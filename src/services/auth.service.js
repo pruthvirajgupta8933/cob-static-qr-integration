@@ -38,6 +38,7 @@ const logout = () => {
 const BASE_URL = "https://adminapi.sabpaisa.in";
 
 const successTxnSummary = (fromdate, todate, clientcode) => {
+  console.log('fromDate',fromdate);
   return axios.post(BASE_URL + "/REST/SuccessTxnSummary/", {
     fromdate,
     todate,
@@ -45,11 +46,17 @@ const successTxnSummary = (fromdate, todate, clientcode) => {
   });
 };
 
+
+const authtest=(ttt)=>{
+  return ttt
+}
+
 const authService = {
   register,
   login,
   logout,
   successTxnSummary,
+  authtest,
 };
 
 export default authService;

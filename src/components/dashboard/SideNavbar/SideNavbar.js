@@ -1,10 +1,21 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import { Link,
     useParams,
-    useRouteMatch } from 'react-router-dom'
+    useRouteMatch,useHistory } from 'react-router-dom'
+import {logout} from '../../../slices/auth'
+
 
 function SideNavbar() {
+
+    const history = useHistory()
     let { path, url } = useRouteMatch();
+    const dispatch = useDispatch();
+    const handle = ()=>{
+      dispatch(logout());
+      history.push('/');
+    }
+    
     return (
       <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px', marginTop: '35px'}}>
       <div className="ant-layout-sider-children">
@@ -12,7 +23,7 @@ function SideNavbar() {
           <div className="side_top_wrap"><span className="switch_live_label">Live</span>
             <div className="side_top_wrap_profile">
               <div className="side_top_wrap_toggle"><i className="fa fa-angle-down" /></div>
-              <p title="VISHAL ANAND" className="text-md text-ellipsis text-capitalize ng-binding">ABHISHEK VERMA</p>
+              <p title="ABHISHEK VERMA" className="text-md text-ellipsis text-capitalize ng-binding">ABHISHEK VERMA</p>
               {/* <a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/profile.html" className="text-lighter text-ellipsis ng-binding txt-white">My
                 Profile</a> */}
                 <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link>
@@ -42,37 +53,22 @@ function SideNavbar() {
                         <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
                       </li>
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/refunds.html"><i className="fa fa-exchange" aria-hidden="true" />
-                          Refunds</a>
+                            Refunds</a>
                       </li>
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/completekyc.html"><i className="fa fa-university" aria-hidden="true" />
-                          Complete KYC</a>
+                            Complete KYC</a>
                       </li>
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href="javascript:void(0)"><i className="fa fa-briefcase" aria-hidden="true" />
+                            Logout</a></li>
                     </ul>
                   </li>
-                  <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open" role="menuitem">
-                    <div className="ant-menu-submenu-title" aria-expanded="true" aria-haspopup="true" style={{paddingLeft: '24px'}} aria-owns="proposal$Menu"><span className="sidebar-menu-divider">Your
-                        Proposals</span><i className="ant-menu-submenu-arrow" /></div>
-                    <ul id="proposal$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu" style={{}}>
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/quotation.html"><i className="fa fa-clone" aria-hidden="true" />
-                          Quotations</a></li>
-                      <li className="ant-menu-item ant-menu-item-active" role="menuitem" style={{paddingLeft: '48px'}}><a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/proforma.html"><i className="fa fa-inr" aria-hidden="true" />
-                          Proforma Invoices</a></li>
-                    </ul>
-                  </li>
+               
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-selected" role="menuitem">
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-haspopup="true" style={{paddingLeft: '24px'}} aria-owns="payment-tool$Menu"><span className="sidebar-menu-divider">Payment
                         Tools</span><i className="ant-menu-submenu-arrow" /></div>
                     <ul id="payment-tool$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu" style={{}}>
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/invoice.html"><i className="fa fa-inr" aria-hidden="true" />
-                          Invoices</a>
-                      </li>
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                        <a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/paymentlink.html"><i className="fa fa-money" aria-hidden="true" />
-                          Payment
-                          Links</a>
-                      </li>
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/subscriptions.html"><i className="fa fa-briefcase" aria-hidden="true" />
-                          Services<i className="sidebar_badge">Soon</i></a></li>
+                     
+                     
                     </ul>
                   </li>
                 </ul>

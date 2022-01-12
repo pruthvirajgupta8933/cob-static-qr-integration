@@ -12,7 +12,7 @@ const successTxnSummary = (fromdate, todate, clientcode) => {
 
 
 const homeService = {
-    successTxnSummary,
+    successTxnSummary
 };
 
 export default homeService;

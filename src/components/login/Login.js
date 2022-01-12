@@ -13,15 +13,12 @@ import {
     Card,
     CardContent,
     CardHeader ,
-    Stack,
-    Alert,
-    Button,
     Snackbar,
     IconButton,
 } from '@mui/material/';
 import CloseIcon from '@mui/icons-material/Close';
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import { Redirect,useHistory  } from "react-router-dom";
+import { Formik} from "formik";
+import { useHistory  } from "react-router-dom";
 import * as Yup from 'yup';
 import Textfield from '../../_components/reuseable_components/Textfield'
 import FormButton from '../../_components/reuseable_components/FormButton'
@@ -100,7 +97,6 @@ function Login(props) {
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        
         setAuthData(authentication);
         console.log('change auth data',auth);
         redirectRoute(auth);
@@ -110,11 +106,8 @@ function Login(props) {
         dispatch(clearMessage());
       }, [dispatch]);
     
-    
-
-
     useEffect(() => {
-        console.log('call one tiem')
+        console.log('call one tiem');
         dispatch(logout());
     }, [])
 
@@ -202,7 +195,7 @@ const redirectRoute = (authen) => {
         variant="error"
       />
       <Box className={classes.formBase} sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      <div className='Test'>Teszttttttt</div>
+      
         <Grid container>
             <Grid item md className={classes.leftCard}>
                 <Card  style={{backgroundColor:'#212334', color:'white' }} sx={{ minWidth: 275 ,height: '100%'}}>

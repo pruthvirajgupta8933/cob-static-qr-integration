@@ -1,9 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 
+
 import AuthService from "../services/auth.service";
+import { useHistory } from "react-router-dom";
 
 const user = JSON.parse(localStorage.getItem("user"));
+
 
 export const register = createAsyncThunk(
   "auth/register",
@@ -47,17 +50,22 @@ export const login = createAsyncThunk(
 
 export const logout = createAsyncThunk("auth/logout", async () => {
   await AuthService.logout();
+  
 });
+
+
+
 
 
 // Home , successTxnSummary
 
 export const successTxnSummary = createAsyncThunk(
   "auth/successTxnSummary",
-  async ({ fromdate, todate, clientcode }, thunkAPI) => {
+  async (object, thunkAPI) => {
     try {
-      console.log({ fromdate, todate, clientcode });
-      const response = await AuthService.successTxnSummary(fromdate, todate, clientcode );
+      console.log(object);
+      const {fromDate,toDate,clientCode} = object;
+      const response = await AuthService.successTxnSummary(fromDate,toDate,clientCode );
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
@@ -73,10 +81,12 @@ export const successTxnSummary = createAsyncThunk(
   }
 );
 
-console.log('authuser',user);
+
 const initialState = user && user.loginStatus
-  ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
-  : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{} };
+  ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:[] }
+  : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:[] };
+
+
 
 const authSlice = createSlice({
   name: "auth",
@@ -89,7 +99,7 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
     },
     [successTxnSummary.fulfilled]: (state, action) => {
-      state.successTxnsumry = action.payload.data;
+      state.successTxnsumry = action.payload;
     },
     [successTxnSummary.rejected]: (state, action) => {
       //code 

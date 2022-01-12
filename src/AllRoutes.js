@@ -3,20 +3,21 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link,
-    useParams,
-    useRouteMatch
+
+    useHistory
   } from "react-router-dom";
 import Dashboard from './components/dashboard/Dashboard';
 import Login from './components/login/Login';
 import Header from './components/login/Headre'
 import Registration from './components/registration/Registration';
+import { useDispatch,useSelector } from 'react-redux';
 
 
+function AllRoutes(){
 
-function AllRoutes() {
+  
     return (
-        <Router>
+        <Router >
           <div>
             {/* <ul>
               <li>

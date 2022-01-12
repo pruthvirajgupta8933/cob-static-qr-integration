@@ -1,26 +1,64 @@
-import React,{useEffect} from 'react'
-import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import React,{useEffect,useState} from 'react'
+import { useDispatch,useSelector } from 'react-redux'
 import { successTxnSummary } from '../../../slices/auth'
+import moment from 'moment'
 
 import '../css/Home.css'
+import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min'
 function Home() {
 const dispatch = useDispatch();
+var currentDate =moment().format('YYYY-MM-DD');
+const [fromDate, setFromDate] = useState(currentDate);
+const [toDate, setToDate] = useState(currentDate);
+const [clientCode, setClientCode] = useState("1");
 
+const [isLoading,setIsLoading] = useState(false);
+
+
+    var {successTxnsumry,user} = useSelector((state)=>state.auth);
+    var clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
+    return item.clientCode;
+    });
+
+    console.log('clientCodeArr',clientCodeArr);
+    console.log('successTxnsumry',successTxnsumry);
+    
+    successTxnsumry = successTxnsumry.filter((txnsummery)=>{
+      if(clientCodeArr.includes(txnsummery.clientCode)){
+        return clientCodeArr.includes(txnsummery.clientCode);
+      }
+       
+    });
+    console.log(successTxnsumry);
+  
   useEffect(() => {
-    var formData = '2022-01-06';
-    var toData = '2022-01-06';
-    var clientCode = '1';
-    dispatch(successTxnSummary(formData,toData,clientCode))
-  }, [])
+   
+    console.log(fromDate)
+    const objParam = {fromDate,toDate,clientCode};
+    dispatch(successTxnSummary(objParam));
+    setIsLoading(true);
+    
+  }, [dispatch,clientCode]);
+
+  const handler = (val) => {
+    const value =val
+    console.log(value)
+    successTxnsumry='';
+    setClientCode(value)
+}
+
+const handleChange= (e)=>{
+      console.log('search ',e);
+}
+    
+   if(isLoading){
+     console.log('loading true');
+   }
 
     return (
-       
       <section className="ant-layout">
       <div className="profileBarStatus">
-        {/*
-                  <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
-                              class="btn">Upload Here</span></span></div>*/}
+        {/*  <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span class="btn">Upload Here</span></span></div>*/}
       </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
@@ -34,15 +72,18 @@ const dispatch = useDispatch();
                   lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Sucessful TRansaction Summary</label>
-                  <select className="ant-input">
-                    <option defaultValue='selected'>Today</option>
-                    <option>Yesterday</option>
-                    <option>Tomorrow</option>
+                  <select className="ant-input" onChange={(e)=>handler(e.currentTarget.value)}>
+
+                    <option defaultValue='selected' value="1">Today</option>
+                    <option value="2">Yesterday</option>
+                    <option value="3">Last 7 Days</option>
+                    <option value="4">Current Month</option>
+                    <option value="5">Last Month</option>
                   </select>
                 </div>
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Search</label>
-                  <input type="text" className="ant-input" placeholder="Search from here" />
+                  <input type="text" className="ant-input" onChange={(e)=>{handleChange(e.currentTarget.value)}} placeholder="Search from here" />
                 </div>
                 <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables">
                   <tbody><tr>
@@ -51,19 +92,18 @@ const dispatch = useDispatch();
                       <th>Transactions</th>
                       <th>Amount</th>
                     </tr>
-                    <tr>
-                      <td>01</td>
-                      <td>Client Name here</td>
-                      <td>SPTRANS0932497</td>
-                      <td>Rs - 10000.00/-</td>
-                    </tr>
-                    <tr>
-                      <td>02</td>
-                      <td>Client Name here</td>
-                      <td>SPTRANS0932497</td>
-                      <td>Rs - 10000.00/-</td>
-                    </tr>
-                  </tbody></table>
+                   {clientCodeArr && clientCodeArr!==null ? successTxnsumry.map((item,i)=>{
+                        return(
+                          <tr>
+                            <td>{i+1}</td>
+                            <td>{item.clientName}</td>
+                            <td>{item.noOfTransaction}</td>
+                            <td>Rs {item.payeeamount}</td>
+                          </tr>
+                        )
+                      }) : <tr>No Record Found</tr>}
+                  </tbody>
+                  </table>
               </div>
             </div></section>
         </div>
