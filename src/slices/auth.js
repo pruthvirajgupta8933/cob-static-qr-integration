@@ -8,6 +8,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 export const register = createAsyncThunk(
   "auth/register",
   async ({ username, email, password }, thunkAPI) => {
+    console.log("Within register");
     try {
       const response = await AuthService.register(username, email, password);
       thunkAPI.dispatch(setMessage(response.data.message));
@@ -32,6 +33,26 @@ export const login = createAsyncThunk(
       console.log("auth",username);
       const data = await AuthService.login(username, password);
       return { user: data };
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+export const sendEmail = createAsyncThunk(
+  "auth/sendEmail",
+  async ({ toEmail, toCc, subject, msg }, thunkAPI) => {
+    try {
+      const response = await AuthService.sendEmail(toEmail, toCc, subject, msg);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
     } catch (error) {
       const message =
         (error.response &&
@@ -76,7 +97,7 @@ export const successTxnSummary = createAsyncThunk(
 console.log('authuser',user);
 const initialState = user && user.loginStatus
   ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
-  : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{} };
+  : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{}, sendEmail: {} };
 
 const authSlice = createSlice({
   name: "auth",
@@ -92,6 +113,12 @@ const authSlice = createSlice({
       state.successTxnsumry = action.payload.data;
     },
     [successTxnSummary.rejected]: (state, action) => {
+      //code 
+    },
+    [sendEmail.fulfilled]: (state, action) => {
+      state.sendEmail = action.payload.data;
+    },
+    [sendEmail.rejected]: (state, action) => {
       //code 
     },
     [login.fulfilled]: (state, action) => {

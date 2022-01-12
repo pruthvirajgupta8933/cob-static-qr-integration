@@ -11,7 +11,6 @@ const register = (username, email, password) => {
 };
 
 const login = (username, password) => {
-  console.log('authservie',username)
   return axios
     .post("https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin", {
       clientUserId:username,
@@ -45,11 +44,30 @@ const successTxnSummary = (fromdate, todate, clientcode) => {
   });
 };
 
+const sendEmail = (toEmail, toCc, subject, msg) => {
+  return axios.post(BASE_URL + "/REST/Email/sendEmail", {
+    toEmail,
+    toCc,
+    subject,
+    msg,
+  })
+  .then((response) => {
+    if (response.data) {
+      localStorage.setItem("sendEmail", JSON.stringify(response.data));
+    }else{
+      localStorage.setItem("sendEmail", JSON.stringify(response.data));
+    }
+
+    return response.data;
+  });
+};
+
 const authService = {
   register,
   login,
   logout,
   successTxnSummary,
+  sendEmail,
 };
 
 export default authService;
