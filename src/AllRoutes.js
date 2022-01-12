@@ -19,16 +19,6 @@ function AllRoutes(){
     return (
         <Router >
           <div>
-            {/* <ul>
-              <li>
-                <Link to="/dashbaord">Dashbard</Link>
-              </li>
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-            </ul>
-    
-            <hr /> */}
             <Switch>
               <Route exact path="/">
                 <Login />

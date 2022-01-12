@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react'
 
-function TransactionEnquirey() {
+function TransactionEnquireyH() {
   
   const initialState = {
-    ActAmount:'',
+    txnId:'',
     paymentMode:'',
     payeeFirstName:'',
     payeeMobile:'',
     payeeEmail:'',
-
-
 
   }
   
@@ -25,10 +23,10 @@ function TransactionEnquirey() {
   const onSubmit=(input)=>{
       console.log('submit');
       if(input) {
-        fetch(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`).then((result) => {
-          result.json().
+        fetch(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`).then((db) => {
+          db.json().
           then((resp) => {
-            console.warn("result", resp)
+            console.warn("db", resp)
             setData(resp)
           }).catch((e)=>console.log(e));
         })
@@ -64,17 +62,18 @@ function TransactionEnquirey() {
                 <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables">
                   <tbody>
                     <tr>
-                      <td>Txn Id:</td><hr></hr>
-                      <td className="bold" >{data.ActAmount}</td>
-                      <td>Payment Mode :</td><hr></hr>
+                      <td>Txn Id:</td>
+                      <td className="bold" >{data.txnId}</td>
+                      <td>Payment Mode :</td>
                       <td className="bold">{data.paymentMode}</td>
-                      <td>payee First Name :</td><hr></hr>
+                      <td>Payee First Name :</td>
                       <td className="bold">{data.payeeFirstName}</td>
                     </tr>
+                   
                     <tr>
-                      <td>Payee Mobile:</td><hr></hr>
-                      <td className="bold">{data.payeeMobile}</td>
-                      <td>Payee Email :</td><hr></hr>
+                      <td></td>
+                      <td className="bold"></td>
+                      <td>Payee Email :</td>
                       <td className="bold">{data.payeeEmail}</td>
                       <td>Status :</td>
                       <td className="bold">Success</td>
@@ -82,7 +81,9 @@ function TransactionEnquirey() {
                     <tr>
                       <td colSpan={6}><button className="view_history">Print</button></td>
                     </tr>
-                  </tbody></table>
+                      
+                  </tbody>
+                  </table>
               </div>
             </div></section>
         </div>
@@ -94,4 +95,4 @@ function TransactionEnquirey() {
   )
 }
 
-export default TransactionEnquirey
+export default TransactionEnquireyH
