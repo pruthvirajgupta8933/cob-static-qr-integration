@@ -7,13 +7,10 @@ import {logout} from '../../../slices/auth'
 
 
 function SideNavbar() {
-
-    const history = useHistory()
     let { path, url } = useRouteMatch();
     const dispatch = useDispatch();
     const handle = ()=>{
       dispatch(logout());
-      history.push('/');
     }
     
     return (
@@ -58,8 +55,9 @@ function SideNavbar() {
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/completekyc.html"><i className="fa fa-university" aria-hidden="true" />
                             Complete KYC</a>
                       </li>
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href="javascript:void(0)"><i className="fa fa-briefcase" aria-hidden="true" />
-                            Logout</a></li>
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href=""><i className="fa fa-briefcase" aria-hidden="true" />
+                            Logout</a>
+                            </li>
                     </ul>
                   </li>
                

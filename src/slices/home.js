@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
-
 import HomeService from "../services/home.service";
 
 export const successTxnSummary = createAsyncThunk(

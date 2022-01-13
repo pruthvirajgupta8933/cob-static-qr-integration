@@ -3,7 +3,6 @@ import { setMessage } from "./message";
 
 
 import AuthService from "../services/auth.service";
-import { useHistory } from "react-router-dom";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -70,6 +69,7 @@ export const sendEmail = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
+  console.log("comes to logout");
   await AuthService.logout();
   
 });
@@ -104,15 +104,15 @@ export const successTxnSummary = createAsyncThunk(
 
 
 const initialState = user && user.loginStatus
-<<<<<<< HEAD
-  ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:[] }
-  : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:[] };
+// <<<<<<< HEAD
+//   ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:[] }
+//   : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:[] };
 
 
-=======
-  ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
+// =======
+  ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{}, sendEmail: {} }
   : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{}, sendEmail: {} };
->>>>>>> 47020e4e03d5f8550b97ad46a01cae5f87f9cd9d
+// >>>>>>> 47020e4e03d5f8550b97ad46a01cae5f87f9cd9d
 
 const authSlice = createSlice({
   name: "auth",

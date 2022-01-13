@@ -121,7 +121,7 @@ function Login(props) {
           .unwrap()
           .then(() => {
             history.push("/dashboard");
-            window.location.reload();
+            // window.location.reload();
           })
           .catch(() => {
             setLoading(false);

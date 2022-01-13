@@ -16,19 +16,28 @@ const [isLoading,setIsLoading] = useState(false);
 
 
     var {successTxnsumry,user} = useSelector((state)=>state.auth);
-    var clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
-    return item.clientCode;
-    });
+    if(user.clientMerchantDetailsList.length>0){
+      var clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
+        return item.clientCode;
+        });
+    }else{
+      var clientCodeArr = []
+    }
+    
 
     console.log('clientCodeArr',clientCodeArr);
     console.log('successTxnsumry',successTxnsumry);
     
-    successTxnsumry = successTxnsumry.filter((txnsummery)=>{
-      if(clientCodeArr.includes(txnsummery.clientCode)){
-        return clientCodeArr.includes(txnsummery.clientCode);
-      }
-       
-    });
+    if(successTxnsumry.length>0){
+      successTxnsumry = successTxnsumry.filter((txnsummery)=>{
+        if(clientCodeArr.includes(txnsummery.clientCode)){
+          return clientCodeArr.includes(txnsummery.clientCode);
+        }
+      });
+    }else{
+      successTxnsumry=[];
+    }
+    
     console.log(successTxnsumry);
   
   useEffect(() => {
@@ -43,7 +52,7 @@ const [isLoading,setIsLoading] = useState(false);
   const handler = (val) => {
     const value =val
     console.log(value)
-    successTxnsumry='';
+    successTxnsumry=[];
     setClientCode(value)
 }
 

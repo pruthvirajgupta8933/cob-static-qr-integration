@@ -3,7 +3,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-
+    Redirect ,
     useHistory
   } from "react-router-dom";
 import Dashboard from './components/dashboard/Dashboard';
@@ -14,7 +14,6 @@ import { useDispatch,useSelector } from 'react-redux';
 
 
 function AllRoutes(){
-
   
     return (
         <Router >

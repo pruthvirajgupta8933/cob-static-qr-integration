@@ -28,6 +28,7 @@ const login = (username, password) => {
 };
 
 const logout = () => {
+  console.log('remove user from LS');
   localStorage.removeItem("user");
 };
 
@@ -45,12 +46,12 @@ const successTxnSummary = (fromdate, todate, clientcode) => {
   });
 };
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
 
 const authtest=(ttt)=>{
   return ttt
 }
-=======
+// =======
 const sendEmail = (toEmail, toCc, subject, msg) => {
   return axios.post(BASE_URL + "/REST/Email/sendEmail", {
     toEmail,
@@ -68,18 +69,18 @@ const sendEmail = (toEmail, toCc, subject, msg) => {
     return response.data;
   });
 };
->>>>>>> 47020e4e03d5f8550b97ad46a01cae5f87f9cd9d
+// >>>>>>> 47020e4e03d5f8550b97ad46a01cae5f87f9cd9d
 
 const authService = {
   register,
   login,
   logout,
   successTxnSummary,
-<<<<<<< HEAD
+// <<<<<<< HEAD
   authtest,
-=======
+// =======
   sendEmail,
->>>>>>> 47020e4e03d5f8550b97ad46a01cae5f87f9cd9d
+// >>>>>>> 47020e4e03d5f8550b97ad46a01cae5f87f9cd9d
 };
 
 export default authService;
