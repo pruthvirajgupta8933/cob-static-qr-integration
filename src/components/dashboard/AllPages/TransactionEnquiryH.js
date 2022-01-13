@@ -1,19 +1,30 @@
 import React, { useState, useEffect } from 'react'
 
-function TransactionEnquireyH() {
+function TransactionEnquirey() {
   
   const initialState = {
     txnId:'',
     paymentMode:'',
     payeeFirstName:'',
-    payeeMobile:'',
+    payeeMob:'',
     payeeEmail:'',
+    status: '',
+    bankTxnId: '',
+    clientName:'',
+    clientId:'',
+    payeeAmount:'',
+    paidAmount:'',
+    transDate:'',
+    transCompleteDate:'',
+    transactionCompositeKey:'',
+    clientCode:'',
+    clientTxnId:'',
 
   }
   
   
-  const [user, setUser] = useState()
-  const [input, setInput] = useState()
+  const [input, setInput] = useState();
+  const [show, setIsShow] = useState(false);
   const [data,setData]= useState(initialState)
 
   const onValueChange = e => {
@@ -21,13 +32,13 @@ function TransactionEnquireyH() {
   };
 
   const onSubmit=(input)=>{
-      console.log('submit');
       if(input) {
-        fetch(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`).then((db) => {
-          db.json().
-          then((resp) => {
-            console.warn("db", resp)
-            setData(resp)
+        fetch(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`).then((result) => {
+          result.json()
+          .then((resp) => {
+            console.warn("result", resp)
+            setData(resp);
+            setIsShow(true);
           }).catch((e)=>console.log(e));
         })
       }
@@ -49,8 +60,7 @@ function TransactionEnquireyH() {
           <section className="features8 cid-sg6XYTl25a" id="features08-3-">
             <div className="container-fluid">
               <div className="row">
-                <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
-                  lazy dog.The quick brown fox jumps over the lazy dog.</p>
+             
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Transactions Enquiry</label>
                   <input type="text" className="ant-input" placeholder="Enter your transactions enquiry" onChange={(e) => onValueChange(e)} />
@@ -59,31 +69,56 @@ function TransactionEnquireyH() {
                   <div>&nbsp;</div>
                   <button className="view_history test" style={{ marginTop: '8px' }} onClick={() => onSubmit(input)}>Search</button>
                 </div>
-                <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables">
+                {
+                  show ? 
+                
+              <table cellspacing={0} cellPadding={10} border={0} width="100%" className="tables">
                   <tbody>
                     <tr>
-                      <td>Txn Id:</td>
-                      <td className="bold" >{data.txnId}</td>
-                      <td>Payment Mode :</td>
-                      <td className="bold">{data.paymentMode}</td>
-                      <td>Payee First Name :</td>
-                      <td className="bold">{data.payeeFirstName}</td>
+                      <td>Txn Id:</td><hr></hr>
+                      <td className="bold" ><b>{data.txnId}</b></td>
+                      <td>Payment Mode :</td><hr></hr>
+                      <td className="bold"><b>{data.paymentMode}</b></td>
+                      <td>Payee First Name :</td><hr></hr>
+                      <td className="bold"><b>{data.payeeFirstName}</b></td>
                     </tr>
-                   
                     <tr>
-                      <td></td>
-                      <td className="bold"></td>
-                      <td>Payee Email :</td>
-                      <td className="bold">{data.payeeEmail}</td>
-                      <td>Status :</td>
-                      <td className="bold">Success</td>
+                      <td>Payee Mobile:</td><hr></hr>
+                      <td className="bold"><b>{data.payeeMob}</b></td>
+                      <td>Payee Email :</td><hr></hr>
+                      <td className="bold"><b>{data.payeeEmail}</b></td>
+                      <td>Status :</td><hr></hr>
+                      <td className="bold"><b>{data.status}</b></td>
                     </tr>
+                    <tr>
+                    <td>Bank Txn Id :</td><hr></hr>
+                    <td className="bold"><b>{data.bankTxnId}</b></td>
+                    <td>Client Name :</td><hr></hr>
+                    <td><b>{data.clientName}</b></td>
+                    <td>Client Id : </td><hr></hr>
+                    <td className="bold"><b>{data.clientId}</b></td>
+                    </tr>
+                    <tr>
+                    <td>Payee Amount :</td><hr></hr>
+                    <td className="bold"><b>{data.payeeAmount}</b></td>
+                    <td>Paid Amount :</td><hr></hr>
+                    <td className="bold"><b>{data.paidAmount}</b></td>
+                    <td>Trans Date :</td><hr></hr>
+                    <td className="bold"><b>{data.transDate}</b></td>
+                    </tr>
+                    <tr>
+                    <td>Trans Complete Date :</td><hr></hr>
+                    <td className="bold"><b>{data.transCompleteDate}</b></td>
+                    <td> Client Code :</td><hr></hr>
+                    <td className="bold"><b>{data.transactionCompositeKey.clientCode}</b></td>
+                    <td>Client Txn Id:</td><hr></hr>
+                    <td className="bold"><b>{data.transactionCompositeKey.clientTxnId}</b></td>
+                    </tr>
+
                     <tr>
                       <td colSpan={6}><button className="view_history">Print</button></td>
                     </tr>
-                      
-                  </tbody>
-                  </table>
+                  </tbody></table> : null }
               </div>
             </div></section>
         </div>
@@ -95,4 +130,4 @@ function TransactionEnquireyH() {
   )
 }
 
-export default TransactionEnquireyH
+export default TransactionEnquirey
