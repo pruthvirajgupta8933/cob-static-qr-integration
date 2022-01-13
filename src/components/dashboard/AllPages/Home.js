@@ -1,13 +1,11 @@
-import React,{useEffect,useState} from 'react'
-import { useDispatch,useSelector } from 'react-redux'
-import { successTxnSummary } from '../../../slices/auth'
-import moment from 'moment'
+import React,{useEffect,useState} from 'react';
+import { useDispatch,useSelector } from 'react-redux';
+import { successTxnSummary } from '../../../slices/auth';
+import '../css/Home.css';
 
-import '../css/Home.css'
-import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min'
 function Home() {
 const dispatch = useDispatch();
-var currentDate =moment().format('YYYY-MM-DD');
+var currentDate = new Date().toJSON().slice(0, 10);
 const [fromDate, setFromDate] = useState(currentDate);
 const [toDate, setToDate] = useState(currentDate);
 const [clientCode, setClientCode] = useState("1");
@@ -28,8 +26,8 @@ const [isLoading,setIsLoading] = useState(false);
     console.log('clientCodeArr',clientCodeArr);
     console.log('successTxnsumry',successTxnsumry);
     
-    if(successTxnsumry.length>0){
-      successTxnsumry = successTxnsumry.filter((txnsummery)=>{
+    if(successTxnsumry?.length>0){
+      successTxnsumry = successTxnsumry?.filter((txnsummery)=>{
         if(clientCodeArr.includes(txnsummery.clientCode)){
           return clientCodeArr.includes(txnsummery.clientCode);
         }

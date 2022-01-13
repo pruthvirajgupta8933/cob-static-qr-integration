@@ -24,13 +24,13 @@ import Textfield from '../../_components/reuseable_components/Textfield'
 import FormButton from '../../_components/reuseable_components/FormButton'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
-// import { userActions } from '../_actions';
 import Header from './Headre';
-// import  "../_assest/css/style.css";
 import './Login.css';
-import { RecentActors } from '@mui/icons-material';
 import { login,logout } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
+import OtpView from "../login/OtpView";
+import toastConfig from "../../utilities/toastTypes";
+import OTPVerificationApi from "../../slices/auth";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -67,18 +67,15 @@ const useStyles = makeStyles({
 
   const theme = createTheme();
 
-
   const INITIAL_FORM_STATE = {
     clientUserId:'',
     userPassword:''
-}
+  };
 
 const FORM_VALIDATION = Yup.object().shape({
     clientUserId: Yup.string().required("Required"),
     userPassword: Yup.string().required('Password is required')
 });
-
-
 
 function Login(props) {
     const history = useHistory()
@@ -91,10 +88,21 @@ function Login(props) {
     const [open, setOpen] = useState(false);
     const [notificationMsg, setNotificationMsg] = React.useState('Username or password not valid');
     const [auth,setAuthData] = useState(authentication);
-
+    const [showOTP, setShowOtp] = useState(false);
+    const [signUpOrSignIn,setSignUpOrSignIn]=useState(false)
+    const [otp, setOtp] = useState({ otp: "" });
+    const [otpVerificationError, setOtpVerificationError] = useState("");
+    const [showResendCode, setShowResendCode] = useState(false);
+    const [showBackDrop, setShowBackDrop] = useState(false);
+    const [GeoLocation, setGeeolocation] = useState("");
 
     const classes = useStyles();
     const dispatch = useDispatch();
+
+    // const AuthToken = useSelector(
+    //     (state) =>
+    //       state.CombinedReducers.authentication.LoginResponse.verification_token
+    //   );
 
     useEffect(()=>{
         setAuthData(authentication);
@@ -128,6 +136,13 @@ function Login(props) {
           });
       };
 
+      const handleChangeForOtp = (otp) => {
+        const regex = /^[0-9]*$/;
+        if (!otp || regex.test(otp.toString())) {
+          setOtp({ otp });
+        }
+      };
+
 const redirectRoute = (authen) => {
         console.log('function call route');
         console.log('isLoggedIn',isLoggedIn);
@@ -135,7 +150,6 @@ const redirectRoute = (authen) => {
         if (isLoggedIn ) {
             setOpen(false);
               console.log('redirect','dashboard')
-              //return <Redirect to="/dashboard" />;
               history.push("/dashboard");
           }
           if (authen.isValidUser==="No"){
@@ -143,8 +157,33 @@ const redirectRoute = (authen) => {
           }
     };
 
+    const handleClickForVerification = () => {
+        setShowBackDrop(true);
+        dispatch(
+          OTPVerificationApi({
+            //verification_code: AuthToken,
+            otp: parseInt(otp.otp, 10),
+            geo_location: GeoLocation,
+          })
+        ).then((res) => {
+          if (res) {
+            if (res.meta.requestStatus === "fulfilled") {
+              if (res.payload.response_code === "1") {
+                setOtpVerificationError("");
+                setShowBackDrop(false);
+                history.push("/ledger");
+              } else if (res.payload.response_code === "0") {
+                setShowBackDrop(false);
+                toastConfig.errorToast(res.payload.message);
+              }
+            } else {
+              setShowBackDrop(false);
+              setShowResendCode(true);
+            }
+          }
+        });
+      };
     
-
     const handleClick = () => {
         setOpen(true);
     };
@@ -215,6 +254,7 @@ const redirectRoute = (authen) => {
                 </CardContent>
                 </Card>
             </Grid>
+            
             
             <Divider orientation="vertical" flexItem />            
             <Grid item md>
