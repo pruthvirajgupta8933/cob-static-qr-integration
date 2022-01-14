@@ -1,10 +1,37 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
-
+import Axios from "axios";
 
 import AuthService from "../services/auth.service";
 
 const user = JSON.parse(localStorage.getItem("user"));
+
+const auth = {
+  LoginResponse: { message: "", verification_token: "", response_code: "" },
+  OtpVerificationResponse: {
+    fulfilled: {
+      auth_token: "",
+      jwt_token: {
+        refresh: "",
+        access: "",
+      },
+      user_token: {
+        login_token: "",
+        tab_login: "",
+      },
+      response_code: "",
+    },
+    rejected: {
+      message: "",
+      response_code: "",
+    },
+  },
+  currentUser: {},
+  status: "",
+  error: "",
+  userAlreadyLoggedIn: false,
+  otpVerified: false,
+};
 
 
 export const register = createAsyncThunk(
@@ -68,17 +95,24 @@ export const sendEmail = createAsyncThunk(
   }
 );
 
+export const OTPVerificationApi = createAsyncThunk(
+  "auth/OTPVerification",
+  async (requestParam) => {
+    const response = await Axios.post(
+      `https://api.msg91.com/api/sendhttp.php?sender=SPTRAN&route=4&mobiles=mobileNO&authkey=177009ASboH8XM59ce18cb&DLT_TE_ID=1107161794798561616&country=91&message=Dear,`,
+      { ...requestParam, type: "back_office" }
+    ).catch((error) => {
+      return error.response;
+    });
+    return response.data;
+  }
+);
+
 export const logout = createAsyncThunk("auth/logout", async () => {
   console.log("comes to logout");
   await AuthService.logout();
   
 });
-
-
-
-
-
-// Home , successTxnSummary
 
 export const successTxnSummary = createAsyncThunk(
   "auth/successTxnSummary",
@@ -104,19 +138,12 @@ export const successTxnSummary = createAsyncThunk(
 
 
 const initialState = user && user.loginStatus
-// <<<<<<< HEAD
-//   ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:[] }
-//   : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:[] };
-
-
-// =======
-  ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{}, sendEmail: {} }
+  ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
   : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{}, sendEmail: {} };
-// >>>>>>> 47020e4e03d5f8550b97ad46a01cae5f87f9cd9d
 
 const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: auth,
   extraReducers: {
     [register.fulfilled]: (state, action) => {
       state.isLoggedIn = false;
@@ -165,6 +192,26 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
       state.user = null;
       state.isValidUser = '';
+    },
+    [OTPVerificationApi.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [OTPVerificationApi.fulfilled]: (state, action) => {
+      state.OtpVerificationResponse.fulfilled = action.payload;
+
+      sessionStorage.setItem(
+        "authToken",
+        action.payload.auth_token ? action.payload.auth_token : ""
+      );
+      sessionStorage.setItem(
+        "userName",
+        action.payload.username ? action.payload.username : ""
+      );
+    },
+    [OTPVerificationApi.rejected]: (state, action) => {
+      state.status = "failed";
+
+      state.error = action.error.message;
     },
   },
 });

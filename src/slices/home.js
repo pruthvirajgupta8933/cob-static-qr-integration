@@ -23,8 +23,6 @@ export const successTxnSummary = createAsyncThunk(
   }
 );
 
-
-
 const initialState = { successTxnSummaryHome: {},isLoading:false  }
 const homeSlice = createSlice({
   name: "home",

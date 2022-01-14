@@ -69,18 +69,14 @@ const sendEmail = (toEmail, toCc, subject, msg) => {
     return response.data;
   });
 };
-// >>>>>>> 47020e4e03d5f8550b97ad46a01cae5f87f9cd9d
 
 const authService = {
   register,
   login,
   logout,
   successTxnSummary,
-// <<<<<<< HEAD
   authtest,
-// =======
   sendEmail,
-// >>>>>>> 47020e4e03d5f8550b97ad46a01cae5f87f9cd9d
 };
 
 export default authService;
