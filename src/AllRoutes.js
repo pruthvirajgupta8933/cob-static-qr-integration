@@ -11,6 +11,7 @@ import Login from './components/login/Login';
 import Header from './components/login/Headre'
 import Registration from './components/registration/Registration';
 import { useDispatch,useSelector } from 'react-redux';
+import LoginPage from './components/login/LoginPage';
 
 
 function AllRoutes(){
@@ -24,6 +25,9 @@ function AllRoutes(){
               </Route>
               <Route exact path="/login">
                 <Login />
+              </Route>
+              <Route exact path="/login-page">
+                <LoginPage />
               </Route>
               <Route exact path="/registration">
                 <Registration />
