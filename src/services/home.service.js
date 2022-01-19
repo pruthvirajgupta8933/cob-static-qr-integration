@@ -11,6 +11,11 @@ const successTxnSummary = (fromdate, todate, clientcode) => {
 };
 
 
+const getPaymentStatusList = ()=>{
+  return axios.get('https://adminapi.sabpaisa.in/REST/admin/getPaymentStatusList');
+}
+
+
 const homeService = {
     successTxnSummary
 };

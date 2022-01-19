@@ -83,7 +83,7 @@ function Login(props) {
     const  isLoggedIn  = useSelector((state) => state.auth.isLoggedIn);
     const { message } = useSelector((state) => state.message);
     const authentication = useSelector(state => state.auth);
-    console.log(authentication);
+    // console.log(authentication);
     
     const [open, setOpen] = useState(false);
     const [notificationMsg, setNotificationMsg] = React.useState('Username or password not valid');
@@ -106,7 +106,7 @@ function Login(props) {
 
     useEffect(()=>{
         setAuthData(authentication);
-        console.log('change auth data',auth);
+        // console.log('change auth data',auth);
         redirectRoute(auth);
     },[authentication])
 
@@ -115,7 +115,7 @@ function Login(props) {
       }, [dispatch]);
     
     useEffect(() => {
-        console.log('call one tiem');
+        // console.log('call one tiem');
         dispatch(logout());
     }, [])
 
@@ -124,7 +124,7 @@ function Login(props) {
         var username= clientUserId; 
         var password= userPassword; 
         setLoading(true);
-        console.log(formValue);
+        // console.log(formValue);
         dispatch(login({ username, password }))
           .unwrap()
           .then(() => {
@@ -144,12 +144,12 @@ function Login(props) {
       };
 
 const redirectRoute = (authen) => {
-        console.log('function call route');
-        console.log('isLoggedIn',isLoggedIn);
-        console.log('authvaliduser',authen.isValidUser);
+        // console.log('function call route');
+        // console.log('isLoggedIn',isLoggedIn);
+        // console.log('authvaliduser',authen.isValidUser);
         if (isLoggedIn ) {
             setOpen(false);
-              console.log('redirect','dashboard')
+              // console.log('redirect','dashboard')
               history.push("/dashboard");
           }
           if (authen.isValidUser==="No"){
@@ -202,7 +202,7 @@ const redirectRoute = (authen) => {
     //      setNotificationMsg("User name Or Password Not Valid");
     //     }, [auth]);
 
-    // useEffect(() => {dispatch(userActions.logout()); console.log("run one time only:")}, [])
+    // useEffect(() => {dispatch(userActions.logout()); // console.log("run one time only:")}, [])
     
     const action = (
         <React.Fragment>

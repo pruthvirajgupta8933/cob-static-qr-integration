@@ -13,12 +13,14 @@ import "./css/50.684f163d.chunk.css";
 import "./css/main.e3214ff9.chunk.css";
 import "./css/loader.css";
 import { useSelector } from 'react-redux';
+import Test from './AllPages/Test';
+import ClientList from './AllPages/ClientList';
 
 
 function Dashboard() {
     let { path } = useRouteMatch();
     const { user: currentUser } = useSelector((state) => state.auth);
-  console.log("currentUser",currentUser);
+  // console.log("currentUser",currentUser);
   if (!currentUser) {
     return <Redirect to="/login" />;
   }
@@ -44,6 +46,12 @@ function Dashboard() {
                 </Route>
                 <Route exaxt path={`${path}/transaction-enquiryh`}>
                      <TransactionEnquireyH />
+                </Route>
+                <Route exaxt path={`${path}/test`}>
+                     <Test />
+                </Route>
+                <Route exact path={`${path}/client-list`}>
+                     <ClientList />
                 </Route>
                 </Switch>
           

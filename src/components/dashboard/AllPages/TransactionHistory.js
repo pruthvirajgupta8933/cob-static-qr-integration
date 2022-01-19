@@ -1,7 +1,106 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
+import { useDispatch,useSelector } from 'react-redux'
+import getPaymentStatusList from '../../../services/home.service'
+import axios from "axios"
+
 
 function TransactionHistory() {
-    return (
+  const dispatch = useDispatch();
+  var {user} = useSelector((state)=>state.auth);
+
+  const [paymentStatusList,SetPaymentStatusList] = useState([]);
+  const [paymentModeList,SetPaymentModeList] = useState([]);
+  const [clientCode,SetClientCode] = useState("All");
+  const [fromDate,SetFromDate] = useState("");
+  const [toDate,SetToDate] = useState("");
+  const [txnStatus,SetTxnStatus] = useState("All");
+  const [payModeId,SetPayModeId] = useState("All")
+  const [txnList,SetTxnList] = useState([])
+  const [filterList,SetFilterList] = useState([])
+  const [searchText,SetSearchText] = useState('')
+
+
+  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+
+
+  const getInputValue=(label,val)=>{
+      if(label==='fromDate'){
+        SetFromDate(val);
+        // console.log(fromDate);
+      }else if(label==='toDate'){
+        SetToDate(val);
+      }else if(label==='clientCode'){
+
+        SetClientCode(val);
+        
+      }else if(label==='txnStatus'){
+        SetTxnStatus(val);
+      }else if(label==='payMode'){
+        SetPayModeId(val);
+      }
+  }
+
+  
+
+  const getPaymentStatusList = async () => {  
+    await axios.get('https://adminapi.sabpaisa.in/REST/admin/getPaymentStatusList')  
+    .then(res => {  
+      // console.log(res)  
+      SetPaymentStatusList(res.data);
+    })  
+    .catch(err => {  
+      console.log(err)  
+    });  
+  }  
+
+
+
+  const paymodeList = async () => {  
+    await axios.get('https://adminapi.sabpaisa.in/REST/paymode/paymodeList')  
+    .then(res => {  
+      // console.log(res)
+      SetPaymentModeList(res.data);  
+    })  
+    .catch(err => {  
+      console.log(err)  
+    });  
+  }  
+
+
+
+
+  const txnHistory = async () => {  
+    // // console.log(`https://adminapi.sabpaisa.in/REST/paymode/paymodeList/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`);
+    await axios.get(`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`)  
+    .then(res => {  
+      SetTxnList(res.data);
+      SetFilterList(res.data)
+      // console.log(res)
+    })  
+    .catch(err => {  
+      console.log(err)  
+    });  
+  }  
+
+  
+  useEffect(() => {     
+    getPaymentStatusList();
+    paymodeList();  
+  }, [])
+
+
+  useEffect(() => {
+    console.log('filter call')
+    if(searchText !== ''){ SetFilterList(txnList.filter((txnItme)=>txnItme.txn_id.toLowerCase().includes(searchText.toLocaleLowerCase())))}
+  }, [searchText])
+
+  
+  
+
+
+
+
+  return (
         <section className="ant-layout">
         <div className="profileBarStatus">
           {/*
@@ -16,48 +115,51 @@ function TransactionHistory() {
             <section className="features8 cid-sg6XYTl25a" id="features08-3-">
               <div className="container-fluid">
                 <div className="row">
-                  <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
-                    lazy dog.The quick brown fox jumps over the lazy dog.</p>
+                  
                   <div className="col-lg-4 mrg-btm- bgcolor">
                     <label>Client Name</label>
-                    <select className="ant-input">
-                      <option selected>All</option>
-                      <option>Yesterday</option>
-                      <option>Tomorrow</option>
+                    <select className="ant-input" onChange={(e)=>{getInputValue('clientCode',e.target.value)}}>
+                    <option value="0">All</option>
+                     {clientMerchantDetailsList.map((item)=>{
+                       return (<option value={item.clientCode}>{ item.clientCode + ' - ' +item.clientName} </option>);
+                     })}
+                      
                     </select>
                   </div>
                   <div className="col-lg-4 mrg-btm- bgcolor">
                     <label>From Date</label>
-                    <input type="date" className="ant-input" placeholder="From Date" />
+                    <input type="date" className="ant-input" placeholder="From Date" onChange={(e)=>{getInputValue('fromDate',e.target.value)}} />
                   </div>
                   <div className="col-lg-4 mrg-btm- bgcolor">
                     <label>To Date</label>
-                    <input type="date" className="ant-input" placeholder="To Date" />
+                    <input type="date" className="ant-input" placeholder="To Date" onChange={(e)=>{getInputValue('toDate',e.target.value)}} />
                   </div>
                   <div className="col-lg-4 mrg-btm- bgcolor">
                     <label>Transactions Status</label>
-                    <select className="ant-input">
-                      <option selected>All</option>
-                      <option>Yesterday</option>
-                      <option>Tomorrow</option>
+                    <select className="ant-input" onChange={(e)=>{getInputValue('txnStatus',e.target.value)}}>
+                    <option value="All">All</option>
+                     {paymentStatusList.map((item,i)=>{
+                       return (<option value={item}>{item} </option>);
+                     })}
                     </select>
                   </div>
                   <div className="col-lg-4 mrg-btm- bgcolor">
                     <label>Payment Mode</label>
-                    <select className="ant-input">
-                      <option selected>All</option>
-                      <option>Yesterday</option>
-                      <option>Tomorrow</option>
+                    <select className="ant-input" onChange={(e)=>{getInputValue('payMode',e.target.value)}}>
+                    <option value="All">All</option>
+                     {paymentModeList.map((item)=>{
+                       return (<option value={item.paymodeId}>{item.paymodeName } </option>);
+                     })}
                     </select>
                   </div>
                   <div className="col-lg-4 mrg-btm- bgcolor">
-                    <button className="view_history" style={{margin: '22px 8px 0 0'}}>Search</button>
+                    <button className="view_history" style={{margin: '22px 8px 0 0'}} onClick={()=>txnHistory()}>Search</button>
                     <button className="view_history" style={{margin: '22px 8px 0 0'}}>Export to
                       Excel</button>
                   </div>
                   <div className="col-lg-6 mrg-btm- bgcolor">
-                    <label>Search Transaction History</label>
-                    <input type="text" className="ant-input" placeholder="Search here" />
+                    <label>Search Transaction ID</label>
+                    <input type="text" className="ant-input" placeholder="Search here" onChange={(e)=>{SetSearchText(e.target.value)}} />
                   </div>
                   <div className="col-lg-6 mrg-btm- bgcolor">
                     <label>Count per page</label>
@@ -69,24 +171,78 @@ function TransactionHistory() {
                   </div>
                   <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables">
                     <tbody><tr>
-                        <th>Sr. No.</th>
-                        <th>Client's Name</th>
-                        <th>Transactions</th>
-                        <th>Amount</th>
-                      </tr>
-                      <tr>
-                        <td>01</td>
-                        <td>Client Name here</td>
-                        <td>SPTRANS0932497</td>
-                        <td>Rs - 10000.00/-</td>
-                      </tr>
-                      <tr>
-                        <td>02</td>
-                        <td>Client Name here</td>
-                        <td>SPTRANS0932497</td>
-                        <td>Rs - 10000.00/-</td>
-                      </tr>
+                            <th> S.No </th>
+                            <th> Trans ID </th>
+                            <th> Client Trans ID </th>
+                            <th> Challan Number / VAN </th>
+                            <th> Amount </th>
+                            <th> Trans Initiation Date </th>
+                            <th> Trans Complete Date </th>
+                            <th> Payment Status </th>
+                            <th> Payee First Name </th>
+                            <th> Payee Last Name </th>
+                            <th> Payee Mob number </th>
+                            <th> Payee Email </th>
+                            <th> Client Code </th>
+                            <th> Payment Mode </th>
+                            <th> Payee Address </th>
+                            <th> Udf1 </th>
+                            <th> Udf2 </th>
+                            <th> Udf3 </th>
+                            <th> Udf4 </th>
+                            <th> Udf5 </th>
+                            <th> Udf6 </th>
+                            <th> Udf7 </th>
+                            <th> Udf8 </th>
+                            <th> Udf9 </th>
+                            <th> Udf10 </th>
+                            <th> Udf11 </th>
+                            <th> Udf20 </th>
+                            <th> Gr.No </th>
+                            <th> Bank Message </th>
+                            <th> IFSC Code </th>
+                            <th> Payer Account No </th>
+                            <th> Bank Txn Id </th>
+                          </tr>
+                          {txnList.length>0 && filterList.map((item,i)=>{return(
+                            <tr>
+                            <td>{item.srNo}</td>
+                            <td>{item.txn_id}</td>
+                            <td>{item.client_txn_id}</td>
+                            <td>{item.challan_no}</td>
+                            <td>{item.payee_amount}</td>
+                            <td>{item.trans_date}</td>
+                            <td>{item.trans_complete_date}</td>
+                            <td>{item.status}</td>
+                            <td>{item.payee_first_name}</td>
+                            <td>{item.payee_lst_name}</td>
+                            <td>{item.payee_mob}</td>
+                            <td>{item.payee_email}</td>
+                            <td>{item.client_code}</td>
+                            <td>{item.payment_mode}</td>
+                            <td>{item.payee_address}</td>
+                            <td>{item.udf1}</td>
+                            <td>{item.udf2}</td>
+                            <td>{item.udf3}</td>
+                            <td>{item.udf4}</td>
+                            <td>{item.udf5}</td>
+                            <td>{item.udf6}</td>
+                            <td>{item.udf7}</td>
+                            <td>{item.udf8}</td>
+                            <td>{item.udf9}</td>
+                            <td>{item.udf10}</td>
+                            <td>{item.udf11}</td>
+                            <td>{item.udf20}</td>
+                            <td>{item.gr_number}</td>
+                            <td>{item.bank_message}</td>
+                            <td>{item.ifsc_code}</td>
+                            <td>{item.payer_acount_number}</td>
+                            <td>{item.bank_txn_id}</td>                            
+                          </tr>
+                          )})}
+                          
                     </tbody></table>
+                  {filterList.length<0? <div>No Data Found</div>:<div></div>}
                 </div>
               </div></section>
           </div>

@@ -37,7 +37,7 @@ const auth = {
 export const register = createAsyncThunk(
   "auth/register",
   async ({ username, email, password }, thunkAPI) => {
-    console.log("Within register");
+    // console.log("Within register");
     try {
       const response = await AuthService.register(username, email, password);
       thunkAPI.dispatch(setMessage(response.data.message));
@@ -59,7 +59,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async ({ username, password }, thunkAPI) => {
     try {
-      console.log("auth",username);
+      // console.log("auth",username);
       const data = await AuthService.login(username, password);
       return { user: data };
     } catch (error) {
@@ -109,7 +109,7 @@ export const OTPVerificationApi = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-  console.log("comes to logout");
+  // console.log("comes to logout");
   await AuthService.logout();
   
 });
@@ -118,7 +118,7 @@ export const successTxnSummary = createAsyncThunk(
   "auth/successTxnSummary",
   async (object, thunkAPI) => {
     try {
-      console.log(object);
+      // console.log(object);
       const {fromDate,toDate,clientCode} = object;
       const response = await AuthService.successTxnSummary(fromDate,toDate,clientCode );
       thunkAPI.dispatch(setMessage(response.data.message));

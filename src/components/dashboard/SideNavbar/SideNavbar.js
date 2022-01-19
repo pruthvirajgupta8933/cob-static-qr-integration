@@ -49,8 +49,7 @@ function SideNavbar() {
                         Transaction Enquiry</a> */}
                         <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
                       </li>
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/refunds.html"><i className="fa fa-exchange" aria-hidden="true" />
-                            Refunds</a>
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Client List </Link> 
                       </li>
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/completekyc.html"><i className="fa fa-university" aria-hidden="true" />
                             Complete KYC</a>

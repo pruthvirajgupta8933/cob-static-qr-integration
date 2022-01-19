@@ -39,7 +39,7 @@ function TransactionEnquirey() {
             console.warn("result", resp)
             setData(resp);
             setIsShow(true);
-          }).catch((e)=>console.log(e));
+          }).catch((e)=> console.log(e));
         })
       }
   }

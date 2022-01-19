@@ -250,22 +250,37 @@ img{max-width:100%;}
     font-weight: 700
 }
 
-header{ float: left; width:100%;padding:0px;/* font-family:Stack,Helvetica,Arial,sans-serif; */position:relative; background:#fff;}
+header{ /*float: left;*/ width:100%; padding:0px;/* font-family:Stack,Helvetica,Arial,sans-serif; */position:relative; background:#fff;}
 .logo{display: flex;display: -webkit-box;display: -webkit-flex;display: -ms-flexbox;}
 .logo img{float:left;height:51px;}
 .header_first_list{display:flex;display: -webkit-box;display: -webkit-flex;display: -ms-flexbox;padding:0px;margin:0;list-style-type: none;-webkit-box-align: stretch;-webkit-align-items: stretch;-ms-flex-align: stretch;align-items: stretch;-webkit-box-pack: justify;
--webkit-justify-content: space-between;-ms-flex-pack: justify;justify-content: space-between;padding:0 21.3rem 0 0;}
+-webkit-justify-content: space-between;-ms-flex-pack: justify;justify-content: space-between;padding:0 14rem 0 0;}
 .header_first_list li{float: left;padding:0 3.04rem;flex: 0 1 auto;-webkit-box-flex: 0;-webkit-flex: 0 1 auto;-ms-flex: 0 1 auto;position: relative;}
-.header_first_list > li > a{float:left;font-weight:500;font-size: 1.6rem;color: #565870;transition: 0.4s all;}
+.header_first_list > li > a{/*float:left; font-weight:500; font-size: 1.6rem;*/ color: #565870;transition: 0.4s all;}
 .header_first_list > li > a:hover{color: #0B4A94;}
 .header_first_list > li > a svg{fill:#565870;}
 .header_first_list > li > a:hover svg{fill:#0B4A94;}
 .header_second_list{display: flex;display: -webkit-box;display: -webkit-flex;display: -ms-flexbox;padding:0px;margin: 0;list-style-type: none;}
-.header_second_list li{float: left;padding-left:1.8em;margin:0;}
-.header_second_list li a{float: left;font-weight: 600;font-size: 1.6rem;color: #0B4A94;}
+.header_second_list li{float: left; padding-left:1.8em; margin:0; line-height: 44px;}
+.header_second_list li a{float: left; /*font-weight: 600;font-size: 1.6rem;*/ color: #0B4A94;}
 .header_second_list li a:hover{color: #111;}
 .header_second_list li .btnlink span{float: left;line-height:34px;width: calc(100% - 30px);text-align: center;}
-.header_second_list li .btnlink{background: #0B4A94;font-weight: 500;font-size: 1.6rem;color: #fff;border: 1px solid #0B4A94;padding: 6px 15px 6px 15px;border-radius: 2px;transition: 0.5s all;margin-top:4px;float:left;height:40px;border-radius: 3px;line-height: 28px;}
+
+.header_second_list li .btnlink{background: #0B4A94;
+    /* font-weight: 500; */
+    /* font-size: 1.6rem; */
+    color: #fff;
+    border: 1px solid #0B4A94;
+    padding: 6px 15px 6px 15px;
+    border-radius: 4px;
+    transition: 0.5s all;
+    margin-top: 4px;
+    /* float: left; */
+    height: 40px;
+    /* border-radius: 3px; */
+    line-height: 24px;
+    white-space: nowrap;}
+
 .header_second_list li .btnlink svg{float: right;fill:#0B4A94;margin-top:5px;}
 .header_second_list li .btnlink:hover svg{fill: #fff;opacity:0.5;}
 .header_second_list li .btnlink:hover{background: #0B4A94;color: #fff;}
@@ -352,7 +367,7 @@ footer{float: left;width: 100%;background: #F8F8F8;padding:34px 0 0;}
 .bannerImage img{width:811px;height:450px;vertical-align: bottom;max-width:none;}
 .flex_wrap{display: flex;}
 .flexInner{flex:0 0 auto;-webkit-box-flex: 0;-webkit-flex: 0 0 auto;-ms-flex: 0 0 auto;}
-.header-fluid{max-width: 1680px;padding-right: 2.4rem;padding-left: 2.4rem;margin-right: auto;margin-left: auto;line-height:48px;display: flex;justify-content: space-between;align-items: center;height: 9.6rem;}
+.header-fluid{max-width: 1680px;padding-right: 2.4rem;padding-left: 2.4rem;margin-right: auto;margin-left: auto; /*line-height:48px;*/ display: flex;justify-content: space-between;align-items: center; /*height: 9.6rem;*/}
 /* .header-fluid::before,.header-fluid::after{display: table;content: " ";}
 .header-fluid::after{clear: both;} */
 .code_list_no{color:#515978;background: #EEF0F6;width:56px;border-radius: 12px 0px 0px 12px;position:absolute;left:0;top:0;bottom:0;padding:15px 22px;line-height:18px;font-size:14px;font-weight: 600;text-align: right;font-family: 'Source Code Pro', monospace;}

@@ -28,7 +28,7 @@ const login = (username, password) => {
 };
 
 const logout = () => {
-  console.log('remove user from LS');
+  // console.log('remove user from LS');
   localStorage.removeItem("user");
 };
 
@@ -38,7 +38,7 @@ const logout = () => {
 const BASE_URL = "https://adminapi.sabpaisa.in";
 
 const successTxnSummary = (fromdate, todate, clientcode) => {
-  console.log('fromDate',fromdate);
+  // console.log('fromDate',fromdate);
   return axios.post(BASE_URL + "/REST/SuccessTxnSummary/", {
     fromdate,
     todate,

@@ -2,11 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import HomeService from "../services/home.service";
 
+
 export const successTxnSummary = createAsyncThunk(
   "home/successTxnSummary",
   async ({ fromdate, todate, clientcode }, thunkAPI) => {
     try {
-      console.log({ fromdate, todate, clientcode });
+      // console.log({ fromdate, todate, clientcode });
       const response = await HomeService.successTxnSummary(fromdate, todate, clientcode );
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
@@ -22,6 +23,8 @@ export const successTxnSummary = createAsyncThunk(
     }
   }
 );
+
+
 
 const initialState = { successTxnSummaryHome: {},isLoading:false  }
 const homeSlice = createSlice({

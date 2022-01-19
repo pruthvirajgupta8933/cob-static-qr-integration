@@ -1,66 +1,65 @@
 import React,{useEffect,useState} from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { successTxnSummary } from '../../../slices/auth';
+import ProgressBar from '../../../_components/reuseable_components/ProgressBar';
 import '../css/Home.css';
 
 function Home() {
-const dispatch = useDispatch();
-var currentDate = new Date().toJSON().slice(0, 10);
-const [fromDate, setFromDate] = useState(currentDate);
-const [toDate, setToDate] = useState(currentDate);
-const [clientCode, setClientCode] = useState("1");
+  // console.log("home page call");
+  const dispatch = useDispatch();
+  var currentDate = new Date().toJSON().slice(0, 10);
+  const [fromDate, setFromDate] = useState(currentDate);
+  const [toDate, setToDate] = useState(currentDate);
+  const [clientCode, setClientCode] = useState("1");
+  const [isLoading,setIsLoading] = useState(false);
+  const [search, SetSearch] = useState("");
+  const [txnList, SetTxnList] = useState([]);
 
-const [isLoading,setIsLoading] = useState(false);
 
 
-    var {successTxnsumry,user} = useSelector((state)=>state.auth);
-    if(user.clientMerchantDetailsList.length>0){
-      var clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
-        return item.clientCode;
-        });
-    }else{
-      var clientCodeArr = []
-    }
-    
-
-    console.log('clientCodeArr',clientCodeArr);
-    console.log('successTxnsumry',successTxnsumry);
-    
+  var {successTxnsumry,user} = useSelector((state)=>state.auth);
+  console.log('successTxnsumry',successTxnsumry);
+  // console.log('user call',user);
+  if(user.clientMerchantDetailsList.length>0){
+    var clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
+      return item.clientCode;
+      });
+  }else{
+    clientCodeArr = []
+  }
+  
+  
+  useEffect(() => {
     if(successTxnsumry?.length>0){
-      successTxnsumry = successTxnsumry?.filter((txnsummery)=>{
+      setIsLoading(false)
+      var filterData = successTxnsumry?.filter((txnsummery)=>{
         if(clientCodeArr.includes(txnsummery.clientCode)){
           return clientCodeArr.includes(txnsummery.clientCode);
         }
       });
+      SetTxnList(filterData);
+      console.log('filterData',filterData)
     }else{
       successTxnsumry=[];
     }
-    
-    console.log(successTxnsumry);
-  
-  useEffect(() => {
-   
-    console.log(fromDate)
+
     const objParam = {fromDate,toDate,clientCode};
     dispatch(successTxnSummary(objParam));
     setIsLoading(true);
-    
-  }, [dispatch,clientCode]);
+    // console.log('useEffect call');
+  }, [clientCode]);
 
-  const handler = (val) => {
-    const value =val
-    console.log(value)
-    successTxnsumry=[];
-    setClientCode(value)
-}
+  useEffect(() => {
+    SetTxnList(successTxnsumry.filter((txnItme)=>txnItme.clientName.toLowerCase().includes(search.toLocaleLowerCase())));
+  }, [search]);
+  
+
 
 const handleChange= (e)=>{
-      console.log('search ',e);
+      SetSearch(e);
 }
-    
-   if(isLoading){
-     console.log('loading true');
-   }
+    console.log('loading ',isLoading);
+   
 
     return (
       <section className="ant-layout">
@@ -79,8 +78,7 @@ const handleChange= (e)=>{
                   lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Sucessful TRansaction Summary</label>
-                  <select className="ant-input" onChange={(e)=>handler(e.currentTarget.value)}>
-
+                  <select className="ant-input" value={clientCode} onChange={(e)=>setClientCode(e.currentTarget.value)}>
                     <option defaultValue='selected' value="1">Today</option>
                     <option value="2">Yesterday</option>
                     <option value="3">Last 7 Days</option>
@@ -99,18 +97,20 @@ const handleChange= (e)=>{
                       <th>Transactions</th>
                       <th>Amount</th>
                     </tr>
-                   {clientCodeArr && clientCodeArr!==null ? successTxnsumry.map((item,i)=>{
+                   {clientCodeArr && clientCodeArr!==null ? txnList.map((item,i)=>{
                         return(
-                          <tr>
+                          <tr key={i}>
                             <td>{i+1}</td>
                             <td>{item.clientName}</td>
                             <td>{item.noOfTransaction}</td>
                             <td>Rs {item.payeeamount}</td>
                           </tr>
+
                         )
-                      }) : <tr>No Record Found</tr>}
+                      }) : <></>}
                   </tbody>
                   </table>
+                  {clientCodeArr && clientCodeArr===null ? <ProgressBar />:<></>}
               </div>
             </div></section>
         </div>
