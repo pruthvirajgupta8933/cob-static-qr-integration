@@ -13,7 +13,6 @@ import "./css/50.684f163d.chunk.css";
 import "./css/main.e3214ff9.chunk.css";
 import "./css/loader.css";
 import { useSelector } from 'react-redux';
-import Test from './AllPages/Test';
 import ClientList from './AllPages/ClientList';
 
 
