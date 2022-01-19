@@ -2,10 +2,11 @@ import React from 'react'
 
 function Home() {
     return (
+      <div>
         <section className="ant-layout">
         <div className="profileBarStatus">
           {/*
-          <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
+          <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
                 class="btn">Upload Here</span></span></div>*/}
         </div>
         <main className="gx-layout-content ant-layout-content">
@@ -299,6 +300,96 @@ function Home() {
           </footer>
         </main>
       </section>
+      <section className="features8 cid-sg6XYTl25a" id="features08-3">
+      <div className="container-fluid">
+
+          <div className="row">
+              <div className="card- col-12 col-md-6 col-lg-4">
+                  <div className="card-wrapper card1">
+                      <div className="card-box align-left">
+                          <div className="iconfont-wrapper">
+                              <span className="mbr-iconfont mobi-mbri-cash mobi-mbri"></span>
+                          </div>
+                          <h5 className="card-title mbr-fonts-style display-5">Gateway</h5>
+                          <p className="card-text mbr-fonts-style display-7">Lorem ipsum dolor sit
+                              amet, consectetur
+                              adipiscing
+                              elit.</p>
+                          <span className="Click-here- ant-btn ant-btn-default">Read more</span>
+                          <span className="Click-here ant-btn ant-btn-primary">Subscribes</span>
+
+                      </div>
+                  </div>
+              </div>
+              <div className="card- col-12 col-md-6 col-lg-4">
+                  <div className="card-wrapper card2">
+                      <div className="card-box align-left">
+                          <div className="iconfont-wrapper">
+                              <span className="mbr-iconfont mobi-mbri-change-style mobi-mbri"></span>
+                          </div>
+                          <h5 className="card-title mbr-fonts-style display-5">Offline Challan</h5>
+                          <p className="card-text mbr-fonts-style display-7">Lorem ipsum dolor sit
+                              amet, consectetur
+                              adipiscing elit.</p>
+                          <span className="Click-here- ant-btn ant-btn-default">Read more</span>
+                          <span className="Click-here ant-btn ant-btn-primary">Subscribes</span>
+                      </div>
+                  </div>
+              </div>
+              <div className="card- col-12 col-md-6 col-lg-4">
+                  <div className="card-wrapper card3">
+                      <div className="card-box align-left">
+                          <div className="iconfont-wrapper">
+                              <span className="mbr-iconfont mobi-mbri-photo mobi-mbri"></span>
+                          </div>
+                          <h5 className="card-title mbr-fonts-style display-5">QwikForm</h5>
+                          <p className="card-text mbr-fonts-style display-7">Lorem ipsum dolor sit
+                              amet, consectetur
+                              adipiscing elit.</p>
+                          <span className="Click-here- ant-btn ant-btn-default">Read more</span>
+                          <span className="Click-here ant-btn ant-btn-primary">Subscribes</span>
+                      </div>
+                  </div>
+              </div>
+              <div className="card- col-12 col-md-6 col-lg-4">
+                  <div className="card-wrapper card4">
+                      <div className="card-box align-left">
+                          <div className="iconfont-wrapper">
+                              <span className="mbr-iconfont mobi-mbri-rocket mobi-mbri"></span>
+                          </div>
+                          <h5 className="card-title mbr-fonts-style display-5">QwikCollect</h5>
+                          <p className="card-text mbr-fonts-style display-7">Lorem ipsum dolor sit
+                              amet, consectetur
+                              adipiscing elit.</p>
+                          <h6 className="link mbr-fonts-style display-4"><a href="#" className="text-info">Read more</a></h6>
+
+
+                          <span className="Click-here- ant-btn ant-btn-default">Read more</span>
+                          <span className="Click-here ant-btn ant-btn-primary">Subscribes</span>
+                      </div>
+                  </div>
+              </div>
+
+              <div className="card- col-12 col-md-6 col-lg-4">
+                  <div className="card-wrapper card5">
+                      <div className="card-box align-left">
+                          <div className="iconfont-wrapper">
+                              <span className="mbr-iconfont mobi-mbri-sites mobi-mbri"></span>
+                          </div>
+                          <h5 className="card-title mbr-fonts-style display-5">Payout</h5>
+                          <p className="card-text mbr-fonts-style display-7">Lorem ipsum dolor sit
+                              amet, consectetur
+                              adipiscing elit.</p>
+
+                          <span className="Click-here- ant-btn ant-btn-default">Read more</span>
+                          <span className="Click-here ant-btn ant-btn-primary">Subscribes</span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </section>
+      </div>
     )
 }
 

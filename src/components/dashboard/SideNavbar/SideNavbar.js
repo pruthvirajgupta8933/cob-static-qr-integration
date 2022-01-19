@@ -59,7 +59,6 @@ function SideNavbar() {
                             </li>
                     </ul>
                   </li>
-               
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-selected" role="menuitem">
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-haspopup="true" style={{paddingLeft: '24px'}} aria-owns="payment-tool$Menu"><span className="sidebar-menu-divider">Payment
                         Tools</span><i className="ant-menu-submenu-arrow" /></div>
