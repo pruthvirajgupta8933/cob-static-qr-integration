@@ -3,10 +3,8 @@ import SideNavbar from './SideNavbar/SideNavbar'
 import Home from './AllPages/Home'
 import Transaction from './AllPages/Transaction'
 import TransactionEnquirey from './AllPages/TransactionEnquirey';
-import TransactionEnquireyH from './AllPages/TransactionEnquiryH';
 import SettlementReport from './AllPages/SettlementReport';
 import TransactionHistory from './AllPages/TransactionHistory';
-import SettlementReport from './AllPages/SettlementReport';
 import Profile from './AllPages/Profile';
 import { useRouteMatch,Switch,Route ,Redirect} from 'react-router-dom'
 
@@ -46,30 +44,16 @@ function Dashboard() {
                 <Route exact path={`${path}/transaction-history`}>
                      <TransactionHistory/>
                 </Route>
-                <Route exact path={`${path}/transaction-enquiryh`}>
-                     <TransactionEnquireyH />
-                </Route>
-<<<<<<< HEAD
-<<<<<<< HEAD
                 <Route exaxt path={`${path}/test`}>
                      <Test />
                 </Route>
                 <Route exact path={`${path}/client-list`}>
                      <ClientList />
-=======
+               </Route>
                 <Route exaxt path={`${path}/settlement-report`}>
                      <SettlementReport/>
->>>>>>> phase_hrry
-=======
-                <Route exact path={`${path}/settlement`}>
-                     <SettlementReport />
->>>>>>> phase_bhuvn
                 </Route>
                 </Switch>
-          
-         
-            
-            
         </section>
     )
 }

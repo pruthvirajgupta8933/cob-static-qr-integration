@@ -49,29 +49,7 @@ function SideNavbar() {
                         Transaction Enquiry</a> */}
                         <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
                       </li>
-<<<<<<< HEAD
-<<<<<<< HEAD
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Client List </Link> 
-=======
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      {/* <a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/settlement.html"><i className="fa fa-university" aria-hidden="true" />
-                        Transaction Enquiry</a> */}
-                        <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Settlement Report </Link> 
-                      </li>
-=======
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      {/* <a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/settlement.html"><i className="fa fa-university" aria-hidden="true" />
-                        Transaction Enquiry</a> */}
-                        <Link to={`${url}/settlement`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />  SettlementReport  </Link> 
-                      </li>
-
-
-
-
->>>>>>> phase_bhuvn
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/refunds.html"><i className="fa fa-exchange" aria-hidden="true" />
-                            Refunds</a>
->>>>>>> phase_hrry
                       </li>
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}><a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/completekyc.html"><i className="fa fa-university" aria-hidden="true" />
                             Complete KYC</a>
@@ -86,8 +64,6 @@ function SideNavbar() {
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-haspopup="true" style={{paddingLeft: '24px'}} aria-owns="payment-tool$Menu"><span className="sidebar-menu-divider">Payment
                         Tools</span><i className="ant-menu-submenu-arrow" /></div>
                     <ul id="payment-tool$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu" style={{}}>
-                     
-                     
                     </ul>
                   </li>
                 </ul>

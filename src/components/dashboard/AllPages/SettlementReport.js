@@ -2,11 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 
 
-<<<<<<< HEAD
 function SettlementReport() {
-=======
-function Test() {
->>>>>>> phase_bhuvn
     const initialState = {
         Id: "",
         client_code: "",
@@ -20,14 +16,10 @@ function Test() {
 
 
 
-<<<<<<< HEAD
 
     const [input,setInput]=React.useState();
     const [searchArea, setSearchArea] = useState('');
     const [searchResults, setSearchResults] = useState([]);
-=======
-    const [input,setInput]=React.useState();
->>>>>>> phase_bhuvn
     const [data, setData] = React.useState([])
     const [users, setUsers] = React.useState(initialState);
     const [folderArr, setFolderArr] = React.useState([]);
@@ -38,20 +30,12 @@ function Test() {
     
 
     const getFileName = async () => {  
-<<<<<<< HEAD
         await axios("https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/LPSD1")  //MPSE1
-=======
-        await axios("https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/MPSE1")
->>>>>>> phase_bhuvn
         .then(res => {  
           setData(res.data);  
         })  
         .catch(err => {  
-<<<<<<< HEAD
           console.log(err)
-=======
-          console.log(err)  
->>>>>>> phase_bhuvn
         });
 
     }
@@ -94,7 +78,6 @@ function Test() {
         SetShowFilterData(showFilterData)
 
     }, [selectedSubFolder,selectedFolder])
-<<<<<<< HEAD
 
 
     const getSearchTerm = (e) => {
@@ -108,8 +91,6 @@ function Test() {
 
 
 
-=======
->>>>>>> phase_bhuvn
   
 
 
@@ -131,18 +112,13 @@ function Test() {
             <div>
                 <label For="folder"></label>
                 <select onChange={(event) => SetSelectedSubFolder(event.target.value)}  value={selectedSubFolder}style={{ position: 'absolute', top: 150, left: 650, width: 300 }} >
-<<<<<<< HEAD
                 <option value="" >Select</option>
-=======
-                <option value="">Select</option>
->>>>>>> phase_bhuvn
                     {subFolderArr && (subFolderArr.map((subfolder) => (
                         <option value={subfolder} >{subfolder}</option>
                     )))}
                 </select>
 
             </div>
-<<<<<<< HEAD
             <input type="text" value= {searchArea} placeholder="Search Here" style={{ position: 'absolute', top: 200, left: 250, width: 300 }} 
             onChange = {getSearchTerm}  
             />
@@ -150,9 +126,6 @@ function Test() {
 
                 showFilterData.filter 
             }
-=======
-            <input type="text" placeholder="Search Here" style={{ position: 'absolute', top: 200, left: 250, width: 300 }} />
->>>>>>> phase_bhuvn
 
             <div>
                 <select style={{ position: 'absolute', top: 200, left: 650, width: 300 }}>
@@ -212,8 +185,4 @@ function Test() {
     )
 }
 
-<<<<<<< HEAD
 export default SettlementReport;
-=======
-export default Test
->>>>>>> phase_bhuvn
