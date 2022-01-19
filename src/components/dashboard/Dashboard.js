@@ -53,7 +53,7 @@ function Dashboard() {
                 <Route exaxt path={`${path}/subscription`}>
                      <Subsciption />
                 </Route>
-                </Switch>
+                </Switch> 
         </section>
     )
 }
