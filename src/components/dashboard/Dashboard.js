@@ -4,11 +4,12 @@ import Home from './AllPages/Home'
 import Transaction from './AllPages/Transaction'
 import TransactionEnquirey from './AllPages/TransactionEnquirey';
 import TransactionEnquireyH from './AllPages/TransactionEnquiryH';
+import SettlementReport from './AllPages/SettlementReport';
 import TransactionHistory from './AllPages/TransactionHistory';
 import Profile from './AllPages/Profile';
 import { useRouteMatch,Switch,Route ,Redirect} from 'react-router-dom'
 
-import "./css/loader.css";
+import "./css/Home.css";
 import "./css/50.684f163d.chunk.css";
 import "./css/main.e3214ff9.chunk.css";
 import "./css/loader.css";
@@ -44,6 +45,9 @@ function Dashboard() {
                 </Route>
                 <Route exaxt path={`${path}/transaction-enquiryh`}>
                      <TransactionEnquireyH />
+                </Route>
+                <Route exaxt path={`${path}/settlement-report`}>
+                     <SettlementReport/>
                 </Route>
                 </Switch>
           

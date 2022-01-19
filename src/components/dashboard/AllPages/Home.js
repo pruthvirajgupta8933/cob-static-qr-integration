@@ -16,6 +16,7 @@ const [isLoading,setIsLoading] = useState(false);
 
 
     var {successTxnsumry,user} = useSelector((state)=>state.auth);
+    console.log('user', user)
     if(user.clientMerchantDetailsList.length>0){
       var clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
         return item.clientCode;
