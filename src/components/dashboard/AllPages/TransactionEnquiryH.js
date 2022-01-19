@@ -32,16 +32,18 @@ function TransactionEnquirey() {
   };
 
   const onSubmit=(input)=>{
-      if(input) {
+    
         fetch(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`).then((result) => {
           result.json()
           .then((resp) => {
             console.warn("result", resp)
             setData(resp);
             setIsShow(true);
-          }).catch((e)=>console.log(e));
-        })
-      }
+            })
+        }).catch((e)=>console.log(e));
+       
+        
+      
   }
 
 
