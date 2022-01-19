@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react'
 
+import axios from 'axios';
+
 function TransactionEnquirey() {
   
   const initialState = {
@@ -28,6 +30,7 @@ function TransactionEnquirey() {
   const [show, setIsShow] = useState(false);
   const [errMessage , setErrMessage] = useState('');
   const [data,setData]= useState(initialState)
+  const[errMessage, setErrMessage]=useState('');
 
 
 
@@ -36,6 +39,11 @@ function TransactionEnquirey() {
   };
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> phase_bhuvn
   const onSubmit=async(input)=>{
 
     const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
@@ -50,6 +58,7 @@ function TransactionEnquirey() {
 
       console.log(e);
       setIsShow(false);
+<<<<<<< HEAD
       setErrMessage('No Data Found');
 
     })
@@ -75,6 +84,71 @@ return (date.getDate()+
 
 
 
+=======
+      setErrMessage('No Data Found');  
+
+    })
+  
+    
+  }
+  
+  const dateFormat = (timestamp) => {
+
+
+    // var date = new Date(timestamp);
+    // console.log(date.getTime())
+    // return date.getTime();
+    
+    var date = new Date(timestamp);
+    return (date.getDate()+
+              "/"+(date.getMonth()+1)+
+              "/"+date.getFullYear()+
+              " "+date.getHours()+
+              ":"+date.getMinutes()+
+              ":"+date.getSeconds());
+  }    
+
+  // const onSubmit=(input)=>{
+      
+  //       fetch(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`).then((result) => {
+  //         result.json()
+  //         .then((resp) => {
+  //           console.warn("result", resp)
+  //           setData(resp);
+  //           setIsShow(true);
+  //         }).catch((e)=> {
+
+  //     console.log(e);
+  //     setIsShow(false);
+  //     setErrMessage('No Data Found');
+
+  //   })
+          
+          
+           
+          
+        
+      
+  // }
+
+  const onClick=()=>{
+
+    var tableContents = document.getElementById("joshi").innerHTML;
+    var a = window.open('', '', 'height=900, width=900');
+    a.document.write('<table>')
+     a.document.write(tableContents);
+    a.document.write('</table>');
+    a.document.close();
+            a.print();
+  }
+
+  //   window.print();
+  
+  // document.getElementById("btn").addEventListener("click",onClick)
+  
+
+  
+>>>>>>> phase_bhuvn
 
   return (
     <section className="ant-layout">
@@ -104,13 +178,19 @@ return (date.getDate()+
   
                 {
                   show ? 
+<<<<<<< HEAD
 
             
               <table cellspacing={0} cellPadding={10} border={0} width="100%" className="tables" >
+=======
+                
+                
+              <table cellspacing={0} cellPadding={10} border={0} width="100%" className="tables" id="joshi">
+>>>>>>> phase_bhuvn
                   <tbody>
                     <tr>
                       <td>Txn Id:</td><hr></hr>
-                      <td className="bold" ><b>{data.txnId}</b></td>
+                      <td className="bold" ><b>{data.txnId}</b></td>npm
                       <td>Payment Mode :</td><hr></hr>
                       <td className="bold"><b>{data.paymentMode}</b></td>
                       <td>Payee First Name :</td><hr></hr>
@@ -150,6 +230,7 @@ return (date.getDate()+
                  
                     </tr>
 
+<<<<<<< HEAD
                      <tr>
                        <td colSpan={6}>
                         <button className="view_history">Print</button>
@@ -172,6 +253,27 @@ return (date.getDate()+
                  
 
                  
+=======
+                    <tr>
+                      <button Value='click' onClick={onClick} className="view_history">Print</button>
+                    </tr>
+                  </tbody></table> 
+          //  {/* <ReactHTMLTableToExcel 
+          //   className = 'view_history'
+          //   table="table-to-xls"
+          //   filename="tablexls"
+          //   sheet='Enquiry Data'
+          //  buttonText = 'Print'
+          //  /> */}
+
+
+
+                  
+                  
+                  : null }
+                  {errMessage && ( <h3 style={{position: 'absolute', top: 300, left: 100, color: 'red'}}> {errMessage} </h3>)}
+
+>>>>>>> phase_bhuvn
               </div>
             </div></section>
         </div>

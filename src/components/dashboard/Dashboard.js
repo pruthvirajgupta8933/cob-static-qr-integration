@@ -6,6 +6,7 @@ import TransactionEnquirey from './AllPages/TransactionEnquirey';
 import TransactionEnquireyH from './AllPages/TransactionEnquiryH';
 import SettlementReport from './AllPages/SettlementReport';
 import TransactionHistory from './AllPages/TransactionHistory';
+import SettlementReport from './AllPages/SettlementReport';
 import Profile from './AllPages/Profile';
 import { useRouteMatch,Switch,Route ,Redirect} from 'react-router-dom'
 
@@ -33,21 +34,22 @@ function Dashboard() {
                 <Route exact path={path}>
                     <Home/>
                 </Route>
-                <Route exaxt path={`${path}/profile`}>
+                <Route exact path={`${path}/profile`}>
                      <Profile/>
                 </Route>
-                <Route exaxt path={`${path}/transaction`}>
+                <Route exact path={`${path}/transaction`}>
                      <Transaction/>
                 </Route>
-                <Route exaxt path={`${path}/transaction-enquiry`}>
+                <Route exact path={`${path}/transaction-enquiry`}>
                      <TransactionEnquirey/>
                 </Route>
-                <Route exaxt path={`${path}/transaction-history`}>
+                <Route exact path={`${path}/transaction-history`}>
                      <TransactionHistory/>
                 </Route>
-                <Route exaxt path={`${path}/transaction-enquiryh`}>
+                <Route exact path={`${path}/transaction-enquiryh`}>
                      <TransactionEnquireyH />
                 </Route>
+<<<<<<< HEAD
 <<<<<<< HEAD
                 <Route exaxt path={`${path}/test`}>
                      <Test />
@@ -58,6 +60,10 @@ function Dashboard() {
                 <Route exaxt path={`${path}/settlement-report`}>
                      <SettlementReport/>
 >>>>>>> phase_hrry
+=======
+                <Route exact path={`${path}/settlement`}>
+                     <SettlementReport />
+>>>>>>> phase_bhuvn
                 </Route>
                 </Switch>
           
