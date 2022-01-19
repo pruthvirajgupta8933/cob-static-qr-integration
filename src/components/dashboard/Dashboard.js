@@ -44,9 +44,6 @@ function Dashboard() {
                 <Route exact path={`${path}/transaction-history`}>
                      <TransactionHistory/>
                 </Route>
-                <Route exaxt path={`${path}/test`}>
-                     <Test />
-                </Route>
                 <Route exact path={`${path}/client-list`}>
                      <ClientList />
                </Route>
