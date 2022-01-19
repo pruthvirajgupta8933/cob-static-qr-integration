@@ -4,6 +4,7 @@ import Home from './AllPages/Home'
 import Transaction from './AllPages/Transaction'
 import TransactionEnquirey from './AllPages/TransactionEnquirey';
 import TransactionEnquireyH from './AllPages/TransactionEnquiryH';
+import SettlementReport from './AllPages/SettlementReport';
 import TransactionHistory from './AllPages/TransactionHistory';
 import Profile from './AllPages/Profile';
 import { useRouteMatch,Switch,Route ,Redirect} from 'react-router-dom'
@@ -47,11 +48,16 @@ function Dashboard() {
                 <Route exaxt path={`${path}/transaction-enquiryh`}>
                      <TransactionEnquireyH />
                 </Route>
+<<<<<<< HEAD
                 <Route exaxt path={`${path}/test`}>
                      <Test />
                 </Route>
                 <Route exact path={`${path}/client-list`}>
                      <ClientList />
+=======
+                <Route exaxt path={`${path}/settlement-report`}>
+                     <SettlementReport/>
+>>>>>>> phase_hrry
                 </Route>
                 </Switch>
           

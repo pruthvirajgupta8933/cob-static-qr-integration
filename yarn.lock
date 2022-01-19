@@ -7736,7 +7736,11 @@ mkdirp@^1.0.3:
 
 moment@^2.29.1:
   version "2.29.1"
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
+=======
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+>>>>>>> phase_hrry
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
 
 ms@2.0.0:
@@ -9187,6 +9191,7 @@ react-scripts@^5.0.0:
     workbox-webpack-plugin "^6.4.1"
   optionalDependencies:
     fsevents "^2.3.2"
+<<<<<<< HEAD
 
 react-toastify@^8.1.0:
   version "8.1.0"
@@ -9194,6 +9199,8 @@ react-toastify@^8.1.0:
   integrity sha512-M+Q3rTmEw/53Csr7NsV/YnldJe4c7uERcY7Tma9mvLU98QT2VhIkKwjBzzxZkJRk/oBKyUAtkyMjMgO00hx6gQ==
   dependencies:
     clsx "^1.1.1"
+=======
+>>>>>>> phase_hrry
 
 react-transition-group@^4.4.0, react-transition-group@^4.4.2:
   version "4.4.2"

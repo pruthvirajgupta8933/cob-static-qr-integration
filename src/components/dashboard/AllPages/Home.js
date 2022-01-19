@@ -16,6 +16,19 @@ function Home() {
   const [txnList, SetTxnList] = useState([]);
 
 
+<<<<<<< HEAD
+=======
+    var {successTxnsumry,user} = useSelector((state)=>state.auth);
+    console.log('user', user)
+    if(user.clientMerchantDetailsList.length>0){
+      var clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
+        return item.clientCode;
+        });
+    }else{
+      var clientCodeArr = []
+    }
+    
+>>>>>>> phase_hrry
 
   var {successTxnsumry,user} = useSelector((state)=>state.auth);
   console.log('successTxnsumry',successTxnsumry);
