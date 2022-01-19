@@ -75,7 +75,16 @@ return (date.getDate()+
   }
 
 
+  const onClick=()=>{
 
+    var tableContents = document.getElementById("joshi").innerHTML;
+    var a = window.open('', '', 'height=900, width=900');
+    a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
+     a.document.write(tableContents);
+    a.document.write('</table>');
+    a.document.close();
+            a.print();
+  }
 
   return (
     <section className="ant-layout">
@@ -105,58 +114,51 @@ return (date.getDate()+
   
                 {
                   show ? 
-
-            
-              <table cellspacing={0} cellPadding={10} border={0} width="100%" className="tables" >
+              <table cellspacing={0} cellPadding={10} border={0} width="100%" className="tables"  id="joshi">
                   <tbody>
                     <tr>
-                      <td>Txn Id:</td><hr></hr>
-                      <td className="bold" ><b>{data.txnId}</b></td>npm
-                      <td>Payment Mode :</td><hr></hr>
+                      <td>Txn Id:</td>
+                      <td className="bold" ><b>{data.txnId}</b></td>
+                      <td>Payment Mode :</td>
                       <td className="bold"><b>{data.paymentMode}</b></td>
-                      <td>Payee First Name :</td><hr></hr>
+                      <td>Payee First Name :</td>
                       <td className="bold"><b>{data.payeeFirstName}</b></td>
                     </tr>
                     <tr>
-                      <td>Payee Mobile:</td><hr></hr>
+                      <td>Payee Mobile:</td>
                       <td className="bold"><b>{data.payeeMob}</b></td>
-                      <td>Payee Email :</td><hr></hr>
+                      <td>Payee Email :</td>
                       <td className="bold"><b>{data.payeeEmail}</b></td>
-                      <td>Status :</td><hr></hr>
+                      <td>Status :</td>
                       <td className="bold"><b>{data.status}</b></td>
                     </tr>
                     <tr>
-                    <td>Bank Txn Id :</td><hr></hr>
+                    <td>Bank Txn Id :</td>
                     <td className="bold"><b>{data.bankTxnId}</b></td>
-                    <td>Client Name :</td><hr></hr>
+                    <td>Client Name :</td>
                     <td><b>{data.clientName}</b></td>
-                    <td>Client Id : </td><hr></hr>
+                    <td>Client Id : </td>
                     <td className="bold"><b>{data.clientId}</b></td>
                     </tr>
                     <tr>
-                    <td>Payee Amount :</td><hr></hr>
+                    <td>Payee Amount :</td>
                     <td className="bold"><b>{data.payeeAmount}</b></td>
-                    <td>Paid Amount :</td><hr></hr>
+                    <td>Paid Amount :</td>
                     <td className="bold"><b>{data.paidAmount}</b></td>
-                    <td>Trans Date :</td><hr></hr>
+                    <td>Trans Date :</td>
                     <td className="bold"><b>{dateFormat(data.transDate)}</b></td>
                     </tr>
                     <tr>
-                    <td>Trans Complete Date :</td><hr></hr>
+                    <td>Trans Complete Date :</td>
                     <td className="bold"><b>{data.transCompleteDate}</b></td>
-                    <td> Client Code :</td><hr></hr>
+                    <td> Client Code :</td>
                     <td className="bold"><b>{data.transactionCompositeKey.clientCode}</b></td>
-                    <td>Client Txn Id:</td><hr></hr>
+                    <td>Client Txn Id:</td>
                     <td className="bold"><b>{data.transactionCompositeKey.clientTxnId}</b></td>
                  
                     </tr>
 
-                     <tr>
-                       <td colSpan={6}>
-                        <button className="view_history">Print</button>
-                        </td> 
-                        </tr> 
-                          
+
                   
                   </tbody>
                   </table>
@@ -170,9 +172,7 @@ return (date.getDate()+
 
                  
 
-                 
-
-                 
+                 { show ? <button Value='click' onClick={onClick} className="view_history">Print</button>:<></> }
               </div>
             </div></section>
         </div>
