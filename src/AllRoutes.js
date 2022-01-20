@@ -21,13 +21,13 @@ function AllRoutes(){
           <div>
             <Switch>
               <Route exact path="/">
-                <Login />
+                <LoginPage />
               </Route>
               <Route exact path="/login">
-                <Login />
-              </Route>
-              <Route exact path="/login-page">
                 <LoginPage />
+              </Route>
+              <Route exact path="/login-page-old">
+                <Login />
               </Route>
               <Route exact path="/registration">
                 <Registration />

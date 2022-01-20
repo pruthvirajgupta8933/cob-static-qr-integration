@@ -1,10 +1,17 @@
 import React from 'react'
-import Header from './Header'
+//import Header from './Header'
+import HeaderPage from '../login/HeaderPage'
+import '../login/css/home.css'
+import '../login/css/homestyle.css'
+import '../login/css/style-style.css'
+import '../login/css/style.css'
+import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
+
 
 function Registration() {
     return (
         <>
-        <Header/>
+        <HeaderPage/>
         <div className="container-fluid">
         <div className="row">
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-10 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
@@ -13,7 +20,7 @@ function Registration() {
                 <div className="headline">
                   {/* brand-logo start */}
                   <div className="brand-logo">
-                    <img src="sabpaisa-logo-white.png" width={150} alt="SabPaisa" title="SabPaisa" />
+                    <img src={sabpaisalogo} width={150} alt="SabPaisa" title="SabPaisa" />
                   </div>{/* ./brand-logo */}
                   <p style={{fontSize: '20px', lineHeight: '20px'}}>Receive Payments, The Easy Way</p>
                   <h1 style={{fontSize: '26px'}}>A Payments Solution for</h1>
@@ -30,11 +37,11 @@ function Registration() {
                     <span className="logmod__close">Close</span>
                     <div className="logmod__container">
                       <ul className="logmod__tabs">
-                        <li data-tabtar="lgm-2"><a href="#">Individual</a></li>
+                        <li data-tabtar="lgm-2" className="current"><a href="#">Individual</a></li>
                         <li data-tabtar="lgm-1"><a href="#">Business</a></li>
                       </ul>
                       <div className="logmod__tab-wrapper">
-                        <div className="logmod__tab lgm-1">
+                        <div className="logmod__tab lgm-1 show">
                           <div className="logmod__heading">
                             <span className="logmod__heading-subtitle">Enter your personal details <strong>to create an acount</strong></span>
                           </div>

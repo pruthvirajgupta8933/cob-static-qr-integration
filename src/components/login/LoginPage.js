@@ -1,7 +1,147 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import HeaderPage from './HeaderPage'
+import { useDispatch, useSelector } from 'react-redux';
+import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
+import { Formik, Field, Form} from "formik";
+import { useHistory  } from "react-router-dom";
+import * as Yup from 'yup';
+import { login,logout } from "../../slices/auth";
+import { clearMessage } from "../../slices/message";
+import OtpView from "../login/OtpView";
+import toastConfig from "../../utilities/toastTypes";
+import OTPVerificationApi from "../../slices/auth";
 
-function LoginPage() {
+
+const INITIAL_FORM_STATE = {
+  clientUserId:'',
+  userPassword:''
+};
+
+const FORM_VALIDATION = Yup.object().shape({
+  clientUserId: Yup.string().required("Required"),
+  userPassword: Yup.string().required('Password is required')
+});
+
+
+function LoginPage(props) {
+  const history = useHistory()
+  const [loading, setLoading] = useState(false);
+  const  isLoggedIn  = useSelector((state) => state.auth.isLoggedIn);
+  const { message } = useSelector((state) => state.message);
+  const authentication = useSelector(state => state.auth);
+
+  const [open, setOpen] = useState(false);
+  const [notificationMsg, setNotificationMsg] = React.useState('Username or password not valid');
+  const [auth,setAuthData] = useState(authentication);
+  const [showOTP, setShowOtp] = useState(false);
+  const [signUpOrSignIn,setSignUpOrSignIn]=useState(false)
+  const [otp, setOtp] = useState({ otp: "" });
+  const [otpVerificationError, setOtpVerificationError] = useState("");
+  const [showResendCode, setShowResendCode] = useState(false);
+  const [showBackDrop, setShowBackDrop] = useState(false);
+  const [GeoLocation, setGeeolocation] = useState("");
+
+  
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    setAuthData(authentication);
+    // console.log('change auth data',auth);
+    redirectRoute(auth);
+},[authentication])
+
+useEffect(() => {
+    dispatch(clearMessage());
+  }, [dispatch]);
+
+useEffect(() => {
+    // console.log('call one tiem');
+    dispatch(logout());
+}, [])
+
+const handleLogin = (formValue) => {
+  var { clientUserId, userPassword } = formValue;
+  var username= clientUserId; 
+  var password= userPassword; 
+  setLoading(true);
+  // console.log(formValue);
+  dispatch(login({ username, password }))
+    .unwrap()
+    .then(() => {
+      history.push("/dashboard");
+      // window.location.reload();
+    })
+    .catch(() => {
+      setLoading(false);
+    });
+};
+
+const handleChangeForOtp = (otp) => {
+  const regex = /^[0-9]*$/;
+  if (!otp || regex.test(otp.toString())) {
+    setOtp({ otp });
+  }
+};
+
+
+const redirectRoute = (authen) => {
+  // console.log('function call route');
+  // console.log('isLoggedIn',isLoggedIn);
+  // console.log('authvaliduser',authen.isValidUser);
+  if (isLoggedIn ) {
+      setOpen(false);
+        // console.log('redirect','dashboard')
+        history.push("/dashboard");
+    }
+    if (authen.isValidUser==="No"){
+        setOpen(true);
+    }
+};
+
+
+const handleClickForVerification = () => {
+  setShowBackDrop(true);
+  dispatch(
+    OTPVerificationApi({
+      //verification_code: AuthToken,
+      otp: parseInt(otp.otp, 10),
+      geo_location: GeoLocation,
+    })
+  ).then((res) => {
+    if (res) {
+      if (res.meta.requestStatus === "fulfilled") {
+        if (res.payload.response_code === "1") {
+          setOtpVerificationError("");
+          setShowBackDrop(false);
+          history.push("/ledger");
+        } else if (res.payload.response_code === "0") {
+          setShowBackDrop(false);
+          toastConfig.errorToast(res.payload.message);
+        }
+      } else {
+        setShowBackDrop(false);
+        setShowResendCode(true);
+      }
+    }
+  });
+};
+
+
+const handleClick = () => {
+  setOpen(true);
+};
+
+const handleClose = (event, reason) => {
+  if (reason === 'clickaway') {
+  return;
+  }
+
+  setOpen(false);
+};
+
+
+
+
   return (
     <>
       <HeaderPage />
@@ -14,7 +154,7 @@ function LoginPage() {
                   {/* brand-logo start */}
                   <div className="brand-logo">
                     <img
-                      src="sabpaisa-logo-white.png"
+                      src={sabpaisalogo}
                       width={150}
                       alt="SabPaisa"
                       title="SabPaisa"
@@ -56,11 +196,14 @@ function LoginPage() {
                             </span>
                           </div>
                           <div className="logmod__form">
-                            <form
-                              acceptCharset="utf-8"
-                              action="#"
-                              className="simform"
-                            >
+                          <Formik
+                                        initialValues={{
+                                        ...INITIAL_FORM_STATE
+                                    }}
+                                        validationSchema={FORM_VALIDATION}
+                                        onSubmit={handleLogin}
+                                    >
+                                    <Form>
                               <div className="sminputs">
                                 <div className="input full">
                                   <label
@@ -69,13 +212,13 @@ function LoginPage() {
                                   >
                                     Email*
                                   </label>
-                                  <input
+                                  <Field
                                     className="string optional"
                                     maxLength={255}
                                     id="user-email"
                                     placeholder="Email"
-                                    type="email"
-                                    size={50}
+                                    type="text"
+                                    name="clientUserId"
                                   />
                                 </div>
                               </div>
@@ -87,36 +230,37 @@ function LoginPage() {
                                   >
                                     Password *
                                   </label>
-                                  <input
+                                  <Field
                                     className="string optional"
                                     maxLength={255}
                                     id="user-pw"
                                     placeholder="Password"
                                     type="password"
                                     size={50}
+                                    name="userPassword"
                                   />
                                   <span className="hide-password">Show</span>
                                 </div>
                               </div>
                               <div className="simform__actions">
                                 {/*<input class="sumbit" name="commit" type="sumbit" value="Log In" />*/}
-                                <a
-                                  href="./dashboard/payout.html"
+                                <button
                                   className="sumbit"
-                                  name="commit"
                                   type="sumbit"
-                                  value="Log In"
                                   style={{ color: "#fff" }}
-                                >
+                                > {loading && (
+                                                <span className="spinner-border spinner-border-sm"></span>
+                                                )}
                                   LogIn
-                                </a>
+                                </button>
                                 <span className="simform__actions-sidetext">
                                   <a className="special" role="link" href="#">
                                     Forgot your password? Click here
                                   </a>
                                 </span>
                               </div>
-                            </form>
+                              </Form>
+                              </Formik>
                           </div>
                         </div>
                       </div>
@@ -124,72 +268,7 @@ function LoginPage() {
                   </div>
                 </div>{" "}
                 {/* ./panel-login */}
-                {/* panel-signup start */}
-                <div className="authfy-panel panel-signup text-center">
-                  <div className="row">
-                    <div className="col-xs-12 col-sm-12">
-                      <div className="authfy-heading">
-                        <h3 className="auth-title">Sign up for free!</h3>
-                      </div>
-                      <form
-                        name="signupForm"
-                        className="signupForm"
-                        action="#"
-                        method="POST"
-                      >
-                        <div className="form-group">
-                          <input
-                            type="email"
-                            className="form-control"
-                            name="username"
-                            placeholder="Email address"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="fullname"
-                            placeholder="Full name"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <div className="pwdMask">
-                            <input
-                              type="password"
-                              className="form-control"
-                              name="password"
-                              placeholder="Password"
-                            />
-                            <span className="fa fa-eye-slash pwd-toggle" />
-                          </div>
-                        </div>
-                        <div className="form-group">
-                          <p className="term-policy text-muted small">
-                            I agree to the <a href="#">privacy policy</a> and{" "}
-                            <a href="#">terms of service</a>.
-                          </p>
-                        </div>
-                        <div className="form-group">
-                          <button
-                            className="btn btn-lg btn-primary btn-block"
-                            type="submit"
-                          >
-                            Sign up with email
-                          </button>
-                        </div>
-                      </form>
-                      <a
-                        className="lnk-toggler"
-                        data-panel=".panel-login"
-                        href="#"
-                      >
-                        Already have an account?
-                      </a>
-                    </div>
-                  </div>
-                </div>{" "}
-                {/* ./panel-signup */}
+               
                 {/* panel-forget start */}
                 <div className="authfy-panel panel-forgot">
                   <div className="row">
