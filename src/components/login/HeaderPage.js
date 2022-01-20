@@ -1,4 +1,5 @@
 import React from 'react'
+import sabpaisalogo from "../../assets/images/sabpaisalogo.png"
 
 function HeaderPage() {
     return (
@@ -255,7 +256,7 @@ function HeaderPage() {
           <div className="header-fluid">
             <a className="logo" href="https://www.SabPaisa.com/">
               <img
-                src="../assets/images/sabpaisalogo.png"
+                src={sabpaisalogo}
                 alt="SabPaisa"
                 title="SabPaisa"
               />

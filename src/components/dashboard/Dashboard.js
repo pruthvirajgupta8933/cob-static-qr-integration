@@ -19,9 +19,9 @@ import Subsciption from './AllPages/Subscription';
 
 function Dashboard() {
     let { path } = useRouteMatch();
-    const { user: currentUser } = useSelector((state) => state.auth);
+    const { user: currentUser,isLoggedIn } = useSelector((state) => state.auth);
   // console.log("currentUser",currentUser);
-  if (!currentUser) {
+  if (!isLoggedIn) {
     return <Redirect to="/login" />;
   }
  
