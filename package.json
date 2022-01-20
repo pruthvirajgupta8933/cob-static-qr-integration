@@ -1,4 +1,4 @@
-{ 
+{
   "name": "react-redux-login-example",
   "version": "0.1.0",
   "private": true,
@@ -58,4 +58,3 @@
     "node-sass": "^6.0.1"
   }
 }
- 
