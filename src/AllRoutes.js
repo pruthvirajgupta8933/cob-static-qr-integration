@@ -23,7 +23,7 @@ function AllRoutes(){
               <Route exact path="/">
                 <LoginPage />
               </Route>
-              <Route exact path="/login">
+              <Route exact path="/login-page">
                 <LoginPage />
               </Route>
               <Route exact path="/login-page-old">
