@@ -163,7 +163,8 @@ return (
                                 </div>
                               </div>
                               <div className="simform__actions">
-                                <input className="sumbit" name="commit" type="sumbit" defaultValue="Create Account" />
+                              {/* <button className="submit" onClick={() => handleRegistration()}/> */}
+                                <input className="sumbit" name="commit" type="sumbit" defaultValue="Create Account" onClick={handleRegistration} />
                                 <span className="simform__actions-sidetext"><span className="ant-checkbox"><input name="agreement" id="agreement" type="checkbox" className="ant-checkbox-input" defaultValue /><span className="ant-checkbox-inner" /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
                               </div>
                             </form>
@@ -242,7 +243,7 @@ return (
                                 </div>
                               </div>
                               <div className="simform__actions">
-                                <input className="sumbit" name="commit" type="sumbit" defaultValue="Create Account" />
+                                <button className="submit" onClick={() => handleRegistration()}/>
                                 <span className="simform__actions-sidetext"><span className="ant-checkbox"><input name="agreement" id="agreement" type="checkbox" className="ant-checkbox-input" defaultValue /><span className="ant-checkbox-inner" /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
                               </div> 
                             </form>
@@ -276,7 +277,7 @@ return (
                           <p className="term-policy text-muted small">I agree to the <a href="#">privacy policy</a> and <a href="#">terms of service</a>.</p>
                         </div>
                         <div className="form-group">
-                          <button className="btn btn-lg btn-primary btn-block" type="submit" onSubmit={handleRegistration}>Sign up with email</button>
+                          <button className="btn btn-lg btn-primary btn-block" type="submit">Sign up with email</button>
                         </div>
                       </form>
                       <a className="lnk-toggler" data-panel=".panel-login" href="#">Already have an account?</a>
