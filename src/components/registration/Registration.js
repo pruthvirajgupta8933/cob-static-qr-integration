@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react';
 //import Header from './Header'
 import HeaderPage from '../login/HeaderPage'
 import '../login/css/home.css'
@@ -6,10 +6,59 @@ import '../login/css/homestyle.css'
 import '../login/css/style-style.css'
 import '../login/css/style.css'
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
+import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from "../../slices/auth";
+import { useHistory  } from "react-router-dom";
 
+const INITIAL_FORM_STATE = {
+  fullName:'',
+  mobileNumber:'',
+  email:'',
+  password:'',
+  selectStates:''
+};
+
+const FORM_VALIDATION = Yup.object().shape({
+  fullName: Yup.string().required("Required"),
+  mobileNumber: Yup.string().required("Required"),
+  email: Yup.string().required("Required"),
+  password: Yup.string().required("Required"),
+  selectStates: Yup.string().required("Required")
+});
 
 function Registration() {
-    return (
+  const history = useHistory()
+  const [fullName, setFullName] = React.useState("");
+  const [mobileNumber, setMobileNumber] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [selectStates, setSelectStates] = React.useState("");
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const handleRegistration = () => {
+        var fullName= fullName; 
+        var mobileNumber= mobileNumber;
+        var email= email; 
+        var password= password; 
+        var selectStates= selectStates; 
+
+        setLoading(true);
+        // console.log(formValue);
+        dispatch(register({ fullName, mobileNumber, email, password, selectStates}))
+          .unwrap()
+          .then(() => {
+            history.push("/dashboard");
+            // window.location.reload();
+          })
+          .catch(() => {
+            setLoading(false);
+          });
+  }
+
+return (
         <>
         <HeaderPage/>
         <div className="container-fluid">
@@ -50,17 +99,17 @@ function Registration() {
                               <div className="sminputs">
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-name">Full Name*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="Full Name" type="text" size={50} />
+                                  <input className="string optional" maxLength={255} id="user-name" placeholder="Full Name" type="text" size={50} onChange={e => setFullName(e.target.value)}/>
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-name">Mobile Number*</label>
-                                  <input className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" type="number" size={10} />
+                                  <input className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" type="number" size={10} onChange={e => setMobileNumber(e.target.value)}/>
                                 </div>
                               </div>
                               <div className="sminputs">
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-name">Email*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="email" type="email" size={50} />
+                                  <input className="string optional" maxLength={255} id="user-name" placeholder="email" type="email" size={50} onChange={e => setEmail(e.target.value)}/>
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Password *</label>
@@ -72,7 +121,7 @@ function Registration() {
                                 <div className="input full">
                                   <label className="string optional" htmlFor="user-pw">Select *</label>
                                   {/*<input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />*/}
-                                  <select name="states" id="states" className="string optional" style={{border: '1px solid #fafafa', width: '100%', marginBottom: '10px', padding: '2px'}}>
+                                  <select name="states" id="states" className="string optional" onSelect={e => setSelectStates(e.target.value)} style={{border: '1px solid #fafafa', width: '100%', marginBottom: '10px', padding: '2px'} }>
                                     <option value="Select States" selected>Select States</option>
                                     <option value="Andhra Pradesh">Andhra Pradesh</option>								
                                     <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
@@ -227,7 +276,7 @@ function Registration() {
                           <p className="term-policy text-muted small">I agree to the <a href="#">privacy policy</a> and <a href="#">terms of service</a>.</p>
                         </div>
                         <div className="form-group">
-                          <button className="btn btn-lg btn-primary btn-block" type="submit">Sign up with email</button>
+                          <button className="btn btn-lg btn-primary btn-block" type="submit" onSubmit={handleRegistration}>Sign up with email</button>
                         </div>
                       </form>
                       <a className="lnk-toggler" data-panel=".panel-login" href="#">Already have an account?</a>
