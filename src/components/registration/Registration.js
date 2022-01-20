@@ -39,12 +39,6 @@ function Registration() {
   const dispatch = useDispatch();
 
   const handleRegistration = () => {
-        var fullName= fullName; 
-        var mobileNumber= mobileNumber;
-        var email= email; 
-        var password= password; 
-        var selectStates= selectStates; 
-
         setLoading(true);
         // console.log(formValue);
         dispatch(register({ fullName, mobileNumber, email, password, selectStates}))
