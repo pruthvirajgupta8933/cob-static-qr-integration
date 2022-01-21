@@ -68,6 +68,8 @@ function TransactionHistory() {
 
   const txnHistory = async () => {  
     // // console.log(`https://adminapi.sabpaisa.in/REST/paymode/paymodeList/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`);
+    
+
     await axios.get(`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`)  
     .then(res => {  
       SetTxnList(res.data);
