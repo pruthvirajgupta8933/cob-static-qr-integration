@@ -52,15 +52,13 @@ function SideNavbar() {
                         <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
                       </li>
 
-                      
-                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Client List </Link> 
-                      </li> 
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                      {roleId===3 || roleId===13 ?<li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                      <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link> 
+                      </li>:<li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />
                       Settlement Report</Link> 
                       </li>
-                        
+                       }
                         
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/subscription`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />

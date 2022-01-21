@@ -1,6 +1,7 @@
+
 import React,{useEffect,useState} from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import { successTxnSummary } from '../../../slices/auth';
+import { successTxnSummary } from '../../../slices/dashboardSlice';
 import ProgressBar from '../../../_components/reuseable_components/ProgressBar';
 import '../css/Home.css';
 
@@ -11,55 +12,79 @@ function Home() {
   const [fromDate, setFromDate] = useState(currentDate);
   const [toDate, setToDate] = useState(currentDate);
   const [clientCode, setClientCode] = useState("1");
-  const [isLoading,setIsLoading] = useState(false);
+  
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
+  const [showData, SetShowData] = useState([]);
 
 
 
-  var {successTxnsumry,user} = useSelector((state)=>state.auth);
-  console.log('successTxnsumry',successTxnsumry);
-  // console.log('user call',user);
+  const {dashboard,auth} = useSelector((state)=>state);
+  // console.log("dashboard",dashboard)
+  const { isLoading , successTxnsumry } = dashboard;
+  const {user} = auth;
+  var clientCodeArr = [];
+  var filterData =[];
+  var totalSuccessTxn = 0;
+  var totalAmt = 0;
+
+  // dispatch action when client code change
+  useEffect(() => {
+    const objParam = {fromDate,toDate,clientCode};
+    var DefaulttxnList = [];
+    SetTxnList(DefaulttxnList);
+    SetShowData(DefaulttxnList);
+    console.log(objParam);
+    dispatch(successTxnSummary(objParam));
+  }, [clientCode]);
+
+  // console.log('successTxnsumry',successTxnsumry );
+  // console.log('clientMerchantDetailsList',user.clientMerchantDetailsList);
+
+  //make client code array
   if(user.clientMerchantDetailsList.length>0){
-    var clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
+        clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
       return item.clientCode;
       });
   }else{
-    clientCodeArr = []
+        clientCodeArr = []
   }
-  
-  var filterData =[];
+
+  // filter api response data with client code
   useEffect(() => {
     if(successTxnsumry?.length>0){
-      setIsLoading(false)
-       filterData = successTxnsumry?.filter((txnsummery)=>{
-        if(clientCodeArr.includes(txnsummery.clientCode)){
-          return clientCodeArr.includes(txnsummery.clientCode);
+      var filterData = successTxnsumry?.filter((txnsummery)=>{
+      if(clientCodeArr.includes(txnsummery.clientCode)){
+        return clientCodeArr.includes(txnsummery.clientCode);
         }
       });
       SetTxnList(filterData);
-      console.log('filterData',filterData)
+      SetShowData(filterData);
     }else{
-      successTxnsumry=[];
+      //successTxnsumry=[];
     }
-
-    const objParam = {fromDate,toDate,clientCode};
-    dispatch(successTxnSummary(objParam));
-    setIsLoading(true);
-    // console.log('useEffect call');
-  }, [clientCode]);
+    
+  }, [successTxnsumry])
+  
 
   useEffect(() => {
-    SetTxnList(successTxnsumry.filter((txnItme)=>txnItme.clientName.toLowerCase().includes(search.toLocaleLowerCase())));
+    search!==''
+    ? SetShowData(txnList.filter((txnItme)=>txnItme.clientName.toLowerCase().includes(search.toLocaleLowerCase())))
+    : SetShowData(txnList);
   }, [search]);
   
 
+  const handleChange= (e)=>{
+        SetSearch(e);
+  }
 
-const handleChange= (e)=>{
-      SetSearch(e);
-}
-    console.log('loading ',isLoading);
-   
+
+console.log('show data',showData)
+
+showData.map((item)=>{
+      totalSuccessTxn += item.noOfTransaction;
+      totalAmt +=item.payeeamount
+})
 
     return (
       <section className="ant-layout">
@@ -77,7 +102,7 @@ const handleChange= (e)=>{
                 {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
                   lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
                 <div className="col-lg-6 mrg-btm- bgcolor">
-                  <label>Sucessful TRansaction Summary</label>
+                  <label>Successful Transaction Summary</label>
                   <select className="ant-input" value={clientCode} onChange={(e)=>setClientCode(e.currentTarget.value)}>
                     <option defaultValue='selected' value="1">Today</option>
                     <option value="2">Yesterday</option>
@@ -90,6 +115,9 @@ const handleChange= (e)=>{
                   <label>Search</label>
                   <input type="text" className="ant-input" onChange={(e)=>{handleChange(e.currentTarget.value)}} placeholder="Search from here" />
                 </div>
+                <div>
+                  <p>Total Successful Transactions: {totalSuccessTxn} | Total Amount {`(INR)`}: {totalAmt} </p>
+                </div>
                 <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables">
                   <tbody><tr>
                       <th>Sr. No.</th>
@@ -97,7 +125,7 @@ const handleChange= (e)=>{
                       <th>Transactions</th>
                       <th>Amount</th>
                     </tr>
-                   {filterData && filterData.map((item,i)=>{
+                   {showData && !isLoading && showData.map((item,i)=>{
                         return(
                           <tr key={i}>
                             <td>{i+1}</td>
@@ -110,7 +138,8 @@ const handleChange= (e)=>{
                       }) }
                   </tbody>
                   </table>
-                  {clientCodeArr && clientCodeArr===null ? <ProgressBar />:<></>}
+                  { showData.length<0 ? <div className='showMsg'> Record Not Found</div>:<></>}
+                  { isLoading ? <ProgressBar />:<></>}
               </div>
             </div></section>
         </div>

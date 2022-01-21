@@ -2,12 +2,12 @@ import { configureStore } from '@reduxjs/toolkit'
 import authReducer from "./slices/auth";
 import messageReducer from "./slices/message";
 import homeReducer from './slices/home'
-import counterReducer from './slices/counterSlice'
+import { dashboardReducer } from './slices/dashboardSlice';
 
 const reducer = {
   auth: authReducer,
   message: messageReducer,
-  counter:counterReducer
+  dashboard:dashboardReducer,
 }
 
 const store = configureStore({
