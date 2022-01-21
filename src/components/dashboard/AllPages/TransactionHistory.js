@@ -26,13 +26,10 @@ function TransactionHistory() {
   const getInputValue=(label,val)=>{
       if(label==='fromDate'){
         SetFromDate(val);
-        // console.log(fromDate);
       }else if(label==='toDate'){
         SetToDate(val);
       }else if(label==='clientCode'){
-
         SetClientCode(val);
-        
       }else if(label==='txnStatus'){
         SetTxnStatus(val);
       }else if(label==='payMode'){
@@ -71,6 +68,8 @@ function TransactionHistory() {
 
   const txnHistory = async () => {  
     // // console.log(`https://adminapi.sabpaisa.in/REST/paymode/paymodeList/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`);
+    
+
     await axios.get(`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`)  
     .then(res => {  
       SetTxnList(res.data);

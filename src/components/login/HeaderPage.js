@@ -1,5 +1,6 @@
 import React from 'react'
 import sabpaisalogo from "../../assets/images/sabpaisalogo.png"
+import {Link} from 'react-router-dom';
 
 function HeaderPage() {
     return (
@@ -391,15 +392,15 @@ function HeaderPage() {
                 </div>
               </li>
               <li>
-                <a href="https://www.SabPaisa.com/payout-solutions">Payouts</a>
+                <Link to="/commonpages">Payout</Link>
               </li>
               <li>
-                <a target="_blank" href="https://www.sabpaisa.com/">
+                <Link target="_blank" to="/commonpages">
                   Neo&nbsp;&nbsp;Banking&nbsp;&nbsp;API
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="https://www.SabPaisa.com/pricing">Pricing</a>
+                <Link to="/commonpages">Pricing</Link>
               </li>
             </ul>
             <ul className="header_second_list hidden-xs">

@@ -13,6 +13,8 @@ import Registration from './components/registration/Registration';
 import { useDispatch,useSelector } from 'react-redux';
 import LoginPage from './components/login/LoginPage';
 import ForgetPassword from './components/forgetpassword/ForgetPassword';
+import CommonPage from './components/Otherpages/CommonPage';
+
 
 
 function AllRoutes(){
@@ -35,6 +37,12 @@ function AllRoutes(){
               </Route>
               <Route path="/dashboard">
                 <Dashboard />
+
+              </Route>
+
+              <Route exact path="/commonpages">
+                <CommonPage />
+
               </Route>
               <Route path="/forget">
                 <ForgetPassword />

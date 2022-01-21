@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-
+import { useSelector } from 'react-redux';
 
 function SettlementReport() {
     const initialState = {
@@ -27,10 +27,13 @@ function SettlementReport() {
     var [showFilterData,SetShowFilterData] =React.useState([]); 
     const [selectedFolder,SetSelectedFolder] = React.useState('');
     const [selectedSubFolder,SetSelectedSubFolder] = React.useState('');
-    
+    const {user} = useSelector((state)=>state.auth);
+    var clientMerchantDetailsList = user.clientMerchantDetailsList;
+    const {clientCode} =clientMerchantDetailsList[0]; 
+    //console.log(clientMerchantDetailsList);
 
     const getFileName = async () => {  
-        await axios("https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/LPSD1")  //MPSE1
+        await axios(`https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/${clientCode}`)
         .then(res => {  
           setData(res.data);  
         })  
@@ -63,14 +66,14 @@ function SettlementReport() {
             })
             setSubFolderArr([...new Set(subFolderArr)])
     }
-    console.log('subFolderArr',subFolderArr);
+    // console.log('subFolderArr',subFolderArr);
 
 
     React.useEffect(() => {
         showFilterData=[];
         data.filter((item)=>{
           if(item.folder===selectedFolder && item.sub_folder===selectedSubFolder){
-                console.log('kkk',item);
+                // console.log('kkk',item);
                 showFilterData.push(item);
             }
         })
