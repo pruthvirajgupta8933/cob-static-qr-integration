@@ -10,6 +10,7 @@ import { clearMessage } from "../../slices/message";
 import OtpView from "../login/OtpView";
 import toastConfig from "../../utilities/toastTypes";
 import OTPVerificationApi from "../../slices/auth";
+import {Link} from 'react-router-dom'
 
 
 const INITIAL_FORM_STATE = {
@@ -254,9 +255,9 @@ const handleClose = (event, reason) => {
                                   LogIn
                                 </button>
                                 <span className="simform__actions-sidetext">
-                                  <a className="special" role="link" href="#">
+                                  <Link className="special" role="link" to="/forget">
                                     Forgot your password? Click here
-                                  </a>
+                                  </Link>
                                 </span>
                               </div>
                               </Form>
