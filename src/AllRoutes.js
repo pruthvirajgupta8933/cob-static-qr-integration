@@ -12,6 +12,7 @@ import Header from './components/login/Headre'
 import Registration from './components/registration/Registration';
 import { useDispatch,useSelector } from 'react-redux';
 import LoginPage from './components/login/LoginPage';
+import ForgetPassword from './components/forgetpassword/ForgetPassword';
 
 
 function AllRoutes(){
@@ -34,6 +35,9 @@ function AllRoutes(){
               </Route>
               <Route path="/dashboard">
                 <Dashboard />
+              </Route>
+              <Route path="/forget">
+                <ForgetPassword />
               </Route>
             </Switch>
           </div>
