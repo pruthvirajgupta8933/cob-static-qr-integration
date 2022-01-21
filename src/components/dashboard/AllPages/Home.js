@@ -28,11 +28,11 @@ function Home() {
     clientCodeArr = []
   }
   
-  
+  var filterData =[];
   useEffect(() => {
     if(successTxnsumry?.length>0){
       setIsLoading(false)
-      var filterData = successTxnsumry?.filter((txnsummery)=>{
+       filterData = successTxnsumry?.filter((txnsummery)=>{
         if(clientCodeArr.includes(txnsummery.clientCode)){
           return clientCodeArr.includes(txnsummery.clientCode);
         }
@@ -97,7 +97,7 @@ const handleChange= (e)=>{
                       <th>Transactions</th>
                       <th>Amount</th>
                     </tr>
-                   {clientCodeArr && clientCodeArr!==null ? txnList.map((item,i)=>{
+                   {filterData && filterData.map((item,i)=>{
                         return(
                           <tr key={i}>
                             <td>{i+1}</td>
@@ -107,7 +107,7 @@ const handleChange= (e)=>{
                           </tr>
 
                         )
-                      }) : <></>}
+                      }) }
                   </tbody>
                   </table>
                   {clientCodeArr && clientCodeArr===null ? <ProgressBar />:<></>}

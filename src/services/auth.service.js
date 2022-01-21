@@ -2,11 +2,24 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/auth/";
 
-const register = (username, email, password) => {
-  return axios.post(API_URL + "signup", {
-    username,
-    email,
-    password,
+const SIGNUP_URL = "http://18.216.47.58:8080/auth-service/auth/sign/";
+
+const register = (fullName, mobileNumber, email, password, selectStates) => {
+  return axios.post(SIGNUP_URL + "signup", {
+    name: fullName,
+    mobileNumber: mobileNumber,
+    email: email,
+    password: password,
+    state: selectStates,
+  })
+  .then((response) => {
+    if (response.data.accessToken) {
+      localStorage.setItem("register", JSON.stringify(response.data));
+    }else{
+      localStorage.setItem("register", JSON.stringify(response.data));
+    }
+
+    return response.data;
   });
 };
 
