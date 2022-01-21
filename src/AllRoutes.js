@@ -17,6 +17,7 @@ import CommonPage from './components/Otherpages/CommonPage';
 
 
 
+
 function AllRoutes(){
   
     return (
@@ -47,6 +48,7 @@ function AllRoutes(){
               <Route path="/forget">
                 <ForgetPassword />
               </Route>
+             
             </Switch>
           </div>
         </Router>

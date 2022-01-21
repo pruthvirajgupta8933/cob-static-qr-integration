@@ -15,7 +15,7 @@ import "./css/loader.css";
 import { useSelector } from 'react-redux';
 import ClientList from './AllPages/ClientList';
 import Subsciption from './AllPages/Subscription';
-
+import PayerDetails from'./AllPages/createpaymentlink/PayerDetails'
 
 function Dashboard() {
     let { path } = useRouteMatch();
@@ -52,6 +52,9 @@ function Dashboard() {
                 </Route>
                 <Route exaxt path={`${path}/subscription`}>
                      <Subsciption />
+                </Route>
+                <Route exaxt path={`${path}/createpaylink`}>
+                     <PayerDetails />
                 </Route>
                 </Switch>
         </section>
