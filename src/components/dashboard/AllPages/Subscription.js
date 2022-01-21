@@ -1,4 +1,12 @@
-const Subsciption=()=>{
+import { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { subscriptionplan } from "../../../slices/subscription";
+
+const Subsciption = () => {
+  const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(subscriptionplan());
+    }, [])
 
 return (
     <section className="ant-layout">

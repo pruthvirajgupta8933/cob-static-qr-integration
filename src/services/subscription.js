@@ -7,20 +7,20 @@ const subscriptionPlan = () => {
   .then((response) => {
     if (response.data) {
       localStorage.setItem("subscriptionplan", JSON.stringify(response.data));
-    }else{
+    } else {
       localStorage.setItem("subscriptionplan", JSON.stringify(response.data));
     }
     return response.data;
   });
 };
 
-const subscription = () => {
-    return axios.get(SUBSCRIPTION_URL + "subscribe")
+const subscriptionChargesDetail = () => {
+    return axios.post(SUBSCRIPTION_URL + "subscribe")
     .then((response) => {
       if (response.data) {
-        localStorage.setItem("subscribe", JSON.stringify(response.data));
-      }else{
-        localStorage.setItem("subscribe", JSON.stringify(response.data));
+        localStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
+      } else {
+        localStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
       }
   
       return response.data;
@@ -29,7 +29,7 @@ const subscription = () => {
 
 const subscriptionService = {
     subscriptionPlan,
-    subscription,
+    subscriptionChargesDetail,
 };
 
 export default subscriptionService;

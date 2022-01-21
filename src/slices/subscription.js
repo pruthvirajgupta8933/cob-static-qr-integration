@@ -1,20 +1,103 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { setMessage } from "./message";
 import subscriptionService from "../services/subscription";
 
-const initialState = { subscription: {}, isLoading:false  }
+const user = JSON.parse(localStorage.getItem("user"));
+
+const subscription = {
+    subscriptionServiceResponse : [
+        {
+            applicationId: 1,
+            applicationCode: "",
+            applicationName: "",
+            applicationDescription: "",
+            active: true,
+            applicationUrl: "",
+            epUrl: "",
+            planMaster: [
+                {
+                    planId: 1,
+                    planName: "",
+                    planCode: "",
+                    planType: "",
+                    planDescription: "",
+                    active: true,
+                    planPrice: 200,
+                    planValidityDays: 30
+                }
+            ]
+        }
+    ],
+
+    subscriptionPackageResponse : {
+        clientId:"",
+        clientCode:"",
+        clientName:"",
+        applicationId:1,
+        applicationName:"",
+        planId:1,
+        planName:"",
+        purchasAmount: "",
+        mandateRegistrationId:"",
+        umrn:"",
+        paymentMode:"",
+        bankRef:"",
+        mandateStatus:"",
+        clientTxnId:""
+}
+}
+
+export const subscriptionplan = createAsyncThunk(
+    "subscription/subscriptionplan",
+    async ({}, thunkAPI) => {
+      try {
+        const data = await subscriptionService.subscriptionPlan();
+        return { subscribe: data };
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+      }
+    }
+  );
+
+  export const subscriptionPlanDetail = createAsyncThunk(
+    "subscription/subscriptionChargesDetail",
+    async ({}, thunkAPI) => {
+      try {
+        const data = await subscriptionService.subscriptionChargesDetail();
+        return { subscriptionplandetail: data };
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+      }
+    }
+  );
+
+const initialState = { subscriptionServiceResponse: {}, subscriptionPackageResponse: {}, isLoading:false  }
 const subscriptionSlice = createSlice({
   name: "subscription",
   initialState,
-  extraReducers: {
-      
-    [subscription.pending]: (state, action) => {
+  extraReducers: {      
+    [subscriptionplan.pending]: (state, action) => {
         state.isLoading = true;
     },
-    [subscription.fulfilled]: (state, action) => {
+    [subscriptionplan.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.subscription = action.payload.data;
     },
-    [subscription.rejected]: (state, action) => {
+    [subscriptionplan.rejected]: (state, action) => {
       state.isLoading = false;
     },
   },
