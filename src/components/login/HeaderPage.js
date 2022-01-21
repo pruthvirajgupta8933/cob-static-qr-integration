@@ -284,8 +284,8 @@ function HeaderPage() {
                   <div className="ippo_new_inner_wrap_nav">
                     <div className="col-xs-12 col-sm-7 col-md-9 ippo_new_arround_padding">
                       <div className="row">
-                        <a
-                          href="https://www.SabPaisa.com/payment-gateway"
+                        <Link
+                          to="/commonpages"
                           className="col-xs-12 col-sm-6 col-md-6"
                         >
                           <img
@@ -302,9 +302,9 @@ function HeaderPage() {
                               online payments of all types.
                             </div>
                           </div>
-                        </a>
-                        <a
-                          href="https://www.SabPaisa.com/free-invoice-generator"
+                        </Link>
+                        <Link
+                         to="/commonpages"
                           className="col-xs-12 col-sm-6 col-md-6"
                         >
                           <img
@@ -319,11 +319,11 @@ function HeaderPage() {
                               receive payments of all your bills.
                             </div>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                       <div className="row">
-                        <a
-                          href="https://www.SabPaisa.com/payment-link-generator"
+                        <Link
+                          to="/commonpages"
                           className="col-xs-12 col-sm-6 col-md-6 m-b-0"
                         >
                           <img
@@ -340,8 +340,8 @@ function HeaderPage() {
                               process an online payment.
                             </div>
                           </div>
-                        </a>
-                        <a className="col-xs-12 col-sm-6 col-md-6 m-b-0">
+                        </Link>
+                        <Link to="/commonpages" className="col-xs-12 col-sm-6 col-md-6 m-b-0">
                           <img
                             className="left_img_new_ippo_nav"
                             src="./paymentpages_new_ippo.png"
@@ -356,7 +356,7 @@ function HeaderPage() {
                               accept online payments.
                             </div>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xs-12 col-sm-5 col-md-3 gray_nav_header_right_ippo_new">

@@ -14,7 +14,8 @@ import "./css/main.e3214ff9.chunk.css";
 import "./css/loader.css";
 import { useSelector } from 'react-redux';
 import ClientList from './AllPages/ClientList';
-import Subsciption from './AllPages/Subscription';
+import Subsciption from './AllPages/Subscription'
+import PayerDetails from './AllPages/createpaymentlink/PayerDetails';
 
 
 function Dashboard() {
@@ -52,6 +53,9 @@ function Dashboard() {
                 </Route>
                 <Route exaxt path={`${path}/subscription`}>
                      <Subsciption />
+                </Route>
+                <Route exaxt path={`${path}/createpaylink`}>
+                     < PayerDetails/>
                 </Route>
                 </Switch>
         </section>
