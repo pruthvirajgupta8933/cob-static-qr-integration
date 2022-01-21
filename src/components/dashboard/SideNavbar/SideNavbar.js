@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { Link,
     useParams,
     useRouteMatch,useHistory } from 'react-router-dom'
@@ -7,6 +7,10 @@ import {logout} from '../../../slices/auth'
 
 
 function SideNavbar() {
+
+  const {user} = useSelector((state)=> state.auth )
+  // console.log(user);
+  var {roleId,clientContactPersonName}=user;
     let { path, url } = useRouteMatch();
     const dispatch = useDispatch();
     const handle = ()=>{
@@ -20,7 +24,7 @@ function SideNavbar() {
           <div className="side_top_wrap"><span className="switch_live_label">Live</span>
             <div className="side_top_wrap_profile">
               <div className="side_top_wrap_toggle"><i className="fa fa-angle-down" /></div>
-              <p title="ABHISHEK VERMA" className="text-md text-ellipsis text-capitalize ng-binding">ABHISHEK VERMA</p>
+              <p title="ABHISHEK VERMA" className="text-md text-ellipsis text-capitalize ng-binding">{clientContactPersonName}</p>
               {/* <a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/profile.html" className="text-lighter text-ellipsis ng-binding txt-white">My
                 Profile</a> */}
                 <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link>
@@ -47,15 +51,17 @@ function SideNavbar() {
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                         <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
                       </li>
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Client List </Link> 
-                      </li>
 
+                      
+                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                      <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Client List </Link> 
+                      </li> 
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />
                       Settlement Report</Link> 
                       </li>
-
+                        
+                        
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/subscription`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />
                       Subsciption</Link> 

@@ -26,13 +26,10 @@ function TransactionHistory() {
   const getInputValue=(label,val)=>{
       if(label==='fromDate'){
         SetFromDate(val);
-        // console.log(fromDate);
       }else if(label==='toDate'){
         SetToDate(val);
       }else if(label==='clientCode'){
-
         SetClientCode(val);
-        
       }else if(label==='txnStatus'){
         SetTxnStatus(val);
       }else if(label==='payMode'){
