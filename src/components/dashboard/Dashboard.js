@@ -23,7 +23,7 @@ function Dashboard() {
     const { user: currentUser,isLoggedIn } = useSelector((state) => state.auth);
   // console.log("currentUser",currentUser);
   if (!isLoggedIn) {
-    return <Redirect to="/login" />;
+    return <Redirect to="/login-page" />;
   }
  
     return (

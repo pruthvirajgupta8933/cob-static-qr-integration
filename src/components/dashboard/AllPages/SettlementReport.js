@@ -30,7 +30,7 @@ function SettlementReport() {
     const {user} = useSelector((state)=>state.auth);
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
     const {clientCode} =clientMerchantDetailsList[0]; 
-    //console.log(clientMerchantDetailsList);
+    console.log(clientMerchantDetailsList);
 
     const getFileName = async () => {  
         await axios(`https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/${clientCode}`)
