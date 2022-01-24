@@ -38,6 +38,12 @@ function Registration() {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+      localStorage.setItem("register", "");
+  }, []);
+
+  const saved = localStorage.getItem("register");
+
   const handleRegistration = () => {
         setLoading(true);
         // console.log(formValue);
@@ -102,12 +108,12 @@ return (
                               </div>
                               <div className="sminputs">
                                 <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Email*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="email" type="email" size={50} onChange={e => setEmail(e.target.value)}/>
+                                  <label className="string optional" htmlFor="user-email">Email*</label>
+                                  <input className="string optional" maxLength={255} id="email" placeholder="email" type="email" size={50} onChange={e => setEmail(e.target.value)}/>
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Password *</label>
-                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} />
+                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} onChange={e => setPassword(e.target.value)} />
                                   <span className="hide-password">Show</span>
                                 </div>
                               </div>
@@ -115,7 +121,7 @@ return (
                                 <div className="input full">
                                   <label className="string optional" htmlFor="user-pw">Select *</label>
                                   {/*<input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />*/}
-                                  <select name="states" id="states" className="string optional" onSelect={e => setSelectStates(e.target.value)} style={{border: '1px solid #fafafa', width: '100%', marginBottom: '10px', padding: '2px'} }>
+                                  <select name="states" id="states" className="string optional" onChange={e => setSelectStates(e.target.value)} style={{border: '1px solid #fafafa', width: '100%', marginBottom: '10px', padding: '2px'} }>
                                     <option value="Select States" selected>Select States</option>
                                     <option value="Andhra Pradesh">Andhra Pradesh</option>								
                                     <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
@@ -162,6 +168,9 @@ return (
                                 <span className="simform__actions-sidetext"><span className="ant-checkbox"><input name="agreement" id="agreement" type="checkbox" className="ant-checkbox-input" defaultValue /><span className="ant-checkbox-inner" /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
                               </div>
                             </form>
+                            {saved &&
+                            <div style={{ borderTopWidth: 0, borderBottomWidth: 0, marginBottom: 0, paddingTop: 0, paddingBottom: 0,}} className="alert alert-success">User successfully Signed in</div>
+                            }
                           </div> 
                         </div>
                         <div className="logmod__tab lgm-2">
@@ -237,7 +246,7 @@ return (
                                 </div>
                               </div>
                               <div className="simform__actions">
-                                <button className="submit" onClick={() => handleRegistration()}/>
+                                <button className="submit"/>
                                 <span className="simform__actions-sidetext"><span className="ant-checkbox"><input name="agreement" id="agreement" type="checkbox" className="ant-checkbox-input" defaultValue /><span className="ant-checkbox-inner" /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
                               </div> 
                             </form>
