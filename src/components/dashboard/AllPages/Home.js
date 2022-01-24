@@ -24,7 +24,6 @@ function Home() {
   const { isLoading , successTxnsumry } = dashboard;
   const {user} = auth;
   var clientCodeArr = [];
-  var filterData =[];
   var totalSuccessTxn = 0;
   var totalAmt = 0;
 
@@ -53,7 +52,7 @@ function Home() {
   // filter api response data with client code
   useEffect(() => {
     if(successTxnsumry?.length>0){
-      var filterData = successTxnsumry?.filter((txnsummery)=>{
+       var filterData = successTxnsumry?.filter((txnsummery)=>{
       if(clientCodeArr.includes(txnsummery.clientCode)){
         return clientCodeArr.includes(txnsummery.clientCode);
         }
@@ -111,10 +110,11 @@ showData.map((item)=>{
                     <option value="5">Last Month</option>
                   </select>
                 </div>
-                <div className="col-lg-6 mrg-btm- bgcolor">
+                
+                {showData.length>0 ?   <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Search</label>
                   <input type="text" className="ant-input" onChange={(e)=>{handleChange(e.currentTarget.value)}} placeholder="Search from here" />
-                </div>
+                </div> : <></>}
                 <div>
                   <p>Total Successful Transactions: {totalSuccessTxn} | Total Amount {`(INR)`}: {totalAmt} </p>
                 </div>
@@ -138,7 +138,9 @@ showData.map((item)=>{
                       }) }
                   </tbody>
                   </table>
-                  { showData.length<0 ? <div className='showMsg'> Record Not Found</div>:<></>}
+           
+                  { showData.length<=0 && isLoading===false ? <div className='showMsg'> No Record Found</div>:<></>}
+
                   { isLoading ? <ProgressBar />:<></>}
               </div>
             </div></section>
