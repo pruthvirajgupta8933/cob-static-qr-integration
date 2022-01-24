@@ -37,8 +37,6 @@ function TransactionHistory() {
       }
   }
 
-  
-
   const getPaymentStatusList = async () => {  
     await axios.get('https://adminapi.sabpaisa.in/REST/admin/getPaymentStatusList')  
     .then(res => {  
@@ -49,8 +47,6 @@ function TransactionHistory() {
       console.log(err)  
     });  
   }  
-
-
 
   const paymodeList = async () => {  
     await axios.get('https://adminapi.sabpaisa.in/REST/paymode/paymodeList')  

@@ -89,7 +89,7 @@ const initialState = { subscriptionServiceResponse: {}, subscriptionPackageRespo
 const subscriptionSlice = createSlice({
   name: "subscription",
   initialState,
-  extraReducers: {      
+  extraReducers: {
     [subscriptionplan.pending]: (state, action) => {
         state.isLoading = true;
     },
