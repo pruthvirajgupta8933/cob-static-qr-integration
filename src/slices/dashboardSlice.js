@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import {Dashboardservice} from "../services/dashboard.service";
 
-const initialState = { successTxnsumry:[],isLoading:false };
+const initialState = { successTxnsumry:[], isLoading:false, subscribe: [], subscriptionplandetail: [] };
 
 export const successTxnSummary = createAsyncThunk(
     "dashbaord/successTxnSummary",
@@ -27,8 +27,44 @@ export const successTxnSummary = createAsyncThunk(
     }
   );
 
+  export const subscriptionplan = createAsyncThunk(
+    "dashbaord/subscriptionplan",
+    async ({}, thunkAPI) => {
+      try {
+        const data = await Dashboardservice.subscriptionPlan();
+        console.log("subscribe data", data )
+        return { subscribe: data };
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+      }
+    }
+  );
 
-
+  export const subscriptionPlanDetail = createAsyncThunk(
+    "dashbaord/subscriptionChargesDetail",
+    async ({}, thunkAPI) => {
+      try {
+        const data = await Dashboardservice.subscriptionChargesDetail();
+        return { subscriptionplandetail: data };
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+      }
+    }
+  );
 
   export const dashboardSlice = createSlice({
     name: 'dashboard',
@@ -45,7 +81,17 @@ export const successTxnSummary = createAsyncThunk(
       [successTxnSummary.rejected]: (state) => {
         state.isLoading = false
       },
-    },
+      [subscriptionplan.pending]: (state, action) => {
+        state.isLoading = true;
+      },
+      [subscriptionplan.fulfilled]: (state, action) => {
+        state.isLoading = false;
+        state.subscription = action.payload.data;
+      },
+      [subscriptionplan.rejected]: (state, action) => {
+        state.isLoading = false;
+      },
+      },
   })
   
   export const dashboardReducer = dashboardSlice.reducer
