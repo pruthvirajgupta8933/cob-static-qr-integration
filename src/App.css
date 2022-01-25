@@ -87,3 +87,11 @@ label {
     
     padding: 10px 14px;
 }
+.my-custom-scrollbar {
+ 
+  height: 200px !important;
+  overflow: auto !important;
+  }
+  .table-wrapper-scroll-y {
+  display: block !important;
+  }
