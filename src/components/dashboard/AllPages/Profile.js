@@ -61,6 +61,16 @@ function Profile() {
                           9899660338</label></div>
                       <div className="merchant-detail-container"><label>State</label><label>Uttar
                           Pradesh</label></div>
+                          <br />
+                          <h4 className="text-left m-b-lg m-b-20">Bank Details</h4>
+                      <div className="merchant-detail-container"><label>Bank Name</label><label>
+                      Bank Of Baroda</label></div>
+                      <div className="merchant-detail-container"><label>Account Type
+                          </label><label>Savings Account</label></div>
+                      <div className="merchant-detail-container"><label>Account Number</label><label>
+                      4012888888881881</label></div>
+                      <div className="merchant-detail-container"><label>IFSC Code </label><label>BARB0INDELX
+                          </label></div>
                     </div>
                     <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
                     </div>

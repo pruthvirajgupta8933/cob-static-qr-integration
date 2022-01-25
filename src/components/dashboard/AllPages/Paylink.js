@@ -1,6 +1,8 @@
 import React, { useState,useEffect } from 'react';
 import PayerDetails from './createpaymentlink/PayerDetails';
 import PaymentLinkDetail from './createpaymentlink/PaymentLinkDetail';
+import BulkPayer from './createpaymentlink/BulkPayer';
+import Reports from './createpaymentlink/Reports';
 
 
 function Paylink() {
@@ -28,7 +30,7 @@ function Paylink() {
                             <a className="nav-link"onClick={()=>SetTab(2)} >Payment Link Detail</a>
                             </li>
                             <li className="nav-item">
-                            <a className="nav-link" onClick={()=>SetTab(3)}>Import BulK Payer</a>
+                            <a className="nav-link" onClick={()=>SetTab(3)}>Import Bulk Payer</a>
                             </li>
                             <li className="nav-item">
                             <a className="nav-link " onClick={()=>SetTab(4)}>Reports</a>
@@ -43,11 +45,22 @@ function Paylink() {
                   lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
 
                     {(tab === 1 &&
-                        <PaymentLinkDetail/>)
-                    || (tab === 2 &&
                         <PayerDetails />)
+                    || (tab === 2 &&
+                        <PaymentLinkDetail />)
+                  
+                        
+                    ||  (tab === 2 &&
+                        <PaymentLinkDetail />)
+
+                    ||  (tab === 3 &&
+                        <BulkPayer/>)
+
+                    ||  (tab === 4 &&
+                        <Reports/>)
+
                     ||
-                        <PaymentLinkDetail />
+                       <PayerDetails />
                     }
                 
               </div>

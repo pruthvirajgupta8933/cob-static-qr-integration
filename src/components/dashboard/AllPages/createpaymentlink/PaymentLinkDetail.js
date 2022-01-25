@@ -19,19 +19,23 @@ const PaymentLinkDetail = () => {
 
     }
 
-    const [data, setData] = useState([initialState]);
+    const [data, setData] = useState([]);
+    const [searchText, SetSearchText] = useState('');
+    var [showFilterData,SetShowFilterData] =useState([]); 
     const {user} = useSelector((state)=>state.auth);
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
     const {clientCode} = clientMerchantDetailsList[0];
     console.log('clientCode',clientCode);
 
+    // console.log('https://paybylink.sabpaisa.in/paymentlink/getLinks/'+ clientCode );
+
 
 
     const getDetails = async () => {  
-         await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getLinks/LPSD1`)  
+         await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getLinks/${clientCode}`)  
         .then(res => {     
-         console.log(res.data)
           setData(res.data);  
+
         })  
         .catch(err => {  
           console.log(err)
@@ -42,6 +46,12 @@ const PaymentLinkDetail = () => {
     useEffect(() => { 
         getDetails();
     },[])
+
+
+    const getSearchTerm  = (e) => {
+        SetSearchText(e.target.value)
+        if(searchText !== ''){ setData(data.filter((item)=>item.customer_email.toLowerCase().includes(searchText.toLocaleLowerCase())))}
+    }
 
 
  
@@ -65,20 +75,6 @@ const PaymentLinkDetail = () => {
         </button>
       </div>
       <div class="modal-body">
-        {/* <form>
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Recipient:</label>
-            <input type="text" class="form-control" id="recipient-name" />
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Message:</label>
-            <textarea class="form-control" id="message-text"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Message:</label>
-            <textarea class="form-control" id="message-text"></textarea>
-          </div>
-        </form> */}
         <form>
         <select style={{width: 470}}>
         <option selected>Select Payer</option>
@@ -99,7 +95,7 @@ const PaymentLinkDetail = () => {
       <input type="text" class="form-control" placeholder="Enter Payment Amount in (INR)"/>
     </div>
     <div class="col">
-    <label for="exampleInputEmail1">Purpose of Payemnt Collection</label>
+    <label for="exampleInputEmail1">Purpose of Payement Collection</label>
       <input type="text" class="form-control" placeholder="Enter Purpose of Payement Collection"/>
     </div>
   </div>
@@ -188,7 +184,8 @@ const PaymentLinkDetail = () => {
       
 
       <p style={{position: 'absolute', top: 270, left:50}}>Total Records: 8</p>
-      <input type="text" placeholder="Search Here" style={{ position: 'absolute', top: 300, left: 30, width: 700 }}/> 
+      <input type="text" placeholder="Search Here" value={searchText} style={{ position: 'absolute', top: 300, left: 30, width: 700 }} onChange={getSearchTerm}/> 
+    
       <h4 style={{ position: 'absolute', top: 300, left: 835 }}>Count per page</h4>
       <select style={{ position: 'absolute', top: 300, left: 960, width: 100 }}>
            <option value="10">10</option>

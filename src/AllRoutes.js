@@ -14,6 +14,7 @@ import { useDispatch,useSelector } from 'react-redux';
 import LoginPage from './components/login/LoginPage';
 import ForgetPassword from './components/forgetpassword/ForgetPassword';
 import CommonPage from './components/Otherpages/CommonPage';
+import EmailVerification from './components/Otherpages/EmailVerification'
 
 
 
@@ -47,6 +48,10 @@ function AllRoutes(){
               </Route>
               <Route path="/forget">
                 <ForgetPassword />
+              </Route>
+
+              <Route exact path="/emailverification">
+                <EmailVerification />
               </Route>
              
             </Switch>
