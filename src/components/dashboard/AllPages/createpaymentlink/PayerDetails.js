@@ -24,7 +24,7 @@ const PayerDetails = () => {
 
   return(
       <div>
-          <h1 className='bholu'>Create Payment Link</h1>
+          <h1 >Create Payment Link</h1>
 
           <h3 className='sample'>Payer Details</h3>
           <button type="button" className='btn' class="btn btn-primary">Add Single Payer</button>
