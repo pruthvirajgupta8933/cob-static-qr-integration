@@ -1,7 +1,7 @@
 
 import React,{useEffect,useState} from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import { successTxnSummary } from '../../../slices/dashboardSlice';
+import { successTxnSummary, subscriptionplan, subscriptionPlanDetail } from '../../../slices/dashboardSlice';
 import ProgressBar from '../../../_components/reuseable_components/ProgressBar';
 import { useRouteMatch, Redirect} from 'react-router-dom'
 import '../css/Home.css';
@@ -27,7 +27,7 @@ function Home() {
 
   const {dashboard,auth} = useSelector((state)=>state);
   // console.log("dashboard",dashboard)
-  const { isLoading , successTxnsumry } = dashboard;
+  const { isLoading , successTxnsumry, subscribedService } = dashboard;
   const {user} = auth;
   var clientCodeArr = [];
   var totalSuccessTxn = 0;
@@ -40,6 +40,7 @@ function Home() {
     SetTxnList(DefaulttxnList);
     SetShowData(DefaulttxnList);
     console.log(objParam);
+    dispatch(subscriptionplan);
     dispatch(successTxnSummary(objParam));
   }, [clientCode]);
 

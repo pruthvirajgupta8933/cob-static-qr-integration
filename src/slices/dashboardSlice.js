@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import {Dashboardservice} from "../services/dashboard.service";
 
-const initialState = { successTxnsumry:[], isLoading:false, subscribe: [], subscriptionplandetail: [] };
+const initialState = { successTxnsumry:[], isLoading:false, subscribedService: [], subscriptionplandetail: [] };
 
 export const successTxnSummary = createAsyncThunk(
     "dashbaord/successTxnSummary",
@@ -31,9 +31,9 @@ export const successTxnSummary = createAsyncThunk(
     "dashbaord/subscriptionplan",
     async ({}, thunkAPI) => {
       try {
-        const data = await Dashboardservice.subscriptionPlan();
-        console.log("subscribe data", data )
-        return { subscribe: data };
+        const response = await Dashboardservice.subscriptionplan();
+        console.log("subscribe data", response );
+        return response;
       } catch (error) {
         const message =
           (error.response &&
@@ -48,11 +48,11 @@ export const successTxnSummary = createAsyncThunk(
   );
 
   export const subscriptionPlanDetail = createAsyncThunk(
-    "dashbaord/subscriptionChargesDetail",
+    "dashbaord/subscriptionPlanDetail",
     async ({}, thunkAPI) => {
       try {
-        const data = await Dashboardservice.subscriptionChargesDetail();
-        return { subscriptionplandetail: data };
+        const response = await Dashboardservice.subscriptionPlanDetail();
+        return response;
       } catch (error) {
         const message =
           (error.response &&
@@ -81,14 +81,14 @@ export const successTxnSummary = createAsyncThunk(
       [successTxnSummary.rejected]: (state) => {
         state.isLoading = false
       },
-      [subscriptionplan.pending]: (state, action) => {
+      [subscriptionplan.pending]: (state) => {
         state.isLoading = true;
       },
       [subscriptionplan.fulfilled]: (state, action) => {
         state.isLoading = false;
-        state.subscription = action.payload.data;
+        state.subscribedService = action.payload.data;
       },
-      [subscriptionplan.rejected]: (state, action) => {
+      [subscriptionplan.rejected]: (state) => {
         state.isLoading = false;
       },
       },

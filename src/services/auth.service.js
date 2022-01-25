@@ -4,13 +4,14 @@ const API_URL = "http://localhost:8080/api/auth/";
 
 const SIGNUP_URL = "http://18.216.47.58:8080/auth-service/auth/";
 
-const register = (fullName, mobileNumber, email, password, selectStates) => {
+const register = (firstName, lastName, mobileNumber, email, password, confirmPassword) => {
   return axios.post(SIGNUP_URL + "signup", {
-    name: fullName,
+    firstname: firstName,
+    lastname: lastName,
     mobileNumber: mobileNumber,
     email: email,
     password: password,
-    state: selectStates,
+    confirmPassword: confirmPassword,
   })
   .then((response) => {
     if (response.data.accessToken) {

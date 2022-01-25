@@ -29,11 +29,12 @@ const FORM_VALIDATION = Yup.object().shape({
 
 function Registration() {
   const history = useHistory()
-  const [fullName, setFullName] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
   const [mobileNumber, setMobileNumber] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [selectStates, setSelectStates] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ function Registration() {
   const handleRegistration = () => {
         setLoading(true);
         // console.log(formValue);
-        dispatch(register({ fullName, mobileNumber, email, password, selectStates}))
+        dispatch(register({ firstName, lastName, mobileNumber, email, password, confirmPassword }))
           .unwrap()
           .then(() => {
             history.push("/dashboard");
@@ -98,74 +99,49 @@ return (
                             <form acceptCharset="utf-8" action="#" className="simform">
                               <div className="sminputs">
                                 <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Full Name*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="Full Name" type="text" size={50} onChange={e => setFullName(e.target.value)}/>
+                                  <label className="string optional" htmlFor="user-name">First Name *</label>
+                                  <input className="string optional" maxLength={255} id="user-name" placeholder="First Name" type="text" size={50} onChange={e => setFirstName(e.target.value)}/>
                                 </div>
                                 <div className="input full- optional">
+                                  <label className="string optional" htmlFor="user-name">Last Name*</label>
+                                  <input className="string optional" maxLength={255} id="user-name" placeholder="Last Name" type="text" size={50} onChange={e => setLastName(e.target.value)}/>
+                                </div>                                
+                              </div>
+                              <div className="sminputs">
+                              <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-name">Mobile Number*</label>
                                   <input className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" type="number" size={10} onChange={e => setMobileNumber(e.target.value)}/>
                                 </div>
-                              </div>
-                              <div className="sminputs">
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-email">Email*</label>
                                   <input className="string optional" maxLength={255} id="email" placeholder="email" type="email" size={50} onChange={e => setEmail(e.target.value)}/>
                                 </div>
+                                </div>
+                              <div className="sminputs">
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Password *</label>
                                   <input className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} onChange={e => setPassword(e.target.value)} />
                                   <span className="hide-password">Show</span>
                                 </div>
-                              </div>
-                              <div className="sminputs">
-                                <div className="input full">
-                                  <label className="string optional" htmlFor="user-pw">Select *</label>
-                                  {/*<input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />*/}
-                                  <select name="states" id="states" className="string optional" onChange={e => setSelectStates(e.target.value)} style={{border: '1px solid #fafafa', width: '100%', marginBottom: '10px', padding: '2px'} }>
-                                    <option value="Select States" selected>Select States</option>
-                                    <option value="Andhra Pradesh">Andhra Pradesh</option>								
-                                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                                    <option value="Assam">Assam</option>
-                                    <option value="Bihar">Bihar</option>
-                                    <option value="Chandigarh">Chandigarh</option>
-                                    <option value="Chhattisgarh">Chhattisgarh</option>
-                                    <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
-                                    <option value="Daman and Diu">Daman and Diu</option>
-                                    <option value="Delhi">Delhi</option>
-                                    <option value="Lakshadweep">Lakshadweep</option>
-                                    <option value="Puducherry">Puducherry</option>
-                                    <option value="Goa">Goa</option>
-                                    <option value="Gujarat">Gujarat</option>
-                                    <option value="Haryana">Haryana</option>
-                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
-                                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                                    <option value="Jharkhand">Jharkhand</option>
-                                    <option value="Karnataka">Karnataka</option>
-                                    <option value="Kerala">Kerala</option>
-                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
-                                    <option value="Maharashtra">Maharashtra</option>
-                                    <option value="Manipur">Manipur</option>
-                                    <option value="Meghalaya">Meghalaya</option>
-                                    <option value="Mizoram">Mizoram</option>
-                                    <option value="Nagaland">Nagaland</option>
-                                    <option value="Odisha">Odisha</option>
-                                    <option value="Punjab">Punjab</option>
-                                    <option value="Rajasthan">Rajasthan</option>
-                                    <option value="Sikkim">Sikkim</option>
-                                    <option value="Tamil Nadu">Tamil Nadu</option>
-                                    <option value="Telangana">Telangana</option>
-                                    <option value="Tripura">Tripura</option>
-                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                    <option value="Uttarakhand">Uttarakhand</option>
-                                    <option value="West Bengal">West Bengal</option>
-                                  </select>					
+                                <div className="input full- optional">
+                                  <label className="string optional" htmlFor="user-pw">Confirm Password *</label>
+                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type="password" size={50} onChange={e => setConfirmPassword(e.target.value)} />
+                                  <span className="hide-password">Show</span>
                                 </div>
                               </div>
+                              <div className="sminputs">                              
                               <div className="simform__actions">
-                              {/* <button className="submit" onClick={() => handleRegistration()}/> */}
-                                <input className="sumbit" name="commit" type="sumbit" defaultValue="Create Account" onClick={handleRegistration} />
+                              <button
+                                  className="sumbit"
+                                  type="sumbit"
+                                  style={{ color: "#fff" }}
+                                  onClick={handleRegistration}
+                                > 
+                                  Create Account
+                                </button>
+                                {/* <input className="sumbit" name="commit" type="sumbit" defaultValue="Create Account" onClick={handleRegistration} /> */}
                                 <span className="simform__actions-sidetext"><span className="ant-checkbox"><input name="agreement" id="agreement" type="checkbox" className="ant-checkbox-input" defaultValue /><span className="ant-checkbox-inner" /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
+                              </div>
                               </div>
                             </form>
                             {saved &&
