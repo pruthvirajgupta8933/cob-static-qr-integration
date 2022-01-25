@@ -23,7 +23,7 @@ const PaymentLinkDetail = () => {
     const {user} = useSelector((state)=>state.auth);
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
     const {clientCode} = clientMerchantDetailsList[0];
-    console.log(clientMerchantDetailsList);
+    console.log('clientCode',clientCode);
 
 
 

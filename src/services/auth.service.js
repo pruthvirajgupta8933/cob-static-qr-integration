@@ -23,19 +23,52 @@ const register = (fullName, mobileNumber, email, password, selectStates) => {
   });
 };
 
+// login old url : https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin 
+// login new url : http://18.216.47.58:8080/auth-service/auth/login
+
+var staticClientList = [
+  {
+    "clientId": 2078,
+    "clientCode": "LPSD1",
+    "clientName": "Laxman Public School",
+    "clientContact": "7895352728",
+    "clientEmail": "pooja.kushwaha@sabpaisa.in",
+    "roleType": "Client",
+    "clientUserName": "Abh789@sp",
+    "clientContactPersonName": "Abhay",
+    "clientType": null,
+    "parentClientId": 0,
+    "lastLoginTime": null,
+    "address": null,
+    "stateId": null,
+    "stateName": null,
+    "bid": null,
+    "businessType": null,
+    "successUrl": null,
+    "failedUrl": null,
+    "subscription_status": null,
+    "subscribedTym": null,
+    "configuration_status": null,
+    "referrerChildClient": null
+  }
+];
+
 const login = (username, password) => {
   return axios
-    .post("https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin", {
+    .post("http://18.216.47.58:8080/auth-service/auth/login", {
       clientUserId:username,
       userPassword:password,
     })
     .then((response) => {
+      response.data.clientMerchantDetailsList = staticClientList
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
       }else{
+
         localStorage.setItem("user", JSON.stringify(response.data));
       }
-
+      
+      console.log(response.data)
       return response.data;
     });
 };
@@ -47,24 +80,9 @@ const logout = () => {
 
 
 
-// Home, successTxnSummary 
+// Home,
 const BASE_URL = "https://adminapi.sabpaisa.in";
 
-const successTxnSummary = (fromdate, todate, clientcode) => {
-  // console.log('fromDate',fromdate);
-  return axios.post(BASE_URL + "/REST/SuccessTxnSummary/", {
-    fromdate,
-    todate,
-    clientcode,
-  });
-};
-
-// <<<<<<< HEAD
-
-const authtest=(ttt)=>{
-  return ttt
-}
-// =======
 const sendEmail = (toEmail, toCc, subject, msg) => {
   return axios.post(BASE_URL + "/REST/Email/sendEmail", {
     toEmail,
@@ -87,8 +105,6 @@ const authService = {
   register,
   login,
   logout,
-  successTxnSummary,
-  authtest,
   sendEmail,
 };
 

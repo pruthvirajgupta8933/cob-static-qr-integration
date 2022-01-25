@@ -1,11 +1,15 @@
 import React,{useEffect, useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
+import { useRouteMatch, Redirect,useHistory} from 'react-router-dom'
 import getPaymentStatusList from '../../../services/home.service'
 import axios from "axios"
 
 
 function TransactionHistory() {
   const dispatch = useDispatch();
+  const {path} = useRouteMatch();
+  
+  let history = useHistory();
   var {user} = useSelector((state)=>state.auth);
 
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
@@ -19,8 +23,6 @@ function TransactionHistory() {
   const [filterList,SetFilterList] = useState([])
   const [searchText,SetSearchText] = useState('')
 
-
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
   function dayDiff(dateFrom, dateTo) {
     var from = new Date(dateFrom);
     var to = new Date(dateTo);
@@ -112,10 +114,17 @@ const checkValidation = ()=>{
 
 
   useEffect(() => {
-    
     if(searchText !== ''){ SetFilterList(txnList.filter((txnItme)=>txnItme.txn_id.toLowerCase().includes(searchText.toLocaleLowerCase())))}else{SetFilterList(txnList)}
   }, [searchText])
 
+
+  var clientMerchantDetailsList =[];
+  if(user && user.clientMerchantDetailsList===null){
+    history.push('/dashboard/profile');
+  }else{
+    clientMerchantDetailsList = user.clientMerchantDetailsList;
+  }
+  
   
   console.log(txnList.lenth)
 

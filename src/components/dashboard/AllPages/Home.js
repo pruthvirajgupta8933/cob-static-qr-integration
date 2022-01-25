@@ -3,11 +3,17 @@ import React,{useEffect,useState} from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import { successTxnSummary } from '../../../slices/dashboardSlice';
 import ProgressBar from '../../../_components/reuseable_components/ProgressBar';
+import { useRouteMatch, Redirect} from 'react-router-dom'
 import '../css/Home.css';
 
+
+
 function Home() {
+
+  
   // console.log("home page call");
   const dispatch = useDispatch();
+  let { path } = useRouteMatch();
   var currentDate = new Date().toJSON().slice(0, 10);
   const [fromDate, setFromDate] = useState(currentDate);
   const [toDate, setToDate] = useState(currentDate);
@@ -40,14 +46,17 @@ function Home() {
   // console.log('successTxnsumry',successTxnsumry );
   // console.log('clientMerchantDetailsList',user.clientMerchantDetailsList);
 
+  
   //make client code array
-  if(user.clientMerchantDetailsList.length>0){
+  if(user.clientMerchantDetailsList!==null && user.clientMerchantDetailsList.length>0){
         clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
       return item.clientCode;
       });
   }else{
         clientCodeArr = []
   }
+
+  
 
   // filter api response data with client code
   useEffect(() => {
@@ -77,7 +86,10 @@ function Home() {
         SetSearch(e);
   }
 
-
+ 
+  if(user && user.clientMerchantDetailsList===null){
+    return <Redirect to={`${path}/profile`} />
+  } 
 console.log('show data',showData)
 
 showData.map((item)=>{

@@ -1,12 +1,27 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom';
+
 
 function Profile() {
+  const [message,setMessage]  = useState('');
+  const { user } = useSelector((state) => state.auth);
+  
+  useEffect(() => {
+    var clientMerchantDetailsList =[];
+    if(user && user.clientMerchantDetailsList===null){
+      setMessage("Please update your profile to access the dashbaord");
+    }else{
+      clientMerchantDetailsList = user.clientMerchantDetailsList;
+    }
+  }, [])
+ 
+  
+
     return (
         <section className="ant-layout">
         <div className="profileBarStatus">
-          {/*
-                    <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
-                                class="btn">Upload Here</span></span></div>*/}
+          {/* {message} */}
         </div>
         <main className="gx-layout-content ant-layout-content">
           <div className="gx-main-content-wrapper">
@@ -19,6 +34,7 @@ function Profile() {
                       <div className="ant-tabs-nav-scroll">
                         <div className="ant-tabs-nav- ant-tabs-nav-animated">
                           <div>
+                          <h4 style={{background: "#ffa2a2",padding: "14px",margin:" auto",textAlign: "center"}}>{message}</h4>
                             <div role="tab" aria-disabled="false" aria-selected="true" className="ant-tabs-tab-active ant-tabs-tab">Basic Details</div>
                           </div>
                           <div className="ant-tabs-ink-bar ant-tabs-ink-bar-animated" style={{display: 'block', transform: 'translate3d(0px, 0px, 0px)', width: '116px'}}>

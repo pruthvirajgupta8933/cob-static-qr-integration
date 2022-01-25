@@ -21,11 +21,14 @@ import Paylink from './AllPages/Paylink';
 
 function Dashboard() {
     let { path } = useRouteMatch();
-    const { user: currentUser,isLoggedIn } = useSelector((state) => state.auth);
-  // console.log("currentUser",currentUser);
+    const {  user,isLoggedIn } = useSelector((state) => state.auth);
+    
   if (!isLoggedIn) {
     return <Redirect to="/login-page" />;
   }
+
+
+
  
     return (
         <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
