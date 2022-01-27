@@ -1,11 +1,15 @@
 import React,{useEffect, useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
+import { useRouteMatch, Redirect,useHistory} from 'react-router-dom'
 import getPaymentStatusList from '../../../services/home.service'
 import axios from "axios"
 
 
 function TransactionHistory() {
   const dispatch = useDispatch();
+  const {path} = useRouteMatch();
+  
+  let history = useHistory();
   var {user} = useSelector((state)=>state.auth);
 
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
@@ -19,9 +23,13 @@ function TransactionHistory() {
   const [filterList,SetFilterList] = useState([])
   const [searchText,SetSearchText] = useState('')
 
-
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-
+  function dayDiff(dateFrom, dateTo) {
+    var from = new Date(dateFrom);
+    var to = new Date(dateTo);
+    var diffInMs   =to - from
+    return Math.abs(diffInMs / (1000 * 60 * 60 * 24));
+   }
+   
 
   const getInputValue=(label,val)=>{
       if(label==='fromDate'){
@@ -37,8 +45,6 @@ function TransactionHistory() {
       }
   }
 
-  
-
   const getPaymentStatusList = async () => {  
     await axios.get('https://adminapi.sabpaisa.in/REST/admin/getPaymentStatusList')  
     .then(res => {  
@@ -49,8 +55,6 @@ function TransactionHistory() {
       console.log(err)  
     });  
   }  
-
-
 
   const paymodeList = async () => {  
     await axios.get('https://adminapi.sabpaisa.in/REST/paymode/paymodeList')  
@@ -65,20 +69,41 @@ function TransactionHistory() {
 
 
 
+const checkValidation = ()=>{
+    var flag = true
+    if(fromDate==='' || toDate===''){
+        alert("Please select the date.");
+        flag = false;
+    }else if(fromDate!=='' || toDate!==''){
+      //check date range
+      var days =  dayDiff(fromDate,toDate);
+      if(days <= 0 || days >= 90 ){
+        flag = false;
+          alert("The date range should be under 3 months");
+      }
+      
+    }else{
+      flag = true;
+    }
+
+    return flag;
+}
+
 
   const txnHistory = async () => {  
-    // // console.log(`https://adminapi.sabpaisa.in/REST/paymode/paymodeList/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`);
-    
-
-    await axios.get(`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`)  
-    .then(res => {  
-      SetTxnList(res.data);
-      SetFilterList(res.data)
-      // console.log(res)
-    })  
-    .catch(err => {  
-      console.log(err)  
-    });  
+    var isValid = checkValidation();
+          if(isValid){ await axios.get(`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`)  
+          .then(res => {  
+            SetTxnList(res.data);
+            SetFilterList(res.data)
+            // console.log(res)
+          })  
+          .catch(err => {  
+            console.log(err)  
+          });    
+      }else{
+        console.log('API not trigger!');
+      }
   }  
 
   
@@ -89,12 +114,19 @@ function TransactionHistory() {
 
 
   useEffect(() => {
-    console.log('filter call')
-    if(searchText !== ''){ SetFilterList(txnList.filter((txnItme)=>txnItme.txn_id.toLowerCase().includes(searchText.toLocaleLowerCase())))}
+    if(searchText !== ''){ SetFilterList(txnList.filter((txnItme)=>txnItme.txn_id.toLowerCase().includes(searchText.toLocaleLowerCase())))}else{SetFilterList(txnList)}
   }, [searchText])
 
+
+  var clientMerchantDetailsList =[];
+  if(user && user.clientMerchantDetailsList===null){
+    history.push('/dashboard/profile');
+  }else{
+    clientMerchantDetailsList = user.clientMerchantDetailsList;
+  }
   
   
+  console.log(txnList.lenth)
 
 
 

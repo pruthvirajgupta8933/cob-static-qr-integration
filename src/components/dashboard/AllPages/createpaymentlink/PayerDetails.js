@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom';
 
 
 
+
 const PayerDetails = () => {
     const [item, setItem] = useState({
         name: "",
         email: "",
         phone_number: "",
-        customer_type: "shopkeeper"
+        customer_type: ""
     });
     const {name, email,phone_number}= item;
     const { user } = useSelector((state) => state.auth);
@@ -51,6 +52,33 @@ const PayerDetails = () => {
     React.useEffect(() => {
         getFileName();
     }, []);
+
+
+    const getDrop = async (e) => { 
+
+       
+
+        await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes`)  
+      .then(res => {     
+        setData(res.data);  
+  
+      })  
+      .catch(err => {  
+        console.log(err)
+      });
+      
+  }
+  React.useEffect(() => {
+    getDrop();
+}, []);
+
+
+
+
+
+
+
+
 
 
     //    const onSubmit= async()=>{
@@ -107,7 +135,7 @@ const PayerDetails = () => {
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form onSubmit={e => onSubmit(e)} >
+                            <form onSubmit={e => onSubmit(e)}>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Name of Payer:</label>
                                     <input type="text" name="name" value={name} onChange={e => onInputChange(e)}
@@ -134,18 +162,18 @@ const PayerDetails = () => {
                                     <select className='selct' >
 
                                         <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
-                                        <option type="text" class="form-control" id="recipient-name"  >Customer</option>
-                                        <option type="text" class="form-control" id="recipient-name"  >IT Company</option>
-                                        <option type="text" class="form-control" id="recipient-name"  >Reseller</option>
-                                        <option type="text" class="form-control" id="recipient-name"  >Shopkeeper</option>
-                                        <option type="text" class="form-control" id="recipient-name"  >Vendor</option>
-                                        <option type="text" class="form-control" id="recipient-name"  >Whole saler</option>
+                                        {
+                                            data.map((payer) => (
+
+                                                <option value="name">{payer.type}</option>
+
+                                            ))}
                                     </select>
 
 
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary" >Submit</button>
+                                    <button type="button" class="btn btn-primary" >Submit</button>
                                     <button type="button" class="btn btn-danger">Update</button>
                                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                 </div>
@@ -206,9 +234,6 @@ const PayerDetails = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                        console.log(data)
-                    }
 
                         {data.map((user) => (
                             <tr>
@@ -238,3 +263,18 @@ const PayerDetails = () => {
 };
 
 export default PayerDetails;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

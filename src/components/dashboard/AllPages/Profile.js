@@ -1,12 +1,27 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom';
+
 
 function Profile() {
+  const [message,setMessage]  = useState('');
+  const { user } = useSelector((state) => state.auth);
+  
+  useEffect(() => {
+    var clientMerchantDetailsList =[];
+    if(user && user.clientMerchantDetailsList===null){
+      setMessage("Please update your profile to access the dashbaord");
+    }else{
+      clientMerchantDetailsList = user.clientMerchantDetailsList;
+    }
+  }, [])
+ 
+  
+
     return (
         <section className="ant-layout">
         <div className="profileBarStatus">
-          {/*
-                    <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
-                                class="btn">Upload Here</span></span></div>*/}
+          {/* {message} */}
         </div>
         <main className="gx-layout-content ant-layout-content">
           <div className="gx-main-content-wrapper">
@@ -19,6 +34,7 @@ function Profile() {
                       <div className="ant-tabs-nav-scroll">
                         <div className="ant-tabs-nav- ant-tabs-nav-animated">
                           <div>
+                          <h4 style={{background: "#ffa2a2",padding: "14px",margin:" auto",textAlign: "center"}}>{message}</h4>
                             <div role="tab" aria-disabled="false" aria-selected="true" className="ant-tabs-tab-active ant-tabs-tab">Basic Details</div>
                           </div>
                           <div className="ant-tabs-ink-bar ant-tabs-ink-bar-animated" style={{display: 'block', transform: 'translate3d(0px, 0px, 0px)', width: '116px'}}>
@@ -45,6 +61,16 @@ function Profile() {
                           9899660338</label></div>
                       <div className="merchant-detail-container"><label>State</label><label>Uttar
                           Pradesh</label></div>
+                          <br />
+                          <h4 className="text-left m-b-lg m-b-20">Bank Details</h4>
+                      <div className="merchant-detail-container"><label>Bank Name</label><label>
+                      Bank Of Baroda</label></div>
+                      <div className="merchant-detail-container"><label>Account Type
+                          </label><label>Savings Account</label></div>
+                      <div className="merchant-detail-container"><label>Account Number</label><label>
+                      4012888888881881</label></div>
+                      <div className="merchant-detail-container"><label>IFSC Code </label><label>BARB0INDELX
+                          </label></div>
                     </div>
                     <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
                     </div>

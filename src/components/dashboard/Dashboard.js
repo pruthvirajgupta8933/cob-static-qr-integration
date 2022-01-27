@@ -14,17 +14,21 @@ import "./css/main.e3214ff9.chunk.css";
 import "./css/loader.css";
 import { useSelector } from 'react-redux';
 import ClientList from './AllPages/ClientList';
-import Subsciption from './AllPages/Subscription'
-import PayerDetails from './AllPages/createpaymentlink/PayerDetails';
-
+import Subsciption from './AllPages/Subscription';
+import PayerDetails from'./AllPages/createpaymentlink/PayerDetails'
+import PaymentLinkDetail from './AllPages/createpaymentlink/PaymentLinkDetail';
+import Paylink from './AllPages/Paylink';
 
 function Dashboard() {
     let { path } = useRouteMatch();
-    const { user: currentUser,isLoggedIn } = useSelector((state) => state.auth);
-  // console.log("currentUser",currentUser);
+    const {  user,isLoggedIn } = useSelector((state) => state.auth);
+    
   if (!isLoggedIn) {
     return <Redirect to="/login-page" />;
   }
+
+
+
  
     return (
         <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
@@ -54,8 +58,11 @@ function Dashboard() {
                 <Route exaxt path={`${path}/subscription`}>
                      <Subsciption />
                 </Route>
-                <Route exaxt path={`${path}/createpaylink`}>
-                     < PayerDetails/>
+                <Route exaxt path={`${path}/paylink`}>
+                     <Paylink />
+                </Route>
+                <Route exaxt path={`${path}/paylinkdetail`}>
+                     <PaymentLinkDetail />
                 </Route>
                 </Switch>
         </section>
