@@ -44,6 +44,16 @@ const PayerDetails = () => {
 
 
 
+<<<<<<< HEAD
+=======
+       )}
+       const submitHandler={
+
+       }
+
+
+
+>>>>>>> phase_hrry
     return (
         <div>
             <h1 className='bholu'>Create Payment Link</h1>
