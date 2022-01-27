@@ -22,7 +22,7 @@ const Reports = () => {
   }
 
   const [data , setData] = useState([]);
-  const [searchText, SetSearchText] = useState('');
+  const [searchText, setSearchText] = useState('');
   const {user} = useSelector((state)=>state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   const {clientCode} = clientMerchantDetailsList[0];
@@ -53,7 +53,7 @@ useEffect(() => {
 
 
 const getSearchTerm  = (e) => {
-  SetSearchText(e.target.value)
+  setSearchText(e.target.value)
   if(searchText !== ''){ setData(data.filter((item)=>item.customer_email.toLowerCase().includes(searchText.toLocaleLowerCase())))}
 }
 
@@ -65,11 +65,11 @@ const getSearchTerm  = (e) => {
       <h3><b>Reports</b></h3>
       <p>Total Records : 8</p>
 
-      <input type="text" placeholder="Search Here"  style={{ width: 500 }}  />
+      <input type="text" placeholder="Search Here" value={searchText} style={{ width: 500 }}  />
       </div>
       
-      <div>
-      <h4 style={{ position: 'absolute', top: 250, left: 700 }}>Count per page</h4>
+      <div  style={{ position: 'absolute', top: 250, left: 700 }}>
+      <h4>Count per page</h4>
       </div>
       <select style={{ position: 'absolute', top: 250, left: 820, width: 1100 }}>
            <option value="10">10</option>
