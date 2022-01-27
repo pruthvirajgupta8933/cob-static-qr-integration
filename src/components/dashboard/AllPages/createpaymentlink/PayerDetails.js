@@ -72,15 +72,9 @@ const PayerDetails = () => {
 
 
 
-<<<<<<< HEAD
     return (
         <div>
             <h1 className='bholu'>Create Payment Link</h1>
-=======
-  return(
-      <div>
-          <h1 >Create Payment Link</h1>
->>>>>>> phase_hrry
 
             <h3 className='sample'>Payer Details</h3>
             {/* <button type="button" className='btn' class="btn btn-primary">Add Single Payer</button> */}

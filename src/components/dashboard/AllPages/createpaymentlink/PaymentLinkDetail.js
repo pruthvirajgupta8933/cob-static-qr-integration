@@ -47,15 +47,8 @@ const PaymentLinkDetail = () => {
     useEffect(() => { 
         getDetails();
     },[])
-
-    useEffect(() => {
-        
-      data.filter((item)=>{
-          folderArr.push(item.folder);
-      })
-      setFolderArr( [...new Set(folderArr)]);
-  }, [data]);
-
+   
+   
 
     const getSearchTerm  = (e) => {
         SetSearchText(e.target.value)
@@ -79,16 +72,12 @@ const PaymentLinkDetail = () => {
     }
 
 
- 
-
-
-
 
 
     return (
 
         <div>
-      <button type="button"  style={{postion:'absolute', top:230 , left:50}} class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Create Payment Link</button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Create Payment Link</button>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -195,13 +184,13 @@ const PaymentLinkDetail = () => {
        </select>
     </div>
   </div>
-  <button type="button" style={{postion:'absolute', top:212 , left:280}} class="btn btn-primary ">SUBMIT</button> 
+  <button type="button" style={{postion:'relative', top:200 , left:280}} class="btn btn-primary ">SUBMIT</button> 
 </form>
 
       </div>
       <div class="modal-footer">
           <br/>
-         {/* <button type="button" style={{postion:'absolute', top:265 , left:380 }} class="btn btn-danger" data-dismiss="modal">CANCEL</button>  */}
+         <button type="button" style={{postion:'absolute', top:290 , left:380 }} class="btn btn-danger" data-dismiss="modal">CANCEL</button> 
 
       </div>
     </div>
