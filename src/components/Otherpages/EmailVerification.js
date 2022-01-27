@@ -12,15 +12,17 @@ const EmailVerification = () => {
 
 <div class="card" style={{ width: 600, height: 400 , backgroundColor: '#999999'}}>
 
-<img class="card-img-top" src={sabpaisalogo} alt="Card image cap" style={{position: 'absolute', height: '100px' , width: '200px'}} />
- 
 
 
   <div class="card-body">
+  <div>
+  <img class="card-img-top"  src={sabpaisalogo} alt="sabpaisa" style={{position: 'absolute', height: '34px' , width: '110px'}} />
  
-<h1 class="display-4" style={{ color: 'white' , position: 'absolute' , top: 150}} >Email Verification</h1>
-<br />
-<br />
+  </div>
+  
+
+<h1 class="display-4" style={{ color: 'white'  }} >Email Verification</h1>
+
 <br />
 
      <div style={{ color: 'white' , position: 'absolute' , top: 300}} >
