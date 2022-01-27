@@ -21,6 +21,7 @@ const PaymentLinkDetail = () => {
 
     const [data, setData] = useState([]);
     const [searchText, SetSearchText] = useState('');
+    const [folderArr, setFolderArr] = React.useState([]);
     var [showFilterData,SetShowFilterData] =useState([]); 
     const {user} = useSelector((state)=>state.auth);
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
@@ -47,10 +48,34 @@ const PaymentLinkDetail = () => {
         getDetails();
     },[])
 
+    useEffect(() => {
+        
+      data.filter((item)=>{
+          folderArr.push(item.folder);
+      })
+      setFolderArr( [...new Set(folderArr)]);
+  }, [data]);
+
 
     const getSearchTerm  = (e) => {
         SetSearchText(e.target.value)
         if(searchText !== ''){ setData(data.filter((item)=>item.customer_email.toLowerCase().includes(searchText.toLocaleLowerCase())))}
+    }
+
+
+    const submitHandler =  async () => {
+
+       await axios.post(`https://paybylink.sabpaisa.in/paymentlink/addLink/${clientCode}`)
+
+   .then((resp) => {  
+     console.log(JSON.stringify(resp.data));
+   })
+   .catch((error) => {
+     console.log(error);
+   }
+
+)
+
     }
 
 
@@ -75,18 +100,20 @@ const PaymentLinkDetail = () => {
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form onSubmit={submitHandler}>
+
         <select style={{width: 470}}>
         <option selected>Select Payer</option>
-           <option value="10">10</option>
-           <option value="20">25</option>
-           <option value="30">50</option>
-           <option value="60">100</option>
-           <option value="70">200</option>
-           <option value="70">300</option>
-           <option value="70">400</option>
-           <option value="70">500</option>
+        {data.map((user) => (
+        
+        
+           <option value="name">{user.customer_name}</option>
+           
+        ))}
+          
+         
        </select>
+      
        <br/>
 
   <div class="row">
@@ -168,15 +195,14 @@ const PaymentLinkDetail = () => {
        </select>
     </div>
   </div>
-  
-  
+  <button type="button" style={{postion:'absolute', top:212 , left:280}} class="btn btn-primary ">SUBMIT</button> 
 </form>
 
       </div>
       <div class="modal-footer">
           <br/>
-         <button type="button" style={{postion:'absolute', top:265 , left:380 }} class="btn btn-danger" data-dismiss="modal">CANCEL</button> 
-        <button type="button" style={{postion:'absolute', top:265 , left:280}} class="btn btn-primary ">SUBMIT</button>
+         {/* <button type="button" style={{postion:'absolute', top:265 , left:380 }} class="btn btn-danger" data-dismiss="modal">CANCEL</button>  */}
+
       </div>
     </div>
   </div>
