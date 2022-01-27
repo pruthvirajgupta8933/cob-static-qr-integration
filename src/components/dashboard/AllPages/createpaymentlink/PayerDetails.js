@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -6,18 +6,25 @@ import { Link } from 'react-router-dom';
 
 
 const PayerDetails = () => {
-    const initialState = {
+    const [item, setItem] = useState({
         name: "",
         email: "",
         phone_number: "",
-        customer_type: ""
-    }
+        customer_type: "shopkeeper"
+    });
+    const {name, email,phone_number}= item;
     const { user } = useSelector((state) => state.auth);
-    const [data, setData] = React.useState([initialState])
+    const [data, setData] = React.useState([])
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
     const { clientCode } = clientMerchantDetailsList[0];
     console.log(clientMerchantDetailsList);
     //console.log(clientCode)
+
+
+    const onInputChange = e => {
+        console.log(e.target.value);
+        setItem({ ...item, [e.target.name]: e.target.value })
+    };
 
 
 
@@ -28,13 +35,13 @@ const PayerDetails = () => {
         // console.log(clientCode,'hello')
         await axios(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)  //MPSE1
             .then(res => {
-            
+
                 console.log(res)
                 setData(res.data);
             })
             .catch(err => {
                 console.log(err)
-                
+
             });
 
     }
@@ -46,28 +53,40 @@ const PayerDetails = () => {
     }, []);
 
 
-   const onClick= async()=>{
+    //    const onSubmit= async()=>{
+
+    //         const response = await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers')
+
+
+
+
+
+    //        .then((response) => {  
+    //         console.warn(response);
+    //       setItem(response.data);
+
+    //          console.log(JSON.stringify(response.data));
+    //        })
+    //        .catch((error) => { 
+    //          console.log(error);
+    //        }
+
+    //        )}
+    //        const submitHandler={
+
+    //        }
+    const onSubmit= async e =>{
+        e.preventDefault();
+        await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers',item);
+        console.log(item)
     
-        const response = await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers')
-       
-           
-           
-   
-     
-       .then((response) => {  
-        console.warn(response);
-      setData(response.data);
-           
-         console.log(JSON.stringify(response.data));
-       })
-       .catch((error) => { 
-         console.log(error);
-       }
+      }; 
 
-       )}
-       const submitHandler={
 
-       }
+
+        // const data = res.json(
+    
+
 
 
 
@@ -88,18 +107,23 @@ const PayerDetails = () => {
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form  onSubmit={submitHandler}> 
+                            <form onSubmit={e => onSubmit(e)} >
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Name of Payer:</label>
-                                    <input type="text" placeholder="Enter Name of Payer" class="form-control" id="recipient-name" />
+                                    <input type="text" name="name" value={name} onChange={e => onInputChange(e)}
+                                        placeholder="Enter Name of Payer" class="form-control" id="recipient-name" />
 
 
                                     <label for="recipient-name" class="col-form-label">Mobile No.:</label>
-                                    <input type="text" placeholder='Enter Mobile No.' class="form-control" id="recipient-name" />
+                                    <input type="text" name="phone_number"
+                                    value={phone_number}
+                                    onChange={e => onInputChange(e)} placeholder='Enter Mobile No.' class="form-control" id="recipient-name" />
 
 
                                     <label for="recipient-name" class="col-form-label">Email ID:</label>
-                                    <input type="text" placeholder='Enter Email ID' class="form-control" id="recipient-name" />
+                                    <input type="text" name="email"
+                                        value={email}
+                                        onChange={e => onInputChange(e)} placeholder='Enter Email ID' class="form-control" id="recipient-name" />
 
 
 
@@ -121,14 +145,14 @@ const PayerDetails = () => {
 
                                 </div>
                                 <div class="modal-footer">
-                            <button  onClick={onClick}  type="button" class="btn btn-primary" >Submit</button>
-                            <button type="button" class="btn btn-danger">Update</button>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                        </div>
+                                    <button type="submit" class="btn btn-primary" >Submit</button>
+                                    <button type="button" class="btn btn-danger">Update</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                </div>
 
                             </form>
                         </div>
-                       
+
                     </div>
                 </div>
             </div>
@@ -166,24 +190,27 @@ const PayerDetails = () => {
             </table>
 
  */}
-           <div class="full-screen-scroller">
+            <div class="full-screen-scroller">
 
-            <table data-spy="scroll"  data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 450, left: 300, width: 800, height:200}}>
-                <thead>
-                    <tr>
-                        <th scope='col'>Pair Name</th>
-                        <th scope='col'>Mobile No.</th>
-                        <th scope='col'>Email ID</th>
-                        <th scope='col'>Payer  Category</th>
-                        <th scope='col'>Edit</th>
-                        <th scope='col'>Delete</th>
-                
-                        <th scope='col'>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                         {data.map((user) => ( 
+                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 450, left: 300, width: 800, height: 200 }}>
+                    <thead>
+                        <tr>
+                            <th scope='col'>Pair Name</th>
+                            <th scope='col'>Mobile No.</th>
+                            <th scope='col'>Email ID</th>
+                            <th scope='col'>Payer  Category</th>
+                            <th scope='col'>Edit</th>
+                            <th scope='col'>Delete</th>
+
+                            <th scope='col'>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                        console.log(data)
+                    }
+
+                        {data.map((user) => (
                             <tr>
                                 <td>{user.name}</td>
                                 <td>{user.phone_number}</td>
@@ -201,11 +228,11 @@ const PayerDetails = () => {
                                 </td>
                             </tr>
                         ))}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        </div>
-       
+
 
     )
 };
