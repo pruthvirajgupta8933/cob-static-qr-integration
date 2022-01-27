@@ -19,7 +19,26 @@ const PaymentLinkDetail = () => {
 
     }
 
+    const [item, setItem] = useState({
+
+  
+        Customer_id: "",
+        Remarks: "",
+        Amount : "",
+        Client_Code : "LPSD1",
+        name_visiblity : true,
+        email_visibilty:  true,
+        phone_number_visibilty: true,
+        valid_to : "",
+        isMerchantChargeBearer: true,
+        
+
+    })
+
+     const {Amount, Remarks, valid_to }= item;
+
     const [data, setData] = useState([]);
+    const [drop, setDrop] = useState([]);
     const [searchText, SetSearchText] = useState('');
     const [folderArr, setFolderArr] = React.useState([]);
     var [showFilterData,SetShowFilterData] =useState([]); 
@@ -47,9 +66,26 @@ const PaymentLinkDetail = () => {
         
     }
 
+    const getDrop = async (e) => { 
+
+       
+
+      await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)  
+    .then(res => {     
+      setDrop(res.data);  
+
+    })  
+    .catch(err => {  
+      console.log(err)
+    });
+    
+}
+
     useEffect(() => { 
         getDetails();
+         getDrop();
     },[])
+
    
    
 
@@ -64,18 +100,26 @@ const PaymentLinkDetail = () => {
       e.preventDefault();
       console.log("harry");
 
-       await axios.post(`https://paybylink.sabpaisa.in/paymentlink/addLink/${clientCode}`)
+       await axios.post(`https://paybylink.sabpaisa.in/paymentlink/addLink`, item)
 
-   .then((resp) => {  
-     console.log(JSON.stringify(resp.data));
-   })
-   .catch((error) => {
-     console.log(error);
-   }
+       setData(item)
 
-)
+
+//    .then((resp) => {  
+//      console.log(JSON.stringify(resp.data));
+//    })
+//    .catch((error) => {
+//      console.log(error);
+//    }
+
+// )
 
     }
+
+    const onInputChange = e => {
+      console.log(e.target.value);
+      setItem({ ...item, [e.target.name]: e.target.value })
+  };
 
 
 
@@ -97,16 +141,15 @@ const PaymentLinkDetail = () => {
       <div class="modal-body">
         <form onSubmit={submitHandler}>
 
-        <select style={{width: 470}}>
+        <select style={{width: 470}} >
         <option selected>Select Payer</option>
-        {data.map((user) => (
+        {drop.map((payer) => (
         
-        
-           <option value="name">{user.customer_name}</option>
+           <option value="name">{payer.name} - {payer.email}</option>
            
         ))}
           
-         
+
        </select>
       
        <br/>
@@ -114,18 +157,18 @@ const PaymentLinkDetail = () => {
   <div class="row">
     <div class="col">
     <label for="exampleInputEmail1">Payment to be Collected (INR)</label>
-      <input type="text" class="form-control" placeholder="Enter Payment Amount in (INR)"/>
+      <input type="text" name= 'Amount' value ={Amount} class="form-control" placeholder="Enter Payment Amount in (INR)" onChange={e => onInputChange(e)}/>
     </div>
     <div class="col">
     <label for="exampleInputEmail1">Purpose of Payement Collection</label>
-      <input type="text" class="form-control" placeholder="Enter Purpose of Payement Collection"/>
+      <input type="text" name= 'Remarks' value = {Remarks} class="form-control" placeholder="Enter Purpose of Payement Collection" onChange={e => onInputChange(e)}/>
     </div>
   </div>
   
   <div class="row">
     <div class="col">
     <label>Link Valid To Date</label>
-                    <input type="date" className="ant-input" placeholder="From Date" />
+                    <input type="date"  className="ant-input" placeholder="From Date"  />
     </div>
     <div class="col">
     <label>Hours</label>
@@ -191,14 +234,13 @@ const PaymentLinkDetail = () => {
     </div>
   </div>
   <div>
-  <button type="submit"  style={{postion:'relative', top:200 , left:280}} class="btn btn-primary ">SUBMIT</button> 
+
+  <div class="modal-footer">
+         <button type="submit"  style={{postion:'relative', top:200 , left:280}} class="btn btn-primary ">SUBMIT</button>
+         <button type="button" style={{postion:'absolute', top:290 , left:380 }} class="btn btn-danger" data-dismiss="modal">CANCEL</button> 
+      </div> 
   </div>
 </form>
-
-      </div>
-      <div class="modal-footer">
-          <br/>
-         <button type="button" style={{postion:'absolute', top:290 , left:380 }} class="btn btn-danger" data-dismiss="modal">CANCEL</button> 
 
       </div>
     </div>
