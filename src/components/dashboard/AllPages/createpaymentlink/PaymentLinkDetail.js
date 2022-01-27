@@ -32,8 +32,11 @@ const PaymentLinkDetail = () => {
 
 
 
-    const getDetails = async () => {  
-         await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getLinks/${clientCode}`)  
+    const getDetails = async (e) => { 
+
+       
+
+          await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getLinks/${clientCode}`)  
         .then(res => {     
           setData(res.data);  
 
@@ -56,7 +59,10 @@ const PaymentLinkDetail = () => {
     }
 
 
-    const submitHandler =  async () => {
+    const submitHandler =  async (e) => {
+
+      e.preventDefault();
+      console.log("harry");
 
        await axios.post(`https://paybylink.sabpaisa.in/paymentlink/addLink/${clientCode}`)
 
@@ -184,7 +190,9 @@ const PaymentLinkDetail = () => {
        </select>
     </div>
   </div>
-  <button type="button" style={{postion:'relative', top:200 , left:280}} class="btn btn-primary ">SUBMIT</button> 
+  <div>
+  <button type="submit"  style={{postion:'relative', top:200 , left:280}} class="btn btn-primary ">SUBMIT</button> 
+  </div>
 </form>
 
       </div>
