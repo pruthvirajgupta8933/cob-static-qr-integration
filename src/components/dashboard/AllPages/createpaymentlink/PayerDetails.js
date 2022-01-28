@@ -19,11 +19,6 @@ const PayerDetails = () => {
     const { clientCode } = clientMerchantDetailsList[0];
     console.log(clientMerchantDetailsList);
 
-
-
-
-
-
     const getFileName = async () => {
         await axios(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)  //MPSE1
             .then(res => {
@@ -36,13 +31,9 @@ const PayerDetails = () => {
 
     }
 
-
-
     React.useEffect(() => {
         getFileName();
     }, []);
-
-
 
     return (
         <div>
