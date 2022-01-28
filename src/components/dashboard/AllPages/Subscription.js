@@ -8,6 +8,7 @@ const Subsciption = () => {
   const { message } = useSelector((state) => state.message);
   const subscriptionData = useSelector(state => state.subscribe);
   const [subscriptionPlanData,setSubscriptionData] = useState([]);
+  const [emandateDetails, setEmandateDetails] = useState(false);
   const [subscriptionPlanChargesData,setSubscriptionPlanChargesData] = useState([]);
   const {dashboard,auth} = useSelector((state)=>state);
   const { isLoading , subscribe } = dashboard;
@@ -23,6 +24,46 @@ const Subsciption = () => {
       console.log(err)
     });  
   }
+
+  const emandate = () => {
+    return axios
+      .post("https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin", {
+        "authenticationMode": "Netbanking",
+        "clientCode":3,
+        "clientRegistrationId":"7111302244",
+        "consumerReferenceNumber":"232",
+        "emiamount":"",
+        "frequency":"ADHO",
+        "mandateCategory":"D001",
+        "mandateEndDate": "",
+        "mandateMaxAmount":"12.00",
+        "mandatePurpose": "Destination Bank Mandate",
+        "mandateStartDate":"2021-11-11T17:34:29.033Z",
+        "mandateType":"ONLINE",
+        "npciPaymentBankCode":"CNRB",
+        "panNo": "",
+        "payerAccountNumber":"123131313123",
+        "payerAccountType":"SAVINGS",
+        "payerBank":"CNRB",
+        "payerBankIfscCode":"CNRB0002783",
+        "payerEmail":"dhananjayaduttmishra@gmail.com",
+        "payerMobile":"+91-9899115728",
+        "payerName":"MrDhananjaya",
+        "payerUtilitityCode":"NACH00000000022341",
+        "requestType":"REGSTRN",
+        "schemeReferenceNumber":"34234",
+        "telePhone": "",
+        "untilCancelled":true,
+        "userType":"merchant",
+  })
+  .then(res => {  
+    setEmandateDetails(res.data);
+  })  
+  .catch(err => {  
+    console.log(err)
+  });
+  };
+  
 
   console.log("Suscription Charges", subscriptionPlanData);
 
@@ -81,7 +122,7 @@ return (
                                     <label for="vehicle1"> I agree all terms and condition.</label>
                                 </td>
                             </tr><tr>
-                                <td colspan="2"><a href="successsubscription.html" className="Click-here ant-btn ant-btn-primary float-right" disabled>Create e-mandate</a></td>
+                                <td colspan="2"><a href="successsubscription.html" className="Click-here ant-btn ant-btn-primary float-right" onClick={emandate}>Create e-mandate</a></td>
                             </tr></>
                             
                     )}
