@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import HeaderPage from './HeaderPage'
 import { useDispatch, useSelector } from 'react-redux';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
-import { Formik, Field, Form} from "formik";
+import { Formik, Field, Form,ErrorMessage} from "formik";
 import { useHistory  } from "react-router-dom";
 import * as Yup from 'yup';
 import { login,logout } from "../../slices/auth";
@@ -20,7 +20,7 @@ const INITIAL_FORM_STATE = {
 
 const FORM_VALIDATION = Yup.object().shape({
   clientUserId: Yup.string().required("Required"),
-  userPassword: Yup.string().required('Password is required')
+  userPassword: Yup.string().min(8, "Password minimum length should be 8").required('Password is required')
 });
 
 
@@ -221,6 +221,10 @@ const handleClose = (event, reason) => {
                                     type="text"
                                     name="clientUserId"
                                   />
+                                  <ErrorMessage name="clientUserId">
+                                      { msg => <div className="abhitest" style={{color: "red",position: "absolute",zIndex:" 999"}}>{msg}</div> }
+                                  </ErrorMessage>
+
                                 </div>
                               </div>
                               <div className="sminputs">
@@ -240,6 +244,9 @@ const handleClose = (event, reason) => {
                                     size={50}
                                     name="userPassword"
                                   />
+                                  <ErrorMessage name="userPassword">
+                                      { msg => <div className="abhitest" style={{color: "red",position: "absolute",zIndex:" 999"}}>{msg}</div> }
+                                  </ErrorMessage>
                                   <span className="hide-password">Show</span>
                                 </div>
                               </div>

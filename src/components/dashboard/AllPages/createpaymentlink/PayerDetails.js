@@ -1,9 +1,17 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { TextField } from '@material-ui/core'
+import * as Yup from 'yup'
 
 
+const initialValues = {
+    name: "",
+    email: "",
+    phone_number: ""
+}
 
 
 const PayerDetails = () => {
@@ -13,7 +21,16 @@ const PayerDetails = () => {
         phone_number: "",
         customer_type: ""
     });
-    const {name, email,phone_number}= item;
+    const validationSchema = Yup.object().shape({
+        name: Yup.string().min(3, "It's too short").required("Required"),
+        phone_number: Yup.string().required("Required"),
+        email: Yup.string().email("Enter valid email").required("Required")
+
+
+    })
+
+
+    const { name, email, phone_number } = item;
     const { user } = useSelector((state) => state.auth);
     const [data, setData] = React.useState([])
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
@@ -54,23 +71,23 @@ const PayerDetails = () => {
     }, []);
 
 
-    const getDrop = async (e) => { 
+    const getDrop = async (e) => {
 
-       
 
-        await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes`)  
-      .then(res => {     
-        setData(res.data);  
-  
-      })  
-      .catch(err => {  
-        console.log(err)
-      });
-      
-  }
-  React.useEffect(() => {
-    getDrop();
-}, []);
+
+        await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes`)
+            .then(res => {
+                setData(res.data);
+
+            })
+            .catch(err => {
+                console.log(err)
+            });
+
+    }
+    React.useEffect(() => {
+        getDrop();
+    }, []);
 
 
 
@@ -103,17 +120,17 @@ const PayerDetails = () => {
     //        const submitHandler={
 
     //        }
-    const onSubmit= async e =>{
+    const onSubmit = async e => {
         e.preventDefault();
-        await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers',item);
+        await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers', item);
         console.log(item)
-    
-      }; 
+
+    };
 
 
 
-        // const data = res.json(
-    
+    // const data = res.json(
+
 
 
 
@@ -135,50 +152,55 @@ const PayerDetails = () => {
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form onSubmit={e => onSubmit(e)}>
-                                <div class="form-group">
-                                    <label for="recipient-name" class="col-form-label">Name of Payer:</label>
-                                    <input type="text" name="name" value={name} onChange={e => onInputChange(e)}
-                                        placeholder="Enter Name of Payer" class="form-control" id="recipient-name" />
+                            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+                                 {(props) => (
+                                    <Form >
+                                        <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Name of Payer:</label>
+                                            <Field as={TextField} fullWidth name="name" value={name} onChange={e => onInputChange(e)} helperText={<ErrorMessage name="name" />}
+                                                placeholder="Enter Name of Payer" class="form-control" id="recipient-name" />
 
 
-                                    <label for="recipient-name" class="col-form-label">Mobile No.:</label>
-                                    <input type="text" name="phone_number"
-                                    value={phone_number}
-                                    onChange={e => onInputChange(e)} placeholder='Enter Mobile No.' class="form-control" id="recipient-name" />
+                                            <label for="recipient-name" class="col-form-label">Mobile No.:</label>
+                                            <Field as={TextField} fullWidth name="phone_number"
+                                                value={phone_number}
+                                                onChange={e => onInputChange(e)} helperText={<ErrorMessage name="phone_number" />} placeholder='Enter Mobile No.' class="form-control" id="recipient-name" />
 
 
-                                    <label for="recipient-name" class="col-form-label">Email ID:</label>
-                                    <input type="text" name="email"
-                                        value={email}
-                                        onChange={e => onInputChange(e)} placeholder='Enter Email ID' class="form-control" id="recipient-name" />
+                                            <label for="recipient-name" class="col-form-label">Email ID:</label>
+                                            <Field as={TextField} fullWidth name="email"
+                                                value={email}
+                                                onChange={e => onInputChange(e)} helperText={<ErrorMessage name="email" />} placeholder='Enter Email ID' class="form-control" id="recipient-name" />
 
 
 
-                                    {/* <label for="recipient-name"  class="col-form-label">Payer Category:</label>
+                                            {/* <label for="recipient-name"  class="col-form-label">Payer Category:</label>
             <input type="text" placeholder='Select your payer category' class="form-control" id="recipient-name"/> */}
 
-                                    <label for="recipient-name" class="col-form-label">Payer Category:</label><br></br>
-                                    <select className='selct' >
+                                            <label for="recipient-name" class="col-form-label">Payer Category:</label><br></br>
+                                            <select className='selct' >
 
-                                        <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
-                                        {
-                                            data.map((payer) => (
+                                                <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
+                                                {
+                                                    data.map((payer) => (
 
-                                                <option value="name">{payer.type}</option>
+                                                        <option value="name">{payer.type}</option>
 
-                                            ))}
-                                    </select>
+                                                    ))}
+                                            </select>
 
 
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" >Submit</button>
-                                    <button type="button" class="btn btn-danger">Update</button>
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" >Submit</button>
+                                            <button type="button" class="btn btn-danger">Update</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                        </div>
 
-                            </form>
+                                    </Form>
+                                )}
+                            </Formik>
+
                         </div>
 
                     </div>
