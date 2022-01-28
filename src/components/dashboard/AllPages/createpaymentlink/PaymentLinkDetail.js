@@ -63,6 +63,9 @@ const PaymentLinkDetail = () => {
         .catch(err => {  
           console.log(err)
         });
+
+
+
         
     }
 
@@ -259,6 +262,7 @@ const PaymentLinkDetail = () => {
            <option value="70">300</option>
            <option value="70">400</option>
            <option value="70">500</option>
+           
        </select>
        <table  style={{ position: 'absolute', top: 340, left: 20, width:900}} class='table'  >
  
