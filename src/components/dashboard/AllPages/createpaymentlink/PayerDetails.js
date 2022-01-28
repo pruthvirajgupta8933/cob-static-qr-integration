@@ -14,11 +14,10 @@ const PayerDetails = () => {
         customer_type: ""
     }
     const { user } = useSelector((state) => state.auth);
-    const [data, setData] = React.useState([initialState])
+    const [data, setData] = React.useState([])
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
     const { clientCode } = clientMerchantDetailsList[0];
     console.log(clientMerchantDetailsList);
-    //console.log(clientCode)
 
 
 
@@ -26,16 +25,13 @@ const PayerDetails = () => {
 
 
     const getFileName = async () => {
-        // console.log(clientCode,'hello')
         await axios(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)  //MPSE1
             .then(res => {
-            
-                console.log(res)
+                console.log(res.data)
                 setData(res.data);
             })
             .catch(err => {
                 console.log(err)
-                
             });
 
     }
@@ -45,30 +41,6 @@ const PayerDetails = () => {
     React.useEffect(() => {
         getFileName();
     }, []);
-
-
-   const onClick= async()=>{
-    
-        const response = await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers')
-       
-           
-           
-   
-     
-       .then((response) => {  
-        console.warn(response);
-      setData(response.data);
-           
-         console.log(JSON.stringify(response.data));
-       })
-       .catch((error) => { 
-         console.log(error);
-       }
-
-       )}
-       const submitHandler={
-
-       }
 
 
 
@@ -89,7 +61,7 @@ const PayerDetails = () => {
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form  onSubmit={submitHandler}> 
+                            <form>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Name of Payer:</label>
                                     <input type="text" placeholder="Enter Name of Payer" class="form-control" id="recipient-name" />
@@ -121,15 +93,14 @@ const PayerDetails = () => {
 
 
                                 </div>
-                                <div class="modal-footer">
-                            <button  onClick={onClick}  type="button" class="btn btn-primary" >Submit</button>
-                            <button type="button" class="btn btn-danger">Update</button>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                        </div>
 
                             </form>
                         </div>
-                       
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" >Add user</button>
+                            <button type="button" class="btn btn-danger">Send message</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -167,9 +138,7 @@ const PayerDetails = () => {
             </table>
 
  */}
-           <div class="full-screen-scroller">
-
-            <table data-spy="scroll"  data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 450, left: 300, width: 800, height:200}}>
+            <table class="table table-striped" style={{ position: 'absolute', top: 450, left: 300, width: 800 }}>
                 <thead>
                     <tr>
                         <th scope='col'>Pair Name</th>
@@ -178,7 +147,6 @@ const PayerDetails = () => {
                         <th scope='col'>Payer  Category</th>
                         <th scope='col'>Edit</th>
                         <th scope='col'>Delete</th>
-                
                         <th scope='col'>Action</th>
                     </tr>
                 </thead>
@@ -187,9 +155,9 @@ const PayerDetails = () => {
                          {data.map((user) => ( 
                             <tr>
                                 <td>{user.name}</td>
-                                <td>{user.phone_number}</td>
-                                <td>{user.email}</td>
-                                <td>{user.customer_type}</td>
+                                <td>8920885489</td>
+                                <td>rahul.singh@srslive.in</td>
+                                <td>customer</td>
                                 <td>
                                     <button class="btn bhuvi btn-primary mt-2 "  >Edit</button>
 
@@ -205,8 +173,6 @@ const PayerDetails = () => {
                 </tbody>
             </table>
         </div>
-        </div>
-       
 
     )
 };
