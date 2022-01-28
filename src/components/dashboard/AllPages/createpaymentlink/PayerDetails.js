@@ -3,8 +3,16 @@ import React from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { TextField } from '@material-ui/core'
+import * as Yup from 'yup'
 
 
+const initialValues = {
+    name: "",
+    email: "",
+    phone_number: ""
+}
 
 const PayerDetails = () => {
     const initialState = {
@@ -67,11 +75,11 @@ const PayerDetails = () => {
 
 
 
-                                    {/* <label for="recipient-name"  class="col-form-label">Payer Category:</label>
+                                            {/* <label for="recipient-name"  class="col-form-label">Payer Category:</label>
             <input type="text" placeholder='Select your payer category' class="form-control" id="recipient-name"/> */}
 
-                                    <label for="recipient-name" class="col-form-label">Payer Category:</label><br></br>
-                                    <select className='selct' >
+                                            <label for="recipient-name" class="col-form-label">Payer Category:</label><br></br>
+                                            <select className='selct' >
 
                                         <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
                                         <option type="text" class="form-control" id="recipient-name"  >Customer</option>
@@ -84,8 +92,7 @@ const PayerDetails = () => {
 
 
                                 </div>
-
-                            </form>
+                                </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" >Add user</button>
