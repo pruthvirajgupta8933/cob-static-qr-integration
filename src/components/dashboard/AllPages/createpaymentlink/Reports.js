@@ -62,16 +62,18 @@ const getSearchTerm  = (e) => {
   return <div>
       
       <div>
+        <div>
       <h3><b>Reports</b></h3>
       <p>Total Records : 8</p>
-
+      </div>
+       
+       
       <input type="text" placeholder="Search Here" value={searchText} style={{ width: 500 }}  />
       </div>
       
-      <div  style={{ position: 'absolute', top: 250, left: 700 }}>
-      <h4>Count per page</h4>
-      </div>
-      <select style={{ position: 'absolute', top: 250, left: 820, width: 1100 }}>
+      <div>
+      <h4 style={{marginLeft:650 , position: 'relative', top: -25 }} >Count per page</h4>
+       <select style={{marginLeft:800 , position: 'relative', top: -55 , width: 150}}>
            <option value="10">10</option>
            <option value="20">25</option>
            <option value="30">50</option>
@@ -81,8 +83,8 @@ const getSearchTerm  = (e) => {
            <option value="70">400</option>
            <option value="70">500</option>
        </select>
-
-       <table  className= "tables">
+      </div>
+       <table class='table'>
  
  <tr>
    <th>Name</th>

@@ -68,8 +68,6 @@ const PaymentLinkDetail = () => {
 
     const getDrop = async (e) => { 
 
-       
-
       await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)  
     .then(res => {     
       setDrop(res.data);  

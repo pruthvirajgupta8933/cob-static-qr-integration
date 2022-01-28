@@ -56,7 +56,7 @@ var staticClientList = [
 
 const login = (username, password) => {
   return axios
-    .post("http://18.216.47.58:8080/auth-service/auth/login", {
+    .post("https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin ", {
       clientUserId:username,
       userPassword:password,
     })
