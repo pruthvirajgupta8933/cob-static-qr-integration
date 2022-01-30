@@ -2,6 +2,7 @@ import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashboardSlice";
+import { Link } from 'react-router-dom';
 
 const Subsciption = () => {
   const [subscriptionDetails, setSubscriptionDetails] = useState(false);
@@ -16,7 +17,7 @@ const Subsciption = () => {
  const dispatch = useDispatch();
 
  const getSubscriptionService = async () => {  
-    await axios.get('http://18.216.47.58:8081/client-subscription-service/fetchAppAndPlan')  
+    await axios.get('https://cobtestapi.sabpaisa.in/client-subscription-service/fetchAppAndPlan')  
     .then(res => {  
       setSubscriptionData(res.data);
     })  
@@ -87,7 +88,7 @@ return (
               <p className="card-text">{s.planMaster[0].planDescription}</p>
             </div>
             <div class="container">
-                <button type="button" style={{ padding: "0", top: "155px" }} className="btn btn-warning">Read More</button>
+                <a target="blank" href="https://sabpaisa.in/payout/"  style={{ padding: "0", top: "155px" }} className="btn btn-warning">Read More</a>
                 <button type="button" style={{ top: "200px" }} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={handleSubscribe}>subscribe</button>                
             </div>
           </div>

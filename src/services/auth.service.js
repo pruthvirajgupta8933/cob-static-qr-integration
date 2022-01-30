@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/auth/";
 
-const SIGNUP_URL = "http://18.216.47.58:8080/auth-service/auth/";
+const SIGNUP_URL = "https://cobtest.sabpaisa.in/auth-service/auth/";
 
 const register = (firstName, lastName, mobileNumber, email, password) => {
   return axios.post(SIGNUP_URL + "signup", {
@@ -23,7 +23,7 @@ const register = (firstName, lastName, mobileNumber, email, password) => {
 };
 
 // login old url : https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin 
-// login new url : http://18.216.47.58:8080/auth-service/auth/login
+// login new url : https://cobtest.sabpaisa.in/auth-service/auth/login
 
 var staticClientList = [
   {
@@ -54,7 +54,7 @@ var staticClientList = [
 
 const login = (username, password) => {
   return axios
-    .post("https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin", {
+    .post("https://cobtest.sabpaisa.in/auth-service/auth/login", {
       clientUserId:username,
       userPassword:password,
     })

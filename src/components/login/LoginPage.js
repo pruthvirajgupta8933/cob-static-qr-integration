@@ -20,7 +20,7 @@ const INITIAL_FORM_STATE = {
 
 const FORM_VALIDATION = Yup.object().shape({
   clientUserId: Yup.string().required("Required"),
-  userPassword: Yup.string().min(8, "Password minimum length should be 8").required('Password is required')
+  userPassword: Yup.string().min(6, "Password minimum length should be 6").required('Password is required')
 });
 
 
