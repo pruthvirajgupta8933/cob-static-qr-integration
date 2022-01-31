@@ -1,60 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
-import { TextField } from '@material-ui/core'
 import * as Yup from 'yup'
-
-
 const initialValues = {
     name: "",
     email: "",
     phone_number: ""
 }
-
-
 const PayerDetails = () => {
+
+
+
     const [item, setItem] = useState({
         name: "",
         email: "",
         phone_number: "",
-        customer_type: ""
+        customer_type_id: ""
     });
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
         phone_number: Yup.string().required("Required"),
         email: Yup.string().email("Enter valid email").required("Required")
-
-
     })
-
-
-    const { name, email, phone_number } = item;
+    const { name, email, phone_number, customer_type_id } = item;
     const { user } = useSelector((state) => state.auth);
     const [data, setData] = React.useState([])
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
     const { clientCode } = clientMerchantDetailsList[0];
-    console.log(clientMerchantDetailsList);
+    // console.log(clientMerchantDetailsList);
     //console.log(clientCode)
-
-
     const onInputChange = e => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
         setItem({ ...item, [e.target.name]: e.target.value })
     };
 
-
-
-
-
-
+    useEffect(() => {
+        loadUser();
+    }, []);
+  
+    const loadUser = async () => {
+        const result = await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)
+        const data = result.data;
+        // console.log(result.data);              
+        setItem(data);
+    }
     const getFileName = async () => {
         // console.log(clientCode,'hello')
         await axios(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)  //MPSE1
             .then(res => {
-
-                console.log(res)
+                // console.log(res)
                 setData(res.data);
             })
             .catch(err => {
@@ -63,18 +59,10 @@ const PayerDetails = () => {
             });
 
     }
-
-
-
     React.useEffect(() => {
         getFileName();
     }, []);
-
-
     const getDrop = async (e) => {
-
-
-
         await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes`)
             .then(res => {
                 setData(res.data);
@@ -88,60 +76,46 @@ const PayerDetails = () => {
     React.useEffect(() => {
         getDrop();
     }, []);
-
-
-
-
-
-
-
-
-
-
-    //    const onSubmit= async()=>{
-
-    //         const response = await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers')
-
-
-
-
-
-    //        .then((response) => {  
-    //         console.warn(response);
-    //       setItem(response.data);
-
-    //          console.log(JSON.stringify(response.data));
-    //        })
-    //        .catch((error) => { 
-    //          console.log(error);
-    //        }
-
-    //        )}
-    //        const submitHandler={
-
-    //        }
     const onSubmit = async e => {
         e.preventDefault();
-        await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers', item);
-        console.log(item)
+        console.log(item);
+        const res = await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers', {
+            name: item.name,
+            email: item.email,
+            phone_number: item.phone_number,
+            client_code: clientCode,
+            customer_type_id: item.customer_type_id
+        });
+
+        console.log(res)
+.then((res) => {
+                 console.log(JSON.stringify(res.data))
+             })
+
+        setItem([])
+
+
+
 
     };
+const  handleClick=(id)=> {
+    //console.log('this is harry');
+    //console.log(id);
+            data.filter((data)=>{
+                if(data.id === id) {console.log(data);}
+            })
 
-
-
-    // const data = res.json(
-
-
-
+        
+        
+    
+  }
 
 
     return (
         <div>
-            <h1 className='bholu'>Create Payment Link</h1>
-
             <h3 className='sample'>Payer Details</h3>
             {/* <button type="button" className='btn' class="btn btn-primary">Add Single Payer</button> */}
-            <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" >Add Single Payer</button>
+            <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-157px', marginTop: '-70' }} >Add Single Payer</button>
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -153,38 +127,44 @@ const PayerDetails = () => {
                         </div>
                         <div class="modal-body">
                             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-                                 {(props) => (
-                                    <Form >
+                                {(props) => (
+                                    <Form onSubmit={e => onSubmit(e)} >
                                         <div class="form-group">
                                             <label for="recipient-name" class="col-form-label">Name of Payer:</label>
-                                            <Field as={TextField} fullWidth name="name" value={name} onChange={e => onInputChange(e)} helperText={<ErrorMessage name="name" />}
+                                            <Field name="name" value={name} onChange={e => onInputChange(e)}
                                                 placeholder="Enter Name of Payer" class="form-control" id="recipient-name" />
-
-
+                                            <ErrorMessage name="name">
+                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                            </ErrorMessage>
                                             <label for="recipient-name" class="col-form-label">Mobile No.:</label>
-                                            <Field as={TextField} fullWidth name="phone_number"
+                                            <Field name="phone_number"
                                                 value={phone_number}
                                                 onChange={e => onInputChange(e)} helperText={<ErrorMessage name="phone_number" />} placeholder='Enter Mobile No.' class="form-control" id="recipient-name" />
-
+                                            <ErrorMessage name="phone_number">
+                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                            </ErrorMessage>
 
                                             <label for="recipient-name" class="col-form-label">Email ID:</label>
-                                            <Field as={TextField} fullWidth name="email"
+                                            <Field name="email"
                                                 value={email}
-                                                onChange={e => onInputChange(e)} helperText={<ErrorMessage name="email" />} placeholder='Enter Email ID' class="form-control" id="recipient-name" />
+                                                onChange={e => onInputChange(e)} placeholder='Enter Email ID' class="form-control" id="recipient-name" />
 
-
+                                            <ErrorMessage name="email">
+                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                            </ErrorMessage>
 
                                             {/* <label for="recipient-name"  class="col-form-label">Payer Category:</label>
             <input type="text" placeholder='Select your payer category' class="form-control" id="recipient-name"/> */}
 
-                                            <label for="recipient-name" class="col-form-label">Payer Category:</label><br></br>
-                                            <select className='selct' >
-
+                                            <label for="recipient-name" class="col-form-label">Payer Category:</label>
+                                            <select className='selct' name='customer_type_id'
+                                                onChange={(e) => onInputChange(e)} value={customer_type_id}
+                                            >
                                                 <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
                                                 {
                                                     data.map((payer) => (
 
-                                                        <option value="name">{payer.type}</option>
+                                                        <option value={payer.id}>{payer.type}</option>
 
                                                     ))}
                                             </select>
@@ -192,7 +172,7 @@ const PayerDetails = () => {
 
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" >Submit</button>
+                                            <button type="submit" class="btn btn-primary"  >Submit</button>
                                             <button type="button" class="btn btn-danger">Update</button>
                                             <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                         </div>
@@ -208,9 +188,9 @@ const PayerDetails = () => {
             </div>
 
             <p className='para'>Total Records: 8</p>
-            <input type="text" placeholder="Search Here" style={{ position: 'absolute', top: 370, left: 300, width: 700 }} />
-            <h3 style={{ position: 'absolute', top: 370, left: 1150 }}>Count per page</h3>
-            <select style={{ position: 'absolute', top: 370, left: 1300, width: 100 }}>
+            <input type="text" placeholder="Search Here" style={{ position: 'absolute', top: 370, left: 124, width: 700 }} />
+            <h3 style={{ position: 'absolute', top: 370, left: 900 }}>Count per page</h3>
+            <select style={{ position: 'absolute', top: 370, left: 1070, width: 100 }}>
                 <option value="10">10</option>
                 <option value="20">25</option>
                 <option value="30">50</option>
@@ -242,10 +222,10 @@ const PayerDetails = () => {
  */}
             <div class="full-screen-scroller">
 
-                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 450, left: 300, width: 800, height: 200 }}>
+                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 450, left: 124, width: 800, height: 200 }}>
                     <thead>
                         <tr>
-                            <th scope='col'>Pair Name</th>
+                            <th scope='col'>Name of Payer</th>
                             <th scope='col'>Mobile No.</th>
                             <th scope='col'>Email ID</th>
                             <th scope='col'>Payer  Category</th>
@@ -264,7 +244,63 @@ const PayerDetails = () => {
                                 <td>{user.email}</td>
                                 <td>{user.customer_type}</td>
                                 <td>
-                                    <button class="btn bhuvi btn-primary mt-2 "  >Edit</button>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)}    >Edit</button>
+                                    <div class="modal fade" id="web" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <Formik>
+                                                    <Form>
+                                                    <div class="form-group">
+                                            <label for="recipient-name" class="col-form-label">Name of Payer:</label>
+                                            <Field name="name"  
+                                               value={name} onChange={e => onInputChange(e)}  placeholder="Enter Name of Payer" class="form-control" id="recipient-name" />
+                                                
+                                                
+                                                <label for="recipient-name" class="col-form-label">Mobile No.:</label>
+                                            <Field name="phone_number"
+                                                
+                                                value={phone_number} onChange={e => onInputChange(e)} placeholder='Enter Mobile No.' class="form-control" id="recipient-name" />
+                                                 
+                                                 <label for="recipient-name" class="col-form-label">Email ID:</label>
+                                            <Field name="email"
+                                                
+                                                value={email} onChange={e => onInputChange(e)} placeholder='Enter Email ID' class="form-control" id="recipient-name" />
+                                                 
+                                            <label for="recipient-name" class="col-form-label">Payer Category:</label><br></br>
+                                            <select className='selct' name='customer_type_id'
+                                                onChange={(e) => onInputChange(e)} value={customer_type_id}
+                                            >
+                                                <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
+                                                {
+                                                    data.map((payer) => (
+
+                                                        <option value={payer.id}>{payer.type}</option>
+
+                                                    ))}
+                                            </select>
+
+   
+
+</div>  
+                                                    </Form>
+                                                    </Formik>
+                                                   
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary" >Submit</button>
+                                                    <button type="button" class="btn btn-danger">Update</button>
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>     </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                 </td>
                                 <td>
