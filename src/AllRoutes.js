@@ -4,7 +4,7 @@ import {
     Switch,
     Route,
     Redirect ,
-    useHistory
+    useHistory 
   } from "react-router-dom";
 import Dashboard from './components/dashboard/Dashboard';
 import Login from './components/login/Login';
@@ -50,7 +50,7 @@ function AllRoutes(){
                 <ForgetPassword />
               </Route>
 
-              <Route exact path="/emailverification">
+              <Route exact path="/emailverification/:loginId">
                 <EmailVerification />
               </Route>
              

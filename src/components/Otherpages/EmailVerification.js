@@ -1,39 +1,49 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
+import React, { useEffect ,useState} from 'react';
+import { Link ,useParams} from 'react-router-dom';
+import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
+import axios from 'axios';
+
 
 const EmailVerification = () => {
+  const {loginId} =  useParams();
+  const [data,setData]=useState(false)
+  const onSubmit=async()=>{
+     await axios.get(`https://cobtest.sabpaisa.in/auth-service/auth/emailVerify/${loginId}`)
+    .then((response) => {
+      setData(response);
+    })
+    .catch((e) => {
+      console.log(e);
+    })
     
+  }
 
 
-
+  useEffect(() => {
+    onSubmit();
+  
+  }, []);
+  
   return (
   <div>
-
-<div class="card" style={{ width: 600, height: 400 , backgroundColor: '#999999'}}>
-
-
-
-  <div class="card-body">
-  <div>
-  <img class="card-img-top"  src={sabpaisalogo} alt="sabpaisa" style={{position: 'absolute', height: '34px' , width: '110px'}} />
- 
+<div className="card text-center" style={{"width":"40rem"}}>
+<div className="card-header" style={{"background":"black"}}>
+    <img  src={sabpaisalogo} alt="logo" width={"90px"} height={"25px"}/>
   </div>
-  
+  <div className="card-header" style={{"fontSize":"44px","fontWeight":"700"}}>
+    Account {data?"Activated":"is not activate"}
+  </div>
+  <div className="card-body">
+    <p className="card-text" style={{"fontSize":"24px"}}>
+        <i class="fa fa-user" aria-hidden="true" style={{"color":data?"greenyellow":"#000"}}></i>
+        <i class="fa fa-check" aria-hidden="true" style={{"color":data?"greenyellow":"#ff3030"}}></i> 
+        </p>
 
-<h1 class="display-4" style={{ color: 'white'  }} >Email Verification</h1>
-
-<br />
-
-     <div style={{ color: 'white' , position: 'absolute' , top: 300}} >
-     <h3>Thanks for Sign Up !</h3>
+    <p className="card-text" style={{"fontSize":"18px"}}>{data?"Thank you, your email has been verifed. Your account is now active. Please use the link below to login to your account.":"Please wait... !"}</p>
+    <Link to="/" className="btn btn-primary">LOGIN TO YOUR ACCOUNT</Link>
+  </div>
  
-
-<Link role="link" to="/login-page"> <button type="button"  class="btn btn-primary">Back To Login</button></Link>
 </div>
-     
-  </div>
-  </div>
   </div>
   )
 };
