@@ -64,13 +64,12 @@ const Subsciption = () => {
     console.log(err)
   });
   };
+
+  useEffect(() => {
+    getSubscriptionService();
+  },[])
   
-
-  console.log("Suscription Charges", subscriptionPlanData);
-
-    useEffect(() => {
-        getSubscriptionService();
-    },[])
+  console.log("Suscription Charges", subscriptionPlanData);    
 
   const handleSubscribe = () => {
     setSubscriptionDetails(true);
@@ -80,7 +79,8 @@ return (
     <>
     <h1 className="right_side_heading">Services</h1>
     {subscriptionPlanData.map((s) => 
-        <div className="row">
+        <div className="row row-cols-1 row-cols-md-2" style={{ marginLeft: "0px" , marginRight: "50px" }}>
+        <div class="col mb-4">  
         <div style={{ width: "200px" }}>
           <div className="card" style={{ background: "aquamarine" }}>
             <div className="card-body" style={{ height: "200px" }}>
@@ -93,17 +93,12 @@ return (
             </div>
           </div>
         </div>
-      </div>
-    )
-    }
-
-
-    {subscriptionDetails &&
+        {subscriptionDetails &&
         <div class="modal fade" id="exampleModal" style={{ top: "25%" }} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Welcome !</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Welcome {s.applicationName} !</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -111,12 +106,10 @@ return (
             <div class="modal-body">
             <table className="tables" cellpadding="10" cellspacing="10" width="100%">
                 <tbody>
-                    {subscriptionPlanData.map((sp) =>
                     <><>
-                        {sp.planMaster[0].planCode === "WEEK" ? (<th><input type="checkbox" id="vehicle2" name="vehicle2" value="Weekly" />  Weekly Plan</th> ) :
-                            (<th><input type="checkbox" id="vehicle2" name="vehicle2" value="Yearly" /> {sp.planMaster[0].planCode === "YEARLY" ? "Yearly Plan" : ""}</th>)}
+                            <th><input type="checkbox" id="vehicle2" name="vehicle2" value="Yearly" /> {s.planMaster[0].planType}</th>
                             </><tr>
-                                <td>Rs - {sp.planMaster[0].planPrice}</td>
+                                <td>Rs - {s.planMaster[0].planPrice}</td>
                             </tr><tr>
                                 <td colspan="2">
                                     <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
@@ -126,17 +119,22 @@ return (
                                 <td colspan="2"><a href="successsubscription.html" className="Click-here ant-btn ant-btn-primary float-right" onClick={emandate}>Create e-mandate</a></td>
                             </tr></>
                             
-                    )}
-                        </tbody>
-                </table>
+                </tbody>
+            </table>
             </div>
             <div class="modal-footer">
             </div>
           </div>
         </div>
-      </div>
-        
+      )}
+      </div>        
     }
+        </div>
+      </div>
+    )
+  }
+
+    
     </>    
 );
 }
