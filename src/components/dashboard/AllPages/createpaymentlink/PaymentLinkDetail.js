@@ -7,9 +7,8 @@ const PaymentLinkDetail = () => {
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredPurpose, setEnteredPurpose] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
-  const [hours, setHours] = useState('');
-  const [minutes, setMinutes] = useState('');
-
+  const [hours, setHours] = useState("");
+  const [minutes, setMinutes] = useState("");
 
   const initialState = {
     customer_phoneNumber: "",
@@ -41,8 +40,9 @@ const PaymentLinkDetail = () => {
   var [showFilterData, SetShowFilterData] = useState([]);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  const { clientCode, clientId } = clientMerchantDetailsList[0];
+  const { clientCode , id } = clientMerchantDetailsList[0];
   console.log("clientCode", clientCode);
+
 
   // console.log('https://paybylink.sabpaisa.in/paymentlink/getLinks/'+ clientCode );
 
@@ -68,6 +68,8 @@ const PaymentLinkDetail = () => {
       .catch((err) => {
         console.log(err);
       });
+
+      console.log(data);
   };
 
   useEffect(() => {
@@ -88,17 +90,18 @@ const PaymentLinkDetail = () => {
     }
   };
 
-  const dateFormat = (timestamp) => {
-    var date = new Date(timestamp);
+  const dateFormat = (enteredDate) => {
     return (
-      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+      enteredDate+'%20'+hours+':'+minutes
     );
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    const addlink = {
+    console.log(selectedPayer)
+
+    const linkdata = {
       Customer_id: selectedPayer,
       Amount: enteredAmount,
       Remarks: enteredPurpose,
@@ -110,32 +113,39 @@ const PaymentLinkDetail = () => {
       isMerchantChargeBearer: true,
     };
 
-    console.log("AddLink", addlink);
+    console.log(dateFormat(enteredDate));
 
     setSelectedPayer("");
     setEnteredAmount("");
     setEnteredDate("");
     setEnteredPurpose("");
+    setHours("");
+    setMinutes("");
 
     await axios
-      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink`, {
+      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${selectedPayer}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=LPSD1&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=false`, {
+
         Customer_id: selectedPayer,
         Remarks: enteredPurpose,
-        Amount: enteredAmount,
+        Amount: parseInt(enteredAmount),
         Client_Code: clientCode,
         name_visiblity: true,
         email_visibilty: true,
         phone_number_visibilty: true,
-        valid_to: enteredDate,
+        valid_to: dateFormat(enteredDate),
         isMerchantChargeBearer: true,
-      })
+        isPasswordProtected:false,
+       })
       .then((resp) => {
+        alert("Payment Link Created!")
         console.log(JSON.stringify(resp.data));
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  console.log(enteredDate);
 
   return (
     <div>
@@ -181,7 +191,7 @@ const PaymentLinkDetail = () => {
                 >
                   <option selected>Select Payer</option>
                   {drop.map((payer) => (
-                    <option>
+                    <option value={payer.id}>
                       {payer.name} - {payer.email}
                     </option>
                   ))}
@@ -226,9 +236,7 @@ const PaymentLinkDetail = () => {
                     <input
                       type="date"
                       className="ant-input"
-                      value={enteredDate}
-                      min="2021-01-01"
-                      max="2022-12-31"
+                      value={enteredDate}                     
                       onChange={(e) => setEnteredDate(e.target.value)}
                       placeholder="From Date"
                     />
@@ -236,7 +244,7 @@ const PaymentLinkDetail = () => {
                   <div class="col">
                     <label>Hours</label>
                     <br />
-                    <select style={{ width: 80 }}  onChange={(e) => setHours(e.target.value)}>
+                    <select style={{ width: 80 }}  value= {hours} onChange={(e) => setHours(e.target.value)}>
                       <option selected>Hours</option>
                       <option value="01">01</option>
                       <option value="02">02</option>
@@ -267,7 +275,7 @@ const PaymentLinkDetail = () => {
                   <div class="col">
                     <label>Minutes</label>
                     <br />
-                    <select style={{ width: 100 }} onChange={(e) => setMinutes(e.target.value)}>
+                    <select style={{ width: 100 }} value = {minutes} onChange={(e) => setMinutes(e.target.value)}>
                       <option selected>Minutes</option>
                       <option value="01">01</option>
                       <option value="02">02</option>
