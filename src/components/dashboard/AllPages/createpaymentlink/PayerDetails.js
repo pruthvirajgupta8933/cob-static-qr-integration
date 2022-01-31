@@ -311,6 +311,7 @@ const  handleClick=(id)=> {
                 </tbody>
             </table>
         </div>
+        </div>
 
     )
 };
