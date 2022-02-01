@@ -20,41 +20,63 @@ const Subsciption = () => {
     await axios.get('https://cobtestapi.sabpaisa.in/client-subscription-service/fetchAppAndPlan')  
     .then(res => {  
       setSubscriptionData(res.data);
+      localStorage.setItem("subscriptionData", JSON.stringify(res.data));
     })  
     .catch(err => {  
       console.log(err)
     });  
   }
 
+  const userDetails = JSON.parse(localStorage?.getItem("user"));
+
+  const subsData = JSON.parse(localStorage?.getItem("subscriptionData"));
+
+  const d = new Date();
+  let formattedDate = d.toISOString();
+
+  // switch(planDate){
+  //   case week:
+  //     let planEndDateWeek = d.setDate(d.getDate() + 7);
+  //     planEndDateWeek = new Date(planEndDateWeek).toISOString();
+  //     break;
+  //   case yearly:
+  //     let planEndDateYear = d.setDate(d.getDate() + 365);
+  //     planEndDateYear = new Date(planEndDateYear).toISOString();
+  //     break;
+  //   default:    
+  // }
+  let sevenDaysFromNow = d.setDate(d.getDate() + 7);
+  sevenDaysFromNow = new Date(sevenDaysFromNow).toISOString();
+
   const emandate = () => {
     return axios
-      .post("https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin", {
+      .post("https://subscription.sabpaisa.in/subscription/mandateRegistration", {
         "authenticationMode": "Netbanking",
-        "clientCode":3,
-        "clientRegistrationId":"7111302244",
-        "consumerReferenceNumber":"232",
+        "clientCode": 70,
+        "clientRegistrationId": Math.floor(Math.random() * 90000) + 10000,
+        "consumerReferenceNumber": Math.floor(Math.random() * 92000) + 10000,
         "emiamount":"",
         "frequency":"ADHO",
         "mandateCategory":"D001",
-        "mandateEndDate": "",
+        "mandateEndDate": sevenDaysFromNow,
         "mandateMaxAmount":"12.00",
         "mandatePurpose": "Destination Bank Mandate",
-        "mandateStartDate":"2021-11-11T17:34:29.033Z",
+        "mandateStartDate": formattedDate,
         "mandateType":"ONLINE",
-        "npciPaymentBankCode":"CNRB",
+        "npciPaymentBankCode":"BARB",
         "panNo": "",
-        "payerAccountNumber":"123131313123",
+        "payerAccountNumber":"62300100005139",
         "payerAccountType":"SAVINGS",
-        "payerBank":"CNRB",
-        "payerBankIfscCode":"CNRB0002783",
-        "payerEmail":"dhananjayaduttmishra@gmail.com",
-        "payerMobile":"+91-9899115728",
-        "payerName":"MrDhananjaya",
+        "payerBank":"BARB",
+        "payerBankIfscCode":"BARB0VJRAPH",
+        "payerEmail": userDetails.clientEmail,
+        "payerMobile": userDetails.clientMobileNo,
+        "payerName": userDetails.payerName,
         "payerUtilitityCode":"NACH00000000022341",
         "requestType":"REGSTRN",
-        "schemeReferenceNumber":"34234",
+        "schemeReferenceNumber":Math.floor(Math.random() * 94000) + 10000,
         "telePhone": "",
-        "untilCancelled":true,
+        "untilCancelled":false,
         "userType":"merchant",
   })
   .then(res => {  
