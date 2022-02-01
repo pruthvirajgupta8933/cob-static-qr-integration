@@ -149,6 +149,12 @@ const PaymentLinkDetail = () => {
       });
   };
 
+
+  // let options = [];
+  // for (let i =0; i < 24; i++) {
+  //   options.push(<option>{i}</option>)
+  // }
+
   return (
     <div>
       <button
@@ -224,7 +230,7 @@ const PaymentLinkDetail = () => {
                       Payment to be Collected (INR)
                     </label>
                     <Field
-                      type="Text"
+                      type="number"
                       name="Amount"
                       autoComplete="off"
                       value={enteredAmount}
@@ -301,6 +307,7 @@ const PaymentLinkDetail = () => {
                       <option value="21">21</option>
                       <option value="22">22</option>
                       <option value="23">23</option>
+               
                     </Field>
                     {<ErrorMessage name="hours">
                                                 {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
