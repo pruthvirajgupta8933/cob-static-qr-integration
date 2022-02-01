@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+
+// const initialValues = {
+//   Remarks: "",
+//   Amount: "",
+//   payer: ""
+// }
+
 
 const PaymentLinkDetail = () => {
   const [selectedPayer, setSelectedPayer] = useState("Select Payer");
@@ -10,28 +19,10 @@ const PaymentLinkDetail = () => {
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
 
-  const initialState = {
-    customer_phoneNumber: "",
-    amount: "",
-    customer_type: "",
-    customer_email: "",
-    created_at: "",
-    customer_id: "",
-    customer_name: "",
-    full_link: "",
-  };
 
-  // const [item, setItem] = useState({
-  //   Customer_id: "",
-  //   Remarks: "",
-  //   Amount: "",
-  //   Client_Code: "LPSD1",
-  //   name_visiblity: true,
-  //   email_visibilty: true,
-  //   phone_number_visibilty: true,
-  //   valid_to: "",
-  //   isMerchantChargeBearer: true,
-  // });
+
+
+
 
   const [data, setData] = useState([]);
   const [drop, setDrop] = useState([]);
@@ -40,7 +31,7 @@ const PaymentLinkDetail = () => {
   var [showFilterData, SetShowFilterData] = useState([]);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  const { clientCode , id } = clientMerchantDetailsList[0];
+  const { clientCode} = clientMerchantDetailsList[0];
   console.log("clientCode", clientCode);
 
 
@@ -96,12 +87,25 @@ const PaymentLinkDetail = () => {
     );
   };
 
+
+  const validationSchema = Yup.object().shape({
+    
+
+    Amount: Yup.string().required("Required!"),
+    Remarks: Yup.string().required("Required!"),
+    payer: Yup.string().required("Required!"),
+    date: Yup.string().required("Required!"),
+    hours: Yup.string().required("Required!"),
+    minutes: Yup.string().required("Required!"),
+    
+})
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
     console.log(selectedPayer)
 
-    const linkdata = {
+    const createlink = {
       Customer_id: selectedPayer,
       Amount: enteredAmount,
       Remarks: enteredPurpose,
@@ -113,7 +117,7 @@ const PaymentLinkDetail = () => {
       isMerchantChargeBearer: true,
     };
 
-    console.log(dateFormat(enteredDate));
+    console.log(createlink);
 
     setSelectedPayer("");
     setEnteredAmount("");
@@ -145,8 +149,6 @@ const PaymentLinkDetail = () => {
       });
   };
 
-  console.log(enteredDate);
-
   return (
     <div>
       <button
@@ -155,6 +157,7 @@ const PaymentLinkDetail = () => {
         data-toggle="modal"
         data-target="#exampleModal"
         data-whatever="@getbootstrap"
+        style={{marginTop: 5, marginLeft: 35}}
       >
         Create Payment Link
       </button>
@@ -183,8 +186,21 @@ const PaymentLinkDetail = () => {
               </button>
             </div>
             <div class="modal-body">
-              <form onSubmit={submitHandler}>
-                <select
+              <Formik initialValues={{
+          payer: '',
+          Remarks: '',
+          Amount: '',
+          date: '',
+          hours: '',
+          minutes: ''
+      }}
+       validationSchema={validationSchema}>
+          
+              
+             
+              <Form  onSubmit={submitHandler}>
+              
+                <Field component='select' name='payer'
                   value={selectedPayer}
                   onChange={(e) => setSelectedPayer(e.target.value)}
                   style={{ width: 470 }}
@@ -195,8 +211,11 @@ const PaymentLinkDetail = () => {
                       {payer.name} - {payer.email}
                     </option>
                   ))}
-                </select>
-
+                </Field>
+                {<ErrorMessage name="payer">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
+            
                 <br />
 
                 <div class="row">
@@ -204,8 +223,8 @@ const PaymentLinkDetail = () => {
                     <label for="exampleInputEmail1">
                       Payment to be Collected (INR)
                     </label>
-                    <input
-                      type="text"
+                    <Field
+                      type="Text"
                       name="Amount"
                       autoComplete="off"
                       value={enteredAmount}
@@ -213,12 +232,16 @@ const PaymentLinkDetail = () => {
                       class="form-control"
                       placeholder="Enter Payment Amount in (INR)"
                     />
+                    {<ErrorMessage name="Amount">
+                                                {msg => <p style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                   </div>
+                  <br/>
                   <div class="col">
                     <label for="exampleInputEmail1">
                       Purpose of Payement Collection
                     </label>
-                    <input
+                    <Field
                       type="text"
                       name="Remarks"
                       autoComplete="off"
@@ -227,24 +250,32 @@ const PaymentLinkDetail = () => {
                       class="form-control"
                       placeholder="Enter Purpose of Payement Collection"
                     />
+                    {<ErrorMessage name="Remarks">
+                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                            </ErrorMessage>}
                   </div>
                 </div>
+                <br/>
 
                 <div class="row">
                   <div class="col">
                     <label>Link Valid To Date</label>
-                    <input
+                    <Field
+                    name ='date'
                       type="date"
                       className="ant-input"
                       value={enteredDate}                     
                       onChange={(e) => setEnteredDate(e.target.value)}
                       placeholder="From Date"
                     />
+                     {<ErrorMessage name="date">
+                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                            </ErrorMessage>}
                   </div>
                   <div class="col">
                     <label>Hours</label>
                     <br />
-                    <select style={{ width: 80 }}  value= {hours} onChange={(e) => setHours(e.target.value)}>
+                    <Field component='select' style={{ width: 80 }}  name = 'hours' value= {hours} onChange={(e) => setHours(e.target.value)}>
                       <option selected>Hours</option>
                       <option value="01">01</option>
                       <option value="02">02</option>
@@ -270,12 +301,15 @@ const PaymentLinkDetail = () => {
                       <option value="21">21</option>
                       <option value="22">22</option>
                       <option value="23">23</option>
-                    </select>
+                    </Field>
+                    {<ErrorMessage name="hours">
+                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                            </ErrorMessage>}
                   </div>
                   <div class="col">
                     <label>Minutes</label>
                     <br />
-                    <select style={{ width: 100 }} value = {minutes} onChange={(e) => setMinutes(e.target.value)}>
+                    <Field component = 'select' style={{ width: 100 }} name= 'minutes' value = {minutes} onChange={(e) => setMinutes(e.target.value)}>
                       <option selected>Minutes</option>
                       <option value="01">01</option>
                       <option value="02">02</option>
@@ -301,7 +335,10 @@ const PaymentLinkDetail = () => {
                       <option value="21">21</option>
                       <option value="22">22</option>
                       <option value="23">23</option>
-                    </select>
+                    </Field>
+                    {<ErrorMessage name="minutes">
+                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                            </ErrorMessage>}
                   </div>
                 </div>
                 <div>
@@ -323,27 +360,32 @@ const PaymentLinkDetail = () => {
                     </button>
                   </div>
                 </div>
-              </form>
+              </Form>
+              
+               
+              
+              </Formik>
+
             </div>
           </div>
         </div>
       </div>
 
-      <p style={{ position: "absolute", top: 270, left: 50 }}>
+      <p style={{ position: "absolute", top: 230, left: 35 }}>
         Total Records: 8
       </p>
       <input
         type="text"
         placeholder="Search Here"
         value={searchText}
-        style={{ position: "absolute", top: 300, left: 30, width: 700 }}
+        style={{ position: "absolute", top: 260, left: 30, width: 700 }}
         onChange={getSearchTerm}
       />
 
-      <h4 style={{ position: "absolute", top: 300, left: 835 }}>
+      <h4 style={{ position: "absolute", top: 260, left: 835 }}>
         Count per page
       </h4>
-      <select style={{ position: "absolute", top: 300, left: 960, width: 100 }}>
+      <select style={{ position: "absolute", top: 260, left: 960, width: 100 }}>
         <option value="10">10</option>
         <option value="20">25</option>
         <option value="30">50</option>
@@ -354,7 +396,7 @@ const PaymentLinkDetail = () => {
         <option value="70">500</option>
       </select>
       <table
-        style={{ position: "absolute", top: 340, left: 20, width: 900 }}
+        style={{ position: "absolute", top: 320, left: 20, width: 900 }}
         class="table"
       >
         <tr>
