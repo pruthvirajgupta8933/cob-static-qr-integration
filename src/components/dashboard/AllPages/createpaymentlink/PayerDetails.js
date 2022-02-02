@@ -1,121 +1,172 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+//import Genratelink from './Genratelink';
+
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+import Genratelink from './Genratelink';
+import { Edituser } from './Edituser';
+
 const initialValues = {
     name: "",
     email: "",
     phone_number: ""
 }
+
+// const validationSchema = Yup.object().shape({
+    //     name: Yup.string().min(3, "It's too short").required("Required"),
+    //     phone_number: Yup.string().required("Required"),
+    //     email: Yup.string().email("Enter valid email").required("Required")
+    // })
+
 const PayerDetails = () => {
 
-
-
     const [item, setItem] = useState({
-        name: "",
-        email: "",
-        phone_number: "",
-        customer_type_id: ""
+        newName: "",
+        NewEmail: "",
+        NewPhoneNumber: "",
+        newCustomerTypeId: ""
     });
-    const validationSchema = Yup.object().shape({
-        name: Yup.string().min(3, "It's too short").required("Required"),
-        phone_number: Yup.string().required("Required"),
-        email: Yup.string().email("Enter valid email").required("Required")
-    })
-    const { name, email, phone_number, customer_type_id } = item;
+    
+    const { newName, NewEmail, NewPhoneNumber, newCustomerTypeId } = item;
+    const [name , setName ] = useState('');
+    const [myemail , setMyEmail]=useState('');
+    const [customerTypeId , setCustomerTypeId]=useState('');
+    const [phoneNumber , setPhoneNumber]=useState('');
+
     const { user } = useSelector((state) => state.auth);
-    const [data, setData] = React.useState([])
+    // const [formData, setFormData] = useState(initialValues)
+
+    const [data, setData] = useState([])
+    const [customerType,setCustomerType]= useState([]);
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
     const { clientCode } = clientMerchantDetailsList[0];
     // console.log(clientMerchantDetailsList);
     //console.log(clientCode)
-    const onInputChange = e => {
-        // console.log(e.target.value);
-        setItem({ ...item, [e.target.name]: e.target.value })
-    };
+    // const onInputChange = e => {
+    //     // console.log(e.target.value);
+    //     setItem({ ...item, [e.target.name]: e.target.value })
+    // };
 
-    useEffect(() => {
-        loadUser();
-    }, []);
-  
+
     const loadUser = async () => {
-        const result = await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)
-        const data = result.data;
-        // console.log(result.data);              
-        setItem(data);
-    }
-    const getFileName = async () => {
-        // console.log(clientCode,'hello')
-        await axios(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)  //MPSE1
-            .then(res => {
-                // console.log(res)
-                setData(res.data);
-            })
-            .catch(err => {
-                console.log(err)
+        const result = await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}` )
+        // const data = result.data;
+        // console.log(result.data);  
+        .then(res => {
+                  // console.log(res)
+                         setData(res.data);
+                    })
+                    .catch(err => {
+                        console.log(err)
+        
+                     })
 
-            });
 
     }
-    React.useEffect(() => {
-        getFileName();
-    }, []);
+    // const getFileName = async () => {
+    //     // console.log(clientCode,'hello')
+    //     await axios(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)  //MPSE1
+    //         .then(res => {
+    //             // console.log(res)
+    //             setData(res.data);
+    //         })
+    //         .catch(err => {
+    //             console.log(err)
+
+    //         });
+
+    // }
+    
     const getDrop = async (e) => {
         await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes`)
             .then(res => {
-                setData(res.data);
-
+                setCustomerType(res.data);
             })
             .catch(err => {
                 console.log(err)
             });
 
     }
-    React.useEffect(() => {
-        getDrop();
-    }, []);
     const onSubmit = async e => {
         e.preventDefault();
         console.log(item);
         const res = await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers', {
-            name: item.name,
-            email: item.email,
-            phone_number: item.phone_number,
+            name: name,
+            email:myemail,
+            phone_number: phoneNumber,
             client_code: clientCode,
-            customer_type_id: item.customer_type_id
+            customer_type_id: customerTypeId
         });
 
         console.log(res)
-.then((res) => {
-                 console.log(JSON.stringify(res.data))
-             })
+            .then((res) => {
+                console.log(JSON.stringify(res.data))
 
-        setItem([])
-
-
-
-
-    };
-const  handleClick=(id)=> {
-    //console.log('this is harry');
-    //console.log(id);
-            data.filter((data)=>{
-                if(data.id === id) {console.log(data);}
             })
 
-        
-        
-    
-  }
+        // setItem([])
+};
+const handleClick = (id) => {
 
+    data.filter((data) => {
+        if (data.id === id) {
+            console.log(data);
+            // setItem(
+            //     {
+            //         newName: item.newName,
+            //         NewEmail:item.NewEmail,
+            //         NewPhoneNumber:item.NewPhoneNumber,
+            //         newCustomerTypeId:item.newCustomerTypeId
+
+            //     }
+            // )
+
+            // Working on it
+        }
+})
+}
+
+
+
+        //console.log('this is harry');
+        //console.log(id);
+  
+ 
+    
+    const deleteUser = async id => {
+        // confirm("do you confirm to delete it");
+        var iscConfirm = window.confirm("Are you sure you want to delete it");
+        if(iscConfirm){
+            await axios.delete(`https://paybylink.sabpaisa.in/paymentlink/deleteCustomer?Client_Code=${clientCode}&Customer_id=${id}`);
+            loadUser();
+        }     
+    };
+    useEffect(() => {
+     loadUser();
+     getDrop();
+    }, []);
+    
+      
+    
+
+
+
+    // const genrateLinkFc=(id)=>{
+    //     console.log(id);
+    // }
+
+    console.log("data=",data);
 
     return (
         <div>
-            <h3 className='sample'>Payer Details</h3>
+            <Edituser items={item} />
+           <Genratelink />
+            
             {/* <button type="button" className='btn' class="btn btn-primary">Add Single Payer</button> */}
-            <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-157px', marginTop: '-70' }} >Add Single Payer</button>
+            <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-200px', marginTop: '-70' }} >Add Single Payer</button>
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -126,46 +177,45 @@ const  handleClick=(id)=> {
                             </button>
                         </div>
                         <div class="modal-body">
-                            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+                            <Formik 
+                            // initialValues={initialValues}
+                            //  validationSchema={validationSchema}
+                              onSubmit={onSubmit}>
                                 {(props) => (
                                     <Form onSubmit={e => onSubmit(e)} >
                                         <div class="form-group">
                                             <label for="recipient-name" class="col-form-label">Name of Payer:</label>
-                                            <Field name="name" value={name} onChange={e => onInputChange(e)}
-                                                placeholder="Enter Name of Payer" class="form-control" id="recipient-name" />
+                                            <Field name="name" value={name} onChange={e => setName(e.target.value)}
+                                                placeholder="Enter Name of Payer" class="form-control" id="pairname" />
                                             <ErrorMessage name="name">
                                                 {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                             </ErrorMessage>
                                             <label for="recipient-name" class="col-form-label">Mobile No.:</label>
                                             <Field name="phone_number"
-                                                value={phone_number}
-                                                onChange={e => onInputChange(e)} helperText={<ErrorMessage name="phone_number" />} placeholder='Enter Mobile No.' class="form-control" id="recipient-name" />
+                                                value={phoneNumber}
+                                                onChange={e => setPhoneNumber(e.target.value)} helperText={<ErrorMessage name="phone_number" />} placeholder='Enter Mobile No.' class="form-control" id="pairemail" />
                                             <ErrorMessage name="phone_number">
                                                 {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                             </ErrorMessage>
 
                                             <label for="recipient-name" class="col-form-label">Email ID:</label>
                                             <Field name="email"
-                                                value={email}
-                                                onChange={e => onInputChange(e)} placeholder='Enter Email ID' class="form-control" id="recipient-name" />
+                                                value={myemail}
+                                                onChange={e => setMyEmail(e.target.value)} placeholder='Enter Email ID' class="form-control" id="pairphn" />
 
                                             <ErrorMessage name="email">
                                                 {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                             </ErrorMessage>
 
-                                            {/* <label for="recipient-name"  class="col-form-label">Payer Category:</label>
-            <input type="text" placeholder='Select your payer category' class="form-control" id="recipient-name"/> */}
 
                                             <label for="recipient-name" class="col-form-label">Payer Category:</label>
                                             <select className='selct' name='customer_type_id'
-                                                onChange={(e) => onInputChange(e)} value={customer_type_id}
+                                                onChange={(e) => setCustomerTypeId(e.target.value)} value={customerTypeId}
                                             >
                                                 <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
                                                 {
-                                                    data.map((payer) => (
-
+                                                    customerType.map((payer) => (
                                                         <option value={payer.id}>{payer.type}</option>
-
                                                     ))}
                                             </select>
 
@@ -173,8 +223,8 @@ const  handleClick=(id)=> {
                                         </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary"  >Submit</button>
-                                            <button type="button" class="btn btn-danger">Update</button>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                            <button type="button" disabled class="btn btn-danger">Update</button>
+                                            <button type="button" disabled class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                         </div>
 
                                     </Form>
@@ -187,10 +237,10 @@ const  handleClick=(id)=> {
                 </div>
             </div>
 
-            <p className='para'>Total Records: 8</p>
-            <input type="text" placeholder="Search Here" style={{ position: 'absolute', top: 370, left: 124, width: 700 }} />
-            <h3 style={{ position: 'absolute', top: 370, left: 900 }}>Count per page</h3>
-            <select style={{ position: 'absolute', top: 370, left: 1070, width: 100 }}>
+            <p className='para'>Total Records: 5</p>
+            <input type="text" placeholder="Search Here" style={{ position: 'absolute', top: 320, left: 12, width: 700 }} />
+            <h3 style={{ position: 'absolute', top: 320, left: 800 }}>Count per page</h3>
+            <select style={{ position: 'absolute', top: 320, left: 930, width: 130 }}>
                 <option value="10">10</option>
                 <option value="20">25</option>
                 <option value="30">50</option>
@@ -200,29 +250,9 @@ const  handleClick=(id)=> {
                 <option value="70">400</option>
                 <option value="70">500</option>
             </select>
-
-            {/* <table style={{ position: 'absolute', top: 450, left: 300, width: 800 }}  > */}
-
-            {/* <tr>
-                    <th>Pair Name</th>
-                    <th >Mobile No.</th>
-                    <th >Email ID</th>
-                    <th >Payer  Category</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                    <th>Action</th>
-                </tr>
-                
-           
-                
-
-
-            </table>
-
- */}
             <div class="full-screen-scroller">
 
-                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 450, left: 124, width: 800, height: 200 }}>
+                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 380, left: 12, width: 800, height: 200 }}>
                     <thead>
                         <tr>
                             <th scope='col'>Name of Payer</th>
@@ -245,75 +275,38 @@ const  handleClick=(id)=> {
                                 <td>{user.customer_type}</td>
                                 <td>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)}    >Edit</button>
-                                    <div class="modal fade" id="web" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <Formik>
-                                                    <Form>
-                                                    <div class="form-group">
-                                            <label for="recipient-name" class="col-form-label">Name of Payer:</label>
-                                            <Field name="name"  
-                                               value={name} onChange={e => onInputChange(e)}  placeholder="Enter Name of Payer" class="form-control" id="recipient-name" />
-                                                
-                                                
-                                                <label for="recipient-name" class="col-form-label">Mobile No.:</label>
-                                            <Field name="phone_number"
-                                                
-                                                value={phone_number} onChange={e => onInputChange(e)} placeholder='Enter Mobile No.' class="form-control" id="recipient-name" />
-                                                 
-                                                 <label for="recipient-name" class="col-form-label">Email ID:</label>
-                                            <Field name="email"
-                                                
-                                                value={email} onChange={e => onInputChange(e)} placeholder='Enter Email ID' class="form-control" id="recipient-name" />
-                                                 
-                                            <label for="recipient-name" class="col-form-label">Payer Category:</label><br></br>
-                                            <select className='selct' name='customer_type_id'
-                                                onChange={(e) => onInputChange(e)} value={customer_type_id}
-                                            >
-                                                <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
-                                                {
-                                                    data.map((payer) => (
-
-                                                        <option value={payer.id}>{payer.type}</option>
-
-                                                    ))}
-                                            </select>
-
-   
-
-</div>  
-                                                    </Form>
-                                                    </Formik>
-                                                   
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary" >Submit</button>
-                                                    <button type="button" class="btn btn-danger">Update</button>
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>     </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary   mt-2"  >Delete</button>
+                                    <button class="btn btn-primary mt-2" onClick={() => deleteUser(user.id)}  >Delete</button>
                                 </td><td>
-                                    <button class="btn btn-primary   mt-2"  >Genrate Link</button>
+                                    <button
+
+                                        type="button"
+                                        class="btn btn-primary"
+                                        data-toggle="modal"
+                                        data-target="#bhuvi"
+                                        data-whatever="@getbootstrap"
+                                    
+                                    >
+                                        Genrate Link
+                                    </button>
+                                    <div>
+                                    
+                                 </div>
+
 
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                
             </div>
+            <div>
+         
+            </div>
+            
+
         </div>
 
 
