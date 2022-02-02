@@ -21,7 +21,7 @@ const BulkPayer = () => {
     e.preventDefault();
     const formData = new FormData();
 
-    formData.append("File", selectedFile);
+    formData.append("file", selectedFile);
     formData.append("Client_Code", [clientCode]);
 
 

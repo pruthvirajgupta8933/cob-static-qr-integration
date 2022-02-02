@@ -54,7 +54,7 @@ useEffect(() => {
 
 const getSearchTerm  = (e) => {
   setSearchText(e.target.value)
-  if(searchText !== ''){ setData(data.filter((item)=>item.customer_email.toLowerCase().includes(searchText.toLocaleLowerCase())))}
+  if(searchText !== ''){ setData(data.filter((item)=>item.customer_name.toLowerCase().includes(searchText.toLocaleLowerCase())))}
 }
 
 
@@ -68,7 +68,7 @@ const getSearchTerm  = (e) => {
       </div>
        
        
-      <input type="text" placeholder="Search Here" value={searchText} style={{ width: 500 }}  />
+      <input type="text" placeholder="Search Here" value={searchText} onChange={getSearchTerm} style={{ width: 500 }}  />
       </div>
       
       <div>
