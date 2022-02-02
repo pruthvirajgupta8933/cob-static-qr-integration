@@ -4,11 +4,19 @@ import { useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 
-// const initialValues = {
-//   Remarks: "",
-//   Amount: "",
-//   payer: ""
-// }
+
+
+const validationSchema = Yup.object().shape({
+    
+
+  Amount: Yup.string().required("Required!"),
+  Remarks: Yup.string().required("Required!"),
+  payer: Yup.string().required("Required!"),
+  date: Yup.string().required("Required!"),
+  hours: Yup.string().required("Required!"),
+  minutes: Yup.string().required("Required!"),
+  
+})
 
 
 const PaymentLinkDetail = () => {
@@ -88,17 +96,7 @@ const PaymentLinkDetail = () => {
   };
 
 
-  const validationSchema = Yup.object().shape({
-    
 
-    Amount: Yup.string().required("Required!"),
-    Remarks: Yup.string().required("Required!"),
-    payer: Yup.string().required("Required!"),
-    date: Yup.string().required("Required!"),
-    hours: Yup.string().required("Required!"),
-    minutes: Yup.string().required("Required!"),
-    
-})
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -127,19 +125,7 @@ const PaymentLinkDetail = () => {
     setMinutes("");
 
     await axios
-      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${selectedPayer}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=false`, {
-
-        Customer_id: selectedPayer,
-        Remarks: enteredPurpose,
-        Amount: parseInt(enteredAmount),
-        Client_Code: clientCode,
-        name_visiblity: true,
-        email_visibilty: true,
-        phone_number_visibilty: true,
-        valid_to: dateFormat(enteredDate),
-        isMerchantChargeBearer: true,
-        isPasswordProtected:false,
-       })
+      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${selectedPayer}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=false`)
       .then((resp) => {
         alert("Payment Link Created!")
         console.log(JSON.stringify(resp.data));
@@ -150,10 +136,10 @@ const PaymentLinkDetail = () => {
   };
 
 
-  // let options = [];
-  // for (let i =0; i < 24; i++) {
-  //   options.push(<option>{i}</option>)
-  // }
+  let options = [];
+  for (let i =0; i < 24; i++) {
+    options.push(<option>{i}</option>)
+  }
 
   return (
     <div>
