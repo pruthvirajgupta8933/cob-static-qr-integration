@@ -3,6 +3,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+import _ from 'lodash';
+
 
 
 
@@ -18,6 +20,8 @@ const validationSchema = Yup.object().shape({
   
 })
 
+const pageSize = 10;
+
 
 const PaymentLinkDetail = () => {
   const [selectedPayer, setSelectedPayer] = useState("Select Payer");
@@ -29,10 +33,9 @@ const PaymentLinkDetail = () => {
 
 
 
-
-
-
   const [data, setData] = useState([]);
+  const [paginatedata, setPaginatedData] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
   const [drop, setDrop] = useState([]);
   const [searchText, SetSearchText] = useState("");
   const [folderArr, setFolderArr] = React.useState([]);
@@ -42,6 +45,12 @@ const PaymentLinkDetail = () => {
   const { clientCode} = clientMerchantDetailsList[0];
   console.log("clientCode", clientCode);
 
+  
+const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
+if ( pageCount === 1) return null;
+
+const pages = _.range(1, pageCount+1)
+
 
   // console.log('https://paybylink.sabpaisa.in/paymentlink/getLinks/'+ clientCode );
 
@@ -50,6 +59,7 @@ const PaymentLinkDetail = () => {
       .get(`https://paybylink.sabpaisa.in/paymentlink/getLinks/${clientCode}`)
       .then((res) => {
         setData(res.data);
+        setPaginatedData(_(res.data).slice(0).take(pageSize).value())
       })
       .catch((err) => {
         console.log(err);
@@ -140,6 +150,20 @@ const PaymentLinkDetail = () => {
   for (let i =0; i < 24; i++) {
     options.push(<option>{i}</option>)
   }
+
+const pagination = (pageNo) => {
+  setCurrentPage(pageNo);
+
+  const startIndex = (pageNo - 1) * pageSize;
+  const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+  setPaginatedData(paginatedPost);
+}
+
+
+
+
+
+
 
   return (
     <div>
@@ -403,7 +427,7 @@ const PaymentLinkDetail = () => {
           <th>Full Link</th>
         </tr>
 
-        {data.map((user) => (
+        {paginatedata.map((user) => (
           <tr>
             <td>{user.customer_phoneNumber}</td>
             <td>{user.amount}</td>
@@ -416,6 +440,34 @@ const PaymentLinkDetail = () => {
           </tr>
         ))}
       </table>
+      <div>
+  <nav aria-label="Page navigation example" style={{position: 'absolute', top: 1000, left: 50}}>
+  <ul class="pagination">
+  {/* <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li> */}
+
+   {
+
+     pages.map((page) => (
+      <li class={
+        page === currentPage ? " page-item active" : "page-item"
+      }><a class="page-link">
+        
+        <p onClick={() => pagination(page)}>
+        {page}
+        </p>
+        </a></li>
+    
+     ))
+   }
+   
+   
+  
+  </ul>
+</nav>
+  </div>
+
     </div>
   );
 };
