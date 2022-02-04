@@ -390,29 +390,38 @@ console.log("dataLength",paginatedata.length)
         </div>
       </div>
 
-      <p style={{ position: "absolute", top: 230, left: 35 }}>
-        Total Records: 8
-      </p>
-      <input
+     
+      <div className="filterSection" style={{display:"flex",margin:"10px"}}>
+      
+       <div style={{display:"content"}}>
+
+       <input
         type="text"
         placeholder="Search Here"
         value={searchText}
-        style={{ position: "absolute", top: 260, left: 30, width: 700 }}
+        style={{  width: 700 }}
         onChange={getSearchTerm}
       />
 
-      <h4 style={{ position: "absolute", top: 260, left: 835 }}>
+      <h4  style={{marginLeft:"10em"}}>
         Count per page
       </h4>
-      <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} style={{ position: "absolute", top: 260, left: 960, width: 100 }}>
+      <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} style={{width: 100 }}>
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="50">50</option>
         <option value="100">100</option>
      
       </select>
+       </div>
+      
+      </div>
+      <div style={{margin:"10px"}}>
+         <p >
+        Total Records: {data.length}
+       </p>
+       </div>
       <table
-        style={{ position: "absolute", top: 320, left: 20, width: 900 }}
         class="table"
       >
         <tr>
@@ -442,7 +451,7 @@ console.log("dataLength",paginatedata.length)
         ))}
       </table>
       <div>
-  <nav aria-label="Page navigation example"  style={{position: 'absolute', top: 1640, left:220}}>
+  <nav aria-label="Page navigation example"  >
   <ul class="pagination">
   {/* <li class="page-item"><a class="page-link" href="#">1</a></li>
     <li class="page-item"><a class="page-link" href="#">2</a></li>
