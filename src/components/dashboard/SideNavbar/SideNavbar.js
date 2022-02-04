@@ -62,7 +62,7 @@ function SideNavbar() {
                         
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/subscription`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />
-                      Subsciption</Link> 
+                      Subscription</Link> 
                       </li>
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />

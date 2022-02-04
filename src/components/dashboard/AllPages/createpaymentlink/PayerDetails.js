@@ -29,6 +29,16 @@ const PayerDetails = () => {
         NewPhoneNumber: "",
         newCustomerTypeId: ""
     });
+    const[editform, setEditForm]=useState({
+        myname:"",
+        email:"",
+        phone:"",
+        editCustomerTypeId:"",
+        id:""
+    })
+    const[genrateform,setGenrateForm]=useState({
+        customer_id: '',
+    })
     
     const { newName, NewEmail, NewPhoneNumber, newCustomerTypeId } = item;
     const [name , setName ] = useState('');
@@ -93,6 +103,12 @@ const PayerDetails = () => {
     const onSubmit = async e => {
         e.preventDefault();
         console.log(item);
+
+        setName('');
+        setMyEmail('');
+        setCustomerTypeId('');
+        setPhoneNumber('');
+
         const res = await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers', {
             name: name,
             email:myemail,
@@ -107,28 +123,43 @@ const PayerDetails = () => {
 
             })
 
+
+           
+
+
+
         // setItem([])
 };
 const handleClick = (id) => {
+//console.log(id);
+    data.filter((dataItem) => {
+        if (dataItem.id === id) {
+            setEditForm(
+                {
+                    myname: dataItem.name,
+                    email:dataItem.email,
+                    phone:dataItem.phone_number,
+                   editCustomerTypeId:dataItem.customer_type_id,
+                   id:dataItem.id
 
-    data.filter((data) => {
-        if (data.id === id) {
-            console.log(data);
-            // setItem(
-            //     {
-            //         newName: item.newName,
-            //         NewEmail:item.NewEmail,
-            //         NewPhoneNumber:item.NewPhoneNumber,
-            //         newCustomerTypeId:item.newCustomerTypeId
-
-            //     }
-            // )
-
+                }
+            )
             // Working on it
         }
 })
 }
 
+const generateli = (id) => {
+    console.log(id);
+    data.filter((dataItem) => {
+        if (dataItem.id === id) {
+    setGenrateForm({
+        customer_id : id
+    })
+
+}
+    })}
+    
 
 
         //console.log('this is harry');
@@ -158,12 +189,12 @@ const handleClick = (id) => {
     //     console.log(id);
     // }
 
-    console.log("data=",data);
-
+    //console.log("data=",data);
+    console.log("editform",editform);
     return (
         <div>
-            <Edituser items={item} />
-           <Genratelink />
+            <Edituser items={editform} />
+           <Genratelink generatedata= {genrateform}/>
             
             {/* <button type="button" className='btn' class="btn btn-primary">Add Single Payer</button> */}
             <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-200px', marginTop: '-70' }} >Add Single Payer</button>
@@ -252,9 +283,10 @@ const handleClick = (id) => {
             </select>
             <div class="full-screen-scroller">
 
-                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 380, left: 12, width: 800, height: 200 }}>
+                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 380, left: 12, height: 200 }}>
                     <thead>
                         <tr>
+                            <th scope='col'>Serial.No</th>
                             <th scope='col'>Name of Payer</th>
                             <th scope='col'>Mobile No.</th>
                             <th scope='col'>Email ID</th>
@@ -267,8 +299,10 @@ const handleClick = (id) => {
                     </thead>
                     <tbody>
 
-                        {data.map((user) => (
+                        {data.map((user,i) => (
+
                             <tr>
+                                <td>{i+1}</td>
                                 <td>{user.name}</td>
                                 <td>{user.phone_number}</td>
                                 <td>{user.email}</td>
@@ -277,9 +311,9 @@ const handleClick = (id) => {
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)}    >Edit</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary mt-2" onClick={() => deleteUser(user.id)}  >Delete</button>
+                                    <button class="btn btn-primary mt-2"  onClick={() => deleteUser(user.id)}  >Delete</button>
                                 </td><td>
-                                    <button
+                                    <button onClick={(e) => generateli(user.id)}
 
                                         type="button"
                                         class="btn btn-primary"
@@ -310,6 +344,7 @@ const handleClick = (id) => {
         </div>
 
 
+                        
     )
 };
 

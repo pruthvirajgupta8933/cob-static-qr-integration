@@ -1,27 +1,45 @@
 import React, {useState} from 'react';
 import axios from 'axios'
+import { useSelector } from 'react-redux';
 
- const Genratelink = () => {
+ const Genratelink = (props) => {
 
-    
+  console.log(props);
+  // var id=""
+  var {customer_id} = props.generatedata;
+
+
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredPurpose, setEnteredPurpose] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
+ 
 
 
 
-    const submitHandler = async(e) => {
+  const { user } = useSelector((state) => state.auth);
+   
+
+  const [data, setData] = useState([])
+  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  const { clientCode } = clientMerchantDetailsList[0]
+  
+  // console.log(customer_type_id);
+
+
+
+    const generateHandler = async(e) => {
 
         e.preventDefault();
 
         const linkdata = {
-            
+
+            Customer_id: customer_id,
             Amount: enteredAmount,
             Remarks: enteredPurpose,
             valid_to: dateFormat(enteredDate),
-            Client_Code: '',
+            Client_Code: clientCode,
             name_visiblity: true,
             email_visibilty: true,
             phone_number_visibilty: true,
@@ -30,39 +48,30 @@ import axios from 'axios'
       
           console.log(linkdata);
       
-          
-          setEnteredAmount("");
-          setEnteredDate("");
-          setEnteredPurpose("");
-          setHours("");
-          setMinutes("");
       
-        //   await axios
-        //     .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${selectedPayer}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=false`, {
+
+         
+           const response = await axios
+            .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${customer_id}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=false`, {
       
-        //       Customer_id: selectedPayer,
-        //       Remarks: enteredPurpose,
-        //       Amount: parseInt(enteredAmount),
-        //       Client_Code: clientCode,
-        //       name_visiblity: true,
-        //       email_visibilty: true,
-        //       phone_number_visibilty: true,
-        //       valid_to: dateFormat(enteredDate),
-        //       isMerchantChargeBearer: true,
-        //       isPasswordProtected:false,
-        //      })
-        //     .then((resp) => {
-        //       alert("Payment Link Created!")
-        //       console.log(JSON.stringify(resp.data));
-        //     })
-        //     .catch((error) => {
-        //       console.log(error);
-        //     });
-        
+             })
+            .then((resp) => {
+              alert("Payment Link Created!")
+              console.log(JSON.stringify(resp.data));
+            })
+            .catch((error) => {
+              console.log(error);
+            });
 
 
 
-    }
+            setEnteredAmount("");
+            setEnteredDate("");
+            setEnteredPurpose("");
+            setHours("");
+            setMinutes("");
+
+          }
 
 
     const dateFormat = (enteredDate) => {
@@ -97,7 +106,7 @@ import axios from 'axios'
           </button>
         </div>
         <div class="modal-body">
-          <form onSubmit={submitHandler}>
+          <form onSubmit={generateHandler}>
             
 
             <br />
@@ -237,6 +246,7 @@ import axios from 'axios'
 
 
   
-};
+}
+
 
 export default Genratelink;

@@ -15,6 +15,7 @@ import LoginPage from './components/login/LoginPage';
 import ForgetPassword from './components/forgetpassword/ForgetPassword';
 import CommonPage from './components/Otherpages/CommonPage';
 import EmailVerification from './components/Otherpages/EmailVerification'
+import { Recipts } from './components/Otherpages/Recipts';
 
 
 
@@ -52,6 +53,9 @@ function AllRoutes(){
 
               <Route exact path="/emailverification">
                 <EmailVerification />
+              </Route>
+              <Route exact path="/Recipts">
+                <Recipts />
               </Route>
              
             </Switch>
