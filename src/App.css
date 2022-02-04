@@ -127,3 +127,19 @@ label {
   color:red !important;
 } */
 
+
+
+.displayErrorMessage{
+  display: flex;
+  padding: 10px;
+  justify-content: end;
+  position: absolute;
+  z-index: 999;
+  width: 100%;
+
+}
+
+.displayErrorMessage p{
+  background: palevioletred;
+  padding: 15px;
+}
