@@ -3,6 +3,8 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+import _ from 'lodash';
+
 
 
 
@@ -26,21 +28,29 @@ const PaymentLinkDetail = () => {
   const [enteredDate, setEnteredDate] = useState("");
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
+  const [pageSize, setPageSize] = useState(10);
 
-
-
-
-
+  console.log(pageSize);
+  console.log(typeof(pageSize));
 
   const [data, setData] = useState([]);
+  const [paginatedata, setPaginatedData] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
   const [drop, setDrop] = useState([]);
   const [searchText, SetSearchText] = useState("");
+  const [noofbuttons, setNoOfButtons ] = useState([]);
   const [folderArr, setFolderArr] = React.useState([]);
   var [showFilterData, SetShowFilterData] = useState([]);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   const { clientCode} = clientMerchantDetailsList[0];
   console.log("clientCode", clientCode);
+
+  
+const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
+if ( pageCount === 1) return null;
+
+const pages = _.range(1, pageCount + 1)
 
 
   // console.log('https://paybylink.sabpaisa.in/paymentlink/getLinks/'+ clientCode );
@@ -50,6 +60,7 @@ const PaymentLinkDetail = () => {
       .get(`https://paybylink.sabpaisa.in/paymentlink/getLinks/${clientCode}`)
       .then((res) => {
         setData(res.data);
+        setPaginatedData(_(res.data).slice(0).take(pageSize).value())
       })
       .catch((err) => {
         console.log(err);
@@ -67,8 +78,6 @@ const PaymentLinkDetail = () => {
       .catch((err) => {
         console.log(err);
       });
-
-      console.log(data);
   };
 
   useEffect(() => {
@@ -140,6 +149,23 @@ const PaymentLinkDetail = () => {
   for (let i =0; i < 24; i++) {
     options.push(<option>{i}</option>)
   }
+
+const pagination = (pageNo) => {
+  setCurrentPage(pageNo);
+
+  const startIndex = (pageNo - 1) * pageSize;
+  const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+  setPaginatedData(paginatedPost);
+
+}
+
+
+useEffect(()=>{
+  setPaginatedData(_(data).slice(0).take(pageSize).value())
+},[pageSize]);
+
+console.log("dataLength",paginatedata.length)
+
 
   return (
     <div>
@@ -364,35 +390,42 @@ const PaymentLinkDetail = () => {
         </div>
       </div>
 
-      <p style={{ position: "absolute", top: 230, left: 35 }}>
-        Total Records: 8
-      </p>
-      <input
+     
+      <div className="filterSection" style={{display:"flex",margin:"10px"}}>
+      
+       <div style={{display:"contents"}}>
+
+       <input
         type="text"
         placeholder="Search Here"
         value={searchText}
-        style={{ position: "absolute", top: 260, left: 30, width: 700 }}
+        style={{  width: 700 }}
         onChange={getSearchTerm}
       />
 
-      <h4 style={{ position: "absolute", top: 260, left: 835 }}>
+      <h4  style={{marginLeft:"10em"}}>
         Count per page
       </h4>
-      <select style={{ position: "absolute", top: 260, left: 960, width: 100 }}>
+      <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} style={{width: 100 }}>
         <option value="10">10</option>
-        <option value="20">25</option>
-        <option value="30">50</option>
-        <option value="60">100</option>
-        <option value="70">200</option>
-        <option value="70">300</option>
-        <option value="70">400</option>
-        <option value="70">500</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+     
       </select>
+       </div>
+      
+      </div>
+      <div style={{margin:"10px"}}>
+         <p >
+        Total Records: {data.length}
+       </p>
+       </div>
       <table
-        style={{ position: "absolute", top: 320, left: 20, width: 900 }}
         class="table"
       >
         <tr>
+        <th>Serial No.</th>
           <th>Phone No.</th>
           <th>Amount</th>
           <th>Customer Type</th>
@@ -403,8 +436,9 @@ const PaymentLinkDetail = () => {
           <th>Full Link</th>
         </tr>
 
-        {data.map((user) => (
+        {paginatedata.map((user,i) => (
           <tr>
+            <td>{i+1}</td>
             <td>{user.customer_phoneNumber}</td>
             <td>{user.amount}</td>
             <td>{user.customer_type}</td>
@@ -416,6 +450,36 @@ const PaymentLinkDetail = () => {
           </tr>
         ))}
       </table>
+      <div>
+  <nav aria-label="Page navigation example"  >
+  <ul class="pagination">
+  {/* <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li> */}
+    <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
+
+   {
+
+     pages.map((page) => (
+      <li class={
+        page === currentPage ? " page-item active" : "page-item"
+      }><a class="page-link">
+        
+        <p onClick={() => pagination(page)}>
+        {page}
+        </p>
+        </a></li>
+    
+     ))
+   }
+    <a class="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href="#">Next</a>
+   
+   
+  
+  </ul>
+</nav>
+  </div>
+
     </div>
   );
 };
