@@ -6,36 +6,56 @@ import axios from 'axios';
 
 export const Edituser = (props) => { 
 
-    console.log(props.items);
+     console.log(props.items);
     
-    const [formData, setFormData] = useState(props.items);
+    // const [formData, setFormData] = useState();
+    // useEffect(() => {
+    //     setFormData(props.items)
+    // }, [props]);
+
+    var {myname,email,phone,editCustomerTypeId,id} = props.items;
+    const [username , setUsername ] = useState(myname);
+    const [useremail , setUserEmail]=useState(email);
+    const [usercustomer , setUserCustomer]=useState(editCustomerTypeId);
+    const [userphone , setUserPhone]=useState(phone);
+
+ 
+    // const { name, email, phone_number, customer_type_id } =formData;
+  // console.log(myname);
+    
     useEffect(() => {
-        setFormData(props.items)
+     setUsername(myname);
+     setUserEmail(email);
+     setUserCustomer(editCustomerTypeId);
+     setUserPhone(phone);
     }, [props]);
-    const { name, email, phone_number, customer_type_id } =formData;
-    console.log(formData);
-  
+    
+    
     const { user } = useSelector((state) => state.auth);
    
 
     const [data, setData] = useState([])
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
-    const { clientCode } = clientMerchantDetailsList[0];
-    const onValueChange = e => {
-        // console.log(e.target.value);
-        setFormData({ ...formData, [e.target.name]: e.target.value })
-    };
+    const { clientCode,customer_type_id } = clientMerchantDetailsList[0]
+    console.log(customer_type_id);
+    
+    // const onValueChange = e => {
+    //     // console.log(e.target.value);
+    //     setFormData({ ...formData, [e.target.name]: e.target.value })
+    // };
 
    
     const editHandler = async e =>{
+    
         e.preventDefault();
-        console.log(formData)
-      const res=  await axios.put(` https://paybylink.sabpaisa.in/paymentlink/editCustomer`,{
-            name: formData.name,
-            email: formData.email,
-            phone_number: formData.phone_number,
+       
+      const res=  await axios.put(` https://paybylink.sabpaisa.in/paymentlink/editCustomer/`,{
+            name: username,
+            email: useremail,
+            phone_number: userphone,
             client_code: clientCode,
-            customer_type_id: formData.customer_type_id
+            customer_type_id: usercustomer,
+            id:id
         });
         console.log(res.data);
 
@@ -56,7 +76,8 @@ export const Edituser = (props) => {
     useEffect(() => {
         getDrop();
     }, []);
-     
+
+     console.log("username",username);
 
   return (
     <div class="modal fade" id="web" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -73,23 +94,23 @@ export const Edituser = (props) => {
                     <Form onSubmit={editHandler}>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Name of Payer:</label>
-                            <Field name="name" rel="check"
-                                value={name} onChange={e => onValueChange(e)} placeholder="Enter Name of Payer" class="form-control" id="namepair" />
+                            <Field name="name" rel={username}
+                                value={username} onChange={e => setUsername(e.target.value)} placeholder="Enter Your Name" class="form-control" id="namepair" />
 
-
+                            
                             <label for="recipient-name" class="col-form-label">Mobile No.:</label>
                             <Field name="phone_number"
 
-                                value={phone_number} onChange={e => onValueChange(e)} placeholder='Enter Mobile No.' class="form-control" id="emailpair" />
+                                value={userphone} onChange={e => setUserPhone(e.target.value)} placeholder='Enter Mobile No.' class="form-control" id="emailpair" />
 
                             <label for="recipient-name" class="col-form-label">Email ID:</label>
                             <Field name="email"
 
-                                value={email} onChange={e => onValueChange(e)} placeholder='Enter Email ID' class="form-control" id="phnpair" />
+                                value={useremail} onChange={e => setUserEmail(e.target.value)} placeholder='Enter Email ID' class="form-control" id="phnpair" />
 
                             <label for="recipient-name" class="col-form-label">Payer Category:</label><br></br>
                             <select className='selct' name='customer_type_id'
-                                onChange={(e) => onValueChange(e)} value={customer_type_id}
+                                onChange={(e) => setUserCustomer(e.target.value)} value={usercustomer}
                             >
                                 <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
                                 {
