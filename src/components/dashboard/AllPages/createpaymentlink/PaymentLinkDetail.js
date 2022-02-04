@@ -393,7 +393,7 @@ console.log("dataLength",paginatedata.length)
      
       <div className="filterSection" style={{display:"flex",margin:"10px"}}>
       
-       <div style={{display:"content"}}>
+       <div style={{display:"contents"}}>
 
        <input
         type="text"
