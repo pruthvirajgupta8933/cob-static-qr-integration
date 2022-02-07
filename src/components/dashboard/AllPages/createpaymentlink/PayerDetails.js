@@ -8,6 +8,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import Genratelink from './Genratelink';
 import { Edituser } from './Edituser';
+import {toast} from 'react-toastify';
 
 const initialValues = {
     name: "",
@@ -15,11 +16,11 @@ const initialValues = {
     phone_number: ""
 }
 
-// const validationSchema = Yup.object().shape({
-    //     name: Yup.string().min(3, "It's too short").required("Required"),
-    //     phone_number: Yup.string().required("Required"),
-    //     email: Yup.string().email("Enter valid email").required("Required")
-    // })
+const validationSchema = Yup.object().shape({
+        name: Yup.string().min(3, "It's too short").required("Required"),
+        phone_number: Yup.string().required("Required"),
+        email: Yup.string().email("Enter valid email").required("Required")
+    })
 
 const PayerDetails = () => {
 
@@ -102,6 +103,12 @@ const PayerDetails = () => {
     }
     const onSubmit = async e => {
         e.preventDefault();
+        toast.success("Payment Link success")
+        // if(item.status===200)
+        // alert("succes")
+        // else{
+        //     alert("Payer Name required !")
+        // }
         console.log(item);
 
         setName('');
@@ -119,6 +126,7 @@ const PayerDetails = () => {
 
         console.log(res)
             .then((res) => {
+                
                 console.log(JSON.stringify(res.data))
 
             })
@@ -209,8 +217,8 @@ const generateli = (id) => {
                         </div>
                         <div class="modal-body">
                             <Formik 
-                            // initialValues={initialValues}
-                            //  validationSchema={validationSchema}
+                             initialValues={initialValues}
+                              validationSchema={validationSchema}
                               onSubmit={onSubmit}>
                                 {(props) => (
                                     <Form onSubmit={e => onSubmit(e)} >
@@ -255,7 +263,7 @@ const generateli = (id) => {
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary"  >Submit</button>
                                             <button type="button" disabled class="btn btn-danger">Update</button>
-                                            <button type="button" disabled class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                         </div>
 
                                     </Form>
