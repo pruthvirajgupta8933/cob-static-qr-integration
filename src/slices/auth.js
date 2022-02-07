@@ -67,7 +67,8 @@ export const login = createAsyncThunk(
           error.response.data &&
           error.response.data.message) ||
         error.message ||
-        error.toString();
+        error.toString()||error.request.toString();
+        console.log("message",message);
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
     }

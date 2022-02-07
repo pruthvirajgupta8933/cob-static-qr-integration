@@ -10,20 +10,10 @@ import { toast } from 'react-toastify';
 
 
 
-const validationSchema = Yup.object().shape({
-    
-
-  Amount: Yup.string().required("Required!"),
-  Remarks: Yup.string().required("Required!"),
-  payer: Yup.string().required("Required!"),
-  date: Yup.string().required("Required!"),
-  hours: Yup.string().required("Required!"),
-  minutes: Yup.string().required("Required!"),
-  
-})
-
 
 const PaymentLinkDetail = () => {
+
+  
   const [selectedPayer, setSelectedPayer] = useState("Select Payer");
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredPurpose, setEnteredPurpose] = useState("");
@@ -49,12 +39,24 @@ const PaymentLinkDetail = () => {
   console.log("clientCode", clientCode);
 
   
+
+  
+
+const validationSchema = Yup.object().shape({
+    
+
+  Amount: Yup.string().required("Required!"),
+  Remarks: Yup.string().required("Required!"),
+  payer: Yup.string().required("Required!"),
+  date: Yup.string().required("Required!"),
+  hours: Yup.string().required("Required!"),
+  minutes: Yup.string().required("Required!"),
+  
+})
+
+
+
 const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
-if ( pageCount === 1) return null;
-
-const pages = _.range(1, pageCount + 1)
-
-
   // console.log('https://paybylink.sabpaisa.in/paymentlink/getLinks/'+ clientCode );
 
   const getDetails = async (e) => {
@@ -82,10 +84,7 @@ const pages = _.range(1, pageCount + 1)
       });
   };
 
-  useEffect(() => {
-    getDetails();
-    getDrop();
-  }, []);
+
 
   const getSearchTerm = (e) => {
     SetSearchText(e.target.value);
@@ -150,10 +149,6 @@ const pages = _.range(1, pageCount + 1)
   };
 
 
-  let options = [];
-  for (let i =0; i < 24; i++) {
-    options.push(<option>{i}</option>)
-  }
 
 const pagination = (pageNo) => {
   setCurrentPage(pageNo);
@@ -165,9 +160,21 @@ const pagination = (pageNo) => {
 }
 
 
+useEffect(() => {
+  getDetails();
+  getDrop();
+}, []);
+
 useEffect(()=>{
   setPaginatedData(_(data).slice(0).take(pageSize).value())
 },[pageSize]);
+
+
+if ( pageCount === 1) return null;
+
+const pages = _.range(1, pageCount + 1)
+
+
 
 console.log("dataLength",paginatedata.length)
 
