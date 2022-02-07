@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import _ from 'lodash';
-
-
+import { toast } from 'react-toastify';
+import DatePicker from 'react-date-picker';
 
 
 
@@ -13,6 +13,7 @@ const PaymentLinkDetail = () => {
 
   
   const [selectedPayer, setSelectedPayer] = useState("Select Payer");
+  var [showFilterData,SetShowFilterData] =useState([]); 
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredPurpose, setEnteredPurpose] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
@@ -31,6 +32,7 @@ const PaymentLinkDetail = () => {
   const [noofbuttons, setNoOfButtons ] = useState([]);
   const [folderArr, setFolderArr] = React.useState([]);
   var [showFilterData, SetShowFilterData] = useState([]);
+
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   const { clientCode} = clientMerchantDetailsList[0];
@@ -87,7 +89,7 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
   const getSearchTerm = (e) => {
     SetSearchText(e.target.value);
     if (searchText !== "") {
-      setData(
+    showFilterData(
         data.filter((item) =>
           item.customer_email
             .toLowerCase()
@@ -135,11 +137,14 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
     await axios
       .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${selectedPayer}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=false`)
       .then((resp) => {
-        alert("Payment Link Created!")
+        toast.success("Payment Link Created!")
         console.log(JSON.stringify(resp.data));
+
+        
       })
       .catch((error) => {
         console.log(error);
+        toast.error('Payment Link Creation Failed')
       });
   };
 
@@ -219,11 +224,11 @@ console.log("dataLength",paginatedata.length)
           hours: '',
           minutes: ''
       }}
-       validationSchema={validationSchema}>
+       validationSchema={validationSchema} >
           
               
              
-              <Form  onSubmit={submitHandler}>
+              <Form onSubmit={submitHandler} >
               
                 <Field component='select' name='payer'
                   value={selectedPayer}
@@ -361,6 +366,42 @@ console.log("dataLength",paginatedata.length)
                       <option value="21">21</option>
                       <option value="22">22</option>
                       <option value="23">23</option>
+                      <option value="23">24</option>
+                      <option value="23">25</option>
+                      <option value="23">26</option>
+                      <option value="23">27</option>
+                      <option value="23">28</option>
+                      <option value="23">29</option>
+                      <option value="23">30</option>
+                      <option value="23">31</option>
+                      <option value="23">32</option>
+                      <option value="23">33</option>
+                      <option value="23">34</option>
+                      <option value="23">35</option>
+                      <option value="23">36</option>
+                      <option value="23">37</option>
+                      <option value="23">38</option>
+                      <option value="23">39</option>
+                      <option value="23">40</option>
+                      <option value="23">41</option>
+                      <option value="23">42</option>
+                      <option value="23">43</option>
+                      <option value="23">44</option>
+                      <option value="23">45</option>
+                      <option value="23">46</option>
+                      <option value="23">47</option>
+                      <option value="23">48</option>
+                      <option value="23">49</option>
+                      <option value="23">50</option>
+                      <option value="23">51</option>
+                      <option value="23">52</option>
+                      <option value="23">53</option>
+                      <option value="23">54</option>
+                      <option value="23">55</option>
+                      <option value="23">56</option>
+                      <option value="23">58</option>
+                      <option value="23">59</option>
+                      <option value="23">60</option>
                     </Field>
                     {<ErrorMessage name="minutes">
                                                 {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
@@ -428,6 +469,9 @@ console.log("dataLength",paginatedata.length)
         Total Records: {data.length}
        </p>
        </div>
+       <div>
+         {
+         ! paginatedata ? ("No data Found"):(
       <table
         class="table"
       >
@@ -457,6 +501,8 @@ console.log("dataLength",paginatedata.length)
           </tr>
         ))}
       </table>
+         )}
+      </div>
       <div>
   <nav aria-label="Page navigation example"  >
   <ul class="pagination">

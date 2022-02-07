@@ -12,6 +12,7 @@ import toastConfig from "../../utilities/toastTypes";
 import OTPVerificationApi from "../../slices/auth";
 import {Link} from 'react-router-dom'
 import DisplayErrorMessage from '../../_components/reuseable_components/DisplayErrorMessage';
+import { toast } from 'react-toastify';
 
 
 const INITIAL_FORM_STATE = {
@@ -75,7 +76,8 @@ const handleLogin = (formValue) => {
       history.push("/dashboard");
       // window.location.reload();
     })
-    .catch(() => {
+    .catch((error) => {
+      toast.error('Login Unsucessful')
       setLoading(false);
     });
 };
@@ -149,7 +151,6 @@ const handleClose = (event, reason) => {
   return (
     <>
       <HeaderPage />
-      <DisplayErrorMessage data={message} />
     {/* <p className="showErrormsg">{message && message!=''?message:''}</p> */}
       <div className="container-fluid">
         <div className="row">

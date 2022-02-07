@@ -44,7 +44,7 @@ const BulkPayer = () => {
     <div>
       <form onSubmit={submitHandler}>
         <h2 style={{ marginLeft: 110 }}>
-          <b>Bulk Payer</b>
+          <b>Upload Bulk Payer</b>
         </h2>
         <input
           type="file"

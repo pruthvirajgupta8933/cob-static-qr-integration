@@ -48,7 +48,7 @@ function Registration() {
   const handleRegistration = () => {
         setLoading(true);
         // console.log(formValue);
-        dispatch(register({ firstName, lastName, mobileNumber, email, password, confirmPassword }))
+        dispatch(register({ firstName, lastName, mobileNumber, email, password, confirmPassword}))
           .unwrap()
           .then(() => {
             history.push("/dashboard");
@@ -93,7 +93,7 @@ return (
                       <div className="logmod__tab-wrapper">
                         <div className="logmod__tab lgm-1 show">
                           <div className="logmod__heading">
-                            <span className="logmod__heading-subtitle">Enter your personal details <strong>to create an acount</strong></span>
+                            <span className="logmod__heading-subtitle">Enter your personal details <strong>to create an account</strong></span>
                             {saved &&
                             <div style={{ borderTopWidth: 0, borderBottomWidth: 0, marginBottom: 0, paddingTop: 0, paddingBottom: 0,}} className="alert alert-success">User successfully Signed in</div>
                             }
@@ -124,13 +124,17 @@ return (
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Password *</label>
                                   <input className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} onChange={e => setPassword(e.target.value)} />
-                                  <span className="hide-password">Show</span>
+                                  {/* <span className="hidden">Show</span> */}
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Confirm Password *</label>
                                   <input className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type="password" size={50} onChange={e => setConfirmPassword(e.target.value)} />
-                                  <span className="hide-password">Show</span>
+                                  <input className="string optional" maxLength={255} id="email" placeholder="email" type="hidden" size={50} onChange={e => setEmail(e.target.value)}/>
+                                
+                                  {/* <span className="hide-password">Show</span> */}
                                 </div>
+                                
+                                
                               </div>
                               <div className="sminputs">                              
                               <div className="simform__actions">
