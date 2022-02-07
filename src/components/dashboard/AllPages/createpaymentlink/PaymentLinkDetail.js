@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import _ from 'lodash';
+import { toast } from 'react-toastify';
+
 
 
 
@@ -136,11 +138,14 @@ const pages = _.range(1, pageCount + 1)
     await axios
       .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${selectedPayer}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=false`)
       .then((resp) => {
-        alert("Payment Link Created!")
+        toast.success("Payment Link Created!")
         console.log(JSON.stringify(resp.data));
+
+        
       })
       .catch((error) => {
         console.log(error);
+        toast.error('Payment Link Creation Failed')
       });
   };
 
