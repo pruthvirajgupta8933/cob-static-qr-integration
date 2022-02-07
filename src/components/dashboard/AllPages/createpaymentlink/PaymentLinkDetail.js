@@ -480,7 +480,7 @@ console.log("dataLength",paginatedata.length)
      ))
    }
     <a class="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href="#">Next</a>
-   
+  
    
   
   </ul>

@@ -1,8 +1,40 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import {Dashboardservice} from "../services/dashboard.service";
+import ProfileService from "../services/profile.service";
 
-const initialState = { successTxnsumry:[], isLoading:false, subscribedService: [], subscriptionplandetail: [] };
+const initialState = { successTxnsumry:[], isLoading:false, subscribedService: [], subscriptionplandetail: [], createClientProfile:[] };
+
+
+
+/* ======Start Profile Function ======= */
+
+
+export const createClientProfile = createAsyncThunk(
+  "dashboard/createClientProfile",
+  async (object, thunkAPI) => {
+    try {
+      // console.log({ fromdate, todate, clientcode });
+      const response = await ProfileService.createClintCode(object );
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+
+
+/* ======End Profile Function ======= */
+
 
 export const successTxnSummary = createAsyncThunk(
     "dashbaord/successTxnSummary",
@@ -66,10 +98,18 @@ export const successTxnSummary = createAsyncThunk(
     }
   );
 
+
   export const dashboardSlice = createSlice({
     name: 'dashboard',
     initialState,
     extraReducers: {
+      [createClientProfile.pending]:(state)=>{
+        state.createClientProfile = {}
+      },
+      [createClientProfile.fulfilled]:(state,action)=>{
+        state.createClientProfile = action.payload
+
+      },
       [successTxnSummary.pending]: (state) => {
         state.isLoading = true
       },

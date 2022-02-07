@@ -1,15 +1,35 @@
 import React, { useState,useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import axios from "axios";
+import { useSelector,useDispatch } from 'react-redux'
+import { Formik, Field, Form, ErrorMessage} from "formik";
+import * as Yup from 'yup'
+import axios from 'axios';
+import {createClientProfile} from '../../../slices/dashboardSlice' 
+
+
+
+const INITIAL_FORM_STATE = {
+  clientUserId:'',
+  userPassword:''
+};
+
+const FORM_VALIDATION = Yup.object().shape({
+  clientUserId: Yup.string().required("Required"),
+  userPassword: Yup.string().min(6, "Password minimum length should be 6").required('Password is required')
+});
 
 function Profile() {
-  const [message,setMessage]  = useState('');
+  const dispatch= useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
+  const {clientMerchantDetailsList,loginId,userName,lastLoginTime,clientContactPersonName,clientEmail,clientMobileNo} = user;
 
-  const [loginID , setLoginID] = useState('');
-  const [clientName , setClientName] = useState('');
-  const [phoneNumber , setphoneNumber] = useState('');
+  
+  const [message,setMessage]  = useState('');
+  const [loginID , setLoginID] = useState(loginId);
+  const [clientName , setClientName] = useState(clientContactPersonName);
+  const [phoneNumber , setphoneNumber] = useState(clientMobileNo);
   const [stateadd , setStateAdd] = useState('');
-  const [emailID , setEmailID] = useState('');
+  const [emailID , setEmailID] = useState(clientEmail);
   const [clientCode , setClientCode] = useState('');
   const [address , setAddress] = useState('');
   const [nameAsInBankAcc , setnameAsInBankAcc] = useState('');
@@ -27,10 +47,16 @@ function Profile() {
   const UPDATE_PROFILE_URL = "https://cobtest.sabpaisa.in/auth-service/client/update/${clientCode}";
   const PROFILE_GET_URL = "";
 
-  const { user } = useSelector((state) => state.auth);
 
+
+  var isRequireClientCreate = true;
+  isRequireClientCreate = clientMerchantDetailsList && clientMerchantDetailsList!==null ? false : true;
+console.log("isRequireClientCreate",isRequireClientCreate);
+ // if(isRequireClientCreate){dispatch(createClientProfile(objectparam))} 
   useEffect(() => {
-    retrieveProfileData();
+    // var objectparam = {};
+    // dispatch(createClientProfile(objectparam));
+    setIsCreateorUpdate(clientMerchantDetailsList && clientMerchantDetailsList!==null ? false : true);
   }, [])
 
   const retrieveProfileData = () => {
@@ -55,7 +81,7 @@ function Profile() {
       setClientAuthType();
     }
     else {
-      setIsCreateorUpdate(false);
+     // setIsCreateorUpdate(false);
     }
   })  
   .catch(err => {  
@@ -120,28 +146,35 @@ function Profile() {
                     <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
                     </div>
                     <div className="panel">
+                      <Formik
+                                        initialValues={{
+                                        ...INITIAL_FORM_STATE
+                                    }}
+                                        validationSchema={FORM_VALIDATION}
+                                        onSubmit={(d)=>console.log(d)}
+                                    >
+                                  <Form>
+                                 
+                                
                       <h4 className="text-left m-b-lg m-b-20">Basic Details</h4>
- 
+
                       <div className="merchant-detail-container">
                       Login ID : 
-                        <input
+                        <Field
                           type="text"
-                          name="loginID" 
-                          onChange={(e) => setLoginID(e.target.value)} 
-                          placeholder="Enter Login ID" 
+                          name="clientUserId"
                           value={loginID}
-                          style={{marginLeft: '10px', width: "398px"}}
+                          disabled
                         />
                       </div>
+
                       <div className="merchant-detail-container">
                       Client Name : 
-                        <input
+                        <Field
                           type="text"
                           name="clientName" 
-                          onChange={(e) => setClientName(e.target.value)} 
                           placeholder="Enter Client Name" 
                           value={clientName}
-                          style={{marginLeft: '10px', width: "398px"}}
                         />
                       </div>
                       <div className="merchant-detail-container">
@@ -270,6 +303,8 @@ function Profile() {
                       <button style={{margin: '10px', float: "right", width: '25%'}} className='class="btn btn-primary' onClick={createorUpdateProfile}>{isCreateorUpdate? "Create Profile" : "Update Profile"}</button>
                       
                           <br />
+                        </Form>
+                       </Formik>
                     </div>
 
                     </div>
