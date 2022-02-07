@@ -205,7 +205,7 @@ const generateli = (id) => {
            <Genratelink generatedata= {genrateform}/>
             
             {/* <button type="button" className='btn' class="btn btn-primary">Add Single Payer</button> */}
-            <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-200px', marginTop: '-70' }} >Add Single Payer</button>
+            
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -271,24 +271,33 @@ const generateli = (id) => {
                             </Formik>
 
                         </div>
-
                     </div>
                 </div>
             </div>
+        {/* end add form */}
+                
+                <div className="main_filter_area">
+                    <div className='Form_add_btn'>
+                        <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-200px', marginTop: '-70' }} >Add Single Payer</button>
+                    </div>
+                    <div className="filter_area">
+                    {/* <p className='para'>Total Records: 5</p> */}
+                        <input type="text" placeholder="Search Here" style={{ position: 'absolute', top: 320, left: 12, width: 700 }} />
+                        <h3 style={{ position: 'absolute', top: 320, left: 800 }}>Count per page</h3>
+                        <select style={{ position: 'absolute', top: 320, left: 930, width: 130 }}>
+                            <option value="10">10</option>
+                            <option value="20">25</option>
+                            <option value="30">50</option>
+                            <option value="60">100</option>
+                            <option value="70">200</option>
+                            <option value="70">300</option>
+                            <option value="70">400</option>
+                            <option value="70">500</option>
+                        </select>
+                    </div>
+                </div>
 
-            <p className='para'>Total Records: 5</p>
-            <input type="text" placeholder="Search Here" style={{ position: 'absolute', top: 320, left: 12, width: 700 }} />
-            <h3 style={{ position: 'absolute', top: 320, left: 800 }}>Count per page</h3>
-            <select style={{ position: 'absolute', top: 320, left: 930, width: 130 }}>
-                <option value="10">10</option>
-                <option value="20">25</option>
-                <option value="30">50</option>
-                <option value="60">100</option>
-                <option value="70">200</option>
-                <option value="70">300</option>
-                <option value="70">400</option>
-                <option value="70">500</option>
-            </select>
+            
             <div class="full-screen-scroller">
 
                 <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 380, left: 12, height: 200 }}>
@@ -312,9 +321,9 @@ const generateli = (id) => {
                             <tr>
                                 <td>{i+1}</td>
                                 <td>{user.name}</td>
-                                <td>{user.phone_number}</td>
-                                <td>{user.email}</td>
-                                <td>{user.customer_type}</td>
+                                <td>8920885489</td>
+                                <td>rahul.singh@srslive.in</td>
+                                <td>customer</td>
                                 <td>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)}    >Edit</button>
                                 </td>
@@ -357,18 +366,3 @@ const generateli = (id) => {
 };
 
 export default PayerDetails;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

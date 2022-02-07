@@ -94,6 +94,9 @@ return (
                         <div className="logmod__tab lgm-1 show">
                           <div className="logmod__heading">
                             <span className="logmod__heading-subtitle">Enter your personal details <strong>to create an acount</strong></span>
+                            {saved &&
+                            <div style={{ borderTopWidth: 0, borderBottomWidth: 0, marginBottom: 0, paddingTop: 0, paddingBottom: 0,}} className="alert alert-success">User successfully Signed in</div>
+                            }
                           </div>
                           <div className="logmod__form">
                             <form acceptCharset="utf-8" action="#" className="simform">
@@ -131,22 +134,20 @@ return (
                               </div>
                               <div className="sminputs">                              
                               <div className="simform__actions">
-                              <button
+                              {/* <button
                                   className="sumbit"
                                   type="sumbit"
                                   style={{ color: "#fff" }}
                                   onClick={handleRegistration}
                                 > 
                                   Create Account
-                                </button>
-                                {/* <input className="sumbit" name="commit" type="sumbit" defaultValue="Create Account" onClick={handleRegistration} /> */}
+                                </button> */}
+                                <input className="sumbit" name="commit" type="button" defaultValue="Create Account" onClick={handleRegistration} />
                                 <span className="simform__actions-sidetext"><span className="ant-checkbox"><input name="agreement" id="agreement" type="checkbox" className="ant-checkbox-input" defaultValue /><span className="ant-checkbox-inner" /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
                               </div>
                               </div>
                             </form>
-                            {saved &&
-                            <div style={{ borderTopWidth: 0, borderBottomWidth: 0, marginBottom: 0, paddingTop: 0, paddingBottom: 0,}} className="alert alert-success">User successfully Signed in</div>
-                            }
+                          
                           </div> 
                         </div>
                         <div className="logmod__tab lgm-2">

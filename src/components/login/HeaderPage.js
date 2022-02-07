@@ -255,13 +255,15 @@ function HeaderPage() {
         </div>
         <header className>
           <div className="header-fluid">
-            <a className="logo" href="https://www.SabPaisa.com/">
+            <Link to = '/login-page'
+           className="logo" href="https://www.SabPaisa.com/">
               <img
                 src={sabpaisalogo}
                 alt="SabPaisa"
                 title="SabPaisa"
               />
-            </a>
+            
+            </Link>
             <a className="fp_icon_open">
               <img src="./index_files/menu.svg" alt="" />
             </a>

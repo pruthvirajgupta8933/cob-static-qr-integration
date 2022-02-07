@@ -11,6 +11,7 @@ import OtpView from "../login/OtpView";
 import toastConfig from "../../utilities/toastTypes";
 import OTPVerificationApi from "../../slices/auth";
 import {Link} from 'react-router-dom'
+import DisplayErrorMessage from '../../_components/reuseable_components/DisplayErrorMessage';
 
 
 const INITIAL_FORM_STATE = {
@@ -20,8 +21,7 @@ const INITIAL_FORM_STATE = {
 
 const FORM_VALIDATION = Yup.object().shape({
   clientUserId: Yup.string().required("Required"),
-  userPassword: Yup.string().min(8, "Password minimum length should be 8").required('Password is required')
-  
+  userPassword: Yup.string().min(6, "Password minimum length should be 6").required('Password is required')
 });
 
 
@@ -29,7 +29,7 @@ function LoginPage(props) {
   const history = useHistory()
   const [loading, setLoading] = useState(false);
   const  isLoggedIn  = useSelector((state) => state.auth.isLoggedIn);
-  const { message } = useSelector((state) => state.message);
+  var { message } = useSelector((state) => state.message);
   const authentication = useSelector(state => state.auth);
 
   const [open, setOpen] = useState(false);
@@ -43,9 +43,11 @@ function LoginPage(props) {
   const [showBackDrop, setShowBackDrop] = useState(false);
   const [GeoLocation, setGeeolocation] = useState("");
 
-  
+ 
   const dispatch = useDispatch();
 
+  // message = message?.length>=0?message=null:message;
+  console.log(message)
   useEffect(()=>{
     setAuthData(authentication);
     // console.log('change auth data',auth);
@@ -147,6 +149,8 @@ const handleClose = (event, reason) => {
   return (
     <>
       <HeaderPage />
+      <DisplayErrorMessage data={message} />
+    {/* <p className="showErrormsg">{message && message!=''?message:''}</p> */}
       <div className="container-fluid">
         <div className="row">
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
@@ -183,7 +187,7 @@ const handleClose = (event, reason) => {
                     <div className="logmod__container">
                       <ul className="logmod__tabs">
                         <li data-tabtar="lgm-2" className="current">
-                          <a href="#" style={{ width: "100%" }}>
+                          <a href="javascript:void(0)" style={{ width: "100%" }}>
                             Login
                           </a>
                         </li>

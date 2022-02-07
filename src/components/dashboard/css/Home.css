@@ -1,26 +1,29 @@
-table.tables th{
-    background:#f7f7f7; 
-    padding:8px; 
-    font-size:14px;
-  }
-  table.tables {
-    padding:8px; 
-    font-size:13px;
-    border:1px solid #f7f7f7;
-  }
-  table.tables tr:nth-child(even) {
-    background:#fff;   
-  }
-  table.tables tr:nth-child(odd) {
-    background:#fcfcfc;   
-  }
-  .mrg-btm{
-    margin-bottom:10px;
-  }
-  .mar-top{
-    margin-top:10px;
-  }
-  .bgcolor{
-    background: #fcfcfc;
-    padding:10px 0;
-  }
+table.tables th {
+  background: #f7f7f7;
+  padding: 8px;
+  font-size: 14px;
+}
+table.tables {
+  padding: 8px;
+  font-size: 13px;
+  border: 1px solid #f7f7f7;
+}
+table.tables tr:nth-child(even) {
+  background: #fff;
+}
+table.tables tr:nth-child(odd) {
+  background: #fcfcfc;
+}
+.mrg-btm {
+  margin-bottom: 10px;
+}
+.mar-top {
+  margin-top: 10px;
+}
+.bgcolor {
+  background: #fcfcfc;
+  padding: 10px 0;
+}
+.my_account_wrapper .merchant-detail-container {
+  justify-content: none !important;
+}

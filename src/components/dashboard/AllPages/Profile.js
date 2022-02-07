@@ -1,22 +1,92 @@
 import React, { useState,useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom';
-
+import axios from "axios";
 
 function Profile() {
   const [message,setMessage]  = useState('');
+
+  const [loginID , setLoginID] = useState('');
+  const [clientName , setClientName] = useState('');
+  const [phoneNumber , setphoneNumber] = useState('');
+  const [stateadd , setStateAdd] = useState('');
+  const [emailID , setEmailID] = useState('');
+  const [clientCode , setClientCode] = useState('');
+  const [address , setAddress] = useState('');
+  const [nameAsInBankAcc , setnameAsInBankAcc] = useState('');
+  const [bankName , setBankName] = useState('');
+  const [bankAccountNumber , setBankAccountNumber] = useState('');
+  const [ifscCode , setIfscCode] = useState('');
+  const [pan , setPAN] = useState('');
+  const [clientAuthType , setClientAuthType] = useState('');
+  const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
+
+  const [createProfileResponse , setCreateProfileResponse]  = useState('');
+  const [retrievedProfileResponse , setRetrivedProfileResponse] = useState('');
+
+  const CREATE_PROFILE_URL = "https://cobtest.sabpaisa.in/auth-service/client/create";
+  const UPDATE_PROFILE_URL = "https://cobtest.sabpaisa.in/auth-service/client/update/${clientCode}";
+  const PROFILE_GET_URL = "";
+
   const { user } = useSelector((state) => state.auth);
-  
+
   useEffect(() => {
-    var clientMerchantDetailsList =[];
-    if(user && user.clientMerchantDetailsList===null){
-      setMessage("Please update your profile to access the dashbaord");
-    }else{
-      clientMerchantDetailsList = user.clientMerchantDetailsList;
-    }
+    retrieveProfileData();
   }, [])
+
+  const retrieveProfileData = () => {
+    return axios
+      .get(PROFILE_GET_URL)
+  .then(res => {
+    if( res.data !== 0 )
+    {
+      setRetrivedProfileResponse(res.data);
+      setLoginID();
+      setClientName();
+      setphoneNumber();
+      setStateAdd();
+      setEmailID();
+      setClientCode();
+      setAddress();
+      setnameAsInBankAcc();
+      setBankName();
+      setBankAccountNumber();
+      setIfscCode();
+      setPAN();
+      setClientAuthType();
+    }
+    else {
+      setIsCreateorUpdate(false);
+    }
+  })  
+  .catch(err => {  
+    console.log(err)
+  });
+  }
  
-  
+  const createorUpdateProfile = () => {
+    return axios
+      .post(isCreateorUpdate ? CREATE_PROFILE_URL : UPDATE_PROFILE_URL, {
+        "loginId": loginID,
+        "clientName": clientName,
+        "phone": phoneNumber,
+        "state": stateadd,
+        "email": emailID,
+        ...(isCreateorUpdate && {"clientCode": clientCode}),
+        "accountHolderName": nameAsInBankAcc,
+        "bankName": bankName,
+        "accountNumber": bankAccountNumber,
+        "ifscCode": ifscCode,
+        "pan": pan,
+        "address": address,
+        "clientAuthenticationType" : clientAuthType,
+  })
+  .then(res => {  
+    setCreateProfileResponse(res.data);
+  })  
+  .catch(err => {  
+    console.log(err)
+  });
+  };
 
     return (
         <section className="ant-layout">
@@ -51,26 +121,157 @@ function Profile() {
                     </div>
                     <div className="panel">
                       <h4 className="text-left m-b-lg m-b-20">Basic Details</h4>
+ 
                       <div className="merchant-detail-container">
-                        <label>ID</label><label>hkiWYmgbg</label></div>
-                      <div className="merchant-detail-container"><label>User Name</label><label>VISHAL
-                          ANAND</label></div>
-                      <div className="merchant-detail-container"><label>Login
-                          Email</label><label>visi.bhatt@gmail.com</label></div>
-                      <div className="merchant-detail-container"><label>Phone Number</label><label>+91
-                          9899660338</label></div>
-                      <div className="merchant-detail-container"><label>State</label><label>Uttar
-                          Pradesh</label></div>
+                      Login ID : 
+                        <input
+                          type="text"
+                          name="loginID" 
+                          onChange={(e) => setLoginID(e.target.value)} 
+                          placeholder="Enter Login ID" 
+                          value={loginID}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <div className="merchant-detail-container">
+                      Client Name : 
+                        <input
+                          type="text"
+                          name="clientName" 
+                          onChange={(e) => setClientName(e.target.value)} 
+                          placeholder="Enter Client Name" 
+                          value={clientName}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <div className="merchant-detail-container">
+                      Phone : 
+                        <input
+                          type="text"
+                          name="Phone" 
+                          onChange={(e) => setphoneNumber(e.target.value)} 
+                          placeholder="Enter Phone Number" 
+                          value={phoneNumber}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <div className="merchant-detail-container">
+                      State : 
+                        <input
+                          type="text"
+                          name="State" 
+                          onChange={(e) => setStateAdd(e.target.value)} 
+                          placeholder="Enter State" 
+                          value={stateadd}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <div className="merchant-detail-container">
+                      Email-ID : 
+                        <input
+                          type="text"
+                          name="EmailID" 
+                          onChange={(e) => setEmailID(e.target.value)} 
+                          placeholder="Enter Email ID" 
+                          value={emailID}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <div className="merchant-detail-container">
+                      Client Code : 
+                        <input
+                          type="text"
+                          name="ClientCode" 
+                          onChange={(e) => setClientCode(e.target.value)} 
+                          placeholder="Enter Client Code" 
+                          value={clientCode}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <div className="merchant-detail-container">
+                      Address : 
+                        <input
+                          type="text"
+                          name="Address" 
+                          onChange={(e) => setAddress(e.target.value)} 
+                          placeholder="Enter Address" 
+                          value={address}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <h4 className="text-left m-b-lg m-b-20">Bank Details</h4>
+
+                      <div className="merchant-detail-container">
+                      Name in Bank Account : 
+                        <input
+                          type="text"
+                          name="BankAccountName" 
+                          onChange={(e) => setnameAsInBankAcc(e.target.value)} 
+                          placeholder="Enter Name in Bank Account" 
+                          value={nameAsInBankAcc}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <div className="merchant-detail-container">
+                      Bank Name : 
+                        <input
+                          type="text"
+                          name="BankName" 
+                          onChange={(e) => setBankName(e.target.value)} 
+                          placeholder="Enter Bank Name" 
+                          value={bankName}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <div className="merchant-detail-container">
+                      Bank Account Number : 
+                        <input
+                          type="text"
+                          name="BankAccountNumber" 
+                          onChange={(e) => setBankAccountNumber(e.target.value)} 
+                          placeholder="Enter Bank Account Number" 
+                          value={bankAccountNumber}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <div className="merchant-detail-container">
+                      IFSC Code : 
+                        <input
+                          type="text"
+                          name="IFSCCode" 
+                          onChange={(e) => setIfscCode(e.target.value)} 
+                          placeholder="Enter IFSC Code"
+                          value={ifscCode}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <div className="merchant-detail-container">
+                      PAN :
+                        <input
+                          type="text"
+                          name="PAN" 
+                          onChange={(e) => setPAN(e.target.value)} 
+                          placeholder="PAN" 
+                          value={pan}
+                          style={{marginLeft: '10px', width: "398px"}}
+                        />
+                      </div>
+                      <div className="merchant-detail-container">
+                      Client Authentication Type : 
+                        <input
+                          type="text"
+                          name="authType" 
+                          onChange={(e) => setClientAuthType(e.target.value)} 
+                          placeholder="Enter CLient Auth Type" 
+                          value={clientAuthType}
+                          style={{marginLeft: '10px' , width: "398px"}}
+                        />
+                      </div>
+                      <button style={{margin: '10px', float: "right", width: '25%'}} className='class="btn btn-primary' onClick={createorUpdateProfile}>{isCreateorUpdate? "Create Profile" : "Update Profile"}</button>
+                      
                           <br />
-                          <h4 className="text-left m-b-lg m-b-20">Bank Details</h4>
-                      <div className="merchant-detail-container"><label>Bank Name</label><label>
-                      Bank Of Baroda</label></div>
-                      <div className="merchant-detail-container"><label>Account Type
-                          </label><label>Savings Account</label></div>
-                      <div className="merchant-detail-container"><label>Account Number</label><label>
-                      4012888888881881</label></div>
-                      <div className="merchant-detail-container"><label>IFSC Code </label><label>BARB0INDELX
-                          </label></div>
+                    </div>
+
                     </div>
                     <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
                     </div>
@@ -79,7 +280,6 @@ function Profile() {
                 <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
               </div>
             </div>
-          </div>
           <footer className="ant-layout-footer">
             <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
           </footer>

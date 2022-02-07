@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import validation from '../../validation';
 
 
 function TransactionEnquirey() {
@@ -27,6 +28,7 @@ function TransactionEnquirey() {
   
   const [input, setInput] = useState();
   const [show, setIsShow] = useState(false);
+  const [errors, setErrors] =useState({});
   const [errMessage , setErrMessage] = useState('');
   const [data,setData]= useState(initialState)
 
@@ -38,6 +40,10 @@ function TransactionEnquirey() {
 
 
   const onSubmit=async(input)=>{
+
+    setErrors(validation({ input }))
+
+    
 
     const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
     .then((response) => {
