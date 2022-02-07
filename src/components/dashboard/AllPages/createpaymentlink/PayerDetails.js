@@ -8,6 +8,8 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import Genratelink from './Genratelink';
 import { Edituser } from './Edituser';
+import {toast} from 'react-toastify';
+
 
 const initialValues = {
     name: "",
@@ -15,11 +17,11 @@ const initialValues = {
     phone_number: ""
 }
 
-// const validationSchema = Yup.object().shape({
-    //     name: Yup.string().min(3, "It's too short").required("Required"),
-    //     phone_number: Yup.string().required("Required"),
-    //     email: Yup.string().email("Enter valid email").required("Required")
-    // })
+const validationSchema = Yup.object().shape({
+        name: Yup.string().min(3, "It's too short").required("Required"),
+        phone_number: Yup.string().required("Required"),
+        email: Yup.string().email("Enter valid email").required("Required")
+    })
 
 const PayerDetails = () => {
 
@@ -42,9 +44,11 @@ const PayerDetails = () => {
     
     const { newName, NewEmail, NewPhoneNumber, newCustomerTypeId } = item;
     const [name , setName ] = useState('');
+
     const [myemail , setMyEmail]=useState('');
     const [customerTypeId , setCustomerTypeId]=useState('');
     const [phoneNumber , setPhoneNumber]=useState('');
+    const [searchText, SetSearchText] = useState("");
 
     const { user } = useSelector((state) => state.auth);
     // const [formData, setFormData] = useState(initialValues)
@@ -76,6 +80,18 @@ const PayerDetails = () => {
 
 
     }
+    const getSearchTerm = (e) => {
+        SetSearchText(e.target.value);
+        if (searchText !== "") {
+          setData(
+            data.filter((item) =>
+              item.customer_email
+                .toLowerCase()
+                .includes(searchText.toLocaleLowerCase())
+            )
+          );
+        }
+      };
     // const getFileName = async () => {
     //     // console.log(clientCode,'hello')
     //     await axios(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)  //MPSE1
@@ -102,6 +118,12 @@ const PayerDetails = () => {
     }
     const onSubmit = async e => {
         e.preventDefault();
+        toast.success("Payment Link success")
+        // if(item.status===200)
+        // alert("succes")
+        // else{
+        //     alert("Payer Name required !")
+        // }
         console.log(item);
 
         setName('');
@@ -119,6 +141,7 @@ const PayerDetails = () => {
 
         console.log(res)
             .then((res) => {
+                
                 console.log(JSON.stringify(res.data))
 
             })
@@ -209,8 +232,8 @@ const generateli = (id) => {
                         </div>
                         <div class="modal-body">
                             <Formik 
-                            // initialValues={initialValues}
-                            //  validationSchema={validationSchema}
+                             initialValues={initialValues}
+                              validationSchema={validationSchema}
                               onSubmit={onSubmit}>
                                 {(props) => (
                                     <Form onSubmit={e => onSubmit(e)} >
@@ -255,7 +278,7 @@ const generateli = (id) => {
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary"  >Submit</button>
                                             <button type="button" disabled class="btn btn-danger">Update</button>
-                                            <button type="button" disabled class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                         </div>
 
                                     </Form>
@@ -270,11 +293,11 @@ const generateli = (id) => {
                 
                 <div className="main_filter_area">
                     <div className='Form_add_btn'>
-                        <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-200px', marginTop: '-70' }} >Add Single Payer</button>
+                        <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-200px', marginTop: '-70px' }} >Add Single Payer</button>
                     </div>
                     <div className="filter_area">
                     {/* <p className='para'>Total Records: 5</p> */}
-                        <input type="text" placeholder="Search Here" style={{ position: 'absolute', top: 320, left: 12, width: 700 }} />
+                        <input onChange={getSearchTerm} type="text" placeholder="Search Here" style={{ position: 'absolute', top: 320, left: 12, width: 700 }} />
                         <h3 style={{ position: 'absolute', top: 320, left: 800 }}>Count per page</h3>
                         <select style={{ position: 'absolute', top: 320, left: 930, width: 130 }}>
                             <option value="10">10</option>
@@ -313,9 +336,9 @@ const generateli = (id) => {
                             <tr>
                                 <td>{i+1}</td>
                                 <td>{user.name}</td>
-                                <td>8920885489</td>
-                                <td>rahul.singh@srslive.in</td>
-                                <td>customer</td>
+                                <td>{user.phone_number}</td>
+                                <td>{user.email}</td>
+                                <td>{user.customer_type}</td>
                                 <td>
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)}    >Edit</button>
                                 </td>

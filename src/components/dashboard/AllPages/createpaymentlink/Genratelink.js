@@ -189,6 +189,7 @@ import { useSelector } from 'react-redux';
                 <br />
                 <select style={{ width: 100 }} value = {minutes} onChange={(e) => setMinutes(e.target.value)}>
                   <option selected>Minutes</option>
+                  <option value='00'>0</option>
                   <option value="01">01</option>
                   <option value="02">02</option>
                   <option value="03">03</option>
@@ -213,6 +214,7 @@ import { useSelector } from 'react-redux';
                   <option value="21">21</option>
                   <option value="22">22</option>
                   <option value="23">23</option>
+                 
                 </select>
               </div>
             </div>
