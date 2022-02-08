@@ -82,13 +82,15 @@ const PayerDetails = () => {
     }
     const getSearchTerm = (e) => {
         SetSearchText(e.target.value);
+        console.log(e);
         if (searchText !== "") {
           setData(
-            data.filter((item) =>
-              item.customer_email
+            data.filter((item) =>{
+              item.join("")
+              
                 .toLowerCase()
                 .includes(searchText.toLocaleLowerCase())
-            )
+            })
           );
         }
       };
@@ -296,8 +298,8 @@ const generateli = (id) => {
                         <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-200px', marginTop: '-70px' }} >Add Single Payer</button>
                     </div>
                     <div className="filter_area">
-                    {/* <p className='para'>Total Records: 5</p> */}
-                        <input onChange={getSearchTerm} type="text" placeholder="Search Here" style={{ position: 'absolute', top: 320, left: 12, width: 700 }} />
+                    <p className='para'>Total Records:{data.length}</p>
+                        <input value={searchText} onChange={getSearchTerm} type="text" placeholder="Search Here" style={{ position: 'absolute', top: 320, left: 12, width: 700 }} />
                         <h3 style={{ position: 'absolute', top: 320, left: 800 }}>Count per page</h3>
                         <select style={{ position: 'absolute', top: 320, left: 930, width: 130 }}>
                             <option value="10">10</option>
