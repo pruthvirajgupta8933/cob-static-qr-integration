@@ -263,7 +263,7 @@ const handleClose = (event, reason) => {
                                   type="sumbit"
                                   style={{ color: "#fff" }}
                                 > {loading && (
-                                                <span className="spinner-border spinner-border-sm"></span>
+                                                <span class="spinner-border" role="status"></span>
                                                 )}
                                   LogIn
                                 </button>

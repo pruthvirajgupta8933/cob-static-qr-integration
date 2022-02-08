@@ -1,6 +1,22 @@
 import React, {useState} from 'react';
 import axios from 'axios'
 import { useSelector } from 'react-redux';
+import {toast} from 'react-toastify';
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+
+const initialValues={
+  Amount:"",
+  Remarks:"",
+  LinkValidToDate:""
+}
+
+
+const validationSchema = Yup.object().shape({
+  Amount: Yup.string().required("Required"),
+  Remarks: Yup.string().required("Required"),
+  Date: Yup.string().required("Required")
+})
 
  const Genratelink = (props) => {
 
@@ -56,11 +72,12 @@ import { useSelector } from 'react-redux';
       
              })
             .then((resp) => {
-              alert("Payment Link Created!")
+              toast.success("Payment Link Created!")
               console.log(JSON.stringify(resp.data));
             })
             .catch((error) => {
               console.log(error);
+              toast.error("Payment Link Creation Failed ")
             });
 
 
@@ -106,7 +123,11 @@ import { useSelector } from 'react-redux';
           </button>
         </div>
         <div class="modal-body">
-          <form onSubmit={generateHandler}>
+          <Formik initialValues={initialValues}
+            validationSchema={validationSchema}
+            >
+                 {(props) => (
+          <Form onSubmit={generateHandler}>
             
 
             <br />
@@ -116,8 +137,11 @@ import { useSelector } from 'react-redux';
                 <label for="exampleInputEmail1">
                  Amount
                 </label>
-                <input
+                <Field
                   type="number"
+                  min="1" 
+                  step="1"
+                  onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
                   name="Amount"
                   autoComplete="off"
                   value={enteredAmount}
@@ -125,12 +149,15 @@ import { useSelector } from 'react-redux';
                   class="form-control"
                  
                 />
+                <ErrorMessage name="Amount">
+                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                            </ErrorMessage>
               </div>
               <div class="col">
                 <label for="exampleInputEmail1">
                  Remarks
                 </label>
-                <input
+                <Field
                   type="text"
                   name="Remarks"
                   autoComplete="off"
@@ -139,19 +166,27 @@ import { useSelector } from 'react-redux';
                   class="form-control"
                   
                 />
+                 <ErrorMessage name="Remarks">
+                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                            </ErrorMessage>
+
               </div>
             </div>
 
             <div class="row">
               <div class="col">
                 <label>Link Valid To Date</label>
-                <input
+                <Field
                   type="date"
+                  name="Date"
                   className="ant-input"
                   value={enteredDate}                     
                   onChange={(e) => setEnteredDate(e.target.value)}
                   
                 />
+                 <ErrorMessage name="Date">
+                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                            </ErrorMessage>
               </div>
               <div class="col">
                 <label>Hours</label>
@@ -237,7 +272,9 @@ import { useSelector } from 'react-redux';
                 </button>
               </div>
             </div>
-          </form>
+          </Form>
+                 )}
+          </Formik>
           </div>
           </div>
           </div>
