@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import {Dashboardservice} from "../services/dashboard.service";
-import ProfileService from "../services/profile.service";
+import profileService from "../services/profile.service";
+
 
 const initialState = { successTxnsumry:[], isLoading:false, subscribedService: [], subscriptionplandetail: [], createClientProfile:[] };
 
@@ -12,10 +13,34 @@ const initialState = { successTxnsumry:[], isLoading:false, subscribedService: [
 
 export const createClientProfile = createAsyncThunk(
   "dashboard/createClientProfile",
-  async (object, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
+      console.log("dashboardslice",data);
       // console.log({ fromdate, todate, clientcode });
-      const response = await ProfileService.createClintCode(object );
+      const response = await profileService.createClintCode(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+export const updateClientProfile = createAsyncThunk(
+  "dashboard/updateClientProfile",
+  async ({data,clientId}, thunkAPI) => {
+    try {
+      console.log("update functon",data);
+      console.log("update functon",clientId);
+      // console.log({ fromdate, todate, clientcode });===update fn call
+      const response = await profileService.updateClientProfile(data,clientId);
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
@@ -108,7 +133,15 @@ export const successTxnSummary = createAsyncThunk(
       },
       [createClientProfile.fulfilled]:(state,action)=>{
         state.createClientProfile = action.payload
-
+      },
+      [updateClientProfile.pending]:(state)=>{
+          console.log('pending profile');
+      },
+      [updateClientProfile.fulfilled]:(state,action)=>{
+        console.log('fulfilled profile');
+      },
+      [updateClientProfile.rejected]:()=>{
+        console.log('rejected profile');
       },
       [successTxnSummary.pending]: (state) => {
         state.isLoading = true

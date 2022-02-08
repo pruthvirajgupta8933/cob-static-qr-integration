@@ -129,7 +129,7 @@ return (
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Confirm Password *</label>
                                   <input className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type="password" size={50} onChange={e => setConfirmPassword(e.target.value)} />
-                                  <input className="string optional" maxLength={255} id="email" placeholder="email" type="hidden" size={50} onChange={e => setEmail(e.target.value)}/>
+                                  <input  type="hidden" name="requestedClientType" value="1" />
                                 
                                   {/* <span className="hide-password">Show</span> */}
                                 </div>

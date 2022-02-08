@@ -6,10 +6,11 @@ const SIGNUP_URL = "https://cobtest.sabpaisa.in/auth-service/auth/";
 
 const register = (firstName, lastName, mobileNumber, email, password) => {
   return axios.post(SIGNUP_URL + "signup", {
-    name: firstName + lastName,
+    name: firstName+' '+ lastName,
     mobileNumber: mobileNumber,
     email: email,
     password: password,
+    requestedClientType:1,
   })
   .then((response) => {
     if (response.data.accessToken) {

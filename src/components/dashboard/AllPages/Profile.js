@@ -2,46 +2,72 @@ import React, { useState,useEffect } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { Formik, Field, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup'
+import "yup-phone"
 import axios from 'axios';
-import {createClientProfile} from '../../../slices/dashboardSlice' 
+import {createClientProfile, updateClientProfile} from '../../../slices/dashboardSlice' 
 
 
-
-const INITIAL_FORM_STATE = {
-  clientUserId:'',
-  userPassword:''
-};
-
-const FORM_VALIDATION = Yup.object().shape({
-  clientUserId: Yup.string().required("Required"),
-  userPassword: Yup.string().min(6, "Password minimum length should be 6").required('Password is required')
-});
 
 function Profile() {
   const dispatch= useDispatch();
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
-  const {clientMerchantDetailsList,loginId,userName,lastLoginTime,clientContactPersonName,clientEmail,clientMobileNo} = user;
 
+  const { clientSuperMasterList ,
+          loginId,
+          clientContactPersonName,
+          clientEmail,
+          clientMobileNo,
+          state,
+          accountHolderName,
+          accountNumber,
+          bankName,
+          ifscCode,
+          pan,
+        } = user;
   
   const [message,setMessage]  = useState('');
-  const [loginID , setLoginID] = useState(loginId);
-  const [clientName , setClientName] = useState(clientContactPersonName);
-  const [phoneNumber , setphoneNumber] = useState(clientMobileNo);
-  const [stateadd , setStateAdd] = useState('');
-  const [emailID , setEmailID] = useState(clientEmail);
-  const [clientCode , setClientCode] = useState('');
-  const [address , setAddress] = useState('');
-  const [nameAsInBankAcc , setnameAsInBankAcc] = useState('');
-  const [bankName , setBankName] = useState('');
-  const [bankAccountNumber , setBankAccountNumber] = useState('');
-  const [ifscCode , setIfscCode] = useState('');
-  const [pan , setPAN] = useState('');
-  const [clientAuthType , setClientAuthType] = useState('');
-  const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
 
+  const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
+  const [clientId,setClientId] = useState(clientSuperMasterList?.clientId)
   const [createProfileResponse , setCreateProfileResponse]  = useState('');
   const [retrievedProfileResponse , setRetrivedProfileResponse] = useState('');
+
+
+
+  
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+console.log(clientSuperMasterList?.address)
+const INITIAL_FORM_STATE = {
+  loginId:loginId,
+  clientName:clientContactPersonName,
+  phone:clientMobileNo,
+  state:state,
+  email:clientEmail,
+  ...(isCreateorUpdate && {clientCode:''}),
+  address:clientSuperMasterList?.address,
+  accountHolderName:accountHolderName,
+  bankName:bankName,
+  accountNumber:accountNumber,
+  ifscCode:ifscCode,
+  pan:pan 
+};
+
+console.log("INITIAL_FORM_STATE----",INITIAL_FORM_STATE);
+
+const FORM_VALIDATION = Yup.object().shape({
+  loginId:Yup.string().required("Required"),
+  clientName: Yup.string().required("Required"),
+  phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
+  state: Yup.string().required("Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
+  ...(isCreateorUpdate && {clientCode: Yup.string().min(6,"Client Code should be 6 digit").required("Required")}),
+  address: Yup.string().required("Required"),
+  accountHolderName: Yup.string().required("Required"),
+  bankName: Yup.string().required("Required"),
+  accountNumber: Yup.string().required("Required"),
+  ifscCode: Yup.string().required("Required"),
+  pan: Yup.string().required("Required"),
+});
 
   const CREATE_PROFILE_URL = "https://cobtest.sabpaisa.in/auth-service/client/create";
   const UPDATE_PROFILE_URL = "https://cobtest.sabpaisa.in/auth-service/client/update/${clientCode}";
@@ -49,69 +75,15 @@ function Profile() {
 
 
 
-  var isRequireClientCreate = true;
-  isRequireClientCreate = clientMerchantDetailsList && clientMerchantDetailsList!==null ? false : true;
-console.log("isRequireClientCreate",isRequireClientCreate);
- // if(isRequireClientCreate){dispatch(createClientProfile(objectparam))} 
   useEffect(() => {
-    // var objectparam = {};
-    // dispatch(createClientProfile(objectparam));
-    setIsCreateorUpdate(clientMerchantDetailsList && clientMerchantDetailsList!==null ? false : true);
+    setIsCreateorUpdate(clientSuperMasterList && clientSuperMasterList!==null ? false : true);
   }, [])
 
-  const retrieveProfileData = () => {
-    return axios
-      .get(PROFILE_GET_URL)
-  .then(res => {
-    if( res.data !== 0 )
-    {
-      setRetrivedProfileResponse(res.data);
-      setLoginID();
-      setClientName();
-      setphoneNumber();
-      setStateAdd();
-      setEmailID();
-      setClientCode();
-      setAddress();
-      setnameAsInBankAcc();
-      setBankName();
-      setBankAccountNumber();
-      setIfscCode();
-      setPAN();
-      setClientAuthType();
-    }
-    else {
-     // setIsCreateorUpdate(false);
-    }
-  })  
-  .catch(err => {  
-    console.log(err)
-  });
-  }
  
-  const createorUpdateProfile = () => {
-    return axios
-      .post(isCreateorUpdate ? CREATE_PROFILE_URL : UPDATE_PROFILE_URL, {
-        "loginId": loginID,
-        "clientName": clientName,
-        "phone": phoneNumber,
-        "state": stateadd,
-        "email": emailID,
-        ...(isCreateorUpdate && {"clientCode": clientCode}),
-        "accountHolderName": nameAsInBankAcc,
-        "bankName": bankName,
-        "accountNumber": bankAccountNumber,
-        "ifscCode": ifscCode,
-        "pan": pan,
-        "address": address,
-        "clientAuthenticationType" : clientAuthType,
-  })
-  .then(res => {  
-    setCreateProfileResponse(res.data);
-  })  
-  .catch(err => {  
-    console.log(err)
-  });
+  const createorUpdateProfile = (data) => {
+    console.log(isCreateorUpdate)
+    console.log("send client id",clientId);
+    isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
   };
 
     return (
@@ -147,23 +119,19 @@ console.log("isRequireClientCreate",isRequireClientCreate);
                     </div>
                     <div className="panel">
                       <Formik
-                                        initialValues={{
-                                        ...INITIAL_FORM_STATE
-                                    }}
-                                        validationSchema={FORM_VALIDATION}
-                                        onSubmit={(d)=>console.log(d)}
-                                    >
-                                  <Form>
-                                 
-                                
+                            initialValues={{
+                            ...INITIAL_FORM_STATE
+                        }}
+                            validationSchema={FORM_VALIDATION}
+                            onSubmit={createorUpdateProfile}
+                        >
+                      <Form>
                       <h4 className="text-left m-b-lg m-b-20">Basic Details</h4>
-
                       <div className="merchant-detail-container">
                       Login ID : 
                         <Field
                           type="text"
-                          name="clientUserId"
-                          value={loginID}
+                          name="loginId"
                           disabled
                         />
                       </div>
@@ -174,133 +142,145 @@ console.log("isRequireClientCreate",isRequireClientCreate);
                           type="text"
                           name="clientName" 
                           placeholder="Enter Client Name" 
-                          value={clientName}
                         />
+                        <ErrorMessage name="clientName">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>                      
                       </div>
                       <div className="merchant-detail-container">
                       Phone : 
-                        <input
+                        <Field
                           type="text"
-                          name="Phone" 
-                          onChange={(e) => setphoneNumber(e.target.value)} 
+                          name="phone"
                           placeholder="Enter Phone Number" 
-                          value={phoneNumber}
                           style={{marginLeft: '10px', width: "398px"}}
                         />
+                        <ErrorMessage name="phone">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>  
                       </div>
+
                       <div className="merchant-detail-container">
                       State : 
-                        <input
+                        <Field
                           type="text"
-                          name="State" 
-                          onChange={(e) => setStateAdd(e.target.value)} 
+                          name="state" 
                           placeholder="Enter State" 
-                          value={stateadd}
                           style={{marginLeft: '10px', width: "398px"}}
                         />
+                          <ErrorMessage name="state">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>  
                       </div>
+
+
                       <div className="merchant-detail-container">
                       Email-ID : 
-                        <input
+                        <Field
                           type="text"
-                          name="EmailID" 
-                          onChange={(e) => setEmailID(e.target.value)} 
+                          name="email" 
                           placeholder="Enter Email ID" 
-                          value={emailID}
                           style={{marginLeft: '10px', width: "398px"}}
                         />
+                          <ErrorMessage name="email">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>  
                       </div>
-                      <div className="merchant-detail-container">
+
+                      {/* Client Code Hide if already client created */}
+                      {isCreateorUpdate ? <div className="merchant-detail-container">
                       Client Code : 
-                        <input
+                        <Field
                           type="text"
-                          name="ClientCode" 
-                          onChange={(e) => setClientCode(e.target.value)} 
+                          name="clientCode" 
                           placeholder="Enter Client Code" 
-                          value={clientCode}
                           style={{marginLeft: '10px', width: "398px"}}
                         />
-                      </div>
+                          <ErrorMessage name="clientCode">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>  
+                      </div> : <></> }
                       <div className="merchant-detail-container">
                       Address : 
-                        <input
+                        <Field
                           type="text"
-                          name="Address" 
-                          onChange={(e) => setAddress(e.target.value)} 
+                          name="address" 
                           placeholder="Enter Address" 
-                          value={address}
                           style={{marginLeft: '10px', width: "398px"}}
                         />
+                          <ErrorMessage name="address">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>  
                       </div>
+
+                      {/* start bank details field */}
                       <h4 className="text-left m-b-lg m-b-20">Bank Details</h4>
 
                       <div className="merchant-detail-container">
                       Name in Bank Account : 
-                        <input
+                        <Field
                           type="text"
-                          name="BankAccountName" 
-                          onChange={(e) => setnameAsInBankAcc(e.target.value)} 
+                          name="accountHolderName" 
                           placeholder="Enter Name in Bank Account" 
-                          value={nameAsInBankAcc}
                           style={{marginLeft: '10px', width: "398px"}}
                         />
+                          <ErrorMessage name="accountHolderName">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>  
                       </div>
                       <div className="merchant-detail-container">
                       Bank Name : 
-                        <input
+                        <Field
                           type="text"
-                          name="BankName" 
-                          onChange={(e) => setBankName(e.target.value)} 
+                          name="bankName"  
                           placeholder="Enter Bank Name" 
-                          value={bankName}
                           style={{marginLeft: '10px', width: "398px"}}
                         />
+                        <ErrorMessage name="bankName">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>  
                       </div>
+
                       <div className="merchant-detail-container">
                       Bank Account Number : 
-                        <input
+                        <Field
                           type="text"
-                          name="BankAccountNumber" 
-                          onChange={(e) => setBankAccountNumber(e.target.value)} 
+                          name="accountNumber" 
                           placeholder="Enter Bank Account Number" 
-                          value={bankAccountNumber}
                           style={{marginLeft: '10px', width: "398px"}}
                         />
+                           <ErrorMessage name="accountNumber">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>  
                       </div>
+
                       <div className="merchant-detail-container">
                       IFSC Code : 
-                        <input
+                        <Field
                           type="text"
-                          name="IFSCCode" 
-                          onChange={(e) => setIfscCode(e.target.value)} 
+                          name="ifscCode" 
                           placeholder="Enter IFSC Code"
-                          value={ifscCode}
                           style={{marginLeft: '10px', width: "398px"}}
                         />
+                         <ErrorMessage name="ifscCode">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>  
                       </div>
+
                       <div className="merchant-detail-container">
                       PAN :
-                        <input
+                        <Field
                           type="text"
-                          name="PAN" 
-                          onChange={(e) => setPAN(e.target.value)} 
-                          placeholder="PAN" 
-                          value={pan}
+                          name="pan"  
+                          placeholder="PAN Number" 
                           style={{marginLeft: '10px', width: "398px"}}
                         />
+                         <ErrorMessage name="pan">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>  
                       </div>
-                      <div className="merchant-detail-container">
-                      Client Authentication Type : 
-                        <input
-                          type="text"
-                          name="authType" 
-                          onChange={(e) => setClientAuthType(e.target.value)} 
-                          placeholder="Enter CLient Auth Type" 
-                          value={clientAuthType}
-                          style={{marginLeft: '10px' , width: "398px"}}
-                        />
-                      </div>
-                      <button style={{margin: '10px', float: "right", width: '25%'}} className='class="btn btn-primary' onClick={createorUpdateProfile}>{isCreateorUpdate? "Create Profile" : "Update Profile"}</button>
+                 
+                      <button type="sumbit" style={{margin: '10px', float: "right", width: '25%'}} className="btn btn-primary" >{isCreateorUpdate? "Create Profile" : "Update Profile"}</button>
                       
                           <br />
                         </Form>
