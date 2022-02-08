@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios' ;
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const Reports = () => {
 
@@ -23,10 +24,10 @@ const Reports = () => {
 
   const [data , setData] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [searchResults, setSearchResults] = useState([])
   const {user} = useSelector((state)=>state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   const {clientCode} = clientMerchantDetailsList[0];
-  console.log('clientCode',clientCode);
 
 
   
@@ -37,6 +38,7 @@ const Reports = () => {
     await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getReports/${clientCode}`)  
   .then(res => {     
     setData(res.data);  
+    console.log(res.data)
 
   })  
   .catch(err => {  
@@ -45,16 +47,38 @@ const Reports = () => {
   
 }
 
-
-useEffect(() => { 
-  getData();
-},[])
+useEffect(() => {
+  const loading = getData();
+  toast.promise(
+    loading,
+    {
+      pending: "In Process",
+      success: "Data Loaded Successfully",
+      error: "Error Occured in Data",
+    },
+    {
+      position: "top-center",
+    }
+  );
+}, []);
 
 
 
 const getSearchTerm  = (e) => {
-  setSearchText(e.target.value)
-  if(searchText !== ''){ setData(data.filter((item)=>item.customer_name.toLowerCase().includes(searchText.toLocaleLowerCase())))}
+  setSearchText(e.target.value);
+
+  if(searchText !== "") {
+    const newData = data.filter((dataitem) => {
+      return dataitem.customer_phone_number.toLowerCase().includes(searchText.toLowerCase());
+    })
+
+    setSearchResults(newData);
+  }
+  else {
+    setSearchResults(data)
+  }
+
+  console.log(data)
 }
 
 
@@ -64,7 +88,7 @@ const getSearchTerm  = (e) => {
       <div>
         <div>
       <h3><b>Reports</b></h3>
-      <p>Total Records : 8</p>
+      <p>Total Records : {data.length}</p>
       </div>
        
        
@@ -104,9 +128,11 @@ const getSearchTerm  = (e) => {
  </tr>
 
  
-
+{/* 
  {
-    (data.map((user) => 
+    searchText.length < 1 ?  */}
+    
+    { data.map((user) => 
  <tr>
      <td>{user.customer_name}</td>
      <td>{user.customer_email}</td>
@@ -122,8 +148,9 @@ const getSearchTerm  = (e) => {
 
      <td></td>
  </tr>
+    )}
 
-     ))}
+    {/* //  ): searchResults} */}
  
 
 

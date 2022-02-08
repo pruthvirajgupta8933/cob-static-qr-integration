@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const BulkPayer = () => {
   const { user } = useSelector((state) => state.auth);
@@ -32,9 +32,11 @@ const BulkPayer = () => {
 
       .then((res) => {
         alert("File Upload success");
+        toast.success("File Upload Successfull")
       })
       .catch((error) => {
         console.error("Error:", error);
+        toast.error('File Upload Unsuccesfull')
       });
 
     console.log(formData);

@@ -13,7 +13,7 @@ const PaymentLinkDetail = () => {
 
   
   const [selectedPayer, setSelectedPayer] = useState("Select Payer");
-  var [showFilterData,SetShowFilterData] =useState([]); 
+  const [searchResults, setSearchResults] = useState([])
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredPurpose, setEnteredPurpose] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
@@ -28,10 +28,9 @@ const PaymentLinkDetail = () => {
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [drop, setDrop] = useState([]);
-  const [searchText, SetSearchText] = useState("");
+  const [searchText, setSearchText] = useState("");
   const [noofbuttons, setNoOfButtons ] = useState([]);
   const [folderArr, setFolderArr] = React.useState([]);
-  var [showFilterData, SetShowFilterData] = useState([]);
 
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
@@ -86,18 +85,10 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 
 
 
-  const getSearchTerm = (e) => {
-    SetSearchText(e.target.value);
-    if (searchText !== "") {
-    showFilterData(
-        data.filter((item) =>
-          item.customer_email
-            .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
-        )
-      );
-    }
-  };
+
+  const getSearchTerm  = (e) => {
+  setSearchText(e.target.value);
+  }
 
   const dateFormat = (enteredDate) => {
     return (
@@ -255,8 +246,12 @@ console.log("dataLength",paginatedata.length)
                     </label>
                     <Field
                       type="number"
-                      name="Amount"
+                      min="1" 
+                      step="1"
+                      onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
+                      name="Amount" 
                       autoComplete="off"
+                      onkeydown="return event.keyCode !== 69" 
                       value={enteredAmount}
                       onChange={(e) => setEnteredAmount(e.target.value)}
                       class="form-control"
