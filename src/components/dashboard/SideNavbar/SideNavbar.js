@@ -56,21 +56,21 @@ function SideNavbar() {
                       <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link> 
                       </li>:<li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
-                      Settlement Report</Link> 
+                      &nbsp; Settlement Report</Link> 
                       </li>
                        }
                         
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/subscription`} className='txt-white'><i className="fa fa-bell" aria-hidden="true" />
-                      Subscription</Link> 
+                      &nbsp; Subscription</Link> 
                       </li>
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
-                      Create Payment Link</Link> 
+                      &nbsp; Create Payment Link</Link> 
                       </li>
                      
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href=""><i className="fa fa-briefcase" aria-hidden="true" />
-                            Logout</a>
+                      &nbsp; Logout</a>
                       </li>
                     </ul>
                   </li>
