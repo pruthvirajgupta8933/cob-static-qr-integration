@@ -178,7 +178,7 @@ console.log("dataLength",paginatedata.length)
         data-toggle="modal"
         data-target="#exampleModal"
         data-whatever="@getbootstrap"
-        style={{marginTop: 5, marginLeft: 35}}
+        style={{marginTop: 5, marginLeft: 15}}
       >
         Create Payment Link
       </button>
@@ -499,11 +499,8 @@ console.log("dataLength",paginatedata.length)
          )}
       </div>
       <div>
-  <nav aria-label="Page navigation example"  >
+  {/* <nav aria-label="Page navigation example"  >
   <ul class="pagination">
-  {/* <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li> */}
     <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
 
    {
@@ -525,7 +522,7 @@ console.log("dataLength",paginatedata.length)
    
   
   </ul>
-</nav>
+</nav> */}
   </div>
 
     </div>

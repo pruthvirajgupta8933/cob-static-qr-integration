@@ -2,25 +2,33 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios' ;
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import _ from 'lodash';
 
 const Reports = () => {
 
-  const initialState = {
 
-    client_transaction_id: null,
-    created_at: null,
-    customer_email: "",
-    customer_name: "",
-    customer_phone_number: "",
-    link_id: "",
-    link_valid_date: "",
-    numeric_link_id: "",
-    payment_collected: null,
-    pg_response: null,
-    pg_transaction_id: null,
-    transaction_status: null,
-    type: "",
-  }
+  const [pageSize, setPageSize] = useState(10);
+  const [paginatedata, setPaginatedData] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+ 
+
+  // Parameters for Reports
+  // const initialState = {
+
+  //   client_transaction_id: null,
+  //   created_at: null,
+  //   customer_email: "",
+  //   customer_name: "",
+  //   customer_phone_number: "",
+  //   link_id: "",
+  //   link_valid_date: "",
+  //   numeric_link_id: "",
+  //   payment_collected: null,
+  //   pg_response: null,
+  //   pg_transaction_id: null,
+  //   transaction_status: null,
+  //   type: "",
+  // }
 
   const [data , setData] = useState([]);
   const [searchText, setSearchText] = useState('');
@@ -28,6 +36,20 @@ const Reports = () => {
   const {user} = useSelector((state)=>state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   const {clientCode} = clientMerchantDetailsList[0];
+
+
+  const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
+
+
+  
+const pagination = (pageNo) => {
+  setCurrentPage(pageNo);
+
+  const startIndex = (pageNo - 1) * pageSize;
+  const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+  setPaginatedData(paginatedPost);
+
+}
 
 
   
@@ -38,6 +60,7 @@ const Reports = () => {
     await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getReports/${clientCode}`)  
   .then(res => {     
     setData(res.data);  
+    setPaginatedData(_(res.data).slice(0).take(pageSize).value())
     console.log(res.data)
 
   })  
@@ -81,6 +104,17 @@ const getSearchTerm  = (e) => {
   console.log(data)
 }
 
+useEffect(()=>{
+  setPaginatedData(_(data).slice(0).take(pageSize).value())
+},[pageSize]);
+
+
+if ( pageCount === 1) return null;
+
+const pages = _.range(1, pageCount + 1)
+
+
+
 
 
   return <div>
@@ -97,20 +131,17 @@ const getSearchTerm  = (e) => {
       
       <div>
       <h4 style={{marginLeft:650 , position: 'relative', top: -25 }} >Count per page</h4>
-       <select style={{marginLeft:800 , position: 'relative', top: -55 , width: 150}}>
-           <option value="10">10</option>
-           <option value="20">25</option>
-           <option value="30">50</option>
-           <option value="60">100</option>
-           <option value="70">200</option>
-           <option value="70">300</option>
-           <option value="70">400</option>
-           <option value="70">500</option>
+       <select  value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} style={{marginLeft:800 , position: 'relative', top: -55 , width: 150}}>
+       <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
        </select>
       </div>
        <table class='table'>
  
  <tr>
+ <th>Serial No.</th>
    <th>Name</th>
    <th>Email</th>
    <th >Mobile No.</th>
@@ -132,8 +163,9 @@ const getSearchTerm  = (e) => {
  {
     searchText.length < 1 ?  */}
     
-    { data.map((user) => 
+    { paginatedata.map((user, i) => (
  <tr>
+   <td>{i+1}</td>
      <td>{user.customer_name}</td>
      <td>{user.customer_email}</td>
      <td>{user.customer_phone_number}</td>
@@ -148,7 +180,7 @@ const getSearchTerm  = (e) => {
 
      <td></td>
  </tr>
-    )}
+    ))}
 
     {/* //  ): searchResults} */}
  
