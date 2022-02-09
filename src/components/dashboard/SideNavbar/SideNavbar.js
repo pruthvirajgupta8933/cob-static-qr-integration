@@ -45,7 +45,7 @@ function SideNavbar() {
                         Business</span><i className="ant-menu-submenu-arrow" /></div>
                     <ul id="settlement$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu">
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-list-ul" aria-hidden="true" />   Transaction History </Link> 
+                      <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-calendar" aria-hidden="true" />   Transaction History </Link> 
                       {/* <a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/transaction.html"><i className="fa fa-list-ul" aria-hidden="true" /> Transactions</a> */}
                     </li>
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
@@ -55,17 +55,17 @@ function SideNavbar() {
                       {roleId===3 || roleId===13 ?<li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link> 
                       </li>:<li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />
+                      <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
                       Settlement Report</Link> 
                       </li>
                        }
                         
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/subscription`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />
+                      <Link to={`${url}/subscription`} className='txt-white'><i className="fa fa-bell" aria-hidden="true" />
                       Subscription</Link> 
                       </li>
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />
+                      <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
                       Create Payment Link</Link> 
                       </li>
                      
