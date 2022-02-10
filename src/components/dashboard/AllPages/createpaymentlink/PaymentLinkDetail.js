@@ -5,6 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import _ from 'lodash';
 import { toast } from 'react-toastify';
+import { Zoom } from "react-toastify";
 import DatePicker from 'react-date-picker';
 
 
@@ -29,7 +30,7 @@ const PaymentLinkDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [drop, setDrop] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [noofbuttons, setNoOfButtons ] = useState([]);
+  const [noofbuttons, setNoOfButtons ] = useState(Math.ceil(data.length/pageSize));
   const [folderArr, setFolderArr] = React.useState([]);
 
   const { user } = useSelector((state) => state.auth);
@@ -128,14 +129,23 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
     await axios
       .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${selectedPayer}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=false`)
       .then((resp) => {
-        toast.success("Payment Link Created!")
+        toast.success("Payment Link Created!",
+        {
+          position: "top-right",
+          autoClose: 2000,
+          transition: Zoom,
+          limit: 2,
+        })
         console.log(JSON.stringify(resp.data));
-
-        
       })
       .catch((error) => {
         console.log(error);
-        toast.error('Payment Link Creation Failed')
+        toast.error('Payment Link Creation Failed',{
+          position: "top-right",
+          autoClose: 1000,
+          transition: Zoom,
+          limit: 2,
+        })
       });
   };
 
@@ -447,7 +457,7 @@ console.log("dataLength",paginatedata.length)
       />
 
       <h4  style={{marginLeft:"10em"}}>
-        Count per page
+        Count per page &nbsp; &nbsp;
       </h4>
       <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} style={{width: 100 }}>
         <option value="10">10</option>
@@ -468,7 +478,7 @@ console.log("dataLength",paginatedata.length)
          {
          ! paginatedata ? ("No data Found"):(
       <table
-        class="table"
+        class="table" style={{marginLeft: 10}}
       >
         <tr>
         <th>Serial No.</th>
@@ -499,7 +509,7 @@ console.log("dataLength",paginatedata.length)
          )}
       </div>
       <div>
-  {/* <nav aria-label="Page navigation example"  >
+  <nav aria-label="Page navigation example"  >
   <ul class="pagination">
     <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
 
@@ -522,7 +532,7 @@ console.log("dataLength",paginatedata.length)
    
   
   </ul>
-</nav> */}
+</nav>
   </div>
 
     </div>

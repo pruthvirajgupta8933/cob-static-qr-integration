@@ -3,6 +3,7 @@ import axios from 'axios' ;
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
+import { Zoom } from 'react-toastify';
 
 const Reports = () => {
 
@@ -80,7 +81,10 @@ useEffect(() => {
       error: "Error Occured in Data",
     },
     {
-      position: "top-center",
+      position: "bottom-center",
+      autoClose: 1000,
+      limit: 2,
+      transition: Zoom,
     }
   );
 }, []);
@@ -90,18 +94,18 @@ useEffect(() => {
 const getSearchTerm  = (e) => {
   setSearchText(e.target.value);
 
-  if(searchText !== "") {
-    const newData = data.filter((dataitem) => {
-      return dataitem.customer_phone_number.toLowerCase().includes(searchText.toLowerCase());
-    })
+  // if(searchText !== "") {
+  //   const newData = data.filter((dataitem) => {
+  //     return dataitem.customer_phone_number.toLowerCase().includes(searchText.toLowerCase());
+  //   })
 
-    setSearchResults(newData);
-  }
-  else {
-    setSearchResults(data)
-  }
+  //   setSearchResults(newData);
+  // }
+  // else {
+  //   setSearchResults(data)
+  // }
 
-  console.log(data)
+  // console.log(data)
 }
 
 useEffect(()=>{
@@ -119,13 +123,13 @@ const pages = _.range(1, pageCount + 1)
 
   return <div>
       
-      <div>
-        <div>
+
+        <div style={{marginLeft: 20}}>
       <h3><b>Reports</b></h3>
       <p>Total Records : {data.length}</p>
       </div>
        
-       
+      <div style={{marginLeft: 20}} >
       <input type="text" placeholder="Search Here" value={searchText} onChange={getSearchTerm} style={{ width: 500 }}  />
       </div>
       
@@ -138,7 +142,7 @@ const pages = _.range(1, pageCount + 1)
         <option value="100">100</option>
        </select>
       </div>
-       <table class='table'>
+       <table class='table' style={{marginLeft: 10}}>
  
  <tr>
  <th>Serial No.</th>
@@ -163,32 +167,54 @@ const pages = _.range(1, pageCount + 1)
  {
     searchText.length < 1 ?  */}
     
-    { paginatedata.map((user, i) => (
+    { paginatedata.map((report, i) => (
  <tr>
    <td>{i+1}</td>
-     <td>{user.customer_name}</td>
-     <td>{user.customer_email}</td>
-     <td>{user.customer_phone_number}</td>
-     <td>{user.type}</td>
-     <td>{user.transaction_status}</td>
-     <td>{user.client_transaction_id}</td>
-     <td>{user.link_id}</td>
-     <td>{user.link_valid_date}</td>
-     <td>{user.created_at}</td>
-     <td>{user.payment_collected}</td>
-     <td>{user.numeric_link_id}</td>
+     <td>{report.customer_name}</td>
+     <td>{report.customer_email}</td>
+     <td>{report.customer_phone_number}</td>
+     <td>{report.type}</td>
+     <td>{report.transaction_status}</td>
+     <td>{report.client_transaction_id}</td>
+     <td>{report.link_id}</td>
+     <td>{report.link_valid_date}</td>
+     <td>{report.created_at}</td>
+     <td>{report.payment_collected}</td>
+     <td>{report.numeric_link_id}</td>
 
      <td></td>
  </tr>
     ))}
-
-    {/* //  ): searchResults} */}
- 
-
-
     </table>
+    <div>
+  <nav aria-label="Page navigation example"  >
+  <ul class="pagination">
+    <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
 
-  </div>;
+   {
+
+     pages.map((page) => (
+      <li class={
+        page === currentPage ? " page-item active" : "page-item"
+      }><a class="page-link">
+        
+        <p onClick={() => pagination(page)}>
+        {page}
+        </p>
+        </a></li>
+    
+     ))
+   }
+    <a class="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href="#">Next</a>
+   
+  
+  </ul>
+</nav>
+  </div>
+
+    </div>
+
+
 };
 
 export default Reports;
