@@ -19,7 +19,7 @@ const initialValues = {
 
 const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
-        phone_number: Yup.string().required("Required"),
+        phone_number: Yup.number().typeError("please enter valid number").min(10,'no sholuld not axceed 10 digits ').required("Required"),
         email: Yup.string().email("Enter valid email").required("Required")
     })
 
@@ -86,7 +86,7 @@ const PayerDetails = () => {
         if (searchText !== "") {
           setData(
             data.filter((item) =>{
-              item.join("")
+              item.append("")
               
                 .toLowerCase()
                 .includes(searchText.toLocaleLowerCase())
@@ -155,6 +155,21 @@ const PayerDetails = () => {
 
         // setItem([])
 };
+
+const cancelClick=()=>{
+    setName('');
+    setMyEmail('');
+    setCustomerTypeId('');
+    setPhoneNumber('');
+
+}
+const closeClick=()=>{
+    setName('');
+    setMyEmail('');
+    setCustomerTypeId('');
+    setPhoneNumber('');
+
+}
 const handleClick = (id) => {
 //console.log(id);
     data.filter((dataItem) => {
@@ -228,7 +243,7 @@ const generateli = (id) => {
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3 class="modal-title" id="exampleModalLabel">Add Payer Details</h3>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close" onClick={closeClick} data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -248,6 +263,9 @@ const generateli = (id) => {
                                             </ErrorMessage>
                                             <label for="recipient-name" class="col-form-label">Mobile No.:</label>
                                             <Field name="phone_number"
+                                            type="number"
+                                            onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
+
                                                 value={phoneNumber}
                                                 onChange={e => setPhoneNumber(e.target.value)} helperText={<ErrorMessage name="phone_number" />} placeholder='Enter Mobile No.' class="form-control" id="pairemail" />
                                             <ErrorMessage name="phone_number">
@@ -280,7 +298,7 @@ const generateli = (id) => {
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary"  >Submit</button>
                                             <button type="button" disabled class="btn btn-danger">Update</button>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={cancelClick}>Cancel</button>
                                         </div>
 
                                     </Form>
@@ -295,13 +313,13 @@ const generateli = (id) => {
                 
                 <div className="main_filter_area">
                     <div className='Form_add_btn'>
-                        <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-200px', marginTop: '-70px' }} >Add Single Payer</button>
+                        <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-222px', marginTop: '-83px' }} >Add Single Payer</button>
                     </div>
                     <div className="filter_area">
                     <p className='para'>Total Records:{data.length}</p>
-                        <input value={searchText} onChange={getSearchTerm} type="text" placeholder="Search Here" style={{ position: 'absolute', top: 320, left: 12, width: 700 }} />
-                        <h3 style={{ position: 'absolute', top: 320, left: 800 }}>Count per page</h3>
-                        <select style={{ position: 'absolute', top: 320, left: 930, width: 130 }}>
+                        <input value={searchText} onChange={getSearchTerm} type="text" placeholder="Search Here" style={{ position: 'absolute', top: 222, left: 12, width: 700 }} />
+                        <h3 style={{ position: 'absolute', top: 222, left: 800 }}>Count per page</h3>
+                        <select style={{ position: 'absolute', top: 222, left: 930, width: 130 }}>
                             <option value="10">10</option>
                             <option value="20">25</option>
                             <option value="30">50</option>
@@ -317,7 +335,7 @@ const generateli = (id) => {
             
             <div class="full-screen-scroller">
 
-                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 380, left: 12, height: 200 }}>
+                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 300, left: 12, height: 200 }}>
                     <thead>
                         <tr>
                             <th scope='col'>Serial.No</th>
@@ -345,7 +363,7 @@ const generateli = (id) => {
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)}    >Edit</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary mt-2"  onClick={() => deleteUser(user.id)}  >Delete</button>
+                                    <button class="btn btn-primary mt-7"  onClick={() => deleteUser(user.id)}  >Delete</button>
                                 </td><td>
                                     <button onClick={(e) => generateli(user.id)}
 
