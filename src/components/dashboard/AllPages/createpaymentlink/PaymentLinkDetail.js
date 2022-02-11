@@ -5,6 +5,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import _ from 'lodash';
 import { toast } from 'react-toastify';
+import { Zoom } from "react-toastify";
 import DatePicker from 'react-date-picker';
 
 
@@ -14,6 +15,7 @@ const PaymentLinkDetail = () => {
   
   const [selectedPayer, setSelectedPayer] = useState("Select Payer");
   const [searchResults, setSearchResults] = useState([])
+  const [passwordcheck, setPasswordCheck] = useState(false);
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredPurpose, setEnteredPurpose] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
@@ -29,7 +31,7 @@ const PaymentLinkDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [drop, setDrop] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [noofbuttons, setNoOfButtons ] = useState([]);
+  const [noofbuttons, setNoOfButtons ] = useState(Math.ceil(data.length/pageSize));
   const [folderArr, setFolderArr] = React.useState([]);
 
   const { user } = useSelector((state) => state.auth);
@@ -124,18 +126,28 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
     setEnteredPurpose("");
     setHours("");
     setMinutes("");
+    document.getElementById("checkbox_pass").checked = false;
 
     await axios
-      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${selectedPayer}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=false`)
+      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${selectedPayer}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
       .then((resp) => {
-        toast.success("Payment Link Created!")
+        toast.success("Payment Link Created!",
+        {
+          position: "top-right",
+          autoClose: 2000,
+          transition: Zoom,
+          limit: 2,
+        })
         console.log(JSON.stringify(resp.data));
-
-        
       })
       .catch((error) => {
         console.log(error);
-        toast.error('Payment Link Creation Failed')
+        toast.error('Payment Link Creation Failed',{
+          position: "top-right",
+          autoClose: 1000,
+          transition: Zoom,
+          limit: 2,
+        })
       });
   };
 
@@ -169,6 +181,30 @@ const pages = _.range(1, pageCount + 1)
 
 console.log("dataLength",paginatedata.length)
 
+const handleCheck = (e) => {
+  setPasswordCheck(e.target.checked);
+};
+
+const cancleClick=()=>{
+  setSelectedPayer("");
+    setEnteredAmount("");
+    setEnteredDate("");
+    setEnteredPurpose("");
+    setHours("");
+    setMinutes("");
+    document.getElementById("checkbox_pass").checked = false;
+
+}
+const closeClick=()=>{
+  setSelectedPayer("");
+  setEnteredAmount("");
+  setEnteredDate("");
+  setEnteredPurpose("");
+  setHours("");
+  setMinutes("");
+  document.getElementById("checkbox_pass").checked = false;
+}
+
 
   return (
     <div>
@@ -178,7 +214,7 @@ console.log("dataLength",paginatedata.length)
         data-toggle="modal"
         data-target="#exampleModal"
         data-whatever="@getbootstrap"
-        style={{marginTop: 5, marginLeft: 35}}
+        style={{marginTop: 5, marginLeft: 15}}
       >
         Create Payment Link
       </button>
@@ -202,6 +238,7 @@ console.log("dataLength",paginatedata.length)
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
+                onClick={closeClick}
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -221,6 +258,22 @@ console.log("dataLength",paginatedata.length)
              
               <Form onSubmit={submitHandler} >
               
+              <div class="form-check">
+                    <label
+                      class="form-check-label"
+                      for="exampleCheck1"
+                      style={{ marginLeft: 290, marginBottom: 20 }}
+                    >
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        onChange={handleCheck}
+                        value={passwordcheck}
+                        id="checkbox_pass"
+                      />
+                      is Password Protected
+                    </label>
+                    </div>
                 <Field component='select' name='payer'
                   value={selectedPayer}
                   onChange={(e) => setSelectedPayer(e.target.value)}
@@ -412,7 +465,7 @@ console.log("dataLength",paginatedata.length)
                     >
                       SUBMIT
                     </button>
-                    <button
+                    <button onClick={cancleClick}
                       type="button"
                       style={{ postion: "absolute", top: 290, left: 380 }}
                       class="btn btn-danger"
@@ -447,7 +500,7 @@ console.log("dataLength",paginatedata.length)
       />
 
       <h4  style={{marginLeft:"10em"}}>
-        Count per page
+        Count per page &nbsp; &nbsp;
       </h4>
       <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} style={{width: 100 }}>
         <option value="10">10</option>
@@ -468,7 +521,7 @@ console.log("dataLength",paginatedata.length)
          {
          ! paginatedata ? ("No data Found"):(
       <table
-        class="table"
+        class="table" style={{marginLeft: 10}}
       >
         <tr>
         <th>Serial No.</th>
@@ -501,9 +554,6 @@ console.log("dataLength",paginatedata.length)
       <div>
   <nav aria-label="Page navigation example"  >
   <ul class="pagination">
-  {/* <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li> */}
     <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
 
    {

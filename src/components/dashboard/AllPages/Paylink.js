@@ -21,7 +21,7 @@ function Paylink() {
           <div className="right_layout my_account_wrapper right_side_heading">
                                 
                         <div className="container">
-                        <h2>Create Payment Link</h2>
+                        <h2 style={{marginLeft: 30}}>Create Payment Link</h2>
                         <ul className="nav nav-tabs">
                             <li className="nav-item">
                             <a className="nav-link " onClick={()=>SetTab(1)} >Payment Detail</a>
