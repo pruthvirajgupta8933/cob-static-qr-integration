@@ -22,7 +22,7 @@ const Subsciption = () => {
   const {clientAuthenticationType,clientCode} = clientSuperMasterList[0];
 
   var authenticationMode ='';
-  console.log(clientAuthenticationType);
+  // console.log(clientAuthenticationType);
   if(clientAuthenticationType==='NetBank'){
     authenticationMode='Netbanking';
   }else{
@@ -54,20 +54,25 @@ const Subsciption = () => {
   const [planType,setPlanType]=useState('');
   const [planValidityDays,setPlanValidityDays]=useState('');
   const [mandateEndData,setMandateEndData]=useState('');
+  const [subscribeData,setSubscribeData]=useState({});
 
-
+// console.log(mandateEndData);
 
   const handleChecked=(e,data={})=>{
+    // console.log(e.target.checked);
+    // console.log(data);
     if(e.target.checked){
-      console.log(e.target.checked);
-      console.log(data)
-      setPlanPrice(parseFloat(data.planPrice));
-      console.log(planPrice)
+      // console.log(e.target.checked);
+      // console.log(data)
+      setPlanPrice(data.planPrice);
+      // console.log(typeof(data.planValidityDays))
       setPlanType(data.planType);
-      setPlanValidityDays(parseInt(data.planValidityDays));
-      
-      var mandateEndDate = d.setDate(d.getDate() + parseInt(planValidityDays));
+      setPlanValidityDays(data.planValidityDays);
+     
+      const ed = new Date();
+      var mandateEndDate = ed.setDate(ed.getDate() + data.planValidityDays);
       mandateEndDate = new Date(mandateEndDate).toISOString();
+      console.log(mandateEndDate);
       setMandateEndData(mandateEndDate);
     }else{
       setPlanPrice('');
@@ -110,6 +115,8 @@ const Subsciption = () => {
 
 
 
+useEffect(() => {
+  
   // update body by realtime data
   const bodyFormData = {
     authenticationMode: authenticationMode,
@@ -140,8 +147,13 @@ const Subsciption = () => {
     untilCancelled:false,
     userType:'merchant',
   }
+//,{mandateEndData:mandateEndData,mandateMaxAmount:planPrice+'.00'}
+  setSubscribeData(bodyFormData)
 
-  console.log(bodyFormData);
+}, [mandateEndData,planPrice]);
+
+
+  console.log("subscribeData",subscribeData);
   useEffect(() => {
     getSubscriptionService();
   },[])
@@ -210,7 +222,7 @@ return (
                 </div>
             
             <div class="modal-footer">
-              <Emandate bodyData={bodyFormData}/>
+              <Emandate bodyData={subscribeData}/>
               
             </div>
           </div>

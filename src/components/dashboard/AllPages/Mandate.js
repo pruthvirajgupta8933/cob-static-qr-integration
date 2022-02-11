@@ -3,14 +3,21 @@ import { useForm } from "react-hook-form";
 
 function Emandate(props) {
   const { register, handleSubmit } = useForm();
+  const [formData, setFormData] = useState({});
   
   const onSubmit = (data) => {
     //console.log(data);
-	  document.getElementById("mandateRegForm").submit(JSON.stringify(data));
+	  document.getElementById("mandateRegForm").submit();
 	//   prompt('copy post data',JSON.stringify(data));
   };
 
-const formData = props.bodyData;
+// const formData = props.bodyData;
+useEffect(() => {
+
+  setFormData(props.bodyData)
+
+}, [props.bodyData]);
+
 
 useEffect(() => {
     handleSubmit(onSubmit);
@@ -22,8 +29,10 @@ useEffect(() => {
 		id="mandateRegForm"
 		action="https://subscription.sabpaisa.in/subscription/mandateRegistration"
 		method="POST"
+
 	>
 		<div style={{ display: "none" }}>
+    {console.log(formData.authenticationMode)}
 		<input {...register("authenticationMode")} name="authenticationMode" value={formData.authenticationMode}/>
         <input {...register("clientCode")} type="text" name="clientCode" value={formData.clientCode}/>
         <input {...register("clientRegistrationId")} type="text" name="clientRegistrationId" value={formData.clientRegistrationId}/>

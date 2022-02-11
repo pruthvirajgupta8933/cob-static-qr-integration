@@ -19,6 +19,7 @@ import { Recipts } from './components/Otherpages/Recipts';
 import StudentRecipets from './components/Otherpages/StudentRecipets';
 import ReceiptByEmail from './components/Otherpages/ReceiptByEmail';
 import ReceiptWalchand from './components/Otherpages/ReceiptWalchand';
+import EmandatePage from './components/Otherpages/EmandatePage';
 
 
 
@@ -42,12 +43,9 @@ function AllRoutes(){
               </Route>
               <Route path="/dashboard">
                 <Dashboard />
-
               </Route>
-
               <Route exact path="/commonpages">
                 <CommonPage />
-
               </Route>
               <Route path="/forget">
                 <ForgetPassword />
@@ -68,7 +66,10 @@ function AllRoutes(){
               <Route exact path="/ReceiptWalchand">
                 <ReceiptWalchand />
               </Route>
-             
+              <Route exact path="/EmandatePage">
+                <EmandatePage />
+              </Route>
+
              
             </Switch>
           </div>
