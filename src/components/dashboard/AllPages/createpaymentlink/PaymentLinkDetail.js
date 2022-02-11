@@ -126,7 +126,6 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
     setEnteredPurpose("");
     setHours("");
     setMinutes("");
-    setPasswordCheck("");
     document.getElementById("checkbox_pass").checked = false;
 
     await axios
@@ -193,7 +192,6 @@ const cancleClick=()=>{
     setEnteredPurpose("");
     setHours("");
     setMinutes("");
-    setPasswordCheck("");
     document.getElementById("checkbox_pass").checked = false;
 
 }
@@ -204,7 +202,6 @@ const closeClick=()=>{
   setEnteredPurpose("");
   setHours("");
   setMinutes("");
-  setPasswordCheck("");
   document.getElementById("checkbox_pass").checked = false;
 
 }
