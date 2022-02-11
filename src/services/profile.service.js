@@ -17,7 +17,7 @@ const updateClientProfile = (object,clientId)=>{
 const verifyClientCode=(clientCode)=>{
   return axios.get(BASE_URL + "//verifyClientCode/"+clientCode);
 }
-
+ 
 
 const verifyIfcsCode=(ifsc_code)=>{
   return axios.get( "https://ifsc.razorpay.com/"+ifsc_code);
