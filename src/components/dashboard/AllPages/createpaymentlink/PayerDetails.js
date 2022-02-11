@@ -320,7 +320,7 @@ const generateli = (id) => {
                 
                 <div className="main_filter_area">
                     <div className='Form_add_btn'>
-                        <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-222px', marginTop: '-83px' }} >Add Single Payer</button>
+                        <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-222px', marginTop: '-111px',zIndex:'9999'}} >Add Single Payer</button>
                     </div>
                     <div className="filter_area">
                     <p className='para'>Total Records:{data.length}</p>
