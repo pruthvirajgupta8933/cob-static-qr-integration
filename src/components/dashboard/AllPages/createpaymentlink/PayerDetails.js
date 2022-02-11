@@ -8,7 +8,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import Genratelink from './Genratelink';
 import { Edituser } from './Edituser';
-import {toast} from 'react-toastify';
+import {toast, Zoom} from 'react-toastify';
 
 
 const initialValues = {
@@ -121,7 +121,13 @@ const PayerDetails = () => {
     }
     const onSubmit = async e => {
         e.preventDefault();
-        toast.success("Payment Link success")
+        toast.success("Payment Link success",{
+            position:"top-right",
+            autoClose:2000,
+            transition:Zoom
+
+        })
+        
         // if(item.status===200)
         // alert("succes")
         // else{
