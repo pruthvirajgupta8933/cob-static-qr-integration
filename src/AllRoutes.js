@@ -17,6 +17,8 @@ import CommonPage from './components/Otherpages/CommonPage';
 import EmailVerification from './components/Otherpages/EmailVerification'
 import { Recipts } from './components/Otherpages/Recipts';
 import StudentRecipets from './components/Otherpages/StudentRecipets';
+import ReceiptByEmail from './components/Otherpages/ReceiptByEmail';
+import ReceiptWalchand from './components/Otherpages/ReceiptWalchand';
 
 
 
@@ -60,6 +62,13 @@ function AllRoutes(){
               <Route exact path="/stdReceipt">
                 <StudentRecipets />
               </Route>
+              <Route exact path="/ReceiptByEmail">
+                <ReceiptByEmail />
+              </Route>
+              <Route exact path="/ReceiptWalchand">
+                <ReceiptWalchand />
+              </Route>
+             
              
             </Switch>
           </div>

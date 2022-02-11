@@ -3,7 +3,7 @@ import axios from 'axios';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
 
 
-const StudentRecipets = () => {
+const ReceiptByEmail = () => {
   const initialState = {
     payee_first_name: "",
     txn_id: "",
@@ -17,7 +17,7 @@ const StudentRecipets = () => {
 
   }
   const [transactionId, setTransactionId] = useState();
-  const[studentId, setStudentId]=useState();
+  const[studentEmailId, setStudentEmailId]=useState();
   const [show, setIsShow] = useState(false);
   const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState(initialState)
@@ -32,16 +32,16 @@ const StudentRecipets = () => {
   
 
 
-  const onSubmit = async (transactionId,studentId) => {
+  const onSubmit = async (transactionId,studentEmailId) => {
     if(transactionId === null){
       setTransactionId(0);
     }
     else {
-      setStudentId(0);
+      setStudentEmailId(0);
     }
     
 
-    const response = await axios.get(`https://adminapi.sabpaisa.in/Receipt/ReceiptMB/${transactionId}/${studentId}`)
+    const response = await axios.get(`https://adminapi.sabpaisa.in/Receipt/ReceiptMB/${transactionId}/${studentEmailId}`)
       .then((response) => {
         console.warn(response);
         setData(response.data);
@@ -60,6 +60,12 @@ const StudentRecipets = () => {
 
   }
   const dateFormat = (timestamp) => {
+
+
+    // var date = new Date(timestamp);
+    // console.log(date.getTime())
+    // return date.getTime();
+
     var date = new Date(timestamp);
     return (date.getDate() +
       "/" + (date.getMonth() + 1) +
@@ -68,13 +74,6 @@ const StudentRecipets = () => {
       ":" + date.getMinutes() +
       ":" + date.getSeconds());
 
-
-
-    // var date = new Date(timestamp);
-    // console.log(date.getTime())
-    // return date.getTime();
-
-    
   }
   const onClick = () => {
 
@@ -93,6 +92,8 @@ const StudentRecipets = () => {
       <div className='container'>
         <div className='row'>
           <div className='col-12 mb-4'>
+             
+           <b>Dear payer, in case money is debited by a Bank and not confirmed to us in Real time Your Bank would probably Refund your money as per your policy.For any payment issues please mail us at support@sabpaisa.in </b>
             <div class="card">
               <div class="card-header" style={{ textAlign: 'center' }}>
                 SABPAISA TRANSACTION RECEIPT
@@ -107,7 +108,7 @@ const StudentRecipets = () => {
                 <br /><br />
                 <div className="col-lg-6 mrg-btm- bgcolor">
 
-                  <input type="text" className="ant-input" name="studdentid"  value={studentId} onChange={(e)=>setStudentId(e.target.value)} placeholder="Enter Student Id" style={{ position: 'absolute', width: 430,left:250 }} />
+                  <input type="text" className="ant-input" name="studentEmailid"  value={studentEmailId} onChange={(e)=>setStudentEmailId(e.target.value)} placeholder="Enter Email Id" style={{ position: 'absolute', width: 430,left:250 }} />
                 </div>
 
                 <br /><br />
@@ -115,7 +116,7 @@ const StudentRecipets = () => {
                 <div className="col-lg-6 mrg-btm- bgcolor">
                 </div>
 
-                <button class="btn btn-success" onClick={() => onSubmit(transactionId,studentId)} style={{ marginTop: '70px', marginLeft: -130,width:200 }} >View</button>
+                <button class="btn btn-success" onClick={() => onSubmit(transactionId,studentEmailId)} style={{ marginTop: '70px', marginLeft: -130,width:200 }} >View</button>
               </div>
             </div>
           </div>
@@ -178,7 +179,7 @@ const StudentRecipets = () => {
 
                           </tr>
                           <tr>
-                            <th scope="row">Student id</th>
+                            <th scope="row">Student Email</th>
                             <td>{user.udf19}</td>
                           </tr>
                         </tbody>
@@ -201,4 +202,4 @@ const StudentRecipets = () => {
   )
 }
 
-export default StudentRecipets;
+export default ReceiptByEmail;

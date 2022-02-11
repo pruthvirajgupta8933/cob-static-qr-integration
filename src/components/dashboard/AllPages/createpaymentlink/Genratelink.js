@@ -30,6 +30,7 @@ const validationSchema = Yup.object().shape({
   const [enteredDate, setEnteredDate] = useState("");
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
+  const [passwordcheck, setPasswordCheck] = useState(false);
  
 
 
@@ -68,7 +69,7 @@ const validationSchema = Yup.object().shape({
 
          
            const response = await axios
-            .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${customer_id}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=false`, {
+            .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${customer_id}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
       
              })
             .then((resp) => {
@@ -87,6 +88,8 @@ const validationSchema = Yup.object().shape({
             setEnteredPurpose("");
             setHours("");
             setMinutes("");
+            document.getElementById("checkbox_pass").checked = false;
+
 
           }
 
@@ -96,6 +99,30 @@ const validationSchema = Yup.object().shape({
           enteredDate+'%20'+hours+':'+minutes
         );
       };
+      const handleCheck = (e) => {                 //for checkbox
+        setPasswordCheck(e.target.checked);
+      };
+      const cancelClick=()=>{
+       
+  setEnteredAmount("");
+  setEnteredDate("");
+  setEnteredPurpose("");
+  setHours("");
+  setMinutes("");
+ 
+  document.getElementById("checkbox_pass").checked = false;
+      }
+      const closeClick=()=>{
+        
+  setEnteredAmount("");
+  setEnteredDate("");
+  setEnteredPurpose("");
+  setHours("");
+  setMinutes("");
+  
+  document.getElementById("checkbox_pass").checked = false;
+
+      }
 
   return (
     <div
@@ -111,16 +138,35 @@ const validationSchema = Yup.object().shape({
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">
-           Genrate Link
+          <b> Genrate Link</b>
           </h5>
           <button
             type="button"
             class="close"
             data-dismiss="modal"
             aria-label="Close"
+            onClick={closeClick}
           >
             <span aria-hidden="true">&times;</span>
           </button>
+
+          <div class="form-check">
+                    <label
+                      class="form-check-label"
+                      for="exampleCheck1"
+                      style={{ marginLeft: 200, marginBottom: 20 }}
+                    >
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        onChange={handleCheck}
+                        value={passwordcheck}
+                        id="checkbox_pass"
+                      />
+                      is Password Protected
+                    </label>
+
+          </div>
         </div>
         <div class="modal-body">
           <Formik initialValues={initialValues}
@@ -217,6 +263,9 @@ const validationSchema = Yup.object().shape({
                   <option value="21">21</option>
                   <option value="22">22</option>
                   <option value="23">23</option>
+                 
+                  
+
                 </select>
               </div>
               <div class="col">
@@ -249,6 +298,43 @@ const validationSchema = Yup.object().shape({
                   <option value="21">21</option>
                   <option value="22">22</option>
                   <option value="23">23</option>
+                  <option value="24">24</option>
+                  <option value="25">25</option>
+                  <option value="2">26</option>
+                  <option value="27">27</option>
+                  <option value="28">28</option>
+                  <option value="29">29</option>
+                  <option value="30">30</option>
+                  <option value="31">31</option>
+                  <option value="32">32</option>
+                  <option value="33">33</option>
+                  <option value="34">34</option>
+                  <option value="35">35</option>
+                  <option value="35">36</option>
+                  <option value="37">37</option>
+                  <option value="38">38</option>
+                  <option value="39">39</option>
+                  <option value="40">40</option>
+                  <option value="41">41</option>
+                  <option value="42">42</option>
+                  <option value="43">43</option>
+                  <option value="44">44</option>
+                  <option value="45">45</option>
+                  <option value="46">46</option>
+                  <option value="47">47</option>
+                  <option value="48">48</option>
+                  <option value="49">49</option>
+                  <option value="50">50</option>
+                  <option value="51">51</option>
+                  <option value="52">52</option>
+                  <option value="53">53</option>
+                  <option value="54">54</option>
+                  <option value="55">55</option>
+                  <option value="55">56</option>
+                  <option value="57">57</option>
+                  <option value="58">58</option>
+                  <option value="59">59</option>
+                  <option value="60">60</option>
                  
                 </select>
               </div>
@@ -267,6 +353,7 @@ const validationSchema = Yup.object().shape({
                   style={{ postion: "absolute", top: 290, left: 380 }}
                   class="btn btn-danger"
                   data-dismiss="modal"
+                  onClick={cancelClick}
                 >
                   CANCEL
                 </button>
