@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios';
+import { toast,Zoom } from 'react-toastify';
 
 export const Edituser = (props) => { 
 
@@ -36,7 +37,7 @@ export const Edituser = (props) => {
 
     const [data, setData] = useState([])
     var clientSuperMasterList = user.clientSuperMasterList;
-    const { clientCode } = clientSuperMasterList
+    const { clientCode } = clientSuperMasterList[0]
  
     
     // const onValueChange = e => {
@@ -46,18 +47,32 @@ export const Edituser = (props) => {
 
    
     const editHandler = async e =>{
-    
+
+
         e.preventDefault();
+        toast.success("User Updated Successfully", {
+            position:"top-right",
+            autoClose:2000,
+            transition:Zoom
+
+        })
+        
        
       const res=  await axios.put(` https://paybylink.sabpaisa.in/paymentlink/editCustomer/`,{
+
+
+          
             name: username,
             email: useremail,
             phone_number: userphone,
             client_code: clientCode,
             customer_type_id: usercustomer,
             id:id
-        });
+
+            
+        })
         console.log(res.data);
+       
 
        
      

@@ -137,11 +137,10 @@ const StudentRecipets = () => {
                         </thead>
                         <tbody>
                           <tr>
-                            Payer Name
+                            <th scope="row">Payer Name</th>
+                            <td>{user.payee_first_name}</td>
                           </tr>
-                          <tr>
-                            {user.payee_first_name}
-                          </tr>
+                         
                           <tr>
                             <th scope="row">Sabpaisa Transaction ID</th>
                             <td>{user.txn_id}</td>
