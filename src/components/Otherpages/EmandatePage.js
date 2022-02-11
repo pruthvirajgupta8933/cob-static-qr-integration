@@ -1,9 +1,40 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from "react";
+import {useParams,useLocation} from "react-router-dom"
 import axios from 'axios';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
 
 
 const EmandatePage = () => {
+
+  const search = useLocation().search;
+  const mendateRegIdParam = new URLSearchParams(search).get('mendateRegId');
+
+  console.log(mendateRegIdParam);
+
+  const [details,setDetails] = useState([]);
+    const baseUrl = "https://subscription.sabpaisa.in/subscription/npci/registration/status/";
+    const mandateRegId = mendateRegIdParam;
+    const getManteDetails = (mandateRegId)=>{
+    const mandateDetails = axios.get(baseUrl+mandateRegId).then((response)=>{
+            
+            setDetails(response.data);
+    }).catch(error => console.log(error,"error"));
+  }
+
+  useEffect(()=>{
+    getManteDetails(mandateRegId);
+},[]);
+
+const detailsVal =Object.values(details);
+const detailsKey =Object.keys(details);
+
+
+const detailList = detailsKey.map((item,i)=>{
+  return (
+      <p className="p1"> {item} : {detailsVal[i]}</p>
+      );
+});
+
   const initialState = {
     payee_first_name: "",
     txn_id: "",
@@ -89,7 +120,7 @@ const EmandatePage = () => {
 
 
   return (
-    <>
+    
       <div className='container'>
         <div className='row'>
           <div className='col-12 mb-4'>
@@ -99,18 +130,14 @@ const EmandatePage = () => {
               </div>
               <div class="card-body" >
                 <div className="col-lg-6 mrg-btm- bgcolor">
+                <div>
+                  <p>MandateDetails Here {mandateRegId}</p> 
+                  <div className="main">
+                      {detailList}
+                  </div>
+              </div>
+               
 
-                  <input type="text" className="ant-input" name="transactionid" value={transactionId} onChange={(e) => setTransactionId(e.target.value)} placeholder="Enter Sabpaisa Transactions Id" style={{ position: 'absolute', width: 430,left:250 }} />
-                </div>
-                <br /><br /><br />
-                <h3 style={{ position: 'absolute', left: 490 }}>OR</h3>
-                <br /><br />
-                <div className="col-lg-6 mrg-btm- bgcolor">
-
-                  <input type="text" className="ant-input" name="studdentid"  value={studentId} onChange={(e)=>setStudentId(e.target.value)} placeholder="Enter Student Id" style={{ position: 'absolute', width: 430,left:250 }} />
-                </div>
-
-                <br /><br />
 
                 <div className="col-lg-6 mrg-btm- bgcolor">
                 </div>
@@ -120,84 +147,10 @@ const EmandatePage = () => {
             </div>
           </div>
         </div>
-        <div className='row'>
-          <div className='col-12'>
-            {
-              show &&
-              data.map((user) => (
-                <>
-                  <div className='card'>
-                    <div className='card-body table-responsive'>
-                      <h3>TRANSACTION RECEIPT</h3>
-                      <table className='table' id="joshi">
-                        <thead class="thead-dark">
-                          <tr>
-                            <th><img src={sabpaisalogo} alt="logo" width={"90px"} height={"25px"} /></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            Payer Name
-                          </tr>
-                          <tr>
-                            {user.payee_first_name}
-                          </tr>
-                          <tr>
-                            <th scope="row">Sabpaisa Transaction ID</th>
-                            <td>{user.txn_id}</td>
-
-                          </tr>
-                          <tr>
-                            <th scope="row">Client Transaction ID</th>
-                            <td>{user.client_txn_id}</td>
-
-                          </tr>
-                          <tr>
-                            <th scope="row">Client Name</th>
-                            <td>{user.client_name}</td>
-
-                          </tr>
-                          <tr>
-                            <th scope="row">Paid Amount</th>
-                            <td>{user.paid_amount}</td>
-
-                          </tr>
-                          <tr>
-                            <th scope="row">Payment Mode</th>
-                            <td>{user.payment_mode}</td>
-
-                          </tr>
-                          <tr>
-                            <th scope="row">Transaction Date</th>
-                            <td>{dateFormat(user.trans_date)}</td>
-
-                          </tr>
-                          <tr>
-                            <th scope="row">Payment Status</th>
-                            <td>{user.status}</td>
-
-                          </tr>
-                          <tr>
-                            <th scope="row">Student id</th>
-                            <td>{user.udf19}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </>
-              ))
-            }
-          </div>
-        </div>
-        <div className='col-md-12'>
-        { show ? <button Value='click' onClick={onClick} class="btn btn-success" style={{ position: 'absolute', width: 200, left: 500 }}>
-            Print
-          </button>:<></> }
-        </div>
+      </div>
       </div>
 
-    </>
+  
   )
 }
 
