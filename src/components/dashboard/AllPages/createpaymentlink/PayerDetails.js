@@ -57,7 +57,7 @@ const PayerDetails = () => {
     const [customerType,setCustomerType]= useState([]);
     var clientSuperMasterList = user.clientSuperMasterList;
     console.log(clientSuperMasterList);
-    const { clientCode } = clientSuperMasterList;
+    const { clientCode } = clientSuperMasterList[0];
     // console.log(clientSuperMasterList);
     //console.log(clientCode)
     // const onInputChange = e => {

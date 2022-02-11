@@ -7,7 +7,7 @@ import { Zoom } from "react-toastify";
 const BulkPayer = () => {
   const { user } = useSelector((state) => state.auth);
   var clientSuperMasterList = user.clientSuperMasterList;
-  const { clientCode } = clientSuperMasterList;
+  const { clientCode } = clientSuperMasterList[0];
   console.log("clientCode", clientCode);
 
   const [selectedFile, setSelectedFile] = useState(null);

@@ -36,7 +36,7 @@ export const Edituser = (props) => {
 
     const [data, setData] = useState([])
     var clientSuperMasterList = user.clientSuperMasterList;
-    const { clientCode } = clientSuperMasterList
+    const { clientCode } = clientSuperMasterList[0]
  
     
     // const onValueChange = e => {
