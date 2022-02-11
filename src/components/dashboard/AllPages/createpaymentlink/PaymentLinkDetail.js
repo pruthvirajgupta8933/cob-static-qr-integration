@@ -203,7 +203,6 @@ const closeClick=()=>{
   setHours("");
   setMinutes("");
   document.getElementById("checkbox_pass").checked = false;
-
 }
 
 
