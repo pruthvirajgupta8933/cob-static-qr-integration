@@ -66,7 +66,7 @@ function AllRoutes(){
               <Route exact path="/ReceiptWalchand">
                 <ReceiptWalchand />
               </Route>
-              <Route exact path="/EmandatePage">
+              <Route exact path="/EmandatePage/:mandatetxnid">
                 <EmandatePage />
               </Route>
 
