@@ -5,6 +5,7 @@ function Emandate(props) {
   const { register, handleSubmit } = useForm();
   
   const onSubmit = (data) => {
+    //console.log(data);
 	  document.getElementById("mandateRegForm").submit(JSON.stringify(data));
 	//   prompt('copy post data',JSON.stringify(data));
   };
@@ -25,7 +26,7 @@ useEffect(() => {
 		<div style={{ display: "none" }}>
 		<input {...register("authenticationMode")} name="authenticationMode" value={formData.authenticationMode}/>
         <input {...register("clientCode")} type="text" name="clientCode" value={formData.clientCode}/>
-        <input {...register("clientRegistrationId")} type="text" name="clientRegistrationId" value="7111302244"/>
+        <input {...register("clientRegistrationId")} type="text" name="clientRegistrationId" value={formData.clientRegistrationId}/>
         <input {...register("consumerReferenceNumber")} type="text" name="consumerReferenceNumber" value={formData.consumerReferenceNumber}/>
         <input {...register("emiamount")} type="text" name="emiamount" value={formData.emiamount}/>
         <input {...register("frequency")} type="text" name="frequency" value={formData.frequency}/>

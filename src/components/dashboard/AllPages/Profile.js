@@ -3,93 +3,114 @@ import { useSelector,useDispatch } from 'react-redux'
 import { Formik, Field, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup'
 import "yup-phone"
-import axios from 'axios';
 import {createClientProfile, updateClientProfile} from '../../../slices/dashboardSlice' 
-
+import profileService from '../../../services/profile.service'
 
 
 function Profile() {
   const dispatch= useDispatch();
   const { user } = useSelector((state) => state.auth);
-
+  const {fetchDcBankList,fetchNbBankList} = profileService
   const { clientSuperMasterList ,
           loginId,
           clientContactPersonName,
           clientEmail,
           clientMobileNo,
-          state,
           accountHolderName,
           accountNumber,
           bankName,
           ifscCode,
+
           pan,
         } = user;
   
   const [message,setMessage]  = useState('');
 
   const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
-  const [clientId,setClientId] = useState(clientSuperMasterList?.clientId)
+  const [clientId,setClientId] = useState(clientSuperMasterList!==null && clientSuperMasterList[0]?.clientId)
   const [createProfileResponse , setCreateProfileResponse]  = useState('');
   const [retrievedProfileResponse , setRetrivedProfileResponse] = useState('');
 
+  const [authenticationMode,setAuthenticationMode] = useState('');
+  const [listOfNetBank,setListOfNetBank] = useState([]);
+  const [listOfDebitCardBank,setListOfDebitCardBank] = useState([]);
+  const [selectedListForOption,setSelectedListForOption]=useState([]);
+  const [userIfscCode,setUserIfscCOde]=useState('ifscCode')
 
 
   
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-console.log(clientSuperMasterList?.address)
+console.log(clientSuperMasterList && clientSuperMasterList[0]?.address)
 const INITIAL_FORM_STATE = {
   loginId:loginId,
   clientName:clientContactPersonName,
   phone:clientMobileNo,
-  state:state,
   email:clientEmail,
   ...(isCreateorUpdate && {clientCode:''}),
-  address:clientSuperMasterList?.address,
+  address:clientSuperMasterList &&  clientSuperMasterList[0]?.address,
   accountHolderName:accountHolderName,
   bankName:bankName,
   accountNumber:accountNumber,
-  ifscCode:ifscCode,
-  pan:pan 
+  ifscCode:userIfscCode,
+  pan:pan,
+  clientAuthenticationType: clientSuperMasterList &&  clientSuperMasterList[0]?.clientAuthenticationType,
 };
 
-console.log("INITIAL_FORM_STATE----",INITIAL_FORM_STATE);
+// console.log("INITIAL_FORM_STATE----",INITIAL_FORM_STATE);
 
 const FORM_VALIDATION = Yup.object().shape({
   loginId:Yup.string().required("Required"),
   clientName: Yup.string().required("Required"),
   phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
-  state: Yup.string().required("Required"),
   email: Yup.string().email("Invalid email").required("Required"),
-  ...(isCreateorUpdate && {clientCode: Yup.string().min(6,"Client Code should be 6 digit").required("Required")}),
-  address: Yup.string().required("Required"),
-  accountHolderName: Yup.string().required("Required"),
-  bankName: Yup.string().required("Required"),
-  accountNumber: Yup.string().required("Required"),
-  ifscCode: Yup.string().required("Required"),
-  pan: Yup.string().required("Required"),
+  ...(isCreateorUpdate && {clientCode: Yup.string().min(6,"Client Code should be 6 digit").required("Required").nullable()}),
+  address: Yup.string().required("Required").nullable(),
+  accountHolderName: Yup.string().required("Required").nullable(),
+  bankName: Yup.string().required("Required").nullable(),
+  accountNumber: Yup.string().required("Required").nullable(),
+  ifscCode: Yup.string().required("Required").nullable(),
+  pan: Yup.string().nullable(),
+  clientAuthenticationType:Yup.string().required("Select Authentication Mode")
 });
 
-  const CREATE_PROFILE_URL = "https://cobtest.sabpaisa.in/auth-service/client/create";
-  const UPDATE_PROFILE_URL = "https://cobtest.sabpaisa.in/auth-service/client/update/${clientCode}";
-  const PROFILE_GET_URL = "";
 
-
+ 
 
   useEffect(() => {
+    // fetch bank list
+    fetchDcBankList()
+      .then((response)=>{setListOfDebitCardBank(response.data)})
+      .catch((error)=> console.log(error));
+
+    fetchNbBankList()
+      .then(response => setListOfNetBank(response.data))
+      .catch(error=>console.log(error))                          
+
     setIsCreateorUpdate(clientSuperMasterList && clientSuperMasterList!==null ? false : true);
   }, [])
 
+  useEffect(() => {
+    if(authenticationMode==='Netbank'){
+      setSelectedListForOption(listOfNetBank);
+    }
+    
+    if(authenticationMode==='Debitcard'){
+      setSelectedListForOption(listOfDebitCardBank);
+    }
+  }, [authenticationMode]);
+  
+
  
   const createorUpdateProfile = (data) => {
-    console.log(isCreateorUpdate)
-    console.log("send client id",clientId);
-    isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
+    // console.log(isCreateorUpdate)
+    // console.log("send client id",clientId);
+    console.log("send data",data);
+    // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
   };
 
     return (
         <section className="ant-layout">
         <div className="profileBarStatus">
-          {/* {message} */}
         </div>
         <main className="gx-layout-content ant-layout-content">
           <div className="gx-main-content-wrapper">
@@ -119,6 +140,7 @@ const FORM_VALIDATION = Yup.object().shape({
                     </div>
                     <div className="panel">
                       <Formik
+                      enableReintialize="true"
                             initialValues={{
                             ...INITIAL_FORM_STATE
                         }}
@@ -159,21 +181,6 @@ const FORM_VALIDATION = Yup.object().shape({
                             { msg => <div className="error_msg_display" >{msg}</div> }
                         </ErrorMessage>  
                       </div>
-
-                      <div className="merchant-detail-container">
-                      State : 
-                        <Field
-                          type="text"
-                          name="state" 
-                          placeholder="Enter State" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                          <ErrorMessage name="state">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-
-
                       <div className="merchant-detail-container">
                       Email-ID : 
                         <Field
@@ -195,11 +202,14 @@ const FORM_VALIDATION = Yup.object().shape({
                           name="clientCode" 
                           placeholder="Enter Client Code" 
                           style={{marginLeft: '10px', width: "398px"}}
+                          onChange = {( e=> console.log(e.target.value) )}
                         />
                           <ErrorMessage name="clientCode">
                             { msg => <div className="error_msg_display" >{msg}</div> }
                         </ErrorMessage>  
                       </div> : <></> }
+
+
                       <div className="merchant-detail-container">
                       Address : 
                         <Field
@@ -229,13 +239,50 @@ const FORM_VALIDATION = Yup.object().shape({
                         </ErrorMessage>  
                       </div>
                       <div className="merchant-detail-container">
-                      Bank Name : 
+                      Authentication Mode : 
+                      <p  style={{margin:"0px 40px 0px 10px"}}>
+                      <span style={{margin:"10px"}}> Net Banking</span> 
                         <Field
-                          type="text"
+                          type="radio"
+                          name="clientAuthenticationType" 
+                          value="Netbank"
+                          onChange={()=>setAuthenticationMode("Netbank")}
+                          checked={authenticationMode==="Netbank"}
+                        />
+                        </p>
+
+                        <p style={{margin:"0px 40px 0px 10px"}}>
+                        <span style={{margin:"10px"}}>Debit Card</span>
+                        <Field
+                          type="radio"
+                          name="clientAuthenticationType" 
+                          value="Debitcard"
+                          onChange={()=>setAuthenticationMode("Debitcard")}
+                          checked={authenticationMode==="Debitcard"}
+                        /></p>
+                        
+                          <ErrorMessage name="accountHolderName">
+                            { msg => <div className="error_msg_display" >{msg}</div> }
+                        </ErrorMessage>  
+                      </div>
+                      <div className="merchant-detail-container">
+                      Bank Name : 
+                        <Field as="select"
                           name="bankName"  
+                          id="bankName"
                           placeholder="Enter Bank Name" 
                           style={{marginLeft: '10px', width: "398px"}}
-                        />
+                        >
+                        <option defailtValue="">Please Select Bank</option>
+                        {selectedListForOption.map((option)=>{
+                          return (
+                            <option key={option.id} value={option.code}>
+                              {option.description}
+                            </option>
+                          )
+                        })}
+                         </Field>
+
                         <ErrorMessage name="bankName">
                             { msg => <div className="error_msg_display" >{msg}</div> }
                         </ErrorMessage>  
@@ -261,6 +308,7 @@ const FORM_VALIDATION = Yup.object().shape({
                           name="ifscCode" 
                           placeholder="Enter IFSC Code"
                           style={{marginLeft: '10px', width: "398px"}}
+                      
                         />
                          <ErrorMessage name="ifscCode">
                             { msg => <div className="error_msg_display" >{msg}</div> }
@@ -268,7 +316,7 @@ const FORM_VALIDATION = Yup.object().shape({
                       </div>
 
                       <div className="merchant-detail-container">
-                      PAN :
+                      PAN *:
                         <Field
                           type="text"
                           name="pan"  

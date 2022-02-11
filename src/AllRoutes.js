@@ -20,7 +20,6 @@ import StudentRecipets from './components/Otherpages/StudentRecipets';
 
 
 
-
 function AllRoutes(){
   
     return (

@@ -8,13 +8,28 @@ import Emandate from '../AllPages/Mandate';
 const Subsciption = () => {
   const [subscriptionDetails, setSubscriptionDetails] = useState(false);
   const { message } = useSelector((state) => state.message);
+
   const subscriptionData = useSelector(state => state.subscribe);
   const [subscriptionPlanData,setSubscriptionData] = useState([]);
   const [emandateDetails, setEmandateDetails] = useState(false);
   const [subscriptionPlanChargesData,setSubscriptionPlanChargesData] = useState([]);
+  const [Plans,setPlans] = useState([]);
   const {dashboard,auth} = useSelector((state)=>state);
+  const {user} = auth;
+  const {clientSuperMasterList , accountHolderName,accountNumber,bankName,clientEmail,clientMobileNo,ifscCode,loginStatus,pan} =user;
   const { isLoading , subscribe } = dashboard;
- console.log("subsciption.js", subscriptionplan);  
+ 
+  const {clientAuthenticationType,clientCode} = clientSuperMasterList[0];
+
+  var authenticationMode ='';
+  console.log(clientAuthenticationType);
+  if(clientAuthenticationType==='NetBank'){
+    authenticationMode='Netbanking';
+  }else{
+    authenticationMode='Debitcard';
+  }
+
+
  const dispatch = useDispatch();
 
  const getSubscriptionService = async () => {  
@@ -35,98 +50,121 @@ const Subsciption = () => {
   const d = new Date();
   let formattedDate = d.toISOString();
 
-  // switch(planDate){
-  //   case week:
-  //     let planEndDateWeek = d.setDate(d.getDate() + 7);
-  //     planEndDateWeek = new Date(planEndDateWeek).toISOString();
-  //     break;
-  //   case yearly:
-  //     let planEndDateYear = d.setDate(d.getDate() + 365);
-  //     planEndDateYear = new Date(planEndDateYear).toISOString();
-  //     break;
-  //   default:    
-  // }
-  let sevenDaysFromNow = d.setDate(d.getDate() + 7);
-  sevenDaysFromNow = new Date(sevenDaysFromNow).toISOString();
+  const [planPrice,setPlanPrice]=useState('');
+  const [planType,setPlanType]=useState('');
+  const [planValidityDays,setPlanValidityDays]=useState('');
+  const [mandateEndData,setMandateEndData]=useState('');
+
+
+
+  const handleChecked=(e,data={})=>{
+    if(e.target.checked){
+      console.log(e.target.checked);
+      console.log(data)
+      setPlanPrice(parseFloat(data.planPrice));
+      console.log(planPrice)
+      setPlanType(data.planType);
+      setPlanValidityDays(parseInt(data.planValidityDays));
+      
+      var mandateEndDate = d.setDate(d.getDate() + parseInt(planValidityDays));
+      mandateEndDate = new Date(mandateEndDate).toISOString();
+      setMandateEndData(mandateEndDate);
+    }else{
+      setPlanPrice('');
+      setPlanType('');
+      setPlanValidityDays('');
+
+    }
+  }
 
   // --Working bodyFormData ---
   // const bodyFormData = {
   //   authenticationMode: 'Netbanking',
-  //   clientCode: 70,
-  //   clientRegistrationId: 7111302244,
-  //   consumerReferenceNumber: 232,
+  //   clientCode: '70',
+  //   clientRegistrationId: Math.floor(Math.random() * 90000) + 10000,
+  //   consumerReferenceNumber: '96321',
   //   emiamount: "",
   //   frequency: 'ADHO',
   //   mandateCategory: 'A001',
   //   mandateEndDate: '',
-  //   mandateMaxAmount: 1.00,
+  //   mandateMaxAmount: '1.00',
   //   mandatePurpose: "API mandate",
   //   mandateStartDate: "2021-11-11T17:34:29.033Z",
   //   mandateType: 'ONLINE',
   //   npciPaymentBankCode: 'BARB',
   //   panNo: '',
-  //   payerAccountNumber: 62300100005139,
+  //   payerAccountNumber: '62300100005139',
   //   payerAccountType: 'SAVINGS',
   //   payerBank: 'BARB',
   //   payerBankIfscCode: 'BARB0VJRAPH',
-  //   payerEmail: "rahmat.ali@sabpaisa.in",
-  //   payerMobile: +91-8750212347,
+  //   payerEmail: 'rahmat.ali@sabpaisa.in',
+  //   payerMobile: '+91-8750212347',
   //   payerName: 'Rahmat',
   //   payerUtilitityCode: 'NACH00000000022341',
   //   requestType: 'REGSTRN',
-  //   schemeReferenceNumber: 34234,
+  //   schemeReferenceNumber: '741255',
   //   telePhone: '',
   //   untilCancelled: true,
   //   userType: 'merchant',
   // }
 
+
+
+  // update body by realtime data
   const bodyFormData = {
-    authenticationMode: 'Netbanking',
+    authenticationMode: authenticationMode,
     clientCode: 70,
     clientRegistrationId: Math.floor(Math.random() * 90000) + 10000,
     consumerReferenceNumber: Math.floor(Math.random() * 92000) + 10000,
     emiamount:"",
     frequency:'ADHO',
-    mandateCategory:'D001',
-    mandateEndDate: '',
-    mandateMaxAmount:12.00,
-    mandatePurpose: "Destination Bank Mandate",
+    mandateCategory:'U099',
+    mandateEndDate: mandateEndData,
+    mandateMaxAmount:planPrice+'.00',
+    mandatePurpose: "Others",
     mandateStartDate: formattedDate,
     mandateType:'ONLINE',
-    npciPaymentBankCode:'BARB',
+    npciPaymentBankCode:bankName,
     panNo: '',
-    payerAccountNumber:62300100005139,
+    payerAccountNumber:accountNumber,
     payerAccountType:'SAVINGS',
-    payerBank:'BARB',
-    payerBankIfscCode:'BARB0VJRAPH',
-    payerEmail: userDetails.clientEmail,
-    payerMobile: userDetails.clientMobileNo,
-    payerName: userDetails.payerName,
+    payerBank:bankName,
+    payerBankIfscCode:ifscCode,
+    payerEmail: clientEmail,
+    payerMobile: '+91-'+ clientMobileNo,
+    payerName: accountHolderName,
     payerUtilitityCode:'NACH00000000022341',
     requestType:'REGSTRN',
     schemeReferenceNumber:Math.floor(Math.random() * 94000) + 10000,
     telePhone: "",
-    untilCancelled:true,
+    untilCancelled:false,
     userType:'merchant',
   }
 
+  console.log(bodyFormData);
   useEffect(() => {
     getSubscriptionService();
   },[])
   
-  console.log("Suscription Charges", subscriptionPlanData);    
+  // console.log("Suscription Charges", subscriptionPlanData);    
 
-  const handleSubscribe = () => {
+  const handleSubscribe = (data) => {
+    console.log(data);
     setSubscriptionDetails(true);
+    setPlans(data)
   }
 
+
+  // console.log("subscriptionPlanData",subscriptionPlanData);
 return (
-    <>
+  <section className="ant-layout">
+
     <h1>Services</h1>
+    <div className="row" style={{overflow:"scroll"}}>
     {subscriptionPlanData.map((s) => 
-        <div className="row row-cols-1 row-cols-md-2" style={{ marginLeft: "0px" , marginRight: "50px" }}>
+        <div className="col-3" >
         <div class="col mb-4">  
-        <div style={{ width: "200px" }}>
+        <div >
           <div className="card" style={{ background: "aquamarine" }}>
             <div className="card-body" style={{ height: "200px" }}>
               <h5 className="card-title" style={{ fontWeight: "700", fontSize: "large" }}>{s.applicationName}</h5>
@@ -134,7 +172,7 @@ return (
             </div>
             <div class="container">
                 <a target="blank" href="https://sabpaisa.in/payout/"  style={{ padding: "0", top: "155px" }} className="btn btn-warning">Read More</a>
-                <button type="button" style={{ top: "200px" }} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={handleSubscribe}>subscribe</button>                
+                <button type="button" style={{ top: "200px" }} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster)}>subscribe</button>                
             </div>
           </div>
         </div>
@@ -149,18 +187,15 @@ return (
               </button>
             </div>
             <div class="modal-body">
-            {s.planMaster.map((sp) =>
+            
+            {Plans && Plans.map((sp) =>
             <table className="tables" cellpadding="10" cellspacing="10" width="100%">
                 <tbody>
+               
                     <><>
-                            <th><input type="checkbox" id="vehicle2" name="vehicle2" value="Yearly" /> {sp.planType}</th>
+                            <th><input type="checkbox" id="plantype" name="plantype" value={sp.planType} onChange={(e)=>{handleChecked(e,sp)}} /> {sp.planType} {sp.planName}</th>
                             </><tr>
                                 <td>Rs - {sp.planPrice}</td>
-                            </tr><tr>
-                                <td colspan="2">
-                                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
-                                    <label for="vehicle1"> I agree all terms and condition.</label>
-                                </td>
                             </tr><tr>
                                 {/* <td colspan="2"><a href="successsubscription.html" className="Click-here ant-btn ant-btn-primary float-right" >Create e-mandate</a></td> */}
                             </tr></>
@@ -169,22 +204,30 @@ return (
             </table>
             )}
             </div>
+            <div >
+                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+                    <label for="vehicle1"> I agree all terms and condition.</label>
+                </div>
+            
             <div class="modal-footer">
               <Emandate bodyData={bodyFormData}/>
+              
             </div>
           </div>
         </div>
       )
       </div>        
     }
+   
         </div>
       </div>
     )
   }
+  </div>
 
     
-    </>    
-);
+    </section>    
+  );
 }
 
 export default Subsciption

@@ -118,11 +118,11 @@ const checkValidation = ()=>{
   }, [searchText])
 
 
-  var clientMerchantDetailsList =[];
-  if(user && user.clientMerchantDetailsList===null){
+  var clientSuperMasterList =[];
+  if(user && user.clientSuperMasterList===null){
     history.push('/dashboard/profile');
   }else{
-    clientMerchantDetailsList = user.clientMerchantDetailsList;
+    clientSuperMasterList = user.clientSuperMasterList;
   }
   
   
@@ -151,7 +151,7 @@ const checkValidation = ()=>{
                     <label>Client Name</label>
                     <select className="ant-input" onChange={(e)=>{getInputValue('clientCode',e.target.value)}}>
                     <option value="0">All</option>
-                     {clientMerchantDetailsList.map((item)=>{
+                     {clientSuperMasterList.map((item)=>{
                        return (<option value={item.clientCode}>{ item.clientCode + ' - ' +item.clientName} </option>);
                      })}
                       

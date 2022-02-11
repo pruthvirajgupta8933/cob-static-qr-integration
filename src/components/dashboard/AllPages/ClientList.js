@@ -11,12 +11,12 @@ function ClientList() {
   
   useEffect(() => {
    
-  if(user.clientMerchantDetailsList.length>0){
-    var clientMerchantDetailsList = user.clientMerchantDetailsList;
-    SetClientList(user.clientMerchantDetailsList);
+  if(user.clientSuperMasterList.length>0){
+    var clientSuperMasterList = user.clientSuperMasterList;
+    SetClientList(user.clientSuperMasterList);
   }
   if(search!==''){
-    SetClientList(clientMerchantDetailsList.filter((Itme)=>Itme.clientCode.toLowerCase().includes(search.toLocaleLowerCase())));
+    SetClientList(clientSuperMasterList.filter((Itme)=>Itme.clientCode.toLowerCase().includes(search.toLocaleLowerCase())));
   
   }
     }, [search,user]);

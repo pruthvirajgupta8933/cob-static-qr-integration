@@ -60,7 +60,7 @@ const login = (username, password) => {
       userPassword:password,
     })
     .then((response) => {
-      // response.data.clientMerchantDetailsList = staticClientList
+      // response.data.clientSuperMasterList = staticClientList
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
       }else{

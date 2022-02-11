@@ -27,7 +27,7 @@ export const Edituser = (props) => {
      setUsername(myname);
      setUserEmail(email);
      setUserCustomer(editCustomerTypeId);
-     setUserPhone(phone);
+     setUserPhone(phone); 
     }, [props]);
     
     
@@ -35,9 +35,9 @@ export const Edituser = (props) => {
    
 
     const [data, setData] = useState([])
-    var clientMerchantDetailsList = user.clientMerchantDetailsList;
-    const { clientCode,customer_type_id } = clientMerchantDetailsList[0]
-    console.log(customer_type_id);
+    var clientSuperMasterList = user.clientSuperMasterList;
+    const { clientCode } = clientSuperMasterList
+ 
     
     // const onValueChange = e => {
     //     // console.log(e.target.value);

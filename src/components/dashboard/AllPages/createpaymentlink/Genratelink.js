@@ -38,8 +38,8 @@ const validationSchema = Yup.object().shape({
    
 
   const [data, setData] = useState([])
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  const { clientCode } = clientMerchantDetailsList[0]
+  var clientSuperMasterList = user.clientSuperMasterList;
+  const { clientCode } = clientSuperMasterList
   
   // console.log(customer_type_id);
 

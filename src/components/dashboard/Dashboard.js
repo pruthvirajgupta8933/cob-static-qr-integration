@@ -18,6 +18,8 @@ import Subsciption from './AllPages/Subscription';
 import PayerDetails from'./AllPages/createpaymentlink/PayerDetails'
 import PaymentLinkDetail from './AllPages/createpaymentlink/PaymentLinkDetail';
 import Paylink from './AllPages/Paylink';
+import {FormikApp} from './AllPages/ProfileTest'
+
 
 function Dashboard() {
     let { path } = useRouteMatch();
@@ -38,7 +40,8 @@ function Dashboard() {
                     <Home/>
                 </Route>
                 <Route exact path={`${path}/profile`}>
-                     <Profile/>
+                     {/* <Profile/> */}
+                     <FormikApp />
                 </Route>
                 <Route exact path={`${path}/transaction`}>
                      <Transaction/>

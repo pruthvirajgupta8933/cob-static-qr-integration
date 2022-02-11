@@ -55,9 +55,10 @@ const PayerDetails = () => {
 
     const [data, setData] = useState([])
     const [customerType,setCustomerType]= useState([]);
-    var clientMerchantDetailsList = user.clientMerchantDetailsList;
-    const { clientCode } = clientMerchantDetailsList[0];
-    // console.log(clientMerchantDetailsList);
+    var clientSuperMasterList = user.clientSuperMasterList;
+    console.log(clientSuperMasterList);
+    const { clientCode } = clientSuperMasterList;
+    // console.log(clientSuperMasterList);
     //console.log(clientCode)
     // const onInputChange = e => {
     //     // console.log(e.target.value);

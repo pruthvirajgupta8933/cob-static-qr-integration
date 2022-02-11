@@ -77,7 +77,7 @@ const handleLogin = (formValue) => {
       // window.location.reload();
     })
     .catch((error) => {
-      toast.error('Login Unsucessful')
+      toast.error('Login Unsucessful');
       setLoading(false);
     });
 };

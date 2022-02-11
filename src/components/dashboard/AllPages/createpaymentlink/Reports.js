@@ -26,8 +26,8 @@ const Reports = () => {
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([])
   const {user} = useSelector((state)=>state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  const {clientCode} = clientMerchantDetailsList[0];
+  var clientSuperMasterList = user.clientSuperMasterList;
+  const {clientCode} = clientSuperMasterList;
 
 
   

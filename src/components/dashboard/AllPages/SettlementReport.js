@@ -28,9 +28,9 @@ function SettlementReport() {
     const [selectedFolder,SetSelectedFolder] = React.useState('');
     const [selectedSubFolder,SetSelectedSubFolder] = React.useState('');
     const {user} = useSelector((state)=>state.auth);
-    var clientMerchantDetailsList = user.clientMerchantDetailsList;
-    const {clientCode} =clientMerchantDetailsList[0]; 
-    console.log(clientMerchantDetailsList);
+    var clientSuperMasterList = user.clientSuperMasterList;
+    const {clientCode} =clientSuperMasterList; 
+    console.log(clientSuperMasterList);
 
     const getFileName = async () => {  
         await axios(`https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/${clientCode}`)
