@@ -15,6 +15,7 @@ const PaymentLinkDetail = () => {
   
   const [selectedPayer, setSelectedPayer] = useState("Select Payer");
   const [searchResults, setSearchResults] = useState([])
+  const [passwordcheck, setPasswordCheck] = useState(false);
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredPurpose, setEnteredPurpose] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
@@ -125,9 +126,11 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
     setEnteredPurpose("");
     setHours("");
     setMinutes("");
+    setPasswordCheck("");
+    document.getElementById("checkbox_pass").checked = false;
 
     await axios
-      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${selectedPayer}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=false`)
+      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${selectedPayer}&Remarks=${enteredPurpose}&Amount=${enteredAmount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(enteredDate)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
       .then((resp) => {
         toast.success("Payment Link Created!",
         {
@@ -179,6 +182,33 @@ const pages = _.range(1, pageCount + 1)
 
 console.log("dataLength",paginatedata.length)
 
+const handleCheck = (e) => {
+  setPasswordCheck(e.target.checked);
+};
+
+const cancleClick=()=>{
+  setSelectedPayer("");
+    setEnteredAmount("");
+    setEnteredDate("");
+    setEnteredPurpose("");
+    setHours("");
+    setMinutes("");
+    setPasswordCheck("");
+    document.getElementById("checkbox_pass").checked = false;
+
+}
+const closeClick=()=>{
+  setSelectedPayer("");
+  setEnteredAmount("");
+  setEnteredDate("");
+  setEnteredPurpose("");
+  setHours("");
+  setMinutes("");
+  setPasswordCheck("");
+  document.getElementById("checkbox_pass").checked = false;
+
+}
+
 
   return (
     <div>
@@ -212,6 +242,7 @@ console.log("dataLength",paginatedata.length)
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
+                onClick={closeClick}
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -231,6 +262,22 @@ console.log("dataLength",paginatedata.length)
              
               <Form onSubmit={submitHandler} >
               
+              <div class="form-check">
+                    <label
+                      class="form-check-label"
+                      for="exampleCheck1"
+                      style={{ marginLeft: 290, marginBottom: 20 }}
+                    >
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        onChange={handleCheck}
+                        value={passwordcheck}
+                        id="checkbox_pass"
+                      />
+                      is Password Protected
+                    </label>
+                    </div>
                 <Field component='select' name='payer'
                   value={selectedPayer}
                   onChange={(e) => setSelectedPayer(e.target.value)}
@@ -422,7 +469,7 @@ console.log("dataLength",paginatedata.length)
                     >
                       SUBMIT
                     </button>
-                    <button
+                    <button onClick={cancleClick}
                       type="button"
                       style={{ postion: "absolute", top: 290, left: 380 }}
                       class="btn btn-danger"
