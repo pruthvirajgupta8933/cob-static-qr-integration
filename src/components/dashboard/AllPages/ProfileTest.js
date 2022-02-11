@@ -6,6 +6,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import {createClientProfile, updateClientProfile} from '../../../slices/dashboardSlice' 
 import profileService from '../../../services/profile.service'
+import { toast, Zoom } from 'react-toastify';
+import { Redirect } from 'react-router-dom';
+import { logout } from '../../../slices/auth';
 
 
 export const FormikApp = () => {
@@ -111,6 +114,16 @@ const validationSchema = Yup.object().shape({
     // console.log("send client id",clientId);
     console.log("send data",data);
     isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
+    toast.success("Your Data is Updated,Now you will redirect to login page",{
+      autoClose:2000,
+      limit :1,
+      transition:Zoom
+    });
+
+    setTimeout(() => {
+      dispatch(logout());
+      return <Redirect to="/login-page" />;
+    }, 2510);
      
     }
 
