@@ -263,11 +263,12 @@ const disableDates = () => {
           hours: '',
           minutes: ''
       }}
-       validationSchema={validationSchema} >
+       validationSchema={validationSchema} 
+       >
           
               
              
-              <Form onSubmit={submitHandler} >
+              <Form>
               
               <div class="form-check">
                     <label

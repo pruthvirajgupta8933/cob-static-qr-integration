@@ -6,6 +6,7 @@ import '../login/css/homestyle.css'
 import '../login/css/style-style.css'
 import '../login/css/style.css'
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from "../../slices/auth";
@@ -21,12 +22,24 @@ const INITIAL_FORM_STATE = {
   selectStates:''
 };
 
+// const INITIAL_VALUES= {
+//   firstname: '',
+//   lastname: '',
+//   mobilenumber: '',
+//   emaill:'',
+//   passwordd: '',
+//   confirmpasswordd: ''
+// }
+
 const FORM_VALIDATION = Yup.object().shape({
-  fullName: Yup.string().required("Required"),
-  mobileNumber: Yup.string().required("Required"),
-  email: Yup.string().required("Required"),
-  password: Yup.string().required("Required"),
-  selectStates: Yup.string().required("Required")
+  firstname: Yup.string().required("Required"),
+  lastname: Yup.string().required("Required"),
+  mobilenumber: Yup.string().required("Required"),
+  emaill: Yup.string().required("Required"),
+  passwordd: Yup.string().required("Password Required"),
+  // confirmpasswordd: Yup.string().required("Password Required"),
+  confirmpasswordd: Yup.string()
+     .oneOf([Yup.ref('passwordd'), null], 'Passwords must match')
 });
 
 function Registration() {
@@ -51,8 +64,15 @@ function Registration() {
 
   const saved = localStorage.getItem("register");
 
-  const handleRegistration = (businessType) => {
-    console.log(businessType)
+  const handleRegistration = (formData) => {
+    var businessType = isActive? 1 : 2 ;
+    var { firstname, lastname , mobilenumber, emaill, passwordd } = formData;
+    var firstName = firstname;
+    var lastName = lastname;
+    var mobileNumber = mobilenumber;
+    var email = emaill;
+    var password = passwordd;
+
         setLoading(true);
         // console.log(formValue);
         dispatch(register({ firstName, lastName, mobileNumber, email, password, confirmPassword,businessType}))
@@ -125,42 +145,75 @@ return (
                         <div className={isActive ? 'show logmod__tab lgm-1 ': 'logmod__tab lgm-1 '} >
                           <div className="logmod__heading">
                             <span className="logmod__heading-subtitle">Enter your personal details <strong>to create an account</strong></span>
-                            {saved &&
+                            {/* {saved &&
                             <div style={{ borderTopWidth: 0, borderBottomWidth: 0, marginBottom: 0, paddingTop: 0, paddingBottom: 0,}} className="alert alert-success">User successfully Signed in</div>
-                            }
+                            } */}
                           </div>
                           <div className="logmod__form">
-                            <form acceptCharset="utf-8" action="#" className="simform">
+                          <Formik initialValues={{
+                          firstname: '',
+                          lastname: '',
+                          mobilenumber: '',
+                          emaill:'',
+                          passwordd: '',
+                          confirmpasswordd: ''
+
+                         }}
+                        validationSchema={FORM_VALIDATION} 
+                        onSubmit= { handleRegistration}
+                        >
+                            <Form acceptCharset="utf-8" action="#" className="simform">
                               <div className="sminputs">
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-name">First Name *</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="First Name" type="text" size={50} onChange={e => setFirstName(e.target.value)}/>
+                                  <Field className="string optional" maxLength={255} id="user-name"  placeholder="First Name" type="text" name='firstname' size={50}/>
+                                  {<ErrorMessage name="firstname">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-name">Last Name*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="Last Name" type="text" size={50} onChange={e => setLastName(e.target.value)}/>
+                                  <Field className="string optional" maxLength={255} id="user-name" placeholder="Last Name" name = 'lastname' type="text" size={50} />
+                                  {<ErrorMessage name="lastname">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                                 </div>                                
                               </div>
                               <div className="sminputs">
                               <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-name">Mobile Number*</label>
-                                  <input className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" type="number" size={10} onChange={e => setMobileNumber(e.target.value)}/>
+                                  <Field className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" name = 'mobilenumber' type="number" size={10}/>
+                                  {<ErrorMessage name="mobilenumber">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-email">Email*</label>
-                                  <input className="string optional" maxLength={255} id="email" placeholder="email" type="email" size={50} onChange={e => setEmail(e.target.value)}/>
+                                             <Field className="string optional" maxLength={255} id="email" placeholder="email" type="email" name = 'emaill'  size={50} />
+                                             {<ErrorMessage name="emaill">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
+
+                                  
                                 </div>
                                 </div>
                               <div className="sminputs">
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Password *</label>
-                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} onChange={e => setPassword(e.target.value)} />
+                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" name = "passwordd" size={50} autocomplete="off" />
+                                  {<ErrorMessage name="passwordd">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
+
                             
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Confirm Password *</label>
-                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type="password" size={50} onChange={e => setConfirmPassword(e.target.value)} />
-                                  <input  type="hidden" name="requestedClientType" value="1" />
+                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type="password"  name="confirmpasswordd" size={50} />
+                                  <input type="hidden" name="requestedClientType" value="1" />
+                                  {<ErrorMessage name="confirmpasswordd">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                                 
                                   <span className="hide-password">Show</span>
                                 </div>
@@ -177,11 +230,12 @@ return (
                                 > 
                                   Create Account
                                 </button> */}
-                                <input className="sumbit" name="commit" type="button" defaultValue="Create Account" onClick={()=>handleRegistration(1)} />
+                                <button className="sumbit" name="commit" type="submit" defaultValue="Create Account" >Create Account </button>
                                 <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}}name="agreement" id="agreement" type="checkbox" className="form-check-input" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
                               </div>
                               </div>
-                            </form>
+                            </Form>
+                            </Formik>
                           
                           </div> 
                         </div>
@@ -190,37 +244,69 @@ return (
                             <span className="logmod__heading-subtitle">Create New Account <strong>Enter your details below</strong></span>
                           </div> 
                           <div className="logmod__form">
-                            <form acceptCharset="utf-8" action="#" className="simform">
+                            <Formik initialValues={{
+                          firstname: '',
+                          lastname: '',
+                          mobilenumber: '',
+                          emaill:'',
+                          passwordd: '',
+                          confirmpasswordd: '' 
+                          
+                        }}
+                        validationSchema={FORM_VALIDATION} 
+                        onSubmit={ handleRegistration}
+                          >
+                            <Form acceptCharset="utf-8" action="#" className="simform">
                               <div className="sminputs">
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-name">First Name*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="First Name" type="text" size={50} />
+                                  <Field className="string optional" name='firstname' maxLength={255} id="user-name" placeholder="First Name" type="text" size={50} />
+                                  {<ErrorMessage name="firstname">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-name">Last Name*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="Last Name" type="number" size={10} />
+                                  <Field className="string optional" maxLength={255} id="user-name" placeholder="Last Name" type="text" size={50} name = 'lastname' />
+                                  {<ErrorMessage name="lastname">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                                 </div>
                               </div>
                               <div className="sminputs">
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-name">Mobile Number*</label>
-                                  <input className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" type="number" size={50} />
+                                  <Field className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" type="number" size={50} name = 'mobilenumber' />
+                                  {<ErrorMessage name='mobilenumber'>
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
+                                  
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Email*</label>
-                                  <input className="string optional" maxLength={255} id="email" placeholder="email" type="email" size={50} />
+                                  <Field className="string optional" maxLength={255} id="email" placeholder="email" type="email" size={50} name='emaill'/>
                                   {/* <span style= {{marginTop: "26px"}}className="hide-password">Show</span> */}
+                                  {<ErrorMessage name='emaill'>
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}     
                                 </div>
                               </div>
                               <div className="sminputs">
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Password *</label>
-                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} onChange={e => setPassword(e.target.value)} />
+                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} name = 'passwordd' autocomplete="off" />
+                                  {<ErrorMessage name='passwordd'>
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>} 
                             
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Confirm Password *</label>
-                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type="password" size={50} onChange={e => setConfirmPassword(e.target.value)} />
+                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type="password" size={50} name='confirmpasswordd' />
+                                  {<ErrorMessage name='confirmpasswordd'>
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>} 
+
                                   <input  type="hidden" name="requestedClientType" value="2" />
                                 
                                   <span className="hide-password">Show</span>
@@ -229,10 +315,11 @@ return (
 
 
                               <div className="simform__actions">
-                              <input className="sumbit" name="commit" type="button" defaultValue="Create Account" onClick={()=>handleRegistration(2)} />
+                              <button className="sumbit" name="commit" type="submit" defaultValue="Create Account" >Create Account </button>
                                  <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}}name="agreement" id="agreement" type="checkbox" className="form-check-input" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
                               </div> 
-                            </form>
+                            </Form>
+                            </Formik>
                           </div> 
                         </div>
                       </div>
