@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useRef,useEffect} from 'react';
 import axios from 'axios';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
 
 
 const ReceiptWalchand = () => {
+
     const initialState = {
         formId: "",
         Category: "",
@@ -30,66 +31,72 @@ const ReceiptWalchand = () => {
     const [show, setIsShow] = useState(false);
     const [errMessage, setErrMessage] = useState('');
     const [walchandData, setWalchandData] = useState([]);
-    const [data, setData] = useState(initialState)
-   
+    const [data, setData] = useState([]);
+    const ref = useRef([]);
 
-
-
-
-
-
-
-
-
+    console.log(data);
 
     const onSubmit = async (pnrId) => {
-        // if(transactionId === null){
-        //   setTransactionId(0);
-        // }
-        // else {
-        //   setStudentEmailId(0);
-        // }
-
-
-        const response = await axios.get(`https://qwikforms.in/QwikForms/fetchDataForWACOE?PRNNum=${pnrId}`)
-       
-
+          const response = await axios.get(`https://qwikforms.in/QwikForms/fetchDataForWACOE?PRNNum=${pnrId}`)
             .then((response) => {
-                console.warn(response);
-                setData(response.data);
-                setIsShow(true);
-                setErrMessage('');
+                var resData = response.data
+                resData.map((dt,i)=>{
+                    transactionStatus(dt.cid,dt.transId).then((response)=>{
+                        if(response[0].client_txn_id===dt.transId){
+                           //resData[i] = {...response[0], ...dt};
+                           //trans_date:dt.trans_date,paid_amount:dt.paid_amount,client_name:dt.client_name
+                           console.log(response[0]);
+                           resData[i].trans_date = response[0].trans_date;
+                           resData[i].paid_amount = response[0].paid_amount;
+                           resData[i].client_name = response[0].client_name;
+                        }
+                    })
+                })
+
+                console.log('afterupdate',resData)
+                setInterval(() => {
+                    setData(resData);
+                    setIsShow(true);
+                    setErrMessage('');
+                }, 1500);
+                   
+               
             })
 
             .catch((e) => {
                 console.log(e);
-                setIsShow(false);
+                 setIsShow(false);
                 
               
             })
 
     }
 
+    
 
-    const transactionStatus = (cid, transId) => {
-        // console.log({cid,transId});      
-        var tempArrData = [];  
-        fetch(`https://adminapi.sabpaisa.in/Receipt/ReceiptForWalchand/${cid}/${transId}`, {
+
+    const transactionStatus = (cid, transId,index=0,dataLength=1) => {
+           
+            return fetch(`https://adminapi.sabpaisa.in/Receipt/ReceiptForWalchand/${cid}/${transId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 },
             }).then((res) => res.json())
                 .then((json)=>{
-                    tempArrData.push(json);
+                    return json
                     // console.log(json)
-                    // setWalchandData([...walchandData,transId])
                 });
-    //    console.log(tempArrData);
 
     }
 
-    console.log(walchandData);
+    
+    // console.log(ref.current);
+    // const addItem = useCallback(() => {
+    //     setWalchandData(walchandData => [...walchandData, Math.random()]);
+    //   }, []);
+
+    // console.log("",walchandData);
 
 
     const dateFormat = (timestamp) => {
@@ -123,26 +130,20 @@ const ReceiptWalchand = () => {
     return (
         <>
             <div className='container'>
+        
                 <div className='row'>
                     <div className='col-12 mb-4'>
 
                         <b>Dear payer, in case money is debited by a Bank and not confirmed to us in Real time Your Bank would probably Refund your money as per your policy.For any payment issues please mail us at support@sabpaisa.in </b>
-                        <div class="card">
-                            <div class="card-header" style={{ textAlign: 'center' }}>
+                        <div className="card">
+                            <div className="card-header" style={{ textAlign: 'center' }}>
                                 SABPAISA TRANSACTION RECEIPT
                             </div>
-                            <div class="card-body" >
+                            <div className="card-body" >
                                 <div className="col-lg-6 mrg-btm- bgcolor">
-
                                     <input type="text" className="ant-input" name="pnrId" value={pnrId} onChange={(e) => setPnrId(e.target.value)} placeholder="Enter PNR number " style={{ position: 'absolute', width: 430, left: 250 }} />
                                 </div>
-
-
-
-
-
-
-                                <button class="btn btn-success" onClick={() => onSubmit(pnrId)} style={{ marginTop: '70px', marginLeft: -130, width: 200 }} >View</button>
+                                <button className="btn btn-success" onClick={() => onSubmit(pnrId)} style={{ marginTop: '70px', marginLeft: -130, width: 200 }} >View</button>
                             </div>
                         </div>
                     </div>
@@ -152,15 +153,14 @@ const ReceiptWalchand = () => {
                         
                         {
                             show &&
-                            data.map((user) => (
-                        
+                            data.map((user,i) => (
                                 <>
+                            {console.log(user)}
                                     <div className='card'>
-                                    {transactionStatus(user.cid,user.transId)}
                                         <div className='card-body table-responsive'>
                                             <h3>TRANSACTION RECEIPT</h3>
                                             <table className='table' id="joshi">
-                                                <thead class="thead-dark">
+                                                <thead className="thead-dark">
                                                     <tr>
                                                         <th><img src={sabpaisalogo} alt="logo" width={"90px"} height={"25px"} /></th>
                                                     </tr>
@@ -198,7 +198,7 @@ const ReceiptWalchand = () => {
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Transaction Date</th>
-                                                        <td>{}</td>
+                                                        <td>{user.trans_date}</td>
 
                                                     </tr>
                                                     <tr>
@@ -218,7 +218,7 @@ const ReceiptWalchand = () => {
                             ))
                         }
                         <div className='col-md-12'>
-                    {show ? <button Value='click' onClick={onClick} class="btn btn-success" style={{ position: 'absolute', width: 200, left: 500 }}>
+                    {show ? <button Value='click' onClick={onClick} className="btn btn-success" style={{ position: 'absolute', width: 200, left: 500 }}>
                         Print
                     </button> : <></>}
                 </div>

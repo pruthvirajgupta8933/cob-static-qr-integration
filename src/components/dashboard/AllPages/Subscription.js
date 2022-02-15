@@ -33,7 +33,7 @@ const Subsciption = () => {
  const dispatch = useDispatch();
 
  const getSubscriptionService = async () => {  
-    await axios.get('https://cobtestapi.sabpaisa.in/client-subscription-service/fetchAppAndPlan')  
+    await axios.get('http://18.189.11.232:8081/client-subscription-service/fetchAppAndPlan')  
     .then(res => {  
       setSubscriptionData(res.data);
       localStorage.setItem("subscriptionData", JSON.stringify(res.data));
