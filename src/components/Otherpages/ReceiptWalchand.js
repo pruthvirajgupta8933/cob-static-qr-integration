@@ -32,7 +32,7 @@ const ReceiptWalchand = () => {
     const [errMessage, setErrMessage] = useState('');
     const [walchandData, setWalchandData] = useState([]);
     const [data, setData] = useState([]);
-    const ref = useRef([]);
+    
 
     console.log(data);
 
