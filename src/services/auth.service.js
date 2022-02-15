@@ -4,13 +4,13 @@ const API_URL = "http://localhost:8080/api/auth/";
 
 const SIGNUP_URL = "https://cobtest.sabpaisa.in/auth-service/auth/";
 
-const register = (firstName, lastName, mobileNumber, email, password) => {
+const register = (firstName, lastName, mobileNumber, email, password,businessType) => {
   return axios.post(SIGNUP_URL + "signup", {
     name: firstName+' '+ lastName,
     mobileNumber: mobileNumber,
     email: email,
     password: password,
-    requestedClientType:1,
+    requestedClientType:businessType,
   })
   .then((response) => {
     if (response.data.accessToken) {
