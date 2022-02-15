@@ -206,6 +206,17 @@ const closeClick=()=>{
 }
 
 
+const disableDates = () => {
+  var today, mm, dd, yyyy;
+  today = new Date();
+  dd = today.getDate() + 1;
+  mm = today.getMonth() + 1;
+  yyyy = today.getFullYear();
+
+  return mm + "/" + dd + "/" + yyyy;
+};
+
+
   return (
     <div>
       <button
@@ -342,6 +353,7 @@ const closeClick=()=>{
                     name ='date'
                       type="date"
                       className="ant-input"
+                      min= {disableDates()}
                       value={enteredDate}                     
                       onChange={(e) => setEnteredDate(e.target.value)}
                       placeholder="From Date"

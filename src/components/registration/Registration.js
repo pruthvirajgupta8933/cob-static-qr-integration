@@ -9,7 +9,9 @@ import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from "../../slices/auth";
-import { useHistory  } from "react-router-dom";
+import { Link, useHistory  } from "react-router-dom";
+import { toast, Zoom } from 'react-toastify';
+
 
 const INITIAL_FORM_STATE = {
   fullName:'',
@@ -36,6 +38,10 @@ function Registration() {
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [loading, setLoading] = useState(false);
+  const [isActive, setActive] = useState(true);
+  const [values, setValues] = useState({
+    showPassword: false,
+  });
 
   const dispatch = useDispatch();
 
@@ -45,19 +51,42 @@ function Registration() {
 
   const saved = localStorage.getItem("register");
 
-  const handleRegistration = () => {
+  const handleRegistration = (businessType) => {
+    console.log(businessType)
         setLoading(true);
         // console.log(formValue);
-        dispatch(register({ firstName, lastName, mobileNumber, email, password, confirmPassword}))
+        dispatch(register({ firstName, lastName, mobileNumber, email, password, confirmPassword,businessType}))
           .unwrap()
           .then(() => {
             history.push("/dashboard");
             // window.location.reload();
           })
           .catch(() => {
+            toast.error("Sign Up Unsuccessfull",{
+              position: "top-right",
+              autoClose: 1000,
+              transition: Zoom,
+              limit: 2,
+            })
             setLoading(false);
           });
   }
+
+
+ 
+ 
+
+  const toggleClass = () => {
+    setActive(!isActive);
+  };
+
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
+  
+
+  
 
 return (
         <>
@@ -87,11 +116,13 @@ return (
                     <span className="logmod__close">Close</span>
                     <div className="logmod__container">
                       <ul className="logmod__tabs">
-                        <li data-tabtar="lgm-2" className="current"><a href="#">Individual</a></li>
-                        <li data-tabtar="lgm-1"><a href="#">Business</a></li>
+                        <li data-tabtar="lgm-2" id="lgm-2" className={isActive ? 'current': 'left'} 
+                        onClick={toggleClass} ><Link id="btnLeft" href="javascript:void(0)">Individual</Link></li>
+                        <li data-tabtar="lgm-1" id="lgm-1" className={isActive ? 'right': 'current'} 
+                      onClick={toggleClass} ><Link id="btnRight" href="javascript:void(0)">Business</Link></li>
                       </ul>
                       <div className="logmod__tab-wrapper">
-                        <div className="logmod__tab lgm-1 show">
+                        <div className={isActive ? 'show logmod__tab lgm-1 ': 'logmod__tab lgm-1 '} >
                           <div className="logmod__heading">
                             <span className="logmod__heading-subtitle">Enter your personal details <strong>to create an account</strong></span>
                             {saved &&
@@ -124,14 +155,14 @@ return (
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Password *</label>
                                   <input className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} onChange={e => setPassword(e.target.value)} />
-                                  {/* <span className="hidden">Show</span> */}
+                            
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Confirm Password *</label>
                                   <input className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type="password" size={50} onChange={e => setConfirmPassword(e.target.value)} />
                                   <input  type="hidden" name="requestedClientType" value="1" />
                                 
-                                  {/* <span className="hide-password">Show</span> */}
+                                  <span className="hide-password">Show</span>
                                 </div>
                                 
                                 
@@ -146,15 +177,15 @@ return (
                                 > 
                                   Create Account
                                 </button> */}
-                                <input className="sumbit" name="commit" type="button" defaultValue="Create Account" onClick={handleRegistration} />
-                                <span className="simform__actions-sidetext"><span className="ant-checkbox"><input name="agreement" id="agreement" type="checkbox" className="ant-checkbox-input" defaultValue /><span className="ant-checkbox-inner" /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
+                                <input className="sumbit" name="commit" type="button" defaultValue="Create Account" onClick={()=>handleRegistration(1)} />
+                                <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}}name="agreement" id="agreement" type="checkbox" className="form-check-input" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
                               </div>
                               </div>
                             </form>
                           
                           </div> 
                         </div>
-                        <div className="logmod__tab lgm-2">
+                        <div   className={isActive ? ' logmod__tab lgm-2 ': 'logmod__tab lgm-2  show'} >
                           <div className="logmod__heading">
                             <span className="logmod__heading-subtitle">Create New Account <strong>Enter your details below</strong></span>
                           </div> 
@@ -162,73 +193,44 @@ return (
                             <form acceptCharset="utf-8" action="#" className="simform">
                               <div className="sminputs">
                                 <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Full Name*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="Full Name" type="text" size={50} />
+                                  <label className="string optional" htmlFor="user-name">First Name*</label>
+                                  <input className="string optional" maxLength={255} id="user-name" placeholder="First Name" type="text" size={50} />
                                 </div>
                                 <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Mobile Number*</label>
-                                  <input className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" type="number" size={10} />
+                                  <label className="string optional" htmlFor="user-name">Last Name*</label>
+                                  <input className="string optional" maxLength={255} id="user-name" placeholder="Last Name" type="number" size={10} />
                                 </div>
                               </div>
                               <div className="sminputs">
                                 <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Email*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="email" type="email" size={50} />
+                                  <label className="string optional" htmlFor="user-name">Mobile Number*</label>
+                                  <input className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" type="number" size={50} />
                                 </div>
                                 <div className="input full- optional">
+                                  <label className="string optional" htmlFor="user-pw">Email*</label>
+                                  <input className="string optional" maxLength={255} id="email" placeholder="email" type="email" size={50} />
+                                  {/* <span style= {{marginTop: "26px"}}className="hide-password">Show</span> */}
+                                </div>
+                              </div>
+                              <div className="sminputs">
+                                <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Password *</label>
-                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} />
+                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} onChange={e => setPassword(e.target.value)} />
+                            
+                                </div>
+                                <div className="input full- optional">
+                                  <label className="string optional" htmlFor="user-pw">Confirm Password *</label>
+                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type="password" size={50} onChange={e => setConfirmPassword(e.target.value)} />
+                                  <input  type="hidden" name="requestedClientType" value="2" />
+                                
                                   <span className="hide-password">Show</span>
                                 </div>
                               </div>
-                              <div className="sminputs">
-                                <div className="input full">
-                                  <label className="string optional" htmlFor="user-pw">Select *</label>
-                                  {/*<input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />*/}
-                                  <select name="states" id="states" className="string optional" style={{border: '1px solid #fafafa', width: '100%', marginBottom: '10px', padding: '2px'}}>
-                                    <option value="Select States" selected>Select States</option>
-                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
-                                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                                    <option value="Assam">Assam</option>
-                                    <option value="Bihar">Bihar</option>
-                                    <option value="Chandigarh">Chandigarh</option>
-                                    <option value="Chhattisgarh">Chhattisgarh</option>
-                                    <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
-                                    <option value="Daman and Diu">Daman and Diu</option>
-                                    <option value="Delhi">Delhi</option>
-                                    <option value="Lakshadweep">Lakshadweep</option>
-                                    <option value="Puducherry">Puducherry</option>
-                                    <option value="Goa">Goa</option>
-                                    <option value="Gujarat">Gujarat</option>
-                                    <option value="Haryana">Haryana</option>
-                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
-                                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                                    <option value="Jharkhand">Jharkhand</option>
-                                    <option value="Karnataka">Karnataka</option>
-                                    <option value="Kerala">Kerala</option>
-                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
-                                    <option value="Maharashtra">Maharashtra</option>
-                                    <option value="Manipur">Manipur</option>
-                                    <option value="Meghalaya">Meghalaya</option>
-                                    <option value="Mizoram">Mizoram</option>
-                                    <option value="Nagaland">Nagaland</option>
-                                    <option value="Odisha">Odisha</option>
-                                    <option value="Punjab">Punjab</option>
-                                    <option value="Rajasthan">Rajasthan</option>
-                                    <option value="Sikkim">Sikkim</option>
-                                    <option value="Tamil Nadu">Tamil Nadu</option>
-                                    <option value="Telangana">Telangana</option>
-                                    <option value="Tripura">Tripura</option>
-                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                    <option value="Uttarakhand">Uttarakhand</option>
-                                    <option value="West Bengal">West Bengal</option>
-                                  </select>					
-                                </div>
-                              </div>
+
+
                               <div className="simform__actions">
-                                <button className="submit"/>
-                                <span className="simform__actions-sidetext"><span className="ant-checkbox"><input name="agreement" id="agreement" type="checkbox" className="ant-checkbox-input" defaultValue /><span className="ant-checkbox-inner" /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
+                              <input className="sumbit" name="commit" type="button" defaultValue="Create Account" onClick={()=>handleRegistration(2)} />
+                                 <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}}name="agreement" id="agreement" type="checkbox" className="form-check-input" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
                               </div> 
                             </form>
                           </div> 
