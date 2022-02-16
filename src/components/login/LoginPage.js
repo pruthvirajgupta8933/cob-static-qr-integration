@@ -48,7 +48,7 @@ function LoginPage(props) {
   const dispatch = useDispatch();
 
   // message = message?.length>=0?message=null:message;
-  console.log(message)
+  // console.log(message)
   useEffect(()=>{
     setAuthData(authentication);
     // console.log('change auth data',auth);
@@ -60,8 +60,8 @@ useEffect(() => {
   }, [dispatch]);
 
 useEffect(() => {
-    // console.log('call one tiem');
-    dispatch(logout());
+    // console.log('login page ,call one time');
+    // dispatch(logout());
 }, [])
 
 const handleLogin = (formValue) => {

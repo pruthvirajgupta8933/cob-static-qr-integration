@@ -23,7 +23,7 @@ import {FormikApp} from './AllPages/ProfileTest'
 
 function Dashboard() {
     let { path } = useRouteMatch();
-    const {  user,isLoggedIn } = useSelector((state) => state.auth);
+    const { user,isLoggedIn } = useSelector((state) => state.auth);
     
   if (!isLoggedIn) {
     return <Redirect to="/login-page" />;
