@@ -171,7 +171,7 @@ useEffect(() => {
 return (
   <section className="ant-layout">
 
-    <h1>Services</h1>
+    <h1 style={{fontSize:"21px"}}>Services</h1>
     <div className="row" style={{overflow:"scroll"}}>
     {subscriptionPlanData.map((s) => 
         <div className="col-3" >

@@ -39,7 +39,9 @@ const FORM_VALIDATION = Yup.object().shape({
   passwordd: Yup.string().required("Password Required"),
   // confirmpasswordd: Yup.string().required("Password Required"),
   confirmpasswordd: Yup.string()
-     .oneOf([Yup.ref('passwordd'), null], 'Passwords must match')
+     .oneOf([Yup.ref('passwordd'), null], 'Passwords must match'),
+     terms_and_condition:  Yup.boolean()
+     .oneOf([true], "You must accept the terms and conditions")
 });
 
 function Registration() {
@@ -82,12 +84,12 @@ function Registration() {
             // window.location.reload();
           })
           .catch(() => {
-            toast.error("Sign Up Unsuccessfull",{
-              position: "top-right",
-              autoClose: 1000,
-              transition: Zoom,
-              limit: 2,
-            })
+            // toast.error("Sign Up Unsuccessfull",{
+            //   position: "top-right",
+            //   autoClose: 1000,
+            //   transition: Zoom,
+            //   limit: 2,
+            // })
             setLoading(false);
           });
   }
@@ -156,7 +158,8 @@ return (
                           mobilenumber: '',
                           emaill:'',
                           passwordd: '',
-                          confirmpasswordd: ''
+                          confirmpasswordd: '',
+                          terms_and_condition: false,
 
                          }}
                         validationSchema={FORM_VALIDATION} 
@@ -200,7 +203,7 @@ return (
                               <div className="sminputs">
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Password *</label>
-                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" name = "passwordd" size={50} autocomplete="off" />
+                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" name = "passwordd" size={50} autoComplete="off" />
                                   {<ErrorMessage name="passwordd">
                                                 {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
                                             </ErrorMessage>}
@@ -231,7 +234,10 @@ return (
                                   Create Account
                                 </button> */}
                                 <button className="sumbit" name="commit" type="submit" defaultValue="Create Account" >Create Account </button>
-                                <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}}name="agreement" id="agreement" type="checkbox" className="form-check-input" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
+                                <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}} type="checkbox" className="form-check-input" name= "terms_and_condition" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
+                                {<ErrorMessage name="terms_and_condition">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", top: "267px", left:'4px' }}>{msg}</p>}
+                                            </ErrorMessage>}
                               </div>
                               </div>
                             </Form>
@@ -250,7 +256,10 @@ return (
                           mobilenumber: '',
                           emaill:'',
                           passwordd: '',
-                          confirmpasswordd: '' 
+                          confirmpasswordd: '',
+                          terms_and_condition: false
+                          
+                          
                           
                         }}
                         validationSchema={FORM_VALIDATION} 
@@ -316,7 +325,11 @@ return (
 
                               <div className="simform__actions">
                               <button className="sumbit" name="commit" type="submit" defaultValue="Create Account" >Create Account </button>
-                                 <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}}name="agreement" id="agreement" type="checkbox" className="form-check-input" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
+                              <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}} type="checkbox" className="form-check-input" name= "terms_and_condition" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
+                                {<ErrorMessage name="terms_and_condition">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", top: "267px", left:'4px' }}>{msg}</p>}
+                                            </ErrorMessage>}
+                               
                               </div> 
                             </Form>
                             </Formik>

@@ -29,7 +29,7 @@ function SettlementReport() {
     const [selectedSubFolder,SetSelectedSubFolder] = React.useState('');
     const {user} = useSelector((state)=>state.auth);
     var clientSuperMasterList = user.clientSuperMasterList;
-    const {clientCode} =clientSuperMasterList; 
+    const {clientCode} =clientSuperMasterList[0]; 
     console.log(clientSuperMasterList);
 
     const getFileName = async () => {  
@@ -99,7 +99,7 @@ function SettlementReport() {
 
     return (
         <div>
-            <h1 style={{ position: 'absolute', top: 70, left: 250 }}>Settlement Report</h1>
+            <h1 style={{ position: 'absolute', top: 70, left: 250 ,fontSize: '21px'}}>Settlement Report</h1>
             <hr />
             <label For="folder "></label>
             <select value={selectedFolder} style={{ position: 'absolute', top: 150, left: 250, width: 300 }} onChange={(e)=>onChangeFolder(e.target.value)}>
