@@ -43,6 +43,10 @@ function LoginPage(props) {
   const [showResendCode, setShowResendCode] = useState(false);
   const [showBackDrop, setShowBackDrop] = useState(false);
   const [GeoLocation, setGeeolocation] = useState("");
+  const [values, setValues] = useState({
+    password: '',
+    showPassword: false,
+  });
 
  
   const dispatch = useDispatch();
@@ -146,6 +150,10 @@ const handleClose = (event, reason) => {
 };
 
 
+const handleClickShowPassword = () => {
+  setValues({ ...values, showPassword: !values.showPassword });
+};
+
 
 
   return (
@@ -246,14 +254,18 @@ const handleClose = (event, reason) => {
                                     maxLength={255}
                                     id="user-pw"
                                     placeholder="Password"
-                                    type="password"
+                                    type={values.showPassword ? "text" : "password"}
                                     size={50}
                                     name="userPassword"
                                   />
                                   <ErrorMessage name="userPassword">
                                       { msg => <div className="abhitest" style={{color: "red",position: "absolute",zIndex:" 999"}}>{msg}</div> }
                                   </ErrorMessage>
-                                  <span className="hide-password">Show</span>
+                                  <span className="hide-password" onClick={handleClickShowPassword}>
+
+                                  {values.showPassword ? "Hide" : "Show" }
+
+                                  </span>
                                 </div>
                               </div>
                               <div className="simform__actions">
