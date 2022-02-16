@@ -55,6 +55,7 @@ function Registration() {
   const [loading, setLoading] = useState(false);
   const [isActive, setActive] = useState(true);
   const [values, setValues] = useState({
+    password: '',
     showPassword: false,
   });
 
@@ -80,8 +81,10 @@ function Registration() {
         dispatch(register({ firstName, lastName, mobileNumber, email, password, confirmPassword,businessType}))
           .unwrap()
           .then(() => {
-            history.push("/dashboard");
+            
+            //history.push("/dashboard");
             // window.location.reload();
+            // alert(2);
           })
           .catch(() => {
             // toast.error("Sign Up Unsuccessfull",{
@@ -90,6 +93,7 @@ function Registration() {
             //   transition: Zoom,
             //   limit: 2,
             // })
+            // alert(4);
             setLoading(false);
           });
   }
@@ -144,7 +148,7 @@ return (
                       onClick={toggleClass} ><Link id="btnRight" href="javascript:void(0)">Business</Link></li>
                       </ul>
                       <div className="logmod__tab-wrapper">
-                        <div className={isActive ? 'show logmod__tab lgm-1 ': 'logmod__tab lgm-1 '} >
+                        <div className="show logmod__tab lgm-1" >
                           <div className="logmod__heading">
                             <span className="logmod__heading-subtitle">Enter your personal details <strong>to create an account</strong></span>
                             {/* {saved &&
@@ -159,7 +163,7 @@ return (
                           emaill:'',
                           passwordd: '',
                           confirmpasswordd: '',
-                          terms_and_condition: false,
+                          
 
                          }}
                         validationSchema={FORM_VALIDATION} 
@@ -195,9 +199,7 @@ return (
                                              <Field className="string optional" maxLength={255} id="email" placeholder="email" type="email" name = 'emaill'  size={50} />
                                              {<ErrorMessage name="emaill">
                                                 {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                                            </ErrorMessage>}
-
-                                  
+                                            </ErrorMessage>}                                  
                                 </div>
                                 </div>
                               <div className="sminputs">
@@ -212,13 +214,16 @@ return (
                                 </div>
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Confirm Password *</label>
-                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type="password"  name="confirmpasswordd" size={50} />
+                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type={values.showPassword ? "text" : "password"}  name="confirmpasswordd" size={50} />
                                   <input type="hidden" name="requestedClientType" value="1" />
                                   {<ErrorMessage name="confirmpasswordd">
                                                 {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
                                             </ErrorMessage>}
                                 
-                                  <span className="hide-password">Show</span>
+                                  <span className="hide-password" onClick={handleClickShowPassword}>
+                                  {values.showPassword ? "Hide" : "Show" }
+                                    </span>
+
                                 </div>
                                 
                                 
@@ -235,9 +240,9 @@ return (
                                 </button> */}
                                 <button className="sumbit" name="commit" type="submit" defaultValue="Create Account" >Create Account </button>
                                 <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}} type="checkbox" className="form-check-input" name= "terms_and_condition" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
-                                {<ErrorMessage name="terms_and_condition">
+                                {/* {<ErrorMessage name="terms_and_condition">
                                                 {msg => <p className="abhitest" style={{ color: "red", position: "absolute", top: "267px", left:'4px' }}>{msg}</p>}
-                                            </ErrorMessage>}
+                                            </ErrorMessage>} */}
                               </div>
                               </div>
                             </Form>
@@ -245,96 +250,7 @@ return (
                           
                           </div> 
                         </div>
-                        <div   className={isActive ? ' logmod__tab lgm-2 ': 'logmod__tab lgm-2  show'} >
-                          <div className="logmod__heading">
-                            <span className="logmod__heading-subtitle">Create New Account <strong>Enter your details below</strong></span>
-                          </div> 
-                          <div className="logmod__form">
-                            <Formik initialValues={{
-                          firstname: '',
-                          lastname: '',
-                          mobilenumber: '',
-                          emaill:'',
-                          passwordd: '',
-                          confirmpasswordd: '',
-                          terms_and_condition: false
-                          
-                          
-                          
-                        }}
-                        validationSchema={FORM_VALIDATION} 
-                        onSubmit={ handleRegistration}
-                          >
-                            <Form acceptCharset="utf-8" action="#" className="simform">
-                              <div className="sminputs">
-                                <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">First Name*</label>
-                                  <Field className="string optional" name='firstname' maxLength={255} id="user-name" placeholder="First Name" type="text" size={50} />
-                                  {<ErrorMessage name="firstname">
-                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                                            </ErrorMessage>}
-                                </div>
-                                <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Last Name*</label>
-                                  <Field className="string optional" maxLength={255} id="user-name" placeholder="Last Name" type="text" size={50} name = 'lastname' />
-                                  {<ErrorMessage name="lastname">
-                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                                            </ErrorMessage>}
-                                </div>
-                              </div>
-                              <div className="sminputs">
-                                <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Mobile Number*</label>
-                                  <Field className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" type="number" size={50} name = 'mobilenumber' />
-                                  {<ErrorMessage name='mobilenumber'>
-                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                                            </ErrorMessage>}
-                                  
-                                </div>
-                                <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-pw">Email*</label>
-                                  <Field className="string optional" maxLength={255} id="email" placeholder="email" type="email" size={50} name='emaill'/>
-                                  {/* <span style= {{marginTop: "26px"}}className="hide-password">Show</span> */}
-                                  {<ErrorMessage name='emaill'>
-                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                                            </ErrorMessage>}     
-                                </div>
-                              </div>
-                              <div className="sminputs">
-                                <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-pw">Password *</label>
-                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} name = 'passwordd' autocomplete="off" />
-                                  {<ErrorMessage name='passwordd'>
-                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                                            </ErrorMessage>} 
-                            
-                                </div>
-                                <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-pw">Confirm Password *</label>
-                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type="password" size={50} name='confirmpasswordd' />
-                                  {<ErrorMessage name='confirmpasswordd'>
-                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                                            </ErrorMessage>} 
-
-                                  <input  type="hidden" name="requestedClientType" value="2" />
-                                
-                                  <span className="hide-password">Show</span>
-                                </div>
-                              </div>
-
-
-                              <div className="simform__actions">
-                              <button className="sumbit" name="commit" type="submit" defaultValue="Create Account" >Create Account </button>
-                              <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}} type="checkbox" className="form-check-input" name= "terms_and_condition" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
-                                {<ErrorMessage name="terms_and_condition">
-                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", top: "267px", left:'4px' }}>{msg}</p>}
-                                            </ErrorMessage>}
-                               
-                              </div> 
-                            </Form>
-                            </Formik>
-                          </div> 
-                        </div>
+                    
                       </div>
                     </div>
                   </div>

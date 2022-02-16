@@ -147,9 +147,11 @@ const authSlice = createSlice({
   extraReducers: {
     [register.fulfilled]: (state, action) => {
       state.isLoggedIn = false;
+      console.log("register-full",action);
     },
     [register.rejected]: (state, action) => {
       state.isLoggedIn = false;
+      console.log("register-rejected",action);
     },
     [successTxnSummary.fulfilled]: (state, action) => {
       state.successTxnsumry = action.payload;
