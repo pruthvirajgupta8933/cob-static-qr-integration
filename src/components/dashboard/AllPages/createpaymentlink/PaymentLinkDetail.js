@@ -263,12 +263,11 @@ const disableDates = () => {
           hours: '',
           minutes: ''
       }}
-       validationSchema={validationSchema} 
-       >
+       validationSchema={validationSchema} >
           
               
              
-              <Form>
+              <Form onSubmit={submitHandler} >
               
               <div class="form-check">
                     <label
@@ -354,7 +353,7 @@ const disableDates = () => {
                     name ='date'
                       type="date"
                       className="ant-input"
-                      min= {disableDates()}
+                      minDate= {disableDates()}
                       value={enteredDate}                     
                       onChange={(e) => setEnteredDate(e.target.value)}
                       placeholder="From Date"
