@@ -126,7 +126,7 @@ const checkValidation = ()=>{
   }
   
   
-  console.log(txnList.lenth)
+  console.log(txnList.length)
 
 
 

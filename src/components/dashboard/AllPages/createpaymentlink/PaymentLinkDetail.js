@@ -85,10 +85,7 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
       });
   };
 
-
-
-
-  const getSearchTerm  = (e) => {
+const getSearchTerm  = (e) => {
   setSearchText(e.target.value);
   }
 

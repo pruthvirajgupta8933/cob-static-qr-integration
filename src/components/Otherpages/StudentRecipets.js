@@ -5,15 +5,15 @@ import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
 
 const StudentRecipets = () => {
   const initialState = {
-    payee_first_name: "",
-    txn_id: "",
-    client_txn_id: "",
-    client_name: "",
-    paid_amount: "",
-    payment_mode: "",
-    trans_date: "",
-    status: "",
-    udf19: "",
+    payee_first_name: '',
+    txn_id: '',
+    client_txn_id: '',
+    client_name: '',
+    paid_amount: '',
+    payment_mode: '',
+    trans_date: '',
+    status: '',
+    udf19: '',
 
   }
   const [transactionId, setTransactionId] = useState();
@@ -49,10 +49,12 @@ const StudentRecipets = () => {
         setErrMessage('');
       })
 
-      .catch((e) => {
+      .catch((error) => {
+        console.log(error);
+        alert("Kindly enter SabPaisa Transaction Id Or Student Id")
         
 
-        console.log(e);
+        // console.log(e);
         setIsShow(false);
         setErrMessage('No Data Found');
 
@@ -93,11 +95,11 @@ const StudentRecipets = () => {
       <div className='container'>
         <div className='row'>
           <div className='col-12 mb-4'>
-            <div class="card">
-              <div class="card-header" style={{ textAlign: 'center' }}>
+            <div className="card">
+              <div className="card-header" style={{ textAlign: 'center' }}>
                 SABPAISA TRANSACTION RECEIPT
               </div>
-              <div class="card-body" >
+              <div className="card-body" >
                 <div className="col-lg-6 mrg-btm- bgcolor">
 
                   <input type="text" className="ant-input" name="transactionid" value={transactionId} onChange={(e) => setTransactionId(e.target.value)} placeholder="Enter Sabpaisa Transactions Id" style={{ position: 'absolute', width: 430,left:250 }} />
@@ -115,7 +117,7 @@ const StudentRecipets = () => {
                 <div className="col-lg-6 mrg-btm- bgcolor">
                 </div>
 
-                <button class="btn btn-success" onClick={() => onSubmit(transactionId,studentId)} style={{ marginTop: '70px', marginLeft: -130,width:200 }} >View</button>
+                <button className="btn btn-success" onClick={() => onSubmit(transactionId,studentId)} style={{ marginTop: '70px', marginLeft: -130,width:200 }} >View</button>
               </div>
             </div>
           </div>
@@ -125,12 +127,12 @@ const StudentRecipets = () => {
             {
               show &&
               data.map((user) => (
-                <>
-                  <div className='card'>
+               
+                  <div className='card' key={user.id}>
                     <div className='card-body table-responsive'>
                       <h3>TRANSACTION RECEIPT</h3>
                       <table className='table' id="joshi">
-                        <thead class="thead-dark">
+                        <thead className="thead-dark">
                           <tr>
                             <th><img src={sabpaisalogo} alt="logo" width={"90px"} height={"25px"} /></th>
                           </tr>
@@ -184,13 +186,13 @@ const StudentRecipets = () => {
                       </table>
                     </div>
                   </div>
-                </>
+               
               ))
             }
           </div>
         </div>
         <div className='col-md-12'>
-        { show ? <button Value='click' onClick={onClick} class="btn btn-success" style={{ position: 'absolute', width: 200, left: 500 }}>
+        { show ? <button value='click' onClick={onClick} className="btn btn-success" style={{ position: 'absolute', width: 200, left: 500 }}>
             Print
           </button>:<></> }
         </div>

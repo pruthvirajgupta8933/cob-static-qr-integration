@@ -82,7 +82,7 @@ const ReceiptWalchand = () => {
             }).then((res) => res.json())
                 .then((json)=>{
                     tempArrData.push(json);
-                    // console.log(json)
+                     console.log(json)
                     // setWalchandData([...walchandData,transId])
                 });
     //    console.log(tempArrData);

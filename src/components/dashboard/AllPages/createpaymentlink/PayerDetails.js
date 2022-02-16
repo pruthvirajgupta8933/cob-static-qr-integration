@@ -87,9 +87,8 @@ const PayerDetails = () => {
         if (searchText !== "") {
           setData(
             data.filter((item) =>{
-              item.append("")
-              
-                .toLowerCase()
+              item.name
+               .toLowerCase()
                 .includes(searchText.toLocaleLowerCase())
             })
           );
@@ -263,18 +262,19 @@ const generateli = (id) => {
                                     <Form onSubmit={e => onSubmit(e)} >
                                         <div class="form-group">
                                             <label for="recipient-name" class="col-form-label">Name of Payer:</label>
-                                            <Field name="name" value={name} onChange={e => setName(e.target.value)}
+                                            <Field name="name" autoComplete="off" value={name} onChange={e => { props.setFieldError("name",""); setName(e.target.value) }}
+                                           
                                                 placeholder="Enter Name of Payer" class="form-control" id="pairname" />
                                             <ErrorMessage name="name">
                                                 {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                             </ErrorMessage>
                                             <label for="recipient-name" class="col-form-label">Mobile No.:</label>
-                                            <Field name="phone_number"
+                                            <Field name="phone_number" value={phoneNumber}  onChange={e => { props.setFieldError("name",""); setPhoneNumber(e.target.value) }}
+                                          
                                             type="number"
                                             onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
 
-                                                value={phoneNumber}
-                                                onChange={e => setPhoneNumber(e.target.value)} helperText={<ErrorMessage name="phone_number" />} placeholder='Enter Mobile No.' class="form-control" id="pairemail" />
+                                                placeholder='Enter Mobile No.' class="form-control" id="pairemail" />
                                             <ErrorMessage name="phone_number">
                                                 {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                             </ErrorMessage>
@@ -282,7 +282,8 @@ const generateli = (id) => {
                                             <label for="recipient-name" class="col-form-label">Email ID:</label>
                                             <Field name="email"
                                                 value={myemail}
-                                                onChange={e => setMyEmail(e.target.value)} placeholder='Enter Email ID' class="form-control" id="pairphn" />
+                                                onChange={e => { props.setFieldError("phoneNumber",""); setMyEmail(e.target.value) }}
+                                                placeholder='Enter Email ID' class="form-control" id="pairphn" />
 
                                             <ErrorMessage name="email">
                                                 {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}

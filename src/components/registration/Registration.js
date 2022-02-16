@@ -87,8 +87,8 @@ return (
                     <span className="logmod__close">Close</span>
                     <div className="logmod__container">
                       <ul className="logmod__tabs">
-                        <li data-tabtar="lgm-2" className="current"><a href="#">Individual</a></li>
-                        <li data-tabtar="lgm-1"><a href="#">Business</a></li>
+                        <li data-tabtar="lgm-2" className='current'  ><a  href="#">Individual</a></li>
+                        <li data-tabtar="lgm-1" ><a  href="#">Business</a></li>
                       </ul>
                       <div className="logmod__tab-wrapper">
                         <div className="logmod__tab lgm-1 show">
