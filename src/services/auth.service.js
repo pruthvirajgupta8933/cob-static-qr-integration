@@ -48,9 +48,9 @@ const login = (username, password) => {
 
 const logout = () => {
   // console.log('remove user from LS');
-localStorage.removeItem("user");
-localStorage.clear();
- alert('logout call auth service');
+  localStorage.removeItem("user");
+  localStorage.clear();
+  // alert('logout call auth service');
 };
 
 

@@ -53,6 +53,12 @@ function LoginPage(props) {
 
   // message = message?.length>=0?message=null:message;
   // console.log(message)
+  const {user,userAlreadyLoggedIn} = auth;
+  // console.log(auth)
+  if(userAlreadyLoggedIn ){
+    history.push("/dashboard")  
+  }
+
   useEffect(()=>{
     setAuthData(authentication);
     // console.log('change auth data',auth);

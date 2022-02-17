@@ -21,6 +21,7 @@ import EmandatePage from './components/Otherpages/EmandatePage';
 
 function AllRoutes(){
   
+  
     return (
         <Router >
           <div>
