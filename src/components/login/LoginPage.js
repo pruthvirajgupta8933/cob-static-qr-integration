@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import HeaderPage from './HeaderPage'
 import { useDispatch, useSelector } from 'react-redux';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
-import { Formik, Field, Form} from "formik";
+import { Formik, Field, Form,ErrorMessage} from "formik";
 import { useHistory  } from "react-router-dom";
 import * as Yup from 'yup';
 import { login,logout } from "../../slices/auth";
@@ -10,6 +10,9 @@ import { clearMessage } from "../../slices/message";
 import OtpView from "../login/OtpView";
 import toastConfig from "../../utilities/toastTypes";
 import OTPVerificationApi from "../../slices/auth";
+import {Link} from 'react-router-dom'
+import DisplayErrorMessage from '../../_components/reuseable_components/DisplayErrorMessage';
+import { toast } from 'react-toastify';
 
 
 const INITIAL_FORM_STATE = {
@@ -19,7 +22,7 @@ const INITIAL_FORM_STATE = {
 
 const FORM_VALIDATION = Yup.object().shape({
   clientUserId: Yup.string().required("Required"),
-  userPassword: Yup.string().required('Password is required')
+  userPassword: Yup.string().min(6, "Password minimum length should be 6").required('Password is required')
 });
 
 
@@ -27,7 +30,7 @@ function LoginPage(props) {
   const history = useHistory()
   const [loading, setLoading] = useState(false);
   const  isLoggedIn  = useSelector((state) => state.auth.isLoggedIn);
-  const { message } = useSelector((state) => state.message);
+  var { message } = useSelector((state) => state.message);
   const authentication = useSelector(state => state.auth);
 
   const [open, setOpen] = useState(false);
@@ -40,9 +43,21 @@ function LoginPage(props) {
   const [showResendCode, setShowResendCode] = useState(false);
   const [showBackDrop, setShowBackDrop] = useState(false);
   const [GeoLocation, setGeeolocation] = useState("");
+  const [values, setValues] = useState({
+    password: '',
+    showPassword: false,
+  });
 
-  
+ 
   const dispatch = useDispatch();
+
+  // message = message?.length>=0?message=null:message;
+  // console.log(message)
+  const {user,userAlreadyLoggedIn} = auth;
+  // console.log(auth)
+  if(userAlreadyLoggedIn ){
+    history.push("/dashboard")  
+  }
 
   useEffect(()=>{
     setAuthData(authentication);
@@ -55,8 +70,8 @@ useEffect(() => {
   }, [dispatch]);
 
 useEffect(() => {
-    // console.log('call one tiem');
-    dispatch(logout());
+    // console.log('login page ,call one time');
+    // dispatch(logout());
 }, [])
 
 const handleLogin = (formValue) => {
@@ -71,7 +86,8 @@ const handleLogin = (formValue) => {
       history.push("/dashboard");
       // window.location.reload();
     })
-    .catch(() => {
+    .catch((error) => {
+      toast.error('Login Unsucessful');
       setLoading(false);
     });
 };
@@ -140,11 +156,16 @@ const handleClose = (event, reason) => {
 };
 
 
+const handleClickShowPassword = () => {
+  setValues({ ...values, showPassword: !values.showPassword });
+};
+
 
 
   return (
     <>
       <HeaderPage />
+    {/* <p className="showErrormsg">{message && message!=''?message:''}</p> */}
       <div className="container-fluid">
         <div className="row">
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
@@ -181,7 +202,7 @@ const handleClose = (event, reason) => {
                     <div className="logmod__container">
                       <ul className="logmod__tabs">
                         <li data-tabtar="lgm-2" className="current">
-                          <a href="#" style={{ width: "100%" }}>
+                          <a href="javascript:void(0)" style={{ width: "100%" }}>
                             Login
                           </a>
                         </li>
@@ -220,6 +241,10 @@ const handleClose = (event, reason) => {
                                     type="text"
                                     name="clientUserId"
                                   />
+                                  <ErrorMessage name="clientUserId">
+                                      { msg => <div className="abhitest" style={{color: "red",position: "absolute",zIndex:" 999"}}>{msg}</div> }
+                                  </ErrorMessage>
+
                                 </div>
                               </div>
                               <div className="sminputs">
@@ -235,11 +260,18 @@ const handleClose = (event, reason) => {
                                     maxLength={255}
                                     id="user-pw"
                                     placeholder="Password"
-                                    type="password"
+                                    type={values.showPassword ? "text" : "password"}
                                     size={50}
                                     name="userPassword"
                                   />
-                                  <span className="hide-password">Show</span>
+                                  <ErrorMessage name="userPassword">
+                                      { msg => <div className="abhitest" style={{color: "red",position: "absolute",zIndex:" 999"}}>{msg}</div> }
+                                  </ErrorMessage>
+                                  <span className="hide-password" onClick={handleClickShowPassword}>
+
+                                  {values.showPassword ? "Hide" : "Show" }
+
+                                  </span>
                                 </div>
                               </div>
                               <div className="simform__actions">
@@ -249,14 +281,14 @@ const handleClose = (event, reason) => {
                                   type="sumbit"
                                   style={{ color: "#fff" }}
                                 > {loading && (
-                                                <span className="spinner-border spinner-border-sm"></span>
+                                                <span class="spinner-border" role="status"></span>
                                                 )}
                                   LogIn
                                 </button>
                                 <span className="simform__actions-sidetext">
-                                  <a className="special" role="link" href="#">
+                                  <Link className="special" role="link" to="/forget">
                                     Forgot your password? Click here
-                                  </a>
+                                  </Link>
                                 </span>
                               </div>
                               </Form>

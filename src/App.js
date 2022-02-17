@@ -21,7 +21,9 @@ const App = () => {
   const dispatch = useDispatch();
 
   const logOut = useCallback(() => {
+    alert('hook call useCallback');
     dispatch(logout());
+
   }, [dispatch]);
 
   useEffect(() => {
@@ -34,6 +36,7 @@ const App = () => {
     }
 
     EventBus.on("logout", () => {
+      alert("event bus call")
       logOut();
     });
 

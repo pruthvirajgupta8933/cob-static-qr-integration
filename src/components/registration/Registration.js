@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react';
 //import Header from './Header'
 import HeaderPage from '../login/HeaderPage'
 import '../login/css/home.css'
@@ -6,10 +6,115 @@ import '../login/css/homestyle.css'
 import '../login/css/style-style.css'
 import '../login/css/style.css'
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
+import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from "../../slices/auth";
+import { Link, useHistory  } from "react-router-dom";
+import { toast, Zoom } from 'react-toastify';
 
+
+const INITIAL_FORM_STATE = {
+  fullName:'',
+  mobileNumber:'',
+  email:'',
+  password:'',
+  selectStates:''
+};
+
+// const INITIAL_VALUES= {
+//   firstname: '',
+//   lastname: '',
+//   mobilenumber: '',
+//   emaill:'',
+//   passwordd: '',
+//   confirmpasswordd: ''
+// }
+
+const FORM_VALIDATION = Yup.object().shape({
+  firstname: Yup.string().required("Required"),
+  lastname: Yup.string().required("Required"),
+  mobilenumber: Yup.string().required("Required"),
+  emaill: Yup.string().required("Required"),
+  passwordd: Yup.string().required("Password Required"),
+  // confirmpasswordd: Yup.string().required("Password Required"),
+  confirmpasswordd: Yup.string()
+     .oneOf([Yup.ref('passwordd'), null], 'Passwords must match'),
+     terms_and_condition:  Yup.boolean()
+     .oneOf([true], "You must accept the terms and conditions")
+});
 
 function Registration() {
-    return (
+  const history = useHistory()
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [mobileNumber, setMobileNumber] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [loading, setLoading] = useState(false);
+  const [isActive, setActive] = useState(true);
+  const [values, setValues] = useState({
+    password: '',
+    showPassword: false,
+  });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+      localStorage.setItem("register", "");
+  }, []);
+
+  const saved = localStorage.getItem("register");
+
+  const handleRegistration = (formData) => {
+    var businessType = isActive? 1 : 2 ;
+    var { firstname, lastname , mobilenumber, emaill, passwordd } = formData;
+    var firstName = firstname;
+    var lastName = lastname;
+    var mobileNumber = mobilenumber;
+    var email = emaill;
+    var password = passwordd;
+
+        setLoading(true);
+        // console.log(formValue);
+        dispatch(register({ firstName, lastName, mobileNumber, email, password, confirmPassword,businessType}))
+          .unwrap()
+          .then(() => {
+            
+            //history.push("/dashboard");
+            // window.location.reload();
+            // alert(2);
+          })
+          .catch(() => {
+            // toast.error("Sign Up Unsuccessfull",{
+            //   position: "top-right",
+            //   autoClose: 1000,
+            //   transition: Zoom,
+            //   limit: 2,
+            // })
+            // alert(4);
+            setLoading(false);
+          });
+  }
+
+
+ 
+ 
+
+  const toggleClass = () => {
+    setActive(!isActive);
+  };
+
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
+  
+
+  
+
+return (
         <>
         <HeaderPage/>
         <div className="container-fluid">
@@ -37,168 +142,115 @@ function Registration() {
                     <span className="logmod__close">Close</span>
                     <div className="logmod__container">
                       <ul className="logmod__tabs">
-                        <li data-tabtar="lgm-2" className="current"><a href="#">Individual</a></li>
-                        <li data-tabtar="lgm-1"><a href="#">Business</a></li>
+                        <li data-tabtar="lgm-2" id="lgm-2" className={isActive ? 'current': 'left'} 
+                        onClick={toggleClass} ><Link id="btnLeft" href="javascript:void(0)">Individual</Link></li>
+                        <li data-tabtar="lgm-1" id="lgm-1" className={isActive ? 'right': 'current'} 
+                      onClick={toggleClass} ><Link id="btnRight" href="javascript:void(0)">Business</Link></li>
                       </ul>
                       <div className="logmod__tab-wrapper">
-                        <div className="logmod__tab lgm-1 show">
+                        <div className="show logmod__tab lgm-1" >
                           <div className="logmod__heading">
-                            <span className="logmod__heading-subtitle">Enter your personal details <strong>to create an acount</strong></span>
+                            <span className="logmod__heading-subtitle">Enter your personal details <strong>to create an account</strong></span>
+                            {/* {saved &&
+                            <div style={{ borderTopWidth: 0, borderBottomWidth: 0, marginBottom: 0, paddingTop: 0, paddingBottom: 0,}} className="alert alert-success">User successfully Signed in</div>
+                            } */}
                           </div>
                           <div className="logmod__form">
-                            <form acceptCharset="utf-8" action="#" className="simform">
+                          <Formik initialValues={{
+                          firstname: '',
+                          lastname: '',
+                          mobilenumber: '',
+                          emaill:'',
+                          passwordd: '',
+                          confirmpasswordd: '',
+                          
+
+                         }}
+                        validationSchema={FORM_VALIDATION} 
+                        onSubmit= { handleRegistration}
+                        >
+                            <Form acceptCharset="utf-8" action="#" className="simform">
                               <div className="sminputs">
                                 <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Full Name*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="Full Name" type="text" size={50} />
+                                  <label className="string optional" htmlFor="user-name">First Name *</label>
+                                  <Field className="string optional" maxLength={255} id="user-name"  placeholder="First Name" type="text" name='firstname' size={50}/>
+                                  {<ErrorMessage name="firstname">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                                 </div>
                                 <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Mobile Number*</label>
-                                  <input className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" type="number" size={10} />
-                                </div>
+                                  <label className="string optional" htmlFor="user-name">Last Name*</label>
+                                  <Field className="string optional" maxLength={255} id="user-name" placeholder="Last Name" name = 'lastname' type="text" size={50} />
+                                  {<ErrorMessage name="lastname">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
+                                </div>                                
                               </div>
                               <div className="sminputs">
-                                <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Email*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="email" type="email" size={50} />
+                              <div className="input full- optional">
+                                  <label className="string optional" htmlFor="user-name">Mobile Number*</label>
+                                  <Field className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" name = 'mobilenumber' type="number" size={10}/>
+                                  {<ErrorMessage name="mobilenumber">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                                 </div>
+                                <div className="input full- optional">
+                                  <label className="string optional" htmlFor="user-email">Email*</label>
+                                             <Field className="string optional" maxLength={255} id="email" placeholder="email" type="email" name = 'emaill'  size={50} />
+                                             {<ErrorMessage name="emaill">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}                                  
+                                </div>
+                                </div>
+                              <div className="sminputs">
                                 <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-pw">Password *</label>
-                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} />
-                                  <span className="hide-password">Show</span>
+                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" name = "passwordd" size={50} autoComplete="off" />
+                                  {<ErrorMessage name="passwordd">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
+
+                            
                                 </div>
-                              </div>
-                              <div className="sminputs">
-                                <div className="input full">
-                                  <label className="string optional" htmlFor="user-pw">Select *</label>
-                                  {/*<input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />*/}
-                                  <select name="states" id="states" className="string optional" style={{border: '1px solid #fafafa', width: '100%', marginBottom: '10px', padding: '2px'}}>
-                                    <option value="Select States" selected>Select States</option>
-                                    <option value="Andhra Pradesh">Andhra Pradesh</option>								
-                                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                                    <option value="Assam">Assam</option>
-                                    <option value="Bihar">Bihar</option>
-                                    <option value="Chandigarh">Chandigarh</option>
-                                    <option value="Chhattisgarh">Chhattisgarh</option>
-                                    <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
-                                    <option value="Daman and Diu">Daman and Diu</option>
-                                    <option value="Delhi">Delhi</option>
-                                    <option value="Lakshadweep">Lakshadweep</option>
-                                    <option value="Puducherry">Puducherry</option>
-                                    <option value="Goa">Goa</option>
-                                    <option value="Gujarat">Gujarat</option>
-                                    <option value="Haryana">Haryana</option>
-                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
-                                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                                    <option value="Jharkhand">Jharkhand</option>
-                                    <option value="Karnataka">Karnataka</option>
-                                    <option value="Kerala">Kerala</option>
-                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
-                                    <option value="Maharashtra">Maharashtra</option>
-                                    <option value="Manipur">Manipur</option>
-                                    <option value="Meghalaya">Meghalaya</option>
-                                    <option value="Mizoram">Mizoram</option>
-                                    <option value="Nagaland">Nagaland</option>
-                                    <option value="Odisha">Odisha</option>
-                                    <option value="Punjab">Punjab</option>
-                                    <option value="Rajasthan">Rajasthan</option>
-                                    <option value="Sikkim">Sikkim</option>
-                                    <option value="Tamil Nadu">Tamil Nadu</option>
-                                    <option value="Telangana">Telangana</option>
-                                    <option value="Tripura">Tripura</option>
-                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                    <option value="Uttarakhand">Uttarakhand</option>
-                                    <option value="West Bengal">West Bengal</option>
-                                  </select>					
+                                <div className="input full- optional">
+                                  <label className="string optional" htmlFor="user-pw">Confirm Password *</label>
+                                  <Field className="string optional" maxLength={255} id="user-pw" placeholder="Confirm Password" type={values.showPassword ? "text" : "password"}  name="confirmpasswordd" size={50} />
+                                  <input type="hidden" name="requestedClientType" value="1" />
+                                  {<ErrorMessage name="confirmpasswordd">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
+                                
+                                  <span className="hide-password" onClick={handleClickShowPassword}>
+                                  {values.showPassword ? "Hide" : "Show" }
+                                    </span>
+
                                 </div>
+                                
+                                
                               </div>
+                              <div className="sminputs">                              
                               <div className="simform__actions">
-                                <input className="sumbit" name="commit" type="sumbit" defaultValue="Create Account" />
-                                <span className="simform__actions-sidetext"><span className="ant-checkbox"><input name="agreement" id="agreement" type="checkbox" className="ant-checkbox-input" defaultValue /><span className="ant-checkbox-inner" /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
+                              {/* <button
+                                  className="sumbit"
+                                  type="sumbit"
+                                  style={{ color: "#fff" }}
+                                  onClick={handleRegistration}
+                                > 
+                                  Create Account
+                                </button> */}
+                                <button className="sumbit" name="commit" type="submit" defaultValue="Create Account" >Create Account </button>
+                                <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}} type="checkbox" className="form-check-input" name= "terms_and_condition" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
+                                {/* {<ErrorMessage name="terms_and_condition">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", top: "267px", left:'4px' }}>{msg}</p>}
+                                            </ErrorMessage>} */}
                               </div>
-                            </form>
+                              </div>
+                            </Form>
+                            </Formik>
+                          
                           </div> 
                         </div>
-                        <div className="logmod__tab lgm-2">
-                          <div className="logmod__heading">
-                            <span className="logmod__heading-subtitle">Create New Account <strong>Enter your details below</strong></span>
-                          </div> 
-                          <div className="logmod__form">
-                            <form acceptCharset="utf-8" action="#" className="simform">
-                              <div className="sminputs">
-                                <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Full Name*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="Full Name" type="text" size={50} />
-                                </div>
-                                <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Mobile Number*</label>
-                                  <input className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" type="number" size={10} />
-                                </div>
-                              </div>
-                              <div className="sminputs">
-                                <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Email*</label>
-                                  <input className="string optional" maxLength={255} id="user-name" placeholder="email" type="email" size={50} />
-                                </div>
-                                <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-pw">Password *</label>
-                                  <input className="string optional" maxLength={255} id="user-pw" placeholder="Password" type="password" size={50} />
-                                  <span className="hide-password">Show</span>
-                                </div>
-                              </div>
-                              <div className="sminputs">
-                                <div className="input full">
-                                  <label className="string optional" htmlFor="user-pw">Select *</label>
-                                  {/*<input class="string optional" maxlength="255" id="user-pw" placeholder="Password" type="password" size="50" />*/}
-                                  <select name="states" id="states" className="string optional" style={{border: '1px solid #fafafa', width: '100%', marginBottom: '10px', padding: '2px'}}>
-                                    <option value="Select States" selected>Select States</option>
-                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
-                                    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-                                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                                    <option value="Assam">Assam</option>
-                                    <option value="Bihar">Bihar</option>
-                                    <option value="Chandigarh">Chandigarh</option>
-                                    <option value="Chhattisgarh">Chhattisgarh</option>
-                                    <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
-                                    <option value="Daman and Diu">Daman and Diu</option>
-                                    <option value="Delhi">Delhi</option>
-                                    <option value="Lakshadweep">Lakshadweep</option>
-                                    <option value="Puducherry">Puducherry</option>
-                                    <option value="Goa">Goa</option>
-                                    <option value="Gujarat">Gujarat</option>
-                                    <option value="Haryana">Haryana</option>
-                                    <option value="Himachal Pradesh">Himachal Pradesh</option>
-                                    <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                                    <option value="Jharkhand">Jharkhand</option>
-                                    <option value="Karnataka">Karnataka</option>
-                                    <option value="Kerala">Kerala</option>
-                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
-                                    <option value="Maharashtra">Maharashtra</option>
-                                    <option value="Manipur">Manipur</option>
-                                    <option value="Meghalaya">Meghalaya</option>
-                                    <option value="Mizoram">Mizoram</option>
-                                    <option value="Nagaland">Nagaland</option>
-                                    <option value="Odisha">Odisha</option>
-                                    <option value="Punjab">Punjab</option>
-                                    <option value="Rajasthan">Rajasthan</option>
-                                    <option value="Sikkim">Sikkim</option>
-                                    <option value="Tamil Nadu">Tamil Nadu</option>
-                                    <option value="Telangana">Telangana</option>
-                                    <option value="Tripura">Tripura</option>
-                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                    <option value="Uttarakhand">Uttarakhand</option>
-                                    <option value="West Bengal">West Bengal</option>
-                                  </select>					
-                                </div>
-                              </div>
-                              <div className="simform__actions">
-                                <input className="sumbit" name="commit" type="sumbit" defaultValue="Create Account" />
-                                <span className="simform__actions-sidetext"><span className="ant-checkbox"><input name="agreement" id="agreement" type="checkbox" className="ant-checkbox-input" defaultValue /><span className="ant-checkbox-inner" /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
-                              </div> 
-                            </form>
-                          </div> 
-                        </div>
+                    
                       </div>
                     </div>
                   </div>

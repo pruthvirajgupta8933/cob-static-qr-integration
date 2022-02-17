@@ -1,5 +1,6 @@
 import React from 'react'
 import sabpaisalogo from "../../assets/images/sabpaisalogo.png"
+import {Link} from 'react-router-dom';
 
 function HeaderPage() {
     return (
@@ -254,13 +255,15 @@ function HeaderPage() {
         </div>
         <header className>
           <div className="header-fluid">
-            <a className="logo" href="https://www.SabPaisa.com/">
+            <Link to = '/login-page'
+           className="logo" href="https://www.SabPaisa.com/">
               <img
                 src={sabpaisalogo}
                 alt="SabPaisa"
                 title="SabPaisa"
               />
-            </a>
+            
+            </Link>
             <a className="fp_icon_open">
               <img src="./index_files/menu.svg" alt="" />
             </a>
@@ -283,8 +286,8 @@ function HeaderPage() {
                   <div className="ippo_new_inner_wrap_nav">
                     <div className="col-xs-12 col-sm-7 col-md-9 ippo_new_arround_padding">
                       <div className="row">
-                        <a
-                          href="https://www.SabPaisa.com/payment-gateway"
+                        <Link
+                          to="/commonpages"
                           className="col-xs-12 col-sm-6 col-md-6"
                         >
                           <img
@@ -301,9 +304,9 @@ function HeaderPage() {
                               online payments of all types.
                             </div>
                           </div>
-                        </a>
-                        <a
-                          href="https://www.SabPaisa.com/free-invoice-generator"
+                        </Link>
+                        <Link
+                         to="/commonpages"
                           className="col-xs-12 col-sm-6 col-md-6"
                         >
                           <img
@@ -318,11 +321,11 @@ function HeaderPage() {
                               receive payments of all your bills.
                             </div>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                       <div className="row">
-                        <a
-                          href="https://www.SabPaisa.com/payment-link-generator"
+                        <Link
+                          to="/commonpages"
                           className="col-xs-12 col-sm-6 col-md-6 m-b-0"
                         >
                           <img
@@ -339,8 +342,8 @@ function HeaderPage() {
                               process an online payment.
                             </div>
                           </div>
-                        </a>
-                        <a className="col-xs-12 col-sm-6 col-md-6 m-b-0">
+                        </Link>
+                        <Link to="/commonpages" className="col-xs-12 col-sm-6 col-md-6 m-b-0">
                           <img
                             className="left_img_new_ippo_nav"
                             src="./paymentpages_new_ippo.png"
@@ -355,7 +358,7 @@ function HeaderPage() {
                               accept online payments.
                             </div>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                     <div className="col-xs-12 col-sm-5 col-md-3 gray_nav_header_right_ippo_new">
@@ -391,34 +394,33 @@ function HeaderPage() {
                 </div>
               </li>
               <li>
-                <a href="https://www.SabPaisa.com/payout-solutions">Payouts</a>
+                <Link to="/commonpages">Payout</Link>
               </li>
               <li>
-                <a target="_blank" href="https://www.sabpaisa.com/">
+                <Link target="_blank" to="/commonpages">
                   Neo&nbsp;&nbsp;Banking&nbsp;&nbsp;API
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="https://www.SabPaisa.com/pricing">Pricing</a>
+                <Link to="/commonpages">Pricing</Link>
               </li>
             </ul>
             <ul className="header_second_list hidden-xs">
               <li>
-                <a href="login-page" style={{ color: "#000" }}>
+                <Link to="/login-page" style={{ color: "#000" }}>
                   Login
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="Registration">Sign up</a>
+                <Link to="/ `">Sign up</Link>
               </li>
               <li>
-                <a
+                <Link
                   className="btnlink cotactbg"
-                  href="https://app.SabPaisa.com/signup"
-                  target="_blank"
+                  href="/Registration"
                 >
                   Call +91 887-777-2200
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -479,14 +481,14 @@ function HeaderPage() {
                 <a href="https://www.SabPaisa.com/pricing">Pricing</a>
               </li>
               <li>
-                <a href="https://app.SabPaisa.com/signin" target="_blank">
+                <Link to="/login-page">
                   Login
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="Signup.html" target="_blank">
-                  Sign up
-                </a>
+                <Link to="/Registration" >
+                  Sign up =
+                </Link>
               </li>
             </ul>
           </div>

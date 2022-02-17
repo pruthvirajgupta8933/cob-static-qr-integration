@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
-import HomeService from "../services/home.service";
+import ProfileService from "../services/profile.service";
 
 
-export const successTxnSummary = createAsyncThunk(
-  "home/successTxnSummary",
-  async ({ fromdate, todate, clientcode }, thunkAPI) => {
+export const createClientProfile = createAsyncThunk(
+  "profile/createClientProfile",
+  async (object, thunkAPI) => {
     try {
       // console.log({ fromdate, todate, clientcode });
-      const response = await HomeService.successTxnSummary(fromdate, todate, clientcode );
+      const response = await ProfileService.createClintCode(object );
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
@@ -24,25 +24,24 @@ export const successTxnSummary = createAsyncThunk(
   }
 );
 
-const initialState = { successTxnSummaryHome: {},isLoading:false  }
-const homeSlice = createSlice({
-  name: "home",
+const initialState = { createClientProfile: {},updateClientProfile:{} ,isLoading:false }
+const profileSlice = createSlice({
+  name: "profile",
   initialState,
   extraReducers: {
-      
-    [successTxnSummary.pending]: (state, action) => {
+    [createClientProfile.pending]: (state, action) => {
         state.isLoading = true;
       },
-    [successTxnSummary.fulfilled]: (state, action) => {
+    [createClientProfile.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.successTxnSummaryHome = action.payload.data;
+      state.createClientProfile = action.payload.data;
     },
-    [successTxnSummary.rejected]: (state, action) => {
+    [createClientProfile.rejected]: (state, action) => {
       state.isLoading = false;
     },
    
   },
 });
 
-const { reducerHome } = homeSlice;
-export default reducerHome;
+const { reducerProfile } = profileSlice;
+export default reducerProfile;

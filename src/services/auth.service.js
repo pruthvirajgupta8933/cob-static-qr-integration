@@ -2,27 +2,46 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/auth/";
 
-const register = (username, email, password) => {
-  return axios.post(API_URL + "signup", {
-    username,
-    email,
-    password,
+const SIGNUP_URL = "https://cobtest.sabpaisa.in/auth-service/auth/";
+
+const register = (firstName, lastName, mobileNumber, email, password,businessType) => {
+  return axios.post(SIGNUP_URL + "signup", {
+    name: firstName+' '+ lastName,
+    mobileNumber: mobileNumber,
+    email: email,
+    password: password,
+    requestedClientType:businessType,
+  })
+  .then((response) => {
+    if (response.data.accessToken) {
+      localStorage.setItem("register", JSON.stringify(response.data));
+    }else{
+      localStorage.setItem("register", JSON.stringify(response.data));
+    }
+
+    return response.data;
   });
 };
 
+// login old url : https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin 
+// login new url : https://cobtest.sabpaisa.in/auth-service/auth/login
+// http://18.189.11.232:8080/auth-service/auth/login
 const login = (username, password) => {
   return axios
-    .post("https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin", {
+    .post("https://cobtest.sabpaisa.in/auth-service/auth/login", {
       clientUserId:username,
       userPassword:password,
     })
     .then((response) => {
+      // response.data.clientSuperMasterList = staticClientList
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
       }else{
+
         localStorage.setItem("user", JSON.stringify(response.data));
       }
-
+      
+      console.log(response.data)
       return response.data;
     });
 };
@@ -30,28 +49,15 @@ const login = (username, password) => {
 const logout = () => {
   // console.log('remove user from LS');
   localStorage.removeItem("user");
+  localStorage.clear();
+  // alert('logout call auth service');
 };
 
 
 
-// Home, successTxnSummary 
+// Home,
 const BASE_URL = "https://adminapi.sabpaisa.in";
 
-const successTxnSummary = (fromdate, todate, clientcode) => {
-  // console.log('fromDate',fromdate);
-  return axios.post(BASE_URL + "/REST/SuccessTxnSummary/", {
-    fromdate,
-    todate,
-    clientcode,
-  });
-};
-
-// <<<<<<< HEAD
-
-const authtest=(ttt)=>{
-  return ttt
-}
-// =======
 const sendEmail = (toEmail, toCc, subject, msg) => {
   return axios.post(BASE_URL + "/REST/Email/sendEmail", {
     toEmail,
@@ -74,8 +80,6 @@ const authService = {
   register,
   login,
   logout,
-  successTxnSummary,
-  authtest,
   sendEmail,
 };
 

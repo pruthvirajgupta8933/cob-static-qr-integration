@@ -115,7 +115,7 @@ function Login(props) {
       }, [dispatch]);
     
     useEffect(() => {
-        // console.log('call one tiem');
+        alert(' login js call one time');
         dispatch(logout());
     }, [])
 
@@ -215,7 +215,6 @@ const redirectRoute = (authen) => {
         </IconButton>
         </React.Fragment>
     );
-
 
     return (
     <>  

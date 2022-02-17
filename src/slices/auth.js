@@ -5,6 +5,8 @@ import Axios from "axios";
 import AuthService from "../services/auth.service";
 
 const user = JSON.parse(localStorage.getItem("user"));
+console.log("user",user);
+const userAlreadyLoggedIn = user && user.loginId!==null ? true :false;
 
 const auth = {
   LoginResponse: { message: "", verification_token: "", response_code: "" },
@@ -26,20 +28,20 @@ const auth = {
       response_code: "",
     },
   },
+  user:user,
   currentUser: {},
   status: "",
   error: "",
-  userAlreadyLoggedIn: false,
+  userAlreadyLoggedIn: userAlreadyLoggedIn,
   otpVerified: false,
 };
 
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ username, email, password }, thunkAPI) => {
-    // console.log("Within register");
+  async ({ firstName, lastName, mobileNumber, email, password, confirmPassword,businessType }, thunkAPI) => {
     try {
-      const response = await AuthService.register(username, email, password);
+      const response = await AuthService.register(firstName, lastName, mobileNumber, email, password,businessType);
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
@@ -68,7 +70,8 @@ export const login = createAsyncThunk(
           error.response.data &&
           error.response.data.message) ||
         error.message ||
-        error.toString();
+        error.toString()||error.request.toString();
+        console.log("message",message);
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
     }
@@ -147,9 +150,11 @@ const authSlice = createSlice({
   extraReducers: {
     [register.fulfilled]: (state, action) => {
       state.isLoggedIn = false;
+      console.log("register-full",action);
     },
     [register.rejected]: (state, action) => {
       state.isLoggedIn = false;
+      console.log("register-rejected",action);
     },
     [successTxnSummary.fulfilled]: (state, action) => {
       state.successTxnsumry = action.payload;

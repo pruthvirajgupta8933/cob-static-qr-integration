@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-
+import { useSelector } from 'react-redux';
 
 function SettlementReport() {
     const initialState = {
@@ -27,10 +27,13 @@ function SettlementReport() {
     var [showFilterData,SetShowFilterData] =React.useState([]); 
     const [selectedFolder,SetSelectedFolder] = React.useState('');
     const [selectedSubFolder,SetSelectedSubFolder] = React.useState('');
-    
+    const {user} = useSelector((state)=>state.auth);
+    var clientSuperMasterList = user.clientSuperMasterList;
+    const {clientCode} =clientSuperMasterList[0]; 
+    console.log(clientSuperMasterList);
 
     const getFileName = async () => {  
-        await axios("https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/LPSD1")  //MPSE1
+        await axios(`https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/${clientCode}`)
         .then(res => {  
           setData(res.data);  
         })  
@@ -63,14 +66,14 @@ function SettlementReport() {
             })
             setSubFolderArr([...new Set(subFolderArr)])
     }
-    console.log('subFolderArr',subFolderArr);
+    // console.log('subFolderArr',subFolderArr);
 
 
     React.useEffect(() => {
         showFilterData=[];
         data.filter((item)=>{
           if(item.folder===selectedFolder && item.sub_folder===selectedSubFolder){
-                console.log('kkk',item);
+                // console.log('kkk',item);
                 showFilterData.push(item);
             }
         })
@@ -96,7 +99,7 @@ function SettlementReport() {
 
     return (
         <div>
-            <h1 style={{ position: 'absolute', top: 70, left: 250 }}>Settlement Report</h1>
+            <h1 style={{ position: 'absolute', top: 70, left: 250 ,fontSize: '21px'}}>Settlement Report</h1>
             <hr />
             <label For="folder "></label>
             <select value={selectedFolder} style={{ position: 'absolute', top: 150, left: 250, width: 300 }} onChange={(e)=>onChangeFolder(e.target.value)}>
