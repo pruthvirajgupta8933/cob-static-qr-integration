@@ -104,8 +104,9 @@ export const Recipts = () => {
       <br />
       {
         show ?
-        <React.Fragment>
+        
           <div className="card" style={{ position: 'absolute', top: 220, width: 1200, height: 480, left: 100 }}>
+            <React.Fragment>
 
             <div className="card-body">
               <table className="table table-striped" id="joshi" style={{ position: 'absolute', top: 40 }} >
@@ -165,11 +166,13 @@ export const Recipts = () => {
                 </tbody>
 
               </table>
+             
 
 
             </div>
+            </React.Fragment> 
           </div>
-          </React.Fragment>
+         
           : ''}
       {show ? <button value='click' onClick={onClick} className="btn btn-success" style={{ position: 'absolute', top: 760, width: 200, left: 590 }}>Print</button> : <></>}
 
