@@ -89,7 +89,7 @@ const PayerDetails = () => {
     useEffect(() => {
   
         if(searchText !== ''){
-          setSearchResults(data.filter((item)=>item.name.toLowerCase().includes(searchText.toLocaleLowerCase())))}else{setSearchResults(data)}
+          setData(data.filter((item)=>item.name.toLowerCase().includes(searchText.toLocaleLowerCase())))}else{setData(data)}
       },[searchText])
 
 
@@ -361,7 +361,7 @@ const PayerDetails = () => {
                     </thead>
                     <tbody>
 
-                        {searchResults.map((user, i) => (
+                        {data.map((user, i) => (
 
                             <tr>
                                 <td>{i + 1}</td>
