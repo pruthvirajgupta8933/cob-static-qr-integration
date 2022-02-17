@@ -23,8 +23,8 @@ const PaymentLinkDetail = () => {
   const [minutes, setMinutes] = useState("");
   const [pageSize, setPageSize] = useState(10);
 
-  console.log(pageSize);
-  console.log(typeof(pageSize));
+  // console.log(pageSize);
+  // console.log(typeof(pageSize));
 
   const [data, setData] = useState([]);
   const [paginatedata, setPaginatedData] = useState([])
@@ -32,12 +32,13 @@ const PaymentLinkDetail = () => {
   const [drop, setDrop] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [noofbuttons, setNoOfButtons ] = useState(Math.ceil(data.length/pageSize));
-  const [folderArr, setFolderArr] = React.useState([]);
+  var [showFilterData,SetShowFilterData] = useState([]); 
+  const [folderArr, setFolderArr] = useState([]);
 
   const { user } = useSelector((state) => state.auth);
   var clientSuperMasterList = user.clientSuperMasterList;
   const { clientCode} = clientSuperMasterList[0];
-  console.log("clientCode", clientCode);
+  // console.log("clientCode", clientCode);
 
   
 
@@ -86,10 +87,20 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
   };
 
 
+  useEffect(() => {
+  
+    if(searchText !== ''){
+      setPaginatedData(data.filter((item)=>item.customer_phoneNumber.toLowerCase().includes(searchText.toLocaleLowerCase())))}else{setPaginatedData(data)}
+  },[searchText])
+
 
 
   const getSearchTerm  = (e) => {
   setSearchText(e.target.value);
+  // if(searchText !== '')
+
+  // { setPaginatedData(data.filter((item)=>item.customer_phoneNumber.includes(searchText)))}
+  //  console.log(searchText)
   }
 
   const dateFormat = (enteredDate) => {
@@ -179,7 +190,7 @@ const pages = _.range(1, pageCount + 1)
 
 
 
-console.log("dataLength",paginatedata.length)
+// console.log("dataLength",paginatedata.length)
 
 const handleCheck = (e) => {
   setPasswordCheck(e.target.checked);
@@ -506,10 +517,12 @@ const disableDates = () => {
        <input
         type="text"
         placeholder="Search Here"
-        value={searchText}
         style={{  width: 700 }}
         onChange={getSearchTerm}
       />
+        {/* {
+         paginatedata.filter 
+        } */}
 
       <h4  style={{marginLeft:"10em"}}>
         Count per page &nbsp; &nbsp;
