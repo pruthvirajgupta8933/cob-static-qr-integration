@@ -356,7 +356,6 @@ const PayerDetails = () => {
                             <th scope='col'>Payer  Category</th>
                             <th scope='col'>Edit</th>
                             <th scope='col'>Delete</th>
-
                             <th scope='col'>Action</th>
                         </tr>
                     </thead>
