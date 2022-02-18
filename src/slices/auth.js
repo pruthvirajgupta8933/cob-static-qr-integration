@@ -34,12 +34,13 @@ const auth = {
   error: "",
   userAlreadyLoggedIn: userAlreadyLoggedIn,
   otpVerified: false,
+  isUserRegistered:null,
 };
 
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ firstName, lastName, mobileNumber, email, password, confirmPassword,businessType }, thunkAPI) => {
+  async ({ firstName, lastName, mobileNumber, email, password,businessType }, thunkAPI) => {
     try {
       const response = await AuthService.register(firstName, lastName, mobileNumber, email, password,businessType);
       thunkAPI.dispatch(setMessage(response.data.message));
@@ -143,18 +144,18 @@ export const successTxnSummary = createAsyncThunk(
 const initialState = user && user.loginStatus
   ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
   : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{}, sendEmail: {} };
-
+console.log(register)
 const authSlice = createSlice({
   name: "auth",
   initialState: auth,
   extraReducers: {
     [register.fulfilled]: (state, action) => {
       state.isLoggedIn = false;
-      console.log("register-full",action);
+      state.isUserRegistered = true;
     },
     [register.rejected]: (state, action) => {
       state.isLoggedIn = false;
-      console.log("register-rejected",action);
+      state.isUserRegistered = false;
     },
     [successTxnSummary.fulfilled]: (state, action) => {
       state.successTxnsumry = action.payload;

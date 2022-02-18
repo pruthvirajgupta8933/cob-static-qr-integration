@@ -12,15 +12,6 @@ const register = (firstName, lastName, mobileNumber, email, password,businessTyp
     password: password,
     requestedClientType:businessType,
   })
-  .then((response) => {
-    if (response.data.accessToken) {
-      localStorage.setItem("register", JSON.stringify(response.data));
-    }else{
-      localStorage.setItem("register", JSON.stringify(response.data));
-    }
-
-    return response.data;
-  });
 };
 
 // login old url : https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin 

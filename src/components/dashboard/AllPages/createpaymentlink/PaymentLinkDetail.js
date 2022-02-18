@@ -166,12 +166,8 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 
 const pagination = (pageNo) => {
   setCurrentPage(pageNo);
-
-  const startIndex = (pageNo - 1) * pageSize;
-  const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
-  setPaginatedData(paginatedPost);
-
 }
+
 
 
 useEffect(() => {
@@ -182,6 +178,15 @@ useEffect(() => {
 useEffect(()=>{
   setPaginatedData(_(data).slice(0).take(pageSize).value())
 },[pageSize]);
+
+useEffect(() => {
+  console.log("page chagne no")
+  const startIndex = (currentPage - 1) * pageSize;
+ const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+ setPaginatedData(paginatedPost);
+
+}, [currentPage])
+
 
 
 if ( pageCount === 1) return null;
@@ -217,7 +222,7 @@ const closeClick=()=>{
 }
 
 
-const disableDates = () => {
+const validDate = () => {
   var today, mm, dd, yyyy;
   today = new Date();
   dd = today.getDate() + 1;
@@ -364,7 +369,7 @@ const disableDates = () => {
                     name ='date'
                       type="date"
                       className="ant-input"
-                      minDate= {disableDates()}
+                      min= {validDate()}
                       value={enteredDate}                     
                       onChange={(e) => setEnteredDate(e.target.value)}
                       placeholder="From Date"
@@ -583,15 +588,18 @@ const disableDates = () => {
 
    {
 
-     pages.map((page) => (
-      <li class={
+     pages.map((page,i) => (
+         
+      <li className={
+
         page === currentPage ? " page-item active" : "page-item"
-      }><a class="page-link">
-        
-        <p onClick={() => pagination(page)}>
-        {page}
-        </p>
-        </a></li>
+      }> 
+          <a class="page-link">  
+            <p onClick={() => pagination(page)}>
+            {page}
+            </p>
+          </a>
+        </li>
     
      ))
    }
