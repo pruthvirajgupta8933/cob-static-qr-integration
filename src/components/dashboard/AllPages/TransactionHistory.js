@@ -2,6 +2,7 @@ import React,{useEffect, useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useRouteMatch, Redirect,useHistory} from 'react-router-dom'
 import getPaymentStatusList from '../../../services/home.service'
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import axios from "axios"
 
 
@@ -185,8 +186,16 @@ const checkValidation = ()=>{
                   </div>
                   <div className="col-lg-4 mrg-btm- bgcolor">
                     <button className="view_history" style={{margin: '22px 8px 0 0'}} onClick={()=>txnHistory()}>Search</button>
-                    <button className="view_history" style={{margin: '22px 8px 0 0'}}>Export to
-                      Excel</button>
+                    {/* <button className="view_history" style={{margin: '22px 8px 0 0'}}>Export to
+                      Excel</button> */}
+                   <ReactHTMLTableToExcel
+                   style={{margin: '22px 8px 0 0'}}
+                    id="test-table-xls-button"
+                    className="view_history"
+                    table="table-to-xls"
+                    filename="tablexls"
+                    sheet="tablexls"
+                    buttonText="Export To Excel"/>
                   </div>
                   <div className="col-lg-6 mrg-btm- bgcolor">
                     <label>Search Transaction ID</label>
@@ -200,7 +209,7 @@ const checkValidation = ()=>{
                       <option>50</option>
                     </select>
                   </div>
-                  <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables">
+                  <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables" id="table-to-xls">
                     <tbody><tr>
                             <th> S.No </th>
                             <th> Trans ID </th>
