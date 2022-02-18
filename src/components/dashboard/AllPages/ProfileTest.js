@@ -110,20 +110,31 @@ const validationSchema = Yup.object().shape({
     }, [userData]);
 
     function onSubmit(data) {
-        // console.log(isCreateorUpdate)
-    // console.log("send client id",clientId);
+
     console.log("send data",data);
-    isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
-    toast.success("Your Data is Updated,Now you will redirect to login page",{
+    const userLocalData = JSON.parse(localStorage?.getItem("user"));
+      
+    if(isCreateorUpdate)
+    {
+      dispatch(createClientProfile(data));
+    
+    }
+    else
+    {
+      delete data.clientCode; 
+      dispatch(updateClientProfile({data,clientId}))
+    }
+    // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
+    toast.success("Your Data is Update successfully",{
       autoClose:2000,
       limit :1,
       transition:Zoom
     });
 
-    setTimeout(() => {
-      dispatch(logout());
-      return <Redirect to="/login-page" />;
-    }, 2510);
+    // setTimeout(() => {
+    //   dispatch(logout());
+    //   return <Redirect to="/login-page" />;
+    // }, 2510);
      
     }
 
@@ -182,9 +193,9 @@ const validationSchema = Yup.object().shape({
     }
   }, [authenticationMode]);
 
-    console.log(authenticationMode);
-    console.log(bankName);
-    console.log(selectedListForOption);
+    // console.log(authenticationMode);
+    // console.log(bankName);
+    // console.log(selectedListForOption);
  
  return (
     <section className="ant-layout">
