@@ -100,7 +100,7 @@ const detailList = detailsKey.map((item,i)=>{
       <section className="features8 cid-sg6XYTl25a" id="features08-3-">
         <div className="container-fluid">
           <div className="row" style={{justifyContent: "center"}}>
-            <div>
+            <div> 
             <table class="table">
                 <tbody>
                     {detailList}
