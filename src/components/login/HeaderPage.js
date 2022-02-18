@@ -412,7 +412,7 @@ function HeaderPage() {
                 </Link>
               </li>
               <li>
-                <Link to="/ `">Sign up</Link>
+                <Link to="/Registration">Sign up</Link>
               </li>
               <li>
                 <Link
