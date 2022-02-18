@@ -37,7 +37,6 @@ const FORM_VALIDATION = Yup.object().shape({
   mobilenumber: Yup.string().required("Required"),
   emaill: Yup.string().required("Required"),
   passwordd: Yup.string().required("Password Required"),
-  // confirmpasswordd: Yup.string().required("Password Required"),
   confirmpasswordd: Yup.string()
      .oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
      terms_and_condition:  Yup.boolean()
