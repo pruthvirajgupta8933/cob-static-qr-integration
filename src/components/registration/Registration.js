@@ -39,7 +39,7 @@ const FORM_VALIDATION = Yup.object().shape({
   passwordd: Yup.string().required("Password Required"),
   // confirmpasswordd: Yup.string().required("Password Required"),
   confirmpasswordd: Yup.string()
-     .oneOf([Yup.ref('passwordd'), null], 'Passwords must match'),
+     .oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
      terms_and_condition:  Yup.boolean()
      .oneOf([true], "You must accept the terms and conditions")
 });
@@ -190,6 +190,7 @@ return (
                           emaill:'',
                           passwordd: '',
                           confirmpasswordd: '',
+                          terms_and_condition: false
                           
 
                          }}
@@ -266,10 +267,10 @@ return (
                                   Create Account
                                 </button> */}
                                 <button className="sumbit" name="commit" type="submit" defaultValue="Create Account" >Create Account </button>
-                                <span className="simform__actions-sidetext"><span className="ant-checkbox"><input  style={{ marginTop :"-7px"}} type="checkbox" className="form-check-input" name= "terms_and_condition" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
-                                {/* {<ErrorMessage name="terms_and_condition">
+                                <span className="simform__actions-sidetext"><span className="ant-checkbox"><Field  style={{ marginTop :"-7px"}} type="checkbox" className="form-check-input" name= "terms_and_condition" defaultValue /></span> I agree to the <a className="special" role="link" href="#">Terms &amp; Conditions</a></span>
+                                {<ErrorMessage name="terms_and_condition">
                                                 {msg => <p className="abhitest" style={{ color: "red", position: "absolute", top: "267px", left:'4px' }}>{msg}</p>}
-                                            </ErrorMessage>} */}
+                                            </ErrorMessage>}
                               </div>
                               </div>
                             </Form>
