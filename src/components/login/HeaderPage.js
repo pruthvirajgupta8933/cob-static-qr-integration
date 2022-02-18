@@ -407,21 +407,20 @@ function HeaderPage() {
             </ul>
             <ul className="header_second_list hidden-xs">
               <li>
-                <a href="login-page" style={{ color: "#000" }}>
+                <Link to="/login-page" style={{ color: "#000" }}>
                   Login
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="Registration">Sign up</a>
+                <Link to="/ `">Sign up</Link>
               </li>
               <li>
-                <a
+                <Link
                   className="btnlink cotactbg"
-                  href="https://app.SabPaisa.com/signup"
-                  target="_blank"
+                  href="/Registration"
                 >
                   Call +91 887-777-2200
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -482,14 +481,14 @@ function HeaderPage() {
                 <a href="https://www.SabPaisa.com/pricing">Pricing</a>
               </li>
               <li>
-                <a href="https://app.SabPaisa.com/signin" target="_blank">
+                <Link to="/login-page">
                   Login
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="Signup.html" target="_blank">
-                  Sign up
-                </a>
+                <Link to="/Registration" >
+                  Sign up =
+                </Link>
               </li>
             </ul>
           </div>

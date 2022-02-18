@@ -5,6 +5,8 @@ import Axios from "axios";
 import AuthService from "../services/auth.service";
 
 const user = JSON.parse(localStorage.getItem("user"));
+console.log("user",user);
+const userAlreadyLoggedIn = user && user.loginId!==null ? true :false;
 
 const auth = {
   LoginResponse: { message: "", verification_token: "", response_code: "" },
@@ -26,10 +28,11 @@ const auth = {
       response_code: "",
     },
   },
+  user:user,
   currentUser: {},
   status: "",
   error: "",
-  userAlreadyLoggedIn: false,
+  userAlreadyLoggedIn: userAlreadyLoggedIn,
   otpVerified: false,
   isUserRegistered:null,
 };

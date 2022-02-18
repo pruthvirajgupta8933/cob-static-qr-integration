@@ -39,43 +39,40 @@ function Pagination(props) {
 
   if ( pageCount === 1) return null;
   const pages = _.range(1, pageCount + 1)
-  var tableContent = '';
-useEffect(() => {
-  console.log('ee');
+  var tableContent = (   <table class='table' style={{marginLeft: 10}}>
+  {/* table head */}
+<tr>
+  {tableHeader.map((thd,i)=><th key={i}>{thd}</th>)}
+</tr>
 
-}, [props])
+{/* table body */}
+  { paginatedata.map((report, i) => (
+      <tr>
+          {tableBody.map((allowedData,i)=>
+                ( Object.keys(report).includes(allowedData) ? <td>{Object.values(report)[i]}</td> : '' )
+          
+          )}
+
+          {/* <td>{i+1}</td>
+          <td>{report.customer_name}</td>
+          <td>{report.customer_email}</td>
+          <td>{report.customer_phone_number}</td>
+          <td>{report.type}</td>
+          <td>{report.transaction_status}</td>
+          <td>{report.client_transaction_id}</td>
+          <td>{report.link_id}</td>
+          <td>{report.link_valid_date}</td>
+          <td>{report.created_at}</td>
+          <td>{report.payment_collected}</td>
+          <td>{report.numeric_link_id}</td> */}
+      </tr>
+  ))}
+</table>);
+
 
   return (
     <div>Pagination
-        <table class='table' style={{marginLeft: 10}}>
-            {/* table head */}
-        <tr>
-            {tableHeader.map((thd,i)=><th key={i}>{thd}</th>)}
-        </tr>
-        
-        {/* table body */}
-            { paginatedata.map((report, i) => (
-                <tr>
-                    {tableBody.map((allowedData,i)=>{
-                        console.log(allowedData in Object.keys(report))
-                        allowedData in Object.keys(report) ? <td>{Object.values(report)}</td>:''
-                    }
-                    )}
-                    <td>{i+1}</td>
-                    <td>{report.customer_name}</td>
-                    <td>{report.customer_email}</td>
-                    <td>{report.customer_phone_number}</td>
-                    <td>{report.type}</td>
-                    <td>{report.transaction_status}</td>
-                    <td>{report.client_transaction_id}</td>
-                    <td>{report.link_id}</td>
-                    <td>{report.link_valid_date}</td>
-                    <td>{report.created_at}</td>
-                    <td>{report.payment_collected}</td>
-                    <td>{report.numeric_link_id}</td>
-                </tr>
-            ))}
-     </table>
+     {tableContent}
     </div>
   )
 }

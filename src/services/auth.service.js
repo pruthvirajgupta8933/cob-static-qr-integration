@@ -16,34 +16,7 @@ const register = (firstName, lastName, mobileNumber, email, password,businessTyp
 
 // login old url : https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin 
 // login new url : https://cobtest.sabpaisa.in/auth-service/auth/login
-
-var staticClientList = [
-  {
-    "clientId": 2078,
-    "clientCode": "LPSD1",
-    "clientName": "Laxman Public School",
-    "clientContact": "7895352728",
-    "clientEmail": "pooja.kushwaha@sabpaisa.in",
-    "roleType": "Client",
-    "clientUserName": "Abh789@sp",
-    "clientContactPersonName": "Abhay",
-    "clientType": null,
-    "parentClientId": 0,
-    "lastLoginTime": null,
-    "address": null,
-    "stateId": null,
-    "stateName": null,
-    "bid": null,
-    "businessType": null,
-    "successUrl": null,
-    "failedUrl": null,
-    "subscription_status": null,
-    "subscribedTym": null,
-    "configuration_status": null,
-    "referrerChildClient": null
-  }
-];
-
+// http://18.189.11.232:8080/auth-service/auth/login
 const login = (username, password) => {
   return axios
     .post("https://cobtest.sabpaisa.in/auth-service/auth/login", {
@@ -67,6 +40,8 @@ const login = (username, password) => {
 const logout = () => {
   // console.log('remove user from LS');
   localStorage.removeItem("user");
+  localStorage.clear();
+  // alert('logout call auth service');
 };
 
 

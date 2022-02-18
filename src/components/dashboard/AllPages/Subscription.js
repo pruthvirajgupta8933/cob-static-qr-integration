@@ -4,6 +4,7 @@ import axios from "axios";
 import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashboardSlice";
 import { Link } from 'react-router-dom';
 import Emandate from '../AllPages/Mandate';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const Subsciption = () => {
   const [subscriptionDetails, setSubscriptionDetails] = useState(false);
@@ -12,17 +13,31 @@ const Subsciption = () => {
   const subscriptionData = useSelector(state => state.subscribe);
   const [subscriptionPlanData,setSubscriptionData] = useState([]);
   const [emandateDetails, setEmandateDetails] = useState(false);
+  const [termAndCnd, setTermAndCnd] = useState(false);
   const [subscriptionPlanChargesData,setSubscriptionPlanChargesData] = useState([]);
+  const [subscribePlanData,setSubscribePlanData] = useState([]);
+  
   const [Plans,setPlans] = useState([]);
   const {dashboard,auth} = useSelector((state)=>state);
   const {user} = auth;
+  let history = useHistory();
+
+  if(user && user.clientSuperMasterList===null){
+    // alert(`${path}/profile`);
+    // return <Redirect to={`${path}/profile`} />
+    history.push('/dashboard/profile');
+  } 
+  
   const {clientSuperMasterList , accountHolderName,accountNumber,bankName,clientEmail,clientMobileNo,ifscCode,loginStatus,pan} =user;
   const { isLoading , subscribe } = dashboard;
- 
-  const {clientAuthenticationType,clientCode} = clientSuperMasterList[0];
+  let clientAuthenticationType,clientCode = '';
+  if(clientSuperMasterList!==null){
 
+    let {clientAuthenticationType,clientCode} = clientSuperMasterList[0];
+
+  }
   var authenticationMode ='';
-  console.log(clientAuthenticationType);
+  // console.log(clientAuthenticationType);
   if(clientAuthenticationType==='NetBank'){
     authenticationMode='Netbanking';
   }else{
@@ -33,7 +48,7 @@ const Subsciption = () => {
  const dispatch = useDispatch();
 
  const getSubscriptionService = async () => {  
-    await axios.get('https://cobtestapi.sabpaisa.in/client-subscription-service/fetchAppAndPlan')  
+    await axios.get('http://18.189.11.232:8081/client-subscription-service/fetchAppAndPlan')  
     .then(res => {  
       setSubscriptionData(res.data);
       localStorage.setItem("subscriptionData", JSON.stringify(res.data));
@@ -54,21 +69,27 @@ const Subsciption = () => {
   const [planType,setPlanType]=useState('');
   const [planValidityDays,setPlanValidityDays]=useState('');
   const [mandateEndData,setMandateEndData]=useState('');
+  const [subscribeData,setSubscribeData]=useState({});
 
-
+// console.log(mandateEndData);
 
   const handleChecked=(e,data={})=>{
+    
     if(e.target.checked){
-      console.log(e.target.checked);
-      console.log(data)
-      setPlanPrice(parseFloat(data.planPrice));
-      console.log(planPrice)
+      setSubscribePlanData({...subscribePlanData,
+                              planId:data.planId ,
+                              planName: data.planName,
+                            });
+    
+      setPlanPrice(data.planPrice);
       setPlanType(data.planType);
-      setPlanValidityDays(parseInt(data.planValidityDays));
-      
-      var mandateEndDate = d.setDate(d.getDate() + parseInt(planValidityDays));
+      setPlanValidityDays(data.planValidityDays);
+     
+      const ed = new Date();
+      var mandateEndDate = ed.setDate(ed.getDate() + data.planValidityDays);
       mandateEndDate = new Date(mandateEndDate).toISOString();
       setMandateEndData(mandateEndDate);
+
     }else{
       setPlanPrice('');
       setPlanType('');
@@ -110,6 +131,8 @@ const Subsciption = () => {
 
 
 
+useEffect(() => {
+  
   // update body by realtime data
   const bodyFormData = {
     authenticationMode: authenticationMode,
@@ -139,21 +162,41 @@ const Subsciption = () => {
     telePhone: "",
     untilCancelled:false,
     userType:'merchant',
+    termAndCnd:termAndCnd,
+    planId:subscribePlanData.planId,
+    planName:subscribePlanData.planName,
+    applicationId:subscribePlanData.applicationId,
+    applicationName:subscribePlanData.applicationName,
   }
+//,{mandateEndData:mandateEndData,mandateMaxAmount:planPrice+'.00'}
+  setSubscribeData(bodyFormData)
 
-  console.log(bodyFormData);
+}, [mandateEndData,planPrice,termAndCnd,subscribePlanData]);
+
+
   useEffect(() => {
     getSubscriptionService();
   },[])
   
   // console.log("Suscription Charges", subscriptionPlanData);    
 
-  const handleSubscribe = (data) => {
-    console.log(data);
+  const handleSubscribe = (data,applicationData) => {
+    
+    // console.log(applicationData);
+    // console.log(applicationData)
+    setSubscribePlanData({...subscribePlanData, 
+                            applicationId:applicationData.applicationId,
+                            applicationName:applicationData.applicationName
+    });
+    
     setSubscriptionDetails(true);
     setPlans(data)
   }
 
+  useEffect(() => {
+    console.log("termAndCnd",termAndCnd);
+  }, [subscribePlanData,termAndCnd]);
+  
 
   // console.log("subscriptionPlanData",subscriptionPlanData);
 return (
@@ -172,7 +215,7 @@ return (
             </div>
             <div class="container">
                 <a target="blank" href="https://sabpaisa.in/payout/"  style={{ padding: "0", top: "155px" }} className="btn btn-warning">Read More</a>
-                <button type="button" style={{ top: "200px" }} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster)}>subscribe</button>                
+                <button type="button" style={{ top: "200px" }} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>subscribe</button>                
             </div>
           </div>
         </div>
@@ -181,7 +224,7 @@ return (
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Welcome {s.applicationName} !</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Welcome - {s.applicationName} !</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -193,24 +236,26 @@ return (
                 <tbody>
                
                     <><>
-                            <th><input type="checkbox" id="plantype" name="plantype" value={sp.planType} onChange={(e)=>{handleChecked(e,sp)}} /> {sp.planType} {sp.planName}</th>
-                            </><tr>
-                                <td>Rs - {sp.planPrice}</td>
-                            </tr><tr>
-                                {/* <td colspan="2"><a href="successsubscription.html" className="Click-here ant-btn ant-btn-primary float-right" >Create e-mandate</a></td> */}
-                            </tr></>
+                            <th><input type="radio" id="plantype" name="plantype" value={sp.planType} onChange={(e)=>{handleChecked(e,sp)}} /> {sp.planType} {sp.planName}</th>
+                            </>
+                              <tr>
+                                  <td>Rs - {sp.planPrice}</td>
+                              </tr>
+                              <tr></tr>
+                            </>
                             
                 </tbody>
             </table>
             )}
             </div>
             <div >
-                    <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+                    <input type="checkbox" id="termandcnd" name="termandcnd" value="termandcnd" checked={termAndCnd}
+                        onChange={e => setTermAndCnd(e.target.checked)} />
                     <label for="vehicle1"> I agree all terms and condition.</label>
                 </div>
             
             <div class="modal-footer">
-              <Emandate bodyData={bodyFormData}/>
+              <Emandate bodyData={subscribeData}/>
               
             </div>
           </div>

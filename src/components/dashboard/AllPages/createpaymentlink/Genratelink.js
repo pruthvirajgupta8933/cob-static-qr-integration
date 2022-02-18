@@ -226,6 +226,7 @@ const validationSchema = Yup.object().shape({
                   type="date"
                   name="Date"
                   className="ant-input"
+                  minDate= {new Date ()}
                   value={enteredDate}                     
                   onChange={(e) => setEnteredDate(e.target.value)}
                   

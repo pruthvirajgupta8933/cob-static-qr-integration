@@ -17,29 +17,29 @@ const ReceiptByEmail = () => {
 
   }
   const [transactionId, setTransactionId] = useState();
-  const[studentEmailId, setStudentEmailId]=useState();
+  const [studentEmailId, setStudentEmailId] = useState();
   const [show, setIsShow] = useState(false);
   const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState(initialState)
 
- 
-  
-    
-  
-  
 
 
-  
 
 
-  const onSubmit = async (transactionId,studentEmailId) => {
-    if(transactionId === null){
+
+
+
+
+
+
+  const onSubmit = async (transactionId, studentEmailId) => {
+    if (transactionId === null) {
       setTransactionId(0);
     }
     else {
       setStudentEmailId(0);
     }
-    
+
 
     const response = await axios.get(`https://adminapi.sabpaisa.in/Receipt/ReceiptMB/${transactionId}/${studentEmailId}`)
       .then((response) => {
@@ -50,7 +50,7 @@ const ReceiptByEmail = () => {
       })
 
       .catch((e) => {
-        
+
 
         console.log(e);
         setIsShow(false);
@@ -92,23 +92,23 @@ const ReceiptByEmail = () => {
       <div className='container'>
         <div className='row'>
           <div className='col-12 mb-4'>
-             
-           <b>Dear payer, in case money is debited by a Bank and not confirmed to us in Real time Your Bank would probably Refund your money as per your policy.For any payment issues please mail us at support@sabpaisa.in </b>
-            <div class="card">
-              <div class="card-header" style={{ textAlign: 'center' }}>
+
+            <b>Dear payer, in case money is debited by a Bank and not confirmed to us in Real time Your Bank would probably Refund your money as per your policy.For any payment issues please mail us at support@sabpaisa.in </b>
+            <div className="card">
+              <div className="card-header" style={{ textAlign: 'center' }}>
                 SABPAISA TRANSACTION RECEIPT
               </div>
-              <div class="card-body" >
+              <div className="card-body" >
                 <div className="col-lg-6 mrg-btm- bgcolor">
 
-                  <input type="text" className="ant-input" name="transactionid" value={transactionId} onChange={(e) => setTransactionId(e.target.value)} placeholder="Enter Sabpaisa Transactions Id" style={{ position: 'absolute', width: 430,left:250 }} />
+                  <input type="text" className="ant-input" name="transactionid" value={transactionId} onChange={(e) => setTransactionId(e.target.value)} placeholder="Enter Sabpaisa Transactions Id" style={{ position: 'absolute', width: 430, left: 250 }} />
                 </div>
                 <br /><br /><br />
                 <h3 style={{ position: 'absolute', left: 490 }}>OR</h3>
                 <br /><br />
                 <div className="col-lg-6 mrg-btm- bgcolor">
 
-                  <input type="text" className="ant-input" name="studentEmailid"  value={studentEmailId} onChange={(e)=>setStudentEmailId(e.target.value)} placeholder="Enter Email Id" style={{ position: 'absolute', width: 430,left:250 }} />
+                  <input type="text" className="ant-input" name="studentEmailid" value={studentEmailId} onChange={(e) => setStudentEmailId(e.target.value)} placeholder="Enter Email Id" style={{ position: 'absolute', width: 430, left: 250 }} />
                 </div>
 
                 <br /><br />
@@ -116,7 +116,7 @@ const ReceiptByEmail = () => {
                 <div className="col-lg-6 mrg-btm- bgcolor">
                 </div>
 
-                <button class="btn btn-success" onClick={() => onSubmit(transactionId,studentEmailId)} style={{ marginTop: '70px', marginLeft: -130,width:200 }} >View</button>
+                <button className="btn btn-success" onClick={() => onSubmit(transactionId, studentEmailId)} style={{ marginTop: '70px', marginLeft: -130, width: 200 }} >View</button>
               </div>
             </div>
           </div>
@@ -126,12 +126,12 @@ const ReceiptByEmail = () => {
             {
               show &&
               data.map((user) => (
-                <>
-                  <div className='card'>
+               
+                  <div className='card' key={user.Id}>
                     <div className='card-body table-responsive'>
                       <h3>TRANSACTION RECEIPT</h3>
                       <table className='table' id="joshi">
-                        <thead class="thead-dark">
+                        <thead className="thead-dark">
                           <tr>
                             <th><img src={sabpaisalogo} alt="logo" width={"90px"} height={"25px"} /></th>
                           </tr>
@@ -146,38 +146,28 @@ const ReceiptByEmail = () => {
                           <tr>
                             <th scope="row">Sabpaisa Transaction ID</th>
                             <td>{user.txn_id}</td>
-
                           </tr>
                           <tr>
                             <th scope="row">Client Transaction ID</th>
                             <td>{user.client_txn_id}</td>
-
                           </tr>
                           <tr>
                             <th scope="row">Client Name</th>
-                            <td>{user.client_name}</td>
-
-                          </tr>
+                            <td>{user.client_name}</td></tr>
                           <tr>
                             <th scope="row">Paid Amount</th>
                             <td>{user.paid_amount}</td>
-
                           </tr>
                           <tr>
                             <th scope="row">Payment Mode</th>
                             <td>{user.payment_mode}</td>
-
                           </tr>
                           <tr>
                             <th scope="row">Transaction Date</th>
-                            <td>{dateFormat(user.trans_date)}</td>
-
-                          </tr>
+                            <td>{dateFormat(user.trans_date)}</td></tr>
                           <tr>
                             <th scope="row">Payment Status</th>
-                            <td>{user.status}</td>
-
-                          </tr>
+                            <td>{user.status}</td></tr>
                           <tr>
                             <th scope="row">Student Email</th>
                             <td>{user.udf19}</td>
@@ -186,15 +176,15 @@ const ReceiptByEmail = () => {
                       </table>
                     </div>
                   </div>
-                </>
+                 
               ))
             }
           </div>
         </div>
         <div className='col-md-12'>
-        { show ? <button Value='click' onClick={onClick} class="btn btn-success" style={{ position: 'absolute', width: 200, left: 500 }}>
+          {show ? <button value='click' onClick={onClick} className="btn btn-success" style={{ position: 'absolute', width: 200, left: 500 }}>
             Print
-          </button>:<></> }
+          </button> : <></>}
         </div>
       </div>
 

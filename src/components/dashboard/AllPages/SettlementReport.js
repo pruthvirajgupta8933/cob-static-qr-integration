@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function SettlementReport() {
     const initialState = {
@@ -27,10 +28,19 @@ function SettlementReport() {
     var [showFilterData,SetShowFilterData] =React.useState([]); 
     const [selectedFolder,SetSelectedFolder] = React.useState('');
     const [selectedSubFolder,SetSelectedSubFolder] = React.useState('');
+    let history = useHistory();
+
+   
     const {user} = useSelector((state)=>state.auth);
-    var clientSuperMasterList = user.clientSuperMasterList;
-    const {clientCode} =clientSuperMasterList[0]; 
-    console.log(clientSuperMasterList);
+    let clientCode='';
+    if(user && user.clientSuperMasterList===null){
+        history.push('/dashboard/profile');
+      }else{
+        var clientSuperMasterList = user.clientSuperMasterList;
+       let {clientCode} =clientSuperMasterList[0]; 
+    
+      }
+    
 
     const getFileName = async () => {  
         await axios(`https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/${clientCode}`)
