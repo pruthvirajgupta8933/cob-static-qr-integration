@@ -19,6 +19,47 @@ export const createClientProfile = createAsyncThunk(
       // console.log({ fromdate, todate, clientcode });
       const response = await profileService.createClintCode(data);
       thunkAPI.dispatch(setMessage(response.data.message));
+
+      const userLocalData = JSON.parse(localStorage?.getItem("user"));
+      const allData = Object.assign(userLocalData,response.data);
+
+
+      const clientSuperMasterListObj = {
+        "clientId": null,
+        "lookupState": null,
+        "address": null,
+        "clientAuthenticationType": null,
+        "clientCode": null,
+        "clientContact": null,
+        "clientEmail": null,
+        "clientImagePath": null,
+        "clientLink": null,
+        "clientLogoPath": null,
+        "clientName": null,
+        "failedUrl": null,
+        "landingPage": null,
+        "service": null,
+        "successUrl": null,
+        "createdDate": null,
+        "modifiedDate": null,
+        "modifiedBy": null,
+        "status": null,
+        "reason": null,
+        "merchantId": null,
+        "requestId": null,
+        "clientType": null,
+        "parentClientId": null,
+        "businessType": null,
+        "pocAccountManager": null
+      };
+
+      const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
+      console.log("mergeClientSuperMasterList",mergeClientSuperMasterList)
+      const clientSuperMasterList =  [mergeClientSuperMasterList];
+      allData.clientSuperMasterList = clientSuperMasterList;
+      localStorage.setItem("user", JSON.stringify(allData))
+
+
       return response.data;
     } catch (error) {
       const message =
@@ -42,6 +83,44 @@ export const updateClientProfile = createAsyncThunk(
       // console.log({ fromdate, todate, clientcode });===update fn call
       const response = await profileService.updateClientProfile(data,clientId);
       thunkAPI.dispatch(setMessage(response.data.message));
+      const userLocalData = JSON.parse(localStorage?.getItem("user"));
+      const allData = Object.assign(userLocalData,response.data);
+
+
+      const clientSuperMasterListObj = {
+        "clientId": null,
+        "lookupState": null,
+        "address": null,
+        "clientAuthenticationType": null,
+        "clientCode": null,
+        "clientContact": null,
+        "clientEmail": null,
+        "clientImagePath": null,
+        "clientLink": null,
+        "clientLogoPath": null,
+        "clientName": null,
+        "failedUrl": null,
+        "landingPage": null,
+        "service": null,
+        "successUrl": null,
+        "createdDate": null,
+        "modifiedDate": null,
+        "modifiedBy": null,
+        "status": null,
+        "reason": null,
+        "merchantId": null,
+        "requestId": null,
+        "clientType": null,
+        "parentClientId": null,
+        "businessType": null,
+        "pocAccountManager": null
+      };
+
+      const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
+      console.log("mergeClientSuperMasterList",mergeClientSuperMasterList)
+      const clientSuperMasterList =  [mergeClientSuperMasterList];
+      allData.clientSuperMasterList = clientSuperMasterList;
+      localStorage.setItem("user", JSON.stringify(allData))
       return response.data;
     } catch (error) {
       const message =
@@ -136,9 +215,11 @@ export const successTxnSummary = createAsyncThunk(
       },
       [updateClientProfile.pending]:(state)=>{
           console.log('pending profile');
+          
       },
       [updateClientProfile.fulfilled]:(state,action)=>{
         console.log('fulfilled profile');
+        state.createClientProfile = action.payload
       },
       [updateClientProfile.rejected]:()=>{
         console.log('rejected profile');

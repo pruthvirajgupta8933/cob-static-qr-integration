@@ -16,6 +16,9 @@ export const FormikApp = () => {
     const {fetchDcBankList,fetchNbBankList,verifyClientCode, verifyIfcsCode} = profileService
     const dispatch= useDispatch();
     const { user } = useSelector((state) => state.auth);
+    const {dashboard} = useSelector((state) => state );
+  
+    
     // const {fetchDcBankList,fetchNbBankList} = profileService
     const { clientSuperMasterList ,
             loginId,
@@ -26,7 +29,6 @@ export const FormikApp = () => {
             accountNumber,
             bankName,
             ifscCode,
-  
             pan,
           } = user;
     
@@ -43,7 +45,11 @@ export const FormikApp = () => {
     const [userIfscCode,setUserIfscCOde]=useState(ifscCode)
     const [isClientCodeValid,setIsClientCodeValid]=useState(null)
     const [isIfcsValid,setIsIfscValid]=useState(null)
+    const [dataProfileResponse,setDataProfileResponse]=useState(null)
   
+    useEffect(() => {
+      setCreateProfileResponse(dashboard.createClientProfile)
+    }, [dashboard]);
   
     
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
@@ -113,16 +119,67 @@ const validationSchema = Yup.object().shape({
 
     console.log("send data",data);
     const userLocalData = JSON.parse(localStorage?.getItem("user"));
+    //  userLocalData.accountHolderName = data.accountHolderName
+
+      const allData = Object.assign(userLocalData,data);
+
+      const clientSuperMasterListObj = {
+        "clientId": null,
+        "lookupState": null,
+        "address": null,
+        "clientAuthenticationType": null,
+        "clientCode": null,
+        "clientContact": null,
+        "clientEmail": null,
+        "clientImagePath": null,
+        "clientLink": null,
+        "clientLogoPath": null,
+        "clientName": null,
+        "failedUrl": null,
+        "landingPage": null,
+        "service": null,
+        "successUrl": null,
+        "createdDate": null,
+        "modifiedDate": null,
+        "modifiedBy": null,
+        "status": null,
+        "reason": null,
+        "merchantId": null,
+        "requestId": null,
+        "clientType": null,
+        "parentClientId": null,
+        "businessType": null,
+        "pocAccountManager": null
+      };
+
+     
       
+
+      // console.log(allRules);
     if(isCreateorUpdate)
     {
+      
       dispatch(createClientProfile(data));
+      // setTimeout(() => {
+      //   const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,createProfileResponse);
+      //   const clientSuperMasterList =  [mergeClientSuperMasterList];
+      //   allData.clientSuperMasterList = clientSuperMasterList;
+      //   console.log(allData);
+      //   localStorage.setItem("user", JSON.stringify(allData))
+      // }, 2500);
     
     }
     else
     {
       delete data.clientCode; 
       dispatch(updateClientProfile({data,clientId}))
+      // setTimeout(() => {
+      //   const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,createProfileResponse);
+      //   const clientSuperMasterList =  [mergeClientSuperMasterList];
+      //   allData.clientSuperMasterList = clientSuperMasterList;
+      //   console.log(allData);
+      //   localStorage.setItem("user",JSON.stringify(allData))
+      // }, 2500);
     }
     // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
     toast.success("Your Data is Update successfully",{
