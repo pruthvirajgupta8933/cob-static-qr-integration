@@ -10,7 +10,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from "../../slices/auth";
-import { Link, useHistory  } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
 
 
@@ -46,6 +46,8 @@ const FORM_VALIDATION = Yup.object().shape({
 
 function Registration() {
   const history = useHistory()
+  const datar = useSelector(state=>state.auth);
+  const {isUserRegistered} = datar;
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [mobileNumber, setMobileNumber] = React.useState("");
@@ -78,11 +80,11 @@ function Registration() {
 
         setLoading(true);
         // console.log(formValue);
-        dispatch(register({ firstName, lastName, mobileNumber, email, password, confirmPassword,businessType}))
+        dispatch(register({ firstName, lastName, mobileNumber, email, password,businessType}))
           .unwrap()
           .then(() => {
             
-            //history.push("/dashboard");
+            // history.push("/dashboard");
             // window.location.reload();
             // alert(2);
           })
@@ -96,6 +98,8 @@ function Registration() {
             // alert(4);
             setLoading(false);
           });
+
+          
   }
 
 
@@ -112,8 +116,31 @@ function Registration() {
   };
   
 
-  
+  useEffect(() => {
+    console.log("isUserRegistered",isUserRegistered);
+    if(isUserRegistered === true) {
+    toast.success("User Registered, Verify Your Email", {
+      position: "top-right",
+      autoClose: 2000,
+      limit: 1,
+      transition: Zoom,
+    });
+    setTimeout(() => {   
+      history.push("/login-page");
+    }, 2000);
+    }
+    if(isUserRegistered === false) {
+      toast.error("Please Check Your Details, ", {
+          position: "top-right",
+          autoClose: 1000,
+          limit: 5,
+          transition: Zoom,
 
+      })
+    }
+  }, [isUserRegistered])
+  
+  
 return (
         <>
         <HeaderPage/>
@@ -189,7 +216,7 @@ return (
                               <div className="sminputs">
                               <div className="input full- optional">
                                   <label className="string optional" htmlFor="user-name">Mobile Number*</label>
-                                  <Field className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" name = 'mobilenumber' type="number" size={10}/>
+                                  <Field className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" name = 'mobilenumber' type="number" size={10} onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}/>
                                   {<ErrorMessage name="mobilenumber">
                                                 {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
                                             </ErrorMessage>}

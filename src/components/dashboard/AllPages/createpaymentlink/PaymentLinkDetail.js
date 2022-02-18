@@ -177,7 +177,6 @@ useEffect(() => {
 
 useEffect(()=>{
   setPaginatedData(_(data).slice(0).take(pageSize).value())
-  
 },[pageSize]);
 
 useEffect(() => {
@@ -223,7 +222,7 @@ const closeClick=()=>{
 }
 
 
-const disableDates = () => {
+const validDate = () => {
   var today, mm, dd, yyyy;
   today = new Date();
   dd = today.getDate() + 1;
@@ -370,7 +369,7 @@ const disableDates = () => {
                     name ='date'
                       type="date"
                       className="ant-input"
-                      minDate= {disableDates()}
+                      min= {validDate()}
                       value={enteredDate}                     
                       onChange={(e) => setEnteredDate(e.target.value)}
                       placeholder="From Date"
