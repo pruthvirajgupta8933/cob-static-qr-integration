@@ -9,29 +9,23 @@ import * as Yup from 'yup'
 import Genratelink from './Genratelink';
 import { Edituser } from './Edituser';
 import { toast, Zoom } from 'react-toastify';
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 
-const initialValues = {
-    name: "",
-    email: "",
-    phone_number: ""
-}
+
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().min(3, "It's too short").required("Required"),
-    phone_number: Yup.number().typeError("please enter valid number").min(10, 'no sholuld not axceed 10 digits ').required("Required"),
+    phone_number: Yup.string()
+    .required("required")
+    .matches(phoneRegExp, 'Phone number is not valid')
+    .min(10, "to short")
+    .max(10, "to long"),
     email: Yup.string().email("Enter valid email").required("Required")
 })
 
 const PayerDetails = () => {
-
-    const [item, setItem] = useState({
-        newName: "",
-        NewEmail: "",
-        NewPhoneNumber: "",
-        newCustomerTypeId: ""
-    });
-    const [editform, setEditForm] = useState({
+ const [editform, setEditForm] = useState({
         myname: "",
         email: "",
         phone: "",
@@ -41,23 +35,15 @@ const PayerDetails = () => {
     const [genrateform, setGenrateForm] = useState({
         customer_id: '',
     })
-
-    const { newName, NewEmail, NewPhoneNumber, newCustomerTypeId } = item;
-    const [name, setName] = useState('');
-
-    const [myemail, setMyEmail] = useState('');
-    const [customerTypeId, setCustomerTypeId] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [searchText, setSearchText] = useState("");
-
-    const { user } = useSelector((state) => state.auth);
+const [searchText, setSearchText] = useState("");
+ const { user } = useSelector((state) => state.auth);
     // const [formData, setFormData] = useState(initialValues)
 
     const [data, setData] = useState([])
-    const [searchResults, setSearchResults]= useState([])
+    const [searchResults, setSearchResults] = useState([])
     const [customerType, setCustomerType] = useState([]);
     var clientSuperMasterList = user.clientSuperMasterList;
-    console.log(clientSuperMasterList);
+    // console.log(clientSuperMasterList);
     const { clientCode } = clientSuperMasterList[0];
     // console.log(clientSuperMasterList);
     //console.log(clientCode)
@@ -71,6 +57,7 @@ const PayerDetails = () => {
         getDrop();
     }, []);
 
+// Alluser data API INTEGRATION
 
     const loadUser = async () => {
         const result = await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)
@@ -85,32 +72,21 @@ const PayerDetails = () => {
 
             })
     }
+    // SEARCH FILTER 
 
     useEffect(() => {
-  
-        if(searchText !== ''){
-          setSearchResults(data.filter((item)=>item.name.toLowerCase().includes(searchText.toLocaleLowerCase())))}else{setSearchResults(data)}
-      },[searchText])
-
-
-
+        if (searchText.length > 0) {
+            setData(data.filter((item) => item.name.toLowerCase().includes(searchText.toLocaleLowerCase())))
+        } else {
+            loadUser()
+        }
+    }, [searchText])
 
     const getSearchTerm = (e) => {
         setSearchText(e.target.value);
     };
-    // const getFileName = async () => {
-    //     // console.log(clientCode,'hello')
-    //     await axios(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)  //MPSE1
-    //         .then(res => {
-    //             // console.log(res)
-    //             setData(res.data);
-    //         })
-    //         .catch(err => {
-    //             console.log(err)
 
-    //         });
-
-    // }
+    // ADD User Dropdown api integration
 
     const getDrop = async (e) => {
         await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes`)
@@ -122,64 +98,38 @@ const PayerDetails = () => {
             });
 
     }
-    const onSubmit = async e => {
-        e.preventDefault();
-        toast.success("Payment Link success", {
-            position: "top-right",
-            autoClose: 2000,
-            transition: Zoom
 
-        })
-
-        // if(item.status===200)
-        // alert("succes")
-        // else{
-        //     alert("Payer Name required !")
-        // }
-        console.log(item);
-
-        setName('');
-        setMyEmail('');
-        setCustomerTypeId('');
-        setPhoneNumber('');
-
+    //ADD user API Integration
+    const onSubmit = async (e) => {
+        // console.log(e)
         const res = await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers', {
-            name: name,
-            email: myemail,
-            phone_number: phoneNumber,
+            name: e.name,
+            email: e.email,
+            phone_number: e.phone_number,
             client_code: clientCode,
-            customer_type_id: customerTypeId
+            customer_type_id: e.customer_type_id
         });
 
-        console.log(res)
-            .then((res) => {
+        console.log(res, 'succes')
 
-                console.log(JSON.stringify(res.data))
-
+        if (res.status === 200) {
+            ;
+            toast.success("Payment Link success", {
+                position: "top-right",
+                autoClose: 2000,
+                transition: Zoom
             })
-
-
-
-
-
-
-        // setItem([])
+        } else {
+            toast.error("something went wrong", {
+                position: "top-right",
+                autoClose: 2000,
+                transition: Zoom
+            })
+        }
     };
 
-    const cancelClick = () => {
-        setName('');
-        setMyEmail('');
-        setCustomerTypeId('');
-        setPhoneNumber('');
+    // USE FOR EDIT FORM
 
-    }
-    const closeClick = () => {
-        setName('');
-        setMyEmail('');
-        setCustomerTypeId('');
-        setPhoneNumber('');
-
-    }
     const handleClick = (id) => {
         //console.log(id);
         data.filter((dataItem) => {
@@ -194,11 +144,11 @@ const PayerDetails = () => {
 
                     }
                 )
-                // Working on it
+
             }
         })
     }
-
+    // USE FOR GENERETE LINK
     const generateli = (id) => {
         console.log(id);
         data.filter((dataItem) => {
@@ -211,34 +161,15 @@ const PayerDetails = () => {
         })
     }
 
-
-
-    //console.log('this is harry');
-    //console.log(id);
-
-
-
     const deleteUser = async id => {
         // confirm("do you confirm to delete it");
         var iscConfirm = window.confirm("Are you sure you want to delete it");
         if (iscConfirm) {
-            await axios.delete(`https://paybylink.sabpaisa.in/paymentlink/deleteCustomer?Client_Code=${clientCode}&Customer_id=${id}`);
+    await axios.delete(`https://paybylink.sabpaisa.in/paymentlink/deleteCustomer?Client_Code=${clientCode}&Customer_id=${id}`);
             loadUser();
         }
     };
 
-   
-
-
-
-
-
-    // const genrateLinkFc=(id)=>{
-    //     console.log(id);
-    // }
-
-    //console.log("data=",data);
-    console.log("editform", editform);
     return (
         <div>
             <Edituser items={editform} />
@@ -249,74 +180,107 @@ const PayerDetails = () => {
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 class="modal-title" id="exampleModalLabel">Add Payer Details</h3>
-                            <button type="button" class="close" onClick={closeClick} data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <Formik
-                                initialValues={initialValues}
-                                validationSchema={validationSchema}
-                                onSubmit={onSubmit}>
-                                {(props) => (
-                                    <Form onSubmit={e => onSubmit(e)} >
-                                        <div class="form-group">
-                                            <label for="recipient-name" class="col-form-label">Name of Payer:</label>
-                                            <Field name="name" autoComplete="off" value={name} onChange={e => { props.setFieldError("name", ""); setName(e.target.value) }}
+                        <Formik
+                            initialValues={
+                                {
+                                    name: "",
+                                    email: "",
+                                    phone_number: "",
+                                    customer_type_id: 0
+                                }
+                            }
+                            validationSchema={validationSchema}
+                            onSubmit={(values, { resetForm }) => {
+                                onSubmit(values)                 // this onsubmit used for api integration
+                                resetForm()
+                            }}>
+                            {({ resetForm }) => (
 
-                                                placeholder="Enter Name of Payer" class="form-control" id="pairname" />
-                                            <ErrorMessage name="name">
-                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
-                                            </ErrorMessage>
-                                            <label for="recipient-name" class="col-form-label">Mobile No.:</label>
-                                            <Field name="phone_number" autoComplete="off" value={phoneNumber} onChange={e => { props.setFieldError("name", ""); setPhoneNumber(e.target.value) }}
+                                <>
+                                    <div class="modal-header">
+                                        <h3 class="modal-title" id="exampleModalLabel">Add Payer Details</h3>
+                                        <button type="button" class="close" onClick={resetForm} data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <Form>
+                                            <div class="form-group">
+                                                <label for="recipient-name"
+                                                    class="col-form-label">Name of Payer:</label>
+                                                <Field
+                                                    name="name"
+                                                    placeholder="Enter Name of Payer"
+                                                    class="form-control"
+                                                    autoComplete="off"
+                                                />
+                                                <ErrorMessage name="name">
+                                                    {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                                </ErrorMessage>
 
-                                                type="number"
-                                                onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
+                                                <label for="recipient-name" class="col-form-label">Mobile No.:</label>
+                                                <Field
+                                                    name="phone_number"
+                                                    id="phoneNumber"
+                                                    onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
+                                                    type="number"
+                                                    autoComplete="off"
+                                                    placeholder='Enter Mobile No.'
+                                                    class="form-control"
+                                                />
+                                                <ErrorMessage name="phone_number">
+                                                    {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                                </ErrorMessage>
 
-                                                placeholder='Enter Mobile No.' class="form-control" id="pairemail" />
-                                            <ErrorMessage name="phone_number">
-                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
-                                            </ErrorMessage>
+                                                <label for="recipient-name" class="col-form-label">Email ID:</label>
+                                                <Field name="email"
+                                                    autoComplete="off"
+                                                    placeholder='Enter Email'
+                                                    id="pairphn"
+                                                    className="form-control" />
+                                                <ErrorMessage name="email">
+                                                    {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                                                </ErrorMessage>
 
-                                            <label for="recipient-name" class="col-form-label">Email ID:</label>
-                                            <Field name="email"
-                                            autoComplete="off"
-                                                value={myemail}
-                                                onChange={e => { props.setFieldError("phoneNumber", ""); setMyEmail(e.target.value) }}
-                                                placeholder='Enter Email ID' class="form-control" id="pairphn" />
+                                                <label for="recipient-name" class="col-form-label">Payer Category:</label>
+                                                <Field name="customer_type_id" className="selct" component="select">
+                                                    <option
+                                                        type="text"
+                                                        class="form-control"
+                                                        id="recipient-name"
+                                                    >Select Your Payer Category</option>
+                                                    {
+                                                        customerType.map((payer) => (
+                                                            <option value={payer.id}>{payer.type}</option>
+                                                        ))}
+                                                </Field>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-primary" >
+                                                    Submit
+                                                </button>
+                                                <button
+                                                    type="button" disabled
+                                                    class="btn btn-danger">
+                                                    Update
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-primary"
+                                                    data-dismiss="modal"
+                                                    onClick={resetForm}>
+                                                    Cancel
+                                                </button>
+                                            </div>
 
-                                            <ErrorMessage name="email">
-                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
-                                            </ErrorMessage>
+                                        </Form>
+                                    </div>
+                                </>
+                            )}
+                        </Formik>
 
-
-                                            <label for="recipient-name" class="col-form-label">Payer Category:</label>
-                                            <select className='selct' name='customer_type_id'
-                                                onChange={(e) => setCustomerTypeId(e.target.value)} value={customerTypeId}
-                                            >
-                                                <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
-                                                {
-                                                    customerType.map((payer) => (
-                                                        <option value={payer.id}>{payer.type}</option>
-                                                    ))}
-                                            </select>
-
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary"  >Submit</button>
-                                            <button type="button" disabled class="btn btn-danger">Update</button>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal" onClick={cancelClick}>Cancel</button>
-                                        </div>
-
-                                    </Form>
-                                )}
-                            </Formik>
-
-                        </div>
                     </div>
                 </div>
             </div>
@@ -362,7 +326,7 @@ const PayerDetails = () => {
                     </thead>
                     <tbody>
 
-                        {searchResults.map((user, i) => (
+                        {data.map((user, i) => (
 
                             <tr>
                                 <td>{i + 1}</td>
@@ -404,7 +368,7 @@ const PayerDetails = () => {
             </div>
 
 
-        </div>
+        </div >
 
 
 
