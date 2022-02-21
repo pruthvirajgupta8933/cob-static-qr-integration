@@ -70,9 +70,6 @@ function Dashboard() {
                 <Route exaxt path={`${path}/subscription`}>
                      <Subsciption />
                 </Route>
-<<<<<<< HEAD
-                </Switch> 
-=======
                 <Route exaxt path={`${path}/paylink`}>
                      <Paylink />
                 </Route>
@@ -83,7 +80,6 @@ function Dashboard() {
                      <Emandate />
                 </Route>
                 </Switch>
->>>>>>> phase_abhi
         </section>
     )
 }
