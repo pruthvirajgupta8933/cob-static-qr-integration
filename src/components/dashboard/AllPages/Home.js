@@ -124,7 +124,7 @@ showData.map((item)=>{
                   </select>
                 </div>
                 
-                {showData.length>0 ?   <div className="col-lg-6 mrg-btm- bgcolor">
+                {txnList.length>0 ?   <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Search</label>
                   <input type="text" className="ant-input" onChange={(e)=>{handleChange(e.currentTarget.value)}} placeholder="Search from here" />
                 </div> : <></>}

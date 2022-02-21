@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import { Zoom } from 'react-toastify';
-import Pagination from '../../../../_components/reuseable_components/Pagination';
 
 const Reports = () => {
 
@@ -34,7 +33,6 @@ const Reports = () => {
 
   const [data , setData] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState([])
   const {user} = useSelector((state)=>state.auth);
   var clientSuperMasterList = user.clientSuperMasterList;
   const {clientCode} = clientSuperMasterList[0];
@@ -91,20 +89,16 @@ useEffect(() => {
 
 const getSearchTerm  = (e) => {
   setSearchText(e.target.value);
-
-  // if(searchText !== "") {
-  //   const newData = data.filter((dataitem) => {
-  //     return dataitem.customer_phone_number.toLowerCase().includes(searchText.toLowerCase());
-  //   })
-
-  //   setSearchResults(newData);
-  // }
-  // else {
-  //   setSearchResults(data)
-  // }
-
-  // console.log(data)
 }
+
+
+useEffect(() => {
+  if (searchText.length > 0) {
+      setPaginatedData(data.filter((item) => item.customer_name.toLowerCase().includes(searchText.toLocaleLowerCase())))
+  } else {
+      setPaginatedData(data)
+  }
+}, [searchText])
 
 useEffect(()=>{
   setPaginatedData(_(data).slice(0).take(pageSize).value())
@@ -116,17 +110,101 @@ if ( pageCount === 1) return null;
 const pages = _.range(1, pageCount + 1)
 
 
-const tableHeader = ["Name","Email","Mobile No.","Action","Status","Client Txn Id","Link Id","Link Valid Date","Created At","Payment Collected","Numeric Link Id"];
-
-const tableBody = ["customer_name","customer_email","customer_phone_number","type","transaction_status","client_transaction_id","link_id","link_valid_date","created_at","payment_collected","numeric_link_id"];
-
-const paginationProps = {data:data,tableHeader:tableHeader,tableBody:tableBody};
 
 
 
-  return (
+  return (<div>
+      
 
-    <Pagination paginationProps={paginationProps} />
+        <div style={{marginLeft: 20}}>
+      <h3><b>Reports</b></h3>
+      <p>Total Records : {data.length}</p>
+      </div>
+       
+      <div style={{marginLeft: 20}} >
+      <input type="text" placeholder="Search Here" value={searchText} onChange={getSearchTerm} style={{ width: 500 }}  />
+      </div>
+      
+      <div>
+      <h4 style={{marginLeft:650 , position: 'relative', top: -25 }} >Count per page</h4>
+       <select  value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} style={{marginLeft:800 , position: 'relative', top: -55 , width: 150}}>
+       <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+       </select>
+      </div>
+       <table class='table' style={{marginLeft: 10}}>
+ 
+ <tr>
+ <th>Serial No.</th>
+   <th>Name</th>
+   <th>Email</th>
+   <th >Mobile No.</th>
+   <th> Action</th>
+<th>Status</th>
+<th>Client Txn Id</th>
+<th>Link Id</th>
+<th>Link Valid Date</th>
+<th>Created At</th>
+<th>Created At</th>
+<th>Payment Collected</th>
+<th>Numeric Link Id</th>
+
+
+ </tr>
+
+ 
+{/* 
+ {
+    searchText.length < 1 ?  */}
+    
+    { paginatedata.map((report, i) => (
+ <tr>
+   <td>{i+1}</td>
+     <td>{report.customer_name}</td>
+     <td>{report.customer_email}</td>
+     <td>{report.customer_phone_number}</td>
+     <td>{report.type}</td>
+     <td>{report.transaction_status}</td>
+     <td>{report.client_transaction_id}</td>
+     <td>{report.link_id}</td>
+     <td>{report.link_valid_date}</td>
+     <td>{report.created_at}</td>
+     <td>{report.payment_collected}</td>
+     <td>{report.numeric_link_id}</td>
+
+     <td></td>
+ </tr>
+    ))}
+    </table>
+    <div>
+  <nav aria-label="Page navigation example"  >
+  <ul class="pagination">
+    <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
+
+   {
+
+     pages.map((page) => (
+      <li class={
+        page === currentPage ? " page-item active" : "page-item"
+      }><a class="page-link">
+        
+        <p onClick={() => pagination(page)}>
+        {page}
+        </p>
+        </a></li>
+    
+     ))
+   }
+    <a class="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href="#">Next</a>
+   
+  
+  </ul>
+</nav>
+  </div>
+
+    </div>
   )
 
 };

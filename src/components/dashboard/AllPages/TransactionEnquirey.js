@@ -31,7 +31,7 @@ function TransactionEnquirey() {
   
   const [input, setInput] = useState();
   const [show, setIsShow] = useState(false);
-  const [errors, setErrors] =useState({});
+  const [errors, setErrors] =useState({input:true});
   const [errMessage , setErrMessage] = useState('');
   const [data,setData]= useState(initialState)
   const {auth} = useSelector((state)=>state);
@@ -46,11 +46,10 @@ function TransactionEnquirey() {
 
 
   const onSubmit=async(input)=>{
-
     setErrors(validation({ input }))
-
     
-
+    console.log(errors.input);
+   if(errors.input===false){
     const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
     .then((response) => {
       console.warn(response);
@@ -63,11 +62,14 @@ function TransactionEnquirey() {
 
       console.log(e);
       setIsShow(false);
-      setErrMessage('No Data Found');
+      setErrMessage("No Data Found")
 
-    })
+    })} 
     
   }
+
+  
+
 
    const dateFormat = (timestamp) => {
 
@@ -123,6 +125,7 @@ return (date.getDate()+
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Transactions Enquiry</label>
                   <input type="text" className="ant-input" placeholder="Enter your transactions enquiry" onChange={(e) => onValueChange(e)} />
+                  {errors.input && <h4>{errors.input}</h4>}
                 </div>
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <div>&nbsp;</div>
@@ -186,7 +189,7 @@ return (date.getDate()+
                   
                   
                 
-                 {errMessage &&  ( <h3 style={{position: 'absolute', top: 300, left: 200, color: 'red'}}> {errMessage} </h3>)}
+                 {!show ? errMessage &&  ( <h3 style={{position: 'absolute', top: 300, left: 200, color: 'red'}}> {errMessage} </h3>) : ''}
 
                  
 
