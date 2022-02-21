@@ -222,11 +222,12 @@ export const updateClientProfile = createAsyncThunk(
       const userLocalData = JSON.parse(localStorage?.getItem("user"));
       const allData = Object.assign(userLocalData,data);
       console.log("userLocalData",userLocalData);
-      console.log("response.data",data);
+      console.log("data",data);
+      console.log("response.data",response.data);
       console.log("all data",allData);
 
       const clientSuperMasterListObj = {
-        "clientId": null,
+        "clientId": clientId,
         "lookupState": null,
         "address": null,
         "clientAuthenticationType": null,
@@ -254,7 +255,7 @@ export const updateClientProfile = createAsyncThunk(
         "pocAccountManager": null
       };
 
-      const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,data);
+      const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
       console.log("mergeClientSuperMasterList",mergeClientSuperMasterList)
       const clientSuperMasterList =  [mergeClientSuperMasterList];
       allData.clientSuperMasterList = clientSuperMasterList;
@@ -357,22 +358,23 @@ const authSlice = createSlice({
     },
     [OTPVerificationApi.rejected]: (state, action) => {
       state.status = "failed";
-
       state.error = action.error.message;
     },
     [createClientProfile.pending]:(state)=>{
-      state.createClientProfile = {}
+      console.log("pending...create profile of client")
     },
     [createClientProfile.fulfilled]:(state,action)=>{
       state.createClientProfile = action.payload
+    },
+    [createClientProfile.rejected]:(state)=>{
+      console.log("Client Profile not update!");
     },
     [updateClientProfile.pending]:(state)=>{
         console.log('pending profile');
     },
     [updateClientProfile.fulfilled]:(state,action)=>{
       console.log('fulfilled profile');
-      console.log("user",state.auth.user)
-      state.createClientProfile = action.payload
+      state.user = action.payload
     },
     [updateClientProfile.rejected]:()=>{
       console.log('rejected profile');
