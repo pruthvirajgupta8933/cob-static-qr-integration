@@ -13,6 +13,7 @@ import { register } from "../../slices/auth";
 import { Link, useHistory, Redirect } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
 
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 const INITIAL_FORM_STATE = {
   fullName:'',
@@ -34,9 +35,13 @@ const INITIAL_FORM_STATE = {
 const FORM_VALIDATION = Yup.object().shape({
   firstname: Yup.string().required("Required"),
   lastname: Yup.string().required("Required"),
-  mobilenumber: Yup.string().required("Required"),
-  emaill: Yup.string().required("Required"),
-  passwordd: Yup.string().required("Password Required"),
+  mobilenumber: Yup.string().required("Required").matches(phoneRegExp, 'Phone number is not valid')
+  .min(10, "Too short")
+  .max(10, "too long"),
+  emaill: Yup.string().email('Must be a valid email').max(255).required("Required"),
+  passwordd: Yup.string().required("Password Required").matches(
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+    "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"),
   confirmpasswordd: Yup.string()
      .oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
      terms_and_condition:  Yup.boolean()
@@ -298,43 +303,12 @@ return (
                                 </div>
                               </div>
                               <div className="sminputs">
-                                <div className="input full- optional">
-                                  <label
-                                    className="string optional"
-                                    htmlFor="user-name"
-                                  >
-                                    Mobile Number*
-                                  </label>
-                                  <Field
-                                    className="string optional"
-                                    maxLength={10}
-                                    id="user-name"
-                                    placeholder="Mobile Number"
-                                    name="mobilenumber"
-                                    type="number"
-                                    size={10}
-                                    onKeyDown={(e) =>
-                                      ["e", "E", "+", "-", "."].includes(
-                                        e.key
-                                      ) && e.preventDefault()
-                                    }
-                                  />
-                                  {
-                                    <ErrorMessage name="mobilenumber">
-                                      {(msg) => (
-                                        <p
-                                          className="abhitest"
-                                          style={{
-                                            color: "red",
-                                            position: "absolute",
-                                            zIndex: " 999",
-                                          }}
-                                        >
-                                          {msg}
-                                        </p>
-                                      )}
-                                    </ErrorMessage>
-                                  }
+                              <div className="input full- optional">
+                                  <label className="string optional" htmlFor="user-name">Mobile Number*</label>
+                                  <Field className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" name = 'mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}/>
+                                  {<ErrorMessage name="mobilenumber">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                                 </div>
                                 <div className="input full- optional">
                                   <label

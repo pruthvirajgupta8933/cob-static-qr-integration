@@ -418,6 +418,7 @@ const validDate = () => {
                     <br />
                     <Field component = 'select' style={{ width: 100 }} name= 'minutes' value = {minutes} onChange={(e) => setMinutes(e.target.value)}>
                       <option selected>Minutes</option>
+                      <option value="01">00</option>
                       <option value="01">01</option>
                       <option value="02">02</option>
                       <option value="03">03</option>

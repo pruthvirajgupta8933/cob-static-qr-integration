@@ -130,7 +130,7 @@ showData.map((item)=>{
                     </select>
                   </div>
 
-                  {showData.length > 0 ? (
+                  {txnList.length > 0 ? (
                     <div className="col-lg-6 mrg-btm-">
                       <label>Search</label>
                       <input
