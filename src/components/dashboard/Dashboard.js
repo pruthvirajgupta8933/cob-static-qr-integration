@@ -42,50 +42,46 @@ function Dashboard() {
   }
 
     return (
-        <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
-                <SideNavbar />
-                <Switch>
-                <Route exact path={path}>
-                    <Home/>
-                </Route>
-                <Route exact path={`${path}/profile`}>
-                     {/* <Profile/> */}
-                     <FormikApp />
-                </Route>
-                <Route exact path={`${path}/transaction`}>
-                     <Transaction/>
-                </Route>
-                <Route exact path={`${path}/transaction-enquiry`}>
-                     <TransactionEnquirey/>
-                </Route>
-                <Route exact path={`${path}/transaction-history`}>
-                     <TransactionHistory/>
-                </Route>
-                <Route exact path={`${path}/client-list`}>
-                     <ClientList />
-               </Route>
-                <Route exaxt path={`${path}/settlement-report`}>
-                     <SettlementReport/>
-                </Route>
-                <Route exaxt path={`${path}/subscription`}>
-                     <Subsciption />
-                </Route>
-<<<<<<< HEAD
-                </Switch> 
-=======
-                <Route exaxt path={`${path}/paylink`}>
-                     <Paylink />
-                </Route>
-                <Route exaxt path={`${path}/paylinkdetail`}>
-                     <PaymentLinkDetail />
-                </Route>
-                <Route exaxt path={`${path}/emandate/`}>
-                     <Emandate />
-                </Route>
-                </Switch>
->>>>>>> phase_abhi
-        </section>
-    )
+      <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
+        <SideNavbar />
+        <Switch>
+          <Route exact path={path}>
+            <Home />
+          </Route>
+          <Route exact path={`${path}/profile`}>
+            {/* <Profile/> */}
+            <FormikApp />
+          </Route>
+          <Route exact path={`${path}/transaction`}>
+            <Transaction />
+          </Route>
+          <Route exact path={`${path}/transaction-enquiry`}>
+            <TransactionEnquirey />
+          </Route>
+          <Route exact path={`${path}/transaction-history`}>
+            <TransactionHistory />
+          </Route>
+          <Route exact path={`${path}/client-list`}>
+            <ClientList />
+          </Route>
+          <Route exaxt path={`${path}/settlement-report`}>
+            <SettlementReport />
+          </Route>
+          <Route exaxt path={`${path}/subscription`}>
+            <Subsciption />
+          </Route>
+          <Route exaxt path={`${path}/paylink`}>
+            <Paylink />
+          </Route>
+          <Route exaxt path={`${path}/paylinkdetail`}>
+            <PaymentLinkDetail />
+          </Route>
+          <Route exaxt path={`${path}/emandate/`}>
+            <Emandate />
+          </Route>
+        </Switch>
+      </section>
+    );
 }
 
 export default Dashboard
