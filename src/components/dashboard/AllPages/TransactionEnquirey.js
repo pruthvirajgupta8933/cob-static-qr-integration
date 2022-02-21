@@ -119,87 +119,151 @@ return (date.getDate()+
           <section className="features8 cid-sg6XYTl25a" id="features08-3-">
             <div className="container-fluid">
               <div className="row">
-             
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Transactions Enquiry</label>
-                  <input type="text" className="ant-input" placeholder="Enter your transactions enquiry" onChange={(e) => onValueChange(e)} />
+                  <input
+                    type="text"
+                    className="ant-input"
+                    placeholder="Enter your transactions enquiry"
+                    onChange={(e) => onValueChange(e)}
+                  />
                 </div>
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <div>&nbsp;</div>
-                  <button className="view_history test" style={{ marginTop: '8px' }} onClick={() => onSubmit(input)}>Search</button>
+                  <button
+                    className="view_history test topmargt"
+                    onClick={() => onSubmit(input)}
+                  >
+                    Search
+                  </button>
                 </div>
-              
-  
-                {
-                  show ? 
-              <table cellspacing={0} cellPadding={10} border={0} width="100%" className="tables"  id="joshi">
-                  <tbody>
-                    <tr>
-                      <td>Txn Id:</td>
-                      <td className="bold" ><b>{data.txnId}</b></td>
-                      <td>Payment Mode :</td>
-                      <td className="bold"><b>{data.paymentMode}</b></td>
-                      <td>Payee First Name :</td>
-                      <td className="bold"><b>{data.payeeFirstName}</b></td>
-                    </tr>
-                    <tr>
-                      <td>Payee Mobile:</td>
-                      <td className="bold"><b>{data.payeeMob}</b></td>
-                      <td>Payee Email :</td>
-                      <td className="bold"><b>{data.payeeEmail}</b></td>
-                      <td>Status :</td>
-                      <td className="bold"><b>{data.status}</b></td>
-                    </tr>
-                    <tr>
-                    <td>Bank Txn Id :</td>
-                    <td className="bold"><b>{data.bankTxnId}</b></td>
-                    <td>Client Name :</td>
-                    <td><b>{data.clientName}</b></td>
-                    <td>Client Id : </td>
-                    <td className="bold"><b>{data.clientId}</b></td>
-                    </tr>
-                    <tr>
-                    <td>Payee Amount :</td>
-                    <td className="bold"><b>{data.payeeAmount}</b></td>
-                    <td>Paid Amount :</td>
-                    <td className="bold"><b>{data.paidAmount}</b></td>
-                    <td>Trans Date :</td>
-                    <td className="bold"><b>{dateFormat(data.transDate)}</b></td>
-                    </tr>
-                    <tr>
-                    <td>Trans Complete Date :</td>
-                    <td className="bold"><b>{data.transCompleteDate}</b></td>
-                    <td> Client Code :</td>
-                    <td className="bold"><b>{data.transactionCompositeKey.clientCode}</b></td>
-                    <td>Client Txn Id:</td>
-                    <td className="bold"><b>{data.transactionCompositeKey.clientTxnId}</b></td>
-                 
-                    </tr>
 
-
-                  
-                  </tbody>
+                {show ? (
+                  <table
+                    cellspacing={0}
+                    cellPadding={10}
+                    border={0}
+                    width="100%"
+                    className="tables"
+                    id="joshi"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>Txn Id:</td>
+                        <td className="bold">
+                          <b>{data.txnId}</b>
+                        </td>
+                        <td>Payment Mode :</td>
+                        <td className="bold">
+                          <b>{data.paymentMode}</b>
+                        </td>
+                        <td>Payee First Name :</td>
+                        <td className="bold">
+                          <b>{data.payeeFirstName}</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Payee Mobile:</td>
+                        <td className="bold">
+                          <b>{data.payeeMob}</b>
+                        </td>
+                        <td>Payee Email :</td>
+                        <td className="bold">
+                          <b>{data.payeeEmail}</b>
+                        </td>
+                        <td>Status :</td>
+                        <td className="bold">
+                          <b>{data.status}</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Bank Txn Id :</td>
+                        <td className="bold">
+                          <b>{data.bankTxnId}</b>
+                        </td>
+                        <td>Client Name :</td>
+                        <td>
+                          <b>{data.clientName}</b>
+                        </td>
+                        <td>Client Id : </td>
+                        <td className="bold">
+                          <b>{data.clientId}</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Payee Amount :</td>
+                        <td className="bold">
+                          <b>{data.payeeAmount}</b>
+                        </td>
+                        <td>Paid Amount :</td>
+                        <td className="bold">
+                          <b>{data.paidAmount}</b>
+                        </td>
+                        <td>Trans Date :</td>
+                        <td className="bold">
+                          <b>{dateFormat(data.transDate)}</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Trans Complete Date :</td>
+                        <td className="bold">
+                          <b>{data.transCompleteDate}</b>
+                        </td>
+                        <td> Client Code :</td>
+                        <td className="bold">
+                          <b>{data.transactionCompositeKey.clientCode}</b>
+                        </td>
+                        <td>Client Txn Id:</td>
+                        <td className="bold">
+                          <b>{data.transactionCompositeKey.clientTxnId}</b>
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
-                  
-                  
-                  : '' }
-                  
-                  
-                
-                 {errMessage &&  ( <h3 style={{position: 'absolute', top: 300, left: 200, color: 'red'}}> {errMessage} </h3>)}
+                ) : (
+                  ""
+                )}
 
-                 
+                {errMessage && (
+                  <h3
+                    style={{
+                      position: "absolute",
+                      top: 300,
+                      left: 200,
+                      color: "red",
+                    }}
+                  >
+                    {" "}
+                    {errMessage}{" "}
+                  </h3>
+                )}
 
-                 { show ? <button Value='click' onClick={onClick} className="view_history">Print</button>:<></> }
+                {show ? (
+                  <button
+                    Value="click"
+                    onClick={onClick}
+                    className="view_history float-right"
+                  >
+                    Print
+                  </button>
+                ) : (
+                  <></>
+                )}
               </div>
-            </div></section>
+            </div>
+          </section>
         </div>
         <footer className="ant-layout-footer">
-          <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
+          <div className="gx-layout-footer-content">
+            © 2021 Ippopay. All Rights Reserved.{" "}
+            <span className="pull-right">
+              Ippopay's GST Number : 33AADCF9175D1ZP
+            </span>
+          </div>
         </footer>
       </main>
     </section>
-  )
+  );
 }
 
 export default TransactionEnquirey

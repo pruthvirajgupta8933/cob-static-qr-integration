@@ -628,3 +628,20 @@ html {
     width: 100%;
     padding: 13px 0 0 10px;
 }
+.topmarg{
+  margin:34px 8px 0 0;
+}
+.topmargt{
+  margin-top:16px;
+}
+.float-right{
+  margin:10px;
+  float:right;
+}
+
+.table_wrapper{
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    
+}
