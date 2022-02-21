@@ -32,12 +32,12 @@ function SettlementReport() {
 
    
     const {user} = useSelector((state)=>state.auth);
-    let clientCode='';
+    var clientCode='';
     if(user && user.clientSuperMasterList===null){
         history.push('/dashboard/profile');
       }else{
         var clientSuperMasterList = user.clientSuperMasterList;
-       let {clientCode} =clientSuperMasterList[0]; 
+       clientCode = clientSuperMasterList[0].clientCode; 
     
       }
     
