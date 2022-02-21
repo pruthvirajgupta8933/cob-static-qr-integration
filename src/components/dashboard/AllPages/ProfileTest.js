@@ -4,7 +4,8 @@ import { useSelector,useDispatch } from 'react-redux'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import {createClientProfile, updateClientProfile} from '../../../slices/dashboardSlice' 
+import {createClientProfile, updateClientProfile} from '../../../slices/auth'
+
 import profileService from '../../../services/profile.service'
 import { toast, Zoom } from 'react-toastify';
 import { Redirect } from 'react-router-dom';
