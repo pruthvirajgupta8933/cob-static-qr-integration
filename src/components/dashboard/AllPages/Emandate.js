@@ -1,9 +1,13 @@
+
 import React from 'react';
 
 import { useState, useEffect } from "react";
 import {useParams,useLocation} from "react-router-dom"
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { ArrayToDate } from '../../../utilities/emandateDateFormat';
+import { ceil } from 'lodash';
+
 
 // import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
 
@@ -15,7 +19,7 @@ const Emandate = () => {
     const mendateRegIdParam = new URLSearchParams(search).get('mendateRegId');
 
 
-    console.log(mendateRegIdParam);
+  //  console.log(mendateRegIdParam);
 
   const [details,setDetails] = useState([]);
     const baseUrl = "https://subscription.sabpaisa.in/subscription/npci/registration/status/";
@@ -35,32 +39,34 @@ useEffect(() => {
     
     
     if(Object.values(details).length>0){
-        alert(2)
+        // console.log(details.mandateStartDate)
+        const selectedPlan = JSON.parse(localStorage?.getItem("selectedPlan"));
         const postData = {
             clientCode:details.clientCode,
-            mandateRegistrationId:details.mandateRegistrationId,
-            umrnNumber:details.umrn,
+            mandateRegistrationId:details.mandateRegistrationId +'22' ,
+            umrn:details.umrnNumber,
             paymentMode:details.authenticationMode,
             mandateBankName:details.bankName,
             mandateFrequency:details.frequency,
             mandateStatus:details.regestrationStatus,
             purchasAmount:details.mandateMaxAmount,
-            clientId:clientId,
+            clientId:clientId.toString(),
             clientName:clientName,
-            applicationId: 2,
-            applicationName: "cob",
-            planId: 3,
-            planName: "master_plan",
-            bankRef: "124pqr",
+            applicationId:selectedPlan.applicationId,
+            applicationName: selectedPlan.applicationName,
+            planId: selectedPlan.planId,
+            planName: selectedPlan.planName,
+            bankRef: details.regestrationNpciRefId,
             clientTxnId : details.clientRegistrationId,
-            mandateRegTime:"2022-02-17T12:48:02.226",
-            mandateStartTime : "2022-02-17T12:48:02.226",
-            mandateEndTime  : null,
+            mandateRegTime: ArrayToDate(details.mandateRegTime),
+            mandateStartTime : ArrayToDate(details.mandateStartDate),
+            mandateEndTime  : ArrayToDate(details.mandateEndDate),
         };
+        console.log(postData)
 
         axios.post("http://18.189.11.232:8081/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
             console.log(response)
-        })
+        }).catch(error=>console.log(error))
     }
 
 }, [details]);
@@ -94,7 +100,7 @@ const detailList = detailsKey.map((item,i)=>{
       <section className="features8 cid-sg6XYTl25a" id="features08-3-">
         <div className="container-fluid">
           <div className="row" style={{justifyContent: "center"}}>
-            <div>
+            <div> 
             <table class="table">
                 <tbody>
                     {detailList}

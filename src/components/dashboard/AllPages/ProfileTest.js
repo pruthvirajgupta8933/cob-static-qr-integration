@@ -4,7 +4,8 @@ import { useSelector,useDispatch } from 'react-redux'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import {createClientProfile, updateClientProfile} from '../../../slices/dashboardSlice' 
+import {createClientProfile, updateClientProfile} from '../../../slices/auth'
+
 import profileService from '../../../services/profile.service'
 import { toast, Zoom } from 'react-toastify';
 import { Redirect } from 'react-router-dom';
@@ -16,6 +17,9 @@ export const FormikApp = () => {
     const {fetchDcBankList,fetchNbBankList,verifyClientCode, verifyIfcsCode} = profileService
     const dispatch= useDispatch();
     const { user } = useSelector((state) => state.auth);
+    const {dashboard} = useSelector((state) => state );
+  
+    
     // const {fetchDcBankList,fetchNbBankList} = profileService
     const { clientSuperMasterList ,
             loginId,
@@ -26,7 +30,6 @@ export const FormikApp = () => {
             accountNumber,
             bankName,
             ifscCode,
-  
             pan,
           } = user;
     
@@ -43,7 +46,11 @@ export const FormikApp = () => {
     const [userIfscCode,setUserIfscCOde]=useState(ifscCode)
     const [isClientCodeValid,setIsClientCodeValid]=useState(null)
     const [isIfcsValid,setIsIfscValid]=useState(null)
+    const [dataProfileResponse,setDataProfileResponse]=useState(null)
   
+    useEffect(() => {
+      setCreateProfileResponse(dashboard.createClientProfile)
+    }, [dashboard]);
   
     
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
@@ -110,20 +117,82 @@ const validationSchema = Yup.object().shape({
     }, [userData]);
 
     function onSubmit(data) {
-        // console.log(isCreateorUpdate)
-    // console.log("send client id",clientId);
+
     console.log("send data",data);
-    isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
-    toast.success("Your Data is Updated,Now you will redirect to login page",{
+    const userLocalData = JSON.parse(localStorage?.getItem("user"));
+    //  userLocalData.accountHolderName = data.accountHolderName
+
+      const allData = Object.assign(userLocalData,data);
+
+      const clientSuperMasterListObj = {
+        "clientId": null,
+        "lookupState": null,
+        "address": null,
+        "clientAuthenticationType": null,
+        "clientCode": null,
+        "clientContact": null,
+        "clientEmail": null,
+        "clientImagePath": null,
+        "clientLink": null,
+        "clientLogoPath": null,
+        "clientName": null,
+        "failedUrl": null,
+        "landingPage": null,
+        "service": null,
+        "successUrl": null,
+        "createdDate": null,
+        "modifiedDate": null,
+        "modifiedBy": null,
+        "status": null,
+        "reason": null,
+        "merchantId": null,
+        "requestId": null,
+        "clientType": null,
+        "parentClientId": null,
+        "businessType": null,
+        "pocAccountManager": null
+      };
+
+     
+      
+
+      // console.log(allRules);
+    if(isCreateorUpdate)
+    {
+      
+      dispatch(createClientProfile(data));
+      // setTimeout(() => {
+      //   const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,createProfileResponse);
+      //   const clientSuperMasterList =  [mergeClientSuperMasterList];
+      //   allData.clientSuperMasterList = clientSuperMasterList;
+      //   console.log(allData);
+      //   localStorage.setItem("user", JSON.stringify(allData))
+      // }, 2500);
+    
+    }
+    else
+    {
+      delete data.clientCode; 
+      dispatch(updateClientProfile({data,clientId}))
+      // setTimeout(() => {
+      //   const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,createProfileResponse);
+      //   const clientSuperMasterList =  [mergeClientSuperMasterList];
+      //   allData.clientSuperMasterList = clientSuperMasterList;
+      //   console.log(allData);
+      //   localStorage.setItem("user",JSON.stringify(allData))
+      // }, 2500);
+    }
+    // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
+    toast.success("Your Data is Update successfully",{
       autoClose:2000,
       limit :1,
       transition:Zoom
     });
 
-    setTimeout(() => {
-      dispatch(logout());
-      return <Redirect to="/login-page" />;
-    }, 2510);
+    // setTimeout(() => {
+    //   dispatch(logout());
+    //   return <Redirect to="/login-page" />;
+    // }, 2510);
      
     }
 
@@ -182,9 +251,9 @@ const validationSchema = Yup.object().shape({
     }
   }, [authenticationMode]);
 
-    console.log(authenticationMode);
-    console.log(bankName);
-    console.log(selectedListForOption);
+    // console.log(authenticationMode);
+    // console.log(bankName);
+    // console.log(selectedListForOption);
  
  return (
     <section className="ant-layout">

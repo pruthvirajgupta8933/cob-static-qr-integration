@@ -1,5 +1,8 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
 import validation from '../../validation';
 
 
@@ -31,7 +34,10 @@ function TransactionEnquirey() {
   const [errors, setErrors] =useState({});
   const [errMessage , setErrMessage] = useState('');
   const [data,setData]= useState(initialState)
-
+  const {auth} = useSelector((state)=>state);
+  const {user} = auth;
+  let { path } = useRouteMatch();
+  let history = useHistory();
 
 
   const onValueChange = e => {
@@ -91,6 +97,12 @@ return (date.getDate()+
     a.document.close();
             a.print();
   }
+
+  if(user && user.clientSuperMasterList===null){
+    // alert(`${path}/profile`);
+    // return <Redirect to={`${path}/profile`} />
+    history.push('/dashboard/profile');
+  } 
 
   return (
     <section className="ant-layout">

@@ -3,11 +3,20 @@ import PayerDetails from './createpaymentlink/PayerDetails';
 import PaymentLinkDetail from './createpaymentlink/PaymentLinkDetail';
 import BulkPayer from './createpaymentlink/BulkPayer';
 import Reports from './createpaymentlink/Reports';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 function Paylink() {
     const [tab,SetTab] = useState(1);
 
+    const {dashboard,auth} = useSelector((state)=>state);
+    const {user} = auth;
+    let history = useHistory();
+
+    if(user && user.clientSuperMasterList===null){
+          history.push('/dashboard/profile');
+    } 
     
     
 
