@@ -394,15 +394,15 @@ function HeaderPage() {
                 </div> */}
               </li>
               <li>
-                <Link to="/commonpages">Payout</Link>
+                <Link to={{pathname:"https://sabpaisa.in/sabpaisa-apis/"}}  target="_blank" rel="noreferrer noopener">APIs</Link>
               </li>
               <li>
-                <Link target="_blank" to="/commonpages">
-                  Neo&nbsp;&nbsp;Banking&nbsp;&nbsp;API
+                <Link target="_blank"  to={{pathname:"https://sabpaisa.in/"}} rel="noreferrer noopener">
+                  Developers
                 </Link>
               </li>
               <li>
-                <Link to="/commonpages">Pricing</Link>
+                <Link target="_blank"  to={{pathname:"https://sabpaisa.in/"}} rel="noreferrer noopener" >Pricing</Link>
               </li>
             </ul>
             <ul className="header_second_list hidden-xs">
@@ -419,7 +419,7 @@ function HeaderPage() {
                   className="btnlink cotactbg"
                   href="/Registration"
                 >
-                  Call +91 887-777-2200
+                  Call +91  987-551-5119
                 </Link>
               </li>
             </ul>
