@@ -331,7 +331,7 @@ loadUser()
 
             <div class="full-screen-scroller">
 
-                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'fixed'}}>
+                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute'}}>
                     <thead>
                         <tr>
                             <th scope='col'>Serial.No</th>
