@@ -157,8 +157,18 @@ export const createClientProfile = createAsyncThunk(
 
       const userLocalData = JSON.parse(localStorage?.getItem("user"));
       const allData = Object.assign(userLocalData,response.data);
-
-
+      // first time need to assign all request data into temp data
+      allData.accountHolderName = data.accountHolderName;
+      allData.accountNumber = data.accountNumber;
+      allData.bankName = data.bankName;
+      allData.clientAuthenticationType = data.clientAuthenticationType;
+      allData.clientContactPersonName = data.clientName;
+      allData.clientEmail = data.email;
+      allData.ifscCode = data.ifscCode;
+      allData.pan = data.pan;
+      allData.clientMobileNo = data.phone;
+     
+      console.log("allData--s",allData);
       const clientSuperMasterListObj = {
         "clientId": null,
         "lookupState": null,

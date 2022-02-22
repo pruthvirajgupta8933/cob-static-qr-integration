@@ -1,12 +1,55 @@
-import { useState, useEffect } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
 
 function Emandate(props) {
+  const {user} = useSelector((state)=>state.auth);
+  const { clientId,clientName } =user.clientSuperMasterList[0];
   const { register, handleSubmit } = useForm();
   const [formData, setFormData] = useState({});
+
+  const [displayMsg,setDisplayMsg]=useState("none" );
+  console.log("isModelClosed",formData.isModelClosed);
+  useEffect(() => {
+    setDisplayMsg(formData.isModelClosed ? 'block':'none');
+  }, [formData])
   
+
+  console.log("displayMsg",displayMsg);
+  const saveTrialPlanData = (data)=>{
+
+    const postData = {
+      clientCode:data.clientCode,
+      mandateRegistrationId: (Math.floor(Math.random()*999999)*969685).toString() ,
+      umrn: '0',
+      paymentMode:data.authenticationMode,
+      mandateBankName:data.payerBank,
+      mandateFrequency:data.frequency,
+      mandateStatus:'success',
+      purchasAmount:data.mandateMaxAmount,
+      clientId:clientId.toString(),
+      clientName:clientName,
+      applicationId:data.applicationId,
+      applicationName: data.applicationName,
+      planId: data.planId,
+      planName: data.planName,
+      bankRef: 'null',
+      clientTxnId : data.clientRegistrationId.toString(),
+      mandateRegTime: new Date().toISOString(),
+      mandateStartTime : data.mandateStartDate,
+      mandateEndTime  : data.mandateEndDate,
+  };
+  axios.post("http://18.189.11.232:8081/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+            console.log(response);
+            setDisplayMsg('block');
+            
+        }).catch(error=>console.log(error))
+  console.log("post data trial",postData);
+  }
+
   const onSubmit = (data) => {
-    console.log(formData.termAndCnd)
+    console.log(formData.planType)
     if(formData.termAndCnd){
 
       const planData = {
@@ -20,11 +63,14 @@ function Emandate(props) {
         alert("please Select the valid plan");
       }else{
         console.log("formData",formData);
-        localStorage.setItem("selectedPlan",JSON.stringify(planData))
-        document.getElementById("mandateRegForm").submit()
-      }
-
-      
+        if(formData.planType==='trail'){
+          saveTrialPlanData(formData);
+         
+        }else{
+           localStorage.setItem("selectedPlan",JSON.stringify(planData))
+           document.getElementById("mandateRegForm").submit()
+        }
+      }      
     }else{
       alert("Please Agree Term and Condition")
     }  //   prompt('copy post data',JSON.stringify(data));
@@ -40,7 +86,43 @@ useEffect(() => {
     handleSubmit(onSubmit);
 },[])
 
+const thank_msg = {
+  position: "absolute",
+    width: "100%",
+    background: "aquamarine",
+    zIndex: "999",
+    textAalign:" center",
+    padding: "14px",
+    margin: "14px",
+    top: "5%",
+    right: "0",
+    left: "-15px",
+    height: "92%",
+    display:displayMsg
+};
+
+const subscribe_msg_content = {
+  border: "3px solid #f4f4f4",
+  padding: "50px",
+  margin: "20px",
+  fontSize: "16px",
+  fontWeight: "700",
+};
+
+
+
   return (
+    <React.Fragment>
+     <div className="thank_msg" style={thank_msg}  >
+      <div className="subscribe_msg_content" style={subscribe_msg_content}>
+      <p>Thank you for showing interest in SabPaisa.</p> 
+      <p> Our team will get in touch with you soon!</p>
+      <p> Meanwhile you can reach out to us at</p>
+      <p> +91 - 9875515119</p>
+      </div>
+     
+    </div>
+    <div>
     <form 
 		onSubmit={handleSubmit(onSubmit)}
 		id="mandateRegForm"
@@ -78,8 +160,12 @@ useEffect(() => {
         <input {...register("userType")} type="text" name="userType" value={formData.userType}/>
 		</div>
 
-        <button className="Click-here ant-btn ant-btn-primary float-right" type="submit">Create e-mandate</button>
+        <button className="Click-here ant-btn ant-btn-primary float-right" type="submit">  {formData.planType==='trail' ? 'Subscribe' : ' Create E-Mandate'} </button>
     </form>
+    </div>
+   
+   
+    </React.Fragment>
   );
 }
 

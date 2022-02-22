@@ -61,7 +61,7 @@ export const FormikApp = () => {
 
     const [userIfscCode,setUserIfscCOde]=useState(ifscCode)
     const [isClientCodeValid,setIsClientCodeValid]=useState(null)
-    const [isIfcsValid,setIsIfscValid]=useState(null)
+    const [isIfcsValid,setIsIfscValid]=useState(true)
     const [dataProfileResponse,setDataProfileResponse]=useState(null)
   
     useEffect(() => {
@@ -177,7 +177,7 @@ const validationSchema = Yup.object().shape({
                 setIsIfscValid(false)
             })
         :
-        setIsIfscValid(null);
+        setIsIfscValid(true);
 
     }
 
