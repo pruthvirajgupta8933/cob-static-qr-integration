@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom'
+import { Link ,useHistory} from 'react-router-dom'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import Genratelink from './Genratelink';
@@ -15,7 +15,7 @@ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string().min(3, "It's too short").required("Required"),
+    name: Yup.string().min(3, "It's too short").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
     phone_number: Yup.string()
     .required("required")
     .matches(phoneRegExp, 'Phone number is not valid')
@@ -25,6 +25,7 @@ const validationSchema = Yup.object().shape({
 })
 
 const PayerDetails = () => {
+    let history = useHistory();
  const [editform, setEditForm] = useState({
         myname: "",
         email: "",
@@ -35,16 +36,24 @@ const PayerDetails = () => {
     const [genrateform, setGenrateForm] = useState({
         customer_id: '',
     })
-const [searchText, setSearchText] = useState("");
- const { user } = useSelector((state) => state.auth);
+    const [searchText, setSearchText] = useState("");
+    const { user } = useSelector((state) => state.auth);
     // const [formData, setFormData] = useState(initialValues)
 
     const [data, setData] = useState([])
     const [searchResults, setSearchResults] = useState([])
     const [customerType, setCustomerType] = useState([]);
-    var clientSuperMasterList = user.clientSuperMasterList;
+    let clientSuperMasterList=[]
+    let clientCode =''
+    if(user && user.clientSuperMasterList===null){
+        history.push('/dashboard/profile');
+      }else{
+        clientSuperMasterList = user.clientSuperMasterList;
+        clientCode =  clientSuperMasterList[0].clientCode;
+      }
+  
     // console.log(clientSuperMasterList);
-    const { clientCode } = clientSuperMasterList[0];
+    
     // console.log(clientSuperMasterList);
     //console.log(clientCode)
     // const onInputChange = e => {
@@ -110,8 +119,9 @@ const [searchText, setSearchText] = useState("");
             customer_type_id: e.customer_type_id
         });
 
-        console.log(res, 'succes')
 
+        console.log(res, 'succes')
+loadUser()
         if (res.status === 200) {
             ;
             toast.success("Payment Link success", {

@@ -350,7 +350,7 @@ return (
                                     className="string optional"
                                     htmlFor="user-pw"
                                   >
-                                    Password *
+                                   Create Password *
                                   </label>
                                   <Field
                                     className="string optional"
@@ -456,9 +456,9 @@ return (
                                       />
                                     </span>{" "}
                                     I agree to the{" "}
-                                    <a className="special" role="link" href="#">
+                                    <Link to={{pathname:"https://sabpaisa.in/term-conditions/"}} className="special" target="_blank" >
                                       Terms &amp; Conditions
-                                    </a>
+                                    </Link>
                                   </span>
                                   {
                                     <ErrorMessage name="terms_and_condition">

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
+import validation from '../validation';
 
 
 export const Recipts = () => {
@@ -25,6 +26,7 @@ export const Recipts = () => {
   }
   const [input, setInput] = useState("");
   const [show, setIsShow] = useState(false);
+  const [errors, setErrors] =useState({input:true});
   const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState(initialState)
 
@@ -34,8 +36,10 @@ export const Recipts = () => {
 
 
   const onSubmit = async (input) => {
-
-    const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
+    setErrors(validation({ input }))
+    //console.log(errors, 'error')
+    if(errors.input===false){
+const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
       .then((response) => {
         console.warn(response);
         setData(response.data);
@@ -53,6 +57,7 @@ export const Recipts = () => {
       })
 
   }
+}
   const dateFormat = (timestamp) => {
 
 
@@ -91,7 +96,10 @@ export const Recipts = () => {
           <div className="col-lg-6 mrg-btm- bgcolor">
 
             <input type="text" className="ant-input" onChange={(e) => onValueChange(e)} placeholder="Enter Sabpaisa Transactions Id" style={{ position: 'absolute', width: 430 }} />
+            <br/>
+            <br/><br/>{errors.input && <h4 >{errors.input}</h4>}
           </div>
+
           <div className="col-lg-6 mrg-btm- bgcolor">
           </div>
 

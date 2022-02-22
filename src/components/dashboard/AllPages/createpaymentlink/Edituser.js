@@ -3,10 +3,12 @@ import { useSelector } from 'react-redux';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios';
+
 import { toast,Zoom } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 
 export const Edituser = (props) => { 
-
+    let history = useHistory();
      console.log(props.items);
     
     // const [formData, setFormData] = useState();
@@ -36,8 +38,17 @@ export const Edituser = (props) => {
    
 
     const [data, setData] = useState([])
-    var clientSuperMasterList = user.clientSuperMasterList;
-    const { clientCode } = clientSuperMasterList[0]
+    // var clientSuperMasterList = user.clientSuperMasterList;
+    // const { clientCode } = clientSuperMasterList[0]
+
+    let clientSuperMasterList=[];
+    let clientCode ='';
+    if(user && user.clientSuperMasterList===null){
+        history.push('/dashboard/profile');
+      }else{
+        clientSuperMasterList = user.clientSuperMasterList;
+        clientCode =  clientSuperMasterList[0].clientCode;
+      }
  
     
     // const onValueChange = e => {

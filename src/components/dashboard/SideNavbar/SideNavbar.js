@@ -97,7 +97,7 @@ function SideNavbar() {
               </div>
             </div>
           </div>
-          <div className="sidebar-menu-query"><span className="sidebar-help-button"><i className="icon icon-queries" />Support</span></div>
+          <div className="sidebar-menu-query"> <Link to={{pathname:"https://sabpaisa.in/support-contact-us/"}}  target="_blank" >< span className="sidebar-help-button"> <i className="icon icon-queries" />Support</span></Link></div>
         </div>
       </div>
     </aside>
