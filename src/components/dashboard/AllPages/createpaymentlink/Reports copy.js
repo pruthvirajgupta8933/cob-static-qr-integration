@@ -33,6 +33,7 @@ const Reports = () => {
 
   const [data , setData] = useState([]);
   const [searchText, setSearchText] = useState('');
+  const [searchResults, setSearchResults] = useState([])
   const {user} = useSelector((state)=>state.auth);
   var clientSuperMasterList = user.clientSuperMasterList;
   const {clientCode} = clientSuperMasterList[0];
@@ -89,16 +90,20 @@ useEffect(() => {
 
 const getSearchTerm  = (e) => {
   setSearchText(e.target.value);
+
+  // if(searchText !== "") {
+  //   const newData = data.filter((dataitem) => {
+  //     return dataitem.customer_phone_number.toLowerCase().includes(searchText.toLowerCase());
+  //   })
+
+  //   setSearchResults(newData);
+  // }
+  // else {
+  //   setSearchResults(data)
+  // }
+
+  // console.log(data)
 }
-
-
-useEffect(() => {
-  if (searchText.length > 0) {
-      setPaginatedData(data.filter((item) => item.customer_name.toLowerCase().includes(searchText.toLocaleLowerCase())))
-  } else {
-      setPaginatedData(data)
-  }
-}, [searchText])
 
 useEffect(()=>{
   setPaginatedData(_(data).slice(0).take(pageSize).value())

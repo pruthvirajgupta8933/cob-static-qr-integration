@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function SettlementReport() {
     const initialState = {
@@ -27,165 +28,179 @@ function SettlementReport() {
     var [showFilterData,SetShowFilterData] =React.useState([]); 
     const [selectedFolder,SetSelectedFolder] = React.useState('');
     const [selectedSubFolder,SetSelectedSubFolder] = React.useState('');
+    let history = useHistory();
+
+   
     const {user} = useSelector((state)=>state.auth);
-    var clientSuperMasterList = user.clientSuperMasterList;
-    const {clientCode} =clientSuperMasterList; 
-    console.log(clientSuperMasterList);
-
-    const getFileName = async () => {  
-        await axios(`https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/${clientCode}`)
-        .then(res => {  
-          setData(res.data);  
-        })  
-        .catch(err => {  
-          console.log(err)
-        });
-
+    let clientCode='';
+    if (user && user.clientSuperMasterList === null) {
+      history.push("/dashboard/profile");
+    } else {
+      var clientSuperMasterList = user.clientSuperMasterList;
+      clientCode = clientSuperMasterList[0].clientCode;
     }
 
+    const getFileName = async () => {
+      await axios(
+        `https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/${clientCode}`
+      )
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
     React.useEffect(() => {
-        getFileName();
+      getFileName();
     }, []);
 
-    
     React.useEffect(() => {
-        
-        data.filter((item)=>{
-            folderArr.push(item.folder);
-        })
-        setFolderArr( [...new Set(folderArr)]);
+      data.filter((item) => {
+        folderArr.push(item.folder);
+      });
+      setFolderArr([...new Set(folderArr)]);
     }, [data]);
 
-    const onChangeFolder=(val)=>{
-        SetSelectedFolder(val);
-        subFolderArr = [];
-             data.filter((item)=>{
-                if(item.folder === val){ 
-                    subFolderArr.push(item.sub_folder)
-                }
-            })
-            setSubFolderArr([...new Set(subFolderArr)])
-    }
+    const onChangeFolder = (val) => {
+      SetSelectedFolder(val);
+      subFolderArr = [];
+      data.filter((item) => {
+        if (item.folder === val) {
+          subFolderArr.push(item.sub_folder);
+        }
+      });
+      setSubFolderArr([...new Set(subFolderArr)]);
+    };
     // console.log('subFolderArr',subFolderArr);
 
-
     React.useEffect(() => {
-        showFilterData=[];
-        data.filter((item)=>{
-          if(item.folder===selectedFolder && item.sub_folder===selectedSubFolder){
-                // console.log('kkk',item);
-                showFilterData.push(item);
-            }
-        })
+      showFilterData = [];
+      data.filter((item) => {
+        if (
+          item.folder === selectedFolder &&
+          item.sub_folder === selectedSubFolder
+        ) {
+          // console.log('kkk',item);
+          showFilterData.push(item);
+        }
+      });
 
-        SetShowFilterData(showFilterData)
-
-    }, [selectedSubFolder,selectedFolder])
-
+      SetShowFilterData(showFilterData);
+    }, [selectedSubFolder, selectedFolder]);
 
     const getSearchTerm = (e) => {
+      setSearchArea(e.target.value);
 
-        setSearchArea(e.target.value);
-      
-            if(searchArea !== ''){ SetShowFilterData(data.filter((item)=>item.file_name.toLowerCase().includes(searchArea.toLocaleLowerCase())))}
-            
-            // setSearchResults(newDataList);
-    }
+      if (searchArea !== "") {
+        SetShowFilterData(
+          data.filter((item) =>
+            item.file_name
+              .toLowerCase()
+              .includes(searchArea.toLocaleLowerCase())
+          )
+        );
+      }
 
-
-
-  
-
+      // setSearchResults(newDataList);
+    };
 
     return (
+      <section className="ant-layout">
+        <div className="profileBarStatus"></div>
+        <h1
+          style={{ position: "absolute", top: 70, left: 250, fontSize: "21px" }}
+        >
+          Settlement Report
+        </h1>
+        <hr />
+        <label For="folder "></label>
+
+        <select
+          value={selectedFolder}
+          className="ant-input"
+          onChange={(e) => onChangeFolder(e.target.value)}
+        >
+          <option value="">--Select Folder--</option>
+          {folderArr &&
+            folderArr.map((folder) => <option value={folder}>{folder}</option>)}
+
+          <input type="text" placeholder="Search.." />
+        </select>
+
         <div>
-            <h1 style={{ position: 'absolute', top: 70, left: 250 }}>Settlement Report</h1>
-            <hr />
-            <label For="folder "></label>
-            <select value={selectedFolder} style={{ position: 'absolute', top: 150, left: 250, width: 300 }} onChange={(e)=>onChangeFolder(e.target.value)}>
-            <option value="">--Select Folder--</option>
-            {folderArr && (folderArr.map((folder) => (
-                <option value={folder}>{folder}</option>
-                )))}
-
-                <input type="text" placeholder="Search.." />
-
-            </select>
-
-            <div>
-                <label For="folder"></label>
-                <select onChange={(event) => SetSelectedSubFolder(event.target.value)}  value={selectedSubFolder}style={{ position: 'absolute', top: 150, left: 650, width: 300 }} >
-                <option value="" >Select</option>
-                    {subFolderArr && (subFolderArr.map((subfolder) => (
-                        <option value={subfolder} >{subfolder}</option>
-                    )))}
-                </select>
-
-            </div>
-            <input type="text" value= {searchArea} placeholder="Search Here" style={{ position: 'absolute', top: 200, left: 250, width: 300 }} 
-            onChange = {getSearchTerm}  
-            />
-            {
-
-                showFilterData.filter 
-            }
-
-            <div>
-                <select style={{ position: 'absolute', top: 200, left: 650, width: 300 }}>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="40">40</option>
-                    <option value="50">50</option>
-                    <option value="60">100</option>
-                    <option value="70">200</option>
-                    <option value="70">300</option>
-                    <option value="70">400</option>
-                    <option value="70">500</option>
-                </select>
-            </div>
-            <div>
-                <table style={{ position: 'absolute', top: 300, left: 250, width: 550 }}>
-                    <tr>
-                        <th>S.No</th>
-                        <th>Client Code</th>
-                        <th>File Name</th>
-                        <th>Created On</th>
-                        <th>Action</th>
-                    </tr>
-                    <br />
-                    {
-                        showFilterData.length > 0 ? (
-                            showFilterData.map((user, i) =>
-                                <tr key={user.Id}>
-                                    <td>{i + 1}</td>
-                                    <td>{user.client_code}	</td>
-
-                                    <td>{user.file_name}</td>
-                                    <td>{user.created_on}</td>
-                                    {/* <td>{user.sub_folder}</td> */}
-                                    <td><a href={user.base_url_path}>Download</a></td>
-
-                                </tr>
-                            )) : (
-                            <>
-                                {""}
-                            </>
-
-
-                        )
-
-                    }
-
-
-
-                </table>
-            </div>
-
+          <label For="folder"></label>
+          <select
+            onChange={(event) => SetSelectedSubFolder(event.target.value)}
+            value={selectedSubFolder}
+            style={{ position: "absolute", top: 150, left: 650, width: 300 }}
+          >
+            <option value="">Select</option>
+            {subFolderArr &&
+              subFolderArr.map((subfolder) => (
+                <option value={subfolder}>{subfolder}</option>
+              ))}
+          </select>
         </div>
+        <input
+          type="text"
+          value={searchArea}
+          placeholder="Search Here"
+          style={{ position: "absolute", top: 200, left: 250, width: 300 }}
+          onChange={getSearchTerm}
+        />
+        {showFilterData.filter}
 
+        <div>
+          <select
+            style={{ position: "absolute", top: 200, left: 650, width: 300 }}
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+            <option value="60">100</option>
+            <option value="70">200</option>
+            <option value="70">300</option>
+            <option value="70">400</option>
+            <option value="70">500</option>
+          </select>
+        </div>
+        <div>
+          <table
+            style={{ position: "absolute", top: 300, left: 250, width: 550 }}
+          >
+            <tr>
+              <th>S.No</th>
+              <th>Client Code</th>
+              <th>File Name</th>
+              <th>Created On</th>
+              <th>Action</th>
+            </tr>
+            <br />
+            {showFilterData.length > 0 ? (
+              showFilterData.map((user, i) => (
+                <tr key={user.Id}>
+                  <td>{i + 1}</td>
+                  <td>{user.client_code} </td>
 
-    )
+                  <td>{user.file_name}</td>
+                  <td>{user.created_on}</td>
+                  {/* <td>{user.sub_folder}</td> */}
+                  <td>
+                    <a href={user.base_url_path}>Download</a>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <>{""}</>
+            )}
+          </table>
+        </div>
+      </section>
+    );
 }
 
 export default SettlementReport;

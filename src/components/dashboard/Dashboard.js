@@ -6,7 +6,7 @@ import TransactionEnquirey from './AllPages/TransactionEnquirey';
 import SettlementReport from './AllPages/SettlementReport';
 import TransactionHistory from './AllPages/TransactionHistory';
 import Profile from './AllPages/Profile';
-import { useRouteMatch,Switch,Route ,Redirect} from 'react-router-dom'
+import { useRouteMatch,Switch,Route ,Redirect,useHistory} from 'react-router-dom'
 
 import "./css/Home.css";
 import "./css/50.684f163d.chunk.css";
@@ -19,19 +19,28 @@ import PayerDetails from'./AllPages/createpaymentlink/PayerDetails'
 import PaymentLinkDetail from './AllPages/createpaymentlink/PaymentLinkDetail';
 import Paylink from './AllPages/Paylink';
 import {FormikApp} from './AllPages/ProfileTest'
+import Emandate from './AllPages/Emandate';
+
 
 
 function Dashboard() {
+     // console.log('dashboard call');
+     let history = useHistory();
     let { path } = useRouteMatch();
-    const {  user,isLoggedIn } = useSelector((state) => state.auth);
+    const { user,isLoggedIn } = useSelector((state) => state.auth);
     
-  if (!isLoggedIn) {
-    return <Redirect to="/login-page" />;
+    
+//   user!==null && user?. return (<Redirect to="/login-page" />)
+     // console.log(user);
+  if(user!==null && user.userAlreadyLoggedIn){
+     console.log('funciton dashboard call');
+     // history.push("/login-page");  
+     return <Redirect to="/login-page" />
+  }else if(user===null){
+     console.log('2 funciton dashboard call');
+     return <Redirect to="/login-page" />
   }
 
-
-
- 
     return (
         <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
                 <SideNavbar />
@@ -66,6 +75,9 @@ function Dashboard() {
                 </Route>
                 <Route exaxt path={`${path}/paylinkdetail`}>
                      <PaymentLinkDetail />
+                </Route>
+                <Route exaxt path={`${path}/emandate/`}>
+                     <Emandate />
                 </Route>
                 </Switch>
         </section>

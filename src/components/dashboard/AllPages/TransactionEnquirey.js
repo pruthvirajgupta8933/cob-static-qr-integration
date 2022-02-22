@@ -1,5 +1,8 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
 import validation from '../../validation';
 
 
@@ -28,10 +31,13 @@ function TransactionEnquirey() {
   
   const [input, setInput] = useState();
   const [show, setIsShow] = useState(false);
-  const [errors, setErrors] =useState({});
+  const [errors, setErrors] =useState({input:true});
   const [errMessage , setErrMessage] = useState('');
   const [data,setData]= useState(initialState)
-
+  const {auth} = useSelector((state)=>state);
+  const {user} = auth;
+  let { path } = useRouteMatch();
+  let history = useHistory();
 
 
   const onValueChange = e => {
@@ -40,11 +46,10 @@ function TransactionEnquirey() {
 
 
   const onSubmit=async(input)=>{
-
     setErrors(validation({ input }))
-
     
-
+    console.log(errors.input);
+   if(errors.input===false){
     const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
     .then((response) => {
       console.warn(response);
@@ -57,11 +62,14 @@ function TransactionEnquirey() {
 
       console.log(e);
       setIsShow(false);
-      setErrMessage('No Data Found');
+      setErrMessage("No Data Found")
 
-    })
+    })} 
     
   }
+
+  
+
 
    const dateFormat = (timestamp) => {
 
@@ -92,6 +100,12 @@ return (date.getDate()+
             a.print();
   }
 
+  if(user && user.clientSuperMasterList===null){
+    // alert(`${path}/profile`);
+    // return <Redirect to={`${path}/profile`} />
+    history.push('/dashboard/profile');
+  } 
+
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">
@@ -107,87 +121,147 @@ return (date.getDate()+
           <section className="features8 cid-sg6XYTl25a" id="features08-3-">
             <div className="container-fluid">
               <div className="row">
-             
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Transactions Enquiry</label>
                   <input type="text" className="ant-input" placeholder="Enter your transactions enquiry" onChange={(e) => onValueChange(e)} />
+                  {errors.input && <h4>{errors.input}</h4>}
                 </div>
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <div>&nbsp;</div>
-                  <button className="view_history test" style={{ marginTop: '8px' }} onClick={() => onSubmit(input)}>Search</button>
+                  <button
+                    className="view_history test topmargt"
+                    onClick={() => onSubmit(input)}
+                  >
+                    Search
+                  </button>
                 </div>
-              
-  
-                {
-                  show ? 
-              <table cellspacing={0} cellPadding={10} border={0} width="100%" className="tables"  id="joshi">
-                  <tbody>
-                    <tr>
-                      <td>Txn Id:</td>
-                      <td className="bold" ><b>{data.txnId}</b></td>
-                      <td>Payment Mode :</td>
-                      <td className="bold"><b>{data.paymentMode}</b></td>
-                      <td>Payee First Name :</td>
-                      <td className="bold"><b>{data.payeeFirstName}</b></td>
-                    </tr>
-                    <tr>
-                      <td>Payee Mobile:</td>
-                      <td className="bold"><b>{data.payeeMob}</b></td>
-                      <td>Payee Email :</td>
-                      <td className="bold"><b>{data.payeeEmail}</b></td>
-                      <td>Status :</td>
-                      <td className="bold"><b>{data.status}</b></td>
-                    </tr>
-                    <tr>
-                    <td>Bank Txn Id :</td>
-                    <td className="bold"><b>{data.bankTxnId}</b></td>
-                    <td>Client Name :</td>
-                    <td><b>{data.clientName}</b></td>
-                    <td>Client Id : </td>
-                    <td className="bold"><b>{data.clientId}</b></td>
-                    </tr>
-                    <tr>
-                    <td>Payee Amount :</td>
-                    <td className="bold"><b>{data.payeeAmount}</b></td>
-                    <td>Paid Amount :</td>
-                    <td className="bold"><b>{data.paidAmount}</b></td>
-                    <td>Trans Date :</td>
-                    <td className="bold"><b>{dateFormat(data.transDate)}</b></td>
-                    </tr>
-                    <tr>
-                    <td>Trans Complete Date :</td>
-                    <td className="bold"><b>{data.transCompleteDate}</b></td>
-                    <td> Client Code :</td>
-                    <td className="bold"><b>{data.transactionCompositeKey.clientCode}</b></td>
-                    <td>Client Txn Id:</td>
-                    <td className="bold"><b>{data.transactionCompositeKey.clientTxnId}</b></td>
-                 
-                    </tr>
 
-
-                  
-                  </tbody>
+                {show ? (
+                  <table
+                    cellspacing={0}
+                    cellPadding={10}
+                    border={0}
+                    width="100%"
+                    className="tables"
+                    id="joshi"
+                  >
+                    <tbody>
+                      <tr>
+                        <td>Txn Id:</td>
+                        <td className="bold">
+                          <b>{data.txnId}</b>
+                        </td>
+                        <td>Payment Mode :</td>
+                        <td className="bold">
+                          <b>{data.paymentMode}</b>
+                        </td>
+                        <td>Payee First Name :</td>
+                        <td className="bold">
+                          <b>{data.payeeFirstName}</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Payee Mobile:</td>
+                        <td className="bold">
+                          <b>{data.payeeMob}</b>
+                        </td>
+                        <td>Payee Email :</td>
+                        <td className="bold">
+                          <b>{data.payeeEmail}</b>
+                        </td>
+                        <td>Status :</td>
+                        <td className="bold">
+                          <b>{data.status}</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Bank Txn Id :</td>
+                        <td className="bold">
+                          <b>{data.bankTxnId}</b>
+                        </td>
+                        <td>Client Name :</td>
+                        <td>
+                          <b>{data.clientName}</b>
+                        </td>
+                        <td>Client Id : </td>
+                        <td className="bold">
+                          <b>{data.clientId}</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Payee Amount :</td>
+                        <td className="bold">
+                          <b>{data.payeeAmount}</b>
+                        </td>
+                        <td>Paid Amount :</td>
+                        <td className="bold">
+                          <b>{data.paidAmount}</b>
+                        </td>
+                        <td>Trans Date :</td>
+                        <td className="bold">
+                          <b>{dateFormat(data.transDate)}</b>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Trans Complete Date :</td>
+                        <td className="bold">
+                          <b>{data.transCompleteDate}</b>
+                        </td>
+                        <td> Client Code :</td>
+                        <td className="bold">
+                          <b>{data.transactionCompositeKey.clientCode}</b>
+                        </td>
+                        <td>Client Txn Id:</td>
+                        <td className="bold">
+                          <b>{data.transactionCompositeKey.clientTxnId}</b>
+                        </td>
+                      </tr>
+                    </tbody>
                   </table>
-                  
-                  
-                  : '' }
-                  
-                  
-                
-                 {errMessage &&  ( <h3 style={{position: 'absolute', top: 300, left: 200, color: 'red'}}> {errMessage} </h3>)}
+                ) : (
+                  ""
+                )}
 
-                 
+                {errMessage && (
+                  <h3
+                    style={{
+                      position: "absolute",
+                      top: 300,
+                      left: 200,
+                      color: "red",
+                    }}
+                  >
+                    {" "}
+                    {errMessage}{" "}
+                  </h3>
+                )}
 
-                 { show ? <button Value='click' onClick={onClick} className="view_history">Print</button>:<></> }
+                {show ? (
+                  <button
+                    Value="click"
+                    onClick={onClick}
+                    className="view_history float-right"
+                  >
+                    Print
+                  </button>
+                ) : (
+                  <></>
+                )}
               </div>
-            </div></section>
+            </div>
+          </section>
         </div>
         <footer className="ant-layout-footer">
-          <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
+          <div className="gx-layout-footer-content">
+            © 2021 Ippopay. All Rights Reserved.{" "}
+            <span className="pull-right">
+              Ippopay's GST Number : 33AADCF9175D1ZP
+            </span>
+          </div>
         </footer>
       </main>
     </section>
-  )
+  );
 }
 
 export default TransactionEnquirey

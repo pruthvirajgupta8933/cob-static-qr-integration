@@ -43,12 +43,22 @@ function LoginPage(props) {
   const [showResendCode, setShowResendCode] = useState(false);
   const [showBackDrop, setShowBackDrop] = useState(false);
   const [GeoLocation, setGeeolocation] = useState("");
+  const [values, setValues] = useState({
+    password: '',
+    showPassword: false,
+  });
 
  
   const dispatch = useDispatch();
 
   // message = message?.length>=0?message=null:message;
-  console.log(message)
+  // console.log(message)
+  const {user,userAlreadyLoggedIn} = auth;
+  // console.log(auth)
+  if(userAlreadyLoggedIn ){
+    history.push("/dashboard")  
+  }
+
   useEffect(()=>{
     setAuthData(authentication);
     // console.log('change auth data',auth);
@@ -60,8 +70,8 @@ useEffect(() => {
   }, [dispatch]);
 
 useEffect(() => {
-    // console.log('call one tiem');
-    dispatch(logout());
+    // console.log('login page ,call one time');
+    // dispatch(logout());
 }, [])
 
 const handleLogin = (formValue) => {
@@ -145,6 +155,10 @@ const handleClose = (event, reason) => {
   setOpen(false);
 };
 
+
+const handleClickShowPassword = () => {
+  setValues({ ...values, showPassword: !values.showPassword });
+};
 
 
 
@@ -246,14 +260,18 @@ const handleClose = (event, reason) => {
                                     maxLength={255}
                                     id="user-pw"
                                     placeholder="Password"
-                                    type="password"
+                                    type={values.showPassword ? "text" : "password"}
                                     size={50}
                                     name="userPassword"
                                   />
                                   <ErrorMessage name="userPassword">
                                       { msg => <div className="abhitest" style={{color: "red",position: "absolute",zIndex:" 999"}}>{msg}</div> }
                                   </ErrorMessage>
-                                  <span className="hide-password">Show</span>
+                                  <span className="hide-password" onClick={handleClickShowPassword}>
+
+                                  {values.showPassword ? "Hide" : "Show" }
+
+                                  </span>
                                 </div>
                               </div>
                               <div className="simform__actions">

@@ -3,14 +3,38 @@ import { useForm } from "react-hook-form";
 
 function Emandate(props) {
   const { register, handleSubmit } = useForm();
+  const [formData, setFormData] = useState({});
   
   const onSubmit = (data) => {
-    //console.log(data);
-	  document.getElementById("mandateRegForm").submit(JSON.stringify(data));
-	//   prompt('copy post data',JSON.stringify(data));
+    console.log(formData.termAndCnd)
+    if(formData.termAndCnd){
+
+      const planData = {
+        applicationId:formData.applicationId,
+        applicationName:formData.applicationName,
+        planId:formData.planId,
+        planName:formData.planName,
+      }
+
+      if(typeof formData.planId==='undefined'){
+        alert("please Select the valid plan");
+      }else{
+        console.log("formData",formData);
+        localStorage.setItem("selectedPlan",JSON.stringify(planData))
+        document.getElementById("mandateRegForm").submit()
+      }
+
+      
+    }else{
+      alert("Please Agree Term and Condition")
+    }  //   prompt('copy post data',JSON.stringify(data));
   };
 
-const formData = props.bodyData;
+// const formData = props.bodyData;
+useEffect(() => {
+  setFormData(props.bodyData)
+}, [props.bodyData]);
+
 
 useEffect(() => {
     handleSubmit(onSubmit);
@@ -22,6 +46,7 @@ useEffect(() => {
 		id="mandateRegForm"
 		action="https://subscription.sabpaisa.in/subscription/mandateRegistration"
 		method="POST"
+
 	>
 		<div style={{ display: "none" }}>
 		<input {...register("authenticationMode")} name="authenticationMode" value={formData.authenticationMode}/>

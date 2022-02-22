@@ -23,8 +23,8 @@ const PaymentLinkDetail = () => {
   const [minutes, setMinutes] = useState("");
   const [pageSize, setPageSize] = useState(10);
 
-  console.log(pageSize);
-  console.log(typeof(pageSize));
+  // console.log(pageSize);
+  // console.log(typeof(pageSize));
 
   const [data, setData] = useState([]);
   const [paginatedata, setPaginatedData] = useState([])
@@ -32,12 +32,13 @@ const PaymentLinkDetail = () => {
   const [drop, setDrop] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [noofbuttons, setNoOfButtons ] = useState(Math.ceil(data.length/pageSize));
-  const [folderArr, setFolderArr] = React.useState([]);
+  var [showFilterData,SetShowFilterData] = useState([]); 
+  const [folderArr, setFolderArr] = useState([]);
 
   const { user } = useSelector((state) => state.auth);
   var clientSuperMasterList = user.clientSuperMasterList;
   const { clientCode} = clientSuperMasterList[0];
-  console.log("clientCode", clientCode);
+  // console.log("clientCode", clientCode);
 
   
 
@@ -85,8 +86,21 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
       });
   };
 
-const getSearchTerm  = (e) => {
+
+  useEffect(() => {
+  
+    if(searchText !== ''){
+      setPaginatedData(data.filter((item)=>item.customer_phoneNumber.toLowerCase().includes(searchText.toLocaleLowerCase())))}else{setPaginatedData(data)}
+  },[searchText])
+
+
+
+  const getSearchTerm  = (e) => {
   setSearchText(e.target.value);
+  // if(searchText !== '')
+
+  // { setPaginatedData(data.filter((item)=>item.customer_phoneNumber.includes(searchText)))}
+  //  console.log(searchText)
   }
 
   const dateFormat = (enteredDate) => {
@@ -152,12 +166,8 @@ const getSearchTerm  = (e) => {
 
 const pagination = (pageNo) => {
   setCurrentPage(pageNo);
-
-  const startIndex = (pageNo - 1) * pageSize;
-  const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
-  setPaginatedData(paginatedPost);
-
 }
+
 
 
 useEffect(() => {
@@ -169,6 +179,15 @@ useEffect(()=>{
   setPaginatedData(_(data).slice(0).take(pageSize).value())
 },[pageSize]);
 
+useEffect(() => {
+  console.log("page chagne no")
+  const startIndex = (currentPage - 1) * pageSize;
+ const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+ setPaginatedData(paginatedPost);
+
+}, [currentPage])
+
+
 
 if ( pageCount === 1) return null;
 
@@ -176,7 +195,7 @@ const pages = _.range(1, pageCount + 1)
 
 
 
-console.log("dataLength",paginatedata.length)
+// console.log("dataLength",paginatedata.length)
 
 const handleCheck = (e) => {
   setPasswordCheck(e.target.checked);
@@ -201,6 +220,17 @@ const closeClick=()=>{
   setMinutes("");
   document.getElementById("checkbox_pass").checked = false;
 }
+
+
+const validDate = () => {
+  var today, mm, dd, yyyy;
+  today = new Date();
+  dd = today.getDate() + 1;
+  mm = today.getMonth() + 1;
+  yyyy = today.getFullYear();
+
+  return mm + "/" + dd + "/" + yyyy;
+};
 
 
   return (
@@ -339,6 +369,7 @@ const closeClick=()=>{
                     name ='date'
                       type="date"
                       className="ant-input"
+                      min= {validDate()}
                       value={enteredDate}                     
                       onChange={(e) => setEnteredDate(e.target.value)}
                       placeholder="From Date"
@@ -387,6 +418,7 @@ const closeClick=()=>{
                     <br />
                     <Field component = 'select' style={{ width: 100 }} name= 'minutes' value = {minutes} onChange={(e) => setMinutes(e.target.value)}>
                       <option selected>Minutes</option>
+                      <option value="01">00</option>
                       <option value="01">01</option>
                       <option value="02">02</option>
                       <option value="03">03</option>
@@ -491,10 +523,12 @@ const closeClick=()=>{
        <input
         type="text"
         placeholder="Search Here"
-        value={searchText}
         style={{  width: 700 }}
         onChange={getSearchTerm}
       />
+        {/* {
+         paginatedata.filter 
+        } */}
 
       <h4  style={{marginLeft:"10em"}}>
         Count per page &nbsp; &nbsp;
@@ -555,15 +589,18 @@ const closeClick=()=>{
 
    {
 
-     pages.map((page) => (
-      <li class={
+     pages.map((page,i) => (
+         
+      <li className={
+
         page === currentPage ? " page-item active" : "page-item"
-      }><a class="page-link">
-        
-        <p onClick={() => pagination(page)}>
-        {page}
-        </p>
-        </a></li>
+      }> 
+          <a class="page-link">  
+            <p onClick={() => pagination(page)}>
+            {page}
+            </p>
+          </a>
+        </li>
     
      ))
    }

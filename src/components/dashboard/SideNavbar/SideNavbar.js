@@ -2,14 +2,19 @@ import React from 'react'
 import { useDispatch, useSelector} from 'react-redux';
 import { Link,
     useParams,
-    useRouteMatch,useHistory } from 'react-router-dom'
+    useRouteMatch,useHistory ,Redirect} from 'react-router-dom'
 import {logout} from '../../../slices/auth'
 
 
 function SideNavbar() {
-
+  let history = useHistory();
   const {user} = useSelector((state)=> state.auth )
   // console.log(user);
+  if(user!==null && user.userAlreadyLoggedIn){
+    alert('no login');
+    // <Redirect to="/login-page" />
+    history.push("/login-page");
+}
   var {roleId,clientContactPersonName}=user;
     let { path, url } = useRouteMatch();
     const dispatch = useDispatch();

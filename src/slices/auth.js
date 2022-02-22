@@ -5,6 +5,8 @@ import Axios from "axios";
 import AuthService from "../services/auth.service";
 
 const user = JSON.parse(localStorage.getItem("user"));
+// console.log("user",user);
+const userAlreadyLoggedIn = user && user.loginId!==null ? true :false;
 
 const auth = {
   LoginResponse: { message: "", verification_token: "", response_code: "" },
@@ -26,19 +28,23 @@ const auth = {
       response_code: "",
     },
   },
+  user:user,
   currentUser: {},
   status: "",
   error: "",
-  userAlreadyLoggedIn: false,
+  userAlreadyLoggedIn: userAlreadyLoggedIn,
   otpVerified: false,
+  isUserRegistered:null,
+  subscriptionplandetail: [],
+  createClientProfile:[]
 };
 
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ firstName, lastName, mobileNumber, email, password, confirmPassword }, thunkAPI) => {
+  async ({ firstName, lastName, mobileNumber, email, password,businessType }, thunkAPI) => {
     try {
-      const response = await AuthService.register(firstName, lastName, mobileNumber, email, password, confirmPassword);
+      const response = await AuthService.register(firstName, lastName, mobileNumber, email, password,businessType);
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
@@ -114,6 +120,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   
 });
 
+// check and remove fn
 export const successTxnSummary = createAsyncThunk(
   "auth/successTxnSummary",
   async (object, thunkAPI) => {
@@ -137,19 +144,159 @@ export const successTxnSummary = createAsyncThunk(
 );
 
 
+
+
+/* ======Start Profile Function ======= */
+export const createClientProfile = createAsyncThunk(
+  "auth/createClientProfile",
+  async (data, thunkAPI) => {
+    try {
+      console.log('a-senddata',data);
+      const response = await AuthService.createClintCode(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+
+      const userLocalData = JSON.parse(localStorage?.getItem("user"));
+      const allData = Object.assign(userLocalData,response.data);
+
+
+      const clientSuperMasterListObj = {
+        "clientId": null,
+        "lookupState": null,
+        "address": null,
+        "clientAuthenticationType": null,
+        "clientCode": null,
+        "clientContact": null,
+        "clientEmail": null,
+        "clientImagePath": null,
+        "clientLink": null,
+        "clientLogoPath": null,
+        "clientName": null,
+        "failedUrl": null,
+        "landingPage": null,
+        "service": null,
+        "successUrl": null,
+        "createdDate": null,
+        "modifiedDate": null,
+        "modifiedBy": null,
+        "status": null,
+        "reason": null,
+        "merchantId": null,
+        "requestId": null,
+        "clientType": null,
+        "parentClientId": null,
+        "businessType": null,
+        "pocAccountManager": null
+      };
+
+      const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
+      console.log("mergeClientSuperMasterList",mergeClientSuperMasterList)
+      const clientSuperMasterList =  [mergeClientSuperMasterList];
+      allData.clientSuperMasterList = clientSuperMasterList;
+      localStorage.setItem("user", JSON.stringify(allData))
+
+
+      return allData;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+export const updateClientProfile = createAsyncThunk(
+  "auth/updateClientProfile",
+  async ({data,clientId}, thunkAPI) => {
+    try {
+      console.log("update functon",data);
+      console.log("update functon",clientId);
+      // console.log({ fromdate, todate, clientcode });===update fn call
+      const response = await AuthService.updateClientProfile(data,clientId);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      const userLocalData = JSON.parse(localStorage?.getItem("user"));
+      const allData = Object.assign(userLocalData,data);
+      console.log("userLocalData",userLocalData);
+      console.log("data",data);
+      console.log("response.data",response.data);
+      console.log("all data",allData);
+
+      const clientSuperMasterListObj = {
+        "clientId": clientId,
+        "lookupState": null,
+        "address": null,
+        "clientAuthenticationType": null,
+        "clientCode": null,
+        "clientContact": null,
+        "clientEmail": null,
+        "clientImagePath": null,
+        "clientLink": null,
+        "clientLogoPath": null,
+        "clientName": null,
+        "failedUrl": null,
+        "landingPage": null,
+        "service": null,
+        "successUrl": null,
+        "createdDate": null,
+        "modifiedDate": null,
+        "modifiedBy": null,
+        "status": null,
+        "reason": null,
+        "merchantId": null,
+        "requestId": null,
+        "clientType": null,
+        "parentClientId": null,
+        "businessType": null,
+        "pocAccountManager": null
+      };
+
+      const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
+      console.log("mergeClientSuperMasterList",mergeClientSuperMasterList)
+      const clientSuperMasterList =  [mergeClientSuperMasterList];
+      allData.clientSuperMasterList = clientSuperMasterList;
+      console.log("after update user",allData);
+      localStorage.setItem("user", JSON.stringify(allData))
+
+      return allData;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
+
+
+/* ======End Profile Function ======= */
+
+
+
+
 const initialState = user && user.loginStatus
   ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
   : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{}, sendEmail: {} };
-
+// console.log(register)
 const authSlice = createSlice({
   name: "auth",
   initialState: auth,
   extraReducers: {
     [register.fulfilled]: (state, action) => {
       state.isLoggedIn = false;
+      state.isUserRegistered = true;
     },
     [register.rejected]: (state, action) => {
       state.isLoggedIn = false;
+      state.isUserRegistered = false;
     },
     [successTxnSummary.fulfilled]: (state, action) => {
       state.successTxnsumry = action.payload;
@@ -210,9 +357,30 @@ const authSlice = createSlice({
     },
     [OTPVerificationApi.rejected]: (state, action) => {
       state.status = "failed";
-
       state.error = action.error.message;
     },
+    [createClientProfile.pending]:(state)=>{
+      console.log("pending...create profile of client")
+    },
+    [createClientProfile.fulfilled]:(state,action)=>{
+      state.createClientProfile = action.payload
+      state.user = action.payload
+      console.log("client create and update",state.user);
+    },
+    [createClientProfile.rejected]:(state)=>{
+      console.log("Client Profile not update!");
+    },
+    [updateClientProfile.pending]:(state)=>{
+        console.log('pending profile');
+    },
+    [updateClientProfile.fulfilled]:(state,action)=>{
+      console.log('fulfilled profile');
+      state.user = action.payload
+    },
+    [updateClientProfile.rejected]:()=>{
+      console.log('rejected profile');
+    },
+
   },
 });
 
