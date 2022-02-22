@@ -269,10 +269,10 @@ function HeaderPage() {
             </a>
             <ul className="header_first_list hidden-xs">
               <li className="ippo_new_pos_rel">
-                <a>
+                <a href="https://sabpaisa.in/" target="_blank" rel="noreferrer noopener">
                   {" "}
-                  Payments &nbsp;
-                  <svg
+                  Products &nbsp;
+                  {/* <svg
                     width={8}
                     height={5}
                     viewBox="0 0 8 5"
@@ -280,9 +280,9 @@ function HeaderPage() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path d="M4 4.25001L0.817749 1.06776L1.879 0.00726318L4 2.12901L6.121 0.00726318L7.18225 1.06776L4 4.25001Z" />
-                  </svg>
+                  </svg> */}
                 </a>
-                <div className="drop_down_new_ippo">
+                {/* <div className="drop_down_new_ippo">
                   <div className="ippo_new_inner_wrap_nav">
                     <div className="col-xs-12 col-sm-7 col-md-9 ippo_new_arround_padding">
                       <div className="row">
@@ -391,18 +391,18 @@ function HeaderPage() {
                       </ul>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </li>
               <li>
-                <Link to="/commonpages">Payout</Link>
+                <Link to={{pathname:"https://sabpaisa.in/sabpaisa-apis/"}}  target="_blank" rel="noreferrer noopener">APIs</Link>
               </li>
               <li>
-                <Link target="_blank" to="/commonpages">
-                  Neo&nbsp;&nbsp;Banking&nbsp;&nbsp;API
+                <Link target="_blank"  to={{pathname:"https://sabpaisa.in/"}} rel="noreferrer noopener">
+                  Developers
                 </Link>
               </li>
               <li>
-                <Link to="/commonpages">Pricing</Link>
+                <Link target="_blank"  to={{pathname:"https://sabpaisa.in/"}} rel="noreferrer noopener" >Pricing</Link>
               </li>
             </ul>
             <ul className="header_second_list hidden-xs">
@@ -419,7 +419,7 @@ function HeaderPage() {
                   className="btnlink cotactbg"
                   href="/Registration"
                 >
-                  Call +91 887-777-2200
+                  Call +91  987-551-5119
                 </Link>
               </li>
             </ul>
