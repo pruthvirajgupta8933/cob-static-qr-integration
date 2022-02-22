@@ -65,7 +65,7 @@ function Emandate(props) {
         console.log("formData",formData);
         if(formData.planType.toLowerCase() ==='trial'){
           saveTrialPlanData(formData);
-         
+
         }else{
            localStorage.setItem("selectedPlan",JSON.stringify(planData))
            document.getElementById("mandateRegForm").submit()
