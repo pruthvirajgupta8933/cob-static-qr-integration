@@ -146,23 +146,6 @@ function Registration() {
   
   
 return (
-<<<<<<< HEAD
-        <>
-        <HeaderPage/>
-        <div className="container-fluid">
-        <div className="row">
-          <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
-            <div className="col-sm-5 authfy-panel-left">
-              <div className="brand-col">
-                <div className="headline">
-                  {/* brand-logo start */}
-                  <div className="brand-logo">
-                    <img src={sabpaisalogo} width={150} alt="SabPaisa" title="SabPaisa" />
-                  </div>{/* ./brand-logo */}
-                  <p style={{fontSize: '20px', lineHeight: '20px'}}>Receive Payments, The Easy Way</p>
-                  <h1 style={{fontSize: '26px'}}>A Payments Solution for</h1>
-                  <h1 style={{fontSize: '26px', whiteSpace: '10px'}}>Businesses,&nbsp;SMEs,&nbsp;Freelancers, Homepreneurs.</h1>
-=======
   <>
     <HeaderPage />
     <div className="container-fluid">
@@ -179,7 +162,6 @@ return (
                     alt="SabPaisa"
                     title="SabPaisa"
                   />
->>>>>>> phase_abhi
                 </div>
                 {/* ./brand-logo */}
                 <p style={{ fontSize: "20px", lineHeight: "20px" }}>
