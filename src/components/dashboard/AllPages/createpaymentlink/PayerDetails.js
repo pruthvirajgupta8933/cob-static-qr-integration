@@ -223,10 +223,12 @@ const [searchText, setSearchText] = useState("");
                                                     name="phone_number"
                                                     id="phoneNumber"
                                                     onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
-                                                    type="number"
+                                                    type="text"
                                                     autoComplete="off"
                                                     placeholder='Enter Mobile No.'
                                                     class="form-control"
+                                                    pattern="\d{10}"
+                                                    minlength="4" maxlength="10"
                                                 />
                                                 <ErrorMessage name="phone_number">
                                                     {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
