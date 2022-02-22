@@ -299,30 +299,39 @@ loadUser()
             {/* end add form */}
 
             <div className="main_filter_area">
-                <div className='Form_add_btn'>
-                    <button type="button" class="btn joshi btn-primary" data-toggle="modal" data-target="#exampleModal" style={{ marginLeft: '-222px', marginTop: '-83px' }} >Add Single Payer</button>
-                </div>
-                <div className="filter_area">
-                    <p className='para'>Total Records:{data.length}</p>
-                    <input onChange={getSearchTerm} type="text" placeholder="Search Here" style={{ position: 'absolute', top: 222, left: 12, width: 700 }} />
-                    <h3 style={{ position: 'absolute', top: 222, left: 800 }}>Count per page</h3>
-                    <select style={{ position: 'absolute', top: 222, left: 930, width: 130 }}>
-                        <option value="10">10</option>
-                        <option value="20">25</option>
-                        <option value="30">50</option>
-                        <option value="60">100</option>
-                        <option value="70">200</option>
-                        <option value="70">300</option>
-                        <option value="70">400</option>
-                        <option value="70">500</option>
-                    </select>
+             
+                <div className="filter_area" style={{margin:"14px"}}>
+                    <div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
+                   
+                    </div>
+                   
+                    <div style={{display:"flex" }}>
+                        <div>
+                            <input onChange={getSearchTerm} type="text" placeholder="Search Here" style={{width: "600px", marginRight: "5em"}} />
+                        </div>
+                        <div style={{margin:"0px ​4px 0px 18em"}}>
+                            <span style={{marginRight:"5px"}}>Count per page</span>
+                            <select style={{ width: 130 }}>
+                                <option value="10">10</option>
+                                <option value="20">25</option>
+                                <option value="30">50</option>
+                                <option value="60">100</option>
+                                <option value="70">200</option>
+                                <option value="70">300</option>
+                                <option value="70">400</option>
+                                <option value="70">500</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p className=''>Total Records:{data.length}</p>
                 </div>
             </div>
 
 
             <div class="full-screen-scroller">
 
-                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute', top: 300, left: 12, height: 200 }}>
+                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'fixed'}}>
                     <thead>
                         <tr>
                             <th scope='col'>Serial.No</th>
