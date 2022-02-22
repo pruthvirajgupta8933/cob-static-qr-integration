@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/auth/";
 
-const SIGNUP_URL = "https://cobtest.sabpaisa.in/auth-service/auth/";
+const SIGNUP_URL = "https://spl.sabpaisa.in/auth-service/auth/";
 
 const register = (firstName, lastName, mobileNumber, email, password,businessType) => {
   return axios.post(SIGNUP_URL + "signup", {
@@ -19,7 +19,7 @@ const register = (firstName, lastName, mobileNumber, email, password,businessTyp
 // http://18.189.11.232:8080/auth-service/auth/login
 const login = (username, password) => {
   return axios
-    .post("https://cobtest.sabpaisa.in/auth-service/auth/login", {
+    .post("https://spl.sabpaisa.in/auth-service/auth/login", {
       clientUserId:username,
       userPassword:password,
     })
@@ -71,7 +71,7 @@ const sendEmail = (toEmail, toCc, subject, msg) => {
 
 // profile service
 
-const BASE_URL = "https://cobtest.sabpaisa.in/auth-service/client";
+const BASE_URL = "https://spl.sabpaisa.in/auth-service/client";
 const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
 
 const createClintCode = (object) => {

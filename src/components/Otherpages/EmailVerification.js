@@ -8,7 +8,7 @@ const EmailVerification = () => {
   const {loginId} =  useParams();
   const [data,setData]=useState(false)
   const onSubmit=async()=>{
-     await axios.get(`https://cobtest.sabpaisa.in/auth-service/auth/emailVerify/${loginId}`)
+     await axios.get(`https://spl.sabpaisa.in/auth-service/auth/emailVerify/${loginId}`)
     .then((response) => {
       setData(response);
     })

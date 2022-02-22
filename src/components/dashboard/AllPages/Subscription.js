@@ -50,7 +50,7 @@ const Subsciption = () => {
  const dispatch = useDispatch();
 
  const getSubscriptionService = async () => {  
-    await axios.get('http://18.189.11.232:8081/client-subscription-service/fetchAppAndPlan')  
+    await axios.get('https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan')  
     .then(res => {  
       setSubscriptionData(res.data);
       localStorage.setItem("subscriptionData", JSON.stringify(res.data));
@@ -221,7 +221,7 @@ return (
           <div className="card" style={{ background: "aquamarine" }}>
             <div className="card-body" style={{ height: "200px" }}>
               <h5 className="card-title" style={{ fontWeight: "700", fontSize: "large" }}>{s.applicationName}</h5>
-              <p className="card-text">{s.planMaster[0].planDescription}</p>
+              <p className="card-text">{s.applicationDescription}</p>
             </div>
             <div class="container">
                 <a target="blank" href={s.applicationUrl}  style={{ padding: "0", top: "155px" }} className="btn btn-warning">Read More</a>
@@ -245,7 +245,9 @@ return (
             <table className="tables" cellpadding="10" cellspacing="10" width="100%">
                 <tbody>
                     <><>
-                        <th><input type="radio" id="plantype" name="plantype" value={sp.planType} onChange={(e)=>{handleChecked(e,sp)}} /> {sp.planType} {sp.planName}</th>
+                        <th><input type="radio" id="plantype" name="plantype" value={sp.planType} onChange={(e)=>{handleChecked(e,sp)}} /><span style={{ textTransform: "uppercase"}}>
+                        {sp.planType}
+                        </span>  {sp.planName}</th>
                           </>
                             <tr>
                                 <td>Rs - {sp.planPrice}</td>

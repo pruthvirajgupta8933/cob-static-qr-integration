@@ -40,7 +40,7 @@ function Emandate(props) {
       mandateStartTime : data.mandateStartDate,
       mandateEndTime  : data.mandateEndDate,
   };
-  axios.post("http://18.189.11.232:8081/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+  axios.post("https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
             console.log(response);
             setDisplayMsg('block');
             
@@ -63,7 +63,7 @@ function Emandate(props) {
         alert("please Select the valid plan");
       }else{
         console.log("formData",formData);
-        if(formData.planType==='trail'){
+        if(formData.planType.toLowerCase() ==='trial'){
           saveTrialPlanData(formData);
          
         }else{
@@ -160,7 +160,7 @@ const subscribe_msg_content = {
         <input {...register("userType")} type="text" name="userType" value={formData.userType}/>
 		</div>
 
-        <button className="Click-here ant-btn ant-btn-primary float-right" type="submit">  {formData.planType==='trail' ? 'Subscribe' : ' Create E-Mandate'} </button>
+        <button className="Click-here ant-btn ant-btn-primary float-right" type="submit">  {formData.planType ==='trial' ? 'Subscribe' : ' Create E-Mandate'} </button>
     </form>
     </div>
    
