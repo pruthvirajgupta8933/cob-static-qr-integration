@@ -41,16 +41,6 @@ const Reports = () => {
   const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 
 
-  
-const pagination = (pageNo) => {
-  setCurrentPage(pageNo);
-
-  const startIndex = (pageNo - 1) * pageSize;
-  const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
-  setPaginatedData(paginatedPost);
-
-}
-
 
   
   const getData = async (e) => { 
@@ -100,9 +90,24 @@ useEffect(() => {
   }
 }, [searchText])
 
+const pagination = (pageNo) => {
+  setCurrentPage(pageNo);
+}
+
 useEffect(()=>{
   setPaginatedData(_(data).slice(0).take(pageSize).value())
 },[pageSize]);
+
+
+useEffect(() => {
+  console.log("page chagne no")
+  const startIndex = (currentPage - 1) * pageSize;
+ const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+ setPaginatedData(paginatedPost);
+
+}, [currentPage])
+
+
 
 
 if ( pageCount === 1) return null;
