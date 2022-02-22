@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+import { useHistory } from 'react-router-dom';
 
 const initialValues = {
   Amount: "",
@@ -19,7 +20,7 @@ const validationSchema = Yup.object().shape({
 })
 
 const Genratelink = (props) => {
-
+let history = useHistory();
   console.log(props);
   // var id=""
   var { customer_id } = props.generatedata;
@@ -39,9 +40,17 @@ const Genratelink = (props) => {
 
 
   const [data, setData] = useState([])
-  var clientSuperMasterList = user.clientSuperMasterList;
-  const { clientCode } = clientSuperMasterList[0]
+  // var clientSuperMasterList = user.clientSuperMasterList;
+  // const { clientCode } = clientSuperMasterList[0]
 
+  let clientSuperMasterList=[];
+    let clientCode ='';
+    if(user && user.clientSuperMasterList===null){
+        history.push('/dashboard/profile');
+      }else{
+        clientSuperMasterList = user.clientSuperMasterList;
+        clientCode =  clientSuperMasterList[0].clientCode;
+      }
   // console.log(customer_type_id);
 
 

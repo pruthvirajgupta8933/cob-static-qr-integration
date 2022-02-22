@@ -22,6 +22,28 @@ export default function validation(values) {
         errors.input = false;
     }
 
+    errors.transactionId = true;
+    if(!values.transactionId) {
+        errors.transactionId = 'ID is required'
+    }
+    else if(regex.test(values.transactionId)) {
+        errors.transactionId = 'Invalid Input'
+    }
+   else{
+        errors.transactionId = false;
+    }
+
+    errors.studentId = true;
+    if(!values.studentId) {
+        errors.studentId = 'ID is required'
+    }
+    else if(regex.test(values.studentId)) {
+        errors.studentId = 'Invalid Input'
+    }
+   else{
+        errors.studentId = false;
+    }
+
     
 console.log(errors)
     return errors;
