@@ -4,7 +4,8 @@ import { useSelector,useDispatch } from 'react-redux'
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import {createClientProfile, updateClientProfile} from '../../../slices/dashboardSlice' 
+import {createClientProfile, updateClientProfile} from '../../../slices/auth'
+
 import profileService from '../../../services/profile.service'
 import { toast, Zoom } from 'react-toastify';
 import { Redirect } from 'react-router-dom';
@@ -16,6 +17,9 @@ export const FormikApp = () => {
     const {fetchDcBankList,fetchNbBankList,verifyClientCode, verifyIfcsCode} = profileService
     const dispatch= useDispatch();
     const { user } = useSelector((state) => state.auth);
+    const {dashboard} = useSelector((state) => state );
+  
+    
     // const {fetchDcBankList,fetchNbBankList} = profileService
     const { clientSuperMasterList ,
             loginId,
@@ -26,9 +30,22 @@ export const FormikApp = () => {
             accountNumber,
             bankName,
             ifscCode,
-  
             pan,
           } = user;
+
+    var initNBlist,initDClist = [];
+
+    
+    if (localStorage.getItem('NB_bank_list') !== null) {
+      initNBlist = JSON.parse(localStorage.getItem("NB_bank_list"));
+    } else {
+      initNBlist = [];
+    }
+
+    if(localStorage.getItem("DC_bank_list")!==null){
+      initDClist = JSON.parse(localStorage.getItem("DC_bank_list"));
+    }
+    
     
     const [message,setMessage]  = useState('');
   
@@ -36,15 +53,22 @@ export const FormikApp = () => {
     const [createProfileResponse , setCreateProfileResponse]  = useState('');
     const [retrievedProfileResponse , setRetrivedProfileResponse] = useState('');
   
-    const [authenticationMode,setAuthenticationMode] = useState('NetBank');
-    const [listOfNetBank,setListOfNetBank] = useState([]);
-    const [listOfDebitCardBank,setListOfDebitCardBank] = useState([]);
-    const [selectedListForOption,setSelectedListForOption]=useState([]);
+    const [authenticationMode,setAuthenticationMode] = useState(clientSuperMasterList &&  clientSuperMasterList[0]?.clientAuthenticationType);
+    const [listOfNetBank,setListOfNetBank] = useState(initNBlist);
+    const [listOfDebitCardBank,setListOfDebitCardBank] = useState(initDClist);
+    
+    const [selectedListForOption,setSelectedListForOption]=useState(authenticationMode==='NetBank'?listOfNetBank:listOfDebitCardBank);
+
     const [userIfscCode,setUserIfscCOde]=useState(ifscCode)
     const [isClientCodeValid,setIsClientCodeValid]=useState(null)
     const [isIfcsValid,setIsIfscValid]=useState(null)
+    const [dataProfileResponse,setDataProfileResponse]=useState(null)
   
+    useEffect(() => {
+      setCreateProfileResponse(dashboard.createClientProfile)
+    }, [dashboard]);
   
+    console.log(authenticationMode);
     
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 //   console.log(clientSuperMasterList && clientSuperMasterList[0]?.address)
@@ -110,14 +134,9 @@ const validationSchema = Yup.object().shape({
     }, [userData]);
 
     function onSubmit(data) {
-
-    console.log("send data",data);
-    const userLocalData = JSON.parse(localStorage?.getItem("user"));
-      
     if(isCreateorUpdate)
     {
       dispatch(createClientProfile(data));
-    
     }
     else
     {
@@ -129,13 +148,7 @@ const validationSchema = Yup.object().shape({
       autoClose:2000,
       limit :1,
       transition:Zoom
-    });
-
-    // setTimeout(() => {
-    //   dispatch(logout());
-    //   return <Redirect to="/login-page" />;
-    // }, 2510);
-     
+    });     
     }
 
     const verifyClientCodeFn = (getCode) => {
@@ -173,25 +186,32 @@ const validationSchema = Yup.object().shape({
   useEffect(() => {
     // fetch bank list
      fetchDcBankList()
-      .then((response)=>{setListOfDebitCardBank(response.data); setAuthenticationMode(authenticationMode);})
+      .then((response)=>{
+        localStorage.setItem("DC_bank_list",JSON.stringify(response.data));
+        setListOfNetBank(response.data);
+        })
       .catch((error)=> console.log(error));
 
     fetchNbBankList()
-      .then(response => {setListOfNetBank(response.data); setAuthenticationMode(authenticationMode);})
+      .then(response => {
+        localStorage.setItem("NB_bank_list",JSON.stringify(response.data))
+        setListOfDebitCardBank(response.data);
+      })
       .catch(error=>console.log(error))                          
-
     setIsCreateorUpdate(clientSuperMasterList && clientSuperMasterList!==null ? false : true);
+
+   
+
   }, [])
 
   useEffect(() => {
     if(authenticationMode==='NetBank'){
       setSelectedListForOption(listOfNetBank);
     }
-    
     if(authenticationMode==='Debitcard'){
       setSelectedListForOption(listOfDebitCardBank);
     }
-  }, [authenticationMode]);
+  }, [authenticationMode,listOfNetBank,listOfDebitCardBank]);
 
     // console.log(authenticationMode);
     // console.log(bankName);

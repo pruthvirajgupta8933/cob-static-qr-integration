@@ -133,22 +133,24 @@ const checkValidation = ()=>{
  
  }, [currentPage])
 
+ 
+  
+ useEffect(() => {     
+  getPaymentStatusList();
+  paymodeList();  
+}, [])
+
+
+useEffect(() => {
+  if(searchText !== ''){ SetFilterList(txnList.filter((txnItme)=>txnItme.txn_id.toLowerCase().includes(searchText.toLocaleLowerCase())))}else{SetFilterList(txnList)}
+}, [searchText])
+
+
  if ( pageCount === 1) return null;
 
 const pages = _.range(1, pageCount + 1)
 
  
-
-  
-  useEffect(() => {     
-    getPaymentStatusList();
-    paymodeList();  
-  }, [])
-
-
-  useEffect(() => {
-    if(searchText !== ''){ SetFilterList(txnList.filter((txnItme)=>txnItme.txn_id.toLowerCase().includes(searchText.toLocaleLowerCase())))}else{SetFilterList(txnList)}
-  }, [searchText])
 
 
   var clientSuperMasterList =[];
@@ -165,60 +167,100 @@ const pages = _.range(1, pageCount + 1)
 
 
   return (
-        <section className="ant-layout">
-        <div className="profileBarStatus">
-          {/*
+    <section className="ant-layout">
+      <div className="profileBarStatus">
+        {/*
                     <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
                                 class="btn">Upload Here</span></span></div>*/}
-        </div>
-        <main className="gx-layout-content ant-layout-content">
-          <div className="gx-main-content-wrapper">
-            <div className="right_layout my_account_wrapper right_side_heading">
-              <h1 className="m-b-sm gx-float-left">Transactions History</h1>
-            </div>
-            <section className="features8 cid-sg6XYTl25a" id="features08-3-">
-              <div className="container-fluid">
-                <div className="row">
-                  
-                  <div className="col-lg-4 mrg-btm- bgcolor">
-                    <label>Client Name</label>
-                    <select className="ant-input" onChange={(e)=>{getInputValue('clientCode',e.target.value)}}>
+      </div>
+      <main className="gx-layout-content ant-layout-content">
+        <div className="gx-main-content-wrapper">
+          <div className="right_layout my_account_wrapper right_side_heading">
+            <h1 className="m-b-sm gx-float-left">Transactions History</h1>
+          </div>
+          <section className="features8 cid-sg6XYTl25a" id="features08-3-">
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-lg-4 mrg-btm- bgcolor">
+                  <label>Client Name</label>
+                  <select
+                    className="ant-input"
+                    onChange={(e) => {
+                      getInputValue("clientCode", e.target.value);
+                    }}
+                  >
                     <option value="0">All</option>
-                     {clientSuperMasterList.map((item)=>{
-                       return (<option value={item.clientCode}>{ item.clientCode + ' - ' +item.clientName} </option>);
-                     })}
-                      
-                    </select>
-                  </div>
-                  <div className="col-lg-4 mrg-btm- bgcolor">
-                    <label>From Date</label>
-                    <input type="date" className="ant-input" placeholder="From Date" onChange={(e)=>{getInputValue('fromDate',e.target.value)}} />
-                  </div>
-                  <div className="col-lg-4 mrg-btm- bgcolor">
-                    <label>To Date</label>
-                    <input type="date" className="ant-input" placeholder="To Date" onChange={(e)=>{getInputValue('toDate',e.target.value)}} />
-                  </div>
-                  <div className="col-lg-4 mrg-btm- bgcolor">
-                    <label>Transactions Status</label>
-                    <select className="ant-input" onChange={(e)=>{getInputValue('txnStatus',e.target.value)}}>
+                    {clientSuperMasterList.map((item) => {
+                      return (
+                        <option value={item.clientCode}>
+                          {item.clientCode + " - " + item.clientName}{" "}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className="col-lg-4 mrg-btm- bgcolor">
+                  <label>From Date</label>
+                  <input
+                    type="date"
+                    className="ant-input"
+                    placeholder="From Date"
+                    onChange={(e) => {
+                      getInputValue("fromDate", e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="col-lg-4 mrg-btm- bgcolor">
+                  <label>To Date</label>
+                  <input
+                    type="date"
+                    className="ant-input"
+                    placeholder="To Date"
+                    onChange={(e) => {
+                      getInputValue("toDate", e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="col-lg-4 mrg-btm- bgcolor">
+                  <label>Transactions Status</label>
+                  <select
+                    className="ant-input"
+                    onChange={(e) => {
+                      getInputValue("txnStatus", e.target.value);
+                    }}
+                  >
                     <option value="All">All</option>
-                     {paymentStatusList.map((item,i)=>{
-                       return (<option value={item}>{item} </option>);
-                     })}
-                    </select>
-                  </div>
-                  <div className="col-lg-4 mrg-btm- bgcolor">
-                    <label>Payment Mode</label>
-                    <select className="ant-input" onChange={(e)=>{getInputValue('payMode',e.target.value)}}>
+                    {paymentStatusList.map((item, i) => {
+                      return <option value={item}>{item} </option>;
+                    })}
+                  </select>
+                </div>
+                <div className="col-lg-4 mrg-btm- bgcolor">
+                  <label>Payment Mode</label>
+                  <select
+                    className="ant-input"
+                    onChange={(e) => {
+                      getInputValue("payMode", e.target.value);
+                    }}
+                  >
                     <option value="All">All</option>
-                     {paymentModeList.map((item)=>{
-                       return (<option value={item.paymodeId}>{item.paymodeName } </option>);
-                     })}
-                    </select>
-                  </div>
-                  <div className="col-lg-4 mrg-btm- bgcolor">
-                    <button className="view_history" style={{margin: '22px 8px 0 0'}} onClick={()=>txnHistory()}>Search</button>
-                    {/* <button className="view_history" style={{margin: '22px 8px 0 0'}}>Export to
+                    {paymentModeList.map((item) => {
+                      return (
+                        <option value={item.paymodeId}>
+                          {item.paymodeName}{" "}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className="col-lg-4 mrg-btm- bgcolor">
+                  <button
+                    className="view_history topmarg"
+                    onClick={() => txnHistory()}
+                  >
+                    Search
+                  </button>
+                  {/* <button className="view_history" style={{margin: '22px 8px 0 0'}}>Export to
                       Excel</button> */}
                       {  show ? 
 
@@ -316,51 +358,58 @@ const pages = _.range(1, pageCount + 1)
                             <td>{item.bank_message}</td>
                             <td>{item.ifsc_code}</td>
                             <td>{item.payer_acount_number}</td>
-                            <td>{item.bank_txn_id}</td>                            
+                            <td>{item.bank_txn_id}</td>
                           </tr>
-                          )})}
-                          
-                    </tbody></table>
-                    { show ? 
+                        );
+                      })}
+                  </tbody>
+                </table>
+               
+                { show ? 
                     <nav aria-label="Page navigation example"  >
                     <ul class="pagination">
       
                    <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
-   { 
+                    { 
 
-     pages.map((page,i) => (
-         
-      <li className={
+                      pages.map((page,i) => (
+                          
+                        <li className={
 
-        page === currentPage ? " page-item active" : "page-item"
-      }> 
-          <a class="page-link">  
-            <p onClick={() => pagination(page)}>
-            {page}
-            </p>
-          </a>
-        </li>
-    
-     ))
-   }
-    <a class="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href="#">Next</a>
-  
-   
-  
-  </ul>
-</nav>
-: '' }
-  
-                  {filterList.length<0? <div>No Data Found</div>:<div></div>}
-                </div>
-              </div></section>
+                          page === currentPage ? " page-item active" : "page-item"
+                        }> 
+                            <a class="page-link">  
+                              <p onClick={() => pagination(page)}>
+                              {page}
+                              </p>
+                            </a>
+                          </li>
+                      
+                      ))
+                    }
+                      <a class="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href="#">Next</a>
+                    
+                    
+                    
+                    </ul>
+                  </nav>
+                  : '' }
+                {filterList.length < 0 ? <div>No Data Found</div> : <div></div>}
+              </div>
+            </div>
+          </section>
+        </div>
+        <footer className="ant-layout-footer">
+          <div className="gx-layout-footer-content">
+            © 2021 Ippopay. All Rights Reserved.{" "}
+            <span className="pull-right">
+              Ippopay's GST Number : 33AADCF9175D1ZP
+            </span>
           </div>
-          <footer className="ant-layout-footer">
-            <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
-          </footer>
-        </main>
-      </section>
-    )
+        </footer>
+      </main>
+    </section>
+  );
 }
 
 export default TransactionHistory

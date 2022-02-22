@@ -24,14 +24,14 @@ import Emandate from './AllPages/Emandate';
 
 
 function Dashboard() {
-     console.log('dashboard call');
+     // console.log('dashboard call');
      let history = useHistory();
     let { path } = useRouteMatch();
     const { user,isLoggedIn } = useSelector((state) => state.auth);
     
     
 //   user!==null && user?. return (<Redirect to="/login-page" />)
-     console.log(user);
+     // console.log(user);
   if(user!==null && user.userAlreadyLoggedIn){
      console.log('funciton dashboard call');
      // history.push("/login-page");  
