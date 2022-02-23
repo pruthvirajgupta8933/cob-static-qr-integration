@@ -134,7 +134,7 @@ function SettlementReport() {
           <select
             onChange={(event) => SetSelectedSubFolder(event.target.value)}
             value={selectedSubFolder}
-            style={{ position: "absolute", top: 150, left: 650, width: 300 }}
+            className="ant-input"
           >
             <option value="">Select</option>
             {subFolderArr &&
@@ -147,27 +147,27 @@ function SettlementReport() {
           type="text"
           value={searchArea}
           placeholder="Search Here"
-          style={{ position: "absolute", top: 200, left: 250, width: 300 }}
+          className="ant-input"
           onChange={getSearchTerm}
         />
         {showFilterData.filter}
 
-        <div>
-          <select
-            style={{ position: "absolute", top: 200, left: 650, width: 300 }}
-          >
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="40">40</option>
-            <option value="50">50</option>
-            <option value="60">100</option>
-            <option value="70">200</option>
-            <option value="70">300</option>
-            <option value="70">400</option>
-            <option value="70">500</option>
-          </select>
-        </div>
+        <select className="ant-input">
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+          <option value="40">40</option>
+          <option value="50">50</option>
+          <option value="60">100</option>
+          <option value="70">200</option>
+          <option value="70">300</option>
+          <option value="70">400</option>
+          <option value="70">500</option>
+        </select>
+
+        
+
+        
         <div>
           <table
             style={{ position: "absolute", top: 300, left: 250, width: 550 }}
