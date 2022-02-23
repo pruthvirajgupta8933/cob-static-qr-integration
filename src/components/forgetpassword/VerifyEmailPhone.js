@@ -1,12 +1,17 @@
 import React from 'react'
 
-function handleSubmit(e) {
-    e.preventDefault();
-    console.log('You clicked submit.');
-  }
 
 
-function VerifyEmailPhone() {
+function VerifyEmailPhone(props) {
+    
+    const {handleFormSubmit} = props;
+    
+    function handleSubmit(e) {
+        e.preventDefault();
+        // handleFormSubmit("a2");
+        console.log('You clicked submit.');
+      }
+    
   return (
     <React.Fragment>
     <div className="container-fluid bg-info">
@@ -28,7 +33,7 @@ function VerifyEmailPhone() {
                                 <label htmlFor="inputEmailOTP" className="sr-only">emailOTP</label>
                                 <input type="text" className="form-control" id="inputEmailOTP" placeholder="Email OTP" />
                             </div>
-                        <button type="submit" onClick={(e)=>e.preventDefault} className="btn btn-primary mb-2">Verify</button>
+                        <button type="submit" onClick={()=>props.props('a3')} className="btn btn-primary mb-2">Verify</button>
                     </div>
 
                     <div className="form-inline">
@@ -40,7 +45,7 @@ function VerifyEmailPhone() {
                         <label htmlFor="inputSmsOtp2" className="sr-only">SMS OPT</label>
                         <input type="text" className="form-control" id="inputSmsOtp2" placeholder="SMS OTP" />
                         </div>
-                        <button type="submit"  onClick={(e)=>e.preventDefault}  className="btn btn-primary mb-2">Verify</button>
+                        <button type="submit"   onClick={()=>props.props('a3')}  className="btn btn-primary mb-2">Verify</button>
                     </div>
                 </form>
             <p className="card-text" style={{display: "none"}}>With supporting text below as a natural lead-in to additional content.</p>
