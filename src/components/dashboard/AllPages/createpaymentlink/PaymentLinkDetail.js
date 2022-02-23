@@ -31,9 +31,7 @@ const PaymentLinkDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [drop, setDrop] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [noofbuttons, setNoOfButtons ] = useState(Math.ceil(data.length/pageSize));
-  var [showFilterData,SetShowFilterData] = useState([]); 
-  const [folderArr, setFolderArr] = useState([]);
+
 
   const { user } = useSelector((state) => state.auth);
   var clientSuperMasterList = user.clientSuperMasterList;
