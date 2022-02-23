@@ -79,9 +79,11 @@ export const Edituser = (props) => {
             client_code: clientCode,
             customer_type_id: usercustomer,
             id:id
+            
 
             
         })
+        
         console.log(res.data);
        
 
