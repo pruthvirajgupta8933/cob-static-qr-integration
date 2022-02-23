@@ -222,15 +222,6 @@ const closeClick=()=>{
 }
 
 
-const validDate = () => {
-  var today, mm, dd, yyyy;
-  today = new Date();
-  dd = today.getDate() + 1;
-  mm = today.getMonth() + 1;
-  yyyy = today.getFullYear();
-
-  return mm + "/" + dd + "/" + yyyy;
-};
 
 
   return (
@@ -369,7 +360,7 @@ const validDate = () => {
                     name ='date'
                       type="date"
                       className="ant-input"
-                      min= {validDate()}
+                      min= {new Date().toLocaleDateString('en-ca')}
                       value={enteredDate}                     
                       onChange={(e) => setEnteredDate(e.target.value)}
                       placeholder="From Date"

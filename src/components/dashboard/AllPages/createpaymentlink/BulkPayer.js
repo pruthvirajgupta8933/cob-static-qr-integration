@@ -43,7 +43,7 @@ const BulkPayer = () => {
       })
       .catch((error) => {
         console.error("Error:", error);
-        toast.error('File Upload Unsuccesfull',
+        toast.error('File Upload Unsuccessfull',
         {
           position: "top-center",
           autoClose: 1000,
