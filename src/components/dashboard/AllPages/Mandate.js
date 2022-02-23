@@ -40,7 +40,7 @@ function Emandate(props) {
       mandateStartTime : data.mandateStartDate,
       mandateEndTime  : data.mandateEndDate,
   };
-  axios.post("https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+  axios.post("http://18.189.11.232:8081/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
             console.log(response);
             setDisplayMsg('block');
             
@@ -65,7 +65,6 @@ function Emandate(props) {
         console.log("formData",formData);
         if(formData.planType.toLowerCase() ==='trial'){
           saveTrialPlanData(formData);
-
         }else{
            localStorage.setItem("selectedPlan",JSON.stringify(planData))
            document.getElementById("mandateRegForm").submit()
