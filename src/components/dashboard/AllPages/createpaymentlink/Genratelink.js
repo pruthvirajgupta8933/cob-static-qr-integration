@@ -238,7 +238,7 @@ let history = useHistory();
                         type="date"
                         name="Date"
                         className="ant-input"
-                        minDate={new Date()}
+                        min={new Date().toLocaleDateString('en-ca')}
                        />
                       <ErrorMessage name="Date">
                         {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
