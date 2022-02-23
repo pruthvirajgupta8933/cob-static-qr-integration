@@ -4,7 +4,6 @@ import HeaderPage from '../login/HeaderPage';
 import VerifyEmailPhone from './VerifyEmailPhone';
 
 
-
 const ForgetPassword = () => {
     return (
         <React.Fragment>
