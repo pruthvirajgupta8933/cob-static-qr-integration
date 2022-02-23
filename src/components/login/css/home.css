@@ -255,13 +255,13 @@ header{ /*float: left;*/ width:100%; padding:0px;/* font-family:Stack,Helvetica,
 .logo img{float:left;height:51px;}
 .header_first_list{display:flex;display: -webkit-box;display: -webkit-flex;display: -ms-flexbox;padding:0px;margin:0;list-style-type: none;-webkit-box-align: stretch;-webkit-align-items: stretch;-ms-flex-align: stretch;align-items: stretch;-webkit-box-pack: justify;
 -webkit-justify-content: space-between;-ms-flex-pack: justify;justify-content: space-between;padding:0 14rem 0 0;}
-.header_first_list li{float: left;padding:0 3.04rem;flex: 0 1 auto;-webkit-box-flex: 0;-webkit-flex: 0 1 auto;-ms-flex: 0 1 auto;position: relative;}
+.header_first_list li{float: left;padding:0 40px;flex: 0 1 auto;-webkit-box-flex: 0;-webkit-flex: 0 1 auto;-ms-flex: 0 1 auto;position: relative;}
 .header_first_list > li > a{/*float:left; font-weight:500; font-size: 1.6rem;*/ color: #565870;transition: 0.4s all;}
 .header_first_list > li > a:hover{color: #0B4A94;}
 .header_first_list > li > a svg{fill:#565870;}
 .header_first_list > li > a:hover svg{fill:#0B4A94;}
 .header_second_list{display: flex;display: -webkit-box;display: -webkit-flex;display: -ms-flexbox;padding:0px;margin: 0;list-style-type: none;}
-.header_second_list li{float: left; padding-left:1.8em; margin:0; line-height: 44px;}
+.header_second_list li{float: left; padding:0 10px; margin:0; line-height: 44px; white-space: nowrap;}
 .header_second_list li a{float: left; /*font-weight: 600;font-size: 1.6rem;*/ color: #0B4A94;}
 .header_second_list li a:hover{color: #111;}
 .header_second_list li .btnlink span{float: left;line-height:34px;width: calc(100% - 30px);text-align: center;}
