@@ -54,20 +54,22 @@ function Header () {
   }, [dispatch,handleCloseNavMenu]);
 
   return (
-    <AppBar position="static" style={{background:'white',textColor:'black'}}>
-    ddd
+    <AppBar
+      position="static"
+      style={{ background: "white", textColor: "black" }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box
             component="img"
             sx={{
-            height: 64,
+              height: 64,
             }}
             alt="Sabpaisa"
             src={sabpaisalogo}
-        />
+          />
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -82,46 +84,47 @@ function Header () {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: "block", md: "none" },
               }}
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" style={{fontSize:'24px'}}>{page}</Typography>
+                  <Typography textAlign="center" style={{ fontSize: "24px" }}>
+                    {page}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'black', display: 'block' }}
+                sx={{ my: 2, color: "black", display: "block" }}
               >
                 {page}
               </Button>
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'flex' } }}>
-          
+          <Box sx={{ flexGrow: 0, display: { xs: "flex", md: "flex" } }}>
             {settingPage.map((setting) => (
               <Button
                 key={setting}
-                onClick={()=>handleCloseNavMenu(setting)}
-                sx={{ my: 2, color: 'black', display: 'block' }}
+                onClick={() => handleCloseNavMenu(setting)}
+                sx={{ my: 2, color: "black", display: "block" }}
               >
                 {setting}
               </Button>

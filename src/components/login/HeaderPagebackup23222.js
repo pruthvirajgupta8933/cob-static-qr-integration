@@ -308,17 +308,271 @@ function HeaderPage() {
           {/* </ul>
         <ul className="header_second_list hidden-xs"> */}
           <li>
-            <Link to="/login-page">Login</Link>
+            <Link to="/login-page" style={{ color: "#000" }}>
+              Login
+            </Link>
           </li>
           <li>
             <Link to="/Registration">Sign up</Link>
           </li>
           <li>
-            <span className="btnlink cotactbg whtcolr">
+            <Link className="btnlink cotactbg whtcolr" href="/Registration">
               Call +91 987-551-5119
-            </span>
+            </Link>
           </li>
         </ul>
+      </header>
+
+      <header className>
+        <div className="header-fluid">
+          <Link
+            to="/login-page"
+            className="logo"
+            href="https://www.SabPaisa.com/"
+          >
+            <img src={sabpaisalogo} alt="SabPaisa" title="SabPaisa" />
+          </Link>
+          <a className="fp_icon_open">
+            <img src="./index_files/menu.svg" alt="" />
+          </a>
+          <ul className="header_first_list hidden-xs">
+            <li className="ippo_new_pos_rel">
+              <a
+                href="https://sabpaisa.in/"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {" "}
+                Products &nbsp;
+                {/* <svg
+                    width={8}
+                    height={5}
+                    viewBox="0 0 8 5"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M4 4.25001L0.817749 1.06776L1.879 0.00726318L4 2.12901L6.121 0.00726318L7.18225 1.06776L4 4.25001Z" />
+                  </svg> */}
+              </a>
+              {/* <div className="drop_down_new_ippo">
+                  <div className="ippo_new_inner_wrap_nav">
+                    <div className="col-xs-12 col-sm-7 col-md-9 ippo_new_arround_padding">
+                      <div className="row">
+                        <Link
+                          to="/commonpages"
+                          className="col-xs-12 col-sm-6 col-md-6"
+                        >
+                          <img
+                            className="left_img_new_ippo_nav"
+                            src="./paymentgateway_new_ippo.png"
+                            alt=""
+                          />
+                          <div className="ippo_nav_new_right_wrap">
+                            <div className="ippo_new_nav_title">
+                              Payment gateway
+                            </div>
+                            <div className="ippo_new_nav_desc">
+                              One stop eCommerce payment solution to receive
+                              online payments of all types.
+                            </div>
+                          </div>
+                        </Link>
+                        <Link
+                         to="/commonpages"
+                          className="col-xs-12 col-sm-6 col-md-6"
+                        >
+                          <img
+                            className="left_img_new_ippo_nav"
+                            src="./invoice_new_ippo.png"
+                            alt=""
+                          />
+                          <div className="ippo_nav_new_right_wrap">
+                            <div className="ippo_new_nav_title">Invoice</div>
+                            <div className="ippo_new_nav_desc">
+                              Issue SabPaisa invoices to your customers to
+                              receive payments of all your bills.
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                      <div className="row">
+                        <Link
+                          to="/commonpages"
+                          className="col-xs-12 col-sm-6 col-md-6 m-b-0"
+                        >
+                          <img
+                            className="left_img_new_ippo_nav"
+                            src="./paymentlinks_new_ippo.png"
+                            alt=""
+                          />
+                          <div className="ippo_nav_new_right_wrap">
+                            <div className="ippo_new_nav_title">
+                              Payment Links
+                            </div>
+                            <div className="ippo_new_nav_desc">
+                              Send out payment links to your stakeholders to
+                              process an online payment.
+                            </div>
+                          </div>
+                        </Link>
+                        <Link to="/commonpages" className="col-xs-12 col-sm-6 col-md-6 m-b-0">
+                          <img
+                            className="left_img_new_ippo_nav"
+                            src="./paymentpages_new_ippo.png"
+                            alt=""
+                          />
+                          <div className="ippo_nav_new_right_wrap">
+                            <div className="ippo_new_nav_title">
+                              Payment Pages
+                            </div>
+                            <div className="ippo_new_nav_desc">
+                              Use our Ready-to-use payment page to quickly
+                              accept online payments.
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="col-xs-12 col-sm-5 col-md-3 gray_nav_header_right_ippo_new">
+                      <div className="ippo_new_right_nav_head">More</div>
+                      <ul className="ippo_new_right_nav_head_list">
+                        <li>
+                          <a href="https://www.SabPaisa.com/upi-unified-payment-interface">
+                            <img src="./upi_new_ippo.png" alt="" />
+                            UPI
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://www.SabPaisa.com/social-commerce-payment">
+                            <img src="./socialcommerce_new_ippo.png" alt="" />
+                            Social Commerce
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://www.SabPaisa.com/subscription-payments">
+                            <img src="./subscription_new_ippo.png" alt="" />
+                            Subscriptions
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://www.SabPaisa.com/international-currencies">
+                            <img src="./multicurrency_new_ippo.png" alt="" />
+                            Multi-Currency
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div> */}
+            </li>
+            <li>
+              <Link
+                to={{ pathname: "https://sabpaisa.in/sabpaisa-apis/" }}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                APIs
+              </Link>
+            </li>
+            <li>
+              <Link
+                target="_blank"
+                to={{ pathname: "https://sabpaisa.in/" }}
+                rel="noreferrer noopener"
+              >
+                Developers
+              </Link>
+            </li>
+            <li>
+              <Link
+                target="_blank"
+                to={{ pathname: "https://sabpaisa.in/" }}
+                rel="noreferrer noopener"
+              >
+                Pricing
+              </Link>
+            </li>
+          </ul>
+          <ul className="header_second_list hidden-xs">
+            <li>
+              <Link to="/login-page" style={{ color: "#000" }}>
+                Login
+              </Link>
+            </li>
+            <li>
+              <Link to="/Registration">Sign up</Link>
+            </li>
+            <li>
+              <Link className="btnlink cotactbg" href="/Registration">
+                Call +91 987-551-5119
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div className="mobile_navigation_section">
+          <div className="fp_xs_menu">
+            <a className="fp_close_icon">
+              <img src="./index_files/fp_close.png" alt="" />
+            </a>
+          </div>
+          <ul className="visible-xs mobile_navigation">
+            <li>
+              <a href="https://www.SabPaisa.com/payment-gateway">
+                Payment gateway
+              </a>
+            </li>
+            <li>
+              <a href="https://www.SabPaisa.com/free-invoice-generator">
+                Invoice
+              </a>
+            </li>
+            <li>
+              <a href="https://www.SabPaisa.com/payment-link-generator">
+                Payment Links
+              </a>
+            </li>
+            <li>
+              <a href="https://www.SabPaisa.com/">Payment Pages</a>
+            </li>
+            <li>
+              <a href="https://www.SabPaisa.com/upi-unified-payment-interface">
+                UPI
+              </a>
+            </li>
+            <li>
+              <a href="https://www.SabPaisa.com/social-commerce-payment">
+                Social Commerce
+              </a>
+            </li>
+            <li>
+              <a href="https://www.SabPaisa.com/subscription-payments">
+                Subscriptions
+              </a>
+            </li>
+            <li>
+              <a href="https://www.SabPaisa.com/international-currencies">
+                Multi-Currency
+              </a>
+            </li>
+            <li>
+              <a href="https://www.SabPaisa.com/payout-solutions">Payouts</a>
+            </li>
+            <li>
+              <a href="https://www.ippostack.com/" target="_blank">
+                Neo Banking API
+              </a>
+            </li>
+            <li>
+              <a href="https://www.SabPaisa.com/pricing">Pricing</a>
+            </li>
+            <li>
+              <Link to="/login-page">Login</Link>
+            </li>
+            <li>
+              <Link to="/Registration">Sign up =</Link>
+            </li>
+          </ul>
+        </div>
       </header>
     </div>
   );
