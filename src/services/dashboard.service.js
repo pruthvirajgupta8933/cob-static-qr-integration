@@ -12,7 +12,7 @@ const successTxnSummary = (fromdate, todate, clientcode) => {
   }).catch(err=>console.log(err));
 };
 
-const SUBSCRIPTION_URL = "http://18.216.47.58:8081/client-subscription-service/";
+const SUBSCRIPTION_URL = "http://18.189.11.232:8081/client-subscription-service/";
 
 const subscriptionplan = () => {
   return axios.get(SUBSCRIPTION_URL + "fetchAppAndPlan")

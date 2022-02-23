@@ -5,7 +5,7 @@ import Axios from "axios";
 import AuthService from "../services/auth.service";
 
 const user = JSON.parse(localStorage.getItem("user"));
-console.log("user",user);
+// console.log("user",user);
 const userAlreadyLoggedIn = user && user.loginId!==null ? true :false;
 
 const auth = {
@@ -151,15 +151,24 @@ export const createClientProfile = createAsyncThunk(
   "auth/createClientProfile",
   async (data, thunkAPI) => {
     try {
-      console.log("dashboardslice",data);
-      // console.log({ fromdate, todate, clientcode });
+      console.log('a-senddata',data);
       const response = await AuthService.createClintCode(data);
       thunkAPI.dispatch(setMessage(response.data.message));
 
       const userLocalData = JSON.parse(localStorage?.getItem("user"));
       const allData = Object.assign(userLocalData,response.data);
-
-
+      // first time need to assign all request data into temp data
+      allData.accountHolderName = data.accountHolderName;
+      allData.accountNumber = data.accountNumber;
+      allData.bankName = data.bankName;
+      allData.clientAuthenticationType = data.clientAuthenticationType;
+      allData.clientContactPersonName = data.clientName;
+      allData.clientEmail = data.email;
+      allData.ifscCode = data.ifscCode;
+      allData.pan = data.pan;
+      allData.clientMobileNo = data.phone;
+     
+      console.log("allData--s",allData);
       const clientSuperMasterListObj = {
         "clientId": null,
         "lookupState": null,
@@ -196,7 +205,7 @@ export const createClientProfile = createAsyncThunk(
       localStorage.setItem("user", JSON.stringify(allData))
 
 
-      return response.data;
+      return allData;
     } catch (error) {
       const message =
         (error.response &&
@@ -286,7 +295,7 @@ export const updateClientProfile = createAsyncThunk(
 const initialState = user && user.loginStatus
   ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
   : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{}, sendEmail: {} };
-console.log(register)
+// console.log(register)
 const authSlice = createSlice({
   name: "auth",
   initialState: auth,
@@ -365,6 +374,8 @@ const authSlice = createSlice({
     },
     [createClientProfile.fulfilled]:(state,action)=>{
       state.createClientProfile = action.payload
+      state.user = action.payload
+      console.log("client create and update",state.user);
     },
     [createClientProfile.rejected]:(state)=>{
       console.log("Client Profile not update!");

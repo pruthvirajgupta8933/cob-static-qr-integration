@@ -33,7 +33,6 @@ const Reports = () => {
 
   const [data , setData] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState([])
   const {user} = useSelector((state)=>state.auth);
   var clientSuperMasterList = user.clientSuperMasterList;
   const {clientCode} = clientSuperMasterList[0];
@@ -41,16 +40,6 @@ const Reports = () => {
 
   const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 
-
-  
-const pagination = (pageNo) => {
-  setCurrentPage(pageNo);
-
-  const startIndex = (pageNo - 1) * pageSize;
-  const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
-  setPaginatedData(paginatedPost);
-
-}
 
 
   
@@ -90,24 +79,35 @@ useEffect(() => {
 
 const getSearchTerm  = (e) => {
   setSearchText(e.target.value);
+}
 
-  // if(searchText !== "") {
-  //   const newData = data.filter((dataitem) => {
-  //     return dataitem.customer_phone_number.toLowerCase().includes(searchText.toLowerCase());
-  //   })
 
-  //   setSearchResults(newData);
-  // }
-  // else {
-  //   setSearchResults(data)
-  // }
+useEffect(() => {
+  if (searchText.length > 0) {
+      setPaginatedData(data.filter((item) => item.customer_name.toLowerCase().includes(searchText.toLocaleLowerCase())))
+  } else {
+      setPaginatedData(data)
+  }
+}, [searchText])
 
-  // console.log(data)
+const pagination = (pageNo) => {
+  setCurrentPage(pageNo);
 }
 
 useEffect(()=>{
   setPaginatedData(_(data).slice(0).take(pageSize).value())
 },[pageSize]);
+
+
+useEffect(() => {
+  console.log("page chagne no")
+  const startIndex = (currentPage - 1) * pageSize;
+ const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+ setPaginatedData(paginatedPost);
+
+}, [currentPage])
+
+
 
 
 if ( pageCount === 1) return null;

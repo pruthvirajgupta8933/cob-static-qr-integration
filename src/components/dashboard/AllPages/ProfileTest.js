@@ -32,6 +32,20 @@ export const FormikApp = () => {
             ifscCode,
             pan,
           } = user;
+
+    var initNBlist,initDClist = [];
+
+    
+    if (localStorage.getItem('NB_bank_list') !== null) {
+      initNBlist = JSON.parse(localStorage.getItem("NB_bank_list"));
+    } else {
+      initNBlist = [];
+    }
+
+    if(localStorage.getItem("DC_bank_list")!==null){
+      initDClist = JSON.parse(localStorage.getItem("DC_bank_list"));
+    }
+    
     
     const [message,setMessage]  = useState('');
   
@@ -39,19 +53,22 @@ export const FormikApp = () => {
     const [createProfileResponse , setCreateProfileResponse]  = useState('');
     const [retrievedProfileResponse , setRetrivedProfileResponse] = useState('');
   
-    const [authenticationMode,setAuthenticationMode] = useState('NetBank');
-    const [listOfNetBank,setListOfNetBank] = useState([]);
-    const [listOfDebitCardBank,setListOfDebitCardBank] = useState([]);
-    const [selectedListForOption,setSelectedListForOption]=useState([]);
+    const [authenticationMode,setAuthenticationMode] = useState(clientSuperMasterList &&  clientSuperMasterList[0]?.clientAuthenticationType);
+    const [listOfNetBank,setListOfNetBank] = useState(initNBlist);
+    const [listOfDebitCardBank,setListOfDebitCardBank] = useState(initDClist);
+    
+    const [selectedListForOption,setSelectedListForOption]=useState(authenticationMode==='NetBank'?listOfNetBank:listOfDebitCardBank);
+
     const [userIfscCode,setUserIfscCOde]=useState(ifscCode)
     const [isClientCodeValid,setIsClientCodeValid]=useState(null)
-    const [isIfcsValid,setIsIfscValid]=useState(null)
+    const [isIfcsValid,setIsIfscValid]=useState(true)
     const [dataProfileResponse,setDataProfileResponse]=useState(null)
   
     useEffect(() => {
       setCreateProfileResponse(dashboard.createClientProfile)
     }, [dashboard]);
   
+    console.log(authenticationMode);
     
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 //   console.log(clientSuperMasterList && clientSuperMasterList[0]?.address)
@@ -117,83 +134,21 @@ const validationSchema = Yup.object().shape({
     }, [userData]);
 
     function onSubmit(data) {
-
-    console.log("send data",data);
-    const userLocalData = JSON.parse(localStorage?.getItem("user"));
-    //  userLocalData.accountHolderName = data.accountHolderName
-
-      const allData = Object.assign(userLocalData,data);
-
-      const clientSuperMasterListObj = {
-        "clientId": null,
-        "lookupState": null,
-        "address": null,
-        "clientAuthenticationType": null,
-        "clientCode": null,
-        "clientContact": null,
-        "clientEmail": null,
-        "clientImagePath": null,
-        "clientLink": null,
-        "clientLogoPath": null,
-        "clientName": null,
-        "failedUrl": null,
-        "landingPage": null,
-        "service": null,
-        "successUrl": null,
-        "createdDate": null,
-        "modifiedDate": null,
-        "modifiedBy": null,
-        "status": null,
-        "reason": null,
-        "merchantId": null,
-        "requestId": null,
-        "clientType": null,
-        "parentClientId": null,
-        "businessType": null,
-        "pocAccountManager": null
-      };
-
-     
-      
-
-      // console.log(allRules);
     if(isCreateorUpdate)
     {
-      
       dispatch(createClientProfile(data));
-      // setTimeout(() => {
-      //   const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,createProfileResponse);
-      //   const clientSuperMasterList =  [mergeClientSuperMasterList];
-      //   allData.clientSuperMasterList = clientSuperMasterList;
-      //   console.log(allData);
-      //   localStorage.setItem("user", JSON.stringify(allData))
-      // }, 2500);
-    
     }
     else
     {
       delete data.clientCode; 
       dispatch(updateClientProfile({data,clientId}))
-      // setTimeout(() => {
-      //   const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,createProfileResponse);
-      //   const clientSuperMasterList =  [mergeClientSuperMasterList];
-      //   allData.clientSuperMasterList = clientSuperMasterList;
-      //   console.log(allData);
-      //   localStorage.setItem("user",JSON.stringify(allData))
-      // }, 2500);
     }
     // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
     toast.success("Your Data is Update successfully",{
       autoClose:2000,
       limit :1,
       transition:Zoom
-    });
-
-    // setTimeout(() => {
-    //   dispatch(logout());
-    //   return <Redirect to="/login-page" />;
-    // }, 2510);
-     
+    });     
     }
 
     const verifyClientCodeFn = (getCode) => {
@@ -222,7 +177,7 @@ const validationSchema = Yup.object().shape({
                 setIsIfscValid(false)
             })
         :
-        setIsIfscValid(null);
+        setIsIfscValid(true);
 
     }
 
@@ -231,25 +186,32 @@ const validationSchema = Yup.object().shape({
   useEffect(() => {
     // fetch bank list
      fetchDcBankList()
-      .then((response)=>{setListOfDebitCardBank(response.data); setAuthenticationMode(authenticationMode);})
+      .then((response)=>{
+        localStorage.setItem("DC_bank_list",JSON.stringify(response.data));
+        setListOfNetBank(response.data);
+        })
       .catch((error)=> console.log(error));
 
     fetchNbBankList()
-      .then(response => {setListOfNetBank(response.data); setAuthenticationMode(authenticationMode);})
+      .then(response => {
+        localStorage.setItem("NB_bank_list",JSON.stringify(response.data))
+        setListOfDebitCardBank(response.data);
+      })
       .catch(error=>console.log(error))                          
-
     setIsCreateorUpdate(clientSuperMasterList && clientSuperMasterList!==null ? false : true);
+
+   
+
   }, [])
 
   useEffect(() => {
     if(authenticationMode==='NetBank'){
       setSelectedListForOption(listOfNetBank);
     }
-    
     if(authenticationMode==='Debitcard'){
       setSelectedListForOption(listOfDebitCardBank);
     }
-  }, [authenticationMode]);
+  }, [authenticationMode,listOfNetBank,listOfDebitCardBank]);
 
     // console.log(authenticationMode);
     // console.log(bankName);

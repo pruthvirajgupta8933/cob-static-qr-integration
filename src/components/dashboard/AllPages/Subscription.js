@@ -16,6 +16,8 @@ const Subsciption = () => {
   const [termAndCnd, setTermAndCnd] = useState(false);
   const [subscriptionPlanChargesData,setSubscriptionPlanChargesData] = useState([]);
   const [subscribePlanData,setSubscribePlanData] = useState([]);
+  const [isModelClosed,setIsModelClosed] = useState(false);
+
   
   const [Plans,setPlans] = useState([]);
   const {dashboard,auth} = useSelector((state)=>state);
@@ -74,11 +76,11 @@ const Subsciption = () => {
 // console.log(mandateEndData);
 
   const handleChecked=(e,data={})=>{
-    
     if(e.target.checked){
       setSubscribePlanData({...subscribePlanData,
                               planId:data.planId ,
                               planName: data.planName,
+                              planType:data.planType
                             });
     
       setPlanPrice(data.planPrice);
@@ -89,7 +91,7 @@ const Subsciption = () => {
       var mandateEndDate = ed.setDate(ed.getDate() + data.planValidityDays);
       mandateEndDate = new Date(mandateEndDate).toISOString();
       setMandateEndData(mandateEndDate);
-
+      
     }else{
       setPlanPrice('');
       setPlanType('');
@@ -165,18 +167,26 @@ useEffect(() => {
     termAndCnd:termAndCnd,
     planId:subscribePlanData.planId,
     planName:subscribePlanData.planName,
+    planType:subscribePlanData.planType,
     applicationId:subscribePlanData.applicationId,
     applicationName:subscribePlanData.applicationName,
+    isModelClosed:isModelClosed
+
   }
 //,{mandateEndData:mandateEndData,mandateMaxAmount:planPrice+'.00'}
   setSubscribeData(bodyFormData)
 
-}, [mandateEndData,planPrice,termAndCnd,subscribePlanData]);
+}, [mandateEndData,planPrice,termAndCnd,subscribePlanData,isModelClosed]);
 
 
   useEffect(() => {
     getSubscriptionService();
   },[])
+
+  const modalHandler = () =>{
+  
+    setIsModelClosed(false)
+  }
   
   // console.log("Suscription Charges", subscriptionPlanData);    
 
@@ -194,7 +204,7 @@ useEffect(() => {
   }
 
   useEffect(() => {
-    console.log("termAndCnd",termAndCnd);
+    // console.log("termAndCnd",termAndCnd);
   }, [subscribePlanData,termAndCnd]);
   
 
@@ -211,10 +221,10 @@ return (
           <div className="card" style={{ background: "aquamarine" }}>
             <div className="card-body" style={{ height: "200px" }}>
               <h5 className="card-title" style={{ fontWeight: "700", fontSize: "large" }}>{s.applicationName}</h5>
-              <p className="card-text">{s.planMaster[0].planDescription}</p>
+              <p className="card-text">{s.applicationDescription}</p>
             </div>
             <div class="container">
-                <a target="blank" href="https://sabpaisa.in/payout/"  style={{ padding: "0", top: "155px" }} className="btn btn-warning">Read More</a>
+                <a target="blank" href={s.applicationUrl}  style={{ padding: "0", top: "155px" }} className="btn btn-warning">Read More</a>
                 <button type="button" style={{ top: "200px" }} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>subscribe</button>                
             </div>
           </div>
@@ -224,9 +234,9 @@ return (
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Welcome - {s.applicationName} !</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+              <h5 class="modal-title" id="exampleModalLabel">Welcome - {subscribePlanData.applicationName} !</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={()=>modalHandler()}>
+                <span aria-hidden="true" onClick={()=>setIsModelClosed(false)}>&times;</span>
               </button>
             </div>
             <div class="modal-body">
@@ -234,16 +244,16 @@ return (
             {Plans && Plans.map((sp) =>
             <table className="tables" cellpadding="10" cellspacing="10" width="100%">
                 <tbody>
-               
                     <><>
-                            <th><input type="radio" id="plantype" name="plantype" value={sp.planType} onChange={(e)=>{handleChecked(e,sp)}} /> {sp.planType} {sp.planName}</th>
-                            </>
-                              <tr>
-                                  <td>Rs - {sp.planPrice}</td>
-                              </tr>
-                              <tr></tr>
-                            </>
-                            
+                        <th><input type="radio" id="plantype" name="plantype" value={sp.planType} onChange={(e)=>{handleChecked(e,sp)}} /><span style={{ textTransform: "uppercase"}}>
+                        {sp.planType}
+                        </span>  {sp.planName}</th>
+                          </>
+                            <tr>
+                                <td>Rs - {sp.planPrice}</td>
+                            </tr>
+                            <tr></tr>
+                          </>    
                 </tbody>
             </table>
             )}

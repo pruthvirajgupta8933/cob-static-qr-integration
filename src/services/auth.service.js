@@ -1,7 +1,4 @@
 import axios from "axios";
-
-const API_URL = "http://localhost:8080/api/auth/";
-
 const SIGNUP_URL = "https://cobtest.sabpaisa.in/auth-service/auth/";
 
 const register = (firstName, lastName, mobileNumber, email, password,businessType) => {
@@ -75,7 +72,7 @@ const BASE_URL = "https://cobtest.sabpaisa.in/auth-service/client";
 const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
 
 const createClintCode = (object) => {
-  console.log("profileservice",object)
+  // console.log("profileservice",object)
   return axios.post(BASE_URL + "/create", object)
 };
 

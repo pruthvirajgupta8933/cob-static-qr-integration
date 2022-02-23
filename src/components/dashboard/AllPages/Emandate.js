@@ -42,7 +42,7 @@ useEffect(() => {
         // console.log(details.mandateStartDate)
         const selectedPlan = JSON.parse(localStorage?.getItem("selectedPlan"));
         const postData = {
-            clientCode:details.clientCode,
+            clientCode:details.clientCode.toString(),
             mandateRegistrationId:details.mandateRegistrationId +'22' ,
             umrn:details.umrnNumber,
             paymentMode:details.authenticationMode,
