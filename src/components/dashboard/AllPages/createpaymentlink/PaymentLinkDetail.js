@@ -5,7 +5,7 @@ import _ from 'lodash';
 import FormPaymentLink from "./FormPaymentLink";
 
 
-
+ 
 
 const PaymentLinkDetail = () => {
 
@@ -120,9 +120,10 @@ const pages = _.range(1, pageCount + 1)
        <div style={{display:"contents"}}>
 
        <input
+       class="form-control"
         type="text"
         placeholder="Search Here"
-        style={{  width: 700 }}
+        style={{  width: 700, height: '30px' }}
         onChange={getSearchTerm}
       />
         {/* {
