@@ -1,4 +1,4 @@
-const APIS = {
+const APIS_TEST = {
 
     AUTH_LOGIN: "https://cobtest.sabpaisa.in/auth-service/login",
     AUTH_SIGNUP:"https://cobtest.sabpaisa.in/auth-service/auth/signup",
@@ -18,15 +18,7 @@ const APIS = {
     SUBSCRIBE_SERVICE: "http://18.189.11.232:8081/client-subscription-service/subscribe",
     
 
-
-
-    
-
-    
-
     // CLIENT_SUBSCRIPTION_SERVICE: "http://18.189.11.232:8081/client-subscription-service/",
     // AUTH_LOGIN: "https://spl.sabpaisa.in/auth-service/",
-
-
     // CLIENT_SUBSCRIPTION_SERVICE: "https://spl.sabpaisa.in/client-subscription-service/",
 }

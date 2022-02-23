@@ -24,7 +24,7 @@ import Textfield from '../../_components/reuseable_components/Textfield'
 import FormButton from '../../_components/reuseable_components/FormButton'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import Header from './Headre';
+// import Header from './Headre';
 import './Login.css';
 import { login,logout } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
@@ -219,7 +219,7 @@ const redirectRoute = (authen) => {
     return (
     <>  
         
-    <Header/>
+    {/* <Header/> */}
         <CssBaseline />
 
         <Container fixed >
