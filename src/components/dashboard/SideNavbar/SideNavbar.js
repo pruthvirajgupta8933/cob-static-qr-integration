@@ -32,7 +32,7 @@ function SideNavbar() {
               <p title="ABHISHEK VERMA" className="text-md text-ellipsis text-capitalize ng-binding">{clientContactPersonName}</p>
               {/* <a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/profile.html" className="text-lighter text-ellipsis ng-binding txt-white">My
                 Profile</a> */}
-                <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link>
+               {roleId!==3 && roleId!==13 ?  <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link> : <></> }
             </div>
           </div>
           <div className="sidebar_menu_list">
@@ -59,13 +59,18 @@ function SideNavbar() {
 
                       {roleId===3 || roleId===13 ?<li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link> 
-                      </li>:<li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                      </li> 
+                      : 
+                      
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
                       &nbsp; Settlement Report</Link> 
                       </li>
                        }
-                        
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+
+                       {roleId!==3 && roleId!==13 ? 
+                        <React.Fragment>
+                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/subscription`} className='txt-white'><i className="fa fa-bell" aria-hidden="true" />
                       &nbsp; Subscription</Link> 
                       </li>
@@ -73,6 +78,12 @@ function SideNavbar() {
                       <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
                       &nbsp; Create Payment Link</Link> 
                       </li>
+                      </React.Fragment>
+                       : <></>
+                        }
+                        
+                      
+                    
                      
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href=""><i className="fa fa-briefcase" aria-hidden="true" />
                       &nbsp; Logout</a>

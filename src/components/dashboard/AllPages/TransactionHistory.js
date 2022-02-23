@@ -154,7 +154,7 @@ const pages = _.range(1, pageCount + 1)
 
 
   var clientSuperMasterList =[];
-  if(user && user.clientSuperMasterList===null){
+  if(user && user.clientSuperMasterList===null && user.roleId!==3 && user.roleId!==13){
     history.push('/dashboard/profile');
   }else{
     clientSuperMasterList = user.clientSuperMasterList;
@@ -189,8 +189,9 @@ const pages = _.range(1, pageCount + 1)
                       getInputValue("clientCode", e.target.value);
                     }}
                   >
-                    <option value="0">All</option>
-                    {clientSuperMasterList.map((item) => {
+                 
+                    {user.roleId===3 || user.roleId===13 ?<option value="0">All</option>:<></> }
+                    {clientSuperMasterList?.map((item) => {
                       return (
                         <option value={item.clientCode}>
                           {item.clientCode + " - " + item.clientName}{" "}

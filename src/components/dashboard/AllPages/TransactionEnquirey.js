@@ -100,7 +100,7 @@ return (date.getDate()+
             a.print();
   }
 
-  if(user && user.clientSuperMasterList===null){
+  if(user && user.clientSuperMasterList===null && user.roleId!==3 && user.roleId!==13){
     // alert(`${path}/profile`);
     // return <Redirect to={`${path}/profile`} />
     history.push('/dashboard/profile');

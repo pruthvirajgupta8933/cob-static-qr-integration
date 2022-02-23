@@ -88,7 +88,7 @@ function Home() {
   }
 
  
-  if(user && user.clientSuperMasterList===null){
+  if(user && user.clientSuperMasterList===null && user.roleId!==3 && user.roleId!==13){
     return <Redirect to={`${path}/profile`} />
   } 
 console.log('show data',showData)
