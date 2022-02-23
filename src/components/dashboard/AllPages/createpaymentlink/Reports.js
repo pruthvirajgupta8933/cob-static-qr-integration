@@ -127,7 +127,7 @@ const pages = _.range(1, pageCount + 1)
       </div>
        
       <div style={{marginLeft: 20}} >
-      <input type="text" placeholder="Search Here" value={searchText} onChange={getSearchTerm} style={{ width: 500 }}  />
+      <input class="form-control" type="text" placeholder="Search Here" value={searchText} onChange={getSearchTerm} style={{ width: 500 }}  />
       </div>
       
       <div>
