@@ -31,9 +31,7 @@ const PaymentLinkDetail = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [drop, setDrop] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [noofbuttons, setNoOfButtons ] = useState(Math.ceil(data.length/pageSize));
-  var [showFilterData,SetShowFilterData] = useState([]); 
-  const [folderArr, setFolderArr] = useState([]);
+
 
   const { user } = useSelector((state) => state.auth);
   var clientSuperMasterList = user.clientSuperMasterList;
@@ -222,15 +220,6 @@ const closeClick=()=>{
 }
 
 
-const validDate = () => {
-  var today, mm, dd, yyyy;
-  today = new Date();
-  dd = today.getDate() + 1;
-  mm = today.getMonth() + 1;
-  yyyy = today.getFullYear();
-
-  return mm + "/" + dd + "/" + yyyy;
-};
 
 
   return (
@@ -369,7 +358,7 @@ const validDate = () => {
                     name ='date'
                       type="date"
                       className="ant-input"
-                      min= {validDate()}
+                      min= {new Date().toLocaleDateString('en-ca')}
                       value={enteredDate}                     
                       onChange={(e) => setEnteredDate(e.target.value)}
                       placeholder="From Date"
