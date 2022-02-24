@@ -11,6 +11,7 @@ const EnterUserID = (props) => {
 
   const handleSubmit = () => {
     console.log("You clicked");
+     props.props("a2");
   };
 
   const initialValues = {
@@ -73,7 +74,7 @@ const EnterUserID = (props) => {
                       <button
                         type="submit"
                         className="btn btn-primary"
-                        onClick={() => props.props("a2")}
+                       
                       >
                         Submit
                       </button>

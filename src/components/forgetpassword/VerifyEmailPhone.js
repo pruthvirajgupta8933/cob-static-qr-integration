@@ -1,17 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import validation from "../validation";
 
 
 
-function VerifyEmailPhone(props) {
+const VerifyEmailPhone = (props)  => {
+const [emailotp , setEmailotp] = useState("");
+const [smsotp , setSmsotp] = useState("");
+const [errors, setErrors] =useState({});
+const [verify, setverify] = useState(false)
+
     
     const {handleFormSubmit} = props;
+
+
+    const Email = (e) => {
+      setEmailotp(e.target.value)
+    }
+
+    const Sms = (e) => {
+      setSmsotp(e.target.value)
+    }
+
+    //Email OTP
     
-    function handleSubmit(e) {
+    const emailverify = (e) => {
+      setErrors(validation({ emailotp}))
+      e.preventDefault();
+    }
+
+    //SMS OTP 
+    const smsverify = (e) => {
+      setErrors(validation({ smsotp}))
+      e.preventDefault();
+      props.props('a3')
+
+    }
+
+    
+    
+    const handleSubmit = (e) => {
         e.preventDefault();
-        // handleFormSubmit("a2");
-        console.log('You clicked submit.');
+       
       }
     
   return (
@@ -29,26 +60,32 @@ function VerifyEmailPhone(props) {
                     <div className="form-inline" >
                         <div className="form-group mb-2">
                         <label htmlFor="staticEmail2" className="sr-only">Email OTP</label>
-                        <input type="text" readOnly className="form-control-plaintext" id="staticEmail2" defaultValue="Enter Email OTP" />
+                        <input type="text" readOnly className="form-control-plaintext" id="staticEmail2" />
                         </div>
                             <div className="form-group mx-sm-3 mb-2">
                                 <label htmlFor="inputEmailOTP" className="sr-only">emailOTP</label>
-                                <input type="text" className="form-control" id="inputEmailOTP" placeholder="Email OTP" />
+                                <input type="text"  className="form-control" id="inputEmailOTP" value={emailotp} onChange={Email} placeholder="Email OTP"/>
+                                <br />
+                                <br />
+                                <br />
+                                {errors.emailotp && <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" , top: '157px'}} >{errors.emailotp}</p>}
                             </div>
-                        <button type="submit" className="btn btn-primary mb-2">Verify</button>
+                        <button type="submit" name = "emailverify" className="btn btn-primary mb-2" value = "firstone" onClick={emailverify} >Verify</button>
                         {/* onClick={()=>props.props('a3')} */}
                     </div>
 
                     <div className="form-inline">
                         <div className="form-group mb-2">
                         <label htmlFor="staticPhone2" className="sr-only">SMS OPT</label>
-                        <input type="text" readOnly className="form-control-plaintext" id="staticPhone2" defaultValue="SMS OTP" />
+                        <input type="text" readOnly className="form-control-plaintext" id="staticPhone2"/>
                         </div>
                         <div className="form-group mx-sm-3 mb-2">
-                        <label htmlFor="inputSmsOtp2" className="sr-only">SMS OPT</label>
-                        <input type="text" className="form-control" id="inputSmsOtp2" placeholder="SMS OTP" />
+                        <label htmlFor="inputSmsOtp2" className="sr-only">SMS OTP</label>
+                        <input type="text" pattern="\d{6}" className="form-control" value={smsotp} onChange={Sms} id="inputSmsOtp2" placeholder="SMS OTP" />
+                        <br />
+                        {errors.smsotp && <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" , top: '214px'}} >{errors.smsotp}</p>}
                         </div>
-                        <button type="submit" className="btn btn-primary mb-2">Verify</button>
+                        <button type="submit" name = "otpverify" value = "secondone" className="btn btn-primary mb-2" onClick={smsverify} >Verify</button>
                         {/* onClick={()=>props.props('a3')}  */}
                     </div>
                 </form>

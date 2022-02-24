@@ -1,4 +1,3 @@
-import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -22,7 +21,7 @@ const ResetPassword = (props) => {
     password2: "",
   };
   const resetSubmit = () => {
-    // handleFormSubmit("a3");
+    props.props('a4')
     console.log("You clicked submit.");
   };
 
