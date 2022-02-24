@@ -300,7 +300,8 @@ const handleClickShowPassword = () => {
                                     <Link
                                       className="special"
                                       role="link"
-                                      to="/forget"
+                                      to="#"
+                                      // to="/forget"
                                     >
                                       Forgot your password? Click here
                                     </Link>
