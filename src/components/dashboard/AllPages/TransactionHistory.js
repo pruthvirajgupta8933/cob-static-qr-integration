@@ -164,6 +164,18 @@ const pages = _.range(1, pageCount + 1)
   console.log(txnList.length)
 
 
+  const today = new Date()
+  const lastThreeMonth = new Date(today)
+  lastThreeMonth.setDate(lastThreeMonth.getDate() - 90)
+  lastThreeMonth.toLocaleDateString('en-ca')
+
+    
+  var month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
+  var day = lastThreeMonth.getUTCDate();
+  var year = lastThreeMonth.getUTCFullYear();
+ 
+  const finalDate = year +'-'+month+'-'+day; 
+
 
 
   return (
@@ -203,7 +215,9 @@ const pages = _.range(1, pageCount + 1)
                 <div className="col-lg-4 mrg-btm- bgcolor">
                   <label>From Date</label>
                   <input
+                  rel={finalDate}
                     type="date"
+                    min= {finalDate}
                     className="ant-input"
                     placeholder="From Date"
                     onChange={(e) => {
@@ -215,6 +229,8 @@ const pages = _.range(1, pageCount + 1)
                   <label>To Date</label>
                   <input
                     type="date"
+                   min= {finalDate}
+                   max= {new Date().toLocaleDateString('en-ca')}
                     className="ant-input"
                     placeholder="To Date"
                     onChange={(e) => {
