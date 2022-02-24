@@ -308,7 +308,7 @@ loadUser()
                    
                     <div style={{display:"flex" }}>
                         <div>
-                            <input onChange={getSearchTerm} type="text" placeholder="Search Here" style={{width: "600px", marginRight: "5em"}} />
+                            <input className='form-control' onChange={getSearchTerm} type="text" placeholder="Search Here" style={{width: "600px", marginRight: "5em"}} />
                         </div>
                         <div style={{margin:"0px ​4px 0px 18em"}}>
                             <span style={{marginRight:"5px"}}>Count per page</span>
