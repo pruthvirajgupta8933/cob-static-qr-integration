@@ -8,11 +8,13 @@ import {createClientProfile, updateClientProfile} from '../../../slices/auth'
 
 import profileService from '../../../services/profile.service'
 import { toast, Zoom } from 'react-toastify';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { logout } from '../../../slices/auth';
+import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 export const FormikApp = () => {
+  let { path, url } = useRouteMatch();
     const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
     const {fetchDcBankList,fetchNbBankList,verifyClientCode, verifyIfcsCode} = profileService
     const dispatch= useDispatch();
@@ -224,7 +226,7 @@ const validationSchema = Yup.object().shape({
     <main className="gx-layout-content ant-layout-content">
       <div className="gx-main-content-wrapper">
         <div className="right_layout my_account_wrapper">
-          <h1 className="right_side_heading">My Profile<button type="button" className="ant-btn change_password pull-right"><i className="icon icon-reset-password" /><span>Change Password</span></button></h1>
+          <h1 className="right_side_heading">My Profile <Link to={`/dashboard/change-password`}><button type="button" className="ant-btn change_password pull-right"><i className="icon icon-reset-password" /><span> Change Password</span></button></Link></h1>
           <div className="ant-tabs ant-tabs-top ant-tabs-line">
             <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
               <div className="ant-tabs-nav-container">

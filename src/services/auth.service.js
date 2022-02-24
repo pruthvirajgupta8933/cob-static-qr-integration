@@ -100,6 +100,11 @@ const fetchDcBankList=()=>{
 }
 
 
+const changePassword = (object) => {
+  // console.log("profileservice",object)
+  return axios.post('http://18.189.11.232:8080/auth-service/auth/change-password', object)
+};
+
 
 
 const authService = {
@@ -112,7 +117,8 @@ const authService = {
   verifyClientCode,
   fetchNbBankList,
   fetchDcBankList,
-  verifyIfcsCode
+  verifyIfcsCode,
+  changePassword
 };
 
 export default authService;

@@ -148,10 +148,33 @@ function Registration() {
 return (
   <>
     <HeaderPage />
-    <div className="container-fluid toppad">
+    <div className="container-fluid">
       <div className="row">
         <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
-          <div className="col-sm-7 authfy-panel-right push-right nopad">
+          <div className="col-sm-5 authfy-panel-left">
+            <div className="brand-col">
+              <div className="headline">
+                {/* brand-logo start */}
+                <div className="brand-logo">
+                  <img
+                    src={sabpaisalogo}
+                    width={150}
+                    alt="SabPaisa"
+                    title="SabPaisa"
+                  />
+                </div>
+                {/* ./brand-logo */}
+                <p style={{ fontSize: "20px", lineHeight: "20px" }}>
+                  Receive Payments, The Easy Way
+                </p>
+                <h1 style={{ fontSize: "26px" }}>A Payments Solution for</h1>
+                <h1 style={{ fontSize: "26px", whiteSpace: "10px" }}>
+                  Businesses,&nbsp;SMEs,&nbsp;Freelancers, Homepreneurs.
+                </h1>
+              </div>
+            </div>
+          </div>
+          <div className="col-sm-7- authfy-panel-right">
             {/* authfy-login start */}
             <div className="authfy-login">
               {/* panel-login start */}
@@ -280,44 +303,12 @@ return (
                                 </div>
                               </div>
                               <div className="sminputs">
-                                <div className="input full- optional">
-                                  <label
-                                    className="string optional"
-                                    htmlFor="user-name"
-                                  >
-                                    Mobile Number*
-                                  </label>
-                                  <Field
-                                    className="string optional"
-                                    maxLength={10}
-                                    id="user-name"
-                                    placeholder="Mobile Number"
-                                    name="mobilenumber"
-                                    type="text"
-                                    pattern="\d{10}"
-                                    size={10}
-                                    onKeyDown={(e) =>
-                                      ["e", "E", "+", "-", "."].includes(
-                                        e.key
-                                      ) && e.preventDefault()
-                                    }
-                                  />
-                                  {
-                                    <ErrorMessage name="mobilenumber">
-                                      {(msg) => (
-                                        <p
-                                          className="abhitest"
-                                          style={{
-                                            color: "red",
-                                            position: "absolute",
-                                            zIndex: " 999",
-                                          }}
-                                        >
-                                          {msg}
-                                        </p>
-                                      )}
-                                    </ErrorMessage>
-                                  }
+                              <div className="input full- optional">
+                                  <label className="string optional" htmlFor="user-name">Mobile Number*</label>
+                                  <Field className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" name = 'mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}/>
+                                  {<ErrorMessage name="mobilenumber">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                                 </div>
                                 <div className="input full- optional">
                                   <label
@@ -359,7 +350,7 @@ return (
                                     className="string optional"
                                     htmlFor="user-pw"
                                   >
-                                    Create Password *
+                                   Create Password *
                                   </label>
                                   <Field
                                     className="string optional"
@@ -465,14 +456,7 @@ return (
                                       />
                                     </span>{" "}
                                     I agree to the{" "}
-                                    <Link
-                                      to={{
-                                        pathname:
-                                          "https://sabpaisa.in/term-conditions/",
-                                      }}
-                                      className="special"
-                                      target="_blank"
-                                    >
+                                    <Link to={{pathname:"https://sabpaisa.in/term-conditions/"}} className="special" target="_blank" >
                                       Terms &amp; Conditions
                                     </Link>
                                   </span>
@@ -628,29 +612,6 @@ return (
               {/* ./panel-forgot */}
             </div>{" "}
             {/* ./authfy-login */}
-          </div>
-          <div className="col-sm-5 authfy-panel-left push-left">
-            <div className="brand-col">
-              <div className="headline">
-                {/* brand-logo start */}
-                <div className="brand-logo">
-                  <img
-                    src={sabpaisalogo}
-                    width={150}
-                    alt="SabPaisa"
-                    title="SabPaisa"
-                  />
-                </div>
-                {/* ./brand-logo */}
-                <p style={{ fontSize: "20px", lineHeight: "20px" }}>
-                  Receive Payments, The Easy Way
-                </p>
-                <h1 style={{ fontSize: "26px" }}>A Payments Solution for</h1>
-                <h1 style={{ fontSize: "26px", whiteSpace: "10px" }}>
-                  Businesses,&nbsp;SMEs,&nbsp;Freelancers, Homepreneurs.
-                </h1>
-              </div>
-            </div>
           </div>
         </div>
       </div>{" "}

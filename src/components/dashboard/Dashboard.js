@@ -20,6 +20,7 @@ import PaymentLinkDetail from './AllPages/createpaymentlink/PaymentLinkDetail';
 import Paylink from './AllPages/Paylink';
 import {FormikApp} from './AllPages/ProfileTest'
 import Emandate from './AllPages/Emandate';
+import ChangePassword from './AllPages/ChangePassword';
 
 
 
@@ -49,8 +50,11 @@ function Dashboard() {
                     <Home/>
                 </Route>
                 <Route exact path={`${path}/profile`}>
-                     {/* <Profile/> */}
+                     {/* <Profile/> we need to change after testing complete */} 
                      <FormikApp />
+                </Route>
+                <Route exact path={`${path}/change-password`}>
+                     <ChangePassword />
                 </Route>
                 <Route exact path={`${path}/transaction`}>
                      <Transaction/>

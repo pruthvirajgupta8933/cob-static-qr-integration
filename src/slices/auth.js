@@ -36,7 +36,8 @@ const auth = {
   otpVerified: false,
   isUserRegistered:null,
   subscriptionplandetail: [],
-  createClientProfile:[]
+  createClientProfile:[],
+  passwordChange:null,
 };
 
 
@@ -289,6 +290,32 @@ export const updateClientProfile = createAsyncThunk(
 
 /* ======End Profile Function ======= */
 
+// change password
+
+
+export const changePasswordSlice = createAsyncThunk(
+  "auth/changePasswordSlice",
+  async (data, thunkAPI) => {
+    try {
+      // console.log({ fromdate, todate, clientcode });===update fn call
+      console.log(data);
+      const response = await AuthService.changePassword(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+  
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+);
+
 
 
 
@@ -389,6 +416,18 @@ const authSlice = createSlice({
     },
     [updateClientProfile.rejected]:()=>{
       console.log('rejected profile');
+    },
+    [changePasswordSlice.fulfilled]:(state,action)=>{
+      console.log('fullfiled profile');
+      state.passwordChange = true;
+    },
+    [changePasswordSlice.pending]:(state)=>{
+      console.log('rejected profile');
+      state.passwordChange = null;
+    },
+    [changePasswordSlice.rejected]:(state)=>{
+      console.log('rejected profile');
+      state.passwordChange = false;
     },
 
   },
