@@ -93,6 +93,7 @@ const ResetPassword = (props) => {
                           aria-describedby="password2Help"
                           placeholder="Enter Confirm Password"
                         />
+                    
                         {/* <small
                           id="password2Help"
                           className="form-text text-muted"

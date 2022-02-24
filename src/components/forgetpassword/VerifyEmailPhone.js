@@ -1,4 +1,6 @@
 import React from 'react'
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 
 
@@ -33,7 +35,8 @@ function VerifyEmailPhone(props) {
                                 <label htmlFor="inputEmailOTP" className="sr-only">emailOTP</label>
                                 <input type="text" className="form-control" id="inputEmailOTP" placeholder="Email OTP" />
                             </div>
-                        <button type="submit" onClick={()=>props.props('a3')} className="btn btn-primary mb-2">Verify</button>
+                        <button type="submit" className="btn btn-primary mb-2">Verify</button>
+                        {/* onClick={()=>props.props('a3')} */}
                     </div>
 
                     <div className="form-inline">
@@ -45,7 +48,8 @@ function VerifyEmailPhone(props) {
                         <label htmlFor="inputSmsOtp2" className="sr-only">SMS OPT</label>
                         <input type="text" className="form-control" id="inputSmsOtp2" placeholder="SMS OTP" />
                         </div>
-                        <button type="submit"   onClick={()=>props.props('a3')}  className="btn btn-primary mb-2">Verify</button>
+                        <button type="submit" className="btn btn-primary mb-2">Verify</button>
+                        {/* onClick={()=>props.props('a3')}  */}
                     </div>
                 </form>
             <p className="card-text" style={{display: "none"}}>With supporting text below as a natural lead-in to additional content.</p>
