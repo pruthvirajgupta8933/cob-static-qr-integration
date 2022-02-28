@@ -1,25 +1,32 @@
 import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { getEmailToSendOtpSlice } from "../../slices/auth";
+import { useDispatch, useSelector } from "react-redux";
+
+
 
 const EnterUserID = (props) => {
   const { handleFormSubmit } = props;
+  const dispatch = useDispatch();
 
   const validationSchema = Yup.object().shape({
-    Email: Yup.string().email("Enter valid email").required("Required"),
+    username: Yup.string().required("Required"),
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = (data) => {
     console.log("You clicked");
-     props.props("a2");
+     props.props("a2",data);
+     dispatch(getEmailToSendOtpSlice(data));
   };
 
   const initialValues = {
-    Email: "",
+    username: "",
   };
 
+  // console.log(initialValues.username);
   return (
-    <div className="container-fluid bg-info">
+    <div className="container-fluid toppad">
       <div className="row ">
         <div className="col-sm-6 mx-auto">
           <div className="card ">
@@ -40,18 +47,18 @@ const EnterUserID = (props) => {
                     <Form>
                       <div className="form-group">
                         <label htmlFor="exampleInputEmail1">
-                          Email address
+                          Email address / Username
                         </label>
                         <Field
-                          name="Email"
-                          type="email"
+                          name="username"
+                          type="text"
                           className="form-control"
                           id="exampleInputEmail1"
                           aria-describedby="emailHelp"
                           placeholder="Enter email"
                         />
                         {
-                          <ErrorMessage name="Email">
+                          <ErrorMessage name="username">
                             {(msg) => (
                               <div
                                 className="abhitest"
@@ -74,7 +81,6 @@ const EnterUserID = (props) => {
                       <button
                         type="submit"
                         className="btn btn-primary"
-                       
                       >
                         Submit
                       </button>

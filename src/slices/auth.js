@@ -38,6 +38,19 @@ const auth = {
   subscriptionplandetail: [],
   createClientProfile:[],
   passwordChange:null,
+  forgotPassword:{
+    sendUserName:{
+      username:"",
+      isValid:null
+    },
+    otpVerify:{
+      emailOtp:null,
+      smsOtp:null,
+    },
+    createNewPassowrd:null,
+    isNewPasswordCreated:null,
+
+  }
 };
 
 
@@ -301,7 +314,6 @@ export const changePasswordSlice = createAsyncThunk(
       console.log(data);
       const response = await AuthService.changePassword(data);
       thunkAPI.dispatch(setMessage(response.data.message));
-  
       return response.data;
     } catch (error) {
       const message =
@@ -315,6 +327,84 @@ export const changePasswordSlice = createAsyncThunk(
     }
   }
 );
+
+
+// forgot password
+
+export const getEmailToSendOtpSlice = createAsyncThunk(
+  "auth/getEmailToSendOtp",
+  async(data,thunkAPI)=>{
+    try{
+      console.log("getEmailToSendOtp",data);
+      const response = await AuthService.getEmailToSendOTP(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      //save post username
+      response.data.username = data.username
+      return response.data;
+    }catch(error){
+      const message =
+      (error.response &&
+        error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+
+)
+
+
+
+
+export const verifyOtpOnForgotPwdSlice = createAsyncThunk(
+  "auth/verifyOtpOnForgotPwd",
+  async(data,thunkAPI)=>{
+    try{
+      console.log("verifyOtpOnForgotPwd",data);
+      const response = await AuthService.verifyOtpOnForgotPwd(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    }catch(error){
+      const message =
+      (error.response &&
+        error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+
+)
+
+
+
+export const createNewPasswordSlice = createAsyncThunk(
+  "auth/createNewPassword",
+  async(data,thunkAPI)=>{
+    try{
+      console.log("createNewPassword",data);
+      const response = await AuthService.changePassword(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      return response.data;
+    }catch(error){
+      const message =
+      (error.response &&
+        error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+
+)
+
+
 
 
 
@@ -429,6 +519,50 @@ const authSlice = createSlice({
       console.log('rejected profile');
       state.passwordChange = false;
     },
+
+    [getEmailToSendOtpSlice.fulfilled]:(state,action)=>{
+      const username = action.payload.username;
+      const status = action.payload.status;
+      state.forgotPassword.sendUserName.username = username;
+      state.forgotPassword.sendUserName.isValid = status ? true : false;
+      //state.passwordChange = true;
+    },
+    [getEmailToSendOtpSlice.pending]:(state)=>{
+      console.log('pending profile');
+      //state.passwordChange = null;
+    },
+    [getEmailToSendOtpSlice.rejected]:(state,action)=>{
+      console.log('rejected ',action);
+      state.forgotPassword.sendUserName.isValid = false;
+      //state.passwordChange = false;
+    },
+    
+    [verifyOtpOnForgotPwdSlice.fulfilled]:(state,action)=>{
+      console.log('fullfiled ',action);
+      // state.passwordChange = true;
+    },
+    [verifyOtpOnForgotPwdSlice.pending]:(state)=>{
+      console.log('pending profile');
+      // state.passwordChange = null;
+    },
+    [verifyOtpOnForgotPwdSlice.rejected]:(state)=>{
+      console.log('rejected profile');
+      // state.passwordChange = false;
+    },
+    
+    [createNewPasswordSlice.fulfilled]:(state,action)=>{
+      console.log('fullfiled',action);
+      // state.passwordChange = true;
+    },
+    [createNewPasswordSlice.pending]:(state)=>{
+      console.log('pending profile');
+      // state.passwordChange = null;
+    },
+    [createNewPasswordSlice.rejected]:(state)=>{
+      console.log('rejected profile');
+      // state.passwordChange = false;
+    },
+    
 
   },
 });

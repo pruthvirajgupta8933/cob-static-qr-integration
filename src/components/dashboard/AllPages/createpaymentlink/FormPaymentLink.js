@@ -4,6 +4,8 @@ import * as Yup from 'yup'
 import axios from "axios";
 import { toast } from 'react-toastify';
 import { Zoom } from "react-toastify";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 
 
@@ -15,6 +17,21 @@ function FormPaymentLink() {
  const [hours, setHours] = useState("");
  const [minutes, setMinutes] = useState("");
  const [passwordcheck, setPasswordCheck] = useState(false);
+
+ let history = useHistory();
+
+ const { user } = useSelector((state) => state.auth);
+
+ 
+ 
+ let clientSuperMasterList=[];
+ let clientCode ='';
+ if(user && user.clientSuperMasterList===null){
+     history.push('/dashboard/profile');
+   }else{
+     clientSuperMasterList = user.clientSuperMasterList;
+     clientCode =  clientSuperMasterList[0].clientCode;
+   }
 
  const validationSchema = Yup.object().shape({
     Amount: Yup.string().required("Required!"),
@@ -28,7 +45,7 @@ function FormPaymentLink() {
  const getDrop = async (e) => {
     await axios
       .get(
-        `https://paybylink.sabpaisa.in/paymentlink/getCustomers/LPSD1`
+        `https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`
       )
       .then((res) => {
         setDrop(res.data);
@@ -52,7 +69,7 @@ useEffect(() => {
     
 
      const response = await axios
-      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${e.Customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=LPSD1&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
+      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${e.Customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
       .then((response) => {
         toast.success("Payment Link Created!",
         {

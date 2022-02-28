@@ -13,12 +13,12 @@ const APIS_TEST = {
 
     SEND_EMAIL : "https://adminapi.sabpaisa.in/REST/Email/sendEmail",
     
-    SUBSCRIBE_FETCH_APP_AND_PLAN : "http://18.189.11.232:8081/client-subscription-service/subscribeFetchAppAndPlan",
-    FETCH_APP_AND_PLAN: "http://18.189.11.232:8081/client-subscription-service/fetchAppAndPlan",
-    SUBSCRIBE_SERVICE: "http://18.189.11.232:8081/client-subscription-service/subscribe",
+    SUBSCRIBE_FETCH_APP_AND_PLAN : "http://18.222.220.74:8081/client-subscription-service/subscribeFetchAppAndPlan",
+    FETCH_APP_AND_PLAN: "http://18.222.220.74:8081/client-subscription-service/fetchAppAndPlan",
+    SUBSCRIBE_SERVICE: "http://18.222.220.74:8081/client-subscription-service/subscribe",
     
 
-    // CLIENT_SUBSCRIPTION_SERVICE: "http://18.189.11.232:8081/client-subscription-service/",
+    // CLIENT_SUBSCRIPTION_SERVICE: "http://18.222.220.74:8081/client-subscription-service/",
     // AUTH_LOGIN: "https://spl.sabpaisa.in/auth-service/",
     // CLIENT_SUBSCRIPTION_SERVICE: "https://spl.sabpaisa.in/client-subscription-service/",
 }

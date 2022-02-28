@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SUBSCRIPTION_URL = "http://18.189.11.232:8081/client-subscription-service/";
+const SUBSCRIPTION_URL = "http://18.222.220.74:8081/client-subscription-service/";
 
 const subscriptionPlan = () => {
   return axios.get(SUBSCRIPTION_URL + "fetchAppAndPlan")

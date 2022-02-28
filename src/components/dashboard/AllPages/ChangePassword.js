@@ -113,7 +113,7 @@ const FORM_VALIDATION = Yup.object().shape({
                   <div role="tabpanel" aria-hidden="false" className="ant-tabs-tabpane ant-tabs-tabpane-active">
                     <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
                     </div>
-                    <div className="panel">
+                    <div className="container col-sm-8">
                       <Formik
                       enableReintialize="true"
                             initialValues={{
@@ -122,7 +122,8 @@ const FORM_VALIDATION = Yup.object().shape({
                             validationSchema={FORM_VALIDATION}
                             onSubmit={updataPassword}
                         >
-                      <Form>
+                      <Form className="form-horizontal">
+                    
                       <h4 className="text-left m-b-lg m-b-20">Update Your Password.</h4>
                         <Field
                           type="hidden"
@@ -135,46 +136,58 @@ const FORM_VALIDATION = Yup.object().shape({
                           disabled
                         />
 
-                      <div className="merchant-detail-container">
-                      Old Password : 
+                      <div className="form-group  col-sm-12">
+                        <label className="control-label col-sm-2" htmlFor="email">Old Password :</label>
+                        <div className="col-sm-10">
                         <Field
+
                           type="password"
                           name="old_password" 
                           placeholder="Enter Old Password" 
-                          style={{marginLeft: '10px', width: "398px"}}
+                          className="form-control"
                         />
                         <ErrorMessage name="old_password">
                             { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>                      
+                        </ErrorMessage>  
+                         </div>
                       </div>
+                     
 
-                      <div className="merchant-detail-container">
-                      New Password : 
+                      <div className="form-group  col-sm-12">
+                        <label className="control-label col-sm-2" htmlFor="newPassword">   New Password  :</label>
+                        <div className="col-sm-10">
                         <Field
                           type="password"
                           name="new_password"
                           placeholder="Enter New Password" 
-                          style={{marginLeft: '10px', width: "398px"}}
+                          className="form-control"
                         />
                         <ErrorMessage name="new_password">
                             { msg => <div className="error_msg_display" >{msg}</div> }
                         </ErrorMessage>  
+                         </div>
                       </div>
-                      <div className="merchant-detail-container">
-                      Confirm Password: 
+
+                      <div className="form-group  col-sm-12">
+                        <label className="control-label col-sm-2" htmlFor="changepassword"> Confirm Password :</label>
+                        <div className="col-sm-10">
                         <Field
                           type="password"
                           name="confirm_password" 
                           placeholder="Enter Confirm Password" 
-                          style={{marginLeft: '10px', width: "398px"}}
+                          className="form-control"
                         />
                           <ErrorMessage name="confirm_password">
                             { msg => <div className="error_msg_display" >{msg}</div> }
                         </ErrorMessage>  
+                         </div>
                       </div>
-
-                 
+                    
+                      <div className="form-group  ">
+                      <div className="col-sm-12">
                       <button type="sumbit" style={{margin: '10px', float: "right", width: '25%'}} className="btn btn-primary" > Update Password</button>
+                      </div>
+                      </div>
                           <br />
                         </Form>
                        </Formik>

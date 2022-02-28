@@ -31,8 +31,6 @@ function TransactionHistory() {
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
-  const [showData,setShowData] = useState([])
-  const [pageCount,setPageCount] = useState(0);
 
   function dayDiff(dateFrom, dateTo) {
     var from = new Date(dateFrom);
@@ -41,6 +39,7 @@ function TransactionHistory() {
     return Math.abs(diffInMs / (1000 * 60 * 60 * 24));
    }
    
+   const pageCount = filterList ? Math.ceil(filterList.length/pageSize) : 0;
 
   const getInputValue=(label,val)=>{
       if(label==='fromDate'){
@@ -141,29 +140,24 @@ const checkValidation = ()=>{
   
   useEffect(() => {
     console.log("dashboard redux udpate render");
-    console.log("txnlist",dashboard.transactionHistory);
-     setShowData(dashboard.transactionHistory);
-     SetTxnList(dashboard.transactionHistory);
-     setPaginatedData(_(dashboard.transactionHistory).slice(0).take(pageSize).value())
-     setPageCount(showData.length>0 ? Math.ceil(showData.length/pageSize) : 0)
-   
+    console.log("txnlist",dashboard.transactionHistory)
+    SetTxnList(dashboard.transactionHistory);
     //SetFilterList(dashboard.transactionHistory)
-
+    // setPaginatedData(_(dashboard.transactionHistory).slice(0).take(pageSize).value())
     // txnList.length > 0 ? setShow(true) : setShow(false)
 
   }, [dashboard])
   
-  console.log("showData",showData);
   
   useEffect(()=>{
-     setPaginatedData(_(showData).slice(0).take(pageSize).value())
- },[pageSize,showData]);
+    // setPaginatedData(_(filterList).slice(0).take(pageSize).value())
+ },[pageSize,filterList]);
 
  useEffect(() => {
   //  console.log("page chagne no")
   const startIndex = (currentPage - 1) * pageSize;
-  const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
-   setPaginatedData(paginatedPost);
+  const paginatedPost = _(filterList).slice(startIndex).take(pageSize).value();
+  // setPaginatedData(paginatedPost);
  
  }, [currentPage])
 
@@ -178,20 +172,21 @@ const checkValidation = ()=>{
 
 useEffect(() => {
   if(searchText !== ''){
-    setShowData( dashboard.transactionHistory.filter((txnItme)=>txnItme.txn_id.toLowerCase().includes(searchText.toLocaleLowerCase())))
+     SetFilterList( txnList.filter((txnItme)=>txnItme.txn_id.toLowerCase().includes(searchText.toLocaleLowerCase())))
     }
     else{
-      setShowData(dashboard.transactionHistory)
+      
+      SetFilterList(txnList)
     }
   //  txnList.length >0 ? setShow(true) : setShow(false)
   
-}, [searchText])
+}, [searchText,txnList])
 
 
  if ( pageCount === 1) return null;
 
 const pages = _.range(1, pageCount + 1)
-console.log("pages",pages)
+
  
 
 
@@ -218,7 +213,7 @@ console.log("pages",pages)
  
   const finalDate = year +'-'+month+'-'+day; 
 
-  // console.log('set 2 !');
+  console.log('set 2 !');
 
   return (
     <section className="ant-layout">
@@ -387,8 +382,8 @@ console.log("pages",pages)
                             <th> Payer Account No </th>
                             <th> Bank Txn Id </th>
                           </tr>
-                          {/* {console.log("filterList",filterList)} */}
-                          {txnList.length>0 && paginatedata.map((item,i)=>{return(
+                          {console.log("filterList",filterList)}
+                          {txnList.length>0 && filterList.map((item,i)=>{return(
                             <tr>
                             <td>{item.srNo}</td>
                             <td>{item.txn_id}</td>
@@ -503,8 +498,8 @@ console.log("pages",pages)
                       })}
                   </tbody>
                 </table> */}
-               {/* {console.log("show",show)} */}
-                {txnList.length>0  ? 
+               {console.log("show",show)}
+                {show ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
       
@@ -524,15 +519,13 @@ console.log("pages",pages)
                       
                       ))
                     }
-                
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href="#">
-                      Next</a> : <></> }
-                      
+                      <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href="#">
+                      Next</a>
                     </ul>
                   </nav>
                   : <></> }
                   {/* {console.log(filterList.length,txnList.length)} */}
-                {showData.length <= 0 || txnList.length <= 0 ? <div className='showMsg'>No Data Found</div> : <div></div>}
+                {filterList.length <= 0 || txnList.length <= 0 ? <div className='showMsg'>No Data Found</div> : <div></div>}
               </div>
             </div>
           </section>

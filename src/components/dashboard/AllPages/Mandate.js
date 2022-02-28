@@ -40,12 +40,14 @@ function Emandate(props) {
       mandateStartTime : data.mandateStartDate,
       mandateEndTime  : data.mandateEndDate,
   };
-  axios.post("http://18.189.11.232:8081/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
-            console.log(response);
+  axios.post("http://18.222.220.74:8081/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+            // console.log(response);
             setDisplayMsg('block');
-            
-        }).catch(error=>console.log(error))
-  console.log("post data trial",postData);
+            setTimeout(function() {
+              window.location.reload();
+            }, 3000);
+        }).catch(error=>alert("Subscribe Unsuccessful. Please contact to our support team."))
+  // console.log("post data trial",postData);
   }
 
   const onSubmit = (data) => {

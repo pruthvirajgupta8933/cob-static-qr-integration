@@ -87,7 +87,7 @@ const handleLogin = (formValue) => {
       // window.location.reload();
     })
     .catch((error) => {
-      toast.error('Login Unsucessful');
+      toast.error('Login Unsuccessful');
       setLoading(false);
     });
 };
@@ -297,14 +297,14 @@ const handleClickShowPassword = () => {
                                     LogIn
                                   </button>
                                   <span className="simform__actions-sidetext">
-                                    <Link
+                                    {/* <Link
                                       className="special"
                                       role="link"
                                       to="#"
                                       // to="/forget"
                                     >
                                       Forgot your password? Click here
-                                    </Link>
+                                    </Link> */}
                                   </span>
                                 </div>
                               </Form>

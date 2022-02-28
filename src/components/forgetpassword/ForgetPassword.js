@@ -8,7 +8,7 @@ import ThanksCard from "./ThanksCard";
 const ForgetPassword = () => {
   const [showCard, setShowCard] = useState("a1");
 
-  const handleFormSubmit = (currentCard) => {
+  const handleFormSubmit = (currentCard,data={}) => {
     setShowCard(currentCard);
     console.log("currentCard", currentCard);
   };

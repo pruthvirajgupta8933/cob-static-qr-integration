@@ -64,7 +64,7 @@ useEffect(() => {
         };
         console.log(postData)
 
-        axios.post("http://18.189.11.232:8081/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+        axios.post("http://18.222.220.74:8081/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
             console.log(response)
         }).catch(error=>console.log(error))
     }

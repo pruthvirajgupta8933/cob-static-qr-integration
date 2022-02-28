@@ -1,4 +1,6 @@
 import axios from "axios";
+import API_URL from "../config";
+
 const SIGNUP_URL = "https://cobtest.sabpaisa.in/auth-service/auth/";
 
 const register = (firstName, lastName, mobileNumber, email, password,businessType) => {
@@ -102,8 +104,26 @@ const fetchDcBankList=()=>{
 
 const changePassword = (object) => {
   // console.log("profileservice",object)
-  return axios.post('http://18.189.11.232:8080/auth-service/auth/change-password', object)
+  return axios.post(API_URL.AUTH_CHANGE_PASSWORD, object)
 };
+
+
+// forgot password function
+const getEmailToSendOTP=(object)=>{
+  // here we pass the valid email-id / username to send OTP on Phone number and email
+  return axios.post(API_URL.AUTH_GET_EMAIL_TO_SEND_OTP ,object)
+}
+
+
+const verifyOtpOnForgotPwd=(object)=>{
+  // here we pass received OTP on email / phone number
+  return axios.post(API_URL.AUTH_VERIFY_OTP_ON_FWD ,object)
+}
+
+const createNewPassword=(object)=>{
+  //CREATE NEW PASSWORD
+  return axios.post(API_URL.AUTH_CREATE_NEW_PASSWORD ,object)
+}
 
 
 
@@ -118,7 +138,11 @@ const authService = {
   fetchNbBankList,
   fetchDcBankList,
   verifyIfcsCode,
-  changePassword
+  changePassword,
+  getEmailToSendOTP,
+  verifyOtpOnForgotPwd,
+  createNewPassword
+
 };
 
 export default authService;
