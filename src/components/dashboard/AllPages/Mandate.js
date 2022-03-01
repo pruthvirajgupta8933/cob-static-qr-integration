@@ -40,7 +40,7 @@ function Emandate(props) {
       mandateStartTime : data.mandateStartDate,
       mandateEndTime  : data.mandateEndDate,
   };
-  axios.post("http://18.222.220.74:8081/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+  axios.post("https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
             // console.log(response);
             setDisplayMsg('block');
             setTimeout(function() {
