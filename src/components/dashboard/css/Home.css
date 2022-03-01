@@ -27,3 +27,6 @@ table.tables tr:nth-child(odd) {
 .my_account_wrapper .merchant-detail-container {
   justify-content: none !important;
 }
+.nopad{
+  padding: 0 8px 0 0 !important;
+}

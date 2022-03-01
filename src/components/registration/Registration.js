@@ -33,8 +33,8 @@ const INITIAL_FORM_STATE = {
 // }
 
 const FORM_VALIDATION = Yup.object().shape({
-  firstname: Yup.string().required("Required"),
-  lastname: Yup.string().required("Required"),
+  firstname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
+  lastname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
   mobilenumber: Yup.string().required("Required").matches(phoneRegExp, 'Phone number is not valid')
   .min(10, "Too short")
   .max(10, "too long"),
@@ -304,8 +304,8 @@ return (
                               </div>
                               <div className="sminputs">
                               <div className="input full- optional">
-                                  <label className="string optional" htmlFor="user-name">Mobile Number*</label>
-                                  <Field className="string optional" maxLength={10} id="user-name" placeholder="Mobile Number" name = 'mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}/>
+                                  <label className="string optional" htmlFor="mobile">Mobile Number*</label>
+                                  <Field className="string optional" maxLength={10} id="mobile" placeholder="Mobile Number" name = 'mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}/>
                                   {<ErrorMessage name="mobilenumber">
                                                 {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
                                             </ErrorMessage>}

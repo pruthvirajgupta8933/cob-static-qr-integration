@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -28,6 +28,7 @@ function SettlementReport() {
     var [showFilterData,SetShowFilterData] =React.useState([]); 
     const [selectedFolder,SetSelectedFolder] = React.useState('');
     const [selectedSubFolder,SetSelectedSubFolder] = React.useState('');
+    const [searchFilterData,setSearchFilterData] = React.useState([]);
     let history = useHistory();
 
    
@@ -52,16 +53,27 @@ function SettlementReport() {
         });
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
       getFileName();
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
       data.filter((item) => {
         folderArr.push(item.folder);
       });
       setFolderArr([...new Set(folderArr)]);
     }, [data]);
+
+    useEffect(() => {
+      if (searchArea !== "") {
+        const data = showFilterData.filter((item) =>item.file_name.toLowerCase().includes(searchArea.toLocaleLowerCase()));
+
+        console.log("data",data);
+        setSearchFilterData(data);
+      }else{
+        setSearchFilterData(showFilterData)
+      }
+    }, [searchArea])
 
     const onChangeFolder = (val) => {
       SetSelectedFolder(val);
@@ -75,7 +87,7 @@ function SettlementReport() {
     };
     // console.log('subFolderArr',subFolderArr);
 
-    React.useEffect(() => {
+  useEffect(() => {
       showFilterData = [];
       data.filter((item) => {
         if (
@@ -88,35 +100,31 @@ function SettlementReport() {
       });
 
       SetShowFilterData(showFilterData);
+      setSearchFilterData(showFilterData);
     }, [selectedSubFolder, selectedFolder]);
 
+
+    console.log("showFilterData",showFilterData);
     const getSearchTerm = (e) => {
       setSearchArea(e.target.value);
 
-      if (searchArea !== "") {
-        SetShowFilterData(
-          data.filter((item) =>
-            item.file_name
-              .toLowerCase()
-              .includes(searchArea.toLocaleLowerCase())
-          )
-        );
-      }
+    
 
+ 
+      
       // setSearchResults(newDataList);
     };
 
     return (
       <section className="ant-layout">
         <div className="profileBarStatus"></div>
-        <h1
-          style={{ position: "absolute", top: 70, left: 250, fontSize: "21px" }}
-        >
-          Settlement Report
-        </h1>
-        <hr />
-        <label For="folder "></label>
-
+        <div className='col-lg-12 row- bgcolor'>
+        <h1>
+            Settlement Report
+          </h1>
+          <hr />
+          <label For="folder "></label>
+          <div className='col-lg-3 nopad'>
         <select
           value={selectedFolder}
           className="ant-input"
@@ -128,8 +136,8 @@ function SettlementReport() {
 
           <input type="text" placeholder="Search.." />
         </select>
-
-        <div>
+</div>
+        <div className='col-lg-3 nopad'>
           <label For="folder"></label>
           <select
             onChange={(event) => SetSelectedSubFolder(event.target.value)}
@@ -142,7 +150,8 @@ function SettlementReport() {
                 <option value={subfolder}>{subfolder}</option>
               ))}
           </select>
-        </div>
+          </div>
+<div className='col-lg-3 nopad'>
         <input
           type="text"
           value={searchArea}
@@ -151,7 +160,8 @@ function SettlementReport() {
           onChange={getSearchTerm}
         />
         {showFilterData.filter}
-
+        </div>
+<div className='col-lg-3 nopad'>
         <select className="ant-input">
           <option value="10">10</option>
           <option value="20">20</option>
@@ -164,14 +174,10 @@ function SettlementReport() {
           <option value="70">400</option>
           <option value="70">500</option>
         </select>
-
+</div>
         
-
-        
-        <div>
-          <table
-            style={{ position: "absolute", top: 300, left: 250, width: 550 }}
-          >
+       
+          <table cellPadding="10" cellspacing="0" width="100%" className="tables col-lg-12 mar-top">
             <tr>
               <th>S.No</th>
               <th>Client Code</th>
@@ -180,8 +186,8 @@ function SettlementReport() {
               <th>Action</th>
             </tr>
             <br />
-            {showFilterData.length > 0 ? (
-              showFilterData.map((user, i) => (
+            {searchFilterData.length > 0 ? (
+              searchFilterData.map((user, i) => (
                 <tr key={user.Id}>
                   <td>{i + 1}</td>
                   <td>{user.client_code} </td>

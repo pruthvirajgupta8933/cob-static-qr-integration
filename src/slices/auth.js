@@ -340,7 +340,7 @@ export const getEmailToSendOtpSlice = createAsyncThunk(
       thunkAPI.dispatch(setMessage(response.data.message));
       //save post username
       response.data.username = data.username
-      console.log("getEmailToSendOtp-response",response)
+      console.log("getEmailToSendOtp-response",response.headers)
       return response.data;
     }catch(error){
       const message =
