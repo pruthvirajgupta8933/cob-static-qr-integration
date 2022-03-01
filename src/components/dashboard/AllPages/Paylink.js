@@ -18,8 +18,7 @@ function Paylink() {
           history.push('/dashboard/profile');
     } 
     
-    
-
+   
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">
@@ -33,16 +32,16 @@ function Paylink() {
                         <h2 style={{marginLeft: 30}}>Create Payment Link</h2>
                         <ul className="nav nav-tabs">
                             <li className="nav-item">
-                            <a className="nav-link " onClick={()=>SetTab(1)} >Payment Detail</a>
+                            <a className={"nav-link " +  (tab===1? "activepaylink":"inactive") } onClick={()=>SetTab(1)} >Payment Detail</a>
                             </li>
                             <li className="nav-item">
-                            <a className="nav-link"onClick={()=>SetTab(2)} >Payment Link Detail</a>
+                            <a className={"nav-link " +  (tab===2? "activepaylink":"inactive") } onClick={()=>SetTab(2)} >Payment Link Detail</a>
                             </li>
                             <li className="nav-item">
-                            <a className="nav-link" onClick={()=>SetTab(3)}>Import Bulk Payer</a>
+                            <a className={"nav-link " +  (tab===3? "activepaylink":"inactive") }  onClick={()=>SetTab(3)}>Import Bulk Payer</a>
                             </li>
                             <li className="nav-item">
-                            <a className="nav-link " onClick={()=>SetTab(4)}>Reports</a>
+                            <a className={"nav-link " +  (tab===4? "activepaylink":"inactive") } onClick={()=>SetTab(4)}>Reports</a>
                             </li>
                         </ul>
                         </div>

@@ -1,3 +1,11 @@
+/* create payment link */
+.activepaylink {
+    background: #b3b3ca !important;
+      border: none !important;
+      padding: 8px !important;
+      font-size: 14px !important;
+  }
+
 .flag,
 .flag.flag-24 {
     display: inline-block;
@@ -55130,3 +55138,4 @@ select {
 .toppad{
     padding-top:10px;
 }
+

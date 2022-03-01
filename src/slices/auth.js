@@ -340,6 +340,7 @@ export const getEmailToSendOtpSlice = createAsyncThunk(
       thunkAPI.dispatch(setMessage(response.data.message));
       //save post username
       response.data.username = data.username
+      console.log("getEmailToSendOtp-response",response)
       return response.data;
     }catch(error){
       const message =
@@ -365,6 +366,7 @@ export const verifyOtpOnForgotPwdSlice = createAsyncThunk(
       console.log("verifyOtpOnForgotPwd",data);
       const response = await AuthService.verifyOtpOnForgotPwd(data);
       thunkAPI.dispatch(setMessage(response.data.message));
+      console.log("verifyOtpOnForgotPwd",response)
       return response.data;
     }catch(error){
       const message =
@@ -389,6 +391,7 @@ export const createNewPasswordSlice = createAsyncThunk(
       console.log("createNewPassword",data);
       const response = await AuthService.changePassword(data);
       thunkAPI.dispatch(setMessage(response.data.message));
+      console.log("getEmailToSendOtp-response",response)
       return response.data;
     }catch(error){
       const message =

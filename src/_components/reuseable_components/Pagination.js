@@ -37,7 +37,7 @@ function Pagination(props) {
     setPaginatedData(_(data).slice(0).take(pageSize).value())
   },[pageSize]);
 
-  if ( pageCount === 1) return null;
+  // if ( pageCount === 1) return null;
   const pages = _.range(1, pageCount + 1)
   var tableContent = (   <table class='table' style={{marginLeft: 10}}>
   {/* table head */}

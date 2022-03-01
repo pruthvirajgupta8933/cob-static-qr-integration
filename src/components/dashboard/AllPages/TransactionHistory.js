@@ -119,7 +119,7 @@ const checkValidation = ()=>{
               ref1:0,
               ref2:0
             }
-            console.log(paramData);
+            // console.log(paramData);
             dispatch(fetchTransactionHistorySlice(paramData))
           //   await axios.get(`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`)  
           // .then(res => {  
@@ -140,23 +140,20 @@ const checkValidation = ()=>{
   } 
   
   useEffect(() => {
-    console.log("dashboard redux udpate render");
-    console.log("txnlist",dashboard.transactionHistory);
+    // console.log("dashboard redux udpate render");
+    // console.log("txnlist",dashboard.transactionHistory);
      setShowData(dashboard.transactionHistory);
      SetTxnList(dashboard.transactionHistory);
      setPaginatedData(_(dashboard.transactionHistory).slice(0).take(pageSize).value())
-     setPageCount(showData.length>0 ? Math.ceil(showData.length/pageSize) : 0)
-   
-    //SetFilterList(dashboard.transactionHistory)
-
-    // txnList.length > 0 ? setShow(true) : setShow(false)
-
+    
   }, [dashboard])
   
-  console.log("showData",showData);
+  // console.log("showData",showData);
   
   useEffect(()=>{
      setPaginatedData(_(showData).slice(0).take(pageSize).value())
+     setPageCount(showData.length>0 ? Math.ceil(showData.length/pageSize) : 0)
+
  },[pageSize,showData]);
 
  useEffect(() => {
@@ -172,8 +169,16 @@ const checkValidation = ()=>{
  useEffect(() => {     
   getPaymentStatusList();
   paymodeList();  
-  txnList.length >0 ? setShow(true) : setShow(false)
+  // txnList.length >0 ? setShow(true) : setShow(false)
 }, [])
+
+useEffect(() => {
+  console.log("length",txnList.length);
+  txnList.length > 0 ? setShow(true) : setShow(false)
+ console.log("show",show)
+
+}, [txnList])
+
 
 
 useEffect(() => {
@@ -188,7 +193,7 @@ useEffect(() => {
 }, [searchText])
 
 
- if ( pageCount === 1) return null;
+//  if ( pageCount === 1) return null;
 
 const pages = _.range(1, pageCount + 1)
 console.log("pages",pages)
@@ -429,7 +434,7 @@ console.log("pages",pages)
                 </table>
                 </div>
                 
-                {/* <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables" id="table-to-xls" style={{display: 'none'}}>
+                <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables" id="table-to-xls" style={{display: 'none'}}>
                     <tbody><tr>
                             <th> S.No </th>
                             <th> Trans ID </th>
@@ -502,7 +507,8 @@ console.log("pages",pages)
                         );
                       })}
                   </tbody>
-                </table> */}
+                </table>
+                <div>
                {/* {console.log("show",show)} */}
                 {txnList.length>0  ? 
                     <nav aria-label="Page navigation example"  >
@@ -511,26 +517,31 @@ console.log("pages",pages)
                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
                     { 
 
-                      pages.map((page,i) => (
+
+
+                      pages.slice(currentPage-1,currentPage+6).map((page,i) => (
                         <li className={
                           page === currentPage ? " page-item active" : "page-item"
                         }> 
-                            <a className="page-link">  
+                      {console.log("currentPage",currentPage)}
+                      {console.log("page",page)}
+                            <a className={`page-link data_${i}`} >  
                               <p onClick={() => pagination(page)}>
                               {page}
                               </p>
                             </a>
-                          </li>
+                        </li>
                       
                       ))
                     }
-                
+
                 { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href="#">
                       Next</a> : <></> }
                       
                     </ul>
                   </nav>
                   : <></> }
+                  </div>
                   {/* {console.log(filterList.length,txnList.length)} */}
                 {showData.length <= 0 || txnList.length <= 0 ? <div className='showMsg'>No Data Found</div> : <div></div>}
               </div>

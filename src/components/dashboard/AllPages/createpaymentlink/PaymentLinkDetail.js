@@ -50,7 +50,6 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 
 
 
-
   useEffect(() => {
   
     if(searchText !== ''){
@@ -91,7 +90,7 @@ useEffect(() => {
 
 
 
-if ( pageCount === 1) return null;
+// if ( pageCount === 1) return null;
 
 const pages = _.range(1, pageCount + 1)
 
@@ -165,7 +164,7 @@ const pages = _.range(1, pageCount + 1)
           <th>Customer Name</th>
           <th>Full Link</th>
         </tr>
-
+       
         {paginatedata.map((user,i) => (
           <tr>
             <td>{i+1}</td>

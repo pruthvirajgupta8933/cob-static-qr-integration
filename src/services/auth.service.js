@@ -111,7 +111,8 @@ const changePassword = (object) => {
 // forgot password function
 const getEmailToSendOTP=(object)=>{
   // here we pass the valid email-id / username to send OTP on Phone number and email
-  return axios.post(API_URL.AUTH_GET_EMAIL_TO_SEND_OTP ,object)
+  return axios.post(API_URL.AUTH_GET_EMAIL_TO_SEND_OTP ,object,{
+    withCredentials: true})
 }
 
 
