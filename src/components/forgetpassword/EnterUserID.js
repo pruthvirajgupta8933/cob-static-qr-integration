@@ -15,7 +15,7 @@ const EnterUserID = (props) => {
   });
 
   const handleSubmit = (data) => {
-    console.log("You clicked");
+    // console.log("You clicked");
      props.props("a2",data);
      dispatch(getEmailToSendOtpSlice(data));
   };
@@ -38,7 +38,6 @@ const EnterUserID = (props) => {
                 validationSchema={validationSchema}
                 onSubmit={(values, { resetForm }) => {
                   handleSubmit(values);
-                  console.log(values);
                   resetForm();
                 }}
               >

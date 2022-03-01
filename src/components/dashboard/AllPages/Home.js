@@ -39,7 +39,7 @@ function Home() {
     var DefaulttxnList = [];
     SetTxnList(DefaulttxnList);
     SetShowData(DefaulttxnList);
-    console.log(objParam);
+    // console.log(objParam);
     dispatch(subscriptionplan);
     dispatch(successTxnSummary(objParam));
   }, [clientCode]);

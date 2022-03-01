@@ -34,7 +34,7 @@ const ReceiptWalchand = () => {
     const [data, setData] = useState([]);
     
 
-    console.log(data);
+    // console.log(data);
 
     const onSubmit = async (pnrId) => {
           const response = await axios.get(`https://qwikforms.in/QwikForms/fetchDataForWACOE?PRNNum=${pnrId}`)
@@ -53,7 +53,7 @@ const ReceiptWalchand = () => {
                     })
                 })
 
-                console.log('afterupdate',resData)
+                // console.log('afterupdate',resData)
                 setInterval(() => {
                     setData(resData);
                     setIsShow(true);
@@ -155,7 +155,7 @@ const ReceiptWalchand = () => {
                             show &&
                             data.map((user,i) => (
                                 <>
-                            {console.log(user)}
+                            {/* {console.log(user)} */}
                                     <div className='card'>
                                         <div className='card-body table-responsive'>
                                             <h3>TRANSACTION RECEIPT</h3>

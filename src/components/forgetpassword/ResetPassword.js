@@ -22,7 +22,7 @@ const ResetPassword = (props) => {
   };
   const resetSubmit = () => {
     props.props('a4')
-    console.log("You clicked submit.");
+    // console.log("You clicked submit.");
   };
 
   return (
@@ -38,7 +38,6 @@ const ResetPassword = (props) => {
                 validationSchema={validationSchema}
                 onSubmit={(values, { resetForm }) => {
                   resetSubmit(values);
-                  console.log(values);
                   resetForm();
                 }}
               >

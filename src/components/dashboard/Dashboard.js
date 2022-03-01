@@ -34,11 +34,11 @@ function Dashboard() {
 //   user!==null && user?. return (<Redirect to="/login-page" />)
      // console.log(user);
   if(user!==null && user.userAlreadyLoggedIn){
-     console.log('funciton dashboard call');
+    //  console.log('funciton dashboard call');
      // history.push("/login-page");  
      return <Redirect to="/login-page" />
   }else if(user===null){
-     console.log('2 funciton dashboard call');
+    //  console.log('2 funciton dashboard call');
      return <Redirect to="/login-page" />
   }
 

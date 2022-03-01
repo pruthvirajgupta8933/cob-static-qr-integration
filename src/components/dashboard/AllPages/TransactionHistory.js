@@ -173,9 +173,9 @@ const checkValidation = ()=>{
 }, [])
 
 useEffect(() => {
-  console.log("length",txnList.length);
+  // console.log("length",txnList.length);
   txnList.length > 0 ? setShow(true) : setShow(false)
- console.log("show",show)
+//  console.log("show",show)
 
 }, [txnList])
 
@@ -196,7 +196,7 @@ useEffect(() => {
 //  if ( pageCount === 1) return null;
 
 const pages = _.range(1, pageCount + 1)
-console.log("pages",pages)
+// console.log("pages",pages)
  
 
 
@@ -355,7 +355,7 @@ console.log("pages",pages)
                       <option value="100">100</option>
                     </select>
                   </div> </React.Fragment> : <></> }
-                  {console.log("paginatedata",paginatedata)}
+                  {/* {console.log("paginatedata",paginatedata)} */}
                   <div style={{overflow:"auto"}} > 
                   <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables" >
                     <tbody><tr>
@@ -523,8 +523,8 @@ console.log("pages",pages)
                         <li className={
                           page === currentPage ? " page-item active" : "page-item"
                         }> 
-                      {console.log("currentPage",currentPage)}
-                      {console.log("page",page)}
+                      {/* {console.log("currentPage",currentPage)} */}
+                      {/* {console.log("page",page)} */}
                             <a className={`page-link data_${i}`} >  
                               <p onClick={() => pagination(page)}>
                               {page}

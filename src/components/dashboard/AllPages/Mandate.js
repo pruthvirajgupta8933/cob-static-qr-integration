@@ -10,13 +10,13 @@ function Emandate(props) {
   const [formData, setFormData] = useState({});
 
   const [displayMsg,setDisplayMsg]=useState("none" );
-  console.log("isModelClosed",formData.isModelClosed);
+  // console.log("isModelClosed",formData.isModelClosed);
   useEffect(() => {
     setDisplayMsg(formData.isModelClosed ? 'block':'none');
   }, [formData])
   
 
-  console.log("displayMsg",displayMsg);
+  // console.log("displayMsg",displayMsg);
   const saveTrialPlanData = (data)=>{
 
     const postData = {
@@ -51,7 +51,7 @@ function Emandate(props) {
   }
 
   const onSubmit = (data) => {
-    console.log(formData.planType)
+    // console.log(formData.planType)
     if(formData.termAndCnd){
 
       const planData = {
@@ -64,7 +64,7 @@ function Emandate(props) {
       if(typeof formData.planId==='undefined'){
         alert("please Select the valid plan");
       }else{
-        console.log("formData",formData);
+        // console.log("formData",formData);
         if(formData.planType.toLowerCase() ==='trial'){
           saveTrialPlanData(formData);
         }else{

@@ -14,7 +14,7 @@ function ChangePassword() {
   let { path, url } = useRouteMatch();
   const { user ,passwordChange} = useSelector((state) => state.auth);
 
-console.log(passwordChange);
+// console.log(passwordChange);
   const { clientSuperMasterList ,
           loginId,
           userName,

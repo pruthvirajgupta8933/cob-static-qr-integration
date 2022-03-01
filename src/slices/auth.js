@@ -165,7 +165,7 @@ export const createClientProfile = createAsyncThunk(
   "auth/createClientProfile",
   async (data, thunkAPI) => {
     try {
-      console.log('a-senddata',data);
+      // console.log('a-senddata',data);
       const response = await AuthService.createClintCode(data);
       thunkAPI.dispatch(setMessage(response.data.message));
 
@@ -182,7 +182,7 @@ export const createClientProfile = createAsyncThunk(
       allData.pan = data.pan;
       allData.clientMobileNo = data.phone;
      
-      console.log("allData--s",allData);
+      // console.log("allData--s",allData);
       const clientSuperMasterListObj = {
         "clientId": null,
         "lookupState": null,
@@ -213,7 +213,7 @@ export const createClientProfile = createAsyncThunk(
       };
 
       const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
-      console.log("mergeClientSuperMasterList",mergeClientSuperMasterList)
+      // console.log("mergeClientSuperMasterList",mergeClientSuperMasterList)
       const clientSuperMasterList =  [mergeClientSuperMasterList];
       allData.clientSuperMasterList = clientSuperMasterList;
       localStorage.setItem("user", JSON.stringify(allData))
@@ -237,17 +237,17 @@ export const updateClientProfile = createAsyncThunk(
   "auth/updateClientProfile",
   async ({data,clientId}, thunkAPI) => {
     try {
-      console.log("update functon",data);
-      console.log("update functon",clientId);
+      // console.log("update functon",data);
+      // console.log("update functon",clientId);
       // console.log({ fromdate, todate, clientcode });===update fn call
       const response = await AuthService.updateClientProfile(data,clientId);
       thunkAPI.dispatch(setMessage(response.data.message));
       const userLocalData = JSON.parse(localStorage?.getItem("user"));
       const allData = Object.assign(userLocalData,data);
-      console.log("userLocalData",userLocalData);
-      console.log("data",data);
-      console.log("response.data",response.data);
-      console.log("all data",allData);
+      // console.log("userLocalData",userLocalData);
+      // console.log("data",data);
+      // console.log("response.data",response.data);
+      // console.log("all data",allData);
 
       const clientSuperMasterListObj = {
         "clientId": clientId,
@@ -279,10 +279,10 @@ export const updateClientProfile = createAsyncThunk(
       };
 
       const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
-      console.log("mergeClientSuperMasterList",mergeClientSuperMasterList)
+      // console.log("mergeClientSuperMasterList",mergeClientSuperMasterList)
       const clientSuperMasterList =  [mergeClientSuperMasterList];
       allData.clientSuperMasterList = clientSuperMasterList;
-      console.log("after update user",allData);
+      // console.log("after update user",allData);
       localStorage.setItem("user", JSON.stringify(allData))
 
       return allData;
@@ -311,7 +311,7 @@ export const changePasswordSlice = createAsyncThunk(
   async (data, thunkAPI) => {
     try {
       // console.log({ fromdate, todate, clientcode });===update fn call
-      console.log(data);
+      // console.log(data);
       const response = await AuthService.changePassword(data);
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
@@ -340,7 +340,7 @@ export const getEmailToSendOtpSlice = createAsyncThunk(
       thunkAPI.dispatch(setMessage(response.data.message));
       //save post username
       response.data.username = data.username
-      console.log("getEmailToSendOtp-response",response.headers)
+      // console.log("getEmailToSendOtp-response",response.headers)
       return response.data;
     }catch(error){
       const message =

@@ -81,7 +81,7 @@ useEffect(()=>{
 },[pageSize]);
 
 useEffect(() => {
-  console.log("page chagne no")
+  // console.log("page chagne no")
   const startIndex = (currentPage - 1) * pageSize;
  const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
  setPaginatedData(paginatedPost);

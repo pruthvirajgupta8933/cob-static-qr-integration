@@ -121,7 +121,7 @@ function Registration() {
   
 
   useEffect(() => {
-    console.log("isUserRegistered",isUserRegistered);
+    // console.log("isUserRegistered",isUserRegistered);
     if(isUserRegistered === true) {
     toast.success("User Registered, Verify Your Email", {
       position: "top-right",

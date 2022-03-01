@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 
 export const Edituser = (props) => {
     let history = useHistory();
-    console.log(props.items);
+    // console.log(props.items);
 
     // const [formData, setFormData] = useState();
     // useEffect(() => {
@@ -77,7 +77,7 @@ export const Edituser = (props) => {
             id: id
         })
        
-        console.log(res.data);
+        // console.log(res.data);
     };
     const getDrop = async (e) => {
         await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes`)
@@ -94,7 +94,7 @@ export const Edituser = (props) => {
         getDrop();
     }, []);
 
-    console.log("username", username);
+    // console.log("username", username);
 
     return (
         <div class="modal fade" id="web" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

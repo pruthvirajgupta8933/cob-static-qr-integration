@@ -62,10 +62,10 @@ useEffect(() => {
             mandateStartTime : ArrayToDate(details.mandateStartDate),
             mandateEndTime  : ArrayToDate(details.mandateEndDate),
         };
-        console.log(postData)
+        // console.log(postData)
 
         axios.post("http://18.222.220.74:8081/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
-            console.log(response)
+            // console.log(response)
         }).catch(error=>console.log(error))
     }
 

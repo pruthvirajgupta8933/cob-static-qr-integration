@@ -118,7 +118,7 @@ const checkValidation = ()=>{
               ref1:0,
               ref2:0
             }
-            console.log(paramData);
+            // console.log(paramData);
             dispatch(fetchTransactionHistorySlice(paramData))
           //   await axios.get(`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`)  
           // .then(res => {  
@@ -139,8 +139,8 @@ const checkValidation = ()=>{
   } 
   
   useEffect(() => {
-    console.log("dashboard redux udpate render");
-    console.log("txnlist",dashboard.transactionHistory)
+    // console.log("dashboard redux udpate render");
+    // console.log("txnlist",dashboard.transactionHistory)
     SetTxnList(dashboard.transactionHistory);
     //SetFilterList(dashboard.transactionHistory)
     // setPaginatedData(_(dashboard.transactionHistory).slice(0).take(pageSize).value())
@@ -213,7 +213,7 @@ const pages = _.range(1, pageCount + 1)
  
   const finalDate = year +'-'+month+'-'+day; 
 
-  console.log('set 2 !');
+  // console.log('set 2 !');
 
   return (
     <section className="ant-layout">
@@ -345,7 +345,7 @@ const pages = _.range(1, pageCount + 1)
                       <option value="100">100</option>
                     </select>
                   </div> </React.Fragment> : <></> }
-                  {console.log("paginatedata",paginatedata)}
+                  {/* {console.log("paginatedata",paginatedata)} */}
                   <div style={{overflow:"auto"}} > 
                   <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables" >
                     <tbody><tr>
@@ -382,7 +382,7 @@ const pages = _.range(1, pageCount + 1)
                             <th> Payer Account No </th>
                             <th> Bank Txn Id </th>
                           </tr>
-                          {console.log("filterList",filterList)}
+                          {/* {console.log("filterList",filterList)} */}
                           {txnList.length>0 && filterList.map((item,i)=>{return(
                             <tr>
                             <td>{item.srNo}</td>
@@ -498,7 +498,7 @@ const pages = _.range(1, pageCount + 1)
                       })}
                   </tbody>
                 </table> */}
-               {console.log("show",show)}
+               {/* {console.log("show",show)} */}
                 {show ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">

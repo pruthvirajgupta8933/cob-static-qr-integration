@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import _, { map } from 'lodash';
 
 function Pagination(props) {
-    console.log(props);
+    // console.log(props);
     const {data,tableHeader,tableBody} = props.paginationProps;
     const [pageSize, setPageSize] = useState(10);
     const [paginatedata, setPaginatedData] = useState([])

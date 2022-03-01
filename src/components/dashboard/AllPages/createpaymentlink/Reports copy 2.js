@@ -60,7 +60,7 @@ const pagination = (pageNo) => {
   .then(res => {     
     setData(res.data);  
     setPaginatedData(_(res.data).slice(0).take(pageSize).value())
-    console.log(res.data)
+    // console.log(res.data)
 
   })  
   .catch(err => {  

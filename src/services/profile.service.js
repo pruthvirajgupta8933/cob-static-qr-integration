@@ -4,7 +4,7 @@ const BASE_URL = "https://cobtest.sabpaisa.in/auth-service/client";
 const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
 
 const createClintCode = (object) => {
-  console.log("profileservice",object)
+  // console.log("profileservice",object)
   return axios.post(BASE_URL + "/create", object)
 };
 

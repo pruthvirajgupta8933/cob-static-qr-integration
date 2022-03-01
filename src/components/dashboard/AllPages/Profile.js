@@ -40,7 +40,7 @@ function Profile() {
 
   
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-console.log(clientSuperMasterList && clientSuperMasterList[0]?.address)
+// console.log(clientSuperMasterList && clientSuperMasterList[0]?.address)
 const INITIAL_FORM_STATE = {
   loginId:loginId,
   clientName:clientContactPersonName,
@@ -104,7 +104,7 @@ const FORM_VALIDATION = Yup.object().shape({
   const createorUpdateProfile = (data) => {
     // console.log(isCreateorUpdate)
     // console.log("send client id",clientId);
-    console.log("send data",data);
+    // console.log("send data",data);
     // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
   };
 

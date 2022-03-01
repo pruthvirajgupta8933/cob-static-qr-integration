@@ -69,8 +69,8 @@ let history = useHistory();
       isMerchantChargeBearer: true,
     };
 
-    console.log(linkdata);
-
+    // console.log(linkdata);
+    toast.info("Please Wait...")
     const response = await axios
       .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
         Amount:e.Amount,
@@ -83,8 +83,8 @@ let history = useHistory();
       
       
       .then((response) => {
-        toast.success("Payment Link Created!")
-        console.log(JSON.stringify(response.data));
+        toast.success(response.data.message)
+        // console.log(JSON.stringify(response.data));
       })
       .catch((error) => {
         console.log(error);
@@ -249,6 +249,7 @@ let history = useHistory();
                       <br />
                       <select style={{ width: 80 }} value={hours} onChange={(e) => setHours(e.target.value)}>
                         <option selected>Hours</option>
+                        <option value="00">00</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
                         <option value="03">03</option>
@@ -310,7 +311,7 @@ let history = useHistory();
                         <option value="23">23</option>
                         <option value="24">24</option>
                         <option value="25">25</option>
-                        <option value="2">26</option>
+                        <option value="26">26</option>
                         <option value="27">27</option>
                         <option value="28">28</option>
                         <option value="29">29</option>
@@ -344,7 +345,7 @@ let history = useHistory();
                         <option value="57">57</option>
                         <option value="58">58</option>
                         <option value="59">59</option>
-                        <option value="60">60</option>
+                        
 
                       </select>
                     </div>

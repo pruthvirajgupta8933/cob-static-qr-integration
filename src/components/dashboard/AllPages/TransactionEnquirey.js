@@ -48,7 +48,7 @@ function TransactionEnquirey() {
   const onSubmit=async(input)=>{
     setErrors(validation({ input }))
     
-    console.log(errors.input);
+    // console.log(errors.input);
    if(errors.input===false){
     const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
     .then((response) => {

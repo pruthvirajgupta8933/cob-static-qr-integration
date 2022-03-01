@@ -17,7 +17,7 @@ const SUBSCRIPTION_URL = "http://18.222.220.74:8081/client-subscription-service/
 const subscriptionplan = () => {
   return axios.get(SUBSCRIPTION_URL + "fetchAppAndPlan")
   .then((response) => {
-    console.log("subscribe data - service", response )
+    // console.log("subscribe data - service", response )
     if (response.data) {
       localStorage.setItem("subscriptionplan", JSON.stringify(response.data));
     } else {
@@ -43,7 +43,7 @@ const subscriptionPlanDetail = () => {
 const fetchTransactionHistory=(paramData)=>
 { 
   const {clientCode,fromDate,payModeId,toDate,txnStatus,ref1,ref2} = paramData;
-  console.log("hit",`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
+  // console.log("hit",`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
   return axios.get(`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
 }
 

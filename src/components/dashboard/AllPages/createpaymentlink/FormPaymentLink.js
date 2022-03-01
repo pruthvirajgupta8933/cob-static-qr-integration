@@ -71,14 +71,14 @@ useEffect(() => {
      const response = await axios
       .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${e.Customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
       .then((response) => {
-        toast.success("Payment Link Created!",
+        toast.success(response.data.message,
         {
           position: "top-right",
           autoClose: 2000,
           transition: Zoom,
           limit: 2,
         })
-        console.log(JSON.stringify(response.data));
+        // console.log(response.data.message);
       })
       .catch((error) => {
         toast.error('Payment Link Creation Failed',{
@@ -235,6 +235,7 @@ useEffect(() => {
 
 <Field component='select' className="form-control" name = 'hours' value= {hours} onChange={(e) => setHours(e.target.value)}>
   <option selected>Hours</option>
+  <option value="00">00</option>
   <option value="01">01</option>
   <option value="02">02</option>
   <option value="03">03</option>
@@ -292,42 +293,43 @@ useEffect(() => {
                       <option value="21">21</option>
                       <option value="22">22</option>
                       <option value="23">23</option>
-                      <option value="23">24</option>
-                      <option value="23">25</option>
-                      <option value="23">26</option>
-                      <option value="23">27</option>
-                      <option value="23">28</option>
-                      <option value="23">29</option>
-                      <option value="23">30</option>
-                      <option value="23">31</option>
-                      <option value="23">32</option>
-                      <option value="23">33</option>
-                      <option value="23">34</option>
-                      <option value="23">35</option>
-                      <option value="23">36</option>
-                      <option value="23">37</option>
-                      <option value="23">38</option>
-                      <option value="23">39</option>
-                      <option value="23">40</option>
-                      <option value="23">41</option>
-                      <option value="23">42</option>
-                      <option value="23">43</option>
-                      <option value="23">44</option>
-                      <option value="23">45</option>
-                      <option value="23">46</option>
-                      <option value="23">47</option>
-                      <option value="23">48</option>
-                      <option value="23">49</option>
-                      <option value="23">50</option>
-                      <option value="23">51</option>
-                      <option value="23">52</option>
-                      <option value="23">53</option>
-                      <option value="23">54</option>
-                      <option value="23">55</option>
-                      <option value="23">56</option>
-                      <option value="23">58</option>
-                      <option value="23">59</option>
-                      <option value="23">60</option>
+                      <option value="24">24</option>
+                      <option value="25">25</option>
+                      <option value="26">26</option>
+                      <option value="27">27</option>
+                      <option value="28">28</option>
+                      <option value="29">29</option>
+                      <option value="30">30</option>
+                      <option value="31">31</option>
+                      <option value="32">32</option>
+                      <option value="33">33</option>
+                      <option value="34">34</option>
+                      <option value="35">35</option>
+                      <option value="26">36</option>
+                      <option value="37">37</option>
+                      <option value="38">38</option>
+                      <option value="39">39</option>
+                      <option value="40">40</option>
+                      <option value="41">41</option>
+                      <option value="42">42</option>
+                      <option value="43">43</option>
+                      <option value="44">44</option>
+                      <option value="45">45</option>
+                      <option value="46">46</option>
+                      <option value="47">47</option>
+                      <option value="48">48</option>
+                      <option value="49">49</option>
+                      <option value="50">50</option>
+                      <option value="51">51</option>
+                      <option value="52">52</option>
+                      <option value="53">53</option>
+                      <option value="54">54</option>
+                      <option value="55">55</option>
+                      <option value="56">56</option>
+                      <option value="57">57</option>
+                      <option value="58">58</option>
+                      <option value="59">59</option>
+                     
                     </Field>
                         </div>
 

@@ -10,7 +10,7 @@ const ForgetPassword = () => {
 
   const handleFormSubmit = (currentCard,data={}) => {
     setShowCard(currentCard);
-    console.log("currentCard", currentCard);
+    // console.log("currentCard", currentCard);
   };
 
   return (

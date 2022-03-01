@@ -9,7 +9,7 @@ const EmandatePage = () => {
   const search = useLocation().search;
   const mendateRegIdParam = new URLSearchParams(search).get('mendateRegId');
 
-  console.log(mendateRegIdParam);
+  // console.log(mendateRegIdParam);
 
   const [details,setDetails] = useState([]);
     const baseUrl = "https://subscription.sabpaisa.in/subscription/npci/registration/status/";

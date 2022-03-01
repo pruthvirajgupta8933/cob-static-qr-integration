@@ -120,8 +120,8 @@ const PayerDetails = () => {
         });
 
 
-        console.log(res, 'succes')
-loadUser()
+        // console.log(res, 'succes')
+        loadUser();
         if (res.status === 200) {
             ;
             toast.success("Payment Link success", {
@@ -160,7 +160,7 @@ loadUser()
     }
     // USE FOR GENERETE LINK
     const generateli = (id) => {
-        console.log(id);
+        // console.log(id);
         data.filter((dataItem) => {
             if (dataItem.id === id) {
                 setGenrateForm({

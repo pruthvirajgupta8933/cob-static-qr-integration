@@ -211,10 +211,18 @@ useEffect(() => {
   // console.log("subscriptionPlanData",subscriptionPlanData);
 return (
   <section className="ant-layout">
-
-    <h1 style={{fontSize:"21px"}}>Services</h1>
-    <div className="row" style={{overflow:"scroll"}}>
-    {subscriptionPlanData.map((s) => 
+    <div className="profileBarStatus">
+          {/*  <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span class="btn">Upload Here</span></span></div>*/}
+    </div>
+    <main className="gx-layout-content ant-layout-content">
+          <div className="gx-main-content-wrapper">
+          <div className="right_layout my_account_wrapper right_side_heading">
+              <h1 className="m-b-sm gx-float-left">Services</h1>
+          </div>
+          <section className="features8 cid-sg6XYTl25a" id="features08-3-">
+              <div className="container-fluid">
+              <div className="row" style={{overflow:"scroll"}}>
+        {subscriptionPlanData.map((s) => 
         <div className="col-3" >
         <div class="col mb-4">  
         <div >
@@ -225,7 +233,7 @@ return (
             </div>
             <div class="container">
                 <a target="blank" href={s.applicationUrl}  style={{ padding: "0", top: "155px" }} className="btn btn-warning">Read More</a>
-                <button type="button" style={{ top: "200px" }} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>subscribe</button>                
+                <button type="button" style={{ top: "200px" }} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>Subscribe</button>                
             </div>
           </div>
         </div>
@@ -281,6 +289,12 @@ return (
   </div>
 
     
+              </div>
+          </section>    
+
+          </div>
+    </main>      
+  
     </section>    
   );
 }

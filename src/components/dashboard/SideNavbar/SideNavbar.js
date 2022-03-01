@@ -23,7 +23,7 @@ function SideNavbar() {
     }
     
     return (
-      <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px', marginTop: '35px'}}>
+      <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px'}}>
       <div className="ant-layout-sider-children">
         <div className="gx-sidebar-content">
           <div className="side_top_wrap"><span className="switch_live_label">Live</span>

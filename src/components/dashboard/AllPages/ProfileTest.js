@@ -70,7 +70,7 @@ export const FormikApp = () => {
       setCreateProfileResponse(dashboard.createClientProfile)
     }, [dashboard]);
   
-    console.log(authenticationMode);
+    // console.log(authenticationMode);
     
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 //   console.log(clientSuperMasterList && clientSuperMasterList[0]?.address)
@@ -263,7 +263,7 @@ const validationSchema = Yup.object().shape({
                                     <div className="form-group row">
                                     <label htmlFor="loginId" className="col-md-4 col-form-label text-md-right"> Login ID </label>
                                     <div className="col-md-6">
-                                        <input className={`form-control ${errors.loginId ? 'is-invalid' : ''}`}  {...register('loginId')} type="text" id="loginId" name="loginId" onChange={(e)=>console.log(e.target.value)} disabled  />
+                                        <input className={`form-control ${errors.loginId ? 'is-invalid' : ''}`}  {...register('loginId')} type="text" id="loginId" name="loginId" onChange={(e)=>e.target.value} disabled  />
                                         <div className="invalid-feedback">{errors.loginId?.message}</div>
                                     </div>
                                     </div>
@@ -271,7 +271,7 @@ const validationSchema = Yup.object().shape({
                                     <div className="form-group row">
                                     <label htmlFor="clientName" className="col-md-4 col-form-label text-md-right">Client Name</label>
                                     <div className="col-md-6">
-                                        <input className={`form-control ${errors.clientName ? 'is-invalid' : ''}`}  {...register('clientName')} type="text" id="clientName" name="clientName" onChange={(e)=>console.log(e.target.value)}  />
+                                        <input className={`form-control ${errors.clientName ? 'is-invalid' : ''}`}  {...register('clientName')} type="text" id="clientName" name="clientName" onChange={(e)=>e.target.value}  />
                                         <div className="invalid-feedback">{errors.clientName?.message}</div>
                                     </div>
                                     </div>
@@ -279,7 +279,7 @@ const validationSchema = Yup.object().shape({
                                     <div className="form-group row">
                                     <label htmlFor="phone" className="col-md-4 col-form-label text-md-right"> Phone </label>
                                     <div className="col-md-6">
-                                        <input className={`form-control ${errors.phone ? 'is-invalid' : ''}`}  {...register('phone')} type="text" id="phone" name="phone" onChange={(e)=>console.log(e.target.value)}  />
+                                        <input className={`form-control ${errors.phone ? 'is-invalid' : ''}`}  {...register('phone')} type="text" id="phone" name="phone" onChange={(e)=>e.target.value}  />
                                         <div className="invalid-feedback">{errors.phone?.message}</div>
                                     </div>
                                     </div>
@@ -313,7 +313,7 @@ const validationSchema = Yup.object().shape({
                                     <div className="form-group row">
                                     <label htmlFor="address" className="col-md-4 col-form-label text-md-right"> Address</label>
                                     <div className="col-md-6">
-                                        <input className={`form-control ${errors.address ? 'is-invalid' : ''}`}  {...register('address')} type="text" id="address" name="address" onChange={(e)=>console.log(e.target.value)}  />
+                                        <input className={`form-control ${errors.address ? 'is-invalid' : ''}`}  {...register('address')} type="text" id="address" name="address" onChange={(e)=>e.target.value}  />
                                         <div className="invalid-feedback">{errors.address?.message}</div>
                                     </div>
                                     </div>
@@ -375,7 +375,7 @@ const validationSchema = Yup.object().shape({
                                     <div className="form-group row">
                                     <label htmlFor="accountNumber" className="col-md-4 col-form-label text-md-right">Bank Account Number</label>
                                     <div className="col-md-6">
-                                        <input className={`form-control ${errors.accountNumber ? 'is-invalid' : ''}`}  {...register('accountNumber')} type="text" id="accountNumber" name="accountNumber" onChange={(e)=>console.log(e.target.value)}  />
+                                        <input className={`form-control ${errors.accountNumber ? 'is-invalid' : ''}`}  {...register('accountNumber')} type="text" id="accountNumber" name="accountNumber" onChange={(e)=>e.target.value}  />
                                         <div className="invalid-feedback">{errors.accountNumber?.message}</div>
                                     </div>
                                     </div>
@@ -403,7 +403,7 @@ const validationSchema = Yup.object().shape({
                                     <div className="form-group row">
                                     <label htmlFor="pan" className="col-md-4 col-form-label text-md-right">Pan </label>
                                     <div className="col-md-6">
-                                        <input className={`form-control ${errors.pan ? 'is-invalid' : ''}`}  {...register('pan')} type="text" id="pan" name="pan" onChange={(e)=>console.log(e.target.value)}  />
+                                        <input className={`form-control ${errors.pan ? 'is-invalid' : ''}`}  {...register('pan')} type="text" id="pan" name="pan" onChange={(e)=>e.target.value}  />
                                         <div className="invalid-feedback">{errors.pan?.message}</div>
                                     </div>
                                     </div>

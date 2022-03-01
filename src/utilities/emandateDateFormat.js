@@ -7,7 +7,7 @@ export const ArrayToDate = (data) =>{
         if(d.toString().length===1){
             d = "0"+d;
         }
-        console.log(d);
+        // console.log(d);
 
         if(i<=2)
         {
