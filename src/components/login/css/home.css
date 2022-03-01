@@ -521,3 +521,20 @@ border-radius: 10px;margin-top: 20px;}
 .ip_getstart_btn a svg{float: left; fill: #0B4A94;margin-left: 15px;}
 .ip_getstart_btn a:hover{background: #fff;color: #0B4A94;}
 .ip_partner_who{float: left;width: 100%;margin-bottom: 10px;color: #000;font-size: 18px;font-weight: 500;}
+
+table.tables th {
+  background: #f7f7f7;
+  padding: 8px;
+  font-size: 14px;
+}
+table.tables {
+  padding: 8px;
+  font-size: 13px;
+  border: 1px solid #f7f7f7;
+}
+table.tables tr:nth-child(even) {
+  background: #fff;
+}
+table.tables tr:nth-child(odd) {
+  background: #fcfcfc;
+}

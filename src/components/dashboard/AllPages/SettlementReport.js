@@ -109,68 +109,73 @@ function SettlementReport() {
     return (
       <section className="ant-layout">
         <div className="profileBarStatus"></div>
-        <h1
-          style={{ position: "absolute", top: 70, left: 250, fontSize: "21px" }}
-        >
-          Settlement Report
-        </h1>
-        <hr />
-        <label For="folder "></label>
 
-        <select
-          value={selectedFolder}
-          className="ant-input"
-          onChange={(e) => onChangeFolder(e.target.value)}
-        >
-          <option value="">--Select Folder--</option>
-          {folderArr &&
-            folderArr.map((folder) => <option value={folder}>{folder}</option>)}
+        <div className="col-lg-12 row- bgcolor">
+          <h1 className="col-lg-12">Settlement Report</h1>
+          <hr />
 
-          <input type="text" placeholder="Search.." />
-        </select>
+          <label For="folder "></label>
+          <div className="col-lg-3 nopad">
+            <select
+              value={selectedFolder}
+              className="ant-input"
+              onChange={(e) => onChangeFolder(e.target.value)}
+            >
+              <option value="">--Select Folder--</option>
+              {folderArr &&
+                folderArr.map((folder) => (
+                  <option value={folder}>{folder}</option>
+                ))}
 
-        <div>
-          <label For="folder"></label>
-          <select
-            onChange={(event) => SetSelectedSubFolder(event.target.value)}
-            value={selectedSubFolder}
-            className="ant-input"
-          >
-            <option value="">Select</option>
-            {subFolderArr &&
-              subFolderArr.map((subfolder) => (
-                <option value={subfolder}>{subfolder}</option>
-              ))}
-          </select>
-        </div>
-        <input
-          type="text"
-          value={searchArea}
-          placeholder="Search Here"
-          className="ant-input"
-          onChange={getSearchTerm}
-        />
-        {showFilterData.filter}
+              <input type="text" placeholder="Search.." />
+            </select>
+          </div>
+          <div className="col-lg-3 nopad">
+            <label For="folder"></label>
+            <select
+              onChange={(event) => SetSelectedSubFolder(event.target.value)}
+              value={selectedSubFolder}
+              className="ant-input"
+            >
+              <option value="">Select</option>
+              {subFolderArr &&
+                subFolderArr.map((subfolder) => (
+                  <option value={subfolder}>{subfolder}</option>
+                ))}
+            </select>
+          </div>
 
-        <select className="ant-input">
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="30">30</option>
-          <option value="40">40</option>
-          <option value="50">50</option>
-          <option value="60">100</option>
-          <option value="70">200</option>
-          <option value="70">300</option>
-          <option value="70">400</option>
-          <option value="70">500</option>
-        </select>
+          <div className="col-lg-3 nopad">
+            <input
+              type="text"
+              value={searchArea}
+              placeholder="Search Here"
+              className="ant-input"
+              onChange={getSearchTerm}
+            />
+          </div>
+          <div className="col-lg-3 nopad">
+            {showFilterData.filter}
 
-        
+            <select className="ant-input">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+              <option value="40">40</option>
+              <option value="50">50</option>
+              <option value="60">100</option>
+              <option value="70">200</option>
+              <option value="70">300</option>
+              <option value="70">400</option>
+              <option value="70">500</option>
+            </select>
+          </div>
 
-        
-        <div>
           <table
-            style={{ position: "absolute", top: 300, left: 250, width: 550 }}
+            width="100%"
+            cellPadding="10"
+            cellspacing="0"
+            className="tables col-lg-12 mar-top"
           >
             <tr>
               <th>S.No</th>
@@ -179,7 +184,7 @@ function SettlementReport() {
               <th>Created On</th>
               <th>Action</th>
             </tr>
-            <br />
+
             {showFilterData.length > 0 ? (
               showFilterData.map((user, i) => (
                 <tr key={user.Id}>

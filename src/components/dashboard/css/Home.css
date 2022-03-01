@@ -1,4 +1,4 @@
-table.tables th {
+table.tables th{
   background: #f7f7f7;
   padding: 8px;
   font-size: 14px;
@@ -26,4 +26,7 @@ table.tables tr:nth-child(odd) {
 }
 .my_account_wrapper .merchant-detail-container {
   justify-content: none !important;
+}
+.nopad{
+  padding:0 8px 0 0 !important;
 }
