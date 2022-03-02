@@ -149,7 +149,7 @@ function Registration() {
 return (
   <>
     <HeaderPage />
-    <div className="container-fluid">
+    <div className="container-fluid toppad">
       <div className="row">
         <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
           <div className="col-sm-5 authfy-panel-left">
@@ -372,6 +372,7 @@ return (
                                             color: "red",
                                             position: "absolute",
                                             zIndex: " 999",
+                                            fontSize:"12px"
                                           }}
                                         >
                                           {msg}
@@ -468,9 +469,7 @@ return (
                                           className="abhitest"
                                           style={{
                                             color: "red",
-                                            position: "absolute",
-                                            top: "267px",
-                                            left: "4px",
+                                            float: "left",
                                           }}
                                         >
                                           {msg}
