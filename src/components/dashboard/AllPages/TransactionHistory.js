@@ -469,7 +469,7 @@ const pages = _.range(1, pageCount + 1)
                             <th> Payer Account No </th>
                             <th> Bank Txn Id </th>
                           </tr>
-                          {txnList.length>0 && paginatedata.map((item,i)=>{return(
+                          {txnList.length>0 && txnList.map((item,i)=>{return(
                             <tr>
                             <td>{item.srNo}</td>
                             <td>{item.txn_id}</td>

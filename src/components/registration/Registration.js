@@ -458,9 +458,9 @@ return (
                                       />
                                     </span>{" "}
                                     I agree to the{" "}
-                                    <Link to={{pathname:"https://sabpaisa.in/term-conditions/"}} className="special" target="_blank" >
+                                    <a href="https://sabpaisa.in/term-conditions/" className="special" target="_blank" >
                                       Terms &amp; Conditions
-                                    </Link>
+                                    </a>
                                   </span>
                                   {
                                     <ErrorMessage name="terms_and_condition">

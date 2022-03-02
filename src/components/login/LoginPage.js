@@ -211,13 +211,13 @@ const handleClickShowPassword = () => {
                                       className="string optional"
                                       htmlFor="user-name"
                                     >
-                                      Username*
+                                      User name*
                                     </label>
                                     <Field
                                       className="string optional"
                                       maxLength={255}
                                       id="user-email"
-                                      placeholder="Email"
+                                      placeholder="user name"
                                       type="text"
                                       name="clientUserId"
                                     />

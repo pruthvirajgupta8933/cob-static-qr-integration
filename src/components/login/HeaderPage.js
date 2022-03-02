@@ -279,31 +279,31 @@ function HeaderPage() {
             </a>
           </li>
           <li>
-            <Link
-              to={{ pathname: "https://sabpaisa.in/sabpaisa-apis/" }}
+            <a
+              href= "https://sabpaisa.in/sabpaisa-apis/"
               target="_blank"
               rel="noreferrer noopener"
             >
               APIs
-            </Link>
+            </a>
           </li>
           <li>
-            <Link
+            <a
               target="_blank"
-              to={{ pathname: "https://sabpaisa.in/" }}
+              href={{ pathname: "https://sabpaisa.in/" }}
               rel="noreferrer noopener"
             >
               Developers
-            </Link>
+            </a>
           </li>
           <li>
-            <Link
+            <a
               target="_blank"
-              to={{ pathname: "https://sabpaisa.in/" }}
+              href="https://sabpaisa.in/"
               rel="noreferrer noopener"
             >
               Pricing
-            </Link>
+            </a>
           </li>
           {/* </ul>
         <ul className="header_second_list hidden-xs"> */}

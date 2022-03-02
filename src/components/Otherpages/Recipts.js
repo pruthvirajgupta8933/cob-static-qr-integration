@@ -88,7 +88,7 @@ const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/
   return (
 
     <div>
-      <div className="card" style={{ position: 'absolute', width: 600, height: 200, left: 400 }}>
+      <div className="card" style={{ position: 'absolute', width: 600,  left: 400 }}>
         <div className="card-header" style={{ textAlign: 'center' }}>
           SABPAISA TRANSACTION RECEIPT
         </div>
@@ -110,6 +110,11 @@ const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/
       <br />
       <br />
       <br />
+     
+     
+     
+     
+     
       {
         show ?
         
