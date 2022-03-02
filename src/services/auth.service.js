@@ -128,6 +128,11 @@ const createNewPassword=(object)=>{
 }
 
 
+// CHECK_PERMISSION_PAYLINK
+const checkPermission=(object)=>{
+  //pass client code
+  return axios.get(API_URL.CHECK_PERMISSION_PAYLINK + object)
+}
 
 const authService = {
   register,
@@ -143,7 +148,8 @@ const authService = {
   changePassword,
   getEmailToSendOTP,
   verifyOtpOnForgotPwd,
-  createNewPassword
+  createNewPassword,
+  checkPermission
 
 };
 

@@ -49,8 +49,8 @@ const auth = {
     },
     createNewPassowrd:null,
     isNewPasswordCreated:null,
-
-  }
+  },
+  payLinkPermission:[]
 };
 
 
@@ -404,10 +404,31 @@ export const createNewPasswordSlice = createAsyncThunk(
       return thunkAPI.rejectWithValue();
     }
   }
-
 )
 
 
+
+export const checkPermissionSlice = createAsyncThunk(
+  "auth/checkPermission",
+  async(data,thunkAPI)=>{
+    try{
+    
+      const response = await AuthService.checkPermission(data);
+      thunkAPI.dispatch(setMessage(response.data.message));
+      // console.log("getEmailToSendOtp-response",response)
+      return response.data;
+    }catch(error){
+      const message =
+      (error.response &&
+        error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+)
 
 
 
@@ -565,6 +586,13 @@ const authSlice = createSlice({
       console.log('rejected profile');
       // state.passwordChange = false;
     },
+    
+    [checkPermissionSlice.fulfilled]:(state,action)=>{
+      // console.log('rejected profile');
+      // state.passwordChange = false;
+      state.payLinkPermission = action.payload
+    }
+
     
 
   },

@@ -1,19 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector} from 'react-redux';
 import { Link,
     useParams,
     useRouteMatch,useHistory ,Redirect} from 'react-router-dom'
-import {logout} from '../../../slices/auth'
+import {checkPermissionSlice, logout} from '../../../slices/auth'
 
 
 function SideNavbar() {
   let history = useHistory();
-  const {user} = useSelector((state)=> state.auth )
-  // console.log(user);
+  const {user,payLinkPermission} = useSelector((state)=> state.auth )
+  
   if(user!==null && user.userAlreadyLoggedIn){
     // alert('no login');
     // <Redirect to="/login-page" />
-    alert("aa3");
+    // alert("aa3");
     history.push("/login-page");
 }
   var {roleId,clientContactPersonName}=user;
@@ -21,8 +21,18 @@ function SideNavbar() {
     const dispatch = useDispatch();
     const handle = ()=>{
       dispatch(logout());
-      history.push("/login-page");
+      // history.push("/login-page");
     }
+
+    useEffect(() => {
+      if(user.clientSuperMasterList?.length > 0 ){
+        dispatch(checkPermissionSlice(user?.clientSuperMasterList[0]?.clientCode))
+      }
+      
+    }, [])
+
+    
+    
     
     return (
       <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px'}}>
@@ -71,19 +81,21 @@ function SideNavbar() {
                        }
 
                        {roleId!==3 && roleId!==13 ? 
-                        <React.Fragment>
+                      
                        <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/subscription`} className='txt-white'><i className="fa fa-bell" aria-hidden="true" />
                       &nbsp; Subscription</Link> 
                       </li>
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
-                      &nbsp; Create Payment Link</Link> 
-                      </li>
-                      </React.Fragment>
                        : <></>
                         }
                         
+                        { 
+                           payLinkPermission.length>0 && payLinkPermission[0].clientId===1 ? 
+                           <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                           <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
+                            &nbsp; Create Payment Link</Link> 
+                           </li> :<></>
+                     }
                       
                     
                      
@@ -110,7 +122,7 @@ function SideNavbar() {
               </div>
             </div>
           </div>
-          <div className="sidebar-menu-query"> <Link to={{pathname:"https://sabpaisa.in/support-contact-us/"}}  target="_blank" >< span className="sidebar-help-button"> <i className="icon icon-queries" />Support</span></Link></div>
+          <div className="sidebar-menu-query"> <Link to={{pathname:"https://sabpaisa.in/support-contact-us/"}}  target="_blank" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></Link></div>
         </div>
       </div>
     </aside>

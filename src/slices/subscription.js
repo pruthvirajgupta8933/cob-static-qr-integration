@@ -4,48 +4,7 @@ import subscriptionService from "../services/subscription";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
-const subscription = {
-    subscriptionServiceResponse : [
-        {
-            applicationId: 1,
-            applicationCode: "",
-            applicationName: "",
-            applicationDescription: "",
-            active: true,
-            applicationUrl: "",
-            epUrl: "",
-            planMaster: [
-                {
-                    planId: 1,
-                    planName: "",
-                    planCode: "",
-                    planType: "",
-                    planDescription: "",
-                    active: true,
-                    planPrice: 200,
-                    planValidityDays: 30
-                }
-            ]
-        }
-    ],
 
-    subscriptionPackageResponse : {
-        clientId:"",
-        clientCode:"",
-        clientName:"",
-        applicationId:1,
-        applicationName:"",
-        planId:1,
-        planName:"",
-        purchasAmount: "",
-        mandateRegistrationId:"",
-        umrn:"",
-        paymentMode:"",
-        bankRef:"",
-        mandateStatus:"",
-        clientTxnId:""
-}
-}
 
 export const subscriptionplan = createAsyncThunk(
     "subscription/subscriptionplan",
@@ -102,6 +61,7 @@ const subscriptionSlice = createSlice({
     },
   },
 });
-
-const { reducerSubscription } = subscriptionSlice;
-export default reducerSubscription;
+// console.log(subscriptionSlice)
+// const { reducerSubscription } = subscriptionSlice;
+// console.log(reducerSubscription)
+export default subscriptionSlice;
