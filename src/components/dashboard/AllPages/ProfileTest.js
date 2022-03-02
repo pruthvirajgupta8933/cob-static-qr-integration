@@ -226,7 +226,7 @@ const validationSchema = Yup.object().shape({
     <main className="gx-layout-content ant-layout-content">
       <div className="gx-main-content-wrapper">
         <div className="right_layout my_account_wrapper">
-          <h1 className="right_side_heading">My Profile <Link to={`/dashboard/change-password`}><button type="button" className="ant-btn change_password pull-right"><i className="icon icon-reset-password" /><span> Change Password</span></button></Link></h1>
+          <h1 className="right_side_heading">My Profile <Link to={`/dashboard/change-password`}><button type="button" className="ant-btn change_password pull-right"><i className="fa fa-key" /><span> Change Password</span></button></Link></h1>
           <div className="ant-tabs ant-tabs-top ant-tabs-line">
             <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
               <div className="ant-tabs-nav-container">

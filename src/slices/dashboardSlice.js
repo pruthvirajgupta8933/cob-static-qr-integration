@@ -9,7 +9,8 @@ const initialState = {
   isLoading:false, 
   subscribedService: [], 
   subscriptionplandetail: [],
-  transactionHistory:[]
+  transactionHistory:[],
+  isLoadingTxnHistory:false
 
 };
 
@@ -122,16 +123,15 @@ export const successTxnSummary = createAsyncThunk(
         state.isLoading = false;
       },
       [fetchTransactionHistorySlice.fulfilled]: (state, action) => {
-        state.isLoading = false;
-        
+        state.isLoadingTxnHistory = false;
         state.transactionHistory = action.payload;
       },
       [fetchTransactionHistorySlice.pending]: (state) => {
-        state.isLoading = true;
+        state.isLoadingTxnHistory = true;
         state.transactionHistory=[];
       },
       [fetchTransactionHistorySlice.rejected]: (state) => {
-        state.isLoading = false;
+        state.isLoadingTxnHistory = false;
         state.transactionHistory=[];
       },
 

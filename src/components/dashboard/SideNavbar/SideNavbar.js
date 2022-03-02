@@ -11,8 +11,9 @@ function SideNavbar() {
   const {user} = useSelector((state)=> state.auth )
   // console.log(user);
   if(user!==null && user.userAlreadyLoggedIn){
-    alert('no login');
+    // alert('no login');
     // <Redirect to="/login-page" />
+    alert("aa3");
     history.push("/login-page");
 }
   var {roleId,clientContactPersonName}=user;
@@ -20,6 +21,7 @@ function SideNavbar() {
     const dispatch = useDispatch();
     const handle = ()=>{
       dispatch(logout());
+      history.push("/login-page");
     }
     
     return (

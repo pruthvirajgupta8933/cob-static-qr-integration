@@ -11,7 +11,7 @@ function ClientList() {
   
   useEffect(() => {
    
-  if(user.clientSuperMasterList.length>0){
+  if(user.clientSuperMasterList?.length>0){
     var clientSuperMasterList = user.clientSuperMasterList;
     SetClientList(user.clientSuperMasterList);
   }

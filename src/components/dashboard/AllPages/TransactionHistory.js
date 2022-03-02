@@ -16,6 +16,7 @@ function TransactionHistory() {
   const {auth,dashboard} = useSelector((state)=>state);
   var {user} = auth
 
+  const {isLoadingTxnHistory} = dashboard
 
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
   const [paymentModeList,SetPaymentModeList] = useState([]);
@@ -33,6 +34,8 @@ function TransactionHistory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showData,setShowData] = useState([])
   const [pageCount,setPageCount] = useState(0);
+  const [buttonClicked,isButtonClicked] = useState(false);
+
 
   function dayDiff(dateFrom, dateTo) {
     var from = new Date(dateFrom);
@@ -110,6 +113,8 @@ const checkValidation = ()=>{
   const txnHistory =  () => {  
     var isValid = checkValidation();
           if(isValid){ 
+            // isLoading(true);
+            isButtonClicked(true);
             const paramData = {
               clientCode:clientCode,
               txnStatus:txnStatus,
@@ -121,34 +126,24 @@ const checkValidation = ()=>{
             }
             // console.log(paramData);
             dispatch(fetchTransactionHistorySlice(paramData))
-          //   await axios.get(`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/0/0`)  
-          // .then(res => {  
-          //   SetTxnList(res.data);
-          //   SetFilterList(res.data)
-          //   setPaginatedData(_(res.data).slice(0).take(pageSize).value())
-
-          //   txnList.length > 0 ? setShow(true) : setShow(false)
-          //   console.log('set 1 !');
-          //   // console.log(res)
-          // })  
-          // .catch(err => {  
-          //   console.log(err)  
-          // });    
+            
       }else{
+        // isLoading(false);
         console.log('API not trigger!');
       }
   } 
   
   useEffect(() => {
-    // console.log("dashboard redux udpate render");
-    // console.log("txnlist",dashboard.transactionHistory);
      setShowData(dashboard.transactionHistory);
      SetTxnList(dashboard.transactionHistory);
      setPaginatedData(_(dashboard.transactionHistory).slice(0).take(pageSize).value())
-    
+     if(dashboard.transactionHistory.length){
+       isButtonClicked(false);
+     }
+
   }, [dashboard])
   
-  // console.log("showData",showData);
+  console.log("buttonclicked",buttonClicked);
   
   useEffect(()=>{
      setPaginatedData(_(showData).slice(0).take(pageSize).value())
@@ -223,7 +218,6 @@ const pages = _.range(1, pageCount + 1)
  
   const finalDate = year +'-'+month+'-'+day; 
 
-  // console.log('set 2 !');
 
   return (
     <section className="ant-layout">
@@ -356,9 +350,12 @@ const pages = _.range(1, pageCount + 1)
                     </select>
                   </div> </React.Fragment> : <></> }
                   {/* {console.log("paginatedata",paginatedata)} */}
+
                   <div style={{overflow:"auto"}} > 
                   <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables" >
-                    <tbody><tr>
+                    <tbody>
+                    {txnList.length>0 ?
+                      <tr>
                             <th> S.No </th>
                             <th> Trans ID </th>
                             <th> Client Trans ID </th>
@@ -391,7 +388,10 @@ const pages = _.range(1, pageCount + 1)
                             <th> IFSC Code </th>
                             <th> Payer Account No </th>
                             <th> Bank Txn Id </th>
-                          </tr>
+                          </tr>:
+                          <></>
+                     }
+                   
                           {/* {console.log("filterList",filterList)} */}
                           {txnList.length>0 && paginatedata.map((item,i)=>{return(
                             <tr>
@@ -469,7 +469,7 @@ const pages = _.range(1, pageCount + 1)
                             <th> Payer Account No </th>
                             <th> Bank Txn Id </th>
                           </tr>
-                          {txnList.length>0 && filterList.map((item,i)=>{return(
+                          {txnList.length>0 && paginatedata.map((item,i)=>{return(
                             <tr>
                             <td>{item.srNo}</td>
                             <td>{item.txn_id}</td>
@@ -543,7 +543,15 @@ const pages = _.range(1, pageCount + 1)
                   : <></> }
                   </div>
                   {/* {console.log(filterList.length,txnList.length)} */}
-                {showData.length <= 0 || txnList.length <= 0 ? <div className='showMsg'>No Data Found</div> : <div></div>}
+                {isLoadingTxnHistory ? 
+                  <div className="col-lg-12 col-md-12 mrg-btm- bgcolor"><div className="text-center"><div className="spinner-border" role="status" style={{width: '3rem', height: '3rem'}}><span className="sr-only">Loading...</span></div></div></div> 
+                  : 
+                  buttonClicked && (showData.length <= 0 || txnList.length <= 0) ? 
+                    <div className='showMsg'>No Data Found</div>
+                     :
+                      <div></div>
+                      }  
+                {/* { : <div></div>} */}
               </div>
             </div>
           </section>

@@ -32,9 +32,6 @@ function AllRoutes(){
               <Route exact path="/login-page">
                 <LoginPage />
               </Route>
-              <Route exact path="/login-page-old">
-                <Login />
-              </Route>
               <Route exact path="/registration">
                 <Registration />
               </Route>
@@ -50,7 +47,7 @@ function AllRoutes(){
               <Route exact path="/emailverification/:loginId">
                 <EmailVerification />
               </Route>
-              <Route exact path="/Recipts">
+              <Route exact path="/Receipt">
                 <Recipts />
               </Route>
               <Route exact path="/stdReceipt">

@@ -315,7 +315,7 @@ function HeaderPage() {
           </li>
           <li>
             <span className="btnlink cotactbg whtcolr">
-              Call +91 987-551-5119
+              Call 011 4173 3223
             </span>
           </li>
         </ul>

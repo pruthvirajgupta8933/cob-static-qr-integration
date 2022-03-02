@@ -130,6 +130,7 @@ function Registration() {
       transition: Zoom,
     });
     setTimeout(() => {   
+      // alert("aa4");
       history.push("/login-page");
     }, 2000);
     }

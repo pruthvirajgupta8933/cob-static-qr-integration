@@ -211,7 +211,7 @@ const handleClickShowPassword = () => {
                                       className="string optional"
                                       htmlFor="user-name"
                                     >
-                                      Email*
+                                      Username*
                                     </label>
                                     <Field
                                       className="string optional"
