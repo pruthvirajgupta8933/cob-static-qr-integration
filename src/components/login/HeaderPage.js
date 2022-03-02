@@ -290,7 +290,7 @@ function HeaderPage() {
           <li>
             <a
               target="_blank"
-              href={{ pathname: "https://sabpaisa.in/" }}
+              href="https://sabpaisa.in/"
               rel="noreferrer noopener"
             >
               Developers

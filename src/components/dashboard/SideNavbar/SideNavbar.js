@@ -122,7 +122,7 @@ function SideNavbar() {
               </div>
             </div>
           </div>
-          <div className="sidebar-menu-query"> <a to="https://sabpaisa.in/support-contact-us/" target="_blank" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div>
+          <div className="sidebar-menu-query"> <a href="https://sabpaisa.in/support-contact-us/" target="_blank" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div>
         </div>
       </div>
     </aside>
