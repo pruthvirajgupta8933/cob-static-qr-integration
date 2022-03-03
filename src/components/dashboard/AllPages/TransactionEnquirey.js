@@ -78,14 +78,20 @@ function TransactionEnquirey() {
 // console.log(date.getTime())
 // return date.getTime();
 
-var date = new Date(timestamp);
-return (date.getDate()+
-          "/"+(date.getMonth()+1)+
-          "/"+date.getFullYear()+
-          " "+date.getHours()+
-          ":"+date.getMinutes()+
-          ":"+date.getSeconds());
+if(timestamp==='' || timestamp===null) {
+  return " "
+  // alert(timestamp);
+}else{
 
+  var date = new Date(timestamp);
+  return (date.getDate()+
+            "/"+(date.getMonth()+1)+
+            "/"+date.getFullYear()+
+            " "+date.getHours()+
+            ":"+date.getMinutes()+
+            ":"+date.getSeconds());
+  
+}
   }
 
 

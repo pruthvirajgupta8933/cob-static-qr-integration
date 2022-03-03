@@ -7,7 +7,6 @@ import axios from "axios"
 import _ from 'lodash';
 import { fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
 import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
-console.log(exportToSpreadsheet)
 
 
 
@@ -146,7 +145,7 @@ const checkValidation = ()=>{
 
   }, [dashboard])
   
-  console.log("buttonclicked",buttonClicked);
+  // console.log("buttonclicked",buttonClicked);
   
   useEffect(()=>{
      setPaginatedData(_(showData).slice(0).take(pageSize).value())
@@ -208,14 +207,56 @@ const pages = _.range(1, pageCount + 1)
   
   
   const exportToExcelFn=()=>{
-
+    // const dataWithoutNull = JSON.stringify(txnList).replaceAll('null',"NA");
+    // console.log(JSON.parse(dataWithoutNull));
+    
     const excelHeaderRow =
   ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Trans Initiation Date",	"Trans Complete Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
     let excelArr = [excelHeaderRow];
     txnList.map((item,index)=>{
-    excelArr.push(Object.values(item));
+      // console.log(JSON.stringify(item));
+      var tempStr = JSON.stringify(item).replaceAll('null','"NA"');
+      var reFilter = JSON.parse(tempStr.replaceAll('""NA""','"NA"'));
+    
+      const allowDataToShow ={
+        srNo:reFilter.srNo,
+        txn_id:reFilter.txn_id,
+        client_txn_id:reFilter.client_txn_id,
+        challan_no:reFilter.challan_no,
+        payee_amount:reFilter.payee_amount,
+        trans_date:reFilter.trans_date,
+        trans_complete_date:reFilter.trans_complete_date,
+        status:reFilter.status,
+        payee_first_name:reFilter.payee_first_name,
+        payee_lst_name:reFilter.payee_lst_name,
+        payee_mob:reFilter.payee_mob,
+        payee_email:reFilter.payee_email,
+        client_code:reFilter.client_code,
+        payment_mode:reFilter.payment_mode,
+        payee_address:reFilter.payee_address,
+        udf1:reFilter.udf1,
+        udf2:reFilter.udf2,
+        udf3:reFilter.udf3,
+        udf4:reFilter.udf4,
+        udf5:reFilter.udf5,
+        udf6:reFilter.udf6,
+        udf7:reFilter.udf7,
+        udf8:reFilter.udf8,
+        udf9:reFilter.udf9,
+        udf10:reFilter.udf10,
+        udf11:reFilter.udf11,
+        udf20:reFilter.udf20,
+        gr_number:reFilter.gr_number,
+        bank_message:reFilter.bank_message,
+        ifsc_code:reFilter.ifsc_code,
+        payer_acount_number:reFilter.payer_acount_number,
+        bank_txn_id:reFilter.bank_txn_id
+        };
+        
+        // console.log("allowDataToShow",allowDataToShow);
+    excelArr.push(Object.values(allowDataToShow));
   })
-  
+  console.log("excelArr",excelArr)
   const fileName = "Transactions Report"; 
   exportToSpreadsheet(excelArr, fileName);
 

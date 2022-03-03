@@ -38,13 +38,34 @@ export const Recipts = () => {
   };
 
 
-  const onSubmit = async (e,input) => {
+  const onSubmit =  (e,input) => {
     e.preventDefault();
-    setErrors(validation({ input }))
+    // setErrors(validation({ input }))
     //console.log(errors, 'error')
-    if(errors.input===false){
+
+    // let errors = {}
+    var regex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    var isValidInput = true
+    if(!input) {
+        // errors.input = 'ID is required'
+        // setErrors({input:'ID is required'})
+        isValidInput = 'ID is required';
+    }
+    else if(regex.test(input)) {
+      // setErrors({input:'Invalid Input'})
+        // errors.input = 'Invalid Input'
+        isValidInput = 'Invalid Input';
+    }
+   else{
+        // errors.input = false;
+      // setErrors({input:false})
+      isValidInput = false;
+        
+    }
+
+    if(isValidInput===false){
       setIsLoading(true);
-const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
+      axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
       .then((response) => {
         // console.warn(response);
         setData(response.data);
