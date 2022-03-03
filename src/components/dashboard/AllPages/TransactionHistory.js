@@ -254,7 +254,7 @@ const pages = _.range(1, pageCount + 1)
         };
         
         // console.log("allowDataToShow",allowDataToShow);
-    excelArr.push(Object.values(allowDataToShow));
+    excelArr.push(Object.values(item));
   })
   console.log("excelArr",excelArr)
   const fileName = "Transactions Report"; 
