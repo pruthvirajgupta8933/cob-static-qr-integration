@@ -215,48 +215,49 @@ const pages = _.range(1, pageCount + 1)
     let excelArr = [excelHeaderRow];
     txnList.map((item,index)=>{
       // console.log(JSON.stringify(item));
-      var tempStr = JSON.stringify(item).replaceAll('null','"NA"');
-      var reFilter = JSON.parse(tempStr.replaceAll('""NA""','"NA"'));
     
       const allowDataToShow ={
-        srNo:reFilter.srNo,
-        txn_id:reFilter.txn_id,
-        client_txn_id:reFilter.client_txn_id,
-        challan_no:reFilter.challan_no,
-        payee_amount:reFilter.payee_amount,
-        trans_date:reFilter.trans_date,
-        trans_complete_date:reFilter.trans_complete_date,
-        status:reFilter.status,
-        payee_first_name:reFilter.payee_first_name,
-        payee_lst_name:reFilter.payee_lst_name,
-        payee_mob:reFilter.payee_mob,
-        payee_email:reFilter.payee_email,
-        client_code:reFilter.client_code,
-        payment_mode:reFilter.payment_mode,
-        payee_address:reFilter.payee_address,
-        udf1:reFilter.udf1,
-        udf2:reFilter.udf2,
-        udf3:reFilter.udf3,
-        udf4:reFilter.udf4,
-        udf5:reFilter.udf5,
-        udf6:reFilter.udf6,
-        udf7:reFilter.udf7,
-        udf8:reFilter.udf8,
-        udf9:reFilter.udf9,
-        udf10:reFilter.udf10,
-        udf11:reFilter.udf11,
-        udf20:reFilter.udf20,
-        gr_number:reFilter.gr_number,
-        bank_message:reFilter.bank_message,
-        ifsc_code:reFilter.ifsc_code,
-        payer_acount_number:reFilter.payer_acount_number,
-        bank_txn_id:reFilter.bank_txn_id
+        srNo:item.srNo === null? "" : item.srNo ,
+        txn_id:item.txn_id  === null? "" : item.txn_id ,
+        client_txn_id:item.client_txn_id  === null? "" : item.client_txn_id ,
+        challan_no:item.challan_no  === null? "" : item.challan_no ,
+        payee_amount:item.payee_amount  === null? "" : item.payee_amount ,
+        trans_date:item.trans_date  === null? "" : item.trans_date ,
+        trans_complete_date:item.trans_complete_date  === null? "" : item.trans_complete_date ,
+        status:item.status === null? "" : item.status ,
+        payee_first_name:item.payee_first_name === null? "" : item.payee_first_name ,
+        payee_lst_name:item.payee_lst_name === null? "" : item.payee_lst_name ,
+        payee_mob:item.payee_mob === null? "" : item.payee_mob ,
+        payee_email:item.payee_email === null? "" : item.payee_email ,
+        client_code:item.client_code === null? "" : item.client_code ,
+        payment_mode:item.payment_mode === null? "" : item.payment_mode ,
+        payee_address:item.payee_address === null? "" : item.payee_address ,
+        udf1:item.udf1 === null? "" : item.udf1 ,
+        udf2:item.udf2 === null? "" : item.udf2 ,
+        udf3:item.udf3 === null? "" : item.udf3 ,
+        udf4:item.udf4 === null? "" : item.udf4 ,
+        udf5:item.udf5 === null? "" : item.udf5 ,
+        udf6:item.udf6 === null? "" : item.udf6 ,
+        udf7:item.udf7 === null? "" : item.udf7 ,
+        udf8:item.udf8 === null? "" : item.udf8 ,
+        udf9:item.udf9 === null? "" : item.udf9 ,
+        udf10:item.udf10 === null? "" : item.udf10 ,
+        udf11:item.udf11 === null? "" : item.udf11 ,
+        udf20:item.udf20 === null? "" : item.udf20 ,
+        gr_number:item.gr_number === null? "" : item.gr_number ,
+        bank_message:item.bank_message === null? "" : item.bank_message ,
+        ifsc_code:item.ifsc_code === null? "" : item.ifsc_code ,
+        payer_acount_number:item.payer_acount_number === null? "" : item.payer_acount_number ,
+        bank_txn_id:item.bank_txn_id === null? "" : item.bank_txn_id 
         };
         
-        // console.log("allowDataToShow",allowDataToShow);
-    excelArr.push(Object.values(item));
+        // var tempStr = JSON.stringify(allowDataToShow).replaceAll('null','"NA"');
+        // var data = JSON.parse(tempStr);
+      
+        // console.log("tempStr",tempStr);
+    excelArr.push(Object.values(allowDataToShow));
   })
-  console.log("excelArr",excelArr)
+  // console.log("excelArr",excelArr)
   const fileName = "Transactions Report"; 
   exportToSpreadsheet(excelArr, fileName);
 
