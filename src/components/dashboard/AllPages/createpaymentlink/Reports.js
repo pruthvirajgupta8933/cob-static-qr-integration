@@ -84,7 +84,8 @@ const getSearchTerm  = (e) => {
 
 useEffect(() => {
   if (searchText.length > 0) {
-      setPaginatedData(data.filter((item) => item.customer_name.toLowerCase().includes(searchText.toLocaleLowerCase())))
+      setPaginatedData(data.filter((item) => 
+      Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
   } else {
       setPaginatedData(data)
   }

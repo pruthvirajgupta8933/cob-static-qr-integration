@@ -78,7 +78,8 @@ function Home() {
 
   useEffect(() => {
     search!==''
-    ? SetShowData(txnList.filter((txnItme)=>txnItme.clientName.toLowerCase().includes(search.toLocaleLowerCase())))
+    ? SetShowData(txnList.filter((txnItme)=>
+    Object.values(txnItme).join(" ").toLowerCase().includes(search.toLocaleLowerCase())))
     : SetShowData(txnList);
   }, [search]);
   

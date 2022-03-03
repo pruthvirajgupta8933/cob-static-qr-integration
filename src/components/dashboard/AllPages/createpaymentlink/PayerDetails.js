@@ -85,7 +85,9 @@ const PayerDetails = () => {
 
     useEffect(() => {
         if (searchText.length > 0) {
-            setData(data.filter((item) => item.name.toLowerCase().includes(searchText.toLocaleLowerCase())))
+            setData(data.filter((item) => 
+            
+            Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
         } else {
             loadUser()
         }

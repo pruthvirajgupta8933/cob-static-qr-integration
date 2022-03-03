@@ -181,7 +181,8 @@ useEffect(() => {
 
 useEffect(() => {
   if(searchText !== ''){
-    setShowData( dashboard.transactionHistory.filter((txnItme)=>txnItme.txn_id.toLowerCase().includes(searchText.toLocaleLowerCase())))
+    setShowData( dashboard.transactionHistory.filter((txnItme)=>
+        Object.values(txnItme).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
     }
     else{
       setShowData(dashboard.transactionHistory)

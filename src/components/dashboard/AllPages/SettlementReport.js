@@ -66,8 +66,8 @@ function SettlementReport() {
 
     useEffect(() => {
       if (searchArea !== "") {
-        const data = showFilterData.filter((item) =>item.file_name.toLowerCase().includes(searchArea.toLocaleLowerCase()));
-
+        const data = showFilterData.filter((item) =>
+        Object.values(item).join(" ").toLowerCase().includes(searchArea.toLocaleLowerCase()));
         // console.log("data",data);
         setSearchFilterData(data);
       }else{

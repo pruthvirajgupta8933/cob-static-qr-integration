@@ -53,7 +53,8 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
   useEffect(() => {
   
     if(searchText !== ''){
-      setPaginatedData(data.filter((item)=>item.customer_phoneNumber.toLowerCase().includes(searchText.toLocaleLowerCase())))}else{setPaginatedData(data)}
+      setPaginatedData(data.filter((item)=>
+      Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))}else{setPaginatedData(data)}
   },[searchText])
 
 

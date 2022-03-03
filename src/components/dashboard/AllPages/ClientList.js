@@ -16,7 +16,8 @@ function ClientList() {
     SetClientList(user.clientSuperMasterList);
   }
   if(search!==''){
-    SetClientList(clientSuperMasterList.filter((Itme)=>Itme.clientCode.toLowerCase().includes(search.toLocaleLowerCase())));
+    SetClientList(clientSuperMasterList.filter((Itme)=>
+    Object.values(Itme).join(" ").toLowerCase().includes(search.toLocaleLowerCase())));
   
   }
     }, [search,user]);
