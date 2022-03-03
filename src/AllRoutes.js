@@ -60,10 +60,12 @@ function AllRoutes(){
               <Route exact path="/EmandatePage/">
                 <EmandatePage />
               </Route>
+              <Route exact path="/login">
+                <LoginPage />
+              </Route>
               <Route exact path="/">
                 <LoginPage />
               </Route>
-             
             </Switch>
           </div>
         // </Router>
