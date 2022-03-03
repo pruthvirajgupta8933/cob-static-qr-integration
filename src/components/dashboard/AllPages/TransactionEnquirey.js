@@ -205,7 +205,7 @@ return (date.getDate()+
                       <tr>
                         <td>Trans Complete Date :</td>
                         <td className="bold">
-                          <b>{data.transCompleteDate}</b>
+                          <b>{dateFormat(data.transCompleteDate)}</b>
                         </td>
                         <td> Client Code :</td>
                         <td className="bold">

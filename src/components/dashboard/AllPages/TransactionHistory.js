@@ -6,6 +6,9 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import axios from "axios"
 import _ from 'lodash';
 import { fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
+import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
+console.log(exportToSpreadsheet)
+
 
 
 function TransactionHistory() {
@@ -203,7 +206,21 @@ const pages = _.range(1, pageCount + 1)
   }
   
   
-  // console.log(txnList.length)
+  const exportToExcelFn=()=>{
+
+    const excelHeaderRow =
+  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Trans Initiation Date",	"Trans Complete Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
+    let excelArr = [excelHeaderRow];
+    txnList.map((item,index)=>{
+    excelArr.push(Object.values(item));
+  })
+  
+  const fileName = "Transactions Report"; 
+  exportToSpreadsheet(excelArr, fileName);
+
+  }
+  
+
 
 
   const today = new Date()
@@ -323,14 +340,8 @@ const pages = _.range(1, pageCount + 1)
                       Excel</button> */}
                       {  show ? 
 
-                   <ReactHTMLTableToExcel
-                   style={{margin: '22px 8px 0 0'}}
-                    id="test-table-xls-button"
-                    className="view_history"
-                    table="table-to-xls"
-                    filename="Transaction History"
-                    sheet="tablexls"
-                    buttonText="Export To Excel"/>
+                    <button className="view_history topmarg" onClick={()=>exportToExcelFn()}>Export </button>
+
                     :  '' }
                   </div>
                   {  show ? 
@@ -434,80 +445,7 @@ const pages = _.range(1, pageCount + 1)
                 </table>
                 </div>
                 
-                <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables" id="table-to-xls" style={{display: 'none'}}>
-                    <tbody><tr>
-                            <th> S.No </th>
-                            <th> Trans ID </th>
-                            <th> Client Trans ID </th>
-                            <th> Challan Number / VAN </th>
-                            <th> Amount </th>
-                            <th> Trans Initiation Date </th>
-                            <th> Trans Complete Date </th>
-                            <th> Payment Status </th>
-                            <th> Payee First Name </th>
-                            <th> Payee Last Name </th>
-                            <th> Payee Mob number </th>
-                            <th> Payee Email </th>
-                            <th> Client Code </th>
-                            <th> Payment Mode </th>
-                            <th> Payee Address </th>
-                            <th> Udf1 </th>
-                            <th> Udf2 </th>
-                            <th> Udf3 </th>
-                            <th> Udf4 </th>
-                            <th> Udf5 </th>
-                            <th> Udf6 </th>
-                            <th> Udf7 </th>
-                            <th> Udf8 </th>
-                            <th> Udf9 </th>
-                            <th> Udf10 </th>
-                            <th> Udf11 </th>
-                            <th> Udf20 </th>
-                            <th> Gr.No </th>
-                            <th> Bank Message </th>
-                            <th> IFSC Code </th>
-                            <th> Payer Account No </th>
-                            <th> Bank Txn Id </th>
-                          </tr>
-                          {txnList.length>0 && txnList.map((item,i)=>{return(
-                            <tr>
-                            <td>{item.srNo}</td>
-                            <td>{item.txn_id}</td>
-                            <td>{item.client_txn_id}</td>
-                            <td>{item.challan_no}</td>
-                            <td>{item.payee_amount}</td>
-                            <td>{item.trans_date}</td>
-                            <td>{item.trans_complete_date}</td>
-                            <td>{item.status}</td>
-                            <td>{item.payee_first_name}</td>
-                            <td>{item.payee_lst_name}</td>
-                            <td>{item.payee_mob}</td>
-                            <td>{item.payee_email}</td>
-                            <td>{item.client_code}</td>
-                            <td>{item.payment_mode}</td>
-                            <td>{item.payee_address}</td>
-                            <td>{item.udf1}</td>
-                            <td>{item.udf2}</td>
-                            <td>{item.udf3}</td>
-                            <td>{item.udf4}</td>
-                            <td>{item.udf5}</td>
-                            <td>{item.udf6}</td>
-                            <td>{item.udf7}</td>
-                            <td>{item.udf8}</td>
-                            <td>{item.udf9}</td>
-                            <td>{item.udf10}</td>
-                            <td>{item.udf11}</td>
-                            <td>{item.udf20}</td>
-                            <td>{item.gr_number}</td>
-                            <td>{item.bank_message}</td>
-                            <td>{item.ifsc_code}</td>
-                            <td>{item.payer_acount_number}</td>
-                            <td>{item.bank_txn_id}</td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
+               
                 <div>
                {/* {console.log("show",show)} */}
                 {txnList.length>0  ? 
