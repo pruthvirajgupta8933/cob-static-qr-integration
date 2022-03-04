@@ -1,7 +1,6 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import { useHistory, useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
 import validation from '../../validation';
 

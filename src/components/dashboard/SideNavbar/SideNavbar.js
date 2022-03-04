@@ -99,7 +99,7 @@ function SideNavbar() {
                       
                     
                      
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href=""><i className="fa fa-briefcase" aria-hidden="true" />
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href={void(0)}><i className="fa fa-briefcase" aria-hidden="true" />
                       &nbsp; Logout</a>
                       </li>
                     </ul>

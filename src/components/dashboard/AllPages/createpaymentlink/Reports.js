@@ -187,7 +187,7 @@ const pages = _.range(1, pageCount + 1)
     <div>
   <nav aria-label="Page navigation example"  >
   <ul class="pagination">
-    <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
+    <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
 
    {
 
@@ -203,7 +203,7 @@ const pages = _.range(1, pageCount + 1)
     
      ))
    }
-    <a class="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href="#">Next</a>
+    <a class="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href={void(0)}>Next</a>
    
   
   </ul>

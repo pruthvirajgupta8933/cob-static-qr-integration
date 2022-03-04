@@ -2,7 +2,6 @@ import React,{useEffect, useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useRouteMatch, Redirect,useHistory} from 'react-router-dom'
 import getPaymentStatusList from '../../../services/home.service'
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import axios from "axios"
 import _ from 'lodash';
 import { fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
@@ -315,19 +314,7 @@ const pages = _.range(1, pageCount + 1)
                   >
                     Search
                   </button>
-                  {/* <button className="view_history" style={{margin: '22px 8px 0 0'}}>Export to
-                      Excel</button> */}
-                      {  show ? 
-
-                   <ReactHTMLTableToExcel
-                   style={{margin: '22px 8px 0 0'}}
-                    id="test-table-xls-button"
-                    className="view_history"
-                    table="table-to-xls"
-                    filename="Transaction History"
-                    sheet="tablexls"
-                    buttonText="Export To Excel"/>
-                    :  '' }
+                  
                   </div>
                   {  show ? 
                   <React.Fragment>

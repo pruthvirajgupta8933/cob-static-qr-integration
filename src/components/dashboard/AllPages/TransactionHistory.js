@@ -2,7 +2,7 @@ import React,{useEffect, useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useRouteMatch, Redirect,useHistory} from 'react-router-dom'
 import getPaymentStatusList from '../../../services/home.service'
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+
 import axios from "axios"
 import _ from 'lodash';
 import { fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
@@ -263,28 +263,18 @@ const pages = _.range(1, pageCount + 1)
 
   }
   
-
-
-
   const today = new Date()
   const lastThreeMonth = new Date(today)
   lastThreeMonth.setDate(lastThreeMonth.getDate() - 90)
   lastThreeMonth.toLocaleDateString('en-ca')
-
-    
   var month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
   var day = lastThreeMonth.getUTCDate();
   var year = lastThreeMonth.getUTCFullYear();
- 
-  const finalDate = year +'-'+month+'-'+day; 
-
-
+  
+  const finalDate = year +'-'+month+'-'+day;
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">
-        {/*
-                    <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
-                                class="btn">Upload Here</span></span></div>*/}
       </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
@@ -301,10 +291,13 @@ const pages = _.range(1, pageCount + 1)
                     onChange={(e) => {
                       getInputValue("clientCode", e.target.value);
                     }}
+                  
                     
                   >
-                 
-                    {user.roleId===3 || user.roleId===13 ?<option value="0">All</option>:<option value="">Select</option> }
+                    {user.roleId===3 || user.roleId===13 ?
+                    <option value="0">All</option>
+                      :
+                    <option value="">Select</option> }
                     {clientSuperMasterList?.map((item) => {
                       return (
                         <option value={item.clientCode}>
@@ -331,8 +324,8 @@ const pages = _.range(1, pageCount + 1)
                   <label>To Date</label>
                   <input
                     type="date"
-                   min= {finalDate}
-                   max= {new Date().toLocaleDateString('en-ca')}
+                    min= {finalDate}
+                    max= {new Date().toLocaleDateString('en-ca')}
                     className="ant-input"
                     placeholder="To Date"
                     onChange={(e) => {
@@ -379,12 +372,8 @@ const pages = _.range(1, pageCount + 1)
                   >
                     Search
                   </button>
-                  {/* <button className="view_history" style={{margin: '22px 8px 0 0'}}>Export to
-                      Excel</button> */}
                       {  show ? 
-
-                    <button className="view_history topmarg" onClick={()=>exportToExcelFn()}>Export </button>
-
+                        <button className="view_history topmarg" onClick={()=>exportToExcelFn()}>Export </button>
                     :  '' }
                   </div>
                   {  show ? 
@@ -393,17 +382,16 @@ const pages = _.range(1, pageCount + 1)
                     <label>Search Transaction ID</label>
                     <input type="text" className="ant-input" placeholder="Search here" onChange={(e)=>{SetSearchText(e.target.value)}} />
                   </div>
-                  <div className="col-lg-6 mrg-btm- bgcolor">
-                    <label>Count per page</label>
-                    &nbsp;  &nbsp;
-                    <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} style={{width: 100}}>
-                      <option value="10">10</option>
+                  <div className="col-lg-4 mrg-btm- bgcolor">
+                  <label>Count per page</label>
+                  <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
+                  <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="50">50</option>
                       <option value="100">100</option>
-                    </select>
-                  </div> </React.Fragment> : <></> }
-                  {/* {console.log("paginatedata",paginatedata)} */}
+                  </select>
+                </div>                 
+                  </React.Fragment> : <></> }
 
                   <div style={{overflow:"auto"}} > 
                   <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables" >
@@ -495,7 +483,7 @@ const pages = _.range(1, pageCount + 1)
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
       
-                   <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
+                   <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
                     { 
 
 
@@ -516,7 +504,7 @@ const pages = _.range(1, pageCount + 1)
                       ))
                     }
 
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href="#">
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
                       Next</a> : <></> }
                       
                     </ul>
