@@ -14,14 +14,14 @@ function SideNavbar() {
     // alert('no login');
     // <Redirect to="/login-page" />
     // alert("aa3");
-    history.push("/login-page");
+    // history.push("/login-page");
 }
   var {roleId,clientContactPersonName}=user;
     let { path, url } = useRouteMatch();
     const dispatch = useDispatch();
     const handle = ()=>{
       dispatch(logout());
-      // history.push("/login-page");
+      
     }
 
     useEffect(() => {
@@ -83,8 +83,8 @@ function SideNavbar() {
                        {roleId!==3 && roleId!==13 ? 
                       
                        <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/subscription`} className='txt-white'><i className="fa fa-bell" aria-hidden="true" />
-                      &nbsp; Subscription</Link> 
+                      <Link to={`${url}/product-catalogue`} className='txt-white'><i className="fa fa-book" aria-hidden="true" />
+                      &nbsp; Product Catalogue</Link> 
                       </li>
                        : <></>
                         }

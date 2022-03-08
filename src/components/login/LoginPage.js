@@ -180,7 +180,7 @@ const handleClickShowPassword = () => {
                       <ul className="logmod__tabs">
                         <li data-tabtar="lgm-2" className="current">
                           <a
-                            href="javascript:void(0)"
+                            href="void(0)"
                             style={{ width: "100%" }}
                           >
                             Login

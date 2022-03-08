@@ -49,7 +49,7 @@ function Home() {
 
   
   //make client code array
-  if(user.clientSuperMasterList!==null && user.clientSuperMasterList.length>0){
+  if(user?.clientSuperMasterList!==null && user.clientSuperMasterList?.length>0){
         clientCodeArr = user.clientSuperMasterList.map((item)=>{ 
       return item.clientCode;
       });

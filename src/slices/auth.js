@@ -483,13 +483,17 @@ const authSlice = createSlice({
     },
     [login.rejected]: (state, action) => {
       state.isLoggedIn = false;
+      state.userAlreadyLoggedIn = false;
+      state.isLoggedIn = false;
+      state.isValidUser = '';
       state.user = null;
-      state.isValidUser = 'No';
     },
     [logout.fulfilled]: (state, action) => {
       state.isLoggedIn = false;
-      state.user = null;
+      state.userAlreadyLoggedIn = false;
+      state.isLoggedIn = false;
       state.isValidUser = '';
+      state.user = null;
     },
     [OTPVerificationApi.pending]: (state, action) => {
       state.status = "pending";

@@ -144,17 +144,18 @@ export const Recipts = () => {
       <div className="row ">
         <div className="col-sm-6 mx-auto">
           <div className="card ">
-            <div className="card-header text-center">SABPAISA TRANSACTION RECEIPT</div>
+            <div className="card-header text-center receipt-header">SABPAISA TRANSACTION RECEIPT</div>
             <div className="card-body">
            <form action="#" onSubmit={()=>{console.log()}}>
                       <div className="form-group">
-                          <input type="text" className="ant-input" onChange={(e) => onValueChange(e)} placeholder="Enter Sabpaisa Transactions Id"/>
+                          <label for="txn_id_input">Transcation ID :</label>
+                          <input type="text" className="ant-input" onChange={(e) => onValueChange(e)} placeholder="Enter Sabpaisa Transactions Id" id="txn_id_input"/>
                           {errors.input && <h4 >{errors.input}</h4>}
                       </div>
 
                       <div className="form-group">
                       
-                      <button className="btn btn-success"  onClick={(e) => onSubmit(e,input)} >{isLoading ? "Loading...":"View"}</button>
+                      <button className="btn receipt-button"  onClick={(e) => onSubmit(e,input)} >{isLoading ? "Loading...":"View"}</button>
                       
                       {isLoading?
                       <div className="spinner-border" role="status">

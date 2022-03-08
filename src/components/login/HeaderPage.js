@@ -254,20 +254,19 @@ function HeaderPage() {
         </svg>
       </div>
 
-      <header class="header">
-        {/* <a href="" class="logo"></a> */}
+      <header className="header">
+       
         <Link
           to="/login-page"
           className="logo"
-          href="https://www.SabPaisa.com/"
         >
           <img src={sabpaisalogo} alt="SabPaisa" title="SabPaisa" />
         </Link>
-        <input class="menu-btn" type="checkbox" id="menu-btn" />
-        <label class="menu-icon" for="menu-btn">
-          <span class="navicon"></span>
+        <input className="menu-btn" type="checkbox" id="menu-btn" />
+        <label className="menu-icon" htmlFor="menu-btn">
+          <span className="navicon"></span>
         </label>
-        <ul class="menu">
+        <ul className="menu">
           <li>
             <a
               href="https://sabpaisa.in/"

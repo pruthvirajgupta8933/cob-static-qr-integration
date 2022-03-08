@@ -5,6 +5,7 @@ import { useHistory, useRouteMatch } from 'react-router-dom/cjs/react-router-dom
 import validation from '../../validation';
 
 
+
 function TransactionEnquirey() {
   
   const initialState = {
@@ -126,6 +127,7 @@ if(timestamp==='' || timestamp===null) {
           <section className="features8 cid-sg6XYTl25a" id="features08-3-">
             <div className="container-fluid">
               <div className="row">
+
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Transactions Enquiry</label>
                   <input type="text" className="ant-input" placeholder="Enter your transactions enquiry" onChange={(e) => onValueChange(e)} />
