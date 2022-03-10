@@ -3068,6 +3068,11 @@
   "resolved" "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
   "version" "1.0.2"
 
+"base-64@^1.0.0":
+  "integrity" "sha512-kwDPIFCGx0NZHog36dj+tHiwP4QMzsZ3AgMViUBKI0+V5n4U0ufTCUMhnQ04diaRI8EX/QcPfql7zlhZ7j4zgg=="
+  "resolved" "https://registry.npmjs.org/base-64/-/base-64-1.0.0.tgz"
+  "version" "1.0.0"
+
 "batch@0.6.1":
   "integrity" "sha1-3DQxT05nkxgJP8dgJyUl+UvyXBY="
   "resolved" "https://registry.npmjs.org/batch/-/batch-0.6.1.tgz"
@@ -3683,10 +3688,20 @@
     "shebang-command" "^2.0.0"
     "which" "^2.0.1"
 
+"crypto-js@^4.1.1":
+  "integrity" "sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw=="
+  "resolved" "https://registry.npmjs.org/crypto-js/-/crypto-js-4.1.1.tgz"
+  "version" "4.1.1"
+
 "crypto-random-string@^2.0.0":
   "integrity" "sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA=="
   "resolved" "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-2.0.0.tgz"
   "version" "2.0.0"
+
+"crypto@^1.0.1":
+  "integrity" "sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig=="
+  "resolved" "https://registry.npmjs.org/crypto/-/crypto-1.0.1.tgz"
+  "version" "1.0.1"
 
 "css-blank-pseudo@^3.0.2":
   "integrity" "sha512-hOb1LFjRR+8ocA071xUSmg5VslJ8NGo/I2qpUpdeAYyBVCgupS5O8SEVo4SxEMYyFBNodBkzG3T1iqW9HCXxew=="
@@ -10156,6 +10171,11 @@
   "version" "4.4.1"
   dependencies:
     "punycode" "^2.1.0"
+
+"utf8@^3.0.0":
+  "integrity" "sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ=="
+  "resolved" "https://registry.npmjs.org/utf8/-/utf8-3.0.0.tgz"
+  "version" "3.0.0"
 
 "util-deprecate@^1.0.1", "util-deprecate@^1.0.2", "util-deprecate@~1.0.1":
   "integrity" "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8="

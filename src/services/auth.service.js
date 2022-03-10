@@ -15,7 +15,7 @@ const register = (firstName, lastName, mobileNumber, email, password,businessTyp
 
 // login old url : https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin 
 // login new url : https://cobtest.sabpaisa.in/auth-service/auth/login
-// http://18.189.11.232:8080/auth-service/auth/login
+// https://spl.sabpaisa.in/auth-service/auth/login
 const login = (username, password) => {
   return axios
     .post("https://spl.sabpaisa.in/auth-service/auth/login", {

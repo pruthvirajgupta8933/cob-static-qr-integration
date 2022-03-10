@@ -5,6 +5,8 @@ import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashbo
 import { Link } from 'react-router-dom';
 import Emandate from '../AllPages/Mandate';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+// import paymentGateWay from '../../../payment-gateway/'
+
 
 const Subsciption = () => {
   const [subscriptionDetails, setSubscriptionDetails] = useState(false);
@@ -100,39 +102,6 @@ const Subsciption = () => {
     }
   }
 
-  // --Working bodyFormData ---
-  // const bodyFormData = {
-  //   authenticationMode: 'Netbanking',
-  //   clientCode: '70',
-  //   clientRegistrationId: Math.floor(Math.random() * 90000) + 10000,
-  //   consumerReferenceNumber: '96321',
-  //   emiamount: "",
-  //   frequency: 'ADHO',
-  //   mandateCategory: 'A001',
-  //   mandateEndDate: '',
-  //   mandateMaxAmount: '1.00',
-  //   mandatePurpose: "API mandate",
-  //   mandateStartDate: "2021-11-11T17:34:29.033Z",
-  //   mandateType: 'ONLINE',
-  //   npciPaymentBankCode: 'BARB',
-  //   panNo: '',
-  //   payerAccountNumber: '62300100005139',
-  //   payerAccountType: 'SAVINGS',
-  //   payerBank: 'BARB',
-  //   payerBankIfscCode: 'BARB0VJRAPH',
-  //   payerEmail: 'rahmat.ali@sabpaisa.in',
-  //   payerMobile: '+91-8750212347',
-  //   payerName: 'Rahmat',
-  //   payerUtilitityCode: 'NACH00000000022341',
-  //   requestType: 'REGSTRN',
-  //   schemeReferenceNumber: '741255',
-  //   telePhone: '',
-  //   untilCancelled: true,
-  //   userType: 'merchant',
-  // }
-
-
-
 useEffect(() => {
   
   // update body by realtime data
@@ -208,6 +177,29 @@ useEffect(() => {
   }, [subscribePlanData,termAndCnd]);
   
 
+  const makePayment=()=>{
+      console.log("make payment");
+      var username = 'nishant.jha_2885';
+      var password = 'SIPL1_SP2885';
+      var programID = "5666";
+      var clientCode = 'SIPL1';
+      var authKey = 'rMnggTKFvmGx8y1z';
+      var authIV = "0QvWIQBSz4AX0VoH";
+      var txnId = Math.floor(Math.random() * 1000000000);
+      var tnxAmt = 10;
+
+      var payerFirstName = 'Mukesh';
+      var payerLastName = 'Kumar';
+      var payerContact = '8796541230';
+      var payerAddress = 'xyz abc';
+      var payerEmail = 'test@gmail.com';
+      const userData = {
+        username,password,programID,clientCode,authKey,authIV,txnId,tnxAmt,payerFirstName,payerLastName,payerContact,payerAddress,payerEmail
+      };
+
+      // paymentGateWay(userData);
+  }
+
   // console.log("subscriptionPlanData",subscriptionPlanData);
 return (
   <section className="ant-layout">
@@ -232,8 +224,19 @@ return (
               <p className="card-text">{s.applicationDescription}</p>
             </div>
             <div class="container">
-                <a target="blank" href={s.applicationUrl}  style={{ padding: "0", top: "155px" }} className="btn btn-warning">Read More</a>
-                <button type="button" style={{ top: "200px" }} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>Subscribe</button>                
+                <a target="blank" href={s.applicationUrl} > 
+                  <button className="btn btn-warning sm">Read More </button>
+                </a>
+
+                <div>
+                <button type="button"
+                //  style={{ top: "200px" }}
+                  className="btn btn-primary sm" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>Subscribe</button>
+                </div>
+                                
+            </div>
+            <div style={{display:"none"}}>
+              <button type="button" className="btn btn-info sm" onClick={()=>makePayment()}>Make Payment</button>
             </div>
           </div>
         </div>

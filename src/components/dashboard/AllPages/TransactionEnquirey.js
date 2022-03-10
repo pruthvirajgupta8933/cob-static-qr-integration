@@ -104,7 +104,7 @@ if(timestamp==='' || timestamp===null) {
     a.document.write('</table>');
     a.document.close();
             a.print();
-  }
+  } 
 
   if(user && user.clientSuperMasterList===null && user.roleId!==3 && user.roleId!==13){
     // alert(`${path}/profile`);

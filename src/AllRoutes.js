@@ -16,6 +16,7 @@ import StudentRecipets from './components/Otherpages/StudentRecipets';
 import ReceiptByEmail from './components/Otherpages/ReceiptByEmail';
 import ReceiptWalchand from './components/Otherpages/ReceiptWalchand';
 import EmandatePage from './components/Otherpages/EmandatePage';
+import Test from './components/Otherpages/Test';
 
 
 
@@ -65,6 +66,9 @@ function AllRoutes(){
               </Route>
               <Route exact path="/">
                 <LoginPage />
+              </Route>
+              <Route exact path="/test">
+                <Test />
               </Route>
             </Switch>
           </div>

@@ -215,8 +215,8 @@ export const Recipts = () => {
 
 
                   <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
-                    <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Paid Amount</th>
-                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.paidAmount}</td>
+                    <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Payee Amount</th>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payeeAmount}</td>
                   </tr>
 
                   <tr>

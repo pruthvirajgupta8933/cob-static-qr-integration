@@ -212,9 +212,9 @@ export const createClientProfile = createAsyncThunk(
         "pocAccountManager": null
       };
 
-      const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
-      // console.log("mergeClientSuperMasterList",mergeClientSuperMasterList)
-      const clientSuperMasterList =  [mergeClientSuperMasterList];
+      const mergeclientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
+      // console.log("mergeclientSuperMasterList",mergeclientSuperMasterList)
+      const clientSuperMasterList =  [mergeclientSuperMasterList];
       allData.clientSuperMasterList = clientSuperMasterList;
       localStorage.setItem("user", JSON.stringify(allData))
 
@@ -278,9 +278,9 @@ export const updateClientProfile = createAsyncThunk(
         "pocAccountManager": null
       };
 
-      const mergeClientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
-      // console.log("mergeClientSuperMasterList",mergeClientSuperMasterList)
-      const clientSuperMasterList =  [mergeClientSuperMasterList];
+      const mergeclientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
+      // console.log("mergeclientSuperMasterList",mergeclientSuperMasterList)
+      const clientSuperMasterList =  [mergeclientSuperMasterList];
       allData.clientSuperMasterList = clientSuperMasterList;
       // console.log("after update user",allData);
       localStorage.setItem("user", JSON.stringify(allData))
