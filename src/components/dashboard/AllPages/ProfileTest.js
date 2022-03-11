@@ -23,7 +23,7 @@ export const FormikApp = () => {
   
     
     // const {fetchDcBankList,fetchNbBankList} = profileService
-    const { clientSuperMasterList ,
+    const { clientMerchantDetailsList ,
             loginId,
             clientContactPersonName,
             clientEmail,
@@ -51,11 +51,11 @@ export const FormikApp = () => {
     
     const [message,setMessage]  = useState('');
   
-    const [clientId,setClientId] = useState(clientSuperMasterList!==null && clientSuperMasterList[0]?.clientId)
+    const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
     const [createProfileResponse , setCreateProfileResponse]  = useState('');
     const [retrievedProfileResponse , setRetrivedProfileResponse] = useState('');
   
-    const [authenticationMode,setAuthenticationMode] = useState(clientSuperMasterList &&  clientSuperMasterList[0]?.clientAuthenticationType);
+    const [authenticationMode,setAuthenticationMode] = useState(clientMerchantDetailsList &&  clientMerchantDetailsList[0]?.clientAuthenticationType);
     const [listOfNetBank,setListOfNetBank] = useState(initNBlist);
     const [listOfDebitCardBank,setListOfDebitCardBank] = useState(initDClist);
     
@@ -73,7 +73,7 @@ export const FormikApp = () => {
     // console.log(authenticationMode);
     
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-//   console.log(clientSuperMasterList && clientSuperMasterList[0]?.address)
+//   console.log(clientMerchantDetailsList && clientMerchantDetailsList[0]?.address)
 //  console.log(isCreateorUpdate);
 //   initial values
   const INITIAL_FORM_STATE = {
@@ -82,13 +82,13 @@ export const FormikApp = () => {
     phone:clientMobileNo,
     email:clientEmail,
     ...(isCreateorUpdate && {clientCode:''}),
-    address:clientSuperMasterList &&  clientSuperMasterList[0]?.address,
+    address:clientMerchantDetailsList &&  clientMerchantDetailsList[0]?.address,
     accountHolderName:accountHolderName,
     bankName:bankName,
     accountNumber:accountNumber,
     ifscCode:userIfscCode,
     pan:pan,
-    clientAuthenticationType: clientSuperMasterList &&  clientSuperMasterList[0]?.clientAuthenticationType,
+    clientAuthenticationType: clientMerchantDetailsList &&  clientMerchantDetailsList[0]?.clientAuthenticationType,
   };
 
   
@@ -200,7 +200,7 @@ const validationSchema = Yup.object().shape({
         setListOfDebitCardBank(response.data);
       })
       .catch(error=>console.log(error))                          
-    setIsCreateorUpdate(clientSuperMasterList && clientSuperMasterList!==null ? false : true);
+    setIsCreateorUpdate(clientMerchantDetailsList && clientMerchantDetailsList!==null ? false : true);
 
    
 

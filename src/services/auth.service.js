@@ -18,12 +18,12 @@ const register = (firstName, lastName, mobileNumber, email, password,businessTyp
 // https://spl.sabpaisa.in/auth-service/auth/login
 const login = (username, password) => {
   return axios
-    .post("https://spl.sabpaisa.in/auth-service/auth/login", {
+    .post("https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin", {
       clientUserId:username,
       userPassword:password,
     })
     .then((response) => {
-      // response.data.clientSuperMasterList = staticClientList
+      // response.data.clientMerchantDetailsList = staticClientList
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
       }else{

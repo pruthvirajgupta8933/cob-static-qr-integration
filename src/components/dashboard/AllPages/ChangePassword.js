@@ -15,12 +15,12 @@ function ChangePassword() {
   const { user ,passwordChange} = useSelector((state) => state.auth);
 
 // console.log(passwordChange);
-  const { clientSuperMasterList ,
+  const { clientMerchantDetailsList ,
           loginId,
           userName,
         } = user;
   
-  const [clientId,setClientId] = useState(clientSuperMasterList!==null && clientSuperMasterList[0]?.clientId)
+  const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
 
 useEffect(() => {
 

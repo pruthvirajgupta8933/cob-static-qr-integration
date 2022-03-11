@@ -31,7 +31,7 @@ function TransactionEnquirey() {
   
   const [input, setInput] = useState();
   const [show, setIsShow] = useState(false);
-  const [errors, setErrors] =useState({input:true});
+  const [flag, setFlag] =useState('');
   const [errMessage , setErrMessage] = useState('');
   const [data,setData]= useState(initialState)
   const {auth} = useSelector((state)=>state);
@@ -46,10 +46,23 @@ function TransactionEnquirey() {
 
 
   const onSubmit=async(input)=>{
-    setErrors(validation({ input }))
+    // setErrors(validation({ input }))
+    var regex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     
+    var flagMsg = true;
+    if(!input) {
+      flagMsg = 'ID is required'
+    }
+    else if(regex.test(input)) {
+      flagMsg = 'Invalid Input'
+    }
+   else{
+    flagMsg = false;
+    } 
+
+    setFlag(flagMsg);   
     // console.log(errors.input);
-   if(errors.input===false){
+   if(flagMsg===false){
     const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
     .then((response) => {
       console.warn(response);
@@ -60,7 +73,7 @@ function TransactionEnquirey() {
     
     .catch((e) => {
 
-      console.log(e);
+      // console.log(e);
       setIsShow(false);
       setErrMessage("No Data Found")
 
@@ -106,7 +119,7 @@ if(timestamp==='' || timestamp===null) {
             a.print();
   } 
 
-  if(user && user.clientSuperMasterList===null && user.roleId!==3 && user.roleId!==13){
+  if(user && user.clientMerchantDetailsList===null && user.roleId!==3 && user.roleId!==13){
     // alert(`${path}/profile`);
     // return <Redirect to={`${path}/profile`} />
     history.push('/dashboard/profile');
@@ -131,7 +144,7 @@ if(timestamp==='' || timestamp===null) {
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Transactions Enquiry</label>
                   <input type="text" className="ant-input" placeholder="Enter your transactions enquiry" onChange={(e) => onValueChange(e)} />
-                  {errors.input && <h4>{errors.input}</h4>}
+                  {flag && <h4>{flag}</h4>}
                 </div>
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <div>&nbsp;</div>

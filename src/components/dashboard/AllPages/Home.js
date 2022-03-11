@@ -45,12 +45,12 @@ function Home() {
   }, [clientCode]);
 
   // console.log('successTxnsumry',successTxnsumry );
-  // console.log('clientSuperMasterList',user.clientSuperMasterList);
+  // console.log('clientMerchantDetailsList',user.clientMerchantDetailsList);
 
   
   //make client code array
-  if(user?.clientSuperMasterList!==null && user.clientSuperMasterList?.length>0){
-        clientCodeArr = user.clientSuperMasterList.map((item)=>{ 
+  if(user?.clientMerchantDetailsList!==null && user.clientMerchantDetailsList?.length>0){
+        clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
       return item.clientCode;
       });
   }else{
@@ -89,7 +89,7 @@ function Home() {
   }
 
  
-  if(user && user.clientSuperMasterList===null && user.roleId!==3 && user.roleId!==13){
+  if(user && user.clientMerchantDetailsList===null && user.roleId!==3 && user.roleId!==13){
     return <Redirect to={`${path}/profile`} />
   } 
 console.log('show data',showData)

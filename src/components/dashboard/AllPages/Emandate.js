@@ -14,7 +14,7 @@ import { ceil } from 'lodash';
 
 const Emandate = () => {
     const {user} = useSelector((state)=>state.auth);
-    const { clientId,clientName } =user.clientSuperMasterList[0];
+    const { clientId,clientName } =user.clientMerchantDetailsList[0];
     const search = useLocation().search;
     const mendateRegIdParam = new URLSearchParams(search).get('mendateRegId');
 

@@ -25,8 +25,8 @@ function SideNavbar() {
     }
 
     useEffect(() => {
-      if(user.clientSuperMasterList?.length > 0 ){
-        dispatch(checkPermissionSlice(user?.clientSuperMasterList[0]?.clientCode))
+      if(user.clientMerchantDetailsList?.length > 0 ){
+        dispatch(checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode))
       }
       
     }, [])

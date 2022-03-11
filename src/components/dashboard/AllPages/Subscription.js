@@ -26,18 +26,18 @@ const Subsciption = () => {
   const {user} = auth;
   let history = useHistory();
 
-  if(user && user.clientSuperMasterList===null){
+  if(user && user.clientMerchantDetailsList===null){
     // alert(`${path}/profile`);
     // return <Redirect to={`${path}/profile`} />
     history.push('/dashboard/profile');
   } 
   
-  const {clientSuperMasterList , accountHolderName,accountNumber,bankName,clientEmail,clientMobileNo,ifscCode,loginStatus,pan} =user;
+  const {clientMerchantDetailsList , accountHolderName,accountNumber,bankName,clientEmail,clientMobileNo,ifscCode,loginStatus,pan} =user;
   const { isLoading , subscribe } = dashboard;
   let clientAuthenticationType,clientCode = '';
-  if(clientSuperMasterList!==null){
+  if(clientMerchantDetailsList!==null){
 
-    let {clientAuthenticationType,clientCode} = clientSuperMasterList[0];
+    let {clientAuthenticationType,clientCode} = clientMerchantDetailsList[0];
 
   }
   var authenticationMode ='';

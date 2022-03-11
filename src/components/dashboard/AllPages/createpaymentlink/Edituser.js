@@ -38,16 +38,16 @@ export const Edituser = (props) => {
 
 
     const [data, setData] = useState([])
-    // var clientSuperMasterList = user.clientSuperMasterList;
-    // const { clientCode } = clientSuperMasterList[0]
+    // var clientMerchantDetailsList = user.clientMerchantDetailsList;
+    // const { clientCode } = clientMerchantDetailsList[0]
 
-    let clientSuperMasterList = [];
+    let clientMerchantDetailsList = [];
     let clientCode = '';
-    if (user && user.clientSuperMasterList === null) {
+    if (user && user.clientMerchantDetailsList === null) {
         history.push('/dashboard/profile');
     } else {
-        clientSuperMasterList = user.clientSuperMasterList;
-        clientCode = clientSuperMasterList[0].clientCode;
+        clientMerchantDetailsList = user.clientMerchantDetailsList;
+        clientCode = clientMerchantDetailsList[0].clientCode;
     }
 
 

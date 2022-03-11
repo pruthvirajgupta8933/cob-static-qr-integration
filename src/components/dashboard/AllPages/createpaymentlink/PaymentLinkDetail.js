@@ -23,8 +23,8 @@ const PaymentLinkDetail = () => {
   const [searchText, setSearchText] = useState("");
 
   const { user } = useSelector((state) => state.auth);
-  var clientSuperMasterList = user.clientSuperMasterList;
-  const { clientCode} = clientSuperMasterList[0];
+  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  const { clientCode} = clientMerchantDetailsList[0];
  
 
   

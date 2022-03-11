@@ -43,18 +43,18 @@ const PayerDetails = () => {
     const [data, setData] = useState([])
     const [searchResults, setSearchResults] = useState([])
     const [customerType, setCustomerType] = useState([]);
-    let clientSuperMasterList=[]
+    let clientMerchantDetailsList=[]
     let clientCode =''
-    if(user && user.clientSuperMasterList===null){
+    if(user && user.clientMerchantDetailsList===null){
         history.push('/dashboard/profile');
       }else{
-        clientSuperMasterList = user.clientSuperMasterList;
-        clientCode =  clientSuperMasterList[0].clientCode;
+        clientMerchantDetailsList = user.clientMerchantDetailsList;
+        clientCode =  clientMerchantDetailsList[0].clientCode;
       }
   
-    // console.log(clientSuperMasterList);
+    // console.log(clientMerchantDetailsList);
     
-    // console.log(clientSuperMasterList);
+    // console.log(clientMerchantDetailsList);
     //console.log(clientCode)
     // const onInputChange = e => {
     //     // console.log(e.target.value);

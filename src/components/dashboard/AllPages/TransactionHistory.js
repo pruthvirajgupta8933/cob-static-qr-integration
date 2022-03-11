@@ -50,6 +50,7 @@ function TransactionHistory() {
   const getInputValue=(label,val)=>{
       if(label==='fromDate'){
         SetFromDate(val);
+        // console.log(val);
       }else if(label==='toDate'){
         SetToDate(val);
       }else if(label==='clientCode'){
@@ -117,7 +118,7 @@ const checkValidation = ()=>{
           if(isValid){ 
             // isLoading(true);
             isButtonClicked(true);
-            const paramData = {
+            var paramData = {
               clientCode:clientCode,
               txnStatus:txnStatus,
               payModeId:payModeId,
@@ -126,8 +127,18 @@ const checkValidation = ()=>{
               ref1:0,
               ref2:0
             }
+            clientCode==='0'? 
+              clientMerchantDetailsList?.map((item) => {
+                paramData.clientCode = item.clientCode;
+                // console.log(paramData.clientCode);
+                dispatch(fetchTransactionHistorySlice(paramData))
+              })
+              :
+              dispatch(fetchTransactionHistorySlice(paramData))
+
+
             // console.log(paramData);
-            dispatch(fetchTransactionHistorySlice(paramData))
+            
             
       }else{
         // isLoading(false);
@@ -198,11 +209,11 @@ const pages = _.range(1, pageCount + 1)
  
 
 
-  var clientSuperMasterList =[];
-  if(user && user.clientSuperMasterList===null && user.roleId!==3 && user.roleId!==13){
+  var clientMerchantDetailsList =[];
+  if(user && user.clientMerchantDetailsList===null && user.roleId!==3 && user.roleId!==13){
     history.push('/dashboard/profile');
   }else{
-    clientSuperMasterList = user.clientSuperMasterList;
+    clientMerchantDetailsList = user.clientMerchantDetailsList;
   }
   
   
@@ -298,7 +309,7 @@ const pages = _.range(1, pageCount + 1)
                     <option value="0">All</option>
                       :
                     <option value="">Select</option> }
-                    {clientSuperMasterList?.map((item) => {
+                    {clientMerchantDetailsList?.map((item) => {
                       return (
                         <option value={item.clientCode}>
                           {item.clientCode + " - " + item.clientName}

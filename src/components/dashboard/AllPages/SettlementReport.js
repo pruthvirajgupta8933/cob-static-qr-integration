@@ -34,11 +34,11 @@ function SettlementReport() {
    
     const {user} = useSelector((state)=>state.auth);
     let clientCode='';
-    if (user && user.clientSuperMasterList === null) {
+    if (user && user.clientMerchantDetailsList === null) {
       history.push("/dashboard/profile");
     } else {
-      var clientSuperMasterList = user.clientSuperMasterList;
-      clientCode = clientSuperMasterList[0].clientCode;
+      var clientMerchantDetailsList = user.clientMerchantDetailsList;
+      clientCode = clientMerchantDetailsList[0].clientCode;
     }
 
     const getFileName = async () => {

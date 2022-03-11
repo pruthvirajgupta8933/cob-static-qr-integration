@@ -36,8 +36,8 @@ const Reports = () => {
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([])
   const {user} = useSelector((state)=>state.auth);
-  var clientSuperMasterList = user.clientSuperMasterList;
-  const {clientCode} = clientSuperMasterList[0];
+  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  const {clientCode} = clientMerchantDetailsList[0];
 
 
   const pageCount = data ? Math.ceil(data.length/pageSize) : 0;

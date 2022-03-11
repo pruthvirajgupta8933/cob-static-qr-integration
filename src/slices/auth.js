@@ -183,7 +183,7 @@ export const createClientProfile = createAsyncThunk(
       allData.clientMobileNo = data.phone;
      
       // console.log("allData--s",allData);
-      const clientSuperMasterListObj = {
+      const clientMerchantDetailsListObj = {
         "clientId": null,
         "lookupState": null,
         "address": null,
@@ -212,10 +212,10 @@ export const createClientProfile = createAsyncThunk(
         "pocAccountManager": null
       };
 
-      const mergeclientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
-      // console.log("mergeclientSuperMasterList",mergeclientSuperMasterList)
-      const clientSuperMasterList =  [mergeclientSuperMasterList];
-      allData.clientSuperMasterList = clientSuperMasterList;
+      const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj,response.data);
+      // console.log("mergeclientMerchantDetailsList",mergeclientMerchantDetailsList)
+      const clientMerchantDetailsList =  [mergeclientMerchantDetailsList];
+      allData.clientMerchantDetailsList = clientMerchantDetailsList;
       localStorage.setItem("user", JSON.stringify(allData))
 
 
@@ -249,7 +249,7 @@ export const updateClientProfile = createAsyncThunk(
       // console.log("response.data",response.data);
       // console.log("all data",allData);
 
-      const clientSuperMasterListObj = {
+      const clientMerchantDetailsListObj = {
         "clientId": clientId,
         "lookupState": null,
         "address": null,
@@ -278,10 +278,10 @@ export const updateClientProfile = createAsyncThunk(
         "pocAccountManager": null
       };
 
-      const mergeclientSuperMasterList = Object.assign(clientSuperMasterListObj,response.data);
-      // console.log("mergeclientSuperMasterList",mergeclientSuperMasterList)
-      const clientSuperMasterList =  [mergeclientSuperMasterList];
-      allData.clientSuperMasterList = clientSuperMasterList;
+      const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj,response.data);
+      // console.log("mergeclientMerchantDetailsList",mergeclientMerchantDetailsList)
+      const clientMerchantDetailsList =  [mergeclientMerchantDetailsList];
+      allData.clientMerchantDetailsList = clientMerchantDetailsList;
       // console.log("after update user",allData);
       localStorage.setItem("user", JSON.stringify(allData))
 

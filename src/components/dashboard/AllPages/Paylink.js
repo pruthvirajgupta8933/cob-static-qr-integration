@@ -14,7 +14,7 @@ function Paylink() {
     const {user} = auth;
     let history = useHistory();
 
-    if(user && user.clientSuperMasterList===null){
+    if(user && user.clientMerchantDetailsList===null){
           history.push('/dashboard/profile');
     } 
     
