@@ -23,16 +23,6 @@ const StudentRecipets = () => {
   const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState(initialState);
 
- 
-  
-    
-  
-  
-
-
-  
-
-
   const onSubmit = async (e,transactionId,studentId) => {
     e.preventDefault();
     if(transactionId === null){
@@ -105,10 +95,11 @@ const handle=()=>{
       <div className="row ">
         <div className="col-sm-6 mx-auto">
           <div className="card ">
-            <div className="card-header text-center">SABPAISA TRANSACTION RECEIPT</div>
+            <div className="card-header text-center receipt-header">SABPAISA TRANSACTION RECEIPT</div>
             <div className="card-body">
            <form action="#" onSubmit={()=>{console.log()}}>
                       <div className="form-group">
+                          <label for="txn_id_input">Sabpaisa Transcation ID :</label>
                            <input type="text" className="ant-input" name="transactionid" value={transactionId} onChange={(e) => setTransactionId(e.target.value)} placeholder="Enter Sabpaisa Transactions Id" />
                       </div>
 
@@ -116,11 +107,12 @@ const handle=()=>{
                         <h2 className="text-center">OR</h2>
                       </div>
                       <div className="form-group">
+                      <label for="txn_id_input">Enter Student ID :</label>
                       <input type="text" className="ant-input" name="studdentid"  value={studentId} onChange={(e)=>setStudentId(e.target.value)} placeholder="Enter Student Id"  />
                       </div>
 
                       <div className="form-group">
-                      <button className="btn btn-success" onClick={(e) => onSubmit(e,transactionId,studentId)} >
+                      <button className="btn receipt-button" onClick={(e) => onSubmit(e,transactionId,studentId)} >
                       
                       {isLoading ? "Loading...":"View"}
                       </button>
@@ -192,7 +184,7 @@ const handle=()=>{
                           </tr>
                           <tr>
                             <th scope="row">Transaction Date</th>
-                            <td>{dateFormat(user.trans_date)}</td>
+                            <td>{user.trans_date}</td>
 
                           </tr>
                           <tr>

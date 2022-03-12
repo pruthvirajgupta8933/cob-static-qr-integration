@@ -222,18 +222,19 @@ return (
             <div className="card-body" style={{ height: "200px" }}>
               <h5 className="card-title" style={{ fontWeight: "700", fontSize: "large" }}>{s.applicationName}</h5>
               <p className="card-text">{s.applicationDescription}</p>
+              <div>
+                <a href={s.applicationUrl} target="blank" class="btn btn-sm " style={{backgroundColor:"#ffc107"}} role="button" aria-pressed="true"> Read More</a>
+                <button type="button"
+                //  style={{ top: "200px" }}
+                  className="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>Subscribe</button>
+                </div>
             </div>
             <div class="container">
                 {/* <a target="blank" className="btn btn-warning" href={s.applicationUrl} > 
                    Read More
                 </a>
                  */}
-                <div>
-                <a href={s.applicationUrl} target="blank" class="btn btn-sm " style={{backgroundColor:"#ffc107"}} role="button" aria-pressed="true"> Read More</a>
-                <button type="button"
-                //  style={{ top: "200px" }}
-                  className="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>Subscribe</button>
-                </div>
+               
                                 
             </div>
             <div style={{display:"none"}}>

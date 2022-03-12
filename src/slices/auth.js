@@ -29,6 +29,7 @@ const auth = {
     },
   },
   user:user,
+  isLoggedIn:null,
   currentUser: {},
   status: "",
   error: "",
@@ -465,33 +466,41 @@ const authSlice = createSlice({
       let loggedInStatus = false;
       let isValidData ='';
 
-      if(action.payload.user && action.payload.user!==null){
-        const loginState = action.payload.user.loginStatus;
+      // if(action.payload.user && action.payload.user!==null){
+        const loginState = action.payload?.user?.loginStatus;
         loggedInStatus = false;
+        console.log("loginState",loginState);
           if(loginState==="Activate"){
               loggedInStatus = true;
               isValidData = 'Yes';
+            }else{
+              loggedInStatus = false;
+              isValidData = 'No';
             }
-        }else{
-                loggedInStatus = false;
-                isValidData = 'No';
-        }
+        // }else{
+                // loggedInStatus = false;
+                // isValidData = 'No';
+        // }
 
       state.isLoggedIn = loggedInStatus;
       state.user = action.payload.user;
       state.isValidUser = isValidData;
     },
-    [login.rejected]: (state, action) => {
+    [login.pending]: (state) => {
+      state.isLoggedIn = null;
+      state.userAlreadyLoggedIn = false;
+      state.isValidUser = '';
+      state.user = null;
+    },
+    [login.rejected]: (state) => {
       state.isLoggedIn = false;
       state.userAlreadyLoggedIn = false;
-      state.isLoggedIn = false;
       state.isValidUser = '';
       state.user = null;
     },
     [logout.fulfilled]: (state, action) => {
-      state.isLoggedIn = false;
+      state.isLoggedIn = null;
       state.userAlreadyLoggedIn = false;
-      state.isLoggedIn = false;
       state.isValidUser = '';
       state.user = null;
     },

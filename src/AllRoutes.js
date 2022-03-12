@@ -17,6 +17,7 @@ import ReceiptByEmail from './components/Otherpages/ReceiptByEmail';
 import ReceiptWalchand from './components/Otherpages/ReceiptWalchand';
 import EmandatePage from './components/Otherpages/EmandatePage';
 import Test from './components/Otherpages/Test';
+import InternetConnection from './_components/reuseable_components/InternetConnection';
 
 
 
@@ -26,6 +27,7 @@ function AllRoutes(){
     return (
         // <Router >
           <div>
+          <InternetConnection />
             <Switch>
              
               <Route exact path="/login-page">

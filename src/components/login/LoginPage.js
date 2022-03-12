@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useDebugValue} from 'react'
 import HeaderPage from './HeaderPage'
 import { useDispatch, useSelector } from 'react-redux';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
@@ -53,26 +53,25 @@ function LoginPage(props) {
 
   // message = message?.length>=0?message=null:message;
   // console.log(message)
-  const {user,userAlreadyLoggedIn} = auth;
+  const {user,userAlreadyLoggedIn } = auth;
   // console.log(auth)
-  if(userAlreadyLoggedIn ){
+  if(userAlreadyLoggedIn){
+    console.log(userAlreadyLoggedIn , isLoggedIn)
+    console.log("fn 2");
     history.push("/dashboard")  
   }
 
   useEffect(()=>{
     setAuthData(authentication);
     // console.log('change auth data',auth);
-    redirectRoute(auth);
+    // redirectRoute(auth);
 },[authentication])
 
 useEffect(() => {
     dispatch(clearMessage());
   }, [dispatch]);
 
-useEffect(() => {
-    // console.log('login page ,call one time');
-    // dispatch(logout());
-}, [])
+
 
 const handleLogin = (formValue) => {
   var { clientUserId, userPassword } = formValue;
@@ -80,17 +79,21 @@ const handleLogin = (formValue) => {
   var password= userPassword; 
   setLoading(true);
   // console.log(formValue);
+  // console.log("isLoggedIn",isLoggedIn)
   dispatch(login({ username, password }))
-    .unwrap()
-    .then(() => {
-      history.push("/dashboard");
-      // window.location.reload();
-    })
-    .catch((error) => {
-      toast.error('Login Unsuccessful');
-      setLoading(false);
-    });
+    // .unwrap()
+    // .then(() => {
+    //   // console.log("is loggedin",isLoggedIn);
+    //   // history.push("/dashboard");
+    //   // window.location.reload();
+    // })
+    // .catch((error) => {
+    //   toast.error('Login Unsuccessful');
+    //   setLoading(false);
+    // });
 };
+
+
 
 const handleChangeForOtp = (otp) => {
   const regex = /^[0-9]*$/;
@@ -100,51 +103,87 @@ const handleChangeForOtp = (otp) => {
 };
 
 
-const redirectRoute = (authen) => {
-  // console.log('function call route');
-  // console.log('isLoggedIn',isLoggedIn);
-  // console.log('authvaliduser',authen.isValidUser);
-  if (isLoggedIn ) {
-      setOpen(false);
-        // console.log('redirect','dashboard')
-        history.push("/dashboard");
-    }
-    if (authen.isValidUser==="No"){
-        setOpen(true);
-    }
-};
+// const redirectRoute = (authen) => {
+//   // console.log('function call route');
+//   // console.log('isLoggedIn',isLoggedIn);
+//   // console.log('authvaliduser',authen.isValidUser);
+//   if (isLoggedIn) {
+//       setOpen(false);
+//         console.log('redirect','dashboard')
+//         history.push("/dashboard");
+//     }
+//     if (authen.isValidUser==="No"){
+//         setOpen(true);
+//     }
+// };
 
+console.log("isLoggedIn",isLoggedIn);
+console.log("loading",loading);
 
-const handleClickForVerification = () => {
-  setShowBackDrop(true);
-  dispatch(
-    OTPVerificationApi({
-      //verification_code: AuthToken,
-      otp: parseInt(otp.otp, 10),
-      geo_location: GeoLocation,
-    })
-  ).then((res) => {
-    if (res) {
-      if (res.meta.requestStatus === "fulfilled") {
-        if (res.payload.response_code === "1") {
-          setOtpVerificationError("");
-          setShowBackDrop(false);
-          history.push("/ledger");
-        } else if (res.payload.response_code === "0") {
-          setShowBackDrop(false);
-          toastConfig.errorToast(res.payload.message);
-        }
-      } else {
-        setShowBackDrop(false);
-        setShowResendCode(true);
-      }
+if (isLoggedIn) {
+  // setOpen(false);
+    console.log('redirect','dashboard')
+    history.push("/dashboard");
+}
+// if (authen.isValidUser==="No"){
+//     setOpen(true);
+// }
+
+// const handleClickForVerification = () => {
+//   setShowBackDrop(true);
+//   dispatch(
+//     OTPVerificationApi({
+//       //verification_code: AuthToken,
+//       otp: parseInt(otp.otp, 10),
+//       geo_location: GeoLocation,
+//     })
+//   ).then((res) => {
+//     if (res) {
+//       if (res.meta.requestStatus === "fulfilled") {
+//         if (res.payload.response_code === "1") {
+//           setOtpVerificationError("");
+//           setShowBackDrop(false);
+//           history.push("/ledger");
+//         } else if (res.payload.response_code === "0") {
+//           setShowBackDrop(false);
+//           toastConfig.errorToast(res.payload.message);
+//         }
+//       } else {
+//         setShowBackDrop(false);
+//         setShowResendCode(true);
+//       }
+//     }
+//   });
+// };
+
+useEffect(() => {
+
+  if(isLoggedIn===false){ 
+    // console.log("isLoggedIn--2",isLoggedIn)
+    // console.log(user?.loginStatus)
+    var loginMsg = "Login Unsuccessful";
+    var extMsg = "";
+    console.log(user?.loginStatus)
+    if(user?.loginStatus==="Pending" && isLoggedIn===false){
+      
+      extMsg = "User not verified";
+      toast.error(loginMsg +", "+ extMsg);
+    }else{
+      toast.error(loginMsg);
+
     }
-  });
-};
+    setLoading(false);
+    
+  }
+  
+    // setLoading(false);
+  
+}, [user])
+
 
 
 const handleClick = () => {
-  setOpen(true);
+  // setOpen(true);
 };
 
 const handleClose = (event, reason) => {
@@ -152,7 +191,7 @@ const handleClose = (event, reason) => {
   return;
   }
 
-  setOpen(false);
+  // setOpen(false);
 };
 
 
@@ -287,7 +326,7 @@ const handleClickShowPassword = () => {
                                     type="sumbit"
                                     style={{ color: "#fff" }}
                                   >
-                                    {" "}
+
                                     {loading && (
                                       <span
                                         class="spinner-border"
