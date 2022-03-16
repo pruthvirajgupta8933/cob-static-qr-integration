@@ -13,7 +13,7 @@ import OTPVerificationApi from "../../slices/auth";
 import {Link} from 'react-router-dom'
 import DisplayErrorMessage from '../../_components/reuseable_components/DisplayErrorMessage';
 import { toast } from 'react-toastify';
-
+import method from '../../utilities/encrypt-decrypt'
 
 const INITIAL_FORM_STATE = {
   clientUserId:'',
@@ -55,9 +55,10 @@ function LoginPage(props) {
   // console.log(message)
   const {user,userAlreadyLoggedIn } = auth;
   // console.log(auth)
-  if(userAlreadyLoggedIn){
-    console.log(userAlreadyLoggedIn , isLoggedIn)
-    console.log("fn 2");
+  if(userAlreadyLoggedIn && user?.loginStatus==='Activate'){
+    // console.log(userAlreadyLoggedIn , isLoggedIn)
+    // console.log("fn 2");
+    console.log("user2===",user)
     history.push("/dashboard")  
   }
 
@@ -75,12 +76,23 @@ useEffect(() => {
 
 const handleLogin = (formValue) => {
   var { clientUserId, userPassword } = formValue;
+
   var username= clientUserId; 
   var password= userPassword; 
+
+
+  // const enPwd = method.encryption(password);
+  // console.log("enPwd",enPwd);
+  // const dePwd = method.decryption(enPwd);
+  // console.log("dePwd",dePwd);
+  // alert(2);
+
   setLoading(true);
   // console.log(formValue);
   // console.log("isLoggedIn",isLoggedIn)
-  dispatch(login({ username, password }))
+  dispatch(login({ username, password }));
+
+  // console.log("==user==",user);
     // .unwrap()
     // .then(() => {
     //   // console.log("is loggedin",isLoggedIn);
@@ -117,12 +129,13 @@ const handleChangeForOtp = (otp) => {
 //     }
 // };
 
-console.log("isLoggedIn",isLoggedIn);
-console.log("loading",loading);
+// console.log("isLoggedIn",isLoggedIn);
+// console.log("loading",loading);
 
 if (isLoggedIn) {
   // setOpen(false);
-    console.log('redirect','dashboard')
+    // console.log('redirect','dashboard')
+    console.log("user1===",user);
     history.push("/dashboard");
 }
 // if (authen.isValidUser==="No"){
@@ -159,26 +172,26 @@ if (isLoggedIn) {
 useEffect(() => {
 
   if(isLoggedIn===false){ 
-    // console.log("isLoggedIn--2",isLoggedIn)
+    console.log("isLoggedIn--2",isLoggedIn)
     // console.log(user?.loginStatus)
     var loginMsg = "Login Unsuccessful";
     var extMsg = "";
-    console.log(user?.loginStatus)
+    // console.log(user?.loginStatus)
     if(user?.loginStatus==="Pending" && isLoggedIn===false){
-      
       extMsg = "User not verified";
       toast.error(loginMsg +", "+ extMsg);
+      console.log(1)
     }else{
+      console.log(2)
       toast.error(loginMsg);
-
     }
     setLoading(false);
     
   }
-  
+
     // setLoading(false);
   
-}, [user])
+}, [isLoggedIn])
 
 
 
@@ -219,7 +232,7 @@ const handleClickShowPassword = () => {
                       <ul className="logmod__tabs">
                         <li data-tabtar="lgm-2" className="current">
                           <a
-                            href="void(0)"
+                            href={void(0)}
                             style={{ width: "100%" }}
                           >
                             Login

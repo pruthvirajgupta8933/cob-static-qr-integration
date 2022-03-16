@@ -1,38 +1,46 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SideNavbar from './SideNavbar/SideNavbar'
 import Home from './AllPages/Home'
 import Transaction from './AllPages/Transaction'
 import TransactionEnquirey from './AllPages/TransactionEnquirey';
 import SettlementReport from './AllPages/SettlementReport';
 import TransactionHistory from './AllPages/TransactionHistory';
-import Profile from './AllPages/Profile';
 import { useRouteMatch,Switch,Route ,Redirect,useHistory} from 'react-router-dom'
 
 import "./css/Home.css";
 import "./css/50.684f163d.chunk.css";
 import "./css/main.e3214ff9.chunk.css";
 import "./css/loader.css";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ClientList from './AllPages/ClientList';
 import Subsciption from './AllPages/Subscription';
-import PayerDetails from'./AllPages/createpaymentlink/PayerDetails'
 import PaymentLinkDetail from './AllPages/createpaymentlink/PaymentLinkDetail';
 import Paylink from './AllPages/Paylink';
 import {FormikApp} from './AllPages/ProfileTest'
 import Emandate from './AllPages/Emandate';
 import ChangePassword from './AllPages/ChangePassword';
-
+import { loginRefferalSlice } from '../../slices/auth';
 
 
 function Dashboard() {
-     // console.log('dashboard call');
-     let history = useHistory();
+
+    let history = useHistory();
     let { path } = useRouteMatch();
-    const { user,isLoggedIn } = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
     
     
+
+
 //   user!==null && user?. return (<Redirect to="/login-page" />)
-     // console.log(user);
+    //  console.log("user",user);
+    //  useEffect(() => {
+    //   if(user?.roleId === 3 || user?.roleId === 13){
+    //     const auth_iv = localStorage.getItem("authiv");
+    //     const auth_key = localStorage.getItem("authkey");
+    //     dispatch(loginRefferalSlice({username:auth_key,password:auth_iv}))
+    //   }
+    // }, [])
   if(user!==null && user.userAlreadyLoggedIn){
     //  console.log('funciton dashboard call');
      history.push("/login-page");  
@@ -46,6 +54,11 @@ function Dashboard() {
      return <Redirect to="/login-page" />
   }
 
+
+
+
+
+  
     return (
         <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
                 <SideNavbar />

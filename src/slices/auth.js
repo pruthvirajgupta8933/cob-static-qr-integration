@@ -3,6 +3,7 @@ import { setMessage } from "./message";
 import Axios from "axios";
 
 import AuthService from "../services/auth.service";
+// import { NULL } from "node-sass";
 
 const user = JSON.parse(localStorage.getItem("user"));
 // console.log("user",user);
@@ -80,6 +81,7 @@ export const login = createAsyncThunk(
   async ({ username, password }, thunkAPI) => {
     try {
       // console.log("auth",username);
+      
       const data = await AuthService.login(username, password);
       return { user: data };
     } catch (error) {
@@ -469,10 +471,11 @@ const authSlice = createSlice({
       // if(action.payload.user && action.payload.user!==null){
         const loginState = action.payload?.user?.loginStatus;
         loggedInStatus = false;
-        console.log("loginState",loginState);
+        // console.log("loginState",loginState);
           if(loginState==="Activate"){
               loggedInStatus = true;
               isValidData = 'Yes';
+              
             }else{
               loggedInStatus = false;
               isValidData = 'No';
@@ -484,6 +487,12 @@ const authSlice = createSlice({
 
       state.isLoggedIn = loggedInStatus;
       state.user = action.payload.user;
+      if(action.payload.user?.clientSuperMasterList!==null)
+      {
+        state.user.clientMerchantDetailsList  = action.payload.user.clientSuperMasterList
+      }
+        
+      localStorage.setItem("user",JSON.stringify(state.user))
       state.isValidUser = isValidData;
     },
     [login.pending]: (state) => {
@@ -503,6 +512,7 @@ const authSlice = createSlice({
       state.userAlreadyLoggedIn = false;
       state.isValidUser = '';
       state.user = null;
+      state=undefined;
     },
     [OTPVerificationApi.pending]: (state, action) => {
       state.status = "pending";

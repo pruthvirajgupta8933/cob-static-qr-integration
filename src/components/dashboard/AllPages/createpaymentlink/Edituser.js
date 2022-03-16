@@ -44,6 +44,7 @@ export const Edituser = (props) => {
     let clientMerchantDetailsList = [];
     let clientCode = '';
     if (user && user.clientMerchantDetailsList === null) {
+        console.log("edituser");
         history.push('/dashboard/profile');
     } else {
         clientMerchantDetailsList = user.clientMerchantDetailsList;

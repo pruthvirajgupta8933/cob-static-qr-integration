@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
 
 const Genratelink = (props) => {
 let history = useHistory();
-  console.log(props);
+  // console.log(props);
   // var id=""
   var { customer_id } = props.generatedata;
 
@@ -46,7 +46,9 @@ let history = useHistory();
   let clientMerchantDetailsList=[];
     let clientCode ='';
     if(user && user.clientMerchantDetailsList===null){
-        history.push('/dashboard/profile');
+      console.log("genratelink");  
+      history.push('/dashboard/profile');
+
       }else{
         clientMerchantDetailsList = user.clientMerchantDetailsList;
         clientCode =  clientMerchantDetailsList[0].clientCode;

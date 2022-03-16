@@ -18,7 +18,7 @@ const register = (firstName, lastName, mobileNumber, email, password,businessTyp
 // https://spl.sabpaisa.in/auth-service/auth/login
 const login = (username, password) => {
   return axios
-    .post("https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin", {
+    .post("https://spl.sabpaisa.in/auth-service/auth/login", {
       clientUserId:username,
       userPassword:password,
     })
@@ -150,7 +150,6 @@ const authService = {
   verifyOtpOnForgotPwd,
   createNewPassword,
   checkPermission
-
 };
 
 export default authService;

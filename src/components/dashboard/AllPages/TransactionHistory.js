@@ -40,10 +40,12 @@ function TransactionHistory() {
 
 
   function dayDiff(dateFrom, dateTo) {
-    var from = new Date(dateFrom);
-    var to = new Date(dateTo);
-    var diffInMs   =to - from
-    return Math.abs(diffInMs / (1000 * 60 * 60 * 24));
+    const date1 = new Date(dateFrom);
+    const date2 = new Date(dateTo);
+    const diffTime = Math.abs(date2 - date1);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    console.log(diffDays,"diffDays")
+    return diffDays;
    }
    
 
@@ -97,10 +99,13 @@ const checkValidation = ()=>{
         flag = false;
     }else if(fromDate!=='' || toDate!==''){
       //check date range
-      var days =  dayDiff(fromDate,toDate);
-
-      if(days < 0 || days >= 90 ){
-        // alert(days)
+      // const days =  dayDiff(fromDate,toDate);
+      const date1 = new Date(fromDate);
+      const date2 = new Date(toDate);
+      const diffTime = Math.abs(date2 - date1);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+      console.log("days",diffDays);
+      if(diffDays < 0 || diffDays > 90 ){
         flag = false;
         alert("The date range should be under 3 months");
       }
@@ -177,7 +182,9 @@ const checkValidation = ()=>{
  useEffect(() => {     
   getPaymentStatusList();
   paymodeList();  
+  SetTxnList([]);
   // txnList.length >0 ? setShow(true) : setShow(false)
+
 }, [])
 
 useEffect(() => {
@@ -323,7 +330,6 @@ const pages = _.range(1, pageCount + 1)
                   <input
                   rel={finalDate}
                     type="date"
-                    min= {finalDate}
                     className="ant-input"
                     placeholder="From Date"
                     onChange={(e) => {
@@ -335,7 +341,6 @@ const pages = _.range(1, pageCount + 1)
                   <label>To Date</label>
                   <input
                     type="date"
-                    min= {finalDate}
                     max= {new Date().toLocaleDateString('en-ca')}
                     className="ant-input"
                     placeholder="To Date"

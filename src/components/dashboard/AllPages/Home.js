@@ -89,10 +89,12 @@ function Home() {
   }
 
  
-  if(user && user.clientMerchantDetailsList===null && user.roleId!==3 && user.roleId!==13){
-    return <Redirect to={`${path}/profile`} />
+  if(user.roleId!==3 && user.roleId!==13){
+    if(user.clientMerchantDetailsList===null){
+      return <Redirect to={`${path}/profile`} />
+    }
   } 
-console.log('show data',showData)
+
 
 showData.map((item)=>{
       totalSuccessTxn += item.noOfTransaction;

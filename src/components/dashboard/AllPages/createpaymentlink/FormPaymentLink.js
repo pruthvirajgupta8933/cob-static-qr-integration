@@ -27,6 +27,7 @@ function FormPaymentLink() {
  let clientMerchantDetailsList=[];
  let clientCode ='';
  if(user && user.clientMerchantDetailsList===null){
+  console.log("formpaymet link");
      history.push('/dashboard/profile');
    }else{
      clientMerchantDetailsList = user.clientMerchantDetailsList;

@@ -46,6 +46,7 @@ const PayerDetails = () => {
     let clientMerchantDetailsList=[]
     let clientCode =''
     if(user && user.clientMerchantDetailsList===null){
+        console.log("payerDetails");
         history.push('/dashboard/profile');
       }else{
         clientMerchantDetailsList = user.clientMerchantDetailsList;

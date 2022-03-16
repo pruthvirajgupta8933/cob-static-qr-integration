@@ -31,7 +31,7 @@ function SettlementReport() {
     const [searchFilterData,setSearchFilterData] = React.useState([]);
     let history = useHistory();
 
-   
+  
     const {user} = useSelector((state)=>state.auth);
     let clientCode='';
     if (user && user.clientMerchantDetailsList === null) {
