@@ -359,7 +359,7 @@ const pages = _.range(1, pageCount + 1)
                   >
                     <option value="All">All</option>
                     {paymentStatusList.map((item, i) => {
-                      return <option value={item}>{item} </option>;
+                      return  item!=='INITIATED'? <option value={item}>{item} </option>:<></> ;
                     })}
                   </select>
                 </div>
