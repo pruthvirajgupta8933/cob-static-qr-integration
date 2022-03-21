@@ -371,7 +371,7 @@ const pages = _.range(1, pageCount + 1)
                       getInputValue("payMode", e.target.value);
                     }}
                   >
-                    <option value="All">All</option>
+                    <option value="All">All </option>
                     {paymentModeList.map((item) => {
                       return (
                         <option value={item.paymodeId}>
