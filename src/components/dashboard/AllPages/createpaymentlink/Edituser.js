@@ -44,7 +44,7 @@ export const Edituser = (props) => {
     let clientMerchantDetailsList = [];
     let clientCode = '';
     if (user && user.clientMerchantDetailsList === null) {
-        console.log("edituser");
+        // console.log("edituser");
         history.push('/dashboard/profile');
     } else {
         clientMerchantDetailsList = user.clientMerchantDetailsList;
@@ -98,51 +98,49 @@ export const Edituser = (props) => {
     // console.log("username", username);
 
     return (
-        <div class="modal fade" id="web" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div className="modal fade" id="web" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">New message</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div className="modal-body">
                         <Formik>
                             <Form onSubmit={editHandler}>
-                                <div class="form-group">
-                                    <label for="recipient-name" class="col-form-label">Name of Payer:</label>
+                                <div className="form-group">
+                                    <label htmlFor="recipient-name" className="col-form-label">Name of Payer:</label>
                                     <Field name="name" rel={username}
-                                        value={username} onChange={e => setUsername(e.target.value)} placeholder="Enter Your Name" class="form-control" id="namepair" />
+                                        value={username} onChange={e => setUsername(e.target.value)} placeholder="Enter Your Name" className="form-control" id="namepair" />
 
 
-                                    <label for="recipient-name" class="col-form-label">Mobile No.:</label>
+                                    <label htmlFor="recipient-name" className="col-form-label">Mobile No.:</label>
                                     <Field name="phone_number"
 
-                                        value={userphone} onChange={e => setUserPhone(e.target.value)} placeholder='Enter Mobile No.' class="form-control" id="emailpair" />
+                                        value={userphone} onChange={e => setUserPhone(e.target.value)} placeholder='Enter Mobile No.' className="form-control" id="emailpair" />
 
-                                    <label for="recipient-name" class="col-form-label">Email ID:</label>
+                                    <label htmlFor="recipient-name" className="col-form-label">Email ID:</label>
                                     <Field name="email"
 
-                                        value={useremail} onChange={e => setUserEmail(e.target.value)} placeholder='Enter Email ID' class="form-control" id="phnpair" />
+                                        value={useremail} onChange={e => setUserEmail(e.target.value)} placeholder='Enter Email ID' className="form-control" id="phnpair" />
 
-                                    <label for="recipient-name" class="col-form-label">Payer Category:</label><br></br>
+                                    <label htmlFor="recipient-name" className="col-form-label">Payer Category:</label><br></br>
                                     <select className='selct' name='customer_type_id'
                                         onChange={(e) => setUserCustomer(e.target.value)} value={usercustomer}
                                     >
-                                        <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
+                                        <option type="text" className="form-control" id="recipient-name"  >Select Your Payer Category</option>
                                         {
-                                            data.map((payer) => (
-
-                                                <option value={payer.id}>{payer.type}</option>
-
+                                            data.map((payer,i) => (
+                                                <option value={payer.id} key={i}>{payer.type}</option>
                                             ))}
                                     </select>
 
                                 </div>
-                                <button type="button" disabled class="btn btn-primary" >Submit</button>
-                                <button type="submit" class="btn btn-danger">Update</button>
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                <button type="button" disabled className="btn btn-primary" >Submit</button>
+                                <button type="submit" className="btn btn-danger">Update</button>
+                                <button type="button" className="btn btn-primary" data-dismiss="modal">Cancel</button>
                             </Form>
                         </Formik>
 

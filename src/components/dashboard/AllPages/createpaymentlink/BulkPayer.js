@@ -63,7 +63,7 @@ const BulkPayer = () => {
         </h2>
         <input
           type="file"
-          class="form-control"
+          className="form-control"
           id="customFile"
           onChange={changeHandler}
           style={{ position: "absolute", top: 220, width: 700, left: 100 }}
@@ -71,7 +71,7 @@ const BulkPayer = () => {
         <div>
           <button
             type="submit"
-            class="btn btn-primary"
+            className="btn btn-primary"
             style={{ position: "absolute", top: 220, left: 820 }}
           >
             Submit

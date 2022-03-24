@@ -7,12 +7,8 @@ import { Zoom } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-
-
 function FormPaymentLink() {
 
-
-    
  const [drop, setDrop] = useState([]);  
  const [hours, setHours] = useState("");
  const [minutes, setMinutes] = useState("");
@@ -101,15 +97,15 @@ useEffect(() => {
   return (
     
     <div
-    class="modal fade"
+    className="modal fade"
     id="exampleModal"
     tabindex="-1"
     role="dialog"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
+    <div className="modal-dialog" role="document">
+      <div className="modal-content">
       <Formik initialValues={{
               Amount: "",
               Remarks: "",
@@ -124,13 +120,13 @@ useEffect(() => {
              {({ resetForm }) => (
                 <>
 
-           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
+           <div className="modal-header">
+            <div className="modal-title" id="exampleModalLabel">
               <h5>Payment Link New Details (New Payer)</h5>
-            </h5>
+            </div>
             <button
               type="button"
-              class="close"
+              className="close"
               data-dismiss="modal"
               aria-label="Close"
               onClick={resetForm}
@@ -138,18 +134,13 @@ useEffect(() => {
               <span aria-hidden="true">&times;</span>
             </button>
             </div>
-
                 <div className="container">
-    
-
-
-                    <div className="row">
+                  <div className="row">
                     <Form>
-              <div class="form-check">
+              <div className="form-check">
               <label
-                class="form-check-label"
-                for="exampleCheck1"
-               
+                className="form-check-label"
+                htmlFor="exampleCheck1"
               >
                 <input
                   type="checkbox"
@@ -160,27 +151,22 @@ useEffect(() => {
                 />
                 &ensp; is Password Protected
               </label>
-
             </div>
-                    
-
-                        <div className="col-lg-6 padbottom">
+                  <div className="col-lg-6 padbottom">
                             <label>Select Payer Details</label>
-                      
                         <Field className="form-control" component='select'
                   name = 'Customer_id'
-                 
                 >
-                  <option selected>Select Payer</option>
-                  {drop.map((payer) => (
-                    <option value={payer.id}>
+                  <option value="">Select Payer</option>
+                  {drop.map((payer,i) => (
+                    <option value={payer.id} key={i}>
                       {payer.name} - {payer.email}
                     </option>
                   ))}
                 </Field>
                 {<ErrorMessage name="Customer_id">
-                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                                            </ErrorMessage>}
+                    {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                </ErrorMessage>}
                         </div>
                         <div className="col-lg-6 padbottom">
                         <label>
@@ -193,8 +179,8 @@ useEffect(() => {
                       onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
                       name="Amount" 
                       autoComplete="off"
-                      onkeydown="return event.keyCode !== 69" 
-                      class="form-control"
+                      onkeyDown="return event.keyCode !== 69" 
+                      className="form-control"
                       placeholder="Enter Payment Amount in (INR)"
                     />
                      {<ErrorMessage name="Amount">
@@ -205,12 +191,11 @@ useEffect(() => {
                             <label >
                             Purpose of Payement Collection
                             </label>
-                   
                     <Field
                       type="text"
                       name="Remarks"
                       autoComplete="off"
-                      class="form-control"
+                      className="form-control"
                       placeholder="Enter Purpose of Payement Collection"
                     />
                         {<ErrorMessage name="Remarks">
@@ -221,54 +206,53 @@ useEffect(() => {
                         <div className="col-lg-6 padbottom">
                             <label>Select Date</label>
                         <Field
-                    name ="Date"
-                      type="date"
-                      className="ant-input- form-control"
-                      min= {new Date().toLocaleDateString('en-ca')}
-                      placeholder="From Date"
-                    />
+                          name ="Date"
+                          type="date"
+                          className="ant-input- form-control"
+                          min= {new Date().toLocaleDateString('en-ca')}
+                          placeholder="From Date"
+                          />
                          {<ErrorMessage name="Date">
-                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
-                                            </ErrorMessage>}
+                            {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                        </ErrorMessage>}
                         </div>
                         <div className="col-lg-6 padbottom">
                         <label>Hours</label>
 
-<Field component='select' className="form-control" name = 'hours' value= {hours} onChange={(e) => setHours(e.target.value)}>
-  <option selected>Hours</option>
-  <option value="00">00</option>
-  <option value="01">01</option>
-  <option value="02">02</option>
-  <option value="03">03</option>
-  <option value="04">04</option>
-  <option value="05">04</option>
-  <option value="06">05</option>
-  <option value="06">06</option>
-  <option value="07">07</option>
-  <option value="08">08</option>
-  <option value="09">09</option>
-  <option value="10">10</option>
-  <option value="11">11</option>
-  <option value="12">12</option>
-  <option value="13">13</option>
-  <option value="14">14</option>
-  <option value="15">15</option>
-  <option value="16">16</option>
-  <option value="17">17</option>
-  <option value="18">18</option>
-  <option value="19">19</option>
-  <option value="20">20</option>
-  <option value="21">21</option>
-  <option value="22">22</option>
-  <option value="23">23</option>
-
-</Field>
+                          <Field component='select' className="form-control" name = 'hours' value= {hours} onChange={(e) => setHours(e.target.value)}>
+                            <option value="">Hours</option>
+                            <option value="00">00</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">04</option>
+                            <option value="06">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                          </Field>
                         </div>
                         <div className="col-lg-6 padbottom">
                         <label>Minutes</label>
                     
                     <Field component = 'select' className="form-control" name= 'minutes' value = {minutes} onChange={(e) => setMinutes(e.target.value)}>
-                      <option selected>Minutes</option>
+                      <option value="">Minutes</option>
                       <option value="00">00</option>
                       <option value="01">01</option>
                       <option value="02">02</option>
@@ -330,22 +314,18 @@ useEffect(() => {
                       <option value="57">57</option>
                       <option value="58">58</option>
                       <option value="59">59</option>
-                     
                     </Field>
                         </div>
-
                         <div className="col-lg-12 toppad">
                         <button
-                      type="submit"
-                      
-                      class="btn btn-primary"
-                    >
-                      SUBMIT
-                    </button>
+                          type="submit"
+                          className="btn btn-primary"
+                        >
+                          SUBMIT
+                        </button>
                     <button onClick={resetForm}
                       type="button"
-                      
-                      class="btn btn-danger"
+                      className="btn btn-danger"
                       data-dismiss="modal"
                     >
                       CANCEL
@@ -354,16 +334,12 @@ useEffect(() => {
                         </Form>
                     </div>
                 </div>
-
                 </>
-
-               )}
+              )}
                 </Formik>
         </div>
       </div>
     </div>
-
- 
   )
 }
 

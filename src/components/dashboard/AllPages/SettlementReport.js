@@ -15,9 +15,6 @@ function SettlementReport() {
         sub_folder: ""
     }
 
-
-
-
     const [input,setInput]=React.useState();
     const [searchArea, setSearchArea] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -104,7 +101,7 @@ function SettlementReport() {
     }, [selectedSubFolder, selectedFolder]);
 
 
-    console.log("showFilterData",showFilterData);
+    // console.log("showFilterData",showFilterData);
     const getSearchTerm = (e) => {
       setSearchArea(e.target.value);
 
@@ -123,22 +120,20 @@ function SettlementReport() {
             Settlement Report
           </h1>
           <hr />
-          <label For="folder "></label>
+          <label htmlFor="folder "></label>
           <div className='col-lg-3 nopad'>
-        <select
-          value={selectedFolder}
-          className="ant-input"
-          onChange={(e) => onChangeFolder(e.target.value)}
-        >
-          <option value="">--Select Folder--</option>
-          {folderArr &&
-            folderArr.map((folder) => <option value={folder}>{folder}</option>)}
-
-          <input type="text" placeholder="Search.." />
-        </select>
-</div>
+            <select
+              value={selectedFolder}
+              className="ant-input"
+              onChange={(e) => onChangeFolder(e.target.value)}
+            >
+              <option value="">--Select Folder--</option>
+              {folderArr &&
+                folderArr.map((folder,i) => <option value={folder} key={i}>{folder}</option>)}
+            </select>
+        </div>
         <div className='col-lg-3 nopad'>
-          <label For="folder"></label>
+          <label htmlFor="folder"></label>
           <select
             onChange={(event) => SetSelectedSubFolder(event.target.value)}
             value={selectedSubFolder}
@@ -146,22 +141,22 @@ function SettlementReport() {
           >
             <option value="">Select</option>
             {subFolderArr &&
-              subFolderArr.map((subfolder) => (
-                <option value={subfolder}>{subfolder}</option>
+              subFolderArr.map((subfolder,i) => (
+                <option value={subfolder} key={i}>{subfolder}</option>
               ))}
           </select>
           </div>
-<div className='col-lg-3 nopad'>
-        <input
-          type="text"
-          value={searchArea}
-          placeholder="Search Here"
-          className="ant-input"
-          onChange={getSearchTerm}
-        />
-        {showFilterData.filter}
-        </div>
-<div className='col-lg-3 nopad'>
+          <div className='col-lg-3 nopad'>
+                  <input
+                    type="text"
+                    value={searchArea}
+                    placeholder="Search Here"
+                    className="ant-input"
+                    onChange={getSearchTerm}
+                  />
+                  {showFilterData.filter}
+          </div>
+        <div className='col-lg-3 nopad'>
         <select className="ant-input">
           <option value="10">10</option>
           <option value="20">20</option>
@@ -177,15 +172,16 @@ function SettlementReport() {
 </div>
         
        
-          <table cellPadding="10" cellspacing="0" width="100%" className="tables col-lg-12 mar-top">
-            <tr>
+          <table cellPadding="10" cellSpacing="0" width="100%" className="tables col-lg-12 mar-top">
+          <tbody>
+          <tr>
               <th>S.No</th>
               <th>Client Code</th>
               <th>File Name</th>
               <th>Created On</th>
               <th>Action</th>
             </tr>
-            <br />
+            
             {searchFilterData.length > 0 ? (
               searchFilterData.map((user, i) => (
                 <tr key={user.Id}>
@@ -201,8 +197,9 @@ function SettlementReport() {
                 </tr>
               ))
             ) : (
-              <>{""}</>
+              <></>
             )}
+          </tbody>
           </table>
         </div>
       </section>

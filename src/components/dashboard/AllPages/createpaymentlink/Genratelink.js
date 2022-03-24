@@ -120,30 +120,24 @@ let history = useHistory();
     document.getElementById("checkbox_pass").checked = false;
   }
   const closeClick = () => {
-
-    
-
     document.getElementById("checkbox_pass").checked = false;
-
   }
 
   return (
     <div
-      class="modal fade"
+      className="modal fade"
       id="bhuvi"
-
-      tabindex="-1"
+      tabIndex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
         <Formik initialValues={{
               Amount: "",
               Remarks: "",
               Date:""
-
             }}
               validationSchema={validationSchema}
               onSubmit={(values, { resetForm }) => {
@@ -155,13 +149,13 @@ let history = useHistory();
                 <>
 
 
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
+          <div className="modal-header">
+            <h5 className="modal-title" id="exampleModalLabel">
               <b> Genrate Link</b>
             </h5>
             <button
               type="button"
-              class="close"
+              className="close"
               data-dismiss="modal"
               aria-label="Close"
               onClick={resetForm}
@@ -169,15 +163,15 @@ let history = useHistory();
               <span aria-hidden="true">&times;</span>
             </button>
 
-            <div class="form-check">
+            <div className="form-check">
               <label
-                class="form-check-label"
-                for="exampleCheck1"
+                className="form-check-label"
+                htmlFor="exampleCheck1"
                 style={{ marginLeft: 200, marginBottom: 20 }}
               >
                 <input
                   type="checkbox"
-                  class="form-check-input"
+                  className="form-check-input"
                   onChange={handleCheck}
 
                   value={passwordcheck}
@@ -188,16 +182,12 @@ let history = useHistory();
 
             </div>
           </div>
-          <div class="modal-body">
-           
+          <div className="modal-body">
                 <Form >
-
-
                   <br />
-
-                  <div class="row">
-                    <div class="col">
-                      <label for="exampleInputEmail1">
+                  <div className="row">
+                    <div className="col">
+                      <label htmlFor="exampleInputEmail1">
                         Amount
                       </label>
                       <Field
@@ -207,24 +197,21 @@ let history = useHistory();
                         onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
                         name="Amount"
                         autoComplete="off"
-
-
-                        class="form-control"
-
+                        className="form-control"
                       />
                       <ErrorMessage name="Amount">
                         {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                       </ErrorMessage>
                     </div>
-                    <div class="col">
-                      <label for="exampleInputEmail1">
+                    <div className="col">
+                      <label htmlFor="exampleInputEmail1">
                         Remarks
                       </label>
                       <Field
                         type="text"
                         name="Remarks"
                         autoComplete="off"
-                        class="form-control"
+                        className="form-control"
                             /> 
                             <ErrorMessage name="Remarks">
                         {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
@@ -233,24 +220,24 @@ let history = useHistory();
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col">
+                  <div className="row">
+                    <div className="col">
                       <label>Link Valid To Date</label>
                       <Field
                         type="date"
                         name="Date"
                         className="ant-input"
                         min={new Date().toLocaleDateString('en-ca')}
-                       />
+                      />
                       <ErrorMessage name="Date">
                         {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                       </ErrorMessage>
                     </div>
-                    <div class="col">
+                    <div className="col">
                       <label>Hours</label>
                       <br />
                       <select style={{ width: 80 }} value={hours} onChange={(e) => setHours(e.target.value)}>
-                        <option selected>Hours</option>
+                        <option value="">Hours</option>
                         <option value="00">00</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -281,11 +268,11 @@ let history = useHistory();
 
                       </select>
                     </div>
-                    <div class="col">
+                    <div className="col">
                       <label>Minutes</label>
                       <br />
                       <select style={{ width: 100 }} value={minutes} onChange={(e) => setMinutes(e.target.value)}>
-                        <option selected>Minutes</option>
+                        <option value=''>Minutes</option>
                         <option value='00'>00</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -347,24 +334,22 @@ let history = useHistory();
                         <option value="57">57</option>
                         <option value="58">58</option>
                         <option value="59">59</option>
-                        
-
                       </select>
                     </div>
                   </div>
                   <div>
-                    <div class="modal-footer">
+                    <div className="modal-footer">
                       <button
                         type="submit"
                         style={{ postion: "relative", top: 200, left: 280 }}
-                        class="btn btn-primary "
+                        className="btn btn-primary "
                       >
                         SUBMIT
                       </button>
                       <button
                         type="button"
                         style={{ postion: "absolute", top: 290, left: 380 }}
-                        class="btn btn-danger"
+                        className="btn btn-danger"
                         data-dismiss="modal"
                         onClick={resetForm}
                       >
@@ -375,21 +360,13 @@ let history = useHistory();
                 </Form>
                </div>
             </>
-
-              
               )}
-
             </Formik>
           </div>
         </div>
       </div>
    
   )
-
-
-
-
-
 }
 
 

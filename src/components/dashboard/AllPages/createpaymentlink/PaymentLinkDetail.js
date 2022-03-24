@@ -105,7 +105,7 @@ const pages = _.range(1, pageCount + 1)
     <div>
       <button
         type="button"
-        class="btn btn-primary"
+        className="btn btn-primary"
         data-toggle="modal"
         data-target="#exampleModal"
         data-whatever="@getbootstrap"
@@ -120,7 +120,7 @@ const pages = _.range(1, pageCount + 1)
        <div style={{display:"contents"}}>
 
        <input
-       class="form-control"
+       className="form-control"
         type="text"
         placeholder="Search Here"
         style={{  width: 700, height: '30px' }}
@@ -152,7 +152,7 @@ const pages = _.range(1, pageCount + 1)
          {
          ! paginatedata ? ("No data Found"):(
       <table
-        class="table" style={{marginLeft: 10}}
+        className="table" style={{marginLeft: 10}}
       >
         <tr>
         <th>Serial No.</th>
@@ -184,8 +184,8 @@ const pages = _.range(1, pageCount + 1)
       </div>
       <div>
   <nav aria-label="Page navigation example"  >
-  <ul class="pagination">
-    <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+  <ul className="pagination">
+    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
 
    {
 
@@ -193,7 +193,7 @@ const pages = _.range(1, pageCount + 1)
       <li className={
         page === currentPage ? " page-item active" : "page-item"
       }> 
-          <a class="page-link">  
+          <a className="page-link">  
             <p onClick={() => pagination(page)}>
             {page}
             </p>
@@ -201,7 +201,7 @@ const pages = _.range(1, pageCount + 1)
         </li>
      ))
    }
-    <a class="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href={void(0)}>Next</a>
+    <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href={void(0)}>Next</a>
   
    
   

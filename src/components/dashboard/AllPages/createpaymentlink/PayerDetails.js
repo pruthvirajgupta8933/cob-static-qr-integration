@@ -188,11 +188,11 @@ const PayerDetails = () => {
             <Edituser items={editform} />
             <Genratelink generatedata={genrateform} />
 
-            {/* <button type="button" className='btn' class="btn btn-primary">Add Single Payer</button> */}
+            {/* <button type="button" className='btn' className="btn btn-primary">Add Single Payer</button> */}
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
+            <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
                         <Formik
                             initialValues={
                                 {
@@ -210,28 +210,28 @@ const PayerDetails = () => {
                             {({ resetForm }) => (
 
                                 <>
-                                    <div class="modal-header">
-                                        <h3 class="modal-title" id="exampleModalLabel">Add Payer Details</h3>
-                                        <button type="button" class="close" onClick={resetForm} data-dismiss="modal" aria-label="Close">
+                                    <div className="modal-header">
+                                        <h3 className="modal-title" id="exampleModalLabel">Add Payer Details</h3>
+                                        <button type="button" className="close" onClick={resetForm} data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <div class="modal-body">
+                                    <div className="modal-body">
                                         <Form>
-                                            <div class="form-group">
-                                                <label for="recipient-name"
-                                                    class="col-form-label">Name of Payer:</label>
+                                            <div className="form-group">
+                                                <label htmlFor="recipient-name"
+                                                    className="col-form-label">Name of Payer:</label>
                                                 <Field
                                                     name="name"
                                                     placeholder="Enter Name of Payer"
-                                                    class="form-control"
+                                                    className="form-control"
                                                     autoComplete="off"
                                                 />
                                                 <ErrorMessage name="name">
                                                     {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                                 </ErrorMessage>
 
-                                                <label for="recipient-name" class="col-form-label">Mobile No.:</label>
+                                                <label htmlFor="recipient-name" className="col-form-label">Mobile No.:</label>
                                                 <Field
                                                     name="phone_number"
                                                     id="phoneNumber"
@@ -239,15 +239,15 @@ const PayerDetails = () => {
                                                     type="text"
                                                     autoComplete="off"
                                                     placeholder='Enter Mobile No.'
-                                                    class="form-control"
+                                                    className="form-control"
                                                     pattern="\d{10}"
-                                                    minlength="4" maxlength="10"
+                                                    minLength="4" maxLength="10"
                                                 />
                                                 <ErrorMessage name="phone_number">
                                                     {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                                 </ErrorMessage>
 
-                                                <label for="recipient-name" class="col-form-label">Email ID:</label>
+                                                <label htmlFor="recipient-name" className="col-form-label">Email ID:</label>
                                                 <Field name="email"
                                                     autoComplete="off"
                                                     placeholder='Enter Email'
@@ -257,33 +257,33 @@ const PayerDetails = () => {
                                                     {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                                 </ErrorMessage>
 
-                                                <label for="recipient-name" class="col-form-label">Payer Category:</label>
+                                                <label htmlFor="recipient-name" className="col-form-label">Payer Category:</label>
                                                 <Field name="customer_type_id" className="selct" component="select">
                                                     <option
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="recipient-name"
                                                     >Select Your Payer Category</option>
                                                     {
-                                                        customerType.map((payer) => (
-                                                            <option value={payer.id}>{payer.type}</option>
+                                                        customerType.map((payer,i) => (
+                                                            <option value={payer.id} key={i}>{payer.type}</option>
                                                         ))}
                                                 </Field>
                                             </div>
-                                            <div class="modal-footer">
+                                            <div className="modal-footer">
                                                 <button
                                                     type="submit"
-                                                    class="btn btn-primary" >
+                                                    className="btn btn-primary" >
                                                     Submit
                                                 </button>
                                                 <button
                                                     type="button" disabled
-                                                    class="btn btn-danger">
+                                                    className="btn btn-danger">
                                                     Update
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    class="btn btn-primary"
+                                                    className="btn btn-primary"
                                                     data-dismiss="modal"
                                                     onClick={resetForm}>
                                                     Cancel
@@ -305,7 +305,7 @@ const PayerDetails = () => {
              
                 <div className="filter_area" style={{margin:"14px"}}>
                     <div>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
+                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
                    
                     </div>
                    
@@ -332,9 +332,9 @@ const PayerDetails = () => {
             </div>
 
 
-            <div class="full-screen-scroller">
+            <div className="full-screen-scroller">
 
-                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute'}}>
+                <table data-spy="scroll" data-offset="50" className="table table-striped" style={{ position: 'absolute'}}>
                     <thead>
                         <tr>
                             <th scope='col'>Serial.No</th>
@@ -350,23 +350,22 @@ const PayerDetails = () => {
                     <tbody>
 
                         {data.map((user, i) => (
-
-                            <tr>
+                            <tr key={i}>
                                 <td>{i + 1}</td>
                                 <td>{user.name}</td>
                                 <td>{user.phone_number}</td>
                                 <td>{user.email}</td>
                                 <td>{user.customer_type}</td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)}    >Edit</button>
+                                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)}    >Edit</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary mt-7" onClick={() => deleteUser(user.id)}  >Delete</button>
+                                    <button className="btn btn-primary mt-7" onClick={() => deleteUser(user.id)}  >Delete</button>
                                 </td><td>
                                     <button onClick={(e) => generateli(user.id)}
 
                                         type="button"
-                                        class="btn btn-primary"
+                                        className="btn btn-primary"
                                         data-toggle="modal"
                                         data-target="#bhuvi"
                                         data-whatever="@getbootstrap"

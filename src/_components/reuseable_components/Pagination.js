@@ -39,7 +39,7 @@ function Pagination(props) {
 
   // if ( pageCount === 1) return null;
   const pages = _.range(1, pageCount + 1)
-  var tableContent = (   <table class='table' style={{marginLeft: 10}}>
+  var tableContent = (   <table className='table' style={{marginLeft: 10}}>
   {/* table head */}
 <tr>
   {tableHeader.map((thd,i)=><th key={i}>{thd}</th>)}

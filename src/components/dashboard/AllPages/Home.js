@@ -104,7 +104,6 @@ showData.map((item)=>{
     return (
       <section className="ant-layout">
         <div className="profileBarStatus">
-          {/*  <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span class="btn">Upload Here</span></span></div>*/}
         </div>
         <main className="gx-layout-content ant-layout-content">
           <div className="gx-main-content-wrapper">
@@ -114,8 +113,6 @@ showData.map((item)=>{
             <section className="features8 cid-sg6XYTl25a" id="features08-3-">
               <div className="container-fluid">
                 <div className="row bgcolor">
-                  {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
-                  lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
                   <div className="col-lg-6 mrg-btm- bgcolor-">
                     <label>Successful Transaction Summary</label>
                     <select

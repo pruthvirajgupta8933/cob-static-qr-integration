@@ -139,7 +139,7 @@ const pages = _.range(1, pageCount + 1)
         <option value="100">100</option>
        </select>
       </div>
-       <table class='table' style={{marginLeft: 10}}>
+       <table className='table' style={{marginLeft: 10}}>
  
  <tr>
  <th>Serial No.</th>
@@ -185,15 +185,15 @@ const pages = _.range(1, pageCount + 1)
     </table>
     <div>
   <nav aria-label="Page navigation example"  >
-  <ul class="pagination">
-    <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
+  <ul className="pagination">
+    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href="#">Previous</a>
 
    {
 
      pages.map((page) => (
-      <li class={
+      <li className={
         page === currentPage ? " page-item active" : "page-item"
-      }><a class="page-link">
+      }><a className="page-link">
         
         <p onClick={() => pagination(page)}>
         {page}
@@ -202,7 +202,7 @@ const pages = _.range(1, pageCount + 1)
     
      ))
    }
-    <a class="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href="#">Next</a>
+    <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href="#">Next</a>
    
   
   </ul>

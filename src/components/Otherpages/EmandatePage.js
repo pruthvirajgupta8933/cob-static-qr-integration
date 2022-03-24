@@ -124,11 +124,11 @@ const detailList = detailsKey.map((item,i)=>{
       <div className='container'>
         <div className='row'>
           <div className='col-12 mb-4'>
-            <div class="card">
-              <div class="card-header" style={{ textAlign: 'center' }}>
+            <div className="card">
+              <div className="card-header" style={{ textAlign: 'center' }}>
                 SABPAISA TRANSACTION RECEIPT
               </div>
-              <div class="card-body" >
+              <div className="card-body" >
                 <div className="col-lg-6 mrg-btm- bgcolor">
                 <div>
                   <p>MandateDetails Here {mandateRegId}</p> 
@@ -142,7 +142,7 @@ const detailList = detailsKey.map((item,i)=>{
                 <div className="col-lg-6 mrg-btm- bgcolor">
                 </div>
 
-                <button class="btn btn-success" onClick={() => onSubmit(transactionId,studentId)} style={{ marginTop: '70px', marginLeft: -130,width:200 }} >View</button>
+                <button className="btn btn-success" onClick={() => onSubmit(transactionId,studentId)} style={{ marginTop: '70px', marginLeft: -130,width:200 }} >View</button>
               </div>
             </div>
           </div>

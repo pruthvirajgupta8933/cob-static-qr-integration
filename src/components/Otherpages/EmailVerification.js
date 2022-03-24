@@ -35,8 +35,8 @@ const EmailVerification = () => {
   </div>
   <div className="card-body">
     <p className="card-text" style={{"fontSize":"24px"}}>
-        <i class="fa fa-user" aria-hidden="true" style={{"color":data?"greenyellow":"#000"}}></i>
-        <i class="fa fa-check" aria-hidden="true" style={{"color":data?"greenyellow":"#ff3030"}}></i> 
+        <i className="fa fa-user" aria-hidden="true" style={{"color":data?"greenyellow":"#000"}}></i>
+        <i className="fa fa-check" aria-hidden="true" style={{"color":data?"greenyellow":"#ff3030"}}></i> 
         </p>
 
     <p className="card-text" style={{"fontSize":"18px"}}>{data?"Thank you, your email has been verifed. Your account is now active. Please use the link below to login to your account.":"Please wait... !"}</p>

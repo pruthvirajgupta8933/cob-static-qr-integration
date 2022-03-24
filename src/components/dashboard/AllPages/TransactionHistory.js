@@ -35,6 +35,7 @@ function TransactionHistory() {
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [showData,setShowData] = useState([])
+  const [updateTxnList,setUpdateTxnList] = useState([])
   const [pageCount,setPageCount] = useState(0);
   const [buttonClicked,isButtonClicked] = useState(false);
 
@@ -152,10 +153,17 @@ const checkValidation = ()=>{
   } 
   
   useEffect(() => {
-     setShowData(dashboard.transactionHistory);
-     SetTxnList(dashboard.transactionHistory);
-     setPaginatedData(_(dashboard.transactionHistory).slice(0).take(pageSize).value())
-     if(dashboard.transactionHistory.length){
+  
+     // Remove initiated from transaction history response
+     const TxnListArr = dashboard.transactionHistory
+     const TxnListArrUpdated = TxnListArr?.filter((Txn)=>{
+       return Txn.status!=='INITIATED';
+     })
+     setUpdateTxnList(TxnListArrUpdated)
+     setShowData(TxnListArrUpdated);
+     SetTxnList(TxnListArrUpdated);
+     setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())
+     if(TxnListArrUpdated.length){
        isButtonClicked(false);
      }
 
@@ -198,14 +206,13 @@ useEffect(() => {
 
 useEffect(() => {
   if(searchText !== ''){
-    setShowData( dashboard.transactionHistory.filter((txnItme)=>
+    setShowData( updateTxnList.filter((txnItme)=>
         Object.values(txnItme).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
     }
     else{
-      setShowData(dashboard.transactionHistory)
+      setShowData(updateTxnList)
     }
-  //  txnList.length >0 ? setShow(true) : setShow(false)
-  
+
 }, [searchText])
 
 
@@ -233,9 +240,8 @@ const pages = _.range(1, pageCount + 1)
     let excelArr = [excelHeaderRow];
     txnList.map((item,index)=>{
       // console.log(JSON.stringify(item));
-    
       const allowDataToShow ={
-        srNo:item.srNo === null? "" : item.srNo ,
+        srNo:item.srNo === null? "" : index +1 ,
         txn_id:item.txn_id  === null? "" : item.txn_id ,
         client_txn_id:item.client_txn_id  === null? "" : item.client_txn_id ,
         challan_no:item.challan_no  === null? "" : item.challan_no ,
@@ -316,9 +322,9 @@ const pages = _.range(1, pageCount + 1)
                     <option value="0">All</option>
                       :
                     <option value="">Select</option> }
-                    {clientMerchantDetailsList?.map((item) => {
+                    {clientMerchantDetailsList?.map((item,i) => {
                       return (
-                        <option value={item.clientCode}>
+                        <option value={item.clientCode} key={i}>
                           {item.clientCode + " - " + item.clientName}
                         </option>
                       );
@@ -357,9 +363,9 @@ const pages = _.range(1, pageCount + 1)
                       getInputValue("txnStatus", e.target.value);
                     }}
                   >
-                    <option value="All">All</option>
+                    <option value="All" key="0">All</option>
                     {paymentStatusList.map((item, i) => {
-                      return  item!=='INITIATED'? <option value={item}>{item} </option>:<></> ;
+                      return  item!=='INITIATED'? <option value={item} key={i} rel={i} > {item} </option>: '';
                     })}
                   </select>
                 </div>
@@ -372,9 +378,9 @@ const pages = _.range(1, pageCount + 1)
                     }}
                   >
                     <option value="All">All</option>
-                    {paymentModeList.map((item) => {
+                    {paymentModeList.map((item,i) => {
                       return (
-                        <option value={item.paymodeId}>
+                        <option value={item.paymodeId} key={i}>
                           {item.paymodeName}
                         </option>
                       );
@@ -453,7 +459,7 @@ const pages = _.range(1, pageCount + 1)
                           {/* {console.log("filterList",filterList)} */}
                           {txnList.length>0 && paginatedata.map((item,i)=>{return(
                             <tr>
-                            <td>{item.srNo}</td>
+                            <td>{i+1}</td>
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
                             <td>{item.challan_no}</td>

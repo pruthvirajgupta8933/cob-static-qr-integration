@@ -333,7 +333,7 @@ const handleClickShowPassword = () => {
                                   </div>
                                 </div>
                                 <div className="simform__actions">
-                                  {/*<input class="sumbit" name="commit" type="sumbit" value="Log In" />*/}
+                                  {/*<input className="sumbit" name="commit" type="sumbit" value="Log In" />*/}
                                   <button
                                     className="sumbit"
                                     type="sumbit"
@@ -342,7 +342,7 @@ const handleClickShowPassword = () => {
 
                                     {loading && (
                                       <span
-                                        class="spinner-border"
+                                        className="spinner-border"
                                         role="status"
                                       ></span>
                                     )}

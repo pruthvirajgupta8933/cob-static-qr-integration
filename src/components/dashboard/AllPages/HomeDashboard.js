@@ -7,7 +7,7 @@ function Home() {
         <div className="profileBarStatus">
           {/*
           <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
-                class="btn">Upload Here</span></span></div>*/}
+                className="btn">Upload Here</span></span></div>*/}
         </div>
         <main className="gx-layout-content ant-layout-content">
           <div className="gx-main-content-wrapper">
