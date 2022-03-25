@@ -145,7 +145,6 @@ const pages = _.range(1, pageCount + 1)
       </div>
       
        <table className='tables' cellPadding="10" cellspacing="0" width="100%">
- 
  <tr>
  <th>Serial No.</th>
    <th>Name</th>

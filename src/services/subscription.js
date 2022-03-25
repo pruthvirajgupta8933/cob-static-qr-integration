@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SUBSCRIPTION_URL = "https://cobapi.sabpaisa.in/client-subscription-service/";
+const SUBSCRIPTION_URL = "https://spl.sabpaisa.in/client-subscription-service/";
 
 const subscriptionPlan = () => {
   return axios.get(SUBSCRIPTION_URL + "fetchAppAndPlan")

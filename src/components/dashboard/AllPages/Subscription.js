@@ -52,7 +52,7 @@ const Subsciption = () => {
  const dispatch = useDispatch();
 
  const getSubscriptionService = async () => {  
-    await axios.get('https://cobapi.sabpaisa.in/client-subscription-service/fetchAppAndPlan')  
+    await axios.get('https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan')  
     .then(res => {  
       setSubscriptionData(res.data);
       localStorage.setItem("subscriptionData", JSON.stringify(res.data));
@@ -110,12 +110,12 @@ useEffect(() => {
     clientCode: 70,
     clientRegistrationId: Math.floor(Math.random() * 90000) + 10000,
     consumerReferenceNumber: Math.floor(Math.random() * 92000) + 10000,
-    emiamount:"",
+    emiamount:'',
     frequency:'ADHO',
     mandateCategory:'U099',
     mandateEndDate: mandateEndData,
     mandateMaxAmount:planPrice+'.00',
-    mandatePurpose: "Others",
+    mandatePurpose: 'Others',
     mandateStartDate: formattedDate,
     mandateType:'ONLINE',
     npciPaymentBankCode:bankName,
@@ -130,7 +130,7 @@ useEffect(() => {
     payerUtilitityCode:'NACH00000000022341',
     requestType:'REGSTRN',
     schemeReferenceNumber:Math.floor(Math.random() * 94000) + 10000,
-    telePhone: "",
+    telePhone: '',
     untilCancelled:false,
     userType:'merchant',
     termAndCnd:termAndCnd,
@@ -143,6 +143,7 @@ useEffect(() => {
 
   }
 //,{mandateEndData:mandateEndData,mandateMaxAmount:planPrice+'.00'}
+  
   setSubscribeData(bodyFormData)
 
 }, [mandateEndData,planPrice,termAndCnd,subscribePlanData,isModelClosed]);
@@ -215,7 +216,7 @@ return (
               <div className="container-fluid">
               <div className="row">
               {/* {console.log(subscriptionPlanData.length)} */}
-        {subscriptionPlanData.length <= 0 ? <h3>Loding...</h3> : subscriptionPlanData.map((s,i) => 
+        {subscriptionPlanData.length <= 0 ? <h3>Loading...</h3> : subscriptionPlanData.map((s,i) => 
         <div className="col-3" key={i}>
         <div className="col mb-4">  
         <div >

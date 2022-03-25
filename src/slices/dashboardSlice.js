@@ -77,6 +77,12 @@ export const successTxnSummary = createAsyncThunk(
     }
   );
 
+  export const saveSubscribedPlan = createAsyncThunk("dashbaord/saveSubscribedPlan", async (data) => {
+    console.log("data",data);    
+    console.log("data");    
+    
+  });
+
   export const fetchTransactionHistorySlice = createAsyncThunk(
     "dashbaord/transactionHistory",
     async (data, thunkAPI) => {

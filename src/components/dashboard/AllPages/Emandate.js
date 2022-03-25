@@ -64,7 +64,7 @@ useEffect(() => {
         };
         // console.log(postData)
 
-        axios.post("https://cobapi.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+        axios.post("https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
             // console.log(response)
         }).catch(error=>console.log(error))
     }

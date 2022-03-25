@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { saveSubscribedPlan } from "../../../slices/dashboardSlice";
 
 function Emandate(props) {
+  const dispatch = useDispatch();
   const {user} = useSelector((state)=>state.auth);
   const { clientId,clientName } =user.clientMerchantDetailsList[0];
   const { register, handleSubmit } = useForm();
@@ -40,7 +42,7 @@ function Emandate(props) {
       mandateStartTime : data.mandateStartDate,
       mandateEndTime  : data.mandateEndDate,
   };
-  axios.post("https://cobapi.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+  axios.post("https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
             // console.log(response);
             setDisplayMsg('block');
             setTimeout(function() {
@@ -68,8 +70,12 @@ function Emandate(props) {
         if(formData.planType.toLowerCase() ==='trial'){
           saveTrialPlanData(formData);
         }else{
+          // console.log("selectedPlan",JSON.stringify(planData))
+          // dispatch(saveSubscribedPlan(planData))
+          
            localStorage.setItem("selectedPlan",JSON.stringify(planData))
            document.getElementById("mandateRegForm").submit()
+
         }
       }      
     }else{
