@@ -21,6 +21,7 @@ export const FormikApp = () => {
     const { user } = useSelector((state) => state.auth);
     const {dashboard} = useSelector((state) => state );
   
+    console.log("user",user);
     
     // const {fetchDcBankList,fetchNbBankList} = profileService
     const { clientMerchantDetailsList ,
@@ -33,6 +34,7 @@ export const FormikApp = () => {
             bankName,
             ifscCode,
             pan,
+            clientAuthenticationType,
           } = user;
 
     var initNBlist,initDClist = [];
@@ -55,7 +57,7 @@ export const FormikApp = () => {
     const [createProfileResponse , setCreateProfileResponse]  = useState('');
     const [retrievedProfileResponse , setRetrivedProfileResponse] = useState('');
   
-    const [authenticationMode,setAuthenticationMode] = useState(clientMerchantDetailsList &&  clientMerchantDetailsList[0]?.clientAuthenticationType);
+    const [authenticationMode,setAuthenticationMode] = useState(clientAuthenticationType);
     const [listOfNetBank,setListOfNetBank] = useState(initNBlist);
     const [listOfDebitCardBank,setListOfDebitCardBank] = useState(initDClist);
     
@@ -88,7 +90,7 @@ export const FormikApp = () => {
     accountNumber:accountNumber,
     ifscCode:userIfscCode,
     pan:pan,
-    clientAuthenticationType: clientMerchantDetailsList &&  clientMerchantDetailsList[0]?.clientAuthenticationType,
+    clientAuthenticationType: clientAuthenticationType,
   };
 
   

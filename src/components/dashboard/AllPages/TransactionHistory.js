@@ -28,7 +28,7 @@ function TransactionHistory() {
   const [txnStatus,SetTxnStatus] = useState("All");
   const [payModeId,SetPayModeId] = useState("All")
   const [txnList,SetTxnList] = useState([])
-  const [filterList,SetFilterList] = useState([])
+  // const [filterList,SetFilterList] = useState([])
   const [searchText,SetSearchText] = useState('')
   const [show, setShow] = useState('')
   const [pageSize, setPageSize] = useState(10);
@@ -245,7 +245,7 @@ const pages = _.range(1, pageCount + 1)
         txn_id:item.txn_id  === null? "" : item.txn_id ,
         client_txn_id:item.client_txn_id  === null? "" : item.client_txn_id ,
         challan_no:item.challan_no  === null? "" : item.challan_no ,
-        payee_amount:item.payee_amount  === null? "" : item.payee_amount ,
+        payee_amount:item.payee_amount  === null? "" : Number.parseFloat(item.payee_amount) ,
         trans_date:item.trans_date  === null? "" : item.trans_date ,
         trans_complete_date:item.trans_complete_date  === null? "" : item.trans_complete_date ,
         status:item.status === null? "" : item.status ,
@@ -305,7 +305,7 @@ const pages = _.range(1, pageCount + 1)
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Transactions History</h1>
           </div>
-          <section className="features8 cid-sg6XYTl25a" id="features08-3-">
+          <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-lg-4 mrg-btm- bgcolor">
@@ -463,7 +463,7 @@ const pages = _.range(1, pageCount + 1)
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
                             <td>{item.challan_no}</td>
-                            <td>{item.payee_amount}</td>
+                            <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
                             <td>{item.trans_date}</td>
                             <td>{item.trans_complete_date}</td>
                             <td>{item.status}</td>

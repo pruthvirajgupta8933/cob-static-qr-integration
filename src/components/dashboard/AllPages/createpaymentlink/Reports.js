@@ -119,28 +119,32 @@ const pages = _.range(1, pageCount + 1)
 
 
 
-  return (<div>
+  return (<div className='col-lg-12'>
       
 
-        <div style={{marginLeft: 20}}>
+      
       <h3><b>Reports</b></h3>
       <p>Total Records : {data.length}</p>
-      </div>
-       
-      <div style={{marginLeft: 20}} >
-      <input className="form-control" type="text" placeholder="Search Here" value={searchText} onChange={getSearchTerm} style={{ width: 500 }}  />
+      
+      <div style={{display:"flex"}}> 
+      <div className='col-lg-6' >
+        <label> &nbsp;</label>
+        <input className="form-control" type="text" placeholder="Search Here" value={searchText} onChange={getSearchTerm} />
       </div>
       
-      <div>
-      <h4 style={{marginLeft:650 , position: 'relative', top: -25 }} >Count per page</h4>
-       <select  value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} style={{marginLeft:800 , position: 'relative', top: -55 , width: 150}}>
+      <div className='col-lg-6'>
+      <label>Count per page</label>
+       <select  value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} className="form-control">
        <option value="10">10</option>
         <option value="20">20</option>
         <option value="50">50</option>
         <option value="100">100</option>
        </select>
       </div>
-       <table className='table' style={{marginLeft: 10}}>
+
+      </div>
+      
+       <table className='tables' cellPadding="10" cellspacing="0" width="100%">
  
  <tr>
  <th>Serial No.</th>

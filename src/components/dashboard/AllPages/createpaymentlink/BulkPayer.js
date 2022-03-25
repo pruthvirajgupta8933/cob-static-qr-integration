@@ -56,27 +56,29 @@ const BulkPayer = () => {
   };
 
   return (
-    <div>
+    <div className="col-lg-12">
       <form onSubmit={submitHandler}>
-        <h2 style={{ marginLeft: 110 }}>
-          <b>Upload Bulk Payer</b>
+      <div className="col-lg-4">
+        <h2>
+          Upload Bulk Payer
         </h2>
         <input
           type="file"
           className="form-control"
           id="customFile"
           onChange={changeHandler}
-          style={{ position: "absolute", top: 220, width: 700, left: 100 }}
+          
         />
-        <div>
+       </div>
+       <div className="col-lg-4">
           <button
             type="submit"
-            className="btn btn-primary"
-            style={{ position: "absolute", top: 220, left: 820 }}
+            className="btn btn-primary martop"
+            
           >
             Submit
           </button>
-        </div>
+          </div>
       </form>
       {/* <Link
         style={{ position: "absolute", top: 230, left: 1200 }}

@@ -661,3 +661,13 @@ background: black;
     white-space: nowrap;
     
 }
+
+.flleft{
+  float: left;
+}
+.marright{
+  margin-right:5em ;
+}
+.martop{
+  margin-top:35px;
+}

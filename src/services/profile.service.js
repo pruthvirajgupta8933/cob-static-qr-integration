@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://spl.sabpaisa.in/auth-service/client";
+const BASE_URL = "https://cobapi.sabpaisa.in/auth-service/client";
 const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
 
 const createClintCode = (object) => {

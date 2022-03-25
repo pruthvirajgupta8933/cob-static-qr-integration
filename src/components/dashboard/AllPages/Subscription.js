@@ -52,7 +52,7 @@ const Subsciption = () => {
  const dispatch = useDispatch();
 
  const getSubscriptionService = async () => {  
-    await axios.get('https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan')  
+    await axios.get('https://cobapi.sabpaisa.in/client-subscription-service/fetchAppAndPlan')  
     .then(res => {  
       setSubscriptionData(res.data);
       localStorage.setItem("subscriptionData", JSON.stringify(res.data));
@@ -211,9 +211,9 @@ return (
           <div className="right_layout my_account_wrapper right_side_heading">
               <h1 className="m-b-sm gx-float-left">Product Catalogue</h1>
           </div>
-          <section className="features8 cid-sg6XYTl25a" id="features08-3-">
+          <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
               <div className="container-fluid">
-              <div className="row" style={{overflow:"scroll"}}>
+              <div className="row">
               {/* {console.log(subscriptionPlanData.length)} */}
         {subscriptionPlanData.length <= 0 ? <h3>Loding...</h3> : subscriptionPlanData.map((s,i) => 
         <div className="col-3" key={i}>

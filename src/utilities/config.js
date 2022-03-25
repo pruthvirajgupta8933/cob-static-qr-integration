@@ -19,6 +19,6 @@ const APIS_TEST = {
     
 
     // CLIENT_SUBSCRIPTION_SERVICE: "http://18.222.220.74:8081/client-subscription-service/",
-    // AUTH_LOGIN: "https://spl.sabpaisa.in/auth-service/",
-    // CLIENT_SUBSCRIPTION_SERVICE: "https://spl.sabpaisa.in/client-subscription-service/",
+    // AUTH_LOGIN: "https://cobapi.sabpaisa.in/auth-service/",
+    // CLIENT_SUBSCRIPTION_SERVICE: "https://cobapi.sabpaisa.in/client-subscription-service/",
 }

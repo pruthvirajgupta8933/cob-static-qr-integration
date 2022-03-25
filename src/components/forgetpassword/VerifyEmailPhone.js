@@ -49,7 +49,7 @@ const username = auth.forgotPassword.sendUserName.username;
                             otp: emailotp
                         });
 
-       await axios.post("https://spl.sabpaisa.in/auth-service/account/verify-otp/",sendOtp,{headers:{"Content-Type" : "application/json"}}).then((response)=>{console.log(response)}).catch(error=>console.log(error))
+       await axios.post("https://cobapi.sabpaisa.in/auth-service/account/verify-otp/",sendOtp,{headers:{"Content-Type" : "application/json"}}).then((response)=>{console.log(response)}).catch(error=>console.log(error))
         // dispatch(verifyOtpOnForgotPwdSlice(sendOtp))
       }
 

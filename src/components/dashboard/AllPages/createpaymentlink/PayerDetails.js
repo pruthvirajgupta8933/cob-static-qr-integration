@@ -184,7 +184,7 @@ const PayerDetails = () => {
     };
 
     return (
-        <div>
+        <div className='col-lg-12'>
             <Edituser items={editform} />
             <Genratelink generatedata={genrateform} />
 
@@ -309,13 +309,14 @@ const PayerDetails = () => {
                    
                     </div>
                    
-                    <div style={{display:"flex" }}>
-                        <div>
-                            <input className='form-control' onChange={getSearchTerm} type="text" placeholder="Search Here" style={{width: "600px", marginRight: "5em"}} />
+                    <div className="row">
+                        <div className='col-lg-6'>
+                            <label> &nbsp;</label>
+                            <input className='form-control marright' onChange={getSearchTerm} type="text" placeholder="Search Here" style={{width: "600px", marginRight: "5em"}} />
                         </div>
-                        <div style={{margin:"0px ​4px 0px 18em"}}>
-                            <span style={{marginRight:"5px"}}>Count per page</span>
-                            <select style={{ width: 130 }}>
+                        <div className='col-lg-6'>
+                            <label>Count per page</label>
+                            <select className='form-control'>
                                 <option value="10">10</option>
                                 <option value="20">25</option>
                                 <option value="30">50</option>
@@ -327,14 +328,15 @@ const PayerDetails = () => {
                             </select>
                         </div>
                     </div>
-                    <p className=''>Total Records:{data.length}</p>
+                    <label className=''>Total Records:{data.length}</label>
                 </div>
+                
             </div>
 
 
             <div className="full-screen-scroller">
 
-                <table data-spy="scroll" data-offset="50" className="table table-striped" style={{ position: 'absolute'}}>
+                <table data-spy="scroll" border="0" data-offset="50" className="table table-striped" width="100%">
                     <thead>
                         <tr>
                             <th scope='col'>Serial.No</th>

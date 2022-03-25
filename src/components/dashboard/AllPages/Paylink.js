@@ -54,7 +54,7 @@ function Paylink() {
                         </ul>
                         </div>
           </div>
-          <section className="features8 cid-sg6XYTl25a" id="features08-3-">
+          <section className="features8 cid-sg6XYTl25a flleft col-lg-12" id="features08-3-">
             <div className="container-fluid">
               <div className="row">
                 {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
@@ -63,18 +63,12 @@ function Paylink() {
                     {(tab === 1 &&
                         <PayerDetails />)
                     || (tab === 2 &&
-                        <PaymentLinkDetail />)
-                  
-                        
-                    ||  (tab === 2 &&
-                        <PaymentLinkDetail />)
-
+                        <PaymentLinkDetail />)                        
+                   
                     ||  (tab === 3 &&
                         <BulkPayer/>)
-
                     ||  (tab === 4 &&
                         <Reports/>)
-
                     ||
                        <PayerDetails />
                     }

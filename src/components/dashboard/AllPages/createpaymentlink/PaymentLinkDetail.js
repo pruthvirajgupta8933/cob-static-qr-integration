@@ -102,7 +102,7 @@ const pages = _.range(1, pageCount + 1)
 
 
   return (
-    <div>
+    <div className="col-lg-12">
       <button
         type="button"
         className="btn btn-primary"
@@ -115,25 +115,27 @@ const pages = _.range(1, pageCount + 1)
       </button>
      {/* add form of create payment link */}
      <FormPaymentLink />
-      <div className="filterSection" style={{display:"flex",margin:"10px"}}>
+      <div className="filterSection" style={{display:"flex"}}>
       
-       <div style={{display:"contents"}}>
-
+      <div className="col-lg-6">
+      <label> &nbsp;</label>
        <input
        className="form-control"
         type="text"
         placeholder="Search Here"
-        style={{  width: 700, height: '30px' }}
+        
         onChange={getSearchTerm}
       />
         {/* {
          paginatedata.filter 
         } */}
 
-      <h4  style={{marginLeft:"10em"}}>
+</div>
+<div className="col-lg-6">
+      <label>
         Count per page &nbsp; &nbsp;
-      </h4>
-      <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} style={{width: 100 }}>
+      </label>
+      <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} className="form-control">
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="50">50</option>
@@ -141,13 +143,20 @@ const pages = _.range(1, pageCount + 1)
      
       </select>
        </div>
+
+       
+       
+     
       
       </div>
-      <div style={{margin:"10px"}}>
-         <p >
+      <p>
         Total Records: {data.length}
        </p>
-       </div>
+
+
+      
+         
+      
        <div>
          {
          ! paginatedata ? ("No data Found"):(

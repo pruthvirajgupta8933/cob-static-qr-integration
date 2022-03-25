@@ -12,7 +12,7 @@ const successTxnSummary = (fromdate, todate, clientcode) => {
   }).catch(err=>console.log(err));
 };
 
-const SUBSCRIPTION_URL = "https://spl.sabpaisa.in/client-subscription-service/";
+const SUBSCRIPTION_URL = "https://cobapi.sabpaisa.in/client-subscription-service/";
 
 const subscriptionplan = () => {
   return axios.get(SUBSCRIPTION_URL + "fetchAppAndPlan")

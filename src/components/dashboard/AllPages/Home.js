@@ -110,7 +110,7 @@ showData.map((item)=>{
             <div className="right_layout my_account_wrapper right_side_heading">
               <h1 className="m-b-sm gx-float-left">Home</h1>
             </div>
-            <section className="features8 cid-sg6XYTl25a" id="features08-3-">
+            <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
               <div className="container-fluid">
                 <div className="row bgcolor">
                   <div className="col-lg-6 mrg-btm- bgcolor-">

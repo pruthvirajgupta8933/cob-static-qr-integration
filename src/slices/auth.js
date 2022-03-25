@@ -487,10 +487,8 @@ const authSlice = createSlice({
 
       state.isLoggedIn = loggedInStatus;
       state.user = action.payload.user;
-      if(action.payload.user?.clientSuperMasterList!==null)
-      {
-        state.user.clientMerchantDetailsList  = action.payload.user.clientSuperMasterList
-      }
+      state.user.clientMerchantDetailsList  = action.payload.user.clientMerchantDetailsList
+    
         
       localStorage.setItem("user",JSON.stringify(state.user))
       state.isValidUser = isValidData;
