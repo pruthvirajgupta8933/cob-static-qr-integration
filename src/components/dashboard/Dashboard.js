@@ -91,10 +91,6 @@ function Dashboard() {
                 <Route exaxt path={`${path}/product-catalogue`}>
                      <Subsciption />
                 </Route>
-<<<<<<< HEAD
-                </Switch> 
-                
-=======
                 <Route exaxt path={`${path}/paylink`}>
                      <Paylink />
                 </Route>
@@ -104,8 +100,7 @@ function Dashboard() {
                 <Route exaxt path={`${path}/emandate/`}>
                      <Emandate />
                 </Route>
-                </Switch>
->>>>>>> phase_abhi
+                </Switch> 
         </section>
     )
 }
