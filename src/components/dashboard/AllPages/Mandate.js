@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { saveSubscribedPlan } from "../../../slices/dashboardSlice";
+import { useSelector } from "react-redux";
+// import { saveSubscribedPlan } from "../../../slices/dashboardSlice";
 
 function Emandate(props) {
-  const dispatch = useDispatch();
+  
   const {user} = useSelector((state)=>state.auth);
   const { clientId,clientName } =user.clientMerchantDetailsList[0];
   const { register, handleSubmit } = useForm();

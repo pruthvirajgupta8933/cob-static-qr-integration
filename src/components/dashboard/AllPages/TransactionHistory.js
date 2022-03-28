@@ -305,7 +305,7 @@ const pages = _.range(1, pageCount + 1)
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Transactions History</h1>
           </div>
-          <section className="features8 cid-sg6XYTl25a flleft-" id="features08-3-">
+          <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-lg-4 mrg-btm- bgcolor">
