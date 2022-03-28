@@ -184,214 +184,286 @@ const PayerDetails = () => {
     };
 
     return (
-        <div>
-            <Edituser items={editform} />
-            <Genratelink generatedata={genrateform} />
+      <div>
+        <Edituser items={editform} />
+        <Genratelink generatedata={genrateform} />
 
-            {/* <button type="button" className='btn' class="btn btn-primary">Add Single Payer</button> */}
+        {/* <button type="button" className='btn' class="btn btn-primary">Add Single Payer</button> */}
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <Formik
-                            initialValues={
-                                {
-                                    name: "",
-                                    email: "",
-                                    phone_number: "",
-                                    customer_type_id: 0
-                                }
-                            }
-                            validationSchema={validationSchema}
-                            onSubmit={(values, { resetForm }) => {
-                                onSubmit(values)                 // this onsubmit used for api integration
-                                resetForm()
-                            }}>
-                            {({ resetForm }) => (
-
-                                <>
-                                    <div class="modal-header">
-                                        <h3 class="modal-title" id="exampleModalLabel">Add Payer Details</h3>
-                                        <button type="button" class="close" onClick={resetForm} data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <Form>
-                                            <div class="form-group">
-                                                <label for="recipient-name"
-                                                    class="col-form-label">Name of Payer:</label>
-                                                <Field
-                                                    name="name"
-                                                    placeholder="Enter Name of Payer"
-                                                    class="form-control"
-                                                    autoComplete="off"
-                                                />
-                                                <ErrorMessage name="name">
-                                                    {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
-                                                </ErrorMessage>
-
-                                                <label for="recipient-name" class="col-form-label">Mobile No.:</label>
-                                                <Field
-                                                    name="phone_number"
-                                                    id="phoneNumber"
-                                                    onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
-                                                    type="text"
-                                                    autoComplete="off"
-                                                    placeholder='Enter Mobile No.'
-                                                    class="form-control"
-                                                    pattern="\d{10}"
-                                                    minlength="4" maxlength="10"
-                                                />
-                                                <ErrorMessage name="phone_number">
-                                                    {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
-                                                </ErrorMessage>
-
-                                                <label for="recipient-name" class="col-form-label">Email ID:</label>
-                                                <Field name="email"
-                                                    autoComplete="off"
-                                                    placeholder='Enter Email'
-                                                    id="pairphn"
-                                                    className="form-control" />
-                                                <ErrorMessage name="email">
-                                                    {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
-                                                </ErrorMessage>
-
-                                                <label for="recipient-name" class="col-form-label">Payer Category:</label>
-                                                <Field name="customer_type_id" className="selct" component="select">
-                                                    <option
-                                                        type="text"
-                                                        class="form-control"
-                                                        id="recipient-name"
-                                                    >Select Your Payer Category</option>
-                                                    {
-                                                        customerType.map((payer) => (
-                                                            <option value={payer.id}>{payer.type}</option>
-                                                        ))}
-                                                </Field>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button
-                                                    type="submit"
-                                                    class="btn btn-primary" >
-                                                    Submit
-                                                </button>
-                                                <button
-                                                    type="button" disabled
-                                                    class="btn btn-danger">
-                                                    Update
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="btn btn-primary"
-                                                    data-dismiss="modal"
-                                                    onClick={resetForm}>
-                                                    Cancel
-                                                </button>
-                                            </div>
-
-                                        </Form>
-                                    </div>
-                                </>
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <Formik
+                initialValues={{
+                  name: "",
+                  email: "",
+                  phone_number: "",
+                  customer_type_id: 0,
+                }}
+                validationSchema={validationSchema}
+                onSubmit={(values, { resetForm }) => {
+                  onSubmit(values); // this onsubmit used for api integration
+                  resetForm();
+                }}
+              >
+                {({ resetForm }) => (
+                  <>
+                    <div class="modal-header">
+                      <h3 class="modal-title" id="exampleModalLabel">
+                        Add Payer Details
+                      </h3>
+                      <button
+                        type="button"
+                        class="close"
+                        onClick={resetForm}
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <Form>
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label">
+                            Name of Payer:
+                          </label>
+                          <Field
+                            name="name"
+                            placeholder="Enter Name of Payer"
+                            class="form-control"
+                            autoComplete="off"
+                          />
+                          <ErrorMessage name="name">
+                            {(msg) => (
+                              <div
+                                className="abhitest"
+                                style={{
+                                  color: "red",
+                                  position: "absolute",
+                                  zIndex: " 999",
+                                }}
+                              >
+                                {msg}
+                              </div>
                             )}
-                        </Formik>
+                          </ErrorMessage>
 
-                    </div>
-                </div>
-            </div>
-            {/* end add form */}
+                          <label for="recipient-name" class="col-form-label">
+                            Mobile No.:
+                          </label>
+                          <Field
+                            name="phone_number"
+                            id="phoneNumber"
+                            onKeyDown={(e) =>
+                              ["e", "E", "+", "-", "."].includes(e.key) &&
+                              e.preventDefault()
+                            }
+                            type="text"
+                            autoComplete="off"
+                            placeholder="Enter Mobile No."
+                            class="form-control"
+                            pattern="\d{10}"
+                            minlength="4"
+                            maxlength="10"
+                          />
+                          <ErrorMessage name="phone_number">
+                            {(msg) => (
+                              <div
+                                className="abhitest"
+                                style={{
+                                  color: "red",
+                                  position: "absolute",
+                                  zIndex: " 999",
+                                }}
+                              >
+                                {msg}
+                              </div>
+                            )}
+                          </ErrorMessage>
 
-            <div className="main_filter_area">
-             
-                <div className="filter_area" style={{margin:"14px"}}>
-                    <div>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
-                   
-                    </div>
-                   
-                    <div style={{display:"flex" }}>
-                        <div>
-                            <input className='form-control' onChange={getSearchTerm} type="text" placeholder="Search Here" style={{width: "600px", marginRight: "5em"}} />
+                          <label for="recipient-name" class="col-form-label">
+                            Email ID:
+                          </label>
+                          <Field
+                            name="email"
+                            autoComplete="off"
+                            placeholder="Enter Email"
+                            id="pairphn"
+                            className="form-control"
+                          />
+                          <ErrorMessage name="email">
+                            {(msg) => (
+                              <div
+                                className="abhitest"
+                                style={{
+                                  color: "red",
+                                  position: "absolute",
+                                  zIndex: " 999",
+                                }}
+                              >
+                                {msg}
+                              </div>
+                            )}
+                          </ErrorMessage>
+
+                          <label for="recipient-name" class="col-form-label">
+                            Payer Category:
+                          </label>
+                          <Field
+                            name="customer_type_id"
+                            className="selct"
+                            component="select"
+                          >
+                            <option
+                              type="text"
+                              class="form-control"
+                              id="recipient-name"
+                            >
+                              Select Your Payer Category
+                            </option>
+                            {customerType.map((payer) => (
+                              <option value={payer.id}>{payer.type}</option>
+                            ))}
+                          </Field>
                         </div>
-                        <div style={{margin:"0px ​4px 0px 18em"}}>
-                            <span style={{marginRight:"5px"}}>Count per page</span>
-                            <select style={{ width: 130 }}>
-                                <option value="10">10</option>
-                                <option value="20">25</option>
-                                <option value="30">50</option>
-                                <option value="60">100</option>
-                                <option value="70">200</option>
-                                <option value="70">300</option>
-                                <option value="70">400</option>
-                                <option value="70">500</option>
-                            </select>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-primary">
+                            Submit
+                          </button>
+                          <button type="button" disabled class="btn btn-danger">
+                            Update
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-dismiss="modal"
+                            onClick={resetForm}
+                          >
+                            Cancel
+                          </button>
                         </div>
+                      </Form>
                     </div>
-                    <p className=''>Total Records:{data.length}</p>
-                </div>
+                  </>
+                )}
+              </Formik>
             </div>
+          </div>
+        </div>
+        {/* end add form */}
 
-
-            <div class="full-screen-scroller">
-
-                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute'}}>
-                    <thead>
-                        <tr>
-                            <th scope='col'>Serial.No</th>
-                            <th scope='col'>Name of Payer</th>
-                            <th scope='col'>Mobile No.</th>
-                            <th scope='col'>Email ID</th>
-                            <th scope='col'>Payer  Category</th>
-                            <th scope='col'>Edit</th>
-                            <th scope='col'>Delete</th>
-                            <th scope='col'>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        {data.map((user, i) => (
-
-                            <tr>
-                                <td>{i + 1}</td>
-                                <td>{user.name}</td>
-                                <td>{user.phone_number}</td>
-                                <td>{user.email}</td>
-                                <td>{user.customer_type}</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)}    >Edit</button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-primary mt-7" onClick={() => deleteUser(user.id)}  >Delete</button>
-                                </td><td>
-                                    <button onClick={(e) => generateli(user.id)}
-
-                                        type="button"
-                                        class="btn btn-primary"
-                                        data-toggle="modal"
-                                        data-target="#bhuvi"
-                                        data-whatever="@getbootstrap"
-
-                                    >
-                                        Genrate Link
-                                    </button>
-                                    <div>
-
-                                    </div>
-
-
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+        <div className="main_filter_area">
+          <div className="filter_area" style={{ margin: "14px" }}>
             <div>
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-toggle="modal"
+                data-target="#exampleModal"
+              >
+                Add Single Payer
+              </button>
             </div>
+
+            <div style={{ display: "flex" }}>
+              <div className="col-lg-6">
+                <label> &nbsp;</label>
+                <input
+                  className="form-control"
+                  onChange={getSearchTerm}
+                  type="text"
+                  placeholder="Search Here"
+                  style={{ marginRight: "5em" }}
+                />
+              </div>
+              <div className="col-lg-6">
+                <label style={{ marginRight: "5px" }}>Count per page</label>
+                <select className="form-control">
+                  <option value="10">10</option>
+                  <option value="20">25</option>
+                  <option value="30">50</option>
+                  <option value="60">100</option>
+                  <option value="70">200</option>
+                  <option value="70">300</option>
+                  <option value="70">400</option>
+                  <option value="70">500</option>
+                </select>
+              </div>
+            </div>
+            <p className="">Total Records:{data.length}</p>
+          </div>
         </div>
 
-
-
-    )
+        <div class="full-screen-scroller">
+          <table data-spy="scroll" data-offset="50" class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Serial.No</th>
+                <th scope="col">Name of Payer</th>
+                <th scope="col">Mobile No.</th>
+                <th scope="col">Email ID</th>
+                <th scope="col">Payer Category</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((user, i) => (
+                <tr>
+                  <td>{i + 1}</td>
+                  <td>{user.name}</td>
+                  <td>{user.phone_number}</td>
+                  <td>{user.email}</td>
+                  <td>{user.customer_type}</td>
+                  <td>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      data-toggle="modal"
+                      data-target="#web"
+                      onClick={(e) => handleClick(user.id)}
+                    >
+                      Edit
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      class="btn btn-primary mt-7"
+                      onClick={() => deleteUser(user.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={(e) => generateli(user.id)}
+                      type="button"
+                      class="btn btn-primary"
+                      data-toggle="modal"
+                      data-target="#bhuvi"
+                      data-whatever="@getbootstrap"
+                    >
+                      Genrate Link
+                    </button>
+                    <div></div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div></div>
+      </div>
+    );
 };
 
 export default PayerDetails;

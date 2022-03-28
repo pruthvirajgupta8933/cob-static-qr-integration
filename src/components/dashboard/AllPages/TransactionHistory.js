@@ -292,14 +292,16 @@ const pages = _.range(1, pageCount + 1)
   const finalDate = year +'-'+month+'-'+day;
   return (
     <section className="ant-layout">
-      <div className="profileBarStatus">
-      </div>
+      <div className="profileBarStatus"></div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Transactions History</h1>
           </div>
-          <section className="features8 cid-sg6XYTl25a" id="features08-3-">
+          <section
+            className="features8 cid-sg6XYTl25a flleft"
+            id="features08-3-"
+          >
             <div className="container-fluid">
               <div className="row">
                 <div className="col-lg-4 mrg-btm- bgcolor">
@@ -309,13 +311,12 @@ const pages = _.range(1, pageCount + 1)
                     onChange={(e) => {
                       getInputValue("clientCode", e.target.value);
                     }}
-                  
-                    
                   >
-                    {user.roleId===3 || user.roleId===13 ?
-                    <option value="0">All</option>
-                      :
-                    <option value="">Select</option> }
+                    {user.roleId === 3 || user.roleId === 13 ? (
+                      <option value="0">All</option>
+                    ) : (
+                      <option value="">Select</option>
+                    )}
                     {clientMerchantDetailsList?.map((item) => {
                       return (
                         <option value={item.clientCode}>
@@ -328,7 +329,7 @@ const pages = _.range(1, pageCount + 1)
                 <div className="col-lg-4 mrg-btm- bgcolor">
                   <label>From Date</label>
                   <input
-                  rel={finalDate}
+                    rel={finalDate}
                     type="date"
                     className="ant-input"
                     placeholder="From Date"
@@ -341,7 +342,7 @@ const pages = _.range(1, pageCount + 1)
                   <label>To Date</label>
                   <input
                     type="date"
-                    max= {new Date().toLocaleDateString('en-ca')}
+                    max={new Date().toLocaleDateString("en-ca")}
                     className="ant-input"
                     placeholder="To Date"
                     onChange={(e) => {
@@ -359,7 +360,11 @@ const pages = _.range(1, pageCount + 1)
                   >
                     <option value="All">All</option>
                     {paymentStatusList.map((item, i) => {
-                      return  item!=='INITIATED'? <option value={item}>{item} </option>:<></> ;
+                      return item !== "INITIATED" ? (
+                        <option value={item}>{item} </option>
+                      ) : (
+                        <></>
+                      );
                     })}
                   </select>
                 </div>
@@ -388,154 +393,215 @@ const pages = _.range(1, pageCount + 1)
                   >
                     Search
                   </button>
-                      {  show ? 
-                        <button className="view_history topmarg" onClick={()=>exportToExcelFn()}>Export </button>
-                    :  '' }
-                  </div>
-                  {  show ? 
-                  <React.Fragment>
-                  <div className="col-lg-6 mrg-btm- bgcolor">
-                    <label>Search Transaction ID</label>
-                    <input type="text" className="ant-input" placeholder="Search here" onChange={(e)=>{SetSearchText(e.target.value)}} />
-                  </div>
-                  <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>Count per page</label>
-                  <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
-                  <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                  </select>
-                </div>                 
-                  </React.Fragment> : <></> }
-
-                  <div style={{overflow:"auto"}} > 
-                  <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables" >
-                    <tbody>
-                    {txnList.length>0 ?
-                      <tr>
-                            <th> S.No </th>
-                            <th> Trans ID </th>
-                            <th> Client Trans ID </th>
-                            <th> Challan Number / VAN </th>
-                            <th> Amount </th>
-                            <th> Trans Initiation Date </th>
-                            <th> Trans Complete Date </th>
-                            <th> Payment Status </th>
-                            <th> Payee First Name </th>
-                            <th> Payee Last Name </th>
-                            <th> Payee Mob number </th>
-                            <th> Payee Email </th>
-                            <th> Client Code </th>
-                            <th> Payment Mode </th>
-                            <th> Payee Address </th>
-                            <th> Udf1 </th>
-                            <th> Udf2 </th>
-                            <th> Udf3 </th>
-                            <th> Udf4 </th>
-                            <th> Udf5 </th>
-                            <th> Udf6 </th>
-                            <th> Udf7 </th>
-                            <th> Udf8 </th>
-                            <th> Udf9 </th>
-                            <th> Udf10 </th>
-                            <th> Udf11 </th>
-                            <th> Udf20 </th>
-                            <th> Gr.No </th>
-                            <th> Bank Message </th>
-                            <th> IFSC Code </th>
-                            <th> Payer Account No </th>
-                            <th> Bank Txn Id </th>
-                          </tr>:
-                          <></>
-                     }
-                   
-                          {/* {console.log("filterList",filterList)} */}
-                          {txnList.length>0 && paginatedata.map((item,i)=>{return(
-                            <tr>
-                            <td>{item.srNo}</td>
-                            <td>{item.txn_id}</td>
-                            <td>{item.client_txn_id}</td>
-                            <td>{item.challan_no}</td>
-                            <td>{item.payee_amount}</td>
-                            <td>{item.trans_date}</td>
-                            <td>{item.trans_complete_date}</td>
-                            <td>{item.status}</td>
-                            <td>{item.payee_first_name}</td>
-                            <td>{item.payee_lst_name}</td>
-                            <td>{item.payee_mob}</td>
-                            <td>{item.payee_email}</td>
-                            <td>{item.client_code}</td>
-                            <td>{item.payment_mode}</td>
-                            <td>{item.payee_address}</td>
-                            <td>{item.udf1}</td>
-                            <td>{item.udf2}</td>
-                            <td>{item.udf3}</td>
-                            <td>{item.udf4}</td>
-                            <td>{item.udf5}</td>
-                            <td>{item.udf6}</td>
-                            <td>{item.udf7}</td>
-                            <td>{item.udf8}</td>
-                            <td>{item.udf9}</td>
-                            <td>{item.udf10}</td>
-                            <td>{item.udf11}</td>
-                            <td>{item.udf20}</td>
-                            <td>{item.gr_number}</td>
-                            <td>{item.bank_message}</td>
-                            <td>{item.ifsc_code}</td>
-                            <td>{item.payer_acount_number}</td>
-                            <td>{item.bank_txn_id}</td>
-                          </tr>
-                        );
-                      })}
-                  </tbody>
-                </table>
+                  {show ? (
+                    <button
+                      className="view_history topmarg"
+                      onClick={() => exportToExcelFn()}
+                    >
+                      Export{" "}
+                    </button>
+                  ) : (
+                    ""
+                  )}
                 </div>
-                
-               
+                {show ? (
+                  <React.Fragment>
+                    <div className="col-lg-6 mrg-btm- bgcolor">
+                      <label>Search Transaction ID</label>
+                      <input
+                        type="text"
+                        className="ant-input"
+                        placeholder="Search here"
+                        onChange={(e) => {
+                          SetSearchText(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                      <label>Count per page</label>
+                      <select
+                        value={pageSize}
+                        rel={pageSize}
+                        className="ant-input"
+                        onChange={(e) => setPageSize(parseInt(e.target.value))}
+                      >
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                      </select>
+                    </div>
+                  </React.Fragment>
+                ) : (
+                  <></>
+                )}
+
+                <div style={{ overflow: "auto" }}>
+                  <table
+                    cellspaccing={0}
+                    cellPadding={10}
+                    border={0}
+                    width="100%"
+                    className="tables"
+                  >
+                    <tbody>
+                      {txnList.length > 0 ? (
+                        <tr>
+                          <th> S.No </th>
+                          <th> Trans ID </th>
+                          <th> Client Trans ID </th>
+                          <th> Challan Number / VAN </th>
+                          <th> Amount </th>
+                          <th> Trans Initiation Date </th>
+                          <th> Trans Complete Date </th>
+                          <th> Payment Status </th>
+                          <th> Payee First Name </th>
+                          <th> Payee Last Name </th>
+                          <th> Payee Mob number </th>
+                          <th> Payee Email </th>
+                          <th> Client Code </th>
+                          <th> Payment Mode </th>
+                          <th> Payee Address </th>
+                          <th> Udf1 </th>
+                          <th> Udf2 </th>
+                          <th> Udf3 </th>
+                          <th> Udf4 </th>
+                          <th> Udf5 </th>
+                          <th> Udf6 </th>
+                          <th> Udf7 </th>
+                          <th> Udf8 </th>
+                          <th> Udf9 </th>
+                          <th> Udf10 </th>
+                          <th> Udf11 </th>
+                          <th> Udf20 </th>
+                          <th> Gr.No </th>
+                          <th> Bank Message </th>
+                          <th> IFSC Code </th>
+                          <th> Payer Account No </th>
+                          <th> Bank Txn Id </th>
+                        </tr>
+                      ) : (
+                        <></>
+                      )}
+
+                      {/* {console.log("filterList",filterList)} */}
+                      {txnList.length > 0 &&
+                        paginatedata.map((item, i) => {
+                          return (
+                            <tr>
+                              <td>{item.srNo}</td>
+                              <td>{item.txn_id}</td>
+                              <td>{item.client_txn_id}</td>
+                              <td>{item.challan_no}</td>
+                              <td>{item.payee_amount}</td>
+                              <td>{item.trans_date}</td>
+                              <td>{item.trans_complete_date}</td>
+                              <td>{item.status}</td>
+                              <td>{item.payee_first_name}</td>
+                              <td>{item.payee_lst_name}</td>
+                              <td>{item.payee_mob}</td>
+                              <td>{item.payee_email}</td>
+                              <td>{item.client_code}</td>
+                              <td>{item.payment_mode}</td>
+                              <td>{item.payee_address}</td>
+                              <td>{item.udf1}</td>
+                              <td>{item.udf2}</td>
+                              <td>{item.udf3}</td>
+                              <td>{item.udf4}</td>
+                              <td>{item.udf5}</td>
+                              <td>{item.udf6}</td>
+                              <td>{item.udf7}</td>
+                              <td>{item.udf8}</td>
+                              <td>{item.udf9}</td>
+                              <td>{item.udf10}</td>
+                              <td>{item.udf11}</td>
+                              <td>{item.udf20}</td>
+                              <td>{item.gr_number}</td>
+                              <td>{item.bank_message}</td>
+                              <td>{item.ifsc_code}</td>
+                              <td>{item.payer_acount_number}</td>
+                              <td>{item.bank_txn_id}</td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
+
                 <div>
-               {/* {console.log("show",show)} */}
-                {txnList.length>0  ? 
-                    <nav aria-label="Page navigation example"  >
-                    <ul className="pagination">
-      
-                   <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
-                    { 
+                  {/* {console.log("show",show)} */}
+                  {txnList.length > 0 ? (
+                    <nav aria-label="Page navigation example">
+                      <ul className="pagination">
+                        <a
+                          className="page-link"
+                          onClick={(prev) =>
+                            setCurrentPage((prev) =>
+                              prev === 1 ? prev : prev - 1
+                            )
+                          }
+                          href={void 0}
+                        >
+                          Previous
+                        </a>
+                        {pages
+                          .slice(currentPage - 1, currentPage + 6)
+                          .map((page, i) => (
+                            <li
+                              className={
+                                page === currentPage
+                                  ? " page-item active"
+                                  : "page-item"
+                              }
+                            >
+                              {/* {console.log("currentPage",currentPage)} */}
+                              {/* {console.log("page",page)} */}
+                              <a className={`page-link data_${i}`}>
+                                <p onClick={() => pagination(page)}>{page}</p>
+                              </a>
+                            </li>
+                          ))}
 
-
-
-                      pages.slice(currentPage-1,currentPage+6).map((page,i) => (
-                        <li className={
-                          page === currentPage ? " page-item active" : "page-item"
-                        }> 
-                      {/* {console.log("currentPage",currentPage)} */}
-                      {/* {console.log("page",page)} */}
-                            <a className={`page-link data_${i}`} >  
-                              <p onClick={() => pagination(page)}>
-                              {page}
-                              </p>
-                            </a>
-                        </li>
-                      
-                      ))
-                    }
-
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
-                      Next</a> : <></> }
-                      
-                    </ul>
-                  </nav>
-                  : <></> }
+                        {pages.length !== currentPage ? (
+                          <a
+                            className="page-link"
+                            onClick={(nex) =>
+                              setCurrentPage((nex) =>
+                                nex === pages.length > 9 ? nex : nex + 1
+                              )
+                            }
+                            href={void 0}
+                          >
+                            Next
+                          </a>
+                        ) : (
+                          <></>
+                        )}
+                      </ul>
+                    </nav>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                {/* {console.log(filterList.length,txnList.length)} */}
+                {isLoadingTxnHistory ? (
+                  <div className="col-lg-12 col-md-12 mrg-btm- bgcolor">
+                    <div className="text-center">
+                      <div
+                        className="spinner-border"
+                        role="status"
+                        style={{ width: "3rem", height: "3rem" }}
+                      >
+                        <span className="sr-only">Loading...</span>
+                      </div>
+                    </div>
                   </div>
-                  {/* {console.log(filterList.length,txnList.length)} */}
-                {isLoadingTxnHistory ? 
-                  <div className="col-lg-12 col-md-12 mrg-btm- bgcolor"><div className="text-center"><div className="spinner-border" role="status" style={{width: '3rem', height: '3rem'}}><span className="sr-only">Loading...</span></div></div></div> 
-                  : 
-                  buttonClicked && (showData.length <= 0 || txnList.length <= 0) ? 
-                    <div className='showMsg'>No Data Found</div>
-                     :
-                      <div></div>
-                      }  
+                ) : buttonClicked &&
+                  (showData.length <= 0 || txnList.length <= 0) ? (
+                  <div className="showMsg">No Data Found</div>
+                ) : (
+                  <div></div>
+                )}
                 {/* { : <div></div>} */}
               </div>
             </div>

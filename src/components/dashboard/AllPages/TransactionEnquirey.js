@@ -137,13 +137,20 @@ if(timestamp==='' || timestamp===null) {
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Transaction Enquiry</h1>
           </div>
-          <section className="features8 cid-sg6XYTl25a" id="features08-3-">
+          <section
+            className="features8 cid-sg6XYTl25a flleft"
+            id="features08-3-"
+          >
             <div className="container-fluid">
               <div className="row">
-
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Transactions Enquiry</label>
-                  <input type="text" className="ant-input" placeholder="Enter your transactions enquiry" onChange={(e) => onValueChange(e)} />
+                  <input
+                    type="text"
+                    className="ant-input"
+                    placeholder="Enter your transactions enquiry"
+                    onChange={(e) => onValueChange(e)}
+                  />
                   {flag && <h4>{flag}</h4>}
                 </div>
                 <div className="col-lg-6 mrg-btm- bgcolor">

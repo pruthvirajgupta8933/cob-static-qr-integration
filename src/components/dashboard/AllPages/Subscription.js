@@ -204,104 +204,187 @@ useEffect(() => {
 return (
   <section className="ant-layout">
     <div className="profileBarStatus">
-          {/*  <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span class="btn">Upload Here</span></span></div>*/}
+      {/*  <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span class="btn">Upload Here</span></span></div>*/}
     </div>
     <main className="gx-layout-content ant-layout-content">
-          <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-              <h1 className="m-b-sm gx-float-left">Product Catalogue</h1>
-          </div>
-          <section className="features8 cid-sg6XYTl25a" id="features08-3-">
-              <div className="container-fluid">
-              <div className="row" style={{overflow:"scroll"}}>
-        {subscriptionPlanData.map((s) => 
-        <div className="col-3" >
-        <div class="col mb-4">  
-        <div >
-          <div className="card" style={{ background: "aquamarine" }}>
-            <div className="card-body" style={{ height: "200px" }}>
-              <h5 className="card-title" style={{ fontWeight: "700", fontSize: "large" }}>{s.applicationName}</h5>
-              <p className="card-text">{s.applicationDescription}</p>
-              <div>
-                <a href={s.applicationUrl} target="blank" class="btn btn-sm " style={{backgroundColor:"#ffc107"}} role="button" aria-pressed="true"> Read More</a>
-                <button type="button"
-                //  style={{ top: "200px" }}
-                  className="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>Subscribe</button>
-                </div>
-            </div>
-            <div class="container">
-                {/* <a target="blank" className="btn btn-warning" href={s.applicationUrl} > 
+      <div className="gx-main-content-wrapper">
+        <div className="right_layout my_account_wrapper right_side_heading">
+          <h1 className="m-b-sm gx-float-left">Product Catalogue</h1>
+        </div>
+        <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
+          <div className="container-fluid">
+            <div className="row">
+              {subscriptionPlanData.map((s) => (
+                <div className="col-3">
+                  <div class="col mb-4">
+                    <div>
+                      <div
+                        className="card"
+                        style={{ background: "aquamarine" }}
+                      >
+                        <div className="card-body" style={{ height: "200px" }}>
+                          <h5
+                            className="card-title"
+                            style={{ fontWeight: "700", fontSize: "large" }}
+                          >
+                            {s.applicationName}
+                          </h5>
+                          <p className="card-text">
+                            {s.applicationDescription}
+                          </p>
+                          <div>
+                            <a
+                              href={s.applicationUrl}
+                              target="blank"
+                              class="btn btn-sm "
+                              style={{ backgroundColor: "#ffc107" }}
+                              role="button"
+                              aria-pressed="true"
+                            >
+                              {" "}
+                              Read More
+                            </a>
+                            <button
+                              type="button"
+                              //  style={{ top: "200px" }}
+                              className="btn btn-primary btn-sm"
+                              data-toggle="modal"
+                              data-target="#exampleModal"
+                              onClick={() =>
+                                handleSubscribe(s.planMaster, {
+                                  applicationName: s.applicationName,
+                                  applicationId: s.applicationId,
+                                })
+                              }
+                            >
+                              Subscribe
+                            </button>
+                          </div>
+                        </div>
+                        <div class="container">
+                          {/* <a target="blank" className="btn btn-warning" href={s.applicationUrl} > 
                    Read More
                 </a>
                  */}
-               
-                                
-            </div>
-            <div style={{display:"none"}}>
-              <button type="button" className="btn btn-info sm" onClick={()=>makePayment()}>Make Payment</button>
-            </div>
-          </div>
-        </div>
-        {subscriptionDetails &&
-        <div class="modal fade" id="exampleModal" style={{ top: "25%" }} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Welcome - {subscribePlanData.applicationName} !</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={()=>modalHandler()}>
-                <span aria-hidden="true" onClick={()=>setIsModelClosed(false)}>&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-            
-            {Plans && Plans.map((sp) =>
-            <table className="tables" cellpadding="10" cellspacing="10" width="100%">
-                <tbody>
-                    <><>
-                        <th><input type="radio" id="plantype" name="plantype" value={sp.planType} onChange={(e)=>{handleChecked(e,sp)}} /><span style={{ textTransform: "uppercase"}}>
-                        {sp.planType}
-                        </span>  {sp.planName}</th>
-                          </>
-                            <tr>
-                                <td>Rs - {sp.planPrice}</td>
-                            </tr>
-                            <tr></tr>
-                          </>    
-                </tbody>
-            </table>
-            )}
-            </div>
-            <div >
-                    <input type="checkbox" id="termandcnd" name="termandcnd" value="termandcnd" checked={termAndCnd}
-                        onChange={e => setTermAndCnd(e.target.checked)} />
-                    <label for="vehicle1"> I agree all terms and condition.</label>
+                        </div>
+                        <div style={{ display: "none" }}>
+                          <button
+                            type="button"
+                            className="btn btn-info sm"
+                            onClick={() => makePayment()}
+                          >
+                            Make Payment
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    {subscriptionDetails && (
+                      <div
+                        class="modal fade"
+                        id="exampleModal"
+                        style={{ top: "25%" }}
+                        tabindex="-1"
+                        role="dialog"
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
+                      >
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">
+                                Welcome - {subscribePlanData.applicationName} !
+                              </h5>
+                              <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                                onClick={() => modalHandler()}
+                              >
+                                <span
+                                  aria-hidden="true"
+                                  onClick={() => setIsModelClosed(false)}
+                                >
+                                  &times;
+                                </span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              {Plans &&
+                                Plans.map((sp) => (
+                                  <table
+                                    className="tables"
+                                    cellpadding="10"
+                                    cellspacing="10"
+                                    width="100%"
+                                  >
+                                    <tbody>
+                                      <>
+                                        <>
+                                          <th>
+                                            <input
+                                              type="radio"
+                                              id="plantype"
+                                              name="plantype"
+                                              value={sp.planType}
+                                              onChange={(e) => {
+                                                handleChecked(e, sp);
+                                              }}
+                                            />
+                                            <span
+                                              style={{
+                                                textTransform: "uppercase",
+                                              }}
+                                            >
+                                              {sp.planType}
+                                            </span>{" "}
+                                            {sp.planName}
+                                          </th>
+                                        </>
+                                        <tr>
+                                          <td>Rs - {sp.planPrice}</td>
+                                        </tr>
+                                        <tr></tr>
+                                      </>
+                                    </tbody>
+                                  </table>
+                                ))}
+                            </div>
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="termandcnd"
+                                name="termandcnd"
+                                value="termandcnd"
+                                checked={termAndCnd}
+                                onChange={(e) =>
+                                  setTermAndCnd(e.target.checked)
+                                }
+                              />
+                              <label for="vehicle1">
+                                {" "}
+                                I agree all terms and condition.
+                              </label>
+                            </div>
+
+                            <div class="modal-footer">
+                              <Emandate bodyData={subscribeData} />
+                            </div>
+                          </div>
+                        </div>
+                        )
+                      </div>
+                    )}
+                  </div>
                 </div>
-            
-            <div class="modal-footer">
-              <Emandate bodyData={subscribeData}/>
-              
+              ))}
             </div>
           </div>
-        </div>
-      )
-      </div>        
-    }
-   
-        </div>
+        </section>
       </div>
-    )
-  }
-  </div>
-
-    
-              </div>
-          </section>    
-
-          </div>
-    </main>      
-  
-    </section>    
-  );
+    </main>
+  </section>
+);
 }
 
 export default Subsciption

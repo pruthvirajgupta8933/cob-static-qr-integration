@@ -109,106 +109,117 @@ const pages = _.range(1, pageCount + 1)
         data-toggle="modal"
         data-target="#exampleModal"
         data-whatever="@getbootstrap"
-        style={{marginTop: 5, marginLeft: 15}}
+        style={{ marginTop: 5, marginLeft: 15 }}
       >
         Create Payment Link
       </button>
-     {/* add form of create payment link */}
-     <FormPaymentLink />
-      <div className="filterSection" style={{display:"flex",margin:"10px"}}>
-      
-       <div style={{display:"contents"}}>
-
-       <input
-       class="form-control"
-        type="text"
-        placeholder="Search Here"
-        style={{  width: 700, height: '30px' }}
-        onChange={getSearchTerm}
-      />
-        {/* {
+      {/* add form of create payment link */}
+      <FormPaymentLink />
+      <div
+        className="filterSection"
+        style={{ display: "flex", margin: "10px" }}
+      >
+        <div style={{ display: "contents" }}>
+          <div className="col-lg-6">
+            <label> &nbsp; </label>
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Search Here"
+              onChange={getSearchTerm}
+            />
+            {/* {
          paginatedata.filter 
         } */}
-
-      <h4  style={{marginLeft:"10em"}}>
-        Count per page &nbsp; &nbsp;
-      </h4>
-      <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} style={{width: 100 }}>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-     
-      </select>
-       </div>
-      
+          </div>
+          <div className="col-lg-6">
+            <label>Count per page &nbsp; &nbsp;</label>
+            <select
+              value={pageSize}
+              rel={pageSize}
+              onChange={(e) => setPageSize(parseInt(e.target.value))}
+              className="form-control"
+            >
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
       </div>
-      <div style={{margin:"10px"}}>
-         <p >
-        Total Records: {data.length}
-       </p>
-       </div>
-       <div>
-         {
-         ! paginatedata ? ("No data Found"):(
-      <table
-        class="table" style={{marginLeft: 10}}
-      >
-        <tr>
-        <th>Serial No.</th>
-          <th>Phone No.</th>
-          <th>Amount</th>
-          <th>Customer Type</th>
-          <th> Customer Email</th>
-          <th>Created At</th>
-          <th>Customer ID</th>
-          <th>Customer Name</th>
-          <th>Full Link</th>
-        </tr>
-       
-        {paginatedata.map((user,i) => (
-          <tr>
-            <td>{i+1}</td>
-            <td>{user.customer_phoneNumber}</td>
-            <td>{user.amount}</td>
-            <td>{user.customer_type}</td>
-            <td>{user.customer_email}</td>
-            <td>{user.created_at}</td>
-            <td>{user.customer_id}</td>
-            <td>{user.customer_name}</td>
-            <td>{user.full_link}</td>
-          </tr>
-        ))}
-      </table>
-         )}
+      <div style={{ margin: "10px" }}>
+        <p>Total Records: {data.length}</p>
       </div>
       <div>
-  <nav aria-label="Page navigation example"  >
-  <ul class="pagination">
-    <a class="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+        {!paginatedata ? (
+          "No data Found"
+        ) : (
+          <table class="table" style={{ marginLeft: 10 }}>
+            <tr>
+              <th>Serial No.</th>
+              <th>Phone No.</th>
+              <th>Amount</th>
+              <th>Customer Type</th>
+              <th> Customer Email</th>
+              <th>Created At</th>
+              <th>Customer ID</th>
+              <th>Customer Name</th>
+              <th>Full Link</th>
+            </tr>
 
-   {
+            {paginatedata.map((user, i) => (
+              <tr>
+                <td>{i + 1}</td>
+                <td>{user.customer_phoneNumber}</td>
+                <td>{user.amount}</td>
+                <td>{user.customer_type}</td>
+                <td>{user.customer_email}</td>
+                <td>{user.created_at}</td>
+                <td>{user.customer_id}</td>
+                <td>{user.customer_name}</td>
+                <td>{user.full_link}</td>
+              </tr>
+            ))}
+          </table>
+        )}
+      </div>
+      <div>
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <a
+              class="page-link"
+              onClick={(prev) =>
+                setCurrentPage((prev) => (prev === 1 ? prev : prev - 1))
+              }
+              href={void 0}
+            >
+              Previous
+            </a>
 
-     pages.map((page,i) => (
-      <li className={
-        page === currentPage ? " page-item active" : "page-item"
-      }> 
-          <a class="page-link">  
-            <p onClick={() => pagination(page)}>
-            {page}
-            </p>
-          </a>
-        </li>
-     ))
-   }
-    <a class="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href={void(0)}>Next</a>
-  
-   
-  
-  </ul>
-</nav>
-  </div>
-
+            {pages.map((page, i) => (
+              <li
+                className={
+                  page === currentPage ? " page-item active" : "page-item"
+                }
+              >
+                <a class="page-link">
+                  <p onClick={() => pagination(page)}>{page}</p>
+                </a>
+              </li>
+            ))}
+            <a
+              class="page-link"
+              onClick={(nex) =>
+                setCurrentPage((nex) => (nex === pages.length ? nex : nex + 1))
+              }
+              href={void 0}
+            >
+              Next
+            </a>
+          </ul>
+        </nav>
+      </div>
     </div>
   );
 };
