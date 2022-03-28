@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "api-management-cecbd"
-  }
+    "default": "api-management-cecbd",
+    "staging": "api-management-cecbd"
+  },
+  "targets": {}
 }

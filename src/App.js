@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+ import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -21,7 +21,9 @@ const App = () => {
   const dispatch = useDispatch();
 
   const logOut = useCallback(() => {
+    alert('hook call useCallback');
     dispatch(logout());
+
   }, [dispatch]);
 
   useEffect(() => {
@@ -34,6 +36,7 @@ const App = () => {
     }
 
     EventBus.on("logout", () => {
+      alert("event bus call")
       logOut();
     });
 
@@ -44,6 +47,7 @@ const App = () => {
 
   return (
       <>
+      
         <AllRoutes/>
       </>
   );

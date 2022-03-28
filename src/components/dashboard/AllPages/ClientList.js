@@ -7,21 +7,17 @@ function ClientList() {
   const [search, SetSearch] = useState("");
   const [clientListData, SetClientList] = useState([]);
 
-
-
   var {user} = useSelector((state)=>state.auth);
   
-  
-  
-
   useEffect(() => {
    
-  if(user.clientMerchantDetailsList.length>0){
+  if(user.clientMerchantDetailsList?.length>0){
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
     SetClientList(user.clientMerchantDetailsList);
   }
   if(search!==''){
-    SetClientList(clientMerchantDetailsList.filter((Itme)=>Itme.clientName.toLowerCase().includes(search.toLocaleLowerCase())));
+    SetClientList(clientMerchantDetailsList.filter((Itme)=>
+    Object.values(Itme).join(" ").toLowerCase().includes(search.toLocaleLowerCase())));
   
   }
     }, [search,user]);
@@ -34,7 +30,7 @@ const handleChange= (e)=>{
     return (
       <section className="ant-layout">
       <div className="profileBarStatus">
-        {/*  <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span class="btn">Upload Here</span></span></div>*/}
+        {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
       </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
@@ -50,21 +46,27 @@ const handleChange= (e)=>{
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Search</label>
                   <input type="text" className="ant-input" onChange={(e)=>{handleChange(e.currentTarget.value)}} placeholder="Search from here" />
+                  <div className='noOfRecord'>Number of Record: {clientListData.length}</div>
                 </div>
+                
                 <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables">
                   <tbody><tr>
-                      <th>Sr. No.</th>
-                      <th>Client's Name</th>
-                      <th>Transactions</th>
-                      <th>Amount</th>
+                      <th>Client Code</th>
+                      <th>Client Name</th>
+                      <th>Contact No.</th>
+                      <th>Email ID</th>
+                      <th>Configuration Status</th>
+                      <th>Configuration Date Time</th>
                     </tr>
                    {clientListData && clientListData.map((item,i)=>{
                         return(
                           <tr>
-                            <td>{i+1}</td>
+                            <td>{item.clientCode}</td>
                             <td>{item.clientName}</td>
-                            <td>{item.noOfTransaction}</td>
-                            <td>Rs {item.payeeamount}</td>
+                            <td>{item.clientContact}</td>
+                            <td>{item.clientEmail}</td>
+                            <td>{item.configuration_status}</td>
+                            <td>{item.subscribedTym}</td>
                           </tr>
 
                         )

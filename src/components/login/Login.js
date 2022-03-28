@@ -24,7 +24,7 @@ import Textfield from '../../_components/reuseable_components/Textfield'
 import FormButton from '../../_components/reuseable_components/FormButton'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import Header from './Headre';
+// import Header from './Headre';
 import './Login.css';
 import { login,logout } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
@@ -115,7 +115,7 @@ function Login(props) {
       }, [dispatch]);
     
     useEffect(() => {
-        // console.log('call one tiem');
+        alert(' login js call one time');
         dispatch(logout());
     }, [])
 
@@ -216,11 +216,10 @@ const redirectRoute = (authen) => {
         </React.Fragment>
     );
 
-
     return (
     <>  
         
-    <Header/>
+    {/* <Header/> */}
         <CssBaseline />
 
         <Container fixed >

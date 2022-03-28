@@ -1,29 +1,48 @@
-import React from 'react'
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector} from 'react-redux';
 import { Link,
     useParams,
-    useRouteMatch,useHistory } from 'react-router-dom'
-import {logout} from '../../../slices/auth'
+    useRouteMatch,useHistory ,Redirect} from 'react-router-dom'
+import {checkPermissionSlice, logout} from '../../../slices/auth'
 
 
 function SideNavbar() {
+  let history = useHistory();
+  const {user,payLinkPermission} = useSelector((state)=> state.auth )
+  
+  if(user!==null && user.userAlreadyLoggedIn){
+    // alert('no login');
+    // <Redirect to="/login-page" />
+    // alert("aa3");
+    // history.push("/login-page");
+}
+  var {roleId,clientContactPersonName}=user;
     let { path, url } = useRouteMatch();
     const dispatch = useDispatch();
     const handle = ()=>{
       dispatch(logout());
+      
     }
+
+    useEffect(() => {
+      if(user.clientMerchantDetailsList?.length > 0 ){
+        dispatch(checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode))
+      }
+      
+    }, [])
+
+    
+    
     
     return (
-      <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px', marginTop: '35px'}}>
+      <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px'}}>
       <div className="ant-layout-sider-children">
         <div className="gx-sidebar-content">
           <div className="side_top_wrap"><span className="switch_live_label">Live</span>
             <div className="side_top_wrap_profile">
               <div className="side_top_wrap_toggle"><i className="fa fa-angle-down" /></div>
-              <p title="ABHISHEK VERMA" className="text-md text-ellipsis text-capitalize ng-binding">ABHISHEK VERMA</p>
-              {/* <a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/profile.html" className="text-lighter text-ellipsis ng-binding txt-white">My
-                Profile</a> */}
-                <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link>
+              <p title="ABHISHEK VERMA" className="text-md text-ellipsis text-capitalize ng-binding">{clientContactPersonName}</p>
+               {roleId!==3 && roleId!==13 ?  <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link> : <></> }
             </div>
           </div>
           <div className="sidebar_menu_list">
@@ -31,37 +50,47 @@ function SideNavbar() {
               <div style={{position: 'absolute', inset: '0px', overflow: 'scroll', marginRight: '-3px', marginBottom: '-3px'}}>
                 <ul className="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" role="menu">
                   <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
-                  
-                  {/* <a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/payout.html"><i className="fa fa-home" aria-hidden="true" />
-                      Home</a> */}
                       <Link to={`${url}`} className='txt-white'><i className="fa fa-home" aria-hidden="true" /> Home</Link>
-                 </li>
+                  </li>
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open" role="menuitem">
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-owns="settlement$Menu" aria-haspopup="true" style={{paddingLeft: '24px'}}><span className="sidebar-menu-divider">Your
                         Business</span><i className="ant-menu-submenu-arrow" /></div>
                     <ul id="settlement$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu">
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-list-ul" aria-hidden="true" />   Transaction History </Link> 
-                      {/* <a href="http://www.sabpaisalogin.in.s3-website.us-east-2.amazonaws.com/dashboard/transaction.html"><i className="fa fa-list-ul" aria-hidden="true" /> Transactions</a> */}
+                      <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-calendar" aria-hidden="true" />   Transaction History </Link> 
                     </li>
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                         <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
                       </li>
+                      {roleId===3 || roleId===13 ?<li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                      <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link> 
+                      </li> 
+                      :
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Client List </Link> 
+                      <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
+                      &nbsp; Settlement Report</Link> 
                       </li>
+                      }
 
+                      {roleId!==3 && roleId!==13 ? 
+                      
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />
-                      Settlement Report</Link> 
+                      <Link to={`${url}/product-catalogue`} className='txt-white'><i className="fa fa-book" aria-hidden="true" />
+                      &nbsp; Product Catalogue</Link> 
                       </li>
-
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/subscription`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />
-                      Subsciption</Link> 
-                      </li>
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href=""><i className="fa fa-briefcase" aria-hidden="true" />
-                            Logout</a>
+                      : <></>
+                        }
+                        
+                        { 
+                          payLinkPermission.length>0 && payLinkPermission[0].clientId===1 ? 
+                          <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                          <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
+                            &nbsp; Create Payment Link</Link> 
+                          </li> :<></>
+                        }
+                      
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href={void(0)} ><i className="fa fa-briefcase" aria-hidden="true" />
+                      &nbsp; Logout</a>
                       </li>
                     </ul>
                   </li>
@@ -83,7 +112,7 @@ function SideNavbar() {
               </div>
             </div>
           </div>
-          <div className="sidebar-menu-query"><span className="sidebar-help-button"><i className="icon icon-queries" />Support</span></div>
+          <div className="sidebar-menu-query"> <a href="https://sabpaisa.in/support-contact-us/" target="_blank" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div>
         </div>
       </div>
     </aside>
