@@ -20,6 +20,8 @@ import {FormikApp} from './AllPages/ProfileTest'
 import Emandate from './AllPages/Emandate';
 import ChangePassword from './AllPages/ChangePassword';
 import { loginRefferalSlice } from '../../slices/auth';
+import PaymentResponse from './AllPages/PaymentResponse';
+
 
 
 function Dashboard() {
@@ -99,6 +101,9 @@ function Dashboard() {
                 </Route>
                 <Route exaxt path={`${path}/emandate/`}>
                      <Emandate />
+                </Route>
+                <Route exaxt path={`${path}/payment-response/`}>
+                     <PaymentResponse />
                 </Route>
                 </Switch>
         </section>

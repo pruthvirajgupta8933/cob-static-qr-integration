@@ -19,6 +19,7 @@ const Subsciption = () => {
   const [subscriptionPlanChargesData,setSubscriptionPlanChargesData] = useState([]);
   const [subscribePlanData,setSubscribePlanData] = useState([]);
   const [isModelClosed,setIsModelClosed] = useState(false);
+  const [paymentGatewayUrl,setPaymentGatewayUrl] = useState([]);
 
   
   const [Plans,setPlans] = useState([]);
@@ -179,26 +180,17 @@ useEffect(() => {
   
 
   const makePayment=()=>{
-      console.log("make payment");
-      var username = 'nishant.jha_2885';
-      var password = 'SIPL1_SP2885';
-      var programID = "5666";
-      var clientCode = 'SIPL1';
-      var authKey = 'rMnggTKFvmGx8y1z';
-      var authIV = "0QvWIQBSz4AX0VoH";
-      var txnId = Math.floor(Math.random() * 1000000000);
-      var tnxAmt = 10;
-
-      var payerFirstName = 'Mukesh';
-      var payerLastName = 'Kumar';
-      var payerContact = '8796541230';
-      var payerAddress = 'xyz abc';
-      var payerEmail = 'test@gmail.com';
-      const userData = {
-        username,password,programID,clientCode,authKey,authIV,txnId,tnxAmt,payerFirstName,payerLastName,payerContact,payerAddress,payerEmail
-      };
-
-      // paymentGateWay(userData);
+    
+    fetch("https://node-server-test-2.herokuapp.com/api")
+      .then( 
+        response => response.json()
+      )
+      .then(
+        data =>{
+          setPaymentGatewayUrl(data)
+          window.location.href = data.RedirectUrl;
+        }
+      )
   }
 
   // console.log("subscriptionPlanData",subscriptionPlanData);
@@ -233,9 +225,9 @@ return (
             </div>
             <div className="container">
             </div>
-            <div style={{display:"none"}}>
+            {/* <div>
               <button type="button" className="btn btn-info sm" onClick={()=>makePayment()}>Make Payment</button>
-            </div>
+            </div> */}
           </div>
         </div>
         {subscriptionDetails &&

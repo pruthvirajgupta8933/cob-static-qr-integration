@@ -7,9 +7,11 @@ import { useSelector } from "react-redux";
 function Emandate(props) {
   
   const {user} = useSelector((state)=>state.auth);
-  const { clientId,clientName } =user.clientMerchantDetailsList[0];
+  console.log(user)
+  const { clientId,clientName,clientCode,clientEmail,address } =user.clientMerchantDetailsList[0];
   const { register, handleSubmit } = useForm();
   const [formData, setFormData] = useState({});
+  const [makePayment,setMakePayment]= useState(false);
 
   const [displayMsg,setDisplayMsg]=useState("none" );
   // console.log("isModelClosed",formData.isModelClosed);
@@ -53,7 +55,8 @@ function Emandate(props) {
   }
 
   const onSubmit = (data) => {
-    // console.log(formData.planType)
+
+    //formData has all the selected plan values
     if(formData.termAndCnd){
 
       const planData = {
@@ -69,13 +72,47 @@ function Emandate(props) {
         // console.log("formData",formData);
         if(formData.planType.toLowerCase() ==='trial'){
           saveTrialPlanData(formData);
-        }else{
-          // console.log("selectedPlan",JSON.stringify(planData))
-          // dispatch(saveSubscribedPlan(planData))
-          
-           localStorage.setItem("selectedPlan",JSON.stringify(planData))
-           document.getElementById("mandateRegForm").submit()
+        }else if(makePayment){
+         console.log("call pg api");
 
+                  // http://localhost:5000/api
+                  // https://node-server-test-2.herokuapp.com/api
+                  var arrClientName = clientName.split(" ")
+                  var firstName = arrClientName[0];
+                  var lastName = arrClientName[1];
+            fetch("https://cob-node-server.herokuapp.com/getPg/pg-url/",{
+              // Adding method type
+              method: "POST",
+              // Adding body or contents to send
+              body: JSON.stringify({
+                "payerFirstName": user.clientContactPersonName,
+                "payerLastName":user.clientContactPersonName,
+                "payerContact":user.clientMobileNo,
+                "payerAddress":address,
+                // "payerEmail":clientEmail,
+                "payerEmail":'test@gmail.com',
+                "clientCode":clientCode,
+                "tnxAmt":parseInt(formData.mandateMaxAmount)
+            }),
+               
+              // Adding headers to the request
+              headers: {
+                  "Content-type": "application/json; charset=UTF-8"
+              }
+          }).then( 
+              response => response.json()
+            )
+            .then(
+              data =>{
+                console.log(data)
+                // setPaymentGatewayUrl(data)
+                window.location.href = data.RedirectUrl;
+              }
+            )
+        }else{
+          console.log()
+          // localStorage.setItem("selectedPlan",JSON.stringify(planData))
+          // document.getElementById("mandateRegForm").submit()
         }
       }      
     }else{
@@ -135,7 +172,6 @@ const subscribe_msg_content = {
 		id="mandateRegForm"
 		action="https://subscription.sabpaisa.in/subscription/mandateRegistration"
 		method="POST"
-
 	>
 		<div style={{ display: "none" }}>
 		<input {...register("authenticationMode")} name="authenticationMode" value={formData.authenticationMode}/>
@@ -166,8 +202,10 @@ const subscribe_msg_content = {
         <input {...register("untilCancelled")} type="text" name="untilCancelled" value={formData.untilCancelled}/>
         <input {...register("userType")} type="text" name="userType" value={formData.userType}/>
 		</div>
+       
+        <button className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(false)}}>  {formData.planType ==='trial' ? 'Subscribe' : ' Create E-Mandate'} </button>
 
-        <button className="Click-here ant-btn ant-btn-primary float-right" type="submit">  {formData.planType ==='trial' ? 'Subscribe' : ' Create E-Mandate'} </button>
+        {formData.planType !=='trial'? <button className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(true)}}> Make Payment </button> : <></>}
     </form>
     </div>
    
