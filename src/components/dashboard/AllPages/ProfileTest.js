@@ -222,222 +222,481 @@ const validationSchema = Yup.object().shape({
     // console.log(selectedListForOption);
  
  return (
-    <section className="ant-layout">
-    <div className="profileBarStatus">
-    </div>
-    <main className="gx-layout-content ant-layout-content">
-      <div className="gx-main-content-wrapper">
-        <div className="right_layout my_account_wrapper">
-          <h1 className="right_side_heading">My Profile <Link to={`/dashboard/change-password`}><button type="button" className="ant-btn change_password pull-right"><i className="fa fa-key" /><span> Change Password</span></button></Link></h1>
-          <div className="ant-tabs ant-tabs-top ant-tabs-line">
-            <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
-              <div className="ant-tabs-nav-container">
-                <div className="ant-tabs-nav-wrap">
-                  <div className="ant-tabs-nav-scroll">
-                    <div className="ant-tabs-nav- ant-tabs-nav-animated">
-                      <div>
-                      {/* <h4 style={{background: "#ffa2a2",padding: "14px",margin:" auto",textAlign: "center"}}> */}
-                      {/* {message} */}
-                      {/* </h4> */}
-                        {/* <div role="tab" aria-disabled="false" aria-selected="true" className="ant-tabs-tab-active ant-tabs-tab">Basic Details</div> */}
-                      </div>
-                      <div className="ant-tabs-ink-bar ant-tabs-ink-bar-animated" style={{display: 'block', transform: 'translate3d(0px, 0px, 0px)', width: '116px'}}>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
-            <div className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content" style={{marginLeft: '0%'}}>
-              <div role="tabpanel" aria-hidden="false" className="ant-tabs-tabpane ant-tabs-tabpane-active">
-                <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
-                </div>
-                <div className="panel" style={{maxWidth: "100%"}}>
-                    <div className="container" style={{margin:"0 !important"}}>
-                        {/* start form area */}
-                        <div className="row justify-content-center">
-                            <div className="col-md-12">
-                            <div className="card">
-                                <div className="card-header">Basic Details</div>
-                                <div className="card-body">
-                                <form  onSubmit={handleSubmit(onSubmit)}>
-                                    <div className="form-group row">
-                                    <label htmlFor="loginId" className="col-md-4 col-form-label text-md-right"> Login ID </label>
-                                    <div className="col-md-6">
-                                        <input className={`form-control ${errors.loginId ? 'is-invalid' : ''}`}  {...register('loginId')} type="text" id="loginId" name="loginId" onChange={(e)=>e.target.value} disabled  />
-                                        <div className="invalid-feedback">{errors.loginId?.message}</div>
-                                    </div>
-                                    </div>
+   <section className="ant-layout">
+     <div className="profileBarStatus"></div>
+     <main className="gx-layout-content ant-layout-content">
+       <div className="gx-main-content-wrapper">
+         <div className="right_layout my_account_wrapper">
+           <h1 className="right_side_heading">
+             My Profile{" "}
+             <Link to={`/dashboard/change-password`}>
+               <button
+                 type="button"
+                 className="ant-btn change_password pull-right"
+               >
+                 <i className="fa fa-key" />
+                 <span> Change Password</span>
+               </button>
+             </Link>
+           </h1>
+           <div className="ant-tabs ant-tabs-top ant-tabs-line">
+             <div
+               role="tablist"
+               className="ant-tabs-bar ant-tabs-top-bar"
+               tabIndex={0}
+             >
+               <div className="ant-tabs-nav-container">
+                 <div className="ant-tabs-nav-wrap">
+                   <div className="ant-tabs-nav-scroll">
+                     <div className="ant-tabs-nav- ant-tabs-nav-animated">
+                       <div>
+                         {/* <h4 style={{background: "#ffa2a2",padding: "14px",margin:" auto",textAlign: "center"}}> */}
+                         {/* {message} */}
+                         {/* </h4> */}
+                         {/* <div role="tab" aria-disabled="false" aria-selected="true" className="ant-tabs-tab-active ant-tabs-tab">Basic Details</div> */}
+                       </div>
+                       <div
+                         className="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
+                         style={{
+                           display: "block",
+                           transform: "translate3d(0px, 0px, 0px)",
+                           width: "116px",
+                         }}
+                       ></div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div
+               tabIndex={0}
+               role="presentation"
+               style={{
+                 width: "0px",
+                 height: "0px",
+                 overflow: "hidden",
+                 position: "absolute",
+               }}
+             />
+             <div
+               className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content"
+               style={{ marginLeft: "0%" }}
+             >
+               <div
+                 role="tabpanel"
+                 aria-hidden="false"
+                 className="ant-tabs-tabpane ant-tabs-tabpane-active"
+               >
+                 <div
+                   tabIndex={0}
+                   role="presentation"
+                   style={{
+                     width: "0px",
+                     height: "0px",
+                     overflow: "hidden",
+                     position: "absolute",
+                   }}
+                 ></div>
+                 <div className="panel" style={{ maxWidth: "100%" }}>
+                   <div
+                     className="container-"
+                     style={{ margin: "0 !important" }}
+                   >
+                     {/* start form area */}
+                     <div className="row- justify-content-center">
+                       <div className="col-md-12-">
+                         <div className="card">
+                           <div className="card-header">Basic Details</div>
+                           <div className="card-body-">
+                             <form onSubmit={handleSubmit(onSubmit)}>
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="loginId"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   {" "}
+                                   Login ID
+                                 </label>
 
-                                    <div className="form-group row">
-                                    <label htmlFor="clientName" className="col-md-4 col-form-label text-md-right">Client Name</label>
-                                    <div className="col-md-6">
-                                        <input className={`form-control ${errors.clientName ? 'is-invalid' : ''}`}  {...register('clientName')} type="text" id="clientName" name="clientName" onChange={(e)=>e.target.value}  />
-                                        <div className="invalid-feedback">{errors.clientName?.message}</div>
-                                    </div>
-                                    </div>
+                                 <input
+                                   className={`form-control ${
+                                     errors.loginId ? "is-invalid" : ""
+                                   }`}
+                                   {...register("loginId")}
+                                   type="text"
+                                   id="loginId"
+                                   name="loginId"
+                                   onChange={(e) => e.target.value}
+                                   disabled
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.loginId?.message}
+                                 </div>
+                               </div>
 
-                                    <div className="form-group row">
-                                    <label htmlFor="phone" className="col-md-4 col-form-label text-md-right"> Phone </label>
-                                    <div className="col-md-6">
-                                        <input className={`form-control ${errors.phone ? 'is-invalid' : ''}`}  {...register('phone')} type="text" id="phone" name="phone" onChange={(e)=>e.target.value}  />
-                                        <div className="invalid-feedback">{errors.phone?.message}</div>
-                                    </div>
-                                    </div>
-                                    {/* Client Code Hide if already client created */}
-                                    {isCreateorUpdate?<div className="form-group row">
-                                    <label htmlFor="clientCode" className="col-md-4 col-form-label text-md-right"> Client Code </label>
-                                    <div className="col-md-6">
-                                        <input className={`form-control ${errors.clientCode ? 'is-invalid' : ''}`} 
-                                         {...register('clientCode')} 
-                                         type="text" 
-                                         id="clientCode" 
-                                         name="clientCode" 
-                                         onChange={(e)=>verifyClientCodeFn(e.target.value)} 
-                                         
-                                          />
-                                        <div className="">{isClientCodeValid ?'Valid Client Code':'Try another Client Code'}</div>
-                                        <div className="invalid-feedback">{errors.clientCode?.message}</div>
-                                    </div>
-                                    </div>:<></>}
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="clientName"
+                                   className=" col-form-label text-md-right"
+                                 >
+                                   Client Name
+                                 </label>
 
+                                 <input
+                                   className={`form-control ${
+                                     errors.clientName ? "is-invalid" : ""
+                                   }`}
+                                   {...register("clientName")}
+                                   type="text"
+                                   id="clientName"
+                                   name="clientName"
+                                   onChange={(e) => e.target.value}
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.clientName?.message}
+                                 </div>
+                               </div>
 
-                                    <div className="form-group row">
-                                    <label htmlFor="email" className="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-                                    <div className="col-md-6">
-                                        <input type="text" id="email" className="form-control" name="email" {...register('email')}/>
-                                        <p>{errors.email?.message}</p>
-                                    </div>
-                                    </div>
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="phone"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   {" "}
+                                   Phone{" "}
+                                 </label>
 
+                                 <input
+                                   className={`form-control ${
+                                     errors.phone ? "is-invalid" : ""
+                                   }`}
+                                   {...register("phone")}
+                                   type="text"
+                                   id="phone"
+                                   name="phone"
+                                   onChange={(e) => e.target.value}
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.phone?.message}
+                                 </div>
+                               </div>
+                               {/* Client Code Hide if already client created */}
+                               {isCreateorUpdate ? (
+                                 <div className="col-md-4 col-md-6 col-sm-12">
+                                   <label
+                                     htmlFor="clientCode"
+                                     className="col-form-label text-md-right"
+                                   >
+                                     {" "}
+                                     Client Code{" "}
+                                   </label>
 
-                                    <div className="form-group row">
-                                    <label htmlFor="address" className="col-md-4 col-form-label text-md-right"> Address</label>
-                                    <div className="col-md-6">
-                                        <input className={`form-control ${errors.address ? 'is-invalid' : ''}`}  {...register('address')} type="text" id="address" name="address" onChange={(e)=>e.target.value}  />
-                                        <div className="invalid-feedback">{errors.address?.message}</div>
-                                    </div>
-                                    </div>
+                                   <input
+                                     className={`form-control ${
+                                       errors.clientCode ? "is-invalid" : ""
+                                     }`}
+                                     {...register("clientCode")}
+                                     type="text"
+                                     id="clientCode"
+                                     name="clientCode"
+                                     onChange={(e) =>
+                                       verifyClientCodeFn(e.target.value)
+                                     }
+                                   />
+                                   <div className="">
+                                     {isClientCodeValid
+                                       ? "Valid Client Code"
+                                       : "Try another Client Code"}
+                                   </div>
+                                   <div className="invalid-feedback">
+                                     {errors.clientCode?.message}
+                                   </div>
+                                 </div>
+                               ) : (
+                                 <></>
+                               )}
 
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="email"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   E-Mail Address
+                                 </label>
 
-                                    <div className="form-group row">
-                                    <label htmlFor="accountHolderName" className="col-md-4 col-form-label text-md-right"> Name in Bank Account </label>
-                                    <div className="col-md-6">
-                                        <input type="text" id="accountHolderName" className="form-control" name="accountHolderName" {...register('accountHolderName')}/>
-                                        <p>{errors.accountHolderName?.message}</p>
-                                    </div>
-                                    </div>
+                                 <input
+                                   type="text"
+                                   id="email"
+                                   className="form-control"
+                                   name="email"
+                                   {...register("email")}
+                                 />
+                                 <p>{errors.email?.message}</p>
+                               </div>
 
-                                    
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="address"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   {" "}
+                                   Address
+                                 </label>
 
+                                 <input
+                                   className={`form-control ${
+                                     errors.address ? "is-invalid" : ""
+                                   }`}
+                                   {...register("address")}
+                                   type="text"
+                                   id="address"
+                                   name="address"
+                                   onChange={(e) => e.target.value}
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.address?.message}
+                                 </div>
+                               </div>
 
-                                    <div className="form-group row">
-                                    <label htmlFor="clientAuthenticationType" className="col-md-4 col-form-label text-md-right">Authentication Mode</label>
-                                    <div className="col-md-3">
-                                        <p>Net Bank</p>
-                                        <input className={`form-control ${errors.clientAuthenticationType ? 'is-invalid' : ''}`}  {...register('clientAuthenticationType')}  type="radio" name="clientAuthenticationType" onChange={(e)=>setAuthenticationMode(e.target.value)} 
-                                        defaultChecked={authenticationMode==="Netbank"}
-                                        value="NetBank"
-                                         />
-                                        <div className="invalid-feedback">{errors.clientAuthenticationType?.message}</div>
-                                    </div>
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="accountHolderName"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   {" "}
+                                   Name in Bank Account{" "}
+                                 </label>
 
-                                    <div className="col-md-3">
-                                        <p>Debit Card</p>
-                                        <input className={`form-control ${errors.clientAuthenticationType ? 'is-invalid' : ''}`}  {...register('clientAuthenticationType')} type="radio"  name="clientAuthenticationType" onChange={(e)=>setAuthenticationMode(e.target.value)} 
-                                         defaultChecked={authenticationMode==="Debitcard"}
-                                         value="Debitcard"
-                                         />
-                                        <div className="invalid-feedback">{errors.clientAuthenticationType?.message}</div>
-                                    </div>
-                                    </div>
-                                    <div className="form-group row">
-                                    <label htmlFor="bankName" className="col-md-4 col-form-label text-md-right">Bank Name </label>
-                                    <div className="col-md-6">
-                                        <select name="bankName" {...register('bankName')} className={`form-control ${errors.bankName ? 'is-invalid' : ''}`}>
-                                        <option defailtValue="">Please Select Bank</option>
-                                            {selectedListForOption.map((option)=>{
-                                            return (
-                                                <option key={option.id} value={option.code}>
-                                                {option.description}
-                                                </option>
-                                            )
-                                            })}
-                                        </select>
-                                        <div className="invalid-feedback">{errors.bankName?.message}</div>
-                                    </div>
-                                    </div>
+                                 <input
+                                   type="text"
+                                   id="accountHolderName"
+                                   className="form-control"
+                                   name="accountHolderName"
+                                   {...register("accountHolderName")}
+                                 />
+                                 <p>{errors.accountHolderName?.message}</p>
+                               </div>
 
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="clientAuthenticationType"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   Authentication Mode
+                                 </label>
+                                 <div className="col-md-12">
+                                   <input
+                                     className={`form-control- margn ${
+                                       errors.clientAuthenticationType
+                                         ? "is-invalid"
+                                         : ""
+                                     }`}
+                                     {...register("clientAuthenticationType")}
+                                     type="radio"
+                                     name="clientAuthenticationType"
+                                     onChange={(e) =>
+                                       setAuthenticationMode(e.target.value)
+                                     }
+                                     defaultChecked={
+                                       authenticationMode === "Netbank"
+                                     }
+                                     value="NetBank"
+                                   />
+                                   <label for="html">Net Banking</label>
 
+                                   <div className="invalid-feedback">
+                                     {errors.clientAuthenticationType?.message}
+                                   </div>
 
+                                   <input
+                                     className={`form-control- margn ${
+                                       errors.clientAuthenticationType
+                                         ? "is-invalid"
+                                         : ""
+                                     }`}
+                                     {...register("clientAuthenticationType")}
+                                     type="radio"
+                                     name="clientAuthenticationType"
+                                     onChange={(e) =>
+                                       setAuthenticationMode(e.target.value)
+                                     }
+                                     defaultChecked={
+                                       authenticationMode === "Debitcard"
+                                     }
+                                     value="Debitcard"
+                                   />
+                                   <label for="html">Debit Card</label>
 
+                                   <div className="invalid-feedback">
+                                     {errors.clientAuthenticationType?.message}
+                                   </div>
+                                 </div>
+                               </div>
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="bankName"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   Bank Name{" "}
+                                 </label>
 
+                                 <select
+                                   name="bankName"
+                                   {...register("bankName")}
+                                   className={`form-control ${
+                                     errors.bankName ? "is-invalid" : ""
+                                   }`}
+                                 >
+                                   <option defailtValue="">
+                                     Please Select Bank
+                                   </option>
+                                   {selectedListForOption.map((option) => {
+                                     return (
+                                       <option
+                                         key={option.id}
+                                         value={option.code}
+                                       >
+                                         {option.description}
+                                       </option>
+                                     );
+                                   })}
+                                 </select>
+                                 <div className="invalid-feedback">
+                                   {errors.bankName?.message}
+                                 </div>
+                               </div>
 
-                                    <div className="form-group row">
-                                    <label htmlFor="accountNumber" className="col-md-4 col-form-label text-md-right">Bank Account Number</label>
-                                    <div className="col-md-6">
-                                        <input className={`form-control ${errors.accountNumber ? 'is-invalid' : ''}`}  {...register('accountNumber')} type="text" id="accountNumber" name="accountNumber" onChange={(e)=>e.target.value}  />
-                                        <div className="invalid-feedback">{errors.accountNumber?.message}</div>
-                                    </div>
-                                    </div>
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="accountNumber"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   Bank Account Number
+                                 </label>
 
+                                 <input
+                                   className={`form-control ${
+                                     errors.accountNumber ? "is-invalid" : ""
+                                   }`}
+                                   {...register("accountNumber")}
+                                   type="text"
+                                   id="accountNumber"
+                                   name="accountNumber"
+                                   onChange={(e) => e.target.value}
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.accountNumber?.message}
+                                 </div>
+                               </div>
 
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="ifscCode"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   {" "}
+                                   IFSC Code{" "}
+                                 </label>
 
-                                    <div className="form-group row">
-                                    <label htmlFor="ifscCode" className="col-md-4 col-form-label text-md-right"> IFSC Code </label>
-                                    <div className="col-md-6">
-                                        <input 
-                                        className={`form-control ${errors.ifscCode ? 'is-invalid' : ''}`}  
-                                        {...register('ifscCode')} 
-                                        type="text"
-                                        id="ifscCode"
-                                        name="ifscCode"
-                                        onChange={(e)=>verifyIfcdCodeFn(e.target.value)}  
-                                        />
-                                        <p>{isIfcsValid?"IFSC is Valid":"IFSC is Not Valid"}</p>
-                                        <div className="invalid-feedback">{errors.ifscCode?.message}</div>
-                                    </div>
-                                    </div>
+                                 <input
+                                   className={`form-control ${
+                                     errors.ifscCode ? "is-invalid" : ""
+                                   }`}
+                                   {...register("ifscCode")}
+                                   type="text"
+                                   id="ifscCode"
+                                   name="ifscCode"
+                                   onChange={(e) =>
+                                     verifyIfcdCodeFn(e.target.value)
+                                   }
+                                 />
+                                 <p>
+                                   {isIfcsValid
+                                     ? "IFSC is Valid"
+                                     : "IFSC is Not Valid"}
+                                 </p>
+                                 <div className="invalid-feedback">
+                                   {errors.ifscCode?.message}
+                                 </div>
+                               </div>
 
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="pan"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   Pan{" "}
+                                 </label>
 
+                                 <input
+                                   className={`form-control ${
+                                     errors.pan ? "is-invalid" : ""
+                                   }`}
+                                   {...register("pan")}
+                                   type="text"
+                                   id="pan"
+                                   name="pan"
+                                   onChange={(e) => e.target.value}
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.pan?.message}
+                                 </div>
+                               </div>
 
-                                    <div className="form-group row">
-                                    <label htmlFor="pan" className="col-md-4 col-form-label text-md-right">Pan </label>
-                                    <div className="col-md-6">
-                                        <input className={`form-control ${errors.pan ? 'is-invalid' : ''}`}  {...register('pan')} type="text" id="pan" name="pan" onChange={(e)=>e.target.value}  />
-                                        <div className="invalid-feedback">{errors.pan?.message}</div>
-                                    </div>
-                                    </div>
-
-                                    <div className="col-md-6 offset-md-4">
-                                    <button type="submit" className="btn btn-primary">
-                                    {isCreateorUpdate? "Create Profile" : "Update Profile"}
-                                    </button>
-                                    </div>
-                                </form>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        {/* end form area */}
-                    </div>
-                </div>
-
-                </div>
-                <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
-                </div>
-              </div>
-            </div>
-            <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
-          </div>
-        </div>
-      <footer className="ant-layout-footer">
-        <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
-      </footer>
-    </main>
-  </section>
-  );
+                               <div className="col-lg-4 offset-md-4- topmar">
+                                 <button
+                                   type="submit"
+                                   className="btn btn-primary"
+                                 >
+                                   {isCreateorUpdate
+                                     ? "Create Profile"
+                                     : "Update Profile"}
+                                 </button>
+                               </div>
+                             </form>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     {/* end form area */}
+                   </div>
+                 </div>
+               </div>
+               <div
+                 tabIndex={0}
+                 role="presentation"
+                 style={{
+                   width: "0px",
+                   height: "0px",
+                   overflow: "hidden",
+                   position: "absolute",
+                 }}
+               ></div>
+             </div>
+           </div>
+           <div
+             tabIndex={0}
+             role="presentation"
+             style={{
+               width: "0px",
+               height: "0px",
+               overflow: "hidden",
+               position: "absolute",
+             }}
+           />
+         </div>
+       </div>
+       <footer className="ant-layout-footer">
+         <div className="gx-layout-footer-content">
+           © 2021 Ippopay. All Rights Reserved.{" "}
+           <span className="pull-right">
+             Ippopay's GST Number : 33AADCF9175D1ZP
+           </span>
+         </div>
+       </footer>
+     </main>
+   </section>
+ );
 };
 
 

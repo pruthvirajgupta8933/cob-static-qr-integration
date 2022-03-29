@@ -109,246 +109,369 @@ const FORM_VALIDATION = Yup.object().shape({
   };
 
     return (
-        <section className="ant-layout">
-        <div className="profileBarStatus">
-        </div>
+      <section className="ant-layout">
+        <div className="profileBarStatus"></div>
         <main className="gx-layout-content ant-layout-content">
           <div className="gx-main-content-wrapper">
             <div className="right_layout my_account_wrapper">
-              <h1 className="right_side_heading">My Profile<button type="button" className="ant-btn change_password pull-right"><i className="icon icon-reset-password" /><span>Change Password</span></button></h1>
+              <h1 className="right_side_heading">
+                My Profile
+                <button
+                  type="button"
+                  className="ant-btn change_password pull-right"
+                >
+                  <i className="icon icon-reset-password" />
+                  <span>Change Password</span>
+                </button>
+              </h1>
               <div className="ant-tabs ant-tabs-top ant-tabs-line">
-                <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
+                <div
+                  role="tablist"
+                  className="ant-tabs-bar ant-tabs-top-bar"
+                  tabIndex={0}
+                >
                   <div className="ant-tabs-nav-container">
                     <div className="ant-tabs-nav-wrap">
                       <div className="ant-tabs-nav-scroll">
                         <div className="ant-tabs-nav- ant-tabs-nav-animated">
                           <div>
-                          <h4 style={{background: "#ffa2a2",padding: "14px",margin:" auto",textAlign: "center"}}>{message}</h4>
-                            <div role="tab" aria-disabled="false" aria-selected="true" className="ant-tabs-tab-active ant-tabs-tab">Basic Details</div>
+                            <h4
+                              style={{
+                                background: "#ffa2a2",
+                                padding: "14px",
+                                margin: " auto",
+                                textAlign: "center",
+                              }}
+                            >
+                              {message}
+                            </h4>
+                            <div
+                              role="tab"
+                              aria-disabled="false"
+                              aria-selected="true"
+                              className="ant-tabs-tab-active ant-tabs-tab"
+                            >
+                              Basic Details
+                            </div>
                           </div>
-                          <div className="ant-tabs-ink-bar ant-tabs-ink-bar-animated" style={{display: 'block', transform: 'translate3d(0px, 0px, 0px)', width: '116px'}}>
-                          </div>
+                          <div
+                            className="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
+                            style={{
+                              display: "block",
+                              transform: "translate3d(0px, 0px, 0px)",
+                              width: "116px",
+                            }}
+                          ></div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
-                <div className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content" style={{marginLeft: '0%'}}>
-                  <div role="tabpanel" aria-hidden="false" className="ant-tabs-tabpane ant-tabs-tabpane-active">
-                    <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
-                    </div>
+                <div
+                  tabIndex={0}
+                  role="presentation"
+                  style={{
+                    width: "0px",
+                    height: "0px",
+                    overflow: "hidden",
+                    position: "absolute",
+                  }}
+                />
+                <div
+                  className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content"
+                  style={{ marginLeft: "0%" }}
+                >
+                  <div
+                    role="tabpanel"
+                    aria-hidden="false"
+                    className="ant-tabs-tabpane ant-tabs-tabpane-active"
+                  >
+                    <div
+                      tabIndex={0}
+                      role="presentation"
+                      style={{
+                        width: "0px",
+                        height: "0px",
+                        overflow: "hidden",
+                        position: "absolute",
+                      }}
+                    ></div>
                     <div className="panel">
                       <Formik
-                      enableReintialize="true"
-                            initialValues={{
-                            ...INITIAL_FORM_STATE
+                        enableReintialize="true"
+                        initialValues={{
+                          ...INITIAL_FORM_STATE,
                         }}
-                            validationSchema={FORM_VALIDATION}
-                            onSubmit={createorUpdateProfile}
-                        >
-                      <Form>
-                      <h4 className="text-left m-b-lg m-b-20">Basic Details</h4>
-                      <div className="merchant-detail-container">
-                      Login ID : 
-                        <Field
-                          type="text"
-                          name="loginId"
-                          disabled
-                        />
-                      </div>
+                        validationSchema={FORM_VALIDATION}
+                        onSubmit={createorUpdateProfile}
+                      >
+                        <Form>
+                          <h4 className="text-left m-b-lg m-b-20">
+                            Basic Details
+                          </h4>
+                          <div className="merchant-detail-container">
+                            <label>Login ID : </label>
+                            <Field type="text" name="loginId" disabled />
+                          </div> 
 
-                      <div className="merchant-detail-container">
-                      Client Name : 
-                        <Field
-                          type="text"
-                          name="clientName" 
-                          placeholder="Enter Client Name" 
-                        />
-                        <ErrorMessage name="clientName">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>                      
-                      </div>
-                      <div className="merchant-detail-container">
-                      Phone : 
-                        <Field
-                          type="text"
-                          name="phone"
-                          placeholder="Enter Phone Number" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                        <ErrorMessage name="phone">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-                      <div className="merchant-detail-container">
-                      Email-ID : 
-                        <Field
-                          type="text"
-                          name="email" 
-                          placeholder="Enter Email ID" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                          <ErrorMessage name="email">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
+                          <div className="merchant-detail-container">
+                            Client Name :
+                            <Field
+                              type="text"
+                              name="clientName"
+                              placeholder="Enter Client Name"
+                            />
+                            <ErrorMessage name="clientName">
+                              {(msg) => (
+                                <div className="error_msg_display">{msg}</div>
+                              )}
+                            </ErrorMessage>
+                          </div>
+                          <div className="merchant-detail-container">
+                            Phone :
+                            <Field
+                              type="text"
+                              name="phone"
+                              placeholder="Enter Phone Number"
+                              style={{ marginLeft: "10px", width: "398px" }}
+                            />
+                            <ErrorMessage name="phone">
+                              {(msg) => (
+                                <div className="error_msg_display">{msg}</div>
+                              )}
+                            </ErrorMessage>
+                          </div>
+                          <div className="merchant-detail-container">
+                            Email-ID :
+                            <Field
+                              type="text"
+                              name="email"
+                              placeholder="Enter Email ID"
+                              style={{ marginLeft: "10px", width: "398px" }}
+                            />
+                            <ErrorMessage name="email">
+                              {(msg) => (
+                                <div className="error_msg_display">{msg}</div>
+                              )}
+                            </ErrorMessage>
+                          </div>
 
-                      {/* Client Code Hide if already client created */}
-                      {isCreateorUpdate ? <div className="merchant-detail-container">
-                      Client Code : 
-                        <Field
-                          type="text"
-                          name="clientCode" 
-                          placeholder="Enter Client Code" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                          onChange = {( e=> console.log(e.target.value) )}
-                        />
-                          <ErrorMessage name="clientCode">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div> : <></> }
+                          {/* Client Code Hide if already client created */}
+                          {isCreateorUpdate ? (
+                            <div className="merchant-detail-container">
+                              Client Code :
+                              <Field
+                                type="text"
+                                name="clientCode"
+                                placeholder="Enter Client Code"
+                                style={{ marginLeft: "10px", width: "398px" }}
+                                onChange={(e) => console.log(e.target.value)}
+                              />
+                              <ErrorMessage name="clientCode">
+                                {(msg) => (
+                                  <div className="error_msg_display">{msg}</div>
+                                )}
+                              </ErrorMessage>
+                            </div>
+                          ) : (
+                            <></>
+                          )}
 
+                          <div className="merchant-detail-container">
+                            Address :
+                            <Field
+                              type="text"
+                              name="address"
+                              placeholder="Enter Address"
+                              style={{ marginLeft: "10px", width: "398px" }}
+                            />
+                            <ErrorMessage name="address">
+                              {(msg) => (
+                                <div className="error_msg_display">{msg}</div>
+                              )}
+                            </ErrorMessage>
+                          </div>
 
-                      <div className="merchant-detail-container">
-                      Address : 
-                        <Field
-                          type="text"
-                          name="address" 
-                          placeholder="Enter Address" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                          <ErrorMessage name="address">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
+                          {/* start bank details field */}
+                          <h4 className="text-left m-b-lg m-b-20">
+                            Bank Details
+                          </h4>
 
-                      {/* start bank details field */}
-                      <h4 className="text-left m-b-lg m-b-20">Bank Details</h4>
+                          <div className="merchant-detail-container">
+                            Name in Bank Account :
+                            <Field
+                              type="text"
+                              name="accountHolderName"
+                              placeholder="Enter Name in Bank Account"
+                              style={{ marginLeft: "10px", width: "398px" }}
+                            />
+                            <ErrorMessage name="accountHolderName">
+                              {(msg) => (
+                                <div className="error_msg_display">{msg}</div>
+                              )}
+                            </ErrorMessage>
+                          </div>
+                          <div className="merchant-detail-container">
+                            Authentication Mode :
+                            <p style={{ margin: "0px 40px 0px 10px" }}>
+                              <span style={{ margin: "10px" }}>
+                                {" "}
+                                Net Banking
+                              </span>
+                              <Field
+                                type="radio"
+                                name="clientAuthenticationType"
+                                value="Netbank"
+                                onChange={() =>
+                                  setAuthenticationMode("Netbank")
+                                }
+                                checked={authenticationMode === "Netbank"}
+                              />
+                            </p>
+                            <p style={{ margin: "0px 40px 0px 10px" }}>
+                              <span style={{ margin: "10px" }}>Debit Card</span>
+                              <Field
+                                type="radio"
+                                name="clientAuthenticationType"
+                                value="Debitcard"
+                                onChange={() =>
+                                  setAuthenticationMode("Debitcard")
+                                }
+                                checked={authenticationMode === "Debitcard"}
+                              />
+                            </p>
+                            <ErrorMessage name="accountHolderName">
+                              {(msg) => (
+                                <div className="error_msg_display">{msg}</div>
+                              )}
+                            </ErrorMessage>
+                          </div>
+                          <div className="merchant-detail-container">
+                            Bank Name :
+                            <Field
+                              as="select"
+                              name="bankName"
+                              id="bankName"
+                              placeholder="Enter Bank Name"
+                              style={{ marginLeft: "10px", width: "398px" }}
+                            >
+                              <option defailtValue="">
+                                Please Select Bank
+                              </option>
+                              {selectedListForOption.map((option) => {
+                                return (
+                                  <option key={option.id} value={option.code}>
+                                    {option.description}
+                                  </option>
+                                );
+                              })}
+                            </Field>
+                            <ErrorMessage name="bankName">
+                              {(msg) => (
+                                <div className="error_msg_display">{msg}</div>
+                              )}
+                            </ErrorMessage>
+                          </div>
 
-                      <div className="merchant-detail-container">
-                      Name in Bank Account : 
-                        <Field
-                          type="text"
-                          name="accountHolderName" 
-                          placeholder="Enter Name in Bank Account" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                          <ErrorMessage name="accountHolderName">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-                      <div className="merchant-detail-container">
-                      Authentication Mode : 
-                      <p  style={{margin:"0px 40px 0px 10px"}}>
-                      <span style={{margin:"10px"}}> Net Banking</span> 
-                        <Field
-                          type="radio"
-                          name="clientAuthenticationType" 
-                          value="Netbank"
-                          onChange={()=>setAuthenticationMode("Netbank")}
-                          checked={authenticationMode==="Netbank"}
-                        />
-                        </p>
+                          <div className="merchant-detail-container">
+                            Bank Account Number :
+                            <Field
+                              type="text"
+                              name="accountNumber"
+                              placeholder="Enter Bank Account Number"
+                              style={{ marginLeft: "10px", width: "398px" }}
+                            />
+                            <ErrorMessage name="accountNumber">
+                              {(msg) => (
+                                <div className="error_msg_display">{msg}</div>
+                              )}
+                            </ErrorMessage>
+                          </div>
 
-                        <p style={{margin:"0px 40px 0px 10px"}}>
-                        <span style={{margin:"10px"}}>Debit Card</span>
-                        <Field
-                          type="radio"
-                          name="clientAuthenticationType" 
-                          value="Debitcard"
-                          onChange={()=>setAuthenticationMode("Debitcard")}
-                          checked={authenticationMode==="Debitcard"}
-                        /></p>
-                        
-                          <ErrorMessage name="accountHolderName">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-                      <div className="merchant-detail-container">
-                      Bank Name : 
-                        <Field as="select"
-                          name="bankName"  
-                          id="bankName"
-                          placeholder="Enter Bank Name" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        >
-                        <option defailtValue="">Please Select Bank</option>
-                        {selectedListForOption.map((option)=>{
-                          return (
-                            <option key={option.id} value={option.code}>
-                              {option.description}
-                            </option>
-                          )
-                        })}
-                         </Field>
+                          <div className="merchant-detail-container">
+                            IFSC Code :
+                            <Field
+                              type="text"
+                              name="ifscCode"
+                              placeholder="Enter IFSC Code"
+                              style={{ marginLeft: "10px", width: "398px" }}
+                            />
+                            <ErrorMessage name="ifscCode">
+                              {(msg) => (
+                                <div className="error_msg_display">{msg}</div>
+                              )}
+                            </ErrorMessage>
+                          </div>
 
-                        <ErrorMessage name="bankName">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
+                          <div className="merchant-detail-container">
+                            PAN *:
+                            <Field
+                              type="text"
+                              name="pan"
+                              placeholder="PAN Number"
+                              style={{ marginLeft: "10px", width: "398px" }}
+                            />
+                            <ErrorMessage name="pan">
+                              {(msg) => (
+                                <div className="error_msg_display">{msg}</div>
+                              )}
+                            </ErrorMessage>
+                          </div>
 
-                      <div className="merchant-detail-container">
-                      Bank Account Number : 
-                        <Field
-                          type="text"
-                          name="accountNumber" 
-                          placeholder="Enter Bank Account Number" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                           <ErrorMessage name="accountNumber">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
+                          <button
+                            type="sumbit"
+                            style={{
+                              margin: "10px",
+                              float: "right",
+                              width: "25%",
+                            }}
+                            className="btn btn-primary"
+                          >
+                            {isCreateorUpdate
+                              ? "Create Profile"
+                              : "Update Profile"}
+                          </button>
 
-                      <div className="merchant-detail-container">
-                      IFSC Code : 
-                        <Field
-                          type="text"
-                          name="ifscCode" 
-                          placeholder="Enter IFSC Code"
-                          style={{marginLeft: '10px', width: "398px"}}
-                      
-                        />
-                         <ErrorMessage name="ifscCode">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-
-                      <div className="merchant-detail-container">
-                      PAN *:
-                        <Field
-                          type="text"
-                          name="pan"  
-                          placeholder="PAN Number" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                         <ErrorMessage name="pan">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-                 
-                      <button type="sumbit" style={{margin: '10px', float: "right", width: '25%'}} className="btn btn-primary" >{isCreateorUpdate? "Create Profile" : "Update Profile"}</button>
-                      
                           <br />
                         </Form>
-                       </Formik>
-                    </div>
-
-                    </div>
-                    <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
+                      </Formik>
                     </div>
                   </div>
+                  <div
+                    tabIndex={0}
+                    role="presentation"
+                    style={{
+                      width: "0px",
+                      height: "0px",
+                      overflow: "hidden",
+                      position: "absolute",
+                    }}
+                  ></div>
                 </div>
-                <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
               </div>
+              <div
+                tabIndex={0}
+                role="presentation"
+                style={{
+                  width: "0px",
+                  height: "0px",
+                  overflow: "hidden",
+                  position: "absolute",
+                }}
+              />
             </div>
+          </div>
           <footer className="ant-layout-footer">
-            <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
+            <div className="gx-layout-footer-content">
+              © 2021 Ippopay. All Rights Reserved.{" "}
+              <span className="pull-right">
+                Ippopay's GST Number : 33AADCF9175D1ZP
+              </span>
+            </div>
           </footer>
         </main>
       </section>
-    )
+    );
 }
 
 export default Profile
