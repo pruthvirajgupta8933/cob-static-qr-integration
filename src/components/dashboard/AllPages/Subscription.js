@@ -179,19 +179,6 @@ useEffect(() => {
   }, [subscribePlanData,termAndCnd]);
   
 
-  const makePayment=()=>{
-    
-    fetch("https://node-server-test-2.herokuapp.com/api")
-      .then( 
-        response => response.json()
-      )
-      .then(
-        data =>{
-          setPaymentGatewayUrl(data)
-          window.location.href = data.RedirectUrl;
-        }
-      )
-  }
 
   // console.log("subscriptionPlanData",subscriptionPlanData);
 return (

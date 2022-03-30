@@ -12,6 +12,7 @@ function Emandate(props) {
   const { register, handleSubmit } = useForm();
   const [formData, setFormData] = useState({});
   const [makePayment,setMakePayment]= useState(false);
+  const [spinnerOfPayment,setSpinnerOfPayment] = useState(false)
 
   const [displayMsg,setDisplayMsg]=useState("none" );
   // console.log("isModelClosed",formData.isModelClosed);
@@ -73,8 +74,8 @@ function Emandate(props) {
         if(formData.planType.toLowerCase() ==='trial'){
           saveTrialPlanData(formData);
         }else if(makePayment){
-         console.log("call pg api");
-
+         
+            setSpinnerOfPayment(true);
                   // http://localhost:5000/api
                   // https://node-server-test-2.herokuapp.com/api
                   var arrClientName = clientName.split(" ")
@@ -104,13 +105,14 @@ function Emandate(props) {
             )
             .then(
               data =>{
-                console.log(data)
+                // console.log(data)
                 // setPaymentGatewayUrl(data)
                 window.location.href = data.RedirectUrl;
               }
             )
         }else{
           console.log()
+          setSpinnerOfPayment(false);
           // localStorage.setItem("selectedPlan",JSON.stringify(planData))
           // document.getElementById("mandateRegForm").submit()
         }
@@ -205,7 +207,7 @@ const subscribe_msg_content = {
        
         <button className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(false)}}>  {formData.planType ==='trial' ? 'Subscribe' : ' Create E-Mandate'} </button>
 
-        {formData.planType !=='trial'? <button className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(true)}}> Make Payment </button> : <></>}
+        {formData.planType !=='trial'? <button className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(true)}}>  {spinnerOfPayment ? <span class="spinner-border spinner-border-sm"></span> : <></> } Make Payment </button> : <></>}
     </form>
     </div>
    
