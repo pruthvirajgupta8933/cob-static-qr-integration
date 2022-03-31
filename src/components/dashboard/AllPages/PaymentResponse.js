@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import {useLocation} from "react-router-dom"
 
 
+
 function PaymentResponse() {
+
+    const {user} = useSelector(state=>state.auth)
+    const {clientMerchantDetailsList} = user;
+
+
     const search = useLocation().search;
     const urlParam = new URLSearchParams(search);
     const SabPaisaTxId = urlParam.get('SabPaisaTxId');
@@ -12,7 +19,25 @@ function PaymentResponse() {
     const spRespStatus = urlParam.get('spRespStatus');
     const reMsg = urlParam.get('reMsg');
     const clientCode = urlParam.get('clientCode');
+    const [verifyClientCode, setVerifyClientCode] = useState(false)
 
+
+  
+  useEffect(() => {
+    if(clientCode !== clientMerchantDetailsList[0].clientCode){
+      console.log("Client details does not match!")
+    }else{
+      console.log("match code")
+      setVerifyClientCode(true)
+    }
+  
+
+  }, [clientCode])
+  
+  if(verifyClientCode){
+    const selectedPlan = JSON.parse(localStorage?.getItem("selectedPlan"));
+    
+  }
   
   return (
     <div className="card" style={{"width": "100%"}}>

@@ -59,13 +59,14 @@ function Emandate(props) {
 
     //formData has all the selected plan values
     if(formData.termAndCnd){
-
+      
       const planData = {
         applicationId:formData.applicationId,
         applicationName:formData.applicationName,
         planId:formData.planId,
         planName:formData.planName,
       }
+      localStorage.setItem("selectedPlan",JSON.stringify(planData))
 
       if(typeof formData.planId==='undefined'){
         alert("please Select the valid plan");
@@ -78,20 +79,25 @@ function Emandate(props) {
             setSpinnerOfPayment(true);
                   // http://localhost:5000/api
                   // https://node-server-test-2.herokuapp.com/api
-                  var arrClientName = clientName.split(" ")
+                  var arrClientName = user.clientContactPersonName.split(" ")
                   var firstName = arrClientName[0];
                   var lastName = arrClientName[1];
+                  if(typeof(arrClientName[1]) === 'undefined'){
+                     lastName = "N/A";
+                  }
+
+                  // var firstName = arrClientName[0];
+                  // var lastName = arrClientName[1];
             fetch("https://cob-node-server.herokuapp.com/getPg/pg-url/",{
               // Adding method type
               method: "POST",
               // Adding body or contents to send
               body: JSON.stringify({
-                "payerFirstName": user.clientContactPersonName,
-                "payerLastName":user.clientContactPersonName,
+                "payerFirstName": firstName,
+                "payerLastName":lastName,
                 "payerContact":user.clientMobileNo,
                 "payerAddress":address,
-                // "payerEmail":clientEmail,
-                "payerEmail":'test@gmail.com',
+                "payerEmail":clientEmail,
                 "clientCode":clientCode,
                 "tnxAmt":parseInt(formData.mandateMaxAmount)
             }),
@@ -105,15 +111,13 @@ function Emandate(props) {
             )
             .then(
               data =>{
-                // console.log(data)
+                
                 // setPaymentGatewayUrl(data)
-                window.location.href = data.RedirectUrl;
+                // window.location.href = data.RedirectUrl;
               }
             )
         }else{
-          console.log()
           setSpinnerOfPayment(false);
-          // localStorage.setItem("selectedPlan",JSON.stringify(planData))
           // document.getElementById("mandateRegForm").submit()
         }
       }      
@@ -207,7 +211,7 @@ const subscribe_msg_content = {
        
         <button className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(false)}}>  {formData.planType ==='trial' ? 'Subscribe' : ' Create E-Mandate'} </button>
 
-        {formData.planType !=='trial'? <button className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(true)}}>  {spinnerOfPayment ? <span class="spinner-border spinner-border-sm"></span> : <></> } Make Payment </button> : <></>}
+        {formData.planType !=='trial'? <button style={{display:"none"}} className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(true)}}>  {spinnerOfPayment ? <span class="spinner-border spinner-border-sm"></span> : <></> } Make Payment </button> : <></>}
     </form>
     </div>
    

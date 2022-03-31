@@ -445,11 +445,11 @@ const authSlice = createSlice({
   initialState: auth,
   extraReducers: {
     [register.fulfilled]: (state, action) => {
-      state.isLoggedIn = false;
+      
       state.isUserRegistered = true;
     },
     [register.rejected]: (state, action) => {
-      state.isLoggedIn = false;
+      
       state.isUserRegistered = false;
     },
     [successTxnSummary.fulfilled]: (state, action) => {
