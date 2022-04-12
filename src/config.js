@@ -28,3 +28,6 @@ const API_LIVE = {
 
 const API_URL = DEVELOPMENT_MODE ? API_TEST : API_LIVE
 export default API_URL;
+
+
+// COB PG credential

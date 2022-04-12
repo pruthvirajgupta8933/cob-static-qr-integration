@@ -9,7 +9,7 @@ import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { register } from "../../slices/auth";
+import { register, udpateRegistrationStatus } from "../../slices/auth";
 import { Link, useHistory, Redirect } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
 
@@ -68,7 +68,9 @@ function Registration() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-      localStorage.setItem("register", "");
+      return ()=>{
+        dispatch(udpateRegistrationStatus())
+      }
   }, []);
 
   const saved = localStorage.getItem("register");
@@ -121,6 +123,7 @@ function Registration() {
     setTimeout(() => {   
       // alert("aa4");
       history.push("/login-page");
+      
     }, 2000);
     }
     if(isUserRegistered === false) {
@@ -132,6 +135,11 @@ function Registration() {
 
       })
     }
+    return ()=>{
+
+      dispatch(udpateRegistrationStatus())
+
+    }   
   }, [isUserRegistered])
   
   

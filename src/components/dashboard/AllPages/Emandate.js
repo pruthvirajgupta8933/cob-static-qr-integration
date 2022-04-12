@@ -38,11 +38,12 @@ useEffect(() => {
     
     
     if(Object.values(details).length>0){
+        console.log("details",details)
         // console.log(details.mandateStartDate)
         const selectedPlan = JSON.parse(localStorage?.getItem("selectedPlan"));
         const postData = {
             clientCode:details.clientCode.toString(),
-            mandateRegistrationId:details.mandateRegistrationId +'22' ,
+            mandateRegistrationId:details.mandateRegistrationId,
             umrn:details.umrnNumber,
             paymentMode:details.authenticationMode,
             mandateBankName:details.bankName,

@@ -1,6 +1,10 @@
+import { CatchingPokemonSharp } from '@mui/icons-material';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import {useLocation} from "react-router-dom"
+import { UtcDateToIsoDate } from '../../../utilities/emandateDateFormat';
+
 
 
 
@@ -21,7 +25,7 @@ function PaymentResponse() {
     const clientCode = urlParam.get('clientCode');
     const [verifyClientCode, setVerifyClientCode] = useState(false)
 
-
+// console.log(clientMerchantDetailsList);
   
   useEffect(() => {
     if(clientCode !== clientMerchantDetailsList[0].clientCode){
@@ -30,14 +34,71 @@ function PaymentResponse() {
       console.log("match code")
       setVerifyClientCode(true)
     }
+
+    
+  }, [clientCode])
+
+  useEffect(() => {
+  
+    console.log("verifyClientCode",verifyClientCode)
+    if(verifyClientCode){
+   
+
+      const selectedPlan = JSON.parse(localStorage?.getItem("selectedPlan"));
+      const subscriptionData = JSON.parse(localStorage?.getItem("subscriptionData"));
+      var newArray = subscriptionData.filter( (el)=>
+      {
+        return el.applicationId ===selectedPlan.applicationId;
+      }
+    );
+  
+    var subcribePlan =  newArray[0].planMaster.filter((sp)=>{
+      return sp.planId===selectedPlan.planId
+    });
+  
+  
+    const {planPrice,planValidityDays} = subcribePlan[0];
+    const ed = new Date();
+    var mandateStartDate = '';
+    var mandateEndDate = ed.setDate(ed.getDate()+ planValidityDays);
+    mandateEndDate = new Date(mandateEndDate).toISOString();
+    mandateStartDate = new Date(ed).toISOString();
+      
+    
+      
+    const postData = {
+      clientCode:'70',
+      mandateRegistrationId: SabPaisaTxId,
+      umrn:"0",
+      paymentMode:payMode,
+      mandateBankName:"null",
+      mandateFrequency:"ADHO",
+      mandateStatus: spRespStatus.toLowerCase(),
+      purchasAmount: planPrice,
+      clientId:clientMerchantDetailsList[0].clientId.toString(),
+      clientName:clientMerchantDetailsList[0].clientName,
+      applicationId:selectedPlan.applicationId,
+      applicationName: selectedPlan.applicationName,
+      planId: selectedPlan.planId,
+      planName: selectedPlan.planName,
+      bankRef: "null",
+      clientTxnId : SabPaisaTxId,
+      mandateRegTime: UtcDateToIsoDate(transDate+ ' UTC'),
+      mandateStartTime : mandateStartDate,
+      mandateEndTime  : mandateEndDate,
+  };
+  console.log(postData)
+  axios.post("https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+    // console.log(response)
+}).catch(error=>console.log(error))
+
+  
+    }
   
 
-  }, [clientCode])
+  }, [verifyClientCode])
   
-  if(verifyClientCode){
-    const selectedPlan = JSON.parse(localStorage?.getItem("selectedPlan"));
-    
-  }
+  
   
   return (
     <div className="card" style={{"width": "100%"}}>
@@ -52,7 +113,6 @@ function PaymentResponse() {
             <li className="list-group-item">Payment Status : {spRespStatus}</li>
             <li className="list-group-item">Message : {reMsg}</li>
         </ul>
-       
         </div>
   )
 }

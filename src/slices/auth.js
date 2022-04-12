@@ -137,6 +137,13 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   
 });
 
+export const udpateRegistrationStatus = createAsyncThunk("auth/udpateRegistrationStatus", async () => {
+  console.log("comes to");
+  // update status
+  await AuthService.logout();
+  
+});
+
 // check and remove fn
 export const successTxnSummary = createAsyncThunk(
   "auth/successTxnSummary",
@@ -447,6 +454,14 @@ const authSlice = createSlice({
     [register.fulfilled]: (state, action) => {
       
       state.isUserRegistered = true;
+    },
+    [udpateRegistrationStatus.fulfilled]: (state, action) => {
+      
+      state.isUserRegistered = null;
+    },
+    [udpateRegistrationStatus.pending]: (state, action) => {
+      
+      state.isUserRegistered = null;
     },
     [register.rejected]: (state, action) => {
       

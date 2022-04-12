@@ -113,7 +113,7 @@ function Emandate(props) {
               data =>{
                 
                 // setPaymentGatewayUrl(data)
-                // window.location.href = data.RedirectUrl;
+                window.location.href = data.RedirectUrl;
               }
             )
         }else{
@@ -211,7 +211,7 @@ const subscribe_msg_content = {
        
         <button className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(false)}}>  {formData.planType ==='trial' ? 'Subscribe' : ' Create E-Mandate'} </button>
 
-        {formData.planType !=='trial'? <button style={{display:"none"}} className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(true)}}>  {spinnerOfPayment ? <span class="spinner-border spinner-border-sm"></span> : <></> } Make Payment </button> : <></>}
+        {formData.planType !=='trial'? <button  className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(true)}}>  {spinnerOfPayment ? <span class="spinner-border spinner-border-sm"></span> : <></> } Make Payment </button> : <></>}
     </form>
     </div>
    

@@ -34,3 +34,11 @@ export const ArrayToDate = (data) =>{
     dt = null
     return dt;
 }
+
+
+export const UtcDateToIsoDate = (date)=>{
+
+    const newDate = new Date(date);
+    return newDate.toISOString(newDate)
+
+}
