@@ -67,7 +67,7 @@ function PaymentResponse() {
     
       
     const postData = {
-      clientCode:'70',
+      clientCode:"70",
       mandateRegistrationId: SabPaisaTxId,
       umrn:"0",
       paymentMode:payMode,
