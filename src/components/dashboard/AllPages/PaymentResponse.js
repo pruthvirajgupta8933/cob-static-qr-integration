@@ -60,11 +60,12 @@ function PaymentResponse() {
     const {planPrice,planValidityDays} = subcribePlan[0];
     const ed = new Date();
     var mandateStartDate = '';
+    mandateStartDate = new Date(ed).toISOString();
     var mandateEndDate = ed.setDate(ed.getDate()+ planValidityDays);
     mandateEndDate = new Date(mandateEndDate).toISOString();
-    mandateStartDate = new Date(ed).toISOString();
-      
     
+      
+    console.log(mandateStartDate)
       
     const postData = {
       clientCode:"70",
@@ -74,7 +75,7 @@ function PaymentResponse() {
       mandateBankName:"null",
       mandateFrequency:"ADHO",
       mandateStatus: spRespStatus.toLowerCase(),
-      purchasAmount: planPrice,
+      purchasAmount: parseFloat(planPrice,2),
       clientId:clientMerchantDetailsList[0].clientId.toString(),
       clientName:clientMerchantDetailsList[0].clientName,
       applicationId:selectedPlan.applicationId,
