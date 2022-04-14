@@ -20,7 +20,6 @@ import Test from './components/Otherpages/Test';
 import InternetConnection from './_components/reuseable_components/InternetConnection';
 
 
-
 function AllRoutes(){
   
   
@@ -72,6 +71,7 @@ function AllRoutes(){
               <Route exact path="/test">
                 <Test />
               </Route>
+              
             </Switch>
           </div>
         // </Router>

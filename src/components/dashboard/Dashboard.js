@@ -21,6 +21,8 @@ import Emandate from './AllPages/Emandate';
 import ChangePassword from './AllPages/ChangePassword';
 import { loginRefferalSlice } from '../../slices/auth';
 import PaymentResponse from './AllPages/PaymentResponse';
+import KycForm from '../KYC/KycForm';
+import Test from '../Otherpages/Test';
 
 
 
@@ -105,6 +107,13 @@ function Dashboard() {
                 <Route exaxt path={`${path}/payment-response/`}>
                      <PaymentResponse />
                 </Route>
+                <Route exact path={`${path}/kyc/`}>
+                <KycForm />
+              </Route>
+               
+                <Route exact path={`${path}/test/`}>
+                <Test />
+              </Route>
                 </Switch>
         </section>
     )

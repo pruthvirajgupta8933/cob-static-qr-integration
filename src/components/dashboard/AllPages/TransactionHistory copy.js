@@ -152,9 +152,9 @@ const checkValidation = ()=>{
      setShowData(TxnListArrUpdated);
      SetTxnList(TxnListArrUpdated);
      setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())
-    //  if(TxnListArrUpdated.length){
-    //    isButtonClicked(false);
-    //  }
+     if(TxnListArrUpdated.length){
+       isButtonClicked(false);
+     }
 
   }, [dashboard])
   
@@ -260,6 +260,10 @@ const pages = _.range(1, pageCount + 1)
         bank_txn_id:item.bank_txn_id === null? "" : item.bank_txn_id 
         };
         
+        // var tempStr = JSON.stringify(allowDataToShow).replaceAll('null','"NA"');
+        // var data = JSON.parse(tempStr);
+      
+        // console.log("tempStr",tempStr);
     excelArr.push(Object.values(allowDataToShow));
   })
   // console.log("excelArr",excelArr)
@@ -275,9 +279,8 @@ const pages = _.range(1, pageCount + 1)
   var month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
   var day = lastThreeMonth.getUTCDate();
   var year = lastThreeMonth.getUTCFullYear();
+  
   const finalDate = year +'-'+month+'-'+day;
-
-
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">
@@ -297,6 +300,8 @@ const pages = _.range(1, pageCount + 1)
                     onChange={(e) => {
                       getInputValue("clientCode", e.target.value);
                     }}
+                  
+                    
                   >
                     {user.roleId===3 || user.roleId===13 ?
                     <option value="0">All</option>
@@ -378,8 +383,6 @@ const pages = _.range(1, pageCount + 1)
                         <button className="view_history topmarg" onClick={()=>exportToExcelFn()}>Export </button>
                     :  '' }
                   </div>
-
-
                   {  show ? 
                   <React.Fragment>
                   <div className="col-lg-4 mrg-btm- bgcolor">
@@ -396,23 +399,11 @@ const pages = _.range(1, pageCount + 1)
                   </select>
                 </div>                 
                   </React.Fragment> : <></> }
-         
-               
-             
-              </div>
-            </div>
-          </section>
 
-
-          <section className="" >
-          <div class="container-fluid  p-3 my-3 ">
-
-          {txnList.length>0 ? <h4>Total Record : {txnList.length} </h4> : <></>}
-              
-            <div class="scroll"  style={{"overflow": "auto"}}>
-            <table class="table table-bordered">
-              <thead>
-              {txnList.length>0 ?
+                  <div style={{overflow:"auto"}} > 
+                  <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables" >
+                    <tbody>
+                    {txnList.length>0 ?
                       <tr>
                             <th> S.No </th>
                             <th> Trans ID </th>
@@ -449,9 +440,9 @@ const pages = _.range(1, pageCount + 1)
                           </tr>:
                           <></>
                      }
-              </thead>
-              <tbody>
-              {txnList.length>0 && paginatedata.map((item,i)=>{return(
+                   
+                          {/* {console.log("filterList",filterList)} */}
+                          {txnList.length>0 && paginatedata.map((item,i)=>{return(
                             <tr>
                             <td>{i+1}</td>
                             <td>{item.txn_id}</td>
@@ -488,11 +479,12 @@ const pages = _.range(1, pageCount + 1)
                           </tr>
                         );
                       })}
-              </tbody>
-            </table>
-            </div>  
-            
-            <div>
+                  </tbody>
+                </table>
+                </div>
+                
+               
+                <div>
                {/* {console.log("show",show)} */}
                 {txnList.length>0  ? 
                     <nav aria-label="Page navigation example"  >
@@ -500,6 +492,9 @@ const pages = _.range(1, pageCount + 1)
       
                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
                     { 
+
+
+
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
                         <li className={
                           page === currentPage ? " page-item active" : "page-item"
@@ -515,29 +510,28 @@ const pages = _.range(1, pageCount + 1)
                       
                       ))
                     }
+
                 { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
                       Next</a> : <></> }
+                      
                     </ul>
                   </nav>
                   : <></> }
                   </div>
-
-                 
-                  <div className="container">
-                    
+                  {/* {console.log(filterList.length,txnList.length)} */}
                 {isLoadingTxnHistory ? 
                   <div className="col-lg-12 col-md-12 mrg-btm- bgcolor"><div className="text-center"><div className="spinner-border" role="status" style={{width: '3rem', height: '3rem'}}><span className="sr-only">Loading...</span></div></div></div> 
                   : 
                   buttonClicked && (showData.length <= 0 || txnList.length <= 0) ? 
                     <div className='showMsg'>No Data Found</div>
-                  :
-                    <div></div>
-                    }  
-                </div>
-          </div>
+                     :
+                      <div></div>
+                      }  
+                {/* { : <div></div>} */}
+              </div>
+            </div>
           </section>
         </div>
-
         <footer className="ant-layout-footer">
           <div className="gx-layout-footer-content">
             © 2021 Ippopay. All Rights Reserved.{" "}

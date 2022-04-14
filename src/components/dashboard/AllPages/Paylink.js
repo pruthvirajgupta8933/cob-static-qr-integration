@@ -64,15 +64,13 @@ function Paylink() {
                         <PayerDetails />)
                     || (tab === 2 &&
                         <PaymentLinkDetail />)                        
-                   
                     ||  (tab === 3 &&
                         <BulkPayer/>)
                     ||  (tab === 4 &&
                         <Reports/>)
                     ||
-                       <PayerDetails />
+                        <PayerDetails />
                     }
-                
               </div>
             </div></section>
         </div>
@@ -81,8 +79,6 @@ function Paylink() {
         </footer>
       </main>
     </section>
-   
-
   )
 }
 
