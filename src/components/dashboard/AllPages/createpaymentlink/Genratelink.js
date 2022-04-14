@@ -46,7 +46,7 @@ let history = useHistory();
   let clientMerchantDetailsList=[];
     let clientCode ='';
     if(user && user.clientMerchantDetailsList===null){
-      console.log("genratelink");  
+      // console.log("genratelink");  
       history.push('/dashboard/profile');
 
       }else{

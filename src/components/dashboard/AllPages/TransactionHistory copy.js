@@ -100,7 +100,7 @@ const checkValidation = ()=>{
       const date2 = new Date(toDate);
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-      console.log("days",diffDays);
+      // console.log("days",diffDays);
       if(diffDays < 0 || diffDays > 90 ){
         flag = false;
         alert("The date range should be under 3 months");

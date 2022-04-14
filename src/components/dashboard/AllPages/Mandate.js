@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 function Emandate(props) {
   
   const {user} = useSelector((state)=>state.auth);
-  console.log(user)
+  // console.log(user)
   const { clientId,clientName,clientCode,clientEmail,address } =user.clientMerchantDetailsList[0];
   const { register, handleSubmit } = useForm();
   const [formData, setFormData] = useState({});

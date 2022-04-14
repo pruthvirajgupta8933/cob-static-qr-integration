@@ -40,7 +40,7 @@ function PaymentResponse() {
 
   useEffect(() => {
   
-    console.log("verifyClientCode",verifyClientCode)
+    // console.log("verifyClientCode",verifyClientCode)
     if(verifyClientCode){
    
 

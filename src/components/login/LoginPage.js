@@ -58,7 +58,7 @@ function LoginPage(props) {
   if(userAlreadyLoggedIn && user?.loginStatus==='Activate'){
     // console.log(userAlreadyLoggedIn , isLoggedIn)
     // console.log("fn 2");
-    console.log("user2===",user)
+    // console.log("user2===",user)
     history.push("/dashboard")  
   }
 
@@ -135,7 +135,7 @@ const handleChangeForOtp = (otp) => {
 if (isLoggedIn) {
   // setOpen(false);
     // console.log('redirect','dashboard')
-    console.log("user1===",user);
+    // console.log("user1===",user);
     history.push("/dashboard");
 }
 // if (authen.isValidUser==="No"){
@@ -172,7 +172,7 @@ if (isLoggedIn) {
 useEffect(() => {
 
   if(isLoggedIn===false){ 
-    console.log("isLoggedIn--2",isLoggedIn)
+    // console.log("isLoggedIn--2",isLoggedIn)
     // console.log(user?.loginStatus)
     var loginMsg = "Login Unsuccessful";
     var extMsg = "";

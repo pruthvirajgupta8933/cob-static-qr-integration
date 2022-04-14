@@ -38,7 +38,7 @@ useEffect(() => {
     
     
     if(Object.values(details).length>0){
-        console.log("details",details)
+        // console.log("details",details)
         // console.log(details.mandateStartDate)
         const selectedPlan = JSON.parse(localStorage?.getItem("selectedPlan"));
         const postData = {
