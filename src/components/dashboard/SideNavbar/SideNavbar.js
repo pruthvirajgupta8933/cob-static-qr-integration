@@ -60,7 +60,7 @@ function SideNavbar() {
                       <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-calendar" aria-hidden="true" />   Transaction History </Link> 
                     </li>
 
-                    <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                    <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px',display:"none"}}>
                           <Link to={`${url}/kyc`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
                             &nbsp; Fill KYC Form</Link> 
                           </li>

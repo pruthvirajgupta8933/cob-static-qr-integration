@@ -96,7 +96,7 @@ function Emandate(props) {
                 "payerFirstName": firstName,
                 "payerLastName":lastName,
                 "payerContact":user.clientMobileNo,
-                "payerAddress":address,
+                "payerAddress":"Delhi",
                 "payerEmail":clientEmail,
                 "clientCode":clientCode,
                 "tnxAmt":parseInt(formData.mandateMaxAmount)
