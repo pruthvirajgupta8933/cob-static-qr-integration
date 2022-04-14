@@ -521,8 +521,6 @@ const pages = _.range(1, pageCount + 1)
                   </nav>
                   : <></> }
                   </div>
-
-                 
                   <div className="container">
                     
                 {isLoadingTxnHistory ? 

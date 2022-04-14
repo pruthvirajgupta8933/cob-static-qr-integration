@@ -260,10 +260,6 @@ const pages = _.range(1, pageCount + 1)
         bank_txn_id:item.bank_txn_id === null? "" : item.bank_txn_id 
         };
         
-        // var tempStr = JSON.stringify(allowDataToShow).replaceAll('null','"NA"');
-        // var data = JSON.parse(tempStr);
-      
-        // console.log("tempStr",tempStr);
     excelArr.push(Object.values(allowDataToShow));
   })
   // console.log("excelArr",excelArr)
@@ -279,8 +275,9 @@ const pages = _.range(1, pageCount + 1)
   var month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
   var day = lastThreeMonth.getUTCDate();
   var year = lastThreeMonth.getUTCFullYear();
-  
   const finalDate = year +'-'+month+'-'+day;
+
+  
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">
@@ -440,8 +437,6 @@ const pages = _.range(1, pageCount + 1)
                           </tr>:
                           <></>
                      }
-                   
-                          {/* {console.log("filterList",filterList)} */}
                           {txnList.length>0 && paginatedata.map((item,i)=>{return(
                             <tr>
                             <td>{i+1}</td>
