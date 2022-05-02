@@ -63,10 +63,11 @@ function TransactionEnquirey() {
     setFlag(flagMsg);   
     // console.log(errors.input);
    if(flagMsg===false){
-    const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
+    const response = await axios.get(`https://adminapi.sabpaisa.in/Enquiry/ViewTxn/${input}`)
     .then((response) => {
       console.warn(response);
-      setData(response.data);
+      setData(response.data[0]);
+
       setIsShow(true);
       setErrMessage('');
     })
@@ -83,7 +84,7 @@ function TransactionEnquirey() {
 
   
 
-
+  // console.log(data)
    const dateFormat = (timestamp) => {
 
 
@@ -110,7 +111,7 @@ if(timestamp==='' || timestamp===null) {
 
   const onClick=()=>{
 
-    var tableContents = document.getElementById("joshi").innerHTML;
+    var tableContents = document.getElementById("enquiry").innerHTML;
     var a = window.open('', '', 'height=900, width=900');
     a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
      a.document.write(tableContents);
@@ -163,31 +164,31 @@ if(timestamp==='' || timestamp===null) {
                     border={0}
                     width="100%"
                     className="tables"
-                    id="joshi"
+                    id="enquiry"
                   >
                     <tbody>
                       <tr>
                         <td>Txn Id:</td>
                         <td className="bold">
-                          <b>{data.txnId}</b>
+                          <b>{data.txn_id}</b>
                         </td>
                         <td>Payment Mode :</td>
                         <td className="bold">
-                          <b>{data.paymentMode}</b>
+                          <b>{data.payment_mode}</b>
                         </td>
-                        <td>Payee First Name :</td>
+                        <td>Payee Name :</td>
                         <td className="bold">
-                          <b>{data.payeeFirstName}</b>
+                          <b>{data.payee_name}</b>
                         </td>
                       </tr>
                       <tr>
                         <td>Payee Mobile:</td>
                         <td className="bold">
-                          <b>{data.payeeMob}</b>
+                          <b>{data.payee_mob}</b>
                         </td>
                         <td>Payee Email :</td>
                         <td className="bold">
-                          <b>{data.payeeEmail}</b>
+                          <b>{data.payee_email}</b>
                         </td>
                         <td>Status :</td>
                         <td className="bold">
@@ -197,43 +198,43 @@ if(timestamp==='' || timestamp===null) {
                       <tr>
                         <td>Bank Txn Id :</td>
                         <td className="bold">
-                          <b>{data.bankTxnId}</b>
+                          <b>{data.bank_txn_id}</b>
                         </td>
                         <td>Client Name :</td>
                         <td>
-                          <b>{data.clientName}</b>
+                          <b>{data.client_name}</b>
                         </td>
                         <td>Client Id : </td>
                         <td className="bold">
-                          <b>{data.clientId}</b>
+                          <b>{data.client_id}</b>
                         </td>
                       </tr>
                       <tr>
                         <td>Payee Amount :</td>
                         <td className="bold">
-                          <b>{data.payeeAmount}</b>
+                          <b>{data.payee_amount}</b>
                         </td>
                         <td>Paid Amount :</td>
                         <td className="bold">
-                          <b>{data.paidAmount}</b>
+                          <b>{data.paid_amount}</b>
                         </td>
                         <td>Trans Date :</td>
                         <td className="bold">
-                          <b>{dateFormat(data.transDate)}</b>
+                          <b>{dateFormat(data.trans_date)}</b>
                         </td>
                       </tr>
                       <tr>
                         <td>Trans Complete Date :</td>
                         <td className="bold">
-                          <b>{dateFormat(data.transCompleteDate)}</b>
+                          <b>{dateFormat(data.trans_complete_date)}</b>
                         </td>
                         <td> Client Code :</td>
                         <td className="bold">
-                          <b>{data.transactionCompositeKey.clientCode}</b>
+                          <b>{data.client_code}</b>
                         </td>
                         <td>Client Txn Id:</td>
                         <td className="bold">
-                          <b>{data.transactionCompositeKey.clientTxnId}</b>
+                          <b>{data.client_txn_Id}</b>
                         </td>
                       </tr>
                     </tbody>

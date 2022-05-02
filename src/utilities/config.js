@@ -22,3 +22,6 @@ const APIS_TEST = {
     // AUTH_LOGIN: "https://cobapi.sabpaisa.in/auth-service/",
     // CLIENT_SUBSCRIPTION_SERVICE: "https://cobapi.sabpaisa.in/client-subscription-service/",
 }
+
+
+export const TIMEOUT = 1200;  // 1200 seconds = 20 minutes 

@@ -1,111 +1,123 @@
 import React from 'react'
+import { Formik, Form } from "formik"
+import * as Yup from "yup"
+import FormikController from '../../_components/formik/FormikController'
+
+
 
 function BusinessDetails() {
+
+  
+  const choices = [
+    { key: "choice a", value: "choicea" },
+    { key: "choice b", value: "choiceb" },
+  ]
+
+  const initialValues = {
+    email: "",
+    description: "",
+    selectChoice: "",
+    radioChoice: "",
+    checkBoxChoice: "",
+  }
+  const validationSchema = Yup.object({
+    email: Yup.string().required("Required"),
+    description: Yup.string().required("Required"),
+    selectChoice: Yup.string().required("Required"),
+    radioChoice: Yup.string().required("Required"),
+    checkBoxChoice: Yup.array().required("Required"),
+  })
+
+  const onSubmit = values => console.log("Form data",values)
+
+
   return (
     <div className="col-md-12 col-md-offset-4">   
-    <form>
-    <div className="form-row">
-        <div className="form-group col-md-4">
-            <label htmlFor="inputPassword4">Business Name *</label>
-            <input type="password" className="form-control" id="inputPassword4" placeholder="Enter Your Business Name" />
-        </div>
+     <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={(onSubmit)}
+    >
+          {formik => (
+            <Form>
+                  <div className="form-row">
+                    <div className="form-group col-md-4">
+                      <FormikController
+                        control="input"
+                        type="text"
+                        label="Business Name *"
+                        name="business_name"
+                        placeholder="Enter Your Business Name"
+                        className="form-control"
+                      />
+                    </div>
 
-        <div className="form-group col-md-4">
-            <label htmlFor="inputPassword4">Company Logo *</label>
-            <input type="file" className="form-control" id="inputPassword4" placeholder="Enter Your Business Name" />
-        </div>
+                    <div className="form-group col-md-4">
+                    <FormikController
+                        control="input"
+                        type="file"
+                        label="Company Logo *"
+                        name="company_logo"
+                        className="form-control"
+                      />
+                    </div>
 
-        <div class="form-group col-md-4">
-        <label for="inputState">GSTIN *</label>
-        <select id="inputState" class="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
-        </select>
-        </div>
-    </div>
+                    <div class="form-group col-md-4">
+                      <FormikController
+                          control="select"                          
+                          label="GSTIN *"
+                          name="gstin"
+                          className="form-control"
+                          options={choices}
+                        />
+                    </div>
+                  </div>
 
-    
-    <div className="form-row">
-      <div className="form-group col-md-4">
-        <label htmlFor="inputEmail4">GST No *</label>
-        <input type="email" className="form-control" id="inputEmail4" placeholder="Enter GST No." />
-      </div>
-      
-       
-      <div className="form-group col-md-4">
-        <label htmlFor="inputEmail4">Business Pan *</label>
-        <input type="email" className="form-control" id="inputEmail4" placeholder="Business Pan " />
-      </div>
-      
-       
-      <div className="form-group col-md-4">
-        <label htmlFor="inputEmail4">Authorised Signatory PAN *</label>
-        <input type="email" className="form-control" id="inputEmail4" placeholder="Authorised Signatory PAN" />
-      </div>
-      
-       
 
-    </div>
+                  <div className="form-row">
+                    <div className="form-group col-md-4">
+                      <FormikController
+                        control="input"
+                        type="text"
+                        label="Business Pan *"
+                        name="business_pan"
+                        placeholder="Enter Business PAN"
+                        className="form-control"
+                      />
+                    </div>
 
-    
-    <div className="form-row">
-  
+                  
+                    <div className="form-group col-md-4">
+                      <FormikController
+                          control="input"
+                          type="text"
+                          label="Authorised Signatory PAN *"
+                          name="authorised_signatory_pan"
+                          placeholder="Enter Authorised Signatory PAN"
+                          className="form-control"
+                        />
+                    </div>
 
-      <div className="form-group col-md-3">
-        <label htmlFor="inputPassword4">PAN Owner's Name *</label>
-        <input type="password" className="form-control" id="inputPassword4" placeholder="PAN Owner's Name " />
-      </div>
+                    <div className="form-group col-md-4">
+                      <FormikController
+                          control="input"
+                          type="text"
+                          label="Enter GST No *"
+                          name="gst_number"
+                          placeholder="Enter GST Number"
+                          className="form-control"
+                        />
+                    </div>
 
-      <div className="form-group col-md-3">
-        <label htmlFor="inputPassword4">Pincode *</label>
-        <input type="password" className="form-control" id="inputPassword4" placeholder="PAN Owner's Name " />
-      </div>
+                  </div>
 
-      <div className="form-group col-md-3">
-        <label htmlFor="inputPassword4">City *</label>
-        <input type="password" className="form-control" id="inputPassword4" placeholder="PAN Owner's Name " />
-      </div>
+                  <button className="btn btn-primary" type="submit">Submit</button>
+                    
+            </Form>
+          )}
 
-      <div class="form-group col-md-3">
-        <label for="inputState">State *</label>
-        <select id="inputState" class="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
-        </select>
-        </div>
-    
-    </div>
-
-    
-    <div className="form-row">
-      <div className="form-group col-md-4">
-        <label htmlFor="inputPassword4">Registered Address *</label>
-        <input type="password" className="form-control" id="inputPassword4" placeholder="Password" />
-      </div>
-    </div>
-    <div className="form-row">
-  
-    <div class="form-group">
-        <div class="form-check">
-        <input class="form-check-input" type="checkbox" id="gridCheck" />
-        <label class="form-check-label" for="gridCheck">
-        Operational Address*
-        </label>
-        </div>
-        </div>
-     
-    </div>
-    <div className="form-row">
-  
-      <div className="form-group col-md-4">
-        <label htmlFor="inputPassword4">Same As Registered Address</label>
-        <input type="password" className="form-control" id="inputPassword4" placeholder="Password" />
-      </div>
-     
-    </div>
-
-    <button type="submit" className="btn btn-primary">Save</button>
-  </form>
+    </Formik>
+   
   </div>
   )
 }

@@ -138,7 +138,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 });
 
 export const udpateRegistrationStatus = createAsyncThunk("auth/udpateRegistrationStatus", async () => {
-  console.log("comes to");
+  // console.log("comes to");
   // update status
   await AuthService.logout();
   
