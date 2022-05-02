@@ -126,6 +126,7 @@ if(timestamp==='' || timestamp===null) {
     history.push('/dashboard/profile');
   } 
 
+  console.log("data",data);
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">
@@ -220,13 +221,13 @@ if(timestamp==='' || timestamp===null) {
                         </td>
                         <td>Trans Date :</td>
                         <td className="bold">
-                          <b>{dateFormat(data.trans_date)}</b>
+                          <b>{data.trans_date}</b>
                         </td>
                       </tr>
                       <tr>
                         <td>Trans Complete Date :</td>
                         <td className="bold">
-                          <b>{dateFormat(data.trans_complete_date)}</b>
+                          <b>{data.trans_complete_date}</b>
                         </td>
                         <td> Client Code :</td>
                         <td className="bold">
