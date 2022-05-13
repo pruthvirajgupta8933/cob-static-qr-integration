@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import { toast, Zoom } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import API_URL from '../../../../config';
 
 export const Edituser = (props) => {
     let history = useHistory();
@@ -69,7 +70,7 @@ export const Edituser = (props) => {
             transition: Zoom
 
         })
-        const res = await axios.put(` https://paybylink.sabpaisa.in/paymentlink/editCustomer/`, {
+        const res = await axios.put(API_URL.EDIT_CUSTOMER, {
             name: username,
             email: useremail,
             phone_number: userphone,
@@ -81,7 +82,7 @@ export const Edituser = (props) => {
         // console.log(res.data);
     };
     const getDrop = async (e) => {
-        await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes`)
+        await axios.get(API_URL.GET_CUSTOMER_TYPE)
             .then(res => {
                 setData(res.data);
 

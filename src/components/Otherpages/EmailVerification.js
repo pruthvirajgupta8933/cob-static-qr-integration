@@ -2,13 +2,14 @@ import React, { useEffect ,useState} from 'react';
 import { Link ,useParams} from 'react-router-dom';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
 import axios from 'axios';
+import API_URL from '../../config';
 
 
 const EmailVerification = () => {
   const {loginId} =  useParams();
   const [data,setData]=useState(false)
   const onSubmit=async()=>{
-     await axios.get(`https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/${loginId}`)
+     await axios.get(`${API_URL.EMAIL_VERIFY}${loginId}`)
     .then((response) => {
       setData(response);
     })

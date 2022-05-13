@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import sabpaisalogo from '../../assets/images/sabpaisalogo.png';
+import API_URL from '../../config';
 import validation from '../validation';
 
 
@@ -65,7 +66,8 @@ export const Recipts = () => {
 
     if(isValidInput===false){
       setIsLoading(true);
-      axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
+      
+      axios.get(`${API_URL.SEARCH_BY_TRANSID}${input}`)
       .then((response) => {
         // console.warn(response);
         setData(response.data);

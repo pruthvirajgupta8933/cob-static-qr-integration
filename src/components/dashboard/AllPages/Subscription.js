@@ -1,10 +1,11 @@
 import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
-import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashboardSlice";
+// import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashboardSlice";
 import { Link } from 'react-router-dom';
 import Emandate from '../AllPages/Mandate';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import API_URL from '../../../config';
 // import paymentGateWay from '../../../payment-gateway/'
 
 
@@ -53,7 +54,7 @@ const Subsciption = () => {
  const dispatch = useDispatch();
 
  const getSubscriptionService = async () => {  
-    await axios.get('https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan')  
+    await axios.get(API_URL.FETCH_APP_AND_PLAN)  
     .then(res => {  
       setSubscriptionData(res.data);
       localStorage.setItem("subscriptionData", JSON.stringify(res.data));
@@ -196,20 +197,20 @@ return (
               <div className="row">
               {/* {console.log(subscriptionPlanData.length)} */}
         {subscriptionPlanData.length <= 0 ? <h3>Loading...</h3> : subscriptionPlanData.map((s,i) => 
-        <div className="col-3" key={i}>
+        <div className="col-sm-12 col-md-4" key={i}>
         <div className="col mb-4">  
         <div >
           <div className="card" style={{ background: "aquamarine" }}>
-            <div className="card-body" style={{ height: "200px" }}>
-              <h5 className="card-title" style={{ fontWeight: "700", fontSize: "large" }}>{s.applicationName}</h5>
+            <div className="card-body" >
+              <h5 className="card-title font-weight-bold h3">{s.applicationName}</h5>
               <p className="card-text">{s.applicationDescription}</p>
-              <div>
+            </div>
+            <div class="card-footer">
                 <a href={s.applicationUrl} target="blank" className="btn btn-sm " style={{backgroundColor:"#ffc107"}} role="button" aria-pressed="true"> Read More</a>
                 <button type="button"
                 //  style={{ top: "200px" }}
                   className="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>Subscribe</button>
                 </div>
-            </div>
             <div className="container">
             </div>
             {/* <div>

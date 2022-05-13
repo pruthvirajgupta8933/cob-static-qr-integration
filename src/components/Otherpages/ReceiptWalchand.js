@@ -1,6 +1,7 @@
 import React, { useState,useRef,useEffect} from 'react';
 import axios from 'axios';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
+import API_URL from '../../config';
 
 
 const ReceiptWalchand = () => {
@@ -37,7 +38,8 @@ const ReceiptWalchand = () => {
     // console.log(data);
 
     const onSubmit = async (pnrId) => {
-          const response = await axios.get(`https://qwikforms.in/QwikForms/fetchDataForWACOE?PRNNum=${pnrId}`)
+        
+          const response = await axios.get(`${API_URL.FETCH_DATA_FOR_WACOE}?PRNNum=${pnrId}`)
             .then((response) => {
                 var resData = response.data
                 resData.map((dt,i)=>{
@@ -77,7 +79,7 @@ const ReceiptWalchand = () => {
 
     const transactionStatus = (cid, transId,index=0,dataLength=1) => {
            
-            return fetch(`https://adminapi.sabpaisa.in/Receipt/ReceiptForWalchand/${cid}/${transId}`, {
+            return fetch(`${API_URL.RECEIPT_FOR_WALCHAND}${cid}/${transId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -90,13 +92,6 @@ const ReceiptWalchand = () => {
 
     }
 
-    
-    // console.log(ref.current);
-    // const addItem = useCallback(() => {
-    //     setWalchandData(walchandData => [...walchandData, Math.random()]);
-    //   }, []);
-
-    // console.log("",walchandData);
 
 
     const dateFormat = (timestamp) => {

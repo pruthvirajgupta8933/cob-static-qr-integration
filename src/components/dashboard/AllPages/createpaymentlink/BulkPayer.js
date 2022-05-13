@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from 'react-toastify';
 import { Zoom } from "react-toastify";
+import API_URL from "../../../../config";
 
 const BulkPayer = () => {
   const { user } = useSelector((state) => state.auth);
@@ -27,7 +28,7 @@ const BulkPayer = () => {
 
 
     axios
-      .post("https://paybylink.sabpaisa.in/paymentlink/smartupload", formData, {
+      .post(API_URL.SMART_UPLOAD, formData, {
         headers: { ContentType: "application/json" },
       })
 

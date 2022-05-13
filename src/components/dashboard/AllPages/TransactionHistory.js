@@ -5,6 +5,7 @@ import axios from "axios"
 import _ from 'lodash';
 import { fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
 import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
+import API_URL from '../../../config';
 
 
 
@@ -61,7 +62,7 @@ function TransactionHistory() {
   }
 
   const getPaymentStatusList = async () => {  
-    await axios.get('https://adminapi.sabpaisa.in/REST/admin/getPaymentStatusList')  
+    await axios.get(API_URL.GET_PAYMENT_STATUS_LIST)  
     .then(res => {  
       // console.log(res)  
       SetPaymentStatusList(res.data);
@@ -72,7 +73,7 @@ function TransactionHistory() {
   }  
 
   const paymodeList = async () => {  
-    await axios.get('https://adminapi.sabpaisa.in/REST/paymode/paymodeList')  
+    await axios.get(API_URL.PAY_MODE_LIST)  
     .then(res => {  
       // console.log(res)
       SetPaymentModeList(res.data);  
@@ -100,7 +101,7 @@ const checkValidation = ()=>{
       const date2 = new Date(toDate);
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-      console.log("days",diffDays);
+      // console.log("days",diffDays);
       if(diffDays < 0 || diffDays > 90 ){
         flag = false;
         alert("The date range should be under 3 months");

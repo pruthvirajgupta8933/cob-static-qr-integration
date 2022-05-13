@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
 import { Zoom } from 'react-toastify';
+import API_URL from '../../../../config';
 
 const Reports = () => {
 
@@ -44,7 +45,7 @@ const Reports = () => {
 
   
   const getData = async (e) => { 
-    await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getReports/${clientCode}`)  
+    await axios.get(`${API_URL.GET_REPORTS}${clientCode}`)  
   .then(res => {     
     setData(res.data);  
     setPaginatedData(_(res.data).slice(0).take(pageSize).value())

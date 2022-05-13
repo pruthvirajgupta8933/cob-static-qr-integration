@@ -186,9 +186,9 @@ const PayerDetails = () => {
     };
 
     return (
-        <div className='col-lg-12'>
-            <Edituser items={editform} />
-            <Genratelink generatedata={genrateform} />
+        <div className="col-md-12 col-md-offset-4">
+            {/* <Edituser items={editform} />
+            <Genratelink generatedata={genrateform} /> */}
 
             {/* <button type="button" className='btn' className="btn btn-primary">Add Single Payer</button> */}
 
@@ -301,44 +301,35 @@ const PayerDetails = () => {
                     </div>
                 </div>
             </div>
+
             {/* end add form */}
 
             <div className="main_filter_area">
-             
-                <div className="filter_area" style={{margin:"14px"}}>
+                <div className="filter_area" >
                     <div>
                     <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
-                   
                     </div>
-                   
                     <div className="row">
-                        <div className="col-lg-6 ">
+                        <div className="col-lg-6 col-sm-12 col-md-6">
                             <label> &nbsp;</label>
-                            <input className='form-control marright' onChange={getSearchTerm} type="text" placeholder="Search Here" style={{width: "600px", marginRight: "5em"}} />
+                            <input className="form-control marright" onChange={getSearchTerm} type="text" placeholder="Search Here"  />
                         </div>
-                        <div className='col-lg-6'>
+                        <div className="col-lg-6 col-sm-12 col-md-6">
                             <label>Count per page</label>
-                            <select className='form-control'>
+                            <select className="form-control">
                                 <option value="10">10</option>
                                 <option value="20">25</option>
                                 <option value="30">50</option>
                                 <option value="60">100</option>
-                                <option value="70">200</option>
-                                <option value="70">300</option>
-                                <option value="70">400</option>
-                                <option value="70">500</option>
                             </select>
                         </div>
                     </div>
                     <label className=''>Total Records:{data.length}</label>
                 </div>
-                
             </div>
+            {/* <div className="table-responsive">
 
-
-            <div className="full-screen-scroller">
-
-                <table data-spy="scroll" border="0" data-offset="50" className="table table-striped" width="100%">
+                <table data-spy="scroll" border="0" data-offset="50" className="table table-striped">
                     <thead>
                         <tr>
                             <th scope='col'>Serial.No</th>
@@ -387,7 +378,7 @@ const PayerDetails = () => {
                         ))}
                     </tbody>
                 </table>
-            </div>
+            </div> */}
             <div>
             </div>
         </div>

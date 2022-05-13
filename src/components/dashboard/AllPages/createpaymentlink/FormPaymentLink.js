@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { Zoom } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import API_URL from "../../../../config";
 
 function FormPaymentLink() {
 
@@ -41,9 +42,7 @@ function FormPaymentLink() {
  
  const getDrop = async (e) => {
     await axios
-      .get(
-        `https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`
-      )
+      .get( `${API_URL.GET_CUSTOMERS}${clientCode}` )
       .then((res) => {
         setDrop(res.data);
       })
@@ -66,7 +65,7 @@ useEffect(() => {
     
 
      const response = await axios
-      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${e.Customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
+      .post(`${API_URL.ADD_LINK}?Customer_id=${e.Customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
       .then((response) => {
         toast.success(response.data.message,
         {

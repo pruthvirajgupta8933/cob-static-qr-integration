@@ -21,7 +21,7 @@ function SideNavbar() {
     const dispatch = useDispatch();
     const handle = ()=>{
       dispatch(logout());
-      
+
     }
 
     useEffect(() => {
@@ -100,12 +100,14 @@ function SideNavbar() {
                       </li>
                     </ul>
                   </li>
+
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-selected" role="menuitem">
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-haspopup="true" style={{paddingLeft: '24px'}} aria-owns="payment-tool$Menu"><span className="sidebar-menu-divider">Payment
                         Tools</span><i className="ant-menu-submenu-arrow" /></div>
                     <ul id="payment-tool$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu" style={{}}>
                     </ul>
                   </li>
+                  
                 </ul>
               </div>
               <div className="track-horizontal" style={{display: 'none', opacity: 0}}>

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import _ from 'lodash';
 import FormPaymentLink from "./FormPaymentLink";
+import API_URL from "../../../../config";
 
 
  
@@ -38,7 +39,7 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 
   const getDetails = async (e) => {
     await axios
-      .get(`https://paybylink.sabpaisa.in/paymentlink/getLinks/${clientCode}`)
+      .get(`${API_URL.GET_LINKS}${clientCode}`)
       .then((res) => {
         setData(res.data);
         setPaginatedData(_(res.data).slice(0).take(pageSize).value())

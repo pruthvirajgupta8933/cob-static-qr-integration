@@ -452,21 +452,22 @@ const authSlice = createSlice({
   initialState: auth,
   extraReducers: {
     [register.fulfilled]: (state, action) => {
-      
+      state.isLoggedIn = null
       state.isUserRegistered = true;
     },
+    [register.rejected]: (state, action) => {
+      state.isLoggedIn = null
+      state.isUserRegistered = false;
+    },
     [udpateRegistrationStatus.fulfilled]: (state, action) => {
-      
+      state.isLoggedIn = null
       state.isUserRegistered = null;
     },
     [udpateRegistrationStatus.pending]: (state, action) => {
-      
+      state.isLoggedIn = null
       state.isUserRegistered = null;
     },
-    [register.rejected]: (state, action) => {
-      
-      state.isUserRegistered = false;
-    },
+   
     [successTxnSummary.fulfilled]: (state, action) => {
       state.successTxnsumry = action.payload;
     },

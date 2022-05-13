@@ -16,7 +16,7 @@ import ClientList from './AllPages/ClientList';
 import Subsciption from './AllPages/Subscription';
 import PaymentLinkDetail from './AllPages/createpaymentlink/PaymentLinkDetail';
 import Paylink from './AllPages/Paylink';
-import {FormikApp} from './AllPages/ProfileTest'
+import { Profile } from './AllPages/Profile';
 import Emandate from './AllPages/Emandate';
 import ChangePassword from './AllPages/ChangePassword';
 import { loginRefferalSlice } from '../../slices/auth';
@@ -58,11 +58,6 @@ function Dashboard() {
      return <Redirect to="/login-page" />
   }
 
-
-
-
-
-  
     return (
         <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
                 <SideNavbar />
@@ -70,9 +65,8 @@ function Dashboard() {
                 <Route exact path={path}>
                     <Home/>
                 </Route>
-                <Route exact path={`${path}/profile`}>
-                     {/* <Profile/> we need to change after testing complete */} 
-                     <FormikApp />
+                <Route exact path={`${path}/profile`}> 
+                     <Profile />
                 </Route>
                 <Route exact path={`${path}/change-password`}>
                      <ChangePassword />
@@ -110,7 +104,6 @@ function Dashboard() {
                 <Route exact path={`${path}/kyc/`}>
                 <KycForm />
               </Route>
-               
                 <Route exact path={`${path}/test/`}>
                 <Test />
               </Route>

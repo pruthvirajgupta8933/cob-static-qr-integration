@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useHistory } from 'react-router-dom';
+import API_URL from '../../../../config';
+
 
 const initialValues = {
   Amount: "",
@@ -74,7 +76,7 @@ let history = useHistory();
     // console.log(linkdata);
     toast.info("Please Wait...")
     const response = await axios
-      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
+      .post(`${API_URL.ADD_LINK}?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
         Amount:e.Amount,
         Remarks:e.Remarks,
         Date:e.Date,

@@ -18,6 +18,7 @@ import ReceiptWalchand from './components/Otherpages/ReceiptWalchand';
 import EmandatePage from './components/Otherpages/EmandatePage';
 import Test from './components/Otherpages/Test';
 import InternetConnection from './_components/reuseable_components/InternetConnection';
+import MobileNavbar from './components/dashboard/SideNavbar/MobileNavbar';
 
 
 function AllRoutes(){
@@ -27,8 +28,8 @@ function AllRoutes(){
         // <Router >
           <div>
           <InternetConnection />
-            <Switch>
-             
+
+            <Switch>             
               <Route exact path="/login-page">
                 <LoginPage />
               </Route>
@@ -36,6 +37,7 @@ function AllRoutes(){
                 <Registration />
               </Route>
               <Route path="/dashboard">
+                <MobileNavbar/>
                 <Dashboard />
               </Route>
               <Route exact path="/commonpages">

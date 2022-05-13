@@ -6,22 +6,16 @@ import {useLocation} from "react-router-dom"
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { ArrayToDate } from '../../../utilities/emandateDateFormat';
-
+import API_URL from '../../../config';
 
 // import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
-
-
 const Emandate = () => {
     const {user} = useSelector((state)=>state.auth);
     const { clientId,clientName } =user.clientMerchantDetailsList[0];
     const search = useLocation().search;
     const mendateRegIdParam = new URLSearchParams(search).get('mendateRegId');
-
-
-  //  console.log(mendateRegIdParam);
-
-  const [details,setDetails] = useState([]);
-    const baseUrl = "https://subscription.sabpaisa.in/subscription/npci/registration/status/";
+    const [details,setDetails] = useState([]);
+    const baseUrl = API_URL.MANDATE_REGISTRATION_STATUS;
     const mandateRegId = mendateRegIdParam;
     const getManteDetails = (mandateRegId)=>{
     const mandateDetails = axios.get(baseUrl+mandateRegId).then((response)=>{
@@ -64,7 +58,7 @@ useEffect(() => {
         };
         // console.log(postData)
 
-        axios.post("https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+        axios.post(API_URL.SUBSCRIBE_FETCH_APP_AND_PLAN ,postData).then((response)=>{
             // console.log(response)
         }).catch(error=>console.log(error))
     }

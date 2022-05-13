@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
+import API_URL from '../../config';
 
 
 const ReceiptByEmail = () => {
@@ -40,8 +41,8 @@ const ReceiptByEmail = () => {
       setStudentEmailId(0);
     }
 
-
-    const response = await axios.get(`https://adminapi.sabpaisa.in/Receipt/ReceiptMB/${transactionId}/${studentEmailId}`)
+    
+    const response = await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentEmailId}`)
       .then((response) => {
         console.warn(response);
         setData(response.data);

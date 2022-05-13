@@ -23,15 +23,6 @@ const INITIAL_FORM_STATE = {
   selectStates:''
 };
 
-// const INITIAL_VALUES= {
-//   firstname: '',
-//   lastname: '',
-//   mobilenumber: '',
-//   emaill:'',
-//   passwordd: '',
-//   confirmpasswordd: ''
-// }
-
 const FORM_VALIDATION = Yup.object().shape({
   firstname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
   lastname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
@@ -50,7 +41,11 @@ const FORM_VALIDATION = Yup.object().shape({
 
 function Registration() {
   const history = useHistory()
-  const datar = useSelector(state=>state.auth);
+ 
+  const reduxState = useSelector(state=> state)
+  const {message, auth} = reduxState
+  const datar = auth;
+
   const {isUserRegistered} = datar;
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -126,10 +121,11 @@ function Registration() {
       
     }, 2000);
     }
+
     if(isUserRegistered === false) {
-      toast.error("Please Check Your Details, ", {
+      toast.error(message.message , {
           position: "top-right",
-          autoClose: 1000,
+          autoClose: 1500,
           limit: 5,
           transition: Zoom,
 

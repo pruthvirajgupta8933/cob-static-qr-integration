@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
-import validation from '../../validation';
-
+// import validation from '../../validation';
+import API_URL from '../../../config';
 
 
 function TransactionEnquirey() {
@@ -63,7 +63,7 @@ function TransactionEnquirey() {
     setFlag(flagMsg);   
     // console.log(errors.input);
    if(flagMsg===false){
-    const response = await axios.get(`https://adminapi.sabpaisa.in/Enquiry/ViewTxn/${input}`)
+    const response = await axios.get(API_URL.VIEW_TXN+`/${input}`)
     .then((response) => {
       console.warn(response);
       setData(response.data[0]);
@@ -126,7 +126,7 @@ if(timestamp==='' || timestamp===null) {
     history.push('/dashboard/profile');
   } 
 
-  console.log("data",data);
+  // console.log("data",data);
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">

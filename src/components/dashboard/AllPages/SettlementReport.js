@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import API_URL from '../../../config';
+
 
 function SettlementReport() {
     const initialState = {
@@ -39,9 +41,7 @@ function SettlementReport() {
     }
 
     const getFileName = async () => {
-      await axios(
-        `https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/${clientCode}`
-      )
+      await axios( `${API_URL.GET_FILE_NAME}${clientCode}` )
         .then((res) => {
           setData(res.data);
         })

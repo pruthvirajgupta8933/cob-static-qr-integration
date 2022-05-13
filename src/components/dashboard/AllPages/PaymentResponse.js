@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import {useLocation} from "react-router-dom"
+import API_URL from '../../../config';
 import { UtcDateToIsoDate } from '../../../utilities/emandateDateFormat';
 
 
@@ -89,7 +90,7 @@ function PaymentResponse() {
       mandateEndTime  : mandateEndDate,
   };
   console.log(postData)
-  axios.post("https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+  axios.post(API_URL.SUBSCRIBE_FETCH_APP_AND_PLAN,postData).then((response)=>{
     // console.log(response)
 }).catch(error=>console.log(error))
 

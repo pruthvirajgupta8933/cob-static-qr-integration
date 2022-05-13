@@ -3,11 +3,11 @@ import IdleTimer from 'react-idle-timer'
 import Modal from 'react-modal'
 import { useDispatch } from 'react-redux'
 import { logout } from '../slices/auth'
-import { TIMEOUT } from './config'
+import { TIMEOUT } from '../config'
 
 
 
-
+// console.log(TIMEOUT)
 Modal.setAppElement('#root')
 
 function IdleTimerContainer (props) {

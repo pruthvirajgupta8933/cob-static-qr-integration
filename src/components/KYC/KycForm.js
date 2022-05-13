@@ -31,7 +31,6 @@ function KycForm() {
    
 
   return (
-
     <section className="ant-layout">
     <div className="profileBarStatus">
     </div>
@@ -43,7 +42,7 @@ function KycForm() {
         <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
           <div className="container-fluid">
             <div className="row bgcolor">
-              <div className="col-lg-12 mrg-btm- bgcolor-">
+              <div className="col-lg-12 mb-4 bgcolor-">
               <ul className="nav nav-tabs">
                           <li className="nav-item">
                           <a className={"nav-link " +  (tab===1? "activepaylink":"inactive") } onClick={()=>SetTab(1)} >Contact Info</a>
@@ -66,8 +65,6 @@ function KycForm() {
                       </ul>
               </div>
 
-             
-           
               <section className="features8 cid-sg6XYTl25a flleft col-lg-12" id="features08-3-">
           <div className="container-fluid">
             <div className="row">
@@ -105,9 +102,6 @@ function KycForm() {
       </footer>
     </main>
   </section>
-
-
-
   )
 }
 

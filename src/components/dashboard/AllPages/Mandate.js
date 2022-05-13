@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import API_URL from "../../../config";
 // import { saveSubscribedPlan } from "../../../slices/dashboardSlice";
 
 function Emandate(props) {
@@ -45,7 +46,7 @@ function Emandate(props) {
       mandateStartTime : data.mandateStartDate,
       mandateEndTime  : data.mandateEndDate,
   };
-  axios.post("https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+  axios.post(API_URL.SUBSCRIBE_FETCH_APP_AND_PLAN ,postData).then((response)=>{
             // console.log(response);
             setDisplayMsg('block');
             setTimeout(function() {
@@ -77,18 +78,15 @@ function Emandate(props) {
         }else if(makePayment){
          
             setSpinnerOfPayment(true);
-                  // http://localhost:5000/api
-                  // https://node-server-test-2.herokuapp.com/api
                   var arrClientName = user.clientContactPersonName.split(" ")
                   var firstName = arrClientName[0];
                   var lastName = arrClientName[1];
                   if(typeof(arrClientName[1]) === 'undefined'){
                      lastName = "N/A";
                   }
-
-                  // var firstName = arrClientName[0];
-                  // var lastName = arrClientName[1];
-            fetch("https://cob-node-server.herokuapp.com/getPg/pg-url/",{
+              
+                  // Here add node server URL 
+            fetch(API_URL.NODE_PG_URL,{
               // Adding method type
               method: "POST",
               // Adding body or contents to send
@@ -118,7 +116,7 @@ function Emandate(props) {
             )
         }else{
           setSpinnerOfPayment(false);
-          // document.getElementById("mandateRegForm").submit()
+          document.getElementById("mandateRegForm").submit()
         }
       }      
     }else{
@@ -176,7 +174,7 @@ const subscribe_msg_content = {
     <form 
 		onSubmit={handleSubmit(onSubmit)}
 		id="mandateRegForm"
-		action="https://subscription.sabpaisa.in/subscription/mandateRegistration"
+		action = {API_URL.MANDATE_REGISTRATION}
 		method="POST"
 	>
 		<div style={{ display: "none" }}>
