@@ -481,6 +481,7 @@ const authSlice = createSlice({
       //code 
     },
     [login.fulfilled]: (state, action) => {
+
       let loggedInStatus = false;
       let isValidData ='';
 

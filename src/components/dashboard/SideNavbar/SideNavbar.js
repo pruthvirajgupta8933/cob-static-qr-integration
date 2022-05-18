@@ -41,7 +41,7 @@ function SideNavbar() {
           <div className="side_top_wrap"><span className="switch_live_label">Live</span>
             <div className="side_top_wrap_profile">
               <div className="side_top_wrap_toggle"><i className="fa fa-angle-down" /></div>
-              <p title="ABHISHEK VERMA" className="text-md text-ellipsis text-capitalize ng-binding">{clientContactPersonName}</p>
+              <p title="username" className="text-md text-ellipsis text-capitalize ng-binding">{clientContactPersonName}</p>
                {roleId!==3 && roleId!==13 ?  <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link> : <></> }
             </div>
           </div>

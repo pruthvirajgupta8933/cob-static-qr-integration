@@ -186,11 +186,12 @@ const PayerDetails = () => {
     };
 
     return (
-
-        <React.Fragment>
-
+        <div className='col-lg-12'>
             <Edituser items={editform} />
             <Genratelink generatedata={genrateform} />
+
+            {/* <button type="button" className='btn' className="btn btn-primary">Add Single Payer</button> */}
+
             <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
@@ -300,58 +301,58 @@ const PayerDetails = () => {
                     </div>
                 </div>
             </div>
+            {/* end add form */}
 
-        {/* filter area */}
-        <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
-                <div className="container-fluid">
-                <div className="row">    
-                    <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className="main_filter_area">
+             
+                <div className="filter_area" style={{margin:"14px"}}>
+                    <div>
                     <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
+                   
                     </div>
-                </div>
-
-                    <div className="row">  
-                    <div className="col-lg-4 mrg-btm- bgcolor">
-                    <label>Search</label>
-                        <input className='form-control' onChange={getSearchTerm} type="text" placeholder="Search Here" />
-                    </div>
-                    <div className="col-lg-4 mrg-btm- bgcolor">
-                        <label>Count Per Page</label>
-                        <select className='form-control'>
-                            <option value="10">10</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
-                    </div>
-                    
-                    </div>
+                   
                     <div className="row">
-                    <div className="col-lg-4 mrg-btm- bgcolor">
-                            <p>Total Records:{data.length}</p>
+                        <div className="col-lg-6 ">
+                            <label> &nbsp;</label>
+                            <input className='form-control marright' onChange={getSearchTerm} type="text" placeholder="Search Here" style={{width: "600px", marginRight: "5em"}} />
+                        </div>
+                        <div className='col-lg-6'>
+                            <label>Count per page</label>
+                            <select className='form-control'>
+                                <option value="10">10</option>
+                                <option value="20">25</option>
+                                <option value="30">50</option>
+                                <option value="60">100</option>
+                                <option value="70">200</option>
+                                <option value="70">300</option>
+                                <option value="70">400</option>
+                                <option value="70">500</option>
+                            </select>
+                        </div>
                     </div>
-                    </div>
-                    
+                    <label className=''>Total Records:{data.length}</label>
                 </div>
-            </section>
+                
+            </div>
 
-    <section className="">
-        <div className="container-fluid  p-3 my-3 ">
-            <div className="scroll" style={{overflow: "auto"}}>
-                <table className="table table-bordered">
+
+            <div className="full-screen-scroller">
+
+                <table data-spy="scroll" border="0" data-offset="50" className="table table-striped" width="100%">
                     <thead>
-                    <tr>
-                        <th scope='col'>Serial.No</th>
-                        <th scope='col'>Name of Payer</th>
-                        <th scope='col'>Mobile No.</th>
-                        <th scope='col'>Email ID</th>
-                        <th scope='col'>Payer  Category</th>
-                        <th scope='col'>Edit</th>
-                        <th scope='col'>Delete</th>
-                        <th scope='col'>Action</th>
-                    </tr>
+                        <tr>
+                            <th scope='col'>Serial.No</th>
+                            <th scope='col'>Name of Payer</th>
+                            <th scope='col'>Mobile No.</th>
+                            <th scope='col'>Email ID</th>
+                            <th scope='col'>Payer  Category</th>
+                            <th scope='col'>Edit</th>
+                            <th scope='col'>Delete</th>
+                            <th scope='col'>Action</th>
+                        </tr>
                     </thead>
-                        <tbody>
+                    <tbody>
+
                         {data.map((user, i) => (
                             <tr key={i}>
                                 <td>{i + 1}</td>
@@ -366,25 +367,34 @@ const PayerDetails = () => {
                                     <button className="btn btn-primary mt-7" onClick={() => deleteUser(user.id)}  >Delete</button>
                                 </td><td>
                                     <button onClick={(e) => generateli(user.id)}
+
                                         type="button"
                                         className="btn btn-primary"
                                         data-toggle="modal"
                                         data-target="#bhuvi"
                                         data-whatever="@getbootstrap"
-                                    >Genrate Link
+
+                                    >
+                                        Genrate Link
                                     </button>
                                     <div>
+
                                     </div>
+
+
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-    </div>
-    </section>
-</React.Fragment>
-)
+            <div>
+            </div>
+        </div>
+
+
+
+    )
 };
 
 export default PayerDetails;

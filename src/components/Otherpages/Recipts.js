@@ -29,7 +29,7 @@ export const Recipts = () => {
   const [show, setIsShow] = useState(false);
   const [errors, setErrors] =useState({input:true});
   const [errMessage, setErrMessage] = useState('');
-  const [data, setData] = useState(initialState)
+  const [data, setData] = useState([])
   
   const [isLoading, setIsLoading] = useState(false);
 
@@ -67,17 +67,22 @@ export const Recipts = () => {
     if(isValidInput===false){
       setIsLoading(true);
       
-      axios.get(`${API_URL.SEARCH_BY_TRANSID}${input}`)
+      axios.get(`${API_URL.VIEW_TXN}/${input}`)
       .then((response) => {
-        // console.warn(response);
-        setData(response.data);
-        setIsShow(true);
-        setErrMessage('');
-        setIsLoading(false);
+        
+        if(response.data?.length> 0){
+          setData(response.data[0]);
+          setIsShow(true);
+          setErrMessage('');
+          setIsLoading(false);
+        }else{
+          alert('No Data Found')
+        }
+       
       })
 
       .catch((e) => {
-        alert('Transaction Id required ')
+        alert('No Data Found')
         setIsLoading(false);
         console.log(e);
         setIsShow(false);
@@ -88,11 +93,6 @@ export const Recipts = () => {
   }
 }
   const dateFormat = (timestamp) => {
-
-
-    // var date = new Date(timestamp);
-    // console.log(date.getTime())
-    // return date.getTime();
 
     var date = new Date(timestamp);
     return (date.getDate() +
@@ -195,40 +195,39 @@ export const Recipts = () => {
 
                   <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
                     <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Payer Name</th>
-                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payeeFirstName}</td>
+                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payee_name}</td>
                   </tr>
 
                   <tr >
                     <th style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}} scope="row">Sabpaisa Transaction ID</th>
-                    <td style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}} className="text-wrap">{data.txnId}</td>
+                    <td style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}} className="text-wrap">{data.txn_id}</td>
                   </tr>
 
 
                   <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
                     <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Client Transaction ID</th>
-                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.transactionCompositeKey.clientTxnId}</td>
+                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.client_txn_Id}</td>
                   </tr>
 
 
                   <tr>
                     <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Client Name</th>
-                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.clientName}</td>
+                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.client_name}</td>
                   </tr>
-
 
                   <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
                     <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Payee Amount</th>
-                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payeeAmount}</td>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payee_amount}</td>
                   </tr>
 
                   <tr>
                     <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Payment Mode</th>
-                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.paymentMode}</td>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payment_mode}</td>
                   </tr>
 
                   <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
                     <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Transaction Date</th>
-                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{dateFormat(data.transDate)}</td>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{dateFormat(data.trans_date)}</td>
 
                   </tr>
                   <tr>

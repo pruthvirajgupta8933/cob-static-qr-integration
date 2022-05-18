@@ -57,37 +57,58 @@ const BulkPayer = () => {
   };
 
   return (
-    <div className="col-lg-12">
-      <form onSubmit={submitHandler}>
-      <div className="col-lg-4">
-        <h2>
-          Upload Bulk Payer
-        </h2>
-        <input
-          type="file"
-          className="form-control"
-          id="customFile"
-          onChange={changeHandler}
+
+    <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
+                <div className="container-fluid">
+                
+
+                    <div className="row">  
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <label>Upload Bulk Payer</label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="customFile"
+                      onChange={changeHandler}
+                      
+                    />
+                    </div>
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <button
+                      type="submit"
+                      className="btn btn-primary martop">
+                      Submit
+                    </button>
+                    </div>
+                    </div>
+                </div>
+            </section>
+
+    // <div className="col-lg-12">
+    //   <form onSubmit={submitHandler}>
+    //   <div className="col-lg-4">
+    //     <h2>
+    //       Upload Bulk Payer
+    //     </h2>
+    //     <input
+    //       type="file"
+    //       className="form-control"
+    //       id="customFile"
+    //       onChange={changeHandler}
           
-        />
-       </div>
-       <div className="col-lg-4">
-          <button
-            type="submit"
-            className="btn btn-primary martop"
+    //     />
+    //    </div>
+    //    <div className="col-lg-4">
+    //       <button
+    //         type="submit"
+    //         className="btn btn-primary martop"
             
-          >
-            Submit
-          </button>
-          </div>
-      </form>
-      {/* <Link
-        style={{ position: "absolute", top: 230, left: 1200 }}
-        value="Download"
-      >
-        Download Import Format Excel
-      </Link> */}
-    </div>
+    //       >
+    //         Submit
+    //       </button>
+    //       </div>
+    //   </form>
+    // </div>
   );
 };
 

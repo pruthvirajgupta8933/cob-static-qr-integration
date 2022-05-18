@@ -98,7 +98,7 @@ useEffect(() => {
     <div
     className="modal fade"
     id="exampleModal"
-    tabindex="-1"
+    tabIndex="-1"
     role="dialog"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
@@ -183,8 +183,8 @@ useEffect(() => {
                       placeholder="Enter Payment Amount in (INR)"
                     />
                      {<ErrorMessage name="Amount">
-                                                {msg => <p style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                                            </ErrorMessage>}
+                          {msg => <p style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                      </ErrorMessage>}
                         </div>
                         <div className="col-lg-6 padbottom">
                             <label >
@@ -198,8 +198,8 @@ useEffect(() => {
                       placeholder="Enter Purpose of Payement Collection"
                     />
                         {<ErrorMessage name="Remarks">
-                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
-                                            </ErrorMessage>}
+                              {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                          </ErrorMessage>}
                     
                         </div>
                         <div className="col-lg-6 padbottom">

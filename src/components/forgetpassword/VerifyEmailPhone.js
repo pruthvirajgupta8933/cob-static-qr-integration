@@ -64,21 +64,6 @@ const username = auth.forgotPassword.sendUserName.username;
 
     }
 
-  // useEffect(() => {
-  //   if(verify){
-  //     const sendOtp = {
-  //                         username: username,
-  //                         otp : emailotp
-  //                     }
-  //     axios.post("https://cobtest.sabpaisa.in/auth-service/account/verify-otp",sendOtp).then((response)=>{console.log(response)}).catch(error=>console.log(error))
-  //     // dispatch(verifyOtpOnForgotPwdSlice(sendOtp))
-  //   }
-  // }, [errors,verify])
-  
-      // console.log(verify);
-  
-  
-    
     
     
     const handleSubmit = (e) => {

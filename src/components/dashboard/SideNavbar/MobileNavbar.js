@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector} from 'react-redux';
 import { Link,
-    useParams,
-    useRouteMatch,useHistory ,Redirect} from 'react-router-dom'
+
+    useRouteMatch,useHistory } from 'react-router-dom'
 import {checkPermissionSlice, logout} from '../../../slices/auth'
 
 
@@ -41,7 +41,7 @@ function MobileNavbar() {
             <nav id="navbar1" className="mobile-nav-show navbar navbar-expand-md navbar-dark bg-dark fixed-top ">
                 <div className="container">
                 
-                <span className="navbar-brand">Sabpaisa</span>
+                <span className="navbar-brand">{clientContactPersonName}</span>
 
                 <button onClick={()=>{setToggleNav(!toggleNav)}} className={!toggleNav? "navbar-toggler toggler-example" : "navbar-toggler toggler-example collapsed" } type="button" data-toggle="collapse" data-target="" aria-controls="" aria-expanded={toggleNav} aria-label="Toggle navigation"><span className="dark-blue-text">
                 <i className="fa fa-bars fa-1x"></i></span>
@@ -50,12 +50,14 @@ function MobileNavbar() {
                         <Link to={`${url}`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-home" aria-hidden="true" /> Home</Link>
                     </li> */}
             <div className= { toggleNav ? "collapse navbar-collapse show" :  "collapse navbar-collapse"}  id="navbarSupportedContent1">
-            <ul class="navbar-nav mr-auto">
+            <ul className="navbar-nav mr-auto">
                     {roleId!==3 && roleId!==13 ?
                         <li className="nav-item"> 
                         <Link  to={`${url}/profile`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-user" aria-hidden="true" /> &nbsp;Profile</Link>
                     </li> : <></> }
-
+                    <li className="nav-item">
+                    <div class="clearfix">...</div> 
+                    </li> 
                     <li className="nav-item"> 
                         <Link to={`${url}`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-home" aria-hidden="true" /> &nbsp;Home</Link>
                     </li> 
@@ -92,6 +94,14 @@ function MobileNavbar() {
                     <li className="nav-item" onClick={()=>handle()}> 
                     <a href={void(0)} className="nav-link"><i className="fa fa-briefcase" aria-hidden="true" />
                         &nbsp; Logout</a>
+                    </li> 
+
+                    <li className="nav-item">
+                    <div class="clearfix">...</div> 
+                    </li> 
+                    
+                    <li className="nav-item">
+                    <a href="https://sabpaisa.in/support-contact-us/" target="_blank" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a>
                     </li> 
                     </ul>
                 </div>
