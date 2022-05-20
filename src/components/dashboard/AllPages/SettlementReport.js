@@ -101,15 +101,8 @@ function SettlementReport() {
     }, [selectedSubFolder, selectedFolder]);
 
 
-    // console.log("showFilterData",showFilterData);
     const getSearchTerm = (e) => {
       setSearchArea(e.target.value);
-
-    
-
- 
-      
-      // setSearchResults(newDataList);
     };
 
     return (
@@ -133,7 +126,7 @@ function SettlementReport() {
                     className="ant-input"
                     onChange={(e) => onChangeFolder(e.target.value)}
                   >
-                    <option value="">--Select Folder--</option>
+                    <option value="">Select Folder</option>
                     {folderArr &&
                       folderArr.map((folder,i) => <option value={folder} key={i}>{folder}</option>)}
                   </select>
@@ -228,87 +221,7 @@ function SettlementReport() {
         </footer>
       </main>
     </section>
-      {/* <section className="ant-layout">
-        <div className="profileBarStatus"></div>
-        <div className='col-lg-12 row- bgcolor'>
-        <h1>
-            Settlement Report
-          </h1>
-          <hr />
-          <label htmlFor="folder "></label>
-          <div className='col-lg-6'>
-            <select
-              value={selectedFolder}
-              className="ant-input"
-              onChange={(e) => onChangeFolder(e.target.value)}
-            >
-              <option value="">--Select Folder--</option>
-              {folderArr &&
-                folderArr.map((folder,i) => <option value={folder} key={i}>{folder}</option>)}
-            </select>
-        </div>
-        <div className='col-lg-6'>
-          <label htmlFor="folder"></label>
-          <select
-            onChange={(event) => SetSelectedSubFolder(event.target.value)}
-            value={selectedSubFolder}
-            className="ant-input"
-          >
-            <option value="">Select</option>
-            {subFolderArr &&
-              subFolderArr.map((subfolder,i) => (
-                <option value={subfolder} key={i}>{subfolder}</option>
-              ))}
-          </select>
-          </div>
-          <div className='col-lg-3 nopad'>
-                  <input
-                    type="text"
-                    value={searchArea}
-                    placeholder="Search Here"
-                    className="ant-input"
-                    onChange={getSearchTerm}
-                  />
-                  {showFilterData.filter}
-          </div>
-            <div className='col-lg-3 nopad'>
-            <select className="ant-input">
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="40">40</option>
-              <option value="50">50</option>
-            </select>
-        </div>
-          <table cellPadding="10" cellSpacing="0" width="100%" className="tables col-lg-12 mar-top">
-          <tbody>
-          <tr>
-              <th>S.No</th>
-              <th>Client Code</th>
-              <th>File Name</th>
-              <th>Created On</th>
-              <th>Action</th>
-            </tr>
-            
-            {searchFilterData.length > 0 ? (
-              searchFilterData.map((user, i) => (
-                <tr key={user.Id}>
-                  <td>{i + 1}</td>
-                  <td>{user.client_code} </td>
-                  <td>{user.file_name}</td>
-                  <td>{user.created_on}</td>
-                  <td>
-                    <a href={user.base_url_path}>Download</a>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <></>
-            )}
-          </tbody>
-          </table>
-        </div>
-      </section> */}
+   
       </>
     );
 }
