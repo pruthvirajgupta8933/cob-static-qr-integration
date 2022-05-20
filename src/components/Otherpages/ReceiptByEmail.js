@@ -165,7 +165,7 @@ const ReceiptByEmail = () => {
                           </tr>
                           <tr>
                             <th scope="row">Transaction Date</th>
-                            <td>{dateFormat(user.trans_date)}</td></tr>
+                            <td>{user.trans_date}</td></tr>
                           <tr>
                             <th scope="row">Payment Status</th>
                             <td>{user.status}</td></tr>

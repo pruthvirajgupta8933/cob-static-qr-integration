@@ -406,12 +406,12 @@ const pages = _.range(1, pageCount + 1)
 
 
           <section className="" >
-          <div className="container-fluid  p-3 my-3 ">
+          <div class="container-fluid  p-3 my-3 ">
 
           {txnList.length>0 ? <h4>Total Record : {txnList.length} </h4> : <></>}
               
-            <div className="scroll"  style={{"overflow": "auto"}}>
-            <table className="table table-bordered">
+            <div class="scroll"  style={{"overflow": "auto"}}>
+            <table class="table table-bordered">
               <thead>
               {txnList.length>0 ?
                       <tr>
@@ -505,6 +505,8 @@ const pages = _.range(1, pageCount + 1)
                         <li className={
                           page === currentPage ? " page-item active" : "page-item"
                         }> 
+                      {/* {console.log("currentPage",currentPage)} */}
+                      {/* {console.log("page",page)} */}
                             <a className={`page-link data_${i}`} >  
                               <p onClick={() => pagination(page)}>
                               {page}
@@ -520,7 +522,6 @@ const pages = _.range(1, pageCount + 1)
                   </nav>
                   : <></> }
                   </div>
-                  
                   <div className="container">
                     
                 {isLoadingTxnHistory ? 

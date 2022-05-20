@@ -1,11 +1,25 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import * as Yup from "yup"
+import { Formik, Form } from "formik"
 import sabpaisalogo from '../../assets/images/sabpaisalogo.png';
 import API_URL from '../../config';
-import validation from '../validation';
+import FormikController from '../../_components/formik/FormikController';
 
 
 export const Recipts = () => {
+
+
+  const initialValues = {
+    transaction_id: ""
+  }
+  const validationSchema = Yup.object({
+    transaction_id: Yup.number().required("Required")
+  })
+
+  // const onSubmit = values => console.log("Form data",values)
+
+  
   const initialState = {
     txnId: '',
     paymentMode: '',
@@ -39,35 +53,11 @@ export const Recipts = () => {
   };
 
 
-  const onSubmit =  (e,input) => {
-    e.preventDefault();
-    // setErrors(validation({ input }))
-    //console.log(errors, 'error')
+  const onSubmit =  (value) => {
 
-    // let errors = {}
-    var regex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-    var isValidInput = true
-    if(!input) {
-        // errors.input = 'ID is required'
-        // setErrors({input:'ID is required'})
-        isValidInput = 'ID is required';
-    }
-    else if(regex.test(input)) {
-      // setErrors({input:'Invalid Input'})
-        // errors.input = 'Invalid Input'
-        isValidInput = 'Invalid Input';
-    }
-   else{
-        // errors.input = false;
-      // setErrors({input:false})
-      isValidInput = false;
-        
-    }
-
-    if(isValidInput===false){
+    const transaction_id = value.transaction_id;
       setIsLoading(true);
-      
-      axios.get(`${API_URL.VIEW_TXN}/${input}`)
+      axios.get(`${API_URL.VIEW_TXN}/${transaction_id}`)
       .then((response) => {
         
         if(response.data?.length> 0){
@@ -76,11 +66,12 @@ export const Recipts = () => {
           setErrMessage('');
           setIsLoading(false);
         }else{
+          setIsShow(false)
+          setIsLoading(false);
           alert('No Data Found')
         }
        
       })
-
       .catch((e) => {
         alert('No Data Found')
         setIsLoading(false);
@@ -90,7 +81,7 @@ export const Recipts = () => {
 
       })
 
-  }
+  
 }
   const dateFormat = (timestamp) => {
 
@@ -105,7 +96,7 @@ export const Recipts = () => {
   }
   const onClick = () => {
 
-    var tableContents = document.getElementById("joshi").innerHTML;
+    var tableContents = document.getElementById("receipt_table").innerHTML;
     var a = window.open('', '', 'height=900, width=900');
     a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
     a.document.write(tableContents);
@@ -113,29 +104,6 @@ export const Recipts = () => {
 
     a.document.close();
     a.print();
-
-
-    // =========abhishek========================//
-    // var printWindow = window.open('', '', 'height=600,width=800');
-    // printWindow.document.write('<html><head><title>Print Receipt</title>');
-
-    // //Print the Table CSS.
-    // var table_style = document.getElementById("joshi").innerHTML;
-    // printWindow.document.write('<style type = "text/css">');
-    // printWindow.document.write(table_style);
-    // printWindow.document.write('</style>');
-    // printWindow.document.write('</head>');
-
-    //Print the DIV contents i.e. the HTML Table.
-    // printWindow.document.write('<body>');
-    // var divContents = document.getElementById("joshi").innerHTML;
-    // printWindow.document.write(divContents);
-    // printWindow.document.write('</body>');
-
-    // printWindow.document.write('</html>');
-    // printWindow.document.close();
-    // printWindow.print();
-
   }
 
   return (
@@ -148,41 +116,49 @@ export const Recipts = () => {
           <div className="card ">
             <div className="card-header text-center receipt-header">SABPAISA TRANSACTION RECEIPT</div>
             <div className="card-body">
-           <form action="#" onSubmit={()=>{console.log()}}>
-                      <div className="form-group">
-                          <label for="txn_id_input">Transcation ID :</label>
-                          <input type="text" className="ant-input" onChange={(e) => onValueChange(e)} placeholder="Enter Sabpaisa Transactions Id" id="txn_id_input"/>
-                          {errors.input && <h4 >{errors.input}</h4>}
-                      </div>
+            <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={(onSubmit)}
+                      >
+                  {formik => (
+                    <Form>
+                          <div className="form-row">
+                            <div className="form-group col-md-12 col-sm-12 col-lg-12">
+                              <FormikController
+                                  control="input"
+                                  type="text"
+                                  label="Transaction ID  *"
+                                  name="transaction_id"
+                                  placeholder="Enter Sabpaisa Transaction ID"
+                                  className="form-control"
+                                />
+                            </div>
+                          </div>
+                          <button className="btn receipt-button" type="submit">{isLoading ? "Loading...":"View"}</button>
+                    </Form>
+                    )}
+                </Formik>
 
-                      <div className="form-group">
-                      
-                      <button className="btn receipt-button"  onClick={(e) => onSubmit(e,input)} >{isLoading ? "Loading...":"View"}</button>
-                      
-                      {isLoading?
+                {isLoading?
                       <div className="spinner-border" role="status">
                       <span className="sr-only">Loading...</span>
                     </div> : <></> }
-                      </div>
-                    </form>
-            </div>
-          
-          </div>
+              </div>
+              </div>
         </div>
       </div>
     </div>
-        {/* ============================== */}
-     
-      {
-        show ?
+
+      {show ?
         
-        <div className="container-fluid">
+      <div className="container-fluid">
       <div className="row ">
         <div className="col-sm-6 mx-auto">
             <React.Fragment>
             <div className="card ">
             <div className="card-body">
-              <table className="table table-striped" id="joshi" style={{border: "1px solid #ccc", width: "100%", maxWidth: "100%",marginBottom: "1rem",backgroundColor: "initial",color: "#212529"}} >
+              <table className="table table-striped" id="receipt_table" style={{border: "1px solid #ccc", width: "100%", maxWidth: "100%",marginBottom: "1rem",backgroundColor: "initial",color: "#212529"}} >
                 <tbody>
                   <thead >
                     <tr >
@@ -246,9 +222,7 @@ export const Recipts = () => {
           </div>
           </div>
           </div>
-
-         
-          : ''}
+          : <></>}
         </div>
 
 

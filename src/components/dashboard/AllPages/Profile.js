@@ -97,16 +97,16 @@ export const Profile = () => {
     // form validation rules
 const validationSchema = Yup.object().shape({
     loginId:Yup.string().required("Required"),
-    clientName: Yup.string().required("Required"),
+    clientName: Yup.string().required("Required").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field "),
     phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
     email: Yup.string().email("Invalid email").required("Required"),
     ...(isCreateorUpdate && {clientCode: Yup.string().min(5,"Client Code should be 6 digit").max(6,"Client Code maximum limit is 6").required("Required").nullable()}),
     address: Yup.string().required("Required").nullable(),
-    accountHolderName: Yup.string().required("Required").nullable(),
-    bankName: Yup.string().required("Required").nullable(),
+    accountHolderName: Yup.string().required("Required").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").nullable(),
+    bankName: Yup.string().required("Required").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").nullable(),
     accountNumber: Yup.string().required("Required").nullable(),
-    ifscCode: Yup.string().required("Required").nullable(),
-    pan: Yup.string().nullable(),
+    ifscCode: Yup.string().required("Required").matches(/^[a-zA-Z0-9\s]+$/, "IFCS Code not valid ").nullable(),
+    pan: Yup.string().matches(/^[a-zA-Z0-9\s]+$/, "Pan Card not valid ").nullable(),
     clientAuthenticationType:Yup.string().required("Select Authentication Mode")
   });
    
