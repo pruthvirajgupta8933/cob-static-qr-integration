@@ -60,8 +60,6 @@ const BulkPayer = () => {
 
     <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
                 <div className="container-fluid">
-                
-
                     <div className="row">  
                     <div className="col-lg-4 mrg-btm- bgcolor">
                     <label>Upload Bulk Payer</label>
