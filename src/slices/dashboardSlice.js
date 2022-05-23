@@ -43,7 +43,7 @@ export const successTxnSummary = createAsyncThunk(
     async ({}, thunkAPI) => {
       try {
         const response = await Dashboardservice.subscriptionplan();
-        console.log("subscribe data", response );
+        // console.log("subscribe data", response );
         return response;
       } catch (error) {
         const message =
@@ -78,8 +78,8 @@ export const successTxnSummary = createAsyncThunk(
   );
 
   export const saveSubscribedPlan = createAsyncThunk("dashbaord/saveSubscribedPlan", async (data) => {
-    console.log("data",data);    
-    console.log("data");    
+    // console.log("data",data);    
+    // console.log("data");    
     
   });
 

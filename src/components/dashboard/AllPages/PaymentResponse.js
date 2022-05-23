@@ -30,7 +30,7 @@ function PaymentResponse() {
   
   useEffect(() => {
     if(clientCode !== clientMerchantDetailsList[0].clientCode){
-      console.log("Client details does not match!")
+      // console.log("Client details does not match!")
     }else{
       console.log("match code")
       setVerifyClientCode(true)
@@ -66,7 +66,7 @@ function PaymentResponse() {
     mandateEndDate = new Date(mandateEndDate).toISOString();
     
       
-    console.log(mandateStartDate)
+    // console.log(mandateStartDate)
       
     const postData = {
       clientCode:"70",
@@ -89,7 +89,7 @@ function PaymentResponse() {
       mandateStartTime : mandateStartDate,
       mandateEndTime  : mandateEndDate,
   };
-  console.log(postData)
+  // console.log(postData)
   axios.post(API_URL.SUBSCRIBE_FETCH_APP_AND_PLAN,postData).then((response)=>{
     // console.log(response)
 }).catch(error=>console.log(error))

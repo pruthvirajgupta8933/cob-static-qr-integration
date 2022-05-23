@@ -180,9 +180,9 @@ useEffect(() => {
     if(user?.loginStatus==="Pending" && isLoggedIn===false){
       extMsg = "User not verified";
       toast.error(loginMsg +", "+ extMsg);
-      console.log(1)
+      // console.log(1)
     }else{
-      console.log(2)
+      // console.log(2)
       toast.error(loginMsg);
     }
     setLoading(false);
