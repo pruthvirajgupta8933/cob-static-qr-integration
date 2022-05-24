@@ -49,6 +49,7 @@ const handleChange= (e)=>{
                   <div className='noOfRecord'>Number of Record: {clientListData.length}</div>
                 </div>
                 
+                <div style={{overflow:"scroll"}}>
                 <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables">
                   <tbody><tr>
                       <th>Client Code</th>
@@ -73,6 +74,7 @@ const handleChange= (e)=>{
                       })}
                   </tbody>
                   </table>
+                  </div>
               </div>
             </div></section>
         </div>

@@ -41,7 +41,7 @@ function MobileNavbar() {
             <nav id="navbar1" className="mobile-nav-show navbar navbar-expand-md navbar-dark bg-dark fixed-top ">
                 <div className="container">
                 
-                <span className="navbar-brand">{clientContactPersonName}</span>
+                <span className="navbar-brand">{ `${clientContactPersonName?.slice(0,8)} ...` }</span>
 
                 <button onClick={()=>{setToggleNav(!toggleNav)}} className={!toggleNav? "navbar-toggler toggler-example" : "navbar-toggler toggler-example collapsed" } type="button" data-toggle="collapse" data-target="" aria-controls="" aria-expanded={toggleNav} aria-label="Toggle navigation"><span className="dark-blue-text">
                 <i className="fa fa-bars fa-1x"></i></span>
@@ -51,10 +51,11 @@ function MobileNavbar() {
                     </li> */}
             <div className= { toggleNav ? "collapse navbar-collapse show" :  "collapse navbar-collapse"}  id="navbarSupportedContent1">
             <ul className="navbar-nav mr-auto">
-                    {roleId!==3 && roleId!==13 ?
-                        <li className="nav-item"> 
+                {roleId!==3 && roleId!==13 ?
+                    <li className="nav-item"> 
                         <Link  to={`${url}/profile`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-user" aria-hidden="true" /> &nbsp;Profile</Link>
                     </li> : <></> }
+
                     <li className="nav-item">
                     <div class="clearfix">...</div> 
                     </li> 
@@ -65,19 +66,26 @@ function MobileNavbar() {
                     <li className="nav-item"> 
                         <Link to={`${url}/transaction-history`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"> <i className="fa fa-calendar" aria-hidden="true" /> &nbsp;  Transaction History</Link>
                     </li> 
-                    
+
                     <li className="nav-item" style={{display:"none"}}> 
                         <Link  to={`${url}/kyc`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-address-book" aria-hidden="true" /> &nbsp; Fill KYC Form</Link>
                     </li> 
                     
+                    <li className="nav-item"> 
+                        <Link to={`${url}/transaction-enquiry`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"> <i className="fa fa-calendar" aria-hidden="true" /> &nbsp;  Transaction Enquiry </Link>
+                    </li>
+                    
 
                     {roleId===3 || roleId===13 ? <li className="nav-item"> 
-                        <Link  to={`${url}/transaction-enquiry`}  onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-university" aria-hidden="true" />  &nbsp;Client List </Link>
-                    </li>  :  <></> }
-
+                        <Link  to={`${url}/client-list`}  onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-university" aria-hidden="true" />  &nbsp;Client List </Link>
+                    </li>  : 
+                    
                     <li className="nav-item"> 
                         <Link to={`${url}/settlement-report`}  onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-bars" aria-hidden="true" /> &nbsp; Settlement Report</Link>
-                    </li> 
+                    </li>  }
+
+
+                   
 
                     {roleId!==3 && roleId!==13 ? 
                     <li className="nav-item"> 
