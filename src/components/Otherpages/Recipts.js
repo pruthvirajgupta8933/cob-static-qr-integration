@@ -203,7 +203,7 @@ export const Recipts = () => {
 
                   <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
                     <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Transaction Date</th>
-                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{dateFormat(data.trans_date)}</td>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.trans_date}</td>
 
                   </tr>
                   <tr>
