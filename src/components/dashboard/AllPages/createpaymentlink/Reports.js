@@ -14,24 +14,6 @@ const Reports = () => {
   const [currentPage, setCurrentPage] = useState(1);
  
 
-  // Parameters for Reports
-  // const initialState = {
-
-  //   client_transaction_id: null,
-  //   created_at: null,
-  //   customer_email: "",
-  //   customer_name: "",
-  //   customer_phone_number: "",
-  //   link_id: "",
-  //   link_valid_date: "",
-  //   numeric_link_id: "",
-  //   payment_collected: null,
-  //   pg_response: null,
-  //   pg_transaction_id: null,
-  //   transaction_status: null,
-  //   type: "",
-  // }
-
   const [data , setData] = useState([]);
   const [searchText, setSearchText] = useState('');
   const {user} = useSelector((state)=>state.auth);
@@ -162,7 +144,7 @@ const pages = _.range(1, pageCount + 1)
                       <th>Status</th>
                       <th>Client Txn Id</th>
                       <th>Link Id</th>
-                      <th>Link Valid Date</th>
+                      <th>Link Valid Date (YYYY-MM-DD)</th>
                       <th>Created At</th>
                       <th>Payment Collected</th>
                       <th>Numeric Link Id</th>
@@ -179,7 +161,7 @@ const pages = _.range(1, pageCount + 1)
                             <td>{report.transaction_status}</td>
                             <td>{report.client_transaction_id}</td>
                             <td>{report.link_id}</td>
-                            <td>{report.link_valid_date}</td>
+                            <td>{report?.link_valid_date?.replace("T"," ")}</td>
                             <td>{report.created_at}</td>
                             <td>{report.payment_collected}</td>
                             <td>{report.numeric_link_id}</td>

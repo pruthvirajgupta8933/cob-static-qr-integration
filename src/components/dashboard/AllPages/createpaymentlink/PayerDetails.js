@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link ,useHistory} from 'react-router-dom'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
+import _ from 'lodash';
 import * as Yup from 'yup'
 import Genratelink from './Genratelink';
 import { Edituser } from './Edituser';
@@ -45,6 +46,14 @@ const PayerDetails = () => {
     const [data, setData] = useState([])
     const [searchResults, setSearchResults] = useState([])
     const [customerType, setCustomerType] = useState([]);
+    const [pageSize, setPageSize] = useState(10);
+    const [paginatedata, setPaginatedData] = useState([])
+    const [currentPage, setCurrentPage] = useState(1);
+
+
+    
+const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
+
     let clientMerchantDetailsList=[]
     let clientCode =''
     if(user && user.clientMerchantDetailsList===null){
@@ -73,11 +82,10 @@ const PayerDetails = () => {
 
     const loadUser = async () => {
         const result = await axios.get(API_URL.GET_CUSTOMERS + clientCode)
-            // const data = result.data;
-            // console.log(result.data);  
             .then(res => {
                 // console.log(res)
                 setData(res.data);
+                setPaginatedData(_(res.data).slice(0).take(pageSize).value())
             })
             .catch(err => {
                 console.log(err)
@@ -89,9 +97,11 @@ const PayerDetails = () => {
     useEffect(() => {
         if (searchText.length > 0) {
             setData(data.filter((item) => 
-            
+            Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
+            setPaginatedData(data.filter((item) => 
             Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
         } else {
+            setPaginatedData(data)
             loadUser()
         }
     }, [searchText])
@@ -99,6 +109,24 @@ const PayerDetails = () => {
     const getSearchTerm = (e) => {
         setSearchText(e.target.value);
     };
+
+
+    useEffect(()=>{
+        setPaginatedData(_(data).slice(0).take(pageSize).value())
+      },[pageSize]);
+      
+      useEffect(() => {
+        // console.log("page chagne no")
+        const startIndex = (currentPage - 1) * pageSize;
+       const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+       setPaginatedData(paginatedPost);
+      
+      }, [currentPage])
+      
+
+      const pages = _.range(1, pageCount + 1)
+
+
 
     // ADD User Dropdown api integration
 
@@ -317,9 +345,9 @@ const PayerDetails = () => {
                     </div>
                     <div className="col-lg-4 mrg-btm- bgcolor">
                         <label>Count Per Page</label>
-                        <select className='form-control'>
+                        <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} className="form-control">
                             <option value="10">10</option>
-                            <option value="25">25</option>
+                            <option value="20">20</option>
                             <option value="50">50</option>
                             <option value="100">100</option>
                         </select>
@@ -352,7 +380,7 @@ const PayerDetails = () => {
                     </tr>
                     </thead>
                         <tbody>
-                        {data.map((user, i) => (
+                        {paginatedata.map((user, i) => (
                             <tr key={i}>
                                 <td>{i + 1}</td>
                                 <td>{user.name}</td>

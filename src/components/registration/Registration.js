@@ -27,7 +27,7 @@ const FORM_VALIDATION = Yup.object().shape({
   firstname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
   lastname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
   mobilenumber: Yup.string().required("Required").matches(phoneRegExp, 'Phone number is not valid')
-  .min(10, "Too short")
+  .min(10, "Phone number in not valid")
   .max(10, "too long"),
   emaill: Yup.string().email('Must be a valid email').max(255).required("Required"),
   passwordd: Yup.string().required("Password Required").matches(

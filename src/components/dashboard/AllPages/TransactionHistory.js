@@ -315,13 +315,14 @@ const pages = _.range(1, pageCount + 1)
                 <div className="col-lg-4 mrg-btm- bgcolor">
                   <label>From Date</label>
                   <input
-                  rel={finalDate}
+                    rel={finalDate}
                     type="date"
                     className="ant-input"
                     placeholder="From Date"
                     onChange={(e) => {
                       getInputValue("fromDate", e.target.value);
                     }}
+                    max= {new Date().toLocaleDateString('en-ca')}
                   />
                 </div>
                 <div className="col-lg-4 mrg-btm- bgcolor">
@@ -390,10 +391,11 @@ const pages = _.range(1, pageCount + 1)
                   <div className="col-lg-4 mrg-btm- bgcolor">
                   <label>Count per page</label>
                   <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
-                  <option value="10">10</option>
+                      <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="50">50</option>
                       <option value="100">100</option>
+                      <option value="500">500</option>
                   </select>
                 </div>                 
                   </React.Fragment> : <></> }

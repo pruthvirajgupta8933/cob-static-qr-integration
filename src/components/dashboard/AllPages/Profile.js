@@ -104,7 +104,7 @@ const validationSchema = Yup.object().shape({
     address: Yup.string().required("Required").nullable(),
     accountHolderName: Yup.string().required("Required").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").nullable(),
     bankName: Yup.string().required("Required").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").nullable(),
-    accountNumber: Yup.string().required("Required").nullable(),
+    accountNumber: Yup.string().required("Required").max(20, "Bank Account number length under 20 digits").nullable(),
     ifscCode: Yup.string().required("Required").matches(/^[a-zA-Z0-9\s]+$/, "IFCS Code not valid ").nullable(),
     pan: Yup.string().matches(/^[a-zA-Z0-9\s]+$/, "Pan Card not valid ").nullable(),
     clientAuthenticationType:Yup.string().required("Select Authentication Mode")
