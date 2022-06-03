@@ -8,15 +8,15 @@ function Select(props) {
     <div>
       <label htmlFor={name}>{label}</label>
       <Field as="select" id={name} name={name} {...rest}>
-        {options.map(option => {
+        {options.map((option,i) => {
           return (
-            <option key={option.value} value={option.value}>
-              {option.key}
+            <option key={i} value={option.key}>
+              {option.value}
             </option>
           )
         })}
       </Field>
-      <ErrorMessage name={name} />
+      <p className="text-danger"><ErrorMessage name={name} /></p>
     </div>
   )
 }

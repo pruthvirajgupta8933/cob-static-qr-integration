@@ -1,13 +1,14 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import * as Yup from "yup"
 import { Formik, Form } from "formik"
-import { useHistory, useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 // import validation from '../../validation';
 
 import API_URL from '../../../config';
 import FormikController from '../../../_components/formik/FormikController';
+import PrintDocument from '../../../_components/reuseable_components/PrintDocument';
 
 
 
@@ -26,6 +27,7 @@ function TransactionEnquirey() {
   const [show, setIsShow] = useState(false);
   const [errMessage , setErrMessage] = useState('');
   const [data,setData]= useState({})
+  const [printData,setPrintData]= useState([])
   const {auth} = useSelector((state)=>state);
   const {user} = auth;
 
@@ -59,15 +61,44 @@ function TransactionEnquirey() {
   }
 
 
-  const onClick=()=>{
+  useEffect(() => {
+    const tempArr = [
+      {key: 'Txn Id', value: data.txn_id},
+      {key: 'Payment Mode', value: data.payment_mode},
+      {key: 'Payee Name', value: data.payee_name},
+      {key: 'Payee Mobile', value: data.payee_mob},
+      {key: 'Payee Email', value: data.payee_email},
+      {key: 'Status ', value: data.status},
+      {key: 'Bank Txn Id', value: data.bank_txn_id},
+      {key: 'Client Name', value: data.client_name},
+      {key: 'Client Id', value: data.client_id},
+      {key: 'Payee Amount', value: data.payee_amount},
+      {key: 'Paid Amount', value: data.paid_amount},
+      {key: 'Trans Date', value: data.trans_date},
+      {key: 'Trans Complete Date', value: data.trans_complete_date},
+      {key: 'Client Code ', value: data.client_code},
+      {key: 'Client Txn Id', value: data.client_txn_Id},
+    ]
+   
+  
+    setPrintData(tempArr)
+  }, [data])
+  
 
-    var tableContents = document.getElementById("enquiry").innerHTML;
+
+  const  onClick = async ()=>{
+    console.log("click")
+    
+    
+
+    var tableContents = document.getElementById("print_docuement").innerHTML;
+    console.log(tableContents);
     var a = window.open('', '', 'height=900, width=900');
-    a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
-     a.document.write(tableContents);
-    a.document.write('</table>');
+    // a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
+    a.document.write(tableContents);
+    // a.document.write('</table>');
     a.document.close();
-            a.print();
+    await a.print();
   } 
 
   if(user && user.clientMerchantDetailsList===null && user.roleId!==3 && user.roleId!==13){
@@ -76,9 +107,9 @@ function TransactionEnquirey() {
     history.push('/dashboard/profile');
   } 
 
-  // console.log("data",data);
   return (
     <section className="ant-layout">
+   
       <div className="profileBarStatus">
         {/*
                     <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
@@ -110,16 +141,19 @@ function TransactionEnquirey() {
                                   className="form-control"
                                 />
 
-                                 <button className="btn receipt-button mt-2" type="submit">View</button>
+                                <button className="btn receipt-button mt-2" type="submit">View</button>
                             </div>
                           </div>
                          
                     </Form>
                     )}
                 </Formik>
-
+               
                 {show && data?.txn_id ? (
+                  
                   <div className="overflow-auto col-lg-12 ">
+                   {/* Print Data  */}
+                  <PrintDocument data={printData} />
                   <table
                     cellspacing={0}
                     cellPadding={10}

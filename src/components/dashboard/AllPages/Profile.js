@@ -8,13 +8,11 @@ import {createClientProfile, updateClientProfile} from '../../../slices/auth'
 
 import profileService from '../../../services/profile.service'
 import { toast, Zoom } from 'react-toastify';
-import { Link, Redirect } from 'react-router-dom';
-import { logout } from '../../../slices/auth';
-import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
-
+import { Link } from 'react-router-dom';
+// import { logout } from '../../../slices/auth';
 
 export const Profile = () => {
-  let { path, url } = useRouteMatch();
+  
     const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
     const {fetchDcBankList,fetchNbBankList,verifyClientCode, verifyIfcsCode} = profileService
     const dispatch= useDispatch();
@@ -51,11 +49,8 @@ export const Profile = () => {
     }
     
     
-    const [message,setMessage]  = useState('');
-  
     const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
     const [createProfileResponse , setCreateProfileResponse]  = useState('');
-    const [retrievedProfileResponse , setRetrivedProfileResponse] = useState('');
   
     const [authenticationMode,setAuthenticationMode] = useState(clientAuthenticationType);
     const [listOfNetBank,setListOfNetBank] = useState(initNBlist);
@@ -66,7 +61,6 @@ export const Profile = () => {
     const [userIfscCode,setUserIfscCOde]=useState(ifscCode)
     const [isClientCodeValid,setIsClientCodeValid]=useState(null)
     const [isIfcsValid,setIsIfscValid]=useState(true)
-    const [dataProfileResponse,setDataProfileResponse]=useState(null)
   
     useEffect(() => {
       setCreateProfileResponse(dashboard.createClientProfile)

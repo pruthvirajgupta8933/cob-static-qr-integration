@@ -136,7 +136,7 @@ const pages = _.range(1, pageCount + 1)
                 <table className="table table-bordered">
                     <thead>
                     <tr>
-                      <th>Serial No.</th>
+                      <th>S. No.</th>
                       <th>Name</th>
                       <th>Email</th>
                       <th >Mobile No.</th>
@@ -144,7 +144,7 @@ const pages = _.range(1, pageCount + 1)
                       <th>Status</th>
                       <th>Client Txn Id</th>
                       <th>Link Id</th>
-                      <th>Link Valid Date (YYYY-MM-DD)</th>
+                      <th colSpan={1}>Link_Valid_Date </th>
                       <th>Created At</th>
                       <th>Payment Collected</th>
                       <th>Numeric Link Id</th>

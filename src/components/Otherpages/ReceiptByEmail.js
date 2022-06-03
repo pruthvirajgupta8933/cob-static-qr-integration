@@ -20,7 +20,7 @@ const ReceiptByEmail = () => {
   const [transactionId, setTransactionId] = useState();
   const [studentEmailId, setStudentEmailId] = useState();
   const [show, setIsShow] = useState(false);
-  const [errMessage, setErrMessage] = useState('');
+  // const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState(initialState)
 
 
@@ -42,12 +42,12 @@ const ReceiptByEmail = () => {
     }
 
     
-    const response = await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentEmailId}`)
+    await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentEmailId}`)
       .then((response) => {
         console.warn(response);
         setData(response.data);
         setIsShow(true);
-        setErrMessage('');
+        // setErrMessage('');
       })
 
       .catch((e) => {
@@ -55,7 +55,7 @@ const ReceiptByEmail = () => {
 
         console.log(e);
         setIsShow(false);
-        setErrMessage('No Data Found');
+        // setErrMessage('No Data Found');
 
       })
 

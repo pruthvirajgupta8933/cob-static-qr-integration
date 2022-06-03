@@ -132,7 +132,7 @@ label {
 .displayErrorMessage{
   display: flex;
   padding: 10px;
-  justify-content: end;
+  justify-content: flex-end;
   position: absolute;
   z-index: 999;
   width: 100%;

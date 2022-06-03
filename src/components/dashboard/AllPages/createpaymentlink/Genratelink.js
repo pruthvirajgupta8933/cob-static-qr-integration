@@ -149,11 +149,9 @@ let history = useHistory();
             >
               {({ resetForm }) => (
                 <>
-
-
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
-              <b> Genrate Link</b>
+              <b> Generate Link</b>
             </h5>
             <button
               type="button"
@@ -166,25 +164,24 @@ let history = useHistory();
             </button>
 
             <div className="form-check">
-              <label
-                className="form-check-label"
+              
+
+            </div>
+          </div>
+          <div className="modal-body">
+          <label
+                className="form-check-label ml-3"
                 htmlFor="exampleCheck1"
-                style={{ marginLeft: 200, marginBottom: 20 }}
               >
                 <input
                   type="checkbox"
                   className="form-check-input"
                   onChange={handleCheck}
-
                   value={passwordcheck}
                   id="checkbox_pass"
                 />
-                is Password Protected
+                Password Protected Link
               </label>
-
-            </div>
-          </div>
-          <div className="modal-body">
                 <Form >
                   <br />
                   <div className="row">
@@ -224,7 +221,7 @@ let history = useHistory();
 
                   <div className="row">
                     <div className="col">
-                      <label>Link Valid To Date</label>
+                      <label>Link Validity</label>
                       <Field
                         type="date"
                         name="Date"

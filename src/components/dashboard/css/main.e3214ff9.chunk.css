@@ -793,7 +793,7 @@
     font-feature-settings: normal !important;
     font-variant: normal !important;
     text-transform: none !important;
-    speak: none;
+    /* speak: none; */
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -10277,9 +10277,7 @@ a.text-dark:hover {
     background-position: 20px 0;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 2dppx), only screen and (min-resolution: 192dpi) {
-    .iti-flag {
-        /* background-image: url(''); */
-    }
+
 }
 .iti-flag.np {
     background-color: initial;
@@ -24623,7 +24621,7 @@ textarea.ant-mentions {
     width: 6px;
     height: 1.5px;
     background: #fff;
-    background: #545454\9;
+    /* background: #545454\9; */
     background-image: none\9;
     border-radius: 2px;
     -webkit-transition: background 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), top 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);

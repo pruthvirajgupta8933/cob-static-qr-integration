@@ -26,7 +26,7 @@ function Checkboxes(props) {
           })
         }}
       </Field>
-      <ErrorMessage name={name} />
+      <p className="text-danger"> <ErrorMessage name={name} /></p>
     </div>
   )
 }

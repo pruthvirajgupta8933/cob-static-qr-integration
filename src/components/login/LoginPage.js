@@ -14,6 +14,7 @@ import {Link} from 'react-router-dom'
 import DisplayErrorMessage from '../../_components/reuseable_components/DisplayErrorMessage';
 import { toast } from 'react-toastify';
 import method from '../../utilities/encrypt-decrypt'
+import './Login.css';
 
 const INITIAL_FORM_STATE = {
   clientUserId:'',
@@ -332,6 +333,7 @@ const handleClickShowPassword = () => {
                                     </span>
                                   </div>
                                 </div>
+                                
                                 <div className="simform__actions">
                                   {/*<input className="sumbit" name="commit" type="sumbit" value="Log In" />*/}
                                   <button
@@ -342,22 +344,22 @@ const handleClickShowPassword = () => {
 
                                     {loading && (
                                       <span
-                                        className="spinner-border"
+                                        className="spinner-border "
                                         role="status"
                                       ></span>
                                     )}
                                     LogIn
                                   </button>
-                                  <span className="simform__actions-sidetext">
-                                    {/* <Link
+                                 {/* <span className="simform__actions-sidetext">
+                                     <Link
                                       className="special"
                                       role="link"
                                       to="#"
                                       // to="/forget"
                                     >
                                       Forgot your password? Click here
-                                    </Link> */}
-                                  </span>
+                                    </Link> 
+                                  </span>*/}
                                 </div>
                               </Form>
                             </Formik>

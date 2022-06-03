@@ -188,15 +188,11 @@ const pages = _.range(1, pageCount + 1)
                     </tbody>
                 </table>
           </div>
-         
-
           <div>
-               {/* {console.log("show",show)} */}
                 {paginatedata.length>0  ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
-      
-                   <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
                     { 
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
                         <li key={i} className={
@@ -216,7 +212,7 @@ const pages = _.range(1, pageCount + 1)
                     </ul>
                   </nav>
                   : <></> }
-                  </div>
+            </div>
           </React.Fragment>
           )}
     </div>

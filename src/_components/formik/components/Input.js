@@ -7,7 +7,7 @@ function Input(props) {
     <div>
       <label htmlFor={name}> {label}</label>
       <Field name={name} {...rest} />
-      <ErrorMessage  name={name} />
+      <p className="text-danger"> <ErrorMessage  name={name}/> </p>
     </div>
   )
 }

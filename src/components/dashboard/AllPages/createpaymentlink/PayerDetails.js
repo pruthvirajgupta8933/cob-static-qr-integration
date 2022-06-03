@@ -44,7 +44,6 @@ const PayerDetails = () => {
     // const [formData, setFormData] = useState(initialValues)
 
     const [data, setData] = useState([])
-    const [searchResults, setSearchResults] = useState([])
     const [customerType, setCustomerType] = useState([]);
     const [pageSize, setPageSize] = useState(10);
     const [paginatedata, setPaginatedData] = useState([])
@@ -213,6 +212,13 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
         }
     };
 
+
+
+    
+const pagination = (pageNo) => {
+    setCurrentPage(pageNo);
+  }
+
     return (
 
         <React.Fragment>
@@ -285,7 +291,6 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
                                                 <ErrorMessage name="email">
                                                     {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                                 </ErrorMessage>
-
                                                 <label htmlFor="recipient-name" className="col-form-label">Payer Category:</label>
                                                 <Field name="customer_type_id" className="selct" component="select">
                                                     <option
@@ -306,19 +311,13 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
                                                     Submit
                                                 </button>
                                                 <button
-                                                    type="button" disabled
-                                                    className="btn btn-danger">
-                                                    Update
-                                                </button>
-                                                <button
                                                     type="button"
-                                                    className="btn btn-primary"
+                                                    className="btn btn-danger text-white"
                                                     data-dismiss="modal"
                                                     onClick={resetForm}>
                                                     Cancel
                                                 </button>
                                             </div>
-
                                         </Form>
                                     </div>
                                 </>
@@ -365,18 +364,18 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 
     <section className="">
         <div className="container-fluid  p-3 my-3 ">
-            <div className="scroll" style={{overflow: "auto"}}>
+            <div className="scroll overflow-auto">
                 <table className="table table-bordered">
                     <thead>
                     <tr>
-                        <th scope='col'>Serial.No</th>
-                        <th scope='col'>Name of Payer</th>
-                        <th scope='col'>Mobile No.</th>
-                        <th scope='col'>Email ID</th>
-                        <th scope='col'>Payer  Category</th>
-                        <th scope='col'>Edit</th>
-                        <th scope='col'>Delete</th>
-                        <th scope='col'>Action</th>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Name of Payer</th>
+                        <th scope="col">Mobile No.</th>
+                        <th scope="col">Email ID</th>
+                        <th scope="col">Payer  Category</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                        <th scope="col">Action</th>
                     </tr>
                     </thead>
                         <tbody>
@@ -388,18 +387,19 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
                                 <td>{user.email}</td>
                                 <td>{user.customer_type}</td>
                                 <td>
-                                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)}    >Edit</button>
+                                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)} >Edit</button>
                                 </td>
                                 <td>
                                     <button className="btn btn-primary mt-7" onClick={() => deleteUser(user.id)}  >Delete</button>
-                                </td><td>
+                                </td>
+                                <td>
                                     <button onClick={(e) => generateli(user.id)}
                                         type="button"
                                         className="btn btn-primary"
                                         data-toggle="modal"
                                         data-target="#bhuvi"
                                         data-whatever="@getbootstrap"
-                                    >Genrate Link
+                                    >Generate Link
                                     </button>
                                     <div>
                                     </div>
@@ -409,6 +409,33 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
                     </tbody>
                 </table>
             </div>
+
+            <div>
+                {paginatedata.length>0  ? 
+                    <nav aria-label="Page navigation example"  >
+                    <ul className="pagination">
+                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                    { 
+                      pages.slice(currentPage-1,currentPage+6).map((page,i) => (
+                        <li key={i} className={
+                          page === currentPage ? " page-item active" : "page-item"
+                        }> 
+                            <a className={`page-link data_${i}`} >  
+                              <p onClick={() => pagination(page)}>
+                              {page}
+                              </p>
+                            </a>
+                        </li>
+                      
+                      ))
+                    }
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
+                      Next</a> : <></> }
+                    </ul>
+                  </nav>
+                  : <></> }
+            </div>
+
     </div>
     </section>
 </React.Fragment>

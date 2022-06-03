@@ -10,7 +10,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { register, udpateRegistrationStatus } from "../../slices/auth";
-import { Link, useHistory, Redirect } from "react-router-dom";
+import {  useHistory } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/

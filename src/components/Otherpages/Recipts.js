@@ -17,40 +17,14 @@ export const Recipts = () => {
     transaction_id: Yup.number().required("Required")
   })
 
-  // const onSubmit = values => console.log("Form data",values)
-
-  
-  const initialState = {
-    txnId: '',
-    paymentMode: '',
-    payeeFirstName: '',
-    payeeMob: '',
-    payeeEmail: '',
-    status: '',
-    bankTxnId: '',
-    clientName: '',
-    clientId: '',
-    payeeAmount: '',
-    paidAmount: '',
-    transDate: '',
-    transCompleteDate: '',
-    transactionCompositeKey: '',
-    clientCode: '',
-    clientTxnId: '',
-
-  }
-  const [input, setInput] = useState("");
   const [show, setIsShow] = useState(false);
-  const [errors, setErrors] =useState({input:true});
-  const [errMessage, setErrMessage] = useState('');
+  // const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState([])
   
   const [isLoading, setIsLoading] = useState(false);
 
 
-  const onValueChange = e => {
-    setInput(e.target.value);
-  };
+ 
 
 
   const onSubmit =  (value) => {
@@ -63,7 +37,7 @@ export const Recipts = () => {
         if(response.data?.length> 0){
           setData(response.data[0]);
           setIsShow(true);
-          setErrMessage('');
+          // setErrMessage('');
           setIsLoading(false);
         }else{
           setIsShow(false)
@@ -77,23 +51,13 @@ export const Recipts = () => {
         setIsLoading(false);
         console.log(e);
         setIsShow(false);
-        setErrMessage('No Data Found');
+        // setErrMessage('No Data Found');
 
       })
 
   
 }
-  const dateFormat = (timestamp) => {
 
-    var date = new Date(timestamp);
-    return (date.getDate() +
-      "/" + (date.getMonth() + 1) +
-      "/" + date.getFullYear() +
-      " " + date.getHours() +
-      ":" + date.getMinutes() +
-      ":" + date.getSeconds());
-
-  }
   const onClick = () => {
 
     var tableContents = document.getElementById("receipt_table").innerHTML;

@@ -399,9 +399,6 @@ const pages = _.range(1, pageCount + 1)
                   </select>
                 </div>                 
                   </React.Fragment> : <></> }
-         
-               
-             
               </div>
             </div>
           </section>
@@ -425,13 +422,13 @@ const pages = _.range(1, pageCount + 1)
                             <th> Trans Initiation Date </th>
                             <th> Trans Complete Date </th>
                             <th> Payment Status </th>
-                            <th> Payee First Name </th>
-                            <th> Payee Last Name </th>
-                            <th> Payee Mob number </th>
-                            <th> Payee Email </th>
+                            <th> Payer First Name </th>
+                            <th> Payer Last Name </th>
+                            <th> Payer Mob number </th>
+                            <th> Payer Email </th>
                             <th> Client Code </th>
                             <th> Payment Mode </th>
-                            <th> Payee Address </th>
+                            <th> Payer Address </th>
                             <th> Udf1 </th>
                             <th> Udf2 </th>
                             <th> Udf3 </th>
@@ -451,7 +448,7 @@ const pages = _.range(1, pageCount + 1)
                             <th> Bank Txn Id </th>
                           </tr>:
                           <></>
-                     }
+                      }
               </thead>
               <tbody>
               {txnList.length>0 && paginatedata.map((item,i)=>{return(
@@ -527,7 +524,7 @@ const pages = _.range(1, pageCount + 1)
                   <div className="container">
                     
                 {isLoadingTxnHistory ? 
-                  <div className="col-lg-12 col-md-12 mrg-btm- bgcolor"><div className="text-center"><div className="spinner-border" role="status" style={{width: '3rem', height: '3rem'}}><span className="sr-only">Loading...</span></div></div></div> 
+                  <div className="col-lg-12 col-md-12"><div className="text-center"><div className="spinner-border" role="status" ><span className="sr-only">Loading...</span></div></div></div> 
                   : 
                   buttonClicked && (showData.length <= 0 || txnList.length <= 0) ? 
                     <div className='showMsg'>No Data Found</div>
