@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import { useRouteMatch,useHistory} from 'react-router-dom'
+import { useHistory} from 'react-router-dom'
 import axios from "axios"
 import _ from 'lodash';
 import { fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
@@ -211,10 +211,10 @@ const pages = _.range(1, pageCount + 1)
 // console.log("pages",pages)
 
   var clientMerchantDetailsList =[];
-  if(user && user.clientMerchantDetailsList===null && user.roleId!==3 && user.roleId!==13){
+  if(user && user?.clientMerchantDetailsList===null && user?.roleId!==3 && user?.roleId!==13){
     history.push('/dashboard/profile');
   }else{
-    clientMerchantDetailsList = user.clientMerchantDetailsList;
+    clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
   
   

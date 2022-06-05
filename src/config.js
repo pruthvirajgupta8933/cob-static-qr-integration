@@ -64,6 +64,9 @@ const API_LIVE = {
     /** NODE SERVER URL */
     NODE_PG_URL : "https://cob-node-server.herokuapp.com/getPg/pg-url/",
     MANDATE_REGISTRATION : "https://subscription.sabpaisa.in/subscription/mandateRegistration",
+
+    /** ViewTxnEnqMultiParam **/
+    ViewTxnEnqMultiParam : "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam"
 }
 
 const API_URL =  API_LIVE

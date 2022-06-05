@@ -23,6 +23,7 @@ import { loginRefferalSlice } from '../../slices/auth';
 import PaymentResponse from './AllPages/PaymentResponse';
 import KycForm from '../KYC/KycForm';
 import Test from '../Otherpages/Test';
+import ViewTransactionWithFilter from './AllPages/ViewTransactionWithFilter';
 
 
 
@@ -106,6 +107,9 @@ function Dashboard() {
               </Route>
                 <Route exact path={`${path}/test/`}>
                 <Test />
+              </Route>
+              <Route exact path={`${path}/view-transaction-with-filter`} >
+                <ViewTransactionWithFilter />
               </Route>
                 </Switch>
         </section>

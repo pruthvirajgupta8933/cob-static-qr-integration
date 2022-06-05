@@ -19,6 +19,7 @@ import EmandatePage from './components/Otherpages/EmandatePage';
 import Test from './components/Otherpages/Test';
 import InternetConnection from './_components/reuseable_components/InternetConnection';
 import MobileNavbar from './components/dashboard/SideNavbar/MobileNavbar';
+import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetails';
 
 
 function AllRoutes(){
@@ -73,7 +74,10 @@ function AllRoutes(){
               <Route exact path="/test">
                 <Test />
               </Route>
-              
+              <Route exact path="/ViewTransactionDetails">
+                <ViewTransactionDetails />
+              </Route>
+
             </Switch>
           </div>
         // </Router>

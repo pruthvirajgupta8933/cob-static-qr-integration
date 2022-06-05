@@ -55,6 +55,7 @@ function SideNavbar() {
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open" role="menuitem">
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-owns="settlement$Menu" aria-haspopup="true" style={{paddingLeft: '24px'}}><span className="sidebar-menu-divider">Your
                         Business</span><i className="ant-menu-submenu-arrow" /></div>
+
                     <ul id="settlement$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu">
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-calendar" aria-hidden="true" />   Transaction History </Link> 
@@ -67,6 +68,10 @@ function SideNavbar() {
 
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                         <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
+                      </li>
+
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                        <Link to={`${url}/view-transaction-with-filter`} className='txt-white'><i className="fa fa-filter" aria-hidden="true" />   Transaction Enquiry With Filter </Link> 
                       </li>
                       {roleId===3 || roleId===13 ? <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link> 
