@@ -257,7 +257,7 @@ console.log("atLeastOneFieldReq",atLeastOneFieldReq)
                  )}
                 </Formik>
 
-                {paginatedata.length>0 ?
+                {txnList.length>0 ?
                 <div className="row">
                 <div className="col-lg-4 mrg-btm- bgcolor">
                     <label>Search Here</label>
