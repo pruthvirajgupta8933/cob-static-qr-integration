@@ -1,10 +1,8 @@
 import React,{useEffect, useState} from 'react'
-import { useDispatch,useSelector } from 'react-redux'
-import { useHistory} from 'react-router-dom'
 import axios from "axios"
 import _ from 'lodash';
-import { fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
-import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
+import invariant from 'invariant'
+
 import API_URL from '../../../config';
 
 import { Formik, Form } from "formik"
@@ -13,12 +11,29 @@ import FormikController from '../../../_components/formik/FormikController';
 import Regex,{RegexMsg} from '../../../_components/formik/ValidationRegex';
 
 
+
+
+  
+
 function TransactionEnqMultiParam() {
 
-    const dispatch = useDispatch();  
-  let history = useHistory();
+  const [txnList,SetTxnList] = useState([])
+  const [searchText,SetSearchText] = useState('')
+  const [show, setShow] = useState('')
+  const [pageSize, setPageSize] = useState(10);
+  const [paginatedata, setPaginatedData] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+  const [showData,setShowData] = useState([])
+  const [pageCount,setPageCount] = useState(0);
+  const [loading,setLoading] = useState(false);
+  const [error,setError] = useState(false);
+  const [atLeastOneFieldReq,setAtLeastOneFieldReq] = useState(false);
 
 
+
+  const [transactionId,setTransactionID] = useState("")
+
+  console.log(transactionId)
   const initialValues = {
     txnID : "",
     fname: "",
@@ -29,31 +44,16 @@ function TransactionEnqMultiParam() {
     pclientname: ""
   }
 
-  const validationSchema =  Yup.object({
-    txnID: Yup.number().required("Required"),
+  const validationSchema =  Yup.object().shape({
+    txnID: Yup.number().positive(),
     fname: Yup.string().matches(Regex.acceptAlphabet,RegexMsg.acceptAlphabet),
     lname: Yup.string().matches(Regex.acceptAlphabet,RegexMsg.acceptAlphabet),
-    pemail: Yup.string().matches(Regex.acceptAlphabet,RegexMsg.acceptAlphabet),
-    pmob: Yup.string().matches(Regex.acceptAlphabet,RegexMsg.acceptAlphabet),
-    pyeeamount: Yup.string().matches(Regex.acceptAlphabet,RegexMsg.acceptAlphabet),
-    pclientname: Yup.string().matches(Regex.acceptAlphabet,RegexMsg.acceptAlphabet)
+    pemail: Yup.string().email("Invalid email"),
+    pmob: Yup.string().matches(Regex.acceptNumber,RegexMsg.acceptNumber),
+    pyeeamount: Yup.number(),
+    pclientname: Yup.string().matches(Regex.acceptAlphaNumeric,RegexMsg.acceptAlphaNumeric)
   })
 
-
-
-
-  const [txnList,SetTxnList] = useState([])
-  const [searchText,SetSearchText] = useState('')
-  const [show, setShow] = useState('')
-  const [pageSize, setPageSize] = useState(10);
-  const [paginatedata, setPaginatedData] = useState([])
-  const [currentPage, setCurrentPage] = useState(1);
-  const [showData,setShowData] = useState([])
-  const [updateTxnList,setUpdateTxnList] = useState([])
-  const [pageCount,setPageCount] = useState(0);
-  const [buttonClicked,isButtonClicked] = useState(false);
-  const [loading,setLoading] = useState(false);
-  const [error,setError] = useState(false);
 
 
 
@@ -63,12 +63,6 @@ function TransactionEnqMultiParam() {
   }
 
 
-
-
-  const txnHistory =  () => {  
-   
-  } 
-  
 
   useEffect(()=>{
      setPaginatedData(_(showData).slice(0).take(pageSize).value())
@@ -112,30 +106,60 @@ const pages = _.range(1, pageCount + 1)
 
 
 const onSubmit = (value)=>{
-    setLoading(true)
-    const URL = `${API_URL.ViewTxnEnqMultiParam}/${value.txnID}/${value.fname ==="" ? "ALL" : value.fname }/${value.lname ==="" ? "ALL" : value.lname }/${value.pemail===""?"ALL":value.pemail}/${value.pmob ==="" ? "ALL" : value.pmob }/${value.pyeeamount ==="" ? "ALL" : value.pyeeamount }/${value.pclientname ==="" ? "ALL" : value.pclientname }`;
-    
-    axios.get(URL)
-    .then(res=>{
-        setShowData(res.data)
-        SetTxnList(res.data)
-        setPaginatedData(_(res.data).slice(0).take(pageSize).value())
-        setLoading(false);
-        if(res.data.length<=0){
-            setError(true)
-        }
-        
-    }).catch(
-        err=>{console.log(err)
-            setShowData([])
-            SetTxnList([])
-            setPaginatedData([])
+    console.log("value",value);
+    let flag;
+    if( value.txnID ===""  &&  
+        value.fname ===""  && 
+        value.lname ===""  && 
+        value.pemail ==="" && 
+        value.pmob === ""  &&
+        value.pyeeamount ==="" && 
+        value.pclientname ==="" ){
+          flag = 1    
+            setAtLeastOneFieldReq(true)
+    }else{
+         flag = 0
+            setAtLeastOneFieldReq(false)
+    }
+  
+    if(flag===0){
+        setLoading(true)
+        const URL = `${API_URL.ViewTxnEnqMultiParam}/${value.txnID ==="" ? "ALL" : value.txnID}/${value.fname ==="" ? "ALL" : value.fname }/${value.lname ==="" ? "ALL" : value.lname }/${value.pemail===""?"ALL":value.pemail}/${value.pmob ==="" ? "ALL" : value.pmob }/${value.pyeeamount ==="" ? "ALL" : value.pyeeamount }/${value.pclientname ==="" ? "ALL" : value.pclientname }`;
+        axios.get(URL)
+        .then(res=>{
+            setShowData(res.data)
+            SetTxnList(res.data)
+            setPaginatedData(_(res.data).slice(0).take(pageSize).value())
             setLoading(false);
-            setError(true)
-        }
-    )
+            if(res.data.length<=0){
+                setError(true)
+            }
+            
+        }).catch(
+            err=>{console.log(err)
+                setShowData([])
+                SetTxnList([])
+                setPaginatedData([])
+                setLoading(false);
+                setError(true)
+            }
+        )
+    } 
+
+  
 
 }
+
+useEffect(() => {
+    
+console.log("atLeastOneFieldReq",atLeastOneFieldReq)
+//   return () => {
+//     second
+//   }
+}, [atLeastOneFieldReq])
+
+
+
 
   return (
     
@@ -148,6 +172,11 @@ const onSubmit = (value)=>{
           </div>
           <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
             <div className="container-fluid">
+            <div className="row">
+            <div className="col-lg-12">
+                {atLeastOneFieldReq ? <h4 className="text-danger">At Least One Field Required</h4> : <></>}
+            </div>
+            </div>
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -205,7 +234,7 @@ const onSubmit = (value)=>{
                             <FormikController
                                 control="input"
                                 type="text"
-                                label="Payee Amount"
+                                label="Payer Amount"
                                 name="pyeeamount"
                                 className="ant-input"
                             />
@@ -266,8 +295,8 @@ const onSubmit = (value)=>{
                             <th> S.No </th>
                             <th> Trans ID </th>
                             <th> Client Trans ID </th>
-                            <th>Payee Amount </th>
-                            <th>Paid Amount </th>
+                            <th> Payer Amount </th>
+                            <th> Paid Amount </th>
                             <th> Trans Initiation Date </th>
                             <th> Trans Complete Date </th>
                             <th> Payment Status </th>
