@@ -5742,13 +5742,6 @@
     "has" "^1.0.3"
     "side-channel" "^1.0.4"
 
-"invariant@^2.2.4":
-  "integrity" "sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA=="
-  "resolved" "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
-  "version" "2.2.4"
-  dependencies:
-    "loose-envify" "^1.0.0"
-
 "ip@^1.1.0":
   "integrity" "sha1-vd7XARQpCCjAoDnnLvJfWq7ENUo="
   "resolved" "https://registry.npmjs.org/ip/-/ip-1.1.5.tgz"
