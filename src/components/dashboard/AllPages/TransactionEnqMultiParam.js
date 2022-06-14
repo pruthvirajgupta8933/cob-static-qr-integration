@@ -44,7 +44,7 @@ function TransactionEnqMultiParam() {
 
   const validationSchema =  Yup.object().shape({
     spTxnID: Yup.number().positive(),
-    clientTxnID: Yup.number().positive(),
+    clientTxnID: Yup.string(),
     pemail: Yup.string().email("Invalid email"),
     pmob: Yup.string().matches(Regex.acceptNumber,RegexMsg.acceptNumber)
   })
