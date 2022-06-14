@@ -1,11 +1,12 @@
 import React from 'react'
+import DropDownCountPerPage from '../../_components/reuseable_components/DropDownCountPerPage'
 
 function Test() {
 
   return (
     
 <div className="container">
-
+<DropDownCountPerPage />
 <h2>Bordered Table</h2>
 <p>The .table-bordered class adds borders to a table:</p>    
 <div className="scroll" style={{"overflow": "auto"}}>

@@ -39,7 +39,7 @@ function BusinessOverview() {
     {formik => (
             <Form>
             <div className="form-row">
-              <div class="form-group col-md-4">
+              <div className="form-group col-md-4">
               <FormikController
                   control="select"
                   label="Business Type* "
@@ -49,7 +49,7 @@ function BusinessOverview() {
                 />
               </div>
 
-              <div class="form-group col-md-4">
+              <div className="form-group col-md-4">
               <FormikController
                   control="select"
                   label="Business Category *"
@@ -84,7 +84,7 @@ function BusinessOverview() {
                       />
             </div>
             
-              <div class="form-group col-md-4">
+              <div className="form-group col-md-4">
               <FormikController
                   control="select"
                   label="Do you have you own ERP *"
@@ -94,7 +94,7 @@ function BusinessOverview() {
                 />
               </div>
             
-              <div class="form-group col-md-4">
+              <div className="form-group col-md-4">
               <FormikController
                   control="select"
                   label="Platform *"
@@ -108,7 +108,7 @@ function BusinessOverview() {
 
           
           <div className="form-row">
-          <div class="form-group col-md-4">
+          <div className="form-group col-md-4">
               <FormikController
                   control="select"
                   label="Website/App url *"
@@ -129,7 +129,7 @@ function BusinessOverview() {
                       />
             </div>
 
-            <div class="form-group col-md-4">
+            <div className="form-group col-md-4">
             <FormikController
                   control="select"
                   label="Type Of Collection *"
@@ -142,7 +142,7 @@ function BusinessOverview() {
 
           
           <div className="form-row">
-          <div class="form-group col-md-4">
+          <div className="form-group col-md-4">
           <FormikController
                   control="select"
                   label="Collection Frequency *"
@@ -174,7 +174,7 @@ function BusinessOverview() {
           </div>
 
           <div className="form-row">
-            <div class="form-group col-md-4">
+            <div className="form-group col-md-4">
             <FormikController
                   control="select"
                   label="Do you need SabPaisa to built your form *"

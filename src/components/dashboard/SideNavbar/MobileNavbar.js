@@ -57,7 +57,7 @@ function MobileNavbar() {
                     </li> : <></> }
 
                     <li className="nav-item">
-                    <div class="clearfix">...</div> 
+                    <div className="clearfix">...</div> 
                     </li> 
                     <li className="nav-item"> 
                         <Link to={`${url}`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-home" aria-hidden="true" /> &nbsp;Home</Link>
@@ -108,7 +108,7 @@ function MobileNavbar() {
                     </li> 
 
                     <li className="nav-item">
-                    <div class="clearfix">...</div> 
+                    <div className="clearfix">...</div> 
                     </li> 
                     
                     <li className="nav-item">

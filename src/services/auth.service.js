@@ -1,10 +1,10 @@
 import axios from "axios";
 import API_URL from "../config";
 
-const SIGNUP_URL = "https://cobapi.sabpaisa.in/auth-service/auth/";
+// const SIGNUP_URL = "https://cobapi.sabpaisa.in/auth-service/auth/";
 
 const register = (firstName, lastName, mobileNumber, email, password,businessType) => {
-  return axios.post(SIGNUP_URL + "signup", {
+  return axios.post(API_URL.AUTH_SIGNUP, {
     name: firstName+' '+ lastName,
     mobileNumber: mobileNumber,
     email: email,
@@ -18,7 +18,7 @@ const register = (firstName, lastName, mobileNumber, email, password,businessTyp
 // https://cobapi.sabpaisa.in/auth-service/auth/login
 const login = (username, password) => {
   return axios
-    .post("https://cobapi.sabpaisa.in/auth-service/auth/login", {
+    .post(API_URL.AUTH_LOGIN, {
       clientUserId:username,
       userPassword:password,
     })
@@ -69,10 +69,8 @@ const sendEmail = (toEmail, toCc, subject, msg) => {
 
 
 // profile service
-
 const BASE_URL = "https://cobapi.sabpaisa.in/auth-service/client";
 const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
-
 const createClintCode = (object) => {
   // console.log("profileservice",object)
   return axios.post(BASE_URL + "/create", object)
@@ -111,8 +109,7 @@ const changePassword = (object) => {
 // forgot password function
 const getEmailToSendOTP=(object)=>{
   // here we pass the valid email-id / username to send OTP on Phone number and email
-  const  config = { headers: {'Content-Type' : 'application/json'}
-          }
+
    return axios.post(API_URL.AUTH_GET_EMAIL_TO_SEND_OTP ,object)
 }
 

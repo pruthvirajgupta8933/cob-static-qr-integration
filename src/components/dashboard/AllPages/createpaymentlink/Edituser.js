@@ -107,7 +107,6 @@ export const Edituser = (props) => {
                         </button>
                     </div>
                     <div className="modal-body">
-                    {console.log(initialValues)}
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}

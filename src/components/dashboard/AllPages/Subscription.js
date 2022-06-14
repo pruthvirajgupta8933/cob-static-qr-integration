@@ -205,7 +205,7 @@ return (
               <h5 className="card-title font-weight-bold h3">{s.applicationName}</h5>
               <p className="card-text">{s.applicationDescription}</p>
             </div>
-            <div class="card-footer">
+            <div className="card-footer">
                 <a href={s.applicationUrl} target="blank" className="btn btn-sm " style={{backgroundColor:"#ffc107"}} role="button" aria-pressed="true"> Read More</a>
                 <button type="button"
                 //  style={{ top: "200px" }}

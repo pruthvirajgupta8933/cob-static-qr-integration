@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
 import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
 import API_URL from '../../../config';
+import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
 
 
 
@@ -391,11 +392,7 @@ const pages = _.range(1, pageCount + 1)
                   <div className="col-lg-4 mrg-btm- bgcolor">
                   <label>Count per page</label>
                   <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
-                      <option value="500">500</option>
+                  <DropDownCountPerPage datalength={txnList.length} />
                   </select>
                 </div>                 
                   </React.Fragment> : <></> }
@@ -405,12 +402,12 @@ const pages = _.range(1, pageCount + 1)
 
 
           <section className="" >
-          <div class="container-fluid  p-3 my-3 ">
+          <div className="container-fluid  p-3 my-3 ">
 
           {txnList.length>0 ? <h4>Total Record : {txnList.length} </h4> : <></>}
               
-            <div class="scroll"  style={{"overflow": "auto"}}>
-            <table class="table table-bordered">
+            <div className="scroll"  style={{"overflow": "auto"}}>
+            <table className="table table-bordered">
               <thead>
               {txnList.length>0 ?
                       <tr>
@@ -497,8 +494,7 @@ const pages = _.range(1, pageCount + 1)
                 {txnList.length>0  ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
-      
-                   <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
                     { 
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
                         <li className={
@@ -536,14 +532,6 @@ const pages = _.range(1, pageCount + 1)
           </section>
         </div>
 
-        <footer className="ant-layout-footer">
-          <div className="gx-layout-footer-content">
-            © 2021 Ippopay. All Rights Reserved.{" "}
-            <span className="pull-right">
-              Ippopay's GST Number : 33AADCF9175D1ZP
-            </span>
-          </div>
-        </footer>
       </main>
     </section>
   );

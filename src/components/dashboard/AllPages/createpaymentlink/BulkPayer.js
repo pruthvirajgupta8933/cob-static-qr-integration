@@ -27,8 +27,7 @@ const BulkPayer = () => {
     formData.append("Client_Code", [clientCode]);
 
 
-    axios
-      .post(API_URL.SMART_UPLOAD, formData, {
+    axios.post(API_URL.SMART_UPLOAD, formData, {
         headers: { ContentType: "application/json" },
       })
 
@@ -81,32 +80,6 @@ const BulkPayer = () => {
                     </div>
                 </div>
             </section>
-
-    // <div className="col-lg-12">
-    //   <form onSubmit={submitHandler}>
-    //   <div className="col-lg-4">
-    //     <h2>
-    //       Upload Bulk Payer
-    //     </h2>
-    //     <input
-    //       type="file"
-    //       className="form-control"
-    //       id="customFile"
-    //       onChange={changeHandler}
-          
-    //     />
-    //    </div>
-    //    <div className="col-lg-4">
-    //       <button
-    //         type="submit"
-    //         className="btn btn-primary martop"
-            
-    //       >
-    //         Submit
-    //       </button>
-    //       </div>
-    //   </form>
-    // </div>
   );
 };
 

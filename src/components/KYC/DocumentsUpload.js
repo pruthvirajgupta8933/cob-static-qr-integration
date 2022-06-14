@@ -6,7 +6,7 @@ function DocumentsUpload() {
         <div className="">
             <p> Note : Please complete Business Overview Section to view the list of applicable documents!</p>
         </div>
-        <table class="table table-hover">
+        <table className="table table-hover">
     <thead >
       <tr className="info">
         <th>Document Type</th>

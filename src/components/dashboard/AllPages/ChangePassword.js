@@ -201,9 +201,7 @@ const FORM_VALIDATION = Yup.object().shape({
                 <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
               </div>
             </div>
-          <footer className="ant-layout-footer">
-            <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
-          </footer>
+         
         </main>
       </section>
     )

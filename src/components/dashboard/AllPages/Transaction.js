@@ -279,10 +279,7 @@ function Transaction() {
               </div>
             </div>
           </div>
-          <footer className="ant-layout-footer">
-            <div className="gx-layout-footer-content">© 2021 SabPaisa. All Rights Reserved. <span className="pull-right">SabPaisa
-                GST Number : 33AADCF9175D1ZP</span></div>
-          </footer>
+         
         </main>
       </section>
     )

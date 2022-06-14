@@ -18,8 +18,7 @@ export const Profile = () => {
     const dispatch= useDispatch();
     const { user } = useSelector((state) => state.auth);
     const {dashboard} = useSelector((state) => state );
-  
-    console.log("user",user);
+
     
     // const {fetchDcBankList,fetchNbBankList} = profileService
     const { clientMerchantDetailsList ,
@@ -496,7 +495,7 @@ const validationSchema = Yup.object().shape({
                                      }
                                      value="NetBank"
                                    />
-                                   <label for="html">Net Banking</label>
+                                   <label htmlFor="html">Net Banking</label>
 
                                    <div className="invalid-feedback">
                                      {errors.clientAuthenticationType?.message}
@@ -519,7 +518,7 @@ const validationSchema = Yup.object().shape({
                                      }
                                      value="Debitcard"
                                    />
-                                   <label for="html">Debit Card</label>
+                                   <label htmlFor="html">Debit Card</label>
 
                                    <div className="invalid-feedback">
                                      {errors.clientAuthenticationType?.message}
@@ -541,7 +540,7 @@ const validationSchema = Yup.object().shape({
                                      errors.bankName ? "is-invalid" : ""
                                    }`}
                                  >
-                                   <option defailtValue="">
+                                   <option value="0">
                                      Please Select Bank
                                    </option>
                                    {selectedListForOption.map((option) => {
@@ -680,14 +679,7 @@ const validationSchema = Yup.object().shape({
            />
          </div>
        </div>
-       <footer className="ant-layout-footer">
-         <div className="gx-layout-footer-content">
-           © 2021 Ippopay. All Rights Reserved.{" "}
-           <span className="pull-right">
-             Ippopay's GST Number : 33AADCF9175D1ZP
-           </span>
-         </div>
-       </footer>
+       
      </main>
    </section>
  );

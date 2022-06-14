@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import API_URL from '../../../config';
+import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
 
 
 function SettlementReport() {
@@ -107,7 +108,6 @@ function SettlementReport() {
 
     return (
       <>
-
 <section className="ant-layout">
       <div className="profileBarStatus">
       </div>
@@ -146,7 +146,9 @@ function SettlementReport() {
                         ))}
                     </select>
                 </div>
-                <div className="col-lg-6 mrg-btm- bgcolor">
+                {data?.length>0 ? 
+                  <React.Fragment>
+                  <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Search</label>
                   <input
                     type="text"
@@ -160,23 +162,20 @@ function SettlementReport() {
                 <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Count Per Page</label>
                   <select className="ant-input">
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="40">40</option>
-                    <option value="50">50</option>
+                    <DropDownCountPerPage datalength={searchFilterData.length} />
                   </select>
                 </div>
+                </React.Fragment> 
+                : <></> }
+               
+              
                 </div>
             </div>
           </section>
 
-
           <section className="" >
           <div className="container-fluid  p-3 my-3 ">
-
           {searchFilterData.length >0 ? <h4>Total Record : {searchFilterData.length} </h4> : <></>}
-          
             <div className="scroll"  style={{"overflow": "auto"}}>
             <table className="table table-bordered">
               <thead>
@@ -210,18 +209,8 @@ function SettlementReport() {
             </div>  
           </section> 
         </div>
-
-        <footer className="ant-layout-footer">
-          <div className="gx-layout-footer-content">
-            © 2021 Ippopay. All Rights Reserved.{" "}
-            <span className="pull-right">
-              Ippopay's GST Number : 33AADCF9175D1ZP
-            </span>
-          </div>
-        </footer>
       </main>
     </section>
-   
       </>
     );
 }

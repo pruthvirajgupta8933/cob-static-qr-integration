@@ -1,6 +1,6 @@
 const API_LIVE = {
     AUTH_LOGIN_EMAILVERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
-    AUTH_SIGNUP : "https://cobapi.sabpaisa.in/auth-service/auth/",
+    AUTH_SIGNUP : "https://cobapi.sabpaisa.in/auth-service/auth/signup",
     AUTH_LOGIN : "https://cobapi.sabpaisa.in/auth-service/auth/login",
     AUTH_CLIENT_CREATE : "https://cobapi.sabpaisa.in/auth-service/client",
     AUTH_GET_EMAIL_TO_SEND_OTP : "https://cobapi.sabpaisa.in/auth-service/account/forgot-password",
@@ -8,8 +8,6 @@ const API_LIVE = {
     AUTH_CREATE_NEW_PASSWORD : "https://cobapi.sabpaisa.in/auth-service/account/create-password",
     AUTH_CHANGE_PASSWORD : "https://cobapi.sabpaisa.in/auth-service/account/change-password",
     CHECK_PERMISSION_PAYLINK: "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
-
-
     BANK_IFSC_CODE_VERIFY:"https://ifsc.razorpay.com/",
     BANK_LIST_NB : "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
     BANK_LIST_DC : "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",

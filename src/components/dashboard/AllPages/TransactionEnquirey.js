@@ -78,32 +78,21 @@ function TransactionEnquirey() {
       {key: 'Trans Complete Date', value: data.trans_complete_date},
       {key: 'Client Code ', value: data.client_code},
       {key: 'Client Txn Id', value: data.client_txn_Id},
-    ]
-   
-  
+    ]  
     setPrintData(tempArr)
   }, [data])
   
 
 
   const  onClick = async ()=>{
-    console.log("click")
-    
-    
-
     var tableContents = document.getElementById("print_docuement").innerHTML;
-    console.log(tableContents);
     var a = window.open('', '', 'height=900, width=900');
-    // a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
     a.document.write(tableContents);
-    // a.document.write('</table>');
     a.document.close();
     await a.print();
   } 
 
   if(user && user.clientMerchantDetailsList===null && user.roleId!==3 && user.roleId!==13){
-    // alert(`${path}/profile`);
-    // return <Redirect to={`${path}/profile`} />
     history.push('/dashboard/profile');
   } 
 
@@ -265,14 +254,7 @@ function TransactionEnquirey() {
             </div>
           </section>
         </div>
-        <footer className="ant-layout-footer">
-          <div className="gx-layout-footer-content">
-            © 2021 Ippopay. All Rights Reserved.{" "}
-            <span className="pull-right">
-              Ippopay's GST Number : 33AADCF9175D1ZP
-            </span>
-          </div>
-        </footer>
+    
       </main>
     </section>
   );

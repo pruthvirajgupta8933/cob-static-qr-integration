@@ -62,7 +62,7 @@ function BusinessDetails() {
                       />
                     </div>
 
-                    <div class="form-group col-md-4">
+                    <div className="form-group col-md-4">
                       <FormikController
                           control="select"                          
                           label="GSTIN *"

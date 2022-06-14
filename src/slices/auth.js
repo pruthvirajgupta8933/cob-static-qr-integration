@@ -443,9 +443,9 @@ export const checkPermissionSlice = createAsyncThunk(
 
 
 
-const initialState = user && user.loginStatus
-  ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
-  : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{}, sendEmail: {} };
+// const initialState = user && user.loginStatus
+//   ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
+//   : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{}, sendEmail: {} };
 // console.log(register)
 const authSlice = createSlice({
   name: "auth",
