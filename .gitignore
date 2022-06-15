@@ -4,7 +4,12 @@
 /node_modules
 /.pnp
 .pnp.js
-/package.json
+/.firebase
+.firebaserc
+firebase.json
+overview.txt
+
+package.json
 /yarn.lock
 
 # testing
