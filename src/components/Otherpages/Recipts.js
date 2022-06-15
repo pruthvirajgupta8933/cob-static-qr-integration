@@ -1,86 +1,71 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
-import validation from '../validation';
+import React, { useState } from 'react';
+import * as Yup from "yup"
+import { Formik, Form } from "formik"
+import sabpaisalogo from '../../assets/images/sabpaisalogo.png';
+import API_URL from '../../config';
+import FormikController from '../../_components/formik/FormikController';
 
 
 export const Recipts = () => {
-  const initialState = {
-    txnId: '',
-    paymentMode: '',
-    payeeFirstName: '',
-    payeeMob: '',
-    payeeEmail: '',
-    status: '',
-    bankTxnId: '',
-    clientName: '',
-    clientId: '',
-    payeeAmount: '',
-    paidAmount: '',
-    transDate: '',
-    transCompleteDate: '',
-    transactionCompositeKey: '',
-    clientCode: '',
-    clientTxnId: '',
 
+
+  const initialValues = {
+    transaction_id: ""
   }
-  const [input, setInput] = useState("");
+  const validationSchema = Yup.object({
+    transaction_id: Yup.number().required("Required")
+  })
+
   const [show, setIsShow] = useState(false);
-  const [errors, setErrors] =useState({input:true});
-  const [errMessage, setErrMessage] = useState('');
-  const [data, setData] = useState(initialState)
-
-  const onValueChange = e => {
-    setInput(e.target.value);
-  };
+  // const [errMessage, setErrMessage] = useState('');
+  const [data, setData] = useState([])
+  
+  const [isLoading, setIsLoading] = useState(false);
 
 
-  const onSubmit = async (input) => {
-    setErrors(validation({ input }))
-    //console.log(errors, 'error')
-    if(errors.input===false){
-const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
+ 
+
+
+  const onSubmit =  (value) => {
+
+    const transaction_id = value.transaction_id;
+      setIsLoading(true);
+      axios.get(`${API_URL.VIEW_TXN}/${transaction_id}`)
       .then((response) => {
-        console.warn(response);
-        setData(response.data);
-        setIsShow(true);
-        setErrMessage('');
+        
+        if(response.data?.length> 0){
+          setData(response.data[0]);
+          setIsShow(true);
+          // setErrMessage('');
+          setIsLoading(false);
+        }else{
+          setIsShow(false)
+          setIsLoading(false);
+          alert('No Data Found')
+        }
+       
       })
-
       .catch((e) => {
-        alert('Transaction Id required ')
-
+        alert('No Data Found')
+        setIsLoading(false);
         console.log(e);
         setIsShow(false);
-        setErrMessage('No Data Found');
+        // setErrMessage('No Data Found');
 
       })
 
-  }
+  
 }
-  const dateFormat = (timestamp) => {
 
-
-    // var date = new Date(timestamp);
-    // console.log(date.getTime())
-    // return date.getTime();
-
-    var date = new Date(timestamp);
-    return (date.getDate() +
-      "/" + (date.getMonth() + 1) +
-      "/" + date.getFullYear() +
-      " " + date.getHours() +
-      ":" + date.getMinutes() +
-      ":" + date.getSeconds());
-
-  }
   const onClick = () => {
 
-    var tableContents = document.getElementById("joshi").innerHTML;
+    var tableContents = document.getElementById("receipt_table").innerHTML;
     var a = window.open('', '', 'height=900, width=900');
     a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
     a.document.write(tableContents);
     a.document.write('</table>');
+
     a.document.close();
     a.print();
   }
@@ -88,105 +73,121 @@ const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/
   return (
 
     <div>
-      <div className="card" style={{ position: 'absolute', width: 600, height: 200, left: 400 }}>
-        <div className="card-header" style={{ textAlign: 'center' }}>
-          SABPAISA TRANSACTION RECEIPT
-        </div>
-        <div className="card-body" >
-          <div className="col-lg-6 mrg-btm- bgcolor">
+        {/* ============================== */}
+        <div className="container-fluid toppad">
+      <div className="row ">
+        <div className="col-sm-6 mx-auto">
+          <div className="card ">
+            <div className="card-header text-center receipt-header">SABPAISA TRANSACTION RECEIPT</div>
+            <div className="card-body">
+            <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={(onSubmit)}
+                      >
+                  {formik => (
+                    <Form>
+                          <div className="form-row">
+                            <div className="form-group col-md-12 col-sm-12 col-lg-12">
+                              <FormikController
+                                  control="input"
+                                  type="text"
+                                  label="Transaction ID  *"
+                                  name="transaction_id"
+                                  placeholder="Enter Sabpaisa Transaction ID"
+                                  className="form-control"
+                                />
+                            </div>
+                          </div>
+                          <button className="btn receipt-button" type="submit">{isLoading ? "Loading...":"View"}</button>
+                    </Form>
+                    )}
+                </Formik>
 
-            <input type="text" className="ant-input" onChange={(e) => onValueChange(e)} placeholder="Enter Sabpaisa Transactions Id" style={{ position: 'absolute', width: 430 }} />
-            <br/>
-            <br/><br/>{errors.input && <h4 >{errors.input}</h4>}
-          </div>
-
-          <div className="col-lg-6 mrg-btm- bgcolor">
-          </div>
-
-          <button className="btn btn-success" onClick={() => onSubmit(input)} style={{ marginTop: '40px', marginLeft: 200 }} >View</button>
+                {isLoading?
+                      <div className="spinner-border" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div> : <></> }
+              </div>
+              </div>
         </div>
       </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      {
-        show ?
+    </div>
+
+      {show ?
         
-          <div className="card" style={{ position: 'absolute', top: 220, width: 1200, height: 480, left: 100 }}>
+      <div className="container-fluid">
+      <div className="row ">
+        <div className="col-sm-6 mx-auto">
             <React.Fragment>
-
+            <div className="card ">
             <div className="card-body">
-              <table className="table table-striped" id="joshi" style={{ position: 'absolute', top: 40 }} >
-
-
+              <table className="table table-striped" id="receipt_table" style={{border: "1px solid #ccc", width: "100%", maxWidth: "100%",marginBottom: "1rem",backgroundColor: "initial",color: "#212529"}} >
                 <tbody>
-                  <thead className="thead-dark">
-                    <tr>
-
+                  <thead >
+                    <tr >
                       <th><img src={sabpaisalogo} alt="logo" width={"90px"} height={"25px"} /></th>
                     </tr>
                   </thead>
                   <tr>
-                    <th scope="row">TRANSACTION RECEIPT</th>
+                    <th  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}} scope="row">TRANSACTION RECEIPT</th>
+                  </tr>
 
+                  <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
+                    <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Payer Name</th>
+                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payee_name}</td>
+                  </tr>
+
+                  <tr >
+                    <th style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}} scope="row">Sabpaisa Transaction ID</th>
+                    <td style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}} className="text-wrap">{data.txn_id}</td>
+                  </tr>
+
+
+                  <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
+                    <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Client Transaction ID</th>
+                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.client_txn_Id}</td>
+                  </tr>
+
+
+                  <tr>
+                    <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Client Name</th>
+                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.client_name}</td>
+                  </tr>
+
+                  <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
+                    <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Payee Amount</th>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payee_amount}</td>
                   </tr>
 
                   <tr>
-                    <th scope="row">Payer Name</th>
-                    <td>{data.payeeFirstName}</td>
+                    <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Payment Mode</th>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payment_mode}</td>
                   </tr>
-                  <tr>
-                    <th scope="row">Sabpaisa Transaction ID</th>
-                    <td>{data.txnId}</td>
+
+                  <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
+                    <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Transaction Date</th>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.trans_date}</td>
 
                   </tr>
                   <tr>
-                    <th scope="row">Client Transaction ID</th>
-                    <td>{data.transactionCompositeKey.clientTxnId}</td>
-
-                  </tr>
-                  <tr>
-                    <th scope="row">Client Name</th>
-                    <td>{data.clientName}</td>
-
-                  </tr>
-                  <tr>
-                    <th scope="row">Paid Amount</th>
-                    <td>{data.paidAmount}</td>
-
-                  </tr>
-                  <tr>
-                    <th scope="row">Payment Mode</th>
-                    <td>{data.paymentMode}</td>
-
-                  </tr>
-                  <tr>
-                    <th scope="row">Transaction Date</th>
-                    <td>{dateFormat(data.transDate)}</td>
-
-                  </tr>
-                  <tr>
-                    <th scope="row">Payment Status</th>
-                    <td>{data.status}</td>
+                    <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Payment Status</th>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.status}</td>
 
                   </tr>
                 </tbody>
 
               </table>
-             
-
-
+            </div>
+            <button value='click' onClick={onClick} className="btn btn-info" >Print</button>
             </div>
             </React.Fragment> 
+           
           </div>
-         
-          : ''}
-      {show ? <button value='click' onClick={onClick} className="btn btn-success" style={{ position: 'absolute', top: 760, width: 200, left: 590 }}>Print</button> : <></>}
-
-
-
-    </div>
+          </div>
+          </div>
+          : <></>}
+        </div>
 
 
 

@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useHistory } from 'react-router-dom';
+import API_URL from '../../../../config';
+
 
 const initialValues = {
   Amount: "",
@@ -21,7 +23,7 @@ const validationSchema = Yup.object().shape({
 
 const Genratelink = (props) => {
 let history = useHistory();
-  console.log(props);
+  // console.log(props);
   // var id=""
   var { customer_id } = props.generatedata;
 
@@ -40,16 +42,18 @@ let history = useHistory();
 
 
   const [data, setData] = useState([])
-  // var clientSuperMasterList = user.clientSuperMasterList;
-  // const { clientCode } = clientSuperMasterList[0]
+  // var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  // const { clientCode } = clientMerchantDetailsList[0]
 
-  let clientSuperMasterList=[];
+  let clientMerchantDetailsList=[];
     let clientCode ='';
-    if(user && user.clientSuperMasterList===null){
-        history.push('/dashboard/profile');
+    if(user && user.clientMerchantDetailsList===null){
+      // console.log("genratelink");  
+      history.push('/dashboard/profile');
+
       }else{
-        clientSuperMasterList = user.clientSuperMasterList;
-        clientCode =  clientSuperMasterList[0].clientCode;
+        clientMerchantDetailsList = user.clientMerchantDetailsList;
+        clientCode =  clientMerchantDetailsList[0].clientCode;
       }
   // console.log(customer_type_id);
 
@@ -69,10 +73,10 @@ let history = useHistory();
       isMerchantChargeBearer: true,
     };
 
-    console.log(linkdata);
-
+    // console.log(linkdata);
+    toast.info("Please Wait...")
     const response = await axios
-      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
+      .post(`${API_URL.ADD_LINK}?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
         Amount:e.Amount,
         Remarks:e.Remarks,
         Date:e.Date,
@@ -83,8 +87,8 @@ let history = useHistory();
       
       
       .then((response) => {
-        toast.success("Payment Link Created!")
-        console.log(JSON.stringify(response.data));
+        toast.success(response.data.message)
+        // console.log(JSON.stringify(response.data));
       })
       .catch((error) => {
         console.log(error);
@@ -118,30 +122,24 @@ let history = useHistory();
     document.getElementById("checkbox_pass").checked = false;
   }
   const closeClick = () => {
-
-    
-
     document.getElementById("checkbox_pass").checked = false;
-
   }
 
   return (
     <div
-      class="modal fade"
+      className="modal fade"
       id="bhuvi"
-
-      tabindex="-1"
+      tabIndex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
         <Formik initialValues={{
               Amount: "",
               Remarks: "",
               Date:""
-
             }}
               validationSchema={validationSchema}
               onSubmit={(values, { resetForm }) => {
@@ -151,15 +149,13 @@ let history = useHistory();
             >
               {({ resetForm }) => (
                 <>
-
-
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              <b> Genrate Link</b>
+          <div className="modal-header">
+            <h5 className="modal-title" id="exampleModalLabel">
+              <b> Generate Link</b>
             </h5>
             <button
               type="button"
-              class="close"
+              className="close"
               data-dismiss="modal"
               aria-label="Close"
               onClick={resetForm}
@@ -167,35 +163,30 @@ let history = useHistory();
               <span aria-hidden="true">&times;</span>
             </button>
 
-            <div class="form-check">
-              <label
-                class="form-check-label"
-                for="exampleCheck1"
-                style={{ marginLeft: 200, marginBottom: 20 }}
-              >
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  onChange={handleCheck}
-
-                  value={passwordcheck}
-                  id="checkbox_pass"
-                />
-                is Password Protected
-              </label>
+            <div className="form-check">
+              
 
             </div>
           </div>
-          <div class="modal-body">
-           
+          <div className="modal-body">
+          <label
+                className="form-check-label ml-3"
+                htmlFor="exampleCheck1"
+              >
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  onChange={handleCheck}
+                  value={passwordcheck}
+                  id="checkbox_pass"
+                />
+                Password Protected Link
+              </label>
                 <Form >
-
-
                   <br />
-
-                  <div class="row">
-                    <div class="col">
-                      <label for="exampleInputEmail1">
+                  <div className="row">
+                    <div className="col">
+                      <label htmlFor="exampleInputEmail1">
                         Amount
                       </label>
                       <Field
@@ -205,24 +196,21 @@ let history = useHistory();
                         onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
                         name="Amount"
                         autoComplete="off"
-
-
-                        class="form-control"
-
+                        className="form-control"
                       />
                       <ErrorMessage name="Amount">
                         {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                       </ErrorMessage>
                     </div>
-                    <div class="col">
-                      <label for="exampleInputEmail1">
+                    <div className="col">
+                      <label htmlFor="exampleInputEmail1">
                         Remarks
                       </label>
                       <Field
                         type="text"
                         name="Remarks"
                         autoComplete="off"
-                        class="form-control"
+                        className="form-control"
                             /> 
                             <ErrorMessage name="Remarks">
                         {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
@@ -231,24 +219,25 @@ let history = useHistory();
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col">
-                      <label>Link Valid To Date</label>
+                  <div className="row">
+                    <div className="col">
+                      <label>Link Validity</label>
                       <Field
                         type="date"
                         name="Date"
                         className="ant-input"
                         min={new Date().toLocaleDateString('en-ca')}
-                       />
+                      />
                       <ErrorMessage name="Date">
                         {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                       </ErrorMessage>
                     </div>
-                    <div class="col">
+                    <div className="col">
                       <label>Hours</label>
                       <br />
                       <select style={{ width: 80 }} value={hours} onChange={(e) => setHours(e.target.value)}>
-                        <option selected>Hours</option>
+                        <option value="">Hours</option>
+                        <option value="00">00</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
                         <option value="03">03</option>
@@ -278,11 +267,11 @@ let history = useHistory();
 
                       </select>
                     </div>
-                    <div class="col">
+                    <div className="col">
                       <label>Minutes</label>
                       <br />
                       <select style={{ width: 100 }} value={minutes} onChange={(e) => setMinutes(e.target.value)}>
-                        <option selected>Minutes</option>
+                        <option value=''>Minutes</option>
                         <option value='00'>00</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -310,7 +299,7 @@ let history = useHistory();
                         <option value="23">23</option>
                         <option value="24">24</option>
                         <option value="25">25</option>
-                        <option value="2">26</option>
+                        <option value="26">26</option>
                         <option value="27">27</option>
                         <option value="28">28</option>
                         <option value="29">29</option>
@@ -344,24 +333,22 @@ let history = useHistory();
                         <option value="57">57</option>
                         <option value="58">58</option>
                         <option value="59">59</option>
-                        <option value="60">60</option>
-
                       </select>
                     </div>
                   </div>
                   <div>
-                    <div class="modal-footer">
+                    <div className="modal-footer">
                       <button
                         type="submit"
                         style={{ postion: "relative", top: 200, left: 280 }}
-                        class="btn btn-primary "
+                        className="btn btn-primary "
                       >
                         SUBMIT
                       </button>
                       <button
                         type="button"
                         style={{ postion: "absolute", top: 290, left: 380 }}
-                        class="btn btn-danger"
+                        className="btn btn-danger"
                         data-dismiss="modal"
                         onClick={resetForm}
                       >
@@ -372,21 +359,13 @@ let history = useHistory();
                 </Form>
                </div>
             </>
-
-              
               )}
-
             </Formik>
           </div>
         </div>
       </div>
    
   )
-
-
-
-
-
 }
 
 

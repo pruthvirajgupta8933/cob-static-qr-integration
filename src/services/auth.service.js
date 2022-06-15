@@ -1,8 +1,10 @@
 import axios from "axios";
-const SIGNUP_URL = "https://cobtest.sabpaisa.in/auth-service/auth/";
+import API_URL from "../config";
+
+// const SIGNUP_URL = "https://cobapi.sabpaisa.in/auth-service/auth/";
 
 const register = (firstName, lastName, mobileNumber, email, password,businessType) => {
-  return axios.post(SIGNUP_URL + "signup", {
+  return axios.post(API_URL.AUTH_SIGNUP, {
     name: firstName+' '+ lastName,
     mobileNumber: mobileNumber,
     email: email,
@@ -11,17 +13,17 @@ const register = (firstName, lastName, mobileNumber, email, password,businessTyp
   })
 };
 
-// login old url : https://spl.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin 
+// login old url : https://cobapi.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin 
 // login new url : https://cobtest.sabpaisa.in/auth-service/auth/login
-// http://18.189.11.232:8080/auth-service/auth/login
+// https://cobapi.sabpaisa.in/auth-service/auth/login
 const login = (username, password) => {
   return axios
-    .post("https://cobtest.sabpaisa.in/auth-service/auth/login", {
+    .post(API_URL.AUTH_LOGIN, {
       clientUserId:username,
       userPassword:password,
     })
     .then((response) => {
-      // response.data.clientSuperMasterList = staticClientList
+      // response.data.clientMerchantDetailsList = staticClientList
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
       }else{
@@ -29,7 +31,7 @@ const login = (username, password) => {
         localStorage.setItem("user", JSON.stringify(response.data));
       }
       
-      console.log(response.data)
+      // console.log(response.data)
       return response.data;
     });
 };
@@ -67,10 +69,8 @@ const sendEmail = (toEmail, toCc, subject, msg) => {
 
 
 // profile service
-
-const BASE_URL = "https://cobtest.sabpaisa.in/auth-service/client";
+const BASE_URL = "https://cobapi.sabpaisa.in/auth-service/client";
 const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
-
 const createClintCode = (object) => {
   // console.log("profileservice",object)
   return axios.post(BASE_URL + "/create", object)
@@ -100,7 +100,36 @@ const fetchDcBankList=()=>{
 }
 
 
+const changePassword = (object) => {
+  // console.log("profileservice",object)
+  return axios.post(API_URL.AUTH_CHANGE_PASSWORD, object)
+};
 
+
+// forgot password function
+const getEmailToSendOTP=(object)=>{
+  // here we pass the valid email-id / username to send OTP on Phone number and email
+
+   return axios.post(API_URL.AUTH_GET_EMAIL_TO_SEND_OTP ,object)
+}
+
+
+const verifyOtpOnForgotPwd=(object)=>{
+  // here we pass received OTP on email / phone number
+  return axios.post(API_URL.AUTH_VERIFY_OTP_ON_FWD ,object)
+}
+
+const createNewPassword=(object)=>{
+  //CREATE NEW PASSWORD
+  return axios.post(API_URL.AUTH_CREATE_NEW_PASSWORD ,object)
+}
+
+
+// CHECK_PERMISSION_PAYLINK
+const checkPermission=(object)=>{
+  //pass client code
+  return axios.get(`${API_URL.CHECK_PERMISSION_PAYLINK}${object}`)
+}
 
 const authService = {
   register,
@@ -112,7 +141,12 @@ const authService = {
   verifyClientCode,
   fetchNbBankList,
   fetchDcBankList,
-  verifyIfcsCode
+  verifyIfcsCode,
+  changePassword,
+  getEmailToSendOTP,
+  verifyOtpOnForgotPwd,
+  createNewPassword,
+  checkPermission
 };
 
 export default authService;

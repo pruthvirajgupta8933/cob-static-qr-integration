@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {useParams,useLocation} from "react-router-dom"
 import axios from 'axios';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
+import API_URL from "../../config";
 
 
 const EmandatePage = () => {
@@ -9,10 +10,10 @@ const EmandatePage = () => {
   const search = useLocation().search;
   const mendateRegIdParam = new URLSearchParams(search).get('mendateRegId');
 
-  console.log(mendateRegIdParam);
+  // console.log(mendateRegIdParam);
 
   const [details,setDetails] = useState([]);
-    const baseUrl = "https://subscription.sabpaisa.in/subscription/npci/registration/status/";
+    const baseUrl = API_URL.MANDATE_REGISTRATION_STATUS;
     const mandateRegId = mendateRegIdParam;
     const getManteDetails = (mandateRegId)=>{
     const mandateDetails = axios.get(baseUrl+mandateRegId).then((response)=>{
@@ -72,17 +73,15 @@ const detailList = detailsKey.map((item,i)=>{
     }
     
 
-    const response = await axios.get(`https://adminapi.sabpaisa.in/Receipt/ReceiptMB/${transactionId}/${studentId}`)
+    const response = await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
       .then((response) => {
-        console.warn(response);
+        // console.warn(response);
         setData(response.data);
         setIsShow(true);
         setErrMessage('');
       })
 
       .catch((e) => {
-        
-
         console.log(e);
         setIsShow(false);
         setErrMessage('No Data Found');
@@ -117,18 +116,15 @@ const detailList = detailsKey.map((item,i)=>{
     a.document.close();
     a.print();
   }
-
-
   return (
-    
       <div className='container'>
         <div className='row'>
           <div className='col-12 mb-4'>
-            <div class="card">
-              <div class="card-header" style={{ textAlign: 'center' }}>
+            <div className="card">
+              <div className="card-header" style={{ textAlign: 'center' }}>
                 SABPAISA TRANSACTION RECEIPT
               </div>
-              <div class="card-body" >
+              <div className="card-body" >
                 <div className="col-lg-6 mrg-btm- bgcolor">
                 <div>
                   <p>MandateDetails Here {mandateRegId}</p> 
@@ -142,7 +138,7 @@ const detailList = detailsKey.map((item,i)=>{
                 <div className="col-lg-6 mrg-btm- bgcolor">
                 </div>
 
-                <button class="btn btn-success" onClick={() => onSubmit(transactionId,studentId)} style={{ marginTop: '70px', marginLeft: -130,width:200 }} >View</button>
+                <button className="btn btn-success" onClick={() => onSubmit(transactionId,studentId)} style={{ marginTop: '70px', marginLeft: -130,width:200 }} >View</button>
               </div>
             </div>
           </div>

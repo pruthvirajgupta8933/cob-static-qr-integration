@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import _, { map } from 'lodash';
 
 function Pagination(props) {
-    console.log(props);
+    // console.log(props);
     const {data,tableHeader,tableBody} = props.paginationProps;
     const [pageSize, setPageSize] = useState(10);
     const [paginatedata, setPaginatedData] = useState([])
@@ -37,9 +37,9 @@ function Pagination(props) {
     setPaginatedData(_(data).slice(0).take(pageSize).value())
   },[pageSize]);
 
-  if ( pageCount === 1) return null;
+  // if ( pageCount === 1) return null;
   const pages = _.range(1, pageCount + 1)
-  var tableContent = (   <table class='table' style={{marginLeft: 10}}>
+  var tableContent = (   <table className='table' style={{marginLeft: 10}}>
   {/* table head */}
 <tr>
   {tableHeader.map((thd,i)=><th key={i}>{thd}</th>)}

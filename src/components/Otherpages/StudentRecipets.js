@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
+import API_URL from '../../config';
+
 
 
 const StudentRecipets = () => {
@@ -17,43 +19,35 @@ const StudentRecipets = () => {
 
   }
   const [transactionId, setTransactionId] = useState();
-  const[studentId, setStudentId]=useState();
+  const[studentId, setStudentId]=useState(0);
   const [show, setIsShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errMessage, setErrMessage] = useState('');
-  const [data, setData] = useState(initialState)
+  const [data, setData] = useState(initialState);
 
- 
-  
-    
-  
-  
-
-
-  
-
-
-  const onSubmit = async (transactionId,studentId) => {
+  const onSubmit = async (e,transactionId,studentId) => {
+    e.preventDefault();
     if(transactionId === null){
       setTransactionId(0);
     }
     else {
       setStudentId(0);
     }
-    
-
-    const response = await axios.get(`https://adminapi.sabpaisa.in/Receipt/ReceiptMB/${transactionId}/${studentId}`)
+    setIsLoading(true)
+    setIsShow(false);
+    const response = await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
       .then((response) => {
-        console.warn(response);
+        // console.warn(response);
         setData(response.data);
         setIsShow(true);
         setErrMessage('');
+        setIsLoading(false)
       })
 
       .catch((error) => {
         console.log(error);
         alert("Kindly enter SabPaisa Transaction Id Or Student Id")
-        
-
+        setIsLoading(false)
         // console.log(e);
         setIsShow(false);
         setErrMessage('No Data Found');
@@ -88,40 +82,61 @@ const StudentRecipets = () => {
     a.document.close();
     a.print();
   }
+const handle=()=>{
 
+}
 
   return (
     <>
       <div className='container'>
-        <div className='row'>
-          <div className='col-12 mb-4'>
-            <div className="card">
-              <div className="card-header" style={{ textAlign: 'center' }}>
-                SABPAISA TRANSACTION RECEIPT
-              </div>
-              <div className="card-body" >
-                <div className="col-lg-6 mrg-btm- bgcolor">
+       
 
-                  <input type="text" className="ant-input" name="transactionid" value={transactionId} onChange={(e) => setTransactionId(e.target.value)} placeholder="Enter Sabpaisa Transactions Id" style={{ position: 'absolute', width: 430,left:250 }} />
-                </div>
-                <br /><br /><br />
-                <h3 style={{ position: 'absolute', left: 490 }}>OR</h3>
-                <br /><br />
-                <div className="col-lg-6 mrg-btm- bgcolor">
+        {/* ============================== */}
+        <div className="container-fluid toppad">
+      <div className="row ">
+        <div className="col-sm-6 mx-auto">
+          <div className="card ">
+            <div className="card-header text-center receipt-header">SABPAISA TRANSACTION RECEIPT</div>
+            <div className="card-body">
+           <form action="#" onSubmit={()=>{console.log()}}>
+                      <div className="form-group">
+                          <label for="txn_id_input">Sabpaisa Transcation ID :</label>
+                           <input type="text" className="ant-input" name="transactionid" value={transactionId} onChange={(e) => setTransactionId(e.target.value)} placeholder="Enter Sabpaisa Transactions Id" />
+                      </div>
 
-                  <input type="text" className="ant-input" name="studdentid"  value={studentId} onChange={(e)=>setStudentId(e.target.value)} placeholder="Enter Student Id" style={{ position: 'absolute', width: 430,left:250 }} />
-                </div>
+                      <div className="form-group">
+                        <h2 className="text-center">OR</h2>
+                      </div>
+                      <div className="form-group">
+                      <label for="txn_id_input">Enter Student ID :</label>
+                      <input type="text" className="ant-input" name="studdentid"  value={studentId} onChange={(e)=>setStudentId(e.target.value)} placeholder="Enter Student Id"  />
+                      </div>
 
-                <br /><br />
-
-                <div className="col-lg-6 mrg-btm- bgcolor">
-                </div>
-
-                <button className="btn btn-success" onClick={() => onSubmit(transactionId,studentId)} style={{ marginTop: '70px', marginLeft: -130,width:200 }} >View</button>
-              </div>
+                      <div className="form-group">
+                      <button className="btn receipt-button" onClick={(e) => onSubmit(e,transactionId,studentId)} >
+                      
+                      {isLoading ? "Loading...":"View"}
+                      </button>
+                      {isLoading?
+                      <div className="spinner-border" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div> : <></> }
+                      
+                      </div>
+                   
+                    </form>
             </div>
+          
           </div>
         </div>
+      </div>
+    </div>
+        {/* ============================== */}
+        
+        
+        
+        
+        
         <div className='row'>
           <div className='col-12'>
             {
@@ -170,7 +185,7 @@ const StudentRecipets = () => {
                           </tr>
                           <tr>
                             <th scope="row">Transaction Date</th>
-                            <td>{dateFormat(user.trans_date)}</td>
+                            <td>{user.trans_date}</td>
 
                           </tr>
                           <tr>
@@ -192,7 +207,7 @@ const StudentRecipets = () => {
           </div>
         </div>
         <div className='col-md-12'>
-        { show ? <button value='click' onClick={onClick} className="btn btn-success" style={{ position: 'absolute', width: 200, left: 500 }}>
+        { show ? <button value='click' onClick={onClick} className="btn btn-success">
             Print
           </button>:<></> }
         </div>

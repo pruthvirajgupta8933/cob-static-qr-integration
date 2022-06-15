@@ -5,7 +5,7 @@ function ThanksCard(props) {
     
 
   return (
-    <div className="container-fluid bg-info">
+    <div className="container-fluid toppad">
     <div className="row " >
     <div className="col-sm-6 mx-auto">
         <div className="card ">

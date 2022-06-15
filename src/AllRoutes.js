@@ -5,7 +5,7 @@ import {
     Route
   } from "react-router-dom";
 import Dashboard from './components/dashboard/Dashboard';
-import Login from './components/login/Login';
+// import Login from './components/login/Login';
 import Registration from './components/registration/Registration';
 import LoginPage from './components/login/LoginPage';
 import ForgetPassword from './components/forgetpassword/ForgetPassword';
@@ -16,29 +16,29 @@ import StudentRecipets from './components/Otherpages/StudentRecipets';
 import ReceiptByEmail from './components/Otherpages/ReceiptByEmail';
 import ReceiptWalchand from './components/Otherpages/ReceiptWalchand';
 import EmandatePage from './components/Otherpages/EmandatePage';
-
+import Test from './components/Otherpages/Test';
+import InternetConnection from './_components/reuseable_components/InternetConnection';
+import MobileNavbar from './components/dashboard/SideNavbar/MobileNavbar';
+import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetails';
 
 
 function AllRoutes(){
   
   
     return (
-        <Router >
+        // <Router >
           <div>
-            <Switch>
-              <Route exact path="/">
-                <LoginPage />
-              </Route>
+          <InternetConnection />
+
+            <Switch>             
               <Route exact path="/login-page">
                 <LoginPage />
-              </Route>
-              <Route exact path="/login-page-old">
-                <Login />
               </Route>
               <Route exact path="/registration">
                 <Registration />
               </Route>
               <Route path="/dashboard">
+                <MobileNavbar/>
                 <Dashboard />
               </Route>
               <Route exact path="/commonpages">
@@ -50,7 +50,7 @@ function AllRoutes(){
               <Route exact path="/emailverification/:loginId">
                 <EmailVerification />
               </Route>
-              <Route exact path="/Recipts">
+              <Route exact path="/Receipt">
                 <Recipts />
               </Route>
               <Route exact path="/stdReceipt">
@@ -65,11 +65,22 @@ function AllRoutes(){
               <Route exact path="/EmandatePage/">
                 <EmandatePage />
               </Route>
+              <Route exact path="/login">
+                <LoginPage />
+              </Route>
+              <Route exact path="/">
+                <LoginPage />
+              </Route>
+              <Route exact path="/test">
+                <Test />
+              </Route>
+              <Route exact path="/ViewTransactionDetails">
+                <ViewTransactionDetails />
+              </Route>
 
-             
             </Switch>
           </div>
-        </Router>
+        // </Router>
       );
 }
 

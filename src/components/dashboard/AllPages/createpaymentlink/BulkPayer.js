@@ -3,12 +3,13 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from 'react-toastify';
 import { Zoom } from "react-toastify";
+import API_URL from "../../../../config";
 
 const BulkPayer = () => {
   const { user } = useSelector((state) => state.auth);
-  var clientSuperMasterList = user.clientSuperMasterList;
-  const { clientCode } = clientSuperMasterList[0];
-  console.log("clientCode", clientCode);
+  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  const { clientCode } = clientMerchantDetailsList[0];
+  // console.log("clientCode", clientCode);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [isFilePicked, setIsFilePicked] = useState(false);
@@ -26,8 +27,7 @@ const BulkPayer = () => {
     formData.append("Client_Code", [clientCode]);
 
 
-    axios
-      .post("https://paybylink.sabpaisa.in/paymentlink/smartupload", formData, {
+    axios.post(API_URL.SMART_UPLOAD, formData, {
         headers: { ContentType: "application/json" },
       })
 
@@ -52,39 +52,34 @@ const BulkPayer = () => {
         })
       });
 
-    console.log(formData);
+    // console.log(formData);
   };
 
   return (
-    <div>
-      <form onSubmit={submitHandler}>
-        <h2 style={{ marginLeft: 110 }}>
-          <b>Upload Bulk Payer</b>
-        </h2>
-        <input
-          type="file"
-          class="form-control"
-          id="customFile"
-          onChange={changeHandler}
-          style={{ position: "absolute", top: 220, width: 700, left: 100 }}
-        />
-        <div>
-          <button
-            type="submit"
-            class="btn btn-primary"
-            style={{ position: "absolute", top: 220, left: 820 }}
-          >
-            Submit
-          </button>
-        </div>
-      </form>
-      {/* <Link
-        style={{ position: "absolute", top: 230, left: 1200 }}
-        value="Download"
-      >
-        Download Import Format Excel
-      </Link> */}
-    </div>
+
+    <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
+                <div className="container-fluid">
+                    <div className="row">  
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <label>Upload Bulk Payer</label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="customFile"
+                      onChange={changeHandler}
+                      
+                    />
+                    </div>
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <button
+                      type="submit"
+                      className="btn btn-primary martop">
+                      Submit
+                    </button>
+                    </div>
+                    </div>
+                </div>
+            </section>
   );
 };
 

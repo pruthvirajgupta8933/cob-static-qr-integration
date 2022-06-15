@@ -7,7 +7,7 @@ function Home() {
         <div className="profileBarStatus">
           {/*
           <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
-                class="btn">Upload Here</span></span></div>*/}
+                className="btn">Upload Here</span></span></div>*/}
         </div>
         <main className="gx-layout-content ant-layout-content">
           <div className="gx-main-content-wrapper">
@@ -295,9 +295,7 @@ function Home() {
               </div>
             </div>
           </div>
-          <footer className="ant-layout-footer">
-            <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
-          </footer>
+          
         </main>
       </section>
       <section className="features8 cid-sg6XYTl25a" id="features08-3">

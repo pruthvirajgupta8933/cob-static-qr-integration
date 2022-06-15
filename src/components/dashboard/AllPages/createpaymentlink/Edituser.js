@@ -1,89 +1,89 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import axios from 'axios';
 
 import { toast, Zoom } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import API_URL from '../../../../config';
+import FormikController from '../../../../_components/formik/FormikController';
+import Regex,{RegexMsg} from '../../../../_components/formik/ValidationRegex';
 
 export const Edituser = (props) => {
+
     let history = useHistory();
-    console.log(props.items);
-
-    // const [formData, setFormData] = useState();
-    // useEffect(() => {
-    //     setFormData(props.items)
-    // }, [props]);
-
     var { myname, email, phone, editCustomerTypeId, id } = props.items;
-    const [username, setUsername] = useState(myname);
-    const [useremail, setUserEmail] = useState(email);
-    const [usercustomer, setUserCustomer] = useState(editCustomerTypeId);
-    const [userphone, setUserPhone] = useState(phone);
+    // const [username, setUsername] = useState(myname);
+    // const [useremail, setUserEmail] = useState(email);
+    // const [usercustomer, setUserCustomer] = useState(editCustomerTypeId);
+    // const [userphone, setUserPhone] = useState(phone);
 
 
-    // const { name, email, phone_number, customer_type_id } =formData;
-    // console.log(myname);
+      const initialValues = {
+        name: myname,
+        email: email,
+        phone_number: Number(phone),
+        customer_type_id: editCustomerTypeId,
+      }
 
-    useEffect(() => {
-        setUsername(myname);
-        setUserEmail(email);
-        setUserCustomer(editCustomerTypeId);
-        setUserPhone(phone);
-    }, [props]);
-
+    const validationSchema = Yup.object({
+    name: Yup.string().matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet).required("Required"),
+    email: Yup.string().email('Must be a valid email').required("Required"),
+    phone_number: Yup.string().matches(Regex.acceptNumber, RegexMsg.acceptNumber).required("Required"),
+    customer_type_id: Yup.string().required("Required"),
+    })
 
     const { user } = useSelector((state) => state.auth);
 
 
     const [data, setData] = useState([])
-    // var clientSuperMasterList = user.clientSuperMasterList;
-    // const { clientCode } = clientSuperMasterList[0]
-
-    let clientSuperMasterList = [];
+    let clientMerchantDetailsList = [];
     let clientCode = '';
-    if (user && user.clientSuperMasterList === null) {
+    if (user && user.clientMerchantDetailsList === null) {
+        // console.log("edituser");
         history.push('/dashboard/profile');
     } else {
-        clientSuperMasterList = user.clientSuperMasterList;
-        clientCode = clientSuperMasterList[0].clientCode;
+        clientMerchantDetailsList = user.clientMerchantDetailsList;
+        clientCode = clientMerchantDetailsList[0].clientCode;
     }
 
 
-    // const onValueChange = e => {
-    //     // console.log(e.target.value);
-    //     setFormData({ ...formData, [e.target.name]: e.target.value })
-    // };
+    const editHandler = async values => {
 
-
-    const editHandler = async e => {
-
-
-        e.preventDefault();
-       
-        toast.success("User Updated Successfully", {
-            position: "top-right",
-            autoClose: 2000,
-            transition: Zoom
-
-        })
-        const res = await axios.put(` https://paybylink.sabpaisa.in/paymentlink/editCustomer/`, {
-            name: username,
-            email: useremail,
-            phone_number: userphone,
+        await axios.put(API_URL.EDIT_CUSTOMER, {
+            name: values.name,
+            email: values.email,
+            phone_number: values.phone_number,
             client_code: clientCode,
-            customer_type_id: usercustomer,
+            customer_type_id: values.customer_type_id,
             id: id
+        }).then(res=>{
+            // console.log(res)
+            toast.success("User Updated Successfully", {
+                position: "top-right",
+                autoClose: 2000,
+                transition: Zoom
+            })
+        }).catch(e=>{console.log(e)
+            toast.error("Data not Updated", {
+                position: "top-right",
+                autoClose: 2000,
+                transition: Zoom
+    
+            })
         })
        
-        console.log(res.data);
     };
     const getDrop = async (e) => {
-        await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes`)
+        await axios.get(API_URL.GET_CUSTOMER_TYPE)
             .then(res => {
-                setData(res.data);
-
+                let res_data = res.data
+                let data_arr = []
+                res_data.map((d,i)=>(
+                    data_arr.push({key:d.id, value:d.type})
+                ))
+                setData(data_arr);
             })
             .catch(err => {
                 console.log(err)
@@ -94,57 +94,64 @@ export const Edituser = (props) => {
         getDrop();
     }, []);
 
-    console.log("username", username);
+    // console.log("username", username);
 
     return (
-        <div class="modal fade" id="web" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div className="modal fade" id="web" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">Edit <i className="fa fa-pencil"></i> </h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <Formik>
-                            <Form onSubmit={editHandler}>
-                                <div class="form-group">
-                                    <label for="recipient-name" class="col-form-label">Name of Payer:</label>
-                                    <Field name="name" rel={username}
-                                        value={username} onChange={e => setUsername(e.target.value)} placeholder="Enter Your Name" class="form-control" id="namepair" />
-
-
-                                    <label for="recipient-name" class="col-form-label">Mobile No.:</label>
-                                    <Field name="phone_number"
-
-                                        value={userphone} onChange={e => setUserPhone(e.target.value)} placeholder='Enter Mobile No.' class="form-control" id="emailpair" />
-
-                                    <label for="recipient-name" class="col-form-label">Email ID:</label>
-                                    <Field name="email"
-
-                                        value={useremail} onChange={e => setUserEmail(e.target.value)} placeholder='Enter Email ID' class="form-control" id="phnpair" />
-
-                                    <label for="recipient-name" class="col-form-label">Payer Category:</label><br></br>
-                                    <select className='selct' name='customer_type_id'
-                                        onChange={(e) => setUserCustomer(e.target.value)} value={usercustomer}
-                                    >
-                                        <option type="text" class="form-control" id="recipient-name"  >Select Your Payer Category</option>
-                                        {
-                                            data.map((payer) => (
-
-                                                <option value={payer.id}>{payer.type}</option>
-
-                                            ))}
-                                    </select>
-
-                                </div>
-                                <button type="button" disabled class="btn btn-primary" >Submit</button>
-                                <button type="submit" class="btn btn-danger">Update</button>
-                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                    <div className="modal-body">
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={(editHandler)}
+                        enableReinitialize ={true}
+                        >
+                        {formik => (
+                            <Form>
+                            <div className="form-group">
+                            <FormikController
+                                control="input"
+                                type="text"
+                                label="Name of Payer"
+                                name="name"
+                                className="form-control"
+                            />
+                            <FormikController
+                                control="input"
+                                type="text"
+                                label="Mobile No"
+                                name="phone_number"
+                                className="form-control"
+                            />
+                            <FormikController
+                                control="input"
+                                type="text"
+                                label="Email ID"
+                                name="email"
+                                className="form-control"
+                            />
+                           
+                            <FormikController
+                                control="select"
+                                label="Payer Category"
+                                name="customer_type_id"
+                                options={data}
+                                className="form-control"
+                            />
+                            <button type="submit" className=" btn btn-primary btn-sm" >Update</button>
+                            <button type="button" className="btn btn-danger btn-sm text-white " data-dismiss="modal" >Cancel</button>
+                            </div>
+                            
                             </Form>
+                        )}
                         </Formik>
-
                     </div>
 
                 </div>

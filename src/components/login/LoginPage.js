@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useDebugValue} from 'react'
 import HeaderPage from './HeaderPage'
 import { useDispatch, useSelector } from 'react-redux';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
@@ -13,7 +13,8 @@ import OTPVerificationApi from "../../slices/auth";
 import {Link} from 'react-router-dom'
 import DisplayErrorMessage from '../../_components/reuseable_components/DisplayErrorMessage';
 import { toast } from 'react-toastify';
-
+import method from '../../utilities/encrypt-decrypt'
+import './Login.css';
 
 const INITIAL_FORM_STATE = {
   clientUserId:'',
@@ -53,44 +54,59 @@ function LoginPage(props) {
 
   // message = message?.length>=0?message=null:message;
   // console.log(message)
-  const {user,userAlreadyLoggedIn} = auth;
+  const {user,userAlreadyLoggedIn } = auth;
   // console.log(auth)
-  if(userAlreadyLoggedIn ){
+  if(userAlreadyLoggedIn && user?.loginStatus==='Activate'){
+    // console.log(userAlreadyLoggedIn , isLoggedIn)
+    // console.log("fn 2");
+    // console.log("user2===",user)
     history.push("/dashboard")  
   }
 
   useEffect(()=>{
     setAuthData(authentication);
     // console.log('change auth data',auth);
-    redirectRoute(auth);
+    // redirectRoute(auth);
 },[authentication])
 
 useEffect(() => {
     dispatch(clearMessage());
   }, [dispatch]);
 
-useEffect(() => {
-    // console.log('login page ,call one time');
-    // dispatch(logout());
-}, [])
+
 
 const handleLogin = (formValue) => {
   var { clientUserId, userPassword } = formValue;
+
   var username= clientUserId; 
   var password= userPassword; 
+
+
+  // const enPwd = method.encryption(password);
+  // console.log("enPwd",enPwd);
+  // const dePwd = method.decryption(enPwd);
+  // console.log("dePwd",dePwd);
+  // alert(2);
+
   setLoading(true);
   // console.log(formValue);
-  dispatch(login({ username, password }))
-    .unwrap()
-    .then(() => {
-      history.push("/dashboard");
-      // window.location.reload();
-    })
-    .catch((error) => {
-      toast.error('Login Unsucessful');
-      setLoading(false);
-    });
+  // console.log("isLoggedIn",isLoggedIn)
+  dispatch(login({ username, password }));
+
+  // console.log("==user==",user);
+    // .unwrap()
+    // .then(() => {
+    //   // console.log("is loggedin",isLoggedIn);
+    //   // history.push("/dashboard");
+    //   // window.location.reload();
+    // })
+    // .catch((error) => {
+    //   toast.error('Login Unsuccessful');
+    //   setLoading(false);
+    // });
 };
+
+
 
 const handleChangeForOtp = (otp) => {
   const regex = /^[0-9]*$/;
@@ -100,51 +116,88 @@ const handleChangeForOtp = (otp) => {
 };
 
 
-const redirectRoute = (authen) => {
-  // console.log('function call route');
-  // console.log('isLoggedIn',isLoggedIn);
-  // console.log('authvaliduser',authen.isValidUser);
-  if (isLoggedIn ) {
-      setOpen(false);
-        // console.log('redirect','dashboard')
-        history.push("/dashboard");
-    }
-    if (authen.isValidUser==="No"){
-        setOpen(true);
-    }
-};
+// const redirectRoute = (authen) => {
+//   // console.log('function call route');
+//   // console.log('isLoggedIn',isLoggedIn);
+//   // console.log('authvaliduser',authen.isValidUser);
+//   if (isLoggedIn) {
+//       setOpen(false);
+//         console.log('redirect','dashboard')
+//         history.push("/dashboard");
+//     }
+//     if (authen.isValidUser==="No"){
+//         setOpen(true);
+//     }
+// };
 
+// console.log("isLoggedIn",isLoggedIn);
+// console.log("loading",loading);
 
-const handleClickForVerification = () => {
-  setShowBackDrop(true);
-  dispatch(
-    OTPVerificationApi({
-      //verification_code: AuthToken,
-      otp: parseInt(otp.otp, 10),
-      geo_location: GeoLocation,
-    })
-  ).then((res) => {
-    if (res) {
-      if (res.meta.requestStatus === "fulfilled") {
-        if (res.payload.response_code === "1") {
-          setOtpVerificationError("");
-          setShowBackDrop(false);
-          history.push("/ledger");
-        } else if (res.payload.response_code === "0") {
-          setShowBackDrop(false);
-          toastConfig.errorToast(res.payload.message);
-        }
-      } else {
-        setShowBackDrop(false);
-        setShowResendCode(true);
-      }
+if (isLoggedIn) {
+  // setOpen(false);
+    // console.log('redirect','dashboard')
+    // console.log("user1===",user);
+    history.push("/dashboard");
+}
+// if (authen.isValidUser==="No"){
+//     setOpen(true);
+// }
+
+// const handleClickForVerification = () => {
+//   setShowBackDrop(true);
+//   dispatch(
+//     OTPVerificationApi({
+//       //verification_code: AuthToken,
+//       otp: parseInt(otp.otp, 10),
+//       geo_location: GeoLocation,
+//     })
+//   ).then((res) => {
+//     if (res) {
+//       if (res.meta.requestStatus === "fulfilled") {
+//         if (res.payload.response_code === "1") {
+//           setOtpVerificationError("");
+//           setShowBackDrop(false);
+//           history.push("/ledger");
+//         } else if (res.payload.response_code === "0") {
+//           setShowBackDrop(false);
+//           toastConfig.errorToast(res.payload.message);
+//         }
+//       } else {
+//         setShowBackDrop(false);
+//         setShowResendCode(true);
+//       }
+//     }
+//   });
+// };
+
+useEffect(() => {
+
+  if(isLoggedIn===false){ 
+    // console.log("isLoggedIn--2",isLoggedIn)
+    // console.log(user?.loginStatus)
+    var loginMsg = "Login Unsuccessful";
+    var extMsg = "";
+    // console.log(user?.loginStatus)
+    if(user?.loginStatus==="Pending" && isLoggedIn===false){
+      extMsg = "User not verified";
+      toast.error(loginMsg +", "+ extMsg);
+      // console.log(1)
+    }else{
+      // console.log(2)
+      toast.error(loginMsg);
     }
-  });
-};
+    setLoading(false);
+    
+  }
+
+    // setLoading(false);
+  
+}, [isLoggedIn])
+
 
 
 const handleClick = () => {
-  setOpen(true);
+  // setOpen(true);
 };
 
 const handleClose = (event, reason) => {
@@ -152,7 +205,7 @@ const handleClose = (event, reason) => {
   return;
   }
 
-  setOpen(false);
+  // setOpen(false);
 };
 
 
@@ -180,7 +233,7 @@ const handleClickShowPassword = () => {
                       <ul className="logmod__tabs">
                         <li data-tabtar="lgm-2" className="current">
                           <a
-                            href="javascript:void(0)"
+                            href={void(0)}
                             style={{ width: "100%" }}
                           >
                             Login
@@ -211,13 +264,13 @@ const handleClickShowPassword = () => {
                                       className="string optional"
                                       htmlFor="user-name"
                                     >
-                                      Email*
+                                      User name*
                                     </label>
                                     <Field
                                       className="string optional"
                                       maxLength={255}
                                       id="user-email"
-                                      placeholder="Email"
+                                      placeholder="user name"
                                       type="text"
                                       name="clientUserId"
                                     />
@@ -280,31 +333,33 @@ const handleClickShowPassword = () => {
                                     </span>
                                   </div>
                                 </div>
+                                
                                 <div className="simform__actions">
-                                  {/*<input class="sumbit" name="commit" type="sumbit" value="Log In" />*/}
+                                  {/*<input className="sumbit" name="commit" type="sumbit" value="Log In" />*/}
                                   <button
                                     className="sumbit"
                                     type="sumbit"
                                     style={{ color: "#fff" }}
                                   >
-                                    {" "}
+
                                     {loading && (
                                       <span
-                                        class="spinner-border"
+                                        className="spinner-border "
                                         role="status"
                                       ></span>
                                     )}
                                     LogIn
                                   </button>
-                                  <span className="simform__actions-sidetext">
-                                    <Link
+                                 {/* <span className="simform__actions-sidetext">
+                                     <Link
                                       className="special"
                                       role="link"
-                                      to="/forget"
+                                      to="#"
+                                      // to="/forget"
                                     >
                                       Forgot your password? Click here
-                                    </Link>
-                                  </span>
+                                    </Link> 
+                                  </span>*/}
                                 </div>
                               </Form>
                             </Formik>

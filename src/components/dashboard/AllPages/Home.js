@@ -39,18 +39,18 @@ function Home() {
     var DefaulttxnList = [];
     SetTxnList(DefaulttxnList);
     SetShowData(DefaulttxnList);
-    console.log(objParam);
+    // console.log(objParam);
     dispatch(subscriptionplan);
     dispatch(successTxnSummary(objParam));
   }, [clientCode]);
 
   // console.log('successTxnsumry',successTxnsumry );
-  // console.log('clientSuperMasterList',user.clientSuperMasterList);
+  // console.log('clientMerchantDetailsList',user.clientMerchantDetailsList);
 
   
   //make client code array
-  if(user.clientSuperMasterList!==null && user.clientSuperMasterList.length>0){
-        clientCodeArr = user.clientSuperMasterList.map((item)=>{ 
+  if(user?.clientMerchantDetailsList!==null && user.clientMerchantDetailsList?.length>0){
+        clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
       return item.clientCode;
       });
   }else{
@@ -78,7 +78,8 @@ function Home() {
 
   useEffect(() => {
     search!==''
-    ? SetShowData(txnList.filter((txnItme)=>txnItme.clientName.toLowerCase().includes(search.toLocaleLowerCase())))
+    ? SetShowData(txnList.filter((txnItme)=>
+    Object.values(txnItme).join(" ").toLowerCase().includes(search.toLocaleLowerCase())))
     : SetShowData(txnList);
   }, [search]);
   
@@ -88,10 +89,12 @@ function Home() {
   }
 
  
-  if(user && user.clientSuperMasterList===null && user.roleId!==3 && user.roleId!==13){
-    return <Redirect to={`${path}/profile`} />
+  if(user.roleId!==3 && user.roleId!==13){
+    if(user.clientMerchantDetailsList===null){
+      return <Redirect to={`${path}/profile`} />
+    }
   } 
-console.log('show data',showData)
+
 
 showData.map((item)=>{
       totalSuccessTxn += item.noOfTransaction;
@@ -101,18 +104,15 @@ showData.map((item)=>{
     return (
       <section className="ant-layout">
         <div className="profileBarStatus">
-          {/*  <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span class="btn">Upload Here</span></span></div>*/}
         </div>
         <main className="gx-layout-content ant-layout-content">
           <div className="gx-main-content-wrapper">
             <div className="right_layout my_account_wrapper right_side_heading">
               <h1 className="m-b-sm gx-float-left">Home</h1>
             </div>
-            <section className="features8 cid-sg6XYTl25a" id="features08-3-">
+            <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
               <div className="container-fluid">
                 <div className="row bgcolor">
-                  {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
-                  lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
                   <div className="col-lg-6 mrg-btm- bgcolor-">
                     <label>Successful Transaction Summary</label>
                     <select
@@ -191,14 +191,7 @@ showData.map((item)=>{
               </div>
             </section>
           </div>
-          <footer className="ant-layout-footer">
-            <div className="gx-layout-footer-content">
-              © 2021 Ippopay. All Rights Reserved.{" "}
-              <span className="pull-right">
-                Ippopay's GST Number : 33AADCF9175D1ZP
-              </span>
-            </div>
-          </footer>
+          
         </main>
       </section>
     );

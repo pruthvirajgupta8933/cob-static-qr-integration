@@ -254,20 +254,19 @@ function HeaderPage() {
         </svg>
       </div>
 
-      <header class="header">
-        {/* <a href="" class="logo"></a> */}
+      <header className="header">
+       
         <Link
           to="/login-page"
           className="logo"
-          href="https://www.SabPaisa.com/"
         >
           <img src={sabpaisalogo} alt="SabPaisa" title="SabPaisa" />
         </Link>
-        <input class="menu-btn" type="checkbox" id="menu-btn" />
-        <label class="menu-icon" for="menu-btn">
-          <span class="navicon"></span>
+        <input className="menu-btn" type="checkbox" id="menu-btn" />
+        <label className="menu-icon" htmlFor="menu-btn">
+          <span className="navicon"></span>
         </label>
-        <ul class="menu">
+        <ul className="menu">
           <li>
             <a
               href="https://sabpaisa.in/"
@@ -279,31 +278,31 @@ function HeaderPage() {
             </a>
           </li>
           <li>
-            <Link
-              to={{ pathname: "https://sabpaisa.in/sabpaisa-apis/" }}
+            <a
+              href= "https://sabpaisa.in/sabpaisa-apis/"
               target="_blank"
               rel="noreferrer noopener"
             >
               APIs
-            </Link>
+            </a>
           </li>
           <li>
-            <Link
+            <a
               target="_blank"
-              to={{ pathname: "https://sabpaisa.in/" }}
+              href="https://sabpaisa.in/"
               rel="noreferrer noopener"
             >
               Developers
-            </Link>
+            </a>
           </li>
           <li>
-            <Link
+            <a
               target="_blank"
-              to={{ pathname: "https://sabpaisa.in/" }}
+              href="https://sabpaisa.in/"
               rel="noreferrer noopener"
             >
               Pricing
-            </Link>
+            </a>
           </li>
           {/* </ul>
         <ul className="header_second_list hidden-xs"> */}
@@ -315,7 +314,7 @@ function HeaderPage() {
           </li>
           <li>
             <span className="btnlink cotactbg whtcolr">
-              Call +91 987-551-5119
+              Call 011 4173 3223
             </span>
           </li>
         </ul>

@@ -1,20 +1,79 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import validation from "../validation";
+import { verifyOtpOnForgotPwdSlice } from "../../slices/auth";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 
 
-function VerifyEmailPhone(props) {
+const VerifyEmailPhone = (props)  => {
+  const dispatch = useDispatch();
+  const {auth} = useSelector(state=>state);
+  console.log(auth.forgotPassword.sendUserName)
+  
+
+const [emailotp , setEmailotp] = useState("");
+const [smsotp , setSmsotp] = useState("");
+const [errors, setErrors] =useState({});
+const [verify, setverify] = useState(null)
+//const [username, setUserName] = useState(auth.forgotPassword.sendUserName.username)
+const username = auth.forgotPassword.sendUserName.username;
+
+    // const {handleFormSubmit} = props;
+
+
+    const Email = (e) => {
+      setEmailotp(e.target.value)
+    }
+
+    const Sms = (e) => {
+      setSmsotp(e.target.value)
+    }
+
+    //Email OTP
     
-    const {handleFormSubmit} = props;
+    const emailverify = async (e) => {
+      setErrors(validation({ emailotp}))
+      // e.preventDefault();
+
+      errors?.emailotp === false ? setverify(true) : setverify(false)
+      // alert(verify);
+      // props.props('a3');
+
+      //dispatch(verifyOtpOnForgotPwdSlice())
+      if(verify){
+        const sendOtp = JSON.stringify({
+                            username: username,
+                            otp: emailotp
+                        });
+
+       await axios.post("https://cobapi.sabpaisa.in/auth-service/account/verify-otp/",sendOtp,{headers:{"Content-Type" : "application/json"}}).then((response)=>{console.log(response)}).catch(error=>console.log(error))
+        // dispatch(verifyOtpOnForgotPwdSlice(sendOtp))
+      }
+
+    }
+
+    //SMS OTP 
+    const smsverify = (e) => {
+      // setErrors(validation({ smsotp}))
+       setErrors(false)
+      e.preventDefault();
+      // props.props('a3')
+
+    }
+
     
-    function handleSubmit(e) {
+    
+    const handleSubmit = (e) => {
         e.preventDefault();
-        // handleFormSubmit("a2");
-        console.log('You clicked submit.');
+       
       }
     
   return (
     <React.Fragment>
-    <div className="container-fluid bg-info">
+    <div className="container-fluid toppad ">
     <div className="row">
       <div className="col-sm-6 mx-auto">
         <div className="card ">
@@ -27,25 +86,33 @@ function VerifyEmailPhone(props) {
                     <div className="form-inline" >
                         <div className="form-group mb-2">
                         <label htmlFor="staticEmail2" className="sr-only">Email OTP</label>
-                        <input type="text" readOnly className="form-control-plaintext" id="staticEmail2" defaultValue="Enter Email OTP" />
+                        <input type="text" readOnly className="form-control-plaintext" id="staticEmail2" />
                         </div>
                             <div className="form-group mx-sm-3 mb-2">
                                 <label htmlFor="inputEmailOTP" className="sr-only">emailOTP</label>
-                                <input type="text" className="form-control" id="inputEmailOTP" placeholder="Email OTP" />
+                                <input type="text"  className="form-control" id="inputEmailOTP" value={emailotp} onChange={Email} placeholder="Email OTP"/>
+                                <br />
+                                <br />
+                                <br />
+                                {errors.emailotp && <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" , top: '157px'}} >{errors.emailotp}</p>}
                             </div>
-                        <button type="submit" onClick={()=>props.props('a3')} className="btn btn-primary mb-2">Verify</button>
+                        <button type="submit" name = "emailverify" className="btn btn-primary mb-2" value = "firstone" onClick={()=>emailverify()} >Verify</button>
+                        {/* onClick={()=>props.props('a3')} */}
                     </div>
 
-                    <div className="form-inline">
+                    <div className="form-inline" style={{display:"none"}}>
                         <div className="form-group mb-2">
                         <label htmlFor="staticPhone2" className="sr-only">SMS OPT</label>
-                        <input type="text" readOnly className="form-control-plaintext" id="staticPhone2" defaultValue="SMS OTP" />
+                        <input type="text" readOnly className="form-control-plaintext" id="staticPhone2"/>
                         </div>
                         <div className="form-group mx-sm-3 mb-2">
-                        <label htmlFor="inputSmsOtp2" className="sr-only">SMS OPT</label>
-                        <input type="text" className="form-control" id="inputSmsOtp2" placeholder="SMS OTP" />
+                        <label htmlFor="inputSmsOtp2" className="sr-only">SMS OTP</label>
+                        <input type="text" pattern="\d{6}" className="form-control" value={smsotp} onChange={Sms} id="inputSmsOtp2" placeholder="SMS OTP" />
+                        <br />
+                        {errors.smsotp && <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" , top: '214px'}} >{errors.smsotp}</p>}
                         </div>
-                        <button type="submit"   onClick={()=>props.props('a3')}  className="btn btn-primary mb-2">Verify</button>
+                        <button type="submit" name = "otpverify" value = "secondone" className="btn btn-primary mb-2" onClick={smsverify} >Verify</button>
+                        {/* onClick={()=>props.props('a3')}  */}
                     </div>
                 </form>
             <p className="card-text" style={{display: "none"}}>With supporting text below as a natural lead-in to additional content.</p>

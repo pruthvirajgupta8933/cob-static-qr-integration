@@ -11,12 +11,13 @@ function ClientList() {
   
   useEffect(() => {
    
-  if(user.clientSuperMasterList.length>0){
-    var clientSuperMasterList = user.clientSuperMasterList;
-    SetClientList(user.clientSuperMasterList);
+  if(user.clientMerchantDetailsList?.length>0){
+    var clientMerchantDetailsList = user.clientMerchantDetailsList;
+    SetClientList(user.clientMerchantDetailsList);
   }
   if(search!==''){
-    SetClientList(clientSuperMasterList.filter((Itme)=>Itme.clientCode.toLowerCase().includes(search.toLocaleLowerCase())));
+    SetClientList(clientMerchantDetailsList.filter((Itme)=>
+    Object.values(Itme).join(" ").toLowerCase().includes(search.toLocaleLowerCase())));
   
   }
     }, [search,user]);
@@ -29,7 +30,7 @@ const handleChange= (e)=>{
     return (
       <section className="ant-layout">
       <div className="profileBarStatus">
-        {/*  <div class="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span class="btn">Upload Here</span></span></div>*/}
+        {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
       </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
@@ -48,6 +49,7 @@ const handleChange= (e)=>{
                   <div className='noOfRecord'>Number of Record: {clientListData.length}</div>
                 </div>
                 
+                <div style={{overflow:"scroll"}}>
                 <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables">
                   <tbody><tr>
                       <th>Client Code</th>
@@ -72,12 +74,11 @@ const handleChange= (e)=>{
                       })}
                   </tbody>
                   </table>
+                  </div>
               </div>
             </div></section>
         </div>
-        <footer className="ant-layout-footer">
-          <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
-        </footer>
+        
       </main>
     </section>
     )

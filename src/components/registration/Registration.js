@@ -9,8 +9,8 @@ import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { register } from "../../slices/auth";
-import { Link, useHistory, Redirect } from "react-router-dom";
+import { register, udpateRegistrationStatus } from "../../slices/auth";
+import {  useHistory } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
@@ -23,20 +23,11 @@ const INITIAL_FORM_STATE = {
   selectStates:''
 };
 
-// const INITIAL_VALUES= {
-//   firstname: '',
-//   lastname: '',
-//   mobilenumber: '',
-//   emaill:'',
-//   passwordd: '',
-//   confirmpasswordd: ''
-// }
-
 const FORM_VALIDATION = Yup.object().shape({
-  firstname: Yup.string().required("Required"),
-  lastname: Yup.string().required("Required"),
+  firstname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
+  lastname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
   mobilenumber: Yup.string().required("Required").matches(phoneRegExp, 'Phone number is not valid')
-  .min(10, "Too short")
+  .min(10, "Phone number in not valid")
   .max(10, "too long"),
   emaill: Yup.string().email('Must be a valid email').max(255).required("Required"),
   passwordd: Yup.string().required("Password Required").matches(
@@ -50,7 +41,11 @@ const FORM_VALIDATION = Yup.object().shape({
 
 function Registration() {
   const history = useHistory()
-  const datar = useSelector(state=>state.auth);
+ 
+  const reduxState = useSelector(state=> state)
+  const {message, auth} = reduxState
+  const datar = auth;
+
   const {isUserRegistered} = datar;
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
@@ -68,7 +63,9 @@ function Registration() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-      localStorage.setItem("register", "");
+      return ()=>{
+        dispatch(udpateRegistrationStatus())
+      }
   }, []);
 
   const saved = localStorage.getItem("register");
@@ -93,22 +90,11 @@ function Registration() {
             // alert(2);
           })
           .catch(() => {
-            // toast.error("Sign Up Unsuccessfull",{
-            //   position: "top-right",
-            //   autoClose: 1000,
-            //   transition: Zoom,
-            //   limit: 2,
-            // })
-            // alert(4);
             setLoading(false);
           });
 
           
   }
-
-
- 
- 
 
   const toggleClass = () => {
     setActive(!isActive);
@@ -121,7 +107,7 @@ function Registration() {
   
 
   useEffect(() => {
-    console.log("isUserRegistered",isUserRegistered);
+    // console.log("isUserRegistered",isUserRegistered);
     if(isUserRegistered === true) {
     toast.success("User Registered, Verify Your Email", {
       position: "top-right",
@@ -130,18 +116,26 @@ function Registration() {
       transition: Zoom,
     });
     setTimeout(() => {   
+      // alert("aa4");
       history.push("/login-page");
+      
     }, 2000);
     }
+
     if(isUserRegistered === false) {
-      toast.error("Please Check Your Details, ", {
+      toast.error(message.message , {
           position: "top-right",
-          autoClose: 1000,
+          autoClose: 1500,
           limit: 5,
           transition: Zoom,
 
       })
     }
+    return ()=>{
+
+      dispatch(udpateRegistrationStatus())
+
+    }   
   }, [isUserRegistered])
   
   
@@ -151,7 +145,30 @@ return (
     <div className="container-fluid toppad">
       <div className="row">
         <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
-          <div className="col-sm-7 authfy-panel-right push-right nopad">
+          <div className="col-sm-5 authfy-panel-left">
+            <div className="brand-col">
+              <div className="headline">
+                {/* brand-logo start */}
+                <div className="brand-logo">
+                  <img
+                    src={sabpaisalogo}
+                    width={150}
+                    alt="SabPaisa"
+                    title="SabPaisa"
+                  />
+                </div>
+                {/* ./brand-logo */}
+                <p style={{ fontSize: "20px", lineHeight: "20px" }}>
+                  Receive Payments, The Easy Way
+                </p>
+                <h1 style={{ fontSize: "26px" }}>A Payments Solution for</h1>
+                <h1 style={{ fontSize: "26px", whiteSpace: "10px" }}>
+                  Businesses,&nbsp;SMEs,&nbsp;Freelancers, Homepreneurs.
+                </h1>
+              </div>
+            </div>
+          </div>
+          <div className="col-sm-7- authfy-panel-right">
             {/* authfy-login start */}
             <div className="authfy-login">
               {/* panel-login start */}
@@ -166,9 +183,9 @@ return (
                         className={isActive ? "current" : "left"}
                         onClick={toggleClass}
                       >
-                        <Link id="btnLeft" href="javascript:void(0)">
+                        <a id="btnLeft"  href={void(0)} >
                           Individual
-                        </Link>
+                        </a>
                       </li>
                       <li
                         data-tabtar="lgm-1"
@@ -176,9 +193,9 @@ return (
                         className={isActive ? "right" : "current"}
                         onClick={toggleClass}
                       >
-                        <Link id="btnRight" href="javascript:void(0)">
+                        <a id="btnRight" href={void(0)}>
                           Business
-                        </Link>
+                        </a>
                       </li>
                     </ul>
                     <div className="logmod__tab-wrapper">
@@ -188,9 +205,6 @@ return (
                             Enter your personal details{" "}
                             <strong>to create an account</strong>
                           </span>
-                          {/* {saved &&
-                            <div style={{ borderTopWidth: 0, borderBottomWidth: 0, marginBottom: 0, paddingTop: 0, paddingBottom: 0,}} className="alert alert-success">User successfully Signed in</div>
-                            } */}
                         </div>
                         <div className="logmod__form">
                           <Formik
@@ -215,14 +229,14 @@ return (
                                 <div className="input full- optional">
                                   <label
                                     className="string optional"
-                                    htmlFor="user-name"
+                                    htmlFor="first-name"
                                   >
                                     First Name *
                                   </label>
                                   <Field
                                     className="string optional"
                                     maxLength={255}
-                                    id="user-name"
+                                    id="first-name"
                                     placeholder="First Name"
                                     type="text"
                                     name="firstname"
@@ -248,14 +262,14 @@ return (
                                 <div className="input full- optional">
                                   <label
                                     className="string optional"
-                                    htmlFor="user-name"
+                                    htmlFor="last-name"
                                   >
                                     Last Name*
                                   </label>
                                   <Field
                                     className="string optional"
                                     maxLength={255}
-                                    id="user-name"
+                                    id="last-name"
                                     placeholder="Last Name"
                                     name="lastname"
                                     type="text"
@@ -280,44 +294,12 @@ return (
                                 </div>
                               </div>
                               <div className="sminputs">
-                                <div className="input full- optional">
-                                  <label
-                                    className="string optional"
-                                    htmlFor="user-name"
-                                  >
-                                    Mobile Number*
-                                  </label>
-                                  <Field
-                                    className="string optional"
-                                    maxLength={10}
-                                    id="user-name"
-                                    placeholder="Mobile Number"
-                                    name="mobilenumber"
-                                    type="text"
-                                    pattern="\d{10}"
-                                    size={10}
-                                    onKeyDown={(e) =>
-                                      ["e", "E", "+", "-", "."].includes(
-                                        e.key
-                                      ) && e.preventDefault()
-                                    }
-                                  />
-                                  {
-                                    <ErrorMessage name="mobilenumber">
-                                      {(msg) => (
-                                        <p
-                                          className="abhitest"
-                                          style={{
-                                            color: "red",
-                                            position: "absolute",
-                                            zIndex: " 999",
-                                          }}
-                                        >
-                                          {msg}
-                                        </p>
-                                      )}
-                                    </ErrorMessage>
-                                  }
+                              <div className="input full- optional">
+                                  <label className="string optional" htmlFor="mobile">Mobile Number*</label>
+                                  <Field className="string optional" maxLength={10} id="mobile" placeholder="Mobile Number" name = 'mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}/>
+                                  {<ErrorMessage name="mobilenumber">
+                                                {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                            </ErrorMessage>}
                                 </div>
                                 <div className="input full- optional">
                                   <label
@@ -359,7 +341,7 @@ return (
                                     className="string optional"
                                     htmlFor="user-pw"
                                   >
-                                    Create Password *
+                                   Create Password *
                                   </label>
                                   <Field
                                     className="string optional"
@@ -380,6 +362,7 @@ return (
                                             color: "red",
                                             position: "absolute",
                                             zIndex: " 999",
+                                            fontSize:"12px"
                                           }}
                                         >
                                           {msg}
@@ -391,14 +374,14 @@ return (
                                 <div className="input full- optional">
                                   <label
                                     className="string optional"
-                                    htmlFor="user-pw"
+                                    htmlFor="user-cpw"
                                   >
                                     Confirm Password *
                                   </label>
                                   <Field
                                     className="string optional"
                                     maxLength={255}
-                                    id="user-pw"
+                                    id="user-cpw"
                                     placeholder="Confirm Password"
                                     type={
                                       values.showPassword ? "text" : "password"
@@ -438,14 +421,6 @@ return (
                               </div>
                               <div className="sminputs">
                                 <div className="simform__actions">
-                                  {/* <button
-                                  className="sumbit"
-                                  type="sumbit"
-                                  style={{ color: "#fff" }}
-                                  onClick={handleRegistration}
-                                > 
-                                  Create Account
-                                </button> */}
                                   <button
                                     className="sumbit"
                                     name="commit"
@@ -461,20 +436,12 @@ return (
                                         type="checkbox"
                                         className="form-check-input"
                                         name="terms_and_condition"
-                                        defaultValue
                                       />
                                     </span>{" "}
                                     I agree to the{" "}
-                                    <Link
-                                      to={{
-                                        pathname:
-                                          "https://sabpaisa.in/term-conditions/",
-                                      }}
-                                      className="special"
-                                      target="_blank"
-                                    >
+                                    <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" className="special" target="_blank" >
                                       Terms &amp; Conditions
-                                    </Link>
+                                    </a>
                                   </span>
                                   {
                                     <ErrorMessage name="terms_and_condition">
@@ -483,9 +450,7 @@ return (
                                           className="abhitest"
                                           style={{
                                             color: "red",
-                                            position: "absolute",
-                                            top: "267px",
-                                            left: "4px",
+                                            float: "left",
                                           }}
                                         >
                                           {msg}
@@ -502,158 +467,13 @@ return (
                     </div>
                   </div>
                 </div>
-              </div>{" "}
-              {/* ./panel-login */}
-              {/* panel-signup start */}
-              <div className="authfy-panel panel-signup text-center">
-                <div className="row">
-                  <div className="col-xs-12 col-sm-12">
-                    <div className="authfy-heading">
-                      <h3 className="auth-title">Sign up for free!</h3>
-                    </div>
-                    <form
-                      name="signupForm"
-                      className="signupForm"
-                      action="#"
-                      method="POST"
-                    >
-                      <div className="form-group">
-                        <input
-                          type="email"
-                          className="form-control"
-                          name="username"
-                          placeholder="Email address"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="fullname"
-                          placeholder="Full name"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <div className="pwdMask">
-                          <input
-                            type="password"
-                            className="form-control"
-                            name="password"
-                            placeholder="Password"
-                          />
-                          <span className="fa fa-eye-slash pwd-toggle" />
-                        </div>
-                      </div>
-                      <div className="form-group">
-                        <p className="term-policy text-muted small">
-                          I agree to the <a href="#">privacy policy</a> and{" "}
-                          <a href="#">terms of service</a>.
-                        </p>
-                      </div>
-                      <div className="form-group">
-                        <button
-                          className="btn btn-lg btn-primary btn-block"
-                          type="submit"
-                        >
-                          Sign up with email
-                        </button>
-                      </div>
-                    </form>
-                    <a
-                      className="lnk-toggler"
-                      data-panel=".panel-login"
-                      href="#"
-                    >
-                      Already have an account?
-                    </a>
-                  </div>
-                </div>
-              </div>{" "}
-              {/* ./panel-signup */}
-              {/* panel-forget start */}
-              <div className="authfy-panel panel-forgot">
-                <div className="row">
-                  <div className="col-xs-12 col-sm-12">
-                    <div className="authfy-heading">
-                      <h3 className="auth-title">Recover your password</h3>
-                      <p>
-                        Fill in your e-mail address below and we will send you
-                        an email with further instructions.
-                      </p>
-                    </div>
-                    <form
-                      name="forgetForm"
-                      className="forgetForm"
-                      action="#"
-                      method="POST"
-                    >
-                      <div className="form-group">
-                        <input
-                          type="email"
-                          className="form-control"
-                          name="username"
-                          placeholder="Email address"
-                        />
-                      </div>
-                      <div className="form-group">
-                        <button
-                          className="btn btn-lg btn-primary btn-block"
-                          type="submit"
-                        >
-                          Recover your password
-                        </button>
-                      </div>
-                      <div className="form-group">
-                        <a
-                          className="lnk-toggler"
-                          data-panel=".panel-login"
-                          href="#"
-                        >
-                          Already have an account?
-                        </a>
-                      </div>
-                      <div className="form-group">
-                        <a
-                          className="lnk-toggler"
-                          data-panel=".panel-signup"
-                          href="#"
-                        >
-                          Don’t have an account?
-                        </a>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>{" "}
-              {/* ./panel-forgot */}
-            </div>{" "}
+              </div>
+       
+            </div>
             {/* ./authfy-login */}
           </div>
-          <div className="col-sm-5 authfy-panel-left push-left">
-            <div className="brand-col">
-              <div className="headline">
-                {/* brand-logo start */}
-                <div className="brand-logo">
-                  <img
-                    src={sabpaisalogo}
-                    width={150}
-                    alt="SabPaisa"
-                    title="SabPaisa"
-                  />
-                </div>
-                {/* ./brand-logo */}
-                <p style={{ fontSize: "20px", lineHeight: "20px" }}>
-                  Receive Payments, The Easy Way
-                </p>
-                <h1 style={{ fontSize: "26px" }}>A Payments Solution for</h1>
-                <h1 style={{ fontSize: "26px", whiteSpace: "10px" }}>
-                  Businesses,&nbsp;SMEs,&nbsp;Freelancers, Homepreneurs.
-                </h1>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>{" "}
+      </div>
       {/* ./row */}
     </div>
   </>

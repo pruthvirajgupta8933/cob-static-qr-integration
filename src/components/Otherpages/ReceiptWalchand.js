@@ -1,6 +1,7 @@
 import React, { useState,useRef,useEffect} from 'react';
 import axios from 'axios';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
+import API_URL from '../../config';
 
 
 const ReceiptWalchand = () => {
@@ -34,10 +35,11 @@ const ReceiptWalchand = () => {
     const [data, setData] = useState([]);
     
 
-    console.log(data);
+    // console.log(data);
 
     const onSubmit = async (pnrId) => {
-          const response = await axios.get(`https://qwikforms.in/QwikForms/fetchDataForWACOE?PRNNum=${pnrId}`)
+        
+          const response = await axios.get(`${API_URL.FETCH_DATA_FOR_WACOE}?PRNNum=${pnrId}`)
             .then((response) => {
                 var resData = response.data
                 resData.map((dt,i)=>{
@@ -45,7 +47,7 @@ const ReceiptWalchand = () => {
                         if(response[0].client_txn_id===dt.transId){
                            //resData[i] = {...response[0], ...dt};
                            //trans_date:dt.trans_date,paid_amount:dt.paid_amount,client_name:dt.client_name
-                           console.log(response[0]);
+                        //    console.log(response[0]);
                            resData[i].trans_date = response[0].trans_date;
                            resData[i].paid_amount = response[0].paid_amount;
                            resData[i].client_name = response[0].client_name;
@@ -53,12 +55,12 @@ const ReceiptWalchand = () => {
                     })
                 })
 
-                console.log('afterupdate',resData)
+                // console.log('afterupdate',resData)
                 setInterval(() => {
                     setData(resData);
                     setIsShow(true);
                     setErrMessage('');
-                }, 1500);
+                }, 2000);
                    
                
             })
@@ -77,7 +79,7 @@ const ReceiptWalchand = () => {
 
     const transactionStatus = (cid, transId,index=0,dataLength=1) => {
            
-            return fetch(`https://adminapi.sabpaisa.in/Receipt/ReceiptForWalchand/${cid}/${transId}`, {
+            return fetch(`${API_URL.RECEIPT_FOR_WALCHAND}${cid}/${transId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -90,13 +92,6 @@ const ReceiptWalchand = () => {
 
     }
 
-    
-    // console.log(ref.current);
-    // const addItem = useCallback(() => {
-    //     setWalchandData(walchandData => [...walchandData, Math.random()]);
-    //   }, []);
-
-    // console.log("",walchandData);
 
 
     const dateFormat = (timestamp) => {
@@ -130,9 +125,9 @@ const ReceiptWalchand = () => {
     return (
         <>
             <div className='container'>
-        
+        {/* card start */}
                 <div className='row'>
-                    <div className='col-12 mb-4'>
+                    <div className='col-sm-8 mx-auto'>
 
                         <b>Dear payer, in case money is debited by a Bank and not confirmed to us in Real time Your Bank would probably Refund your money as per your policy.For any payment issues please mail us at support@sabpaisa.in </b>
                         <div className="card">
@@ -140,14 +135,17 @@ const ReceiptWalchand = () => {
                                 SABPAISA TRANSACTION RECEIPT
                             </div>
                             <div className="card-body" >
-                                <div className="col-lg-6 mrg-btm- bgcolor">
-                                    <input type="text" className="ant-input" name="pnrId" value={pnrId} onChange={(e) => setPnrId(e.target.value)} placeholder="Enter PNR number " style={{ position: 'absolute', width: 430, left: 250 }} />
+                                <div className="form-group">
+                                    <input type="text" className="ant-input" name="pnrId" value={pnrId} onChange={(e) => setPnrId(e.target.value)} placeholder="Enter PNR number "  />
                                 </div>
-                                <button className="btn btn-success" onClick={() => onSubmit(pnrId)} style={{ marginTop: '70px', marginLeft: -130, width: 200 }} >View</button>
+                                <button className="btn btn-success" onClick={() => onSubmit(pnrId)}>View</button>
                             </div>
                         </div>
                     </div>
                 </div>
+
+            {/* card end */}
+
                 <div className='row'>
                     <div className='col-12'>
                         
@@ -155,7 +153,7 @@ const ReceiptWalchand = () => {
                             show &&
                             data.map((user,i) => (
                                 <>
-                            {console.log(user)}
+                            {/* {console.log(user)} */}
                                     <div className='card'>
                                         <div className='card-body table-responsive'>
                                             <h3>TRANSACTION RECEIPT</h3>

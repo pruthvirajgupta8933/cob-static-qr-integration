@@ -9,8 +9,6 @@
 firebase.json
 overview.txt
 
-package.json
-/yarn.lock
 
 # testing
 /coverage
@@ -25,6 +23,9 @@ package.json
 .env.test.local
 .env.production.local
 
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+yarn.lock
+

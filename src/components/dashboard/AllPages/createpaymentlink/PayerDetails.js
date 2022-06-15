@@ -5,10 +5,13 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link ,useHistory} from 'react-router-dom'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
+import _ from 'lodash';
 import * as Yup from 'yup'
 import Genratelink from './Genratelink';
 import { Edituser } from './Edituser';
 import { toast, Zoom } from 'react-toastify';
+import API_URL from '../../../../config';
+
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 
@@ -41,20 +44,28 @@ const PayerDetails = () => {
     // const [formData, setFormData] = useState(initialValues)
 
     const [data, setData] = useState([])
-    const [searchResults, setSearchResults] = useState([])
     const [customerType, setCustomerType] = useState([]);
-    let clientSuperMasterList=[]
+    const [pageSize, setPageSize] = useState(10);
+    const [paginatedata, setPaginatedData] = useState([])
+    const [currentPage, setCurrentPage] = useState(1);
+
+
+    
+const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
+
+    let clientMerchantDetailsList=[]
     let clientCode =''
-    if(user && user.clientSuperMasterList===null){
+    if(user && user.clientMerchantDetailsList===null){
+        // console.log("payerDetails");
         history.push('/dashboard/profile');
       }else{
-        clientSuperMasterList = user.clientSuperMasterList;
-        clientCode =  clientSuperMasterList[0].clientCode;
+        clientMerchantDetailsList = user.clientMerchantDetailsList;
+        clientCode =  clientMerchantDetailsList[0].clientCode;
       }
   
-    // console.log(clientSuperMasterList);
+    // console.log(clientMerchantDetailsList);
     
-    // console.log(clientSuperMasterList);
+    // console.log(clientMerchantDetailsList);
     //console.log(clientCode)
     // const onInputChange = e => {
     //     // console.log(e.target.value);
@@ -69,12 +80,11 @@ const PayerDetails = () => {
 // Alluser data API INTEGRATION
 
     const loadUser = async () => {
-        const result = await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`)
-            // const data = result.data;
-            // console.log(result.data);  
+        const result = await axios.get(API_URL.GET_CUSTOMERS + clientCode)
             .then(res => {
                 // console.log(res)
                 setData(res.data);
+                setPaginatedData(_(res.data).slice(0).take(pageSize).value())
             })
             .catch(err => {
                 console.log(err)
@@ -85,8 +95,12 @@ const PayerDetails = () => {
 
     useEffect(() => {
         if (searchText.length > 0) {
-            setData(data.filter((item) => item.name.toLowerCase().includes(searchText.toLocaleLowerCase())))
+            setData(data.filter((item) => 
+            Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
+            setPaginatedData(data.filter((item) => 
+            Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
         } else {
+            setPaginatedData(data)
             loadUser()
         }
     }, [searchText])
@@ -95,10 +109,28 @@ const PayerDetails = () => {
         setSearchText(e.target.value);
     };
 
+
+    useEffect(()=>{
+        setPaginatedData(_(data).slice(0).take(pageSize).value())
+      },[pageSize]);
+      
+      useEffect(() => {
+        // console.log("page chagne no")
+        const startIndex = (currentPage - 1) * pageSize;
+       const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+       setPaginatedData(paginatedPost);
+      
+      }, [currentPage])
+      
+
+      const pages = _.range(1, pageCount + 1)
+
+
+
     // ADD User Dropdown api integration
 
     const getDrop = async (e) => {
-        await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes`)
+        await axios.get(API_URL.GET_CUSTOMER_TYPE)
             .then(res => {
                 setCustomerType(res.data);
             })
@@ -111,7 +143,7 @@ const PayerDetails = () => {
     //ADD user API Integration
     const onSubmit = async (e) => {
         // console.log(e)
-        const res = await axios.post('https://paybylink.sabpaisa.in/paymentlink/addCustomers', {
+        const res = await axios.post(API_URL.ADD_CUSTOMER, {
             name: e.name,
             email: e.email,
             phone_number: e.phone_number,
@@ -120,8 +152,8 @@ const PayerDetails = () => {
         });
 
 
-        console.log(res, 'succes')
-loadUser()
+        // console.log(res, 'succes')
+        loadUser();
         if (res.status === 200) {
             ;
             toast.success("Payment Link success", {
@@ -160,7 +192,7 @@ loadUser()
     }
     // USE FOR GENERETE LINK
     const generateli = (id) => {
-        console.log(id);
+        // console.log(id);
         data.filter((dataItem) => {
             if (dataItem.id === id) {
                 setGenrateForm({
@@ -175,21 +207,27 @@ loadUser()
         // confirm("do you confirm to delete it");
         var iscConfirm = window.confirm("Are you sure you want to delete it");
         if (iscConfirm) {
-    await axios.delete(`https://paybylink.sabpaisa.in/paymentlink/deleteCustomer?Client_Code=${clientCode}&Customer_id=${id}`);
+    await axios.delete(`${API_URL.DELETE_CUSTOMER}?Client_Code=${clientCode}&Customer_id=${id}`);
             loadUser();
         }
     };
 
+
+
+    
+const pagination = (pageNo) => {
+    setCurrentPage(pageNo);
+  }
+
     return (
-        <div>
+
+        <React.Fragment>
+
             <Edituser items={editform} />
             <Genratelink generatedata={genrateform} />
-
-            {/* <button type="button" className='btn' class="btn btn-primary">Add Single Payer</button> */}
-
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
+            <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
                         <Formik
                             initialValues={
                                 {
@@ -207,28 +245,28 @@ loadUser()
                             {({ resetForm }) => (
 
                                 <>
-                                    <div class="modal-header">
-                                        <h3 class="modal-title" id="exampleModalLabel">Add Payer Details</h3>
-                                        <button type="button" class="close" onClick={resetForm} data-dismiss="modal" aria-label="Close">
+                                    <div className="modal-header">
+                                        <h3 className="modal-title" id="exampleModalLabel">Add Payer Details</h3>
+                                        <button type="button" className="close" onClick={resetForm} data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <div class="modal-body">
+                                    <div className="modal-body">
                                         <Form>
-                                            <div class="form-group">
-                                                <label for="recipient-name"
-                                                    class="col-form-label">Name of Payer:</label>
+                                            <div className="form-group">
+                                                <label htmlFor="recipient-name"
+                                                    className="col-form-label">Name of Payer:</label>
                                                 <Field
                                                     name="name"
                                                     placeholder="Enter Name of Payer"
-                                                    class="form-control"
+                                                    className="form-control"
                                                     autoComplete="off"
                                                 />
                                                 <ErrorMessage name="name">
                                                     {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                                 </ErrorMessage>
 
-                                                <label for="recipient-name" class="col-form-label">Mobile No.:</label>
+                                                <label htmlFor="recipient-name" className="col-form-label">Mobile No.:</label>
                                                 <Field
                                                     name="phone_number"
                                                     id="phoneNumber"
@@ -236,15 +274,15 @@ loadUser()
                                                     type="text"
                                                     autoComplete="off"
                                                     placeholder='Enter Mobile No.'
-                                                    class="form-control"
+                                                    className="form-control"
                                                     pattern="\d{10}"
-                                                    minlength="4" maxlength="10"
+                                                    minLength="4" maxLength="10"
                                                 />
                                                 <ErrorMessage name="phone_number">
                                                     {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                                 </ErrorMessage>
 
-                                                <label for="recipient-name" class="col-form-label">Email ID:</label>
+                                                <label htmlFor="recipient-name" className="col-form-label">Email ID:</label>
                                                 <Field name="email"
                                                     autoComplete="off"
                                                     placeholder='Enter Email'
@@ -253,40 +291,33 @@ loadUser()
                                                 <ErrorMessage name="email">
                                                     {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                                 </ErrorMessage>
-
-                                                <label for="recipient-name" class="col-form-label">Payer Category:</label>
+                                                <label htmlFor="recipient-name" className="col-form-label">Payer Category:</label>
                                                 <Field name="customer_type_id" className="selct" component="select">
                                                     <option
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="recipient-name"
                                                     >Select Your Payer Category</option>
                                                     {
-                                                        customerType.map((payer) => (
-                                                            <option value={payer.id}>{payer.type}</option>
+                                                        customerType.map((payer,i) => (
+                                                            <option value={payer.id} key={i}>{payer.type}</option>
                                                         ))}
                                                 </Field>
                                             </div>
-                                            <div class="modal-footer">
+                                            <div className="modal-footer">
                                                 <button
                                                     type="submit"
-                                                    class="btn btn-primary" >
+                                                    className="btn btn-primary" >
                                                     Submit
                                                 </button>
                                                 <button
-                                                    type="button" disabled
-                                                    class="btn btn-danger">
-                                                    Update
-                                                </button>
-                                                <button
                                                     type="button"
-                                                    class="btn btn-primary"
+                                                    className="btn btn-danger text-white"
                                                     data-dismiss="modal"
                                                     onClick={resetForm}>
                                                     Cancel
                                                 </button>
                                             </div>
-
                                         </Form>
                                     </div>
                                 </>
@@ -296,103 +327,119 @@ loadUser()
                     </div>
                 </div>
             </div>
-            {/* end add form */}
 
-            <div className="main_filter_area">
-             
-                <div className="filter_area" style={{margin:"14px"}}>
-                    <div>
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
-                   
+        {/* filter area */}
+        <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
+                <div className="container-fluid">
+                <div className="row">    
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
                     </div>
-                   
-                    <div style={{display:"flex" }}>
-                        <div>
-                            <input className='form-control' onChange={getSearchTerm} type="text" placeholder="Search Here" style={{width: "600px", marginRight: "5em"}} />
-                        </div>
-                        <div style={{margin:"0px ​4px 0px 18em"}}>
-                            <span style={{marginRight:"5px"}}>Count per page</span>
-                            <select style={{ width: 130 }}>
-                                <option value="10">10</option>
-                                <option value="20">25</option>
-                                <option value="30">50</option>
-                                <option value="60">100</option>
-                                <option value="70">200</option>
-                                <option value="70">300</option>
-                                <option value="70">400</option>
-                                <option value="70">500</option>
-                            </select>
-                        </div>
-                    </div>
-                    <p className=''>Total Records:{data.length}</p>
                 </div>
-            </div>
 
+                    <div className="row">  
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <label>Search</label>
+                        <input className='form-control' onChange={getSearchTerm} type="text" placeholder="Search Here" />
+                    </div>
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                        <label>Count Per Page</label>
+                        <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} className="form-control">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    
+                    </div>
+                    <div className="row">
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                            <p>Total Records:{data.length}</p>
+                    </div>
+                    </div>
+                    
+                </div>
+            </section>
 
-            <div class="full-screen-scroller">
-
-                <table data-spy="scroll" data-offset="50" class="table table-striped" style={{ position: 'absolute'}}>
+    <section className="">
+        <div className="container-fluid  p-3 my-3 ">
+            <div className="scroll overflow-auto">
+                <table className="table table-bordered">
                     <thead>
-                        <tr>
-                            <th scope='col'>Serial.No</th>
-                            <th scope='col'>Name of Payer</th>
-                            <th scope='col'>Mobile No.</th>
-                            <th scope='col'>Email ID</th>
-                            <th scope='col'>Payer  Category</th>
-                            <th scope='col'>Edit</th>
-                            <th scope='col'>Delete</th>
-                            <th scope='col'>Action</th>
-                        </tr>
+                    <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Name of Payer</th>
+                        <th scope="col">Mobile No.</th>
+                        <th scope="col">Email ID</th>
+                        <th scope="col">Payer  Category</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                        <th scope="col">Action</th>
+                    </tr>
                     </thead>
-                    <tbody>
-
-                        {data.map((user, i) => (
-
-                            <tr>
+                        <tbody>
+                        {paginatedata.map((user, i) => (
+                            <tr key={i}>
                                 <td>{i + 1}</td>
                                 <td>{user.name}</td>
                                 <td>{user.phone_number}</td>
                                 <td>{user.email}</td>
                                 <td>{user.customer_type}</td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)}    >Edit</button>
+                                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)} >Edit</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary mt-7" onClick={() => deleteUser(user.id)}  >Delete</button>
-                                </td><td>
+                                    <button className="btn btn-primary mt-7" onClick={() => deleteUser(user.id)}  >Delete</button>
+                                </td>
+                                <td>
                                     <button onClick={(e) => generateli(user.id)}
-
                                         type="button"
-                                        class="btn btn-primary"
+                                        className="btn btn-primary"
                                         data-toggle="modal"
                                         data-target="#bhuvi"
                                         data-whatever="@getbootstrap"
-
-                                    >
-                                        Genrate Link
+                                    >Generate Link
                                     </button>
                                     <div>
-
                                     </div>
-
-
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-
             </div>
+
             <div>
-
+                {paginatedata.length>0  ? 
+                    <nav aria-label="Page navigation example"  >
+                    <ul className="pagination">
+                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                    { 
+                      pages.slice(currentPage-1,currentPage+6).map((page,i) => (
+                        <li key={i} className={
+                          page === currentPage ? " page-item active" : "page-item"
+                        }> 
+                            <a className={`page-link data_${i}`} >  
+                              <p onClick={() => pagination(page)}>
+                              {page}
+                              </p>
+                            </a>
+                        </li>
+                      
+                      ))
+                    }
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
+                      Next</a> : <></> }
+                    </ul>
+                  </nav>
+                  : <></> }
             </div>
 
-
-        </div >
-
-
-
-    )
+    </div>
+    </section>
+</React.Fragment>
+)
 };
 
 export default PayerDetails;

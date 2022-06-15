@@ -28,5 +28,5 @@ table.tables tr:nth-child(odd) {
   justify-content: none !important;
 }
 .nopad{
-  padding:0 8px 0 0 !important;
+  padding: 0 0 0 0 !important;
 }

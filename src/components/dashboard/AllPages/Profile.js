@@ -1,354 +1,690 @@
+
 import React, { useState,useEffect } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
-import { Formik, Field, Form, ErrorMessage} from "formik";
-import * as Yup from 'yup'
-import "yup-phone"
-import {createClientProfile, updateClientProfile} from '../../../slices/dashboardSlice' 
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import {createClientProfile, updateClientProfile} from '../../../slices/auth'
+
 import profileService from '../../../services/profile.service'
+import { toast, Zoom } from 'react-toastify';
+import { Link } from 'react-router-dom';
+// import { logout } from '../../../slices/auth';
 
-
-function Profile() {
-  const dispatch= useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  const {fetchDcBankList,fetchNbBankList} = profileService
-  const { clientSuperMasterList ,
-          loginId,
-          clientContactPersonName,
-          clientEmail,
-          clientMobileNo,
-          accountHolderName,
-          accountNumber,
-          bankName,
-          ifscCode,
-
-          pan,
-        } = user;
+export const Profile = () => {
   
-  const [message,setMessage]  = useState('');
+    const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
+    const {fetchDcBankList,fetchNbBankList,verifyClientCode, verifyIfcsCode} = profileService
+    const dispatch= useDispatch();
+    const { user } = useSelector((state) => state.auth);
+    const {dashboard} = useSelector((state) => state );
 
-  const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
-  const [clientId,setClientId] = useState(clientSuperMasterList!==null && clientSuperMasterList[0]?.clientId)
-  const [createProfileResponse , setCreateProfileResponse]  = useState('');
-  const [retrievedProfileResponse , setRetrivedProfileResponse] = useState('');
+    
+    // const {fetchDcBankList,fetchNbBankList} = profileService
+    const { clientMerchantDetailsList ,
+            loginId,
+            clientContactPersonName,
+            clientEmail,
+            clientMobileNo,
+            accountHolderName,
+            accountNumber,
+            bankName,
+            ifscCode,
+            pan,
+            clientAuthenticationType,
+          } = user;
 
-  const [authenticationMode,setAuthenticationMode] = useState('');
-  const [listOfNetBank,setListOfNetBank] = useState([]);
-  const [listOfDebitCardBank,setListOfDebitCardBank] = useState([]);
-  const [selectedListForOption,setSelectedListForOption]=useState([]);
-  const [userIfscCode,setUserIfscCOde]=useState('ifscCode')
+    var initNBlist,initDClist = [];
 
+    
+    if (localStorage.getItem('NB_bank_list') !== null) {
+      initNBlist = JSON.parse(localStorage.getItem("NB_bank_list"));
+    } else {
+      initNBlist = [];
+    }
+
+    if(localStorage.getItem("DC_bank_list")!==null){
+      initDClist = JSON.parse(localStorage.getItem("DC_bank_list"));
+    }
+    
+    
+    const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
+    const [createProfileResponse , setCreateProfileResponse]  = useState('');
+  
+    const [authenticationMode,setAuthenticationMode] = useState(clientAuthenticationType);
+    const [listOfNetBank,setListOfNetBank] = useState(initNBlist);
+    const [listOfDebitCardBank,setListOfDebitCardBank] = useState(initDClist);
+    
+    const [selectedListForOption,setSelectedListForOption]=useState(authenticationMode==='NetBank'?listOfNetBank:listOfDebitCardBank);
+
+    const [userIfscCode,setUserIfscCOde]=useState(ifscCode)
+    const [isClientCodeValid,setIsClientCodeValid]=useState(null)
+    const [isIfcsValid,setIsIfscValid]=useState(true)
+  
+    useEffect(() => {
+      setCreateProfileResponse(dashboard.createClientProfile)
+    }, [dashboard]);
+  
+    // console.log(authenticationMode);
+    
+  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+//   console.log(clientMerchantDetailsList && clientMerchantDetailsList[0]?.address)
+//  console.log(isCreateorUpdate);
+//   initial values
+  const INITIAL_FORM_STATE = {
+    loginId:loginId,
+    clientName:clientContactPersonName,
+    phone:clientMobileNo,
+    email:clientEmail,
+    ...(isCreateorUpdate && {clientCode:''}),
+    address:clientMerchantDetailsList &&  clientMerchantDetailsList[0]?.address,
+    accountHolderName:accountHolderName,
+    bankName:bankName,
+    accountNumber:accountNumber,
+    ifscCode:userIfscCode,
+    pan:pan,
+    clientAuthenticationType: clientAuthenticationType,
+  };
 
   
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-console.log(clientSuperMasterList && clientSuperMasterList[0]?.address)
-const INITIAL_FORM_STATE = {
-  loginId:loginId,
-  clientName:clientContactPersonName,
-  phone:clientMobileNo,
-  email:clientEmail,
-  ...(isCreateorUpdate && {clientCode:''}),
-  address:clientSuperMasterList &&  clientSuperMasterList[0]?.address,
-  accountHolderName:accountHolderName,
-  bankName:bankName,
-  accountNumber:accountNumber,
-  ifscCode:userIfscCode,
-  pan:pan,
-  clientAuthenticationType: clientSuperMasterList &&  clientSuperMasterList[0]?.clientAuthenticationType,
-};
+    // form validation rules
+const validationSchema = Yup.object().shape({
+    loginId:Yup.string().required("Required"),
+    clientName: Yup.string().required("Required").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field "),
+    phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
+    email: Yup.string().email("Invalid email").required("Required"),
+    ...(isCreateorUpdate && {clientCode: Yup.string().min(5,"Client Code should be 6 digit").max(6,"Client Code maximum limit is 6").required("Required").nullable()}),
+    address: Yup.string().required("Required").nullable(),
+    accountHolderName: Yup.string().required("Required").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").nullable(),
+    bankName: Yup.string().required("Required").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").nullable(),
+    accountNumber: Yup.string().required("Required").max(20, "Bank Account number length under 20 digits").nullable(),
+    ifscCode: Yup.string().required("Required").matches(/^[a-zA-Z0-9\s]+$/, "IFCS Code not valid ").nullable(),
+    pan: Yup.string().matches(/^[a-zA-Z0-9\s]+$/, "Pan Card not valid ").nullable(),
+    clientAuthenticationType:Yup.string().required("Select Authentication Mode")
+  });
+   
+//   console.log(validationSchema);
 
-// console.log("INITIAL_FORM_STATE----",INITIAL_FORM_STATE);
+  const formOptions = { resolver: yupResolver(validationSchema) };
 
-const FORM_VALIDATION = Yup.object().shape({
-  loginId:Yup.string().required("Required"),
-  clientName: Yup.string().required("Required"),
-  phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
-  email: Yup.string().email("Invalid email").required("Required"),
-  ...(isCreateorUpdate && {clientCode: Yup.string().min(6,"Client Code should be 6 digit").required("Required").nullable()}),
-  address: Yup.string().required("Required").nullable(),
-  accountHolderName: Yup.string().required("Required").nullable(),
-  bankName: Yup.string().required("Required").nullable(),
-  accountNumber: Yup.string().required("Required").nullable(),
-  ifscCode: Yup.string().required("Required").nullable(),
-  pan: Yup.string().nullable(),
-  clientAuthenticationType:Yup.string().required("Select Authentication Mode")
-});
+   // get functions to build form with useForm() hook
+   const { register, handleSubmit, reset, formState } = useForm(formOptions);
+   const { errors } = formState;
 
+    // user state for form
+    const [userData, setUserData] = useState(null);
 
- 
+    // effect runs on component mount
+    useEffect(() => {
+    // simulate async api call with set timeout
+    setTimeout(() =>{
+        setUserData(INITIAL_FORM_STATE);
+        
+    }  , 1000);
+
+    }, []);
+
+    // effect runs when user state is updated
+    useEffect(() => {
+    // reset form with user data
+    reset(userData);
+    }, [userData]);
+
+    function onSubmit(data) {
+    if(isCreateorUpdate)
+    {
+      dispatch(createClientProfile(data));
+    }
+    else
+    {
+      delete data.clientCode; 
+      dispatch(updateClientProfile({data,clientId}))
+    }
+    // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
+    toast.success("Your Data is Update successfully",{
+      autoClose:2000,
+      limit :1,
+      transition:Zoom
+    });     
+    }
+
+    const verifyClientCodeFn = (getCode) => {
+        getCode.length>5 && getCode.length<7 
+        ?
+            verifyClientCode(getCode).then(
+                (res)=>{
+                    setIsClientCodeValid(res.data)
+                }
+            ).catch((error)=>{console.log(error)
+                setIsClientCodeValid(false)
+            })
+        :
+            setIsClientCodeValid(null);
+    }
+
+    const verifyIfcdCodeFn = (ifscCodeInput) =>{
+        // console.log(ifscCodeInput);
+        ifscCodeInput.length>5 
+        ?
+        verifyIfcsCode(ifscCodeInput).then(
+                (res)=>{
+                    setIsIfscValid(res.data)
+                }
+            ).catch((error)=>{console.log(error)
+                setIsIfscValid(false)
+            })
+        :
+        setIsIfscValid(true);
+
+    }
+
+    
 
   useEffect(() => {
     // fetch bank list
-    fetchDcBankList()
-      .then((response)=>{setListOfDebitCardBank(response.data)})
+     fetchDcBankList()
+      .then((response)=>{
+        localStorage.setItem("DC_bank_list",JSON.stringify(response.data));
+        setListOfNetBank(response.data);
+        })
       .catch((error)=> console.log(error));
 
     fetchNbBankList()
-      .then(response => setListOfNetBank(response.data))
+      .then(response => {
+        localStorage.setItem("NB_bank_list",JSON.stringify(response.data))
+        setListOfDebitCardBank(response.data);
+      })
       .catch(error=>console.log(error))                          
+    setIsCreateorUpdate(clientMerchantDetailsList && clientMerchantDetailsList!==null ? false : true);
 
-    setIsCreateorUpdate(clientSuperMasterList && clientSuperMasterList!==null ? false : true);
+   
+
   }, [])
 
   useEffect(() => {
-    if(authenticationMode==='Netbank'){
+    if(authenticationMode==='NetBank'){
       setSelectedListForOption(listOfNetBank);
     }
-    
     if(authenticationMode==='Debitcard'){
       setSelectedListForOption(listOfDebitCardBank);
     }
-  }, [authenticationMode]);
-  
+  }, [authenticationMode,listOfNetBank,listOfDebitCardBank]);
 
+    // console.log(authenticationMode);
+    // console.log(bankName);
+    // console.log(selectedListForOption);
  
-  const createorUpdateProfile = (data) => {
-    // console.log(isCreateorUpdate)
-    // console.log("send client id",clientId);
-    console.log("send data",data);
-    // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
-  };
+ return (
+   <section className="ant-layout">
+     <div className="profileBarStatus"></div>
+     <main className="gx-layout-content ant-layout-content">
+       <div className="gx-main-content-wrapper">
+         <div className="right_layout my_account_wrapper">
+           <h1 className="right_side_heading">
+             My Profile{" "}
+             <Link to={`/dashboard/change-password`}>
+               <button
+                 type="button"
+                 className="ant-btn change_password pull-right"
+               >
+                 <i className="fa fa-key" />
+                 <span> Change Password</span>
+               </button>
+             </Link>
+           </h1>
+           <div className="ant-tabs ant-tabs-top ant-tabs-line">
+             <div
+               role="tablist"
+               className="ant-tabs-bar ant-tabs-top-bar"
+               tabIndex={0}
+             >
+               <div className="ant-tabs-nav-container">
+                 <div className="ant-tabs-nav-wrap">
+                   <div className="ant-tabs-nav-scroll">
+                     <div className="ant-tabs-nav- ant-tabs-nav-animated">
+                       <div>
+                         {/* <h4 style={{background: "#ffa2a2",padding: "14px",margin:" auto",textAlign: "center"}}> */}
+                         {/* {message} */}
+                         {/* </h4> */}
+                         {/* <div role="tab" aria-disabled="false" aria-selected="true" className="ant-tabs-tab-active ant-tabs-tab">Basic Details</div> */}
+                       </div>
+                       <div
+                         className="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
+                         style={{
+                           display: "block",
+                           transform: "translate3d(0px, 0px, 0px)",
+                           width: "116px",
+                         }}
+                       ></div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div
+               tabIndex={0}
+               role="presentation"
+               style={{
+                 width: "0px",
+                 height: "0px",
+                 overflow: "hidden",
+                 position: "absolute",
+               }}
+             />
+             <div
+               className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content"
+               style={{ marginLeft: "0%" }}
+             >
+               <div
+                 role="tabpanel"
+                 aria-hidden="false"
+                 className="ant-tabs-tabpane ant-tabs-tabpane-active"
+               >
+                 <div
+                   tabIndex={0}
+                   role="presentation"
+                   style={{
+                     width: "0px",
+                     height: "0px",
+                     overflow: "hidden",
+                     position: "absolute",
+                   }}
+                 ></div>
+                 <div className="panel" style={{ maxWidth: "100%" }}>
+                   <div
+                     className="container-"
+                     style={{ margin: "0 !important" }}
+                   >
+                     {/* start form area */}
+                     <div className="row- justify-content-center">
+                       <div className="col-md-12-">
+                         <div className="card">
+                           <div className="card-header">Basic Details</div>
+                           <div className="card-body-">
+                             <form onSubmit={handleSubmit(onSubmit)}>
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="loginId"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   {" "}
+                                   Login ID
+                                 </label>
 
-    return (
-        <section className="ant-layout">
-        <div className="profileBarStatus">
-        </div>
-        <main className="gx-layout-content ant-layout-content">
-          <div className="gx-main-content-wrapper">
-            <div className="right_layout my_account_wrapper">
-              <h1 className="right_side_heading">My Profile<button type="button" className="ant-btn change_password pull-right"><i className="icon icon-reset-password" /><span>Change Password</span></button></h1>
-              <div className="ant-tabs ant-tabs-top ant-tabs-line">
-                <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
-                  <div className="ant-tabs-nav-container">
-                    <div className="ant-tabs-nav-wrap">
-                      <div className="ant-tabs-nav-scroll">
-                        <div className="ant-tabs-nav- ant-tabs-nav-animated">
-                          <div>
-                          <h4 style={{background: "#ffa2a2",padding: "14px",margin:" auto",textAlign: "center"}}>{message}</h4>
-                            <div role="tab" aria-disabled="false" aria-selected="true" className="ant-tabs-tab-active ant-tabs-tab">Basic Details</div>
-                          </div>
-                          <div className="ant-tabs-ink-bar ant-tabs-ink-bar-animated" style={{display: 'block', transform: 'translate3d(0px, 0px, 0px)', width: '116px'}}>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
-                <div className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content" style={{marginLeft: '0%'}}>
-                  <div role="tabpanel" aria-hidden="false" className="ant-tabs-tabpane ant-tabs-tabpane-active">
-                    <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
-                    </div>
-                    <div className="panel">
-                      <Formik
-                      enableReintialize="true"
-                            initialValues={{
-                            ...INITIAL_FORM_STATE
-                        }}
-                            validationSchema={FORM_VALIDATION}
-                            onSubmit={createorUpdateProfile}
-                        >
-                      <Form>
-                      <h4 className="text-left m-b-lg m-b-20">Basic Details</h4>
-                      <div className="merchant-detail-container">
-                      Login ID : 
-                        <Field
-                          type="text"
-                          name="loginId"
-                          disabled
-                        />
-                      </div>
+                                 <input
+                                   className={`form-control ${
+                                     errors.loginId ? "is-invalid" : ""
+                                   }`}
+                                   {...register("loginId")}
+                                   type="text"
+                                   id="loginId"
+                                   name="loginId"
+                                   onChange={(e) => e.target.value}
+                                   disabled
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.loginId?.message}
+                                 </div>
+                               </div>
 
-                      <div className="merchant-detail-container">
-                      Client Name : 
-                        <Field
-                          type="text"
-                          name="clientName" 
-                          placeholder="Enter Client Name" 
-                        />
-                        <ErrorMessage name="clientName">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>                      
-                      </div>
-                      <div className="merchant-detail-container">
-                      Phone : 
-                        <Field
-                          type="text"
-                          name="phone"
-                          placeholder="Enter Phone Number" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                        <ErrorMessage name="phone">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-                      <div className="merchant-detail-container">
-                      Email-ID : 
-                        <Field
-                          type="text"
-                          name="email" 
-                          placeholder="Enter Email ID" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                          <ErrorMessage name="email">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="clientName"
+                                   className=" col-form-label text-md-right"
+                                 >
+                                   Client Name
+                                 </label>
 
-                      {/* Client Code Hide if already client created */}
-                      {isCreateorUpdate ? <div className="merchant-detail-container">
-                      Client Code : 
-                        <Field
-                          type="text"
-                          name="clientCode" 
-                          placeholder="Enter Client Code" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                          onChange = {( e=> console.log(e.target.value) )}
-                        />
-                          <ErrorMessage name="clientCode">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div> : <></> }
+                                 <input
+                                   className={`form-control ${
+                                     errors.clientName ? "is-invalid" : ""
+                                   }`}
+                                   {...register("clientName")}
+                                   type="text"
+                                   id="clientName"
+                                   name="clientName"
+                                   onChange={(e) => e.target.value}
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.clientName?.message}
+                                 </div>
+                               </div>
+
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="phone"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   {" "}
+                                   Phone{" "}
+                                 </label>
+
+                                 <input
+                                   className={`form-control ${
+                                     errors.phone ? "is-invalid" : ""
+                                   }`}
+                                   {...register("phone")}
+                                   type="text"
+                                   id="phone"
+                                   name="phone"
+                                   onChange={(e) => e.target.value}
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.phone?.message}
+                                 </div>
+                               </div>
+                               {/* Client Code Hide if already client created */}
+                               {isCreateorUpdate ? (
+                                 <div className="col-md-4 col-md-6 col-sm-12">
+                                   <label
+                                     htmlFor="clientCode"
+                                     className="col-form-label text-md-right"
+                                   >
+                                     {" "}
+                                     Client Code{" "}
+                                   </label>
+
+                                   <input
+                                     className={`form-control ${
+                                       errors.clientCode ? "is-invalid" : ""
+                                     }`}
+                                     {...register("clientCode")}
+                                     type="text"
+                                     id="clientCode"
+                                     name="clientCode"
+                                     onChange={(e) =>
+                                       verifyClientCodeFn(e.target.value)
+                                     }
+                                   />
+                                   <div className="">
+                                     {isClientCodeValid
+                                       ? "Valid Client Code"
+                                       : "Try another Client Code"}
+                                   </div>
+                                   <div className="invalid-feedback">
+                                     {errors.clientCode?.message}
+                                   </div>
+                                 </div>
+                               ) : (
+                                 <></>
+                               )}
+
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="email"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   E-Mail Address
+                                 </label>
+
+                                 <input
+                                   type="text"
+                                   id="email"
+                                   className="form-control"
+                                   name="email"
+                                   {...register("email")}
+                                 />
+                                 <p>{errors.email?.message}</p>
+                               </div>
+
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="address"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   {" "}
+                                   Address
+                                 </label>
+
+                                 <input
+                                   className={`form-control ${
+                                     errors.address ? "is-invalid" : ""
+                                   }`}
+                                   {...register("address")}
+                                   type="text"
+                                   id="address"
+                                   name="address"
+                                   onChange={(e) => e.target.value}
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.address?.message}
+                                 </div>
+                               </div>
+
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="accountHolderName"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   {" "}
+                                   Name in Bank Account{" "}
+                                 </label>
+
+                                 <input
+                                   type="text"
+                                   id="accountHolderName"
+                                   className="form-control"
+                                   name="accountHolderName"
+                                   {...register("accountHolderName")}
+                                 />
+                                 <p>{errors.accountHolderName?.message}</p>
+                               </div>
+
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="clientAuthenticationType"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   Authentication Mode
+                                 </label>
+                                 <div className="col-md-12">
+                                   <input
+                                     className={`form-control- margn ${
+                                       errors.clientAuthenticationType
+                                         ? "is-invalid"
+                                         : ""
+                                     }`}
+                                     {...register("clientAuthenticationType")}
+                                     type="radio"
+                                     name="clientAuthenticationType"
+                                     onChange={(e) =>
+                                       setAuthenticationMode(e.target.value)
+                                     }
+                                     defaultChecked={
+                                       authenticationMode === "Netbank"
+                                     }
+                                     value="NetBank"
+                                   />
+                                   <label htmlFor="html">Net Banking</label>
+
+                                   <div className="invalid-feedback">
+                                     {errors.clientAuthenticationType?.message}
+                                   </div>
+
+                                   <input
+                                     className={`form-control- margn ${
+                                       errors.clientAuthenticationType
+                                         ? "is-invalid"
+                                         : ""
+                                     }`}
+                                     {...register("clientAuthenticationType")}
+                                     type="radio"
+                                     name="clientAuthenticationType"
+                                     onChange={(e) =>
+                                       setAuthenticationMode(e.target.value)
+                                     }
+                                     defaultChecked={
+                                       authenticationMode === "Debitcard"
+                                     }
+                                     value="Debitcard"
+                                   />
+                                   <label htmlFor="html">Debit Card</label>
+
+                                   <div className="invalid-feedback">
+                                     {errors.clientAuthenticationType?.message}
+                                   </div>
+                                 </div>
+                               </div>
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="bankName"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   Bank Name{" "}
+                                 </label>
+
+                                 <select
+                                   name="bankName"
+                                   {...register("bankName")}
+                                   className={`form-control ${
+                                     errors.bankName ? "is-invalid" : ""
+                                   }`}
+                                 >
+                                   <option value="0">
+                                     Please Select Bank
+                                   </option>
+                                   {selectedListForOption.map((option) => {
+                                     return (
+                                       <option
+                                         key={option.id}
+                                         value={option.code}
+                                       >
+                                         {option.description}
+                                       </option>
+                                     );
+                                   })}
+                                 </select>
+                                 <div className="invalid-feedback">
+                                   {errors.bankName?.message}
+                                 </div>
+                               </div>
+
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="accountNumber"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   Bank Account Number
+                                 </label>
+
+                                 <input
+                                   className={`form-control ${
+                                     errors.accountNumber ? "is-invalid" : ""
+                                   }`}
+                                   {...register("accountNumber")}
+                                   type="text"
+                                   id="accountNumber"
+                                   name="accountNumber"
+                                   onChange={(e) => e.target.value}
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.accountNumber?.message}
+                                 </div>
+                               </div>
+
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="ifscCode"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   {" "}
+                                   IFSC Code{" "}
+                                 </label>
+
+                                 <input
+                                   className={`form-control ${
+                                     errors.ifscCode ? "is-invalid" : ""
+                                   }`}
+                                   {...register("ifscCode")}
+                                   type="text"
+                                   id="ifscCode"
+                                   name="ifscCode"
+                                   onChange={(e) =>
+                                     verifyIfcdCodeFn(e.target.value)
+                                   }
+                                 />
+                                 <p>
+                                   {isIfcsValid
+                                     ? "IFSC is Valid"
+                                     : "IFSC is Not Valid"}
+                                 </p>
+                                 <div className="invalid-feedback">
+                                   {errors.ifscCode?.message}
+                                 </div>
+                               </div>
+
+                               <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <label
+                                   htmlFor="pan"
+                                   className="col-form-label text-md-right"
+                                 >
+                                   Pan{" "}
+                                 </label>
+
+                                 <input
+                                   className={`form-control ${
+                                     errors.pan ? "is-invalid" : ""
+                                   }`}
+                                   {...register("pan")}
+                                   type="text"
+                                   id="pan"
+                                   name="pan"
+                                   onChange={(e) => e.target.value}
+                                 />
+                                 <div className="invalid-feedback">
+                                   {errors.pan?.message}
+                                 </div>
+                               </div>
+
+                               <div className="col-lg-4 offset-md-4- topmar">
+                                 <button
+                                   type="submit"
+                                   className="btn btn-primary"
+                                 >
+                                   {isCreateorUpdate
+                                     ? "Create Profile"
+                                     : "Update Profile"}
+                                 </button>
+                               </div>
+                             </form>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     {/* end form area */}
+                   </div>
+                 </div>
+               </div>
+               <div
+                 tabIndex={0}
+                 role="presentation"
+                 style={{
+                   width: "0px",
+                   height: "0px",
+                   overflow: "hidden",
+                   position: "absolute",
+                 }}
+               ></div>
+             </div>
+           </div>
+           <div
+             tabIndex={0}
+             role="presentation"
+             style={{
+               width: "0px",
+               height: "0px",
+               overflow: "hidden",
+               position: "absolute",
+             }}
+           />
+         </div>
+       </div>
+       
+     </main>
+   </section>
+ );
+};
 
 
-                      <div className="merchant-detail-container">
-                      Address : 
-                        <Field
-                          type="text"
-                          name="address" 
-                          placeholder="Enter Address" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                          <ErrorMessage name="address">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
 
-                      {/* start bank details field */}
-                      <h4 className="text-left m-b-lg m-b-20">Bank Details</h4>
 
-                      <div className="merchant-detail-container">
-                      Name in Bank Account : 
-                        <Field
-                          type="text"
-                          name="accountHolderName" 
-                          placeholder="Enter Name in Bank Account" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                          <ErrorMessage name="accountHolderName">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-                      <div className="merchant-detail-container">
-                      Authentication Mode : 
-                      <p  style={{margin:"0px 40px 0px 10px"}}>
-                      <span style={{margin:"10px"}}> Net Banking</span> 
-                        <Field
-                          type="radio"
-                          name="clientAuthenticationType" 
-                          value="Netbank"
-                          onChange={()=>setAuthenticationMode("Netbank")}
-                          checked={authenticationMode==="Netbank"}
-                        />
-                        </p>
-
-                        <p style={{margin:"0px 40px 0px 10px"}}>
-                        <span style={{margin:"10px"}}>Debit Card</span>
-                        <Field
-                          type="radio"
-                          name="clientAuthenticationType" 
-                          value="Debitcard"
-                          onChange={()=>setAuthenticationMode("Debitcard")}
-                          checked={authenticationMode==="Debitcard"}
-                        /></p>
-                        
-                          <ErrorMessage name="accountHolderName">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-                      <div className="merchant-detail-container">
-                      Bank Name : 
-                        <Field as="select"
-                          name="bankName"  
-                          id="bankName"
-                          placeholder="Enter Bank Name" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        >
-                        <option defailtValue="">Please Select Bank</option>
-                        {selectedListForOption.map((option)=>{
-                          return (
-                            <option key={option.id} value={option.code}>
-                              {option.description}
-                            </option>
-                          )
-                        })}
-                         </Field>
-
-                        <ErrorMessage name="bankName">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-
-                      <div className="merchant-detail-container">
-                      Bank Account Number : 
-                        <Field
-                          type="text"
-                          name="accountNumber" 
-                          placeholder="Enter Bank Account Number" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                           <ErrorMessage name="accountNumber">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-
-                      <div className="merchant-detail-container">
-                      IFSC Code : 
-                        <Field
-                          type="text"
-                          name="ifscCode" 
-                          placeholder="Enter IFSC Code"
-                          style={{marginLeft: '10px', width: "398px"}}
-                      
-                        />
-                         <ErrorMessage name="ifscCode">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-
-                      <div className="merchant-detail-container">
-                      PAN *:
-                        <Field
-                          type="text"
-                          name="pan"  
-                          placeholder="PAN Number" 
-                          style={{marginLeft: '10px', width: "398px"}}
-                        />
-                         <ErrorMessage name="pan">
-                            { msg => <div className="error_msg_display" >{msg}</div> }
-                        </ErrorMessage>  
-                      </div>
-                 
-                      <button type="sumbit" style={{margin: '10px', float: "right", width: '25%'}} className="btn btn-primary" >{isCreateorUpdate? "Create Profile" : "Update Profile"}</button>
-                      
-                          <br />
-                        </Form>
-                       </Formik>
-                    </div>
-
-                    </div>
-                    <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
-                    </div>
-                  </div>
-                </div>
-                <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
-              </div>
-            </div>
-          <footer className="ant-layout-footer">
-            <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
-          </footer>
-        </main>
-      </section>
-    )
-}
-
-export default Profile

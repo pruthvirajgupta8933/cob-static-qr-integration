@@ -1,10 +1,13 @@
 import React,{useEffect, useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
-import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashboardSlice";
+// import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashboardSlice";
 import { Link } from 'react-router-dom';
 import Emandate from '../AllPages/Mandate';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import API_URL from '../../../config';
+// import paymentGateWay from '../../../payment-gateway/'
+
 
 const Subsciption = () => {
   const [subscriptionDetails, setSubscriptionDetails] = useState(false);
@@ -17,6 +20,7 @@ const Subsciption = () => {
   const [subscriptionPlanChargesData,setSubscriptionPlanChargesData] = useState([]);
   const [subscribePlanData,setSubscribePlanData] = useState([]);
   const [isModelClosed,setIsModelClosed] = useState(false);
+  const [paymentGatewayUrl,setPaymentGatewayUrl] = useState([]);
 
   
   const [Plans,setPlans] = useState([]);
@@ -24,18 +28,18 @@ const Subsciption = () => {
   const {user} = auth;
   let history = useHistory();
 
-  if(user && user.clientSuperMasterList===null){
+  if(user && user.clientMerchantDetailsList===null){
     // alert(`${path}/profile`);
     // return <Redirect to={`${path}/profile`} />
     history.push('/dashboard/profile');
   } 
   
-  const {clientSuperMasterList , accountHolderName,accountNumber,bankName,clientEmail,clientMobileNo,ifscCode,loginStatus,pan} =user;
+  const {clientMerchantDetailsList , accountHolderName,accountNumber,bankName,clientEmail,clientMobileNo,ifscCode,loginStatus,pan} =user;
   const { isLoading , subscribe } = dashboard;
   let clientAuthenticationType,clientCode = '';
-  if(clientSuperMasterList!==null){
+  if(clientMerchantDetailsList!==null){
 
-    let {clientAuthenticationType,clientCode} = clientSuperMasterList[0];
+    let {clientAuthenticationType,clientCode} = clientMerchantDetailsList[0];
 
   }
   var authenticationMode ='';
@@ -50,7 +54,7 @@ const Subsciption = () => {
  const dispatch = useDispatch();
 
  const getSubscriptionService = async () => {  
-    await axios.get('http://18.189.11.232:8081/client-subscription-service/fetchAppAndPlan')  
+    await axios.get(API_URL.FETCH_APP_AND_PLAN)  
     .then(res => {  
       setSubscriptionData(res.data);
       localStorage.setItem("subscriptionData", JSON.stringify(res.data));
@@ -100,39 +104,6 @@ const Subsciption = () => {
     }
   }
 
-  // --Working bodyFormData ---
-  // const bodyFormData = {
-  //   authenticationMode: 'Netbanking',
-  //   clientCode: '70',
-  //   clientRegistrationId: Math.floor(Math.random() * 90000) + 10000,
-  //   consumerReferenceNumber: '96321',
-  //   emiamount: "",
-  //   frequency: 'ADHO',
-  //   mandateCategory: 'A001',
-  //   mandateEndDate: '',
-  //   mandateMaxAmount: '1.00',
-  //   mandatePurpose: "API mandate",
-  //   mandateStartDate: "2021-11-11T17:34:29.033Z",
-  //   mandateType: 'ONLINE',
-  //   npciPaymentBankCode: 'BARB',
-  //   panNo: '',
-  //   payerAccountNumber: '62300100005139',
-  //   payerAccountType: 'SAVINGS',
-  //   payerBank: 'BARB',
-  //   payerBankIfscCode: 'BARB0VJRAPH',
-  //   payerEmail: 'rahmat.ali@sabpaisa.in',
-  //   payerMobile: '+91-8750212347',
-  //   payerName: 'Rahmat',
-  //   payerUtilitityCode: 'NACH00000000022341',
-  //   requestType: 'REGSTRN',
-  //   schemeReferenceNumber: '741255',
-  //   telePhone: '',
-  //   untilCancelled: true,
-  //   userType: 'merchant',
-  // }
-
-
-
 useEffect(() => {
   
   // update body by realtime data
@@ -141,12 +112,12 @@ useEffect(() => {
     clientCode: 70,
     clientRegistrationId: Math.floor(Math.random() * 90000) + 10000,
     consumerReferenceNumber: Math.floor(Math.random() * 92000) + 10000,
-    emiamount:"",
+    emiamount:'',
     frequency:'ADHO',
     mandateCategory:'U099',
     mandateEndDate: mandateEndData,
     mandateMaxAmount:planPrice+'.00',
-    mandatePurpose: "Others",
+    mandatePurpose: 'Others',
     mandateStartDate: formattedDate,
     mandateType:'ONLINE',
     npciPaymentBankCode:bankName,
@@ -161,7 +132,7 @@ useEffect(() => {
     payerUtilitityCode:'NACH00000000022341',
     requestType:'REGSTRN',
     schemeReferenceNumber:Math.floor(Math.random() * 94000) + 10000,
-    telePhone: "",
+    telePhone: '',
     untilCancelled:false,
     userType:'merchant',
     termAndCnd:termAndCnd,
@@ -174,6 +145,7 @@ useEffect(() => {
 
   }
 //,{mandateEndData:mandateEndData,mandateMaxAmount:planPrice+'.00'}
+  
   setSubscribeData(bodyFormData)
 
 }, [mandateEndData,planPrice,termAndCnd,subscribePlanData,isModelClosed]);
@@ -208,63 +180,86 @@ useEffect(() => {
   }, [subscribePlanData,termAndCnd]);
   
 
+
   // console.log("subscriptionPlanData",subscriptionPlanData);
 return (
   <section className="ant-layout">
-
-    <h1 style={{fontSize:"21px"}}>Services</h1>
-    <div className="row" style={{overflow:"scroll"}}>
-    {subscriptionPlanData.map((s) => 
-        <div className="col-3" >
-        <div class="col mb-4">  
+    <div className="profileBarStatus">
+          {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
+    </div>
+    <main className="gx-layout-content ant-layout-content">
+          <div className="gx-main-content-wrapper">
+          <div className="right_layout my_account_wrapper right_side_heading">
+              <h1 className="m-b-sm gx-float-left">Product Catalogue</h1>
+          </div>
+          <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
+              <div className="container-fluid">
+              <div className="row">
+              {/* {console.log(subscriptionPlanData.length)} */}
+        {subscriptionPlanData.length <= 0 ? <h3>Loading...</h3> : subscriptionPlanData.map((s,i) => 
+        <div className="col-sm-12 col-md-4" key={i}>
+        <div className="col mb-4">  
         <div >
           <div className="card" style={{ background: "aquamarine" }}>
-            <div className="card-body" style={{ height: "200px" }}>
-              <h5 className="card-title" style={{ fontWeight: "700", fontSize: "large" }}>{s.applicationName}</h5>
+            <div className="card-body" >
+              <h5 className="card-title font-weight-bold h3">{s.applicationName}</h5>
               <p className="card-text">{s.applicationDescription}</p>
             </div>
-            <div class="container">
-                <a target="blank" href={s.applicationUrl}  style={{ padding: "0", top: "155px" }} className="btn btn-warning">Read More</a>
-                <button type="button" style={{ top: "200px" }} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>subscribe</button>                
+            <div className="card-footer">
+                <a href={s.applicationUrl} target="blank" className="btn btn-sm " style={{backgroundColor:"#ffc107"}} role="button" aria-pressed="true"> Read More</a>
+                <button type="button"
+                //  style={{ top: "200px" }}
+                  className="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>Subscribe</button>
+                </div>
+            <div className="container">
             </div>
+            {/* <div>
+              <button type="button" className="btn btn-info sm" onClick={()=>makePayment()}>Make Payment</button>
+            </div> */}
           </div>
         </div>
         {subscriptionDetails &&
-        <div class="modal fade" id="exampleModal" style={{ top: "25%" }} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Welcome - {subscribePlanData.applicationName} !</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={()=>modalHandler()}>
+        <div className="modal fade" id="exampleModal" style={{ top: "25%" }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">Welcome - {subscribePlanData.applicationName} !</h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={()=>modalHandler()}>
                 <span aria-hidden="true" onClick={()=>setIsModelClosed(false)}>&times;</span>
               </button>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
             
-            {Plans && Plans.map((sp) =>
-            <table className="tables" cellpadding="10" cellspacing="10" width="100%">
-                <tbody>
-                    <><>
-                        <th><input type="radio" id="plantype" name="plantype" value={sp.planType} onChange={(e)=>{handleChecked(e,sp)}} /><span style={{ textTransform: "uppercase"}}>
-                        {sp.planType}
-                        </span>  {sp.planName}</th>
-                          </>
-                            <tr>
-                                <td>Rs - {sp.planPrice}</td>
-                            </tr>
-                            <tr></tr>
-                          </>    
+            {Plans && Plans.map((sp,i) =>
+            <table className="tables" cellPadding="10" cellSpacing="10" width="100%" key={i}>
+            
+            <thead>
+            <tr>
+            <th>
+              <input type="radio" id="plantype" name="plantype" value={sp.planType} onChange={(e)=>{handleChecked(e,sp)}} />
+              <span style={{ textTransform: "uppercase",marginLeft:"8px"}}>
+              {sp.planType}
+              </span>  
+              {sp.planName}
+            </th> 
+            </tr>  
+            </thead>
+            <tbody>
+                <tr >
+                    <td >Rs - {sp.planPrice}</td>
+                </tr>
+                <tr></tr>          
                 </tbody>
             </table>
             )}
             </div>
-            <div >
+            <div modal-body >
                     <input type="checkbox" id="termandcnd" name="termandcnd" value="termandcnd" checked={termAndCnd}
                         onChange={e => setTermAndCnd(e.target.checked)} />
-                    <label for="vehicle1"> I agree all terms and condition.</label>
+                    <label htmlFor="vehicle1" style={{margin:"5px"}}> I agree all terms and condition.</label>
                 </div>
             
-            <div class="modal-footer">
+            <div className="modal-footer">
               <Emandate bodyData={subscribeData}/>
               
             </div>
@@ -273,15 +268,16 @@ return (
       )
       </div>        
     }
-   
-        </div>
+    </div>
       </div>
     )
   }
   </div>
-
-    
-    </section>    
+  </div>
+</section>    
+</div>
+</main>      
+</section>    
   );
 }
 

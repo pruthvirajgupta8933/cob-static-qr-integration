@@ -7,7 +7,7 @@ export const ArrayToDate = (data) =>{
         if(d.toString().length===1){
             d = "0"+d;
         }
-        console.log(d);
+        // console.log(d);
 
         if(i<=2)
         {
@@ -33,4 +33,12 @@ export const ArrayToDate = (data) =>{
     }):
     dt = null
     return dt;
+}
+
+
+export const UtcDateToIsoDate = (date)=>{
+
+    const newDate = new Date(date);
+    return newDate.toISOString(newDate)
+
 }

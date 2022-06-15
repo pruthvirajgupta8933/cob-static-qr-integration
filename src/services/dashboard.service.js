@@ -12,12 +12,12 @@ const successTxnSummary = (fromdate, todate, clientcode) => {
   }).catch(err=>console.log(err));
 };
 
-const SUBSCRIPTION_URL = "http://18.189.11.232:8081/client-subscription-service/";
+const SUBSCRIPTION_URL = "https://spl.sabpaisa.in/client-subscription-service/";
 
 const subscriptionplan = () => {
   return axios.get(SUBSCRIPTION_URL + "fetchAppAndPlan")
   .then((response) => {
-    console.log("subscribe data - service", response )
+    // console.log("subscribe data - service", response )
     if (response.data) {
       localStorage.setItem("subscriptionplan", JSON.stringify(response.data));
     } else {
@@ -40,9 +40,17 @@ const subscriptionPlanDetail = () => {
     });
   };
 
+const fetchTransactionHistory=(paramData)=>
+{ 
+  const {clientCode,fromDate,payModeId,toDate,txnStatus,ref1,ref2} = paramData;
+  // console.log("hit",`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
+  return axios.get(`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
+}
+
 export const Dashboardservice = {
     successTxnSummary,
     subscriptionplan,
     subscriptionPlanDetail,
+    fetchTransactionHistory
   };
   
