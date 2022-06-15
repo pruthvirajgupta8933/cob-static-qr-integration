@@ -63,7 +63,7 @@ const logOutUser =(isLoggedIn)=>{
 
   return (
       <>
-      
+
       {loggin ? <IdleTimerContainer fnLogout={logOutUser} / > : <React.Fragment></React.Fragment>}
         <AllRoutes/>
       </>
