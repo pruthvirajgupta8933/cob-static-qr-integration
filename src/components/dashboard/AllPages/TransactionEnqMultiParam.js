@@ -214,7 +214,7 @@ const  printFn = async ()=>{
                 <span aria-hidden="true">×</span>
               </button>
             </div>
-            <div className="modal-body">
+            <div className="modal-body overflow-auto">
 
             <table
                 cellSpacing={0}
