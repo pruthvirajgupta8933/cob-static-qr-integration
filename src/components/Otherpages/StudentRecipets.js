@@ -35,7 +35,7 @@ const StudentRecipets = () => {
     }
     setIsLoading(true)
     setIsShow(false);
-    const response = await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
+    await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
       .then((response) => {
         // console.warn(response);
         setData(response.data);
@@ -55,23 +55,7 @@ const StudentRecipets = () => {
       })
 
   }
-  const dateFormat = (timestamp) => {
-    var date = new Date(timestamp);
-    return (date.getDate() +
-      "/" + (date.getMonth() + 1) +
-      "/" + date.getFullYear() +
-      " " + date.getHours() +
-      ":" + date.getMinutes() +
-      ":" + date.getSeconds());
 
-
-
-    // var date = new Date(timestamp);
-    // console.log(date.getTime())
-    // return date.getTime();
-
-    
-  }
   const onClick = () => {
 
     var tableContents = document.getElementById("joshi").innerHTML;
@@ -82,9 +66,6 @@ const StudentRecipets = () => {
     a.document.close();
     a.print();
   }
-const handle=()=>{
-
-}
 
   return (
     <>

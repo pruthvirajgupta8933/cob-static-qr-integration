@@ -7,29 +7,16 @@ import DropDownCountPerPage from '../../../_components/reuseable_components/Drop
 
 
 function SettlementReport() {
-    const initialState = {
-        Id: "",
-        client_code: "",
-        base_url_path: "",
-        file_name: "",
-        created_by: "",
-        created_on: "",
-        folder: "",
-        sub_folder: ""
-    }
 
-    const [input,setInput]=React.useState();
     const [searchArea, setSearchArea] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
     const [data, setData] = React.useState([])
-    const [users, setUsers] = React.useState(initialState);
     const [folderArr, setFolderArr] = React.useState([]);
-    var [subFolderArr, setSubFolderArr] = React.useState([]);
-    var [showFilterData,SetShowFilterData] =React.useState([]); 
+    const [subFolderArr, setSubFolderArr] = React.useState([]);
+    const [showFilterData,SetShowFilterData] =React.useState([]); 
     const [selectedFolder,SetSelectedFolder] = React.useState('');
     const [selectedSubFolder,SetSelectedSubFolder] = React.useState('');
     const [searchFilterData,setSearchFilterData] = React.useState([]);
-    let history = useHistory();
+    const history = useHistory();
 
   
     const {user} = useSelector((state)=>state.auth);
@@ -53,12 +40,10 @@ function SettlementReport() {
 
     useEffect(() => {
       getFileName();
-    }, []);
+    }, [ ]);
 
     useEffect(() => {
-      data.filter((item) => {
-        folderArr.push(item.folder);
-      });
+      data.filter((item) => folderArr.push(item.folder) )
       setFolderArr([...new Set(folderArr)]);
     }, [data]);
 
@@ -75,30 +60,18 @@ function SettlementReport() {
 
     const onChangeFolder = (val) => {
       SetSelectedFolder(val);
-      subFolderArr = [];
-      data.filter((item) => {
-        if (item.folder === val) {
-          subFolderArr.push(item.sub_folder);
-        }
-      });
-      setSubFolderArr([...new Set(subFolderArr)]);
+      
+      var tempArr = [];
+      data.filter((item) => item.folder === val ? tempArr.push(item.sub_folder) : null );
+      setSubFolderArr([...new Set(tempArr)]);
     };
-    // console.log('subFolderArr',subFolderArr);
-
+   
   useEffect(() => {
-      showFilterData = [];
-      data.filter((item) => {
-        if (
-          item.folder === selectedFolder &&
-          item.sub_folder === selectedSubFolder
-        ) {
-          // console.log('kkk',item);
-          showFilterData.push(item);
-        }
-      });
+      var tempArr1 = [];
+      data.filter((item) => ( item.folder === selectedFolder && item.sub_folder === selectedSubFolder) ? tempArr1.push(item) : null );
 
-      SetShowFilterData(showFilterData);
-      setSearchFilterData(showFilterData);
+      SetShowFilterData(tempArr1);
+      setSearchFilterData(tempArr1);
     }, [selectedSubFolder, selectedFolder]);
 
 

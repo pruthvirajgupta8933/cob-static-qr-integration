@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import SideNavbar from './SideNavbar/SideNavbar'
 import Home from './AllPages/Home'
 import Transaction from './AllPages/Transaction'
@@ -11,15 +11,13 @@ import "./css/Home.css";
 import "./css/50.684f163d.chunk.css";
 import "./css/main.e3214ff9.chunk.css";
 import "./css/loader.css";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ClientList from './AllPages/ClientList';
 import Subsciption from './AllPages/Subscription';
 import PaymentLinkDetail from './AllPages/createpaymentlink/PaymentLinkDetail';
 import Paylink from './AllPages/Paylink';
 import { Profile } from './AllPages/Profile';
 import Emandate from './AllPages/Emandate';
-import ChangePassword from './AllPages/ChangePassword';
-import { loginRefferalSlice } from '../../slices/auth';
 import PaymentResponse from './AllPages/PaymentResponse';
 import KycForm from '../KYC/KycForm';
 import Test from '../Otherpages/Test';
@@ -32,11 +30,6 @@ function Dashboard() {
     let history = useHistory();
     let { path } = useRouteMatch();
     const { user } = useSelector((state) => state.auth);
-    const dispatch = useDispatch();
-    
-    
-
-
 //   user!==null && user?. return (<Redirect to="/login-page" />)
     //  console.log("user",user);
     //  useEffect(() => {
@@ -69,9 +62,9 @@ function Dashboard() {
                 <Route exact path={`${path}/profile`}> 
                      <Profile />
                 </Route>
-                <Route exact path={`${path}/change-password`}>
+                {/* <Route exact path={`${path}/change-password`}>
                      <ChangePassword />
-                </Route>
+                </Route> */}
                 <Route exact path={`${path}/transaction`}>
                      <Transaction/>
                 </Route>
