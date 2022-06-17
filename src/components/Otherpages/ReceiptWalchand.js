@@ -1,4 +1,4 @@
-import React, { useState,useRef,useEffect} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
 import API_URL from '../../config';
@@ -6,63 +6,30 @@ import API_URL from '../../config';
 
 const ReceiptWalchand = () => {
 
-    const initialState = {
-        formId: "",
-        Category: "",
-        trans_date: "",
-        Development_Fee: "",
-        transId: "",
-        spTransId: "",
-        transPaymode: "",
-        Other_Fee: "",
-        transAmount: "",
-        paid_amount:"",
-        client_name: "", 
-        spRespCode: "",
-        Student_Name: "",
-        Branch: "",
-        PRN_No: "",
-        Class: "",
-        College_Fee: "",
-        transStatus: "",
-        cid: ""
-
-    }
     const [pnrId, setPnrId] = useState();
     const [show, setIsShow] = useState(false);
     const [errMessage, setErrMessage] = useState('');
-    const [walchandData, setWalchandData] = useState([]);
     const [data, setData] = useState([]);
     
-
-    // console.log(data);
-
     const onSubmit = async (pnrId) => {
         
-          const response = await axios.get(`${API_URL.FETCH_DATA_FOR_WACOE}?PRNNum=${pnrId}`)
+        await axios.get(`${API_URL.FETCH_DATA_FOR_WACOE}?PRNNum=${pnrId}`)
             .then((response) => {
                 var resData = response.data
                 resData.map((dt,i)=>{
                     transactionStatus(dt.cid,dt.transId).then((response)=>{
                         if(response[0].client_txn_id===dt.transId){
-                           //resData[i] = {...response[0], ...dt};
-                           //trans_date:dt.trans_date,paid_amount:dt.paid_amount,client_name:dt.client_name
-                        //    console.log(response[0]);
-                           resData[i].trans_date = response[0].trans_date;
-                           resData[i].paid_amount = response[0].paid_amount;
-                           resData[i].client_name = response[0].client_name;
+                            resData[i].trans_date = response[0].trans_date;
+                            resData[i].paid_amount = response[0].paid_amount;
+                            resData[i].client_name = response[0].client_name;
                         }
                     })
                 })
-
-                // console.log('afterupdate',resData)
                 setInterval(() => {
                     setData(resData);
                     setIsShow(true);
                     setErrMessage('');
                 }, 2000);
-                   
-               
             })
 
             .catch((e) => {
@@ -74,11 +41,7 @@ const ReceiptWalchand = () => {
 
     }
 
-    
-
-
     const transactionStatus = (cid, transId,index=0,dataLength=1) => {
-           
             return fetch(`${API_URL.RECEIPT_FOR_WALCHAND}${cid}/${transId}`, {
                 method: 'GET',
                 headers: {
@@ -93,23 +56,6 @@ const ReceiptWalchand = () => {
     }
 
 
-
-    const dateFormat = (timestamp) => {
-
-
-        // var date = new Date(timestamp);
-        // console.log(date.getTime())
-        // return date.getTime();
-
-        var date = new Date(timestamp);
-        return (date.getDate() +
-            "/" + (date.getMonth() + 1) +
-            "/" + date.getFullYear() +
-            " " + date.getHours() +
-            ":" + date.getMinutes() +
-            ":" + date.getSeconds());
-
-    }
     const onClick = () => {
 
         var tableContents = document.getElementById("joshi").innerHTML;

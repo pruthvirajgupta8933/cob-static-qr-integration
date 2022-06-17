@@ -223,7 +223,7 @@ const pages = _.range(1, pageCount + 1)
     // const dataWithoutNull = JSON.stringify(txnList).replaceAll('null',"NA");
     // console.log(JSON.parse(dataWithoutNull));
     const excelHeaderRow =
-  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Trans Initiation Date",	"Trans Complete Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
+  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Trans Initiation Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
     let excelArr = [excelHeaderRow];
     txnList.map((item,index)=>{
       // console.log(JSON.stringify(item));
@@ -234,7 +234,6 @@ const pages = _.range(1, pageCount + 1)
         challan_no:item.challan_no  === null? "" : item.challan_no ,
         payee_amount:item.payee_amount  === null? "" : Number.parseFloat(item.payee_amount) ,
         trans_date:item.trans_date  === null? "" : item.trans_date ,
-        trans_complete_date:item.trans_complete_date  === null? "" : item.trans_complete_date ,
         status:item.status === null? "" : item.status ,
         payee_first_name:item.payee_first_name === null? "" : item.payee_first_name ,
         payee_lst_name:item.payee_lst_name === null? "" : item.payee_lst_name ,
@@ -265,7 +264,7 @@ const pages = _.range(1, pageCount + 1)
     excelArr.push(Object.values(allowDataToShow));
   })
   // console.log("excelArr",excelArr)
-  const fileName = "Transactions Report"; 
+  const fileName = "Transactions-Report"; 
   exportToSpreadsheet(excelArr, fileName);
 
   }
@@ -417,7 +416,6 @@ const pages = _.range(1, pageCount + 1)
                             <th> Challan Number / VAN </th>
                             <th> Amount </th>
                             <th> Trans Initiation Date </th>
-                            <th> Trans Complete Date </th>
                             <th> Payment Status </th>
                             <th> Payer First Name </th>
                             <th> Payer Last Name </th>
@@ -456,7 +454,6 @@ const pages = _.range(1, pageCount + 1)
                             <td>{item.challan_no}</td>
                             <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
                             <td>{item.trans_date}</td>
-                            <td>{item.trans_complete_date}</td>
                             <td>{item.status}</td>
                             <td>{item.payee_first_name}</td>
                             <td>{item.payee_lst_name}</td>
