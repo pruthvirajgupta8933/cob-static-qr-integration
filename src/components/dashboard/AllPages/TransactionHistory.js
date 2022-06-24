@@ -3,7 +3,7 @@ import { useDispatch,useSelector } from 'react-redux'
 import { useHistory} from 'react-router-dom'
 import axios from "axios"
 import _ from 'lodash';
-import { fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
+import { clearTransactionHistory, fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
 import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
 import API_URL from '../../../config';
 import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
@@ -153,11 +153,7 @@ const checkValidation = ()=>{
      setUpdateTxnList(TxnListArrUpdated)
      setShowData(TxnListArrUpdated);
      SetTxnList(TxnListArrUpdated);
-     setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())
-    //  if(TxnListArrUpdated.length){
-    //    isButtonClicked(false);
-    //  }
-
+     setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())   
   }, [dashboard])
   
   // console.log("buttonclicked",buttonClicked);
@@ -182,7 +178,9 @@ const checkValidation = ()=>{
   getPaymentStatusList();
   paymodeList();  
   SetTxnList([]);
-  // txnList.length >0 ? setShow(true) : setShow(false)
+  return ()=>{
+    dispatch(clearTransactionHistory())
+  }
 
 }, [])
 
@@ -447,7 +445,7 @@ const pages = _.range(1, pageCount + 1)
               </thead>
               <tbody>
               {txnList.length>0 && paginatedata.map((item,i)=>{return(
-                            <tr>
+                            <tr key={i}>
                             <td>{i+1}</td>
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
@@ -494,7 +492,7 @@ const pages = _.range(1, pageCount + 1)
                     <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
                     { 
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
-                        <li className={
+                        <li key={i} className={
                           page === currentPage ? " page-item active" : "page-item"
                         }> 
                       {/* {console.log("currentPage",currentPage)} */}

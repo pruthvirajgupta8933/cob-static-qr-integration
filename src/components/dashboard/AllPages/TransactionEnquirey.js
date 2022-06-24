@@ -130,7 +130,7 @@ function TransactionEnquirey() {
                                   className="form-control"
                                 />
 
-                                <button className="btn receipt-button mt-2" type="submit">View</button>
+                                <button className="btn btn-primary mt-2" type="submit">View</button>
                             </div>
                           </div>
                          

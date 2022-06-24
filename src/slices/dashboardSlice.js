@@ -43,7 +43,7 @@ export const successTxnSummary = createAsyncThunk(
     async ({}, thunkAPI) => {
       try {
         const response = await Dashboardservice.subscriptionplan();
-        // console.log("subscribe data", response );
+        console.log("subscribe data", response );
         return response;
       } catch (error) {
         const message =
@@ -105,8 +105,15 @@ export const successTxnSummary = createAsyncThunk(
   export const dashboardSlice = createSlice({
     name: 'dashboard',
     initialState,
+    reducers:{
+      clearTransactionHistory : (state)=>{
+        state.transactionHistory = []
+      },
+      clearSuccessTxnsummary : (state)=>{
+        state.successTxnsumry = []
+      }
+    },
     extraReducers: {
-    
       [successTxnSummary.pending]: (state) => {
         state.isLoading = true
       },
@@ -144,5 +151,7 @@ export const successTxnSummary = createAsyncThunk(
       
       },
   })
-  
-  export const dashboardReducer = dashboardSlice.reducer
+
+// Action creators are generated for each case reducer function
+export const { clearTransactionHistory , clearSuccessTxnsummary } = dashboardSlice.actions
+export const dashboardReducer = dashboardSlice.reducer

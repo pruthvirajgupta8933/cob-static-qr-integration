@@ -1,5 +1,4 @@
 import React,{useEffect,useState} from 'react';
-//import Header from './Header'
 import HeaderPage from '../login/HeaderPage'
 import '../login/css/home.css'
 import '../login/css/homestyle.css'
@@ -15,13 +14,6 @@ import { toast, Zoom } from 'react-toastify';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
-const INITIAL_FORM_STATE = {
-  fullName:'',
-  mobileNumber:'',
-  email:'',
-  password:'',
-  selectStates:''
-};
 
 const FORM_VALIDATION = Yup.object().shape({
   firstname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
@@ -47,12 +39,6 @@ function Registration() {
   const datar = auth;
 
   const {isUserRegistered} = datar;
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [mobileNumber, setMobileNumber] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
   const [loading, setLoading] = useState(false);
   const [isActive, setActive] = useState(true);
   const [values, setValues] = useState({
@@ -68,7 +54,7 @@ function Registration() {
       }
   }, []);
 
-  const saved = localStorage.getItem("register");
+
 
   const handleRegistration = (formData) => {
     var businessType = isActive? 1 : 2 ;
@@ -183,7 +169,7 @@ return (
                         className={isActive ? "current" : "left"}
                         onClick={toggleClass}
                       >
-                        <a id="btnLeft"  href={void(0)} >
+                        <a id="btnLeft" rel="rel" href={void(0)} >
                           Individual
                         </a>
                       </li>
@@ -348,7 +334,9 @@ return (
                                     maxLength={255}
                                     id="user-pw"
                                     placeholder="Password"
-                                    type="password"
+                                    type={
+                                      values.showPassword ? "text" : "password"
+                                    }
                                     name="passwordd"
                                     size={50}
                                     autoComplete="off"

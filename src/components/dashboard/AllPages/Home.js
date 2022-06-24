@@ -1,16 +1,15 @@
 
 import React,{useEffect,useState} from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import { successTxnSummary, subscriptionplan, subscriptionPlanDetail } from '../../../slices/dashboardSlice';
+import { successTxnSummary, subscriptionplan, subscriptionPlanDetail, clearSuccessTxnsummary } from '../../../slices/dashboardSlice';
 import ProgressBar from '../../../_components/reuseable_components/ProgressBar';
 import { useRouteMatch, Redirect} from 'react-router-dom'
 import '../css/Home.css';
 
 
 
-function Home() {
 
-  
+function Home() {
   // console.log("home page call");
   const dispatch = useDispatch();
   let { path } = useRouteMatch();
@@ -27,7 +26,7 @@ function Home() {
 
   const {dashboard,auth} = useSelector((state)=>state);
   // console.log("dashboard",dashboard)
-  const { isLoading , successTxnsumry, subscribedService } = dashboard;
+  const { isLoading , successTxnsumry } = dashboard;
   const {user} = auth;
   var clientCodeArr = [];
   var totalSuccessTxn = 0;
@@ -44,10 +43,7 @@ function Home() {
     dispatch(successTxnSummary(objParam));
   }, [clientCode]);
 
-  // console.log('successTxnsumry',successTxnsumry );
-  // console.log('clientMerchantDetailsList',user.clientMerchantDetailsList);
 
-  
   //make client code array
   if(user?.clientMerchantDetailsList!==null && user.clientMerchantDetailsList?.length>0){
         clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
@@ -82,6 +78,13 @@ function Home() {
     Object.values(txnItme).join(" ").toLowerCase().includes(search.toLocaleLowerCase())))
     : SetShowData(txnList);
   }, [search]);
+  
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearSuccessTxnsummary());
+    }
+  }, [])
   
 
   const handleChange= (e)=>{

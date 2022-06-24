@@ -5,15 +5,9 @@ import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
 import { Formik, Field, Form,ErrorMessage} from "formik";
 import { useHistory  } from "react-router-dom";
 import * as Yup from 'yup';
-import { login,logout } from "../../slices/auth";
+import { login } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
-import OtpView from "../login/OtpView";
-import toastConfig from "../../utilities/toastTypes";
-import OTPVerificationApi from "../../slices/auth";
-import {Link} from 'react-router-dom'
-import DisplayErrorMessage from '../../_components/reuseable_components/DisplayErrorMessage';
 import { toast } from 'react-toastify';
-import method from '../../utilities/encrypt-decrypt'
 import './Login.css';
 
 const INITIAL_FORM_STATE = {
@@ -30,20 +24,10 @@ const FORM_VALIDATION = Yup.object().shape({
 function LoginPage(props) {
   const history = useHistory()
   const [loading, setLoading] = useState(false);
-  const  isLoggedIn  = useSelector((state) => state.auth.isLoggedIn);
-  var { message } = useSelector((state) => state.message);
+  const isLoggedIn  = useSelector((state) => state.auth.isLoggedIn);
   const authentication = useSelector(state => state.auth);
-
-  const [open, setOpen] = useState(false);
-  const [notificationMsg, setNotificationMsg] = React.useState('Username or password not valid');
   const [auth,setAuthData] = useState(authentication);
-  const [showOTP, setShowOtp] = useState(false);
-  const [signUpOrSignIn,setSignUpOrSignIn]=useState(false)
   const [otp, setOtp] = useState({ otp: "" });
-  const [otpVerificationError, setOtpVerificationError] = useState("");
-  const [showResendCode, setShowResendCode] = useState(false);
-  const [showBackDrop, setShowBackDrop] = useState(false);
-  const [GeoLocation, setGeeolocation] = useState("");
   const [values, setValues] = useState({
     password: '',
     showPassword: false,
@@ -445,8 +429,8 @@ const handleClickShowPassword = () => {
                   <p style={{ fontSize: "24px", lineHeight: "20px" }}>
                     Receive Payments, The Easy Way
                   </p>
-                  <h1 style={{ fontSize: "26px" }}>A Payments Solution for</h1>
-                  <h1 style={{ fontSize: "26px", whiteSpace: "10px" }}>
+                  <h1 style={{ fontSize: "24px" }}>A Payments Solution for</h1>
+                  <h1 style={{ fontSize: "24px", whiteSpace: "10px" }}>
                     Businesses,&nbsp;SMEs,&nbsp;Freelancers, Homepreneurs.
                   </h1>
                 </div>

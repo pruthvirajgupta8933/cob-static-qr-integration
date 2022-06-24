@@ -222,7 +222,7 @@ const validationSchema = Yup.object().shape({
          <div className="right_layout my_account_wrapper">
            <h1 className="right_side_heading">
              My Profile{" "}
-             <Link to={`/dashboard/change-password`}>
+             {/* <Link to={`/dashboard/change-password`}>
                <button
                  type="button"
                  className="ant-btn change_password pull-right"
@@ -230,7 +230,7 @@ const validationSchema = Yup.object().shape({
                  <i className="fa fa-key" />
                  <span> Change Password</span>
                </button>
-             </Link>
+             </Link> */}
            </h1>
            <div className="ant-tabs ant-tabs-top ant-tabs-line">
              <div
