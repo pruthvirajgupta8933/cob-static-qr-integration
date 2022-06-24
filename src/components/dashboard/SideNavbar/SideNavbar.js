@@ -68,9 +68,9 @@ function SideNavbar() {
                         <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
                       </li>
 
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                      {/* <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                         <Link to={`${url}/view-transaction-with-filter`} className='txt-white'><i className="fa fa-filter" aria-hidden="true" />   Transaction Enquiry With Filter </Link> 
-                      </li>
+                      </li> */}
                       {roleId===3 || roleId===13 ? <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link> 
                       </li> 
