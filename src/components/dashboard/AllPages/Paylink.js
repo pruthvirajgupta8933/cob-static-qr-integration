@@ -47,9 +47,6 @@ function Paylink() {
                     <li className="nav-item" onClick={()=>SetTab(2)} >
                       <a className={"nav-link " +  (tab===2? "activepaylink":"inactive") } >Payment Link Detail</a>
                     </li>
-                    <li className="nav-item"  onClick={()=>SetTab(3)}>
-                      <a className={"nav-link " +  (tab===3? "activepaylink":"inactive") } >Import Bulk Payer</a>
-                    </li>
                     <li className="nav-item" onClick={()=>SetTab(4)}>
                       <a className={"nav-link " +  (tab===4? "activepaylink":"inactive") } >Reports</a>
                     </li>
