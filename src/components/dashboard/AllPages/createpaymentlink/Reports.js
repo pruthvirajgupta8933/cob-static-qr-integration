@@ -104,7 +104,7 @@ const pages = _.range(1, pageCount + 1)
     <React.Fragment>
  {/* filter area */}
        <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
-                <div className="container-fluid">
+                <div className="container-fluid flleft">
                     <div className="row">  
                     <div className="col-lg-4 mrg-btm- bgcolor">
                     <label>Search</label>
@@ -131,7 +131,7 @@ const pages = _.range(1, pageCount + 1)
             </section>
 
             <section className="">
-        <div className="container-fluid  p-3 my-3 ">
+        <div className="container-fluid flleft p-3 my-3 ">
         {! paginatedata ? (<h3> No Data Found</h3>) : ( <React.Fragment>  <div className="scroll" style={{overflow: "auto"}}>
                 <table className="table table-bordered">
                     <thead>

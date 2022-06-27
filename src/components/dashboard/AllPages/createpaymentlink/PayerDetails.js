@@ -330,9 +330,9 @@ const pagination = (pageNo) => {
 
         {/* filter area */}
         <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
-                <div className="container-fluid">
+                <div className="container-fluid flleft">
                 <div className="row">    
-                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <div className="col-lg-4 pl-4">
                     <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
                     </div>
                 </div>
@@ -363,7 +363,7 @@ const pagination = (pageNo) => {
             </section>
 
     <section className="">
-        <div className="container-fluid  p-3 my-3 ">
+        <div className="container-fluid flleft p-3 my-3 ">
             <div className="scroll overflow-auto">
                 <table className="table table-bordered">
                     <thead>

@@ -39,7 +39,7 @@ function Paylink() {
     <section className="features8 cid-sg6XYTl25a flleft w-100" id="features08-3-">
       <div className="container-fluid">
         <div className="row">
-        <div className="col-lg-12 mb-4 bgcolor-">
+        <div className="col-lg-12 mb-4 pl-0">
                 <ul className="nav nav-tabs">
                     <li className="nav-item" onClick={()=>SetTab(1)}>
                       <a className={"nav-link " +  (tab===1? "activepaylink":"inactive") }  >Payment Detail</a>

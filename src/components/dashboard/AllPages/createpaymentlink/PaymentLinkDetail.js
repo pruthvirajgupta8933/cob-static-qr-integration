@@ -108,9 +108,9 @@ const pages = _.range(1, pageCount + 1)
        {/* filter area */}
        <FormPaymentLink />
        <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
-                <div className="container-fluid">
+                <div className="container-fluid flleft">
                 <div className="row">    
-                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <div className="col-lg-4 pl-4">
                     <button
                       type="button"
                       className="btn btn-primary"
@@ -155,7 +155,7 @@ const pages = _.range(1, pageCount + 1)
 
 
         <section className="">
-        <div className="container-fluid  p-3 my-3 ">
+        <div className="container-fluid flleft  p-3 my-3 ">
         {! paginatedata ? (<h3> No Data Found</h3>) : ( <React.Fragment>  <div className="scroll" style={{overflow: "auto"}}>
                 <table className="table table-bordered">
                     <thead>

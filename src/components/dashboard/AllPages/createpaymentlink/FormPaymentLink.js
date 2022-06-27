@@ -181,7 +181,7 @@ useEffect(() => {
                       onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
                       name="Amount" 
                       autoComplete="off"
-                      onkeyDown="return event.keyCode !== 69" 
+                      // onkeyDown="return event.keyCode !== 69" 
                       className="form-control"
                       placeholder="Enter Payment Amount in (INR)"
                     />
