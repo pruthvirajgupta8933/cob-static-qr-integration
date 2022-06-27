@@ -60,22 +60,16 @@ const ReceiptByEmail = () => {
       })
 
   }
-  const dateFormat = (timestamp) => {
+  // const dateFormat = (timestamp) => {
+  //   var date = new Date(timestamp);
+  //   return (date.getDate() +
+  //     "/" + (date.getMonth() + 1) +
+  //     "/" + date.getFullYear() +
+  //     " " + date.getHours() +
+  //     ":" + date.getMinutes() +
+  //     ":" + date.getSeconds());
 
-
-    // var date = new Date(timestamp);
-    // console.log(date.getTime())
-    // return date.getTime();
-
-    var date = new Date(timestamp);
-    return (date.getDate() +
-      "/" + (date.getMonth() + 1) +
-      "/" + date.getFullYear() +
-      " " + date.getHours() +
-      ":" + date.getMinutes() +
-      ":" + date.getSeconds());
-
-  }
+  // }
   const onClick = () => {
 
     var tableContents = document.getElementById("joshi").innerHTML;

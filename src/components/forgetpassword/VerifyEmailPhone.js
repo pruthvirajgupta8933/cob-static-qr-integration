@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import React, {  useState } from "react";
+// import { Formik, Field, Form, ErrorMessage } from "formik";
+// import * as Yup from "yup";
 import validation from "../validation";
-import { verifyOtpOnForgotPwdSlice } from "../../slices/auth";
-import { useDispatch, useSelector } from "react-redux";
+// import { verifyOtpOnForgotPwdSlice } from "../../slices/auth";
+import {  useSelector } from "react-redux";
 import axios from "axios";
 
 
 
 const VerifyEmailPhone = (props)  => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const {auth} = useSelector(state=>state);
   console.log(auth.forgotPassword.sendUserName)
   

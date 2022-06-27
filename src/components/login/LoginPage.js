@@ -1,4 +1,5 @@
-import React,{useState,useEffect, useDebugValue} from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React,{useState,useEffect } from 'react'
 import HeaderPage from './HeaderPage'
 import { useDispatch, useSelector } from 'react-redux';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
@@ -21,13 +22,13 @@ const FORM_VALIDATION = Yup.object().shape({
 });
 
 
-function LoginPage(props) {
+function LoginPage() {
   const history = useHistory()
   const [loading, setLoading] = useState(false);
   const isLoggedIn  = useSelector((state) => state.auth.isLoggedIn);
   const authentication = useSelector(state => state.auth);
   const [auth,setAuthData] = useState(authentication);
-  const [otp, setOtp] = useState({ otp: "" });
+  // const [otp, setOtp] = useState({ otp: "" });
   const [values, setValues] = useState({
     password: '',
     showPassword: false,
@@ -92,12 +93,12 @@ const handleLogin = (formValue) => {
 
 
 
-const handleChangeForOtp = (otp) => {
-  const regex = /^[0-9]*$/;
-  if (!otp || regex.test(otp.toString())) {
-    setOtp({ otp });
-  }
-};
+// const handleChangeForOtp = (otp) => {
+//   const regex = /^[0-9]*$/;
+//   if (!otp || regex.test(otp.toString())) {
+//     // setOtp({ otp });
+//   }
+// };
 
 
 // const redirectRoute = (authen) => {
@@ -180,17 +181,17 @@ useEffect(() => {
 
 
 
-const handleClick = () => {
-  // setOpen(true);
-};
+// const handleClick = () => {
+//   // setOpen(true);
+// };
 
-const handleClose = (event, reason) => {
-  if (reason === 'clickaway') {
-  return;
-  }
+// const handleClose = (event, reason) => {
+//   if (reason === 'clickaway') {
+//   return;
+//   }
 
-  // setOpen(false);
-};
+//   // setOpen(false);
+// };
 
 
 const handleClickShowPassword = () => {
@@ -216,10 +217,7 @@ const handleClickShowPassword = () => {
                     <div className="logmod__container">
                       <ul className="logmod__tabs">
                         <li data-tabtar="lgm-2" className="current">
-                          <a
-                            href={void(0)}
-                            style={{ width: "100%" }}
-                          >
+                          <a href={() => false} style={{ width: "100%" }} >
                             Login
                           </a>
                         </li>
@@ -391,7 +389,7 @@ const handleClickShowPassword = () => {
                           <a
                             className="lnk-toggler"
                             data-panel=".panel-login"
-                            href="#"
+                            href={() => false}
                           >
                             Already have an account?
                           </a>
@@ -400,7 +398,7 @@ const handleClickShowPassword = () => {
                           <a
                             className="lnk-toggler"
                             data-panel=".panel-signup"
-                            href="#"
+                            href={() => false}
                           >
                             Don’t have an account?
                           </a>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React,{useEffect, useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useHistory} from 'react-router-dom'
@@ -37,14 +38,14 @@ function TransactionHistory() {
   const [buttonClicked,isButtonClicked] = useState(false);
 
 
-  function dayDiff(dateFrom, dateTo) {
-    const date1 = new Date(dateFrom);
-    const date2 = new Date(dateTo);
-    const diffTime = Math.abs(date2 - date1);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-    // console.log(diffDays,"diffDays")
-    return diffDays;
-   }
+  // function dayDiff(dateFrom, dateTo) {
+  //   const date1 = new Date(dateFrom);
+  //   const date2 = new Date(dateTo);
+  //   const diffTime = Math.abs(date2 - date1);
+  //   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+  //   // console.log(diffDays,"diffDays")
+  //   return diffDays;
+  //  }
    
 
   const getInputValue=(label,val)=>{
@@ -154,6 +155,7 @@ const checkValidation = ()=>{
      setShowData(TxnListArrUpdated);
      SetTxnList(TxnListArrUpdated);
      setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard])
   
   // console.log("buttonclicked",buttonClicked);
@@ -170,6 +172,7 @@ const checkValidation = ()=>{
   const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
    setPaginatedData(paginatedPost);
  
+ // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [currentPage])
 
  
@@ -489,7 +492,7 @@ const pages = _.range(1, pageCount + 1)
                 {txnList.length>0  ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
-                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={()=>false}>Previous</a>
                     { 
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
                         <li key={i} className={
@@ -497,7 +500,7 @@ const pages = _.range(1, pageCount + 1)
                         }> 
                       {/* {console.log("currentPage",currentPage)} */}
                       {/* {console.log("page",page)} */}
-                            <a className={`page-link data_${i}`} >  
+                            <a className={`page-link data_${i}`} href={()=>false} >  
                               <p onClick={() => pagination(page)}>
                               {page}
                               </p>
@@ -506,7 +509,7 @@ const pages = _.range(1, pageCount + 1)
                       
                       ))
                     }
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={()=>false}>
                       Next</a> : <></> }
                     </ul>
                   </nav>

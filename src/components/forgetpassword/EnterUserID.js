@@ -2,12 +2,12 @@ import React from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { getEmailToSendOtpSlice } from "../../slices/auth";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 
 
 const EnterUserID = (props) => {
-  const { handleFormSubmit } = props;
+  // const { handleFormSubmit } = props;
   const dispatch = useDispatch();
 
   const validationSchema = Yup.object().shape({

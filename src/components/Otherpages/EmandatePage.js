@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import {useLocation} from "react-router-dom"
 import axios from 'axios';
@@ -31,23 +32,23 @@ const detailList = detailsKey.map((item,i)=>{
       );
 });
 
-  const initialState = {
-    payee_first_name: "",
-    txn_id: "",
-    client_txn_id: "",
-    client_name: "",
-    paid_amount: "",
-    payment_mode: "",
-    trans_date: "",
-    status: "",
-    udf19: "",
+  // const initialState = {
+  //   payee_first_name: "",
+  //   txn_id: "",
+  //   client_txn_id: "",
+  //   client_name: "",
+  //   paid_amount: "",
+  //   payment_mode: "",
+  //   trans_date: "",
+  //   status: "",
+  //   udf19: "",
 
-  }
+  // }
   const [transactionId, setTransactionId] = useState();
   const[studentId, setStudentId]=useState();
-  const [show, setIsShow] = useState(false);
-  const [errMessage, setErrMessage] = useState('');
-  const [data, setData] = useState(initialState)
+  // const [show, setIsShow] = useState(false);
+  // const [errMessage, setErrMessage] = useState('');
+  // const [data, setData] = useState(initialState)
 
   const onSubmit = async (transactionId,studentId) => {
     if(transactionId === null){
@@ -58,18 +59,18 @@ const detailList = detailsKey.map((item,i)=>{
     }
     
 
-    const response = await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
+    await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
       .then((response) => {
         // console.warn(response);
-        setData(response.data);
-        setIsShow(true);
-        setErrMessage('');
+        // setData(response.data);
+        // setIsShow(true);
+        // setErrMessage('');
       })
 
       .catch((e) => {
         console.log(e);
-        setIsShow(false);
-        setErrMessage('No Data Found');
+        // setIsShow(false);
+        // setErrMessage('No Data Found');
 
       })
 

@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector} from 'react-redux';
-import { Link,
-
-    useRouteMatch,useHistory } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import {checkPermissionSlice, logout} from '../../../slices/auth'
 
 
 
 function MobileNavbar() {
     const [toggleNav, setToggleNav] = useState(false)
-    let history = useHistory();
+    // let history = useHistory();
     const {user,payLinkPermission} = useSelector((state)=> state.auth )
     
     const roleId = user?.roleId;
@@ -21,7 +19,7 @@ function MobileNavbar() {
       // history.push("/login-page");
   }
     
-      let { path, url } = useRouteMatch();
+      let { url } = useRouteMatch();
       const dispatch = useDispatch();
       const handle = ()=>{
         dispatch(logout());
@@ -32,6 +30,7 @@ function MobileNavbar() {
           dispatch(checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode))
         }
         
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [])
   
       
@@ -103,7 +102,7 @@ function MobileNavbar() {
 
 
                     <li className="nav-item" onClick={()=>handle()}> 
-                    <a href={void(0)} className="nav-link"><i className="fa fa-briefcase" aria-hidden="true" />
+                    <a href={()=>false} className="nav-link"><i className="fa fa-briefcase" aria-hidden="true" />
                         &nbsp; Logout</a>
                     </li> 
 
@@ -112,7 +111,7 @@ function MobileNavbar() {
                     </li> 
                     
                     <li className="nav-item">
-                    <a href="https://sabpaisa.in/support-contact-us/" target="_blank" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a>
+                    <a href="https://sabpaisa.in/support-contact-us/" target="_blank" rel="noreferrer" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a>
                     </li> 
                     </ul>
                 </div>

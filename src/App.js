@@ -24,7 +24,7 @@ const App = () => {
     }
   }, [isLoggedIn,userAlreadyLoggedIn])
   
-  const logOut = useCallback(() => {
+  useCallback (() => {
     // alert('hook call useCallback');
     dispatch(logout());
   }, [dispatch]);
@@ -49,7 +49,6 @@ const logOutUser =(isLoggedIn)=>{
 
   return (
       <>
-      
       {loggin ? <IdleTimerContainer fnLogout={logOutUser} / > : <React.Fragment></React.Fragment>}
         <AllRoutes/>
       </>

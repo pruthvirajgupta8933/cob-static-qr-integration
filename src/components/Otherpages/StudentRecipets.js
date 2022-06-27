@@ -22,7 +22,7 @@ const StudentRecipets = () => {
   const[studentId, setStudentId]=useState(0);
   const [show, setIsShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errMessage, setErrMessage] = useState('');
+  // const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState(initialState);
 
   const onSubmit = async (e,transactionId,studentId) => {
@@ -40,7 +40,7 @@ const StudentRecipets = () => {
         // console.warn(response);
         setData(response.data);
         setIsShow(true);
-        setErrMessage('');
+        // setErrMessage('');
         setIsLoading(false)
       })
 
@@ -50,7 +50,7 @@ const StudentRecipets = () => {
         setIsLoading(false)
         // console.log(e);
         setIsShow(false);
-        setErrMessage('No Data Found');
+        // setErrMessage('No Data Found');
 
       })
 

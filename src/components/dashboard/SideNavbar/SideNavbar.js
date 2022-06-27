@@ -27,6 +27,7 @@ function SideNavbar() {
         dispatch(checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode))
       }
       
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     
@@ -98,7 +99,8 @@ function SideNavbar() {
                           </li> :<></>
                         }
                       
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href={void(0)} ><i className="fa fa-briefcase" aria-hidden="true" />
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}>
+                      <a href={()=>false} ><i className="fa fa-briefcase" aria-hidden="true" />
                       &nbsp; Logout</a>
                       </li>
                     </ul>
@@ -123,7 +125,7 @@ function SideNavbar() {
               </div>
             </div>
           </div>
-          <div className="sidebar-menu-query"> <a href="https://sabpaisa.in/support-contact-us/" rel="noreferre" target="_blank" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div>
+          <div className="sidebar-menu-query"> <a href="https://sabpaisa.in/support-contact-us/" target="_blank" rel="noreferrer"><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div>
         </div>
       </div>
     </aside>
