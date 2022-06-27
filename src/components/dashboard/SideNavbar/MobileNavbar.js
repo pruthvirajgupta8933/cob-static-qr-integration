@@ -75,9 +75,9 @@ function MobileNavbar() {
                         <Link to={`${url}/transaction-enquiry`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"> <i className="fa fa-calendar" aria-hidden="true" /> &nbsp;  Transaction Enquiry </Link>
                     </li>
                     
-                    <li className="nav-item"> 
+                    {/* <li className="nav-item"> 
                         <Link to={`${url}/view-transaction-with-filter`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"> <i className="fa fa-filter" aria-hidden="true" /> &nbsp; Transaction Enquiry With Filter </Link>
-                    </li>
+                    </li> */}
 
                     {roleId===3 || roleId===13 ? <li className="nav-item"> 
                         <Link  to={`${url}/client-list`}  onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-university" aria-hidden="true" />  &nbsp;Client List </Link>
