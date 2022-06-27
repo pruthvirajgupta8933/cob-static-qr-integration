@@ -223,7 +223,7 @@ const pages = _.range(1, pageCount + 1)
     // const dataWithoutNull = JSON.stringify(txnList).replaceAll('null',"NA");
     // console.log(JSON.parse(dataWithoutNull));
     const excelHeaderRow =
-  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Trans Initiation Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
+  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Transaction Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
     let excelArr = [excelHeaderRow];
     txnList.map((item,index)=>{
       // console.log(JSON.stringify(item));
@@ -415,7 +415,7 @@ const pages = _.range(1, pageCount + 1)
                             <th> Client Trans ID </th>
                             <th> Challan Number / VAN </th>
                             <th> Amount </th>
-                            <th> Trans Initiation Date </th>
+                            <th> Transaction Date </th>
                             <th> Payment Status </th>
                             <th> Payer First Name </th>
                             <th> Payer Last Name </th>
