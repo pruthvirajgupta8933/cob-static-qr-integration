@@ -19,7 +19,7 @@ function TransactionHistory() {
   const {isLoadingTxnHistory} = dashboard
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
   const [paymentModeList,SetPaymentModeList] = useState([]);
-  const [clientCode,SetClientCode] = useState("");
+  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
   const [fromDate,SetFromDate] = useState("");
   const [toDate,SetToDate] = useState("");
   const [txnStatus,SetTxnStatus] = useState("All");
@@ -300,7 +300,7 @@ const pages = _.range(1, pageCount + 1)
                     }}
                   >
                     {user.roleId===3 || user.roleId===13 ?
-                    <option value="0">All</option>
+                    <option value="All">All</option>
                       :
                     <option value="">Select</option> }
                     {clientMerchantDetailsList?.map((item,i) => {
