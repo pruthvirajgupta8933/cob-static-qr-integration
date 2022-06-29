@@ -20,7 +20,7 @@ function TransactionHistory() {
   const {isLoadingTxnHistory} = dashboard
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
   const [paymentModeList,SetPaymentModeList] = useState([]);
-  const [clientCode,SetClientCode] = useState("");
+  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
   const [fromDate,SetFromDate] = useState("");
   const [toDate,SetToDate] = useState("");
   const [txnStatus,SetTxnStatus] = useState("All");
@@ -131,14 +131,14 @@ const checkValidation = ()=>{
               ref1:0,
               ref2:0
             }
-            clientCode==='0'? 
-              clientMerchantDetailsList?.map((item) => {
-                paramData.clientCode = item.clientCode;
-                // console.log(paramData.clientCode);
-                dispatch(fetchTransactionHistorySlice(paramData))
-              })
-              :
-              dispatch(fetchTransactionHistorySlice(paramData))
+            // if(clientCode==="All"){
+            //   clientMerchantDetailsList?.map((item) => ( paramData.clientCode = item.clientCode ))
+            //   dispatch(fetchTransactionHistorySlice(paramData))
+            // }else{
+             
+            // }
+            // console.log("paramData",paramData)
+            dispatch(fetchTransactionHistorySlice(paramData))
       }else{
         console.log('API not trigger!');
       }
@@ -188,10 +188,7 @@ const checkValidation = ()=>{
 }, [])
 
 useEffect(() => {
-  // console.log("length",txnList.length);
   txnList.length > 0 ? setShow(true) : setShow(false)
-//  console.log("show",show)
-
 }, [txnList])
 
 
@@ -203,15 +200,9 @@ useEffect(() => {
     else{
       setShowData(updateTxnList)
     }
-
 }, [searchText])
 
-
-//  if ( pageCount === 1) return null;
-
 const pages = _.range(1, pageCount + 1)
-// console.log("pages",pages)
-
   var clientMerchantDetailsList =[];
   if(user && user?.clientMerchantDetailsList===null && user?.roleId!==3 && user?.roleId!==13){
     history.push('/dashboard/profile');
@@ -221,14 +212,15 @@ const pages = _.range(1, pageCount + 1)
   
   
   const exportToExcelFn=()=>{
-    // const dataWithoutNull = JSON.stringify(txnList).replaceAll('null',"NA");
-    // console.log(JSON.parse(dataWithoutNull));
+
     const excelHeaderRow =
-  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Trans Initiation Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
+  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Transaction Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
     let excelArr = [excelHeaderRow];
-    txnList.map((item,index)=>{
+    // eslint-disable-next-line array-callback-return
+    txnList.map((item,index) => {
       // console.log(JSON.stringify(item));
-      const allowDataToShow ={
+      console.log("index",index)
+      const allowDataToShow = {
         srNo:item.srNo === null? "" : index +1 ,
         txn_id:item.txn_id  === null? "" : item.txn_id ,
         client_txn_id:item.client_txn_id  === null? "" : item.client_txn_id ,
@@ -262,7 +254,7 @@ const pages = _.range(1, pageCount + 1)
         bank_txn_id:item.bank_txn_id === null? "" : item.bank_txn_id 
         };
         
-    excelArr.push(Object.values(allowDataToShow));
+        excelArr.push(Object.values(allowDataToShow));
   })
   // console.log("excelArr",excelArr)
   const fileName = "Transactions-Report"; 
@@ -301,7 +293,7 @@ const pages = _.range(1, pageCount + 1)
                     }}
                   >
                     {user.roleId===3 || user.roleId===13 ?
-                    <option value="0">All</option>
+                    <option value="All">All</option>
                       :
                     <option value="">Select</option> }
                     {clientMerchantDetailsList?.map((item,i) => {
@@ -416,7 +408,7 @@ const pages = _.range(1, pageCount + 1)
                             <th> Client Trans ID </th>
                             <th> Challan Number / VAN </th>
                             <th> Amount </th>
-                            <th> Trans Initiation Date </th>
+                            <th> Transaction Date </th>
                             <th> Payment Status </th>
                             <th> Payer First Name </th>
                             <th> Payer Last Name </th>
@@ -509,7 +501,14 @@ const pages = _.range(1, pageCount + 1)
                       
                       ))
                     }
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={()=>false}>
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => 
+                    
+                    { setCurrentPage((nex) => (nex === ( pages.length>9 ) ? nex : nex + 1)) }
+                    
+                    }
+                    
+                    
+                     href={()=>false}>
                       Next</a> : <></> }
                     </ul>
                   </nav>

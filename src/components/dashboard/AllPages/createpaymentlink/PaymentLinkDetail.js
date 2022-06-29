@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -10,29 +11,15 @@ import API_URL from "../../../../config";
 
 const PaymentLinkDetail = () => {
 
-  const [passwordcheck, setPasswordCheck] = useState(false);
- 
-  const [hours, setHours] = useState("");
-  const [minutes, setMinutes] = useState("");
   const [pageSize, setPageSize] = useState(10);
-
-
   const [data, setData] = useState([]);
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
-  const [drop, setDrop] = useState([]);
   const [searchText, setSearchText] = useState("");
 
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   const { clientCode} = clientMerchantDetailsList[0];
- 
-
-  
-
-  
-
-
 
 const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
   // console.log('https://paybylink.sabpaisa.in/paymentlink/getLinks/'+ clientCode );
@@ -192,13 +179,13 @@ const pages = _.range(1, pageCount + 1)
                 {paginatedata.length>0  ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
-                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={()=>false}>Previous</a>
                     { 
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
                         <li key={i} className={
                           page === currentPage ? " page-item active" : "page-item"
                         }> 
-                            <a className={`page-link data_${i}`} >  
+                            <a className={`page-link data_${i}`} href={()=>false}>  
                               <p onClick={() => pagination(page)}>
                               {page}
                               </p>
@@ -207,7 +194,7 @@ const pages = _.range(1, pageCount + 1)
                       
                       ))
                     }
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === (pages.length>9) ? nex : nex + 1)} href={()=>false}>
                       Next</a> : <></> }
                     </ul>
                   </nav>

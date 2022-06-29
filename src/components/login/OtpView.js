@@ -9,10 +9,10 @@ const OtpView = ({
   handleChangeForOtp,
   handleClickForVerification,
   classes,
-  showResendCode,
   otpVerificationError,
 }) => {
   
+  /*
   // const [message, setMessage] = useState("");
   
   // const handleClickforResendOTP = () => {
@@ -21,7 +21,9 @@ const OtpView = ({
   //     setMessage("");
   //   }, 2000);
   // };
-  return (
+
+  */
+  return ( 
     <>
       <Grid item xs={12} className={classes.EnterVerificationCodeContainer}>
         <Typography

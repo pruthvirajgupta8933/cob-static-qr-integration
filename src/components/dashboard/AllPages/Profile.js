@@ -8,7 +8,7 @@ import {createClientProfile, updateClientProfile} from '../../../slices/auth'
 
 import profileService from '../../../services/profile.service'
 import { toast, Zoom } from 'react-toastify';
-import { Link } from 'react-router-dom';
+
 // import { logout } from '../../../slices/auth';
 
 export const Profile = () => {
@@ -48,8 +48,9 @@ export const Profile = () => {
     }
     
     
-    const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
-    const [createProfileResponse , setCreateProfileResponse]  = useState('');
+    const clientId = (clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
+
+    // const [createProfileResponse , setCreateProfileResponse]  = useState('');
   
     const [authenticationMode,setAuthenticationMode] = useState(clientAuthenticationType);
     const [listOfNetBank,setListOfNetBank] = useState(initNBlist);
@@ -57,13 +58,18 @@ export const Profile = () => {
     
     const [selectedListForOption,setSelectedListForOption]=useState(authenticationMode==='NetBank'?listOfNetBank:listOfDebitCardBank);
 
-    const [userIfscCode,setUserIfscCOde]=useState(ifscCode)
     const [isClientCodeValid,setIsClientCodeValid]=useState(null)
     const [isIfcsValid,setIsIfscValid]=useState(true)
-  
+
+    
+    const userIfscCode = ifscCode
+    
     useEffect(() => {
-      setCreateProfileResponse(dashboard.createClientProfile)
+      // setCreateProfileResponse(dashboard.createClientProfile)
     }, [dashboard]);
+
+    //temp variable 
+    // const temp1 = createProfileResponse
   
     // console.log(authenticationMode);
     
@@ -122,12 +128,14 @@ const validationSchema = Yup.object().shape({
         
     }  , 1000);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // effect runs when user state is updated
     useEffect(() => {
     // reset form with user data
     reset(userData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userData]);
 
     function onSubmit(data) {
@@ -199,6 +207,7 @@ const validationSchema = Yup.object().shape({
 
    
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

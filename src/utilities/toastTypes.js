@@ -3,6 +3,8 @@ import "react-toastify/dist/ReactToastify.css";
 toast.configure({
   limit: 3,
 });
+
+
 var toastConfig = {
   basicToast: (message) =>
     toast(message, {

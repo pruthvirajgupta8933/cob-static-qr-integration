@@ -28,23 +28,23 @@ function SettlementReport() {
       clientCode = clientMerchantDetailsList[0].clientCode;
     }
 
-    const getFileName = async () => {
-      await axios( `${API_URL.GET_FILE_NAME}${clientCode}` )
-        .then((res) => {
-          setData(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    
 
     useEffect(() => {
-      getFileName();
-    }, [ ]);
+        axios( `${API_URL.GET_FILE_NAME}${clientCode}` )
+          .then((res) => {
+            setData(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
       data.filter((item) => folderArr.push(item.folder) )
       setFolderArr([...new Set(folderArr)]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     useEffect(() => {
@@ -56,6 +56,7 @@ function SettlementReport() {
       }else{
         setSearchFilterData(showFilterData)
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchArea])
 
     const onChangeFolder = (val) => {
@@ -72,6 +73,7 @@ function SettlementReport() {
 
       SetShowFilterData(tempArr1);
       setSearchFilterData(tempArr1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedSubFolder, selectedFolder]);
 
 
@@ -140,8 +142,6 @@ function SettlementReport() {
                 </div>
                 </React.Fragment> 
                 : <></> }
-               
-              
                 </div>
             </div>
           </section>

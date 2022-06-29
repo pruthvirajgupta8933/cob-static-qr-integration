@@ -1,16 +1,18 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-//import Genratelink from './Genratelink';
-
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { Link ,useHistory} from 'react-router-dom'
+import { useHistory} from 'react-router-dom'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import _ from 'lodash';
 import * as Yup from 'yup'
 import Genratelink from './Genratelink';
 import { Edituser } from './Edituser';
-import { toast, Zoom } from 'react-toastify';
+// import { toast, Zoom } from 'react-toastify';
 import API_URL from '../../../../config';
+import toastConfig from '../../../../utilities/toastTypes';
+
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -80,7 +82,7 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 // Alluser data API INTEGRATION
 
     const loadUser = async () => {
-        const result = await axios.get(API_URL.GET_CUSTOMERS + clientCode)
+        await axios.get(API_URL.GET_CUSTOMERS + clientCode)
             .then(res => {
                 // console.log(res)
                 setData(res.data);
@@ -152,21 +154,11 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
         });
 
 
-        // console.log(res, 'succes')
         loadUser();
         if (res.status === 200) {
-            ;
-            toast.success("Payment Link success", {
-                position: "top-right",
-                autoClose: 2000,
-                transition: Zoom
-            })
+            toastConfig.successToast("Payment Link success")
         } else {
-            toast.error("something went wrong", {
-                position: "top-right",
-                autoClose: 2000,
-                transition: Zoom
-            })
+            toastConfig.errorToast("something went wrong")
         }
     };
 
@@ -190,6 +182,7 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
             }
         })
     }
+
     // USE FOR GENERETE LINK
     const generateli = (id) => {
         // console.log(id);
@@ -414,13 +407,13 @@ const pagination = (pageNo) => {
                 {paginatedata.length>0  ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
-                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={()=>false}>Previous</a>
                     { 
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
                         <li key={i} className={
                           page === currentPage ? " page-item active" : "page-item"
                         }> 
-                            <a className={`page-link data_${i}`} >  
+                            <a href={()=>false} className={`page-link data_${i}`} >  
                               <p onClick={() => pagination(page)}>
                               {page}
                               </p>
@@ -429,7 +422,7 @@ const pagination = (pageNo) => {
                       
                       ))
                     }
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === (pages.length>9) ? nex : nex + 1)} href={()=>false}>
                       Next</a> : <></> }
                     </ul>
                   </nav>

@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import axios from 'axios' ;
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import _ from 'lodash';
-import { Zoom } from 'react-toastify';
 import API_URL from '../../../../config';
+import toastConfig from '../../../../utilities/toastTypes';
+
 
 const Reports = () => {
 
@@ -12,47 +13,28 @@ const Reports = () => {
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
- 
-
   const [data , setData] = useState([]);
+  const [displayList, setDisplayList] = useState([])
   const [searchText, setSearchText] = useState('');
   const {user} = useSelector((state)=>state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  const clientMerchantDetailsList = user.clientMerchantDetailsList;
   const {clientCode} = clientMerchantDetailsList[0];
-
-
   const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 
-  const getData = async (e) => { 
-    await axios.get(`${API_URL.GET_REPORTS}${clientCode}`)  
-  .then(res => {     
-    setData(res.data);  
-    setPaginatedData(_(res.data).slice(0).take(pageSize).value())
-    // console.log(res.data)
-
-  })  
-  .catch(err => {  
-    // console.log(err)
-  });
-  
-}
 
 useEffect(() => {
-  const loading = getData();
-  toast.promise(
-    loading,
-    {
-      pending: "In Process",
-      success: "Data Loaded Successfully",
-      error: "Error Occured in Data",
-    },
-    {
-      position: "bottom-center",
-      autoClose: 1000,
-      limit: 2,
-      transition: Zoom,
-    }
-  );
+  toastConfig.infoToast("Loading")
+  axios.get(`${API_URL.GET_REPORTS}${clientCode}`)  
+  .then(res => {     
+    toastConfig.successToast("Data loaded")
+    setData(res.data);  
+    setDisplayList(res.data)
+    setPaginatedData(_(res.data).slice(0).take(pageSize).value())
+    })  
+  .catch((err) => {
+    toastConfig.errorToast("Data not loaded !")  
+  });
+
 }, []);
 
 
@@ -67,6 +49,7 @@ useEffect(() => {
       setPaginatedData(data.filter((item) => 
       Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
   } else {
+    
       setPaginatedData(data)
   }
 }, [searchText])
@@ -88,14 +71,13 @@ useEffect(() => {
 
 }, [currentPage])
 
-
-
-
-// if ( pageCount === 1) return null;
-
 const pages = _.range(1, pageCount + 1)
 
-
+  console.log("pages",pages)
+  console.log("pageSize",pageSize)
+  console.log("data.length",data.length)
+  console.log("paginatedata",paginatedata)
+  console.log("paginatedata.length",paginatedata.length)
 
 
 
@@ -176,13 +158,13 @@ const pages = _.range(1, pageCount + 1)
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
       
-                   <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                   <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={()=>false}>Previous</a>
                     { 
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
                         <li key={i} className={
                           page === currentPage ? " page-item active" : "page-item"
                         }> 
-                            <a className={`page-link data_${i}`} >  
+                            <a href={()=>false} className={`page-link data_${i}`} >  
                               <p onClick={() => pagination(page)}>
                               {page}
                               </p>
@@ -191,7 +173,7 @@ const pages = _.range(1, pageCount + 1)
                       
                       ))
                     }
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === (pages.length>9) ? nex : nex + 1)} href={()=>false}>
                       Next</a> : <></> }
                     </ul>
                   </nav>

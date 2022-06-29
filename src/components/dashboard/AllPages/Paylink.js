@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import PayerDetails from './createpaymentlink/PayerDetails';
 import PaymentLinkDetail from './createpaymentlink/PaymentLinkDetail';
 import BulkPayer from './createpaymentlink/BulkPayer';
@@ -10,14 +10,14 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 function Paylink() {
     const [tab,SetTab] = useState(1);
 
-    const {dashboard,auth} = useSelector((state)=>state);
+    const {auth} = useSelector((state)=>state);
     const {user} = auth;
     let history = useHistory();
 
     // if(user && user.clientMerchantDetailsList===null){
     //       history.push('/dashboard/profile');
     // } 
-     
+
   if(user.roleId!==3 && user.roleId!==13){
     if(user.clientMerchantDetailsList===null){
       console.log("paylink");
@@ -42,16 +42,16 @@ function Paylink() {
         <div className="col-lg-12 mb-4 pl-0">
                 <ul className="nav nav-tabs">
                     <li className="nav-item" onClick={()=>SetTab(1)}>
-                      <a className={"nav-link " +  (tab===1? "activepaylink":"inactive") }  >Payment Detail</a>
+                      <a href={()=>false} className={"nav-link " +  (tab===1? "activepaylink":"inactive") }  >Payment Detail</a>
                     </li>
                     <li className="nav-item" onClick={()=>SetTab(2)} >
-                      <a className={"nav-link " +  (tab===2? "activepaylink":"inactive") } >Payment Link Detail</a>
+                      <a href={()=>false} className={"nav-link " +  (tab===2? "activepaylink":"inactive") } >Payment Link Detail</a>
                     </li>
                     {/* <li className="nav-item"  onClick={()=>SetTab(3)}>
-                      <a className={"nav-link " +  (tab===3? "activepaylink":"inactive") } >Import Bulk Payer</a>
+                      <a href={()=>false} className={"nav-link " +  (tab===3? "activepaylink":"inactive") } >Import Bulk Payer</a>
                     </li> */}
                     <li className="nav-item" onClick={()=>SetTab(4)}>
-                      <a className={"nav-link " +  (tab===4? "activepaylink":"inactive") } >Reports</a>
+                      <a href={()=>false} className={"nav-link " +  (tab===4? "activepaylink":"inactive") } >Reports</a>
                     </li>
                 </ul>
             </div>

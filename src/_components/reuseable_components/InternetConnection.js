@@ -1,5 +1,5 @@
 import React from 'react'
-import { Offline, Online } from "react-detect-offline"
+import { Offline } from "react-detect-offline"
 function InternetConnection() {
 
     const styles = {

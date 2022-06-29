@@ -9,7 +9,7 @@ function Emandate(props) {
   
   const {user} = useSelector((state)=>state.auth);
   // console.log(user)
-  const { clientId,clientName,clientCode,clientEmail,address } =user.clientMerchantDetailsList[0];
+  const { clientId,clientName,clientCode,clientEmail } =user.clientMerchantDetailsList[0];
   const { register, handleSubmit } = useForm();
   const [formData, setFormData] = useState({});
   const [makePayment,setMakePayment]= useState(false);
@@ -132,6 +132,7 @@ useEffect(() => {
 
 useEffect(() => {
     handleSubmit(onSubmit);
+// eslint-disable-next-line react-hooks/exhaustive-deps
 },[])
 
 const thank_msg = {

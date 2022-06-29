@@ -11,6 +11,7 @@ import { clearMessage } from "../../slices/message";
 import { toast } from 'react-toastify';
 import './Login.css';
 
+
 const INITIAL_FORM_STATE = {
   clientUserId:'',
   userPassword:''
@@ -165,10 +166,9 @@ useEffect(() => {
     // console.log(user?.loginStatus)
     if(user?.loginStatus==="Pending" && isLoggedIn===false){
       extMsg = "User not verified";
+      console.log(1)
       toast.error(loginMsg +", "+ extMsg);
-      // console.log(1)
     }else{
-      // console.log(2)
       toast.error(loginMsg);
     }
     setLoading(false);
@@ -255,6 +255,7 @@ const handleClickShowPassword = () => {
                                       placeholder="user name"
                                       type="text"
                                       name="clientUserId"
+                                      autocomplete="username"
                                     />
                                     <ErrorMessage name="clientUserId">
                                       {(msg) => (
@@ -292,6 +293,7 @@ const handleClickShowPassword = () => {
                                       }
                                       size={50}
                                       name="userPassword"
+                                      autocomplete="current-password"
                                     />
                                     <ErrorMessage name="userPassword">
                                       {(msg) => (
@@ -322,8 +324,8 @@ const handleClickShowPassword = () => {
                                     className="sumbit"
                                     type="sumbit"
                                     style={{ color: "#fff" }}
+                                    disabled = {loading ? true:false }
                                   >
-
                                     {loading && (
                                       <span
                                         className="spinner-border "

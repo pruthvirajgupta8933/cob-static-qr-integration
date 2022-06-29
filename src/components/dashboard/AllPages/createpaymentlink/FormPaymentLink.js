@@ -54,6 +54,7 @@ function FormPaymentLink() {
   
 useEffect(() => {
     getDrop();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCheck = (e) => {                 //for checkbox
@@ -62,9 +63,7 @@ useEffect(() => {
 
 
   const submitHandler =  async (e) => {
-    
-
-     const response = await axios
+    await axios
       .post(`${API_URL.ADD_LINK}?Customer_id=${e.Customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
       .then((response) => {
         toast.success(response.data.message,
@@ -74,7 +73,6 @@ useEffect(() => {
           transition: Zoom,
           limit: 2,
         })
-        // console.log(response.data.message);
       })
       .catch((error) => {
         toast.error('Payment Link Creation Failed',{
