@@ -17,15 +17,16 @@ const Emandate = () => {
     const [details,setDetails] = useState([]);
     const baseUrl = API_URL.MANDATE_REGISTRATION_STATUS;
     const mandateRegId = mendateRegIdParam;
+    
     const getManteDetails = (mandateRegId)=>{
-    const mandateDetails = axios.get(baseUrl+mandateRegId).then((response)=>{
-            
+      axios.get(baseUrl+mandateRegId).then((response)=>{
             setDetails(response.data);
     }).catch(error => console.log(error,"error"));
   }
 
   useEffect(()=>{
     getManteDetails(mandateRegId);
+// eslint-disable-next-line react-hooks/exhaustive-deps
 },[]);
 
 useEffect(() => {
@@ -63,6 +64,7 @@ useEffect(() => {
         }).catch(error=>console.log(error))
     }
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [details]);
 
 

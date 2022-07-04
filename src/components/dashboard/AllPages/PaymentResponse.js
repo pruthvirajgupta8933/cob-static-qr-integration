@@ -1,8 +1,8 @@
-import { CatchingPokemonSharp } from '@mui/icons-material';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 import { useSelector } from 'react-redux';
 import {useLocation} from "react-router-dom"
+
 import API_URL from '../../../config';
 import { UtcDateToIsoDate } from '../../../utilities/emandateDateFormat';
 
@@ -13,8 +13,6 @@ function PaymentResponse() {
 
     const {user} = useSelector(state=>state.auth)
     const {clientMerchantDetailsList} = user;
-
-
     const search = useLocation().search;
     const urlParam = new URLSearchParams(search);
     const SabPaisaTxId = urlParam.get('SabPaisaTxId');
@@ -35,8 +33,7 @@ function PaymentResponse() {
       console.log("match code")
       setVerifyClientCode(true)
     }
-
-    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientCode])
 
   useEffect(() => {
@@ -98,6 +95,7 @@ function PaymentResponse() {
     }
   
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [verifyClientCode])
   
   

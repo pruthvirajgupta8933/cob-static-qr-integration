@@ -256,10 +256,11 @@ a:focus {
 .brand-col .social-buttons a > span {
   padding-left: 5px;
 }
-
+/* 
 .panel-login {
-  /*margin-top: 20px;*/
+  // margin-top: 20px;
 }
+ */
 
 .panel-login .remember-row {
   margin-bottom: 10px;

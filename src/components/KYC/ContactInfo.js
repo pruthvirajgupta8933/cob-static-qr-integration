@@ -6,10 +6,10 @@ import FormikController from '../../_components/formik/FormikController'
 
 function ContactInfo() {
   
-  const choices = [
-    { key: "choice a", value: "choicea" },
-    { key: "choice b", value: "choiceb" },
-  ]
+  // const choices = [
+  //   { key: "choice a", value: "choicea" },
+  //   { key: "choice b", value: "choiceb" },
+  // ]
 
   const initialValues = {
     contact_name: "",

@@ -1,9 +1,9 @@
 import React,{useEffect,useState} from 'react';
-import { useDispatch,useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function ClientList() {
 
-  const [isLoading,setIsLoading] = useState(false);
+  // const [isLoading,setIsLoading] = useState(false);
   const [search, SetSearch] = useState("");
   const [clientListData, SetClientList] = useState([]);
 

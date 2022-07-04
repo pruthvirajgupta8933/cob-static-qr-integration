@@ -1,9 +1,5 @@
 import React from 'react'
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-  } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Dashboard from './components/dashboard/Dashboard';
 // import Login from './components/login/Login';
 import Registration from './components/registration/Registration';
@@ -23,9 +19,8 @@ import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetai
 
 
 function AllRoutes(){
-  
-  
-    return (
+
+  return (
         // <Router >
           <div>
           <InternetConnection />

@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import {Dashboardservice} from "../services/dashboard.service";
-import profileService from "../services/profile.service";
 
 
 const initialState = { 
@@ -40,7 +39,7 @@ export const successTxnSummary = createAsyncThunk(
 
   export const subscriptionplan = createAsyncThunk(
     "dashbaord/subscriptionplan",
-    async ({}, thunkAPI) => {
+    async (object = {}, thunkAPI) => {
       try {
         const response = await Dashboardservice.subscriptionplan();
         // console.log("subscribe data", response );
@@ -60,7 +59,7 @@ export const successTxnSummary = createAsyncThunk(
 
   export const subscriptionPlanDetail = createAsyncThunk(
     "dashbaord/subscriptionPlanDetail",
-    async ({}, thunkAPI) => {
+    async (object = {}, thunkAPI) => {
       try {
         const response = await Dashboardservice.subscriptionPlanDetail();
         return response;
@@ -77,11 +76,7 @@ export const successTxnSummary = createAsyncThunk(
     }
   );
 
-  export const saveSubscribedPlan = createAsyncThunk("dashbaord/saveSubscribedPlan", async (data) => {
-    // console.log("data",data);    
-    // console.log("data");    
-    
-  });
+
 
   export const fetchTransactionHistorySlice = createAsyncThunk(
     "dashbaord/transactionHistory",
@@ -105,8 +100,15 @@ export const successTxnSummary = createAsyncThunk(
   export const dashboardSlice = createSlice({
     name: 'dashboard',
     initialState,
+    reducers:{
+      clearTransactionHistory : (state)=>{
+        state.transactionHistory = []
+      },
+      clearSuccessTxnsummary : (state)=>{
+        state.successTxnsumry = []
+      }
+    },
     extraReducers: {
-    
       [successTxnSummary.pending]: (state) => {
         state.isLoading = true
       },
@@ -144,5 +146,7 @@ export const successTxnSummary = createAsyncThunk(
       
       },
   })
-  
-  export const dashboardReducer = dashboardSlice.reducer
+
+// Action creators are generated for each case reducer function
+export const { clearTransactionHistory , clearSuccessTxnsummary } = dashboardSlice.actions
+export const dashboardReducer = dashboardSlice.reducer

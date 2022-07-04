@@ -75,7 +75,7 @@ function TransactionEnquirey() {
       {key: 'Payee Amount', value: data.payee_amount},
       {key: 'Paid Amount', value: data.paid_amount},
       {key: 'Transaction Date', value: data.trans_date},
-      // {key: 'Trans Complete Date', value: data.trans_complete_date},
+      
       {key: 'Client Code ', value: data.client_code},
       {key: 'Client Txn Id', value: data.client_txn_Id},
     ]  
@@ -130,7 +130,7 @@ function TransactionEnquirey() {
                                   className="form-control"
                                 />
 
-                                <button className="btn receipt-button mt-2" type="submit">View</button>
+                                <button className="btn btn-primary mt-2" type="submit">View</button>
                             </div>
                           </div>
                          
@@ -209,10 +209,6 @@ function TransactionEnquirey() {
                         </td>
                       </tr>
                       <tr>
-                        {/* <td>Trans Complete Date :</td>
-                        <td className="bold">
-                          <b>{data.trans_complete_date}</b>
-                        </td> */}
                         <td> Client Code :</td>
                         <td className="bold">
                           <b>{data.client_code}</b>

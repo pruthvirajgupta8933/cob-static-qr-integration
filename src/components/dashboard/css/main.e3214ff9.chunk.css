@@ -8767,7 +8767,7 @@ a.text-dark:hover {
     font-family: Material Icons;
     font-style: normal;
     font-weight: 400;
-    /* src: url(https://fonts.gstatic.com/s/materialicons/v67/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2"); */
+    src: url(https://fonts.gstatic.com/s/materialicons/v67/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
 }
 .material-icons {
     font-family: Material Icons;
@@ -8783,6 +8783,7 @@ a.text-dark:hover {
     direction: ltr;
     -moz-font-feature-settings: "liga";
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern", "liga", "pnum" "ss01";
 }
 .my_account_wrapper .merchant-detail-container {
     justify-content: left;
@@ -18430,6 +18431,8 @@ li.ant-calendar-time-picker-select-option-disabled:hover {
     outline: none;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    
 }
 .ant-dropdown-menu-item-group-title {
     padding: 5px 12px;
@@ -34453,6 +34456,7 @@ a.gx-btn-outline-orange:disabled {
     width: 3px;
     background-color: hsla(0, 0%, 39.2%, 0.1);
     -webkit-border-radius: 100px;
+    border-radius: 100px;
 }
 ::-webkit-scrollbar:hover {
     background-color: rgba(0, 0, 0, 0.09);
@@ -34460,10 +34464,12 @@ a.gx-btn-outline-orange:disabled {
 ::-webkit-scrollbar-thumb:vertical {
     background: rgba(0, 0, 0, 0.5);
     -webkit-border-radius: 100px;
+    border-radius: 100px;
 }
 ::-webkit-scrollbar-thumb:vertical:active {
     background: rgba(0, 0, 0, 0.61);
     -webkit-border-radius: 100px;
+    border-radius: 100px;
 }
 body {
     height: 100%;
@@ -51383,7 +51389,7 @@ select {
 }
 .crtActibe_failed,
 .crtActibe_paid {
-    display: inline-block;
+    display: block;
     font-size: 11px;
     border-radius: 20px;
     padding: 3px 6px;
@@ -51449,7 +51455,7 @@ select {
     text-align: right;
 }
 .crtActibedew {
-    display: inline-block;
+    display: block;
     font-size: 12px;
     border-radius: 20px;
     padding: 5px 10px;
@@ -51864,6 +51870,7 @@ select {
     -webkit-columns: #333;
     -moz-columns: #333;
     column-count: #333;
+    columns: #333;
     font-size: 13px;
     font-weight: 600;
     text-align: center;
@@ -55128,10 +55135,9 @@ select {
     float: right;
     line-height: 24px;
 }
-/*# sourceMappingURL=main.e3214ff9.chunk.css.map */
 
 .padbottom{
-    paddint-bottom:17px;
+    padding-bottom:17px;
 }
 .toppad{
     padding-top:10px;

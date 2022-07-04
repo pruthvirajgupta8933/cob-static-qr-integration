@@ -7,7 +7,7 @@ function ViewTransactionDetails() {
   return (
     <div className="container-fluid">
     <nav className="navbar navbar-light bg-light">
-    <img className="navbar-brand" style={{width:"140px"}} src={sabpaisalogo}  />
+    <img className="navbar-brand" style={{width:"140px"}} src={sabpaisalogo} alt="sabpaisa"  />
     </nav>
         <TransactionEnqMultiParam />
     </div> 

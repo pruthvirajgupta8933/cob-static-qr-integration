@@ -1,5 +1,4 @@
 import React,{useEffect,useState} from 'react';
-//import Header from './Header'
 import HeaderPage from '../login/HeaderPage'
 import '../login/css/home.css'
 import '../login/css/homestyle.css'
@@ -15,13 +14,6 @@ import { toast, Zoom } from 'react-toastify';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
-const INITIAL_FORM_STATE = {
-  fullName:'',
-  mobileNumber:'',
-  email:'',
-  password:'',
-  selectStates:''
-};
 
 const FORM_VALIDATION = Yup.object().shape({
   firstname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
@@ -33,10 +25,8 @@ const FORM_VALIDATION = Yup.object().shape({
   passwordd: Yup.string().required("Password Required").matches(
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"),
-  confirmpasswordd: Yup.string()
-     .oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
-     terms_and_condition:  Yup.boolean()
-     .oneOf([true], "You must accept the terms and conditions")
+  confirmpasswordd: Yup.string().oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
+  terms_and_condition:  Yup.boolean().oneOf([true], "You must accept the terms and conditions")
 });
 
 function Registration() {
@@ -47,13 +37,7 @@ function Registration() {
   const datar = auth;
 
   const {isUserRegistered} = datar;
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [mobileNumber, setMobileNumber] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [isActive, setActive] = useState(true);
   const [values, setValues] = useState({
     password: '',
@@ -66,9 +50,10 @@ function Registration() {
       return ()=>{
         dispatch(udpateRegistrationStatus())
       }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const saved = localStorage.getItem("register");
+
 
   const handleRegistration = (formData) => {
     var businessType = isActive? 1 : 2 ;
@@ -79,7 +64,7 @@ function Registration() {
     var email = emaill;
     var password = passwordd;
 
-        setLoading(true);
+        // setLoading(true);
         // console.log(formValue);
         dispatch(register({ firstName, lastName, mobileNumber, email, password,businessType}))
           .unwrap()
@@ -90,7 +75,7 @@ function Registration() {
             // alert(2);
           })
           .catch(() => {
-            setLoading(false);
+            // setLoading(false);
           });
 
           
@@ -136,6 +121,7 @@ function Registration() {
       dispatch(udpateRegistrationStatus())
 
     }   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserRegistered])
   
   
@@ -183,7 +169,7 @@ return (
                         className={isActive ? "current" : "left"}
                         onClick={toggleClass}
                       >
-                        <a id="btnLeft"  href={void(0)} >
+                        <a id="btnLeft" rel="rel" href={()=>false} >
                           Individual
                         </a>
                       </li>
@@ -193,7 +179,7 @@ return (
                         className={isActive ? "right" : "current"}
                         onClick={toggleClass}
                       >
-                        <a id="btnRight" href={void(0)}>
+                        <a id="btnRight" href={()=>false}>
                           Business
                         </a>
                       </li>
@@ -348,7 +334,9 @@ return (
                                     maxLength={255}
                                     id="user-pw"
                                     placeholder="Password"
-                                    type="password"
+                                    type={
+                                      values.showPassword ? "text" : "password"
+                                    }
                                     name="passwordd"
                                     size={50}
                                     autoComplete="off"
@@ -427,7 +415,7 @@ return (
                                     type="submit"
                                     defaultValue="Create Account"
                                   >
-                                    Create Account{" "}
+                                    Create Account
                                   </button>
                                   <span className="simform__actions-sidetext">
                                     <span className="ant-checkbox">
@@ -437,7 +425,7 @@ return (
                                         className="form-check-input"
                                         name="terms_and_condition"
                                       />
-                                    </span>{" "}
+                                    </span>
                                     I agree to the{" "}
                                     <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" className="special" target="_blank" >
                                       Terms &amp; Conditions

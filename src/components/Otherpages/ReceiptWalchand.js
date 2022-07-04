@@ -8,7 +8,7 @@ const ReceiptWalchand = () => {
 
     const [pnrId, setPnrId] = useState();
     const [show, setIsShow] = useState(false);
-    const [errMessage, setErrMessage] = useState('');
+    // const [errMessage, setErrMessage] = useState('');
     const [data, setData] = useState([]);
     
     const onSubmit = async (pnrId) => {
@@ -16,7 +16,7 @@ const ReceiptWalchand = () => {
         await axios.get(`${API_URL.FETCH_DATA_FOR_WACOE}?PRNNum=${pnrId}`)
             .then((response) => {
                 var resData = response.data
-                resData.map((dt,i)=>{
+                resData.map((dt,i)=> (
                     transactionStatus(dt.cid,dt.transId).then((response)=>{
                         if(response[0].client_txn_id===dt.transId){
                             resData[i].trans_date = response[0].trans_date;
@@ -24,11 +24,11 @@ const ReceiptWalchand = () => {
                             resData[i].client_name = response[0].client_name;
                         }
                     })
-                })
+                ))
                 setInterval(() => {
                     setData(resData);
                     setIsShow(true);
-                    setErrMessage('');
+                    // setErrMessage('');
                 }, 2000);
             })
 
