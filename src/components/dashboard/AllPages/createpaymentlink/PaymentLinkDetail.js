@@ -5,9 +5,9 @@ import { useSelector } from "react-redux";
 import _ from 'lodash';
 import FormPaymentLink from "./FormPaymentLink";
 import API_URL from "../../../../config";
+import toastConfig from '../../../../utilities/toastTypes';
+import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 
-
- 
 
 const PaymentLinkDetail = () => {
 
@@ -16,33 +16,40 @@ const PaymentLinkDetail = () => {
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
-
+  const [displayList, setDisplayList] = useState([])
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   const { clientCode} = clientMerchantDetailsList[0];
+  const [pageCount,setPageCount ] = useState(data ? Math.ceil(data.length/pageSize) : 0);
 
-const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
-  // console.log('https://paybylink.sabpaisa.in/paymentlink/getLinks/'+ clientCode );
 
-  const getDetails = async (e) => {
-    await axios
-      .get(`${API_URL.GET_LINKS}${clientCode}`)
+  useEffect(() => {
+    toastConfig.infoToast("Loading")
+    axios.get(`${API_URL.GET_LINKS}${clientCode}`)
       .then((res) => {
+        toastConfig.successToast("Payment Link Data Loaded")
         setData(res.data);
+        setDisplayList(res.data);
         setPaginatedData(_(res.data).slice(0).take(pageSize).value())
       })
       .catch((err) => {
-        console.log(err);
+        toastConfig.errorToast("Data not loaded")
       });
-  };
+  }, []);
+  
 
 
 
   useEffect(() => {
   
     if(searchText !== ''){
-      setPaginatedData(data.filter((item)=>
-      Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))}else{setPaginatedData(data)}
+      setDisplayList(data.filter((item)=>
+      Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
+    }
+    else
+    {
+      setDisplayList(data)
+    }
   },[searchText])
 
 
@@ -61,18 +68,16 @@ const pagination = (pageNo) => {
 
 
 
-useEffect(() => {
-  getDetails();
-}, []);
 
 useEffect(()=>{
-  setPaginatedData(_(data).slice(0).take(pageSize).value())
-},[pageSize]);
+  setPaginatedData(_(displayList).slice(0).take(pageSize).value())
+  setPageCount(displayList.length>0 ? Math.ceil(displayList.length/pageSize) : 0)
+},[pageSize, displayList]);
 
 useEffect(() => {
   // console.log("page chagne no")
   const startIndex = (currentPage - 1) * pageSize;
- const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+ const paginatedPost = _(displayList).slice(startIndex).take(pageSize).value();
  setPaginatedData(paginatedPost);
 
 }, [currentPage])
@@ -122,11 +127,8 @@ const pages = _.range(1, pageCount + 1)
 
                     <div className="col-lg-4 mrg-btm- bgcolor">
                         <label>Count Per Page</label>
-                        <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} className="form-control">
-                          <option value="10">10</option>
-                          <option value="20">20</option>
-                          <option value="50">50</option>
-                          <option value="100">100</option>
+                        <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
+                        <DropDownCountPerPage datalength={data.length} />
                         </select>
                     </div>
                     
@@ -176,7 +178,7 @@ const pages = _.range(1, pageCount + 1)
                 </table>
           </div>
           <div>
-                {paginatedata.length>0  ? 
+                {pages.length>1  ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
                     <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={()=>false}>Previous</a>

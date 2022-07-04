@@ -255,7 +255,7 @@ const handleClickShowPassword = () => {
                                       placeholder="user name"
                                       type="text"
                                       name="clientUserId"
-                                      autocomplete="username"
+                                      autoComplete="username"
                                     />
                                     <ErrorMessage name="clientUserId">
                                       {(msg) => (
@@ -293,7 +293,7 @@ const handleClickShowPassword = () => {
                                       }
                                       size={50}
                                       name="userPassword"
-                                      autocomplete="current-password"
+                                      autoComplete="current-password"
                                     />
                                     <ErrorMessage name="userPassword">
                                       {(msg) => (

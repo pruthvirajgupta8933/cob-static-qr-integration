@@ -12,6 +12,7 @@ import { Edituser } from './Edituser';
 // import { toast, Zoom } from 'react-toastify';
 import API_URL from '../../../../config';
 import toastConfig from '../../../../utilities/toastTypes';
+import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
 
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
@@ -44,16 +45,14 @@ const PayerDetails = () => {
     const [searchText, setSearchText] = useState("");
     const { user } = useSelector((state) => state.auth);
     // const [formData, setFormData] = useState(initialValues)
-
+    const [displayList, setDisplayList] = useState([])
     const [data, setData] = useState([])
     const [customerType, setCustomerType] = useState([]);
     const [pageSize, setPageSize] = useState(10);
     const [paginatedata, setPaginatedData] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
+    const [pageCount,setPageCount ] = useState(data ? Math.ceil(data.length/pageSize) : 0);
 
-
-    
-const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 
     let clientMerchantDetailsList=[]
     let clientCode =''
@@ -64,46 +63,35 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
         clientMerchantDetailsList = user.clientMerchantDetailsList;
         clientCode =  clientMerchantDetailsList[0].clientCode;
       }
-  
-    // console.log(clientMerchantDetailsList);
-    
-    // console.log(clientMerchantDetailsList);
-    //console.log(clientCode)
-    // const onInputChange = e => {
-    //     // console.log(e.target.value);
-    //     setItem({ ...item, [e.target.name]: e.target.value })
-    // };
+
+// Alluser data API INTEGRATION
+const loadUser = async () => {
+    await axios.get(API_URL.GET_CUSTOMERS + clientCode)
+        .then(res => {
+            // console.log(res)
+            setData(res.data);
+            setDisplayList(res.data);
+            setPaginatedData(_(res.data).slice(0).take(pageSize).value())
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
 
     useEffect(() => {
         loadUser();
         getDrop();
     }, []);
 
-// Alluser data API INTEGRATION
 
-    const loadUser = async () => {
-        await axios.get(API_URL.GET_CUSTOMERS + clientCode)
-            .then(res => {
-                // console.log(res)
-                setData(res.data);
-                setPaginatedData(_(res.data).slice(0).take(pageSize).value())
-            })
-            .catch(err => {
-                console.log(err)
-
-            })
-    }
     // SEARCH FILTER 
 
     useEffect(() => {
         if (searchText.length > 0) {
-            setData(data.filter((item) => 
-            Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
-            setPaginatedData(data.filter((item) => 
+            setDisplayList(data.filter((item) => 
             Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
         } else {
-            setPaginatedData(data)
-            loadUser()
+            setDisplayList(data)
         }
     }, [searchText])
 
@@ -113,13 +101,14 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 
 
     useEffect(()=>{
-        setPaginatedData(_(data).slice(0).take(pageSize).value())
-      },[pageSize]);
+        setPaginatedData(_(displayList).slice(0).take(pageSize).value())
+        setPageCount(displayList.length>0 ? Math.ceil(displayList.length/pageSize) : 0)
+      },[pageSize, displayList]);
       
       useEffect(() => {
         // console.log("page chagne no")
         const startIndex = (currentPage - 1) * pageSize;
-       const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+       const paginatedPost = _(displayList).slice(startIndex).take(pageSize).value();
        setPaginatedData(paginatedPost);
       
       }, [currentPage])
@@ -156,7 +145,7 @@ const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
 
         loadUser();
         if (res.status === 200) {
-            toastConfig.successToast("Payment Link success")
+            toastConfig.successToast("Payee added successfully")
         } else {
             toastConfig.errorToast("something went wrong")
         }
@@ -212,11 +201,15 @@ const pagination = (pageNo) => {
     setCurrentPage(pageNo);
   }
 
+  const edit = () =>{
+    loadUser();
+  }
+
     return (
 
         <React.Fragment>
 
-            <Edituser items={editform} />
+            <Edituser items={editform} callBackFn={edit} />
             <Genratelink generatedata={genrateform} />
             <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
@@ -337,11 +330,8 @@ const pagination = (pageNo) => {
                     </div>
                     <div className="col-lg-4 mrg-btm- bgcolor">
                         <label>Count Per Page</label>
-                        <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} className="form-control">
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
+                        <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
+                        <DropDownCountPerPage datalength={data.length} />
                         </select>
                     </div>
                     

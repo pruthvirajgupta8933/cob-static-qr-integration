@@ -133,13 +133,15 @@ function SettlementReport() {
                     onChange={getSearchTerm}
                   />
                   {showFilterData.filter}
+                  
                 </div>
-                <div className="col-lg-6 mrg-btm- bgcolor">
+                {searchFilterData.length > 9  ? <div className="col-lg-6 mrg-btm- bgcolor">
                   <label>Count Per Page</label>
                   <select className="ant-input">
                     <DropDownCountPerPage datalength={searchFilterData.length} />
                   </select>
-                </div>
+                </div> : <></> }
+                
                 </React.Fragment> 
                 : <></> }
                 </div>

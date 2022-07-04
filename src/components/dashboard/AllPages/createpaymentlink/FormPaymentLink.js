@@ -63,6 +63,12 @@ useEffect(() => {
 
 
   const submitHandler =  async (e) => {
+    toast.info("In process", {
+      position: "top-right",
+      autoClose: 2000,
+      transition: Zoom,
+      limit: 2,
+    })
     await axios
       .post(`${API_URL.ADD_LINK}?Customer_id=${e.Customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
       .then((response) => {

@@ -5,11 +5,10 @@ import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import API_URL from '../../../../config';
 import toastConfig from '../../../../utilities/toastTypes';
+import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
 
 
 const Reports = () => {
-
-
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,20 +18,20 @@ const Reports = () => {
   const {user} = useSelector((state)=>state.auth);
   const clientMerchantDetailsList = user.clientMerchantDetailsList;
   const {clientCode} = clientMerchantDetailsList[0];
-  const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
+  const [pageCount,setPageCount ] = useState(data ? Math.ceil(data.length/pageSize) : 0);
 
 
 useEffect(() => {
-  toastConfig.infoToast("Loading")
+  toastConfig.infoToast("Report Loading")
   axios.get(`${API_URL.GET_REPORTS}${clientCode}`)  
   .then(res => {     
-    toastConfig.successToast("Data loaded")
+    toastConfig.successToast("Report Data loaded")
     setData(res.data);  
     setDisplayList(res.data)
     setPaginatedData(_(res.data).slice(0).take(pageSize).value())
     })  
   .catch((err) => {
-    toastConfig.errorToast("Data not loaded !")  
+    toastConfig.errorToast("Report Data not loaded !")  
   });
 
 }, []);
@@ -46,11 +45,13 @@ const getSearchTerm  = (e) => {
 
 useEffect(() => {
   if (searchText.length > 0) {
-      setPaginatedData(data.filter((item) => 
+      // setPaginatedData(data.filter((item) => 
+      // Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
+      setDisplayList(data.filter((item) => 
       Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
   } else {
-    
-      setPaginatedData(data)
+      setDisplayList(data)
+      // setPaginatedData(data)
   }
 }, [searchText])
 
@@ -59,25 +60,28 @@ const pagination = (pageNo) => {
 }
 
 useEffect(()=>{
-  setPaginatedData(_(data).slice(0).take(pageSize).value())
-},[pageSize]);
+  setPaginatedData(_(displayList).slice(0).take(pageSize).value())
+  setPageCount(displayList.length>0 ? Math.ceil(displayList.length/pageSize) : 0)
+},[pageSize,displayList]);
 
 
 useEffect(() => {
   // console.log("page chagne no")
   const startIndex = (currentPage - 1) * pageSize;
- const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+ const paginatedPost = _(displayList).slice(startIndex).take(pageSize).value();
  setPaginatedData(paginatedPost);
 
 }, [currentPage])
 
 const pages = _.range(1, pageCount + 1)
 
-  console.log("pages",pages)
-  console.log("pageSize",pageSize)
-  console.log("data.length",data.length)
-  console.log("paginatedata",paginatedata)
-  console.log("paginatedata.length",paginatedata.length)
+  // console.log("==========================")
+  // console.log("pages",pages)
+  // console.log("pageSize",pageSize)
+  // console.log("data.length",data.length)
+  // console.log("paginatedata",paginatedata)
+  // console.log("paginatedata.length",paginatedata.length)
+  // console.log("displayList",displayList)
 
 
 
@@ -95,11 +99,8 @@ const pages = _.range(1, pageCount + 1)
 
                     <div className="col-lg-4 mrg-btm- bgcolor">
                         <label>Count Per Page</label>
-                        <select  value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} className="form-control">
-                          <option value="10">10</option>
-                          <option value="20">20</option>
-                          <option value="50">50</option>
-                          <option value="100">100</option>
+                        <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
+                        <DropDownCountPerPage datalength={data.length} />
                         </select>
                     </div>
                     </div>
@@ -153,8 +154,8 @@ const pages = _.range(1, pageCount + 1)
                 </table>
           </div>
           <div>
-              
-                {paginatedata.length>0  ? 
+            
+                {pages.length>1  ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
       
