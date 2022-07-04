@@ -20,7 +20,7 @@ function TransactionHistory() {
   const {isLoadingTxnHistory} = dashboard
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
   const [paymentModeList,SetPaymentModeList] = useState([]);
-  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
+  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "0" : "");
   const [fromDate,SetFromDate] = useState("");
   const [toDate,SetToDate] = useState("");
   const [txnStatus,SetTxnStatus] = useState("All");
