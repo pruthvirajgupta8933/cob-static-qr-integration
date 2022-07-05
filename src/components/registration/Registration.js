@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { register, udpateRegistrationStatus } from "../../slices/auth";
 import {  useHistory } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
+import TermCondition from './TermCondition';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -39,6 +40,9 @@ function Registration() {
   const {isUserRegistered} = datar;
   // const [loading, setLoading] = useState(false);
   const [isActive, setActive] = useState(true);
+  const [acceptTc,setAcceptTc] = useState(false);
+  const [isCheck,setIsCheck] = useState(false);
+
   const [values, setValues] = useState({
     password: '',
     showPassword: false,
@@ -56,7 +60,8 @@ function Registration() {
 
 
   const handleRegistration = (formData) => {
-    var businessType = isActive? 1 : 2 ;
+    console.log(formData)
+    var businessType = isActive ? 1 : 2 ;
     var { firstname, lastname , mobilenumber, emaill, passwordd } = formData;
     var firstName = firstname;
     var lastName = lastname;
@@ -123,7 +128,14 @@ function Registration() {
     }   
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserRegistered])
-  
+
+
+  const callBackFn = (isClickOnAccept,isChecked) =>{
+    console.log("isClickOnAccept",isClickOnAccept)
+    console.log("isChecked",isChecked)
+    setAcceptTc(!acceptTc)
+    setIsCheck(isChecked)
+  }
   
 return (
   <>
@@ -206,6 +218,7 @@ return (
                             validationSchema={FORM_VALIDATION}
                             onSubmit={handleRegistration}
                           >
+                          {({ values, setFieldValue }) => (
                             <Form
                               acceptCharset="utf-8"
                               action="#"
@@ -417,20 +430,14 @@ return (
                                   >
                                     Create Account
                                   </button>
+                                 
                                   <span className="simform__actions-sidetext">
-                                    <span className="ant-checkbox">
-                                      <Field
-                                        style={{ marginTop: "-7px" }}
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        name="terms_and_condition"
-                                      />
-                                    </span>
-                                    I agree to the{" "}
-                                    <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" className="special" target="_blank" >
-                                      Terms &amp; Conditions
-                                    </a>
-                                  </span>
+
+                                  {console.log(values)}
+                                  <TermCondition  acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} />
+
+                                  {/* <p onClick={()=>{ setAcceptTc(!acceptTc)}} >accept the t&c </p> */}
+                                  <p className="mb-0" style={{cursor:"pointer"}} onClick={()=>{ callBackFn(acceptTc,isCheck) }} > Click here to accept <span className="text-primary">terms and conditions</span></p>  
                                   {
                                     <ErrorMessage name="terms_and_condition">
                                       {(msg) => (
@@ -446,9 +453,28 @@ return (
                                       )}
                                     </ErrorMessage>
                                   }
+                                    {/* <span className="ant-checkbox">
+                                      <Field
+                                        style={{ marginTop: "-7px" }}
+                                        type="checkbox"
+                                        className="form-check-input"
+                                        name="terms_and_condition"
+                                        // onClick={()=>{ handlerTermCond(trmCond,setFieldValue)}}
+
+                                      /> 
+                                    </span>
+
+                                    I agree to the{" "}
+                                    <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" className="special" target="_blank" >
+                                      Terms &amp; Conditions
+                                    </a> */}
+                                  </span>
+                                
                                 </div>
                               </div>
                             </Form>
+                          )}
+
                           </Formik>
                         </div>
                       </div>
