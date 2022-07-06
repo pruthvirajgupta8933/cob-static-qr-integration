@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "cob-staging-test-account"
-  }
+    "cob-staging": "cob-staging",
+    "default": "cob-staging"
+  },
+  "targets": {}
 }

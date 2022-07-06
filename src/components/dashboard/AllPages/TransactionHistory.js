@@ -160,13 +160,16 @@ const checkValidation = ()=>{
     if(user?.roleId===3 || user?.roleId===13){
 
       const arr1 =  [];
-      clientMerchantDetailsList.filter((item)=>{
-        TxnListArr.filter((item1)=>{
-          if(item1.client_code === item.clientCode){
-            arr1.push(item1)	
-          }
+      if(Array.isArray(TxnListArr)){
+        clientMerchantDetailsList.filter((item)=>{
+          TxnListArr.filter((item1)=>{
+            if(item1.client_code === item.clientCode){
+              arr1.push(item1)	
+            }
+          })
         })
-      })
+      }
+      
       TxnListArr = arr1
     }
 
