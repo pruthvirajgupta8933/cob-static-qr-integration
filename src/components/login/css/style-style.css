@@ -14,6 +14,12 @@
   .authfy-panel-left, .authfy-panel-right {
     float: left;
 }
+
+/*Registration page css*/
+
+.max-height-signup {
+  max-height: calc(70vh - 200px);
+}
   
 }
 
@@ -22,6 +28,10 @@
   body {
         background-size: cover;
 		
+  }
+
+  .max-height-signup {
+    max-height: calc(70vh - 200px);
   }
 }
 
@@ -401,11 +411,17 @@ a:focus {
 
 @media (min-width: 768px) {		
 
-    
+  .max-height-signup {
+    max-height: calc(70vh - 200px);
+  }
     
 }
 
 @media (max-width: 767px) {
+
+  .max-height-signup {
+    max-height: calc(70vh - 200px) !important;
+  }
 
     .authfy-panel-left, 
     .authfy-panel-right {

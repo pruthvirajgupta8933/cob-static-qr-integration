@@ -43,10 +43,11 @@ function Registration() {
   const [acceptTc,setAcceptTc] = useState(false);
   const [isCheck,setIsCheck] = useState(false);
 
-  const [values, setValues] = useState({
+  const [valuesIn, setValuesIn] = useState({
     password: '',
     showPassword: false,
   });
+
 
   const dispatch = useDispatch();
 
@@ -60,7 +61,6 @@ function Registration() {
 
 
   const handleRegistration = (formData) => {
-    console.log(formData)
     var businessType = isActive ? 1 : 2 ;
     var { firstname, lastname , mobilenumber, emaill, passwordd } = formData;
     var firstName = firstname;
@@ -92,7 +92,7 @@ function Registration() {
 
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
+    setValuesIn({ ...valuesIn, showPassword: !valuesIn.showPassword });
   };
   
 
@@ -181,7 +181,7 @@ return (
                         className={isActive ? "current" : "left"}
                         onClick={toggleClass}
                       >
-                        <a id="btnLeft" rel="rel" href={()=>false} >
+                        <a id="btnLeft" href={()=>false} >
                           Individual
                         </a>
                       </li>
@@ -191,7 +191,7 @@ return (
                         className={isActive ? "right" : "current"}
                         onClick={toggleClass}
                       >
-                        <a id="btnRight" href={()=>false}>
+                        <a id="btnRight"  href={()=>false}>
                           Business
                         </a>
                       </li>
@@ -348,7 +348,7 @@ return (
                                     id="user-pw"
                                     placeholder="Password"
                                     type={
-                                      values.showPassword ? "text" : "password"
+                                      valuesIn.showPassword ? "text" : "password"
                                     }
                                     name="passwordd"
                                     size={50}
@@ -385,7 +385,7 @@ return (
                                     id="user-cpw"
                                     placeholder="Confirm Password"
                                     type={
-                                      values.showPassword ? "text" : "password"
+                                      valuesIn.showPassword ? "text" : "password"
                                     }
                                     name="confirmpasswordd"
                                     size={50}
@@ -416,7 +416,7 @@ return (
                                     className="hide-password"
                                     onClick={handleClickShowPassword}
                                   >
-                                    {values.showPassword ? "Hide" : "Show"}
+                                    {valuesIn.showPassword ? "Hide" : "Show"}
                                   </span>
                                 </div>
                               </div>
@@ -430,10 +430,9 @@ return (
                                   >
                                     Create Account
                                   </button>
-                                 
+
                                   <span className="simform__actions-sidetext">
 
-                                  {console.log(values)}
                                   <TermCondition  acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} />
 
                                   {/* <p onClick={()=>{ setAcceptTc(!acceptTc)}} >accept the t&c </p> */}

@@ -189,13 +189,13 @@ function TermCondition({acceptTnC,callbackHandler, setFieldValues}) {
 
                 <div className="form-check-inline" style={{alignItems:"baseline"}}>
                   <span><input className="form-check-input" type="checkbox"  id="defaultCheck1" checked={checked}  onChange={e => setChecked(!checked)} /></span>
-                  <span><label className="form-check-label text-bold text-danger" for="defaultCheck1" >  I agree to the Terms and Conditions</label></span>
+                  <span><label className="form-check-label text-bold text-danger" htmlFor="defaultCheck1" >  I agree to the Terms and Conditions</label></span>
                 </div>
                 </div>
                 </div>
               
                 <div className="w-25 m-3" >
-                <button  type="button" class="btn btn-secondary btn-sm text-white" onClick={()=>onChangeHandler()}>Close</button></div>
+                <button  type="button" className="btn btn-secondary btn-sm text-white" onClick={()=>onChangeHandler()}>Close</button></div>
                 
                 <div className="dropdown-divider"></div>
         <div className="modal-footer">
