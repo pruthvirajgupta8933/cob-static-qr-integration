@@ -131,8 +131,6 @@ function Registration() {
 
 
   const callBackFn = (isClickOnAccept,isChecked) =>{
-    console.log("isClickOnAccept",isClickOnAccept)
-    console.log("isChecked",isChecked)
     setAcceptTc(!acceptTc)
     setIsCheck(isChecked)
   }

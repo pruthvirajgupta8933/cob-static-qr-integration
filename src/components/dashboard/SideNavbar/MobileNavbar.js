@@ -7,7 +7,6 @@ import {checkPermissionSlice, logout} from '../../../slices/auth'
 
 function MobileNavbar() {
     const [toggleNav, setToggleNav] = useState(false)
-    // let history = useHistory();
     const {user,payLinkPermission} = useSelector((state)=> state.auth )
     
     const roleId = user?.roleId;
@@ -33,7 +32,7 @@ function MobileNavbar() {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [])
   
-      
+    const contactUs = "https://sabpaisa.in/support-contact-us/";
       
 
     return (
@@ -111,7 +110,7 @@ function MobileNavbar() {
                     </li> 
                     
                     <li className="nav-item">
-                    <a href="https://sabpaisa.in/support-contact-us/" target="_blank" rel="noreferrer" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a>
+                    <a href={contactUs} target="_blank" rel="noreferrer" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a>
                     </li> 
                     </ul>
                 </div>

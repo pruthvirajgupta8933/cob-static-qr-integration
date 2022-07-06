@@ -8,7 +8,7 @@ import { toast, Zoom } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import API_URL from '../../../../config';
 import FormikController from '../../../../_components/formik/FormikController';
-import Regex,{RegexMsg} from '../../../../_components/formik/ValidationRegex';
+import {Regex, RegexMsg} from '../../../../_components/formik/ValidationRegex';
 
 export const Edituser = (props) => {
 

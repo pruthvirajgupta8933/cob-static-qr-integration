@@ -5,7 +5,7 @@ import API_URL from '../../../config';
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
 import FormikController from '../../../_components/formik/FormikController';
-import Regex,{RegexMsg} from '../../../_components/formik/ValidationRegex';
+import {Regex ,RegexMsg} from '../../../_components/formik/ValidationRegex';
 import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
 import PrintDocument from '../../../_components/reuseable_components/PrintDocument';
 

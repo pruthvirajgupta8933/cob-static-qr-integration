@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React,{useEffect, useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
@@ -13,14 +14,14 @@ import DropDownCountPerPage from '../../../_components/reuseable_components/Drop
 
 function TransactionHistory() {
   const dispatch = useDispatch();  
-  let history = useHistory();
+  const history = useHistory();
   const {auth,dashboard} = useSelector((state)=>state);
-  var {user} = auth
+  const {user} = auth
 
   const {isLoadingTxnHistory} = dashboard
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
   const [paymentModeList,SetPaymentModeList] = useState([]);
-  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "0" : "");
+  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "ALL" : "");
   const [fromDate,SetFromDate] = useState("");
   const [toDate,SetToDate] = useState("");
   const [txnStatus,SetTxnStatus] = useState("All");
@@ -37,6 +38,13 @@ function TransactionHistory() {
   const [pageCount,setPageCount] = useState(0);
   const [buttonClicked,isButtonClicked] = useState(false);
 
+
+  var clientMerchantDetailsList =[];
+  if(user && user?.clientMerchantDetailsList===null && user?.roleId!==3 && user?.roleId!==13){
+    history.push('/dashboard/profile');
+  }else{
+    clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  }
 
   // function dayDiff(dateFrom, dateTo) {
   //   const date1 = new Date(dateFrom);
@@ -147,10 +155,27 @@ const checkValidation = ()=>{
   useEffect(() => {
   
      // Remove initiated from transaction history response
-     const TxnListArr = dashboard.transactionHistory
-     const TxnListArrUpdated = TxnListArr?.filter((Txn)=>{
-       return Txn.status!=='INITIATED';
-     })
+    let TxnListArr = dashboard.transactionHistory
+
+    if(user?.roleId===3 || user?.roleId===13){
+
+      const arr1 =  [];
+      clientMerchantDetailsList.filter((item)=>{
+        TxnListArr.filter((item1)=>{
+          if(item1.client_code === item.clientCode){
+            arr1.push(item1)	
+          }
+        })
+      })
+      TxnListArr = arr1
+    }
+
+
+    const TxnListArrUpdated = TxnListArr?.filter((Txn)=>{
+        return Txn.status!=='INITIATED';
+    })
+
+
      setUpdateTxnList(TxnListArrUpdated)
      setShowData(TxnListArrUpdated);
      SetTxnList(TxnListArrUpdated);
@@ -203,12 +228,7 @@ useEffect(() => {
 }, [searchText])
 
 const pages = _.range(1, pageCount + 1)
-  var clientMerchantDetailsList =[];
-  if(user && user?.clientMerchantDetailsList===null && user?.roleId!==3 && user?.roleId!==13){
-    history.push('/dashboard/profile');
-  }else{
-    clientMerchantDetailsList = user?.clientMerchantDetailsList;
-  }
+  
   
   
   const exportToExcelFn=()=>{
@@ -219,7 +239,7 @@ const pages = _.range(1, pageCount + 1)
     // eslint-disable-next-line array-callback-return
     txnList.map((item,index) => {
       // console.log(JSON.stringify(item));
-      console.log("index",index)
+      // console.log("index",index)
       const allowDataToShow = {
         srNo:item.srNo === null? "" : index +1 ,
         txn_id:item.txn_id  === null? "" : item.txn_id ,
@@ -520,6 +540,7 @@ const pages = _.range(1, pageCount + 1)
                   <div className="col-lg-12 col-md-12"><div className="text-center"><div className="spinner-border" role="status" ><span className="sr-only">Loading...</span></div></div></div> 
                   : 
                   buttonClicked && (showData.length <= 0 || txnList.length <= 0) ? 
+                  
                     <div className='showMsg'>No Data Found</div>
                   :
                     <div></div>

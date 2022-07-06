@@ -19,8 +19,14 @@ function DropDownCountPerPage({datalength}) {
     if(length>=50 || length>=100){
         PerPageCount.push(100)
     }
+    if(length>=100 || length>=200){
+        PerPageCount.push(200)
+    }
+    if(length>=200 || length>=300){
+        PerPageCount.push(300)
+    }
     
-    if(length>=250 || length>=500){
+    if(length>=300 || length>=500){
         PerPageCount.push(500)
     }
     
