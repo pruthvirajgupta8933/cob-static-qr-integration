@@ -48,13 +48,18 @@ function TransactionHistory() {
 
 
   useEffect(() => {
+    console.log("showData",showData.length)
+    console.log("updateTxnList",updateTxnList.length)
+    console.log((buttonClicked && dataFound))
+
     setTimeout(() => {
-      if(showData.length <= 0 || updateTxnList.length <= 0){
+
+      if(showData.length < 1 &&  (updateTxnList.length > 0 || updateTxnList.length===0)){
         setDataFound(true)
       }else{
         setDataFound(false)
       }  
-    }, 2000);
+    });
     
   }, [showData, updateTxnList])
   
@@ -542,9 +547,8 @@ const pages = _.range(1, pageCount + 1)
                 {isLoadingTxnHistory ? 
                   <div className="col-lg-12 col-md-12"><div className="text-center"><div className="spinner-border" role="status" ><span className="sr-only">Loading...</span></div></div></div> 
                   : 
-                  buttonClicked && dataFound ? 
-                  
-                    <div className='showMsg'><div className="spinner-border" role="status" ><span className="sr-only">Loading...</span></div></div>
+                  buttonClicked && dataFound ?
+                    <div className='showMsg'>Data Not Found</div>
                   :
                     <div></div>
                     }  
