@@ -36,6 +36,7 @@ function TransactionHistory() {
   const [showData,setShowData] = useState([])
   const [updateTxnList,setUpdateTxnList] = useState([])
   const [pageCount,setPageCount] = useState(0);
+  const [dataFound,setDataFound] = useState(false)
   const [buttonClicked,isButtonClicked] = useState(false);
 
   var clientMerchantDetailsList =[];
@@ -45,6 +46,18 @@ function TransactionHistory() {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(showData.length <= 0 || updateTxnList.length <= 0){
+        setDataFound(true)
+      }else{
+        setDataFound(false)
+      }  
+    }, 2000);
+    
+  }, [showData, updateTxnList])
+  
   // function dayDiff(dateFrom, dateTo) {
   //   const date1 = new Date(dateFrom);
   //   const date2 = new Date(dateTo);
@@ -529,9 +542,9 @@ const pages = _.range(1, pageCount + 1)
                 {isLoadingTxnHistory ? 
                   <div className="col-lg-12 col-md-12"><div className="text-center"><div className="spinner-border" role="status" ><span className="sr-only">Loading...</span></div></div></div> 
                   : 
-                  buttonClicked && (showData.length <= 0 || updateTxnList.length <= 0) ? 
+                  buttonClicked && dataFound ? 
                   
-                    <div className='showMsg'>No Data Found</div>
+                    <div className='showMsg'><div className="spinner-border" role="status" ><span className="sr-only">Loading...</span></div></div>
                   :
                     <div></div>
                     }  
