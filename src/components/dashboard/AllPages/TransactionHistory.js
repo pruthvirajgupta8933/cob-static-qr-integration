@@ -21,7 +21,7 @@ function TransactionHistory() {
   const {isLoadingTxnHistory} = dashboard
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
   const [paymentModeList,SetPaymentModeList] = useState([]);
-  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "ALL" : "");
+  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
   const [fromDate,SetFromDate] = useState("");
   const [toDate,SetToDate] = useState("");
   const [txnStatus,SetTxnStatus] = useState("All");
@@ -37,7 +37,6 @@ function TransactionHistory() {
   const [updateTxnList,setUpdateTxnList] = useState([])
   const [pageCount,setPageCount] = useState(0);
   const [buttonClicked,isButtonClicked] = useState(false);
-
 
   var clientMerchantDetailsList =[];
   if(user && user?.clientMerchantDetailsList===null && user?.roleId!==3 && user?.roleId!==13){
@@ -130,15 +129,30 @@ const checkValidation = ()=>{
           if(isValid){ 
             // isLoading(true);
             isButtonClicked(true);
-            var paramData = {
-              clientCode:clientCode,
-              txnStatus:txnStatus,
-              payModeId:payModeId,
-              fromDate:fromDate,
-              toDate:toDate,
-              ref1:0,
-              ref2:0
+            let strClientCode, clientCodeArrLength ="";
+              if(clientCode==="All"){
+              const allClientCode = []
+              clientMerchantDetailsList?.map((item)=>{
+                allClientCode.push(item.clientCode)
+              })
+              clientCodeArrLength = allClientCode.length.toString();
+              strClientCode = allClientCode.join().toString();
+            }else{
+              strClientCode = clientCode;
+              clientCodeArrLength = "1"
             }
+
+            let paramData = {
+              clientCode:strClientCode,
+              paymentStatus:txnStatus,
+              paymentMode:payModeId,
+              fromDate:fromDate,
+              endDate:toDate,
+              length: "0",
+              page: "0",
+              NoOfClient: clientCodeArrLength
+            } 
+           
             // if(clientCode==="All"){
             //   clientMerchantDetailsList?.map((item) => ( paramData.clientCode = item.clientCode ))
             //   dispatch(fetchTransactionHistorySlice(paramData))
@@ -152,42 +166,45 @@ const checkValidation = ()=>{
       }
   } 
   
-  useEffect(() => {
-  
+
+
+  // useEffect(() => {
+
+
+  //   const message = {
+  //         Txn : dataT,
+  //         clientList : dataC
+  //       }
+    
+  //       webworker.postMessage(message);
+  //       webworker.onerror = () => {
+  //         setResult("Error");
+  //       };
+    
+  //       webworker.onmessage = (e) => {
+  //         // console.log("e",e.data)
+  //         if (e.data) {
+  //           setResult(e.data.result);
+  //         } else {
+  //           setResult("Error");
+  //         }
+  //       };
+  //     }, []);
+
+  useEffect(() => {  
      // Remove initiated from transaction history response
-    let TxnListArr = dashboard.transactionHistory
-
-    if(user?.roleId===3 || user?.roleId===13){
-
-      const arr1 =  [];
-      if(Array.isArray(TxnListArr)){
-        clientMerchantDetailsList.filter((item)=>{
-          TxnListArr.filter((item1)=>{
-            if(item1.client_code === item.clientCode){
-              arr1.push(item1)	
-            }
-          })
-        })
-      }
-      
-      TxnListArr = arr1
-    }
-
-
-    const TxnListArrUpdated = TxnListArr?.filter((Txn)=>{
-        return Txn.status!=='INITIATED';
-    })
-
-
-     setUpdateTxnList(TxnListArrUpdated)
-     setShowData(TxnListArrUpdated);
-     SetTxnList(TxnListArrUpdated);
-     setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())   
+    let TxnListArrUpdated = dashboard.transactionHistory
+    setUpdateTxnList(TxnListArrUpdated)
+    setShowData(TxnListArrUpdated);
+    SetTxnList(TxnListArrUpdated);
+    setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())   
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard])
   
   // console.log("buttonclicked",buttonClicked);
   
+
+
   useEffect(()=>{
      setPaginatedData(_(showData).slice(0).take(pageSize).value())
      setPageCount(showData.length>0 ? Math.ceil(showData.length/pageSize) : 0)
@@ -542,7 +559,7 @@ const pages = _.range(1, pageCount + 1)
                 {isLoadingTxnHistory ? 
                   <div className="col-lg-12 col-md-12"><div className="text-center"><div className="spinner-border" role="status" ><span className="sr-only">Loading...</span></div></div></div> 
                   : 
-                  buttonClicked && (showData.length <= 0 || txnList.length <= 0) ? 
+                  buttonClicked && (showData.length <= 0 || updateTxnList.length <= 0) ? 
                   
                     <div className='showMsg'>No Data Found</div>
                   :
