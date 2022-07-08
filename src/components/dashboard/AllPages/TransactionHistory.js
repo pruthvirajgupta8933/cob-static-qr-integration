@@ -152,14 +152,7 @@ const checkValidation = ()=>{
               page: "0",
               NoOfClient: clientCodeArrLength
             } 
-           
-            // if(clientCode==="All"){
-            //   clientMerchantDetailsList?.map((item) => ( paramData.clientCode = item.clientCode ))
-            //   dispatch(fetchTransactionHistorySlice(paramData))
-            // }else{
-             
-            // }
-            // console.log("paramData",paramData)
+        
             dispatch(fetchTransactionHistorySlice(paramData))
       }else{
         console.log('API not trigger!');
@@ -167,29 +160,6 @@ const checkValidation = ()=>{
   } 
   
 
-
-  // useEffect(() => {
-
-
-  //   const message = {
-  //         Txn : dataT,
-  //         clientList : dataC
-  //       }
-    
-  //       webworker.postMessage(message);
-  //       webworker.onerror = () => {
-  //         setResult("Error");
-  //       };
-    
-  //       webworker.onmessage = (e) => {
-  //         // console.log("e",e.data)
-  //         if (e.data) {
-  //           setResult(e.data.result);
-  //         } else {
-  //           setResult("Error");
-  //         }
-  //       };
-  //     }, []);
 
   useEffect(() => {  
      // Remove initiated from transaction history response
