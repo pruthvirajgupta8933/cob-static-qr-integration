@@ -1,8 +1,8 @@
 import React,{useEffect, useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import axios from "axios";
 // import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashboardSlice";
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import Emandate from '../AllPages/Mandate';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import API_URL from '../../../config';
@@ -11,20 +11,20 @@ import API_URL from '../../../config';
 
 const Subsciption = () => {
   const [subscriptionDetails, setSubscriptionDetails] = useState(false);
-  const { message } = useSelector((state) => state.message);
+  // const { message } = useSelector((state) => state.message);
 
-  const subscriptionData = useSelector(state => state.subscribe);
+  // const subscriptionData = useSelector(state => state.subscribe);
   const [subscriptionPlanData,setSubscriptionData] = useState([]);
-  const [emandateDetails, setEmandateDetails] = useState(false);
+  // const [emandateDetails, setEmandateDetails] = useState(false);
   const [termAndCnd, setTermAndCnd] = useState(false);
-  const [subscriptionPlanChargesData,setSubscriptionPlanChargesData] = useState([]);
+  // const [subscriptionPlanChargesData,setSubscriptionPlanChargesData] = useState([]);
   const [subscribePlanData,setSubscribePlanData] = useState([]);
   const [isModelClosed,setIsModelClosed] = useState(false);
-  const [paymentGatewayUrl,setPaymentGatewayUrl] = useState([]);
+  // const [paymentGatewayUrl,setPaymentGatewayUrl] = useState([]);
 
   
   const [Plans,setPlans] = useState([]);
-  const {dashboard,auth} = useSelector((state)=>state);
+  const {auth} = useSelector((state)=>state);
   const {user} = auth;
   let history = useHistory();
 
@@ -34,12 +34,12 @@ const Subsciption = () => {
     history.push('/dashboard/profile');
   } 
   
-  const {clientMerchantDetailsList , accountHolderName,accountNumber,bankName,clientEmail,clientMobileNo,ifscCode,loginStatus,pan} =user;
-  const { isLoading , subscribe } = dashboard;
-  let clientAuthenticationType,clientCode = '';
+  const {clientMerchantDetailsList , accountHolderName,accountNumber,bankName,clientEmail,clientMobileNo,ifscCode} =user;
+  // const { isLoading , subscribe } = dashboard;
+  let clientAuthenticationType = '';
   if(clientMerchantDetailsList!==null){
 
-    let {clientAuthenticationType,clientCode} = clientMerchantDetailsList[0];
+    // let {clientAuthenticationType,clientCode} = clientMerchantDetailsList[0];
 
   }
   var authenticationMode ='';
@@ -51,7 +51,7 @@ const Subsciption = () => {
   }
 
 
- const dispatch = useDispatch();
+//  const dispatch = useDispatch();
 
  const getSubscriptionService = async () => {  
     await axios.get(API_URL.FETCH_APP_AND_PLAN)  
@@ -64,16 +64,16 @@ const Subsciption = () => {
     });  
   }
 
-  const userDetails = JSON.parse(localStorage?.getItem("user"));
+  // const userDetails = JSON.parse(localStorage?.getItem("user"));
 
-  const subsData = JSON.parse(localStorage?.getItem("subscriptionData"));
+  // const subsData = JSON.parse(localStorage?.getItem("subscriptionData"));
 
   const d = new Date();
   let formattedDate = d.toISOString();
 
   const [planPrice,setPlanPrice]=useState('');
-  const [planType,setPlanType]=useState('');
-  const [planValidityDays,setPlanValidityDays]=useState('');
+  // const [planType,setPlanType]=useState('');
+  // const [planValidityDays,setPlanValidityDays]=useState('');
   const [mandateEndData,setMandateEndData]=useState('');
   const [subscribeData,setSubscribeData]=useState({});
 
@@ -88,8 +88,8 @@ const Subsciption = () => {
                             });
     
       setPlanPrice(data.planPrice);
-      setPlanType(data.planType);
-      setPlanValidityDays(data.planValidityDays);
+      // setPlanType(data.planType);
+      // setPlanValidityDays(data.planValidityDays);
      
       const ed = new Date();
       var mandateEndDate = ed.setDate(ed.getDate() + data.planValidityDays);
@@ -98,8 +98,8 @@ const Subsciption = () => {
       
     }else{
       setPlanPrice('');
-      setPlanType('');
-      setPlanValidityDays('');
+      // setPlanType('');
+      // setPlanValidityDays('');
 
     }
   }
@@ -148,6 +148,7 @@ useEffect(() => {
   
   setSubscribeData(bodyFormData)
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [mandateEndData,planPrice,termAndCnd,subscribePlanData,isModelClosed]);
 
 

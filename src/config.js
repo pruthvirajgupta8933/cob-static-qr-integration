@@ -19,9 +19,13 @@ const API_LIVE = {
     SUBSCRIBE_SERVICE: "https://spl.sabpaisa.in/client-subscription-service/subscribe",
 
     /* transaction history  */
+      //old api of txn history
+    /*https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2} */
+
     GET_PAYMENT_STATUS_LIST : "https://adminapi.sabpaisa.in/REST/admin/getPaymentStatusList",
     PAY_MODE_LIST : "https://adminapi.sabpaisa.in/REST/paymode/paymodeList",
-
+    GetMerchantTxnHistory : "https://adminapi.sabpaisa.in/REST/GetMerchantTxnHistory",
+    
     /* Transaction Enquiry */
     VIEW_TXN : "https://adminapi.sabpaisa.in/Enquiry/ViewTxn",
 

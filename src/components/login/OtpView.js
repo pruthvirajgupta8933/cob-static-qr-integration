@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Typography from "@material-ui/core/Typography";
 import OtpInput from "react-otp-input";
 import Button from "@material-ui/core/Button";
@@ -9,18 +9,21 @@ const OtpView = ({
   handleChangeForOtp,
   handleClickForVerification,
   classes,
-  showResendCode,
   otpVerificationError,
 }) => {
-  const [message, setMessage] = useState("");
   
-  const handleClickforResendOTP = () => {
-    setMessage("Otp has been send to the Registered Email And mobile number");
-    setTimeout(function () {
-      setMessage("");
-    }, 2000);
-  };
-  return (
+  /*
+  // const [message, setMessage] = useState("");
+  
+  // const handleClickforResendOTP = () => {
+  //   setMessage("Otp has been send to the Registered Email And mobile number");
+  //   setTimeout(function () {
+  //     setMessage("");
+  //   }, 2000);
+  // };
+
+  */
+  return ( 
     <>
       <Grid item xs={12} className={classes.EnterVerificationCodeContainer}>
         <Typography
@@ -56,7 +59,7 @@ const OtpView = ({
         />
       </Grid>
       <Grid item xs={8} className={classes.ResendOTPMessage}>
-        {message ? message : null}
+        {/* {message ? message : null} */}
       </Grid>      
       <Grid item xs={8} className={classes.OtpVerificationError}>
         {otpVerificationError !== "" ? otpVerificationError : null}

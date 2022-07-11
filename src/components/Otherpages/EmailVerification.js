@@ -8,21 +8,18 @@ import API_URL from '../../config';
 const EmailVerification = () => {
   const {loginId} =  useParams();
   const [data,setData]=useState(false)
-  const onSubmit=async()=>{
-     await axios.get(`${API_URL.EMAIL_VERIFY}${loginId}`)
+ 
+
+
+  useEffect(() => {
+    axios.get(`${API_URL.EMAIL_VERIFY}${loginId}`)
     .then((response) => {
       setData(response);
     })
     .catch((e) => {
       console.log(e);
-    })
-    
-  }
-
-
-  useEffect(() => {
-    onSubmit();
-  
+    }) 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   return (

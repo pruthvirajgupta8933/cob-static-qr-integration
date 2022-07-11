@@ -14,6 +14,12 @@
   .authfy-panel-left, .authfy-panel-right {
     float: left;
 }
+
+/*Registration page css*/
+
+.max-height-signup {
+  max-height: calc(70vh - 200px);
+}
   
 }
 
@@ -22,6 +28,10 @@
   body {
         background-size: cover;
 		
+  }
+
+  .max-height-signup {
+    max-height: calc(70vh - 200px);
   }
 }
 
@@ -256,10 +266,11 @@ a:focus {
 .brand-col .social-buttons a > span {
   padding-left: 5px;
 }
-
+/* 
 .panel-login {
-  /*margin-top: 20px;*/
+  // margin-top: 20px;
 }
+ */
 
 .panel-login .remember-row {
   margin-bottom: 10px;
@@ -400,14 +411,17 @@ a:focus {
 
 @media (min-width: 768px) {		
 
-    .authfy-panel {
-      /*padding: 20px;*/
-    }
-  
+  .max-height-signup {
+    max-height: calc(70vh - 200px);
+  }
     
 }
 
 @media (max-width: 767px) {
+
+  .max-height-signup {
+    max-height: calc(70vh - 200px) !important;
+  }
 
     .authfy-panel-left, 
     .authfy-panel-right {

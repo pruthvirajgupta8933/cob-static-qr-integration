@@ -1,9 +1,11 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React,{useEffect, useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
 import { useHistory} from 'react-router-dom'
 import axios from "axios"
 import _ from 'lodash';
-import { fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
+import { clearTransactionHistory, fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
 import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
 import API_URL from '../../../config';
 import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
@@ -12,14 +14,14 @@ import DropDownCountPerPage from '../../../_components/reuseable_components/Drop
 
 function TransactionHistory() {
   const dispatch = useDispatch();  
-  let history = useHistory();
+  const history = useHistory();
   const {auth,dashboard} = useSelector((state)=>state);
-  var {user} = auth
+  const {user} = auth
 
   const {isLoadingTxnHistory} = dashboard
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
   const [paymentModeList,SetPaymentModeList] = useState([]);
-  const [clientCode,SetClientCode] = useState("");
+  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
   const [fromDate,SetFromDate] = useState("");
   const [toDate,SetToDate] = useState("");
   const [txnStatus,SetTxnStatus] = useState("All");
@@ -34,17 +36,41 @@ function TransactionHistory() {
   const [showData,setShowData] = useState([])
   const [updateTxnList,setUpdateTxnList] = useState([])
   const [pageCount,setPageCount] = useState(0);
+  const [dataFound,setDataFound] = useState(false)
   const [buttonClicked,isButtonClicked] = useState(false);
 
+  var clientMerchantDetailsList =[];
+  if(user && user?.clientMerchantDetailsList===null && user?.roleId!==3 && user?.roleId!==13){
+    history.push('/dashboard/profile');
+  }else{
+    clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  }
 
-  function dayDiff(dateFrom, dateTo) {
-    const date1 = new Date(dateFrom);
-    const date2 = new Date(dateTo);
-    const diffTime = Math.abs(date2 - date1);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-    // console.log(diffDays,"diffDays")
-    return diffDays;
-   }
+
+  useEffect(() => {
+    console.log("showData",showData.length)
+    console.log("updateTxnList",updateTxnList.length)
+    console.log((buttonClicked && dataFound))
+
+    setTimeout(() => {
+
+      if(showData.length < 1 &&  (updateTxnList.length > 0 || updateTxnList.length===0)){
+        setDataFound(true)
+      }else{
+        setDataFound(false)
+      }  
+    });
+    
+  }, [showData, updateTxnList])
+  
+  // function dayDiff(dateFrom, dateTo) {
+  //   const date1 = new Date(dateFrom);
+  //   const date2 = new Date(dateTo);
+  //   const diffTime = Math.abs(date2 - date1);
+  //   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+  //   // console.log(diffDays,"diffDays")
+  //   return diffDays;
+  //  }
    
 
   const getInputValue=(label,val)=>{
@@ -121,47 +147,52 @@ const checkValidation = ()=>{
           if(isValid){ 
             // isLoading(true);
             isButtonClicked(true);
-            var paramData = {
-              clientCode:clientCode,
-              txnStatus:txnStatus,
-              payModeId:payModeId,
-              fromDate:fromDate,
-              toDate:toDate,
-              ref1:0,
-              ref2:0
-            }
-            clientCode==='0'? 
-              clientMerchantDetailsList?.map((item) => {
-                paramData.clientCode = item.clientCode;
-                // console.log(paramData.clientCode);
-                dispatch(fetchTransactionHistorySlice(paramData))
+            let strClientCode, clientCodeArrLength ="";
+              if(clientCode==="All"){
+              const allClientCode = []
+              clientMerchantDetailsList?.map((item)=>{
+                allClientCode.push(item.clientCode)
               })
-              :
-              dispatch(fetchTransactionHistorySlice(paramData))
+              clientCodeArrLength = allClientCode.length.toString();
+              strClientCode = allClientCode.join().toString();
+            }else{
+              strClientCode = clientCode;
+              clientCodeArrLength = "1"
+            }
+
+            let paramData = {
+              clientCode:strClientCode,
+              paymentStatus:txnStatus,
+              paymentMode:payModeId,
+              fromDate:fromDate,
+              endDate:toDate,
+              length: "0",
+              page: "0",
+              NoOfClient: clientCodeArrLength
+            } 
+        
+            dispatch(fetchTransactionHistorySlice(paramData))
       }else{
         console.log('API not trigger!');
       }
   } 
   
-  useEffect(() => {
-  
-     // Remove initiated from transaction history response
-     const TxnListArr = dashboard.transactionHistory
-     const TxnListArrUpdated = TxnListArr?.filter((Txn)=>{
-       return Txn.status!=='INITIATED';
-     })
-     setUpdateTxnList(TxnListArrUpdated)
-     setShowData(TxnListArrUpdated);
-     SetTxnList(TxnListArrUpdated);
-     setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())
-    //  if(TxnListArrUpdated.length){
-    //    isButtonClicked(false);
-    //  }
 
+
+  useEffect(() => {  
+     // Remove initiated from transaction history response
+    let TxnListArrUpdated = dashboard.transactionHistory
+    setUpdateTxnList(TxnListArrUpdated)
+    setShowData(TxnListArrUpdated);
+    SetTxnList(TxnListArrUpdated);
+    setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard])
   
   // console.log("buttonclicked",buttonClicked);
   
+
+
   useEffect(()=>{
      setPaginatedData(_(showData).slice(0).take(pageSize).value())
      setPageCount(showData.length>0 ? Math.ceil(showData.length/pageSize) : 0)
@@ -174,6 +205,7 @@ const checkValidation = ()=>{
   const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
    setPaginatedData(paginatedPost);
  
+ // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [currentPage])
 
  
@@ -182,15 +214,14 @@ const checkValidation = ()=>{
   getPaymentStatusList();
   paymodeList();  
   SetTxnList([]);
-  // txnList.length >0 ? setShow(true) : setShow(false)
+  return ()=>{
+    dispatch(clearTransactionHistory())
+  }
 
 }, [])
 
 useEffect(() => {
-  // console.log("length",txnList.length);
   txnList.length > 0 ? setShow(true) : setShow(false)
-//  console.log("show",show)
-
 }, [txnList])
 
 
@@ -202,39 +233,28 @@ useEffect(() => {
     else{
       setShowData(updateTxnList)
     }
-
 }, [searchText])
 
-
-//  if ( pageCount === 1) return null;
-
 const pages = _.range(1, pageCount + 1)
-// console.log("pages",pages)
-
-  var clientMerchantDetailsList =[];
-  if(user && user?.clientMerchantDetailsList===null && user?.roleId!==3 && user?.roleId!==13){
-    history.push('/dashboard/profile');
-  }else{
-    clientMerchantDetailsList = user?.clientMerchantDetailsList;
-  }
+  
   
   
   const exportToExcelFn=()=>{
-    // const dataWithoutNull = JSON.stringify(txnList).replaceAll('null',"NA");
-    // console.log(JSON.parse(dataWithoutNull));
+
     const excelHeaderRow =
-  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Trans Initiation Date",	"Trans Complete Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
+  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Transaction Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
     let excelArr = [excelHeaderRow];
-    txnList.map((item,index)=>{
+    // eslint-disable-next-line array-callback-return
+    txnList.map((item,index) => {
       // console.log(JSON.stringify(item));
-      const allowDataToShow ={
+      // console.log("index",index)
+      const allowDataToShow = {
         srNo:item.srNo === null? "" : index +1 ,
         txn_id:item.txn_id  === null? "" : item.txn_id ,
         client_txn_id:item.client_txn_id  === null? "" : item.client_txn_id ,
         challan_no:item.challan_no  === null? "" : item.challan_no ,
         payee_amount:item.payee_amount  === null? "" : Number.parseFloat(item.payee_amount) ,
         trans_date:item.trans_date  === null? "" : item.trans_date ,
-        trans_complete_date:item.trans_complete_date  === null? "" : item.trans_complete_date ,
         status:item.status === null? "" : item.status ,
         payee_first_name:item.payee_first_name === null? "" : item.payee_first_name ,
         payee_lst_name:item.payee_lst_name === null? "" : item.payee_lst_name ,
@@ -262,10 +282,10 @@ const pages = _.range(1, pageCount + 1)
         bank_txn_id:item.bank_txn_id === null? "" : item.bank_txn_id 
         };
         
-    excelArr.push(Object.values(allowDataToShow));
+        excelArr.push(Object.values(allowDataToShow));
   })
   // console.log("excelArr",excelArr)
-  const fileName = "Transactions Report"; 
+  const fileName = "Transactions-Report"; 
   exportToSpreadsheet(excelArr, fileName);
 
   }
@@ -301,7 +321,7 @@ const pages = _.range(1, pageCount + 1)
                     }}
                   >
                     {user.roleId===3 || user.roleId===13 ?
-                    <option value="0">All</option>
+                    <option value="All">All</option>
                       :
                     <option value="">Select</option> }
                     {clientMerchantDetailsList?.map((item,i) => {
@@ -416,8 +436,7 @@ const pages = _.range(1, pageCount + 1)
                             <th> Client Trans ID </th>
                             <th> Challan Number / VAN </th>
                             <th> Amount </th>
-                            <th> Trans Initiation Date </th>
-                            <th> Trans Complete Date </th>
+                            <th> Transaction Date </th>
                             <th> Payment Status </th>
                             <th> Payer First Name </th>
                             <th> Payer Last Name </th>
@@ -449,14 +468,13 @@ const pages = _.range(1, pageCount + 1)
               </thead>
               <tbody>
               {txnList.length>0 && paginatedata.map((item,i)=>{return(
-                            <tr>
+                            <tr key={i}>
                             <td>{i+1}</td>
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
                             <td>{item.challan_no}</td>
                             <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
                             <td>{item.trans_date}</td>
-                            <td>{item.trans_complete_date}</td>
                             <td>{item.status}</td>
                             <td>{item.payee_first_name}</td>
                             <td>{item.payee_lst_name}</td>
@@ -494,15 +512,15 @@ const pages = _.range(1, pageCount + 1)
                 {txnList.length>0  ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
-                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={()=>false}>Previous</a>
                     { 
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
-                        <li className={
+                        <li key={i} className={
                           page === currentPage ? " page-item active" : "page-item"
                         }> 
                       {/* {console.log("currentPage",currentPage)} */}
                       {/* {console.log("page",page)} */}
-                            <a className={`page-link data_${i}`} >  
+                            <a className={`page-link data_${i}`} href={()=>false} >  
                               <p onClick={() => pagination(page)}>
                               {page}
                               </p>
@@ -511,7 +529,14 @@ const pages = _.range(1, pageCount + 1)
                       
                       ))
                     }
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => 
+                    
+                    { setCurrentPage((nex) => (nex === ( pages.length>9 ) ? nex : nex + 1)) }
+                    
+                    }
+                    
+                    
+                     href={()=>false}>
                       Next</a> : <></> }
                     </ul>
                   </nav>
@@ -522,8 +547,8 @@ const pages = _.range(1, pageCount + 1)
                 {isLoadingTxnHistory ? 
                   <div className="col-lg-12 col-md-12"><div className="text-center"><div className="spinner-border" role="status" ><span className="sr-only">Loading...</span></div></div></div> 
                   : 
-                  buttonClicked && (showData.length <= 0 || txnList.length <= 0) ? 
-                    <div className='showMsg'>No Data Found</div>
+                  buttonClicked && dataFound ?
+                    <div className='showMsg'>Data Not Found</div>
                   :
                     <div></div>
                     }  

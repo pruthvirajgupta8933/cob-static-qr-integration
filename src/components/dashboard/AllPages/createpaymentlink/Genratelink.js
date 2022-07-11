@@ -8,11 +8,11 @@ import { useHistory } from 'react-router-dom';
 import API_URL from '../../../../config';
 
 
-const initialValues = {
-  Amount: "",
-  Remarks: "",
-  LinkValidToDate: ""
-}
+// const initialValues = {
+//   Amount: "",
+//   Remarks: "",
+//   LinkValidToDate: ""
+// }
 
 
 const validationSchema = Yup.object().shape({
@@ -28,9 +28,9 @@ let history = useHistory();
   var { customer_id } = props.generatedata;
 
 
-  const [enteredAmount, setEnteredAmount] = useState("");
-  const [enteredPurpose, setEnteredPurpose] = useState("");
-  const [enteredDate, setEnteredDate] = useState("");
+  // const [enteredAmount, setEnteredAmount] = useState("");
+  // const [enteredPurpose, setEnteredPurpose] = useState("");
+  // const [enteredDate, setEnteredDate] = useState("");
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const [passwordcheck, setPasswordCheck] = useState(false);
@@ -41,7 +41,7 @@ let history = useHistory();
   const { user } = useSelector((state) => state.auth);
 
 
-  const [data, setData] = useState([])
+  // const [data, setData] = useState([])
   // var clientMerchantDetailsList = user.clientMerchantDetailsList;
   // const { clientCode } = clientMerchantDetailsList[0]
 
@@ -60,22 +60,22 @@ let history = useHistory();
 
 
   const generateHandler = async (e) => {
-    const linkdata = {
+    // const linkdata = {
 
-      Customer_id: customer_id,
-      Amount: enteredAmount,
-      Remarks: enteredPurpose,
-      valid_to: dateFormat(enteredDate),
-      Client_Code: clientCode,
-      name_visiblity: true,
-      email_visibilty: true,
-      phone_number_visibilty: true,
-      isMerchantChargeBearer: true,
-    };
+    //   Customer_id: customer_id,
+    //   Amount: enteredAmount,
+    //   Remarks: enteredPurpose,
+    //   valid_to: dateFormat(enteredDate),
+    //   Client_Code: clientCode,
+    //   name_visiblity: true,
+    //   email_visibilty: true,
+    //   phone_number_visibilty: true,
+    //   isMerchantChargeBearer: true,
+    // };
 
     // console.log(linkdata);
     toast.info("Please Wait...")
-    const response = await axios
+    await axios
       .post(`${API_URL.ADD_LINK}?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
         Amount:e.Amount,
         Remarks:e.Remarks,
@@ -111,19 +111,19 @@ let history = useHistory();
   const handleCheck = (e) => {                 //for checkbox
     setPasswordCheck(e.target.checked);
   };
-  const cancelClick = () => {
+  // const cancelClick = () => {
 
-    setEnteredAmount("");
-    setEnteredDate("");
-    setEnteredPurpose("");
-    setHours("");
-    setMinutes("");
+  //   setEnteredAmount("");
+  //   setEnteredDate("");
+  //   setEnteredPurpose("");
+  //   setHours("");
+  //   setMinutes("");
 
-    document.getElementById("checkbox_pass").checked = false;
-  }
-  const closeClick = () => {
-    document.getElementById("checkbox_pass").checked = false;
-  }
+  //   document.getElementById("checkbox_pass").checked = false;
+  // }
+  // const closeClick = () => {
+  //   document.getElementById("checkbox_pass").checked = false;
+  // }
 
   return (
     <div

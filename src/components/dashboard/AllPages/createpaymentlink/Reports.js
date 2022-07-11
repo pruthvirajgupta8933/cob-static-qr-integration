@@ -1,58 +1,39 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import axios from 'axios' ;
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import _ from 'lodash';
-import { Zoom } from 'react-toastify';
 import API_URL from '../../../../config';
+import toastConfig from '../../../../utilities/toastTypes';
+import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
+
 
 const Reports = () => {
-
-
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
- 
-
   const [data , setData] = useState([]);
+  const [displayList, setDisplayList] = useState([])
   const [searchText, setSearchText] = useState('');
   const {user} = useSelector((state)=>state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  const clientMerchantDetailsList = user.clientMerchantDetailsList;
   const {clientCode} = clientMerchantDetailsList[0];
+  const [pageCount,setPageCount ] = useState(data ? Math.ceil(data.length/pageSize) : 0);
 
-
-  const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
-
-  const getData = async (e) => { 
-    await axios.get(`${API_URL.GET_REPORTS}${clientCode}`)  
-  .then(res => {     
-    setData(res.data);  
-    setPaginatedData(_(res.data).slice(0).take(pageSize).value())
-    // console.log(res.data)
-
-  })  
-  .catch(err => {  
-    // console.log(err)
-  });
-  
-}
 
 useEffect(() => {
-  const loading = getData();
-  toast.promise(
-    loading,
-    {
-      pending: "In Process",
-      success: "Data Loaded Successfully",
-      error: "Error Occured in Data",
-    },
-    {
-      position: "bottom-center",
-      autoClose: 1000,
-      limit: 2,
-      transition: Zoom,
-    }
-  );
+  toastConfig.infoToast("Report Loading")
+  axios.get(`${API_URL.GET_REPORTS}${clientCode}`)  
+  .then(res => {     
+    toastConfig.successToast("Report Data loaded")
+    setData(res.data);  
+    setDisplayList(res.data)
+    setPaginatedData(_(res.data).slice(0).take(pageSize).value())
+    })  
+  .catch((err) => {
+    toastConfig.errorToast("Report Data not loaded !")  
+  });
+
 }, []);
 
 
@@ -64,10 +45,13 @@ const getSearchTerm  = (e) => {
 
 useEffect(() => {
   if (searchText.length > 0) {
-      setPaginatedData(data.filter((item) => 
+      // setPaginatedData(data.filter((item) => 
+      // Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
+      setDisplayList(data.filter((item) => 
       Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
   } else {
-      setPaginatedData(data)
+      setDisplayList(data)
+      // setPaginatedData(data)
   }
 }, [searchText])
 
@@ -76,26 +60,28 @@ const pagination = (pageNo) => {
 }
 
 useEffect(()=>{
-  setPaginatedData(_(data).slice(0).take(pageSize).value())
-},[pageSize]);
+  setPaginatedData(_(displayList).slice(0).take(pageSize).value())
+  setPageCount(displayList.length>0 ? Math.ceil(displayList.length/pageSize) : 0)
+},[pageSize,displayList]);
 
 
 useEffect(() => {
   // console.log("page chagne no")
   const startIndex = (currentPage - 1) * pageSize;
- const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+ const paginatedPost = _(displayList).slice(startIndex).take(pageSize).value();
  setPaginatedData(paginatedPost);
 
 }, [currentPage])
 
-
-
-
-// if ( pageCount === 1) return null;
-
 const pages = _.range(1, pageCount + 1)
 
-
+  // console.log("==========================")
+  // console.log("pages",pages)
+  // console.log("pageSize",pageSize)
+  // console.log("data.length",data.length)
+  // console.log("paginatedata",paginatedata)
+  // console.log("paginatedata.length",paginatedata.length)
+  // console.log("displayList",displayList)
 
 
 
@@ -104,7 +90,7 @@ const pages = _.range(1, pageCount + 1)
     <React.Fragment>
  {/* filter area */}
        <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
-                <div className="container-fluid">
+                <div className="container-fluid flleft">
                     <div className="row">  
                     <div className="col-lg-4 mrg-btm- bgcolor">
                     <label>Search</label>
@@ -113,11 +99,8 @@ const pages = _.range(1, pageCount + 1)
 
                     <div className="col-lg-4 mrg-btm- bgcolor">
                         <label>Count Per Page</label>
-                        <select  value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} className="form-control">
-                          <option value="10">10</option>
-                          <option value="20">20</option>
-                          <option value="50">50</option>
-                          <option value="100">100</option>
+                        <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
+                        <DropDownCountPerPage datalength={data.length} />
                         </select>
                     </div>
                     </div>
@@ -131,7 +114,7 @@ const pages = _.range(1, pageCount + 1)
             </section>
 
             <section className="">
-        <div className="container-fluid  p-3 my-3 ">
+        <div className="container-fluid flleft p-3 my-3 ">
         {! paginatedata ? (<h3> No Data Found</h3>) : ( <React.Fragment>  <div className="scroll" style={{overflow: "auto"}}>
                 <table className="table table-bordered">
                     <thead>
@@ -171,18 +154,18 @@ const pages = _.range(1, pageCount + 1)
                 </table>
           </div>
           <div>
-              
-                {paginatedata.length>0  ? 
+            
+                {pages.length>1  ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
       
-                   <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                   <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={()=>false}>Previous</a>
                     { 
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
                         <li key={i} className={
                           page === currentPage ? " page-item active" : "page-item"
                         }> 
-                            <a className={`page-link data_${i}`} >  
+                            <a href={()=>false} className={`page-link data_${i}`} >  
                               <p onClick={() => pagination(page)}>
                               {page}
                               </p>
@@ -191,7 +174,7 @@ const pages = _.range(1, pageCount + 1)
                       
                       ))
                     }
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === (pages.length>9) ? nex : nex + 1)} href={()=>false}>
                       Next</a> : <></> }
                     </ul>
                   </nav>

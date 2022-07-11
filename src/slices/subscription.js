@@ -2,13 +2,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import subscriptionService from "../services/subscription";
 
-const user = JSON.parse(localStorage.getItem("user"));
+// const user = JSON.parse(localStorage.getItem("user"));
 
 
 
 export const subscriptionplan = createAsyncThunk(
     "subscription/subscriptionplan",
-    async ({}, thunkAPI) => {
+    async (object = {}, thunkAPI) => {
       try {
         const data = await subscriptionService.subscriptionPlan();
         return { subscribe: data };
@@ -27,7 +27,7 @@ export const subscriptionplan = createAsyncThunk(
 
   export const subscriptionPlanDetail = createAsyncThunk(
     "subscription/subscriptionChargesDetail",
-    async ({}, thunkAPI) => {
+    async (object ={}, thunkAPI) => {
       try {
         const data = await subscriptionService.subscriptionChargesDetail();
         return { subscriptionplandetail: data };

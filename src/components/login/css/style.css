@@ -227,9 +227,7 @@ html {
   display: table;
 }
 
-.sminputs {
-  /*border-bottom: 1px solid #E5E5E5;*/
-}
+
 .sminputs::after {
   clear: both;
   content: "";

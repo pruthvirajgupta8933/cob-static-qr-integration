@@ -143,3 +143,10 @@
   }
   
 }
+
+
+/*Registration page css*/
+
+.max-height-signup {
+  max-height: calc(80vh - 200px);
+}

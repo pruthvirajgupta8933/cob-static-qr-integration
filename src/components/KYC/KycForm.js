@@ -12,7 +12,7 @@ import SubmitKyc from './SubmitKyc';
 function KycForm() {
     const [tab,SetTab] = useState(1);
 
-    const {dashboard,auth} = useSelector((state)=>state);
+    const { auth} = useSelector((state)=>state);
     const {user} = auth;
     let history = useHistory();
 
@@ -45,22 +45,22 @@ function KycForm() {
               <div className="col-lg-12 mb-4 bgcolor-">
               <ul className="nav nav-tabs">
                           <li className="nav-item">
-                          <a className={"nav-link " +  (tab===1? "activepaylink":"inactive") } onClick={()=>SetTab(1)} >Contact Info</a>
+                          <a href={()=>false} className={"nav-link " +  (tab===1? "activepaylink":"inactive") } onClick={()=>SetTab(1)} >Contact Info</a>
                           </li>
                           <li className="nav-item">
-                          <a className={"nav-link " +  (tab===2? "activepaylink":"inactive") } onClick={()=>SetTab(2)} >Business Overview</a>
+                          <a href={()=>false} className={"nav-link " +  (tab===2? "activepaylink":"inactive") } onClick={()=>SetTab(2)} >Business Overview</a>
                           </li>
                           <li className="nav-item">
-                          <a className={"nav-link " +  (tab===3? "activepaylink":"inactive") }  onClick={()=>SetTab(3)}>Business Details</a>
+                          <a href={()=>false} className={"nav-link " +  (tab===3? "activepaylink":"inactive") }  onClick={()=>SetTab(3)}>Business Details</a>
                           </li>
                           <li className="nav-item">
-                          <a className={"nav-link " +  (tab===4? "activepaylink":"inactive") } onClick={()=>SetTab(4)}>Bank Details</a>
+                          <a href={()=>false} className={"nav-link " +  (tab===4? "activepaylink":"inactive") } onClick={()=>SetTab(4)}>Bank Details</a>
                           </li>
                           <li className="nav-item">
-                          <a className={"nav-link " +  (tab===5? "activepaylink":"inactive") } onClick={()=>SetTab(5)}>Documents Upload</a>
+                          <a href={()=>false} className={"nav-link " +  (tab===5? "activepaylink":"inactive") } onClick={()=>SetTab(5)}>Documents Upload</a>
                           </li>
                           <li className="nav-item">
-                          <a className={"nav-link " +  (tab===6? "activepaylink":"inactive") } onClick={()=>SetTab(6)}>Submit KYC</a>
+                          <a href={()=>false} className={"nav-link " +  (tab===6? "activepaylink":"inactive") } onClick={()=>SetTab(6)}>Submit KYC</a>
                           </li>
                       </ul>
               </div>

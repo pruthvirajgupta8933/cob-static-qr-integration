@@ -1,26 +1,26 @@
-import React, { useState,useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { Formik, Field, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup'
 import "yup-phone"
 import {changePasswordSlice} from '../../../slices/auth' 
-import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
+// import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
 import { toast, Zoom } from 'react-toastify';
 
 
 
 function ChangePassword() {
   const dispatch= useDispatch();
-  let { path, url } = useRouteMatch();
+  // let { path, url } = useRouteMatch();
   const { user ,passwordChange} = useSelector((state) => state.auth);
 
 // console.log(passwordChange);
-  const { clientMerchantDetailsList ,
+  const { 
           loginId,
           userName,
         } = user;
   
-  const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
+  // const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
 
 useEffect(() => {
 

@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "api-management-cecbd",
-    "staging": "api-management-cecbd"
+    "cob-staging": "cob-staging",
+    "default": "cob-staging"
   },
   "targets": {}
 }

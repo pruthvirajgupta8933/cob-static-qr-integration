@@ -2,7 +2,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 const ResetPassword = (props) => {
-  const { handleFormSubmit } = props;
+  // const { handleFormSubmit } = props;
 
   const validationSchema = Yup.object().shape({
     password1: Yup.string()

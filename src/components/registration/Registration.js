@@ -1,5 +1,4 @@
 import React,{useEffect,useState} from 'react';
-//import Header from './Header'
 import HeaderPage from '../login/HeaderPage'
 import '../login/css/home.css'
 import '../login/css/homestyle.css'
@@ -12,16 +11,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { register, udpateRegistrationStatus } from "../../slices/auth";
 import {  useHistory } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
+import TermCondition from './TermCondition';
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
-const INITIAL_FORM_STATE = {
-  fullName:'',
-  mobileNumber:'',
-  email:'',
-  password:'',
-  selectStates:''
-};
 
 const FORM_VALIDATION = Yup.object().shape({
   firstname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
@@ -33,10 +26,8 @@ const FORM_VALIDATION = Yup.object().shape({
   passwordd: Yup.string().required("Password Required").matches(
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"),
-  confirmpasswordd: Yup.string()
-     .oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
-     terms_and_condition:  Yup.boolean()
-     .oneOf([true], "You must accept the terms and conditions")
+  confirmpasswordd: Yup.string().oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
+  terms_and_condition:  Yup.boolean().oneOf([true], "You must accept the terms and conditions")
 });
 
 function Registration() {
@@ -47,18 +38,16 @@ function Registration() {
   const datar = auth;
 
   const {isUserRegistered} = datar;
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
-  const [mobileNumber, setMobileNumber] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [isActive, setActive] = useState(true);
-  const [values, setValues] = useState({
+  const [acceptTc,setAcceptTc] = useState(false);
+  const [isCheck,setIsCheck] = useState(false);
+
+  const [valuesIn, setValuesIn] = useState({
     password: '',
     showPassword: false,
   });
+
 
   const dispatch = useDispatch();
 
@@ -66,12 +55,13 @@ function Registration() {
       return ()=>{
         dispatch(udpateRegistrationStatus())
       }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const saved = localStorage.getItem("register");
+
 
   const handleRegistration = (formData) => {
-    var businessType = isActive? 1 : 2 ;
+    var businessType = isActive ? 1 : 2 ;
     var { firstname, lastname , mobilenumber, emaill, passwordd } = formData;
     var firstName = firstname;
     var lastName = lastname;
@@ -79,7 +69,7 @@ function Registration() {
     var email = emaill;
     var password = passwordd;
 
-        setLoading(true);
+        // setLoading(true);
         // console.log(formValue);
         dispatch(register({ firstName, lastName, mobileNumber, email, password,businessType}))
           .unwrap()
@@ -90,7 +80,7 @@ function Registration() {
             // alert(2);
           })
           .catch(() => {
-            setLoading(false);
+            // setLoading(false);
           });
 
           
@@ -102,7 +92,7 @@ function Registration() {
 
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
+    setValuesIn({ ...valuesIn, showPassword: !valuesIn.showPassword });
   };
   
 
@@ -136,8 +126,14 @@ function Registration() {
       dispatch(udpateRegistrationStatus())
 
     }   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserRegistered])
-  
+
+
+  const callBackFn = (isClickOnAccept,isChecked) =>{
+    setAcceptTc(!acceptTc)
+    setIsCheck(isChecked)
+  }
   
 return (
   <>
@@ -183,7 +179,7 @@ return (
                         className={isActive ? "current" : "left"}
                         onClick={toggleClass}
                       >
-                        <a id="btnLeft"  href={void(0)} >
+                        <a id="btnLeft" href={()=>false} >
                           Individual
                         </a>
                       </li>
@@ -193,7 +189,7 @@ return (
                         className={isActive ? "right" : "current"}
                         onClick={toggleClass}
                       >
-                        <a id="btnRight" href={void(0)}>
+                        <a id="btnRight"  href={()=>false}>
                           Business
                         </a>
                       </li>
@@ -220,6 +216,7 @@ return (
                             validationSchema={FORM_VALIDATION}
                             onSubmit={handleRegistration}
                           >
+                          {({ values, setFieldValue }) => (
                             <Form
                               acceptCharset="utf-8"
                               action="#"
@@ -348,7 +345,9 @@ return (
                                     maxLength={255}
                                     id="user-pw"
                                     placeholder="Password"
-                                    type="password"
+                                    type={
+                                      valuesIn.showPassword ? "text" : "password"
+                                    }
                                     name="passwordd"
                                     size={50}
                                     autoComplete="off"
@@ -384,7 +383,7 @@ return (
                                     id="user-cpw"
                                     placeholder="Confirm Password"
                                     type={
-                                      values.showPassword ? "text" : "password"
+                                      valuesIn.showPassword ? "text" : "password"
                                     }
                                     name="confirmpasswordd"
                                     size={50}
@@ -415,7 +414,7 @@ return (
                                     className="hide-password"
                                     onClick={handleClickShowPassword}
                                   >
-                                    {values.showPassword ? "Hide" : "Show"}
+                                    {valuesIn.showPassword ? "Hide" : "Show"}
                                   </span>
                                 </div>
                               </div>
@@ -427,22 +426,15 @@ return (
                                     type="submit"
                                     defaultValue="Create Account"
                                   >
-                                    Create Account{" "}
+                                    Create Account
                                   </button>
+
                                   <span className="simform__actions-sidetext">
-                                    <span className="ant-checkbox">
-                                      <Field
-                                        style={{ marginTop: "-7px" }}
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        name="terms_and_condition"
-                                      />
-                                    </span>{" "}
-                                    I agree to the{" "}
-                                    <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" className="special" target="_blank" >
-                                      Terms &amp; Conditions
-                                    </a>
-                                  </span>
+
+                                  <TermCondition  acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} />
+
+                                  {/* <p onClick={()=>{ setAcceptTc(!acceptTc)}} >accept the t&c </p> */}
+                                  <p className="mb-0" style={{cursor:"pointer"}} onClick={()=>{ callBackFn(acceptTc,isCheck) }} > Click here to accept <span className="text-primary">terms and conditions</span></p>  
                                   {
                                     <ErrorMessage name="terms_and_condition">
                                       {(msg) => (
@@ -458,9 +450,28 @@ return (
                                       )}
                                     </ErrorMessage>
                                   }
+                                    {/* <span className="ant-checkbox">
+                                      <Field
+                                        style={{ marginTop: "-7px" }}
+                                        type="checkbox"
+                                        className="form-check-input"
+                                        name="terms_and_condition"
+                                        // onClick={()=>{ handlerTermCond(trmCond,setFieldValue)}}
+
+                                      /> 
+                                    </span>
+
+                                    I agree to the{" "}
+                                    <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" className="special" target="_blank" >
+                                      Terms &amp; Conditions
+                                    </a> */}
+                                  </span>
+                                
                                 </div>
                               </div>
                             </Form>
+                          )}
+
                           </Formik>
                         </div>
                       </div>

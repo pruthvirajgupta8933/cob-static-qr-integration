@@ -1,4 +1,5 @@
 import axios from "axios";
+import API_URL from "../config";
 
 // Home - successTxnSummary 
 const BASE_URL = "https://adminapi.sabpaisa.in";
@@ -42,9 +43,9 @@ const subscriptionPlanDetail = () => {
 
 const fetchTransactionHistory=(paramData)=>
 { 
-  const {clientCode,fromDate,payModeId,toDate,txnStatus,ref1,ref2} = paramData;
+  // const {clientCode,fromDate,payModeId,toDate,txnStatus,ref1,ref2} = paramData;
   // console.log("hit",`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
-  return axios.get(`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
+  return axios.post(API_URL.GetMerchantTxnHistory,paramData);
 }
 
 export const Dashboardservice = {

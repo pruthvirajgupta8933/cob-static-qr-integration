@@ -22,7 +22,7 @@ const StudentRecipets = () => {
   const[studentId, setStudentId]=useState(0);
   const [show, setIsShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errMessage, setErrMessage] = useState('');
+  // const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState(initialState);
 
   const onSubmit = async (e,transactionId,studentId) => {
@@ -35,12 +35,12 @@ const StudentRecipets = () => {
     }
     setIsLoading(true)
     setIsShow(false);
-    const response = await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
+    await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
       .then((response) => {
         // console.warn(response);
         setData(response.data);
         setIsShow(true);
-        setErrMessage('');
+        // setErrMessage('');
         setIsLoading(false)
       })
 
@@ -50,28 +50,12 @@ const StudentRecipets = () => {
         setIsLoading(false)
         // console.log(e);
         setIsShow(false);
-        setErrMessage('No Data Found');
+        // setErrMessage('No Data Found');
 
       })
 
   }
-  const dateFormat = (timestamp) => {
-    var date = new Date(timestamp);
-    return (date.getDate() +
-      "/" + (date.getMonth() + 1) +
-      "/" + date.getFullYear() +
-      " " + date.getHours() +
-      ":" + date.getMinutes() +
-      ":" + date.getSeconds());
 
-
-
-    // var date = new Date(timestamp);
-    // console.log(date.getTime())
-    // return date.getTime();
-
-    
-  }
   const onClick = () => {
 
     var tableContents = document.getElementById("joshi").innerHTML;
@@ -82,9 +66,6 @@ const StudentRecipets = () => {
     a.document.close();
     a.print();
   }
-const handle=()=>{
-
-}
 
   return (
     <>

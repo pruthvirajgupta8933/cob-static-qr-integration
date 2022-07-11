@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector} from 'react-redux';
-import { Link,
-    useParams,
-    useRouteMatch,useHistory ,Redirect} from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import {checkPermissionSlice, logout} from '../../../slices/auth'
 
 
 function SideNavbar() {
-  let history = useHistory();
+
   const {user,payLinkPermission} = useSelector((state)=> state.auth )
   
   if(user!==null && user.userAlreadyLoggedIn){
@@ -17,7 +15,7 @@ function SideNavbar() {
     // history.push("/login-page");
 }
   var {roleId,clientContactPersonName}=user;
-    let { path, url } = useRouteMatch();
+    let { url } = useRouteMatch();
     const dispatch = useDispatch();
     const handle = ()=>{
       dispatch(logout());
@@ -29,6 +27,7 @@ function SideNavbar() {
         dispatch(checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode))
       }
       
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     
@@ -71,9 +70,9 @@ function SideNavbar() {
                         <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
                       </li>
 
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                      {/* <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                         <Link to={`${url}/view-transaction-with-filter`} className='txt-white'><i className="fa fa-filter" aria-hidden="true" />   Transaction Enquiry With Filter </Link> 
-                      </li>
+                      </li> */}
                       {roleId===3 || roleId===13 ? <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link> 
                       </li> 
@@ -101,7 +100,8 @@ function SideNavbar() {
                           </li> :<></>
                         }
                       
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href={void(0)} ><i className="fa fa-briefcase" aria-hidden="true" />
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}>
+                      <a href={()=>false} ><i className="fa fa-briefcase" aria-hidden="true" />
                       &nbsp; Logout</a>
                       </li>
                     </ul>
@@ -159,7 +159,7 @@ function SideNavbar() {
               </div>
             </div>
           </div>
-          <div className="sidebar-menu-query"> <a href="https://sabpaisa.in/support-contact-us/" target="_blank" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div>
+          <div className="sidebar-menu-query"> <a href="https://sabpaisa.in/support-contact-us/" target="_blank" rel="noreferrer"><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div>
         </div>
       </div>
     </aside>

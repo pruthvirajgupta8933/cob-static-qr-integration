@@ -5,7 +5,7 @@ import API_URL from '../../../config';
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
 import FormikController from '../../../_components/formik/FormikController';
-import Regex,{RegexMsg} from '../../../_components/formik/ValidationRegex';
+import {Regex ,RegexMsg} from '../../../_components/formik/ValidationRegex';
 import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
 import PrintDocument from '../../../_components/reuseable_components/PrintDocument';
 
@@ -18,7 +18,7 @@ function TransactionEnqMultiParam() {
 
   const [txnList,SetTxnList] = useState([])
   const [searchText,SetSearchText] = useState('')
-  const [show, setShow] = useState('')
+  // const [show, setShow] = useState('')
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
@@ -68,15 +68,16 @@ function TransactionEnqMultiParam() {
   const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
    setPaginatedData(paginatedPost);
  
+ // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [currentPage])
 
  
-useEffect(() => {
-  // console.log("length",txnList.length);
-  txnList.length > 0 ? setShow(true) : setShow(false)
-//  console.log("show",show)
+// useEffect(() => {
+//   // console.log("length",txnList.length);
+//   // txnList.length > 0 ? setShow(true) : setShow(false)
+// //  console.log("show",show)
 
-}, [txnList])
+// }, [txnList])
 
 
 useEffect(() => {
@@ -88,6 +89,7 @@ useEffect(() => {
       setShowData(txnList)
     }
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [searchText])
 
 
@@ -168,6 +170,7 @@ useEffect(() => {
     setTempList({})
   }
   
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [viewTxnId])
 
 
@@ -481,7 +484,7 @@ const  printFn = async ()=>{
                 {paginatedata.length>0  ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
-                  <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                  <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={()=>false}>Previous</a>
                     { 
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
                         <li className={
@@ -489,7 +492,7 @@ const  printFn = async ()=>{
                         } key={i}> 
                       {/* {console.log("currentPage",currentPage)} */}
                       {/* {console.log("page",page)} */}
-                            <a className={`page-link data_${i}`} >  
+                            <a href={()=>false} className={`page-link data_${i}`} >  
                               <p onClick={() => pagination(page)}>
                               {page}
                               </p>
@@ -498,7 +501,7 @@ const  printFn = async ()=>{
                       
                       ))
                     }
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === (pages.length>9) ? nex : nex + 1)} href={()=>false}>
                       Next</a> : <></> }
                     </ul>
                   </nav>

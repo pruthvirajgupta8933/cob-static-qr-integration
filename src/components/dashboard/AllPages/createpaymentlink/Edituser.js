@@ -8,12 +8,13 @@ import { toast, Zoom } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import API_URL from '../../../../config';
 import FormikController from '../../../../_components/formik/FormikController';
-import Regex,{RegexMsg} from '../../../../_components/formik/ValidationRegex';
+import {Regex, RegexMsg} from '../../../../_components/formik/ValidationRegex';
 
 export const Edituser = (props) => {
 
     let history = useHistory();
-    var { myname, email, phone, editCustomerTypeId, id } = props.items;
+    const { myname, email, phone, editCustomerTypeId, id } = props.items;
+    const callBackFn = props.callBackFn
     // const [username, setUsername] = useState(myname);
     // const [useremail, setUserEmail] = useState(email);
     // const [usercustomer, setUserCustomer] = useState(editCustomerTypeId);
@@ -49,9 +50,8 @@ export const Edituser = (props) => {
     }
 
 
-    const editHandler = async values => {
-
-        await axios.put(API_URL.EDIT_CUSTOMER, {
+    const editHandler =  values => {
+        axios.put(API_URL.EDIT_CUSTOMER, {
             name: values.name,
             email: values.email,
             phone_number: values.phone_number,
@@ -60,6 +60,7 @@ export const Edituser = (props) => {
             id: id
         }).then(res=>{
             // console.log(res)
+            callBackFn();
             toast.success("User Updated Successfully", {
                 position: "top-right",
                 autoClose: 2000,
