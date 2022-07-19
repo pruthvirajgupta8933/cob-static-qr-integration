@@ -17,6 +17,9 @@ import InternetConnection from './_components/reuseable_components/InternetConne
 import MobileNavbar from './components/dashboard/SideNavbar/MobileNavbar';
 import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetails';
 
+import DemoReg from './components/login/DemoReg';
+import DemoLogin from './components/login/DemoLogin';
+
 
 function AllRoutes(){
 
@@ -71,6 +74,12 @@ function AllRoutes(){
               </Route>
               <Route exact path="/ViewTransactionDetails">
                 <ViewTransactionDetails />
+              </Route>
+              <Route exact path="/demo-login">
+                <DemoLogin/>
+              </Route>
+              <Route exact path="/demo-reg">
+                <DemoReg/>
               </Route>
 
             </Switch>

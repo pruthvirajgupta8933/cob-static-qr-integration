@@ -2,6 +2,9 @@
     background-color: rgb(255, 255, 255);
 }
 
+.logo-h{
+  height: 50px !important;
+}
 
 
 .header {
@@ -115,16 +118,101 @@
 }
 .whtcolr{
     color:#fff !important; 
-    font-weight: 500 !important;   
+    font-weight: 500 !important;  
 }
 .toppad{
     padding-top:40px;
 }
+
+/*Abhishek Verma*/
+
+/* .list-items{
+
+} */
+
+.list-items li {
+
+  padding-right:20px;
+  padding-left:20px;
+  border-right: 1px solid #f4f4f4;
+  border-bottom: 1px solid #d1d1d1;
+}
+
+.list-items li a{
+  display: block;
+  padding: 20px 20px;
+ 
+  text-decoration: none;
+}
+
+.tel-no{
+  background-color: black;
+  border-right: 0px;
+}
+
+.bg-orange{
+  background: #ff3e06;
+}
+
+.p-25{
+  padding: 25px;
+}
+
+.center-left-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.font-size-24{
+  font-size: 24px;
+}
+
+.bg-black{
+  background-color: black;
+}
+
+.h-full{
+  height: calc(100vh - 60px);
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+
+
+/* mobile view start */
+.mobile-view-col{
+  flex-direction: column-reverse;
+}
+
+.left-panal-logo-mt{
+  margin-top: 3em;
+}
+
+.left-panal-logo-mb{
+  margin-bottom: 3em;
+}
+
+.header-m{
+  position: absolute;
+  z-index: 1;
+}
+
+.login-m-container{
+  position: relative;
+  top: calc(100vh - 712px);
+}
+}
+
 /* 48em = 768px */
 @media (max-width: 768px) {
     .toppad{
     padding-top:82px;
 }
+
+
+
 }
 @media (min-width: 48em) {
   .header li {
@@ -141,12 +229,43 @@
   .header .menu-icon {
     display: none;
   }
+
+  
   
 }
+
+
+
 
 
 /*Registration page css*/
 
 .max-height-signup {
   max-height: calc(80vh - 200px);
+}
+
+.login-type{
+  width: 50%;
+  text-align: center;
+}
+
+.sign-up-type-btn{
+  width: 94%;
+  margin: 10px;
+  border: none;
+  border-radius: unset;
+  font-weight: 600;
+}
+
+.selected-btn{
+  background: black;
+}
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  
+  border-top: 20px solid #f00;
 }
