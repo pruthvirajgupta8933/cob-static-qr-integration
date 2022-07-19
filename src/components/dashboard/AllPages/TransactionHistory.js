@@ -242,7 +242,7 @@ const pages = _.range(1, pageCount + 1)
   const exportToExcelFn=()=>{
 
     const excelHeaderRow =
-  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Transaction Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
+  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Transaction Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Response",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
     let excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     txnList.map((item,index) => {
@@ -458,7 +458,7 @@ const pages = _.range(1, pageCount + 1)
                             <th> Udf11 </th>
                             <th> Udf20 </th>
                             <th> Gr.No </th>
-                            <th> Bank Message </th>
+                            <th> Bank Response </th>
                             <th> IFSC Code </th>
                             <th> Payer Account No </th>
                             <th> Bank Txn Id </th>
