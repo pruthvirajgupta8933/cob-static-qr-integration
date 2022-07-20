@@ -38364,7 +38364,7 @@ h6 {
 .gx-layout-sider-dark {
     background-color: #011b33;
     color: #011b33;
-    display:none;
+    /* display:none; */
 }
 .gx-layout-sider-header {
     padding: 20px;

@@ -4,6 +4,7 @@ import TextArea from "./components/TextArea"
 import Select from "./components/Select.js"
 import RadioButtons from "./components/RadioButton.js"
 import CheckBoxes from "./components/CheckBoxes.js"
+import File from "./components/File.js"
 
 function FormikController(props) {
   const { control, ...rest } = props
@@ -13,7 +14,7 @@ function FormikController(props) {
     case "textArea":
       return <TextArea {...rest} />
     case "file":
-      return <Input {...rest} />
+      return <File {...rest} />
     case "select":
       return <Select {...rest} />
     case "radio":
