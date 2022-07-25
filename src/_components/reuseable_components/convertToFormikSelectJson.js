@@ -1,7 +1,8 @@
 export const convertToFormikSelectJson = (key, value, dataObject) =>{
-    const tempArr = [];
+    const tempArr = [{key:'',value:'Select'}];
     dataObject.map(item=>{
-    tempArr.push({key:item.id,value:item.name.toUpperCase()})
+        // console.log(item[key])
+    tempArr.push({key:item[key],value:item[value].toUpperCase()})
     })
     return tempArr
 }

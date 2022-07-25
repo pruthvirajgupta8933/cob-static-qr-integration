@@ -9,6 +9,7 @@ const initialState = {
   subscribedService: [], 
   subscriptionplandetail: [],
   transactionHistory:[],
+  settlementReport:[],
   isLoadingTxnHistory:false
 
 };
@@ -97,6 +98,26 @@ export const successTxnSummary = createAsyncThunk(
     }
   );
 
+
+  export const fetchSettlementReportSlice = createAsyncThunk(
+    "dashbaord/fetchSettlementReport",
+    async (data, thunkAPI) => {
+      try {
+        const response = await Dashboardservice.settlementReport(data);
+        return response.data;
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+      }
+    }
+  );  
+
   export const dashboardSlice = createSlice({
     name: 'dashboard',
     initialState,
@@ -106,7 +127,11 @@ export const successTxnSummary = createAsyncThunk(
       },
       clearSuccessTxnsummary : (state)=>{
         state.successTxnsumry = []
+      },
+      clearSettlementReport : (state)=>{
+        state.settlementReport=[]
       }
+      
     },
     extraReducers: {
       [successTxnSummary.pending]: (state) => {
@@ -142,11 +167,23 @@ export const successTxnSummary = createAsyncThunk(
         state.isLoadingTxnHistory = false;
         state.transactionHistory=[];
       },
+      [fetchSettlementReportSlice.fulfilled]: (state, action) => {
+        // state.isLoadingTxnHistory = false;
+        state.settlementReport = action.payload;
+      },
+      [fetchSettlementReportSlice.pending]: (state) => {
+        // state.isLoadingTxnHistory = true;
+        state.transactionHistory=[];
+      },
+      [fetchSettlementReportSlice.rejected]: (state) => {
+        // state.isLoadingTxnHistory = false;
+        state.transactionHistory=[];
+      },
 
       
       },
   })
 
 // Action creators are generated for each case reducer function
-export const { clearTransactionHistory , clearSuccessTxnsummary } = dashboardSlice.actions
+export const { clearTransactionHistory , clearSuccessTxnsummary, clearSettlementReport } = dashboardSlice.actions
 export const dashboardReducer = dashboardSlice.reducer

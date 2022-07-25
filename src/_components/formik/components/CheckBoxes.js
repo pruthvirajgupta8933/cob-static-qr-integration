@@ -4,7 +4,7 @@ import { Field, ErrorMessage } from "formik"
 function Checkboxes(props) {
   const { label, name, options, ...rest } = props
   return (
-    <div>
+    <React.Fragment>
       <label>{label}</label>
       <Field name={name}>
         {formik => {
@@ -27,7 +27,7 @@ function Checkboxes(props) {
         }}
       </Field>
       <p className="text-danger"> <ErrorMessage name={name} /></p>
-    </div>
+    </React.Fragment>
   )
 }
 

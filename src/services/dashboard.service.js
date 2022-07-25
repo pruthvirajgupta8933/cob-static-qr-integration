@@ -48,10 +48,16 @@ const fetchTransactionHistory=(paramData)=>
   return axios.post(API_URL.GetMerchantTxnHistory,paramData);
 }
 
+
+const settlementReport=(paramData) => {
+  return axios.post(API_URL.SettlementReport,paramData)
+}
+
 export const Dashboardservice = {
     successTxnSummary,
     subscriptionplan,
     subscriptionPlanDetail,
-    fetchTransactionHistory
+    fetchTransactionHistory,
+    settlementReport
   };
   

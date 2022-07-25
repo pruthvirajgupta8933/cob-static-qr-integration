@@ -22,6 +22,8 @@ import PaymentResponse from './AllPages/PaymentResponse';
 import KycForm from '../KYC/KycForm';
 import Test from '../Otherpages/Test';
 import ViewTransactionWithFilter from './AllPages/ViewTransactionWithFilter';
+import SettlementReportNew from './AllPages/SettlementReportNew';
+import TransactionHistoryDownload from './AllPages/TransactionHistoryDownload';
 
 
 
@@ -104,6 +106,15 @@ function Dashboard() {
               <Route exact path={`${path}/view-transaction-with-filter`} >
                 <ViewTransactionWithFilter />
               </Route>
+
+              <Route exact path={`${path}/settlement-report-new`} >
+                <SettlementReportNew />
+              </Route>
+
+              <Route exact path={`${path}/transaction-history-new`} >
+                <TransactionHistoryDownload />
+              </Route>
+              
                 </Switch>
         </section>
     )

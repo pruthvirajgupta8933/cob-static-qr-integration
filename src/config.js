@@ -68,8 +68,11 @@ const API_LIVE = {
     MANDATE_REGISTRATION : "https://subscription.sabpaisa.in/subscription/mandateRegistration",
 
     /** ViewTxnEnqMultiParam **/
-    ViewTxnEnqMultiParam : "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam"
-}
+    ViewTxnEnqMultiParam : "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam",
+
+    /** SettlementReport * */
+    SettlementReport: "https://reportapi.sabpaisa.in/REST/GetSettledTxnHistory"
+} 
 
 const API_URL =  API_LIVE
 export default API_URL;
