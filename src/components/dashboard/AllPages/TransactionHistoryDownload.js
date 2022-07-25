@@ -12,6 +12,7 @@ import { clearTransactionHistory, fetchTransactionHistorySlice } from '../../../
 import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
 import API_URL from '../../../config';
 import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
+import { convertToFormikSelectJson } from '../../../_components/reuseable_components/convertToFormikSelectJson';
 
 
 
@@ -50,21 +51,40 @@ function TransactionHistoryDownload() {
   }
 
 
-  useEffect(() => {
-    console.log("showData",showData.length)
-    console.log("updateTxnList",updateTxnList.length)
-    console.log((buttonClicked && dataFound))
 
-    setTimeout(() => {
+  const initialValues = {
+    clientCode:"",
+    fromDate:"",
+    endDate:"",
+    transaction_status:"",
+    payment_mode:""
+  }
 
-      if(showData.length < 1 &&  (updateTxnList.length > 0 || updateTxnList.length===0)){
-        setDataFound(true)
-      }else{
-        setDataFound(false)
-      }  
-    });
+  const validationSchema = Yup.object({
+    clientCode : Yup.string().required("Required"),
+    fromDate: Yup.date().required("Required"),
+    endDate: Yup.date().min(
+      Yup.ref('fromDate'),
+      "End date can't be before Start date"
+    ).required("Required"),
+
+    transaction_status : Yup.string().required("Required"),
+    payment_mode : Yup.string().required("Required"),
+
+  })
+
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+
+  //     if(showData.length < 1 &&  (updateTxnList.length > 0 || updateTxnList.length===0)){
+  //       setDataFound(true)
+  //     }else{
+  //       setDataFound(false)
+  //     }  
+  //   });
     
-  }, [showData, updateTxnList])
+  // }, [showData, updateTxnList])
   
   // function dayDiff(dateFrom, dateTo) {
   //   const date1 = new Date(dateFrom);
@@ -76,20 +96,6 @@ function TransactionHistoryDownload() {
   //  }
    
 
-  const getInputValue=(label,val)=>{
-      if(label==='fromDate'){
-        SetFromDate(val);
-        // console.log(val);
-      }else if(label==='toDate'){
-        SetToDate(val);
-      }else if(label==='clientCode'){
-        SetClientCode(val);
-      }else if(label==='txnStatus'){
-        SetTxnStatus(val);
-      }else if(label==='payMode'){
-        SetPayModeId(val);
-      }
-  }
 
   const getPaymentStatusList = async () => {  
     await axios.get(API_URL.GET_PAYMENT_STATUS_LIST)  
@@ -114,9 +120,32 @@ function TransactionHistoryDownload() {
   }  
 
 
+  let isExtraDataRequired  = false;
+  let extraDataObj = {}
+  if(user.roleId===3 || user.roleId===13){
+    isExtraDataRequired = true
+    extraDataObj = { key:"All", value:"All"}
+  }
+  const clientCodeOption = convertToFormikSelectJson("clientCode","clientName",clientMerchantDetailsList, extraDataObj, isExtraDataRequired)
+  
+  const tempPayStatus = [{key:"All",value:"All"}]
+  paymentStatusList.map(item => {
+                                if(item!=='INITIATED'){
+                                  tempPayStatus.push({key:item,value:item})
+                                }
+                            })
+
+
+  const tempPaymode = [{key:"All",value:"All"}]
+  paymentModeList.map(item => {
+      tempPaymode.push({key:item.paymodeId,value:item.paymodeName})
+})
+  
+
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
   }
+
 
 
 const checkValidation = ()=>{
@@ -315,24 +344,24 @@ const pages = _.range(1, pageCount + 1)
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid">
             <Formik
-                // initialValues={initialValues}
-                // validationSchema={validationSchema}
+                initialValues={initialValues}
+                validationSchema={validationSchema}
                 onSubmit={(values)=>console.log(values)}
               >
           {formik => (
             <Form>
             <div className="form-row">
-              <div className="form-group col-md-4">
+                <div className="form-group col-md-2 mx-3">
                         <FormikController
                             control="select"                          
                             label="Client Code"
                             name="clientCode"
                             className="form-control rounded-0"
-                            options={[{}]}
+                            options={clientCodeOption}
                           />
                 </div>
 
-                <div className="form-group col-md-4">
+                <div className="form-group col-md-2 mx-3">
                         <FormikController
                             control="input"
                             type="date"                          
@@ -342,7 +371,7 @@ const pages = _.range(1, pageCount + 1)
                           />
                 </div>
 
-                <div className="form-group col-md-4">
+                <div className="form-group col-md-2 mx-3">
                         <FormikController
                             control="input"
                             type="date"                          
@@ -351,13 +380,35 @@ const pages = _.range(1, pageCount + 1)
                             className="form-control rounded-0"
                           />
                 </div>
+
+                <div className="form-group col-md-2 mx-3">
+                        <FormikController
+                            control="select"                          
+                            label="Transactions Status"
+                            name="transaction_status"
+                            className="form-control rounded-0"
+                            options={tempPayStatus}
+                          />
+                </div>
+
+                <div className="form-group col-md-2 mx-3">
+                        <FormikController
+                            control="select"                          
+                            label="Payment Mode"
+                            name="payment_mode"
+                            className="form-control rounded-0"
+                            options={tempPaymode}
+                          />
+                </div>
+
+
             </div>
             <div className="form-row" >
-                <div className="form-group col-md-1">
+                <div className="form-group col-md-1 mx-3">
                   <button className="btn btn-sm btn-primary" type="submit">Search </button>
                 </div>
                 {txnList?.length > 0 ? 
-                <div className="form-group col-md-1">
+                <div className="form-group col-md-1 mx-3">
                 <button className="btn btn-sm  btn-success text-white" type="" onClick={()=>exportToExcelFn()}>Export </button>
                 </div>
                 : <></> }
