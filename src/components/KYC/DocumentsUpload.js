@@ -2,37 +2,74 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
+import { toast } from 'react-toastify';
+ import { Zoom } from "react-toastify";
+import { useSelector } from 'react-redux';
 import FormikController from '../../_components/formik/FormikController'
 import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson'
 import "../KYC/kyc-style.css"
+import API_URL from '../../config';
+
 
 function DocumentsUpload() {
 
 const [docTypeList, setDocTypeList] = useState([])
+const [selectedFile, setSelectedFile] = useState();
 const [fieldValue, setFieldValue] = useState(null);
-const [isFilePicked, setIsFilePicked] = useState(false);
+	const [isFilePicked, setIsFilePicked] = useState(false);
+  const { user } = useSelector((state) => state.auth);
+  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  const { clientCode} = clientMerchantDetailsList[0];
+  const { loginId} = user;
+  // const url = API_URL
 
 
+//  console.log(loginId,"my clientCode")
 
 useEffect(() => {
-  axios.get("http://192.168.34.21:8000/cob/document-type/").then((resp)=>{
+  axios.get(API_URL.DocumentsUpload).then((resp)=>{
     const data = convertToFormikSelectJson('id','name', resp.data.results);
+    console.log(resp,"my all dattaaa")
+   
     setDocTypeList(data)
   }).catch(err=>console.log(err))
 }, [])
 
-
-
-const changeHandler = (event) => {
-  console.log(event)
-  // setSelectedFile(event.target.files[0]);
-  // setIsFilePicked(true);
+const HandleChange = (event) => {
+  setSelectedFile(event.target.files[0]);
+  setIsFilePicked(true);
 };
 
-const choices = [
-  { key: "choice a", value: "choicea" },
-  { key: "choice b", value: "choiceb" },
-]
+// const handleSubmission = () => {
+
+//   const formData = new FormData();
+
+// 		formData.append('file', selectedFile);
+    
+//     // fetch(
+// 		// 	'http://13.126.165.212:8000/cob/upload-merchant-document/',
+// 		// 	{
+// 		// 		method: 'POST',
+// 		// 		body: formData,
+// 		// 	}
+// 		// )
+// 		// 	.then((response) => response.json())
+// 		// 	.then((result) => 
+//     //   { alert("File Upload success");
+				
+// 		// 	})
+// 		// 	.catch((error) => {
+//     //     alert("File Upload Error");
+// 		// 	});
+	
+
+
+// };
+
+// const choices = [
+//   { key: "choice a", value: "choicea" },
+//   { key: "choice b", value: "choiceb" },
+// ]
 
 
 const initialValues = {
@@ -41,36 +78,57 @@ const initialValues = {
 
 }
 const validationSchema = Yup.object({
-  docType: Yup.string().required("Required"),
-  docFile: Yup.mixed().required('File is required')
+  docFile: Yup.mixed()
+  .test('fileType', 'Unsupported File Format', function (value) {
+    const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png'];
+    return SUPPORTED_FORMATS.includes(value.type)
+  })
+  .test('fileSize', "File Size is too large", value => {
+    const sizeInBytes = 500000;//0.5MB
+    return value.size <= sizeInBytes;
+  }),
+  docType :  Yup.string().required("Required"),
+     
 })
 
 
 
 
 const onSubmit = values => {
-  
-
-  const bodyFormData = new FormData();
-  bodyFormData.append('file',fieldValue);
-  bodyFormData.append('type', 1); 
-  bodyFormData.append('modifiedBy', 1); 
-  bodyFormData.append('merchant', 53); 
-
-
-  axios({
+const bodyFormData = new FormData();
+  bodyFormData.append('files',selectedFile);
+  bodyFormData.append("client_code", [clientCode]);
+  bodyFormData.append('login_id',loginId);
+   bodyFormData.append('type',values.docType); 
+ axios({
     method: "post",
-    url: "http://192.168.34.21:8000/cob/upload-merchant-document/",
-    data: bodyFormData,
+     url: API_URL.Upload_Merchant_document,
+
+    data:  bodyFormData,
     headers: { "Content-Type": "multipart/form-data" },
   })
     .then(function (response) {
-      //handle success
+      // alert("File Upload success");
+        toast.success("File Upload Successfull",
+        {
+          position: "top-center",
+          autoClose: 2000,
+          transition: Zoom,
+          limit: 2,
+        })
       console.log(response);
     })
-    .catch(function (response) {
-      //handle error
-      console.log(response);
+    .catch(function (error) {
+      console.error("Error:", error);
+      toast.error('File Upload Unsuccessfull',
+      {
+        position: "top-center",
+        autoClose: 1000,
+        transition: Zoom,
+        limit: 2,
+      })
+     
+     
     });
 }
 
@@ -83,8 +141,8 @@ const onSubmit = values => {
             <p> Note : Please complete Business Overview Section to view the list of applicable documents!</p>
         </div>
 <Formik
-      // initialValues={initialValues}
-      // validationSchema={validationSchema}
+       initialValues={initialValues}
+      validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
 {formik => (
@@ -98,19 +156,37 @@ const onSubmit = values => {
                           name="docType"
                           className="form-control"
                           options={docTypeList}
-                      />
+                           
+                           />
+                            {/* {(
+   values,
+   errors,
+   touched
+  
+)} */}
+                
                 </div>
             </li>
             <li className="list-inline-item align-middle   w-25" > 
              <div className="form-group col-md-12">
+
+
                       <FormikController
                           control="file"
                           type="file"                      
                           label="Select Document"
                           name="docFile"
                           className="form-control-file"
-                          onChange={(event)=>{setFieldValue(event.target.files[0])}}
+                          onChange={HandleChange}
+                          
+                          // onChange={(event)=>{setFieldValue(event.target.files[0])}}
                       />
+                     {/* {
+  errors.docFile && touched.docFile
+    ? <p className="errors">{errors.docFile}</p>
+    : null
+} */}
+
                 </div>
               </li>
             <li className="list-inline-item align-middle w-25" >

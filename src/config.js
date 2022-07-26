@@ -1,3 +1,5 @@
+import DocumentsUpload from "./components/KYC/DocumentsUpload";
+
 const API_LIVE = {
     AUTH_LOGIN_EMAILVERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
     AUTH_SIGNUP : "https://cobapi.sabpaisa.in/auth-service/auth/signup",
@@ -71,7 +73,11 @@ const API_LIVE = {
     ViewTxnEnqMultiParam : "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam",
 
     /** SettlementReport * */
-    SettlementReport: "https://reportapi.sabpaisa.in/REST/GetSettledTxnHistory"
+    SettlementReport: "https://reportapi.sabpaisa.in/REST/GetSettledTxnHistory",
+
+    /**Kyc DocumentsUploads */
+    DocumentsUpload:"http://13.126.165.212:8000/cob/document-type/",                      //get APi
+    Upload_Merchant_document:"http://13.126.165.212:8000/cob/upload-merchant-document/"   //post APi
 } 
 
 const API_URL =  API_LIVE
