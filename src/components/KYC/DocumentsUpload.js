@@ -36,12 +36,12 @@ const choices = [
 
 
 const initialValues = {
-  docType: "",
+  // docType: "",
   docFile:""
 
 }
 const validationSchema = Yup.object({
-  docType: Yup.string().required("Required"),
+  // docType: Yup.string().required("Required"),
   docFile: Yup.mixed().required('File is required')
 })
 
@@ -83,8 +83,8 @@ const onSubmit = values => {
             <p> Note : Please complete Business Overview Section to view the list of applicable documents!</p>
         </div>
 <Formik
-      // initialValues={initialValues}
-      // validationSchema={validationSchema}
+      initialValues={initialValues}
+      validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
 {formik => (
