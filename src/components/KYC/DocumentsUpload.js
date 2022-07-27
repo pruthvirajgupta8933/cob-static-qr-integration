@@ -10,10 +10,8 @@ import { convertToFormikSelectJson } from '../../_components/reuseable_component
 import "../KYC/kyc-style.css"
 import API_URL from '../../config';
 
-
 function DocumentsUpload() {
-
-  const [docTypeList, setDocTypeList] = useState([])
+ const [docTypeList, setDocTypeList] = useState([])
   const [fieldValue, setFieldValue] = useState(null);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
@@ -99,8 +97,7 @@ return (
                     onChange={(event) => {
                       setFieldValue(event.target.files[0])
                       formik.setFieldValue("docFile", event.target.files[0].name)
-
-                    }}
+ }}
 
                     accept="image/jpeg,image/jpg,image/png,application/pdf"
 

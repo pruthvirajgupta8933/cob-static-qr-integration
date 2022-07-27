@@ -76,8 +76,8 @@ const API_LIVE = {
     SettlementReport: "https://reportapi.sabpaisa.in/REST/GetSettledTxnHistory",
 
     /**Kyc DocumentsUploads */
-    DocumentsUpload:"http://13.126.165.212:8000/cob/document-type/",                      //get APi
-    Upload_Merchant_document:"http://13.126.165.212:8000/cob/upload-merchant-document/"   //post APi
+    DocumentsUpload:"http://13.126.165.212:8000/kyc/document-type/",                      //get APi
+    Upload_Merchant_document:"http://13.126.165.212:8000/kyc/upload-merchant-document/"   //post APi
 } 
 
 const API_URL =  API_LIVE
