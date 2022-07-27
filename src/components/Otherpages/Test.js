@@ -1,4 +1,5 @@
 import React from 'react'
+import FormikWrapper from '../../_components/formik/FormikWrapper'
 import DropDownCountPerPage from '../../_components/reuseable_components/DropDownCountPerPage'
 
 
@@ -7,70 +8,8 @@ function Test() {
 
   return (
     
-<div className="container">
-<DropDownCountPerPage />
-<h2>Bordered Table</h2>
-<p>The .table-bordered class adds borders to a table:</p>    
-<div className="scroll" style={{"overflow": "auto"}}>
-<table className="table table-bordered">
-  <thead>
-    <tr>
-      <th>Firstname</th>
-      <th>Lastname</th>
-       <th>Lastname</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-      <th>Email</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>John</td>
-      <td>Doe</td>
-      <td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td>
-    </tr>
-    <tr>
-      <td>Mary</td>
-      <td>Moe</td>
-      <td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td>
-    </tr>
-    <tr>
-      <td>July</td>
-      <td>Dooley</td>
-      <td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td><td>john@example.com</td>
-    </tr>
-  </tbody>
-</table>
-</div>  
+<div className="container bg-white">
+    <FormikWrapper/>
 
 </div>
   )

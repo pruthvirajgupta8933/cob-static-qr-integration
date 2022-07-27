@@ -15,14 +15,21 @@ function FormikWrapper() {
     selectChoice: "",
     radioChoice: "",
     checkBoxChoice: "",
+    file:""
   }
-  const validationSchema = Yup.object({
+  const validationSchema = Yup.object ({
     email: Yup.string().required("Required"),
     description: Yup.string().required("Required"),
     selectChoice: Yup.string().required("Required"),
     radioChoice: Yup.string().required("Required"),
     checkBoxChoice: Yup.array().required("Required"),
+    file: Yup.mixed().required("Required" )
   })
+
+  const imageHandler = e =>{
+      console.log(e.target.files[0])
+  }
+
   const onSubmit = values => console.log("Form data",values)
   return (
     <Formik
@@ -61,6 +68,17 @@ function FormikWrapper() {
             name="checkBoxChoice"
             options={choices}
           />
+          {console.log(formik)}
+          <FormikController
+            control="file"
+            label="select your file"
+            name="file" 
+            onChange={(e)=>{
+              formik.setFieldValue("file",e.target.files[0].name)
+              imageHandler(e)
+              }}
+          />
+
           <button type="submit">Submit</button>
         </Form>
       )}

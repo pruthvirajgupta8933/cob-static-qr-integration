@@ -5,17 +5,21 @@ import * as Yup from "yup"
 import FormikController from '../../_components/formik/FormikController'
 import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson'
 import "../KYC/kyc-style.css"
+import { useSelector } from 'react-redux'
 
 function DocumentsUpload() {
 
 const [docTypeList, setDocTypeList] = useState([])
 const [fieldValue, setFieldValue] = useState(null);
-const [isFilePicked, setIsFilePicked] = useState(false);
 
+const { user } = useSelector((state) => state.auth);
+console.log(user)
+const client_code = user?.clientMerchantDetailsList && user.clientMerchantDetailsList[0]?.clientCode
+const {loginId} = user
 
 
 useEffect(() => {
-  axios.get("http://192.168.34.21:8000/cob/document-type/").then((resp)=>{
+  axios.get("http://13.126.165.212:8000/cob/document-type/").then((resp)=>{
     const data = convertToFormikSelectJson('id','name', resp.data.results);
     setDocTypeList(data)
   }).catch(err=>console.log(err))
@@ -23,26 +27,20 @@ useEffect(() => {
 
 
 
-const changeHandler = (event) => {
-  console.log(event)
-  // setSelectedFile(event.target.files[0]);
-  // setIsFilePicked(true);
-};
-
-const choices = [
-  { key: "choice a", value: "choicea" },
-  { key: "choice b", value: "choiceb" },
-]
 
 
 const initialValues = {
-  // docType: "",
+  docType: "",
   docFile:""
 
 }
+
+
 const validationSchema = Yup.object({
-  // docType: Yup.string().required("Required"),
-  docFile: Yup.mixed().required('File is required')
+  docType: Yup.string().required("Required"),
+  docFile: Yup.mixed()
+  .nullable()
+  .required('Required file format PNG/JPEG/JPG/PDF')
 })
 
 
@@ -52,15 +50,15 @@ const onSubmit = values => {
   
 
   const bodyFormData = new FormData();
-  bodyFormData.append('file',fieldValue);
-  bodyFormData.append('type', 1); 
-  bodyFormData.append('modifiedBy', 1); 
-  bodyFormData.append('merchant', 53); 
+  bodyFormData.append('files',fieldValue);
+  bodyFormData.append('type', values.docType); 
+  bodyFormData.append('login_id', loginId); 
+  bodyFormData.append('client_code', client_code); 
 
 
   axios({
     method: "post",
-    url: "http://192.168.34.21:8000/cob/upload-merchant-document/",
+    url: "http://13.126.165.212:8000/cob/upload-merchant-document/",
     data: bodyFormData,
     headers: { "Content-Type": "multipart/form-data" },
   })
@@ -103,13 +101,20 @@ const onSubmit = values => {
             </li>
             <li className="list-inline-item align-middle   w-25" > 
              <div className="form-group col-md-12">
+             {console.log(formik)}
                       <FormikController
                           control="file"
                           type="file"                      
                           label="Select Document"
                           name="docFile"
                           className="form-control-file"
-                          onChange={(event)=>{setFieldValue(event.target.files[0])}}
+                          onChange={(event)=>{
+                            setFieldValue(event.target.files[0])
+                            formik.setFieldValue("docFile",event.target.files[0].name)
+                            
+                          }}
+
+                          accept="image/jpeg,image/jpg,image/png,application/pdf"
                       />
                 </div>
               </li>
