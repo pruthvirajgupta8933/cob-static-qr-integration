@@ -9,8 +9,7 @@ function BusinessDetails() {
 
   
   const choices = [
-    { key: "choice a", value: "choicea" },
-    { key: "choice b", value: "choiceb" },
+    { key: "Same As Registered Address", value: "choice" }
   ]
 
   const initialValues = {
@@ -108,9 +107,86 @@ function BusinessDetails() {
                           className="form-control"
                         />
                     </div>
-
                   </div>
 
+
+                  <div className="form-row">
+                    <div className="form-group col-md-4">
+                      <FormikController
+                        control="input"
+                        type="text"
+                        label="Pin Code *"
+                        name="pin_code"
+                        placeholder="Enter Pin Code"
+                        className="form-control"
+                      />
+                    </div>
+
+                  
+                    <div className="form-group col-md-4">
+                      <FormikController
+                          control="input"
+                          type="text"
+                          label="City *"
+                          name="city"
+                          placeholder="Enter City Name"
+                          className="form-control"
+                        />
+                    </div>
+
+                    <div className="form-group col-md-4">
+                      <FormikController
+                          control="input"
+                          type="text"
+                          label="State*"
+                          name="state"
+                          placeholder="Enter State"
+                          className="form-control"
+                        />
+                    </div>
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group col-md-4">
+                      <FormikController
+                        control="textArea"
+                        type="textArea"
+                        label="Registered Address *"
+                        name="registered_address"
+                        placeholder="Enter Registered Address"
+                        className="form-control"
+                      />
+                    </div>
+
+                  
+                    <div className="form-group col-md-4 d-flex">
+                      <FormikController
+                        control="checkbox"
+                        name="checkBoxChoice"
+                        options={choices}
+                        />
+
+                      <FormikController
+                          control="textArea"
+                          type="textArea"
+                          label="Operational Address"
+                          name="operational_address"
+                          placeholder="Enter Operational Address"
+                          className="form-control"
+                        />
+                    </div>
+
+                    {/* <div className="form-group col-md-4">
+                      <FormikController
+                          control="textArea"
+                          type="textArea"
+                          label="Operational Address"
+                          name="operational_address"
+                          placeholder="Enter Operational Address"
+                          className="form-control"
+                        />
+                    </div> */}
+                  </div>
                   <button className="btn btn-primary" type="submit">Submit</button>
                     
             </Form>

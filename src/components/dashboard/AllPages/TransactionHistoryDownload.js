@@ -25,11 +25,11 @@ function TransactionHistoryDownload() {
   const {isLoadingTxnHistory} = dashboard
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
   const [paymentModeList,SetPaymentModeList] = useState([]);
-  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
-  const [fromDate,SetFromDate] = useState("");
-  const [toDate,SetToDate] = useState("");
-  const [txnStatus,SetTxnStatus] = useState("All");
-  const [payModeId,SetPayModeId] = useState("All")
+  // const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
+  const [startDate,setStartDate] = useState("");
+  const [toDate,setToDate] = useState("");
+  // const [txnStatus,SetTxnStatus] = useState("All");
+  // const [payModeId,SetPayModeId] = useState("All")
   const [txnList,SetTxnList] = useState([])
   // const [filterList,SetFilterList] = useState([])
   const [searchText,SetSearchText] = useState('')
@@ -56,8 +56,8 @@ function TransactionHistoryDownload() {
     clientCode:"",
     fromDate:"",
     endDate:"",
-    transaction_status:"",
-    payment_mode:""
+    transaction_status:"All",
+    payment_mode:"All"
   }
 
   const validationSchema = Yup.object({
@@ -67,11 +67,12 @@ function TransactionHistoryDownload() {
       Yup.ref('fromDate'),
       "End date can't be before Start date"
     ).required("Required"),
-
     transaction_status : Yup.string().required("Required"),
     payment_mode : Yup.string().required("Required"),
 
   })
+
+
 
 
   // useEffect(() => {
@@ -148,14 +149,50 @@ function TransactionHistoryDownload() {
 
 
 
-const checkValidation = ()=>{
+  const submitHandler = values =>{
+    // console.log(values)
+    const {clientCode, fromDate, endDate, transaction_status, payment_mode} = values
+    const dateRangeValid = checkValidation(fromDate, endDate);
+
+    if(dateRangeValid){ 
+      // isLoading(true);
+      // isButtonClicked(true);
+      let strClientCode, clientCodeArrLength ="";
+        if(clientCode==="All"){
+        const allClientCode = []
+        clientMerchantDetailsList?.map((item)=>{
+          allClientCode.push(item.clientCode)
+        })
+        clientCodeArrLength = allClientCode.length.toString();
+        strClientCode = allClientCode.join().toString();
+      }else{
+        strClientCode = clientCode;
+        clientCodeArrLength = "1"
+      }
+
+      let paramData = {
+        clientCode:strClientCode,
+        paymentStatus:transaction_status,
+        paymentMode:payment_mode,
+        fromDate:fromDate,
+        endDate:endDate,
+        length: "0",
+        page: "0",
+        NoOfClient: clientCodeArrLength
+      } 
+  console.log(paramData)
+      dispatch(fetchTransactionHistorySlice(paramData))
+}
+
+
+  }
+
+const checkValidation = (fromDate="",toDate="")=>{
     var flag = true
-    if(fromDate==='' || toDate===''){
+    if(fromDate===0 || toDate===''){
         alert("Please select the date.");
         flag = false;
     }else if(fromDate!=='' || toDate!==''){
-      //check date range
-      // const days =  dayDiff(fromDate,toDate);
       const date1 = new Date(fromDate);
       const date2 = new Date(toDate);
       const diffTime = Math.abs(date2 - date1);
@@ -174,40 +211,40 @@ const checkValidation = ()=>{
 }
 
 
-  const txnHistory =  () => {  
-    var isValid = checkValidation();
-          if(isValid){ 
-            // isLoading(true);
-            isButtonClicked(true);
-            let strClientCode, clientCodeArrLength ="";
-              if(clientCode==="All"){
-              const allClientCode = []
-              clientMerchantDetailsList?.map((item)=>{
-                allClientCode.push(item.clientCode)
-              })
-              clientCodeArrLength = allClientCode.length.toString();
-              strClientCode = allClientCode.join().toString();
-            }else{
-              strClientCode = clientCode;
-              clientCodeArrLength = "1"
-            }
+  // const txnHistory =  () => {  
+  //   var isValid = checkValidation();
+  //         if(isValid){ 
+  //           // isLoading(true);
+  //           isButtonClicked(true);
+  //           let strClientCode, clientCodeArrLength ="";
+  //             if(clientCode==="All"){
+  //             const allClientCode = []
+  //             clientMerchantDetailsList?.map((item)=>{
+  //               allClientCode.push(item.clientCode)
+  //             })
+  //             clientCodeArrLength = allClientCode.length.toString();
+  //             strClientCode = allClientCode.join().toString();
+  //           }else{
+  //             strClientCode = clientCode;
+  //             clientCodeArrLength = "1"
+  //           }
 
-            let paramData = {
-              clientCode:strClientCode,
-              paymentStatus:txnStatus,
-              paymentMode:payModeId,
-              fromDate:fromDate,
-              endDate:toDate,
-              length: "0",
-              page: "0",
-              NoOfClient: clientCodeArrLength
-            } 
+  //           let paramData = {
+  //             clientCode:strClientCode,
+  //             paymentStatus:txnStatus,
+  //             paymentMode:payModeId,
+  //             fromDate:fromDate,
+  //             endDate:toDate,
+  //             length: "0",
+  //             page: "0",
+  //             NoOfClient: clientCodeArrLength
+  //           } 
         
-            dispatch(fetchTransactionHistorySlice(paramData))
-      }else{
-        console.log('API not trigger!');
-      }
-  } 
+  //           dispatch(fetchTransactionHistorySlice(paramData))
+  //     }else{
+  //       console.log('API not trigger!');
+  //     }
+  // } 
   
 
 
@@ -332,6 +369,9 @@ const pages = _.range(1, pageCount + 1)
   const finalDate = year +'-'+month+'-'+day;
 
 
+  console.log(startDate)
+  
+
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">
@@ -346,7 +386,8 @@ const pages = _.range(1, pageCount + 1)
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={(values)=>console.log(values)}
+                onSubmit={submitHandler}
+                
               >
           {formik => (
             <Form>
@@ -368,6 +409,8 @@ const pages = _.range(1, pageCount + 1)
                             label="From Date"
                             name="fromDate"
                             className="form-control rounded-0"
+                            // value={startDate}
+                            // onChange={(e)=>setStartDate(e.target.value)}
                           />
                 </div>
 
@@ -404,11 +447,11 @@ const pages = _.range(1, pageCount + 1)
 
             </div>
             <div className="form-row" >
-                <div className="form-group col-md-1 mx-3">
+                <div className="form-group col-md-1 ml-3">
                   <button className="btn btn-sm btn-primary" type="submit">Search </button>
                 </div>
                 {txnList?.length > 0 ? 
-                <div className="form-group col-md-1 mx-3">
+                <div className="form-group col-md-1">
                 <button className="btn btn-sm  btn-success text-white" type="" onClick={()=>exportToExcelFn()}>Export </button>
                 </div>
                 : <></> }
