@@ -1,12 +1,25 @@
 const API_LIVE = {
-    AUTH_LOGIN_EMAILVERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
-    AUTH_SIGNUP : "https://cobapi.sabpaisa.in/auth-service/auth/signup",
-    AUTH_LOGIN : "https://cobapi.sabpaisa.in/auth-service/auth/login",
-    AUTH_CLIENT_CREATE : "https://cobapi.sabpaisa.in/auth-service/client",
+    // AUTH_LOGIN_EMAILVERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
+    // AUTH_SIGNUP : "https://cobapi.sabpaisa.in/auth-service/auth/signup",
+    AUTH_SIGNUP : "https://cobapi.sabpaisa.in/cob/register",
+    // AUTH_LOGIN : "https://cobapi.sabpaisa.in/auth-service/auth/login",
+    AUTH_LOGIN : "https://cobapi.sabpaisa.in/cob/loginapi",
+
+    // AUTH_CLIENT_CREATE : "https://cobapi.sabpaisa.in/auth-service/client",
+    AUTH_CLIENT_CREATE : "https://cobapi.sabpaisa.in/cob/createprofile",
     AUTH_GET_EMAIL_TO_SEND_OTP : "https://cobapi.sabpaisa.in/auth-service/account/forgot-password",
     AUTH_VERIFY_OTP_ON_FWD : "https://cobapi.sabpaisa.in/auth-service/account/verify-otp",
     AUTH_CREATE_NEW_PASSWORD : "https://cobapi.sabpaisa.in/auth-service/account/create-password",
     AUTH_CHANGE_PASSWORD : "https://cobapi.sabpaisa.in/auth-service/account/change-password",
+    
+    /** Email Verify for new register users **/
+    // EMAIL_VERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
+    EMAIL_VERIFY : "https://cobapi.sabpaisa.in/cob/emailverify/",
+
+
+    
+
+
     CHECK_PERMISSION_PAYLINK: "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
     BANK_IFSC_CODE_VERIFY:"https://ifsc.razorpay.com/",
     BANK_LIST_NB : "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
@@ -44,8 +57,6 @@ const API_LIVE = {
     GET_REPORTS : "https://paybylink.sabpaisa.in/paymentlink/getReports/",
 
 
-    /** Email Verify for new register users **/
-    EMAIL_VERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
 
     /** GET MANDATE REG. STATUS */
     MANDATE_REGISTRATION_STATUS : "https://subscription.sabpaisa.in/subscription/npci/registration/status/",
