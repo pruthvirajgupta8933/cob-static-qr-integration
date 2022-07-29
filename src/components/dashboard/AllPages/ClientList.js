@@ -10,7 +10,7 @@ function ClientList() {
   var {user} = useSelector((state)=>state.auth);
   
   useEffect(() => {
-   
+   //ClientMerchantDetailList
   if(user.clientMerchantDetailsList?.length>0){
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
     SetClientList(user.clientMerchantDetailsList);

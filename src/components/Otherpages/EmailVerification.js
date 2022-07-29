@@ -12,7 +12,7 @@ const EmailVerification = () => {
 
 
   useEffect(() => {
-    axios.get(`${API_URL.EMAIL_VERIFY}${loginId}`)
+    axios.put(`${API_URL.EMAIL_VERIFY}${loginId}`)
     .then((response) => {
       setData(response);
     })
