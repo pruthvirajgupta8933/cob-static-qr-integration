@@ -272,11 +272,11 @@ const handleShowHide=(event)=>{
           <div className="form-group col-md-4">
               <FormikController
                   control="select"
-                  // onChange={(e)=>handleShowHide(e)}
-                  onChange={(e) => {
-                    handleShowHide(e)
-                    formik. handleShowHide("seletcted_website_app_url", e.target.seletcted_website_app_url[0].name)
-}}
+                  onChange={(e)=>handleShowHide(e)}
+//                   onChange={(e) => {
+//                     handleShowHide(e)
+//                     formik. handleShowHide("seletcted_website_app_url", e.target.seletcted_website_app_url[0].name)
+// }}
                   label="Website/App url *"
                   name="seletcted_website_app_url"
                   options={WebsiteAppUrl}
