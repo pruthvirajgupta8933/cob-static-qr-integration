@@ -101,7 +101,7 @@ const API_LIVE = {
 }
 
 const API_URL =  API_LIVE
-export default API_URL;
+export default API_URL; 
 
 export const TIMEOUT = 1200;  // 1200 seconds = 20 minutes 
 
