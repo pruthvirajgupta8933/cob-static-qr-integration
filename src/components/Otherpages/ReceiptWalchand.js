@@ -15,7 +15,7 @@ const ReceiptWalchand = () => {
     await axios
       .get(`${API_URL.FETCH_DATA_FOR_WACOE}?PRNNum=${pnrId}`)
       .then((response) => {
-        setIsLoading(false);
+       
         var resData = response.data;
         
         resData.map((dt, i) =>
@@ -30,6 +30,7 @@ const ReceiptWalchand = () => {
         setInterval(() => {
           setData(resData);
           setIsShow(true);
+          setIsLoading(false);
           // setErrMessage('');
         }, 2000);
       }).catch((e) => {
