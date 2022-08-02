@@ -1,87 +1,105 @@
-import DocumentsUpload from "./components/KYC/DocumentsUpload";
-
 const API_LIVE = {
-    AUTH_LOGIN_EMAILVERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
-    AUTH_SIGNUP : "https://cobapi.sabpaisa.in/auth-service/auth/signup",
-    AUTH_LOGIN : "https://cobapi.sabpaisa.in/auth-service/auth/login",
-    AUTH_CLIENT_CREATE : "https://cobapi.sabpaisa.in/auth-service/client",
-    AUTH_GET_EMAIL_TO_SEND_OTP : "https://cobapi.sabpaisa.in/auth-service/account/forgot-password",
-    AUTH_VERIFY_OTP_ON_FWD : "https://cobapi.sabpaisa.in/auth-service/account/verify-otp",
-    AUTH_CREATE_NEW_PASSWORD : "https://cobapi.sabpaisa.in/auth-service/account/create-password",
-    AUTH_CHANGE_PASSWORD : "https://cobapi.sabpaisa.in/auth-service/account/change-password",
-    CHECK_PERMISSION_PAYLINK: "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
-    BANK_IFSC_CODE_VERIFY:"https://ifsc.razorpay.com/",
-    BANK_LIST_NB : "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
-    BANK_LIST_DC : "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
+  // AUTH_LOGIN_EMAILVERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
+  // AUTH_SIGNUP : "https://cobapi.sabpaisa.in/auth-service/auth/signup",
+  AUTH_SIGNUP : "https://cobapi.sabpaisa.in/cob/register",
+  // AUTH_LOGIN : "https://cobapi.sabpaisa.in/auth-service/auth/login",
+  AUTH_LOGIN : "https://cobapi.sabpaisa.in/cob/loginapi",
 
-    SEND_EMAIL : "https://adminapi.sabpaisa.in/REST/Email/sendEmail",
-    
-    SUBSCRIBE_FETCH_APP_AND_PLAN : "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
-    FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
-    SUBSCRIBE_SERVICE: "https://spl.sabpaisa.in/client-subscription-service/subscribe",
-
-    /* transaction history  */
-      //old api of txn history
-    /*https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2} */
-
-    GET_PAYMENT_STATUS_LIST : "https://adminapi.sabpaisa.in/REST/admin/getPaymentStatusList",
-    PAY_MODE_LIST : "https://adminapi.sabpaisa.in/REST/paymode/paymodeList",
-    GetMerchantTxnHistory : "https://adminapi.sabpaisa.in/REST/GetMerchantTxnHistory",
-    
-    /* Transaction Enquiry */
-    VIEW_TXN : "https://adminapi.sabpaisa.in/Enquiry/ViewTxn",
-
-    /* Settlement Report */
-    GET_FILE_NAME : "https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/",
-
-    /** PAYLINK **/
-    GET_CUSTOMERS : "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
-    SMART_UPLOAD : "https://paybylink.sabpaisa.in/paymentlink/smartupload",
-    EDIT_CUSTOMER : "https://paybylink.sabpaisa.in/paymentlink/editCustomer/",
-    GET_CUSTOMER_TYPE : "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
-    ADD_LINK : "https://paybylink.sabpaisa.in/paymentlink/addLink",
-    ADD_CUSTOMER : "https://paybylink.sabpaisa.in/paymentlink/addCustomers",
-    DELETE_CUSTOMER : "https://paybylink.sabpaisa.in/paymentlink/deleteCustomer",
-    GET_LINKS : "https://paybylink.sabpaisa.in/paymentlink/getLinks/",
-    GET_REPORTS : "https://paybylink.sabpaisa.in/paymentlink/getReports/",
+  // AUTH_CLIENT_CREATE : "https://cobapi.sabpaisa.in/auth-service/client",
+  AUTH_CLIENT_CREATE : "https://cobapi.sabpaisa.in/cob/createprofile",
+  AUTH_GET_EMAIL_TO_SEND_OTP : "https://cobapi.sabpaisa.in/auth-service/account/forgot-password",
+  AUTH_VERIFY_OTP_ON_FWD : "https://cobapi.sabpaisa.in/auth-service/account/verify-otp",
+  AUTH_CREATE_NEW_PASSWORD : "https://cobapi.sabpaisa.in/auth-service/account/create-password",
+  AUTH_CHANGE_PASSWORD : "https://cobapi.sabpaisa.in/auth-service/account/change-password",
+  
+  
+  /** Email Verify for new register users **/
+  // EMAIL_VERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
+  EMAIL_VERIFY : "https://cobapi.sabpaisa.in/cob/emailverify/",
 
 
-    /** Email Verify for new register users **/
-    EMAIL_VERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
 
-    /** GET MANDATE REG. STATUS */
-    MANDATE_REGISTRATION_STATUS : "https://subscription.sabpaisa.in/subscription/npci/registration/status/",
-
-    /** RECEIPT MB */
-    RECEIPT_MB : "https://adminapi.sabpaisa.in/Receipt/ReceiptMB/",
-
-    /** FETCH_DATA_FOR_WACOE */
-    FETCH_DATA_FOR_WACOE:"https://qwikforms.in/QwikForms/fetchDataForWACOE",
-
-    //** ReceiptForWalchand */
-    RECEIPT_FOR_WALCHAND : "https://adminapi.sabpaisa.in/Receipt/ReceiptForWalchand/",
-
-    /** SEARCH_BY_TRANSID */
-    SEARCH_BY_TRANSID :"https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/",
+  
 
 
-    /** NODE SERVER URL */
-    NODE_PG_URL : "https://cob-node-server.herokuapp.com/getPg/pg-url/",
-    MANDATE_REGISTRATION : "https://subscription.sabpaisa.in/subscription/mandateRegistration",
+  CHECK_PERMISSION_PAYLINK: "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
+  BANK_IFSC_CODE_VERIFY:"https://ifsc.razorpay.com/",
+  BANK_LIST_NB : "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
+  BANK_LIST_DC : "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
 
-    /** ViewTxnEnqMultiParam **/
-    ViewTxnEnqMultiParam : "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam",
+  SEND_EMAIL : "https://adminapi.sabpaisa.in/REST/Email/sendEmail",
+  
+  SUBSCRIBE_FETCH_APP_AND_PLAN : "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
+  FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
+  SUBSCRIBE_SERVICE: "https://spl.sabpaisa.in/client-subscription-service/subscribe",
 
-    /** SettlementReport * */
-    SettlementReport: "https://reportapi.sabpaisa.in/REST/GetSettledTxnHistory",
+  /* transaction history  */
+    //old api of txn history
+  /*https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2} */
 
-    /**Kyc DocumentsUploads */
-    DocumentsUpload:"http://13.126.165.212:8000/kyc/document-type/",                      //get APi
-    Upload_Merchant_document:"http://13.126.165.212:8000/kyc/upload-merchant-document/"   //post APi
-} 
+  GET_PAYMENT_STATUS_LIST : "https://adminapi.sabpaisa.in/REST/admin/getPaymentStatusList",
+  PAY_MODE_LIST : "https://adminapi.sabpaisa.in/REST/paymode/paymodeList",
+  GetMerchantTxnHistory : "https://adminapi.sabpaisa.in/REST/GetMerchantTxnHistory",
+  
+  /* Transaction Enquiry */
+  VIEW_TXN : "https://adminapi.sabpaisa.in/Enquiry/ViewTxn",
+
+  /* Settlement Report */
+  GET_FILE_NAME : "https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/",
+
+  /** PAYLINK **/
+  GET_CUSTOMERS : "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
+  SMART_UPLOAD : "https://paybylink.sabpaisa.in/paymentlink/smartupload",
+  EDIT_CUSTOMER : "https://paybylink.sabpaisa.in/paymentlink/editCustomer/",
+  GET_CUSTOMER_TYPE : "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
+  ADD_LINK : "https://paybylink.sabpaisa.in/paymentlink/addLink",
+  ADD_CUSTOMER : "https://paybylink.sabpaisa.in/paymentlink/addCustomers",
+  DELETE_CUSTOMER : "https://paybylink.sabpaisa.in/paymentlink/deleteCustomer",
+  GET_LINKS : "https://paybylink.sabpaisa.in/paymentlink/getLinks/",
+  GET_REPORTS : "https://paybylink.sabpaisa.in/paymentlink/getReports/",
+
+
+
+  /** GET MANDATE REG. STATUS */
+  MANDATE_REGISTRATION_STATUS : "https://subscription.sabpaisa.in/subscription/npci/registration/status/",
+
+  /** RECEIPT MB */
+  RECEIPT_MB : "https://adminapi.sabpaisa.in/Receipt/ReceiptMB/",
+
+  /** FETCH_DATA_FOR_WACOE */
+  FETCH_DATA_FOR_WACOE:"https://qwikforms.in/QwikForms/fetchDataForWACOE",
+
+  //** ReceiptForWalchand */
+  RECEIPT_FOR_WALCHAND : "https://adminapi.sabpaisa.in/Receipt/ReceiptForWalchand/",
+
+  /** SEARCH_BY_TRANSID */
+  SEARCH_BY_TRANSID :"https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/",
+
+
+  /** NODE SERVER URL */
+  NODE_PG_URL : "https://cob-node-server.herokuapp.com/getPg/pg-url/",
+  MANDATE_REGISTRATION : "https://subscription.sabpaisa.in/subscription/mandateRegistration",
+
+  /** ViewTxnEnqMultiParam **/
+  ViewTxnEnqMultiParam : "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam",
+  /** SettlementReport * */
+  SettlementReport: "https://reportapi.sabpaisa.in/REST/GetSettledTxnHistory",
+
+  /**Kyc DocumentsUploads */
+  DocumentsUpload:"http://13.126.165.212:8000/kyc/document-type/",                      //get APi
+  Upload_Merchant_document:"http://13.126.165.212:8000/kyc/upload-merchant-document/", //post APi
+  Buisness_overview:"http://13.126.165.212:8000/kyc/get-all-business-type/",
+  Platform_type:"http://13.126.165.212:8000/kyc/get-all-platform-type/",
+  Collection_frequency:"http://13.126.165.212:8000/kyc/get-all-collection-frequency/",
+ Get_ALL_Collection_Type :"http://13.126.165.212:8000/kyc/get-all-collection-type",
+ save_Business_Info:"http://13.126.165.212:8000/kyc/save-business-info/",
+ Buisness_overview_state:"http://13.126.165.212:8000/kyc/get-all-lookup_state/"
+ 
+
+}
 
 const API_URL =  API_LIVE
-export default API_URL;
+export default API_URL; 
 
 export const TIMEOUT = 1200;  // 1200 seconds = 20 minutes 
 

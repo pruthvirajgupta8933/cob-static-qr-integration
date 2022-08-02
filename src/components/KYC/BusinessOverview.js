@@ -1,40 +1,201 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
+import axios from 'axios'
 import { Formik, Form } from "formik"
+import { toast } from 'react-toastify';
+import { Zoom } from "react-toastify";
+import { useSelector } from 'react-redux';
 import * as Yup from "yup"
+import API_URL from '../../config';
+import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson'
 import FormikController from '../../_components/formik/FormikController'
 
 
 function BusinessOverview() {
 
+
+  const [data,setData]=useState([])
+  const [appUrl , setAppUrl] = useState('');
+   const [notShowUrl, setnotShowUrl] = useState(false);
+  const[platform,setPlatform]=useState([])
+  const[CollectFreqency,setCollectFreqency]=useState([])
+  const[collection,setCollection]=useState([])
+  const { user } = useSelector((state) => state.auth);
+  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  const { clientCode } = clientMerchantDetailsList[0];
+  const { loginId } = user;
+
+ 
+
+  const Buisnesscategory = [
+    { key: "Select Option", value: "Select Option" },
+    { key: "1", value: "1" },
+    { key: "2", value: "2" },
   
-  const choices = [
-    { key: "choice a", value: "choicea" },
-    { key: "choice b", value: "choiceb" },
   ]
+  
+
+ 
+
+
+ const GEtAllCollectionType = [
+  { key: "Select", value: "Select" },
+  { key: "collectionTypeId", value: "collectionTypeId" },
+  { key: "collectionTypeName", value: "collectionTypeName" },
+
+]
+const BuildYourForm= [
+   
+  { key: "Select", value: "Select Option" },
+  { key: "yes", value: "Yes" },
+  { key: "No", value: "No" },
+]
+const Erp =[
+   
+  { key: "Select", value: "Select Option" },
+  { key: true, value: "Yes" },
+  { key: false, value: "No" },
+] 
+const WebsiteAppUrl =[
+   
+  { key: "Select Option", value: "Select Option" },
+  { key: "yes", value: "We do not have url"},
+  { key: "No", value: "Website/App url" },
+
+] 
+
 
   const initialValues = {
-    contact_name: "",
-    contact_number: "",
-    contact_email: "",
-    contact_designation: "",
-  }
+    business_type: "",
+    business_category: "",
+    business_model: "",
+    billing_label: "",
+    erp_check:"",
+    platform_id:"",
+    company_website:"",
+    seletcted_website_app_url:"",
+    website_app_url:"",
+    type_of_collection:"",
+    collection_frequency_id:"",
+    ticket_size:"",
+    expected_transactions:"",
+    form_build:""
+ }
   const validationSchema = Yup.object({
-    contact_name: Yup.string().required("Required"),
-    contact_number: Yup.string().required("Required"),
-    contact_email: Yup.string().required("Required"),
-    contact_designation: Yup.array().required("Required"),
+    business_type: Yup.string().required("Required"),
+    business_category: Yup.string().required("Required"),
+    business_model: Yup.string().required("Required"),
+    billing_label: Yup.string().required("Required"),
+    erp_check: Yup.boolean().required('Required'),
+    platform_id: Yup.string().required("Required"),
+    seletcted_website_app_url: Yup.string().required("Required"),
+    website_app_url: Yup.string().required("Required"),
+    company_website: Yup.string().required("Required"),
+    // type_of_collection: Yup.string().required("Required"),
+    collection_frequency_id: Yup.string().required("Required"),
+    ticket_size: Yup.string().required("Required"),
+    expected_transactions: Yup.string().required("Required"),
+    form_build: Yup.string().required("Required"),
   })
 
+////Get Api for Buisness overview///////////
+  useEffect(() => {
+    axios.get(API_URL.Buisness_overview).then((resp) => {
+      const data = convertToFormikSelectJson('businessTypeId', 'businessTypeText', resp.data);
+      //  console.log(resp, "my all dattaaa")
 
-  const onSubmit = values => console.log("Form data",values)
 
+      // console.log(data,"here is my get data")
+
+      setData(data)
+
+      
+    }).catch(err => console.log(err))
+  }, [])
+
+//////////////////APi for Platform
+useEffect(() => {
+  axios.get(API_URL.Platform_type).then((resp) => {
+    const data = convertToFormikSelectJson('platformId', 'platformName', resp.data);
+    // console.log(resp, "my all dattaaa")
+
+
+    // console.log(data,"here is my get data")
+
+    setPlatform(data)
+  }).catch(err => console.log(err))
+}, [])
+useEffect(() => {
+  axios.get(API_URL.Collection_frequency).then((resp) => {
+    const data = convertToFormikSelectJson('collectionFrequencyId', 'collectionFrequencyName', resp.data);
+    // console.log(resp, "my all dattaaa")
+
+
+    // console.log(data,"here is my get data")
+
+    setCollectFreqency(data)
+  }).catch(err => console.log(err))
+}, [])
+
+
+
+useEffect(() => {
+  axios.get(API_URL.Get_ALL_Collection_Type).then((resp) => {
+    const data = convertToFormikSelectJson('collectionTypeId', 'collectionTypeName', resp.data);
+    // console.log(resp, "my all dattaaa")
+
+
+    // console.log(data,"here is my get data")
+
+     setCollection(data)
+  }).catch(err => console.log(err))
+}, [])
+
+
+ const onSubmit = async (values) => {
+    const res = await axios.put(API_URL.save_Business_Info, {
+      'business_type': values.business_type,
+      'business_category': values.business_category,
+      'business_model': values.business_model,
+      'billing_label': values.billing_label,
+      'company_website': values.company_website,
+      'erp_check': true,
+      'platform_id': values.platform_id,
+      'collection_type_id': "499999998888",
+      'collection_frequency_id': values.collection_frequency_id,
+      'expected_transactions': values.expected_transactions,
+      'form_build': values.form_build,
+      'ticket_size': values.ticket_size,
+      'login_id':loginId ,
+      'client_code':clientCode
+    });
+
+    console.log(values,"form data")
+
+    if (res.status === 200) {
+      toast.success("File Upload Successfull")
+    } else {
+      toast.error("something went wrong")
+    }
+};
+
+
+const handleShowHide=(event)=>{
+  const getuser=event.target.value;
+  setAppUrl(getuser)
+
+  console.log(getuser,"222222222222222")
+
+}
+
+  
+   
 
   return (
     <div className="col-md-12 col-md-offset-4">   
        <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(onSubmit)}
+      onSubmit={onSubmit}
     >
     {formik => (
             <Form>
@@ -44,7 +205,7 @@ function BusinessOverview() {
                   control="select"
                   label="Business Type* "
                   name="business_type"
-                  options={choices}
+                  options={data}
                   className="form-control"
                 />
               </div>
@@ -54,7 +215,7 @@ function BusinessOverview() {
                   control="select"
                   label="Business Category *"
                   name="business_category"
-                  options={choices}
+                  options={Buisnesscategory}
                   className="form-control"
                 />
               </div>
@@ -88,8 +249,8 @@ function BusinessOverview() {
               <FormikController
                   control="select"
                   label="Do you have you own ERP *"
-                  name="erp"
-                  options={choices}
+                  name="erp_check"
+                  options={Erp}
                   className="form-control"
                 />
               </div>
@@ -98,8 +259,8 @@ function BusinessOverview() {
               <FormikController
                   control="select"
                   label="Platform *"
-                  name="platform"
-                  options={choices}
+                  name="platform_id"
+                  options={ platform}
                   className="form-control"
                 />
               </div>
@@ -111,30 +272,53 @@ function BusinessOverview() {
           <div className="form-group col-md-4">
               <FormikController
                   control="select"
+                  // onChange={(e)=>handleShowHide(e)}
+                  onChange={(e) => {
+                    handleShowHide(e)
+                    formik. handleShowHide("seletcted_website_app_url", e.target.seletcted_website_app_url[0].name)
+}}
                   label="Website/App url *"
                   name="seletcted_website_app_url"
-                  options={choices}
+                  options={WebsiteAppUrl}
                   className="form-control"
                 />
+
+                {
+                  appUrl === "No" && (
+                    
+                    <div className="form-group col-md-4">
+                    <FormikController
+                                control="input"
+                                type="text"
+                                label="Website/App url *"
+                                name="website_app_url"
+                                placeholder="Enter Website/App URL"
+                                className="form-control"
+                              />
+                    </div>
+                 )
+                } 
+
+
+                  { 
+                    appUrl === "Yes" && (
+                      <div>
+                        
+                      </div>
+
+
+                  )
+                  }
               </div>
 
-            <div className="form-group col-md-4">
-            <FormikController
-                        control="input"
-                        type="text"
-                        label="Website/App url *"
-                        name="website_app_url"
-                        placeholder="Enter Website/App URL"
-                        className="form-control"
-                      />
-            </div>
+           
 
             <div className="form-group col-md-4">
             <FormikController
                   control="select"
                   label="Type Of Collection *"
                   name="type_of_collection"
-                  options={choices}
+                  options={collection}
                   className="form-control"
                 />
               </div>
@@ -146,11 +330,22 @@ function BusinessOverview() {
           <FormikController
                   control="select"
                   label="Collection Frequency *"
-                  name="collection_frequency"
-                  options={choices}
+                  name="collection_frequency_id"
+                  options={CollectFreqency}
                   className="form-control"
                 />
               </div>
+              <div className="form-group col-md-4">
+            <FormikController
+                        control="input"
+                        type="text"
+                        label="Company website *"
+                        name="company_website"
+                        placeholder="Enter Ticket Size"
+                        className="form-control"
+                      />
+            </div>
+           
             <div className="form-group col-md-4">
             <FormikController
                         control="input"
@@ -166,7 +361,7 @@ function BusinessOverview() {
                         control="input"
                         type="text"
                         label="Expected Transactions *"
-                        name="expexted_transaction"
+                        name="expected_transactions"
                         placeholder="Enter Expected Transactions"
                         className="form-control"
                       />
@@ -178,8 +373,8 @@ function BusinessOverview() {
             <FormikController
                   control="select"
                   label="Do you need SabPaisa to built your form *"
-                  name="build_your_form"
-                  options={choices}
+                  name="form_build"
+                  options={BuildYourForm}
                   className="form-control"
                 />
               </div>
