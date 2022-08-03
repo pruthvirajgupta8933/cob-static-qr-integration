@@ -14,6 +14,7 @@ function BusinessOverview() {
 
 
   const [data,setData]=useState([])
+  const[businessCategory,setBusinessCategory]=useState([])
   const [appUrl , setAppUrl] = useState('');
    const [notShowUrl, setnotShowUrl] = useState(false);
   const[platform,setPlatform]=useState([])
@@ -26,12 +27,6 @@ function BusinessOverview() {
 
  
 
-  const Buisnesscategory = [
-    { key: "Select Option", value: "Select Option" },
-    { key: "1", value: "1" },
-    { key: "2", value: "2" },
-  
-  ]
   
 
  
@@ -111,6 +106,21 @@ const WebsiteAppUrl =[
       
     }).catch(err => console.log(err))
   }, [])
+
+/////////////////////Buisness cAtegory api////////
+useEffect(() => {
+  axios.get(API_URL.Buisness_category).then((resp) => {
+    const data = convertToFormikSelectJson('category_id', 'category_name', resp.data);
+    //  console.log(resp, "my all dattaaa")
+
+
+    // console.log(data,"here is my get data")
+
+    setBusinessCategory(data)
+
+    
+  }).catch(err => console.log(err))
+}, [])
 
 //////////////////APi for Platform
 useEffect(() => {
@@ -215,7 +225,7 @@ const handleShowHide=(event)=>{
                   control="select"
                   label="Business Category *"
                   name="business_category"
-                  options={Buisnesscategory}
+                  options={businessCategory}
                   className="form-control"
                 />
               </div>

@@ -1,22 +1,35 @@
-const API_LIVE = {
-  // AUTH_LOGIN_EMAILVERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
-  // AUTH_SIGNUP : "https://cobapi.sabpaisa.in/auth-service/auth/signup",
-  AUTH_SIGNUP : "https://cobapi.sabpaisa.in/cob/register",
-  // AUTH_LOGIN : "https://cobapi.sabpaisa.in/auth-service/auth/login",
-  AUTH_LOGIN : "https://cobapi.sabpaisa.in/cob/loginapi",
+const env = "staging"
+let url = "";
 
-  // AUTH_CLIENT_CREATE : "https://cobapi.sabpaisa.in/auth-service/client",
-  AUTH_CLIENT_CREATE : "https://cobapi.sabpaisa.in/cob/createprofile",
-  AUTH_GET_EMAIL_TO_SEND_OTP : "https://cobapi.sabpaisa.in/auth-service/account/forgot-password",
-  AUTH_VERIFY_OTP_ON_FWD : "https://cobapi.sabpaisa.in/auth-service/account/verify-otp",
-  AUTH_CREATE_NEW_PASSWORD : "https://cobapi.sabpaisa.in/auth-service/account/create-password",
-  AUTH_CHANGE_PASSWORD : "https://cobapi.sabpaisa.in/auth-service/account/change-password",
+if(env == "staging") {
+  url ="http://13.126.165.212:5000"
+}
+else  {
+  url = "https://cobapi.sabpaisa.-in"
+}
+// const stagingUrl = "${url}"
+// const prodUrl = "https://cobapi.sabpaisa.-in"
+
+const API_LIVE = {
+  // AUTH_LOGIN_EMAILVERIFY : "${url}/auth-service/auth/emailVerify/",
+  // AUTH_SIGNUP : "${url}/auth-service/auth/signup",
+
+  //------------------------------------------------------------
+  AUTH_SIGNUP : `${url}/cob/register`  ,
+  AUTH_LOGIN : `${url}/cob/loginapi`,
+  //  AUTH_LOGIN : "${url}/cob/loginapi",
   
+
+  // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
+  AUTH_CLIENT_CREATE : `${url}/cob/createprofile`,
+  AUTH_GET_EMAIL_TO_SEND_OTP : `${url}/cob/auth-service/account/forgot-password`,
+  AUTH_VERIFY_OTP_ON_FWD : `${url}/cob/auth-service/account/verify-otp`,
+  AUTH_CREATE_NEW_PASSWORD : `${url}/cob/auth-service/account/create-password`,
+  AUTH_CHANGE_PASSWORD : `${url}/cob/auth-service/account/change-password`,
   
   /** Email Verify for new register users **/
-  // EMAIL_VERIFY : "https://cobapi.sabpaisa.in/auth-service/auth/emailVerify/",
-  EMAIL_VERIFY : "https://cobapi.sabpaisa.in/cob/emailverify/",
-
+  // EMAIL_VERIFY : "${url}/auth-service/auth/emailVerify/",
+  EMAIL_VERIFY : `${url}/cob/emailverify/`,
 
 
   
@@ -88,18 +101,28 @@ const API_LIVE = {
   /**Kyc DocumentsUploads */
   DocumentsUpload:"http://13.126.165.212:8000/kyc/document-type/",                      //get APi
   Upload_Merchant_document:"http://13.126.165.212:8000/kyc/upload-merchant-document/", //post APi
+
+  ///////////Business overview//////////////
   Buisness_overview:"http://13.126.165.212:8000/kyc/get-all-business-type/",
+  Buisness_category:"http://13.126.165.212:8000/kyc/get-all-business-category",
   Platform_type:"http://13.126.165.212:8000/kyc/get-all-platform-type/",
   Collection_frequency:"http://13.126.165.212:8000/kyc/get-all-collection-frequency/",
  Get_ALL_Collection_Type :"http://13.126.165.212:8000/kyc/get-all-collection-type",
  save_Business_Info:"http://13.126.165.212:8000/kyc/save-business-info/",
- Buisness_overview_state:"http://13.126.165.212:8000/kyc/get-all-lookup_state/"
- 
 
+ //////////////////////Business Details////////////////
+ Buisness_overview_state:"http://13.126.165.212:8000/kyc/get-all-lookup-state/",
+
+ ////PUTsave merchant info///
+ save_merchant_info:"http://13.126.165.212:8000/kyc/save-merchant-info/",
+
+
+
+    
 }
 
 const API_URL =  API_LIVE
-export default API_URL; 
+export default API_URL;
 
 export const TIMEOUT = 1200;  // 1200 seconds = 20 minutes 
 
