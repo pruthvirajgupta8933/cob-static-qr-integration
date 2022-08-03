@@ -55,7 +55,7 @@ function BusinessDetails() {
 
 
   useEffect(() => {
-    axios.get(API_URL.Buisness_overview_state).then((resp) => {
+    axios.get(API_URL.Business_overview_state).then((resp) => {
       const data = convertToFormikSelectJson('stateId', 'stateName',resp.data);
       //  console.log(resp, "my all dattaaa")
 
