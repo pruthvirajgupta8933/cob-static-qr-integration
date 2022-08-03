@@ -268,11 +268,11 @@ function BusinessDetails() {
 
                   
                     <div className="form-group col-md-4 d-flex">
-                      <FormikController
+                      {/* <FormikController
                         control="checkbox"
                         name="checkBoxChoice"
                         options={choices}
-                        />
+                        /> */}
 
                       <FormikController
                           control="textArea"

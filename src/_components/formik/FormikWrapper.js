@@ -68,7 +68,6 @@ function FormikWrapper() {
             name="checkBoxChoice"
             options={choices}
           />
-          {console.log(formik)}
           <FormikController
             control="file"
             label="select your file"
