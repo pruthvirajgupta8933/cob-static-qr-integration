@@ -19,7 +19,7 @@ function BusinessOverview() {
   const [collection, setCollection] = useState([]);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  const { clientCode } = clientMerchantDetailsList[0];
+  // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
   const Buisnesscategory = [
@@ -168,7 +168,6 @@ function BusinessOverview() {
       form_build: values.form_build,
       ticket_size: values.ticket_size,
       login_id: loginId,
-      client_code: clientCode,
     });
 
     // console.log(values, "form data");

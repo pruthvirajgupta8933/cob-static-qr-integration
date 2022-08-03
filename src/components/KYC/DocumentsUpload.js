@@ -15,7 +15,7 @@ function DocumentsUpload() {
   const [fieldValue, setFieldValue] = useState(null);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  const { clientCode } = clientMerchantDetailsList[0];
+  // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
   const initialValues = {
     docType: "",
@@ -40,7 +40,7 @@ function DocumentsUpload() {
   const onSubmit = values => {
     const bodyFormData = new FormData();
     bodyFormData.append('files', fieldValue);
-    bodyFormData.append("client_code", [clientCode]);
+    // bodyFormData.append("client_code", [clientCode]);
     bodyFormData.append('login_id', loginId);
     bodyFormData.append('type', values.docType);
     axios({

@@ -18,7 +18,6 @@ function ContactInfo() {
   const { user } = useSelector((state) => state.auth);
   // console.log(user, "<<<<<=========")
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
   const [showOtpVerifyModalEmail, setShowOtpVerifyModalEmail] = useState(false);
@@ -89,11 +88,11 @@ function ContactInfo() {
     try {
       const resp = await axios.put(API_URL.Save_General_Info, {
         login_id: loginId,
-        client_code: clientCode,
         name: values.name,
         contact_number: values.contact_number,
         email_id: values.email_id,
         contact_designation: values.contact_designation,
+        modified_by: loginId,
       });
       console.log("Hello ===>", resp.data);
       toast.success(resp.data.message);
@@ -110,7 +109,7 @@ function ContactInfo() {
     setShowOtpVerifyModalEmail(true)  
     dispatch(
       otpForContactInfo({
-        email: "harris.fazal@sabpaisa.in",
+        email: "abhishek.verma@sabpaisa.in",
         otp_type: "email",
         otp_for: "kyc"
       })
@@ -166,7 +165,7 @@ function ContactInfo() {
     setShowOtpVerifyModalPhone(true)   
     dispatch(
       otpForContactInfo({
-        mobile_number: "9717506705",
+        mobile_number: "8383912770",
         otp_type: "phone",
         otp_for: "kyc"
       })
@@ -228,7 +227,7 @@ function ContactInfo() {
       >
         {(formik) => (
           <Form>
-            {/* {console.log(formik.errors?.isMobileVerified)} */}
+            {console.log(formik)}
             <div className="form-row">
               <div className="form-group col-md-4">
                 <FormikController
@@ -242,12 +241,12 @@ function ContactInfo() {
                 <button
                   className="btn btn-primary"
                   type="submit"
-                  class="btn btn-primary btn-sm"
+                  class="btn btn-primary"
                   data-toggle="modal"
                   data-target="#forEmail"
                   onClick={handleToSendOTPForVerificationEmail}
                 >
-                  Send OTP To Verify
+                  Send OTP
                 </button>
                 {/*  Modal Popup for Otp Verification Email*/}
 
@@ -349,7 +348,7 @@ function ContactInfo() {
                   data-target="#forPhone"
                   onClick= {handleToSendOTPForVerificationPhone}
                 >
-                  Send OTP To Verify
+                  Send OTP
                 </button>
 
   {/*  Modal Popup for Otp Verification */}
@@ -459,7 +458,7 @@ function ContactInfo() {
                 />
               </div>
             </div>
-            <div class="col-md-9 text-center">
+            <div class="col-md-9 p-0">
               <button className="btn btn-primary" type="submit">
                 Save
               </button>
