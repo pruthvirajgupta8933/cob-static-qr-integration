@@ -34,7 +34,7 @@ const KycAuth = {
       });
       return response.data;
     }
-  );
+  ); 
 
 
     //---------VERIFICATION OTP ------------------------
