@@ -120,7 +120,25 @@ const API_LIVE = {
   Get_ALL_Collection_Type: `${kyc_url}/kyc/get-all-collection-type`,
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup_state/`,
-  Business_Category : `${kyc_url}/kyc/get-all-business-category/`
+  Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
+  
+
+    /** Contact Information */
+    Save_General_Info:"http://13.126.165.212:8000/kyc/save-general-info/",
+
+    //==>For Verfifying Contact Info Ist Phase(Send OTP and Verify OTP)
+    Send_OTP:"http://13.126.165.212:8000/kyc/send-otp/",
+    //==>2nd Phase
+    Verify_OTP:"http://13.126.165.212:8000/kyc/verify-otp/",
+
+
+    /** Bank Details One OF KYC TAB  */
+
+    Save_Settlement_Info: "http://13.126.165.212:8000/kyc/save-settlement-info/",
+
+    //Get All Bnak Names in Kyc Bank Details Dropdown Tab
+    GET_ALL_BANK_NAMES: "http://13.126.165.212:8000/kyc/get-all-bank-name/",
+
 };
 
 const API_URL = API_LIVE;
