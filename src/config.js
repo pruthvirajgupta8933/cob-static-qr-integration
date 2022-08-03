@@ -1,15 +1,14 @@
-const env = "staging"
-let url = "";
 
-<<<<<<< HEAD
-if(env == "staging") {
-=======
-if(env === "staging") {
->>>>>>> phase_1
-  url ="http://13.126.165.212:5000"
-}
-else  {
-  url = "https://cobapi.sabpaisa.-in"
+const env = "staging";
+let url,kyc_url = "";
+
+
+if (env === "staging") {
+  url = "http://13.126.165.212:5000";
+  kyc_url = "http://13.126.165.212:8000";
+} else {
+  url = "https://cobapi.sabpaisa.in";
+  kyc_url = "https://kycprocess.sabpaisa.in";
 }
 // const stagingUrl = "${url}"
 // const prodUrl = "https://cobapi.sabpaisa.-in"
@@ -100,31 +99,16 @@ const API_LIVE = {
   /** ViewTxnEnqMultiParam **/
   ViewTxnEnqMultiParam : "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam",
 
-<<<<<<< HEAD
   /**Kyc DocumentsUploads */
-  DocumentsUpload:"http://13.126.165.212:8000/kyc/document-type/",                      //get APi
-  Upload_Merchant_document:"http://13.126.165.212:8000/kyc/upload-merchant-document/", //post APi
-
-  ///////////Business overview//////////////
-  Buisness_overview:"http://13.126.165.212:8000/kyc/get-all-business-type/",
-  Buisness_category:"http://13.126.165.212:8000/kyc/get-all-business-category",
-  Platform_type:"http://13.126.165.212:8000/kyc/get-all-platform-type/",
-  Collection_frequency:"http://13.126.165.212:8000/kyc/get-all-collection-frequency/",
- Get_ALL_Collection_Type :"http://13.126.165.212:8000/kyc/get-all-collection-type",
- save_Business_Info:"http://13.126.165.212:8000/kyc/save-business-info/",
-
- //////////////////////Business Details////////////////
- Buisness_overview_state:"http://13.126.165.212:8000/kyc/get-all-lookup-state/",
-
- ////PUTsave merchant info///
- save_merchant_info:"http://13.126.165.212:8000/kyc/save-merchant-info/",
-
-
-
-=======
-
->>>>>>> phase_1
-    
+  DocumentsUpload: `{kyc_url}/kyc/document-type/`, //get APi
+  Upload_Merchant_document: `{url}/kyc/upload-merchant-document/`, //post APi
+  Business_type: `${kyc_url}/kyc/get-all-business-type/`,
+  Platform_type: `${kyc_url}/kyc/get-all-platform-type/`,
+  Collection_frequency: `${kyc_url}/kyc/get-all-collection-frequency/`,
+  Get_ALL_Collection_Type: `${kyc_url}/kyc/get-all-collection-type`,
+  save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
+  Business_overview_state: `${kyc_url}/kyc/get-all-lookup_state/`,
+  Business_Category : `${kyc_url}/kyc/get-all-business-category/`    
 }
 
 const API_URL =  API_LIVE
