@@ -166,7 +166,7 @@ function ContactInfo() {
     setShowOtpVerifyModalPhone(true)   
     dispatch(
       otpForContactInfo({
-        phone: "9717506705",
+        mobile_number: "9717506705",
         otp_type: "phone",
         otp_for: "kyc"
       })
