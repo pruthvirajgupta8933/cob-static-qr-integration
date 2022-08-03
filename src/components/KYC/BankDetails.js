@@ -60,7 +60,8 @@ function BankDetails() {
       account_type: values.account_type,
       branch: values.branch,
       login_id:loginId ,
-      client_code:clientCode
+      // client_code:clientCode
+       modified_by:"270"
     });
 
     console.log(values,"form data")

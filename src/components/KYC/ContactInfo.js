@@ -81,6 +81,8 @@ function ContactInfo() {
     // isMobileVerified: Yup.string().required("You need to verify Your Phone"),
   });
 
+
+
   const handleSubmitContact = async (values) => {
 
 
@@ -89,7 +91,7 @@ function ContactInfo() {
     try {
       const resp = await axios.put(API_URL.Save_General_Info, {
         login_id: loginId,
-        client_code: clientCode,
+        modified_by:"270",
         name: values.name,
         contact_number: values.contact_number,
         email_id: values.email_id,
@@ -250,15 +252,14 @@ function ContactInfo() {
                   Send OTP To Verify
                 </button>
                 {/*  Modal Popup for Otp Verification Email*/}
-
-                { showOtpVerifyModalEmail ?
                 <div
-                  className="modal fade"
+                className="modal fade show"
                   id="forEmail"
                   tabIndex="-1"
                   role="dialog"
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
+                  style={{display: showOtpVerifyModalEmail ? "block" : "none"}}
                 >
                   <div className="modal-dialog" role="document">
                     <div className="modal-content">
@@ -325,7 +326,7 @@ function ContactInfo() {
                     </div>
                   </div>
                 </div>
-                 : null }
+               
               </div>
 
              
@@ -354,15 +355,15 @@ function ContactInfo() {
 
   {/*  Modal Popup for Otp Verification */}
 
-
-  { showOtpVerifyModalPhone ?
+ 
                   <div
-                  className="modal fade"
+                  className="modal fade show"
                   id="forPhone"
                   tabIndex="-1"
                   role="dialog"
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
+                  style={{display: showOtpVerifyModalPhone ? "block" : "none"}}
                 >
                   <div className="modal-dialog" role="document">
                     <div className="modal-content">
@@ -428,7 +429,7 @@ function ContactInfo() {
                     </div>
                   </div>
                 </div>
-                 : null }
+                 
               </div>
               </div>
 
