@@ -23,7 +23,8 @@ function BankDetails() {
   const initialValues = {
     account_holder_name: "",
     account_number: "",
-    ifsc_code: "  ",
+    confirm_account_number:"",
+    ifsc_code: "",
     bank_id: "",
     account_type: "",
     branch: "",
@@ -31,9 +32,11 @@ function BankDetails() {
   const validationSchema = Yup.object({
     account_holder_name: Yup.string().required("Required"),
     account_number: Yup.string().required("Required"),
+    confirm_account_number:Yup.string().oneOf([Yup.ref('account_number'), null], 'Account Number  must match').required("Confirm Account Number Required"),
     ifsc_code: Yup.string().required("Required"),
     account_type: Yup.string().required("Required"),
     branch: Yup.string().required("Required"),
+    bank_id:Yup.string().required("Required"),
   })
 
 
@@ -159,8 +162,8 @@ function BankDetails() {
                       <FormikController
                           control="input"
                           type="text"
-                          label="Re-Enter Account Number  *"
-                          name="account_number"
+                          label="Confirm Account Number  *"
+                          name="confirm_account_number"
                           placeholder="Re-Enter Account Number"
                           className="form-control"
                         />
