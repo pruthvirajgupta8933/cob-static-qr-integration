@@ -46,11 +46,10 @@ function TransactionHistory() {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
-
   useEffect(() => {
-    console.log("showData",showData.length)
-    console.log("updateTxnList",updateTxnList.length)
-    console.log((buttonClicked && dataFound))
+    // console.log("showData",showData.length)
+    // console.log("updateTxnList",updateTxnList.length)
+    // console.log((buttonClicked && dataFound))
 
     setTimeout(() => {
 

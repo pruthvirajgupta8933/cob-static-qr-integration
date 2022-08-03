@@ -1,7 +1,11 @@
 const env = "staging"
 let url = "";
 
+<<<<<<< HEAD
 if(env == "staging") {
+=======
+if(env === "staging") {
+>>>>>>> phase_1
   url ="http://13.126.165.212:5000"
 }
 else  {
@@ -95,9 +99,8 @@ const API_LIVE = {
 
   /** ViewTxnEnqMultiParam **/
   ViewTxnEnqMultiParam : "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam",
-  /** SettlementReport * */
-  SettlementReport: "https://reportapi.sabpaisa.in/REST/GetSettledTxnHistory",
 
+<<<<<<< HEAD
   /**Kyc DocumentsUploads */
   DocumentsUpload:"http://13.126.165.212:8000/kyc/document-type/",                      //get APi
   Upload_Merchant_document:"http://13.126.165.212:8000/kyc/upload-merchant-document/", //post APi
@@ -118,6 +121,9 @@ const API_LIVE = {
 
 
 
+=======
+
+>>>>>>> phase_1
     
 }
 

@@ -3,5 +3,6 @@
     "cob-staging": "cob-staging",
     "default": "cob-staging"
   },
-  "targets": {}
+  "targets": {},
+  "etags": {}
 }

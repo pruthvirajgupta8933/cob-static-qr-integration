@@ -12,6 +12,7 @@ import { clearTransactionHistory, fetchTransactionHistorySlice } from '../../../
 import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
 import API_URL from '../../../config';
 import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
+import { convertToFormikSelectJson } from '../../../_components/reuseable_components/convertToFormikSelectJson';
 
 
 
@@ -24,11 +25,11 @@ function TransactionHistoryDownload() {
   const {isLoadingTxnHistory} = dashboard
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
   const [paymentModeList,SetPaymentModeList] = useState([]);
-  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
-  const [fromDate,SetFromDate] = useState("");
-  const [toDate,SetToDate] = useState("");
-  const [txnStatus,SetTxnStatus] = useState("All");
-  const [payModeId,SetPayModeId] = useState("All")
+  // const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
+  const [startDate,setStartDate] = useState("");
+  const [toDate,setToDate] = useState("");
+  // const [txnStatus,SetTxnStatus] = useState("All");
+  // const [payModeId,SetPayModeId] = useState("All")
   const [txnList,SetTxnList] = useState([])
   // const [filterList,SetFilterList] = useState([])
   const [searchText,SetSearchText] = useState('')
@@ -50,21 +51,41 @@ function TransactionHistoryDownload() {
   }
 
 
-  useEffect(() => {
-    console.log("showData",showData.length)
-    console.log("updateTxnList",updateTxnList.length)
-    console.log((buttonClicked && dataFound))
 
-    setTimeout(() => {
+  const initialValues = {
+    clientCode:"",
+    fromDate:"",
+    endDate:"",
+    transaction_status:"All",
+    payment_mode:"All"
+  }
 
-      if(showData.length < 1 &&  (updateTxnList.length > 0 || updateTxnList.length===0)){
-        setDataFound(true)
-      }else{
-        setDataFound(false)
-      }  
-    });
+  const validationSchema = Yup.object({
+    clientCode : Yup.string().required("Required"),
+    fromDate: Yup.date().required("Required"),
+    endDate: Yup.date().min(
+      Yup.ref('fromDate'),
+      "End date can't be before Start date"
+    ).required("Required"),
+    transaction_status : Yup.string().required("Required"),
+    payment_mode : Yup.string().required("Required"),
+
+  })
+
+
+
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+
+  //     if(showData.length < 1 &&  (updateTxnList.length > 0 || updateTxnList.length===0)){
+  //       setDataFound(true)
+  //     }else{
+  //       setDataFound(false)
+  //     }  
+  //   });
     
-  }, [showData, updateTxnList])
+  // }, [showData, updateTxnList])
   
   // function dayDiff(dateFrom, dateTo) {
   //   const date1 = new Date(dateFrom);
@@ -76,20 +97,6 @@ function TransactionHistoryDownload() {
   //  }
    
 
-  const getInputValue=(label,val)=>{
-      if(label==='fromDate'){
-        SetFromDate(val);
-        // console.log(val);
-      }else if(label==='toDate'){
-        SetToDate(val);
-      }else if(label==='clientCode'){
-        SetClientCode(val);
-      }else if(label==='txnStatus'){
-        SetTxnStatus(val);
-      }else if(label==='payMode'){
-        SetPayModeId(val);
-      }
-  }
 
   const getPaymentStatusList = async () => {  
     await axios.get(API_URL.GET_PAYMENT_STATUS_LIST)  
@@ -114,19 +121,78 @@ function TransactionHistoryDownload() {
   }  
 
 
+  let isExtraDataRequired  = false;
+  let extraDataObj = {}
+  if(user.roleId===3 || user.roleId===13){
+    isExtraDataRequired = true
+    extraDataObj = { key:"All", value:"All"}
+  }
+  const clientCodeOption = convertToFormikSelectJson("clientCode","clientName",clientMerchantDetailsList, extraDataObj, isExtraDataRequired)
+  
+  const tempPayStatus = [{key:"All",value:"All"}]
+  paymentStatusList.map(item => {
+                                if(item!=='INITIATED'){
+                                  tempPayStatus.push({key:item,value:item})
+                                }
+                            })
+
+
+  const tempPaymode = [{key:"All",value:"All"}]
+  paymentModeList.map(item => {
+      tempPaymode.push({key:item.paymodeId,value:item.paymodeName})
+})
+  
+
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
   }
 
 
-const checkValidation = ()=>{
+
+  const submitHandler = values =>{
+    // console.log(values)
+    const {clientCode, fromDate, endDate, transaction_status, payment_mode} = values
+    const dateRangeValid = checkValidation(fromDate, endDate);
+
+    if(dateRangeValid){ 
+      // isLoading(true);
+      // isButtonClicked(true);
+      let strClientCode, clientCodeArrLength ="";
+        if(clientCode==="All"){
+        const allClientCode = []
+        clientMerchantDetailsList?.map((item)=>{
+          allClientCode.push(item.clientCode)
+        })
+        clientCodeArrLength = allClientCode.length.toString();
+        strClientCode = allClientCode.join().toString();
+      }else{
+        strClientCode = clientCode;
+        clientCodeArrLength = "1"
+      }
+
+      let paramData = {
+        clientCode:strClientCode,
+        paymentStatus:transaction_status,
+        paymentMode:payment_mode,
+        fromDate:fromDate,
+        endDate:endDate,
+        length: "0",
+        page: "0",
+        NoOfClient: clientCodeArrLength
+      } 
+  console.log(paramData)
+      dispatch(fetchTransactionHistorySlice(paramData))
+}
+
+
+  }
+
+const checkValidation = (fromDate="",toDate="")=>{
     var flag = true
-    if(fromDate==='' || toDate===''){
+    if(fromDate===0 || toDate===''){
         alert("Please select the date.");
         flag = false;
     }else if(fromDate!=='' || toDate!==''){
-      //check date range
-      // const days =  dayDiff(fromDate,toDate);
       const date1 = new Date(fromDate);
       const date2 = new Date(toDate);
       const diffTime = Math.abs(date2 - date1);
@@ -145,40 +211,40 @@ const checkValidation = ()=>{
 }
 
 
-  const txnHistory =  () => {  
-    var isValid = checkValidation();
-          if(isValid){ 
-            // isLoading(true);
-            isButtonClicked(true);
-            let strClientCode, clientCodeArrLength ="";
-              if(clientCode==="All"){
-              const allClientCode = []
-              clientMerchantDetailsList?.map((item)=>{
-                allClientCode.push(item.clientCode)
-              })
-              clientCodeArrLength = allClientCode.length.toString();
-              strClientCode = allClientCode.join().toString();
-            }else{
-              strClientCode = clientCode;
-              clientCodeArrLength = "1"
-            }
+  // const txnHistory =  () => {  
+  //   var isValid = checkValidation();
+  //         if(isValid){ 
+  //           // isLoading(true);
+  //           isButtonClicked(true);
+  //           let strClientCode, clientCodeArrLength ="";
+  //             if(clientCode==="All"){
+  //             const allClientCode = []
+  //             clientMerchantDetailsList?.map((item)=>{
+  //               allClientCode.push(item.clientCode)
+  //             })
+  //             clientCodeArrLength = allClientCode.length.toString();
+  //             strClientCode = allClientCode.join().toString();
+  //           }else{
+  //             strClientCode = clientCode;
+  //             clientCodeArrLength = "1"
+  //           }
 
-            let paramData = {
-              clientCode:strClientCode,
-              paymentStatus:txnStatus,
-              paymentMode:payModeId,
-              fromDate:fromDate,
-              endDate:toDate,
-              length: "0",
-              page: "0",
-              NoOfClient: clientCodeArrLength
-            } 
+  //           let paramData = {
+  //             clientCode:strClientCode,
+  //             paymentStatus:txnStatus,
+  //             paymentMode:payModeId,
+  //             fromDate:fromDate,
+  //             endDate:toDate,
+  //             length: "0",
+  //             page: "0",
+  //             NoOfClient: clientCodeArrLength
+  //           } 
         
-            dispatch(fetchTransactionHistorySlice(paramData))
-      }else{
-        console.log('API not trigger!');
-      }
-  } 
+  //           dispatch(fetchTransactionHistorySlice(paramData))
+  //     }else{
+  //       console.log('API not trigger!');
+  //     }
+  // } 
   
 
 
@@ -303,6 +369,9 @@ const pages = _.range(1, pageCount + 1)
   const finalDate = year +'-'+month+'-'+day;
 
 
+  console.log(startDate)
+  
+
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">
@@ -315,34 +384,37 @@ const pages = _.range(1, pageCount + 1)
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid">
             <Formik
-                // initialValues={initialValues}
-                // validationSchema={validationSchema}
-                onSubmit={(values)=>console.log(values)}
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={submitHandler}
+                
               >
           {formik => (
             <Form>
             <div className="form-row">
-              <div className="form-group col-md-4">
+                <div className="form-group col-md-2 mx-3">
                         <FormikController
                             control="select"                          
                             label="Client Code"
                             name="clientCode"
                             className="form-control rounded-0"
-                            options={[{}]}
+                            options={clientCodeOption}
                           />
                 </div>
 
-                <div className="form-group col-md-4">
+                <div className="form-group col-md-2 mx-3">
                         <FormikController
                             control="input"
                             type="date"                          
                             label="From Date"
                             name="fromDate"
                             className="form-control rounded-0"
+                            // value={startDate}
+                            // onChange={(e)=>setStartDate(e.target.value)}
                           />
                 </div>
 
-                <div className="form-group col-md-4">
+                <div className="form-group col-md-2 mx-3">
                         <FormikController
                             control="input"
                             type="date"                          
@@ -351,9 +423,31 @@ const pages = _.range(1, pageCount + 1)
                             className="form-control rounded-0"
                           />
                 </div>
+
+                <div className="form-group col-md-2 mx-3">
+                        <FormikController
+                            control="select"                          
+                            label="Transactions Status"
+                            name="transaction_status"
+                            className="form-control rounded-0"
+                            options={tempPayStatus}
+                          />
+                </div>
+
+                <div className="form-group col-md-2 mx-3">
+                        <FormikController
+                            control="select"                          
+                            label="Payment Mode"
+                            name="payment_mode"
+                            className="form-control rounded-0"
+                            options={tempPaymode}
+                          />
+                </div>
+
+
             </div>
             <div className="form-row" >
-                <div className="form-group col-md-1">
+                <div className="form-group col-md-1 ml-3">
                   <button className="btn btn-sm btn-primary" type="submit">Search </button>
                 </div>
                 {txnList?.length > 0 ? 
