@@ -21,11 +21,16 @@ function SettlementReport() {
   
     const {user} = useSelector((state)=>state.auth);
     let clientCode='';
-    if (user && user.clientMerchantDetailsList === null) {
+    if (user && user?.clientMerchantDetailsList) {
       history.push("/dashboard/profile");
     } else {
       var clientMerchantDetailsList = user.clientMerchantDetailsList;
-      clientCode = clientMerchantDetailsList[0].clientCode;
+      // console.log(typeof(user.clientMerchantDetailsList))
+      if(user.clientMerchantDetailsList!==undefined){
+        // console.log(clientMerchantDetailsList)
+        clientCode = clientMerchantDetailsList[0].clientCode;
+      }
+      
     }
 
     

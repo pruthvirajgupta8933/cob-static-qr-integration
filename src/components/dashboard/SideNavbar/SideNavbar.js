@@ -50,7 +50,10 @@ function SideNavbar() {
               <div style={{position: 'absolute', inset: '0px', overflow: 'scroll', marginRight: '-3px', marginBottom: '-3px'}}>
                 <ul className="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" role="menu">
                   <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
-                      <Link to={`${url}`} className='txt-white'><i className="fa fa-home" aria-hidden="true" /> Home</Link>
+                      <Link to={`${url}`} className='txt-white'><i className="fa fa-home" aria-hidden="true" /> <span>Home</span></Link>
+                  </li>
+                  <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
+                      <Link to={`${url}/kyc`} className='txt-white'><i className="fa fa-file-o" aria-hidden="true" /> <span>KYC</span><span class="new-tab">new</span></Link>
                   </li>
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open" role="menuitem">
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-owns="settlement$Menu" aria-haspopup="true" style={{paddingLeft: '24px'}}><span className="sidebar-menu-divider">Your

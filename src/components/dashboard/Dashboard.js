@@ -114,6 +114,10 @@ function Dashboard() {
               <Route exact path={`${path}/transaction-history-new`} >
                 <TransactionHistoryDownload />
               </Route>
+
+              <Route exact path={`${path}/kyc`} >
+                <KycForm />
+              </Route>
               
                 </Switch>
         </section>

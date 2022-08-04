@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
@@ -18,7 +18,7 @@ function ContactInfo() {
   const { user } = useSelector((state) => state.auth);
   // console.log(user, "<<<<<=========")
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  const { clientCode } = clientMerchantDetailsList[0];
+  // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
   const [showOtpVerifyModalEmail, setShowOtpVerifyModalEmail] = useState(false);
@@ -89,7 +89,6 @@ function ContactInfo() {
     try {
       const resp = await axios.put(API_URL.Save_General_Info, {
         login_id: loginId,
-        client_code: clientCode,
         name: values.name,
         contact_number: values.contact_number,
         email_id: values.email_id,
@@ -212,11 +211,6 @@ function ContactInfo() {
   }
 
 //-------------------------------------------------------------------------------------------------------
-
-
-
-
-
 
 
   return (

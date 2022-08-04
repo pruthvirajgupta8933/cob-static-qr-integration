@@ -60,6 +60,9 @@ function MobileNavbar() {
                     <li className="nav-item"> 
                         <Link to={`${url}`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-home" aria-hidden="true" /> &nbsp;Home</Link>
                     </li> 
+                    <li className="nav-item"> 
+                        <Link to={`${url}/kyc`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-file-o" aria-hidden="true" /> <span>&nbsp;KYC</span><span className="new-tab">new</span></Link>
+                    </li> 
                     
                     <li className="nav-item"> 
                         <Link to={`${url}/transaction-history`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"> <i className="fa fa-calendar" aria-hidden="true" /> &nbsp;  Transaction History</Link>
