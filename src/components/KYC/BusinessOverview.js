@@ -179,7 +179,7 @@ function BusinessOverview() {
       ticket_size: values.ticket_size,
       modified_by:270,
       login_id: loginId,
-      client_code: clientCode,
+      // client_code: clientCode,
     });
 
     // console.log(values, "form data");

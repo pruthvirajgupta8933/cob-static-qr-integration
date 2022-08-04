@@ -113,7 +113,7 @@ const API_LIVE = {
 
   /**Kyc DocumentsUploads */
   DocumentsUpload: `${kyc_url}/kyc/document-type/`, //get APi
-  Upload_Merchant_document: `${kyc_url}/upload-merchant-document/`, //post APi
+  Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
   Business_type: `${kyc_url}/kyc/get-all-business-type/`,
   Platform_type: `${kyc_url}/kyc/get-all-platform-type/`,
   Collection_frequency: `${kyc_url}/kyc/get-all-collection-frequency/`,
