@@ -6,16 +6,15 @@ import axios from "axios";
 
 const KycAuth = {
     OtpResponse: { status: "", verification_token: ""},
-
-    OtpVerification: {
-        message: "",
-        status: false 
+    OtpVerificationResponse: {         
+        status: false,
+        message: ""
        }   
   };
 
 
 
-  //--------------For Seding the Contact Otp ---------------------
+  //--------------For Sending the Contact Otp ---------------------
   export const otpForContactInfo = createAsyncThunk(
     "OtpForContact/otpContactInfo",
     async (requestParam) => {
@@ -32,6 +31,7 @@ const KycAuth = {
       .catch((error) => {
         return error.response;
       });
+      // console.log(response)
       return response.data;
     }
   );
@@ -42,25 +42,21 @@ const KycAuth = {
       "OtpVerification/otpVerificationForContact",
       async (requestParam) => {
           // console.log("requestParam",requestParam)
-        const response = axios.post(
+        const response = await axios.post(
           `${API_URL.Verify_OTP}`,
           requestParam,
-          {
-            headers: {
-              // Authorization: ""
-          },
-          }
         ).catch((error) => {
           return error.response;
         });
-        // console.log("responsepppppppp",response);
+        // console.log("res",response);
         return response.data;
       }
     );
+  
 
 
     const KycOtpSlice = createSlice({
-      name: "KycOtpSlice",
+      name: "KycAuth",
       initialState: KycAuth,
       reducers: {},
       extraReducers: {
@@ -83,7 +79,7 @@ const KycAuth = {
         },
         [otpVerificationForContact.fulfilled]: (state, action) => {
           state.OtpVerificationResponse = action.payload;
-          console.log(action.payload,"==>")
+          console.log(action,"==>")
         },
         [otpVerificationForContact.rejected]: (state, action) => {
           state.status = "failed";
