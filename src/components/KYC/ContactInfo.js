@@ -70,23 +70,19 @@ function ContactInfo() {
   });
 
   const handleSubmitContact = async (values) => {
-
-
-
-    console.log("err", values)
+    // console.log("err", values)
     try {
       const resp = await axios.put(API_URL.Save_General_Info, {
         login_id: loginId,
-        client_code: clientCode,
         name: values.name,
         contact_number: values.contact_number,
         email_id: values.email_id,
         contact_designation: values.contact_designation,
       });
-      console.log("Hello ===>", resp.data);
+      // console.log("Hello ===>", resp.data);
       toast.success(resp.data.message);
     } catch (error) {
-      console.log(error, "Error Detected!!");
+      toast.error(error.data.message)
     }
   };
 
@@ -106,7 +102,7 @@ function ContactInfo() {
     ).then((res) => {
   
       if (res.meta.requestStatus === "fulfilled" && res.payload.status === true) {
-        console.log("This is the response", res);
+        // console.log("This is the response", res);
         toast.success("OTP Sent to the Registered Mobile Number ");
          setShowOtpVerifyModalEmail(true)   
       } else {

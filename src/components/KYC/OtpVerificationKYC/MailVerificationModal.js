@@ -17,8 +17,8 @@ const MailVerificationModal = ({show,check, mailValidate}) => {
   
 
   
-  console.log(show,"<=====")
-  console.log(mailValidate,"<=====")
+  // console.log(show,"<=====")
+  // console.log(mailValidate,"<=====")
 
   const handleChangeForOtp = (otp) => {
     const regex = /^[0-9]*$/;
@@ -38,18 +38,19 @@ const MailVerificationModal = ({show,check, mailValidate}) => {
     ).then((res) => {
       // console.log("This is the response", res);
       if (res.meta.requestStatus === "fulfilled") {
-        console.log("This is the response", res);
-        toast.success("Your Email is Verified");
+        if (res.payload.status === true) {
+         toast.success(res.payload.message)
          check(true)
          show(false)
          mailValidate(true)
+        } else if (res.payload.status === false) {
+          toast.error(res.payload.message)
+          show(true)
+          check(false)
+          mailValidate(false)              
+        }
       } else {
-       toast.error("Something went wrong! Please write the correct OTP.");
-       show(true)
-       check(false)
-       mailValidate(false)
-       //  toastConfig.infoToast(res.payload.msg);
-       
+          
       }
     });
     

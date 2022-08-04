@@ -37,18 +37,19 @@ const PhoneVerficationModal = ({show,check,phoneValidate}) => {
     ).then((res) => {
       // console.log("This is the response", res);
       if (res.meta.requestStatus === "fulfilled") {
-        toast.success("Your Phone is Verified");
-        console.log("=====>",res)
-        check(true) 
-        show(false)
-        phoneValidate(true)   
+        if (res.payload.status === true) {
+         toast.success(res.payload.message)
+         check(true)
+         show(false)
+         phoneValidate(true)
+        } else if (res.payload.status === false) {
+          toast.error(res.payload.message)
+          show(true)
+          check(false)
+          phoneValidate(false)              
+        }
       } else {
-       toast.error("Something went wrong! Please write the correct OTP.");
-      //  console.log(res)
-      phoneValidate(false)
-       show(true)
-       //  toastConfig.infoToast(res.payload.msg);
-       
+          
       }
     });
 
