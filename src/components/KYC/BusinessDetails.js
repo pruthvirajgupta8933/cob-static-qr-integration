@@ -16,22 +16,44 @@ function BusinessDetails() {
   const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([])
+  const [gstin, setGstin] = useState("");
   const [fieldValue, setFieldValue] = useState(null);
+  const [checked, setChecked] =useState(false);
+  const [operationvalue,setOperationvalue]=useState();
 
 
-  const choices = [
-    { key: "choice a", value: "choicea" },
-    { key: "choice b", value: "choiceb" },
+
+  const choicesCheckBox = [
+    { key: "Same As Registered Address", value: "yes" }
   ]
 
   const GSTIN = [
 
     { key: "Select Option", value: "Select Option" },
-    { key: true, value: "We have a registered GSTIN" },
-    { key: false, value: "We don't have a GSTIN" },
+    { key:"True", value: "We have a registered GSTIN" },
+    { key: "False", value: "We don't have a GSTIN" },
 
   ]
+  const handleChange = (event) => {
+    setChecked(event.value);
+  };
+  const handleShowHide = (event) => {
+    const getuser = event.target.value;
+    setGstin(getuser);
 
+    // console.log(getuser, "222222222222222");
+  };
+
+  const test=(e, val)=>{
+    if(e.length>0 && e[0] === "yes"){
+      setChecked(true)
+      setOperationvalue(val)
+    } else{
+      setChecked(false)
+      setOperationvalue(null)
+    }
+    
+  }
   const initialValues = {
     company_name: "",
     company_logo: "",
@@ -45,13 +67,14 @@ function BusinessDetails() {
     state_id: "",
     registered_business_address: "",
     operational_address: "",
+    checkBoxChoice:""
   }
   const validationSchema = Yup.object({
     company_logo: Yup.mixed()
       .nullable()
       .required('Required file format PNG/JPEG/JPG'),
     company_name: Yup.string().required("Required"),
-    registerd_with_gst: Yup.boolean().required("Required"),
+    registerd_with_gst: Yup.string().required("Required"),
     gst_number: Yup.string().required("Required"),
     pan_card: Yup.string().required("Required"),
     signatory_pan: Yup.string().required("Required"),
@@ -61,6 +84,7 @@ function BusinessDetails() {
     state_id: Yup.string().required("Required"),
     registered_business_address: Yup.string().required("Required"),
     operational_address: Yup.string().required("Required"),
+    checkBoxChoice:Yup.array().required("Required"),
 
 
   })
@@ -68,17 +92,17 @@ function BusinessDetails() {
 
   useEffect(() => {
     axios.get(API_URL.Business_overview_state).then((resp) => {
-      const data = convertToFormikSelectJson('stateId', 'stateName',resp.data);
+      const data = convertToFormikSelectJson('stateId', 'stateName', resp.data);
       //  console.log(resp, "my all dattaaa")
-   setBusinessOverview(data)
- }).catch(err => console.log(err))
+      setBusinessOverview(data)
+    }).catch(err => console.log(err))
   }, [])
 
 
 
 
   const onSubmit = values => {
-    console .log(values,"appurlll")
+    console.log(API_URL.SAVE_MERCHANT_INFO, "appurlll")
     const bodyFormData = new FormData();
     bodyFormData.append('company_name', values.company_name);
     bodyFormData.append('registerd_with_gst', values.registerd_with_gst)
@@ -89,14 +113,21 @@ function BusinessDetails() {
     bodyFormData.append('pin_code', values.pin_code)
     bodyFormData.append('city_id', values.city_id)
     bodyFormData.append('state_id', values.state_id)
-    bodyFormData.append('gst_number', values.registered_business_address)
+    if(checked===true){
+      bodyFormData.append('operational_address', values.registered_business_address)
+    }else{
+      bodyFormData.append('operational_address', values.operational_address)
+    }
+    bodyFormData.append('registered_business_address', values.registered_business_address)
     bodyFormData.append('files', fieldValue);
+    bodyFormData.append('modified_by', "277");
     bodyFormData.append("client_code", [clientCode]);
     bodyFormData.append('login_id', loginId);
 
+
     axios({
       method: "put",
-      url: API_URL.save_merchant_info,
+      url: API_URL.SAVE_MERCHANT_INFO,
 
       data: bodyFormData,
       headers: { "Content-Type": "multipart/form-data" },
@@ -153,21 +184,29 @@ function BusinessDetails() {
                   control="select"
                   label="GSTIN *"
                   name="registerd_with_gst"
+                  onChange={(e) => {
+                    handleShowHide(e);
+                    formik.setFieldValue("registerd_with_gst", e.target.value)
+                  }
+
+                  }
                   className="form-control"
                   options={GSTIN}
                 />
               </div>
-              <div className="form-group col-md-4">
-                <FormikController
-                  control="input"
-                  type="text"
-                  label="Enter Gst No *"
-                  name="gst_number"
-                  placeholder="Enter Gst No"
-                  className="form-control"
-                />
+              {formik.values?.registerd_with_gst === "True" && (
+                <div className="form-group col-md-4">
+                  <FormikController
+                    control="input"
+                    type="text"
+                    label="Enter Gst No *"
+                    name="gst_number"
+                    placeholder="Enter Gst No"
+                    className="form-control"
+                  />
 
-              </div>
+                </div>
+              )}
 
 
 
@@ -240,14 +279,43 @@ function BusinessDetails() {
 
               <div className="form-group col-md-4">
                 <FormikController
-                  control="input"
-                  type="text"
+                  control="textArea"
+                  type="textArea"
                   label="Registered Address *"
                   name="registered_business_address"
-                  placeholder="Enter Your Address here"
+                  placeholder="Enter Registered Address"
                   className="form-control"
                 />
+
               </div>
+              <div className="form-group col-md-4 d-flex">
+               
+              <FormikController
+                control="checkbox"
+                name="checkBoxChoice"
+                options={choicesCheckBox}
+                // onChange={(e)=>{
+                //   // formik.setFieldValue("checkBoxChoice",e.target.value)
+                //   // formik.values.checkBoxChoice.length>0 && formik.values.checkBoxChoice[0]==="yes" && 
+                //   // formik.setFieldValue("operational_address",formik.values.registered_business_address)
+                // }}
+              />
+             {formik.handleChange("checkBoxChoice",test(formik.values.checkBoxChoice, formik.values.registered_business_address))}
+
+               <FormikController
+                  control="textArea"
+                  type="textArea"
+                  disabled={checked}
+                  label="Operational Address"
+                  name="operational_address"
+                  placeholder="Enter Operational Address"
+                  className="form-control"
+                  value={operationvalue}
+                /> 
+              
+              </div>
+
+
 
             </div>
 

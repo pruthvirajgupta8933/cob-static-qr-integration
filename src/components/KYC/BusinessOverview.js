@@ -14,6 +14,7 @@ function BusinessOverview() {
   const [data, setData] = useState([]);
   const [appUrl, setAppUrl] = useState("");
   const [notShowUrl, setnotShowUrl] = useState(false);
+  const[businessCategory,setBusinessCategory]=useState([])
   const [platform, setPlatform] = useState([]);
   const [CollectFreqency, setCollectFreqency] = useState([]);
   const [collection, setCollection] = useState([]);
@@ -22,17 +23,8 @@ function BusinessOverview() {
   const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
-  const Buisnesscategory = [
-    { key: "Select Option", value: "Select Option" },
-    { key: "1", value: "1" },
-    { key: "2", value: "2" },
-  ];
 
-  const GEtAllCollectionType = [
-    { key: "Select", value: "Select" },
-    { key: "collectionTypeId", value: "collectionTypeId" },
-    { key: "collectionTypeName", value: "collectionTypeName" },
-  ];
+
   const BuildYourForm = [
     { key: "Select", value: "Select Option" },
     { key: "yes", value: "Yes" },
@@ -40,8 +32,8 @@ function BusinessOverview() {
   ];
   const Erp = [
     { key: "Select", value: "Select Option" },
-    { key: true, value: "Yes" },
-    { key: false, value: "No" },
+    { key: "True", value: "Yes" },
+    { key: "False", value: "No" },
   ];
   const WebsiteAppUrl = [
     { key: "Select Option", value: "Select Option" },
@@ -66,16 +58,16 @@ function BusinessOverview() {
     form_build: "",
   };
   const validationSchema = Yup.object({
-    business_type: Yup.string().required("Required"),
-    business_category: Yup.string().required("Required"),
+    business_type: Yup.string().required("Select BusinessType"),
+    business_category: Yup.string().required("Select Business Category"),
     business_model: Yup.string().required("Required"),
     billing_label: Yup.string().required("Required"),
-    erp_check: Yup.boolean().required("Required"),
+    erp_check: Yup.string().required("Select Erp"),
     platform_id: Yup.string().required("Required"),
-    seletcted_website_app_url: Yup.string().required("Required"),
+    seletcted_website_app_url: Yup.string().required("Select website app Url"),
     website_app_url: Yup.string().required("Required"),
     company_website: Yup.string().required("Required"),
-    // type_of_collection: Yup.string().required("Required"),
+    //  type_of_collection: Yup.string().required("Required"),
     collection_frequency_id: Yup.string().required("Required"),
     ticket_size: Yup.string().required("Required"),
     expected_transactions: Yup.string().required("Required"),
@@ -95,6 +87,24 @@ function BusinessOverview() {
       // console.log(data);
 
         setData(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+
+  //////////////////////BusinessCategory//////////
+  useEffect(() => {
+    axios
+      .get(API_URL.Business_Category)
+      .then((resp) => {
+        const data = convertToFormikSelectJson(
+          "category_id",
+          "category_name",
+          resp.data
+        );
+      // console.log(data);
+
+      setBusinessCategory(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -160,13 +170,14 @@ function BusinessOverview() {
       business_model: values.business_model,
       billing_label: values.billing_label,
       company_website: values.company_website,
-      erp_check: true,
+      erp_check: values.erp_check,
       platform_id: values.platform_id,
       collection_type_id: "499999998888",
       collection_frequency_id: values.collection_frequency_id,
       expected_transactions: values.expected_transactions,
       form_build: values.form_build,
       ticket_size: values.ticket_size,
+      modified_by:270,
       login_id: loginId,
       client_code: clientCode,
     });
@@ -196,6 +207,7 @@ function BusinessOverview() {
       >
         {(formik) => (
           <Form>
+            {console.log(formik)}
             <div className="form-row">
               <div className="form-group col-md-4">
                 <FormikController
@@ -212,7 +224,7 @@ function BusinessOverview() {
                   control="select"
                   label="Business Category *"
                   name="business_category"
-                  options={Buisnesscategory}
+                  options={businessCategory}
                   className="form-control"
                 />
               </div>

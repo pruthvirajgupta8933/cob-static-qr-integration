@@ -112,15 +112,17 @@ const API_LIVE = {
     "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam",
 
   /**Kyc DocumentsUploads */
-  DocumentsUpload: `{kyc_url}/kyc/document-type/`, //get APi
-  Upload_Merchant_document: `{url}/kyc/upload-merchant-document/`, //post APi
+  DocumentsUpload: `${kyc_url}/kyc/document-type/`, //get APi
+  Upload_Merchant_document: `${kyc_url}/upload-merchant-document/`, //post APi
   Business_type: `${kyc_url}/kyc/get-all-business-type/`,
   Platform_type: `${kyc_url}/kyc/get-all-platform-type/`,
   Collection_frequency: `${kyc_url}/kyc/get-all-collection-frequency/`,
   Get_ALL_Collection_Type: `${kyc_url}/kyc/get-all-collection-type`,
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
-  Business_overview_state: `${kyc_url}/kyc/get-all-lookup_state/`,
-  Business_Category : `${kyc_url}/kyc/get-all-business-category/`
+  Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
+  Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
+  SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`
+ 
 };
 
 const API_URL = API_LIVE;

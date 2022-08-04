@@ -3,7 +3,6 @@ import axios from 'axios'
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
 import { toast } from 'react-toastify';
-import { Zoom } from "react-toastify";
 import { useSelector } from 'react-redux';
 import FormikController from '../../_components/formik/FormikController'
 import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson'
@@ -42,6 +41,7 @@ function DocumentsUpload() {
     bodyFormData.append('files', fieldValue);
     bodyFormData.append("client_code", [clientCode]);
     bodyFormData.append('login_id', loginId);
+    bodyFormData.append('modified_by', 270);           
     bodyFormData.append('type', values.docType);
     axios({
       method: "post",
