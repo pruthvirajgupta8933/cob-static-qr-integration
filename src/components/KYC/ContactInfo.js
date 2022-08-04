@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import {otpForContactInfo} from "../../slices/kycOtp";
 import MailVerificationModal from "./OtpVerificationKYC/MailVerificationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
+import { values } from "lodash";
 
 function ContactInfo() {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ function ContactInfo() {
   }
 
   const initialValuesForEmail = {
-     email: "",
+     email_id: "",
      otp_type: "email",
      otp_for: "kyc1"   
   }
@@ -84,12 +85,12 @@ function ContactInfo() {
 
 
   //-----------------Functionality To Send OTP Via Email Through Button ----------------------
-  const handleToSendOTPForVerificationEmail = (isMobileVerified) => {
-    // console.log(isMobileVerified,"=====>")
+  const handleToSendOTPForVerificationEmail = (values) => {
+    // console.log(values,"===>")
  
     dispatch(
       otpForContactInfo({
-        email: "harrisfazal@ymail.com",
+        email: values.email,
         otp_type: "email",
         otp_for: "kyc"
       })
@@ -100,7 +101,7 @@ function ContactInfo() {
         toast.success("OTP Sent to the Registered Mobile Number ");
          setShowOtpVerifyModalEmail(true)   
       } else {
-       toast.error("Something went wrong! Please try again for some time.");
+       toast.error(res.payload.message);
        setShowOtpVerifyModalEmail(false)
 
       
@@ -116,11 +117,11 @@ function ContactInfo() {
   //-----------------Functionality To Send OTP Via Button---------------------
 
 
-  const handleToSendOTPForVerificationPhone = () => {
+  const handleToSendOTPForVerificationPhone = (values) => {
  
     dispatch(
       otpForContactInfo({
-        mobile_number: "9717506705",
+        mobile_number: values.mobile_number,
         otp_type: "phone",
         otp_for: "kyc"
       })
@@ -132,8 +133,6 @@ function ContactInfo() {
         
       } else {
        toast.error(res.payload.message);
-       
-      
        setShowOtpVerifyModalPhone(false)
        //  toastConfig.infoToast(res.payload.msg);
        
@@ -148,9 +147,9 @@ function ContactInfo() {
 
 //After Whole Verification Process//
 
-const changeWhenVerifiedEmail = () =>{
-  targetEmail(!setTargetEmail,isCheck)
-
+const changeWhenVerifiedEmail = (isChecked) =>{
+  targetEmail(!setTargetEmail)
+  setIsChecked(isChecked)
 }
 
 const changeWhenVerifiedPhone = () =>{
@@ -169,7 +168,7 @@ const changeWhenVerifiedPhone = () =>{
         validationSchema={validationSchema}
         onSubmit={handleSubmitContact}
       >
-         {({ formik, values}) => (
+         {({ formik, setFieldValue}) => (
           <Form>
             {/* {console.log(formik.errors?.isMobileVerified)} */}
             <div className="form-row">
@@ -183,20 +182,23 @@ const changeWhenVerifiedPhone = () =>{
                   className="form-control"
                
                 />
+                
+
+                {/* --------------Send OTP Body Email------------------- */}
                 <button
                   className="btn btn-primary"
                   type="submit"
                   class="btn btn-primary btn-sm"
                   data-toggle="modal"
                   data-target="#forEmail"
+                  onChange={()=> {formik.setFieldValue("isEmailVerified",targetEmail)}}
                   onClick={handleToSendOTPForVerificationEmail}
-                  onChange={()=> {
-                    changeWhenVerifiedEmail()
-                    formik.setFieldValue("isEmailVerified",targetEmail)
-                  }}
                 >
                   Send OTP To Verify
                 </button>
+
+
+          {/* --------------Send OTP Body Email ------------------- */}
                 <ErrorMessage name="isEmailVerified">
                                       {(msg) => (
                                         <p
@@ -210,24 +212,12 @@ const changeWhenVerifiedPhone = () =>{
                                         </p>
                                       )}
                                     </ErrorMessage>
+                                    </div>
 
 
 
-
-                {/*  Modal Popup for Otp Verification Email*/}
-                <div
-                  className="modal fade"
-                  id="forEmail"
-                  tabIndex="-1"
-                  role="dialog"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                >
-                
-                  <MailVerificationModal show={showOtpVerifyModalEmail} check={isCheck} />
-                </div>
-                
-              </div>
+              {/*  Modal Popup for Otp Verification Email*/}
+                  <MailVerificationModal show={showOtpVerifyModalEmail} setFieldValue={setFieldValue} mailValidate={changeWhenVerifiedEmail}/>   
               {/*  Modal Popup for Otp Verification Email*/}
 
               <div className="form-group col-md-4">
@@ -268,24 +258,11 @@ const changeWhenVerifiedPhone = () =>{
                                       )}
                                     </ErrorMessage>
 
-                     {/*  Modal Popup for Otp Verification */}
+                                    </div>
+                                    </div>
 
-
-
-                  <div
-                  className="modal fade"
-                  id="forPhone"
-                  tabIndex="-1"
-                  role="dialog"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                >
-           <PhoneVerficationModal show={showOtpVerifyModalPhone} check={isCheck}/>
-                </div>
-                
-              </div>
-              </div>
-
+              {/*  Modal Popup for Otp Verification */}
+               <PhoneVerficationModal show={showOtpVerifyModalPhone} check={isCheck}/>
               {/*  Modal Popup for Otp Verification Mobile */}
   
             

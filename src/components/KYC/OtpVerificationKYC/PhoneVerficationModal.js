@@ -59,6 +59,14 @@ const PhoneVerficationModal = ({show,check}) => {
   
   return (
     <div>
+       <div
+                  className="modal fade show"
+                  id="forPhone"
+                  tabIndex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                >
              <div className="modal-dialog" role="document">
                     <div className="modal-content">
                      
@@ -121,6 +129,7 @@ const PhoneVerficationModal = ({show,check}) => {
                           </div>
                         </>
                     </div>
+                  </div>
                   </div>
     </div>
   )

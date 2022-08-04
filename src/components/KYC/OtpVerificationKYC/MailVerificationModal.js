@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import {otpVerificationForContact} from "../../../slices/kycOtp";
 import OtpInput from "react-otp-input";
 
-const MailVerificationModal = ({show,check}) => {
+const MailVerificationModal = ({show,check,mailValidate,setFieldValue}) => {
 
   const dispatch = useDispatch();
 
@@ -20,7 +20,12 @@ const MailVerificationModal = ({show,check}) => {
   // console.log(show,"<=====")
   // console.log(mailValidate,"<=====")
 
-  const onChangeClose =  () => {}
+  const [checked, setChecked] = useState(false);
+
+  const onChangeHandler=()=>{
+    mailValidate(!check,checked)
+    setFieldValue("isMobileVerified", checked)
+  }
 
   const handleChangeForOtp = (otp) => {
     const regex = /^[0-9]*$/;
@@ -62,6 +67,15 @@ const MailVerificationModal = ({show,check}) => {
 
   return (
     <div>
+       <div
+                  className="modal fade show"
+                  id="forEmail"
+                  tabIndex="-1"
+                  role="dialog"
+                  aria-labelledby="exampleModalLabel"
+                  aria-hidden="true"
+                  style={{display: check ? "block" : "none"}}
+                >
                   <div className="modal-dialog" role="document">
                     <div className="modal-content">
                      
@@ -76,6 +90,7 @@ const MailVerificationModal = ({show,check}) => {
                               className="close"
                               data-dismiss="modal"
                               aria-label="Close"
+                              onClick={()=>onChangeHandler()}
                             >
                               <span aria-hidden="true">&times;</span>
                             </button>
@@ -126,6 +141,7 @@ const MailVerificationModal = ({show,check}) => {
                      
                     </div>
                   </div>
+                </div>
                 </div>
   )
 }
