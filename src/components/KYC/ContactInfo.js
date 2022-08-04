@@ -6,11 +6,7 @@ import API_URL from "../../config";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {
-  otpForContactInfo,
-  otpVerificationForContact,
-} from "../../slices/kycOtp";
-import OtpInput from "react-otp-input";
+import {otpForContactInfo} from "../../slices/kycOtp";
 import MailVerificationModal from "./OtpVerificationKYC/MailVerificationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 
@@ -131,8 +127,7 @@ function ContactInfo() {
 
 
   const handleToSendOTPForVerificationPhone = () => {
-
-    setShowOtpVerifyModalPhone(true)   
+ 
     dispatch(
       otpForContactInfo({
         mobile_number: "9717506705",
@@ -295,7 +290,7 @@ const changeWhenVerifiedPhone = () =>{
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
                 >
-           <PhoneVerficationModal show={showOtpVerifyModalEmail} check={isCheck} phoneValidate={targetPhone}/>
+           <PhoneVerficationModal show={showOtpVerifyModalPhone} check={isCheck} phoneValidate={targetPhone}/>
                 </div>
                 
               </div>

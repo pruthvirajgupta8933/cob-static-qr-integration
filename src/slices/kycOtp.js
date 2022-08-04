@@ -6,10 +6,9 @@ import axios from "axios";
 
 const KycAuth = {
     OtpResponse: { status: "", verification_token: ""},
-
-    OtpVerification: {
-        message: "",
-        status: false 
+    OtpVerificationResponse: {         
+        status: "",
+        message: ""
        }   
   };
 
@@ -60,7 +59,7 @@ const KycAuth = {
 
 
     const KycOtpSlice = createSlice({
-      name: "KycOtpSlice",
+      name: "KycAuth",
       initialState: KycAuth,
       reducers: {},
       extraReducers: {
@@ -83,7 +82,7 @@ const KycAuth = {
         },
         [otpVerificationForContact.fulfilled]: (state, action) => {
           state.OtpVerificationResponse = action.payload;
-          console.log(action.payload,"==>")
+          console.log(action,"==>")
         },
         [otpVerificationForContact.rejected]: (state, action) => {
           state.status = "failed";
