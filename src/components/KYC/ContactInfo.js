@@ -50,7 +50,7 @@ function ContactInfo() {
   }
 
   const initialValuesForEmail = {
-     email_id: "",
+     email: "",
      otp_type: "email",
      otp_for: "kyc1"   
   }
@@ -185,6 +185,21 @@ const changeWhenVerifiedPhone = () =>{
                 
 
                 {/* --------------Send OTP Body Email------------------- */}
+                {
+                    <>
+                   <Formik
+                   initialValues={initialValuesForEmail}
+                    onSubmit={handleToSendOTPForVerificationEmail}>
+                
+                {({ formik}) => ( 
+                 <Form>
+                  <FormikController
+                  control="input"
+                  type="hidden"
+                  name="email_id"
+                  className="form-control"
+                />
+                  
                 <button
                   className="btn btn-primary"
                   type="submit"
@@ -192,13 +207,17 @@ const changeWhenVerifiedPhone = () =>{
                   data-toggle="modal"
                   data-target="#forEmail"
                   onChange={()=> {formik.setFieldValue("isEmailVerified",targetEmail)}}
-                  onClick={handleToSendOTPForVerificationEmail}
                 >
                   Send OTP To Verify
                 </button>
+      
+                </Form>
+                )}
+                </Formik>
+                </>
+                    }
 
-
-          {/* --------------Send OTP Body Email ------------------- */}
+          {/* --------------Send OTP Body For <Email> ------------------- */}
                 <ErrorMessage name="isEmailVerified">
                                       {(msg) => (
                                         <p
@@ -237,9 +256,7 @@ const changeWhenVerifiedPhone = () =>{
                   data-toggle="modal"
                   data-target="#forPhone"
                   onClick= {handleToSendOTPForVerificationPhone}
-                  onChange={()=> {formik.setFieldValue("isPhoneVerified",targetPhone)
-                  changeWhenVerifiedPhone()
-                }}
+                  onChange={()=> {formik.setFieldValue("isPhoneVerified",targetPhone)}}
                 >
                   Send OTP To Verify
                 </button>
@@ -262,11 +279,9 @@ const changeWhenVerifiedPhone = () =>{
                                     </div>
 
               {/*  Modal Popup for Otp Verification */}
-               <PhoneVerficationModal show={showOtpVerifyModalPhone} check={isCheck}/>
+               <PhoneVerficationModal show={showOtpVerifyModalPhone} setFieldValue={setFieldValue} mailValidate={changeWhenVerifiedPhone}/>
               {/*  Modal Popup for Otp Verification Mobile */}
   
-            
-
             <div className="form-row">
               <div className="form-group col-md-4">
                 <FormikController
