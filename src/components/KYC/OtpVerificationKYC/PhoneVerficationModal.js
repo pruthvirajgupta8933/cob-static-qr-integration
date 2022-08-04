@@ -5,7 +5,7 @@ import { otpVerificationForContact} from "../../../slices/kycOtp";
 import OtpInput from "react-otp-input";
 
 
-const PhoneVerficationModal = ({show,check,phoneValidate}) => {
+const PhoneVerficationModal = ({show,check}) => {
 
   const KycVerificationToken = useSelector(
     (state) =>
@@ -41,12 +41,10 @@ const PhoneVerficationModal = ({show,check,phoneValidate}) => {
          toast.success(res.payload.message)
          check(true)
          show(false)
-         phoneValidate(true)
         } else if (res.payload.status === false) {
           toast.error(res.payload.message)
           show(true)
-          check(false)
-          phoneValidate(false)              
+          check(false)         
         }
       } else {
           

@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import {otpVerificationForContact} from "../../../slices/kycOtp";
 import OtpInput from "react-otp-input";
 
-const MailVerificationModal = ({show,check, mailValidate}) => {
+const MailVerificationModal = ({show,check}) => {
 
   const dispatch = useDispatch();
 
@@ -19,6 +19,8 @@ const MailVerificationModal = ({show,check, mailValidate}) => {
   
   // console.log(show,"<=====")
   // console.log(mailValidate,"<=====")
+
+  const onChangeClose =  () => {}
 
   const handleChangeForOtp = (otp) => {
     const regex = /^[0-9]*$/;
@@ -42,12 +44,10 @@ const MailVerificationModal = ({show,check, mailValidate}) => {
          toast.success(res.payload.message)
          check(true)
          show(false)
-         mailValidate(true)
         } else if (res.payload.status === false) {
           toast.error(res.payload.message)
           show(true)
-          check(false)
-          mailValidate(false)              
+          check(false)        
         }
       } else {
           

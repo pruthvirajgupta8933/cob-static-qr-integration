@@ -21,21 +21,16 @@ function ContactInfo() {
 
   const [showOtpVerifyModalEmail, setShowOtpVerifyModalEmail] = useState(false);
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
-  const [sendOtpEmailValue, setSendOtpEmailValue] = useState({email: ""}) 
   const [isCheck, setIsChecked] = useState(false)
   const [targetPhone, setTargetPhone] = useState("")
   const [targetEmail, setTargetEmail] = useState("")
 
 
 
-  const handleChangeForSendOtpEmail = (email) => {
-    const regex = /^[A-Za-z]+$/;
-    if (!sendOtpEmailValue || regex.test(email.toString())) {
-      setSendOtpEmailValue({sendOtpEmailValue})
-      
-    }
-
-  }
+  const KycVerifyStatus = useSelector(
+    (state) =>
+      state.KycOtpSlice.OtpVerificationResponse.status
+  );
 
   
   const initialValues = {
@@ -92,7 +87,6 @@ function ContactInfo() {
   const handleToSendOTPForVerificationEmail = (isMobileVerified) => {
     // console.log(isMobileVerified,"=====>")
  
-    // setShowOtpVerifyModalEmail(true)  
     dispatch(
       otpForContactInfo({
         email: "harrisfazal@ymail.com",
@@ -109,7 +103,7 @@ function ContactInfo() {
        toast.error("Something went wrong! Please try again for some time.");
        setShowOtpVerifyModalEmail(false)
 
-       //  toastConfig.infoToast(res.payload.msg);
+      
        
       }
     });
@@ -160,7 +154,7 @@ const changeWhenVerifiedEmail = () =>{
 }
 
 const changeWhenVerifiedPhone = () =>{
-  targetPhone(!setTargetEmail,isCheck)
+  targetPhone(!setTargetPhone,isCheck)
 
 }
 
@@ -230,7 +224,7 @@ const changeWhenVerifiedPhone = () =>{
                   aria-hidden="true"
                 >
                 
-                  <MailVerificationModal show={showOtpVerifyModalEmail} check={isCheck} mailValidate={targetEmail}/>
+                  <MailVerificationModal show={showOtpVerifyModalEmail} check={isCheck} />
                 </div>
                 
               </div>
@@ -286,7 +280,7 @@ const changeWhenVerifiedPhone = () =>{
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
                 >
-           <PhoneVerficationModal show={showOtpVerifyModalPhone} check={isCheck} phoneValidate={targetPhone}/>
+           <PhoneVerficationModal show={showOtpVerifyModalPhone} check={isCheck}/>
                 </div>
                 
               </div>
