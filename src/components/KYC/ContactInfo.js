@@ -6,18 +6,18 @@ import API_URL from "../../config";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {otpForContactInfo} from "../../slices/kycOtp";
+import { otpForContactInfo } from "../../slices/kycOtp";
 import MailVerificationModal from "./OtpVerificationKYC/MailVerificationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 import { values } from "lodash";
 
 function ContactInfo() {
   const dispatch = useDispatch();
-  
+
   const { user } = useSelector((state) => state.auth);
   // console.log(user, "<<<<<=========")
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  const { clientCode } = clientMerchantDetailsList[0];
+  // var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
   const [showOtpVerifyModalEmail, setShowOtpVerifyModalEmail] = useState(false);
@@ -33,14 +33,14 @@ function ContactInfo() {
       state.KycOtpSlice.OtpVerificationResponse.status
   );
 
-  
+
   const initialValues = {
     name: "",
     contact_number: "",
     email_id: "",
     contact_designation: "",
-    isPhoneVerified: "",
-    isEmailVerified:""
+    // isPhoneVerified: "",
+    // isEmailVerified: ""
   };
 
   const initialValuesForMobile = {
@@ -50,19 +50,19 @@ function ContactInfo() {
   }
 
   const initialValuesForEmail = {
-     email: "",
-     otp_type: "email",
-     otp_for: "kyc1"   
+    email: "",
+    otp_type: "email",
+    otp_for: "kyc1"
   }
 
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Required"),
     contact_number: Yup.string().required("Required"),
-    email_id: Yup.string().required("Required"),
+    email_id: Yup.string().email("Invalid email").required("Required"),
     contact_designation: Yup.string().required("Required"),
-    isPhoneVerified: Yup.string().required("You need to verify Your Phone"),
-    isEmailVerified: Yup.string().required("You need to verify Your Email"),
+    // isPhoneVerified: Yup.string().required("You need to verify Your Phone"),
+    // isEmailVerified: Yup.string().required("You need to verify Your Email"),
   });
 
   const handleSubmitContact = async (values) => {
@@ -74,6 +74,7 @@ function ContactInfo() {
         contact_number: values.contact_number,
         email_id: values.email_id,
         contact_designation: values.contact_designation,
+        modified_by:loginId
       });
       // console.log("Hello ===>", resp.data);
       toast.success(resp.data.message);
@@ -86,31 +87,26 @@ function ContactInfo() {
 
   //-----------------Functionality To Send OTP Via Email Through Button ----------------------
   const handleToSendOTPForVerificationEmail = (values) => {
-    // console.log(values,"===>")
- 
+    // console.log(values)
     dispatch(
       otpForContactInfo({
-        email: values.email,
+        email: values,
         otp_type: "email",
         otp_for: "kyc"
       })
     ).then((res) => {
-  
       if (res.meta.requestStatus === "fulfilled" && res.payload.status === true) {
         // console.log("This is the response", res);
-        toast.success("OTP Sent to the Registered Mobile Number ");
-         setShowOtpVerifyModalEmail(true)   
+        toast.success("OTP Sent to the Registered Email ");
+        setShowOtpVerifyModalEmail(true)
       } else {
-       toast.error(res.payload.message);
-       setShowOtpVerifyModalEmail(false)
-
-      
-       
+        toast.error(res.payload.message);
+        setShowOtpVerifyModalEmail(false)
       }
     });
 
   }
-//----------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------
 
 
 
@@ -118,10 +114,10 @@ function ContactInfo() {
 
 
   const handleToSendOTPForVerificationPhone = (values) => {
- 
+
     dispatch(
       otpForContactInfo({
-        mobile_number: values.mobile_number,
+        mobile_number: values,
         otp_type: "phone",
         otp_for: "kyc"
       })
@@ -129,36 +125,62 @@ function ContactInfo() {
       // console.log("This is the response", res);
       if (res.meta.requestStatus === "fulfilled" && res.payload.status === true) {
         toast.success("OTP Sent to the Registered Mobile Number ");
-         setShowOtpVerifyModalPhone(true)   
-        
+        setShowOtpVerifyModalPhone(true)
+
       } else {
-       toast.error(res.payload.message);
-       setShowOtpVerifyModalPhone(false)
-       //  toastConfig.infoToast(res.payload.msg);
-       
+        toast.error(res.payload.message);
+        setShowOtpVerifyModalPhone(false)
+        //  toastConfig.infoToast(res.payload.msg);
+
       }
     });
 
   }
 
 
-//-------------------------------------------------------------------------------------------------------
+  //-------------------------------------------------------------------------------------------------------
 
 
-//After Whole Verification Process//
+  //After Whole Verification Process//
 
-const changeWhenVerifiedEmail = (isChecked) =>{
-  targetEmail(!setTargetEmail)
-  setIsChecked(isChecked)
-}
+  // const changeWhenVerifiedEmail = (isChecked) => {
+  //   targetEmail(!setTargetEmail)
+  //   setIsChecked(isChecked)
+  // }
 
-const changeWhenVerifiedPhone = () =>{
-  targetPhone(!setTargetPhone,isCheck)
+  // const changeWhenVerifiedPhone = () => {
+  //   targetPhone(!setTargetPhone, isCheck)
 
-}
+  // }
 
-//---------------------------------------
+  //---------------------------------------
 
+  const checkInputIsValid = (err, val, setErr, key) => {
+    const hasErr = err.hasOwnProperty(key)
+    if (hasErr) {
+      if (val[key] === "") {
+        setErr(key, true)
+      }
+    }
+    if (!hasErr && val[key] !== "" && key === "email_id") {
+      handleToSendOTPForVerificationEmail(val[key])
+    }
+    
+    if (!hasErr && val[key] !== "" && key === "contact_number") {
+      handleToSendOTPForVerificationPhone(val[key])
+    }
+  }
+
+  const handlerModal=(val,key)=>{
+    console.log(val)
+    if(key==="phone"){
+      setShowOtpVerifyModalPhone(val)
+    }
+    if(key==="email"){
+      setShowOtpVerifyModalEmail(val)
+    }
+
+  }
 
 
   return (
@@ -168,9 +190,8 @@ const changeWhenVerifiedPhone = () =>{
         validationSchema={validationSchema}
         onSubmit={handleSubmitContact}
       >
-         {({ formik, setFieldValue}) => (
+        {formik => (
           <Form>
-            {/* {console.log(formik.errors?.isMobileVerified)} */}
             <div className="form-row">
               <div className="form-group col-md-4">
                 <FormikController
@@ -180,63 +201,22 @@ const changeWhenVerifiedPhone = () =>{
                   name="email_id"
                   placeholder="Enter Contact Email"
                   className="form-control"
-               
-                />
-                
 
-                {/* --------------Send OTP Body Email------------------- */}
-                {
-                    <>
-                   <Formik
-                   initialValues={initialValuesForEmail}
-                    onSubmit={handleToSendOTPForVerificationEmail}>
-                
-                {({ formik}) => ( 
-                 <Form>
-                  <FormikController
-                  control="input"
-                  type="hidden"
-                  name="email_id"
-                  className="form-control"
                 />
-                  
                 <button
                   className="btn btn-primary"
                   type="submit"
                   class="btn btn-primary btn-sm"
-                  data-toggle="modal"
-                  data-target="#forEmail"
-                  onChange={()=> {formik.setFieldValue("isEmailVerified",targetEmail)}}
+                  onClick={() => { checkInputIsValid(formik.errors, formik.values, formik.setFieldError, "email_id") }}
                 >
-                  Send OTP To Verify
+                  Send OTP
                 </button>
-      
-                </Form>
-                )}
-                </Formik>
-                </>
-                    }
-
-          {/* --------------Send OTP Body For <Email> ------------------- */}
-                <ErrorMessage name="isEmailVerified">
-                                      {(msg) => (
-                                        <p
-                                          className="abhitest"
-                                          style={{
-                                            color: "red",
-                                            float: "bottom",
-                                          }}
-                                        >
-                                          {msg}
-                                        </p>
-                                      )}
-                                    </ErrorMessage>
-                                    </div>
+              </div>
 
 
 
               {/*  Modal Popup for Otp Verification Email*/}
-                  <MailVerificationModal show={showOtpVerifyModalEmail} setFieldValue={setFieldValue} mailValidate={changeWhenVerifiedEmail}/>   
+              <MailVerificationModal show={showOtpVerifyModalEmail} setShow={handlerModal} />
               {/*  Modal Popup for Otp Verification Email*/}
 
               <div className="form-group col-md-4">
@@ -253,35 +233,17 @@ const changeWhenVerifiedPhone = () =>{
                   className="btn btn-primary"
                   type="submit"
                   class="btn btn-primary btn-sm"
-                  data-toggle="modal"
-                  data-target="#forPhone"
-                  onClick= {handleToSendOTPForVerificationPhone}
-                  onChange={()=> {formik.setFieldValue("isPhoneVerified",targetPhone)}}
+                  onClick={() => { checkInputIsValid(formik.errors, formik.values, formik.setFieldError, "contact_number") }}
                 >
-                  Send OTP To Verify
+                  Send OTP
                 </button>
+              </div>
+            </div>
 
-                <ErrorMessage name="isPhoneVerified">
-                                      {(msg) => (
-                                        <p
-                                          className="abhitest"
-                                          style={{
-                                            color: "red",
-                                            float: "bottom",
-                                          }}
-                                        >
-                                          {msg}
-                                        </p>
-                                      )}
-                                    </ErrorMessage>
+            {/*  Modal Popup for Otp Verification */}
+            <PhoneVerficationModal show={showOtpVerifyModalPhone} setShow={handlerModal} />
+            {/*  Modal Popup for Otp Verification Mobile */}
 
-                                    </div>
-                                    </div>
-
-              {/*  Modal Popup for Otp Verification */}
-               <PhoneVerficationModal show={showOtpVerifyModalPhone} setFieldValue={setFieldValue} mailValidate={changeWhenVerifiedPhone}/>
-              {/*  Modal Popup for Otp Verification Mobile */}
-  
             <div className="form-row">
               <div className="form-group col-md-4">
                 <FormikController
@@ -305,7 +267,7 @@ const changeWhenVerifiedPhone = () =>{
                 />
               </div>
             </div>
-            <div class="col-md-9 text-center">
+            <div class="col-md-9 p-0">
               <button className="btn btn-primary" type="submit">
                 Save
               </button>

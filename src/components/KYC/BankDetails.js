@@ -17,7 +17,7 @@ function BankDetails() {
 
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  const { clientCode } = clientMerchantDetailsList[0];
+  // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
   const initialValues = {
