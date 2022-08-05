@@ -24,6 +24,7 @@ import Test from '../Otherpages/Test';
 import ViewTransactionWithFilter from './AllPages/ViewTransactionWithFilter';
 import SettlementReportNew from './AllPages/SettlementReportNew';
 import TransactionHistoryDownload from './AllPages/TransactionHistoryDownload';
+import Approver from '../ApproverNVerifier/Approver';
 
 
 
@@ -113,6 +114,14 @@ function Dashboard() {
 
               <Route exact path={`${path}/transaction-history-new`} >
                 <TransactionHistoryDownload />
+              </Route>
+
+              <Route exact path={`${path}/kyc`} >
+                <KycForm />
+              </Route>
+
+              <Route exact path={`${path}/approver`} >
+                <Approver />
               </Route>
               
                 </Switch>

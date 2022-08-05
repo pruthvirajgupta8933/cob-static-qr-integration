@@ -50,7 +50,10 @@ function SideNavbar() {
               <div style={{position: 'absolute', inset: '0px', overflow: 'scroll', marginRight: '-3px', marginBottom: '-3px'}}>
                 <ul className="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" role="menu">
                   <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
-                      <Link to={`${url}`} className='txt-white'><i className="fa fa-home" aria-hidden="true" /> Home</Link>
+                      <Link to={`${url}`} className='txt-white'><i className="fa fa-home" aria-hidden="true" /> <span>Home</span></Link>
+                  </li>
+                  <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
+                      <Link to={`${url}/kyc`} className='txt-white'><i className="fa fa-file-o" aria-hidden="true" /> <span>Fill KYC Form</span><span class="new-tab">new</span></Link>
                   </li>
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open" role="menuitem">
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-owns="settlement$Menu" aria-haspopup="true" style={{paddingLeft: '24px'}}><span className="sidebar-menu-divider">Your
@@ -61,10 +64,6 @@ function SideNavbar() {
                       <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-calendar" aria-hidden="true" />   Transaction History </Link> 
                     </li>
 
-                    <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px',display:"none"}}>
-                          <Link to={`${url}/kyc`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
-                            &nbsp; Fill KYC Form</Link> 
-                          </li>
 
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                         <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
@@ -77,10 +76,17 @@ function SideNavbar() {
                       <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link> 
                       </li> 
                       :
+                      <React.Fragment>
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
                       &nbsp; Settlement Report</Link> 
                       </li>
+
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                      <Link to={`${url}/settlement-report-new`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
+                      &nbsp; <span>Settlement Report</span><span class="new-tab">new</span></Link> 
+                      </li>
+                      </React.Fragment>
                       }
 
                       {roleId!==3 && roleId!==13 ? 

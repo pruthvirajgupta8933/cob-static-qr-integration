@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import API_URL from '../../../config';
+import { isClientCodeCreated } from '../../../utilities/isClientCodeCreated';
+import { isKycCompleted } from '../../../utilities/isKycCompleted';
 import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
 
 
@@ -21,11 +23,27 @@ function SettlementReport() {
   
     const {user} = useSelector((state)=>state.auth);
     let clientCode='';
-    if (user && user.clientMerchantDetailsList === null) {
+    if(isKycCompleted){
+      console.log("kyc has completed")
+      if(isClientCodeCreated){
+        console.log("client code has created")
+      }else{
+        console.log("kyc done client code is not create");
+      }
+    }else{
+      console.log("kyc not completed")
+    }
+    
+    if (user && user?.clientMerchantDetailsList) {
       history.push("/dashboard/profile");
     } else {
       var clientMerchantDetailsList = user.clientMerchantDetailsList;
-      clientCode = clientMerchantDetailsList[0].clientCode;
+      // console.log(typeof(user.clientMerchantDetailsList))
+      if(user.clientMerchantDetailsList!==undefined){
+        // console.log(clientMerchantDetailsList)
+        clientCode = clientMerchantDetailsList[0].clientCode;
+      }
+      
     }
 
     
@@ -94,7 +112,7 @@ function SettlementReport() {
           <section className="features8 cid-sg6XYTl25a flleft col-lg-12" id="features08-3-">
             <div className="container-fluid">
               <div className="row">
-                <div className="col-lg-6 mrg-btm- bgcolor">
+                <div className="col-lg-6 mrg-btm">
                   <label>Select Folder</label>
                   <select
                     value={selectedFolder}
@@ -107,7 +125,7 @@ function SettlementReport() {
                   </select>
                 </div>
 
-                <div className="col-lg-6 mrg-btm- bgcolor">
+                <div className="col-lg-6 mrg-btm">
                   <label>Select Sub Folder</label>
                    <select
                       onChange={(event) => SetSelectedSubFolder(event.target.value)}

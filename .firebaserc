@@ -1,7 +1,8 @@
 {
   "projects": {
     "cob-staging": "cob-staging",
-    "default": "cob-staging"
+    "default": "cob-staging-test-account",
+    "cob-testing": "cob-staging-test-account"
   },
   "targets": {},
   "etags": {}

@@ -9,8 +9,8 @@ let url,kyc_url = "";
 
 
 if (env === "staging") {
-  url = "http://13.126.165.212:5000";
-  kyc_url = "http://13.126.165.212:8000";
+  url = "http://13.233.198.69:5000";
+  kyc_url = "http://13.233.198.69:8000";
 } else {
   url = "https://cobapi.sabpaisa.in";
   kyc_url = "https://kycprocess.sabpaisa.in";
@@ -112,8 +112,8 @@ const API_LIVE = {
     "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam",
 
   /**Kyc DocumentsUploads */
-  DocumentsUpload: `{kyc_url}/kyc/document-type/`, //get APi
-  Upload_Merchant_document: `{url}/kyc/upload-merchant-document/`, //post APi
+  DocumentsUpload: `${kyc_url}/kyc/document-type/`, //get APi
+  Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
   Business_type: `${kyc_url}/kyc/get-all-business-type/`,
   Platform_type: `${kyc_url}/kyc/get-all-platform-type/`,
   Collection_frequency: `${kyc_url}/kyc/get-all-collection-frequency/`,
@@ -139,6 +139,10 @@ const API_LIVE = {
     //Get All Bnak Names in Kyc Bank Details Dropdown Tab
     GET_ALL_BANK_NAMES: "http://13.126.165.212:8000/kyc/get-all-bank-name/",
 
+  Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
+  Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
+  SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`
+ 
 };
 
 const API_URL = API_LIVE;

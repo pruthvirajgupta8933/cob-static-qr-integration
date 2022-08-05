@@ -7,17 +7,16 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { otpForContactInfo } from "../../slices/kycOtp";
-import MailVerificationModal from "./OtpVerificationKYC/MailVerificationModal";
-import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
+
 import { values } from "lodash";
 
-function ContactInfo() {
+function SingleDocument() {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
   // console.log(user, "<<<<<=========")
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  const { clientCode } = clientMerchantDetailsList[0];
+  // var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
   const [showOtpVerifyModalEmail, setShowOtpVerifyModalEmail] = useState(false);
@@ -185,98 +184,9 @@ function ContactInfo() {
 
   return (
     <div className="col-md-12 col-md-offset-4">
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmitContact}
-      >
-        {formik => (
-          <Form>
-            <div className="form-row">
-              <div className="form-group col-md-4">
-                <FormikController
-                  control="input"
-                  type="text"
-                  label="Contact Email *"
-                  name="email_id"
-                  placeholder="Enter Contact Email"
-                  className="form-control"
-
-                />
-                <button
-                  className="btn btn-primary"
-                  type="submit"
-                  class="btn btn-primary btn-sm"
-                  onClick={() => { checkInputIsValid(formik.errors, formik.values, formik.setFieldError, "email_id") }}
-                >
-                  Send OTP
-                </button>
-              </div>
-
-
-
-              {/*  Modal Popup for Otp Verification Email*/}
-              <MailVerificationModal show={showOtpVerifyModalEmail} setShow={handlerModal} />
-              {/*  Modal Popup for Otp Verification Email*/}
-
-              <div className="form-group col-md-4">
-                <FormikController
-                  control="input"
-                  type="text"
-                  label="Contact Number *"
-                  name="contact_number"
-                  placeholder="Contact Number"
-                  className="form-control"
-                />
-
-                <button
-                  className="btn btn-primary"
-                  type="submit"
-                  class="btn btn-primary btn-sm"
-                  onClick={() => { checkInputIsValid(formik.errors, formik.values, formik.setFieldError, "contact_number") }}
-                >
-                  Send OTP
-                </button>
-              </div>
-            </div>
-
-            {/*  Modal Popup for Otp Verification */}
-            <PhoneVerficationModal show={showOtpVerifyModalPhone} setShow={handlerModal} />
-            {/*  Modal Popup for Otp Verification Mobile */}
-
-            <div className="form-row">
-              <div className="form-group col-md-4">
-                <FormikController
-                  control="input"
-                  type="text"
-                  label="Contact Name *"
-                  name="name"
-                  placeholder="Contact Name"
-                  className="form-control"
-                />
-              </div>
-
-              <div className="form-group col-md-4">
-                <FormikController
-                  control="input"
-                  type="text"
-                  label="Contact Designation *"
-                  name="contact_designation"
-                  placeholder="Contact Designation"
-                  className="form-control"
-                />
-              </div>
-            </div>
-            <div class="col-md-9 p-0">
-              <button className="btn btn-primary" type="submit">
-                Save
-              </button>
-            </div>
-          </Form>
-        )}
-      </Formik>
+    
     </div>
   );
 }
 
-export default ContactInfo;
+export default SingleDocument;

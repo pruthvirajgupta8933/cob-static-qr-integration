@@ -44,10 +44,12 @@ export const Profile = () => {
   if (localStorage.getItem("DC_bank_list") !== null) {
     initDClist = JSON.parse(localStorage.getItem("DC_bank_list"));
   }
+// console.log(clientMerchantDetailsList)
+  // const clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  const clientId = user?.clientMerchantDetailsList[0]?.clientId;
+  // console.log(clientId)
 
-  const clientId = ""
-    // clientMerchantDetailsList !== null &&
-    // clientMerchantDetailsList[0]?.clientId;
+  // const clientId = user?.clientMerchantDetailsList[0]?.clientId;
 
   // const [createProfileResponse , setCreateProfileResponse]  = useState('');
 

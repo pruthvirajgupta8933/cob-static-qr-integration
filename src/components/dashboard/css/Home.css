@@ -30,3 +30,26 @@ table.tables tr:nth-child(odd) {
 .nopad{
   padding: 0 0 0 0 !important;
 }
+
+.new-tab{
+  padding-top: 5px;
+  margin-left: 5px;
+  font-size: 10px;
+  float: right;
+  position: inherit;
+  background: red;
+  line-height: initial;
+  margin: 0;
+  font-weight: bold;
+  padding: 2px;
+  border-radius: 2px 5px;
+  margin-top: 10px;
+  animation: blinker 1s linear infinite;
+}
+
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
