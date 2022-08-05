@@ -40,7 +40,7 @@ function TransactionHistory() {
   const [buttonClicked,isButtonClicked] = useState(false);
 
   var clientMerchantDetailsList =[];
-  if(user && user?.clientMerchantDetailsList===null && user?.roleId!==3 && user?.roleId!==13){
+  if(user && user?.clientMerchantDetailsList === null && user?.roleId!==3 && user?.roleId!==13){
     history.push('/dashboard/profile');
   }else{
     clientMerchantDetailsList = user?.clientMerchantDetailsList;

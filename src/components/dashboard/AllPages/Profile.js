@@ -19,6 +19,7 @@ export const Profile = () => {
 
   // const {fetchDcBankList,fetchNbBankList} = profileService
   const {
+    clientMerchantDetailsList,
     loginId,
     clientContactPersonName,
     clientEmail,
@@ -44,8 +45,8 @@ export const Profile = () => {
     initDClist = JSON.parse(localStorage.getItem("DC_bank_list"));
   }
 // console.log(clientMerchantDetailsList)
-  const clientMerchantDetailsList = user?.clientMerchantDetailsList;
-  const clientId = user?.clientMerchantDetailsList
+  // const clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  const clientId = user?.clientMerchantDetailsList[0]?.clientId;
   // console.log(clientId)
 
   // const clientId = user?.clientMerchantDetailsList[0]?.clientId;
