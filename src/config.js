@@ -9,7 +9,7 @@ let url,kyc_url = "";
 
 
 if (env === "staging") {
-  url = "http://13.233.198.69:5000";
+  url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "http://13.233.198.69:8000";
 } else {
   url = "https://cobapi.sabpaisa.in";
