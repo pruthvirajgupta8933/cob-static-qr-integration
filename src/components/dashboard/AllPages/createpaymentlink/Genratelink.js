@@ -5,12 +5,14 @@ import { toast } from 'react-toastify';
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useHistory } from 'react-router-dom';
+import API_URL from '../../../../config';
 
-const initialValues = {
-  Amount: "",
-  Remarks: "",
-  LinkValidToDate: ""
-}
+
+// const initialValues = {
+//   Amount: "",
+//   Remarks: "",
+//   LinkValidToDate: ""
+// }
 
 
 const validationSchema = Yup.object().shape({
@@ -26,9 +28,9 @@ let history = useHistory();
   var { customer_id } = props.generatedata;
 
 
-  const [enteredAmount, setEnteredAmount] = useState("");
-  const [enteredPurpose, setEnteredPurpose] = useState("");
-  const [enteredDate, setEnteredDate] = useState("");
+  // const [enteredAmount, setEnteredAmount] = useState("");
+  // const [enteredPurpose, setEnteredPurpose] = useState("");
+  // const [enteredDate, setEnteredDate] = useState("");
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const [passwordcheck, setPasswordCheck] = useState(false);
@@ -39,14 +41,14 @@ let history = useHistory();
   const { user } = useSelector((state) => state.auth);
 
 
-  const [data, setData] = useState([])
+  // const [data, setData] = useState([])
   // var clientMerchantDetailsList = user.clientMerchantDetailsList;
   // const { clientCode } = clientMerchantDetailsList[0]
 
   let clientMerchantDetailsList=[];
     let clientCode ='';
     if(user && user.clientMerchantDetailsList===null){
-      console.log("genratelink");  
+      // console.log("genratelink");  
       history.push('/dashboard/profile');
 
       }else{
@@ -58,23 +60,23 @@ let history = useHistory();
 
 
   const generateHandler = async (e) => {
-    const linkdata = {
+    // const linkdata = {
 
-      Customer_id: customer_id,
-      Amount: enteredAmount,
-      Remarks: enteredPurpose,
-      valid_to: dateFormat(enteredDate),
-      Client_Code: clientCode,
-      name_visiblity: true,
-      email_visibilty: true,
-      phone_number_visibilty: true,
-      isMerchantChargeBearer: true,
-    };
+    //   Customer_id: customer_id,
+    //   Amount: enteredAmount,
+    //   Remarks: enteredPurpose,
+    //   valid_to: dateFormat(enteredDate),
+    //   Client_Code: clientCode,
+    //   name_visiblity: true,
+    //   email_visibilty: true,
+    //   phone_number_visibilty: true,
+    //   isMerchantChargeBearer: true,
+    // };
 
     // console.log(linkdata);
     toast.info("Please Wait...")
-    const response = await axios
-      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
+    await axios
+      .post(`${API_URL.ADD_LINK}?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
         Amount:e.Amount,
         Remarks:e.Remarks,
         Date:e.Date,
@@ -109,19 +111,19 @@ let history = useHistory();
   const handleCheck = (e) => {                 //for checkbox
     setPasswordCheck(e.target.checked);
   };
-  const cancelClick = () => {
+  // const cancelClick = () => {
 
-    setEnteredAmount("");
-    setEnteredDate("");
-    setEnteredPurpose("");
-    setHours("");
-    setMinutes("");
+  //   setEnteredAmount("");
+  //   setEnteredDate("");
+  //   setEnteredPurpose("");
+  //   setHours("");
+  //   setMinutes("");
 
-    document.getElementById("checkbox_pass").checked = false;
-  }
-  const closeClick = () => {
-    document.getElementById("checkbox_pass").checked = false;
-  }
+  //   document.getElementById("checkbox_pass").checked = false;
+  // }
+  // const closeClick = () => {
+  //   document.getElementById("checkbox_pass").checked = false;
+  // }
 
   return (
     <div
@@ -147,11 +149,9 @@ let history = useHistory();
             >
               {({ resetForm }) => (
                 <>
-
-
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
-              <b> Genrate Link</b>
+              <b> Generate Link</b>
             </h5>
             <button
               type="button"
@@ -164,25 +164,24 @@ let history = useHistory();
             </button>
 
             <div className="form-check">
-              <label
-                className="form-check-label"
+              
+
+            </div>
+          </div>
+          <div className="modal-body">
+          <label
+                className="form-check-label ml-3"
                 htmlFor="exampleCheck1"
-                style={{ marginLeft: 200, marginBottom: 20 }}
               >
                 <input
                   type="checkbox"
                   className="form-check-input"
                   onChange={handleCheck}
-
                   value={passwordcheck}
                   id="checkbox_pass"
                 />
-                is Password Protected
+                Password Protected Link
               </label>
-
-            </div>
-          </div>
-          <div className="modal-body">
                 <Form >
                   <br />
                   <div className="row">
@@ -222,7 +221,7 @@ let history = useHistory();
 
                   <div className="row">
                     <div className="col">
-                      <label>Link Valid To Date</label>
+                      <label>Link Validity</label>
                       <Field
                         type="date"
                         name="Date"

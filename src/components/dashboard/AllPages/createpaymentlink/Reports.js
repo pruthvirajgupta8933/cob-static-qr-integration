@@ -1,78 +1,39 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import axios from 'axios' ;
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import _ from 'lodash';
-import { Zoom } from 'react-toastify';
+import API_URL from '../../../../config';
+import toastConfig from '../../../../utilities/toastTypes';
+import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
+
 
 const Reports = () => {
-
-
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
- 
-
-  // Parameters for Reports
-  // const initialState = {
-
-  //   client_transaction_id: null,
-  //   created_at: null,
-  //   customer_email: "",
-  //   customer_name: "",
-  //   customer_phone_number: "",
-  //   link_id: "",
-  //   link_valid_date: "",
-  //   numeric_link_id: "",
-  //   payment_collected: null,
-  //   pg_response: null,
-  //   pg_transaction_id: null,
-  //   transaction_status: null,
-  //   type: "",
-  // }
-
   const [data , setData] = useState([]);
+  const [displayList, setDisplayList] = useState([])
   const [searchText, setSearchText] = useState('');
   const {user} = useSelector((state)=>state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  const clientMerchantDetailsList = user.clientMerchantDetailsList;
   const {clientCode} = clientMerchantDetailsList[0];
+  const [pageCount,setPageCount ] = useState(data ? Math.ceil(data.length/pageSize) : 0);
 
-
-  const pageCount = data ? Math.ceil(data.length/pageSize) : 0;
-
-
-
-  
-  const getData = async (e) => { 
-    await axios.get(`https://paybylink.sabpaisa.in/paymentlink/getReports/${clientCode}`)  
-  .then(res => {     
-    setData(res.data);  
-    setPaginatedData(_(res.data).slice(0).take(pageSize).value())
-    console.log(res.data)
-
-  })  
-  .catch(err => {  
-    // console.log(err)
-  });
-  
-}
 
 useEffect(() => {
-  const loading = getData();
-  toast.promise(
-    loading,
-    {
-      pending: "In Process",
-      success: "Data Loaded Successfully",
-      error: "Error Occured in Data",
-    },
-    {
-      position: "bottom-center",
-      autoClose: 1000,
-      limit: 2,
-      transition: Zoom,
-    }
-  );
+  toastConfig.infoToast("Report Loading")
+  axios.get(`${API_URL.GET_REPORTS}${clientCode}`)  
+  .then(res => {     
+    toastConfig.successToast("Report Data loaded")
+    setData(res.data);  
+    setDisplayList(res.data)
+    setPaginatedData(_(res.data).slice(0).take(pageSize).value())
+    })  
+  .catch((err) => {
+    toastConfig.errorToast("Report Data not loaded !")  
+  });
+
 }, []);
 
 
@@ -84,10 +45,13 @@ const getSearchTerm  = (e) => {
 
 useEffect(() => {
   if (searchText.length > 0) {
-      setPaginatedData(data.filter((item) => 
+      // setPaginatedData(data.filter((item) => 
+      // Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
+      setDisplayList(data.filter((item) => 
       Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
   } else {
-      setPaginatedData(data)
+      setDisplayList(data)
+      // setPaginatedData(data)
   }
 }, [searchText])
 
@@ -96,124 +60,132 @@ const pagination = (pageNo) => {
 }
 
 useEffect(()=>{
-  setPaginatedData(_(data).slice(0).take(pageSize).value())
-},[pageSize]);
+  setPaginatedData(_(displayList).slice(0).take(pageSize).value())
+  setPageCount(displayList.length>0 ? Math.ceil(displayList.length/pageSize) : 0)
+},[pageSize,displayList]);
 
 
 useEffect(() => {
   // console.log("page chagne no")
   const startIndex = (currentPage - 1) * pageSize;
- const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+ const paginatedPost = _(displayList).slice(startIndex).take(pageSize).value();
  setPaginatedData(paginatedPost);
 
 }, [currentPage])
 
-
-
-
-// if ( pageCount === 1) return null;
-
 const pages = _.range(1, pageCount + 1)
 
+  // console.log("==========================")
+  // console.log("pages",pages)
+  // console.log("pageSize",pageSize)
+  // console.log("data.length",data.length)
+  // console.log("paginatedata",paginatedata)
+  // console.log("paginatedata.length",paginatedata.length)
+  // console.log("displayList",displayList)
 
 
 
-
-  return (<div className='col-lg-12'>
-      
-
-      
-      <h3><b>Reports</b></h3>
-      <p>Total Records : {data.length}</p>
-      
-      <div style={{display:"flex"}}> 
-      <div className='col-lg-6' >
-        <label> &nbsp;</label>
-        <input className="form-control" type="text" placeholder="Search Here" value={searchText} onChange={getSearchTerm} />
-      </div>
-      
-      <div className='col-lg-6'>
-      <label>Count per page</label>
-       <select  value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} className="form-control">
-       <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="50">50</option>
-        <option value="100">100</option>
-       </select>
-      </div>
-
-      </div>
-      
-       <table className='tables' cellPadding="10" cellspacing="0" width="100%">
- <tr>
- <th>Serial No.</th>
-   <th>Name</th>
-   <th>Email</th>
-   <th >Mobile No.</th>
-   <th> Action</th>
-<th>Status</th>
-<th>Client Txn Id</th>
-<th>Link Id</th>
-<th>Link Valid Date</th>
-<th>Created At</th>
-<th>Created At</th>
-<th>Payment Collected</th>
-<th>Numeric Link Id</th>
-
-
- </tr>
-
- 
-{/* 
- {
-    searchText.length < 1 ?  */}
-    
-    { paginatedata.map((report, i) => (
- <tr>
-   <td>{i+1}</td>
-     <td>{report.customer_name}</td>
-     <td>{report.customer_email}</td>
-     <td>{report.customer_phone_number}</td>
-     <td>{report.type}</td>
-     <td>{report.transaction_status}</td>
-     <td>{report.client_transaction_id}</td>
-     <td>{report.link_id}</td>
-     <td>{report.link_valid_date}</td>
-     <td>{report.created_at}</td>
-     <td>{report.payment_collected}</td>
-     <td>{report.numeric_link_id}</td>
-
-     <td></td>
- </tr>
-    ))}
-    </table>
-    <div>
-  <nav aria-label="Page navigation example"  >
-  <ul className="pagination">
-    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
-
-   {
-
-     pages.map((page) => (
-      <li className={
-        page === currentPage ? " page-item active" : "page-item"
-      }><a className="page-link">
-        
-        <p onClick={() => pagination(page)}>
-        {page}
-        </p>
-        </a></li>
-    
-     ))
-   }
-    <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href={void(0)}>Next</a>
-   
+  return (
   
-  </ul>
-</nav>
-  </div>
+    <React.Fragment>
+ {/* filter area */}
+       <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
+                <div className="container-fluid flleft">
+                    <div className="row">  
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <label>Search</label>
+                    <input className="form-control" type="text" placeholder="Search Here" value={searchText} onChange={getSearchTerm} />
+                    </div>
 
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                        <label>Count Per Page</label>
+                        <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
+                        <DropDownCountPerPage datalength={data.length} />
+                        </select>
+                    </div>
+                    </div>
+                    <div className="row">
+                    <div className="col-lg-4 mrg-btm- bgcolor">
+                            <p>Total Records: {data.length}</p>
+                    </div>
+                    </div>
+                    
+                </div>
+            </section>
+
+            <section className="">
+        <div className="container-fluid flleft p-3 my-3 ">
+        {! paginatedata ? (<h3> No Data Found</h3>) : ( <React.Fragment>  <div className="scroll" style={{overflow: "auto"}}>
+                <table className="table table-bordered">
+                    <thead>
+                    <tr>
+                      <th>S. No.</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th >Mobile No.</th>
+                      <th> Action</th>
+                      <th>Status</th>
+                      <th>Client Txn Id</th>
+                      <th>Link Id</th>
+                      <th colSpan={1}>Link_Valid_Date </th>
+                      <th>Created At</th>
+                      <th>Payment Collected</th>
+                      <th>Numeric Link Id</th>
+                    </tr>
+                    </thead>
+                        <tbody>
+                        { paginatedata.map((report, i) => (
+                        <tr key={i}>
+                            <td>{i+1}</td>
+                            <td>{report.customer_name}</td>
+                            <td>{report.customer_email}</td>
+                            <td>{report.customer_phone_number}</td>
+                            <td>{report.type}</td>
+                            <td>{report.transaction_status}</td>
+                            <td>{report.client_transaction_id}</td>
+                            <td>{report.link_id}</td>
+                            <td>{report?.link_valid_date?.replace("T"," ")}</td>
+                            <td>{report.created_at}</td>
+                            <td>{report.payment_collected}</td>
+                            <td>{report.numeric_link_id}</td>
+                        </tr>
+                            ))}
+                    </tbody>
+                </table>
+          </div>
+          <div>
+            
+                {pages.length>1  ? 
+                    <nav aria-label="Page navigation example"  >
+                    <ul className="pagination">
+      
+                   <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={()=>false}>Previous</a>
+                    { 
+                      pages.slice(currentPage-1,currentPage+6).map((page,i) => (
+                        <li key={i} className={
+                          page === currentPage ? " page-item active" : "page-item"
+                        }> 
+                            <a href={()=>false} className={`page-link data_${i}`} >  
+                              <p onClick={() => pagination(page)}>
+                              {page}
+                              </p>
+                            </a>
+                        </li>
+                      
+                      ))
+                    }
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === (pages.length>9) ? nex : nex + 1)} href={()=>false}>
+                      Next</a> : <></> }
+                    </ul>
+                  </nav>
+                  : <></> }
+                  </div>
+          </React.Fragment>
+          )}
     </div>
+    </section>
+    </React.Fragment>
+  
   )
 
 };

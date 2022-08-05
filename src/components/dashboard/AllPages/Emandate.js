@@ -2,48 +2,43 @@
 import React from 'react';
 
 import { useState, useEffect } from "react";
-import {useParams,useLocation} from "react-router-dom"
+import {useLocation} from "react-router-dom"
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { ArrayToDate } from '../../../utilities/emandateDateFormat';
-import { ceil } from 'lodash';
-
+import API_URL from '../../../config';
 
 // import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
-
-
 const Emandate = () => {
     const {user} = useSelector((state)=>state.auth);
     const { clientId,clientName } =user.clientMerchantDetailsList[0];
     const search = useLocation().search;
     const mendateRegIdParam = new URLSearchParams(search).get('mendateRegId');
-
-
-  //  console.log(mendateRegIdParam);
-
-  const [details,setDetails] = useState([]);
-    const baseUrl = "https://subscription.sabpaisa.in/subscription/npci/registration/status/";
+    const [details,setDetails] = useState([]);
+    const baseUrl = API_URL.MANDATE_REGISTRATION_STATUS;
     const mandateRegId = mendateRegIdParam;
+    
     const getManteDetails = (mandateRegId)=>{
-    const mandateDetails = axios.get(baseUrl+mandateRegId).then((response)=>{
-            
+      axios.get(baseUrl+mandateRegId).then((response)=>{
             setDetails(response.data);
     }).catch(error => console.log(error,"error"));
   }
 
   useEffect(()=>{
     getManteDetails(mandateRegId);
+// eslint-disable-next-line react-hooks/exhaustive-deps
 },[]);
 
 useEffect(() => {
     
     
     if(Object.values(details).length>0){
+        // console.log("details",details)
         // console.log(details.mandateStartDate)
         const selectedPlan = JSON.parse(localStorage?.getItem("selectedPlan"));
         const postData = {
             clientCode:details.clientCode.toString(),
-            mandateRegistrationId:details.mandateRegistrationId +'22' ,
+            mandateRegistrationId:details.mandateRegistrationId,
             umrn:details.umrnNumber,
             paymentMode:details.authenticationMode,
             mandateBankName:details.bankName,
@@ -64,11 +59,12 @@ useEffect(() => {
         };
         // console.log(postData)
 
-        axios.post("https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+        axios.post(API_URL.SUBSCRIBE_FETCH_APP_AND_PLAN ,postData).then((response)=>{
             // console.log(response)
         }).catch(error=>console.log(error))
     }
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [details]);
 
 
@@ -98,9 +94,9 @@ const detailList = detailsKey.map((item,i)=>{
         <h1 className="m-b-sm gx-float-left">E Mandate Details</h1>
       </div>
       <section className="features8 cid-sg6XYTl25a" id="features08-3-">
-        <div className="container-fluid">
+        <div className="container-fluid ">
           <div className="row" style={{justifyContent: "center"}}>
-            <div> 
+            <div className="col-lg-12 col-md-12 col-sm-12 overflow-auto"> 
             <table className="table">
                 <tbody>
                     {detailList}
@@ -111,9 +107,7 @@ const detailList = detailsKey.map((item,i)=>{
           </div>
         </div></section>
     </div>
-    <footer className="ant-layout-footer">
-      <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
-    </footer>
+  
   </main>
 </section>
   

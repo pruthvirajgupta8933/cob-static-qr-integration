@@ -1,109 +1,66 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import * as Yup from "yup"
+import { Formik, Form } from "formik"
 import sabpaisalogo from '../../assets/images/sabpaisalogo.png';
-import validation from '../validation';
+import API_URL from '../../config';
+import FormikController from '../../_components/formik/FormikController';
 
 
 export const Recipts = () => {
-  const initialState = {
-    txnId: '',
-    paymentMode: '',
-    payeeFirstName: '',
-    payeeMob: '',
-    payeeEmail: '',
-    status: '',
-    bankTxnId: '',
-    clientName: '',
-    clientId: '',
-    payeeAmount: '',
-    paidAmount: '',
-    transDate: '',
-    transCompleteDate: '',
-    transactionCompositeKey: '',
-    clientCode: '',
-    clientTxnId: '',
 
+
+  const initialValues = {
+    transaction_id: ""
   }
-  const [input, setInput] = useState("");
+  const validationSchema = Yup.object({
+    transaction_id: Yup.number().required("Required")
+  })
+
   const [show, setIsShow] = useState(false);
-  const [errors, setErrors] =useState({input:true});
-  const [errMessage, setErrMessage] = useState('');
-  const [data, setData] = useState(initialState)
+  // const [errMessage, setErrMessage] = useState('');
+  const [data, setData] = useState([])
   
   const [isLoading, setIsLoading] = useState(false);
 
 
-  const onValueChange = e => {
-    setInput(e.target.value);
-  };
+ 
 
 
-  const onSubmit =  (e,input) => {
-    e.preventDefault();
-    // setErrors(validation({ input }))
-    //console.log(errors, 'error')
+  const onSubmit =  (value) => {
 
-    // let errors = {}
-    var regex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-    var isValidInput = true
-    if(!input) {
-        // errors.input = 'ID is required'
-        // setErrors({input:'ID is required'})
-        isValidInput = 'ID is required';
-    }
-    else if(regex.test(input)) {
-      // setErrors({input:'Invalid Input'})
-        // errors.input = 'Invalid Input'
-        isValidInput = 'Invalid Input';
-    }
-   else{
-        // errors.input = false;
-      // setErrors({input:false})
-      isValidInput = false;
-        
-    }
-
-    if(isValidInput===false){
+    const transaction_id = value.transaction_id;
       setIsLoading(true);
-      axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
+      axios.get(`${API_URL.VIEW_TXN}/${transaction_id}`)
       .then((response) => {
-        // console.warn(response);
-        setData(response.data);
-        setIsShow(true);
-        setErrMessage('');
-        setIsLoading(false);
+        
+        if(response.data?.length> 0){
+          setData(response.data[0]);
+          setIsShow(true);
+          // setErrMessage('');
+          setIsLoading(false);
+        }else{
+          setIsShow(false)
+          setIsLoading(false);
+          alert('No Data Found')
+        }
+       
       })
-
       .catch((e) => {
-        alert('Transaction Id required ')
+        alert('No Data Found')
         setIsLoading(false);
         console.log(e);
         setIsShow(false);
-        setErrMessage('No Data Found');
+        // setErrMessage('No Data Found');
 
       })
 
-  }
+  
 }
-  const dateFormat = (timestamp) => {
 
-
-    // var date = new Date(timestamp);
-    // console.log(date.getTime())
-    // return date.getTime();
-
-    var date = new Date(timestamp);
-    return (date.getDate() +
-      "/" + (date.getMonth() + 1) +
-      "/" + date.getFullYear() +
-      " " + date.getHours() +
-      ":" + date.getMinutes() +
-      ":" + date.getSeconds());
-
-  }
   const onClick = () => {
 
-    var tableContents = document.getElementById("joshi").innerHTML;
+    var tableContents = document.getElementById("receipt_table").innerHTML;
     var a = window.open('', '', 'height=900, width=900');
     a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
     a.document.write(tableContents);
@@ -111,29 +68,6 @@ export const Recipts = () => {
 
     a.document.close();
     a.print();
-
-
-    // =========abhishek========================//
-    // var printWindow = window.open('', '', 'height=600,width=800');
-    // printWindow.document.write('<html><head><title>Print Receipt</title>');
-
-    // //Print the Table CSS.
-    // var table_style = document.getElementById("joshi").innerHTML;
-    // printWindow.document.write('<style type = "text/css">');
-    // printWindow.document.write(table_style);
-    // printWindow.document.write('</style>');
-    // printWindow.document.write('</head>');
-
-    //Print the DIV contents i.e. the HTML Table.
-    // printWindow.document.write('<body>');
-    // var divContents = document.getElementById("joshi").innerHTML;
-    // printWindow.document.write(divContents);
-    // printWindow.document.write('</body>');
-
-    // printWindow.document.write('</html>');
-    // printWindow.document.close();
-    // printWindow.print();
-
   }
 
   return (
@@ -146,41 +80,49 @@ export const Recipts = () => {
           <div className="card ">
             <div className="card-header text-center receipt-header">SABPAISA TRANSACTION RECEIPT</div>
             <div className="card-body">
-           <form action="#" onSubmit={()=>{console.log()}}>
-                      <div className="form-group">
-                          <label for="txn_id_input">Transcation ID :</label>
-                          <input type="text" className="ant-input" onChange={(e) => onValueChange(e)} placeholder="Enter Sabpaisa Transactions Id" id="txn_id_input"/>
-                          {errors.input && <h4 >{errors.input}</h4>}
-                      </div>
+            <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={(onSubmit)}
+                      >
+                  {formik => (
+                    <Form>
+                          <div className="form-row">
+                            <div className="form-group col-md-12 col-sm-12 col-lg-12">
+                              <FormikController
+                                  control="input"
+                                  type="text"
+                                  label="Transaction ID  *"
+                                  name="transaction_id"
+                                  placeholder="Enter Sabpaisa Transaction ID"
+                                  className="form-control"
+                                />
+                            </div>
+                          </div>
+                          <button className="btn receipt-button" type="submit">{isLoading ? "Loading...":"View"}</button>
+                    </Form>
+                    )}
+                </Formik>
 
-                      <div className="form-group">
-                      
-                      <button className="btn receipt-button"  onClick={(e) => onSubmit(e,input)} >{isLoading ? "Loading...":"View"}</button>
-                      
-                      {isLoading?
+                {isLoading?
                       <div className="spinner-border" role="status">
                       <span className="sr-only">Loading...</span>
                     </div> : <></> }
-                      </div>
-                    </form>
-            </div>
-          
-          </div>
+              </div>
+              </div>
         </div>
       </div>
     </div>
-        {/* ============================== */}
-     
-      {
-        show ?
+
+      {show ?
         
-        <div className="container-fluid">
+      <div className="container-fluid">
       <div className="row ">
         <div className="col-sm-6 mx-auto">
             <React.Fragment>
             <div className="card ">
             <div className="card-body">
-              <table className="table table-striped" id="joshi" style={{border: "1px solid #ccc", width: "100%", maxWidth: "100%",marginBottom: "1rem",backgroundColor: "initial",color: "#212529"}} >
+              <table className="table table-striped" id="receipt_table" style={{border: "1px solid #ccc", width: "100%", maxWidth: "100%",marginBottom: "1rem",backgroundColor: "initial",color: "#212529"}} >
                 <tbody>
                   <thead >
                     <tr >
@@ -193,40 +135,39 @@ export const Recipts = () => {
 
                   <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
                     <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Payer Name</th>
-                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payeeFirstName}</td>
+                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payee_name}</td>
                   </tr>
 
                   <tr >
                     <th style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}} scope="row">Sabpaisa Transaction ID</th>
-                    <td style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}} className="text-wrap">{data.txnId}</td>
+                    <td style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}} className="text-wrap">{data.txn_id}</td>
                   </tr>
 
 
                   <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
                     <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Client Transaction ID</th>
-                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.transactionCompositeKey.clientTxnId}</td>
+                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.client_txn_Id}</td>
                   </tr>
 
 
                   <tr>
                     <th scope="row" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Client Name</th>
-                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.clientName}</td>
+                    <td className="text-wrap" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.client_name}</td>
                   </tr>
-
 
                   <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
                     <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Payee Amount</th>
-                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payeeAmount}</td>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payee_amount}</td>
                   </tr>
 
                   <tr>
                     <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Payment Mode</th>
-                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.paymentMode}</td>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.payment_mode}</td>
                   </tr>
 
                   <tr style={{backgroundColor: "rgba(0, 0, 0, 0.05)"}}>
                     <th scope="row"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>Transaction Date</th>
-                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{dateFormat(data.transDate)}</td>
+                    <td className="text-wrap"  style={{ borderTop: "1px solid rgba(0, 0, 0, 0.05)",padding: "0.75rem", verticalAlign: "top"}}>{data.trans_date}</td>
 
                   </tr>
                   <tr>
@@ -245,9 +186,7 @@ export const Recipts = () => {
           </div>
           </div>
           </div>
-
-         
-          : ''}
+          : <></>}
         </div>
 
 

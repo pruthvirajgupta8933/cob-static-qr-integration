@@ -2,14 +2,18 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import API_URL from "../../../config";
 // import { saveSubscribedPlan } from "../../../slices/dashboardSlice";
 
 function Emandate(props) {
   
   const {user} = useSelector((state)=>state.auth);
-  const { clientId,clientName } =user.clientMerchantDetailsList[0];
+  // console.log(user)
+  const { clientId,clientName,clientCode,clientEmail } =user.clientMerchantDetailsList[0];
   const { register, handleSubmit } = useForm();
   const [formData, setFormData] = useState({});
+  const [makePayment,setMakePayment]= useState(false);
+  const [spinnerOfPayment,setSpinnerOfPayment] = useState(false)
 
   const [displayMsg,setDisplayMsg]=useState("none" );
   // console.log("isModelClosed",formData.isModelClosed);
@@ -42,7 +46,7 @@ function Emandate(props) {
       mandateStartTime : data.mandateStartDate,
       mandateEndTime  : data.mandateEndDate,
   };
-  axios.post("https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",postData).then((response)=>{
+  axios.post(API_URL.SUBSCRIBE_FETCH_APP_AND_PLAN ,postData).then((response)=>{
             // console.log(response);
             setDisplayMsg('block');
             setTimeout(function() {
@@ -53,15 +57,17 @@ function Emandate(props) {
   }
 
   const onSubmit = (data) => {
-    // console.log(formData.planType)
-    if(formData.termAndCnd){
 
+    //formData has all the selected plan values
+    if(formData.termAndCnd){
+      
       const planData = {
         applicationId:formData.applicationId,
         applicationName:formData.applicationName,
         planId:formData.planId,
         planName:formData.planName,
       }
+      localStorage.setItem("selectedPlan",JSON.stringify(planData))
 
       if(typeof formData.planId==='undefined'){
         alert("please Select the valid plan");
@@ -69,13 +75,48 @@ function Emandate(props) {
         // console.log("formData",formData);
         if(formData.planType.toLowerCase() ==='trial'){
           saveTrialPlanData(formData);
+        }else if(makePayment){
+         
+            setSpinnerOfPayment(true);
+                  var arrClientName = user.clientContactPersonName.split(" ")
+                  var firstName = arrClientName[0];
+                  var lastName = arrClientName[1];
+                  if(typeof(arrClientName[1]) === 'undefined'){
+                     lastName = "N/A";
+                  }
+              
+                  // Here add node server URL 
+            fetch(API_URL.NODE_PG_URL,{
+              // Adding method type
+              method: "POST",
+              // Adding body or contents to send
+              body: JSON.stringify({
+                "payerFirstName": firstName,
+                "payerLastName":lastName,
+                "payerContact":user.clientMobileNo,
+                "payerAddress":"Delhi",
+                "payerEmail":clientEmail,
+                "clientCode":clientCode,
+                "tnxAmt":parseInt(formData.mandateMaxAmount)
+            }),
+               
+              // Adding headers to the request
+              headers: {
+                  "Content-type": "application/json; charset=UTF-8"
+              }
+          }).then( 
+              response => response.json()
+            )
+            .then(
+              data =>{
+                
+                // setPaymentGatewayUrl(data)
+                window.location.href = data.RedirectUrl;
+              }
+            )
         }else{
-          // console.log("selectedPlan",JSON.stringify(planData))
-          // dispatch(saveSubscribedPlan(planData))
-          
-           localStorage.setItem("selectedPlan",JSON.stringify(planData))
-           document.getElementById("mandateRegForm").submit()
-
+          setSpinnerOfPayment(false);
+          document.getElementById("mandateRegForm").submit()
         }
       }      
     }else{
@@ -91,6 +132,7 @@ useEffect(() => {
 
 useEffect(() => {
     handleSubmit(onSubmit);
+// eslint-disable-next-line react-hooks/exhaustive-deps
 },[])
 
 const thank_msg = {
@@ -133,9 +175,8 @@ const subscribe_msg_content = {
     <form 
 		onSubmit={handleSubmit(onSubmit)}
 		id="mandateRegForm"
-		action="https://subscription.sabpaisa.in/subscription/mandateRegistration"
+		action = {API_URL.MANDATE_REGISTRATION}
 		method="POST"
-
 	>
 		<div style={{ display: "none" }}>
 		<input {...register("authenticationMode")} name="authenticationMode" value={formData.authenticationMode}/>
@@ -166,8 +207,10 @@ const subscribe_msg_content = {
         <input {...register("untilCancelled")} type="text" name="untilCancelled" value={formData.untilCancelled}/>
         <input {...register("userType")} type="text" name="userType" value={formData.userType}/>
 		</div>
+       
+        <button className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(false)}}>  {formData.planType ==='trial' ? 'Subscribe' : ' Create E-Mandate'} </button>
 
-        <button className="Click-here ant-btn ant-btn-primary float-right" type="submit">  {formData.planType ==='trial' ? 'Subscribe' : ' Create E-Mandate'} </button>
+        {formData.planType !=='trial'? <button  className="Click-here ant-btn ant-btn-primary float-right" type="submit" onClick={()=>{setMakePayment(true)}}>  {spinnerOfPayment ? <span className="spinner-border spinner-border-sm"></span> : <></> } Make Payment </button> : <></>}
     </form>
     </div>
    

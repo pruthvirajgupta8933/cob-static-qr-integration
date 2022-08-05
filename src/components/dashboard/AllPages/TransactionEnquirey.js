@@ -1,132 +1,104 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory, useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
-import validation from '../../validation';
+import * as Yup from "yup"
+import { Formik, Form } from "formik"
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+// import validation from '../../validation';
+
+import API_URL from '../../../config';
+import FormikController from '../../../_components/formik/FormikController';
+import PrintDocument from '../../../_components/reuseable_components/PrintDocument';
 
 
 
 function TransactionEnquirey() {
-  
-  const initialState = {
-    txnId:'',
-    paymentMode:'',
-    payeeFirstName:'',
-    payeeMob:'',
-    payeeEmail:'',
-    status: '',
-    bankTxnId: '',
-    clientName:'',
-    clientId:'',
-    payeeAmount:'',
-    paidAmount:'',
-    transDate:'',
-    transCompleteDate:'',
-    transactionCompositeKey:'',
-    clientCode:'',
-    clientTxnId:'',
 
+  
+  const initialValues = {
+    transaction_id: ""
   }
+  const validationSchema = Yup.object({
+    transaction_id: Yup.number().required("Required")
+  })
+
   
-  
-  const [input, setInput] = useState();
+
   const [show, setIsShow] = useState(false);
-  const [flag, setFlag] =useState('');
   const [errMessage , setErrMessage] = useState('');
-  const [data,setData]= useState(initialState)
+  const [data,setData]= useState({})
+  const [printData,setPrintData]= useState([])
   const {auth} = useSelector((state)=>state);
   const {user} = auth;
-  let { path } = useRouteMatch();
+
   let history = useHistory();
 
 
-  const onValueChange = e => {
-    setInput(e.target.value);
-  };
+  const onSubmit = (input)=>{
+    setData({});
+    const transaction_id = input.transaction_id
 
-
-  const onSubmit=async(input)=>{
-    // setErrors(validation({ input }))
-    var regex = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
-    
-    var flagMsg = true;
-    if(!input) {
-      flagMsg = 'ID is required'
-    }
-    else if(regex.test(input)) {
-      flagMsg = 'Invalid Input'
-    }
-   else{
-    flagMsg = false;
-    } 
-
-    setFlag(flagMsg);   
-    // console.log(errors.input);
-   if(flagMsg===false){
-    const response = await axios.get(`https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/${input}`)
+    axios.get(API_URL.VIEW_TXN+`/${transaction_id}`)
     .then((response) => {
-      console.warn(response);
-      setData(response.data);
-      setIsShow(true);
-      setErrMessage('');
+      if(response?.data.length>0){
+        setIsShow(true);
+        setData(response?.data[0]);
+        setErrMessage(false)
+      }else{
+        setIsShow(false);
+        setErrMessage(true)
+      }
+     
     })
     
     .catch((e) => {
-
       // console.log(e);
       setIsShow(false);
-      setErrMessage("No Data Found")
+      setErrMessage(true)
 
-    })} 
+    })
     
   }
 
+
+  useEffect(() => {
+    const tempArr = [
+      {key: 'Txn Id', value: data.txn_id},
+      {key: 'Payment Mode', value: data.payment_mode},
+      {key: 'Payee Name', value: data.payee_name},
+      {key: 'Payee Mobile', value: data.payee_mob},
+      {key: 'Payee Email', value: data.payee_email},
+      {key: 'Status ', value: data.status},
+      {key: 'Bank Txn Id', value: data.bank_txn_id},
+      {key: 'Client Name', value: data.client_name},
+      {key: 'Client Id', value: data.client_id},
+      {key: 'Payee Amount', value: data.payee_amount},
+      {key: 'Paid Amount', value: data.paid_amount},
+      {key: 'Transaction Date', value: data.trans_date},
+      
+      {key: 'Client Code ', value: data.client_code},
+      {key: 'Client Txn Id', value: data.client_txn_Id},
+    ]  
+    setPrintData(tempArr)
+  }, [data])
   
 
 
-   const dateFormat = (timestamp) => {
-
-
-// var date = new Date(timestamp);
-// console.log(date.getTime())
-// return date.getTime();
-
-if(timestamp==='' || timestamp===null) {
-  return " "
-  // alert(timestamp);
-}else{
-
-  var date = new Date(timestamp);
-  return (date.getDate()+
-            "/"+(date.getMonth()+1)+
-            "/"+date.getFullYear()+
-            " "+date.getHours()+
-            ":"+date.getMinutes()+
-            ":"+date.getSeconds());
-  
-}
-  }
-
-
-  const onClick=()=>{
-
-    var tableContents = document.getElementById("joshi").innerHTML;
+  const  onClick = async ()=>{
+    var tableContents = document.getElementById("print_docuement").innerHTML;
     var a = window.open('', '', 'height=900, width=900');
-    a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
-     a.document.write(tableContents);
-    a.document.write('</table>');
+    a.document.write(tableContents);
     a.document.close();
-            a.print();
+    await a.print();
   } 
 
   if(user && user.clientMerchantDetailsList===null && user.roleId!==3 && user.roleId!==13){
-    // alert(`${path}/profile`);
-    // return <Redirect to={`${path}/profile`} />
     history.push('/dashboard/profile');
   } 
 
   return (
     <section className="ant-layout">
+   
       <div className="profileBarStatus">
         {/*
                     <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
@@ -140,54 +112,68 @@ if(timestamp==='' || timestamp===null) {
           <section className="features8 cid-sg6XYTl25a flleft col-lg-12" id="features08-3-">
             <div className="container-fluid">
               <div className="row">
+              <Formik
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={(onSubmit)}
+                      >
+                  {formik => (
+                    <Form className="col-lg-12 ">
+                          <div className="form-row">
+                            <div className="form-group col-md-6 col-sm-12 col-lg-6">
+                              <FormikController
+                                  control="input"
+                                  type="text"
+                                  label="Transaction ID  *"
+                                  name="transaction_id"
+                                  placeholder="Enter Sabpaisa Transaction ID"
+                                  className="form-control"
+                                />
 
-                <div className="col-lg-6 mrg-btm- bgcolor">
-                  <label>Transactions Enquiry</label>
-                  <input type="text" className="ant-input" placeholder="Enter your transactions enquiry" onChange={(e) => onValueChange(e)} />
-                  {flag && <h4>{flag}</h4>}
-                </div>
-                <div className="col-lg-6 mrg-btm- bgcolor">
-                  <div>&nbsp;</div>
-                  <button
-                    className="view_history test topmargt"
-                    onClick={() => onSubmit(input)}
-                  >
-                    Search
-                  </button>
-                </div>
-
-                {show ? (
+                                <button className="btn btn-primary mt-2" type="submit">View</button>
+                            </div>
+                          </div>
+                         
+                    </Form>
+                    )}
+                </Formik>
+               
+                {show && data?.txn_id ? (
+                  
+                  <div className="overflow-auto col-lg-12 ">
+                   {/* Print Data  */}
+                  <PrintDocument data={printData} />
                   <table
                     cellspacing={0}
                     cellPadding={10}
                     border={0}
                     width="100%"
                     className="tables"
-                    id="joshi"
+                    id="enquiry"
                   >
                     <tbody>
                       <tr>
                         <td>Txn Id:</td>
                         <td className="bold">
-                          <b>{data.txnId}</b>
+                          <b>{data.txn_id}</b>
                         </td>
                         <td>Payment Mode :</td>
                         <td className="bold">
-                          <b>{data.paymentMode}</b>
+                          <b>{data.payment_mode}</b>
                         </td>
-                        <td>Payee First Name :</td>
+                        <td>Payee Name :</td>
                         <td className="bold">
-                          <b>{data.payeeFirstName}</b>
+                          <b>{data.payee_name}</b>
                         </td>
                       </tr>
                       <tr>
                         <td>Payee Mobile:</td>
                         <td className="bold">
-                          <b>{data.payeeMob}</b>
+                          <b>{data.payee_mob}</b>
                         </td>
                         <td>Payee Email :</td>
                         <td className="bold">
-                          <b>{data.payeeEmail}</b>
+                          <b>{data.payee_email}</b>
                         </td>
                         <td>Status :</td>
                         <td className="bold">
@@ -197,66 +183,59 @@ if(timestamp==='' || timestamp===null) {
                       <tr>
                         <td>Bank Txn Id :</td>
                         <td className="bold">
-                          <b>{data.bankTxnId}</b>
+                          <b>{data.bank_txn_id}</b>
                         </td>
                         <td>Client Name :</td>
                         <td>
-                          <b>{data.clientName}</b>
+                          <b>{data.client_name}</b>
                         </td>
                         <td>Client Id : </td>
                         <td className="bold">
-                          <b>{data.clientId}</b>
+                          <b>{data.client_id}</b>
                         </td>
                       </tr>
                       <tr>
                         <td>Payee Amount :</td>
                         <td className="bold">
-                          <b>{data.payeeAmount}</b>
+                          <b>{data.payee_amount}</b>
                         </td>
                         <td>Paid Amount :</td>
                         <td className="bold">
-                          <b>{data.paidAmount}</b>
+                          <b>{data.paid_amount}</b>
                         </td>
-                        <td>Trans Date :</td>
+                        <td>Transaction Date :</td>
                         <td className="bold">
-                          <b>{dateFormat(data.transDate)}</b>
+                          <b>{data.trans_date}</b>
                         </td>
                       </tr>
                       <tr>
-                        <td>Trans Complete Date :</td>
-                        <td className="bold">
-                          <b>{dateFormat(data.transCompleteDate)}</b>
-                        </td>
                         <td> Client Code :</td>
                         <td className="bold">
-                          <b>{data.transactionCompositeKey.clientCode}</b>
+                          <b>{data.client_code}</b>
                         </td>
                         <td>Client Txn Id:</td>
                         <td className="bold">
-                          <b>{data.transactionCompositeKey.clientTxnId}</b>
+                          <b>{data.client_txn_Id}</b>
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                  </div>
                 ) : (
-                  ""
+                  <>  </>
                 )}
 
                 {errMessage && (
                   <h3
                     style={{
-                      position: "absolute",
-                      top: 300,
-                      left: 200,
                       color: "red",
                     }}
                   >
-                    {" "}
-                    {errMessage}{" "}
+                    Record Not Found!
                   </h3>
                 )}
 
-                {show ? (
+                {show && data.txn_id? (
                   <button
                     Value="click"
                     onClick={onClick}
@@ -271,14 +250,7 @@ if(timestamp==='' || timestamp===null) {
             </div>
           </section>
         </div>
-        <footer className="ant-layout-footer">
-          <div className="gx-layout-footer-content">
-            © 2021 Ippopay. All Rights Reserved.{" "}
-            <span className="pull-right">
-              Ippopay's GST Number : 33AADCF9175D1ZP
-            </span>
-          </div>
-        </footer>
+    
       </main>
     </section>
   );

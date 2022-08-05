@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import SideNavbar from './SideNavbar/SideNavbar'
 import Home from './AllPages/Home'
 import Transaction from './AllPages/Transaction'
@@ -11,15 +11,21 @@ import "./css/Home.css";
 import "./css/50.684f163d.chunk.css";
 import "./css/main.e3214ff9.chunk.css";
 import "./css/loader.css";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ClientList from './AllPages/ClientList';
 import Subsciption from './AllPages/Subscription';
 import PaymentLinkDetail from './AllPages/createpaymentlink/PaymentLinkDetail';
 import Paylink from './AllPages/Paylink';
-import {FormikApp} from './AllPages/ProfileTest'
+import { Profile } from './AllPages/Profile';
 import Emandate from './AllPages/Emandate';
-import ChangePassword from './AllPages/ChangePassword';
-import { loginRefferalSlice } from '../../slices/auth';
+import PaymentResponse from './AllPages/PaymentResponse';
+import KycForm from '../KYC/KycForm';
+import Test from '../Otherpages/Test';
+import ViewTransactionWithFilter from './AllPages/ViewTransactionWithFilter';
+import SettlementReportNew from './AllPages/SettlementReportNew';
+import TransactionHistoryDownload from './AllPages/TransactionHistoryDownload';
+import Approver from '../ApproverNVerifier/Approver';
+
 
 
 function Dashboard() {
@@ -27,11 +33,6 @@ function Dashboard() {
     let history = useHistory();
     let { path } = useRouteMatch();
     const { user } = useSelector((state) => state.auth);
-    const dispatch = useDispatch();
-    
-    
-
-
 //   user!==null && user?. return (<Redirect to="/login-page" />)
     //  console.log("user",user);
     //  useEffect(() => {
@@ -54,11 +55,6 @@ function Dashboard() {
      return <Redirect to="/login-page" />
   }
 
-
-
-
-
-  
     return (
         <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
                 <SideNavbar />
@@ -66,13 +62,12 @@ function Dashboard() {
                 <Route exact path={path}>
                     <Home/>
                 </Route>
-                <Route exact path={`${path}/profile`}>
-                     {/* <Profile/> we need to change after testing complete */} 
-                     <FormikApp />
+                <Route exact path={`${path}/profile`}> 
+                     <Profile />
                 </Route>
-                <Route exact path={`${path}/change-password`}>
+                {/* <Route exact path={`${path}/change-password`}>
                      <ChangePassword />
-                </Route>
+                </Route> */}
                 <Route exact path={`${path}/transaction`}>
                      <Transaction/>
                 </Route>
@@ -100,7 +95,36 @@ function Dashboard() {
                 <Route exaxt path={`${path}/emandate/`}>
                      <Emandate />
                 </Route>
-                </Switch> 
+                <Route exaxt path={`${path}/payment-response/`}>
+                     <PaymentResponse />
+                </Route>
+                <Route exact path={`${path}/kyc/`}>
+                <KycForm />
+              </Route>
+                <Route exact path={`${path}/test/`}>
+                <Test />
+              </Route>
+              <Route exact path={`${path}/view-transaction-with-filter`} >
+                <ViewTransactionWithFilter />
+              </Route>
+
+              <Route exact path={`${path}/settlement-report-new`} >
+                <SettlementReportNew />
+              </Route>
+
+              <Route exact path={`${path}/transaction-history-new`} >
+                <TransactionHistoryDownload />
+              </Route>
+
+              <Route exact path={`${path}/kyc`} >
+                <KycForm />
+              </Route>
+
+              <Route exact path={`${path}/approver`} >
+                <Approver />
+              </Route>
+              
+                </Switch>
         </section>
     )
 }

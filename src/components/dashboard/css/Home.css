@@ -1,4 +1,4 @@
-table.tables th {
+table.tables th{
   background: #f7f7f7;
   padding: 8px;
   font-size: 14px;
@@ -28,5 +28,28 @@ table.tables tr:nth-child(odd) {
   justify-content: none !important;
 }
 .nopad{
-  padding: 0 8px 0 0 !important;
+  padding: 0 0 0 0 !important;
+}
+
+.new-tab{
+  padding-top: 5px;
+  margin-left: 5px;
+  font-size: 10px;
+  float: right;
+  position: inherit;
+  background: red;
+  line-height: initial;
+  margin: 0;
+  font-weight: bold;
+  padding: 2px;
+  border-radius: 2px 5px;
+  margin-top: 10px;
+  animation: blinker 1s linear infinite;
+}
+
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }

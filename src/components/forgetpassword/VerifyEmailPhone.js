@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import React, {  useState } from "react";
+// import { Formik, Field, Form, ErrorMessage } from "formik";
+// import * as Yup from "yup";
 import validation from "../validation";
-import { verifyOtpOnForgotPwdSlice } from "../../slices/auth";
-import { useDispatch, useSelector } from "react-redux";
+// import { verifyOtpOnForgotPwdSlice } from "../../slices/auth";
+import {  useSelector } from "react-redux";
 import axios from "axios";
 
 
 
 const VerifyEmailPhone = (props)  => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const {auth} = useSelector(state=>state);
   console.log(auth.forgotPassword.sendUserName)
   
@@ -64,21 +64,6 @@ const username = auth.forgotPassword.sendUserName.username;
 
     }
 
-  // useEffect(() => {
-  //   if(verify){
-  //     const sendOtp = {
-  //                         username: username,
-  //                         otp : emailotp
-  //                     }
-  //     axios.post("https://cobtest.sabpaisa.in/auth-service/account/verify-otp",sendOtp).then((response)=>{console.log(response)}).catch(error=>console.log(error))
-  //     // dispatch(verifyOtpOnForgotPwdSlice(sendOtp))
-  //   }
-  // }, [errors,verify])
-  
-      // console.log(verify);
-  
-  
-    
     
     
     const handleSubmit = (e) => {

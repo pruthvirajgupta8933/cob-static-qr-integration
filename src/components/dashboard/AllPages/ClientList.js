@@ -1,16 +1,16 @@
 import React,{useEffect,useState} from 'react';
-import { useDispatch,useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function ClientList() {
 
-  const [isLoading,setIsLoading] = useState(false);
+  // const [isLoading,setIsLoading] = useState(false);
   const [search, SetSearch] = useState("");
   const [clientListData, SetClientList] = useState([]);
 
   var {user} = useSelector((state)=>state.auth);
   
   useEffect(() => {
-   
+   //ClientMerchantDetailList
   if(user.clientMerchantDetailsList?.length>0){
     var clientMerchantDetailsList = user.clientMerchantDetailsList;
     SetClientList(user.clientMerchantDetailsList);
@@ -49,6 +49,7 @@ const handleChange= (e)=>{
                   <div className='noOfRecord'>Number of Record: {clientListData.length}</div>
                 </div>
                 
+                <div style={{overflow:"scroll"}}>
                 <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables">
                   <tbody><tr>
                       <th>Client Code</th>
@@ -73,12 +74,11 @@ const handleChange= (e)=>{
                       })}
                   </tbody>
                   </table>
+                  </div>
               </div>
             </div></section>
         </div>
-        <footer className="ant-layout-footer">
-          <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
-        </footer>
+        
       </main>
     </section>
     )

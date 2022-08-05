@@ -1,22 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import {useParams,useLocation} from "react-router-dom"
+import {useLocation} from "react-router-dom"
 import axios from 'axios';
-import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
+import API_URL from "../../config";
 
 
 const EmandatePage = () => {
 
   const search = useLocation().search;
   const mendateRegIdParam = new URLSearchParams(search).get('mendateRegId');
-
-  // console.log(mendateRegIdParam);
-
   const [details,setDetails] = useState([]);
-    const baseUrl = "https://subscription.sabpaisa.in/subscription/npci/registration/status/";
-    const mandateRegId = mendateRegIdParam;
+  const baseUrl = API_URL.MANDATE_REGISTRATION_STATUS;
+  const mandateRegId = mendateRegIdParam;
     const getManteDetails = (mandateRegId)=>{
-    const mandateDetails = axios.get(baseUrl+mandateRegId).then((response)=>{
-            
+      axios.get(baseUrl+mandateRegId).then((response)=>{
             setDetails(response.data);
     }).catch(error => console.log(error,"error"));
   }
@@ -35,33 +32,23 @@ const detailList = detailsKey.map((item,i)=>{
       );
 });
 
-  const initialState = {
-    payee_first_name: "",
-    txn_id: "",
-    client_txn_id: "",
-    client_name: "",
-    paid_amount: "",
-    payment_mode: "",
-    trans_date: "",
-    status: "",
-    udf19: "",
+  // const initialState = {
+  //   payee_first_name: "",
+  //   txn_id: "",
+  //   client_txn_id: "",
+  //   client_name: "",
+  //   paid_amount: "",
+  //   payment_mode: "",
+  //   trans_date: "",
+  //   status: "",
+  //   udf19: "",
 
-  }
+  // }
   const [transactionId, setTransactionId] = useState();
   const[studentId, setStudentId]=useState();
-  const [show, setIsShow] = useState(false);
-  const [errMessage, setErrMessage] = useState('');
-  const [data, setData] = useState(initialState)
-
- 
-  
-    
-  
-  
-
-
-  
-
+  // const [show, setIsShow] = useState(false);
+  // const [errMessage, setErrMessage] = useState('');
+  // const [data, setData] = useState(initialState)
 
   const onSubmit = async (transactionId,studentId) => {
     if(transactionId === null){
@@ -72,55 +59,25 @@ const detailList = detailsKey.map((item,i)=>{
     }
     
 
-    const response = await axios.get(`https://adminapi.sabpaisa.in/Receipt/ReceiptMB/${transactionId}/${studentId}`)
+    await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
       .then((response) => {
-        console.warn(response);
-        setData(response.data);
-        setIsShow(true);
-        setErrMessage('');
+        // console.warn(response);
+        // setData(response.data);
+        // setIsShow(true);
+        // setErrMessage('');
       })
 
       .catch((e) => {
-        
-
         console.log(e);
-        setIsShow(false);
-        setErrMessage('No Data Found');
+        // setIsShow(false);
+        // setErrMessage('No Data Found');
 
       })
 
   }
-  const dateFormat = (timestamp) => {
-    var date = new Date(timestamp);
-    return (date.getDate() +
-      "/" + (date.getMonth() + 1) +
-      "/" + date.getFullYear() +
-      " " + date.getHours() +
-      ":" + date.getMinutes() +
-      ":" + date.getSeconds());
-
-
-
-    // var date = new Date(timestamp);
-    // console.log(date.getTime())
-    // return date.getTime();
-
-    
-  }
-  const onClick = () => {
-
-    var tableContents = document.getElementById("joshi").innerHTML;
-    var a = window.open('', '', 'height=900, width=900');
-    a.document.write('<table cellspacing="0" cellPadding="10" border="0" width="100%" style="padding: 8px; font-size: 13px; border: 1px solid #f7f7f7;" >')
-    a.document.write(tableContents);
-    a.document.write('</table>');
-    a.document.close();
-    a.print();
-  }
-
-
+  
+ 
   return (
-    
       <div className='container'>
         <div className='row'>
           <div className='col-12 mb-4'>

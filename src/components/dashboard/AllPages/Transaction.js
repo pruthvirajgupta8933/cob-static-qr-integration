@@ -65,7 +65,7 @@ function Transaction() {
                                 </div>
                               </div>
                             </div>
-                            <div className="ant-col ant-col-24 ant-col-sm-5 ant-col-md-5 ant-col-lg-5 m-t-24"><a className="ant-btn ant-btn-danger">Reset</a><a className="ant-btn ant-btn-primary btn_now_allow">Download</a></div>
+                            <div className="ant-col ant-col-24 ant-col-sm-5 ant-col-md-5 ant-col-lg-5 m-t-24"><a href={()=>false}className="ant-btn ant-btn-danger">Reset</a><a href={()=>false}className="ant-btn ant-btn-primary btn_now_allow">Download</a></div>
                           </div>
                         </div>
                         <div className="react-bs-table-container">
@@ -200,7 +200,7 @@ function Transaction() {
                                 </div>
                               </div>
                             </div>
-                            <div className="ant-col ant-col-24 ant-col-sm-5 ant-col-md-5 ant-col-lg-5 m-t-24"><a className="ant-btn ant-btn-danger">Reset</a><a className="ant-btn ant-btn-primary btn_now_allow">Download</a></div>
+                            <div className="ant-col ant-col-24 ant-col-sm-5 ant-col-md-5 ant-col-lg-5 m-t-24"><a href={()=>false}className="ant-btn ant-btn-danger">Reset</a><a href={()=>false}className="ant-btn ant-btn-primary btn_now_allow">Download</a></div>
                           </div>
                         </div>
                         <div className="react-bs-table-container">
@@ -279,10 +279,7 @@ function Transaction() {
               </div>
             </div>
           </div>
-          <footer className="ant-layout-footer">
-            <div className="gx-layout-footer-content">© 2021 SabPaisa. All Rights Reserved. <span className="pull-right">SabPaisa
-                GST Number : 33AADCF9175D1ZP</span></div>
-          </footer>
+         
         </main>
       </section>
     )

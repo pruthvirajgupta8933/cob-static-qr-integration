@@ -1,26 +1,26 @@
-import React, { useState,useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { Formik, Field, Form, ErrorMessage} from "formik";
 import * as Yup from 'yup'
 import "yup-phone"
 import {changePasswordSlice} from '../../../slices/auth' 
-import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
+// import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
 import { toast, Zoom } from 'react-toastify';
 
 
 
 function ChangePassword() {
   const dispatch= useDispatch();
-  let { path, url } = useRouteMatch();
+  // let { path, url } = useRouteMatch();
   const { user ,passwordChange} = useSelector((state) => state.auth);
 
 // console.log(passwordChange);
-  const { clientMerchantDetailsList ,
+  const { 
           loginId,
           userName,
         } = user;
   
-  const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
+  // const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
 
 useEffect(() => {
 
@@ -201,9 +201,7 @@ const FORM_VALIDATION = Yup.object().shape({
                 <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
               </div>
             </div>
-          <footer className="ant-layout-footer">
-            <div className="gx-layout-footer-content">© 2021 Ippopay. All Rights Reserved. <span className="pull-right">Ippopay's GST Number : 33AADCF9175D1ZP</span></div>
-          </footer>
+         
         </main>
       </section>
     )

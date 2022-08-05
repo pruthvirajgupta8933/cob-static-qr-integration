@@ -1,34 +1,34 @@
+/* eslint-disable array-callback-return */
 
 import React,{useEffect,useState} from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import { successTxnSummary, subscriptionplan, subscriptionPlanDetail } from '../../../slices/dashboardSlice';
+import { successTxnSummary, subscriptionplan, clearSuccessTxnsummary } from '../../../slices/dashboardSlice';
 import ProgressBar from '../../../_components/reuseable_components/ProgressBar';
 import { useRouteMatch, Redirect} from 'react-router-dom'
 import '../css/Home.css';
 
 
 
-function Home() {
 
-  
+function Home() {
   // console.log("home page call");
   const dispatch = useDispatch();
   let { path } = useRouteMatch();
-  var currentDate = new Date().toJSON().slice(0, 10);
-  const [fromDate, setFromDate] = useState(currentDate);
-  const [toDate, setToDate] = useState(currentDate);
+
   const [clientCode, setClientCode] = useState("1");
   
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
-
-
-
   const {dashboard,auth} = useSelector((state)=>state);
   // console.log("dashboard",dashboard)
-  const { isLoading , successTxnsumry, subscribedService } = dashboard;
+  const { isLoading , successTxnsumry } = dashboard;
   const {user} = auth;
+
+  const currentDate = new Date().toJSON().slice(0, 10);
+  const fromDate = currentDate;
+  const toDate = currentDate;
+
   var clientCodeArr = [];
   var totalSuccessTxn = 0;
   var totalAmt = 0;
@@ -42,12 +42,10 @@ function Home() {
     // console.log(objParam);
     dispatch(subscriptionplan);
     dispatch(successTxnSummary(objParam));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientCode]);
 
-  // console.log('successTxnsumry',successTxnsumry );
-  // console.log('clientMerchantDetailsList',user.clientMerchantDetailsList);
 
-  
   //make client code array
   if(user?.clientMerchantDetailsList!==null && user.clientMerchantDetailsList?.length>0){
         clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
@@ -62,6 +60,7 @@ function Home() {
   // filter api response data with client code
   useEffect(() => {
     if(successTxnsumry?.length>0){
+       // eslint-disable-next-line array-callback-return
        var filterData = successTxnsumry?.filter((txnsummery)=>{
       if(clientCodeArr.includes(txnsummery.clientCode)){
         return clientCodeArr.includes(txnsummery.clientCode);
@@ -73,6 +72,7 @@ function Home() {
       //successTxnsumry=[];
     }
     
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [successTxnsumry])
   
 
@@ -81,7 +81,16 @@ function Home() {
     ? SetShowData(txnList.filter((txnItme)=>
     Object.values(txnItme).join(" ").toLowerCase().includes(search.toLocaleLowerCase())))
     : SetShowData(txnList);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
+  
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearSuccessTxnsummary());
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   
 
   const handleChange= (e)=>{
@@ -191,14 +200,7 @@ showData.map((item)=>{
               </div>
             </section>
           </div>
-          <footer className="ant-layout-footer">
-            <div className="gx-layout-footer-content">
-              © 2021 Ippopay. All Rights Reserved.{" "}
-              <span className="pull-right">
-                Ippopay's GST Number : 33AADCF9175D1ZP
-              </span>
-            </div>
-          </footer>
+          
         </main>
       </section>
     );

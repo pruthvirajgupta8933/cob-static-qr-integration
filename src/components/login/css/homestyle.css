@@ -1,4 +1,4 @@
-html,body{/*height:100%;min-height:100%; scroll-behavior: smooth; overflow-x: hidden;overflow-y: auto;*/}
+
 body{font-family:basis-grotesque,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";font-size: 14px;font-weight:400; height:100%;}
 * {outline: 0!important;}
 a:active,a:focus,a:hover {outline: 0;text-decoration: none;}
@@ -489,7 +489,7 @@ footer{float: left; width:100%; padding:70px 0px 0px; background:#fff;z-index:-1
 .brd_steps_upi_rig::after{position:absolute; width:5px; height:1498px;background: #F4F4F4;left:calc(0% - 2px); top:calc(50% + 24.233px);content:""}
 .padd_top_align{padding:50px 0px;}
 .step_desc_con_rig{text-align: right;display:flex;color:#fff; font-size:20px;font-weight:500; background: #001a6c; padding:10px 20px; border-radius:30px; margin-right:-54px; z-index:10;}
-.dis_table_rig{display:flex;  align-items: center; min-height:400px;justify-content: end;}
+.dis_table_rig{display:flex;  align-items: center; min-height:400px;justify-content: flex-end;}
 .brd_steps_upi_two{position: absolute;width: 155px;height: 5px;background: #F4F4F4;right: 80%;top: 50%;content:"";}
 /*payment_link*/
 .tab_align_des{float: left;width:100%;text-align: center;}
@@ -1433,8 +1433,8 @@ footer{float: left; width:100%; padding:70px 0px 0px; background:#fff;z-index:-1
 .ippo_new_left_align .slide_list{float: left;width: 20px;list-style-type: none;padding: 0;margin: 0;}
 .ippo_new_left_align  .slide_list li{float: left;width: 100%;text-align: center;width: 18px;height: 18px;margin-bottom: 15px;line-height: 18px;}
 .ippo_new_left_align  .slide_list li a{display: inline-block;width: 14px;height: 14px;transition:ease 1s all;-wekit-transition:ease 1s all;-mz-transition:ease 1s all;}
-.ippo_new_left_align  .slide_list li a:hover{ }
-.ippo_new_left_align  .slide_list li a.active { }
+/* .ippo_new_left_align  .slide_list li a:hover{ } */
+/* .ippo_new_left_align  .slide_list li a.active { } */
 .ippo_new_white_text_title{float: left;width: 100%;font-size: 36px;font-weight: 700;margin-bottom: 20px;color: #fff;}
 .ippo_new_new_white_desc{float: left;width: 100%;font-size: 16px;font-weight: 500;margin-bottom: 35px;color: #C1D5ED;}
 .ippo_new_pmp_list{float: left;width: 100%;padding: 0 0 0 30px;margin: 0;}

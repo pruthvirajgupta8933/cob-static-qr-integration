@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { Zoom } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import API_URL from "../../../../config";
 
 function FormPaymentLink() {
 
@@ -23,7 +24,7 @@ function FormPaymentLink() {
  let clientMerchantDetailsList=[];
  let clientCode ='';
  if(user && user.clientMerchantDetailsList===null){
-  console.log("formpaymet link");
+  // console.log("formpaymet link");
      history.push('/dashboard/profile');
    }else{
      clientMerchantDetailsList = user.clientMerchantDetailsList;
@@ -41,9 +42,7 @@ function FormPaymentLink() {
  
  const getDrop = async (e) => {
     await axios
-      .get(
-        `https://paybylink.sabpaisa.in/paymentlink/getCustomers/${clientCode}`
-      )
+      .get( `${API_URL.GET_CUSTOMERS}${clientCode}` )
       .then((res) => {
         setDrop(res.data);
       })
@@ -55,6 +54,7 @@ function FormPaymentLink() {
   
 useEffect(() => {
     getDrop();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCheck = (e) => {                 //for checkbox
@@ -63,10 +63,14 @@ useEffect(() => {
 
 
   const submitHandler =  async (e) => {
-    
-
-     const response = await axios
-      .post(`https://paybylink.sabpaisa.in/paymentlink/addLink?Customer_id=${e.Customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
+    toast.info("In process", {
+      position: "top-right",
+      autoClose: 2000,
+      transition: Zoom,
+      limit: 2,
+    })
+    await axios
+      .post(`${API_URL.ADD_LINK}?Customer_id=${e.Customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`)
       .then((response) => {
         toast.success(response.data.message,
         {
@@ -75,7 +79,6 @@ useEffect(() => {
           transition: Zoom,
           limit: 2,
         })
-        // console.log(response.data.message);
       })
       .catch((error) => {
         toast.error('Payment Link Creation Failed',{
@@ -94,12 +97,15 @@ useEffect(() => {
     );
   };
 
+
+  const hoursArr = ["01", "02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
+
   return (
     
     <div
     className="modal fade"
     id="exampleModal"
-    tabindex="-1"
+    tabIndex="-1"
     role="dialog"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
@@ -179,13 +185,13 @@ useEffect(() => {
                       onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
                       name="Amount" 
                       autoComplete="off"
-                      onkeyDown="return event.keyCode !== 69" 
+                      // onKeyDown="return event.keyCode !== 69" 
                       className="form-control"
                       placeholder="Enter Payment Amount in (INR)"
                     />
                      {<ErrorMessage name="Amount">
-                                                {msg => <p style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                                            </ErrorMessage>}
+                          {msg => <p style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                      </ErrorMessage>}
                         </div>
                         <div className="col-lg-6 padbottom">
                             <label >
@@ -199,8 +205,8 @@ useEffect(() => {
                       placeholder="Enter Purpose of Payement Collection"
                     />
                         {<ErrorMessage name="Remarks">
-                                                {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
-                                            </ErrorMessage>}
+                              {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                          </ErrorMessage>}
                     
                         </div>
                         <div className="col-lg-6 padbottom">
@@ -220,32 +226,10 @@ useEffect(() => {
                         <label>Hours</label>
 
                           <Field component='select' className="form-control" name = 'hours' value= {hours} onChange={(e) => setHours(e.target.value)}>
-                            <option value="">Hours</option>
-                            <option value="00">00</option>
-                            <option value="01">01</option>
-                            <option value="02">02</option>
-                            <option value="03">03</option>
-                            <option value="04">04</option>
-                            <option value="05">04</option>
-                            <option value="06">05</option>
-                            <option value="06">06</option>
-                            <option value="07">07</option>
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                            <option value="23">23</option>
+                            <option value="" >Hours</option>
+                            {hoursArr.map((val,i)=>(
+                              <option value={val} key={i}>{val}</option>
+                            ))}
                           </Field>
                         </div>
                         <div className="col-lg-6 padbottom">

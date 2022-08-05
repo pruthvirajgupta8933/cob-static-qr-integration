@@ -227,9 +227,7 @@ html {
   display: table;
 }
 
-.sminputs {
-  /*border-bottom: 1px solid #E5E5E5;*/
-}
+
 .sminputs::after {
   clear: both;
   content: "";
@@ -670,4 +668,46 @@ background: black;
 }
 .martop{
   margin-top:35px;
+}
+.margn{
+  margin: 10px 5px 0 10px;
+}
+.topmar{margin-top:45px}
+.scrolltable{
+  
+  white-space: nowrap;
+  
+    overflow-x: auto;
+}
+
+@-moz-document url-prefix() {
+  .fllef {
+    float: left;
+    display: inline-flex;
+  }
+}
+
+
+
+.outerDiv {
+  max-width: 100%;
+  margin: 0 auto;
+}
+.inner-scrolling {
+  width: 100%;
+  overflow-x: auto;
+  display: flex;
+}
+.list {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0;
+  padding: 0;
+}
+table.list{
+  width: 100%; /* Temporary width is given you can remove it later on. */
+  display: inline-block;
+  padding: 10px 20px;
 }

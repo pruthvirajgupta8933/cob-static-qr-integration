@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector} from 'react-redux';
-import { Link,
-    useParams,
-    useRouteMatch,useHistory ,Redirect} from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import {checkPermissionSlice, logout} from '../../../slices/auth'
 
 
 function SideNavbar() {
-  let history = useHistory();
+
   const {user,payLinkPermission} = useSelector((state)=> state.auth )
   
   if(user!==null && user.userAlreadyLoggedIn){
@@ -17,11 +15,11 @@ function SideNavbar() {
     // history.push("/login-page");
 }
   var {roleId,clientContactPersonName}=user;
-    let { path, url } = useRouteMatch();
+    let { url } = useRouteMatch();
     const dispatch = useDispatch();
     const handle = ()=>{
       dispatch(logout());
-      
+
     }
 
     useEffect(() => {
@@ -29,6 +27,7 @@ function SideNavbar() {
         dispatch(checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode))
       }
       
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     
@@ -38,10 +37,11 @@ function SideNavbar() {
       <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px'}}>
       <div className="ant-layout-sider-children">
         <div className="gx-sidebar-content">
-          <div className="side_top_wrap"><span className="switch_live_label">Live</span>
+          <div className="side_top_wrap">
+            <span className="switch_live_label">Live</span>
             <div className="side_top_wrap_profile">
               <div className="side_top_wrap_toggle"><i className="fa fa-angle-down" /></div>
-              <p title="ABHISHEK VERMA" className="text-md text-ellipsis text-capitalize ng-binding">{clientContactPersonName}</p>
+              <p title="username" className="text-md text-ellipsis text-capitalize ng-binding">{clientContactPersonName}</p>
                {roleId!==3 && roleId!==13 ?  <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link> : <></> }
             </div>
           </div>
@@ -50,26 +50,43 @@ function SideNavbar() {
               <div style={{position: 'absolute', inset: '0px', overflow: 'scroll', marginRight: '-3px', marginBottom: '-3px'}}>
                 <ul className="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" role="menu">
                   <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
-                      <Link to={`${url}`} className='txt-white'><i className="fa fa-home" aria-hidden="true" /> Home</Link>
+                      <Link to={`${url}`} className='txt-white'><i className="fa fa-home" aria-hidden="true" /> <span>Home</span></Link>
+                  </li>
+                  <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
+                      <Link to={`${url}/kyc`} className='txt-white'><i className="fa fa-file-o" aria-hidden="true" /> <span>Fill KYC Form</span><span class="new-tab">new</span></Link>
                   </li>
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open" role="menuitem">
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-owns="settlement$Menu" aria-haspopup="true" style={{paddingLeft: '24px'}}><span className="sidebar-menu-divider">Your
                         Business</span><i className="ant-menu-submenu-arrow" /></div>
+
                     <ul id="settlement$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu">
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-calendar" aria-hidden="true" />   Transaction History </Link> 
                     </li>
+
+
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                         <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
                       </li>
-                      {roleId===3 || roleId===13 ?<li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+
+                      {/* <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                        <Link to={`${url}/view-transaction-with-filter`} className='txt-white'><i className="fa fa-filter" aria-hidden="true" />   Transaction Enquiry With Filter </Link> 
+                      </li> */}
+                      {roleId===3 || roleId===13 ? <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link> 
                       </li> 
                       :
+                      <React.Fragment>
                       <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                       <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
                       &nbsp; Settlement Report</Link> 
                       </li>
+
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
+                      <Link to={`${url}/settlement-report-new`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
+                      &nbsp; <span>Settlement Report</span><span class="new-tab">new</span></Link> 
+                      </li>
+                      </React.Fragment>
                       }
 
                       {roleId!==3 && roleId!==13 ? 
@@ -89,34 +106,70 @@ function SideNavbar() {
                           </li> :<></>
                         }
                       
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}><a href={void(0)} ><i className="fa fa-briefcase" aria-hidden="true" />
+                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}>
+                      <a href={()=>false} ><i className="fa fa-briefcase" aria-hidden="true" />
                       &nbsp; Logout</a>
                       </li>
                     </ul>
                   </li>
+
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-selected" role="menuitem">
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-haspopup="true" style={{paddingLeft: '24px'}} aria-owns="payment-tool$Menu"><span className="sidebar-menu-divider">Payment
                         Tools</span><i className="ant-menu-submenu-arrow" /></div>
                     <ul id="payment-tool$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu" style={{}}>
                     </ul>
                   </li>
+                  
                 </ul>
               </div>
-              <div className="track-horizontal" style={{display: 'none', opacity: 0}}>
-                <div style={{position: 'relative', display: 'block', height: '100%', cursor: 'pointer', borderRadius: 'inherit', backgroundColor: 'rgba(0, 0, 0, 0.2)', width: '0px'}}>
-                </div>
+              <div
+                className="track-horizontal"
+                style={{ display: "none", opacity: 0 }}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    display: "block",
+                    height: "100%",
+                    cursor: "pointer",
+                    borderRadius: "inherit",
+                    backgroundColor: "rgba(0, 0, 0, 0.2)",
+                    width: "0px",
+                  }}
+                ></div>
               </div>
-              <div style={{position: 'absolute', width: '6px', transition: 'opacity 200ms ease 0s', opacity: 0, right: '2px', bottom: '2px', top: '2px', borderRadius: '3px'}}>
-                <div style={{position: 'relative', display: 'block', width: '100%', cursor: 'pointer', borderRadius: 'inherit', backgroundColor: 'rgba(0, 0, 0, 0.2)', height: '30px', transform: 'translateY(31.5706px)'}}>
-                </div>
+              <div
+                style={{
+                  position: "absolute",
+                  width: "6px",
+                  transition: "opacity 200ms ease 0s",
+                  opacity: 0,
+                  right: "2px",
+                  bottom: "2px",
+                  top: "2px",
+                  borderRadius: "3px",
+                }}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    display: "block",
+                    width: "100%",
+                    cursor: "pointer",
+                    borderRadius: "inherit",
+                    backgroundColor: "rgba(0, 0, 0, 0.2)",
+                    height: "30px",
+                    transform: "translateY(31.5706px)",
+                  }}
+                ></div>
               </div>
             </div>
           </div>
-          <div className="sidebar-menu-query"> <a href="https://sabpaisa.in/support-contact-us/" target="_blank" ><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div>
+          <div className="sidebar-menu-query"> <a href="https://sabpaisa.in/support-contact-us/" target="_blank" rel="noreferrer"><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div>
         </div>
       </div>
     </aside>
-    )
+  );
 }
 
 export default SideNavbar

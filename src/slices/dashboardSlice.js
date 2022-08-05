@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import {Dashboardservice} from "../services/dashboard.service";
-import profileService from "../services/profile.service";
 
 
 const initialState = { 
@@ -10,6 +9,7 @@ const initialState = {
   subscribedService: [], 
   subscriptionplandetail: [],
   transactionHistory:[],
+  settlementReport:[],
   isLoadingTxnHistory:false
 
 };
@@ -40,10 +40,10 @@ export const successTxnSummary = createAsyncThunk(
 
   export const subscriptionplan = createAsyncThunk(
     "dashbaord/subscriptionplan",
-    async ({}, thunkAPI) => {
+    async (object = {}, thunkAPI) => {
       try {
         const response = await Dashboardservice.subscriptionplan();
-        console.log("subscribe data", response );
+        // console.log("subscribe data", response );
         return response;
       } catch (error) {
         const message =
@@ -60,7 +60,7 @@ export const successTxnSummary = createAsyncThunk(
 
   export const subscriptionPlanDetail = createAsyncThunk(
     "dashbaord/subscriptionPlanDetail",
-    async ({}, thunkAPI) => {
+    async (object = {}, thunkAPI) => {
       try {
         const response = await Dashboardservice.subscriptionPlanDetail();
         return response;
@@ -77,11 +77,7 @@ export const successTxnSummary = createAsyncThunk(
     }
   );
 
-  export const saveSubscribedPlan = createAsyncThunk("dashbaord/saveSubscribedPlan", async (data) => {
-    console.log("data",data);    
-    console.log("data");    
-    
-  });
+
 
   export const fetchTransactionHistorySlice = createAsyncThunk(
     "dashbaord/transactionHistory",
@@ -102,11 +98,42 @@ export const successTxnSummary = createAsyncThunk(
     }
   );
 
+
+  export const fetchSettlementReportSlice = createAsyncThunk(
+    "dashbaord/fetchSettlementReport",
+    async (data, thunkAPI) => {
+      try {
+        const response = await Dashboardservice.settlementReport(data);
+        return response.data;
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+      }
+    }
+  );  
+
   export const dashboardSlice = createSlice({
     name: 'dashboard',
     initialState,
+    reducers:{
+      clearTransactionHistory : (state)=>{
+        state.transactionHistory = []
+      },
+      clearSuccessTxnsummary : (state)=>{
+        state.successTxnsumry = []
+      },
+      clearSettlementReport : (state)=>{
+        state.settlementReport=[]
+      }
+      
+    },
     extraReducers: {
-    
       [successTxnSummary.pending]: (state) => {
         state.isLoading = true
       },
@@ -140,9 +167,23 @@ export const successTxnSummary = createAsyncThunk(
         state.isLoadingTxnHistory = false;
         state.transactionHistory=[];
       },
+      [fetchSettlementReportSlice.fulfilled]: (state, action) => {
+        // state.isLoadingTxnHistory = false;
+        state.settlementReport = action.payload;
+      },
+      [fetchSettlementReportSlice.pending]: (state) => {
+        // state.isLoadingTxnHistory = true;
+        state.transactionHistory=[];
+      },
+      [fetchSettlementReportSlice.rejected]: (state) => {
+        // state.isLoadingTxnHistory = false;
+        state.transactionHistory=[];
+      },
 
       
       },
   })
-  
-  export const dashboardReducer = dashboardSlice.reducer
+
+// Action creators are generated for each case reducer function
+export const { clearTransactionHistory , clearSuccessTxnsummary, clearSettlementReport } = dashboardSlice.actions
+export const dashboardReducer = dashboardSlice.reducer

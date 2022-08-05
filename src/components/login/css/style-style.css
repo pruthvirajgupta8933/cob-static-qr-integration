@@ -14,6 +14,12 @@
   .authfy-panel-left, .authfy-panel-right {
     float: left;
 }
+
+/*Registration page css*/
+
+.max-height-signup {
+  max-height: calc(70vh - 200px);
+}
   
 }
 
@@ -22,6 +28,10 @@
   body {
         background-size: cover;
 		
+  }
+
+  .max-height-signup {
+    max-height: calc(70vh - 200px);
   }
 }
 
@@ -256,10 +266,11 @@ a:focus {
 .brand-col .social-buttons a > span {
   padding-left: 5px;
 }
-
+/* 
 .panel-login {
-  /*margin-top: 20px;*/
+  // margin-top: 20px;
 }
+ */
 
 .panel-login .remember-row {
   margin-bottom: 10px;
@@ -400,14 +411,17 @@ a:focus {
 
 @media (min-width: 768px) {		
 
-    .authfy-panel {
-      /*padding: 20px;*/
-    }
-  
+  .max-height-signup {
+    max-height: calc(70vh - 200px);
+  }
     
 }
 
 @media (max-width: 767px) {
+
+  .max-height-signup {
+    max-height: calc(70vh - 200px) !important;
+  }
 
     .authfy-panel-left, 
     .authfy-panel-right {
@@ -472,6 +486,18 @@ a:focus {
 }
 
 
+@media screen and (max-width: 992px) {
+  .mobile-nav-show {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 993px) {
+  .mobile-nav-show {
+    display: none;
+  }
+}
+
 @media (min-width: 1200px)
 {
 .col-lg-offset-3 {
@@ -491,8 +517,11 @@ a:focus {
 @media (min-width: 768px)
 {
 .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
-    float: left;
-}
+    float: left;  
+  }
+  .mdevice{
+    width:100%;
+  }
 }
 
 .push-right{
@@ -505,5 +534,11 @@ a:focus {
   padding: 0;
 }
 
+
+.flleft-plink{
+  display: flex;
+  
+  /* float: inline-end; */
+}
 
 

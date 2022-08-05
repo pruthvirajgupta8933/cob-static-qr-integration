@@ -1,28 +1,30 @@
 import React,{useEffect, useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import axios from "axios";
-import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashboardSlice";
-import { Link } from 'react-router-dom';
+// import { subscriptionplan, subscriptionPlanDetail } from "../../../slices/dashboardSlice";
+// import { Link } from 'react-router-dom';
 import Emandate from '../AllPages/Mandate';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import API_URL from '../../../config';
 // import paymentGateWay from '../../../payment-gateway/'
 
 
 const Subsciption = () => {
   const [subscriptionDetails, setSubscriptionDetails] = useState(false);
-  const { message } = useSelector((state) => state.message);
+  // const { message } = useSelector((state) => state.message);
 
-  const subscriptionData = useSelector(state => state.subscribe);
+  // const subscriptionData = useSelector(state => state.subscribe);
   const [subscriptionPlanData,setSubscriptionData] = useState([]);
-  const [emandateDetails, setEmandateDetails] = useState(false);
+  // const [emandateDetails, setEmandateDetails] = useState(false);
   const [termAndCnd, setTermAndCnd] = useState(false);
-  const [subscriptionPlanChargesData,setSubscriptionPlanChargesData] = useState([]);
+  // const [subscriptionPlanChargesData,setSubscriptionPlanChargesData] = useState([]);
   const [subscribePlanData,setSubscribePlanData] = useState([]);
   const [isModelClosed,setIsModelClosed] = useState(false);
+  // const [paymentGatewayUrl,setPaymentGatewayUrl] = useState([]);
 
   
   const [Plans,setPlans] = useState([]);
-  const {dashboard,auth} = useSelector((state)=>state);
+  const {auth} = useSelector((state)=>state);
   const {user} = auth;
   let history = useHistory();
 
@@ -32,12 +34,12 @@ const Subsciption = () => {
     history.push('/dashboard/profile');
   } 
   
-  const {clientMerchantDetailsList , accountHolderName,accountNumber,bankName,clientEmail,clientMobileNo,ifscCode,loginStatus,pan} =user;
-  const { isLoading , subscribe } = dashboard;
-  let clientAuthenticationType,clientCode = '';
+  const {clientMerchantDetailsList , accountHolderName,accountNumber,bankName,clientEmail,clientMobileNo,ifscCode} =user;
+  // const { isLoading , subscribe } = dashboard;
+  let clientAuthenticationType = '';
   if(clientMerchantDetailsList!==null){
 
-    let {clientAuthenticationType,clientCode} = clientMerchantDetailsList[0];
+    // let {clientAuthenticationType,clientCode} = clientMerchantDetailsList[0];
 
   }
   var authenticationMode ='';
@@ -49,10 +51,10 @@ const Subsciption = () => {
   }
 
 
- const dispatch = useDispatch();
+//  const dispatch = useDispatch();
 
  const getSubscriptionService = async () => {  
-    await axios.get('https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan')  
+    await axios.get(API_URL.FETCH_APP_AND_PLAN)  
     .then(res => {  
       setSubscriptionData(res.data);
       localStorage.setItem("subscriptionData", JSON.stringify(res.data));
@@ -62,16 +64,16 @@ const Subsciption = () => {
     });  
   }
 
-  const userDetails = JSON.parse(localStorage?.getItem("user"));
+  // const userDetails = JSON.parse(localStorage?.getItem("user"));
 
-  const subsData = JSON.parse(localStorage?.getItem("subscriptionData"));
+  // const subsData = JSON.parse(localStorage?.getItem("subscriptionData"));
 
   const d = new Date();
   let formattedDate = d.toISOString();
 
   const [planPrice,setPlanPrice]=useState('');
-  const [planType,setPlanType]=useState('');
-  const [planValidityDays,setPlanValidityDays]=useState('');
+  // const [planType,setPlanType]=useState('');
+  // const [planValidityDays,setPlanValidityDays]=useState('');
   const [mandateEndData,setMandateEndData]=useState('');
   const [subscribeData,setSubscribeData]=useState({});
 
@@ -86,8 +88,8 @@ const Subsciption = () => {
                             });
     
       setPlanPrice(data.planPrice);
-      setPlanType(data.planType);
-      setPlanValidityDays(data.planValidityDays);
+      // setPlanType(data.planType);
+      // setPlanValidityDays(data.planValidityDays);
      
       const ed = new Date();
       var mandateEndDate = ed.setDate(ed.getDate() + data.planValidityDays);
@@ -96,8 +98,8 @@ const Subsciption = () => {
       
     }else{
       setPlanPrice('');
-      setPlanType('');
-      setPlanValidityDays('');
+      // setPlanType('');
+      // setPlanValidityDays('');
 
     }
   }
@@ -146,6 +148,7 @@ useEffect(() => {
   
   setSubscribeData(bodyFormData)
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [mandateEndData,planPrice,termAndCnd,subscribePlanData,isModelClosed]);
 
 
@@ -178,28 +181,6 @@ useEffect(() => {
   }, [subscribePlanData,termAndCnd]);
   
 
-  const makePayment=()=>{
-      console.log("make payment");
-      var username = 'nishant.jha_2885';
-      var password = 'SIPL1_SP2885';
-      var programID = "5666";
-      var clientCode = 'SIPL1';
-      var authKey = 'rMnggTKFvmGx8y1z';
-      var authIV = "0QvWIQBSz4AX0VoH";
-      var txnId = Math.floor(Math.random() * 1000000000);
-      var tnxAmt = 10;
-
-      var payerFirstName = 'Mukesh';
-      var payerLastName = 'Kumar';
-      var payerContact = '8796541230';
-      var payerAddress = 'xyz abc';
-      var payerEmail = 'test@gmail.com';
-      const userData = {
-        username,password,programID,clientCode,authKey,authIV,txnId,tnxAmt,payerFirstName,payerLastName,payerContact,payerAddress,payerEmail
-      };
-
-      // paymentGateWay(userData);
-  }
 
   // console.log("subscriptionPlanData",subscriptionPlanData);
 return (
@@ -217,25 +198,25 @@ return (
               <div className="row">
               {/* {console.log(subscriptionPlanData.length)} */}
         {subscriptionPlanData.length <= 0 ? <h3>Loading...</h3> : subscriptionPlanData.map((s,i) => 
-        <div className="col-3" key={i}>
+        <div className="col-sm-12 col-md-4" key={i}>
         <div className="col mb-4">  
         <div >
           <div className="card" style={{ background: "aquamarine" }}>
-            <div className="card-body" style={{ height: "200px" }}>
-              <h5 className="card-title" style={{ fontWeight: "700", fontSize: "large" }}>{s.applicationName}</h5>
+            <div className="card-body" >
+              <h5 className="card-title font-weight-bold h3">{s.applicationName}</h5>
               <p className="card-text">{s.applicationDescription}</p>
-              <div>
+            </div>
+            <div className="card-footer">
                 <a href={s.applicationUrl} target="blank" className="btn btn-sm " style={{backgroundColor:"#ffc107"}} role="button" aria-pressed="true"> Read More</a>
                 <button type="button"
                 //  style={{ top: "200px" }}
                   className="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onClick={()=>handleSubscribe(s.planMaster,{applicationName:s.applicationName,applicationId:s.applicationId})}>Subscribe</button>
                 </div>
-            </div>
             <div className="container">
             </div>
-            <div style={{display:"none"}}>
+            {/* <div>
               <button type="button" className="btn btn-info sm" onClick={()=>makePayment()}>Make Payment</button>
-            </div>
+            </div> */}
           </div>
         </div>
         {subscriptionDetails &&

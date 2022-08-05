@@ -2,63 +2,67 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import API_URL from '../../../config';
+import { isClientCodeCreated } from '../../../utilities/isClientCodeCreated';
+import { isKycCompleted } from '../../../utilities/isKycCompleted';
+import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
+
 
 function SettlementReport() {
-    const initialState = {
-        Id: "",
-        client_code: "",
-        base_url_path: "",
-        file_name: "",
-        created_by: "",
-        created_on: "",
-        folder: "",
-        sub_folder: ""
-    }
 
-    const [input,setInput]=React.useState();
     const [searchArea, setSearchArea] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
     const [data, setData] = React.useState([])
-    const [users, setUsers] = React.useState(initialState);
     const [folderArr, setFolderArr] = React.useState([]);
-    var [subFolderArr, setSubFolderArr] = React.useState([]);
-    var [showFilterData,SetShowFilterData] =React.useState([]); 
+    const [subFolderArr, setSubFolderArr] = React.useState([]);
+    const [showFilterData,SetShowFilterData] =React.useState([]); 
     const [selectedFolder,SetSelectedFolder] = React.useState('');
     const [selectedSubFolder,SetSelectedSubFolder] = React.useState('');
     const [searchFilterData,setSearchFilterData] = React.useState([]);
-    let history = useHistory();
+    const history = useHistory();
 
   
     const {user} = useSelector((state)=>state.auth);
     let clientCode='';
-    if (user && user.clientMerchantDetailsList === null) {
+    if(isKycCompleted){
+      console.log("kyc has completed")
+      if(isClientCodeCreated){
+        console.log("client code has created")
+      }else{
+        console.log("kyc done client code is not create");
+      }
+    }else{
+      console.log("kyc not completed")
+    }
+    
+    if (user && user?.clientMerchantDetailsList) {
       history.push("/dashboard/profile");
     } else {
       var clientMerchantDetailsList = user.clientMerchantDetailsList;
-      clientCode = clientMerchantDetailsList[0].clientCode;
+      // console.log(typeof(user.clientMerchantDetailsList))
+      if(user.clientMerchantDetailsList!==undefined){
+        // console.log(clientMerchantDetailsList)
+        clientCode = clientMerchantDetailsList[0].clientCode;
+      }
+      
     }
 
-    const getFileName = async () => {
-      await axios(
-        `https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/${clientCode}`
-      )
-        .then((res) => {
-          setData(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    
 
     useEffect(() => {
-      getFileName();
+        axios( `${API_URL.GET_FILE_NAME}${clientCode}` )
+          .then((res) => {
+            setData(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
-      data.filter((item) => {
-        folderArr.push(item.folder);
-      });
+      data.filter((item) => folderArr.push(item.folder) )
       setFolderArr([...new Set(folderArr)]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     useEffect(() => {
@@ -70,83 +74,75 @@ function SettlementReport() {
       }else{
         setSearchFilterData(showFilterData)
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchArea])
 
     const onChangeFolder = (val) => {
       SetSelectedFolder(val);
-      subFolderArr = [];
-      data.filter((item) => {
-        if (item.folder === val) {
-          subFolderArr.push(item.sub_folder);
-        }
-      });
-      setSubFolderArr([...new Set(subFolderArr)]);
+      
+      var tempArr = [];
+      data.filter((item) => item.folder === val ? tempArr.push(item.sub_folder) : null );
+      setSubFolderArr([...new Set(tempArr)]);
     };
-    // console.log('subFolderArr',subFolderArr);
-
+   
   useEffect(() => {
-      showFilterData = [];
-      data.filter((item) => {
-        if (
-          item.folder === selectedFolder &&
-          item.sub_folder === selectedSubFolder
-        ) {
-          // console.log('kkk',item);
-          showFilterData.push(item);
-        }
-      });
+      var tempArr1 = [];
+      data.filter((item) => ( item.folder === selectedFolder && item.sub_folder === selectedSubFolder) ? tempArr1.push(item) : null );
 
-      SetShowFilterData(showFilterData);
-      setSearchFilterData(showFilterData);
+      SetShowFilterData(tempArr1);
+      setSearchFilterData(tempArr1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedSubFolder, selectedFolder]);
 
 
-    // console.log("showFilterData",showFilterData);
     const getSearchTerm = (e) => {
       setSearchArea(e.target.value);
-
-    
-
- 
-      
-      // setSearchResults(newDataList);
     };
 
     return (
-      <section className="ant-layout">
-        <div className="profileBarStatus"></div>
-        <div className='col-lg-12 row- bgcolor'>
-        <h1>
-            Settlement Report
-          </h1>
-          <hr />
-          <label htmlFor="folder "></label>
-          <div className='col-lg-3 nopad'>
-            <select
-              value={selectedFolder}
-              className="ant-input"
-              onChange={(e) => onChangeFolder(e.target.value)}
-            >
-              <option value="">--Select Folder--</option>
-              {folderArr &&
-                folderArr.map((folder,i) => <option value={folder} key={i}>{folder}</option>)}
-            </select>
-        </div>
-        <div className='col-lg-3 nopad'>
-          <label htmlFor="folder"></label>
-          <select
-            onChange={(event) => SetSelectedSubFolder(event.target.value)}
-            value={selectedSubFolder}
-            className="ant-input"
-          >
-            <option value="">Select</option>
-            {subFolderArr &&
-              subFolderArr.map((subfolder,i) => (
-                <option value={subfolder} key={i}>{subfolder}</option>
-              ))}
-          </select>
-          </div>
-          <div className='col-lg-3 nopad'>
+      <>
+<section className="ant-layout">
+      <div className="profileBarStatus">
+      </div>
+      <main className="gx-layout-content ant-layout-content">
+        <div className="gx-main-content-wrapper">
+          <div className="right_layout my_account_wrapper right_side_heading">
+            <h1 className="m-b-sm gx-float-left">Settlement Report</h1>
+          </div> 
+          <section className="features8 cid-sg6XYTl25a flleft col-lg-12" id="features08-3-">
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-lg-6 mrg-btm">
+                  <label>Select Folder</label>
+                  <select
+                    value={selectedFolder}
+                    className="ant-input"
+                    onChange={(e) => onChangeFolder(e.target.value)}
+                  >
+                    <option value="">Select Folder</option>
+                    {folderArr &&
+                      folderArr.map((folder,i) => <option value={folder} key={i}>{folder}</option>)}
+                  </select>
+                </div>
+
+                <div className="col-lg-6 mrg-btm">
+                  <label>Select Sub Folder</label>
+                   <select
+                      onChange={(event) => SetSelectedSubFolder(event.target.value)}
+                      value={selectedSubFolder}
+                      className="ant-input"
+                    >
+                      <option value="">Select</option>
+                      {subFolderArr &&
+                        subFolderArr.map((subfolder,i) => (
+                          <option value={subfolder} key={i}>{subfolder}</option>
+                        ))}
+                    </select>
+                </div>
+                {data?.length>0 ? 
+                  <React.Fragment>
+                  <div className="col-lg-6 mrg-btm- bgcolor">
+                  <label>Search</label>
                   <input
                     type="text"
                     value={searchArea}
@@ -155,54 +151,60 @@ function SettlementReport() {
                     onChange={getSearchTerm}
                   />
                   {showFilterData.filter}
-          </div>
-        <div className='col-lg-3 nopad'>
-        <select className="ant-input">
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="30">30</option>
-          <option value="40">40</option>
-          <option value="50">50</option>
-          <option value="60">100</option>
-          <option value="70">200</option>
-          <option value="70">300</option>
-          <option value="70">400</option>
-          <option value="70">500</option>
-        </select>
-</div>
-        
-       
-          <table cellPadding="10" cellSpacing="0" width="100%" className="tables col-lg-12 mar-top">
-          <tbody>
-          <tr>
-              <th>S.No</th>
-              <th>Client Code</th>
-              <th>File Name</th>
-              <th>Created On</th>
-              <th>Action</th>
-            </tr>
-            
-            {searchFilterData.length > 0 ? (
-              searchFilterData.map((user, i) => (
-                <tr key={user.Id}>
-                  <td>{i + 1}</td>
-                  <td>{user.client_code} </td>
+                  
+                </div>
+                {searchFilterData.length > 9  ? <div className="col-lg-6 mrg-btm- bgcolor">
+                  <label>Count Per Page</label>
+                  <select className="ant-input">
+                    <DropDownCountPerPage datalength={searchFilterData.length} />
+                  </select>
+                </div> : <></> }
+                
+                </React.Fragment> 
+                : <></> }
+                </div>
+            </div>
+          </section>
 
-                  <td>{user.file_name}</td>
-                  <td>{user.created_on}</td>
-                  {/* <td>{user.sub_folder}</td> */}
-                  <td>
-                    <a href={user.base_url_path}>Download</a>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <></>
-            )}
-          </tbody>
-          </table>
+          <section className="" >
+          <div className="container-fluid  p-3 my-3 ">
+          {searchFilterData.length >0 ? <h4>Total Record : {searchFilterData.length} </h4> : <></>}
+            <div className="scroll"  style={{"overflow": "auto"}}>
+            <table className="table table-bordered">
+              <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Client Code</th>
+                    <th>File Name</th>
+                    <th>Created On</th>
+                    <th>Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {searchFilterData.length > 0 ? (
+                  searchFilterData.map((user, i) => (
+                    <tr key={user.Id}>
+                      <td>{i + 1}</td>
+                      <td>{user.client_code} </td>
+                      <td>{user.file_name}</td>
+                      <td>{user.created_on}</td>
+                      <td>
+                        <a href={user.base_url_path}>Download</a>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <></>
+                )}
+              </tbody>
+            </table>
+            </div>  
+            </div>  
+          </section> 
         </div>
-      </section>
+      </main>
+    </section>
+      </>
     );
 }
 

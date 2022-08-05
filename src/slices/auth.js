@@ -137,6 +137,13 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   
 });
 
+export const udpateRegistrationStatus = createAsyncThunk("auth/udpateRegistrationStatus", async () => {
+  // console.log("comes to");
+  // update status
+  await AuthService.logout();
+  
+});
+
 // check and remove fn
 export const successTxnSummary = createAsyncThunk(
   "auth/successTxnSummary",
@@ -366,10 +373,10 @@ export const verifyOtpOnForgotPwdSlice = createAsyncThunk(
   "auth/verifyOtpOnForgotPwd",
   async(data,thunkAPI)=>{
     try{
-      console.log("verifyOtpOnForgotPwd",data);
+      // console.log("verifyOtpOnForgotPwd",data);
       const response = await AuthService.verifyOtpOnForgotPwd(data);
       thunkAPI.dispatch(setMessage(response.data.message));
-      console.log("verifyOtpOnForgotPwd",response)
+      // console.log("verifyOtpOnForgotPwd",response)
       return response.data;
     }catch(error){
       const message =
@@ -391,10 +398,10 @@ export const createNewPasswordSlice = createAsyncThunk(
   "auth/createNewPassword",
   async(data,thunkAPI)=>{
     try{
-      console.log("createNewPassword",data);
+      // console.log("createNewPassword",data);
       const response = await AuthService.changePassword(data);
       thunkAPI.dispatch(setMessage(response.data.message));
-      console.log("getEmailToSendOtp-response",response)
+      // console.log("getEmailToSendOtp-response",response)
       return response.data;
     }catch(error){
       const message =
@@ -436,22 +443,31 @@ export const checkPermissionSlice = createAsyncThunk(
 
 
 
-const initialState = user && user.loginStatus
-  ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
-  : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{}, sendEmail: {} };
+// const initialState = user && user.loginStatus
+//   ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
+//   : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{}, sendEmail: {} };
 // console.log(register)
 const authSlice = createSlice({
   name: "auth",
   initialState: auth,
   extraReducers: {
     [register.fulfilled]: (state, action) => {
-      state.isLoggedIn = false;
+      state.isLoggedIn = null
       state.isUserRegistered = true;
     },
     [register.rejected]: (state, action) => {
-      state.isLoggedIn = false;
+      state.isLoggedIn = null
       state.isUserRegistered = false;
     },
+    [udpateRegistrationStatus.fulfilled]: (state, action) => {
+      state.isLoggedIn = null
+      state.isUserRegistered = null;
+    },
+    [udpateRegistrationStatus.pending]: (state, action) => {
+      state.isLoggedIn = null
+      state.isUserRegistered = null;
+    },
+   
     [successTxnSummary.fulfilled]: (state, action) => {
       state.successTxnsumry = action.payload;
     },
@@ -465,6 +481,7 @@ const authSlice = createSlice({
       //code 
     },
     [login.fulfilled]: (state, action) => {
+
       let loggedInStatus = false;
       let isValidData ='';
 

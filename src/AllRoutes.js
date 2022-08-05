@@ -1,11 +1,7 @@
 import React from 'react'
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-  } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import Dashboard from './components/dashboard/Dashboard';
-import Login from './components/login/Login';
+// import Login from './components/login/Login';
 import Registration from './components/registration/Registration';
 import LoginPage from './components/login/LoginPage';
 import ForgetPassword from './components/forgetpassword/ForgetPassword';
@@ -18,18 +14,21 @@ import ReceiptWalchand from './components/Otherpages/ReceiptWalchand';
 import EmandatePage from './components/Otherpages/EmandatePage';
 import Test from './components/Otherpages/Test';
 import InternetConnection from './_components/reuseable_components/InternetConnection';
+import MobileNavbar from './components/dashboard/SideNavbar/MobileNavbar';
+import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetails';
 
+import DemoReg from './components/login/DemoReg';
+import DemoLogin from './components/login/DemoLogin';
 
 
 function AllRoutes(){
-  
-  
-    return (
+
+  return (
         // <Router >
           <div>
           <InternetConnection />
-            <Switch>
-             
+
+            <Switch>             
               <Route exact path="/login-page">
                 <LoginPage />
               </Route>
@@ -37,6 +36,7 @@ function AllRoutes(){
                 <Registration />
               </Route>
               <Route path="/dashboard">
+                <MobileNavbar/>
                 <Dashboard />
               </Route>
               <Route exact path="/commonpages">
@@ -72,6 +72,16 @@ function AllRoutes(){
               <Route exact path="/test">
                 <Test />
               </Route>
+              <Route exact path="/ViewTransactionDetails">
+                <ViewTransactionDetails />
+              </Route>
+              <Route exact path="/demo-login">
+                <DemoLogin/>
+              </Route>
+              <Route exact path="/demo-reg">
+                <DemoReg/>
+              </Route>
+
             </Switch>
           </div>
         // </Router>

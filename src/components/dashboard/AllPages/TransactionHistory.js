@@ -1,28 +1,27 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React,{useEffect, useState} from 'react'
 import { useDispatch,useSelector } from 'react-redux'
-import { useRouteMatch, Redirect,useHistory} from 'react-router-dom'
-import getPaymentStatusList from '../../../services/home.service'
-
+import { useHistory} from 'react-router-dom'
 import axios from "axios"
 import _ from 'lodash';
-import { fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
+import { clearTransactionHistory, fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
 import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
+import API_URL from '../../../config';
+import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
 
 
 
 function TransactionHistory() {
-  const dispatch = useDispatch();
-  const {path} = useRouteMatch();
-  
-  let history = useHistory();
+  const dispatch = useDispatch();  
+  const history = useHistory();
   const {auth,dashboard} = useSelector((state)=>state);
-  var {user} = auth
+  const {user} = auth
 
   const {isLoadingTxnHistory} = dashboard
-
   const [paymentStatusList,SetPaymentStatusList] = useState([]);
   const [paymentModeList,SetPaymentModeList] = useState([]);
-  const [clientCode,SetClientCode] = useState("");
+  const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
   const [fromDate,SetFromDate] = useState("");
   const [toDate,SetToDate] = useState("");
   const [txnStatus,SetTxnStatus] = useState("All");
@@ -37,17 +36,40 @@ function TransactionHistory() {
   const [showData,setShowData] = useState([])
   const [updateTxnList,setUpdateTxnList] = useState([])
   const [pageCount,setPageCount] = useState(0);
+  const [dataFound,setDataFound] = useState(false)
   const [buttonClicked,isButtonClicked] = useState(false);
 
+  var clientMerchantDetailsList =[];
+  if(user && user?.clientMerchantDetailsList === null && user?.roleId!==3 && user?.roleId!==13){
+    history.push('/dashboard/profile');
+  }else{
+    clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  }
 
-  function dayDiff(dateFrom, dateTo) {
-    const date1 = new Date(dateFrom);
-    const date2 = new Date(dateTo);
-    const diffTime = Math.abs(date2 - date1);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-    console.log(diffDays,"diffDays")
-    return diffDays;
-   }
+  useEffect(() => {
+    // console.log("showData",showData.length)
+    // console.log("updateTxnList",updateTxnList.length)
+    // console.log((buttonClicked && dataFound))
+
+    setTimeout(() => {
+
+      if(showData.length < 1 &&  (updateTxnList.length > 0 || updateTxnList.length===0)){
+        setDataFound(true)
+      }else{
+        setDataFound(false)
+      }  
+    });
+    
+  }, [showData, updateTxnList])
+  
+  // function dayDiff(dateFrom, dateTo) {
+  //   const date1 = new Date(dateFrom);
+  //   const date2 = new Date(dateTo);
+  //   const diffTime = Math.abs(date2 - date1);
+  //   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+  //   // console.log(diffDays,"diffDays")
+  //   return diffDays;
+  //  }
    
 
   const getInputValue=(label,val)=>{
@@ -66,7 +88,7 @@ function TransactionHistory() {
   }
 
   const getPaymentStatusList = async () => {  
-    await axios.get('https://adminapi.sabpaisa.in/REST/admin/getPaymentStatusList')  
+    await axios.get(API_URL.GET_PAYMENT_STATUS_LIST)  
     .then(res => {  
       // console.log(res)  
       SetPaymentStatusList(res.data);
@@ -77,7 +99,7 @@ function TransactionHistory() {
   }  
 
   const paymodeList = async () => {  
-    await axios.get('https://adminapi.sabpaisa.in/REST/paymode/paymodeList')  
+    await axios.get(API_URL.PAY_MODE_LIST)  
     .then(res => {  
       // console.log(res)
       SetPaymentModeList(res.data);  
@@ -105,7 +127,7 @@ const checkValidation = ()=>{
       const date2 = new Date(toDate);
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-      console.log("days",diffDays);
+      // console.log("days",diffDays);
       if(diffDays < 0 || diffDays > 90 ){
         flag = false;
         alert("The date range should be under 3 months");
@@ -124,53 +146,52 @@ const checkValidation = ()=>{
           if(isValid){ 
             // isLoading(true);
             isButtonClicked(true);
-            var paramData = {
-              clientCode:clientCode,
-              txnStatus:txnStatus,
-              payModeId:payModeId,
-              fromDate:fromDate,
-              toDate:toDate,
-              ref1:0,
-              ref2:0
-            }
-            clientCode==='0'? 
-              clientMerchantDetailsList?.map((item) => {
-                paramData.clientCode = item.clientCode;
-                // console.log(paramData.clientCode);
-                dispatch(fetchTransactionHistorySlice(paramData))
+            let strClientCode, clientCodeArrLength ="";
+              if(clientCode==="All"){
+              const allClientCode = []
+              clientMerchantDetailsList?.map((item)=>{
+                allClientCode.push(item.clientCode)
               })
-              :
-              dispatch(fetchTransactionHistorySlice(paramData))
+              clientCodeArrLength = allClientCode.length.toString();
+              strClientCode = allClientCode.join().toString();
+            }else{
+              strClientCode = clientCode;
+              clientCodeArrLength = "1"
+            }
 
-
-            // console.log(paramData);
-            
-            
+            let paramData = {
+              clientCode:strClientCode,
+              paymentStatus:txnStatus,
+              paymentMode:payModeId,
+              fromDate:fromDate,
+              endDate:toDate,
+              length: "0",
+              page: "0",
+              NoOfClient: clientCodeArrLength
+            } 
+        
+            dispatch(fetchTransactionHistorySlice(paramData))
       }else{
-        // isLoading(false);
         console.log('API not trigger!');
       }
   } 
   
-  useEffect(() => {
-  
-     // Remove initiated from transaction history response
-     const TxnListArr = dashboard.transactionHistory
-     const TxnListArrUpdated = TxnListArr?.filter((Txn)=>{
-       return Txn.status!=='INITIATED';
-     })
-     setUpdateTxnList(TxnListArrUpdated)
-     setShowData(TxnListArrUpdated);
-     SetTxnList(TxnListArrUpdated);
-     setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())
-     if(TxnListArrUpdated.length){
-       isButtonClicked(false);
-     }
 
+
+  useEffect(() => {  
+     // Remove initiated from transaction history response
+    let TxnListArrUpdated = dashboard.transactionHistory
+    setUpdateTxnList(TxnListArrUpdated)
+    setShowData(TxnListArrUpdated);
+    SetTxnList(TxnListArrUpdated);
+    setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard])
   
   // console.log("buttonclicked",buttonClicked);
   
+
+
   useEffect(()=>{
      setPaginatedData(_(showData).slice(0).take(pageSize).value())
      setPageCount(showData.length>0 ? Math.ceil(showData.length/pageSize) : 0)
@@ -183,6 +204,7 @@ const checkValidation = ()=>{
   const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
    setPaginatedData(paginatedPost);
  
+ // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [currentPage])
 
  
@@ -191,17 +213,15 @@ const checkValidation = ()=>{
   getPaymentStatusList();
   paymodeList();  
   SetTxnList([]);
-  // txnList.length >0 ? setShow(true) : setShow(false)
+  return ()=>{
+    dispatch(clearTransactionHistory())
+  }
 
 }, [])
 
 useEffect(() => {
-  // console.log("length",txnList.length);
   txnList.length > 0 ? setShow(true) : setShow(false)
-//  console.log("show",show)
-
 }, [txnList])
-
 
 
 useEffect(() => {
@@ -212,42 +232,28 @@ useEffect(() => {
     else{
       setShowData(updateTxnList)
     }
-
 }, [searchText])
 
-
-//  if ( pageCount === 1) return null;
-
 const pages = _.range(1, pageCount + 1)
-// console.log("pages",pages)
- 
-
-
-  var clientMerchantDetailsList =[];
-  if(user && user.clientMerchantDetailsList===null && user.roleId!==3 && user.roleId!==13){
-    history.push('/dashboard/profile');
-  }else{
-    clientMerchantDetailsList = user.clientMerchantDetailsList;
-  }
+  
   
   
   const exportToExcelFn=()=>{
-    // const dataWithoutNull = JSON.stringify(txnList).replaceAll('null',"NA");
-    // console.log(JSON.parse(dataWithoutNull));
-    
+
     const excelHeaderRow =
-  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Trans Initiation Date",	"Trans Complete Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Message",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
+  ["S.No",	"Trans ID",	"Client Trans ID",	"Challan Number / VAN",	"Amount",	"Transaction Date",	"Payment Status	", "Payee First Name", 	"Payee Last Name",	"Payee Mob number",	"Payee Email",	"Client Code",	"Payment Mode",	"Payee Address",	"Udf1",	"Udf2",	"Udf3",	"Udf4",	"Udf5",	"Udf6",	"Udf7",	"Udf8",	"Udf9",	"Udf10" , "Udf11",	"Udf20",	"Gr.No",	"Bank Response",	"IFSC Code",	"Payer Account No",	"Bank Txn Id"];
     let excelArr = [excelHeaderRow];
-    txnList.map((item,index)=>{
+    // eslint-disable-next-line array-callback-return
+    txnList.map((item,index) => {
       // console.log(JSON.stringify(item));
-      const allowDataToShow ={
+      // console.log("index",index)
+      const allowDataToShow = {
         srNo:item.srNo === null? "" : index +1 ,
         txn_id:item.txn_id  === null? "" : item.txn_id ,
         client_txn_id:item.client_txn_id  === null? "" : item.client_txn_id ,
         challan_no:item.challan_no  === null? "" : item.challan_no ,
         payee_amount:item.payee_amount  === null? "" : Number.parseFloat(item.payee_amount) ,
         trans_date:item.trans_date  === null? "" : item.trans_date ,
-        trans_complete_date:item.trans_complete_date  === null? "" : item.trans_complete_date ,
         status:item.status === null? "" : item.status ,
         payee_first_name:item.payee_first_name === null? "" : item.payee_first_name ,
         payee_lst_name:item.payee_lst_name === null? "" : item.payee_lst_name ,
@@ -275,14 +281,10 @@ const pages = _.range(1, pageCount + 1)
         bank_txn_id:item.bank_txn_id === null? "" : item.bank_txn_id 
         };
         
-        // var tempStr = JSON.stringify(allowDataToShow).replaceAll('null','"NA"');
-        // var data = JSON.parse(tempStr);
-      
-        // console.log("tempStr",tempStr);
-    excelArr.push(Object.values(allowDataToShow));
+        excelArr.push(Object.values(allowDataToShow));
   })
   // console.log("excelArr",excelArr)
-  const fileName = "Transactions Report"; 
+  const fileName = "Transactions-Report"; 
   exportToSpreadsheet(excelArr, fileName);
 
   }
@@ -294,8 +296,9 @@ const pages = _.range(1, pageCount + 1)
   var month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
   var day = lastThreeMonth.getUTCDate();
   var year = lastThreeMonth.getUTCFullYear();
-  
   const finalDate = year +'-'+month+'-'+day;
+
+
   return (
     <section className="ant-layout">
       <div className="profileBarStatus">
@@ -315,11 +318,9 @@ const pages = _.range(1, pageCount + 1)
                     onChange={(e) => {
                       getInputValue("clientCode", e.target.value);
                     }}
-                  
-                    
                   >
                     {user.roleId===3 || user.roleId===13 ?
-                    <option value="0">All</option>
+                    <option value="All">All</option>
                       :
                     <option value="">Select</option> }
                     {clientMerchantDetailsList?.map((item,i) => {
@@ -334,13 +335,14 @@ const pages = _.range(1, pageCount + 1)
                 <div className="col-lg-4 mrg-btm- bgcolor">
                   <label>From Date</label>
                   <input
-                  rel={finalDate}
+                    rel={finalDate}
                     type="date"
                     className="ant-input"
                     placeholder="From Date"
                     onChange={(e) => {
                       getInputValue("fromDate", e.target.value);
                     }}
+                    max= {new Date().toLocaleDateString('en-ca')}
                   />
                 </div>
                 <div className="col-lg-4 mrg-btm- bgcolor">
@@ -398,6 +400,8 @@ const pages = _.range(1, pageCount + 1)
                         <button className="view_history topmarg" onClick={()=>exportToExcelFn()}>Export </button>
                     :  '' }
                   </div>
+
+
                   {  show ? 
                   <React.Fragment>
                   <div className="col-lg-4 mrg-btm- bgcolor">
@@ -407,34 +411,39 @@ const pages = _.range(1, pageCount + 1)
                   <div className="col-lg-4 mrg-btm- bgcolor">
                   <label>Count per page</label>
                   <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
-                  <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="50">50</option>
-                      <option value="100">100</option>
+                  <DropDownCountPerPage datalength={txnList.length} />
                   </select>
                 </div>                 
                   </React.Fragment> : <></> }
+              </div>
+            </div>
+          </section>
 
-                  <div style={{overflow:"auto"}} > 
-                  <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables" >
-                    <tbody>
-                    {txnList.length>0 ?
+
+          <section className="" >
+          <div className="container-fluid  p-3 my-3 ">
+
+          {txnList.length>0 ? <h4>Total Record : {txnList.length} </h4> : <></>}
+              
+            <div className="scroll"  style={{"overflow": "auto"}}>
+            <table className="table table-bordered">
+              <thead>
+              {txnList.length>0 ?
                       <tr>
                             <th> S.No </th>
                             <th> Trans ID </th>
                             <th> Client Trans ID </th>
                             <th> Challan Number / VAN </th>
                             <th> Amount </th>
-                            <th> Trans Initiation Date </th>
-                            <th> Trans Complete Date </th>
+                            <th> Transaction Date </th>
                             <th> Payment Status </th>
-                            <th> Payee First Name </th>
-                            <th> Payee Last Name </th>
-                            <th> Payee Mob number </th>
-                            <th> Payee Email </th>
+                            <th> Payer First Name </th>
+                            <th> Payer Last Name </th>
+                            <th> Payer Mob number </th>
+                            <th> Payer Email </th>
                             <th> Client Code </th>
                             <th> Payment Mode </th>
-                            <th> Payee Address </th>
+                            <th> Payer Address </th>
                             <th> Udf1 </th>
                             <th> Udf2 </th>
                             <th> Udf3 </th>
@@ -448,24 +457,23 @@ const pages = _.range(1, pageCount + 1)
                             <th> Udf11 </th>
                             <th> Udf20 </th>
                             <th> Gr.No </th>
-                            <th> Bank Message </th>
+                            <th> Bank Response </th>
                             <th> IFSC Code </th>
                             <th> Payer Account No </th>
                             <th> Bank Txn Id </th>
                           </tr>:
                           <></>
-                     }
-                   
-                          {/* {console.log("filterList",filterList)} */}
-                          {txnList.length>0 && paginatedata.map((item,i)=>{return(
-                            <tr>
+                      }
+              </thead>
+              <tbody>
+              {txnList.length>0 && paginatedata.map((item,i)=>{return(
+                            <tr key={i}>
                             <td>{i+1}</td>
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
                             <td>{item.challan_no}</td>
                             <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
                             <td>{item.trans_date}</td>
-                            <td>{item.trans_complete_date}</td>
                             <td>{item.status}</td>
                             <td>{item.payee_first_name}</td>
                             <td>{item.payee_lst_name}</td>
@@ -494,29 +502,24 @@ const pages = _.range(1, pageCount + 1)
                           </tr>
                         );
                       })}
-                  </tbody>
-                </table>
-                </div>
-                
-               
-                <div>
+              </tbody>
+            </table>
+            </div>  
+            
+            <div>
                {/* {console.log("show",show)} */}
                 {txnList.length>0  ? 
                     <nav aria-label="Page navigation example"  >
                     <ul className="pagination">
-      
-                   <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
+                    <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={()=>false}>Previous</a>
                     { 
-
-
-
                       pages.slice(currentPage-1,currentPage+6).map((page,i) => (
-                        <li className={
+                        <li key={i} className={
                           page === currentPage ? " page-item active" : "page-item"
                         }> 
                       {/* {console.log("currentPage",currentPage)} */}
                       {/* {console.log("page",page)} */}
-                            <a className={`page-link data_${i}`} >  
+                            <a className={`page-link data_${i}`} href={()=>false} >  
                               <p onClick={() => pagination(page)}>
                               {page}
                               </p>
@@ -525,36 +528,34 @@ const pages = _.range(1, pageCount + 1)
                       
                       ))
                     }
-
-                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length>9 ? nex : nex + 1)} href={void(0)}>
+                { pages.length!==currentPage? <a className="page-link"  onClick={(nex) => 
+                    
+                    { setCurrentPage((nex) => (nex === ( pages.length>9 ) ? nex : nex + 1)) }
+                    
+                    }
+                    
+                    
+                     href={()=>false}>
                       Next</a> : <></> }
-                      
                     </ul>
                   </nav>
                   : <></> }
                   </div>
-                  {/* {console.log(filterList.length,txnList.length)} */}
+                  <div className="container">
+                    
                 {isLoadingTxnHistory ? 
-                  <div className="col-lg-12 col-md-12 mrg-btm- bgcolor"><div className="text-center"><div className="spinner-border" role="status" style={{width: '3rem', height: '3rem'}}><span className="sr-only">Loading...</span></div></div></div> 
+                  <div className="col-lg-12 col-md-12"><div className="text-center"><div className="spinner-border" role="status" ><span className="sr-only">Loading...</span></div></div></div> 
                   : 
-                  buttonClicked && (showData.length <= 0 || txnList.length <= 0) ? 
-                    <div className='showMsg'>No Data Found</div>
-                     :
-                      <div></div>
-                      }  
-                {/* { : <div></div>} */}
-              </div>
-            </div>
+                  buttonClicked && dataFound ?
+                    <div className='showMsg'>Data Not Found</div>
+                  :
+                    <div></div>
+                    }  
+                </div>
+          </div>
           </section>
         </div>
-        <footer className="ant-layout-footer">
-          <div className="gx-layout-footer-content">
-            © 2021 Ippopay. All Rights Reserved.{" "}
-            <span className="pull-right">
-              Ippopay's GST Number : 33AADCF9175D1ZP
-            </span>
-          </div>
-        </footer>
+
       </main>
     </section>
   );
