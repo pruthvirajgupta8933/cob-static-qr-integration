@@ -30,22 +30,6 @@ function SideNavbar() {
       
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-
-    // useEffect(() => {
-      // dispatch(API()).then((res) => {});
-    //  }, []);
-
-    
-    const handleLinkClick = () => {
-
-      dispatch(kycUserList({
-        login_id:795
-      })).then((res) => {
-        console.log(res,"My Dataaaaaaaaaaaaaaa")
-      })
-     
-    };
     
     
     return (
@@ -68,7 +52,10 @@ function SideNavbar() {
                       <Link to={`${url}`} className='txt-white'><i className="fa fa-home" aria-hidden="true" /> <span>Home</span></Link>
                   </li>
                   <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
-                      <Link to={`${url}/kyc`} className='txt-white' onClick={handleLinkClick} ><i className="fa fa-file-o" aria-hidden="true" /> <span>Fill KYC Form</span><span class="new-tab">new</span></Link>
+                      <Link to={`${url}/kyc`} className='txt-white' ><i className="fa fa-file-o" aria-hidden="true" /> <span>Fill KYC Form</span><span class="new-tab">new</span></Link>
+                  </li>
+                  <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
+                      <Link to={`${url}/approver`} className='txt-white' ><i className="fa fa-list" aria-hidden="true" /> <span>Merchant List</span><span class="new-tab">new</span></Link>
                   </li>
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open" role="menuitem">
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-owns="settlement$Menu" aria-haspopup="true" style={{paddingLeft: '24px'}}><span className="sidebar-menu-divider">Your
