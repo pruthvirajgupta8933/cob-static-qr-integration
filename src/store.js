@@ -7,7 +7,7 @@ import reducerSubscription from './slices/subscription'
 import KycOtpSlice from "./slices/kycOtp"
 import { kycReducer } from './slices/kycSlice';
 import ContactInfoSlice from "./slices/contactInfo"
-import { bankDetailsReducer } from "./slices/kycBankDetailsSlice"
+
 
 
 
@@ -19,7 +19,6 @@ const reducer = {
   kyc:kycReducer,
   KycOtpSlice:KycOtpSlice,
   ContactInfoSlice:ContactInfoSlice,
-  bankDetails:bankDetailsReducer,
 
 }
 
