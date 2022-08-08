@@ -7,7 +7,7 @@ import axios from "axios";
 import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson'
 import { useSelector , useDispatch } from 'react-redux';
 import { toast } from 'react-toastify'
-import { kycBankNames, saveMerchantBankDetais} from "../../slices/kycBankDetailsSlice"
+import { kycBankNames, saveMerchantBankDetais} from "../../slices/kycSlice"
 
 
 function BankDetails() {
