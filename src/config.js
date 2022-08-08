@@ -141,7 +141,10 @@ const API_LIVE = {
 
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
   Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
-  SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`
+  SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,
+
+ /*KYC USER LIST */
+ Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`
  
 };
 

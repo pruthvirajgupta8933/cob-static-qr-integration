@@ -3,6 +3,77 @@ import API_URL from "../config";
 import axios from "axios";
 
 const initialState = {
+  kycUserList:{
+    merchantId: "",
+    name: "",
+    emailId: "",
+    isEmailVerified: false,
+    isContactNumberVerified: false,
+    contactNumber: "",
+    contactDesignation: "",
+    aadharNumber: null,
+    panCard: "",
+    accountNumber: "",
+    bankName: "",
+    accountHolderName: "",
+    ifscCode: "",
+    companyName: "",
+    companyLogoPath: "",
+    companyImagePath: "",
+    companyDescription: "",
+    companyType: null,
+    companyWebsite: "",
+    clientName: "",
+    clientCode: "",
+    successUrl: "",
+    failureUrl: "",
+    loginMasterId: "",
+    created_date: "",
+    modifiedDate: "",
+    modified_by: "",
+    status: "",
+    reason: null,
+    businessType: "",
+    yourRole: null,
+    nameOnPanCard: "",
+    registeredBusinessAdress: "",
+    stateId: "",
+    pinCode: "",
+    registerdWithGST: null,
+    gstNumber: "",
+    monthlyRevenue: null,
+    partnerBankId: "",
+    mouAgreement: "",
+    constitutionOfMerchant: null,
+    addressProof: null,
+    entityProof: null,
+    utilityBill: null,
+    panProof: null,
+    kycOneProof: null,
+    kycTwoProof: null,
+    kycThreeProof: null,
+    kycFourProof: null,
+    kycFiveProof: null,
+    bankLetter: null,
+    onBoardFrom: "",
+    requestId: "",
+    clientType: "",
+    parentClientId: "",
+    businessCategory: "",
+    businessModel:"",
+    billingLabel: "",
+    erpCheck: null,
+    platformId: "",
+    collectionTypeId: "",
+    collectionFrequencyId: "",
+    expectedTransactions: "",
+    formBuild: "",
+    ticketSize: "",
+    signatoryPAN: "",
+    cityId: "",
+    operationalAddress: ""
+
+  },
     businessType:[],
     busiCategory:[],
     platformType:[],
@@ -12,8 +83,9 @@ const initialState = {
     businessOverviewState:[],
     saveMerchantInfo:[],
     documentsUpload:[],
-    merchantInfo:[]
-   
+    merchantInfo:[],
+    kycBankNames :[],
+    saveMerchantBankDetais:[],
  }
 
 //--------------Kyc BusinessType get api (BusinessOverview Tab)---------------------
@@ -205,6 +277,69 @@ export const documentsUpload= createAsyncThunk(
     }
   );
 
+  ///////////////FOR KYC USER LIST (THATS COMING STRAIGHT FROM THIS API)/////////////////////)
+
+
+  export const kycUserList= createAsyncThunk(
+    "kyc/kycUserList",
+    async (requestParam) => {
+      const response = await axios.post(
+        `${API_URL.Kyc_User_List}`,
+        requestParam
+      )
+      .catch((error) => {
+        return error.response;
+      });
+     
+      return response.data;
+    }
+  );
+
+
+
+   //--------------KYC BANK NAMES --------------------- //
+ export const kycBankNames = createAsyncThunk(
+  "kyc/kycBankNames",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.GET_ALL_BANK_NAMES}`,
+      {
+        headers: {
+          
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+    // console.log(response)
+    return response.data;
+  }
+);
+
+
+//----For Saving Merchant Bank Details-----------------// 
+export const saveMerchantBankDetais= createAsyncThunk(
+  "kyc/saveMerchantBankDetais",
+  async (requestParam) => {
+    const response = await axios.put(
+      `${API_URL.Save_Settlement_Info}`,
+      requestParam,
+
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+    // console.log(response)
+    return response.data;
+  }
+);
+
  export const kycSlice = createSlice({
     name: 'kyc',
     initialState,
@@ -215,13 +350,26 @@ export const documentsUpload= createAsyncThunk(
       getBusinessCategory : (state)=>{
         state.busiCategory = []
       },
-    //   saveKycDetails : (state)=>{
-    //     state.saveKycDetails=[]
-    //   }
+      loadKycUserList : (state)=>{
+        state.kycUserList=[]
+      }
       
     },
+    extraReducers:{
+      [kycUserList.pending]: (state, action) => {
+        state.status = "pending";
+      },
+      [kycUserList.fulfilled]: (state, action) => {
+        // console.log("action-11 ====>",action.payload)
+        state.kycUserList = action.payload;
+      },
+      [kycUserList.rejected]: (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      },
+    }
 })
 
 
-export const {getBusinessType,getBusinessCategory } = kycSlice.actions
+export const {getBusinessType,getBusinessCategory,loadKycUserList} = kycSlice.actions
 export const kycReducer = kycSlice.reducer
