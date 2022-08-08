@@ -5,11 +5,14 @@ import FormikController from '../../_components/formik/FormikController'
 import API_URL from '../../config'
 import axios from "axios";
 import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson'
-import { useSelector } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
 import { toast } from 'react-toastify'
+import { kycBankNames, saveMerchantBankDetais} from "../../slices/kycBankDetailsSlice"
 
 
 function BankDetails() {
+
+  const dispatch = useDispatch();
 
 
   const [data, setData] = useState([]);
@@ -43,16 +46,22 @@ function BankDetails() {
   //---------------GET ALL BANK NAMES DROPDOWN--------------------
   
   useEffect(() => {
-    axios.get(API_URL.GET_ALL_BANK_NAMES).then((resp) => {
-      const data = convertToFormikSelectJson('bankId', 'bankName', resp.data);
-      setData(data)
-    }).catch(err => console.log(err))
-  }, [])
+    dispatch(kycBankNames()).then((resp) => {
+     const data = convertToFormikSelectJson( "bankId",
+     "bankName",
+     resp.payload
+   );
+      setData(data);
+   })
+     
+       .catch((err) => console.log(err));
+   }, []);
+
+  // ------------------------------------------
 
 
-  const onSubmit = async (values) => {
-    const res = await axios.put(API_URL.Save_Settlement_Info, {
-
+  const onSubmit =  (values) => {
+    dispatch(saveMerchantBankDetais({
       account_holder_name: values.account_holder_name,
       account_number: values.account_number,
       ifsc_code: values.ifsc_code,
@@ -60,16 +69,16 @@ function BankDetails() {
       account_type: values.account_type,
       branch: values.branch,
       login_id:loginId ,
-       modified_by:loginId
+      modified_by:"270"
+    })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        // console.log("This is the response", res);
+        toast.success(res.payload.message);
+      } else {
+        toast.error(res.payload.message);
+
+      }
     });
-
-    console.log(values,"form data")
-
-    if (res.status === 200) {
-      toast.success("Bank Details Updated")
-    } else {
-      toast.error("Something went wrong")
-    }
 };
 
 
