@@ -1,16 +1,10 @@
-// KYC (staging): http://13.126.165.212:8000/
-// KYC (production): https://kycprocess.sabpaisa.in/
-
-// COB (staging): http://13.126.165.212:5000/
-// COB (production): https://cobapi.sabpaisa.in
-
 const env = "staging";
 let url,kyc_url = "";
 
 
 if (env === "staging") {
   url = "https://stgcobapi.sabpaisa.in";
-  kyc_url = "http://13.233.198.69:8000";
+  kyc_url = "https://stgcobkyc.sabpaisa.in";
 } else {
   url = "https://cobapi.sabpaisa.in";
   kyc_url = "https://kycprocess.sabpaisa.in";
@@ -37,23 +31,14 @@ const API_LIVE = {
   /** Email Verify for new register users **/
   // EMAIL_VERIFY : "${url}/auth-service/auth/emailVerify/",
   EMAIL_VERIFY: `${url}/cob/emailverify/`,
-
-  CHECK_PERMISSION_PAYLINK:
-    "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
+  CHECK_PERMISSION_PAYLINK:"https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
   BANK_IFSC_CODE_VERIFY: "https://ifsc.razorpay.com/",
-  BANK_LIST_NB:
-    "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
-  BANK_LIST_DC:
-    "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
-
+  BANK_LIST_NB:"https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
+  BANK_LIST_DC:"https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
   SEND_EMAIL: "https://adminapi.sabpaisa.in/REST/Email/sendEmail",
-
-  SUBSCRIBE_FETCH_APP_AND_PLAN:
-    "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
-  FETCH_APP_AND_PLAN:
-    "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
-  SUBSCRIBE_SERVICE:
-    "https://spl.sabpaisa.in/client-subscription-service/subscribe",
+  SUBSCRIBE_FETCH_APP_AND_PLAN:"https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
+  FETCH_APP_AND_PLAN:"https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
+  SUBSCRIBE_SERVICE:"https://spl.sabpaisa.in/client-subscription-service/subscribe",
 
   /* transaction history  */
   //old api of txn history
@@ -124,20 +109,20 @@ const API_LIVE = {
   
 
     /** Contact Information */
-    Save_General_Info:"http://13.126.165.212:8000/kyc/save-general-info/",
+    Save_General_Info:"https://stgcobkyc.sabpaisa.in/kyc/save-general-info/",
 
     //==>For Verfifying Contact Info Ist Phase(Send OTP and Verify OTP)
-    Send_OTP:"http://13.126.165.212:8000/kyc/send-otp/",
+    Send_OTP:"https://stgcobkyc.sabpaisa.in/kyc/send-otp/",
     //==>2nd Phase
-    Verify_OTP:"http://13.126.165.212:8000/kyc/verify-otp/",
+    Verify_OTP:"https://stgcobkyc.sabpaisa.in/kyc/verify-otp/",
 
 
     /** Bank Details One OF KYC TAB  */
 
-    Save_Settlement_Info: "http://13.126.165.212:8000/kyc/save-settlement-info/",
+    Save_Settlement_Info: "https://stgcobkyc.sabpaisa.in/kyc/save-settlement-info/",
 
     //Get All Bnak Names in Kyc Bank Details Dropdown Tab
-    GET_ALL_BANK_NAMES: "http://13.126.165.212:8000/kyc/get-all-bank-name/",
+    GET_ALL_BANK_NAMES: "https://stgcobkyc.sabpaisa.in/kyc/get-all-bank-name/",
 
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
   Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
