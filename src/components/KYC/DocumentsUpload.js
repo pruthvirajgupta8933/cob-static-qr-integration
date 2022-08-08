@@ -3,14 +3,15 @@ import axios from 'axios'
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import FormikController from '../../_components/formik/FormikController'
 import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson'
 import "../KYC/kyc-style.css"
 import API_URL from '../../config';
+import { documentsUpload,merchantInfo } from "../../slices/kycSlice"
 
 function DocumentsUpload() {
- const [docTypeList, setDocTypeList] = useState([])
+  const [docTypeList, setDocTypeList] = useState([])
   const [fieldValue, setFieldValue] = useState(null);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
@@ -21,6 +22,7 @@ function DocumentsUpload() {
     docFile: ""
 
   }
+  const dispatch = useDispatch();
   const validationSchema = Yup.object({
     docType: Yup.string().required("Required"),
     docFile: Yup.mixed()
@@ -29,10 +31,8 @@ function DocumentsUpload() {
   })
 
   useEffect(() => {
-    axios.get(API_URL.DocumentsUpload).then((resp) => {
-      const data = convertToFormikSelectJson('id', 'name', resp.data.results);
-      console.log(resp, "my all dattaaa")
-
+    dispatch(documentsUpload()).then((resp) => {
+      const data = convertToFormikSelectJson('id', 'name', resp.payload.results);
       setDocTypeList(data)
     }).catch(err => console.log(err))
   }, [])
@@ -41,25 +41,19 @@ function DocumentsUpload() {
     bodyFormData.append('files', fieldValue);
     // bodyFormData.append("client_code", [clientCode]);
     bodyFormData.append('login_id', loginId);
-    bodyFormData.append('modified_by', 270);           
+    bodyFormData.append('modified_by', 270);
     bodyFormData.append('type', values.docType);
-    axios({
-      method: "post",
-      url: API_URL.Upload_Merchant_document,
-
-      data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data" },
-    })
+   dispatch(merchantInfo(bodyFormData))
       .then(function (response) {
-      toast.success("File Upload Successfull")
-      console.log(response);
+        toast.success("Merchant document saved successfully")
+        console.log(response);
       })
       .catch(function (error) {
         console.error("Error:", error);
-        toast.error('File Upload Unsuccessfull')
- });
+        toast.error('Merchant document saved Unsuccessfull')
+      });
   }
-return (
+  return (
     <div className="col-md-12 col-md-offset-4">
       <div className="">
         <p> Note : Please complete Business Overview Section to view the list of applicable documents!</p>
@@ -97,7 +91,7 @@ return (
                     onChange={(event) => {
                       setFieldValue(event.target.files[0])
                       formik.setFieldValue("docFile", event.target.files[0].name)
- }}
+                    }}
 
                     accept="image/jpeg,image/jpg,image/png,application/pdf"
 

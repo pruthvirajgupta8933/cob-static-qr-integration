@@ -3,11 +3,11 @@ import axios from 'axios'
 import { Formik, Form } from "formik"
 import * as Yup from "yup"
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import FormikController from '../../_components/formik/FormikController'
 import API_URL from '../../config';
 import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson'
-
+import {businessOverviewState,saveMerchantInfo} from "../../slices/kycSlice"
 
 
 function BusinessDetails() {
@@ -20,6 +20,7 @@ function BusinessDetails() {
   const [fieldValue, setFieldValue] = useState(null);
   const [checked, setChecked] =useState(false);
   const [operationvalue,setOperationvalue]=useState();
+  const dispatch =useDispatch();
 
 
 
@@ -91,8 +92,8 @@ function BusinessDetails() {
 
 
   useEffect(() => {
-    axios.get(API_URL.Business_overview_state).then((resp) => {
-      const data = convertToFormikSelectJson('stateId', 'stateName', resp.data);
+    dispatch(businessOverviewState()).then((resp) => {
+      const data = convertToFormikSelectJson('stateId', 'stateName', resp.payload);
       //  console.log(resp, "my all dattaaa")
       setBusinessOverview(data)
     }).catch(err => console.log(err))
@@ -102,7 +103,6 @@ function BusinessDetails() {
 
 
   const onSubmit = values => {
-    console.log(API_URL.SAVE_MERCHANT_INFO, "appurlll")
     const bodyFormData = new FormData();
     bodyFormData.append('company_name', values.company_name);
     bodyFormData.append('registerd_with_gst', values.registerd_with_gst)
@@ -124,16 +124,9 @@ function BusinessDetails() {
     // bodyFormData.append("client_code", [clientCode]);
     bodyFormData.append('login_id', loginId);
 
-
-    axios({
-      method: "put",
-      url: API_URL.SAVE_MERCHANT_INFO,
-
-      data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data" },
-    })
+    dispatch(saveMerchantInfo(bodyFormData))
       .then(function (response) {
-        toast.success("File Upload Successfull")
+        toast.success("Merchant data updated successfully")
         console.log(response);
       })
       .catch(function (error) {
