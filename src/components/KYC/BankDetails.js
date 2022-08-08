@@ -14,6 +14,14 @@ function BankDetails() {
 
   const dispatch = useDispatch();
 
+  const KycList = useSelector(
+    (state) =>
+      state.kyc.kycUserList
+  );
+
+  
+  //  console.log(KycList ,"====================>")
+
 
   const [data, setData] = useState([]);
 
@@ -24,12 +32,12 @@ function BankDetails() {
   const { loginId } = user;
 
   const initialValues = {
-    account_holder_name: "",
-    account_number: "",
+    account_holder_name: KycList.accountHolderName,
+    account_number: KycList.accountNumber,
     confirm_account_number:"",
-    ifsc_code: "",
+    ifsc_code: KycList.ifscCode,
     bank_id: "",
-    account_type: "",
+    account_type: KycList.bankName,
     branch: "",
   }
   const validationSchema = Yup.object({
@@ -41,6 +49,9 @@ function BankDetails() {
     branch: Yup.string().required("Required"),
     bank_id:Yup.string().required("Required"),
   })
+
+  
+
 
 
   //---------------GET ALL BANK NAMES DROPDOWN--------------------

@@ -22,6 +22,17 @@ function DocumentsUpload() {
     docFile: ""
 
   }
+
+
+  const KycList = useSelector(
+    (state) =>
+      state.kyc.kycUserList
+  );
+
+  
+   console.log(KycList ,"====================>")
+
+   
   const dispatch = useDispatch();
   const validationSchema = Yup.object({
     docType: Yup.string().required("Required"),

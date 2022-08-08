@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState , useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import BankDetails from './BankDetails';
 import BusinessDetails from './BusinessDetails';
@@ -7,13 +7,17 @@ import BusinessOverview from './BusinessOverview';
 import ContactInfo from './ContactInfo';
 import DocumentsUpload from './DocumentsUpload';
 import SubmitKyc from './SubmitKyc';
+import { kycUserList } from "../../slices/kycSlice"
 
 
 function KycForm() {
+  const dispatch = useDispatch();
     const [tab,SetTab] = useState(1);
 
     const { auth} = useSelector((state)=>state);
     const {user} = auth;
+
+    const { loginId } = user;
     let history = useHistory();
 
     // if(user && user.clientMerchantDetailsList===null){
@@ -27,6 +31,15 @@ function KycForm() {
 
     }
   } 
+
+  useEffect(() => {
+    dispatch(kycUserList({
+      login_id:loginId
+
+    })).then((res) => {
+      console.log(res)
+    });
+  },[kycUserList])
     
    
 

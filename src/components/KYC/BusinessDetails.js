@@ -23,6 +23,16 @@ function BusinessDetails() {
   const dispatch =useDispatch();
 
 
+  const KycList = useSelector(
+    (state) =>
+      state.kyc.kycUserList
+  );
+
+  // console.log(KycList ,"=== =================>")
+  // console.log(KycList.companyLogoPath ,"Company Logo")
+    
+
+
 
   const choicesCheckBox = [
     { key: "Same As Registered Address", value: "yes" }
@@ -58,18 +68,18 @@ function BusinessDetails() {
     
   }
   const initialValues = {
-    company_name: "",
-    company_logo: "",
-    registerd_with_gst: "",
-    gst_number: "",
-    pan_card: "",
-    signatory_pan: "",
-    name_on_pancard: "",
-    pin_code: "",
-    city_id: "",
-    state_id: "",
-    registered_business_address: "",
-    operational_address: "",
+    company_name: KycList.companyName,
+    company_logo: KycList.companyImagePath,
+    registerd_with_gst: KycList.registerdWithGST,
+    gst_number: KycList.gstNumber,
+    pan_card: KycList.panCard,
+    signatory_pan: KycList.signatoryPAN,
+    name_on_pancard: KycList.nameOnPanCard,
+    pin_code: KycList.pinCode,
+    city_id: KycList.cityId,
+    state_id: KycList.stateId,
+    registered_business_address: KycList.registeredBusinessAdress,
+    operational_address: KycList.operationalAddress,
     checkBoxChoice:""
   }
   const validationSchema = Yup.object({

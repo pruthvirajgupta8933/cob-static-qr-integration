@@ -47,21 +47,28 @@ const dispatch=useDispatch();
     { key: "Yes", value: "Website/App url" },
   ];
 
+  const KycList = useSelector(
+    (state) =>
+      state.kyc.kycUserList
+  );
+
+
+
   const initialValues = {
-    business_type: "",
-    business_category: "",
-    business_model: "",
-    billing_label: "",
-    erp_check: "",
-    platform_id: "",
-    company_website: "",
+    business_type: KycList.businessType,
+    business_category: KycList.businessCategory,
+    business_model: KycList.businessModel,
+    billing_label: KycList.billingLabel,
+    erp_check: KycList.erpCheck,
+    platform_id: KycList.platformId,
+    company_website: KycList.companyWebsite,
     seletcted_website_app_url: "",
-    website_app_url: "",
-    collection_type_id: "",
-    collection_frequency_id: "",
-    ticket_size: "",
-    expected_transactions: "",
-    form_build: "",
+    website_app_url: KycList.successUrl,
+    collection_type_id: KycList.collectionTypeId,
+    collection_frequency_id: KycList.collectionFrequencyId,
+    ticket_size: KycList.ticketSize,
+    expected_transactions: KycList.expectedTransactions,
+    form_build: KycList.formBuild,
   };
   const validationSchema = Yup.object({
     business_type: Yup.string().required("Select BusinessType"),
