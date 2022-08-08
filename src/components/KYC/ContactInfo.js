@@ -64,11 +64,14 @@ let KycVerifyStatusForPhone = useSelector(
     otp_for: "kyc1"
   }
 
+  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Required"),
     contact_number: Yup.string().required("Required"),
-    email_id: Yup.string().email("Invalid email").required("Required"),
+    email_id: Yup.string().email("Invalid email").required("Required").matches(phoneRegExp, 'Phone number is not valid')
+    .min(10, "Phone number in not valid")
+    .max(10, "too long"),
     contact_designation: Yup.string().required("Required"),
     // isPhoneVerified: Yup.string().required("You need to verify Your Phone"),
     // isEmailVerified: Yup.string().required("You need to verify Your Email"),

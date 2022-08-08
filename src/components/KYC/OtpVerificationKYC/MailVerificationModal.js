@@ -40,7 +40,7 @@ const MailVerificationModal = ({ show, setShow }) => {
     dispatch(
       otpVerificationForContactForEmail({
         verification_token: KycVerificationToken,
-        otp: parseInt(otp.otp, 10),
+        otp: otp.otp,
       })
     ).then((res) => {
       // console.log("This is the response", res);
