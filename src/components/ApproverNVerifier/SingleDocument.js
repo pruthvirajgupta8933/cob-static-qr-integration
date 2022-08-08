@@ -27,10 +27,10 @@ function SingleDocument() {
 
 
 
-  const KycVerifyStatus = useSelector(
-    (state) =>
-      state.KycOtpSlice.OtpVerificationResponse.status
-  );
+  // const KycVerifyStatus = useSelector(
+  //   (state) =>
+  //     state.KycOtpSlice.OtpVerificationResponse.status
+  // );
 
 
   const initialValues = {

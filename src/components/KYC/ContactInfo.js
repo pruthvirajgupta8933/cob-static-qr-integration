@@ -20,15 +20,8 @@ function ContactInfo() {
   
   const { loginId } = user;
 
-  const [verifiedUpdateStatusPhone,setVerifiedUpdateStatusPhone] = useState(null)
-  const [verifiedUpdateStatusEmail,setVerifiedUpdateStatusEmail] = useState(null)
   const [showOtpVerifyModalEmail, setShowOtpVerifyModalEmail] = useState(false);
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
-  const [isCheck, setIsChecked] = useState(false)
-  const [targetPhone, setTargetPhone] = useState("")
-  const [targetEmail, setTargetEmail] = useState("")
-
-
 
 let KycVerifyStatusForPhone = useSelector(
     (state) =>
@@ -39,9 +32,6 @@ let KycVerifyStatusForPhone = useSelector(
     (state) =>
       state.KycOtpSlice.OtpVerificationResponseForEmail.status
   );
-
-  console.log(KycVerifyStatusForPhone,"----Phone Verification Status-------")
-  console.log(KycVerifyStatusForEmail,"----Email Verification Status-------")
 
   const initialValues = {
     name: "",
@@ -68,10 +58,10 @@ let KycVerifyStatusForPhone = useSelector(
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Required"),
-    contact_number: Yup.string().required("Required"),
-    email_id: Yup.string().email("Invalid email").required("Required").matches(phoneRegExp, 'Phone number is not valid')
+    contact_number: Yup.string().required("Required").matches(phoneRegExp, 'Phone number is not valid')
     .min(10, "Phone number in not valid")
     .max(10, "too long"),
+    email_id: Yup.string().email("Invalid email").required("Required"),
     contact_designation: Yup.string().required("Required"),
     // isPhoneVerified: Yup.string().required("You need to verify Your Phone"),
     // isEmailVerified: Yup.string().required("You need to verify Your Email"),
