@@ -3,12 +3,18 @@ import axios from "axios";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { Zoom } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch} from "react-redux";
 import * as Yup from "yup";
 import API_URL from "../../config";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
-import { FormatLineSpacing } from "@mui/icons-material";
+import {businessType,
+  busiCategory,
+  platformType,
+  collectionFrequency,
+  collectionType,
+  saveBusinessInfo} from "../../slices/kycSlice"
+
 
 function BusinessOverview() {
   const [data, setData] = useState([]);
@@ -23,7 +29,7 @@ function BusinessOverview() {
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
-
+const dispatch=useDispatch();
 
   const BuildYourForm = [
     { key: "Select", value: "Select Option" },
@@ -51,7 +57,7 @@ function BusinessOverview() {
     company_website: "",
     seletcted_website_app_url: "",
     website_app_url: "",
-    type_of_collection: "",
+    collection_type_id: "",
     collection_frequency_id: "",
     ticket_size: "",
     expected_transactions: "",
@@ -67,78 +73,67 @@ function BusinessOverview() {
     seletcted_website_app_url: Yup.string().required("Select website app Url"),
     website_app_url: Yup.string().required("Required"),
     company_website: Yup.string().required("Required"),
-    //  type_of_collection: Yup.string().required("Required"),
+    collection_type_id: Yup.string().required("Required"),
     collection_frequency_id: Yup.string().required("Required"),
     ticket_size: Yup.string().required("Required"),
     expected_transactions: Yup.string().required("Required"),
     form_build: Yup.string().required("Required"),
   });
+  
 
   ////Get Api for Buisness overview///////////
   useEffect(() => {
-    axios
-      .get(API_URL.Business_type)
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "businessTypeId",
-          "businessTypeText",
-          resp.data
-        );
-      // console.log(data);
-
-        setData(data);
-      })
+   dispatch(businessType()).then((resp) => {
+    const data = convertToFormikSelectJson( "businessTypeId",
+    "businessTypeText",
+    resp.payload
+  );
+     setData(data);
+  })
+    
       .catch((err) => console.log(err));
   }, []);
 
 
   //////////////////////BusinessCategory//////////
   useEffect(() => {
-    axios
-      .get(API_URL.Business_Category)
-      .then((resp) => {
+   dispatch(busiCategory()).then((resp) => {
         const data = convertToFormikSelectJson(
           "category_id",
           "category_name",
-          resp.data
+          resp.payload
         );
-      // console.log(data);
+
 
       setBusinessCategory(data);
+     
       })
       .catch((err) => console.log(err));
   }, []);
 
   //////////////////APi for Platform
   useEffect(() => {
-    axios
-      .get(API_URL.Platform_type)
+   dispatch(platformType())
       .then((resp) => {
         const data = convertToFormikSelectJson(
           "platformId",
           "platformName",
-          resp.data
+          resp.payload
         );
-        // console.log(resp, "my all dattaaa")
-
-        // console.log(data,"here is my get data")
-
-        setPlatform(data);
+      setPlatform(data);
       })
       .catch((err) => console.log(err));
   }, []);
+
+  ////////////////////////////////////////
   useEffect(() => {
-    axios
-      .get(API_URL.Collection_frequency)
+   dispatch(collectionFrequency())
       .then((resp) => {
         const data = convertToFormikSelectJson(
           "collectionFrequencyId",
           "collectionFrequencyName",
-          resp.data
+          resp.payload
         );
-        // console.log(resp, "my all dattaaa")
-
-        // console.log(data,"here is my get data")
 
         setCollectFreqency(data);
       })
@@ -146,25 +141,20 @@ function BusinessOverview() {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(API_URL.Get_ALL_Collection_Type)
+   dispatch(collectionType())
       .then((resp) => {
         const data = convertToFormikSelectJson(
           "collectionTypeId",
           "collectionTypeName",
-          resp.data
+          resp.payload
         );
-        // console.log(resp, "my all dattaaa")
-
-        // console.log(data,"here is my get data")
-
-        setCollection(data);
+     setCollection(data);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  const onSubmit = async (values) => {
-    const res = await axios.put(API_URL.save_Business_Info, {
+  const onSubmit =  (values) => {
+   dispatch(saveBusinessInfo ({
       business_type: values.business_type,
       business_category: values.business_category,
       business_model: values.business_model,
@@ -172,29 +162,31 @@ function BusinessOverview() {
       company_website: values.company_website,
       erp_check: values.erp_check,
       platform_id: values.platform_id,
-      collection_type_id: "499999998888",
+      collection_type_id: values.collection_type_id,
       collection_frequency_id: values.collection_frequency_id,
       expected_transactions: values.expected_transactions,
       form_build: values.form_build,
       ticket_size: values.ticket_size,
       modified_by:270,
       login_id: loginId,
+      // client_code: clientCode,
+    
+    })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        console.log("This is the response", res);
+        toast.success(res.payload.message);
+      } else {
+        toast.error(res.payload.message);
+
+      }
     });
+   
 
-    // console.log(values, "form data");
-
-    if (res.status === 200) {
-      toast.success("Your Details Submitted Successfully");
-    } else {
-      toast.error("Something Went Wrong");
-    }
   };
 
   const handleShowHide = (event) => {
     const getuser = event.target.value;
     setAppUrl(getuser);
-
-    // console.log(getuser, "222222222222222");
   };
 
   return (
@@ -206,7 +198,7 @@ function BusinessOverview() {
       >
         {(formik) => (
           <Form>
-            {console.log(formik)}
+           
             <div className="form-row">
               <div className="form-group col-md-4">
                 <FormikController
@@ -308,7 +300,7 @@ function BusinessOverview() {
                 <FormikController
                   control="select"
                   label="Type Of Collection *"
-                  name="type_of_collection"
+                  name="collection_type_id"
                   options={collection}
                   className="form-control"
                 />

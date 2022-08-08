@@ -4,8 +4,7 @@ import messageReducer from "./slices/message";
 // import homeReducer from './slices/home'
 import { dashboardReducer } from './slices/dashboardSlice';
 import reducerSubscription from './slices/subscription'
-import KycOtpSlice from "./slices/kycOtp"
-
+import { kycReducer } from './slices/kycSlice';
 
 
 const reducer = {
@@ -13,8 +12,7 @@ const reducer = {
   message: messageReducer,
   dashboard:dashboardReducer,
   subscription:reducerSubscription,
-  KycOtpSlice:KycOtpSlice
-
+  kyc:kycReducer
 }
 
 const store = configureStore({
