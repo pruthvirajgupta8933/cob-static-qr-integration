@@ -23,16 +23,19 @@ const API_LIVE = {
   // AUTH_SIGNUP : "${url}/auth-service/auth/signup",
 
   //------------------------------------------------------------
-  AUTH_SIGNUP: `${url}/cob/register`,
-  AUTH_LOGIN: `${url}/cob/loginapi`,
-  //  AUTH_LOGIN : "${url}/cob/loginapi",
+ //------------------------------------------------------------
+ AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
+ AUTH_LOGIN: `${url}/auth-service/auth/login`,
+ //  AUTH_LOGIN : "${url}/cob/loginapi",
 
-  // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
-  AUTH_CLIENT_CREATE: `${url}/cob/createprofile`,
-  AUTH_GET_EMAIL_TO_SEND_OTP: `${url}/cob/auth-service/account/forgot-password`,
-  AUTH_VERIFY_OTP_ON_FWD: `${url}/cob/auth-service/account/verify-otp`,
-  AUTH_CREATE_NEW_PASSWORD: `${url}/cob/auth-service/account/create-password`,
-  AUTH_CHANGE_PASSWORD: `${url}/cob/auth-service/account/change-password`,
+ // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
+ AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
+ AUTH_UPDATE_PROFILE: `${url}/auth-service/updateProfile`,
+ AUTH_GET_EMAIL_TO_SEND_OTP: `${url}/auth-service/account/forgot-password`,
+ AUTH_VERIFY_OTP_ON_FWD: `${url}/cob/auth-service/account/verify-otp`,
+ AUTH_CREATE_NEW_PASSWORD: `${url}/cob/auth-service/account/create-password`,
+ AUTH_CHANGE_PASSWORD: `${url}/auth-service/account/change-password`,
+ AUTH_FORGET_PASSWORD: `${url}/auth-service/account/create-password`,
 
   /** Email Verify for new register users **/
   // EMAIL_VERIFY : "${url}/auth-service/auth/emailVerify/",
