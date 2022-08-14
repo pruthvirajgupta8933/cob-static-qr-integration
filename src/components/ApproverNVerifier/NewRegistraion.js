@@ -46,7 +46,7 @@ const [pageSize, setPageSize] = useState(10);
     setSearchText(e.target.value);
 };
 useEffect(()=>{
-  setData(_(data).slice(0).take(pageSize).value())
+  // setData(data.slice(0).take(pageSize).value())
   // setPageCount(displayList.length>0 ? Math.ceil(displayList.length/pageSize) : 0)
 },[pageSize]);
 
