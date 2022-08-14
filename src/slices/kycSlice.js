@@ -86,6 +86,10 @@ const initialState = {
     merchantInfo:[],
     kycBankNames :[],
     saveMerchantBankDetais:[],
+    kycForPending:[],
+    kycForVerified:[],
+    kycForApproved:[],
+    kycForCompleted:[]
  }
 
 //--------------Kyc BusinessType get api (BusinessOverview Tab)---------------------
@@ -339,6 +343,86 @@ export const saveMerchantBankDetais= createAsyncThunk(
     return response.data;
   }
 );
+/////////////////////////////////KYC APPROVED API
+
+export const kycForPending= createAsyncThunk(
+  "kyc/kycForPending",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_PENDING}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+
+//////////////////////////////////////////////////
+export const kycForVerified= createAsyncThunk(
+  "kyc/kycForVerified",
+  async (data) => {
+    const requestParam =data.page
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_VERIFIED}&page=${requestParam}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+////////////////////////////////////////////////////
+export const kycForApproved= createAsyncThunk(
+  "kyc/kycForApproved",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_APPROVED}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+///////////////////////////////////////////
+export const kycForCompleted= createAsyncThunk(
+  "kyc/kycForCompleted",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_COMPLETED}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+
 
  export const kycSlice = createSlice({
     name: 'kyc',

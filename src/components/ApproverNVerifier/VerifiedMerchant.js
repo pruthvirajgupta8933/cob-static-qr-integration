@@ -1,158 +1,114 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-import { Formik, Form } from "formik"
-import * as Yup from "yup"
-import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
-import FormikController from '../../_components/formik/FormikController'
-import API_URL from '../../config';
-import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson'
-
+import {useDispatch } from 'react-redux';
+import {kycForVerified} from "../../slices/kycSlice"
 
 
 function VerifiedMerchant() {
-  const { user } = useSelector((state) => state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  // const { clientCode } = clientMerchantDetailsList[0];
-  const { loginId } = user;
-  const [BusinessOverview, setBusinessOverview] = useState([])
-  const [gstin, setGstin] = useState("");
-  const [fieldValue, setFieldValue] = useState(null);
-  const [checked, setChecked] =useState(false);
-  const [operationvalue,setOperationvalue]=useState();
+  const[verfiedMerchant,setVerifiedMerchant]=useState([])
+  const dispatch=useDispatch();
+  const [searchText, setSearchText] = useState("");
+  const[page,setPage]=useState(1)
+  const kycSearch = (e) => {
+    setSearchText(e.target.value);
+};
 
-
-
-  const choicesCheckBox = [
-    { key: "Same As Registered Address", value: "yes" }
-  ]
-
-  const GSTIN = [
-
-    { key: "Select Option", value: "Select Option" },
-    { key:"True", value: "We have a registered GSTIN" },
-    { key: "False", value: "We don't have a GSTIN" },
-
-  ]
-  const handleChange = (event) => {
-    setChecked(event.value);
-  };
-  const handleShowHide = (event) => {
-    const getuser = event.target.value;
-    setGstin(getuser);
-
-    // console.log(getuser, "222222222222222");
-  };
-
-  const test=(e, val)=>{
-   
-    if(e.length>0 && e[0] === "yes"){
-      setChecked(true)
-      setOperationvalue(val)
-      // fn("operational_address",val)
-    } else{
-      setChecked(false)
-      setOperationvalue(null)
-    }
-    
-  }
-  const initialValues = {
-    company_name: "",
-    company_logo: "",
-    registerd_with_gst: "",
-    gst_number: "",
-    pan_card: "",
-    signatory_pan: "",
-    name_on_pancard: "",
-    pin_code: "",
-    city_id: "",
-    state_id: "",
-    registered_business_address: "",
-    operational_address: "",
-    checkBoxChoice:""
-  }
-  const validationSchema = Yup.object({
-    company_logo: Yup.mixed()
-      .nullable()
-      .required('Required file format PNG/JPEG/JPG'),
-    company_name: Yup.string().required("Required"),
-    registerd_with_gst: Yup.string().required("Required"),
-    gst_number: Yup.string().required("Required"),
-    pan_card: Yup.string().required("Required"),
-    signatory_pan: Yup.string().required("Required"),
-    name_on_pancard: Yup.string().required("Required"),
-    pin_code: Yup.string().required("Required"),
-    city_id: Yup.string().required("Required"),
-    state_id: Yup.string().required("Required"),
-    registered_business_address: Yup.string().required("Required"),
-    operational_address: Yup.string().when("checkBoxChoice",{
-      is:"yes",
-      then:Yup.string().required("Required")
-    }),
-    checkBoxChoice:Yup.array(),
-
-
-  })
 
 
   useEffect(() => {
-    axios.get(API_URL.Business_overview_state).then((resp) => {
-      const data = convertToFormikSelectJson('stateId', 'stateName', resp.data);
-      //  console.log(resp, "my all dattaaa")
-      setBusinessOverview(data)
-    }).catch(err => console.log(err))
-  }, [])
+    dispatch(kycForVerified({page})).then((resp) => {
+     const data = resp.payload.results
+   
+     setVerifiedMerchant(data);
+   })
+     
+       .catch((err) => console.log(err));
+   }, []);
 
-
-
-
-  const onSubmit = values => {
-    console.log(API_URL.SAVE_MERCHANT_INFO, "appurlll")
-    const bodyFormData = new FormData();
-    bodyFormData.append('company_name', values.company_name);
-    bodyFormData.append('registerd_with_gst', values.registerd_with_gst)
-    bodyFormData.append('gst_number', values.gst_number)
-    bodyFormData.append('pan_card', values.pan_card)
-    bodyFormData.append('signatory_pan', values.signatory_pan)
-    bodyFormData.append('name_on_pancard', values.name_on_pancard)
-    bodyFormData.append('pin_code', values.pin_code)
-    bodyFormData.append('city_id', values.city_id)
-    bodyFormData.append('state_id', values.state_id)
-    if(checked===true){
-      bodyFormData.append('operational_address', values.registered_business_address)
-    }else{
-      bodyFormData.append('operational_address', values.operational_address)
-    }
-    bodyFormData.append('registered_business_address', values.registered_business_address)
-    bodyFormData.append('files', fieldValue);
-    bodyFormData.append('modified_by', "277");
-    // bodyFormData.append("client_code", [clientCode]);
-    bodyFormData.append('login_id', loginId);
-
-
-    axios({
-      method: "put",
-      url: API_URL.SAVE_MERCHANT_INFO,
-
-      data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-      .then(function (response) {
-        toast.success("File Upload Successfull")
-        console.log(response);
+   useEffect(() => {
+    if (searchText.length > 0) {
+      setVerifiedMerchant(verfiedMerchant.filter((item) => 
+        
+        Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
+    } else {
+      dispatch(kycForVerified()).then((resp) => {
+        const data = resp.payload.results
+      
+        setVerifiedMerchant(data);
       })
-      .catch(function (error) {
-        console.error("Error:", error);
-        toast.error('File Upload Unsuccessfull')
-      });
-  }
+   
+       
+    }
+}, [searchText])
+
+  
 
 
   return (
-    <div className="col-md-12 col-md-offset-4">
+    <div className="row">  
+    <div className="col-lg-4 mrg-btm- bgcolor">
+    <label>Search</label>
+        <input className='form-control' onChange={ kycSearch} type="text" placeholder="Search Here" />
+    </div>
+  
+    <div className="col-lg-4 mrg-btm- bgcolor">
+        {/* <label>Count Per Page</label>
+        <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))}  className="ant-input" >
+        <DropDownCountPerPage datalength={data.length} />
+        </select> */}
+  </div>
+    <div className="col-md-12 col-md-offset-4">   
+   
+    <table className="table table-bordered">
+                     <thead>
+                     <tr>
+                       
+                       <th>Merchant Id</th>
+                       <th>Contact Number</th>
+                       <th>Name</th>
+                       <th> Email</th>
+                       <th>Bank</th>
+                       <th>Adhar Number</th>
+                       <th>Pan card</th>
+                       <th>State</th>
+                       <th>Pin code</th>
+                       <th>Status</th>
+                     </tr>
+                     </thead>
+                         <tbody>
+                         {verfiedMerchant.map((user,i) => (
+                           <tr key={i}>
+                            
+                             <td>{user.merchantId}</td>
+                             <td>{user.contactNumber}</td>
+                             <td>{user.name}</td>
+                             <td>{user.emailId}</td>
+                             <td>{user.bankName}</td>
+                             <td>{user.aadharNumber}</td>
+                             <td>{user.panCard}</td>
+                             <td>{user.stateId}</td>
+                             <td>{user.pinCode}</td>
+                             <td>{user.status}</td>
+                           </tr>
+                         ))}
+                     </tbody>
+                 </table>
+                 <nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
+    
+   </div>
+   </div>
+ 
+ 
   
 
-    </div>
+   
   )
 }
 

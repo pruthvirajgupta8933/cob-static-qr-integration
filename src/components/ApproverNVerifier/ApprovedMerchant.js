@@ -1,206 +1,66 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Formik, Form } from "formik";
-import { toast } from "react-toastify";
-import { Zoom } from "react-toastify";
-import { useSelector } from "react-redux";
-import * as Yup from "yup";
-import API_URL from "../../config";
-import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
-import FormikController from "../../_components/formik/FormikController";
-import { FormatLineSpacing } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import {kycForApproved} from "../../slices/kycSlice"
 
 function ApprovedMerchant() {
-  const [data, setData] = useState([]);
-  const [appUrl, setAppUrl] = useState("");
-  const [notShowUrl, setnotShowUrl] = useState(false);
-  const[businessCategory,setBusinessCategory]=useState([])
-  const [platform, setPlatform] = useState([]);
-  const [CollectFreqency, setCollectFreqency] = useState([]);
-  const [collection, setCollection] = useState([]);
-  const { user } = useSelector((state) => state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  // const { clientCode } = clientMerchantDetailsList[0];
-  const { loginId } = user;
-
-
-
-  const BuildYourForm = [
-    { key: "Select", value: "Select Option" },
-    { key: "yes", value: "Yes" },
-    { key: "No", value: "No" },
-  ];
-  const Erp = [
-    { key: "Select", value: "Select Option" },
-    { key: "True", value: "Yes" },
-    { key: "False", value: "No" },
-  ];
-  const WebsiteAppUrl = [
-    { key: "Select Option", value: "Select Option" },
-    { key: "No", value: "We do not have url" },
-    { key: "Yes", value: "Website/App url" },
-  ];
-
-  const initialValues = {
-    business_type: "",
-    business_category: "",
-    business_model: "",
-    billing_label: "",
-    erp_check: "",
-    platform_id: "",
-    company_website: "",
-    seletcted_website_app_url: "",
-    website_app_url: "",
-    type_of_collection: "",
-    collection_frequency_id: "",
-    ticket_size: "",
-    expected_transactions: "",
-    form_build: "",
-  };
-  const validationSchema = Yup.object({
-    business_type: Yup.string().required("Select BusinessType"),
-    business_category: Yup.string().required("Select Business Category"),
-    business_model: Yup.string().required("Required"),
-    billing_label: Yup.string().required("Required"),
-    erp_check: Yup.string().required("Select Erp"),
-    platform_id: Yup.string().required("Required"),
-    seletcted_website_app_url: Yup.string().required("Select website app Url"),
-    website_app_url: Yup.string().required("Required"),
-    company_website: Yup.string().required("Required"),
-    //  type_of_collection: Yup.string().required("Required"),
-    collection_frequency_id: Yup.string().required("Required"),
-    ticket_size: Yup.string().required("Required"),
-    expected_transactions: Yup.string().required("Required"),
-    form_build: Yup.string().required("Required"),
-  });
-
-  ////Get Api for Buisness overview///////////
-  useEffect(() => {
-    axios
-      .get(API_URL.Business_type)
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "businessTypeId",
-          "businessTypeText",
-          resp.data
-        );
-      // console.log(data);
-
-        setData(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-
-  //////////////////////BusinessCategory//////////
-  useEffect(() => {
-    axios
-      .get(API_URL.Business_Category)
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "category_id",
-          "category_name",
-          resp.data
-        );
-      // console.log(data);
-
-      setBusinessCategory(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  //////////////////APi for Platform
-  useEffect(() => {
-    axios
-      .get(API_URL.Platform_type)
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "platformId",
-          "platformName",
-          resp.data
-        );
-        // console.log(resp, "my all dattaaa")
-
-        // console.log(data,"here is my get data")
-
-        setPlatform(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-  useEffect(() => {
-    axios
-      .get(API_URL.Collection_frequency)
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "collectionFrequencyId",
-          "collectionFrequencyName",
-          resp.data
-        );
-        // console.log(resp, "my all dattaaa")
-
-        // console.log(data,"here is my get data")
-
-        setCollectFreqency(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  const[approveMerchant,setApproveMerchant]=useState([])
+  const dispatch=useDispatch();
 
   useEffect(() => {
-    axios
-      .get(API_URL.Get_ALL_Collection_Type)
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "collectionTypeId",
-          "collectionTypeName",
-          resp.data
-        );
-        // console.log(resp, "my all dattaaa")
+    dispatch(kycForApproved()).then((resp) => {
+     const data = resp.payload.results
+   
+     setApproveMerchant(data);
 
-        // console.log(data,"here is my get data")
 
-        setCollection(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  const onSubmit = async (values) => {
-    const res = await axios.put(API_URL.save_Business_Info, {
-      business_type: values.business_type,
-      business_category: values.business_category,
-      business_model: values.business_model,
-      billing_label: values.billing_label,
-      company_website: values.company_website,
-      erp_check: values.erp_check,
-      platform_id: values.platform_id,
-      collection_type_id: "499999998888",
-      collection_frequency_id: values.collection_frequency_id,
-      expected_transactions: values.expected_transactions,
-      form_build: values.form_build,
-      ticket_size: values.ticket_size,
-      modified_by:270,
-      login_id: loginId,
-    });
-
-    // console.log(values, "form data");
-
-    if (res.status === 200) {
-      toast.success("Your Details Submitted Successfully");
-    } else {
-      toast.error("Something Went Wrong");
-    }
-  };
-
-  const handleShowHide = (event) => {
-    const getuser = event.target.value;
-    setAppUrl(getuser);
-
-    // console.log(getuser, "222222222222222");
-  };
+     
+   })
+     
+       .catch((err) => console.log(err));
+   }, []);
 
   return (
-    <div className="col-md-12 col-md-offset-4">
+    <div className="col-md-12 col-md-offset-4">   
+   
+    <table className="table table-bordered">
+                     <thead>
+                     <tr>
+                       <th>Serial No.</th>
+                       <th>Merchant Id</th>
+                       <th>Contact Number</th>
+                       <th>Name</th>
+                       <th> Email</th>
+                       <th>Bank</th>
+                       <th>Adhar Number</th>
+                       <th>Pan card</th>
+                       <th>State</th>
+                       <th>Pin code</th>
+                       <th>Status</th>
+                     </tr>
+                     </thead>
+                         <tbody>
+                         {approveMerchant.map((user,i) => (
+                           <tr key={i}>
+                             <td>{i+1}</td>
+                             <td>{user.merchantId}</td>
+                             <td>{user.contactNumber}</td>
+                             <td>{user.name}</td>
+                             <td>{user.emailId}</td>
+                             <td>{user.bankName}</td>
+                             <td>{user.aadharNumber}</td>
+                             <td>{user.panCard}</td>
+                             <td>{user.stateId}</td>
+                             <td>{user.pinCode}</td>
+                             <td>{user.status}</td>
+                           </tr>
+                         ))}
+                     </tbody>
+                 </table>
+    
+   </div>
+ 
       
-    </div>
+    
   );
 }
 

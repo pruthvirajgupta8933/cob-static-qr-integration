@@ -23,8 +23,8 @@ const API_LIVE = {
   // AUTH_SIGNUP : "${url}/auth-service/auth/signup",
 
   //------------------------------------------------------------
-  AUTH_SIGNUP: `${url}/cob/register`,
-  AUTH_LOGIN: `${url}/cob/loginapi`,
+  AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
+  AUTH_LOGIN: `${url}/auth-service/auth/login`,
   //  AUTH_LOGIN : "${url}/cob/loginapi",
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
@@ -121,6 +121,25 @@ const API_LIVE = {
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup_state/`,
   Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
+
+  /////////////////////////Kyc approver 
+  /* For pending*/
+  KYC_FOR_PENDING:`${kyc_url}/kyc/get-merchant-data/?search=pending&order_by=-merchantId`,
+  KYC_FOR_VERIFIED:`${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
+  KYC_FOR_APPROVED:`${kyc_url}/kyc/get-merchant-data/?search=approved&order_by=-merchantId`,
+  KYC_FOR_COMPLETED:`${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
+  
+
+
+
+
+
+  
+
+
+
+
+
   
 
     /** Contact Information */
