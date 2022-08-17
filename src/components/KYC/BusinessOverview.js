@@ -26,10 +26,26 @@ function BusinessOverview() {
   const [collection, setCollection] = useState([]);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
+
+  const KycList = useSelector(
+    (state) =>
+      state.kyc.kycUserList
+  );
+
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
 const dispatch=useDispatch();
+
+const ErpCheck = useSelector(
+  (state) =>
+    state.kyc.kycUserList.erpCheck
+);
+
+const ErpCheckStatus = () => {
+  if(ErpCheck === true) return "Yes"
+  else return "No"
+}
 
   const BuildYourForm = [
     { key: "Select", value: "Select Option" },
@@ -47,11 +63,24 @@ const dispatch=useDispatch();
     { key: "Yes", value: "Website/App url" },
   ];
 
-  const KycList = useSelector(
-    (state) =>
-      state.kyc.kycUserList
-  );
 
+
+   
+  
+
+  // console.log(ErpCheck,"<======Erp Check=====>")
+  console.log(KycList, "<===List===>")
+
+  // const erpCheck = () => {
+  //   if(ErpCheck === true)
+  //   return "Yes"
+  //   else return "No"
+  // }
+
+  const VerifyKycStatus = useSelector(
+    (state) =>
+      state.kyc.kycVerificationForAllTabs.business_info_status
+  );
 
 
   const initialValues = {
@@ -59,7 +88,7 @@ const dispatch=useDispatch();
     business_category: KycList.businessCategory,
     business_model: KycList.businessModel,
     billing_label: KycList.billingLabel,
-    erp_check: KycList.erpCheck,
+    erp_check: ErpCheckStatus(),
     platform_id: KycList.platformId,
     company_website: KycList.companyWebsite,
     seletcted_website_app_url: "",
@@ -161,6 +190,7 @@ const dispatch=useDispatch();
   }, []);
 
   const onSubmit =  (values) => {
+
    dispatch(saveBusinessInfo ({
       business_type: values.business_type,
       business_category: values.business_category,
@@ -179,11 +209,11 @@ const dispatch=useDispatch();
       // client_code: clientCode,
     
     })).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
-        console.log("This is the response", res);
+      if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
+        // console.log("This is the response", res);
         toast.success(res.payload.message);
       } else {
-        toast.error(res.payload.message);
+        toast.error("Something Went Wrong! Please try again.");
 
       }
     });
@@ -214,6 +244,7 @@ const dispatch=useDispatch();
                   name="business_type"
                   options={data}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -224,6 +255,7 @@ const dispatch=useDispatch();
                   name="business_category"
                   options={businessCategory}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -235,6 +267,7 @@ const dispatch=useDispatch();
                   name="business_model"
                   placeholder="Business Model"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
             </div>
@@ -248,6 +281,7 @@ const dispatch=useDispatch();
                   name="billing_label"
                   placeholder="Billing Label"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -258,6 +292,7 @@ const dispatch=useDispatch();
                   name="erp_check"
                   options={Erp}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -268,6 +303,7 @@ const dispatch=useDispatch();
                   name="platform_id"
                   options={platform}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
             </div>
@@ -287,6 +323,7 @@ const dispatch=useDispatch();
                   name="seletcted_website_app_url"
                   options={WebsiteAppUrl}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -299,6 +336,7 @@ const dispatch=useDispatch();
                       name="website_app_url"
                       placeholder="Enter Website/App URL"
                       className="form-control"
+                      disabled={VerifyKycStatus === "Verified" ? true : false}
                     />
                   </div>
                 )}
@@ -310,6 +348,7 @@ const dispatch=useDispatch();
                   name="collection_type_id"
                   options={collection}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
             </div>
@@ -322,6 +361,7 @@ const dispatch=useDispatch();
                   name="collection_frequency_id"
                   options={CollectFreqency}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
               <div className="form-group col-md-4">
@@ -332,6 +372,7 @@ const dispatch=useDispatch();
                   name="company_website"
                   placeholder="Enter Ticket Size"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -343,6 +384,7 @@ const dispatch=useDispatch();
                   name="ticket_size"
                   placeholder="Enter Ticket Size"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
               <div className="form-group col-md-4">
@@ -353,6 +395,7 @@ const dispatch=useDispatch();
                   name="expected_transactions"
                   placeholder="Enter Expected Transactions"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -363,15 +406,17 @@ const dispatch=useDispatch();
                   name="form_build"
                   options={BuildYourForm}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
             </div>
 
            
-
-            <button type="submit" className="btn btn-primary">
-              Save
-            </button>
+            { VerifyKycStatus === "Verified" ? 
+            null 
+            : <button type="submit" className="btn btn-primary"  disabled={VerifyKycStatus === "Verified" ? true : false} >
+              Save and Next
+            </button> }
           </Form>
         )}
       </Formik>

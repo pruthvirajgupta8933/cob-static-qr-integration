@@ -23,8 +23,8 @@ const API_LIVE = {
   // AUTH_SIGNUP : "${url}/auth-service/auth/signup",
 
   //------------------------------------------------------------
-  AUTH_SIGNUP: `${url}/cob/register`,
-  AUTH_LOGIN: `${url}/cob/loginapi`,
+  AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
+  AUTH_LOGIN: `${url}/auth-service/auth/login`,
   //  AUTH_LOGIN : "${url}/cob/loginapi",
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
@@ -144,7 +144,16 @@ const API_LIVE = {
   SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,
 
  /*KYC USER LIST */
- Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`
+ Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`,
+
+  /*KYC Document Upload LIST */
+  Kyc_Doc_List: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
+
+   /* KYC VERIFICATION FOR ALL TABS */
+  Kyc_Verification_For_All_Tabs: `${kyc_url}/kyc/verify-kyc/1/`,
+
+  /*Image Preview API */
+  Image_Preview:`${kyc_url}/kyc/get-merchant-document/`
  
 };
 

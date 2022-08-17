@@ -71,8 +71,46 @@ const initialState = {
     ticketSize: "",
     signatoryPAN: "",
     cityId: "",
-    operationalAddress: ""
+    operationalAddress: "",
+    merchant_account_details:"",
 
+  },
+  KycDocUpload: {
+    documentId: "",
+    name: "",
+    filePath: "",
+    isApproved: false,
+    approvedDate: null,
+    approvedBy: null,
+    isLatest: true,
+    createdDate: "",
+    createdBy: "",
+    modifiedDate: "",
+    modifiedBy: "",
+    status: "",
+    comment: null,
+    merchant: "",
+    type: ""
+  },
+  kycVerificationForAllTabs: {
+    approved_date: null,
+    is_approved: false,
+    is_verified: false,
+    general_info_status: "",
+    merchant_info_status: "",
+    business_info_status: "",
+    settlement_info_status: "",
+    general_info_verified_date: null,
+    merchant_info_verified_date: null,
+    business_info_verified_date: null,
+    settlement_info_verified_date: null,
+    status: "",
+    login_id: "",
+    approved_by: null,
+    general_info_verified_by: null,
+    merchant_info_verified_by: null,
+    business_info_verified_by: null,
+    settlement_info_verified_by: null
   },
     businessType:[],
     busiCategory:[],
@@ -296,6 +334,47 @@ export const documentsUpload= createAsyncThunk(
   );
 
 
+  //------------------------------------------------------------------------------------------
+
+  //--------------------For KYC DOCUMENT UPLOAD DATA STRAIGHT FROM THIS API -------------------
+
+  export const kycDocumentUploadList= createAsyncThunk(
+    "kyc/kycDocumentUploadList",
+    async (requestParam) => {
+      const response = await axios.post(
+        `${API_URL.Kyc_Doc_List}`,
+        requestParam,
+      )
+      .catch((error) => {
+        return error.response;
+      });
+     
+      return response.data;
+    }
+  );
+  //----------------------------------------------------------------------------
+
+
+   //--------------------For KYC Verification For All Tabs -----------------------
+
+   export const kycVerificationForTabs= createAsyncThunk(
+    "kyc/kycVerificationForTabs",
+    async (requestParam) => {
+      const response = await axios.get(
+        `${API_URL.Kyc_Verification_For_All_Tabs}`, 
+      )
+      .catch((error) => {
+        return error.response;
+      });
+     
+      return response.data;
+    }
+  );
+  //--------------------------------------------------------------------------------
+
+
+
+
 
    //--------------KYC BANK NAMES --------------------- //
  export const kycBankNames = createAsyncThunk(
@@ -316,6 +395,9 @@ export const documentsUpload= createAsyncThunk(
     return response.data;
   }
 );
+
+
+//--------------------------------------------------------------
 
 
 //----For Saving Merchant Bank Details-----------------// 
@@ -352,7 +434,11 @@ export const saveMerchantBankDetais= createAsyncThunk(
       },
       loadKycUserList : (state)=>{
         state.kycUserList=[]
-      }
+      },
+      loadKycVericationForAllTabs : (state)=>{
+        state.kycVerificationForAllTabs=[]
+      },
+
       
     },
     extraReducers:{
@@ -360,16 +446,39 @@ export const saveMerchantBankDetais= createAsyncThunk(
         state.status = "pending";
       },
       [kycUserList.fulfilled]: (state, action) => {
-        // console.log("action-11 ====>",action.payload)
         state.kycUserList = action.payload;
       },
       [kycUserList.rejected]: (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       },
+      // DOC UPLOAD KYC //
+      [kycDocumentUploadList.pending]: (state, action) => {
+        state.status = "pending";
+      },
+      [kycDocumentUploadList.fulfilled]: (state, action) => {
+       
+        state.KycDocUpload = action.payload;
+      },
+      [kycDocumentUploadList.rejected]: (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      },
+      //Kyc Verification for All Tabs
+      [kycVerificationForTabs.pending]: (state, action) => {
+        state.status = "pending";
+      },
+      [kycVerificationForTabs.fulfilled]: (state, action) => {
+        state.kycVerificationForAllTabs = action.payload;
+      },
+      [kycVerificationForTabs.rejected]: (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      },
+
     }
 })
 
 
-export const {getBusinessType,getBusinessCategory,loadKycUserList} = kycSlice.actions
+export const {getBusinessType,getBusinessCategory,loadKycUserList,loadKycVericationForAllTabs} = kycSlice.actions
 export const kycReducer = kycSlice.reducer

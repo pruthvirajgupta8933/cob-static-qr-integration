@@ -20,6 +20,19 @@ function ContactInfo() {
   
   const { loginId } = user;
 
+  const KycList = useSelector(
+    (state) =>
+      state.kyc.kycUserList
+  );
+
+  const VerifyKycStatus = useSelector(
+    (state) =>
+      state.kyc.kycVerificationForAllTabs.general_info_status
+  );
+
+  // console.log(KycList ,"====================>")
+  //  console.log(VerifyKycStatus ,"====================>")
+
   const [showOtpVerifyModalEmail, setShowOtpVerifyModalEmail] = useState(false);
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
 
@@ -34,10 +47,10 @@ let KycVerifyStatusForPhone = useSelector(
   );
 
   const initialValues = {
-    name: "",
-    contact_number: "",
-    email_id: "",
-    contact_designation: "",
+    name: KycList.name,
+    contact_number: KycList.contactNumber,
+    email_id: KycList.emailId,
+    contact_designation: KycList.contactDesignation,
     // isPhoneVerified: "",
     // isEmailVerified: ""
   };
@@ -227,16 +240,28 @@ useEffect(() => {
                   name="email_id"
                   placeholder="Enter Contact Email"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
 
                 />
+
+      
+                     
+         { VerifyKycStatus === "Verified" ? null :
+                   KycVerifyStatusForEmail === false ? 
+                  
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary btn-sm"
                   type="submit"
-                  class="btn btn-primary btn-sm"
                   onClick={() => { checkInputIsValid(formik.errors, formik.values, formik.setFieldError, "email_id") }}
+                  
                 >
                   Send OTP
                 </button>
+                 : 
+                 <span><p className="text-success">Verified <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                 <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                 </svg></p></span> 
+               }
               </div>
 
 
@@ -249,27 +274,29 @@ useEffect(() => {
                 <FormikController
                   control="input"
                   type="text"
-                  label="Contact Number *"
+                  label="Contact Mobile Number *"
                   name="contact_number"
                   placeholder="Contact Number"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
 
-
-              { KycVerifyStatusForPhone === false ? 
+            { VerifyKycStatus === "Verified" ? null :
+               KycVerifyStatusForPhone === false ? 
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary btn-sm"
                   type="submit"
-                  class="btn btn-primary btn-sm"
                   onClick={() => { checkInputIsValid(formik.errors, formik.values, formik.setFieldError, "contact_number") }}
+                  
                 >
                   Send OTP
                 </button>
                   : 
-                  <span><p class="text-success">Verified <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                  <span><p className="text-success">Verified <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
                   <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
                   </svg></p></span> 
-                }  
+                }
+                
               </div>
             </div>
 
@@ -286,6 +313,7 @@ useEffect(() => {
                   name="name"
                   placeholder="Contact Name"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -297,13 +325,17 @@ useEffect(() => {
                   name="contact_designation"
                   placeholder="Contact Designation"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
             </div>
             <div class="col-md-9 p-0">
-              <button className="btn btn-primary" type="submit">
-                Save
-              </button>
+            { VerifyKycStatus === "Verified" ? 
+             null
+              : <button className="btn btn-primary" type="submit">
+                Save and Next
+              </button> }
+              
             </div>
           </Form>
         )}

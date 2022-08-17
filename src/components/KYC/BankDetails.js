@@ -18,7 +18,15 @@ function BankDetails() {
     (state) =>
       state.kyc.kycUserList
   );
+  
 
+  const VerifyKycStatus = useSelector(
+    (state) =>
+      state.kyc.kycVerificationForAllTabs.settlement_info_status
+  );
+
+
+  // console.log(VerifyKycStatus,"<==STATUS==>")
   
   //  console.log(KycList ,"====================>")
 
@@ -34,19 +42,19 @@ function BankDetails() {
   const initialValues = {
     account_holder_name: KycList.accountHolderName,
     account_number: KycList.accountNumber,
-    confirm_account_number:"",
+    confirm_account_number:KycList.accountNumber,
     ifsc_code: KycList.ifscCode,
-    bank_id: "",
+    bank_id: KycList.merchant_account_details.bankId,
     account_type: KycList.bankName,
-    branch: "",
+    branch: KycList.merchant_account_details.branch,
   }
   const validationSchema = Yup.object({
-    account_holder_name: Yup.string().required("Required"),
-    account_number: Yup.string().required("Required"),
+    account_holder_name:Yup.string().required("Required"),
+    account_number:Yup.string().required("Required"),
     confirm_account_number:Yup.string().oneOf([Yup.ref('account_number'), null], 'Account Number  must match').required("Confirm Account Number Required"),
-    ifsc_code: Yup.string().required("Required"),
-    account_type: Yup.string().required("Required"),
-    branch: Yup.string().required("Required"),
+    ifsc_code:Yup.string().required("Required"),
+    account_type:Yup.string().required("Required"),
+    branch:Yup.string().required("Required"),
     bank_id:Yup.string().required("Required"),
   })
 
@@ -82,12 +90,11 @@ function BankDetails() {
       login_id:loginId ,
       modified_by:"270"
     })).then((res) => {
-      if (res.meta.requestStatus === "fulfilled") {
+      if (res.meta.requestStatus === "fulfilled" && res.payload.status === true) {
         // console.log("This is the response", res);
         toast.success(res.payload.message);
       } else {
-        toast.error(res.payload.message);
-
+        toast.error("Something Went Wrong! Please try again.");
       }
     });
 };
@@ -116,6 +123,7 @@ function BankDetails() {
                         name="account_holder_name"
                         placeholder="Account Holder Name"
                         className="form-control"
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
                       />
                     </div>
 
@@ -127,6 +135,7 @@ function BankDetails() {
                         name="account_type"
                         placeholder="Account Type"
                         className="form-control"
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
                       />
                     </div>
 
@@ -138,6 +147,7 @@ function BankDetails() {
                           className="form-control"
                           placeholder="Enter Bank Name"
                           options={data}
+                          disabled={VerifyKycStatus === "Verified" ? true : false}
                         />
                     </div>
                   </div>
@@ -152,6 +162,7 @@ function BankDetails() {
                         name="branch"
                         placeholder="Enter Branch Name"
                         className="form-control"
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
                       />
                     </div>
 
@@ -164,6 +175,7 @@ function BankDetails() {
                           name="ifsc_code"
                           placeholder="IFSC Code"
                           className="form-control"
+                          disabled={VerifyKycStatus === "Verified" ? true : false}
                         />
                     </div>
 
@@ -175,6 +187,7 @@ function BankDetails() {
                           name="account_number"
                           placeholder="Account Number"
                           className="form-control"
+                          disabled={VerifyKycStatus === "Verified" ? true : false}
                         />
                     </div>
 
@@ -186,11 +199,16 @@ function BankDetails() {
                           name="confirm_account_number"
                           placeholder="Re-Enter Account Number"
                           className="form-control"
+                          disabled={VerifyKycStatus === "Verified" ? true : false}
                         />
                     </div>
                   </div>
 
-                  <button className="btn btn-primary" type="submit">Submit</button>
+                 { VerifyKycStatus === "Verified" ?      
+                  null
+                  : <button className="btn btn-primary" type="submit">Save and Next</button>
+                 }
+                 
                     
             </Form>
           )}

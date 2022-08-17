@@ -8,32 +8,50 @@ import FormikController from '../../_components/formik/FormikController'
 import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson'
 import "../KYC/kyc-style.css"
 import API_URL from '../../config';
-import { documentsUpload,merchantInfo } from "../../slices/kycSlice"
+import { documentsUpload,merchantInfo} from "../../slices/kycSlice"
+
 
 function DocumentsUpload() {
   const [docTypeList, setDocTypeList] = useState([])
   const [fieldValue, setFieldValue] = useState(null);
+  const [visibility, setVisibility] = useState(false)
+  const [photos, setPhotos] = useState([]);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
+
+  const KycDocList = useSelector(
+    (state) =>
+      state.kyc.KycDocUpload
+  );
+
+  const VerifyKycStatus = useSelector(
+    (state) =>
+      state.kyc.KycDocUpload[0].status
+  );
+
   const initialValues = {
-    docType: "",
-    docFile: ""
+    docType:KycDocList[0].type,
+    docFile:"",
 
   }
 
 
-  const KycList = useSelector(
+  const documentId = useSelector(
     (state) =>
-      state.kyc.kycUserList
+      state.kyc.KycDocUpload[0].documentId
   );
 
-  
-   console.log(KycList ,"====================>")
 
-   
+   const ImgUrl = `${API_URL.Image_Preview}/?document_id=${documentId}`
+    // console.log(ImgUrl,"<===========KYC DOC Id===========>")
+    // console.log(KycDocList,"<===========KYC DOC List===========>")
+
+
+
   const dispatch = useDispatch();
+
   const validationSchema = Yup.object({
     docType: Yup.string().required("Required"),
     docFile: Yup.mixed()
@@ -47,6 +65,24 @@ function DocumentsUpload() {
       setDocTypeList(data)
     }).catch(err => console.log(err))
   }, [])
+
+
+
+  const displayImages = () => {
+    return photos.map(photo => {
+      return <img src = {photo} alt= "" />
+    })
+  }
+
+
+  //----------------------------------------------------------------------
+
+
+
+
+
+
+  //-------------------------------------------------------------------------
   const onSubmit = values => {
     const bodyFormData = new FormData();
     bodyFormData.append('files', fieldValue);
@@ -55,14 +91,15 @@ function DocumentsUpload() {
     bodyFormData.append('modified_by', 270);
     bodyFormData.append('type', values.docType);
    dispatch(merchantInfo(bodyFormData))
-      .then(function (response) {
-        toast.success("Merchant document saved successfully")
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.error("Error:", error);
-        toast.error('Merchant document saved Unsuccessfull')
-      });
+   .then((res) => {
+    if (res.meta.requestStatus === "fulfilled" && res.payload.status === true) {
+      // console.log("This is the response", res);
+      toast.success(res.payload.message);
+    } else {
+      toast.error("Something Went Wrong! Please try again.");
+
+    }
+  });
   }
   return (
     <div className="col-md-12 col-md-offset-4">
@@ -85,6 +122,7 @@ function DocumentsUpload() {
                     name="docType"
                     className="form-control"
                     options={docTypeList}
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
 
                   />
                 </div>
@@ -105,19 +143,33 @@ function DocumentsUpload() {
                     }}
 
                     accept="image/jpeg,image/jpg,image/png,application/pdf"
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
 
                   // onChange={(event)=>{setFieldValue(event.target.files[0])}}
                   />
                 </div>
               </li>
               <li className="list-inline-item align-middle w-25" >
-                <button className="btn btn-primary mb-0" type="submit">upload</button>
+                { VerifyKycStatus === "Verified" ? null :
+                <button className="btn btn-primary mb-0" type="submit">Upload and Next</button>
+                }
               </li>
               {/* <li className="list-inline-item align-middle   w-25" > Download</li> */}
             </ul>
-          </Form>
+          </Form>          
         )}
       </Formik>
+      <div>
+      </div>
+      { documentId === null ? "" :
+      <div class= "mt-md-4">
+      <h4 class="font-weight-bold mt-xl-4">ImagePreview</h4>
+                            <a href= {ImgUrl} target="_blank">
+                            <img src = {ImgUrl} alt="" width="50px" height="50px"/>
+                            </a>
+                        
+      </div>
+     }
 
     </div>
   )
