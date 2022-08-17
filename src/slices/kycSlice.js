@@ -3,6 +3,14 @@ import API_URL from "../config";
 import axios from "axios";
 
 const initialState = {
+
+
+  kycApproved:{
+    count: null, 
+    next: null, 
+    previous: null,
+     results:null
+  },
   kycUserList:{
     merchantId: "",
     name: "",
@@ -124,6 +132,10 @@ const initialState = {
     merchantInfo:[],
     kycBankNames :[],
     saveMerchantBankDetais:[],
+    kycForPending:[],
+    kycForVerified:[],
+    kycForApproved:[],
+    kycForCompleted:[]
  }
 
 //--------------Kyc BusinessType get api (BusinessOverview Tab)---------------------
@@ -421,6 +433,87 @@ export const saveMerchantBankDetais= createAsyncThunk(
     return response.data;
   }
 );
+/////////////////////////////////KYC APPROVED API
+
+export const kycForPending= createAsyncThunk(
+  "kyc/kycForPending",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_PENDING}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+
+//////////////////////////////////////////////////
+export const kycForVerified= createAsyncThunk(
+  "kyc/kycForVerified",
+  async (data) => {
+    const requestParam =data.page
+    const requestParam1 = data.page_size
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_VERIFIED}&page=${requestParam}&page_size=${requestParam1}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+////////////////////////////////////////////////////
+export const kycForApproved= createAsyncThunk(
+  "kyc/kycForApproved",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_APPROVED}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+///////////////////////////////////////////
+export const kycForCompleted= createAsyncThunk(
+  "kyc/kycForCompleted",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_COMPLETED}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+
 
  export const kycSlice = createSlice({
     name: 'kyc',
@@ -452,6 +545,21 @@ export const saveMerchantBankDetais= createAsyncThunk(
         state.status = "failed";
         state.error = action.error.message;
       },
+      ///////////////////////////////////
+      [kycForApproved.pending]: (state, action) => {
+        state.status = "pending";
+      },
+      [kycForApproved.fulfilled]: (state, action) => {
+        // console.log("action-11 ====>",action.payload)
+        state.kycApproved.results = action.payload;
+      },
+      [kycForApproved.rejected]: (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      },
+
+
+
       // DOC UPLOAD KYC //
       [kycDocumentUploadList.pending]: (state, action) => {
         state.status = "pending";
