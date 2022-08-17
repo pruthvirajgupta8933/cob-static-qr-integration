@@ -3,6 +3,14 @@ import API_URL from "../config";
 import axios from "axios";
 
 const initialState = {
+
+
+  kycApproved:{
+    count: null, 
+    next: null, 
+    previous: null,
+     results:null
+  },
   kycUserList:{
     merchantId: "",
     name: "",
@@ -369,8 +377,9 @@ export const kycForVerified= createAsyncThunk(
   "kyc/kycForVerified",
   async (data) => {
     const requestParam =data.page
+    const requestParam1 = data.page_size
     const response = await axios.get(
-      `${API_URL.KYC_FOR_VERIFIED}&page=${requestParam}`,
+      `${API_URL.KYC_FOR_VERIFIED}&page=${requestParam}&page_size=${requestParam1}`,
       {
         headers: {
          
@@ -451,6 +460,21 @@ export const kycForCompleted= createAsyncThunk(
         state.status = "failed";
         state.error = action.error.message;
       },
+      ///////////////////////////////////
+      [kycForApproved.pending]: (state, action) => {
+        state.status = "pending";
+      },
+      [kycForApproved.fulfilled]: (state, action) => {
+        // console.log("action-11 ====>",action.payload)
+        state.kycApproved.results = action.payload;
+      },
+      [kycForApproved.rejected]: (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      },
+
+
+
     }
 })
 
