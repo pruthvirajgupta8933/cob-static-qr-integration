@@ -40,7 +40,7 @@ function ApprovedMerchant() {
     
   const viewDocument = async (loginMasterId) => {
     // console.log('id got it', loginMasterId)
-    const res = await axios.post('https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/document-by-login-id/', {
+    const res = await axios.post(API_URL.DOCUMENT_BY_LOGINID, {
       login_id: loginMasterId
     }).then(res => {
       if (res.status === 200) {
@@ -64,7 +64,7 @@ function ApprovedMerchant() {
   //   setDocumentId(res.payload[0].documentId)
   //   viewDoc(ImgUrl);
 
-
+const id =user.loginMasterId
 
 
 
