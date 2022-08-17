@@ -1,81 +1,139 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useSelector,useDispatch } from "react-redux";
-import {kycForApproved} from "../../slices/kycSlice"
+import { useSelector, useDispatch } from "react-redux";
+import API_URL from "../../config";
+import { kycForApproved, UploadLoginId } from "../../slices/kycSlice"
+
 
 function ApprovedMerchant() {
-  const[approveMerchant,setApproveMerchant]=useState([])
-  const dispatch=useDispatch();
+  const [approveMerchant, setApproveMerchant] = useState([])
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const [documentId, setDocumentId] = useState("")
+  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  // const { clientCode } = clientMerchantDetailsList[0];
+  const { loginId } = user;
 
   const masterid = useSelector(
     (state) =>
-      state.kyc.kycApproved.loginMasterId
-  );
-  console.log(masterid,"111111111111111111111111111111")
+      state.kyc.kycApproved.results);
+  //   const document=useSelector((state)=> state.kyc.documentByloginId)
+  //  const {documentId}=document;
+  console.log(masterid, "we2222222222222222221111111111111111111111111")
+
 
   useEffect(() => {
     dispatch(kycForApproved()).then((resp) => {
-     const data = resp.payload.results
-   
-     setApproveMerchant(data);
+      const data = resp.payload.results
+
+      setApproveMerchant(data);
 
 
-     
-   })
-     
-       .catch((err) => console.log(err));
-   }, []);
 
-   const onClick =()=>{
-     
-   }
+    })
+
+      .catch((err) => console.log(err));
+  }, []);
+
+  
+
+    
+  const viewDocument = async (loginMasterId) => {
+    // console.log('id got it', loginMasterId)
+    const res = await axios.post('https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/document-by-login-id/', {
+      login_id: loginMasterId
+    }).then(res => {
+      if (res.status === 200) {
+        const data = res.data[0];
+
+        const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${data.documentId}`;
+        console.log(ImgUrl)
+        setDocumentId(ImgUrl)
+      }
+    })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+
+  };
+
+
+  //   dispatch(UploadLoginId({
+  //   login_id: "10440",
+  // })).then((res) => {
+  //   setDocumentId(res.payload[0].documentId)
+  //   viewDoc(ImgUrl);
+
+
+
+
 
   return (
-    <div className="col-md-12 col-md-offset-4">   
-   
-    <table className="table table-bordered">
-                     <thead>
-                     <tr>
-                       <th>Serial No.</th>
-                       <th>Merchant Id</th>
-                       <th>Contact Number</th>
-                       <th>Name</th>
-                       <th> Email</th>
-                       <th>Bank</th>
-                       <th>Adhar Number</th>
-                       <th>Pan card</th>
-                       <th>State</th>
-                       <th>Pin code</th>
-                       <th>Status</th>
-                       <th>View document</th>
-                     </tr>
-                     </thead>
-                         <tbody>
-                         {approveMerchant.map((user,i) => (
-                           <tr key={i}>
-                             <td>{i+1}</td>
-                             <td>{user.merchantId}</td>
-                             <td>{user.contactNumber}</td>
-                             <td>{user.name}</td>
-                             <td>{user.emailId}</td>
-                             <td>{user.bankName}</td>
-                             <td>{user.aadharNumber}</td>
-                             <td>{user.panCard}</td>
-                             <td>{user.stateId}</td>
-                             <td>{user.pinCode}</td>
-                             <td>{user.status}</td>
-                             <td>  <button type="button" onClick={onClick} class="btn btn-primary">View Document</button></td>
-                           
-                           </tr>
-                           
-                         ))}
-                        
-                     </tbody>
-                 </table>
-    
-   </div>
- 
-      
-    
+    <div className="col-md-12 col-md-offset-4">
+
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th>Serial No.</th>
+            <th>Merchant Id</th>
+            <th>Contact Number</th>
+            <th>Name</th>
+            <th> Email</th>
+            <th>Bank</th>
+            <th>Adhar Number</th>
+            <th>Pan card</th>
+            <th>State</th>
+            <th>Pin code</th>
+            <th>Status</th>
+            <th>View document</th>
+          </tr>
+        </thead>
+        <tbody>
+          {approveMerchant.map((user, i) => (
+            <tr key={i}>
+              <td>{i + 1}</td>
+              <td>{user.merchantId}</td>
+              <td>{user.contactNumber}</td>
+              <td>{user.name}</td>
+              <td>{user.emailId}</td>
+              <td>{user.bankName}</td>
+              <td>{user.aadharNumber}</td>
+              <td>{user.panCard}</td>
+              <td>{user.stateId}</td>
+              <td>{user.pinCode}</td>
+              <td>{user.status}</td>
+              {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
+              <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" onClick={viewDocument(user.loginMasterId)} data-target="#exampleModal">
+                  View Document
+                </button>
+
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+
+                      </div>
+                      <div class="modal-body">
+                      <img src={documentId} />
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div></td>
+            </tr>
+
+          ))}
+
+        </tbody>
+      </table>
+
+    </div>
+
+
+
   );
 }
 
