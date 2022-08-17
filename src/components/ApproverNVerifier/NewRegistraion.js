@@ -10,6 +10,7 @@ function NewRegistraion() {
 const [data, setData] = useState([]);
 const [searchText, setSearchText] = useState("");
 const [pageSize, setPageSize] = useState(10);
+console.log(setPageSize,"wewewewewewewewewewewew")
   const dispatch=useDispatch();
 
 

@@ -1,21 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import {useDispatch } from 'react-redux';
 import {kycForVerified} from "../../slices/kycSlice"
+import API_URL from '../../config';
+import axios from "axios";
+import DropDownCountPerPage from '../../_components/reuseable_components/DropDownCountPerPage';
 
 
 function VerifiedMerchant() {
+
   const[verfiedMerchant,setVerifiedMerchant]=useState([])
+  const [merchantData,setMerchantData] = useState([])
   const dispatch=useDispatch();
   const [searchText, setSearchText] = useState("");
-  const[page,setPage]=useState(1)
+  const[currentPage,setCurrentPage]=useState(1)
+  const [pageSize, setPageSize] = useState(10);
+  let page_size = pageSize;
+  let page = currentPage;
   const kycSearch = (e) => {
     setSearchText(e.target.value);
 };
 
+const allVerifiedMerchants = async () => {
+ await axios.get(`${API_URL.KYC_FOR_VERIFIED}`)
+  .then(res => {
+    const data = res.data.results;
+    console.log(data)
+    setMerchantData(data)
+   
+  })
+}
+
 
 
   useEffect(() => {
-    dispatch(kycForVerified({page})).then((resp) => {
+
+    allVerifiedMerchants();
+    dispatch(kycForVerified({page,page_size})).then((resp) => {
      const data = resp.payload.results
    
      setVerifiedMerchant(data);
@@ -24,13 +44,14 @@ function VerifiedMerchant() {
        .catch((err) => console.log(err));
    }, []);
 
+
    useEffect(() => {
     if (searchText.length > 0) {
       setVerifiedMerchant(verfiedMerchant.filter((item) => 
         
         Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
     } else {
-      dispatch(kycForVerified()).then((resp) => {
+      dispatch(kycForVerified({page,page_size})).then((resp) => {
         const data = resp.payload.results
       
         setVerifiedMerchant(data);
@@ -40,7 +61,36 @@ function VerifiedMerchant() {
     }
 }, [searchText])
 
-  
+
+const indexOfLastRecord = page * pageSize;
+
+const indexOfFirstRecord = indexOfLastRecord - pageSize;
+
+const currentRecords = verfiedMerchant.slice(indexOfFirstRecord,indexOfLastRecord);
+
+
+
+const nPages = Math.ceil(merchantData.length / pageSize)
+console.log(merchantData.length ,"<===>")
+
+const pageNumbers = [...Array(nPages + 1).keys()].slice(1)
+console.log(pageNumbers,"<===Page Number===>")
+
+
+const nextPage = () => {
+  if(page !== nPages) 
+      setCurrentPage(page + 1)
+}
+const prevPage = () => {
+  if(page !== 1) 
+      setCurrentPage(page - 1)
+}
+
+const pagination = (pageNo) => {
+  setCurrentPage(pageNo);
+}
+
+
 
 
   return (
@@ -51,10 +101,10 @@ function VerifiedMerchant() {
     </div>
   
     <div className="col-lg-4 mrg-btm- bgcolor">
-        {/* <label>Count Per Page</label>
+        <label>Count Per Page</label>
         <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))}  className="ant-input" >
-        <DropDownCountPerPage datalength={data.length} />
-        </select> */}
+        <DropDownCountPerPage datalength={verfiedMerchant.length} />
+        </select>
   </div>
     <div className="col-md-12 col-md-offset-4">   
    
@@ -75,7 +125,7 @@ function VerifiedMerchant() {
                      </tr>
                      </thead>
                          <tbody>
-                         {verfiedMerchant.map((user,i) => (
+                         {currentRecords.map((user,i) => (
                            <tr key={i}>
                             
                              <td>{user.merchantId}</td>
@@ -94,11 +144,23 @@ function VerifiedMerchant() {
                  </table>
                  <nav aria-label="Page navigation example">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    <li class="page-item"><a class="page-link" href="#" onClick={prevPage}>Previous</a></li>
+
+    {pageNumbers.map(pgNumber => (
+      
+     
+                    <li key={pgNumber} 
+                        className= {`page-item ${page == pgNumber ? 'active' : ''} `} >
+
+                        <a onClick={() => setCurrentPage(pgNumber)}  
+                            className='page-link' 
+                            href='#'>
+                            
+                            {pgNumber}
+                        </a>
+                    </li>
+                ))}
+    <li class="page-item"><a class="page-link" href="#" onClick={nextPage}>Next</a></li>
   </ul>
 </nav>
     

@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import {kycForApproved} from "../../slices/kycSlice"
 
 function ApprovedMerchant() {
   const[approveMerchant,setApproveMerchant]=useState([])
   const dispatch=useDispatch();
+
+  const masterid = useSelector(
+    (state) =>
+      state.kyc.kycApproved.loginMasterId
+  );
+  console.log(masterid,"111111111111111111111111111111")
 
   useEffect(() => {
     dispatch(kycForApproved()).then((resp) => {
@@ -18,6 +24,10 @@ function ApprovedMerchant() {
      
        .catch((err) => console.log(err));
    }, []);
+
+   const onClick =()=>{
+     
+   }
 
   return (
     <div className="col-md-12 col-md-offset-4">   
@@ -36,6 +46,7 @@ function ApprovedMerchant() {
                        <th>State</th>
                        <th>Pin code</th>
                        <th>Status</th>
+                       <th>View document</th>
                      </tr>
                      </thead>
                          <tbody>
@@ -52,8 +63,12 @@ function ApprovedMerchant() {
                              <td>{user.stateId}</td>
                              <td>{user.pinCode}</td>
                              <td>{user.status}</td>
+                             <td>  <button type="button" onClick={onClick} class="btn btn-primary">View Document</button></td>
+                           
                            </tr>
+                           
                          ))}
+                        
                      </tbody>
                  </table>
     
