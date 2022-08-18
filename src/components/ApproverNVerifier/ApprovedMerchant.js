@@ -7,6 +7,7 @@ import { kycForApproved, UploadLoginId } from "../../slices/kycSlice"
 
 function ApprovedMerchant() {
   const [approveMerchant, setApproveMerchant] = useState([])
+  const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const [documentId, setDocumentId] = useState("")
@@ -20,21 +21,38 @@ function ApprovedMerchant() {
       state.kyc.kycApproved.results);
   //   const document=useSelector((state)=> state.kyc.documentByloginId)
   //  const {documentId}=document;
-  console.log(masterid, "we2222222222222222221111111111111111111111111")
+  const approvedSearch = (e) => {
+    setSearchText(e.target.value);
+  };
 
 
   useEffect(() => {
+    kycapproved();
+  }, []);
+  const kycapproved=()=>{ 
     dispatch(kycForApproved()).then((resp) => {
       const data = resp.payload.results
 
       setApproveMerchant(data);
 
-
-
-    })
+})
 
       .catch((err) => console.log(err));
-  }, []);
+  }
+
+ 
+
+
+  /////////////////////////////////////Search filter
+  useEffect(() => {
+    if (searchText.length > 0) {
+      setApproveMerchant(approveMerchant.filter((item) =>
+
+        Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
+    } else {
+      kycapproved();
+  }
+  }, [searchText])
 
   
 
@@ -62,6 +80,11 @@ function ApprovedMerchant() {
 
 
   return (
+    <div className="row">
+      <div className="col-lg-4 mrg-btm- bgcolor">
+        <label>Search</label>
+        <input className='form-control' onChange={approvedSearch} type="text" placeholder="Search Here" />
+      </div>
     <div className="col-md-12 col-md-offset-4">
 
       <table className="table table-bordered">
@@ -130,6 +153,7 @@ function ApprovedMerchant() {
         </tbody>
       </table>
 
+    </div>
     </div>
 
 
