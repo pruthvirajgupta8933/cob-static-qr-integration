@@ -28,15 +28,15 @@ const API_LIVE = {
   //  AUTH_LOGIN : "${url}/cob/loginapi",
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
-  AUTH_CLIENT_CREATE: `${url}/cob/createprofile`,
-  AUTH_GET_EMAIL_TO_SEND_OTP: `${url}/cob/auth-service/account/forgot-password`,
+  AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
+  AUTH_UPDATE_PROFILE: `${url}/auth-service/updateProfile`,
+  AUTH_GET_EMAIL_TO_SEND_OTP: `${url}/auth-service/account/forgot-password`,
   AUTH_VERIFY_OTP_ON_FWD: `${url}/cob/auth-service/account/verify-otp`,
   AUTH_CREATE_NEW_PASSWORD: `${url}/cob/auth-service/account/create-password`,
-  AUTH_CHANGE_PASSWORD: `${url}/cob/auth-service/account/change-password`,
-
+  AUTH_CHANGE_PASSWORD: `${url}/auth-service/account/change-password`,
+  AUTH_FORGET_PASSWORD: `${url}/auth-service/account/create-password`,
   /** Email Verify for new register users **/
-  // EMAIL_VERIFY : "${url}/auth-service/auth/emailVerify/",
-  EMAIL_VERIFY: `${url}/cob/emailverify/`,
+  EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 
   CHECK_PERMISSION_PAYLINK:
     "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
