@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { otpVerificationForContact } from "../../../slices/kycOtp";
+import { otpVerificationForContactForPhone } from "../../../slices/kycOtp";
 import OtpInput from "react-otp-input";
 
 
@@ -30,9 +30,9 @@ const PhoneVerficationModal = ({ show, setShow }) => {
   const handleVerificationOfPhone = () => {
 
     dispatch(
-      otpVerificationForContact({
+      otpVerificationForContactForPhone({
         verification_token: KycVerificationToken,
-        otp: parseInt(otpForPhone.otp, 10),
+        otp: otpForPhone.otp,
       })
     ).then((res) => {
       // console.log("This is the response", res);

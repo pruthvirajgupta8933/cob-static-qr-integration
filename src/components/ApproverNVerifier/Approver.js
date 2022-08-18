@@ -53,10 +53,10 @@ function Approver() {
                           <li className="nav-item">
                           <a href={()=>false} className={"nav-link " +  (tab===3? "activepaylink":"inactive") }  onClick={()=>SetTab(3)}>Approved Merchant</a>
                           </li>
-                          <li className="nav-item">
+                          {/* <li className="nav-item">
                           <a href={()=>false} className={"nav-link " +  (tab===4? "activepaylink":"inactive") } onClick={()=>SetTab(4)}>Single Document</a>
                           </li>
-                         
+                          */}
                          
                       </ul>
               </div>
