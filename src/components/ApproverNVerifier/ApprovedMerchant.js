@@ -10,6 +10,7 @@ function ApprovedMerchant() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const [documentId, setDocumentId] = useState("")
+  const [documentIdImg, setDocumentImg] = useState("#")
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
@@ -37,18 +38,17 @@ function ApprovedMerchant() {
 
   
 
-    
-  const viewDocument = async (loginMasterId) => {
-    // console.log('id got it', loginMasterId)
-    const res = await axios.post(API_URL.DOCUMENT_BY_LOGINID, {
-      login_id: loginMasterId
+  const viewDocument = async (loginMaidsterId) => {
+
+    console.log('id got it', loginMaidsterId)
+    const res = await axios.post(`https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/document-by-login-id/`, {
+      login_id: loginMaidsterId
     }).then(res => {
       if (res.status === 200) {
-        const data = res.data[0];
-
-        const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${data.documentId}`;
-        console.log(ImgUrl)
-        setDocumentId(ImgUrl)
+        const data = res.data;
+        const docId = data[0].documentId;
+ const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;
+        setDocumentImg(ImgUrl)
       }
     })
       .catch(error => {
@@ -58,13 +58,6 @@ function ApprovedMerchant() {
   };
 
 
-  //   dispatch(UploadLoginId({
-  //   login_id: "10440",
-  // })).then((res) => {
-  //   setDocumentId(res.payload[0].documentId)
-  //   viewDoc(ImgUrl);
-
-const id =user.loginMasterId
 
 
 
@@ -104,7 +97,7 @@ const id =user.loginMasterId
               <td>{user.status}</td>
               {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
               <td>
-                <button type="button" class="btn btn-primary" data-toggle="modal" onClick={viewDocument(user.loginMasterId)} data-target="#exampleModal">
+                <button type="button" class="btn btn-primary" data-toggle="modal" onClick={()=>viewDocument(user.loginMasterId)} data-target="#exampleModal">
                   View Document
                 </button>
 
@@ -113,10 +106,17 @@ const id =user.loginMasterId
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
 
                       </div>
                       <div class="modal-body">
-                      <img src={documentId} />
+                        <img src={`${documentIdImg}`}  alt="doc" />
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 
                       </div>
 

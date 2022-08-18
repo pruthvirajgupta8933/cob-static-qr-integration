@@ -221,7 +221,7 @@ export const collectionType= createAsyncThunk(
   export const saveBusinessInfo= createAsyncThunk(
     "kyc/collectionType",
     async (requestParam) => {
-      const response = await axios.put(
+      const response = await axios.post(
         `${API_URL.save_Business_Info}`,
         requestParam
      
@@ -259,7 +259,7 @@ export const collectionType= createAsyncThunk(
   export const saveMerchantInfo= createAsyncThunk(
     "kyc/collectionType",
     async (requestParam) => {
-      const response = await axios.put(
+      const response = await axios.post(
         `${API_URL.SAVE_MERCHANT_INFO}`,
         requestParam
      
