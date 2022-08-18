@@ -5,6 +5,7 @@ import "./App.css";
 import { logout } from "./slices/auth";
 import AllRoutes from "./AllRoutes";
 import IdleTimerContainer from "./utilities/IdleTimer";
+import ChatBotApp from "./components/chatbot/ChatBotApp"
 
 
 
@@ -49,9 +50,11 @@ const logOutUser =(isLoggedIn)=>{
 
   return (
       <>
-      {loggin ? <IdleTimerContainer fnLogout={logOutUser} / > : <React.Fragment></React.Fragment>}
+      { loggin 
+      ? <IdleTimerContainer fnLogout={logOutUser} / > : <React.Fragment></React.Fragment>}
         <AllRoutes/>
-      </>
+        <ChatBotApp />
+         </>
   );
 };
 
