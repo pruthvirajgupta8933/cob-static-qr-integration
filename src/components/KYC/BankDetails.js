@@ -44,9 +44,9 @@ function BankDetails() {
     account_number: KycList.accountNumber,
     confirm_account_number:KycList.accountNumber,
     ifsc_code: KycList.ifscCode,
-    bank_id: KycList.merchant_account_details.bankId,
+    bank_id: user?.roleId === 5 ? KycList.merchant_account_details.bankId : "",
     account_type: KycList.bankName,
-    branch: KycList.merchant_account_details.branch,
+    branch: user?.roleId === 5 ? KycList.merchant_account_details.branch: "",
   }
   const validationSchema = Yup.object({
     account_holder_name:Yup.string().required("Required"),

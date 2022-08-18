@@ -16,7 +16,7 @@ function KycForm() {
   const dispatch = useDispatch();
     const [tab,SetTab] = useState(1);
     const [visibility, setVisibility] = useState(false);
-  const [selectedMerchant,setSelectedMerchant] = useState('');
+  const [setLoginId] = useState('');
     const { auth} = useSelector((state)=>state);
     const {user} = auth;
 
@@ -36,6 +36,14 @@ function KycForm() {
       history.push('/dashboard/profile');
     }
   } 
+
+
+  const getInputValue = (label, val) => {
+    if(label==='loginId'){
+      setLoginId(val);
+      console.log(val, "<=====val=====>");
+    }
+  }
 
 
 
@@ -86,6 +94,7 @@ function KycForm() {
   //--------------------------------------------------------
 
   const onChangeMerchant = () => {
+
     
   }
 
@@ -113,10 +122,11 @@ function KycForm() {
                 <div className="form-row">
                 <div className="form-group col-md-4">
                 <select
-                    value={selectedMerchant}
-                    onChange={(e) => e.target.value}
+                      onChange={(e) => {
+                        getInputValue("loginId", e.target.value);
+                      }}
                     className="ant-input"
-                    label="Select The Merchant"
+                  
                     
                   >
                     <option value="">Select Merchants</option>

@@ -20,29 +20,38 @@ function DocumentsUpload() {
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
+  const dispatch = useDispatch();
 
   const KycDocList = useSelector(
     (state) =>
       state.kyc.KycDocUpload
   );
 
-  const VerifyKycStatus = useSelector(
+  const documentId = useSelector(
     (state) =>
-      state.kyc.KycDocUpload[0].status
+      state.kyc.KycDocUpload[0]?.documentId
   );
 
+  const VerifyKycStatus = useSelector(
+      (state) =>
+        state.kyc.KycDocUpload[0]?.status
+    )
+
+
+ 
+
+  
+
+  
+
   const initialValues = {
-    docType:KycDocList[0].type,
+    docType:KycDocList[0]?.type,
     docFile:"",
 
   }
 
 
-  const documentId = useSelector(
-    (state) =>
-      state.kyc.KycDocUpload[0].documentId
-  );
-
+  
 
    const ImgUrl = `${API_URL.Image_Preview}/?document_id=${documentId}`
     // console.log(ImgUrl,"<===========KYC DOC Id===========>")
@@ -50,7 +59,7 @@ function DocumentsUpload() {
 
 
 
-  const dispatch = useDispatch();
+  
 
   const validationSchema = Yup.object({
     docType: Yup.string().required("Required"),
@@ -59,12 +68,7 @@ function DocumentsUpload() {
       .required('Required file format PNG/JPEG/JPG/PDF')
   })
 
-  useEffect(() => {
-    dispatch(documentsUpload()).then((resp) => {
-      const data = convertToFormikSelectJson('id', 'name', resp.payload.results);
-      setDocTypeList(data)
-    }).catch(err => console.log(err))
-  }, [])
+  
 
 
 
@@ -122,7 +126,7 @@ function DocumentsUpload() {
                     name="docType"
                     className="form-control"
                     options={docTypeList}
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    disabled={ VerifyKycStatus === "Verified" ? true : false}
 
                   />
                 </div>
@@ -161,7 +165,7 @@ function DocumentsUpload() {
       </Formik>
       <div>
       </div>
-      { documentId === null ? "" :
+      { user?.roleId === 3 && user?.roleId === 13 ? null : documentId === null ? "" :
       <div class= "mt-md-4">
       <h4 class="font-weight-bold mt-xl-4">ImagePreview</h4>
                             <a href= {ImgUrl} target="_blank">
