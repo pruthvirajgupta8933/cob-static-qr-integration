@@ -87,14 +87,7 @@ useEffect(() => {
 // if ( pageCount === 1) return null;
 
 const pages = _.range(1, pageCount + 1)
-
-
-
-// console.log("dataLength",paginatedata.length)
-
-
-
-  return (
+return (
 
     <React.Fragment>
        {/* filter area */}

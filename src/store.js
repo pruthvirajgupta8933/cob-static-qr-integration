@@ -5,6 +5,9 @@ import messageReducer from "./slices/message";
 import { dashboardReducer } from './slices/dashboardSlice';
 import reducerSubscription from './slices/subscription'
 import KycOtpSlice from "./slices/kycOtp"
+import { kycReducer } from './slices/kycSlice';
+import ContactInfoSlice from "./slices/contactInfo"
+
 
 
 
@@ -13,7 +16,9 @@ const reducer = {
   message: messageReducer,
   dashboard:dashboardReducer,
   subscription:reducerSubscription,
-  KycOtpSlice:KycOtpSlice
+  kyc:kycReducer,
+  KycOtpSlice:KycOtpSlice,
+  ContactInfoSlice:ContactInfoSlice,
 
 }
 

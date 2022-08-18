@@ -3,12 +3,18 @@ import axios from "axios";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { Zoom } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch} from "react-redux";
 import * as Yup from "yup";
 import API_URL from "../../config";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
-import { FormatLineSpacing } from "@mui/icons-material";
+import {businessType,
+  busiCategory,
+  platformType,
+  collectionFrequency,
+  collectionType,
+  saveBusinessInfo} from "../../slices/kycSlice"
+
 
 function BusinessOverview() {
   const [data, setData] = useState([]);
@@ -20,10 +26,26 @@ function BusinessOverview() {
   const [collection, setCollection] = useState([]);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
+
+  const KycList = useSelector(
+    (state) =>
+      state.kyc.kycUserList
+  );
+
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
+const dispatch=useDispatch();
 
+const ErpCheck = useSelector(
+  (state) =>
+    state.kyc.kycUserList.erpCheck
+);
+
+const ErpCheckStatus = () => {
+  if(ErpCheck === true) return "Yes"
+  else return "No"
+}
 
   const BuildYourForm = [
     { key: "Select", value: "Select Option" },
@@ -41,21 +63,41 @@ function BusinessOverview() {
     { key: "Yes", value: "Website/App url" },
   ];
 
+
+
+   
+  
+
+  // console.log(ErpCheck,"<======Erp Check=====>")
+  console.log(KycList, "<===List===>")
+
+  // const erpCheck = () => {
+  //   if(ErpCheck === true)
+  //   return "Yes"
+  //   else return "No"
+  // }
+
+  const VerifyKycStatus = useSelector(
+    (state) =>
+      state.kyc.kycVerificationForAllTabs.business_info_status
+  );
+
+
   const initialValues = {
-    business_type: "",
-    business_category: "",
-    business_model: "",
-    billing_label: "",
-    erp_check: "",
-    platform_id: "",
-    company_website: "",
+    business_type: KycList.businessType,
+    business_category: KycList.businessCategory,
+    business_model: KycList.businessModel,
+    billing_label: KycList.billingLabel,
+    erp_check: ErpCheckStatus(),
+    platform_id: KycList.platformId,
+    company_website: KycList.companyWebsite,
     seletcted_website_app_url: "",
-    website_app_url: "",
-    type_of_collection: "",
-    collection_frequency_id: "",
-    ticket_size: "",
-    expected_transactions: "",
-    form_build: "",
+    website_app_url: KycList.successUrl,
+    collection_type_id: KycList.collectionTypeId,
+    collection_frequency_id: KycList.collectionFrequencyId,
+    ticket_size: KycList.ticketSize,
+    expected_transactions: KycList.expectedTransactions,
+    form_build: KycList.formBuild,
   };
   const validationSchema = Yup.object({
     business_type: Yup.string().required("Select BusinessType"),
@@ -67,78 +109,67 @@ function BusinessOverview() {
     seletcted_website_app_url: Yup.string().required("Select website app Url"),
     website_app_url: Yup.string().required("Required"),
     company_website: Yup.string().required("Required"),
-    //  type_of_collection: Yup.string().required("Required"),
+    collection_type_id: Yup.string().required("Required"),
     collection_frequency_id: Yup.string().required("Required"),
     ticket_size: Yup.string().required("Required"),
     expected_transactions: Yup.string().required("Required"),
     form_build: Yup.string().required("Required"),
   });
+  
 
   ////Get Api for Buisness overview///////////
   useEffect(() => {
-    axios
-      .get(API_URL.Business_type)
-      .then((resp) => {
-        const data = convertToFormikSelectJson(
-          "businessTypeId",
-          "businessTypeText",
-          resp.data
-        );
-      // console.log(data);
-
-        setData(data);
-      })
+   dispatch(businessType()).then((resp) => {
+    const data = convertToFormikSelectJson( "businessTypeId",
+    "businessTypeText",
+    resp.payload
+  );
+     setData(data);
+  })
+    
       .catch((err) => console.log(err));
   }, []);
 
 
   //////////////////////BusinessCategory//////////
   useEffect(() => {
-    axios
-      .get(API_URL.Business_Category)
-      .then((resp) => {
+   dispatch(busiCategory()).then((resp) => {
         const data = convertToFormikSelectJson(
           "category_id",
           "category_name",
-          resp.data
+          resp.payload
         );
-      // console.log(data);
+
 
       setBusinessCategory(data);
+     
       })
       .catch((err) => console.log(err));
   }, []);
 
   //////////////////APi for Platform
   useEffect(() => {
-    axios
-      .get(API_URL.Platform_type)
+   dispatch(platformType())
       .then((resp) => {
         const data = convertToFormikSelectJson(
           "platformId",
           "platformName",
-          resp.data
+          resp.payload
         );
-        // console.log(resp, "my all dattaaa")
-
-        // console.log(data,"here is my get data")
-
-        setPlatform(data);
+      setPlatform(data);
       })
       .catch((err) => console.log(err));
   }, []);
+
+  ////////////////////////////////////////
   useEffect(() => {
-    axios
-      .get(API_URL.Collection_frequency)
+   dispatch(collectionFrequency())
       .then((resp) => {
         const data = convertToFormikSelectJson(
           "collectionFrequencyId",
           "collectionFrequencyName",
-          resp.data
+          resp.payload
         );
-        // console.log(resp, "my all dattaaa")
-
-        // console.log(data,"here is my get data")
 
         setCollectFreqency(data);
       })
@@ -146,25 +177,21 @@ function BusinessOverview() {
   }, []);
 
   useEffect(() => {
-    axios
-      .get(API_URL.Get_ALL_Collection_Type)
+   dispatch(collectionType())
       .then((resp) => {
         const data = convertToFormikSelectJson(
           "collectionTypeId",
           "collectionTypeName",
-          resp.data
+          resp.payload
         );
-        // console.log(resp, "my all dattaaa")
-
-        // console.log(data,"here is my get data")
-
-        setCollection(data);
+     setCollection(data);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  const onSubmit = async (values) => {
-    const res = await axios.put(API_URL.save_Business_Info, {
+  const onSubmit =  (values) => {
+
+   dispatch(saveBusinessInfo ({
       business_type: values.business_type,
       business_category: values.business_category,
       business_model: values.business_model,
@@ -172,29 +199,31 @@ function BusinessOverview() {
       company_website: values.company_website,
       erp_check: values.erp_check,
       platform_id: values.platform_id,
-      collection_type_id: "499999998888",
+      collection_type_id: values.collection_type_id,
       collection_frequency_id: values.collection_frequency_id,
       expected_transactions: values.expected_transactions,
       form_build: values.form_build,
       ticket_size: values.ticket_size,
       modified_by:270,
       login_id: loginId,
+      // client_code: clientCode,
+    
+    })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
+        // console.log("This is the response", res);
+        toast.success(res.payload.message);
+      } else {
+        toast.error("Something Went Wrong! Please try again.");
+
+      }
     });
+   
 
-    // console.log(values, "form data");
-
-    if (res.status === 200) {
-      toast.success("Your Details Submitted Successfully");
-    } else {
-      toast.error("Something Went Wrong");
-    }
   };
 
   const handleShowHide = (event) => {
     const getuser = event.target.value;
     setAppUrl(getuser);
-
-    // console.log(getuser, "222222222222222");
   };
 
   return (
@@ -206,7 +235,7 @@ function BusinessOverview() {
       >
         {(formik) => (
           <Form>
-            {console.log(formik)}
+           
             <div className="form-row">
               <div className="form-group col-md-4">
                 <FormikController
@@ -215,6 +244,7 @@ function BusinessOverview() {
                   name="business_type"
                   options={data}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -225,6 +255,7 @@ function BusinessOverview() {
                   name="business_category"
                   options={businessCategory}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -236,6 +267,7 @@ function BusinessOverview() {
                   name="business_model"
                   placeholder="Business Model"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
             </div>
@@ -249,6 +281,7 @@ function BusinessOverview() {
                   name="billing_label"
                   placeholder="Billing Label"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -259,6 +292,7 @@ function BusinessOverview() {
                   name="erp_check"
                   options={Erp}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -269,6 +303,7 @@ function BusinessOverview() {
                   name="platform_id"
                   options={platform}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
             </div>
@@ -288,6 +323,7 @@ function BusinessOverview() {
                   name="seletcted_website_app_url"
                   options={WebsiteAppUrl}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -300,6 +336,7 @@ function BusinessOverview() {
                       name="website_app_url"
                       placeholder="Enter Website/App URL"
                       className="form-control"
+                      disabled={VerifyKycStatus === "Verified" ? true : false}
                     />
                   </div>
                 )}
@@ -308,9 +345,10 @@ function BusinessOverview() {
                 <FormikController
                   control="select"
                   label="Type Of Collection *"
-                  name="type_of_collection"
+                  name="collection_type_id"
                   options={collection}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
             </div>
@@ -323,6 +361,7 @@ function BusinessOverview() {
                   name="collection_frequency_id"
                   options={CollectFreqency}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
               <div className="form-group col-md-4">
@@ -333,6 +372,7 @@ function BusinessOverview() {
                   name="company_website"
                   placeholder="Enter Ticket Size"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -344,6 +384,7 @@ function BusinessOverview() {
                   name="ticket_size"
                   placeholder="Enter Ticket Size"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
               <div className="form-group col-md-4">
@@ -354,6 +395,7 @@ function BusinessOverview() {
                   name="expected_transactions"
                   placeholder="Enter Expected Transactions"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
 
@@ -364,15 +406,17 @@ function BusinessOverview() {
                   name="form_build"
                   options={BuildYourForm}
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
               </div>
             </div>
 
            
-
-            <button type="submit" className="btn btn-primary">
-              Save
-            </button>
+            { VerifyKycStatus === "Verified" ? 
+            null 
+            : <button type="submit" className="btn btn-primary"  disabled={VerifyKycStatus === "Verified" ? true : false} >
+              Save and Next
+            </button> }
           </Form>
         )}
       </Formik>

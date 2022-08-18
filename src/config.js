@@ -9,8 +9,8 @@ let url,kyc_url = "";
 
 
 if (env === "staging") {
-  url = "http://13.233.198.69:5000";
-  kyc_url = "http://13.233.198.69:8000";
+  url = "https://stgcobapi.sabpaisa.in";
+  kyc_url = "https://stgcobkyc.sabpaisa.in";
 } else {
   url = "https://cobapi.sabpaisa.in";
   kyc_url = "https://kycprocess.sabpaisa.in";
@@ -23,23 +23,20 @@ const API_LIVE = {
   // AUTH_SIGNUP : "${url}/auth-service/auth/signup",
 
   //------------------------------------------------------------
- //------------------------------------------------------------
- AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
- AUTH_LOGIN: `${url}/auth-service/auth/login`,
- //  AUTH_LOGIN : "${url}/cob/loginapi",
+  AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
+  AUTH_LOGIN: `${url}/auth-service/auth/login`,
+  //  AUTH_LOGIN : "${url}/cob/loginapi",
 
- // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
- AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
- AUTH_UPDATE_PROFILE: `${url}/auth-service/updateProfile`,
- AUTH_GET_EMAIL_TO_SEND_OTP: `${url}/auth-service/account/forgot-password`,
- AUTH_VERIFY_OTP_ON_FWD: `${url}/cob/auth-service/account/verify-otp`,
- AUTH_CREATE_NEW_PASSWORD: `${url}/cob/auth-service/account/create-password`,
- AUTH_CHANGE_PASSWORD: `${url}/auth-service/account/change-password`,
- AUTH_FORGET_PASSWORD: `${url}/auth-service/account/create-password`,
-
+  // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
+  AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
+  AUTH_UPDATE_PROFILE: `${url}/auth-service/updateProfile`,
+  AUTH_GET_EMAIL_TO_SEND_OTP: `${url}/auth-service/account/forgot-password`,
+  AUTH_VERIFY_OTP_ON_FWD: `${url}/cob/auth-service/account/verify-otp`,
+  AUTH_CREATE_NEW_PASSWORD: `${url}/cob/auth-service/account/create-password`,
+  AUTH_CHANGE_PASSWORD: `${url}/auth-service/account/change-password`,
+  AUTH_FORGET_PASSWORD: `${url}/auth-service/account/create-password`,
   /** Email Verify for new register users **/
-  // EMAIL_VERIFY : "${url}/auth-service/auth/emailVerify/",
-  EMAIL_VERIFY: `${url}/cob/emailverify/`,
+  EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 
   CHECK_PERMISSION_PAYLINK:
     "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
@@ -124,27 +121,61 @@ const API_LIVE = {
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup_state/`,
   Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
+
+  /////////////////////////Kyc approver 
+  /* For pending*/
+  KYC_FOR_PENDING:`${kyc_url}/kyc/get-merchant-data/?search=pending&order_by=-merchantId`,
+  KYC_FOR_VERIFIED:`${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
+  KYC_FOR_APPROVED:`${kyc_url}/kyc/get-merchant-data/?search=approved&order_by=-merchantId`,
+  KYC_FOR_COMPLETED:`${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
+   MERCHANT_DOCUMENT:`${kyc_url}/kyc/get-merchant-document`,
+  DOCUMENT_BY_LOGINID:`${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
+
+  
+
+
+
+
+
+  
+
+
+
+
+
   
 
     /** Contact Information */
-    Save_General_Info:"http://13.126.165.212:8000/kyc/save-general-info/",
+    Save_General_Info:`${kyc_url}/kyc/save-general-info/`,
 
     //==>For Verfifying Contact Info Ist Phase(Send OTP and Verify OTP)
-    Send_OTP:"http://13.126.165.212:8000/kyc/send-otp/",
+    Send_OTP:`${kyc_url}/kyc/send-otp/`,
     //==>2nd Phase
-    Verify_OTP:"http://13.126.165.212:8000/kyc/verify-otp/",
+    Verify_OTP:`${kyc_url}/kyc/verify-otp/`,
 
 
     /** Bank Details One OF KYC TAB  */
 
-    Save_Settlement_Info: "http://13.126.165.212:8000/kyc/save-settlement-info/",
+    Save_Settlement_Info: `${kyc_url}/kyc/save-settlement-info/`,
 
     //Get All Bnak Names in Kyc Bank Details Dropdown Tab
-    GET_ALL_BANK_NAMES: "http://13.126.165.212:8000/kyc/get-all-bank-name/",
+    GET_ALL_BANK_NAMES: `${kyc_url}/kyc/get-all-bank-name/`,
 
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
   Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
-  SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`
+  SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,
+
+ /*KYC USER LIST */
+ Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`,
+
+  /*KYC Document Upload LIST */
+  Kyc_Doc_List: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
+
+   /* KYC VERIFICATION FOR ALL TABS */
+  Kyc_Verification_For_All_Tabs: `${kyc_url}/kyc/verify-kyc/1/`,
+
+  /*Image Preview API */
+  Image_Preview:`${kyc_url}/kyc/get-merchant-document/`
  
 };
 

@@ -5,11 +5,30 @@ import FormikController from '../../_components/formik/FormikController'
 import API_URL from '../../config'
 import axios from "axios";
 import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson'
-import { useSelector } from 'react-redux';
+import { useSelector , useDispatch } from 'react-redux';
 import { toast } from 'react-toastify'
+import { kycBankNames, saveMerchantBankDetais} from "../../slices/kycSlice"
 
 
 function BankDetails() {
+
+  const dispatch = useDispatch();
+
+  const KycList = useSelector(
+    (state) =>
+      state.kyc.kycUserList
+  );
+  
+
+  const VerifyKycStatus = useSelector(
+    (state) =>
+      state.kyc.kycVerificationForAllTabs.settlement_info_status
+  );
+
+
+  // console.log(VerifyKycStatus,"<==STATUS==>")
+  
+  //  console.log(KycList ,"====================>")
 
 
   const [data, setData] = useState([]);
@@ -21,38 +40,47 @@ function BankDetails() {
   const { loginId } = user;
 
   const initialValues = {
-    account_holder_name: "",
-    account_number: "",
-    confirm_account_number:"",
-    ifsc_code: "",
-    bank_id: "",
-    account_type: "",
-    branch: "",
+    account_holder_name: KycList?.accountHolderName,
+    account_number: KycList?.accountNumber,
+    confirm_account_number:KycList?.accountNumber,
+    ifsc_code: KycList?.ifscCode,
+    bank_id: KycList?.merchant_account_details?.bankId,
+    account_type: KycList?.bankName,
+    branch: KycList?.merchant_account_details?.branch,
   }
   const validationSchema = Yup.object({
-    account_holder_name: Yup.string().required("Required"),
-    account_number: Yup.string().required("Required"),
+    account_holder_name:Yup.string().required("Required"),
+    account_number:Yup.string().required("Required"),
     confirm_account_number:Yup.string().oneOf([Yup.ref('account_number'), null], 'Account Number  must match').required("Confirm Account Number Required"),
-    ifsc_code: Yup.string().required("Required"),
-    account_type: Yup.string().required("Required"),
-    branch: Yup.string().required("Required"),
+    ifsc_code:Yup.string().required("Required"),
+    account_type:Yup.string().required("Required"),
+    branch:Yup.string().required("Required"),
     bank_id:Yup.string().required("Required"),
   })
+
+  
+
 
 
   //---------------GET ALL BANK NAMES DROPDOWN--------------------
   
   useEffect(() => {
-    axios.get(API_URL.GET_ALL_BANK_NAMES).then((resp) => {
-      const data = convertToFormikSelectJson('bankId', 'bankName', resp.data);
-      setData(data)
-    }).catch(err => console.log(err))
-  }, [])
+    dispatch(kycBankNames()).then((resp) => {
+     const data = convertToFormikSelectJson( "bankId",
+     "bankName",
+     resp.payload
+   );
+      setData(data);
+   })
+     
+       .catch((err) => console.log(err));
+   }, []);
+
+  // ------------------------------------------
 
 
-  const onSubmit = async (values) => {
-    const res = await axios.put(API_URL.Save_Settlement_Info, {
-
+  const onSubmit =  (values) => {
+    dispatch(saveMerchantBankDetais({
       account_holder_name: values.account_holder_name,
       account_number: values.account_number,
       ifsc_code: values.ifsc_code,
@@ -60,16 +88,15 @@ function BankDetails() {
       account_type: values.account_type,
       branch: values.branch,
       login_id:loginId ,
-       modified_by:loginId
+      modified_by:"270"
+    })).then((res) => {
+      if (res.meta.requestStatus === "fulfilled" && res.payload.status === true) {
+        // console.log("This is the response", res);
+        toast.success(res.payload.message);
+      } else {
+        toast.error("Something Went Wrong! Please try again.");
+      }
     });
-
-    console.log(values,"form data")
-
-    if (res.status === 200) {
-      toast.success("Bank Details Updated")
-    } else {
-      toast.error("Something went wrong")
-    }
 };
 
 
@@ -96,6 +123,7 @@ function BankDetails() {
                         name="account_holder_name"
                         placeholder="Account Holder Name"
                         className="form-control"
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
                       />
                     </div>
 
@@ -107,6 +135,7 @@ function BankDetails() {
                         name="account_type"
                         placeholder="Account Type"
                         className="form-control"
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
                       />
                     </div>
 
@@ -118,6 +147,7 @@ function BankDetails() {
                           className="form-control"
                           placeholder="Enter Bank Name"
                           options={data}
+                          disabled={VerifyKycStatus === "Verified" ? true : false}
                         />
                     </div>
                   </div>
@@ -132,6 +162,7 @@ function BankDetails() {
                         name="branch"
                         placeholder="Enter Branch Name"
                         className="form-control"
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
                       />
                     </div>
 
@@ -144,6 +175,7 @@ function BankDetails() {
                           name="ifsc_code"
                           placeholder="IFSC Code"
                           className="form-control"
+                          disabled={VerifyKycStatus === "Verified" ? true : false}
                         />
                     </div>
 
@@ -155,6 +187,7 @@ function BankDetails() {
                           name="account_number"
                           placeholder="Account Number"
                           className="form-control"
+                          disabled={VerifyKycStatus === "Verified" ? true : false}
                         />
                     </div>
 
@@ -166,11 +199,16 @@ function BankDetails() {
                           name="confirm_account_number"
                           placeholder="Re-Enter Account Number"
                           className="form-control"
+                          disabled={VerifyKycStatus === "Verified" ? true : false}
                         />
                     </div>
                   </div>
 
-                  <button className="btn btn-primary" type="submit">Submit</button>
+                 { VerifyKycStatus === "Verified" ?      
+                  null
+                  : <button className="btn btn-primary" type="submit">Save and Next</button>
+                 }
+                 
                     
             </Form>
           )}

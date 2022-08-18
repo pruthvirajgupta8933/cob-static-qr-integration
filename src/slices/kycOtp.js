@@ -6,7 +6,11 @@ import axios from "axios";
 
 const KycAuth = {
     OtpResponse: { status: "", verification_token: ""},
-    OtpVerificationResponse: {         
+    OtpVerificationResponseForPhone: {         
+        status: false,
+        message: ""
+       },
+        OtpVerificationResponseForEmail: {         
         status: false,
         message: ""
        }   
@@ -37,9 +41,25 @@ const KycAuth = {
   ); 
 
 
-    //---------VERIFICATION OTP ------------------------
-    export const otpVerificationForContact = createAsyncThunk(
-      "OtpVerification/otpVerificationForContact",
+    //---------VERIFICATION OTP For Phone ------------------------
+    export const otpVerificationForContactForPhone = createAsyncThunk(
+      "OtpVerificationForContactForPhone/otpVerificationForContactForPhone",
+      async (requestParam) => {
+          // console.log("requestParam",requestParam)
+        const response = await axios.post(
+          `${API_URL.Verify_OTP}`,
+          requestParam,
+        ).catch((error) => {
+          return error.response;
+        });
+        // console.log("res",response);
+        return response.data;
+      }
+    );
+
+     //---------VERIFICATION OTP For Email------------------------
+     export const otpVerificationForContactForEmail = createAsyncThunk(
+      "OtpVerificationForContactForEmail/otpVerificationForContactForEmail",
       async (requestParam) => {
           // console.log("requestParam",requestParam)
         const response = await axios.post(
@@ -53,12 +73,18 @@ const KycAuth = {
       }
     );
   
-
+   
 
     const KycOtpSlice = createSlice({
       name: "KycAuth",
       initialState: KycAuth,
-      reducers: {},
+      reducers: {
+        isPhoneVerified : (state,action)=>{
+          console.log(action);
+          console.log(state.OtpVerificationResponseForPhone.status);
+          // state.transactionHistory = []
+        }
+      },
       extraReducers: {
           ////////////////////////////////////////////////////
       [otpForContactInfo.pending]: (state, action) => {
@@ -74,20 +100,40 @@ const KycAuth = {
         },
         ////////////////////////////////////////////////////////////
     
-        [otpVerificationForContact.pending]: (state, action) => {
+        [otpVerificationForContactForPhone.pending]: (state, action) => {
           state.status = "pending";
         },
-        [otpVerificationForContact.fulfilled]: (state, action) => {
-          state.OtpVerificationResponse = action.payload;
-          console.log(action,"==>")
+        [otpVerificationForContactForPhone.fulfilled]: (state, action) => {
+          state.OtpVerificationResponseForPhone = action.payload;
+    
+          // console.log(action.payload.status,"==> Verification")
         },
-        [otpVerificationForContact.rejected]: (state, action) => {
+        [otpVerificationForContactForPhone.rejected]: (state, action) => {
           state.status = "failed";
           state.error = action.error.message;
         },
+        /////////////////////////////////////////////////////////////////
+
+        [otpVerificationForContactForEmail.pending]: (state, action) => {
+          state.status = "pending";
+        },
+        [otpVerificationForContactForEmail.fulfilled]: (state, action) => {
+          state.OtpVerificationResponseForEmail = action.payload;
+    
+          // console.log(action.payload.status,"==> Verification")
+        },
+        [otpVerificationForContactForEmail.rejected]: (state, action) => {
+          state.status = "failed";
+          state.error = action.error.message;
+        },
+
+      
       },
     });
     
+    
+// Action creators are generated for each case reducer function
+export const { isPhoneVerified } = KycOtpSlice.actions
     export default KycOtpSlice.reducer;
 
 
