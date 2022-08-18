@@ -40,13 +40,13 @@ function BankDetails() {
   const { loginId } = user;
 
   const initialValues = {
-    account_holder_name: KycList.accountHolderName,
-    account_number: KycList.accountNumber,
-    confirm_account_number:KycList.accountNumber,
-    ifsc_code: KycList.ifscCode,
-    bank_id: KycList.merchant_account_details.bankId,
-    account_type: KycList.bankName,
-    branch: KycList.merchant_account_details.branch,
+    account_holder_name: KycList?.accountHolderName,
+    account_number: KycList?.accountNumber,
+    confirm_account_number:KycList?.accountNumber,
+    ifsc_code: KycList?.ifscCode,
+    bank_id: KycList?.merchant_account_details?.bankId,
+    account_type: KycList?.bankName,
+    branch: KycList?.merchant_account_details?.branch,
   }
   const validationSchema = Yup.object({
     account_holder_name:Yup.string().required("Required"),

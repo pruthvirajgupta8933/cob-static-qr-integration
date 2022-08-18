@@ -27,12 +27,11 @@ function DocumentsUpload() {
   );
 
   const VerifyKycStatus = useSelector(
-    (state) =>
-      state.kyc.KycDocUpload[0].status
+    (state) =>state?.kyc?.KycDocUpload[0]?.status
   );
 
   const initialValues = {
-    docType:KycDocList[0].type,
+    docType:KycDocList[0]?.type,
     docFile:"",
 
   }
@@ -40,7 +39,7 @@ function DocumentsUpload() {
 
   const documentId = useSelector(
     (state) =>
-      state.kyc.KycDocUpload[0].documentId
+      state.kyc.KycDocUpload[0]?.documentId
   );
 
 
