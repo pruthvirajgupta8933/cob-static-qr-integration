@@ -57,9 +57,7 @@ function SideNavbar() {
                   <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
                       <Link to={`${url}/approver`} className='txt-white' ><i className="fa fa-list" aria-hidden="true" /> <span>Merchant List</span><span class="new-tab">new</span></Link>
                   </li>
-                  <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
-                      <Link to={`${url}/approver`} className='txt-white'><i className="fa fa-list" aria-hidden="true" /> <span>Merchant List</span><span class="new-tab">new</span></Link>
-                  </li>
+               
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open" role="menuitem">
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-owns="settlement$Menu" aria-haspopup="true" style={{paddingLeft: '24px'}}><span className="sidebar-menu-divider">Your
                         Business</span><i className="ant-menu-submenu-arrow" /></div>

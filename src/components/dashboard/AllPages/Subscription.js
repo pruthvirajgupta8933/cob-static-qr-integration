@@ -7,6 +7,8 @@ import Emandate from '../AllPages/Mandate';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import API_URL from '../../../config';
 import { Link } from 'react-router-dom';
+import CreateClientCode from './Modals/CreateClientCode';
+import BusinessCategory from './Modals/BusinessCategory';
 // import paymentGateWay from '../../../payment-gateway/'
 
 
@@ -41,8 +43,15 @@ const Subsciption = () => {
   if (clientMerchantDetailsList !== null) {
 
     // let {clientAuthenticationType,clientCode} = clientMerchantDetailsList[0];
-
   }
+  let isClientCodeCreated = false;
+  if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
+    isClientCodeCreated = true;
+  }
+
+  console.log("isClientCodeCreated", isClientCodeCreated)
+
+
   var authenticationMode = '';
   // console.log(clientAuthenticationType);
   if (clientAuthenticationType === 'NetBank') {
@@ -268,6 +277,9 @@ const Subsciption = () => {
 
 
 
+  console.log(isClientCodeCreated)
+  console.log(subscriptionDetails)
+
   // console.log("subscriptionPlanData",subscriptionPlanData);
   return (
     <section className="ant-layout">
@@ -300,12 +312,13 @@ const Subsciption = () => {
                           </div>
                           <div className="container">
                           </div>
-                          {/* <div>
-              <button type="button" className="btn btn-info sm" onClick={()=>makePayment()}>Make Payment</button>
-            </div> */}
+            
                         </div>
                       </div>
-                      {subscriptionDetails &&
+                      {isClientCodeCreated ? <CreateClientCode /> : <></>}
+                      {isClientCodeCreated === false && subscriptionDetails ===true ? <BusinessCategory /> : <></> }
+
+                      {/* {isClientCodeCreated === false && subscriptionDetails ===true ?
                         <div className="modal fade" id="exampleModal" style={{ top: "25%" }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div className="modal-dialog" role="document">
                             <div className="modal-content">
@@ -320,51 +333,22 @@ const Subsciption = () => {
                                 <div class="input-group mb-3">
 
                                   <select class="custom-select" id="inputGroupSelect01">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Business</option>
-                                    <option value="2">Individual</option>
-                                    <option value="3">Other</option>
+                                    <option selected>Select Business Type</option>
+                                    <option value="COBRD">COB Retail</option>
+                                    <option value="COBED">COB E-Commerce</option>
+                                    <option value="COBGV">COB Government</option>
+                                    <option value="COBEN">COB Education</option>
                                   </select>
                                 </div>
-                                {/* {Plans && Plans.map((sp,i) =>
-            <table className="tables" cellPadding="10" cellSpacing="10" width="100%" key={i}>
-            
-            <thead>
-            <tr>
-            <th>
-              <input type="radio" id="plantype" name="plantype" value={sp.planType} onChange={(e)=>{handleChecked(e,sp)}} />
-              <span style={{ textTransform: "uppercase",marginLeft:"8px"}}>
-              {sp.planType}
-              </span>  
-              {sp.planName}
-            </th> 
-            </tr>  
-            </thead>
-            <tbody>
-                <tr >
-                    <td >Rs - {sp.planPrice}</td>
-                </tr>
-                <tr></tr>          
-                </tbody>
-            </table>
-            )} */}
                               </div>
-                              {/* <div className="modal-footer" >
-                    <input type="checkbox" id="termandcnd" name="termandcnd" value="termandcnd" checked={termAndCnd}
-                        onChange={e => setTermAndCnd(e.target.checked)} />
-                    <label htmlFor="vehicle1" style={{margin:"5px"}}> I agree all terms and condition.</label>
-                </div> */}
-
                               <div className="modal-footer">
-                                {/* <Emandate bodyData={subscribeData} /> */}
-                                <Link to={`/dashboard/thanks`} type="button"  onClick={() => setIsModelClosed(false)} class="btn btn-success text-white" >Subscribe</Link>
-
+                                <Link to={`/dashboard/thanks`} type="button" onClick={() => setIsModelClosed(false)} class="btn btn-success text-white" >Subscribe</Link>
                               </div>
                             </div>
                           </div>
                           )
-                        </div>
-                      }
+                        </div> : <></>
+                      } */}
                     </div>
                   </div>
                 )

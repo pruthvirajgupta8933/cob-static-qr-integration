@@ -83,6 +83,9 @@ export const login = createAsyncThunk(
       // console.log("auth",username);
       
       const data = await AuthService.login(username, password);
+      localStorage.setItem("p",password);
+        localStorage.setItem("i",username);
+        console.log("set local");
       return { user: data };
     } catch (error) {
       const message =
@@ -91,7 +94,8 @@ export const login = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString()||error.request.toString();
-        console.log("message",message);
+        // console.log("message",message);
+        
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
     }

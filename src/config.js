@@ -32,6 +32,14 @@ const API_LIVE = {
   /** Email Verify for new register users **/
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 
+  // ** Rate mapping **/
+  RATE_MAPPING_GenerateClientFormForCob: "https://adminapi.sabpaisa.in/REST/config/GenerateClientFormForCob",
+
+  // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
+  RATE_MAPPING_CLONE : "https://adminapi.sabpaisa.in/REST/Ratemapping/cloning",
+  RATE_ENABLE_PAYLINK: "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/31",
+
+
   CHECK_PERMISSION_PAYLINK:
     "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
   BANK_IFSC_CODE_VERIFY: "https://ifsc.razorpay.com/",
@@ -119,19 +127,6 @@ const API_LIVE = {
   DOCUMENT_BY_LOGINID:`${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
 
   
-
-
-
-
-
-  
-
-
-
-
-
-  
-
     /** Contact Information */
     Save_General_Info:`${kyc_url}/kyc/save-general-info/`,
 
@@ -163,6 +158,9 @@ const API_LIVE = {
 
   /*Image Preview API */
   Image_Preview:`${kyc_url}/kyc/get-merchant-document/`
+
+
+
  
 };
 

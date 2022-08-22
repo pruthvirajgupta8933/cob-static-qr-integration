@@ -73,7 +73,7 @@ const BASE_URL = "https://cobapi.sabpaisa.in/auth-service/client";
 const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
 const createClintCode = (object) => {
   // console.log("profileservice",object)
-  return axios.post(BASE_URL + "/create", object)
+  return axios.post(API_URL.AUTH_CLIENT_CREATE, object)
 };
 
 
