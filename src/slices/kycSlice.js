@@ -457,9 +457,11 @@ export const saveMerchantBankDetais= createAsyncThunk(
 
 export const kycForPending= createAsyncThunk(
   "kyc/kycForPending",
-  async (requestParam) => {
+  async (data) => {
+    const requestParam =data.page
+    const requestParam1 = data.page_size
     const response = await axios.get(
-      `${API_URL.KYC_FOR_PENDING}`,
+      `${API_URL.KYC_FOR_PENDING}&page=${requestParam}&page_size=${requestParam1}`,
       {
         headers: {
          
