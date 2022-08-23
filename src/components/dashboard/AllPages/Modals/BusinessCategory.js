@@ -8,7 +8,7 @@ function BusinessCategory() {
     const { auth } = useSelector((state) => state);
     const [rateCloneStatus, setRateCloneStatus] = useState("")
     const [businessType, setBusniessType] = useState("")
-    console.log(auth)
+    // console.log(auth)
     const { user } = auth;
     const { clientMerchantDetailsList } = user;
 
@@ -83,15 +83,28 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
             };
     
             console.log(inputData);
+            // 1 - run RATE_MAPPING_GenerateClientFormForCob 
+            axios.post(API_URL.RATE_MAPPING_GenerateClientFormForCob,inputData).then(res=>{
+                console.log("1 api run")
 
-            // axios.post(API_URL.RATE_MAPPING_GenerateClientFormForCob,inputData).then(res=>{
             
-            //     localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob',"api trigger");
+                localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob',"api trigger");
+                 //2 - rate map clone 
+                axios.get(`${API_URL.RATE_MAPPING_CLONE}/${businessType}/${clientCode}/${loginId}`).then(res=>{
+                    console.log("2 api run")
 
-            //     axios.get(API_URL.RATE_ENABLE_PAYLINK+'/'+clientCode).then(res=>{
-            //         localStorage.setItem('enablePaylink',"api trigger");
-            //     })
-            // }).catch(err=>{console.log(err)})
+                    localStorage.setItem('enablePaylink',"api trigger");
+                    // 3- enable pay link
+                    axios.get(API_URL.RATE_ENABLE_PAYLINK+'/'+clientCode).then(res=>{
+                        localStorage.setItem('enablePaylink',"api trigger");
+                        console.log("3 api run")
+                    })
+                })
+
+              
+
+
+            }).catch(err=>{console.log(err)})
 
 
 

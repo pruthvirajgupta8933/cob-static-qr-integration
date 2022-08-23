@@ -29,13 +29,13 @@ const initialValues = {
 
 
 
-function CreateClientCode() {
+function CreateClientCode(props) {
 
     const { user } = useSelector((state) => state.auth);
     const [isCodeValid, setIsCodeValid] = useState(null)
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-
+    const {fnClientCodeCreated} = props;
  
 
     console.log(user);
@@ -76,8 +76,8 @@ function CreateClientCode() {
     }
     
     dispatch(createClientProfile(data)).then(res=>{
-
-    })
+      fnClientCodeCreated(false); // hide createClientProfile
+    }).catch(err=>{fnClientCodeCreated(false); })
     
   }
 

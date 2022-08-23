@@ -44,10 +44,17 @@ const Subsciption = () => {
 
     // let {clientAuthenticationType,clientCode} = clientMerchantDetailsList[0];
   }
-  let isClientCodeCreated = false;
-  if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
-    isClientCodeCreated = true;
-  }
+
+  const [isClientCodeCreated, setIsClientCodeCreated] = useState(false)
+
+  useEffect(() => {
+    if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
+      setIsClientCodeCreated(true)
+    }
+    console.log("is client code updated useEffect")
+  }, [])
+  
+
 
   console.log("isClientCodeCreated", isClientCodeCreated)
 
@@ -271,12 +278,15 @@ const Subsciption = () => {
     setPlans(data)
   }
 
-  useEffect(() => {
-    // console.log("termAndCnd",termAndCnd);
-  }, [subscribePlanData, termAndCnd]);
 
 
-
+  
+  const fnClientCodeCreated =(val)=>{
+    setIsClientCodeCreated(val)
+    if(val===false){
+      setSubscriptionDetails(true)
+    }
+  } 
   console.log(isClientCodeCreated)
   console.log(subscriptionDetails)
 
@@ -315,40 +325,9 @@ const Subsciption = () => {
             
                         </div>
                       </div>
-                      {isClientCodeCreated ? <CreateClientCode /> : <></>}
+                      {isClientCodeCreated ? <CreateClientCode fnClientCodeCreated={fnClientCodeCreated} /> : <></>}
                       {isClientCodeCreated === false && subscriptionDetails ===true ? <BusinessCategory /> : <></> }
 
-                      {/* {isClientCodeCreated === false && subscriptionDetails ===true ?
-                        <div className="modal fade" id="exampleModal" style={{ top: "25%" }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div className="modal-dialog" role="document">
-                            <div className="modal-content">
-                              <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">Welcome - {subscribePlanData.applicationName} !</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => modalHandler()}>
-                                  <span aria-hidden="true" onClick={() => setIsModelClosed(false)}>&times;</span>
-                                </button>
-                              </div>
-                              <div className="modal-body">
-                                <p>Business Type</p>
-                                <div class="input-group mb-3">
-
-                                  <select class="custom-select" id="inputGroupSelect01">
-                                    <option selected>Select Business Type</option>
-                                    <option value="COBRD">COB Retail</option>
-                                    <option value="COBED">COB E-Commerce</option>
-                                    <option value="COBGV">COB Government</option>
-                                    <option value="COBEN">COB Education</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div className="modal-footer">
-                                <Link to={`/dashboard/thanks`} type="button" onClick={() => setIsModelClosed(false)} class="btn btn-success text-white" >Subscribe</Link>
-                              </div>
-                            </div>
-                          </div>
-                          )
-                        </div> : <></>
-                      } */}
                     </div>
                   </div>
                 )
