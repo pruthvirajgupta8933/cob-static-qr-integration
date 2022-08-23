@@ -34,7 +34,6 @@ const API_LIVE = {
 
   // ** Rate mapping **/
   RATE_MAPPING_GenerateClientFormForCob: "https://adminapi.sabpaisa.in/REST/config/GenerateClientFormForCob",
-
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
   RATE_MAPPING_CLONE : "https://adminapi.sabpaisa.in/REST/Ratemapping/cloning",
   RATE_ENABLE_PAYLINK: "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/31",
