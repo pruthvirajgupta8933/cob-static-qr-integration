@@ -38,7 +38,7 @@ function CreateClientCode(props) {
     const {fnClientCodeCreated} = props;
  
 
-    console.log(user);
+    // console.log(user);
     const handleOnChange = (event) => {
         const inputText = event.target.value;
         setIsCodeValid(null);
@@ -113,10 +113,13 @@ function CreateClientCode(props) {
           {isCodeValid ? <p>Client Code is valid</p> : "" }
           {isCodeValid===false ? <p>Client Code already exists</p> : "" }
             <button className="btn btn-primary"  type="submit">Submit</button>
+            
             </div>
           </Form>
+          
       )}
       </Formik>
+      {/* <button className="btn btn-primary" onClick={()=>{fnClientCodeCreated(false)}} >onclien</button> */}
         </div>
   
       </div>

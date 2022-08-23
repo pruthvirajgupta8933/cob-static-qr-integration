@@ -1,22 +1,28 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import API_URL from '../../../../config';
+import { checkPermissionSlice } from '../../../../slices/auth';
 
-function BusinessCategory() {
+
+function BusinessCategory(props) {
+    const {subscribePlanData} = props;
+
+    console.log(subscribePlanData)
+    const dispatch = useDispatch();
+   
     const { auth } = useSelector((state) => state);
     const [rateCloneStatus, setRateCloneStatus] = useState("")
     const [businessType, setBusniessType] = useState("")
+    const [modalClose, setModalClose] = useState(true)
     // console.log(auth)
     const { user } = auth;
     const { clientMerchantDetailsList } = user;
 
-
+  
 
 const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
-    
-
     axios.get(`${API_URL.RATE_MAPPING_CLONE}/${clientCodeF}/${clientCodeT}/${loginId}`)
     .then((resp) => {
         const data = resp.data;
@@ -98,6 +104,7 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
                     axios.get(API_URL.RATE_ENABLE_PAYLINK+'/'+clientCode).then(res=>{
                         localStorage.setItem('enablePaylink',"api trigger");
                         console.log("3 api run")
+                        dispatch(checkPermissionSlice(clientCode));
                     })
                 })
 
@@ -114,16 +121,23 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
     }, [rateCloneStatus])
 
 
+
+    const modalHandler = (val)=>{
+        setModalClose(val)
+
+    }
+
+
     return (
-        <div className="modal fade" id="exampleModal" style={{ top: "25%" }} tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal" id="bussiness" style={{ top: "25%" ,display: `${modalClose ? 'block':'none'}` }} tabIndex="-1" role="dialog" aria-labelledby="bussinessLable" aria-hidden="true" >
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">
-                            {/* Welcome - {subscribePlanData.applicationName} ! */}
+                        <h5 className="modal-title" id="bussinessLable">
+                            Welcome - {subscribePlanData.applicationName} !
                         </h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close"
-                        //   onClick={() => modalHandler()}
+                          onClick={() => modalHandler(false)}
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -141,7 +155,7 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <Link to={`/dashboard/thanks`} type="button"  class="btn btn-success text-white" >Subscribe</Link>
+                        <Link to={`/dashboard/thanks`} type="button" onClick={()=>modalHandler(false)} class="btn btn-success text-white" >Subscribe</Link>
                     </div>
                 </div>
             </div>

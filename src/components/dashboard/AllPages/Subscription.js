@@ -56,7 +56,7 @@ const Subsciption = () => {
   
 
 
-  console.log("isClientCodeCreated", isClientCodeCreated)
+  // console.log("isClientCodeCreated", isClientCodeCreated)
 
 
   var authenticationMode = '';
@@ -154,14 +154,7 @@ const Subsciption = () => {
     }
   ];
   const getSubscriptionService = async () => {
-    await axios.get(API_URL.FETCH_APP_AND_PLAN)
-      .then(res => {
-        setSubscriptionData(tempData);
-        localStorage.setItem("subscriptionData", JSON.stringify(res.data));
-      })
-      .catch(err => {
-        console.log(err)
-      });
+    await  setSubscriptionData(tempData);
   }
 
   // const userDetails = JSON.parse(localStorage?.getItem("user"));
@@ -287,8 +280,8 @@ const Subsciption = () => {
       setSubscriptionDetails(true)
     }
   } 
-  console.log(isClientCodeCreated)
-  console.log(subscriptionDetails)
+  console.log("isClientCodeCreated",isClientCodeCreated)
+  console.log("subscriptionDetails",subscriptionDetails)
 
   // console.log("subscriptionPlanData",subscriptionPlanData);
   return (
@@ -308,7 +301,7 @@ const Subsciption = () => {
                 {subscriptionPlanData.length <= 0 ? <h3>Loading...</h3> : subscriptionPlanData.map((s, i) =>
                   <div className="col-sm-12 col-md-6" key={i}>
                     <div className="col mb-4">
-                      <div >
+                      
                         <div className="card" style={{ background: "aquamarine" }}>
                           <div className="card-body" >
                             <h5 className="card-title font-weight-bold h3">{s.applicationName}</h5>
@@ -324,10 +317,12 @@ const Subsciption = () => {
                           </div>
             
                         </div>
-                      </div>
-                      {isClientCodeCreated ? <CreateClientCode fnClientCodeCreated={fnClientCodeCreated} /> : <></>}
-                      {isClientCodeCreated === false && subscriptionDetails ===true ? <BusinessCategory /> : <></> }
-
+                        {(isClientCodeCreated === true &&
+                          <CreateClientCode fnClientCodeCreated={fnClientCodeCreated} />)
+                        || ((isClientCodeCreated === false && subscriptionDetails ===true) &&
+                          <BusinessCategory subscribePlanData={subscribePlanData} />) 
+                        }
+                      
                     </div>
                   </div>
                 )
