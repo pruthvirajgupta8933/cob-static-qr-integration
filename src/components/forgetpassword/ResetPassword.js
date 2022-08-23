@@ -7,6 +7,15 @@ import API_URL from "../../config";
 const ResetPassword = (props) => {
   // const { handleFormSubmit } = props;
 
+  const { user ,passwordChange} = useSelector((state) => state.auth);
+
+  // console.log(passwordChange);
+    const { 
+            loginId,
+            userName,
+          } = user;
+  console.log(userName,"<==== User Id ====>")  
+
   const validationSchema = Yup.object().shape({
     password:Yup.string()
     .required(" Old Password Required"),
@@ -32,7 +41,7 @@ const ResetPassword = (props) => {
   const resetSubmit = async(values) => {
     console.log(values,"here is the response")
     const res = await axios.put(API_URL.AUTH_CHANGE_PASSWORD, {
-      email: "textbhuvi@gmail.com",
+      email: userName,
       // verification_token:verification_token,
       password: values.password,
       newpassword: values.newpassword

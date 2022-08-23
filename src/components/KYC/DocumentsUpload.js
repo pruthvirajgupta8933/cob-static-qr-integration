@@ -32,11 +32,6 @@ function DocumentsUpload() {
         state.kyc.KycDocUpload[0]?.status
     )
 
-
- 
-
-  
-
   
 
   const initialValues = {
