@@ -113,7 +113,7 @@ const API_LIVE = {
   Collection_frequency: `${kyc_url}/kyc/get-all-collection-frequency/`,
   Get_ALL_Collection_Type: `${kyc_url}/kyc/get-all-collection-type`,
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
-  Business_overview_state:`${kyc_url}/kyc/get-all-state-details/`,
+  Business_overview_state_: `${kyc_url}/kyc/get-all-state-details/`,
   Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
 
   /////////////////////////Kyc approver 

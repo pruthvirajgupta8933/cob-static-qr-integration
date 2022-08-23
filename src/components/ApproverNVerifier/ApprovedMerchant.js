@@ -90,6 +90,7 @@ function ApprovedMerchant() {
       <table className="table table-bordered">
         <thead>
           <tr>
+            
             <th>Serial No.</th>
             <th>Merchant Id</th>
             <th>Contact Number</th>

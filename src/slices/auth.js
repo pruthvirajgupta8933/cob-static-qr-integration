@@ -41,6 +41,10 @@ const auth = {
   createClientProfile:[],
   passwordChange:null,
   forgotPassword:{
+    otpResponse:{
+      verification_token:"",
+      status:false
+    },
     sendUserName:{
       username:"",
       isValid:null
@@ -349,7 +353,7 @@ export const getEmailToSendOtpSlice = createAsyncThunk(
   "auth/getEmailToSendOtp",
   async(data,thunkAPI)=>{
     try{
-      console.log("getEmailToSendOtp",data);
+      // console.log("getEmailToSendOtp",data);
       const response = await AuthService.getEmailToSendOTP(data);
       thunkAPI.dispatch(setMessage(response.data.message));
       //save post username
@@ -587,6 +591,7 @@ const authSlice = createSlice({
     },
 
     [getEmailToSendOtpSlice.fulfilled]:(state,action)=>{
+      state.forgotPassword.otpResponse=action.payload;
       const username = action.payload.username;
       const status = action.payload.status;
       state.forgotPassword.sendUserName.username = username;

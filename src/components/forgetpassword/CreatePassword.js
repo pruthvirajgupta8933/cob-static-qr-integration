@@ -1,70 +1,80 @@
-import React from "react";
+import React from 'react'
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import axios from "axios";
+import API_URL from '../../config';
 import * as Yup from "yup";
-import { getEmailToSendOtpSlice } from "../../slices/auth";
-import { useDispatch,useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
+
+const CreatePassword = (props) => {
+    const {auth} = useSelector(state=>state);
+  const verification_token=auth.forgotPassword.otpResponse.verification_token;
+    const validationSchema = Yup.object().shape({
+
+password:Yup.string().required("password is required")
+
+    })
 
 
+    const initialValues = {
+        password: "",
+       
+      };
 
-const EnterUserID = (props) => {
-  // const { handleFormSubmit } = props;
-  const dispatch = useDispatch();
 
-  const validationSchema = Yup.object().shape({
-    email: Yup.string().required("Required"),
-  });
-
-  const handleSubmit = (data) => {
-    // console.log("You clicked");
-  
-     props.props("a2",data);
-     dispatch(getEmailToSendOtpSlice({
-      email:data.email,
-      otp_type:"both",
-    otp_for: "Forgot Password"
-      
-      
-     }))
-  };
-
-  const initialValues = {
-    email: "",
-  };
-
-  // console.log(initialValues.username);
+    const onSubmit = async(values)=>{
+        console.log(values,"here is the response")
+        const res = await axios.put(API_URL.AUTH_CREATE_NEW_PASSWORD, {
+          email: "textbhuvi@gmail.com",
+          verification_token:verification_token,
+          password: values.password,
+        
+      }).then(res => {
+          console.log(res)
+         })
+          .catch(error => {
+            console.error('There was an error!', error);
+          });
+    
+    
+        // props.props('a4')
+        // console.log("You clicked submit.");
+      };
+    
+    
+        
+    
   return (
     <div className="container-fluid toppad">
       <div className="row ">
         <div className="col-sm-6 mx-auto">
           <div className="card ">
-            <div className="card-header text-center">Forget Password</div>
+            <div className="card-header text-center">Create Password</div>
             <div className="card-body">
               <h5 className="card-title">Please Enter the detatils. </h5>
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                onSubmit={(values, { resetForm }) => {
-                  handleSubmit(values);
-                  resetForm();
-                }}
+                onSubmit={onSubmit}
+             
               >
-                {({ resetForm }) => (
+                {({ formik }) => (
                   <>
                     <Form>
                       <div className="form-group">
-                        <label htmlFor="exampleInputEmail1">
-                          Email address / Username
+                    
+                        <label htmlFor="exampleInputPassword1">
+                          New Password
                         </label>
                         <Field
-                          name="email"
-                          type="text"
+                          name="password"
+                          type="password"
                           className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
-                          placeholder="Enter email"
+                          id="exampleInputPassword1"
+                          aria-describedby="PasswordHelp"
+                          placeholder="Enter New Password"
                         />
-                        {
-                          <ErrorMessage name="email">
+                      
+                          <ErrorMessage name="password">
                             {(msg) => (
                               <div
                                 className="abhitest"
@@ -72,21 +82,20 @@ const EnterUserID = (props) => {
                                   color: "red",
                                   position: "absolute",
                                   zIndex: " 999",
-                                  marginTop: "15px",
                                 }}
                               >
                                 {msg}
                               </div>
                             )}
                           </ErrorMessage>
-                        }
-                        <small id="emailHelp" className="form-text text-muted">
-                          We'll never share your email with anyone else.
-                        </small>
+                        
                       </div>
+                    
+                     
                       <button
                         type="submit"
                         className="btn btn-primary"
+                          // onClick={() => props.props("a4")}
                       >
                         Submit
                       </button>
@@ -106,7 +115,8 @@ const EnterUserID = (props) => {
         </div>
       </div>
     </div>
-  );
-};
 
-export default EnterUserID;
+  )
+}
+
+export default CreatePassword
