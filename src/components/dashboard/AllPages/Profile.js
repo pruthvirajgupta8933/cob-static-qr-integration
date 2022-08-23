@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { createClientProfile, updateClientProfile } from "../../../slices/auth";
+import { Link } from "react-router-dom";
 
 import profileService from "../../../services/profile.service";
 import { toast, Zoom } from "react-toastify";
@@ -287,6 +288,8 @@ export const Profile = () => {
                             width: "116px",
                           }}
                         ></div>
+
+
                       </div>
                     </div>
                   </div>
@@ -329,6 +332,9 @@ export const Profile = () => {
                       {/* start form area */}
                       <div className="row- justify-content-center">
                         <div className="col-md-12-">
+
+                        <Link to="/reset" className="float-right " style={{margin:"-23px"}}>Change Password</Link>
+ 
                           <div className="card">
                             <div className="card-header">Basic Details</div>
                             <div className="card-body-">

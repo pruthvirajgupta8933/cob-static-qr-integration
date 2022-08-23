@@ -1,17 +1,23 @@
 import React, {  useState } from "react";
+import { useHistory } from "react-router-dom";
 // import { Formik, Field, Form, ErrorMessage } from "formik";
 // import * as Yup from "yup";
 import validation from "../validation";
+
 // import { verifyOtpOnForgotPwdSlice } from "../../slices/auth";
 import {  useSelector } from "react-redux";
+import { toast } from 'react-toastify'
 import axios from "axios";
+import ResetPassword from "./ResetPassword";
 
 
 
 const VerifyEmailPhone = (props)  => {
+  const { handleFormSubmit } = props;
   // const dispatch = useDispatch();
   const {auth} = useSelector(state=>state);
   console.log(auth.forgotPassword.sendUserName)
+  let history = useHistory();
   
 
 const [emailotp , setEmailotp] = useState("");
@@ -20,9 +26,12 @@ const [errors, setErrors] =useState({});
 const [verify, setverify] = useState(null)
 //const [username, setUserName] = useState(auth.forgotPassword.sendUserName.username)
 const username = auth.forgotPassword.sendUserName.username;
+const verification_token=auth.forgotPassword.otpResponse.verification_token;
+// console.log(verification_token,"here is my verification token")
 
     // const {handleFormSubmit} = props;
 
+    const url="https://stgcobapi.sabpaisa.in/auth-service/account/verify-otp"
 
     const Email = (e) => {
       setEmailotp(e.target.value)
@@ -45,11 +54,24 @@ const username = auth.forgotPassword.sendUserName.username;
       //dispatch(verifyOtpOnForgotPwdSlice())
       if(verify){
         const sendOtp = JSON.stringify({
-                            username: username,
+                            verification_token:verification_token,
                             otp: emailotp
                         });
 
-       await axios.post("https://cobapi.sabpaisa.in/auth-service/account/verify-otp/",sendOtp,{headers:{"Content-Type" : "application/json"}}).then((response)=>{console.log(response)}).catch(error=>console.log(error))
+       await axios.post(url,sendOtp,{headers:{"Content-Type" : "application/json"}})
+       .then((response)=>{
+         console.log(response)
+         if (response.status === 200) {
+          props.props('a3')
+           toast.success(response.message);
+        }
+        else {
+          toast.error(response.message);
+      }
+        })
+      
+         
+     
         // dispatch(verifyOtpOnForgotPwdSlice(sendOtp))
       }
 
@@ -96,7 +118,7 @@ const username = auth.forgotPassword.sendUserName.username;
                                 <br />
                                 {errors.emailotp && <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" , top: '157px'}} >{errors.emailotp}</p>}
                             </div>
-                        <button type="submit" name = "emailverify" className="btn btn-primary mb-2" value = "firstone" onClick={()=>emailverify()} >Verify</button>
+                        <button type="button" name = "emailverify" className="btn btn-primary mb-2" value = "firstone" onClick={()=>emailverify()} >Verify</button>
                         {/* onClick={()=>props.props('a3')} */}
                     </div>
 
@@ -111,7 +133,7 @@ const username = auth.forgotPassword.sendUserName.username;
                         <br />
                         {errors.smsotp && <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" , top: '214px'}} >{errors.smsotp}</p>}
                         </div>
-                        <button type="submit" name = "otpverify" value = "secondone" className="btn btn-primary mb-2" onClick={smsverify} >Verify</button>
+                        <button type="submit" name = "otpverify" value = "secondone" className="btn btn-primary mb-2" onClick={()=>smsverify()} >Verify</button>
                         {/* onClick={()=>props.props('a3')}  */}
                     </div>
                 </form>
