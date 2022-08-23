@@ -57,7 +57,12 @@ function DocumentsUpload() {
     // console.log(KycDocList,"<===========KYC DOC List===========>")
 
 
-
+    useEffect(() => {
+      dispatch(documentsUpload()).then((resp) => {
+        const data = convertToFormikSelectJson('id', 'name', resp.payload.results);
+        setDocTypeList(data)
+      }).catch(err => console.log(err))
+    }, [])
   
 
   const validationSchema = Yup.object({

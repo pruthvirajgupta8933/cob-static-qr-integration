@@ -6,6 +6,7 @@ import BusinessDetails from './BusinessDetails';
 import BusinessOverview from './BusinessOverview';
 import ContactInfo from './ContactInfo';
 import DocumentsUpload from './DocumentsUpload';
+// import { KycModal } from './KycModal';
 import SubmitKyc from './SubmitKyc';
 import FormikController from '../../_components/formik/FormikController'
 import { kycUserList, kycDocumentUploadList, kycVerificationForTabs } from "../../slices/kycSlice"
@@ -112,6 +113,7 @@ const handleSubmit = (e) => {
     <div className="profileBarStatus">
     </div>
     <main className="gx-layout-content ant-layout-content">
+      
       <div className="gx-main-content-wrapper">
         <div className="right_layout my_account_wrapper right_side_heading">
           <h1 className="m-b-sm gx-float-left">KYC Form</h1>

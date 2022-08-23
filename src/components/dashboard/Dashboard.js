@@ -25,11 +25,11 @@ import ViewTransactionWithFilter from './AllPages/ViewTransactionWithFilter';
 import SettlementReportNew from './AllPages/SettlementReportNew';
 import TransactionHistoryDownload from './AllPages/TransactionHistoryDownload';
 import Approver from '../ApproverNVerifier/Approver';
+import ThanksPage from '../Otherpages/ThanksPage';
 
 
 
 function Dashboard() {
-
     let history = useHistory();
     let { path } = useRouteMatch();
     const { user } = useSelector((state) => state.auth);
@@ -123,6 +123,9 @@ function Dashboard() {
               <Route exact path={`${path}/approver`} >
                 <Approver />
               </Route>
+              <Route exact path={`${path}/thanks`} >
+                <ThanksPage />
+              </Route>
               
                 </Switch>
         </section>
@@ -130,5 +133,3 @@ function Dashboard() {
 }
 
 export default Dashboard
-
-

@@ -1,9 +1,3 @@
-// KYC (staging): http://13.126.165.212:8000/
-// KYC (production): https://kycprocess.sabpaisa.in/
-
-// COB (staging): http://13.126.165.212:5000/
-// COB (production): https://cobapi.sabpaisa.in
-
 const env = "staging";
 let url,kyc_url = "";
 
@@ -38,22 +32,22 @@ const API_LIVE = {
   /** Email Verify for new register users **/
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 
+  // ** Rate mapping **/
+  RATE_MAPPING_GenerateClientFormForCob: "https://adminapi.sabpaisa.in/REST/config/GenerateClientFormForCob",
+  // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
+  RATE_MAPPING_CLONE : "https://adminapi.sabpaisa.in/REST/Ratemapping/cloning",
+  RATE_ENABLE_PAYLINK: "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/31",
+
+
   CHECK_PERMISSION_PAYLINK:
     "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
   BANK_IFSC_CODE_VERIFY: "https://ifsc.razorpay.com/",
-  BANK_LIST_NB:
-    "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
-  BANK_LIST_DC:
-    "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
-
+  BANK_LIST_NB:"https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
+  BANK_LIST_DC:"https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
   SEND_EMAIL: "https://adminapi.sabpaisa.in/REST/Email/sendEmail",
-
-  SUBSCRIBE_FETCH_APP_AND_PLAN:
-    "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
-  FETCH_APP_AND_PLAN:
-    "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
-  SUBSCRIBE_SERVICE:
-    "https://spl.sabpaisa.in/client-subscription-service/subscribe",
+  SUBSCRIBE_FETCH_APP_AND_PLAN:"https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
+  FETCH_APP_AND_PLAN:"https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
+  SUBSCRIBE_SERVICE:"https://spl.sabpaisa.in/client-subscription-service/subscribe",
 
   /* transaction history  */
   //old api of txn history
@@ -132,19 +126,6 @@ const API_LIVE = {
   DOCUMENT_BY_LOGINID:`${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
 
   
-
-
-
-
-
-  
-
-
-
-
-
-  
-
     /** Contact Information */
     Save_General_Info:`${kyc_url}/kyc/save-general-info/`,
 
@@ -176,6 +157,9 @@ const API_LIVE = {
 
   /*Image Preview API */
   Image_Preview:`${kyc_url}/kyc/get-merchant-document/`
+
+
+
  
 };
 

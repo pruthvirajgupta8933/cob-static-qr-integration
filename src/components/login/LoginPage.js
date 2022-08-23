@@ -46,7 +46,8 @@ function LoginPage() {
     // console.log(userAlreadyLoggedIn , isLoggedIn)
     // console.log("fn 2");
     // console.log("user2===",user)
-    history.push("/dashboard")  
+    // history.push("/dashboard")  
+    history.push("/dashboard/")  
   }
 
   useEffect(()=>{

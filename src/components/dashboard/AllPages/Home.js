@@ -6,6 +6,7 @@ import { successTxnSummary, subscriptionplan, clearSuccessTxnsummary } from '../
 import ProgressBar from '../../../_components/reuseable_components/ProgressBar';
 import { useRouteMatch, Redirect} from 'react-router-dom'
 import '../css/Home.css';
+import { KycModal } from '../../KYC/KycModal';
 
 
 
@@ -112,6 +113,7 @@ showData.map((item)=>{
 
     return (
       <section className="ant-layout">
+        <KycModal/>
         <div className="profileBarStatus">
         </div>
         <main className="gx-layout-content ant-layout-content">

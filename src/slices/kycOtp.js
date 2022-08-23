@@ -38,7 +38,7 @@ const KycAuth = {
       // console.log(response)
       return response.data;
     }
-  );
+  ); 
 
 
     //---------VERIFICATION OTP For Phone ------------------------
