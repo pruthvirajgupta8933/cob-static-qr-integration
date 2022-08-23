@@ -38,7 +38,15 @@ function KycForm() {
   } 
 
 
- 
+  const getInputValue = (param, val) => {
+    if(param==='loginId'){
+      setLoginId(val);
+      console.log(val, "<=====val=====>");
+    }
+  }
+
+
+
  
 
 
@@ -89,9 +97,7 @@ function KycForm() {
 
   //--------------------------------------------------------
 
-// const handleChange = (e) => }{
-//   setLoginId()
-// }
+
 
 const handleSubmit = (e) => {
   console.log("Login Id ============>")
@@ -118,7 +124,11 @@ const handleSubmit = (e) => {
               {<form onSubmit={handleSubmit}>
                 <div className="form-row">
                 <div className="form-group col-md-4">
-                <select  className="ant-input"
+                <select
+                      onChange={(e) => {
+                        getInputValue("loginId", e.target.value);
+                      }}
+                    className="ant-input"
                   >
                     <option value="">Select Merchants</option>
                     {merchantList?.map((item,i) => {
