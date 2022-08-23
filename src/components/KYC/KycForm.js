@@ -6,7 +6,7 @@ import BusinessDetails from './BusinessDetails';
 import BusinessOverview from './BusinessOverview';
 import ContactInfo from './ContactInfo';
 import DocumentsUpload from './DocumentsUpload';
-import { KycModal } from './KycModal';
+// import { KycModal } from './KycModal';
 import SubmitKyc from './SubmitKyc';
 import FormikController from '../../_components/formik/FormikController'
 import { kycUserList, kycDocumentUploadList, kycVerificationForTabs } from "../../slices/kycSlice"
