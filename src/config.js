@@ -28,15 +28,15 @@ const API_LIVE = {
   //  AUTH_LOGIN : "${url}/cob/loginapi",
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
-  AUTH_CLIENT_CREATE: `${url}/cob/createprofile`,
-  AUTH_GET_EMAIL_TO_SEND_OTP: `${url}/cob/auth-service/account/forgot-password`,
+  AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
+  AUTH_UPDATE_PROFILE: `${url}/auth-service/updateProfile`,
+  AUTH_GET_EMAIL_TO_SEND_OTP: `${url}/auth-service/account/forgot-password`,
   AUTH_VERIFY_OTP_ON_FWD: `${url}/cob/auth-service/account/verify-otp`,
   AUTH_CREATE_NEW_PASSWORD: `${url}/cob/auth-service/account/create-password`,
-  AUTH_CHANGE_PASSWORD: `${url}/cob/auth-service/account/change-password`,
-
+  AUTH_CHANGE_PASSWORD: `${url}/auth-service/account/change-password`,
+  AUTH_FORGET_PASSWORD: `${url}/auth-service/account/create-password`,
   /** Email Verify for new register users **/
-  // EMAIL_VERIFY : "${url}/auth-service/auth/emailVerify/",
-  EMAIL_VERIFY: `${url}/cob/emailverify/`,
+  EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 
   CHECK_PERMISSION_PAYLINK:
     "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
@@ -121,6 +121,28 @@ const API_LIVE = {
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
   Business_overview_state_: `${kyc_url}/kyc/get-all-state-details/`,
   Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
+
+  /////////////////////////Kyc approver 
+  /* For pending*/
+  KYC_FOR_PENDING:`${kyc_url}/kyc/get-merchant-data/?search=pending&order_by=-merchantId`,
+  KYC_FOR_VERIFIED:`${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
+  KYC_FOR_APPROVED:`${kyc_url}/kyc/get-merchant-data/?search=approved&order_by=-merchantId`,
+  KYC_FOR_COMPLETED:`${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
+   MERCHANT_DOCUMENT:`${kyc_url}/kyc/get-merchant-document`,
+  DOCUMENT_BY_LOGINID:`${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
+
+  
+
+
+
+
+
+  
+
+
+
+
+
   
 
     /** Contact Information */

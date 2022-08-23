@@ -27,11 +27,6 @@ function DocumentsUpload() {
       state.kyc.KycDocUpload
   );
 
-  const documentId = useSelector(
-    (state) =>
-      state.kyc.KycDocUpload[0]?.documentId
-  );
-
   const VerifyKycStatus = useSelector(
       (state) =>
         state.kyc.KycDocUpload[0]?.status
@@ -51,7 +46,11 @@ function DocumentsUpload() {
   }
 
 
-  
+  const documentId = useSelector(
+    (state) =>
+      state.kyc.KycDocUpload[0]?.documentId
+  );
+
 
    const ImgUrl = `${API_URL.Image_Preview}/?document_id=${documentId}`
     // console.log(ImgUrl,"<===========KYC DOC Id===========>")

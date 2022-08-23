@@ -3,6 +3,33 @@ import API_URL from "../config";
 import axios from "axios";
 
 const initialState = {
+
+  documentByloginId:{
+       documentId:"",
+        name: "",
+        filePath: "",
+        isApproved: false,
+        approvedDate: null,
+        approvedBy: null,
+        isLatest: true,
+        createdDate: "",
+        createdBy: "",
+        modifiedDate: "",
+        modifiedBy: "",
+        status: "",
+        comment: null,
+        merchant: "",
+        type: ""
+
+  },
+
+
+  kycApproved:{
+    count: null, 
+    next: null, 
+    previous: null,
+     results:null
+  },
   kycUserList:{
     merchantId: "",
     name: "",
@@ -124,6 +151,11 @@ const initialState = {
     merchantInfo:[],
     kycBankNames :[],
     saveMerchantBankDetais:[],
+    kycForPending:[],
+    kycForVerified:[],
+    kycForApproved:[],
+    kycForCompleted:[],
+    UploadLoginId:[]
  }
 
 //--------------Kyc BusinessType get api (BusinessOverview Tab)---------------------
@@ -227,7 +259,7 @@ export const collectionType= createAsyncThunk(
   export const saveBusinessInfo= createAsyncThunk(
     "kyc/collectionType",
     async (requestParam) => {
-      const response = await axios.put(
+      const response = await axios.post(
         `${API_URL.save_Business_Info}`,
         requestParam
      
@@ -421,6 +453,106 @@ export const saveMerchantBankDetais= createAsyncThunk(
     return response.data;
   }
 );
+/////////////////////////////////KYC APPROVED API
+
+export const kycForPending= createAsyncThunk(
+  "kyc/kycForPending",
+  async (data) => {
+    const requestParam =data.page
+    const requestParam1 = data.page_size
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_PENDING}&page=${requestParam}&page_size=${requestParam1}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+
+//////////////////////////////////////////////////
+export const kycForVerified= createAsyncThunk(
+  "kyc/kycForVerified",
+  async (data) => {
+    const requestParam =data.page
+    const requestParam1 = data.page_size
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_VERIFIED}&page=${requestParam}&page_size=${requestParam1}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+////////////////////////////////////////////////////
+export const kycForApproved= createAsyncThunk(
+  "kyc/kycForApproved",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_APPROVED}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+///////////////////////////////////////////
+export const kycForCompleted= createAsyncThunk(
+  "kyc/kycForCompleted",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.KYC_FOR_COMPLETED}`,
+      {
+        headers: {
+         
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+
+/////////////////////////////////////////
+export const UploadLoginId= createAsyncThunk(
+  "kyc/UploadLoginId",
+  async (requestParam) => {
+    const response = await axios.post(
+      `${API_URL.DOCUMENT_BY_LOGINID}`,
+      requestParam
+    )
+    .catch((error) => {
+      return error.response;
+    });
+   
+    return response.data;
+  }
+);
+
+
 
  export const kycSlice = createSlice({
     name: 'kyc',
@@ -452,6 +584,33 @@ export const saveMerchantBankDetais= createAsyncThunk(
         state.status = "failed";
         state.error = action.error.message;
       },
+      ///////////////////////////////////
+      [kycForApproved.pending]: (state, action) => {
+        state.status = "pending";
+      },
+      [kycForApproved.fulfilled]: (state, action) => {
+        // console.log("action-11 ====>",action.payload)
+        state.kycApproved = action.payload;
+      },
+      [kycForApproved.rejected]: (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      },
+      ////////////////////////////////////////
+      [UploadLoginId.pending]: (state, action) => {
+        state.status = "pending";
+      },
+      [UploadLoginId.fulfilled]: (state, action) => {
+        // console.log("action-11 ====>",action.payload)
+        state.documentByloginId = action.payload;
+      },
+      [UploadLoginId.rejected]: (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      },
+
+
+
       // DOC UPLOAD KYC //
       [kycDocumentUploadList.pending]: (state, action) => {
         state.status = "pending";
