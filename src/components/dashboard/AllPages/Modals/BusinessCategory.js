@@ -45,7 +45,7 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
             const clientCode = clientMerchantDetailsList[0]?.clientCode;
             const clientId = clientMerchantDetailsList[0]?.clientId;
             const clientContact = clientMerchantDetailsList[0]?.clientContact;
-            const clientEmail = clientMerchantDetailsList[0]?.userName;
+            const clientEmail = user?.userName;
             const address = clientMerchantDetailsList[0]?.address;
             const clientName = clientMerchantDetailsList[0]?.clientName;
             const stateId = clientMerchantDetailsList[0]?.stateId;
@@ -54,8 +54,8 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
     
             const bankName = user?.bankName;
             const loginId = user?.loginId;
-            const clientUserName = clientMerchantDetailsList[0]?.clientUserName;
-    
+            const clientUserName = user?.userName;
+    // console.log(user);
             const passwrod = localStorage.getItem('p');
     
             const inputData = {
@@ -67,9 +67,9 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
                 clientLogoPath: "client/logopath",
                 clientName: clientName,
                 clientLink: "cltLink",
-                stateId: stateId,
+                stateId: 9,
                 bid: "19", // ask
-                stateName: stateName,
+                stateName: "DELHI",
                 bankName: bankName,
                 client_username: clientUserName,
                 client_password: passwrod,
@@ -84,14 +84,14 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
     
             console.log(inputData);
 
-            axios.post(API_URL.RATE_MAPPING_GenerateClientFormForCob,inputData).then(res=>{
+            // axios.post(API_URL.RATE_MAPPING_GenerateClientFormForCob,inputData).then(res=>{
             
-                localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob',"api trigger");
+            //     localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob',"api trigger");
 
-                axios.get(API_URL.RATE_ENABLE_PAYLINK+'/'+clientCode).then(res=>{
-                    localStorage.setItem('enablePaylink',"api trigger");
-                })
-            }).catch(err=>{console.log(err)})
+            //     axios.get(API_URL.RATE_ENABLE_PAYLINK+'/'+clientCode).then(res=>{
+            //         localStorage.setItem('enablePaylink',"api trigger");
+            //     })
+            // }).catch(err=>{console.log(err)})
 
 
 
