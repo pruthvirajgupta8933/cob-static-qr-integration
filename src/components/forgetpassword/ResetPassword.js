@@ -1,26 +1,54 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
+import axios from "axios";
 import * as Yup from "yup";
+import {  useSelector } from "react-redux";
+import API_URL from "../../config";
 
 const ResetPassword = (props) => {
   // const { handleFormSubmit } = props;
 
   const validationSchema = Yup.object().shape({
-    password1: Yup.string()
+    password:Yup.string()
+    .required(" Old Password Required"),
+    newpassword: Yup.string()
       .required("Password Required")
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
       ),
-    password2: Yup.string()
-      .oneOf([Yup.ref("password1"), null], "Passwords must match")
+      confirmpassword: Yup.string()
+      .oneOf([Yup.ref("newpassword"), null], "Passwords must match")
       .required("Confirm Password Required"),
   });
+  const {auth} = useSelector(state=>state);
+  // const verification_token=auth.forgotPassword.otpResponse.verification_token;
+  
 
   const initialValues = {
-    password1: "",
-    password2: "",
+    password: "",
+    newpassword: "",
+    confirmpassword:"",
   };
-  const resetSubmit = () => {
+  const resetSubmit = async(values) => {
+    console.log(values,"here is the response")
+    const res = await axios.put(API_URL.AUTH_CHANGE_PASSWORD, {
+      email: "textbhuvi@gmail.com",
+      // verification_token:verification_token,
+      password: values.password,
+      newpassword: values.newpassword
+
+      
+    }).then(res => {
+      console.log(res)
+      // if (res.status === 200) {
+      //   const data = res.data;
+      //         }
+    })
+      .catch(error => {
+        console.error('There was an error!', error);
+      });
+
+
     props.props('a4')
     // console.log("You clicked submit.");
   };
@@ -30,7 +58,7 @@ const ResetPassword = (props) => {
       <div className="row ">
         <div className="col-sm-6 mx-auto">
           <div className="card ">
-            <div className="card-header text-center">Reset Password</div>
+            <div className="card-header text-center">Update Password</div>
             <div className="card-body">
               <h5 className="card-title">Please Enter the detatils. </h5>
               <Formik
@@ -45,11 +73,22 @@ const ResetPassword = (props) => {
                   <>
                     <Form>
                       <div className="form-group">
+                      <label htmlFor="exampleInputPassword1">
+                          Old password
+                        </label>
+                        <Field
+                          name="password"
+                          type="password"
+                          className="form-control"
+                          id="exampleInputPassword1"
+                          aria-describedby="PasswordHelp"
+                          placeholder="Enter old Password"
+                        />
                         <label htmlFor="exampleInputPassword1">
                           New Password
                         </label>
                         <Field
-                          name="password1"
+                          name="newpassword"
                           type="password"
                           className="form-control"
                           id="exampleInputPassword1"
@@ -63,7 +102,7 @@ const ResetPassword = (props) => {
                           Password validation message.
                         </small> */}
                         {
-                          <ErrorMessage name="password1">
+                          <ErrorMessage name="password">
                             {(msg) => (
                               <div
                                 className="abhitest"
@@ -84,7 +123,7 @@ const ResetPassword = (props) => {
                           Confirm Password
                         </label>
                         <Field
-                          name="password2"
+                          name="confirmpassword"
                           type="password"
                           className="form-control"
                           id="exampleInputpassword2"
@@ -99,7 +138,7 @@ const ResetPassword = (props) => {
                           Password validation message
                         </small> */}
                         {
-                          <ErrorMessage name="password2">
+                          <ErrorMessage name="newpassword">
                             {(msg) => (
                               <div
                                 className="abhitest"
@@ -118,7 +157,7 @@ const ResetPassword = (props) => {
                       <button
                         type="submit"
                         className="btn btn-primary"
-                        //   onClick={() => props.props("a4")}
+                          // onClick={() => props.props("a4")}
                       >
                         Submit
                       </button>
