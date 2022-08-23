@@ -277,7 +277,7 @@ export const collectionType= createAsyncThunk(
     "kyc/businessOverviewState",
     async (requestParam) => {
       const response = await axios.get(
-        `${API_URL.Business_overview_state}`,
+        `${API_URL.Business_overview_state_}`,
         {
           headers: {
            
