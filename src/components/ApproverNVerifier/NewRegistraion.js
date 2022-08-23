@@ -67,7 +67,7 @@ const indexOfLastRecord = page * pageSize;
 const indexOfFirstRecord = indexOfLastRecord - pageSize;
 const nPages = Math.ceil(newRegistrationData.length / pageSize)
   console.log(newRegistrationData.length, "<===>")
-  const pageNumbers = [...Array(nPages + 1).keys()].slice(1)
+  const pageNumbers = [...Array(nPages + 2).keys()].slice(1)
   console.log(pageNumbers, "<===Page Number===>")
   const handleNextPage = () => {
     if (currentPage < pageNumbers.length) {
@@ -102,7 +102,7 @@ const nPages = Math.ceil(newRegistrationData.length / pageSize)
    <table className="table table-bordered">
                     <thead>
                     <tr>
-                      <tr>S.No</tr>
+                      <th>Serial.No</th>
                       <th>Merchant Id</th>
                       <th>Contact Number</th>
                       <th>Name</th>

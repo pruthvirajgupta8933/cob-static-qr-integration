@@ -19,6 +19,7 @@ import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetai
 
 import DemoReg from './components/login/DemoReg';
 import DemoLogin from './components/login/DemoLogin';
+import ResetPassword from './components/forgetpassword/ResetPassword';
 
 
 function AllRoutes(){
@@ -45,6 +46,11 @@ function AllRoutes(){
               <Route path="/forget">
                 <ForgetPassword />
               </Route>
+              <Route path="/reset">
+                <ResetPassword />
+              </Route>
+
+
               <Route exact path="/emailverification/:loginId">
                 <EmailVerification />
               </Route>
