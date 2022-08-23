@@ -165,7 +165,7 @@ function DocumentsUpload() {
       </Formik>
       <div>
       </div>
-      { user?.roleId === 3 && user?.roleId === 13 ? null : documentId === null ? "" :
+      { user?.roleId === 3 && user?.roleId === 13 ? <></> : documentId === null ? "" :
       <div class= "mt-md-4">
       <h4 class="font-weight-bold mt-xl-4">ImagePreview</h4>
                             <a href= {ImgUrl} target="_blank">

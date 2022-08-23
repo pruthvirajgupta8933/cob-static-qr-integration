@@ -16,7 +16,7 @@ function KycForm() {
   const dispatch = useDispatch();
     const [tab,SetTab] = useState(1);
     const [visibility, setVisibility] = useState(false);
-  const [setLoginId] = useState('');
+  const [loginIdd, setLoginId] = useState("");
     const { auth} = useSelector((state)=>state);
     const {user} = auth;
 
@@ -24,11 +24,11 @@ function KycForm() {
     let history = useHistory();
 
    const merchantList =  user.clientMerchantDetailsList
-   console.log(merchantList, "<=====Merchant List =======>")
+  //  console.log(merchantList, "<=====Merchant List =======>")
 
     const MerchantClietCode = merchantList.map(merchants => { return merchants.clientCode} )
 
-    console.log(MerchantClietCode, "============>")
+    // console.log(MerchantClietCode, "============>")
 
      
   if(user.roleId!==3 && user.roleId!==13){
@@ -38,12 +38,8 @@ function KycForm() {
   } 
 
 
-  const getInputValue = (label, val) => {
-    if(label==='loginId'){
-      setLoginId(val);
-      console.log(val, "<=====val=====>");
-    }
-  }
+ 
+ 
 
 
 
@@ -93,12 +89,13 @@ function KycForm() {
 
   //--------------------------------------------------------
 
-  const onChangeMerchant = () => {
+// const handleChange = (e) => }{
+//   setLoginId()
+// }
 
-    
-  }
-
-
+const handleSubmit = (e) => {
+  console.log("Login Id ============>")
+}
 
 
     
@@ -118,16 +115,10 @@ function KycForm() {
             <div className="row bgcolor">
               <div className="col-lg-12 mb-4 bgcolor-">
                 {/* --------First Phase of Selecting the Merchants---------- */}
-              {<>
+              {<form onSubmit={handleSubmit}>
                 <div className="form-row">
                 <div className="form-group col-md-4">
-                <select
-                      onChange={(e) => {
-                        getInputValue("loginId", e.target.value);
-                      }}
-                    className="ant-input"
-                  
-                    
+                <select  className="ant-input"
                   >
                     <option value="">Select Merchants</option>
                     {merchantList?.map((item,i) => {
@@ -141,12 +132,12 @@ function KycForm() {
                   </select>
               </div>
               <div class="position-sticky col-lg-4">
-              <button className="btn btn-primary pull-left" type="submit" >Proceed with KYC</button>
+              <button className="btn btn-primary pull-left" type="submit">Proceed with KYC</button>
               </div>
               </div>
                 {/* --------First Phase of Selecting the Merchants---------- */}
               
-              </>}
+              </form>}
               <ul className="nav nav-tabs">
                           <li className="nav-item">
                           <a href={()=>false} className={"nav-link " +  (tab===1? "activepaylink":"inactive") } onClick={()=>SetTab(1)} >Merchant Contact Info</a>
