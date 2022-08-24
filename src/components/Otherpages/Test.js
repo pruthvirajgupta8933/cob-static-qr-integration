@@ -4,11 +4,21 @@ import FormikWrapper from "../../_components/formik/FormikWrapper";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 
 function Test() {
-
-  axios.get("http://13.126.165.212:8000/kyc/get-all-collection-type").then(res=>console.log(res)).catch(err=>console.log(err))
   return (
     <div className="container bg-white">
-      <FormikWrapper />
+   <div className="dropdown show">
+  <a className="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Dropdown link
+  </a>
+  <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a className="dropdown-item" href="#">Action</a>
+    <a className="dropdown-item" href="#">Another action</a>
+    <a className="dropdown-item" href="#">Something else here</a>
+  </div>
+</div>
+
+
+
     </div>
   );
 }

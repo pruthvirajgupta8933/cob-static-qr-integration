@@ -40,12 +40,13 @@ function BusinessCategory(props) {
 
 
     const changeHandler = (buesin) => {
-        setBusniessType(buesin)
-        const clientCode = clientMerchantDetailsList[0]?.clientCode;
+        console.log(buesin);
+        // setBusniessType(buesin)
+        // const clientCode = clientMerchantDetailsList[0]?.clientCode;
 
-        const loginId = user?.loginId;
+        // const loginId = user?.loginId;
 
-        checkRateMappingStatus(buesin, clientCode, loginId);
+        // checkRateMappingStatus(buesin, clientCode, loginId);
 
     }
 
@@ -130,19 +131,19 @@ function BusinessCategory(props) {
 
     }
 
-    const showTooltip=()=>{
+    const showTooltip = () => {
         console.log('showTooltip')
     }
 
 
-    const hideTooltip=()=>{
+    const hideTooltip = () => {
         console.log('hideTooltip')
     }
 
     return (
         <div className="modal" id="bussiness" style={{ top: "25%", display: `${modalClose ? 'block' : 'none'}` }} tabIndex="-1" role="dialog" aria-labelledby="bussinessLable" aria-hidden="true" >
-        
-           
+
+
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -158,27 +159,26 @@ function BusinessCategory(props) {
                     <div className="modal-body">
                         <p>Business Type</p>
                         <div class="input-group mb-3">
-                       
-                            <select className="custom-select"  id="inputGroupSelect01" onChange={(e) => changeHandler(e.target.value)}>
+
+                            <select className="custom-select" id="inputGroupSelect01" onChange={(e) => changeHandler(e)}>
                                 <option selected>Select Business Type</option>
-                                <option value="COBRD" data-tip data-for="registerTip">COBRD Retail</option>
-                                <option value="COBED">COB E-Commerce</option>
-                                <option value="COBGV">COB Government</option>
-                                <option value="COBEN">COB Education</option>
+                                <option value="COBRD" title="Department store, Real Estate, Healthcare, Food and beverage, Grocery store, Fashion">COBRD Retail</option>
+                                <option value="COBED" title="Online store, Financial Product, Media and entertainment, Tech product and services, Travel">COB E-Commerce</option>
+                                <option value="COBGV" title="PSU, Govt Education, Govt Utility, Govt Healthcare">COB Government</option>
+                                <option value="COBEN" title="School, College, Test Prep centre">COB Education</option>
                             </select>
                         </div>
+
                     </div>
                     <div className="modal-footer">
 
-                    {/* <button data-tip data-for="registerTip">
+                        {/* <button data-tip data-for="registerTip">
         Register
       </button> */}
-                    <ReactTooltip id="registerTip" place="top" effect="solid">
-        Tooltip for the register button
-      </ReactTooltip>
+
 
                         <Link to={`/dashboard/thanks`} type="button" onClick={() => modalHandler(false)} class="btn btn-success text-white" >Subscribe</Link>
-                       
+
                     </div>
                 </div>
             </div>
