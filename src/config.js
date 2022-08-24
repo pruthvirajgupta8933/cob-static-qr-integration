@@ -1,5 +1,5 @@
 const env = "staging";
-let url,kyc_url = "";
+let url, kyc_url = "";
 
 
 if (env === "staging") {
@@ -24,30 +24,30 @@ const API_LIVE = {
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
   AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
   AUTH_UPDATE_PROFILE: `${url}/auth-service/updateProfile`,
-  AUTH_GET_EMAIL_TO_SEND_OTP: `${url}/auth-service/account/forgot-password`,
-  AUTH_VERIFY_OTP_ON_FWD: `${url}/cob/auth-service/account/verify-otp`,
-  AUTH_CREATE_NEW_PASSWORD: `${url}/cob/auth-service/account/create-password`,
+  AUTH_GET_EMAIL_TO_SEND_OTP: `${url}/auth-service/account/getotp`,
+  AUTH_VERIFY_OTP_ON_FWD: `${url}/auth-service/account/verify-otp`,
+  AUTH_CREATE_NEW_PASSWORD: `${url}/auth-service/account/create-password`,
   AUTH_CHANGE_PASSWORD: `${url}/auth-service/account/change-password`,
   AUTH_FORGET_PASSWORD: `${url}/auth-service/account/create-password`,
-  /** Email Verify for new register users **/
+  /* Email Verify for new register users */
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 
-  // ** Rate mapping **/
+  // * Rate mapping */
   RATE_MAPPING_GenerateClientFormForCob: "https://adminapi.sabpaisa.in/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
-  RATE_MAPPING_CLONE : "https://adminapi.sabpaisa.in/REST/Ratemapping/cloning",
+  RATE_MAPPING_CLONE: "https://adminapi.sabpaisa.in/REST/Ratemapping/cloning",
   RATE_ENABLE_PAYLINK: "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/31",
 
 
   CHECK_PERMISSION_PAYLINK:
     "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
   BANK_IFSC_CODE_VERIFY: "https://ifsc.razorpay.com/",
-  BANK_LIST_NB:"https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
-  BANK_LIST_DC:"https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
+  BANK_LIST_NB: "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
+  BANK_LIST_DC: "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
   SEND_EMAIL: "https://adminapi.sabpaisa.in/REST/Email/sendEmail",
-  SUBSCRIBE_FETCH_APP_AND_PLAN:"https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
-  FETCH_APP_AND_PLAN:"https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
-  SUBSCRIBE_SERVICE:"https://spl.sabpaisa.in/client-subscription-service/subscribe",
+  SUBSCRIBE_FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
+  FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
+  SUBSCRIBE_SERVICE: "https://spl.sabpaisa.in/client-subscription-service/subscribe",
 
   /* transaction history  */
   //old api of txn history
@@ -66,7 +66,7 @@ const API_LIVE = {
   GET_FILE_NAME:
     "https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/",
 
-  /** PAYLINK **/
+  /* PAYLINK */
   GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
   SMART_UPLOAD: "https://paybylink.sabpaisa.in/paymentlink/smartupload",
   EDIT_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/editCustomer/",
@@ -101,7 +101,7 @@ const API_LIVE = {
   MANDATE_REGISTRATION:
     "https://subscription.sabpaisa.in/subscription/mandateRegistration",
 
-  /** ViewTxnEnqMultiParam **/
+  /* ViewTxnEnqMultiParam */
   ViewTxnEnqMultiParam:
     "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam",
 
@@ -114,53 +114,53 @@ const API_LIVE = {
   Get_ALL_Collection_Type: `${kyc_url}/kyc/get-all-collection-type`,
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
   Business_overview_state_: `${kyc_url}/kyc/get-all-state-details/`,
-  Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
+  Business_Category: `${kyc_url}/kyc/get-all-business-category/`,
 
   /////////////////////////Kyc approver 
   /* For pending*/
-  KYC_FOR_PENDING:`${kyc_url}/kyc/get-merchant-data/?search=pending&order_by=-merchantId`,
-  KYC_FOR_VERIFIED:`${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
-  KYC_FOR_APPROVED:`${kyc_url}/kyc/get-merchant-data/?search=approved&order_by=-merchantId`,
-  KYC_FOR_COMPLETED:`${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
-   MERCHANT_DOCUMENT:`${kyc_url}/kyc/get-merchant-document`,
-  DOCUMENT_BY_LOGINID:`${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
-
-  
-    /** Contact Information */
-    Save_General_Info:`${kyc_url}/kyc/save-general-info/`,
-
-    //==>For Verfifying Contact Info Ist Phase(Send OTP and Verify OTP)
-    Send_OTP:`${kyc_url}/kyc/send-otp/`,
-    //==>2nd Phase
-    Verify_OTP:`${kyc_url}/kyc/verify-otp/`,
+  KYC_FOR_PENDING: `${kyc_url}/kyc/get-merchant-data/?search=pending&order_by=-merchantId`,
+  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
+  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=approved&order_by=-merchantId`,
+  KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
+  MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
+  DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
 
 
-    /** Bank Details One OF KYC TAB  */
+  /** Contact Information */
+  Save_General_Info: `${kyc_url}/kyc/save-general-info/`,
 
-    Save_Settlement_Info: `${kyc_url}/kyc/save-settlement-info/`,
+  //==>For Verfifying Contact Info Ist Phase(Send OTP and Verify OTP)
+  Send_OTP: `${kyc_url}/kyc/send-otp/`,
+  //==>2nd Phase
+  Verify_OTP: `${kyc_url}/kyc/verify-otp/`,
 
-    //Get All Bnak Names in Kyc Bank Details Dropdown Tab
-    GET_ALL_BANK_NAMES: `${kyc_url}/kyc/get-all-bank-name/`,
+
+  /** Bank Details One OF KYC TAB  */
+
+  Save_Settlement_Info: `${kyc_url}/kyc/save-settlement-info/`,
+
+  //Get All Bnak Names in Kyc Bank Details Dropdown Tab
+  GET_ALL_BANK_NAMES: `${kyc_url}/kyc/get-all-bank-name/`,
 
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
-  Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
+  Business_Category: `${kyc_url}/kyc/get-all-business-category/`,
   SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,
 
- /*KYC USER LIST */
- Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`,
+  /*KYC USER LIST */
+  Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`,
 
   /*KYC Document Upload LIST */
   Kyc_Doc_List: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
 
-   /* KYC VERIFICATION FOR ALL TABS */
-  Kyc_Verification_For_All_Tabs: `${kyc_url}/kyc/verify-kyc/1/`,
+  /* KYC VERIFICATION FOR ALL TABS */
+  Kyc_Verification_For_All_Tabs: `${kyc_url}/kyc/verify-kyc/`,
 
   /*Image Preview API */
-  Image_Preview:`${kyc_url}/kyc/get-merchant-document/`
+  Image_Preview: `${kyc_url}/kyc/get-merchant-document/`
 
 
 
- 
+
 };
 
 const API_URL = API_LIVE;

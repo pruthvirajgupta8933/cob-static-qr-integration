@@ -1,39 +1,57 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useRouteMatch } from 'react-router-dom'
-import {checkPermissionSlice, logout} from '../../../slices/auth'
-import { kycUserList } from "../../../slices/kycSlice"
-
+import { checkPermissionSlice, logout } from '../../../slices/auth'
 
 function SideNavbar() {
 
-  const {user,payLinkPermission} = useSelector((state)=> state.auth )
-  
-  if(user!==null && user.userAlreadyLoggedIn){
+  const { user, payLinkPermission } = useSelector((state) => state.auth)
+
+  const roleBasedTab = {
+    "approver": false,
+    "verifier": false,
+    "bank": false,
+    "merchant": false,
+  }
+
+  const [roleBasedShowTab, setRoleBasedShowTab] = useState(roleBasedTab)
+
+
+  if (user !== null && user.userAlreadyLoggedIn) {
     // alert('no login');
     // <Redirect to="/login-page" />
     // alert("aa3");
     // history.push("/login-page");
-}
-  var {roleId,clientContactPersonName}=user;
-    let { url } = useRouteMatch();
-    const dispatch = useDispatch();
-    const handle = ()=>{
-      dispatch(logout());
+  }
+  var { roleId, clientContactPersonName } = user;
+  let { url } = useRouteMatch();
+  const dispatch = useDispatch();
+  const handle = () => {
+    dispatch(logout());
+  }
 
+  useEffect(() => {
+    if (user.clientMerchantDetailsList?.length > 0) {
+      dispatch(checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode))
+    }
+    if (roleId === 14 || roleId === 15) {
+      setRoleBasedShowTab({ ...roleBasedShowTab, approver: true, verifier: true })
+    } else if (roleId === 3 || roleId === 13) {
+      setRoleBasedShowTab({ ...roleBasedShowTab, bank: true })
+    } else if (roleId !== 3 || roleId !== 13) {
+      setRoleBasedShowTab({ ...roleBasedShowTab, merchant: true })
+    } else {
+      console.log("Permission not match with these roles");
     }
 
-    useEffect(() => {
-      if(user.clientMerchantDetailsList?.length > 0 ){
-        dispatch(checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode))
-      }
-      
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-    
-    
-    return (
-      <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px'}}>
+  }, [])
+
+
+  // console.log("roleBasedShowTab", roleBasedShowTab)
+
+
+  return (
+    <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{ flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px' }}>
       <div className="ant-layout-sider-children">
         <div className="gx-sidebar-content">
           <div className="side_top_wrap">
@@ -41,88 +59,101 @@ function SideNavbar() {
             <div className="side_top_wrap_profile">
               <div className="side_top_wrap_toggle"><i className="fa fa-angle-down" /></div>
               <p title="username" className="text-md text-ellipsis text-capitalize ng-binding">{clientContactPersonName}</p>
-               {roleId!==3 && roleId!==13 ?  <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link> : <></> }
+              {roleBasedShowTab?.merchant === true ? <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link> : <></>}
             </div>
           </div>
           <div className="sidebar_menu_list">
-            <div className="gx-layout-sider-scrollbar" style={{position: 'relative', overflow: 'hidden', width: '100%', height: '100%'}}>
-              <div style={{position: 'absolute', inset: '0px', overflow: 'scroll', marginRight: '-3px', marginBottom: '-3px'}}>
+            <div className="gx-layout-sider-scrollbar" style={{ position: 'relative', overflow: 'hidden', width: '100%', height: '100%' }}>
+              <div style={{ position: 'absolute', inset: '0px', overflow: 'scroll', marginRight: '-3px', marginBottom: '-3px' }}>
                 <ul className="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" role="menu">
-                  <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
+                  {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
+                    <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
                       <Link to={`${url}`} className='txt-white'><i className="fa fa-home" aria-hidden="true" /> <span>Home</span></Link>
-                  </li>
-                  <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
+                    </li>
+                    : <React.Fragment></React.Fragment>}
+
+                  {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
+                    <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
                       <Link to={`${url}/kyc`} className='txt-white' ><i className="fa fa-file-o" aria-hidden="true" /> <span>Fill KYC Form</span><span class="new-tab">new</span></Link>
-                  </li>
-                  <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '24px',color:'white'}}>
+                    </li>
+                    : <React.Fragment></React.Fragment>}
+
+                  {roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true ?
+                    <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
                       <Link to={`${url}/approver`} className='txt-white' ><i className="fa fa-list" aria-hidden="true" /> <span>Merchant List</span><span class="new-tab">new</span></Link>
-                  </li>
-               
+                    </li>
+                    : <React.Fragment></React.Fragment>}
+
+
+
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open" role="menuitem">
-                    <div className="ant-menu-submenu-title" aria-expanded="true" aria-owns="settlement$Menu" aria-haspopup="true" style={{paddingLeft: '24px'}}><span className="sidebar-menu-divider">Your
-                        Business</span><i className="ant-menu-submenu-arrow" /></div>
+                    <div className="ant-menu-submenu-title" aria-expanded="true" aria-owns="settlement$Menu" aria-haspopup="true" style={{ paddingLeft: '24px' }}><span className="sidebar-menu-divider">Your
+                      Business</span><i className="ant-menu-submenu-arrow" /></div>
+
+
 
                     <ul id="settlement$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu">
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-calendar" aria-hidden="true" />   Transaction History </Link> 
-                    </li>
+                      {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
+                        <React.Fragment>
+                          <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
+                            <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-calendar" aria-hidden="true" />   Transaction History </Link>
+                          </li>
 
 
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                        <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link> 
-                      </li>
+                          <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
+                            <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link>
+                          </li>
+                        </React.Fragment>
+                        : <React.Fragment></React.Fragment>}
 
                       {/* <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
                         <Link to={`${url}/view-transaction-with-filter`} className='txt-white'><i className="fa fa-filter" aria-hidden="true" />   Transaction Enquiry With Filter </Link> 
                       </li> */}
-                      {roleId===3 || roleId===13 ? <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link> 
-                      </li> 
-                      :
-                      <React.Fragment>
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/settlement-report`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
-                      &nbsp; Settlement Report</Link> 
-                      </li>
+                      {roleBasedShowTab?.bank === true ?
+                        <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
+                          <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link>
+                        </li>
+                        :   <React.Fragment></React.Fragment> }
 
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/settlement-report-new`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
-                      &nbsp; <span>Settlement Report</span><span class="new-tab">new</span></Link> 
-                      </li>
-                      </React.Fragment>
+
+                        {roleBasedShowTab?.merchant === true ?
+                          <React.Fragment>
+                          <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
+                            <Link to={`${url}/settlement-report-new`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
+                              &nbsp; <span>Settlement Report</span><span class="new-tab">new</span></Link>
+                          </li>
+
+                          <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
+                          <Link to={`${url}/product-catalogue`} className='txt-white'><i className="fa fa-book" aria-hidden="true" />
+                            &nbsp; Product Catalogue</Link>
+                        </li>
+                          </React.Fragment>
+                          :   <React.Fragment></React.Fragment> 
                       }
 
-                      {roleId!==3 && roleId!==13 ? 
-                      
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                      <Link to={`${url}/product-catalogue`} className='txt-white'><i className="fa fa-book" aria-hidden="true" />
-                      &nbsp; Product Catalogue</Link> 
-                      </li>
-                      : <></>
-                        }
-                        
-                        { 
-                          payLinkPermission.length>0 && payLinkPermission[0].clientId===1 ? 
-                          <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                          <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
-                            &nbsp; Create Payment Link</Link> 
-                          </li> :<></>
-                        }
-                      
-                      <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}} onClick={()=>handle()}>
-                      <a href={()=>false} ><i className="fa fa-briefcase" aria-hidden="true" />
-                      &nbsp; Logout</a>
+                   
+
+                      { payLinkPermission.length > 0 && payLinkPermission[0].clientId === 1 && roleBasedShowTab?.merchant===true?
+                          <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
+                            <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
+                              &nbsp; Create Payment Link</Link>
+                          </li> : <React.Fragment></React.Fragment>
+                      }
+
+                      <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }} onClick={() => handle()}>
+                        <a href={() => false} ><i className="fa fa-briefcase" aria-hidden="true" />
+                          &nbsp; Logout</a>
                       </li>
                     </ul>
                   </li>
 
-                  <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-selected" role="menuitem">
-                    <div className="ant-menu-submenu-title" aria-expanded="true" aria-haspopup="true" style={{paddingLeft: '24px'}} aria-owns="payment-tool$Menu"><span className="sidebar-menu-divider">Payment
-                        Tools</span><i className="ant-menu-submenu-arrow" /></div>
+                  {/* <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-selected" role="menuitem">
+                    <div className="ant-menu-submenu-title" aria-expanded="true" aria-haspopup="true" style={{ paddingLeft: '24px' }} aria-owns="payment-tool$Menu"><span className="sidebar-menu-divider">Payment
+                      Tools</span><i className="ant-menu-submenu-arrow" /></div>
                     <ul id="payment-tool$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu" style={{}}>
                     </ul>
-                  </li>
-                  
+                  </li> */}
+
                 </ul>
               </div>
               <div
@@ -168,7 +199,7 @@ function SideNavbar() {
               </div>
             </div>
           </div>
-          <div className="sidebar-menu-query"> <a href="https://sabpaisa.in/support-contact-us/" target="_blank" rel="noreferrer"><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div>
+          {/* <div className="sidebar-menu-query"> <a href="https://sabpaisa.in/support-contact-us/" target="_blank" rel="noreferrer"><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div> */}
         </div>
       </div>
     </aside>

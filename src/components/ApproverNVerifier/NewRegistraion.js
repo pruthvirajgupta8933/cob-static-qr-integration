@@ -4,8 +4,14 @@ import {kycForPending} from "../../slices/kycSlice"
 import API_URL from '../../config';
 import axios from "axios";
 import DropDownCountPerPage from '../../_components/reuseable_components/DropDownCountPerPage';
+import { Link, useRouteMatch } from 'react-router-dom';
 
 function NewRegistraion() {
+
+const { url } = useRouteMatch();
+
+
+
 const [data, setData] = useState([]);
 const [newRegistrationData, setNewRegistrationData] = useState([])
 const [searchText, setSearchText] = useState("");
@@ -14,7 +20,7 @@ const [pageSize, setPageSize] = useState(10);
 let page_size = pageSize;
 let page = currentPage;
 
-console.log(setPageSize,"wewewewewewewewewewewew")
+// console.log(setPageSize,"wewewewewewewewewewewew")
   const dispatch=useDispatch();
   const kycSearch = (e) => {
     setSearchText(e.target.value);
@@ -25,7 +31,7 @@ const newAllRegistration = async () => {
   await axios.get(`${API_URL.KYC_FOR_PENDING}`)
     .then(res => {
       const data = res.data.results;
-      console.log(data)
+      // console.log(data)
       setNewRegistrationData(data)
 
     })
@@ -66,9 +72,9 @@ const newAllRegistration = async () => {
 const indexOfLastRecord = page * pageSize; 
 const indexOfFirstRecord = indexOfLastRecord - pageSize;
 const nPages = Math.ceil(newRegistrationData.length / pageSize)
-  console.log(newRegistrationData.length, "<===>")
+  // console.log(newRegistrationData.length, "<===>")
   const pageNumbers = [...Array(nPages + 2).keys()].slice(1)
-  console.log(pageNumbers, "<===Page Number===>")
+  // console.log(pageNumbers, "<===Page Number===>")
   const handleNextPage = () => {
     if (currentPage < pageNumbers.length) {
       setCurrentPage(currentPage + 1)
@@ -109,10 +115,10 @@ const nPages = Math.ceil(newRegistrationData.length / pageSize)
                       <th> Email</th>
                       <th>Bank</th>
                       <th>Adhar Number</th>
-                      <th>Pan card</th>
-                      <th>State</th>
-                      <th>Pin code</th>
+                      <th>PAN card</th>
                       <th>Status</th>
+                      <th>Verify KYC</th>
+
                     </tr>
                     </thead>
                         <tbody>
@@ -126,9 +132,11 @@ const nPages = Math.ceil(newRegistrationData.length / pageSize)
                             <td>{user.bankName}</td>
                             <td>{user.aadharNumber}</td>
                             <td>{user.panCard}</td>
-                            <td>{user.stateId}</td>
-                            <td>{user.pinCode}</td>
                             <td>{user.status}</td>
+                            <td>
+                            <Link to={`/dashboard/kyc/?kycid=${user.loginMasterId}`} className="btn btn-primary  btn-xs" >Verify KYC</Link>
+                            </td>
+
                           </tr>
                         ))}
                     </tbody>

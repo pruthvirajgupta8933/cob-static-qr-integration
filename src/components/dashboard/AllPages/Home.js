@@ -7,12 +7,16 @@ import ProgressBar from '../../../_components/reuseable_components/ProgressBar';
 import { useRouteMatch, Redirect} from 'react-router-dom'
 import '../css/Home.css';
 import { KycModal } from '../../KYC/KycModal';
+import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
 
 
 
 
 function Home() {
   // console.log("home page call");
+  const roles = roleBasedAccess();
+ 
+
   const dispatch = useDispatch();
   let { path } = useRouteMatch();
 
@@ -21,6 +25,7 @@ function Home() {
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
+  // const [roleType, setRoleType] = useState(roles);
   const {dashboard,auth} = useSelector((state)=>state);
   // console.log("dashboard",dashboard)
   const { isLoading , successTxnsumry } = dashboard;
@@ -99,11 +104,15 @@ function Home() {
   }
 
  
-  if(user.roleId!==3 && user.roleId!==13){
+
+
+  if(roles.merchant===true){
     if(user.clientMerchantDetailsList===null){
       return <Redirect to={`${path}/profile`} />
     }
-  } 
+  }else if(roles.approver===true || roles.verifier===true){
+    return <Redirect to={`${path}/approver`} />
+  }
 
 
 showData.map((item)=>{

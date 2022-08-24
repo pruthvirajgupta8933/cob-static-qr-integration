@@ -392,9 +392,8 @@ export const documentsUpload= createAsyncThunk(
    export const kycVerificationForTabs= createAsyncThunk(
     "kyc/kycVerificationForTabs",
     async (requestParam) => {
-      const response = await axios.get(
-        `${API_URL.Kyc_Verification_For_All_Tabs}`, 
-      )
+      
+      const response = await axios.get(`${API_URL.Kyc_Verification_For_All_Tabs}/${requestParam?.login_id}`)
       .catch((error) => {
         return error.response;
       });

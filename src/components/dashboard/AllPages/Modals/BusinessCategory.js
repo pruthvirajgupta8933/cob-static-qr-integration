@@ -4,14 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import API_URL from '../../../../config';
 import { checkPermissionSlice } from '../../../../slices/auth';
+import "../../css/abhishek.css"
+import ReactTooltip from "react-tooltip";
+
 
 
 function BusinessCategory(props) {
-    const {subscribePlanData} = props;
+    const { subscribePlanData } = props;
 
     console.log(subscribePlanData)
     const dispatch = useDispatch();
-   
+
     const { auth } = useSelector((state) => state);
     const [rateCloneStatus, setRateCloneStatus] = useState("")
     const [businessType, setBusniessType] = useState("")
@@ -20,21 +23,21 @@ function BusinessCategory(props) {
     const { user } = auth;
     const { clientMerchantDetailsList } = user;
 
-  
-
-const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
-    axios.get(`${API_URL.RATE_MAPPING_CLONE}/${clientCodeF}/${clientCodeT}/${loginId}`)
-    .then((resp) => {
-        const data = resp.data;
-        setRateCloneStatus(data[0].ID)
-        localStorage.setItem('RATE_MAPPING_CLONE', data[0].ID);
-    })
-    .catch((err) => { console.log(err) })
 
 
+    const checkRateMappingStatus = (clientCodeF, clientCodeT, loginId) => {
+        axios.get(`${API_URL.RATE_MAPPING_CLONE}/${clientCodeF}/${clientCodeT}/${loginId}`)
+            .then((resp) => {
+                const data = resp.data;
+                setRateCloneStatus(data[0].ID)
+                localStorage.setItem('RATE_MAPPING_CLONE', data[0].ID);
+            })
+            .catch((err) => { console.log(err) })
 
-}
-    
+
+
+    }
+
 
     const changeHandler = (buesin) => {
         setBusniessType(buesin)
@@ -42,12 +45,12 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
 
         const loginId = user?.loginId;
 
-        checkRateMappingStatus(buesin,clientCode,loginId);
+        checkRateMappingStatus(buesin, clientCode, loginId);
 
     }
 
     useEffect(() => {
-        if(rateCloneStatus===3 || rateCloneStatus===0) {
+        if (rateCloneStatus === 3 || rateCloneStatus === 0) {
             const clientCode = clientMerchantDetailsList[0]?.clientCode;
             const clientId = clientMerchantDetailsList[0]?.clientId;
             const clientContact = clientMerchantDetailsList[0]?.clientContact;
@@ -57,13 +60,13 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
             const stateId = clientMerchantDetailsList[0]?.stateId;
             const stateName = clientMerchantDetailsList[0]?.stateName;
             const clientType = clientMerchantDetailsList[0]?.clientType;
-    
+
             const bankName = user?.bankName;
             const loginId = user?.loginId;
             const clientUserName = user?.userName;
-    // console.log(user);
+            // console.log(user);
             const passwrod = localStorage.getItem('p');
-    
+
             const inputData = {
                 clientId: clientId,
                 clientCode: clientCode,
@@ -87,49 +90,59 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
                 subscriptionstatus: "Subscribed",
                 businessType: businessType
             };
-    
+
             console.log(inputData);
             // 1 - run RATE_MAPPING_GenerateClientFormForCob 
-            axios.post(API_URL.RATE_MAPPING_GenerateClientFormForCob,inputData).then(res=>{
+            axios.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
                 console.log("1 api run")
 
-            
-                localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob',"api trigger");
-                 //2 - rate map clone 
-                axios.get(`${API_URL.RATE_MAPPING_CLONE}/${businessType}/${clientCode}/${loginId}`).then(res=>{
+
+                localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
+                //2 - rate map clone 
+                axios.get(`${API_URL.RATE_MAPPING_CLONE}/${businessType}/${clientCode}/${loginId}`).then(res => {
                     console.log("2 api run")
 
-                    localStorage.setItem('enablePaylink',"api trigger");
+                    localStorage.setItem('enablePaylink', "api trigger");
                     // 3- enable pay link
-                    axios.get(API_URL.RATE_ENABLE_PAYLINK+'/'+clientCode).then(res=>{
-                        localStorage.setItem('enablePaylink',"api trigger");
+                    axios.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
+                        localStorage.setItem('enablePaylink', "api trigger");
                         console.log("3 api run")
                         dispatch(checkPermissionSlice(clientCode));
                     })
                 })
 
-              
 
 
-            }).catch(err=>{console.log(err)})
+
+            }).catch(err => { console.log(err) })
 
 
 
         }
-       
+
 
     }, [rateCloneStatus])
 
 
 
-    const modalHandler = (val)=>{
+    const modalHandler = (val) => {
         setModalClose(val)
 
     }
 
+    const showTooltip=()=>{
+        console.log('showTooltip')
+    }
+
+
+    const hideTooltip=()=>{
+        console.log('hideTooltip')
+    }
 
     return (
-        <div className="modal" id="bussiness" style={{ top: "25%" ,display: `${modalClose ? 'block':'none'}` }} tabIndex="-1" role="dialog" aria-labelledby="bussinessLable" aria-hidden="true" >
+        <div className="modal" id="bussiness" style={{ top: "25%", display: `${modalClose ? 'block' : 'none'}` }} tabIndex="-1" role="dialog" aria-labelledby="bussinessLable" aria-hidden="true" >
+        
+           
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -137,7 +150,7 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
                             Welcome - {subscribePlanData.applicationName} !
                         </h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close"
-                          onClick={() => modalHandler(false)}
+                            onClick={() => modalHandler(false)}
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -145,9 +158,10 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
                     <div className="modal-body">
                         <p>Business Type</p>
                         <div class="input-group mb-3">
-                            <select class="custom-select" id="inputGroupSelect01" onChange={(e) => changeHandler(e.target.value)}>
+                       
+                            <select className="custom-select"  id="inputGroupSelect01" onChange={(e) => changeHandler(e.target.value)}>
                                 <option selected>Select Business Type</option>
-                                <option value="COBRD">COB Retail</option>
+                                <option value="COBRD" data-tip data-for="registerTip">COBRD Retail</option>
                                 <option value="COBED">COB E-Commerce</option>
                                 <option value="COBGV">COB Government</option>
                                 <option value="COBEN">COB Education</option>
@@ -155,7 +169,16 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <Link to={`/dashboard/thanks`} type="button" onClick={()=>modalHandler(false)} class="btn btn-success text-white" >Subscribe</Link>
+
+                    {/* <button data-tip data-for="registerTip">
+        Register
+      </button> */}
+                    <ReactTooltip id="registerTip" place="top" effect="solid">
+        Tooltip for the register button
+      </ReactTooltip>
+
+                        <Link to={`/dashboard/thanks`} type="button" onClick={() => modalHandler(false)} class="btn btn-success text-white" >Subscribe</Link>
+                       
                     </div>
                 </div>
             </div>
@@ -165,3 +188,4 @@ const checkRateMappingStatus = (clientCodeF,clientCodeT,loginId) => {
 }
 
 export default BusinessCategory
+

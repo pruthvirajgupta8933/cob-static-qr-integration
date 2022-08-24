@@ -24,10 +24,13 @@ const FORM_VALIDATION = Yup.object().shape({
 
 
 function LoginPage() {
-  const history = useHistory()
-  const [loading, setLoading] = useState(false);
+
   const isLoggedIn  = useSelector((state) => state.auth.isLoggedIn);
   const authentication = useSelector(state => state.auth);
+  // const {auth} = useSelector(state => state);
+
+  const history = useHistory()
+  const [loading, setLoading] = useState(false);
   const [auth,setAuthData] = useState(authentication);
   // const [otp, setOtp] = useState({ otp: "" });
   const [values, setValues] = useState({
@@ -47,7 +50,13 @@ function LoginPage() {
     // console.log("fn 2");
     // console.log("user2===",user)
     // history.push("/dashboard")  
-    history.push("/dashboard/")  
+    console.log("login1");
+    if(user?.role==='14' || user?.role==='15'){
+      history.push("/dashboard/approver")  
+    }else{
+      history.push("/dashboard/")
+    }
+      
   }
 
   useEffect(()=>{
@@ -78,7 +87,7 @@ const handleLogin = (formValue) => {
   setLoading(true);
   // console.log(formValue);
   // console.log("isLoggedIn",isLoggedIn)
-  dispatch(login({ username, password }));
+  dispatch(login({ username, password }))
 
   // console.log("==user==",user);
     // .unwrap()
@@ -120,12 +129,7 @@ const handleLogin = (formValue) => {
 // console.log("isLoggedIn",isLoggedIn);
 // console.log("loading",loading);
 
-if (isLoggedIn) {
-  // setOpen(false);
-    // console.log('redirect','dashboard')
-    // console.log("user1===",user);
-    history.push("/dashboard");
-}
+
 // if (authen.isValidUser==="No"){
 //     setOpen(true);
 // }
@@ -174,6 +178,19 @@ useEffect(() => {
     }
     setLoading(false);
     
+  }
+
+  if (isLoggedIn) {
+    // setOpen(false);
+      // console.log('redirect','dashboard')
+      // console.log("user1===",user);
+      console.log("login2");
+      console.log(user)
+      if(user?.role==='14' || user?.role==='15'){
+        history.push("/dashboard/approver")  
+      }else{
+        history.push("/dashboard/")
+      }
   }
 
     // setLoading(false);
