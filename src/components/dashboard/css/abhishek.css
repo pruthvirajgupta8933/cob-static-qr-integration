@@ -1,70 +1,29 @@
-
-  
-
-  
-  /**
-   * Tooltip Styles
-   */
-  
-  /* Add this attribute to the element that needs a tooltip */
-  [data-tooltip] {
-    position: relative;
-    z-index: 2;
-    cursor: pointer;
-  }
-  
-  /* Hide the tooltip content by default */
-  [data-tooltip]:before,
-  [data-tooltip]:after {
-    visibility: hidden;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
-    opacity: 0;
-    pointer-events: none;
-  }
-  
-  /* Position tooltip above the element */
-  [data-tooltip]:before {
-    position: absolute;
-    bottom: 150%;
-    left: 50%;
-    margin-bottom: 5px;
-    margin-left: -80px;
-    padding: 7px;
-    width: 160px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    background-color: #000;
-    background-color: hsla(0, 0%, 20%, 0.9);
-    color: #fff;
-    content: attr(data-tooltip);
-    text-align: center;
-    font-size: 14px;
-    line-height: 1.2;
-  }
-  
-  /* Triangle hack to make tooltip look like a speech bubble */
-  [data-tooltip]:after {
-    position: absolute;
-    bottom: 150%;
-    left: 50%;
-    margin-left: -5px;
-    width: 0;
-    border-top: 5px solid #000;
-    border-top: 5px solid hsla(0, 0%, 20%, 0.9);
-    border-right: 5px solid transparent;
-    border-left: 5px solid transparent;
-    content: " ";
-    font-size: 0;
-    line-height: 0;
-  }
-  
-  /* Show tooltip content on hover */
-  [data-tooltip]:hover:before,
-  [data-tooltip]:hover:after {
-    visibility: visible;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
-    opacity: 1;
-  }
+/* use for any tag on your page */
+[data-title]:hover:after {
+  opacity: 1;
+  transition: all 0.1s ease 0.5s;
+  visibility: visible;
+}
+/* box for title text */
+[data-title]:after {
+  content: attr(data-title);
+  /* position for title view box */
+  position: absolute;
+  bottom: -1.6em;  	
+  left: 100%;
+  z-index: 99999;
+  visibility: hidden;
+  /* optional */
+  white-space: nowrap;
+  /* stilization */
+  background-color: #00FF00;
+  color: #111;
+  font-size: 150%;
+  padding: 1px 5px 2px 5px;
+  box-shadow: 1px 1px 3px #222222;
+  opacity: 0;
+  border: 1px solid #111111;
+}
+[data-title] {
+  position: relative;
+}

@@ -4,8 +4,9 @@ import { Link, useRouteMatch } from 'react-router-dom'
 import { checkPermissionSlice, logout } from '../../../slices/auth'
 
 function SideNavbar() {
+  const {auth , kyc} = useSelector((state) => state)
 
-  const { user, payLinkPermission } = useSelector((state) => state.auth)
+  const { user, payLinkPermission } = auth
 
   const roleBasedTab = {
     "approver": false,
@@ -48,7 +49,7 @@ function SideNavbar() {
 
 
   // console.log("roleBasedShowTab", roleBasedShowTab)
-
+console.log(kyc.enableKycTab)
 
   return (
     <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{ flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px' }}>
@@ -72,7 +73,8 @@ function SideNavbar() {
                     </li>
                     : <React.Fragment></React.Fragment>}
 
-                  {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
+
+                  { kyc.enableKycTab && (roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ) ?
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
                       <Link to={`${url}/kyc`} className='txt-white' ><i className="fa fa-file-o" aria-hidden="true" /> <span>Fill KYC Form</span><span class="new-tab">new</span></Link>
                     </li>

@@ -25,7 +25,7 @@ function ChatBotApp() {
   return (  
   <ThemeProvider theme={theme}>
     <ChatBot
-      headerTitle="Sabpaisa Support"
+      headerTitle="Mansha bot"
       steps={steps}
       {...config}
     />

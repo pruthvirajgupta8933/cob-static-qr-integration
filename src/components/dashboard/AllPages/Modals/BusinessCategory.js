@@ -9,7 +9,9 @@ import ReactTooltip from "react-tooltip";
 
 
 
+
 function BusinessCategory(props) {
+
     const { subscribePlanData } = props;
 
     console.log(subscribePlanData)
@@ -172,12 +174,8 @@ function BusinessCategory(props) {
                     </div>
                     <div className="modal-footer">
 
-                        {/* <button data-tip data-for="registerTip">
-        Register
-      </button> */}
 
-
-                        <Link to={`/dashboard/thanks`} type="button" onClick={() => modalHandler(false)} class="btn btn-success text-white" >Subscribe</Link>
+                        <Link to={`/dashboard/thanks/?planid=${subscribePlanData.applicationId}`} type="button" onClick={() => modalHandler(false)} class="btn btn-success text-white" >Subscribe</Link>
 
                     </div>
                 </div>
@@ -188,4 +186,5 @@ function BusinessCategory(props) {
 }
 
 export default BusinessCategory
+
 
