@@ -54,7 +54,7 @@ function LoginPage() {
     if(user?.role==='14' || user?.role==='15'){
       history.push("/dashboard/approver")  
     }else{
-      history.push("/dashboard/")
+      history.push("/dashboard")
     }
       
   }
@@ -189,7 +189,7 @@ useEffect(() => {
       if(user?.role==='14' || user?.role==='15'){
         history.push("/dashboard/approver")  
       }else{
-        history.push("/dashboard/")
+        history.push("/dashboard")
       }
   }
 

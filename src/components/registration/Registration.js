@@ -61,7 +61,7 @@ function Registration() {
 
 
   const handleRegistration = (formData) => {
-    var businessType = isActive ? 1 : 2 ;
+    var businessType = 1 ;
     var { firstname, lastname , mobilenumber, emaill, passwordd } = formData;
     var firstName = firstname;
     var lastName = lastname;
@@ -177,20 +177,18 @@ return (
                         data-tabtar="lgm-2"
                         id="lgm-2"
                         className={isActive ? "current" : "left"}
-                        onClick={toggleClass}
                       >
                         <a id="btnLeft" href={()=>false} >
-                          Individual
+                          
                         </a>
                       </li>
                       <li
                         data-tabtar="lgm-1"
                         id="lgm-1"
-                        className={isActive ? "right" : "current"}
-                        onClick={toggleClass}
+                        className={isActive ? "current" : "current"}
                       >
-                        <a id="btnRight"  href={()=>false}>
-                          Business
+                       <a id="btnLeft" href={()=>false} >
+                          
                         </a>
                       </li>
                     </ul>
