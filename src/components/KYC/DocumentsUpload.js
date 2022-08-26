@@ -8,7 +8,7 @@ import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import "../KYC/kyc-style.css";
 import API_URL from "../../config";
-import { documentsUpload, merchantInfo, verifyKycDocumentTab, verifyKycEachTab } from "../../slices/kycSlice";
+import { approveDoc, documentsUpload, merchantInfo, verifyKycDocumentTab, verifyKycEachTab } from "../../slices/kycSlice";
 
 function DocumentsUpload(props) {
   const { role, kycid } = props;
@@ -30,6 +30,8 @@ function DocumentsUpload(props) {
   const VerifyKycStatus = useSelector(
     (state) => state.kyc.KycDocUpload[0]?.status
   );
+
+console.log(KycDocList)
 
   const initialValues = {
     docType: KycDocList[0]?.type,
@@ -110,22 +112,40 @@ function DocumentsUpload(props) {
 
       }
 
+
+      if (action === "reject") {
+        const rejectDetails = {
+          "document_id": documentId,
+          "rejected_by": loginId,
+        "comment": "Document Rejected"
+      }
+      dispatch(verifyKycDocumentTab(rejectDetails)).then(resp => {
+     
+        resp?.payload?.status ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message);
+  
+      }).catch((e) => { toast.error("Try Again Network Error") });
+  
+  
+      }
+
+    }else if(role.approver){
+
+      if (action === "approve") {
+
+        const approverDocDetails = {
+          "approved_by": loginId,
+          "document_id": documentId
+        }
+        dispatch(approveDoc(approverDocDetails)).then(resp => {
+
+          resp?.payload?.status ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message);
+
+        }).catch((e) => { toast.error("Try Again Network Error") });
+      }
+
     }
 
-    if (action === "reject") {
-      const rejectDetails = {
-        "document_id": documentId,
-        "rejected_by": loginId,
-      "comment": "Document Rejected"
-    }
-    dispatch(verifyKycDocumentTab(rejectDetails)).then(resp => {
-   
-      resp?.payload?.status ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message);
-
-    }).catch((e) => { toast.error("Try Again Network Error") });
-
-
-    }
+    
 
 
 
@@ -136,7 +156,7 @@ function DocumentsUpload(props) {
   useEffect(() => {
     if (role.approver) {
       setReadOnly(true)
-      setButtonText("Approve and Next")
+      setButtonText("Approve Document")
     } else if (role.verifier) {
       setReadOnly(true)
       setButtonText("Verify and Next")
@@ -203,7 +223,7 @@ function DocumentsUpload(props) {
 
               </li>
               <li className="list-inline-item align-middle w-25">
-                {VerifyKycStatus === "Verified" ? null : (
+                {VerifyKycStatus === "Verified" || VerifyKycStatus === "Approved"  ? null : (
                   <>
                     <button className="btn btn-primary mb-0" type="button" onClick={() => { submitAction = "submit"; formik.handleSubmit() }}>
                       {buttonText}
@@ -216,10 +236,14 @@ function DocumentsUpload(props) {
 
                   </>
                 )}
+
+                {(role.approver===true && VerifyKycStatus !== "Approved") &&  <button className="btn btn-primary mb-0" type="button" onClick={() => { submitAction = "approve"; formik.handleSubmit() }}>
+                      {buttonText}
+                    </button> }
               </li>
               {/* <li className="list-inline-item align-middle   w-25" > Download</li> */}
             </ul>
-            {console.log(formik)}
+            {/* {console.log(formik)} */}
           </Form>
         )}
       </Formik>

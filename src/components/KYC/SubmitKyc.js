@@ -2,7 +2,7 @@
 import React,{useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { verifyComplete } from '../../slices/kycSlice';
+import { approvekyc, verifyComplete } from '../../slices/kycSlice';
 
 function SubmitKyc(props) {
 
@@ -31,7 +31,18 @@ function SubmitKyc(props) {
     }).catch((e) => {console.log(e)})
     
 
-    }else{
+    }
+
+    if(val==="approve"){
+
+      const dataAppr = {
+        "login_id": kycid,
+        "approved_by": loginId
+    }
+
+    dispatch(approvekyc(dataAppr)).then((resp) => {
+      resp?.payload?.status_code===401 || resp?.payload?.status_code===404 ? toast.error(resp?.payload?.message) : toast.success(resp?.payload?.message);
+    }).catch((e) => {console.log(e)})
 
     }
 
@@ -51,7 +62,8 @@ function SubmitKyc(props) {
       use the Solution or the Services.</p>
     </div>
     <button type="button" className="btn btn-primary">Submit KYC</button>
-  </form> : 
+  </form> 
+  :  role.verifer ?
   
   <div className="row">
 
@@ -63,7 +75,22 @@ function SubmitKyc(props) {
   <button type="button" className="btn btn-sm btn-primary" onClick={()=>{verifyApprove("verify")}}>Verify Complete</button></div>
 
   
-  </div>
+  </div> 
+  :  role.approver ? 
+  
+  <div className="row">
+
+<div className="col-lg-12">
+<p>After Verify all the tab's , Kindly click on the <strong> Approve KYC</strong> button </p></div>
+  
+<div className="col-lg-12">
+
+<button type="button" className="btn btn-sm btn-primary" onClick={()=>{verifyApprove("approve")}}>Approve KYC</button></div>
+
+
+</div>  
+
+: <></> 
   
   }
     

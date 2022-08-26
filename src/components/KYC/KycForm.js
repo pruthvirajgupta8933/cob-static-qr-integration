@@ -63,7 +63,7 @@ function KycForm() {
 
   //------------- Kyc  User List ------------//
   useEffect(() => {
-console.log("kycuserlist")
+// console.log("kycuserlist")
     dispatch(
       kycUserList({
         login_id: merchantloginMasterId,

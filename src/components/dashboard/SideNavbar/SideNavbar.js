@@ -17,6 +17,7 @@ function SideNavbar() {
   }
 
   const [roleBasedShowTab, setRoleBasedShowTab] = useState(roleBasedTab)
+  const [showKycTabLink, setShowKycTabLink] = useState(false)
 
 
   if (user !== null && user.userAlreadyLoggedIn) {
@@ -50,11 +51,35 @@ function SideNavbar() {
       console.log("Permission not match with these roles");
     }
 
-  }, [])
+    console.log(kyc.enableKycTab);
+
+    let showKYCtab = false;
+    if(roleBasedShowTab.merchant===true){
+        if(kyc.enableKycTab){
+          showKYCtab = true;
+        }
+        if(kyc?.kycVerificationForAllTabs?.is_verified === true || kyc?.kycVerificationForAllTabs?.is_approved=== true){
+          showKYCtab = true;
+        }
+
+    }else if(roleBasedShowTab.approver===true || roleBasedShowTab.verifier===true){
+        showKYCtab = false;
+      
+    }else{
+      showKYCtab = false;
+    }
+    setShowKycTabLink(showKYCtab)
+    // console.log("showKYCtab",showKYCtab)
+
+  }, [kyc])
+
+
+
+  
 
 
   // console.log("roleBasedShowTab", roleBasedShowTab)
-console.log(kyc.enableKycTab)
+// console.log(kyc.enableKycTab)
 
   return (
     <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{ flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px' }}>
@@ -79,11 +104,16 @@ console.log(kyc.enableKycTab)
                     : <React.Fragment></React.Fragment>}
 
 
-                  { kyc.enableKycTab && (roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ) ?
+                    { roleBasedShowTab?.merchant === true ? <></> : <></> }
+
+
+                  { showKycTabLink === true ?
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
                       <Link to={`${url}/kyc`} className='txt-white' ><i className="fa fa-file-o" aria-hidden="true" /> <span>Fill KYC Form</span><span class="new-tab">new</span></Link>
                     </li>
-                    : <React.Fragment></React.Fragment>}
+                    :
+                    <></>
+                   }
 
                   {roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true ?
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>

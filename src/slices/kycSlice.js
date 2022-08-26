@@ -610,6 +610,32 @@ export const verifyComplete = createAsyncThunk(
     return response.data;
   }
 );
+export const approveDoc = createAsyncThunk(
+  "kyc/approveDoc",
+  async (requestParam) => {
+    const response = await axios
+      .put(`${API_URL.APPROVE_DOCUMENT}`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+
+
+export const approvekyc = createAsyncThunk(
+  "kyc/approvekyc",
+  async (requestParam) => {
+    const response = await axios
+      .post(`${API_URL.APPROVE_KYC}`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
 
 
 

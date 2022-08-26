@@ -13,6 +13,7 @@ export const KycModal=()=>{
 
     // let { url } = useRouteMatch();
     // console.log(useRouteMatch())
+    console.log("kyc.kycModalClose",kyc.kycModalClose)
   const [closeModal, setCloseModal] = useState(kyc.kycModalClose)
 
   const enableKycButton = (val)=>{
@@ -32,10 +33,9 @@ export const KycModal=()=>{
   useEffect(() => {
     setCloseModal(kyc.kycModalClose)
   }, [kyc])
+
+  console.log("closeModal",closeModal)
   
-
-
-
     return (<div><div
         className="modal fade show"
         id="exampleModal"
