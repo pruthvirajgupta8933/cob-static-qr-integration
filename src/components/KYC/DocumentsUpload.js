@@ -96,7 +96,7 @@ function DocumentsUpload() {
     bodyFormData.append('files', fieldValue);
     // bodyFormData.append("client_code", [clientCode]);
     bodyFormData.append('login_id', loginId);
-    bodyFormData.append('modified_by', 270);
+    bodyFormData.append('modified_by', loginId);
     bodyFormData.append('type', values.docType);
    dispatch(merchantInfo(bodyFormData))
    .then((res) => {

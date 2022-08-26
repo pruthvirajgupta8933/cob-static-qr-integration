@@ -57,8 +57,6 @@ function ApprovedMerchant() {
   
 
   const viewDocument = async (loginMaidsterId) => {
-
-    console.log('id got it', loginMaidsterId)
     const res = await axios.post(`https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/document-by-login-id/`, {
       login_id: loginMaidsterId
     }).then(res => {
@@ -72,14 +70,9 @@ function ApprovedMerchant() {
       .catch(error => {
         console.error('There was an error!', error);
       });
+};
 
-  };
-
-
-
-
-
-  return (
+ return (
     <div className="row">
       <div className="col-lg-4 mrg-btm- bgcolor">
         <label>Search</label>
