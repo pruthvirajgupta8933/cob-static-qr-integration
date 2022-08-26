@@ -3,18 +3,23 @@ import axios from "axios";
 import * as Yup from "yup";
 import {  useSelector } from "react-redux";
 import API_URL from "../../config";
-
+import { toast } from 'react-toastify';
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 const ResetPassword = (props) => {
-  // const { handleFormSubmit } = props;
 
-  const { user ,passwordChange} = useSelector((state) => state.auth);
+  const history = useHistory();
+ 
+  // console.log(props)
+
+
+  const { user } = useSelector((state) => state.auth);
 
   // console.log(passwordChange);
     const { 
             loginId,
             userName,
           } = user;
-  console.log(userName,"<==== User Id ====>")  
+  // console.log(userName,"<==== User Id ====>")  
 
   const validationSchema = Yup.object().shape({
     password:Yup.string()
@@ -39,26 +44,26 @@ const ResetPassword = (props) => {
     confirmpassword:"",
   };
   const resetSubmit = async(values) => {
+    
     console.log(values,"here is the response")
     const res = await axios.put(API_URL.AUTH_CHANGE_PASSWORD, {
       email: userName,
       // verification_token:verification_token,
       password: values.password,
       newpassword: values.newpassword
-
-      
+   
     }).then(res => {
-      console.log(res)
-      // if (res.status === 200) {
-      //   const data = res.data;
-      //         }
-    })
+      toast.success(res.message)
+      history.push('/thanks-card')
+
+     
+     })
       .catch(error => {
         console.error('There was an error!', error);
       });
 
 
-    props.props('a4')
+    
     // console.log("You clicked submit.");
   };
 
@@ -166,7 +171,7 @@ const ResetPassword = (props) => {
                       <button
                         type="submit"
                         className="btn btn-primary"
-                          // onClick={() => props.props("a4")}
+                          onClick={() => props.props("a5")}
                       >
                         Submit
                       </button>

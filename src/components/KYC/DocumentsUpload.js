@@ -27,10 +27,20 @@ function DocumentsUpload() {
       state.kyc.KycDocUpload
   );
 
+  const documentId = useSelector(
+    (state) =>
+      state.kyc.KycDocUpload[0]?.documentId
+  );
+
   const VerifyKycStatus = useSelector(
       (state) =>
         state.kyc.KycDocUpload[0]?.status
     )
+
+
+ 
+
+  
 
   
 
@@ -41,23 +51,14 @@ function DocumentsUpload() {
   }
 
 
-  const documentId = useSelector(
-    (state) =>
-      state.kyc.KycDocUpload[0]?.documentId
-  );
-
+  
 
    const ImgUrl = `${API_URL.Image_Preview}/?document_id=${documentId}`
     // console.log(ImgUrl,"<===========KYC DOC Id===========>")
     // console.log(KycDocList,"<===========KYC DOC List===========>")
 
 
-    useEffect(() => {
-      dispatch(documentsUpload()).then((resp) => {
-        const data = convertToFormikSelectJson('id', 'name', resp.payload.results);
-        setDocTypeList(data)
-      }).catch(err => console.log(err))
-    }, [])
+
   
 
   const validationSchema = Yup.object({
@@ -91,7 +92,7 @@ function DocumentsUpload() {
     bodyFormData.append('files', fieldValue);
     // bodyFormData.append("client_code", [clientCode]);
     bodyFormData.append('login_id', loginId);
-    bodyFormData.append('modified_by', 270);
+    bodyFormData.append('modified_by', loginId);
     bodyFormData.append('type', values.docType);
    dispatch(merchantInfo(bodyFormData))
    .then((res) => {

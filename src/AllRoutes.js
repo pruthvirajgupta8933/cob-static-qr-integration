@@ -20,6 +20,8 @@ import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetai
 import DemoReg from './components/login/DemoReg';
 import DemoLogin from './components/login/DemoLogin';
 import ResetPassword from './components/forgetpassword/ResetPassword';
+import ThankingCardForReset from './components/forgetpassword/ThankingCardForReset';
+
 
 
 function AllRoutes(){
@@ -87,11 +89,15 @@ function AllRoutes(){
               <Route exact path="/demo-reg">
                 <DemoReg/>
               </Route>
+              <Route exact path="/thanks-card">
+                <ThankingCardForReset />
+              </Route>
 
             </Switch>
           </div>
         // </Router>
       );
 }
+
 
 export default AllRoutes

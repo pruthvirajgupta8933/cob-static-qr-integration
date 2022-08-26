@@ -88,7 +88,7 @@ function BankDetails() {
       account_type: values.account_type,
       branch: values.branch,
       login_id:loginId ,
-      modified_by:"270"
+      modified_by:loginId
     })).then((res) => {
       if (res.meta.requestStatus === "fulfilled" && res.payload.status === true) {
         // console.log("This is the response", res);

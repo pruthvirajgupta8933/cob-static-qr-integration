@@ -5,6 +5,7 @@ import ResetPassword from "./ResetPassword";
 import VerifyEmailPhone from "./VerifyEmailPhone";
 import ThanksCard from "./ThanksCard";
 import CreatePassword from "./CreatePassword";
+import ThankingCardForReset from "./ThankingCardForReset";
 
 const ForgetPassword = () => {
   const [showCard, setShowCard] = useState("a1");
@@ -33,6 +34,12 @@ const ForgetPassword = () => {
 
       {/* reset password */}
       {showCard === "a4" ? <ThanksCard props={handleFormSubmit} /> : <></>}
+
+
+    {/* Thanks Card for Updating / Reset the Password */}
+      {showCard === "a5" ? <ThankingCardForReset props={handleFormSubmit} /> : <></>}
+
+      
     </React.Fragment>
   );
 };

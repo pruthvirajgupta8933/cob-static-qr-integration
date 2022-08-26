@@ -204,7 +204,7 @@ const ErpCheckStatus = () => {
       expected_transactions: values.expected_transactions,
       form_build: values.form_build,
       ticket_size: values.ticket_size,
-      modified_by:270,
+      modified_by:loginId,
       login_id: loginId,
       // client_code: clientCode,
     
