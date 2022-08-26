@@ -172,7 +172,7 @@ return (
                 <div className="logmod__wrapper">
                   <span className="logmod__close">Close</span>
                   <div className="logmod__container">
-                    <ul className="logmod__tabs">
+                    {/* <ul className="logmod__tabs">
                       <li
                         data-tabtar="lgm-2"
                         id="lgm-2"
@@ -191,7 +191,7 @@ return (
                           
                         </a>
                       </li>
-                    </ul>
+                    </ul> */}
                     <div className="logmod__tab-wrapper">
                       <div className="show logmod__tab lgm-1">
                         <div className="logmod__heading">

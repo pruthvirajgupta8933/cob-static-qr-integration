@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useRouteMatch } from 'react-router-dom'
 import { checkPermissionSlice, logout } from '../../../slices/auth'
+import { enableKycTab, kycModalToggle } from '../../../slices/kycSlice';
 
 function SideNavbar() {
   const {auth , kyc} = useSelector((state) => state)
@@ -29,6 +30,10 @@ function SideNavbar() {
   const dispatch = useDispatch();
   const handle = () => {
     dispatch(logout());
+    dispatch(kycModalToggle(true));
+    dispatch(enableKycTab(false));
+
+
   }
 
   useEffect(() => {

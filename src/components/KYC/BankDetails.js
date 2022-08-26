@@ -7,9 +7,10 @@ import axios from "axios";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { kycBankNames, saveMerchantBankDetais } from "../../slices/kycSlice";
+import { kycBankNames, saveMerchantBankDetais, verifyKycEachTab } from "../../slices/kycSlice";
 
-function BankDetails() {
+function BankDetails(props) {
+  const { role, kycid } = props;
   const dispatch = useDispatch();
 
   const KycList = useSelector((state) => state.kyc.kycUserList);
@@ -18,6 +19,8 @@ function BankDetails() {
     (state) => state.kyc.kycVerificationForAllTabs.settlement_info_status
   );
 
+  const [readOnly, setReadOnly] = useState(false);
+  const [buttonText, setButtonText] = useState("Save and Next");
   // console.log(VerifyKycStatus,"<==STATUS==>")
 
   //  console.log(KycList ,"====================>")
@@ -34,10 +37,9 @@ function BankDetails() {
     account_number: KycList?.accountNumber,
     confirm_account_number: KycList?.accountNumber,
     ifsc_code: KycList?.ifscCode,
-    bank_id:
-      user?.roleId === 5 ? KycList?.merchant_account_details?.bankId : "",
+    bank_id:  KycList?.merchant_account_details?.bankId,
     account_type: KycList?.bankName,
-    branch: user?.roleId === 5 ? KycList?.merchant_account_details?.branch : "",
+    branch:  KycList?.merchant_account_details?.branch,
   };
   const validationSchema = Yup.object({
     account_holder_name: Yup.string().required("Required").nullable(),
@@ -70,29 +72,58 @@ function BankDetails() {
   // ------------------------------------------
 
   const onSubmit = (values) => {
-    dispatch(
-      saveMerchantBankDetais({
-        account_holder_name: values.account_holder_name,
-        account_number: values.account_number,
-        ifsc_code: values.ifsc_code,
-        bank_id: values.bank_id,
-        account_type: values.account_type,
-        branch: values.branch,
-        login_id: loginId,
-        modified_by: "270",
-      })
-    ).then((res) => {
-      if (
-        res.meta.requestStatus === "fulfilled" &&
-        res.payload.status === true
-      ) {
-        // console.log("This is the response", res);
-        toast.success(res.payload.message);
-      } else {
-        toast.error("Something Went Wrong! Please try again.");
+
+    if (role.merchant) {
+
+      dispatch(
+        saveMerchantBankDetais({
+          account_holder_name: values.account_holder_name,
+          account_number: values.account_number,
+          ifsc_code: values.ifsc_code,
+          bank_id: values.bank_id,
+          account_type: values.account_type,
+          branch: values.branch,
+          login_id: loginId,
+          modified_by: "270",
+        })
+      ).then((res) => {
+        if (
+          res.meta.requestStatus === "fulfilled" &&
+          res.payload.status === true
+        ) {
+          // console.log(res)
+          // console.log("This is the response", res);
+          toast.success(res.payload.message);
+        } else {
+          toast.error("Something Went Wrong! Please try again.");
+        }
+      });
+      
+    } else if (role.verifier) {
+      const veriferDetails = {
+        "login_id": kycid,
+        "settlement_info_verified_by": loginId
       }
-    });
+      dispatch(verifyKycEachTab(veriferDetails)).then(resp => {
+        resp?.payload?.settlement_info_status && toast.success(resp?.payload?.settlement_info_status);
+        resp?.payload?.detail && toast.error(resp?.payload?.detail);
+      }).catch((e) => { toast.error("Try Again Network Error") });
+
+    }
+    
   };
+
+
+  useEffect(() => {
+    if (role.approver) {
+      setReadOnly(true)
+      setButtonText("Approve and Next") 
+    }else if(role.verifier){
+      setReadOnly(true)
+      setButtonText("Verify and Next")
+    }
+  }, [role])
+  
 
   return (
     <div className="col-md-12 col-md-offset-4">
@@ -120,6 +151,7 @@ function BankDetails() {
                   placeholder="Account Holder Name"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -132,6 +164,7 @@ function BankDetails() {
                   placeholder="Account Type"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -144,6 +177,7 @@ function BankDetails() {
                   placeholder="Enter Bank Name"
                   options={data}
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
             </div>
@@ -158,6 +192,7 @@ function BankDetails() {
                   placeholder="Enter Branch Name"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -170,6 +205,7 @@ function BankDetails() {
                   placeholder="IFSC Code"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -182,6 +218,7 @@ function BankDetails() {
                   placeholder="Account Number"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -194,13 +231,14 @@ function BankDetails() {
                   placeholder="Re-Enter Account Number"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
             </div>
 
             {VerifyKycStatus === "Verified" ? null : (
               <button className="btn btn-primary" type="submit">
-                Save and Next
+                {buttonText}
               </button>
             )}
           </Form>

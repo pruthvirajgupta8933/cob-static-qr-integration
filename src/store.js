@@ -4,9 +4,11 @@ import messageReducer from "./slices/message";
 // import homeReducer from './slices/home'
 import { dashboardReducer } from './slices/dashboardSlice';
 import reducerSubscription from './slices/subscription'
-import KycOtpSlice from "./slices/kycOtp"
+// import KycOtpSlice from "./slices/kycOtp"
 import { kycReducer } from './slices/kycSlice';
 import ContactInfoSlice from "./slices/contactInfo"
+import veriferApprover from './slices/veriferApproverSlice';
+
 
 
 
@@ -17,8 +19,9 @@ const reducer = {
   dashboard:dashboardReducer,
   subscription:reducerSubscription,
   kyc:kycReducer,
-  KycOtpSlice:KycOtpSlice,
   ContactInfoSlice:ContactInfoSlice,
+  veriferApprover
+
 
 }
 

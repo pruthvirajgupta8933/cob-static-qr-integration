@@ -7,9 +7,14 @@ import { useSelector, useDispatch } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
 import API_URL from "../../config";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
-import { businessOverviewState, saveMerchantInfo } from "../../slices/kycSlice";
+import {
+  businessOverviewState,
+  saveMerchantInfo,
+  verifyKycEachTab,
+} from "../../slices/kycSlice";
 
-function BusinessDetails() {
+function BusinessDetails(props) {
+  const { role, kycid } = props;
   const KycList = useSelector((state) => state.kyc.kycUserList);
 
   const VerifyKycStatus = useSelector(
@@ -24,6 +29,9 @@ function BusinessDetails() {
   const [gstin, setGstin] = useState("");
   const [fieldValue, setFieldValue] = useState(null);
   const [checked, setChecked] = useState(false);
+  const [readOnly, setReadOnly] = useState(false);
+  const [buttonText, setButtonText] = useState("Save and Next");
+
   const [operationvalue, setOperationvalue] = useState(
     KycList.registeredBusinessAdress
   );
@@ -59,7 +67,7 @@ function BusinessDetails() {
   };
   const initialValues = {
     company_name: KycList.companyName,
-    company_logo: KycList.companyImagePath,
+    company_logo: KycList.companyLogoPath,
     registerd_with_gst: KycList.registerdWithGST,
     gst_number: KycList.gstNumber,
     pan_card: KycList.panCard,
@@ -74,21 +82,44 @@ function BusinessDetails() {
   };
   const validationSchema = Yup.object({
     company_logo: Yup.mixed()
-      .required("Required file format PNG/JPEG/JPG").nullable(),
-    company_name: Yup.string().required("Required").nullable(),
-    registerd_with_gst: Yup.string().required("Required").nullable(),
-    gst_number: Yup.string().required("Required").nullable(),
-    pan_card: Yup.string().required("Required").nullable(),
-    signatory_pan: Yup.string().required("Required").nullable(),
-    name_on_pancard: Yup.string().required("Required").nullable(),
-    pin_code: Yup.string().required("Required").nullable(),
-    city_id: Yup.string().required("Required").nullable(),
-    state_id: Yup.string().required("Required").nullable(),
-    registered_business_address: Yup.string().required("Required").nullable(),
-    operational_address: Yup.string().when("checkBoxChoice", {
-      is: "yes",
-      then: Yup.string().required("Required"),
-    }).nullable(),
+      .required("Required file format PNG/JPEG/JPG")
+      .nullable(),
+    company_name: Yup.string()
+      .required("Required")
+      .nullable(),
+    registerd_with_gst: Yup.string()
+      .required("Required")
+      .nullable(),
+    gst_number: Yup.string()
+      .required("Required")
+      .nullable(),
+    pan_card: Yup.string()
+      .required("Required")
+      .nullable(),
+    signatory_pan: Yup.string()
+      .required("Required")
+      .nullable(),
+    name_on_pancard: Yup.string()
+      .required("Required")
+      .nullable(),
+    pin_code: Yup.string()
+      .required("Required")
+      .nullable(),
+    city_id: Yup.string()
+      .required("Required")
+      .nullable(),
+    state_id: Yup.string()
+      .required("Required")
+      .nullable(),
+    registered_business_address: Yup.string()
+      .required("Required")
+      .nullable(),
+    operational_address: Yup.string()
+      .when("checkBoxChoice", {
+        is: "yes",
+        then: Yup.string().required("Required"),
+      })
+      .nullable(),
     checkBoxChoice: Yup.array().nullable(),
   });
 
@@ -107,44 +138,68 @@ function BusinessDetails() {
   }, []);
 
   const onSubmit = (values) => {
-    const bodyFormData = new FormData();
-    bodyFormData.append("company_name", values.company_name);
-    bodyFormData.append("registerd_with_gst", values.registerd_with_gst);
-    bodyFormData.append("gst_number", values.gst_number);
-    bodyFormData.append("pan_card", values.pan_card);
-    bodyFormData.append("signatory_pan", values.signatory_pan);
-    bodyFormData.append("name_on_pancard", values.name_on_pancard);
-    bodyFormData.append("pin_code", values.pin_code);
-    bodyFormData.append("city_id", values.city_id);
-    bodyFormData.append("state_id", values.state_id);
-    if (checked === true) {
+    if (role.merchant) {
+      const bodyFormData = new FormData();
+      bodyFormData.append("company_name", values.company_name);
+      bodyFormData.append("registerd_with_gst", values.registerd_with_gst);
+      bodyFormData.append("gst_number", values.gst_number);
+      bodyFormData.append("pan_card", values.pan_card);
+      bodyFormData.append("signatory_pan", values.signatory_pan);
+      bodyFormData.append("name_on_pancard", values.name_on_pancard);
+      bodyFormData.append("pin_code", values.pin_code);
+      bodyFormData.append("city_id", values.city_id);
+      bodyFormData.append("state_id", values.state_id);
+      if (checked === true) {
+        bodyFormData.append(
+          "operational_address",
+          values.registered_business_address
+        );
+      } else {
+        bodyFormData.append("operational_address", values.operational_address);
+      }
       bodyFormData.append(
-        "operational_address",
+        "registered_business_address",
         values.registered_business_address
       );
-    } else {
-      bodyFormData.append("operational_address", values.operational_address);
-    }
-    bodyFormData.append(
-      "registered_business_address",
-      values.registered_business_address
-    );
-    bodyFormData.append("files", fieldValue);
-    bodyFormData.append("modified_by", loginId);
-    // bodyFormData.append("client_code", [clientCode]);
-    bodyFormData.append("login_id", loginId);
+      bodyFormData.append("files", fieldValue);
+      bodyFormData.append("modified_by", loginId);
+      bodyFormData.append("login_id", loginId);
 
-    dispatch(saveMerchantInfo(bodyFormData)).then((res) => {
-      if (
-        res.meta.requestStatus === "fulfilled" &&
-        res.payload.status === true
-      ) {
-        toast.success(res.payload.message);
-      } else {
-        toast.error("Something Went Wrong! Please try again.");
-      }
-    });
+      dispatch(saveMerchantInfo(bodyFormData)).then((res) => {
+        if (
+          res.meta.requestStatus === "fulfilled" &&
+          res.payload.status === true
+        ) {
+          toast.success(res.payload.message);
+        } else {
+          toast.error("Something Went Wrong! Please try again.");
+        }
+      });
+    } else if (role.verifier) {
+      const veriferDetails = {
+        login_id: kycid,
+        merchant_info_verified_by: loginId,
+      };
+      dispatch(verifyKycEachTab(veriferDetails))
+        .then((resp) => {
+          resp?.payload?.merchant_info_status && toast.success(resp?.payload?.merchant_info_status);
+          resp?.payload?.detail && toast.error(resp?.payload?.detail);
+        })
+        .catch((e) => {
+          toast.error("Try Again Network Error");
+        });
+    }
   };
+
+  useEffect(() => {
+    if (role.approver) {
+      setReadOnly(true);
+      setButtonText("Approve and Next");
+    } else if (role.verifier) {
+      setReadOnly(true);
+      setButtonText("Verify and Next");
+    }
+  }, [role]);
 
   return (
     <div className="col-md-12 col-md-offset-4">
@@ -167,27 +222,33 @@ function BusinessDetails() {
                   placeholder="Enter Your Business Name"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
-              <div className="form-group col-md-4">
-                <FormikController
-                  control="file"
-                  type="file"
-                  label="Company Logo *"
-                  name="company_logo"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  onChange={(event) => {
-                    setFieldValue(event.target.files[0]);
-                    formik.setFieldValue(
-                      "company_logo",
-                      event.target.files[0].name
-                    );
-                  }}
-                  accept="image/jpeg,image/jpg,image/png "
-                />
-              </div>
+              {role.verifier || role.approver ? (
+                <div className="form-group col-md-4">"show company logo" </div>
+              ) : (
+                <div className="form-group col-md-4">
+                  <FormikController
+                    control="file"
+                    type="file"
+                    label="Company Logo *"
+                    name="company_logo"
+                    className="form-control"
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    readOnly={readOnly}
+                    onChange={(event) => {
+                      setFieldValue(event.target.files[0]);
+                      formik.setFieldValue(
+                        "company_logo",
+                        event.target.files[0].name
+                      );
+                    }}
+                    accept="image/jpeg,image/jpg,image/png "
+                  />
+                </div>
+              )}
 
               <div className="form-group col-md-4">
                 <FormikController
@@ -201,6 +262,7 @@ function BusinessDetails() {
                   className="form-control"
                   options={GSTIN}
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
               {formik.values?.registerd_with_gst === "True" && (
@@ -213,6 +275,7 @@ function BusinessDetails() {
                     placeholder="Enter Gst No"
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
+                    readOnly={readOnly}
                   />
                 </div>
               )}
@@ -228,6 +291,7 @@ function BusinessDetails() {
                   placeholder="Enter Business PAN"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -240,6 +304,7 @@ function BusinessDetails() {
                   placeholder="Pan owner's Name"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
               <div className="form-group col-md-4">
@@ -251,6 +316,7 @@ function BusinessDetails() {
                   placeholder="Pin code"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
               <div className="form-group col-md-4">
@@ -262,6 +328,7 @@ function BusinessDetails() {
                   placeholder="Enter City"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
               <div className="form-group col-md-4">
@@ -272,6 +339,7 @@ function BusinessDetails() {
                   options={BusinessOverview}
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -284,6 +352,7 @@ function BusinessDetails() {
                   placeholder="Enter Authorised Signatory PAN"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -296,6 +365,7 @@ function BusinessDetails() {
                   placeholder="Enter Registered Address"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
               <div className="form-group col-md-4 d-flex">
@@ -304,6 +374,8 @@ function BusinessDetails() {
                   name="checkBoxChoice"
                   options={choicesCheckBox}
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                  checked={readOnly}
                 />
                 {formik.handleChange(
                   "checkBoxChoice",
@@ -321,12 +393,13 @@ function BusinessDetails() {
                   placeholder="Enter Operational Address"
                   className="form-control"
                   value={operationvalue}
+                  readOnly={readOnly}
                 />
               </div>
             </div>
             {VerifyKycStatus === "Verified" ? null : (
               <button className="btn btn-primary" type="submit">
-                Save and Next
+                {buttonText}
               </button>
             )}
           </Form>

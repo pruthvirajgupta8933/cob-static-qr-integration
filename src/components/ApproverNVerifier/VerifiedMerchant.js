@@ -4,6 +4,8 @@ import { kycForVerified } from "../../slices/kycSlice"
 import API_URL from '../../config';
 import axios from "axios";
 import DropDownCountPerPage from '../../_components/reuseable_components/DropDownCountPerPage';
+import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
+import { Link } from 'react-router-dom';
 
 
 function VerifiedMerchant() {
@@ -16,6 +18,8 @@ function VerifiedMerchant() {
   const [pageSize, setPageSize] = useState(10);
   let page_size = pageSize;
   let page = currentPage;
+  const roles = roleBasedAccess();
+
   const kycSearch = (e) => {
     setSearchText(e.target.value);
   };
@@ -30,9 +34,9 @@ function VerifiedMerchant() {
       })
   }
 
-  console.log(allVerifiedMerchants,"myyyy alll documents")
+  console.log(allVerifiedMerchants, "myyyy alll documents")
 
- useEffect(() => {
+  useEffect(() => {
     // handleFetchData();
     allVerifiedMerchants();
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize })).then((resp) => {
@@ -53,7 +57,7 @@ function VerifiedMerchant() {
     } else {
       dispatch(kycForVerified({ page, page_size })).then((resp) => {
         const data = resp.payload.results
-      setVerifiedMerchant(data.slice(indexOfFirstRecord, indexOfLastRecord));
+        setVerifiedMerchant(data.slice(indexOfFirstRecord, indexOfLastRecord));
       })
     }
   }, [searchText])
@@ -87,7 +91,7 @@ function VerifiedMerchant() {
         </select>
       </div>
       <div className="col-md-12 col-md-offset-4">
-       <table className="table table-bordered">
+        <table className="table table-bordered">
           <thead>
             <tr>
               <th>S.No</th>
@@ -98,9 +102,9 @@ function VerifiedMerchant() {
               <th>Bank</th>
               <th>Adhar Number</th>
               <th>Pan card</th>
-              <th>State</th>
-              <th>Pin code</th>
               <th>Status</th>
+              {roles.approver===true ? <th>Approve KYC</th> : <></>}
+
             </tr>
           </thead>
           <tbody>
@@ -114,9 +118,12 @@ function VerifiedMerchant() {
                 <td>{user.bankName}</td>
                 <td>{user.aadharNumber}</td>
                 <td>{user.panCard}</td>
-                <td>{user.stateId}</td>
-                <td>{user.pinCode}</td>
                 <td>{user.status}</td>
+                {roles.approver===true ?
+                  <td>
+                    <Link to={`/dashboard/kyc/?kycid=${user.loginMasterId}`} className="btn btn-primary  btn-xs" >Approve KYC</Link>
+                  </td> : <></>
+                }
               </tr>
             ))}
           </tbody>

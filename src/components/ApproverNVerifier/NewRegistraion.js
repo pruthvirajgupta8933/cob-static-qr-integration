@@ -5,11 +5,14 @@ import API_URL from '../../config';
 import axios from "axios";
 import DropDownCountPerPage from '../../_components/reuseable_components/DropDownCountPerPage';
 import { Link, useRouteMatch } from 'react-router-dom';
+import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
+
 
 function NewRegistraion() {
 
 const { url } = useRouteMatch();
-
+const roles = roleBasedAccess();
+console.log(roles)
 
 
 const [data, setData] = useState([]);
@@ -117,7 +120,8 @@ const nPages = Math.ceil(newRegistrationData.length / pageSize)
                       <th>Adhar Number</th>
                       <th>PAN card</th>
                       <th>Status</th>
-                      <th>Verify KYC</th>
+                      {roles.verifier ===true ? <th>Verify KYC</th> : <></>}
+                      
 
                     </tr>
                     </thead>
@@ -133,9 +137,11 @@ const nPages = Math.ceil(newRegistrationData.length / pageSize)
                             <td>{user.aadharNumber}</td>
                             <td>{user.panCard}</td>
                             <td>{user.status}</td>
+                            {roles.verifier ===true ? 
                             <td>
                             <Link to={`/dashboard/kyc/?kycid=${user.loginMasterId}`} className="btn btn-primary  btn-xs" >Verify KYC</Link>
-                            </td>
+                            </td> : <></>
+                            }
 
                           </tr>
                         ))}
@@ -146,8 +152,6 @@ const nPages = Math.ceil(newRegistrationData.length / pageSize)
             <li class="page-item"><button class="page-link" onClick={handlePrevPage}>Previous</button></li>
 
             {pageNumbers.map(pgNumber => (
-
-
               <li key={pgNumber}
                 className={`page-item ${currentPage == pgNumber ? 'active' : ''} `} >
 

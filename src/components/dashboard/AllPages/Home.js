@@ -8,6 +8,7 @@ import { useRouteMatch, Redirect } from 'react-router-dom'
 import '../css/Home.css';
 import { KycModal } from '../../KYC/KycModal';
 import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
+import { kycVerificationForTabs } from '../../../slices/kycSlice';
 
 
 
@@ -48,6 +49,11 @@ function Home() {
     // console.log(objParam);
     dispatch(subscriptionplan);
     dispatch(successTxnSummary(objParam));
+    dispatch(
+      kycVerificationForTabs({
+        login_id: user?.loginId,
+      })
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientCode]);
 
@@ -122,6 +128,7 @@ function Home() {
 
   return (
     <section className="ant-layout">
+
       <KycModal />
       <div className="profileBarStatus">
       </div>

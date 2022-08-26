@@ -94,9 +94,7 @@ console.log("kycuserlist")
       kycVerificationForTabs({
         login_id: merchantloginMasterId,
       })
-    ).then((res) => {
-      // console.log(res)
-    });
+    )
   }, [kycDocumentUploadList,merchantloginMasterId]);
 
   const handleSubmit = (e) => {
@@ -231,13 +229,13 @@ console.log("kycuserlist")
                       {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
                 lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
 
-                      {(tab === 1 && <ContactInfo role={roles} />) ||
-                        (tab === 2 && <BusinessOverview role={roles} />) ||
-                        (tab === 3 && <BusinessDetails role={roles} />) ||
-                        (tab === 4 && <BankDetails role={roles} />) ||
-                        (tab === 5 && <DocumentsUpload role={roles} />) ||
-                        (tab === 6 && <SubmitKyc role={roles} />) ||
-                         <ContactInfo role={roles} />}
+                      {(tab === 1 && <ContactInfo role={roles} kycid={kycid} />) ||
+                        (tab === 2 && <BusinessOverview role={roles} kycid={kycid} />) ||
+                        (tab === 3 && <BusinessDetails role={roles} kycid={kycid} />) ||
+                        (tab === 4 && <BankDetails role={roles} kycid={kycid} />) ||
+                        (tab === 5 && <DocumentsUpload role={roles} kycid={kycid} />) ||
+                        (tab === 6 && <SubmitKyc role={roles} kycid={kycid} />) ||
+                         <ContactInfo role={roles}  kycid={kycid} />}
                     </div>
                   </div>
                 </section>

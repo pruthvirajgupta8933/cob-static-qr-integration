@@ -12,9 +12,11 @@ export const roleBasedAccess = (pageNo) => {
 
     let roleAccessObj = roleBasedTab;
 
-    if (roleId === 14 || roleId === 15) {
-        roleAccessObj = { ...roleAccessObj, approver: true, verifier: true };
-    } else if (roleId === 3 || roleId === 13) {
+    if (roleId === 14 ) {
+        roleAccessObj = { ...roleAccessObj, verifier: true };
+    } else if (roleId === 15){
+        roleAccessObj = { ...roleAccessObj, approver: true };
+    }else if (roleId === 3 || roleId === 13) {
         roleAccessObj = { ...roleAccessObj, bank: true };
     } else if (roleId !== 3 || roleId !== 13) {
         roleAccessObj = { ...roleAccessObj, merchant: true };

@@ -65,7 +65,7 @@ function ApprovedMerchant() {
       if (res.status === 200) {
         const data = res.data;
         const docId = data[0].documentId;
- const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;
+        const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;
         setDocumentImg(ImgUrl)
       }
     })

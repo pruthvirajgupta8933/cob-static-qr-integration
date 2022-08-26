@@ -156,9 +156,15 @@ const API_LIVE = {
   Kyc_Verification_For_All_Tabs: `${kyc_url}/kyc/verify-kyc/`,
 
   /*Image Preview API */
-  Image_Preview: `${kyc_url}/kyc/get-merchant-document/`
+  Image_Preview: `${kyc_url}/kyc/get-merchant-document/`,
 
 
+  /* verify each tab of the kyc , URL FOR VERIFER*/
+  VERIFY_EACH_TAB : `${kyc_url}/kyc/verify-kyc/update/`,
+  VERIFY_FINAL_ALL : `${kyc_url}/kyc/verify-kyc/verify/`,
+  DOCUMENT_VERIFY : `${kyc_url}/kyc/upload-merchant-document/verify/`,
+  DOCUMENT_REJECT : `${kyc_url}/kyc/upload-merchant-document/reject/`,
+  // VERIFY_EACH_TAB : `${kyc_url}kyc/verify-kyc/update/`,
 
 
 };

@@ -15,9 +15,11 @@ import {
   collectionFrequency,
   collectionType,
   saveBusinessInfo,
+  verifyKycEachTab,
 } from "../../slices/kycSlice";
 
-function BusinessOverview() {
+function BusinessOverview(props) {
+  const { role, kycid } = props;
   const [data, setData] = useState([]);
   const [appUrl, setAppUrl] = useState("");
   const [notShowUrl, setnotShowUrl] = useState(false);
@@ -25,6 +27,9 @@ function BusinessOverview() {
   const [platform, setPlatform] = useState([]);
   const [CollectFreqency, setCollectFreqency] = useState([]);
   const [collection, setCollection] = useState([]);
+  const [readOnly, setReadOnly] = useState(false);
+  const [buttonText, setButtonText] = useState("Save and Next");
+  
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
 
@@ -76,11 +81,11 @@ function BusinessOverview() {
     business_category: KycList.businessCategory,
     business_model: KycList.businessModel,
     billing_label: KycList.billingLabel,
-    erp_check: ErpCheckStatus(),
+    erp_check: KycList.erpCheck === true ? "True" : "False",
     platform_id: KycList.platformId,
     company_website: KycList.companyWebsite,
-    seletcted_website_app_url: "",
-    website_app_url: KycList.successUrl,
+    seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
+    website_app_url: KycList?.website_app_url,
     collection_type_id: KycList.collectionTypeId,
     collection_frequency_id: KycList.collectionFrequencyId,
     ticket_size: KycList.ticketSize,
@@ -177,38 +182,63 @@ function BusinessOverview() {
   }, []);
 
   const onSubmit = (values) => {
-    dispatch(
-      saveBusinessInfo({
-        business_type: values.business_type,
-        business_category: values.business_category,
-        business_model: values.business_model,
-        billing_label: values.billing_label,
-        company_website: values.company_website,
-        erp_check: values.erp_check,
-        platform_id: values.platform_id,
-        collection_type_id: values.collection_type_id,
-        collection_frequency_id: values.collection_frequency_id,
-        expected_transactions: values.expected_transactions,
-        form_build: values.form_build,
-        ticket_size: values.ticket_size,
-        modified_by: loginId,
-        login_id: loginId,
-        // client_code: clientCode,
-      })
-    ).then((res) => {
-      if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
-        // console.log("This is the response", res);
-        toast.success(res.payload.message);
-      } else {
-        toast.error("Something Went Wrong! Please try again.");
+
+    if (role.merchant) {
+      dispatch(
+        saveBusinessInfo({
+          business_type: values.business_type,
+          business_category: values.business_category,
+          business_model: values.business_model,
+          billing_label: values.billing_label,
+          company_website: values.company_website,
+          erp_check: values.erp_check,
+          platform_id: values.platform_id,
+          collection_type_id: values.collection_type_id,
+          collection_frequency_id: values.collection_frequency_id,
+          expected_transactions: values.expected_transactions,
+          form_build: values.form_build,
+          ticket_size: values.ticket_size,
+          modified_by: loginId,
+          login_id: loginId,
+          is_website_url: values.seletcted_website_app_url==="Yes" ? "True" : "False",
+          website_app_url:values.website_app_url
+        })
+      ).then((res) => {
+        if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
+          // console.log("This is the response", res);
+          toast.success(res.payload.message);
+        } else {
+          toast.error("Something Went Wrong! Please try again.");
+        }
+      });
+    } else if (role.verifier) {
+      const veriferDetails = {
+        "login_id": kycid,
+        "business_info_verified_by": loginId
       }
-    });
+      dispatch(verifyKycEachTab(veriferDetails)).then(resp => {
+        resp?.payload?.business_info_status && toast.success(resp?.payload?.business_info_status);
+        resp?.payload?.detail && toast.error(resp?.payload?.detail);
+
+      }).catch((e) => { toast.error("Try Again Network Error") });
+
+    }
   };
 
   const handleShowHide = (event) => {
     const getuser = event.target.value;
     setAppUrl(getuser);
   };
+
+  useEffect(() => {
+    if (role.approver) {
+      setReadOnly(true)
+      setButtonText("Approve and Next") 
+    }else if(role.verifier){
+      setReadOnly(true)
+      setButtonText("Verify and Next")
+    }
+  }, [role])
 
   return (
     <div className="col-md-12 col-md-offset-4">
@@ -229,6 +259,7 @@ function BusinessOverview() {
                   options={data}
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -240,6 +271,7 @@ function BusinessOverview() {
                   options={businessCategory}
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -252,6 +284,7 @@ function BusinessOverview() {
                   placeholder="Business Model"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
             </div>
@@ -266,6 +299,7 @@ function BusinessOverview() {
                   placeholder="Billing Label"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -277,6 +311,7 @@ function BusinessOverview() {
                   options={Erp}
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -288,6 +323,7 @@ function BusinessOverview() {
                   options={platform}
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
             </div>
@@ -308,6 +344,7 @@ function BusinessOverview() {
                   options={WebsiteAppUrl}
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -321,6 +358,7 @@ function BusinessOverview() {
                     placeholder="Enter Website/App URL"
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
+                    readOnly={readOnly}
                   />
                 </div>
               )}
@@ -333,6 +371,7 @@ function BusinessOverview() {
                   options={collection}
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
             </div>
@@ -346,6 +385,7 @@ function BusinessOverview() {
                   options={CollectFreqency}
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
               <div className="form-group col-md-4">
@@ -357,6 +397,7 @@ function BusinessOverview() {
                   placeholder="Enter Ticket Size"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -369,6 +410,7 @@ function BusinessOverview() {
                   placeholder="Enter Ticket Size"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
               <div className="form-group col-md-4">
@@ -380,6 +422,7 @@ function BusinessOverview() {
                   placeholder="Enter Expected Transactions"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
 
@@ -391,6 +434,7 @@ function BusinessOverview() {
                   options={BuildYourForm}
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
             </div>
@@ -399,9 +443,8 @@ function BusinessOverview() {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={VerifyKycStatus === "Verified" ? true : false}
               >
-                Save and Next
+                {buttonText}
               </button>
             )}
           </Form>

@@ -1,12 +1,45 @@
-import React,{useState} from 'react'
 
-function SubmitKyc() {
+import React,{useState} from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { verifyComplete } from '../../slices/kycSlice';
+
+function SubmitKyc(props) {
+
+  const { role, kycid } = props;
 
   const [check,setCheck] = useState(false);
+
+  const dispatch = useDispatch()
+
+  const { user } = useSelector((state) => state.auth);
+  const { loginId } = user;
+
+
+
+  const verifyApprove = (val) => {
+
+    if(val==="verify") {
+
+      const data = {
+        "login_id": kycid,
+        "verified_by": loginId
+    }
+
+    dispatch(verifyComplete(data)).then((resp) => {
+      resp?.payload?.status_code===401 || resp?.payload?.status_code===404 ? toast.error(resp?.payload?.message) : toast.success(resp?.payload?.message);
+    }).catch((e) => {console.log(e)})
+    
+
+    }else{
+
+    }
+
+  }
   
   return (
     <div className="col-md-12 col-md-offset-4">   
-    <form>
+    {role.merchant ? <form>
     <div className="form-row" >
       <p class="font-weight-bold" style={{"max-width": "900px"}}>
       <input class="form-check-input" type="checkbox" value={check} id="flexCheckDefault" />
@@ -17,8 +50,23 @@ function SubmitKyc() {
       the term “Customer” shall refer to such entity and its Affiliates. If the individual accepting this Agreement does not have such authority, or does not agree with these terms and conditions, such individual must not accept this Agreement and may not
       use the Solution or the Services.</p>
     </div>
-    <button type="submit" className="btn btn-primary">Submit KYC</button>
-  </form>
+    <button type="button" className="btn btn-primary">Submit KYC</button>
+  </form> : 
+  
+  <div className="row">
+
+  <div className="col-lg-12">
+  <p>After Verify all the tab's , Kindly click on the <strong> complete verify</strong> button </p></div>
+    
+  <div className="col-lg-12">
+  
+  <button type="button" className="btn btn-sm btn-primary" onClick={()=>{verifyApprove("verify")}}>Verify Complete</button></div>
+
+  
+  </div>
+  
+  }
+    
   </div>
   )
 }
