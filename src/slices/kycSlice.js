@@ -748,6 +748,7 @@ export const kycSlice = createSlice({
       state.OtpVerificationResponseForPhone = action.payload;
 
       if (action.payload?.status === true) {
+        state.kycUserList.isEmailVerified = 1
         state.kycUserList.isContactNumberVerified = 1
       }
 

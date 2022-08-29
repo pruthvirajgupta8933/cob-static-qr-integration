@@ -153,7 +153,7 @@ const API_LIVE = {
   Kyc_Doc_List: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
 
   /* KYC VERIFICATION FOR ALL TABS */
-  Kyc_Verification_For_All_Tabs: `${kyc_url}/kyc/verify-kyc/`,
+  Kyc_Verification_For_All_Tabs: `${kyc_url}/kyc/verify-kyc`,
 
   /*Image Preview API */
   Image_Preview: `${kyc_url}/kyc/get-merchant-document/`,
