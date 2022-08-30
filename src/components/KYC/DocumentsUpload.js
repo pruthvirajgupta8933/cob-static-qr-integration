@@ -60,11 +60,12 @@ console.log(KycDocList)
       .catch((err) => console.log(err));
   }, []);
 
+  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
+
   const validationSchema = Yup.object({
     docType: Yup.string().required("Required").nullable(),
     docFile: Yup.mixed()
-      .nullable()
-      .required("Required file format PNG/JPEG/JPG/PDF"),
+      .required("Required file format PNG/JPEG/JPG/PDF").nullable()
   });
 
   const displayImages = () => {
@@ -80,7 +81,7 @@ console.log(KycDocList)
 
 
     if (role.merchant) {
-
+      console.log("eee");
       const bodyFormData = new FormData();
       bodyFormData.append("files", fieldValue);
       bodyFormData.append("login_id", loginId);
@@ -183,6 +184,7 @@ console.log(KycDocList)
       >
         {(formik) => (
           <Form>
+          {console.log(formik)}
             <ul className="list-inline  align-items-center ">
               <li className="list-inline-item align-middle  w-25">
                 <div className="form-group col-md-12">
@@ -199,7 +201,7 @@ console.log(KycDocList)
               </li>
               <li className="list-inline-item align-middle   w-25">
 
-                {role.merchantInfo ? <div className="form-group col-md-12">
+                {role.merchant ? <div className="form-group col-md-12">
                   <FormikController
                     control="file"
                     type="file"
@@ -223,23 +225,27 @@ console.log(KycDocList)
 
               </li>
               <li className="list-inline-item align-middle w-25">
-                {VerifyKycStatus === "Verified" || VerifyKycStatus === "Approved"  ? 
-                    <button className="btn btn-danger mb-0 text-white" type="button"
+                {role.merchant ?  <button className="btn btn-primary mb-0" type="button" onClick={() => { formik.handleSubmit() }}>
+                      {buttonText}
+                    </button> :<></>}
+
+                {((role.approver===true || role.verifier===true) && VerifyKycStatus !== "Approved") &&  
+                     <>
+                     {role.verifier===true ? 
+                      <button className="btn btn-primary mb-0" type="button" onClick={() => { submitAction = "submit"; formik.handleSubmit() }}>
+                      {buttonText}
+                    </button>
+                    :  
+                    <button className="btn btn-primary mb-0" type="button" onClick={() => { submitAction = "approve"; formik.handleSubmit() }}>
+                      {buttonText}
+                    </button> }
+                    
+                     <button className="btn btn-danger mb-0 text-white" type="button"
                       onClick={() => { submitAction = "reject"; formik.handleSubmit() }} >
                       Reject Document
                     </button>
- : (
-                  <>
-                    <button className="btn btn-primary mb-0" type="button" onClick={() => { submitAction = "submit"; formik.handleSubmit() }}>
-                      {buttonText}
-                    </button>
-
-                  </>
-                )}
-
-                {(role.approver===true && VerifyKycStatus !== "Approved") &&  <button className="btn btn-primary mb-0" type="button" onClick={() => { submitAction = "approve"; formik.handleSubmit() }}>
-                      {buttonText}
-                    </button> }
+                     </> 
+                     }
               </li>
               {/* <li className="list-inline-item align-middle   w-25" > Download</li> */}
             </ul>
