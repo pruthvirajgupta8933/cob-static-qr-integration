@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import NewRegistraion from './NewRegistraion';
 import VerifiedMerchant from './VerifiedMerchant';
 import ApprovedMerchant from './ApprovedMerchant';
-import SingleDocument from './SingleDocument';
+// import SingleDocument from './SingleDocument';
 // import DocumentsUpload from './DocumentsUpload';
 // import SubmitKyc from './SubmitKyc';
 
@@ -45,19 +45,14 @@ function Approver() {
               <div className="col-lg-12 mb-4 bgcolor-">
               <ul className="nav nav-tabs">
                           <li className="nav-item">
-                          <a href={()=>false} className={"nav-link " +  (tab===1? "activepaylink":"inactive") } onClick={()=>SetTab(1)} >New Registration</a>
+                          <a href={()=>false} className={"nav-link " +  (tab===1? "activepaylink":"inactive") } onClick={()=>SetTab(1)} >Pending Verification</a>
                           </li>
                           <li className="nav-item">
-                          <a href={()=>false} className={"nav-link " +  (tab===2? "activepaylink":"inactive") } onClick={()=>SetTab(2)} >Verified Merchant</a>
+                          <a href={()=>false} className={"nav-link " +  (tab===2? "activepaylink":"inactive") } onClick={()=>SetTab(2)} >Pending Approval</a>
                           </li>
                           <li className="nav-item">
-                          <a href={()=>false} className={"nav-link " +  (tab===3? "activepaylink":"inactive") }  onClick={()=>SetTab(3)}>Approved Merchant</a>
+                          <a href={()=>false} className={"nav-link " +  (tab===3? "activepaylink":"inactive") }  onClick={()=>SetTab(3)}>Approved</a>
                           </li>
-                          {/* <li className="nav-item">
-                          <a href={()=>false} className={"nav-link " +  (tab===4? "activepaylink":"inactive") } onClick={()=>SetTab(4)}>Single Document</a>
-                          </li>
-                          */}
-                         
                       </ul>
               </div>
 
@@ -73,8 +68,6 @@ function Approver() {
                       <VerifiedMerchant />)                        
                   ||  (tab === 3 &&
                       <ApprovedMerchant/>)
-                  ||  (tab === 4 &&
-                      <SingleDocument/>)
                   ||
                       <NewRegistraion />
                   }

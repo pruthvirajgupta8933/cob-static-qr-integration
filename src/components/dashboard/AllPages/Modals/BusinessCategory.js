@@ -20,6 +20,7 @@ function BusinessCategory(props) {
     const { auth } = useSelector((state) => state);
     const [rateCloneStatus, setRateCloneStatus] = useState("")
     const [businessType, setBusniessType] = useState("")
+    const [title, setTitle] = useState("")
     const [modalClose, setModalClose] = useState(true)
     // console.log(auth)
     const { user } = auth;
@@ -161,8 +162,9 @@ function BusinessCategory(props) {
                     <div className="modal-body">
                         <p>Business Type</p>
                         <div class="input-group mb-3">
+{/* //onChange={(e) => changeHandler(e)} */}
 
-                            <select className="custom-select" id="inputGroupSelect01">
+                            <select className="custom-select" id="inputGroupSelect01" onChange={(e) => {setTitle(e.target.options[e.target.options.selectedIndex].title)}} >
                                 <option selected>Select Business Type</option>
                                 <option value="COBRD" title="Department store, Real Estate, Healthcare, Food and beverage, Grocery store, Fashion">COBRD Retail</option>
                                 <option value="COBED" title="Online store, Financial Product, Media and entertainment, Tech product and services, Travel">COB E-Commerce</option>
@@ -170,10 +172,12 @@ function BusinessCategory(props) {
                                 <option value="COBEN" title="School, College, Test Prep centre">COB Education</option>
                             </select>
                         </div>
+                        <div class="input-group mb-3">
+                            <p>{title}</p>
+                        </div>
 
                     </div>
                     <div className="modal-footer">
-{/* //onChange={(e) => changeHandler(e)} */}
 
                         <Link to={`/dashboard/thanks/?planid=${subscribePlanData.applicationId}`} type="button" onClick={() => modalHandler(false)} class="btn btn-success text-white" >Subscribe</Link>
 

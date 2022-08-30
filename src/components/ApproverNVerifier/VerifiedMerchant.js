@@ -100,8 +100,8 @@ function VerifiedMerchant() {
               <th>Name</th>
               <th> Email</th>
               <th>Bank</th>
-              <th>Adhar Number</th>
-              <th>Pan card</th>
+              <th>Aadhar Number</th>
+              <th>PAN No.</th>
               <th>Status</th>
               {roles.approver===true ? <th>Approve KYC</th> : <></>}
 

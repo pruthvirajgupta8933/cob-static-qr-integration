@@ -115,10 +115,10 @@ const nPages = Math.ceil(newRegistrationData.length / pageSize)
                       <th>Merchant Id</th>
                       <th>Contact Number</th>
                       <th>Name</th>
-                      <th> Email</th>
+                      <th>Email</th>
                       <th>Bank</th>
-                      <th>Adhar Number</th>
-                      <th>PAN card</th>
+                      <th>Aadhar Number</th>
+                      <th>PAN No.</th>
                       <th>Status</th>
                       {roles.verifier ===true ? <th>Verify KYC</th> : <></>}
                       

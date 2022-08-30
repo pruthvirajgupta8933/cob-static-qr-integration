@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import API_URL from "../../config";
-import { kycForApproved, UploadLoginId } from "../../slices/kycSlice"
+import { kycForApproved } from "../../slices/kycSlice"
 
 
 function ApprovedMerchant() {
@@ -97,10 +97,8 @@ function ApprovedMerchant() {
             <th>Name</th>
             <th> Email</th>
             <th>Bank</th>
-            <th>Adhar Number</th>
-            <th>Pan card</th>
-            <th>State</th>
-            <th>Pin code</th>
+            <th>Aadhar Number</th>
+            <th>PAN No.</th>
             <th>Status</th>
             <th>View document</th>
           </tr>
@@ -116,8 +114,7 @@ function ApprovedMerchant() {
               <td>{user.bankName}</td>
               <td>{user.aadharNumber}</td>
               <td>{user.panCard}</td>
-              <td>{user.stateId}</td>
-              <td>{user.pinCode}</td>
+
               <td>{user.status}</td>
               {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
               <td>

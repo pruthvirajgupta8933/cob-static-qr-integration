@@ -223,15 +223,15 @@ console.log(KycDocList)
 
               </li>
               <li className="list-inline-item align-middle w-25">
-                {VerifyKycStatus === "Verified" || VerifyKycStatus === "Approved"  ? null : (
-                  <>
-                    <button className="btn btn-primary mb-0" type="button" onClick={() => { submitAction = "submit"; formik.handleSubmit() }}>
-                      {buttonText}
-                    </button>
-
+                {VerifyKycStatus === "Verified" || VerifyKycStatus === "Approved"  ? 
                     <button className="btn btn-danger mb-0 text-white" type="button"
                       onClick={() => { submitAction = "reject"; formik.handleSubmit() }} >
                       Reject Document
+                    </button>
+ : (
+                  <>
+                    <button className="btn btn-primary mb-0" type="button" onClick={() => { submitAction = "submit"; formik.handleSubmit() }}>
+                      {buttonText}
                     </button>
 
                   </>
