@@ -42,6 +42,7 @@ function Registration() {
   const [isActive, setActive] = useState(true);
   const [acceptTc,setAcceptTc] = useState(false);
   const [isCheck,setIsCheck] = useState(false);
+  const [btnDisable,setBtnDisable] = useState(false);
 
   const [valuesIn, setValuesIn] = useState({
     password: '',
@@ -61,6 +62,8 @@ function Registration() {
 
 
   const handleRegistration = (formData) => {
+    setBtnDisable(true)
+
     var businessType = 1 ;
     var { firstname, lastname , mobilenumber, emaill, passwordd } = formData;
     var firstName = firstname;
@@ -73,13 +76,11 @@ function Registration() {
         // console.log(formValue);
         dispatch(register({ firstName, lastName, mobileNumber, email, password,businessType}))
           .unwrap()
-          .then(() => {
-            
-            // history.push("/dashboard");
-            // window.location.reload();
-            // alert(2);
+          .then((res) => {
+            setBtnDisable(false)
           })
-          .catch(() => {
+          .catch((err) => {
+            setBtnDisable(false)
             // setLoading(false);
           });
 
@@ -423,6 +424,8 @@ return (
                                     name="commit"
                                     type="submit"
                                     defaultValue="Create Account"
+                                    disabled={btnDisable}
+
                                   >
                                     Create Account
                                   </button>

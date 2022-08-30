@@ -7,7 +7,7 @@ import reducerSubscription from './slices/subscription'
 // import KycOtpSlice from "./slices/kycOtp"
 import { kycReducer } from './slices/kycSlice';
 import ContactInfoSlice from "./slices/contactInfo"
-import veriferApprover from './slices/veriferApproverSlice';
+
 
 
 
@@ -20,9 +20,6 @@ const reducer = {
   subscription:reducerSubscription,
   kyc:kycReducer,
   ContactInfoSlice:ContactInfoSlice,
-  veriferApprover
-
-
 }
 
 const store = configureStore({

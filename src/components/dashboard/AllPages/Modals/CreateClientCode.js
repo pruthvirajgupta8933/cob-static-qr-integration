@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import API_URL from '../../../../config'
 import { createClientProfile } from '../../../../slices/auth'
+import { toast} from 'react-toastify';
+
 
 
 const initialValues = {
@@ -74,10 +76,15 @@ function CreateClientCode(props) {
         "address" : "ADD",
         "clientAuthenticationType" : "NB"
     }
+
+  
     
     dispatch(createClientProfile(data)).then(res=>{
       fnClientCodeCreated(false); // hide createClientProfile
-    }).catch(err=>{fnClientCodeCreated(false); })
+      toast.success("Client Code created successfully");
+    }).catch(err=>{fnClientCodeCreated(false);
+      toast.success("Something went wrong creating client code");
+     })
     
   }
 

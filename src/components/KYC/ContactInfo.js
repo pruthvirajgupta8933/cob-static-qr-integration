@@ -285,12 +285,10 @@ function ContactInfo(props) {
                         );
                       }}
                     >
-                      Send OTP M
+                      Send OTP
                     </a> : <></>
                   )
                 }
-
-
                 {formik?.errors?.isEmailVerified && <span className="text-danger">{formik?.errors?.isEmailVerified}</span>}
               </div>
 

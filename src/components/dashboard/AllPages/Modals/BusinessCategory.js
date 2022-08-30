@@ -162,7 +162,7 @@ function BusinessCategory(props) {
                         <p>Business Type</p>
                         <div class="input-group mb-3">
 
-                            <select className="custom-select" id="inputGroupSelect01" onChange={(e) => changeHandler(e)}>
+                            <select className="custom-select" id="inputGroupSelect01">
                                 <option selected>Select Business Type</option>
                                 <option value="COBRD" title="Department store, Real Estate, Healthcare, Food and beverage, Grocery store, Fashion">COBRD Retail</option>
                                 <option value="COBED" title="Online store, Financial Product, Media and entertainment, Tech product and services, Travel">COB E-Commerce</option>
@@ -173,7 +173,7 @@ function BusinessCategory(props) {
 
                     </div>
                     <div className="modal-footer">
-
+{/* //onChange={(e) => changeHandler(e)} */}
 
                         <Link to={`/dashboard/thanks/?planid=${subscribePlanData.applicationId}`} type="button" onClick={() => modalHandler(false)} class="btn btn-success text-white" >Subscribe</Link>
 
