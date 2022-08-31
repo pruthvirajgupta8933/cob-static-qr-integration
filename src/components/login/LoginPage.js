@@ -1,222 +1,132 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React,{useState,useEffect } from 'react'
-import HeaderPage from './HeaderPage'
-import { useDispatch, useSelector } from 'react-redux';
-import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
-import { Formik, Field, Form,ErrorMessage} from "formik";
-import { useHistory  } from "react-router-dom";
-import * as Yup from 'yup';
-import { login } from "../../slices/auth";
+import React, { useState, useEffect } from "react";
+import HeaderPage from "./HeaderPage";
+import { useDispatch, useSelector } from "react-redux";
+import sabpaisalogo from "../../assets/images/sabpaisa-logo-white.png";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
+import { isUserAlreadyLogin, login } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
-import { toast } from 'react-toastify';
-import './Login.css';
-
+import { toast } from "react-toastify";
+import "./Login.css";
 
 const INITIAL_FORM_STATE = {
-  clientUserId:'',
-  userPassword:''
+  clientUserId: "",
+  userPassword: "",
 };
 
 const FORM_VALIDATION = Yup.object().shape({
   clientUserId: Yup.string().required("Required"),
-  userPassword: Yup.string().min(6, "Password minimum length should be 6").required('Password is required')
+  userPassword: Yup.string()
+    .min(6, "Password minimum length should be 6")
+    .required("Password is required"),
 });
 
-
 function LoginPage() {
+  console.log("load components");
 
-  const isLoggedIn  = useSelector((state) => state.auth.isLoggedIn);
-  const authentication = useSelector(state => state.auth);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  const authentication = useSelector((state) => state.auth);
+  console.log(authentication);
   // const {auth} = useSelector(state => state);
 
-  const history = useHistory()
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
-  const [auth,setAuthData] = useState(authentication);
+  const [auth, setAuthData] = useState(authentication);
   // const [otp, setOtp] = useState({ otp: "" });
   const [values, setValues] = useState({
-    password: '',
+    password: "",
     showPassword: false,
   });
 
- 
   const dispatch = useDispatch();
 
   // message = message?.length>=0?message=null:message;
   // console.log(message)
-  const {user,userAlreadyLoggedIn } = auth;
+  const { user, userAlreadyLoggedIn } = auth;
   // console.log(auth)
-  if(userAlreadyLoggedIn && user?.loginStatus==='Activate'){
-    // console.log(userAlreadyLoggedIn , isLoggedIn)
-    // console.log("fn 2");
-    // console.log("user2===",user)
-    // history.push("/dashboard")  
-    console.log("login1");
-    if(user?.role==='14' || user?.role==='15'){
-      history.push("/dashboard/approver")  
-    }else{
-      history.push("/dashboard")
+
+  useEffect(() => {
+    // if user already logged in then redirect to the dashboard
+    const userLocalData = JSON.parse(localStorage.getItem("user"));
+    const isLoggedInLc =
+      userLocalData && userLocalData.loginId !== null ? true : false;
+
+    dispatch(isUserAlreadyLogin(isLoggedInLc));
+    if (
+      (userAlreadyLoggedIn || isLoggedInLc) &&
+      user?.loginStatus === "Activate"
+    ) {
+      // console.log("login1");
+      history.push("/dashboard");
     }
-      
-  }
+  }, [userAlreadyLoggedIn, user]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setAuthData(authentication);
-    // console.log('change auth data',auth);
-    // redirectRoute(auth);
-},[authentication])
+  }, [authentication]);
 
-useEffect(() => {
+  useEffect(() => {
     dispatch(clearMessage());
   }, [dispatch]);
 
+  const handleLogin = (formValue) => {
+    const { clientUserId, userPassword } = formValue;
 
+    const username = clientUserId;
+    const password = userPassword;
 
-const handleLogin = (formValue) => {
-  var { clientUserId, userPassword } = formValue;
+    setLoading(true);
+    dispatch(login({ username, password }))
+      .then((res) => {
+        // console.log(res?.payload?.user)
+        if (res?.payload?.user) {
+          const activeStatus = res?.payload?.user?.loginStatus;
+          const loginMessage = res?.payload?.user?.loginMessage;
+          if (activeStatus === "Activate" && loginMessage === "success") {
+            // console.log("user redirect to dashboard")
+            history.push("/dashboard");
+            setLoading(false);
+          } else {
+            if (loginMessage === "Pending") {
+              toast.error("User Not Verified, Please Check your email");
+            }
+            setLoading(false);
+          }
+        } else {
+          setLoading(false);
+          toast.error("Username or Email Not Correct");
+        }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong" + err?.message);
+        setLoading(false);
+        // console.log(err)
+      });
+  };
 
-  var username= clientUserId; 
-  var password= userPassword; 
+  // useEffect(() => {
 
+  //   if (isLoggedIn) {
 
-  // const enPwd = method.encryption(password);
-  // console.log("enPwd",enPwd);
-  // const dePwd = method.decryption(enPwd);
-  // console.log("dePwd",dePwd);
-  // alert(2);
+  //       console.log("login2");
+  //       console.log(user)
+  //       // if(user?.role==='14' || user?.role==='15'){
+  //       //   history.push("/dashboard/approver")
+  //       // }else{
+  //       //   history.push("/dashboard")
+  //       // }
+  //   }
 
-  setLoading(true);
-  // console.log(formValue);
-  // console.log("isLoggedIn",isLoggedIn)
-  dispatch(login({ username, password }))
+  //     // setLoading(false);
 
-  // console.log("==user==",user);
-    // .unwrap()
-    // .then(() => {
-    //   // console.log("is loggedin",isLoggedIn);
-    //   // history.push("/dashboard");
-    //   // window.location.reload();
-    // })
-    // .catch((error) => {
-    //   toast.error('Login Unsuccessful');
-    //   setLoading(false);
-    // });
-};
+  // }, [isLoggedIn])
 
-
-
-// const handleChangeForOtp = (otp) => {
-//   const regex = /^[0-9]*$/;
-//   if (!otp || regex.test(otp.toString())) {
-//     // setOtp({ otp });
-//   }
-// };
-
-
-// const redirectRoute = (authen) => {
-//   // console.log('function call route');
-//   // console.log('isLoggedIn',isLoggedIn);
-//   // console.log('authvaliduser',authen.isValidUser);
-//   if (isLoggedIn) {
-//       setOpen(false);
-//         console.log('redirect','dashboard')
-//         history.push("/dashboard");
-//     }
-//     if (authen.isValidUser==="No"){
-//         setOpen(true);
-//     }
-// };
-
-// console.log("isLoggedIn",isLoggedIn);
-// console.log("loading",loading);
-
-
-// if (authen.isValidUser==="No"){
-//     setOpen(true);
-// }
-
-// const handleClickForVerification = () => {
-//   setShowBackDrop(true);
-//   dispatch(
-//     OTPVerificationApi({
-//       //verification_code: AuthToken,
-//       otp: parseInt(otp.otp, 10),
-//       geo_location: GeoLocation,
-//     })
-//   ).then((res) => {
-//     if (res) {
-//       if (res.meta.requestStatus === "fulfilled") {
-//         if (res.payload.response_code === "1") {
-//           setOtpVerificationError("");
-//           setShowBackDrop(false);
-//           history.push("/ledger");
-//         } else if (res.payload.response_code === "0") {
-//           setShowBackDrop(false);
-//           toastConfig.errorToast(res.payload.message);
-//         }
-//       } else {
-//         setShowBackDrop(false);
-//         setShowResendCode(true);
-//       }
-//     }
-//   });
-// };
-
-useEffect(() => {
-
-  if(isLoggedIn===false){ 
-    // console.log("isLoggedIn--2",isLoggedIn)
-    // console.log(user?.loginStatus)
-    var loginMsg = "Login Unsuccessful";
-    var extMsg = "";
-    // console.log(user?.loginStatus)
-    if(user?.loginStatus==="Pending" && isLoggedIn===false){
-      extMsg = "User not verified";
-      console.log(1)
-      toast.error(loginMsg +", "+ extMsg);
-    }else{
-      toast.error(loginMsg);
-    }
-    setLoading(false);
-    
-  }
-
-  if (isLoggedIn) {
-    // setOpen(false);
-      // console.log('redirect','dashboard')
-      // console.log("user1===",user);
-      console.log("login2");
-      console.log(user)
-      if(user?.role==='14' || user?.role==='15'){
-        history.push("/dashboard/approver")  
-      }else{
-        history.push("/dashboard")
-      }
-  }
-
-    // setLoading(false);
-  
-}, [isLoggedIn])
-
-
-
-// const handleClick = () => {
-//   // setOpen(true);
-// };
-
-// const handleClose = (event, reason) => {
-//   if (reason === 'clickaway') {
-//   return;
-//   }
-
-//   // setOpen(false);
-// };
-
-
-const handleClickShowPassword = () => {
-  setValues({ ...values, showPassword: !values.showPassword });
-};
-
-
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
 
   return (
     <>
@@ -235,7 +145,7 @@ const handleClickShowPassword = () => {
                     <div className="logmod__container">
                       <ul className="logmod__tabs">
                         <li data-tabtar="lgm-2" className="current">
-                          <a href={() => false} style={{ width: "100%" }} >
+                          <a href={() => false} style={{ width: "100%" }}>
                             Login
                           </a>
                         </li>
@@ -335,14 +245,14 @@ const handleClickShowPassword = () => {
                                     </span>
                                   </div>
                                 </div>
-                                
+
                                 <div className="simform__actions">
                                   {/*<input className="sumbit" name="commit" type="sumbit" value="Log In" />*/}
                                   <button
                                     className="sumbit"
                                     type="sumbit"
                                     style={{ color: "#fff" }}
-                                    disabled = {loading ? true:false }
+                                    disabled={loading ? true : false}
                                   >
                                     {loading && (
                                       <span
@@ -352,7 +262,7 @@ const handleClickShowPassword = () => {
                                     )}
                                     LogIn
                                   </button>
-                                 {/* <span className="simform__actions-sidetext">
+                                  {/* <span className="simform__actions-sidetext">
                                      <Link
                                       className="special"
                                       role="link"
@@ -462,4 +372,4 @@ const handleClickShowPassword = () => {
   );
 }
 
-export default LoginPage
+export default LoginPage;

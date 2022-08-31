@@ -2,22 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useRouteMatch } from 'react-router-dom'
 import { checkPermissionSlice, logout } from '../../../slices/auth'
-import { enableKycTab, kycModalToggle } from '../../../slices/kycSlice';
+// import { enableKycTab, kycModalToggle } from '../../../slices/kycSlice';
+import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
 
 function SideNavbar() {
   const {auth , kyc} = useSelector((state) => state)
 
   const { user, payLinkPermission } = auth
 
-  const roleBasedTab = {
-    "approver": false,
-    "verifier": false,
-    "bank": false,
-    "merchant": false,
-  }
-
-  const [roleBasedShowTab, setRoleBasedShowTab] = useState(roleBasedTab)
-  const [showKycTabLink, setShowKycTabLink] = useState(false)
 
 
   if (user !== null && user.userAlreadyLoggedIn) {
@@ -26,13 +18,13 @@ function SideNavbar() {
     // alert("aa3");
     // history.push("/login-page");
   }
-  var { roleId, clientContactPersonName } = user;
+  var { clientContactPersonName } = user;
   let { url } = useRouteMatch();
   const dispatch = useDispatch();
   const handle = () => {
     dispatch(logout());
-    dispatch(kycModalToggle(true));
-    dispatch(enableKycTab(false));
+    // dispatch(kycModalToggle(true));
+    // dispatch(enableKycTab(false));
 
 
   }
@@ -41,41 +33,12 @@ function SideNavbar() {
     if (user.clientMerchantDetailsList?.length > 0) {
       dispatch(checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode))
     }
-    if (roleId === 14 || roleId === 15) {
-      setRoleBasedShowTab({ ...roleBasedShowTab, approver: true, verifier: true })
-    } else if (roleId === 3 || roleId === 13) {
-      setRoleBasedShowTab({ ...roleBasedShowTab, bank: true })
-    } else if (roleId !== 3 || roleId !== 13) {
-      setRoleBasedShowTab({ ...roleBasedShowTab, merchant: true })
-    } else {
-      console.log("Permission not match with these roles");
-    }
-
-    console.log(kyc.enableKycTab);
-
-    let showKYCtab = false;
-    if(roleBasedShowTab.merchant===true){
-        if(kyc.enableKycTab){
-          showKYCtab = true;
-        }
-        if(kyc?.kycVerificationForAllTabs?.is_verified === true || kyc?.kycVerificationForAllTabs?.is_approved=== true){
-          showKYCtab = true;
-        }
-
-    }else if(roleBasedShowTab.approver===true || roleBasedShowTab.verifier===true){
-        showKYCtab = false;
-      
-    }else{
-      showKYCtab = false;
-    }
-    setShowKycTabLink(showKYCtab)
-    // console.log("showKYCtab",showKYCtab)
-
-  }, [kyc])
+    
+  }, [])
 
 
+  const roleBasedShowTab = roleBasedAccess()
 
-  
 
 
   // console.log("roleBasedShowTab", roleBasedShowTab)
@@ -103,17 +66,10 @@ function SideNavbar() {
                     </li>
                     : <React.Fragment></React.Fragment>}
 
-
-                    { roleBasedShowTab?.merchant === true ? <></> : <></> }
-
-
-                  { showKycTabLink === true ?
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
                       <Link to={`${url}/kyc`} className='txt-white' ><i className="fa fa-file-o" aria-hidden="true" /> <span>Fill KYC Form</span><span class="new-tab">new</span></Link>
                     </li>
-                    :
-                    <></>
-                   }
+                  
 
                   {roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true ?
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>

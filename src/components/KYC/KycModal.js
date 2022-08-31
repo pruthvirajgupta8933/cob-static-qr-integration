@@ -1,33 +1,32 @@
 import React, { useEffect } from "react"
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useRouteMatch} from "react-router-dom"
-import { Redirect, useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { enableKycTab, kycModalToggle } from "../../slices/kycSlice";
+import { Link} from "react-router-dom"
+// import { Redirect, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+// import { enableKycTab, kycModalToggle } from "../../slices/kycSlice";
 
 export const KycModal=()=>{
   const dispatch = useDispatch();
-  const history = useHistory()
+  // const history = useHistory()
   
   const {kyc } = useSelector(state=>state)
 
     // let { url } = useRouteMatch();
     // console.log(useRouteMatch())
-    console.log("kyc.kycModalClose",kyc.kycModalClose)
   const [closeModal, setCloseModal] = useState(kyc.kycModalClose)
 
-  const enableKycButton = (val)=>{
+  // const enableKycButton = (val)=>{
    
-    dispatch(kycModalToggle(false));
-    // setCloseModal(false)
+  //   // dispatch(kycModalToggle(false));
+  //   // setCloseModal(false)
 
-    if(val==='yes'){
-      dispatch(enableKycTab(true));
-    history.push("/dashboard/kyc") 
-    }else{
-      history.push("/dashboard/product-catalogue") 
-    }
-  }
+  //   if(val==='yes'){
+  //     // dispatch(enableKycTab(true));
+  //   history.push("/dashboard/kyc") 
+  //   }else{
+  //     history.push("/dashboard/product-catalogue") 
+  //   }
+  // }
 
 
   useEffect(() => {
@@ -69,9 +68,13 @@ export const KycModal=()=>{
             </div>
             <div className="modal-footer">
             
-            <Link type="button" class="btn btn-success text-white" onClick={()=>enableKycButton("yes")}  >Yes</Link>
+            <Link type="button" class="btn btn-success text-white"
+            //  onClick={()=>enableKycButton("yes")}
+               >Yes</Link>
 
-            <Link type="button" class="btn btn-primary"  onClick={()=>enableKycButton("later")} >Later</Link>
+            <Link type="button" class="btn btn-primary"
+              // onClick={()=>enableKycButton("later")}
+               >Later</Link>
             </div>
           </div>
         </div>

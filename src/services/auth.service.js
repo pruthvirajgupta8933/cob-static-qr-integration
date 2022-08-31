@@ -41,7 +41,7 @@ const logout = () => {
   // console.log('remove user from LS');
   localStorage.removeItem("user");
   localStorage.clear();
-  // alert('logout call auth service');
+  console.log('logout call auth service');
 };
 
 

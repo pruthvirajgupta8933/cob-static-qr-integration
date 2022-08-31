@@ -458,6 +458,12 @@ export const checkPermissionSlice = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: auth,
+  reducers: { 
+    isUserAlreadyLogin : (state,action) => {
+      console.log(action)
+      // state.userAlreadyLoggedIn = 
+    }
+  },
   extraReducers: {
     [register.fulfilled]: (state, action) => {
       state.isLoggedIn = null
@@ -515,11 +521,13 @@ const authSlice = createSlice({
       state.isValidUser = '';
       state.user = null;
     },
-    [login.rejected]: (state) => {
+    [login.rejected]: (state,action) => {
       state.isLoggedIn = false;
       state.userAlreadyLoggedIn = false;
       state.isValidUser = '';
       state.user = null;
+      console.log(action)
+      // state.login_error= action.payload
     },
     [logout.fulfilled]: (state, action) => {
       state.isLoggedIn = null;
@@ -636,5 +644,7 @@ const authSlice = createSlice({
   },
 });
 
-const { reducer } = authSlice;
+
+export const { isUserAlreadyLogin} = authSlice.actions
+const { reducer  } = authSlice;
 export default reducer;
