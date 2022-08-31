@@ -15,7 +15,7 @@ const updateClientProfile = (object,clientId)=>{
 
 
 const verifyClientCode=(clientCode)=>{
-  return axios.get(BASE_URL + "//verifyClientCode/"+clientCode);
+  return axios.get(BASE_URL + "/verifyClientCode/"+clientCode);
 }
  
 

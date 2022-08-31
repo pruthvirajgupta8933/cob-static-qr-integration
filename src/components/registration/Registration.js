@@ -42,6 +42,7 @@ function Registration() {
   const [isActive, setActive] = useState(true);
   const [acceptTc,setAcceptTc] = useState(false);
   const [isCheck,setIsCheck] = useState(false);
+  const [btnDisable,setBtnDisable] = useState(false);
 
   const [valuesIn, setValuesIn] = useState({
     password: '',
@@ -61,7 +62,9 @@ function Registration() {
 
 
   const handleRegistration = (formData) => {
-    var businessType = isActive ? 1 : 2 ;
+    setBtnDisable(true)
+
+    var businessType = 1 ;
     var { firstname, lastname , mobilenumber, emaill, passwordd } = formData;
     var firstName = firstname;
     var lastName = lastname;
@@ -73,13 +76,11 @@ function Registration() {
         // console.log(formValue);
         dispatch(register({ firstName, lastName, mobileNumber, email, password,businessType}))
           .unwrap()
-          .then(() => {
-            
-            // history.push("/dashboard");
-            // window.location.reload();
-            // alert(2);
+          .then((res) => {
+            setBtnDisable(false)
           })
-          .catch(() => {
+          .catch((err) => {
+            setBtnDisable(false)
             // setLoading(false);
           });
 
@@ -172,28 +173,26 @@ return (
                 <div className="logmod__wrapper">
                   <span className="logmod__close">Close</span>
                   <div className="logmod__container">
-                    <ul className="logmod__tabs">
+                    {/* <ul className="logmod__tabs">
                       <li
                         data-tabtar="lgm-2"
                         id="lgm-2"
                         className={isActive ? "current" : "left"}
-                        onClick={toggleClass}
                       >
                         <a id="btnLeft" href={()=>false} >
-                          Individual
+                          
                         </a>
                       </li>
                       <li
                         data-tabtar="lgm-1"
                         id="lgm-1"
-                        className={isActive ? "right" : "current"}
-                        onClick={toggleClass}
+                        className={isActive ? "current" : "current"}
                       >
-                        <a id="btnRight"  href={()=>false}>
-                          Business
+                       <a id="btnLeft" href={()=>false} >
+                          
                         </a>
                       </li>
-                    </ul>
+                    </ul> */}
                     <div className="logmod__tab-wrapper">
                       <div className="show logmod__tab lgm-1">
                         <div className="logmod__heading">
@@ -425,6 +424,8 @@ return (
                                     name="commit"
                                     type="submit"
                                     defaultValue="Create Account"
+                                    disabled={btnDisable}
+
                                   >
                                     Create Account
                                   </button>

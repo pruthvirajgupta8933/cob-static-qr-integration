@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { otpVerificationForContactForEmail } from "../../../slices/kycOtp";
+import { otpVerificationForContactForEmail } from "../../../slices/kycSlice";
 import OtpInput from "react-otp-input";
 
 const MailVerificationModal = ({ show, setShow }) => {
@@ -10,7 +10,7 @@ const MailVerificationModal = ({ show, setShow }) => {
 
   const KycVerificationToken = useSelector(
     (state) =>
-      state.KycOtpSlice.OtpResponse.verification_token
+      state.kyc.OtpResponse.verification_token
   );
 
   const [otp, setOtp] = useState({ otp: "" });

@@ -1,5 +1,5 @@
 const env = "staging";
-let url,kyc_url = "";
+let url, kyc_url = "";
 
 
 if (env === "staging") {
@@ -12,9 +12,10 @@ if (env === "staging") {
 // const stagingUrl = "${url}"
 // const prodUrl = "https://cobapi.sabpaisa.-in"
 
+const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
+const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport"
+
 const API_LIVE = {
-  // AUTH_LOGIN_EMAILVERIFY : "${url}/auth-service/auth/emailVerify/",
-  // AUTH_SIGNUP : "${url}/auth-service/auth/signup",
 
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
@@ -29,49 +30,50 @@ const API_LIVE = {
   AUTH_CREATE_NEW_PASSWORD: `${url}/auth-service/account/create-password`,
   AUTH_CHANGE_PASSWORD: `${url}/auth-service/account/change-password`,
   AUTH_FORGET_PASSWORD: `${url}/auth-service/account/create-password`,
-  /** Email Verify for new register users **/
+  /* Email Verify for new register users */
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 
-  // ** Rate mapping **/
-  RATE_MAPPING_GenerateClientFormForCob: "https://adminapi.sabpaisa.in/REST/config/GenerateClientFormForCob",
+
+  EMAIL_BASE_URL : adminAPIURL + "/REST/Email/sendEmail",
+  SUCCESS_TXN_SUMMARY : adminAPIURL + "/REST/SuccessTxnSummary/",
+
+  // * Rate mapping */
+  RATE_MAPPING_GenerateClientFormForCob: adminAPIURL + "/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
-  RATE_MAPPING_CLONE : "https://adminapi.sabpaisa.in/REST/Ratemapping/cloning",
-  RATE_ENABLE_PAYLINK: "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/31",
+  RATE_MAPPING_CLONE: adminAPIURL + "/Ratemapping/cloning",
+  RATE_ENABLE_PAYLINK: adminAPIURL+"/getDataByCommonProc/getCommonData/31",
 
 
-  CHECK_PERMISSION_PAYLINK:
-    "https://adminapi.sabpaisa.in/getDataByCommonProc/getCommonData/29/",
+  CHECK_PERMISSION_PAYLINK: adminAPIURL+"/getDataByCommonProc/getCommonData/29/",
   BANK_IFSC_CODE_VERIFY: "https://ifsc.razorpay.com/",
-  BANK_LIST_NB:"https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
-  BANK_LIST_DC:"https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
-  SEND_EMAIL: "https://adminapi.sabpaisa.in/REST/Email/sendEmail",
-  SUBSCRIBE_FETCH_APP_AND_PLAN:"https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
-  FETCH_APP_AND_PLAN:"https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
-  SUBSCRIBE_SERVICE:"https://spl.sabpaisa.in/client-subscription-service/subscribe",
+  BANK_LIST_NB: "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
+  BANK_LIST_DC: "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
+  SEND_EMAIL: adminAPIURL + "/Email/sendEmail",
+  SUBSCRIBE_FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
+  FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
+  SUBSCRIBE_SERVICE: "https://spl.sabpaisa.in/client-subscription-service/subscribe",
 
   /* transaction history  */
   //old api of txn history
   /*https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2} */
 
-  GET_PAYMENT_STATUS_LIST:
-    "https://adminapi.sabpaisa.in/REST/admin/getPaymentStatusList",
-  PAY_MODE_LIST: "https://adminapi.sabpaisa.in/REST/paymode/paymodeList",
-  GetMerchantTxnHistory:
-    "https://adminapi.sabpaisa.in/REST/GetMerchantTxnHistory",
+  GET_PAYMENT_STATUS_LIST: adminAPIURL + "/REST/admin/getPaymentStatusList",
+  PAY_MODE_LIST: adminAPIURL + "/REST/paymode/paymodeList",
+  GetMerchantTxnHistory: adminAPIURL + "/REST/GetMerchantTxnHistory",
+   /* Settlement Report */
+   SettlementReport : reportAPIURL+"/REST/GetSettledTxnHistory",
 
   /* Transaction Enquiry */
-  VIEW_TXN: "https://adminapi.sabpaisa.in/Enquiry/ViewTxn",
+  VIEW_TXN: adminAPIURL+"/Enquiry/ViewTxn",
 
   /* Settlement Report */
-  GET_FILE_NAME:
-    "https://adminapi.sabpaisa.in/REST/settlementReport/getFileName/",
+  GET_FILE_NAME: adminAPIURL + "/settlementReport/getFileName/",
 
-  /** PAYLINK **/
+  /* PAYLINK */
   GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
   SMART_UPLOAD: "https://paybylink.sabpaisa.in/paymentlink/smartupload",
   EDIT_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/editCustomer/",
-  GET_CUSTOMER_TYPE:
-    "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
+  GET_CUSTOMER_TYPE: "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
   ADD_LINK: "https://paybylink.sabpaisa.in/paymentlink/addLink",
   ADD_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/addCustomers",
   DELETE_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/deleteCustomer",
@@ -79,31 +81,26 @@ const API_LIVE = {
   GET_REPORTS: "https://paybylink.sabpaisa.in/paymentlink/getReports/",
 
   /** GET MANDATE REG. STATUS */
-  MANDATE_REGISTRATION_STATUS:
-    "https://subscription.sabpaisa.in/subscription/npci/registration/status/",
+  MANDATE_REGISTRATION_STATUS: "https://subscription.sabpaisa.in/subscription/npci/registration/status/",
 
   /** RECEIPT MB */
-  RECEIPT_MB: "https://adminapi.sabpaisa.in/Receipt/ReceiptMB/",
+  RECEIPT_MB: adminAPIURL+"/Receipt/ReceiptMB/",
 
   /** FETCH_DATA_FOR_WACOE */
   FETCH_DATA_FOR_WACOE: "https://qwikforms.in/QwikForms/fetchDataForWACOE",
 
   //** ReceiptForWalchand */
-  RECEIPT_FOR_WALCHAND:
-    "https://adminapi.sabpaisa.in/Receipt/ReceiptForWalchand/",
+  RECEIPT_FOR_WALCHAND: adminAPIURL+"/Receipt/ReceiptForWalchand/",
 
   /** SEARCH_BY_TRANSID */
-  SEARCH_BY_TRANSID:
-    "https://adminapi.sabpaisa.in/REST/transaction/searchByTransId/",
+  SEARCH_BY_TRANSID: adminAPIURL + "/transaction/searchByTransId/",
 
   /** NODE SERVER URL */
   NODE_PG_URL: "https://cob-node-server.herokuapp.com/getPg/pg-url/",
-  MANDATE_REGISTRATION:
-    "https://subscription.sabpaisa.in/subscription/mandateRegistration",
+  MANDATE_REGISTRATION: "https://subscription.sabpaisa.in/subscription/mandateRegistration",
 
-  /** ViewTxnEnqMultiParam **/
-  ViewTxnEnqMultiParam:
-    "https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam",
+  /* ViewTxnEnqMultiParam */
+  ViewTxnEnqMultiParam: adminAPIURL+"/Enquiry/ViewTxnEnqMultiParam",
 
   /**Kyc DocumentsUploads */
   DocumentsUpload: `${kyc_url}/kyc/document-type/`, //get APi
@@ -114,53 +111,61 @@ const API_LIVE = {
   Get_ALL_Collection_Type: `${kyc_url}/kyc/get-all-collection-type`,
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
   Business_overview_state_: `${kyc_url}/kyc/get-all-state-details/`,
-  Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
 
   /////////////////////////Kyc approver 
   /* For pending*/
-  KYC_FOR_PENDING:`${kyc_url}/kyc/get-merchant-data/?search=pending&order_by=-merchantId`,
-  KYC_FOR_VERIFIED:`${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
-  KYC_FOR_APPROVED:`${kyc_url}/kyc/get-merchant-data/?search=approved&order_by=-merchantId`,
-  KYC_FOR_COMPLETED:`${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
-   MERCHANT_DOCUMENT:`${kyc_url}/kyc/get-merchant-document`,
-  DOCUMENT_BY_LOGINID:`${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
-
-  
-    /** Contact Information */
-    Save_General_Info:`${kyc_url}/kyc/save-general-info/`,
-
-    //==>For Verfifying Contact Info Ist Phase(Send OTP and Verify OTP)
-    Send_OTP:`${kyc_url}/kyc/send-otp/`,
-    //==>2nd Phase
-    Verify_OTP:`${kyc_url}/kyc/verify-otp/`,
+  KYC_FOR_PENDING: `${kyc_url}/kyc/get-merchant-data/?search=pending&order_by=-merchantId`,
+  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
+  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=approved&order_by=-merchantId`,
+  KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
+  MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
+  DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
 
 
-    /** Bank Details One OF KYC TAB  */
+  /** Contact Information */
+  Save_General_Info: `${kyc_url}/kyc/save-general-info/`,
 
-    Save_Settlement_Info: `${kyc_url}/kyc/save-settlement-info/`,
+  //==>For Verfifying Contact Info Ist Phase(Send OTP and Verify OTP)
+  Send_OTP: `${kyc_url}/kyc/send-otp/`,
+  //==>2nd Phase
+  Verify_OTP: `${kyc_url}/kyc/verify-otp/`,
 
-    //Get All Bnak Names in Kyc Bank Details Dropdown Tab
-    GET_ALL_BANK_NAMES: `${kyc_url}/kyc/get-all-bank-name/`,
+
+  /** Bank Details One OF KYC TAB  */
+
+  Save_Settlement_Info: `${kyc_url}/kyc/save-settlement-info/`,
+
+  //Get All Bnak Names in Kyc Bank Details Dropdown Tab
+  GET_ALL_BANK_NAMES: `${kyc_url}/kyc/get-all-bank-name/`,
 
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
-  Business_Category : `${kyc_url}/kyc/get-all-business-category/`,
+  Business_Category: `${kyc_url}/kyc/get-all-business-category/`,
   SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,
 
- /*KYC USER LIST */
- Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`,
+  /*KYC USER LIST */
+  Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`,
 
   /*KYC Document Upload LIST */
   Kyc_Doc_List: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
 
-   /* KYC VERIFICATION FOR ALL TABS */
-  Kyc_Verification_For_All_Tabs: `${kyc_url}/kyc/verify-kyc/1/`,
+  /* KYC VERIFICATION FOR ALL TABS */
+  Kyc_Verification_For_All_Tabs: `${kyc_url}/kyc/verify-kyc`,
 
   /*Image Preview API */
-  Image_Preview:`${kyc_url}/kyc/get-merchant-document/`
+  Image_Preview: `${kyc_url}/kyc/get-merchant-document/`,
 
 
+  /* verify each tab of the kyc , URL FOR VERIFER*/
+  VERIFY_EACH_TAB: `${kyc_url}/kyc/verify-kyc/update/`,
+  VERIFY_FINAL_ALL: `${kyc_url}/kyc/verify-kyc/verify/`,
+  DOCUMENT_VERIFY: `${kyc_url}/kyc/upload-merchant-document/verify/`,
+  DOCUMENT_REJECT: `${kyc_url}/kyc/upload-merchant-document/reject/`,
+  APPROVE_DOCUMENT: `${kyc_url}/kyc/upload-merchant-document/approve/`,
+  APPROVE_KYC: `${kyc_url}/kyc/verify-kyc/approve/`
 
- 
+  // VERIFY_EACH_TAB : `${kyc_url}kyc/verify-kyc/update/`,
+
+
 };
 
 const API_URL = API_LIVE;

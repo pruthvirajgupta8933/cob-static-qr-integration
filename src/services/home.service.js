@@ -1,19 +1,14 @@
 import axios from "axios";
-
-const BASE_URL = "https://adminapi.sabpaisa.in";
+import API_URL from "../config";
 
 const successTxnSummary = (fromdate, todate, clientcode) => {
-  return axios.post(BASE_URL + "/REST/SuccessTxnSummary/", {
+  return axios.post(API_URL.SUCCESS_TXN_SUMMARY, {
     fromdate,
     todate,
     clientcode,
   });
 };
 
-
-// const getPaymentStatusList = ()=>{
-//   return axios.get('https://adminapi.sabpaisa.in/REST/admin/getPaymentStatusList');
-// }
 
 
 const homeService = {

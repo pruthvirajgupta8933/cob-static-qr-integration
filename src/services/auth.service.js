@@ -1,6 +1,7 @@
 import axios from "axios";
 import API_URL from "../config";
 
+
 // const SIGNUP_URL = "https://cobapi.sabpaisa.in/auth-service/auth/";
 
 const register = (firstName, lastName, mobileNumber, email, password,businessType) => {
@@ -40,16 +41,15 @@ const logout = () => {
   // console.log('remove user from LS');
   localStorage.removeItem("user");
   localStorage.clear();
-  // alert('logout call auth service');
+  console.log('logout call auth service');
 };
 
 
 
 // Home,
-const EMAIL_BASE_URL = "https://adminapi.sabpaisa.in";
 
 const sendEmail = (toEmail, toCc, subject, msg) => {
-  return axios.post(EMAIL_BASE_URL + "/REST/Email/sendEmail", {
+  return axios.post(API_URL.EMAIL_BASE_URL, {
     toEmail,
     toCc,
     subject,

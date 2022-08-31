@@ -1,30 +1,37 @@
 /* eslint-disable array-callback-return */
 
-import React,{useEffect,useState} from 'react';
-import { useDispatch,useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { successTxnSummary, subscriptionplan, clearSuccessTxnsummary } from '../../../slices/dashboardSlice';
 import ProgressBar from '../../../_components/reuseable_components/ProgressBar';
-import { useRouteMatch, Redirect} from 'react-router-dom'
+import { useRouteMatch, Redirect } from 'react-router-dom'
 import '../css/Home.css';
-import { KycModal } from '../../KYC/KycModal';
+// import { KycModal } from '../../KYC/KycModal';
+import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
+import { kycModalToggle, kycVerificationForTabs } from '../../../slices/kycSlice';
+import KycAlert from '../../KYC/KycAlert';
 
 
 
 
 function Home() {
   // console.log("home page call");
+  const roles = roleBasedAccess();
+
+
   const dispatch = useDispatch();
   let { path } = useRouteMatch();
 
   const [clientCode, setClientCode] = useState("1");
-  
+
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
-  const {dashboard,auth} = useSelector((state)=>state);
+  // const [roleType, setRoleType] = useState(roles);
+  const { dashboard, auth, kyc } = useSelector((state) => state);
   // console.log("dashboard",dashboard)
-  const { isLoading , successTxnsumry } = dashboard;
-  const {user} = auth;
+  const { isLoading, successTxnsumry } = dashboard;
+  const { user } = auth;
 
   const currentDate = new Date().toJSON().slice(0, 10);
   const fromDate = currentDate;
@@ -36,176 +43,124 @@ function Home() {
 
   // dispatch action when client code change
   useEffect(() => {
-    const objParam = {fromDate,toDate,clientCode};
+    const objParam = { fromDate, toDate, clientCode };
     var DefaulttxnList = [];
     SetTxnList(DefaulttxnList);
     SetShowData(DefaulttxnList);
     // console.log(objParam);
     dispatch(subscriptionplan);
     dispatch(successTxnSummary(objParam));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    dispatch(
+      kycVerificationForTabs({
+        login_id: user?.loginId,
+      })
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientCode]);
 
 
   //make client code array
-  if(user?.clientMerchantDetailsList!==null && user.clientMerchantDetailsList?.length>0){
-        clientCodeArr = user.clientMerchantDetailsList.map((item)=>{ 
+  if (user?.clientMerchantDetailsList !== null && user.clientMerchantDetailsList?.length > 0) {
+    clientCodeArr = user.clientMerchantDetailsList.map((item) => {
       return item.clientCode;
-      });
-  }else{
-        clientCodeArr = []
+    });
+  } else {
+    clientCodeArr = []
   }
 
-  
+
 
   // filter api response data with client code
   useEffect(() => {
-    if(successTxnsumry?.length>0){
-       // eslint-disable-next-line array-callback-return
-       var filterData = successTxnsumry?.filter((txnsummery)=>{
-      if(clientCodeArr.includes(txnsummery.clientCode)){
-        return clientCodeArr.includes(txnsummery.clientCode);
+    if (successTxnsumry?.length > 0) {
+      // eslint-disable-next-line array-callback-return
+      var filterData = successTxnsumry?.filter((txnsummery) => {
+        if (clientCodeArr.includes(txnsummery.clientCode)) {
+          return clientCodeArr.includes(txnsummery.clientCode);
         }
       });
       SetTxnList(filterData);
       SetShowData(filterData);
-    }else{
+    } else {
       //successTxnsumry=[];
     }
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [successTxnsumry])
-  
+
 
   useEffect(() => {
-    search!==''
-    ? SetShowData(txnList.filter((txnItme)=>
-    Object.values(txnItme).join(" ").toLowerCase().includes(search.toLocaleLowerCase())))
-    : SetShowData(txnList);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    search !== ''
+      ? SetShowData(txnList.filter((txnItme) =>
+        Object.values(txnItme).join(" ").toLowerCase().includes(search.toLocaleLowerCase())))
+      : SetShowData(txnList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
-  
+
 
   useEffect(() => {
+
     return () => {
       dispatch(clearSuccessTxnsummary());
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  
 
-  const handleChange= (e)=>{
-        SetSearch(e);
+
+  const handleChange = (e) => {
+    SetSearch(e);
   }
 
- 
-  if(user.roleId!==3 && user.roleId!==13){
-    if(user.clientMerchantDetailsList===null){
+
+
+
+  if (roles.merchant === true) {
+    if (user.clientMerchantDetailsList === null) {
       return <Redirect to={`${path}/profile`} />
     }
-  } 
+  } else if (roles.approver === true || roles.verifier === true) {
+    return <Redirect to={`${path}/approver`} />
+  }
 
 
-showData.map((item)=>{
-      totalSuccessTxn += item.noOfTransaction;
-      totalAmt +=item.payeeamount
-})
+  showData.map((item) => {
+    totalSuccessTxn += item.noOfTransaction;
+    totalAmt += item.payeeamount
+  })
 
-    return (
-      <section className="ant-layout">
-        <KycModal/>
-        <div className="profileBarStatus">
-        </div>
-        <main className="gx-layout-content ant-layout-content">
-          <div className="gx-main-content-wrapper">
-            <div className="right_layout my_account_wrapper right_side_heading">
-              <h1 className="m-b-sm gx-float-left">Home</h1>
-            </div>
-            <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
-              <div className="container-fluid">
-                <div className="row bgcolor">
-                  <div className="col-lg-6 mrg-btm- bgcolor-">
-                    <label>Successful Transaction Summary</label>
-                    <select
-                      className="ant-input"
-                      value={clientCode}
-                      onChange={(e) => setClientCode(e.currentTarget.value)}
-                    >
-                      <option defaultValue="selected" value="1">
-                        Today
-                      </option>
-                      <option value="2">Yesterday</option>
-                      <option value="3">Last 7 Days</option>
-                      <option value="4">Current Month</option>
-                      <option value="5">Last Month</option>
-                    </select>
-                  </div>
+  // console.log(kyc?.kycVerificationForAllTabs?.is_verified)
 
-                  {txnList.length > 0 ? (
-                    <div className="col-lg-6 mrg-btm-">
-                      <label>Search</label>
-                      <input
-                        type="text"
-                        className="ant-input"
-                        onChange={(e) => {
-                          handleChange(e.currentTarget.value);
-                        }}
-                        placeholder="Search from here"
-                      />
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-                  <div className="gap">
-                    <p>
-                      Total Successful Transactions: {totalSuccessTxn} | Total
-                      Amount {`(INR)`}: {totalAmt}{" "}
-                    </p>
-                  </div>
-                  <table
-                    cellspaccing={0}
-                    cellPadding={10}
-                    border={0}
-                    width="100%"
-                    className="tables"
-                  >
-                    <tbody>
-                      <tr>
-                        <th>Sr. No.</th>
-                        <th>Client's Name</th>
-                        <th>Transactions</th>
-                        <th>Amount</th>
-                      </tr>
-                      {showData &&
-                        !isLoading &&
-                        showData.map((item, i) => {
-                          return (
-                            <tr key={i}>
-                              <td>{i + 1}</td>
-                              <td>{item.clientName}</td>
-                              <td>{item.noOfTransaction}</td>
-                              <td>Rs {item.payeeamount}</td>
-                            </tr>
-                          );
-                        })}
-                    </tbody>
-                  </table>
 
-                  {showData.length <= 0 && isLoading === false ? (
-                    <div className="showMsg"> No Record Found</div>
-                  ) : (
-                    <></>
-                  )}
+  return (
+    <section className="ant-layout">
+{/* {console.log("kyc?.kycVerificationForAllTabs?.is_verified",kyc?.kycVerificationForAllTabs?.is_verified)} */}
+      {/* {kyc?.kycVerificationForAllTabs?.is_verified === false ? <KycModal /> : <></>} */}
 
-                  {isLoading ? <ProgressBar /> : <></>}
-                </div>
-              </div>
-            </section>
+      <div className="profileBarStatus">
+      </div>
+     
+      <main className="gx-layout-content ant-layout-content">
+        <div className="gx-main-content-wrapper">
+          <div className="right_layout my_account_wrapper right_side_heading">
+            <h1 className="m-b-sm gx-float-left">Dashboard</h1>
           </div>
-          
-        </main>
-      </section>
-    );
+          <section className="features8 cid-sg6XYTl25a flleft" id="features08-3" style={{width: '100%'}}>
+            <div className="container-fluid">
+              <div className="row bgcolor">
+                <div className="col-lg-12">
+
+                <KycAlert />
+
+                </div>
+
+              </div>
+            </div>
+          </section>
+        </div>
+
+      </main>
+    </section>
+  );
 }
 
 export default Home
