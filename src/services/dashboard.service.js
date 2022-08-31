@@ -2,9 +2,9 @@ import axios from "axios";
 import API_URL from "../config";
 
 // Home - successTxnSummary 
-const BASE_URL = "https://adminapi.sabpaisa.in";
+
 const successTxnSummary = (fromdate, todate, clientcode) => {
-  return axios.post(BASE_URL + "/REST/SuccessTxnSummary/", {
+  return axios.post(API_URL.SUCCESS_TXN_SUMMARY, {
     fromdate,
     todate,
     clientcode,
@@ -13,10 +13,8 @@ const successTxnSummary = (fromdate, todate, clientcode) => {
   }).catch(err=>console.log(err));
 };
 
-const SUBSCRIPTION_URL = "https://spl.sabpaisa.in/client-subscription-service/";
-
 const subscriptionplan = () => {
-  return axios.get(SUBSCRIPTION_URL + "fetchAppAndPlan")
+  return axios.get(API_URL.FETCH_APP_AND_PLAN)
   .then((response) => {
     // console.log("subscribe data - service", response )
     if (response.data) {
@@ -29,7 +27,7 @@ const subscriptionplan = () => {
 };
 
 const subscriptionPlanDetail = () => {
-    return axios.post(SUBSCRIPTION_URL + "subscribe")
+    return axios.post(API_URL.SUBSCRIBE_SERVICE)
     .then((response) => {
       if (response.data) {
         localStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
