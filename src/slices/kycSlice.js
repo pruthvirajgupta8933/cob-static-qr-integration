@@ -4,33 +4,33 @@ import axios from "axios";
 
 const initialState = {
 
-  documentByloginId:{
-       documentId:"",
-        name: "",
-        filePath: "",
-        isApproved: false,
-        approvedDate: null,
-        approvedBy: null,
-        isLatest: true,
-        createdDate: "",
-        createdBy: "",
-        modifiedDate: "",
-        modifiedBy: "",
-        status: "",
-        comment: null,
-        merchant: "",
-        type: ""
+  documentByloginId: {
+    documentId: "",
+    name: "",
+    filePath: "",
+    isApproved: false,
+    approvedDate: null,
+    approvedBy: null,
+    isLatest: true,
+    createdDate: "",
+    createdBy: "",
+    modifiedDate: "",
+    modifiedBy: "",
+    status: "",
+    comment: null,
+    merchant: "",
+    type: ""
 
   },
 
 
-  kycApproved:{
-    count: null, 
-    next: null, 
+  kycApproved: {
+    count: null,
+    next: null,
     previous: null,
-     results:null
+    results: null
   },
-  kycUserList:{
+  kycUserList: {
     merchantId: "",
     name: "",
     emailId: "",
@@ -87,7 +87,7 @@ const initialState = {
     clientType: "",
     parentClientId: "",
     businessCategory: "",
-    businessModel:"",
+    businessModel: "",
     billingLabel: "",
     erpCheck: null,
     platformId: "",
@@ -99,7 +99,7 @@ const initialState = {
     signatoryPAN: "",
     cityId: "",
     operationalAddress: "",
-    merchant_account_details:"",
+    merchant_account_details: "",
 
   },
   KycDocUpload: {
@@ -139,290 +139,291 @@ const initialState = {
     business_info_verified_by: null,
     settlement_info_verified_by: null
   },
-    businessType:[],
-    busiCategory:[],
-    platformType:[],
-    collectionFrequency:[],
-    collectionType:[],
-    saveBusinessInfo:[],
-    businessOverviewState:[],
-    saveMerchantInfo:[],
-    documentsUpload:[],
-    merchantInfo:[],
-    kycBankNames :[],
-    saveMerchantBankDetais:[],
-    kycForPending:[],
-    kycForVerified:[],
-    kycForApproved:[],
-    kycForCompleted:[],
-    UploadLoginId:[]
- }
+  businessType: [],
+  busiCategory: [],
+  platformType: [],
+  collectionFrequency: [],
+  collectionType: [],
+  saveBusinessInfo: [],
+  businessOverviewState: [],
+  saveMerchantInfo: [],
+  documentsUpload: [],
+  merchantInfo: [],
+  kycBankNames: [],
+  saveMerchantBankDetais: [],
+  kycForPending: [],
+  kycForVerified: [],
+  kycForApproved: [],
+  kycForCompleted: [],
+  UploadLoginId: [],
+  enableKycTab : false,
+  kycModalClose:true,
+}
 
 //--------------Kyc BusinessType get api (BusinessOverview Tab)---------------------
- export const businessType = createAsyncThunk(
-    "kyc/businessType",
-    async (requestParam) => {
-      const response = await axios.get(
-        `${API_URL.Business_type}`,
-        {
-          headers: {
-            
-          }
-        }
-      )
-      .catch((error) => {
-        return error.response;
-      });
-      // console.log(response)
-      return response.data;
-    }
-  );
-  ///////////////////////// For business category api
-  export const busiCategory= createAsyncThunk(
-    "kyc/busiCategory",
-    async (requestParam) => {
-      const response = await axios.get(
-        `${API_URL.Business_Category}`,
-        {
-          headers: {
-           
-          }
-        }
-      )
-      .catch((error) => {
-        return error.response;
-      });
-      // console.log(response)
-      return response.data;
-    }
-  );
-  ////////////////////////////////////////////////// For platform
-  export const platformType= createAsyncThunk(
-    "kyc/platformType",
-    async (requestParam) => {
-      const response = await axios.get(
-        `${API_URL.Platform_type}`,
-        {
-          headers: {
-           
-          }
-        }
-      )
-      .catch((error) => {
-        return error.response;
-      });
-      // console.log(response)
-      return response.data;
-    }
-  );
+export const businessType = createAsyncThunk(
+  "kyc/businessType",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.Business_type}`,
+      {
+        headers: {
 
-  /////////////////////////////////////////////// For collection frequency
-  export const collectionFrequency= createAsyncThunk(
-    "kyc/platformType",
-    async (requestParam) => {
-      const response = await axios.get(
-        `${API_URL.Collection_frequency}`,
-        {
-          headers: {
-           
-          }
         }
-      )
+      }
+    )
       .catch((error) => {
         return error.response;
       });
-      // console.log(response)
-      return response.data;
-    }
-  );
+    // console.log(response)
+    return response.data;
+  }
+);
+///////////////////////// For business category api
+export const busiCategory = createAsyncThunk(
+  "kyc/busiCategory",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.Business_Category}`,
+      {
+        headers: {
+
+        }
+      }
+    )
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
+////////////////////////////////////////////////// For platform
+export const platformType = createAsyncThunk(
+  "kyc/platformType",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.Platform_type}`,
+      {
+        headers: {
+
+        }
+      }
+    )
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
+
+/////////////////////////////////////////////// For collection frequency
+export const collectionFrequency = createAsyncThunk(
+  "kyc/platformType",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.Collection_frequency}`,
+      {
+        headers: {
+
+        }
+      }
+    )
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
 
 ////////////////////////////////////////////////Get all collection type
-export const collectionType= createAsyncThunk(
-    "kyc/collectionType",
-    async (requestParam) => {
-      const response = await axios.get(
-        `${API_URL. Get_ALL_Collection_Type}`,
-        {
-          headers: {
-           
-          }
+export const collectionType = createAsyncThunk(
+  "kyc/collectionType",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.Get_ALL_Collection_Type}`,
+      {
+        headers: {
+
         }
-      )
+      }
+    )
       .catch((error) => {
         return error.response;
       });
-     
-      return response.data;
-    }
-  );
-  //////////////////////////////////////////////////// Put api for save business info
-  export const saveBusinessInfo= createAsyncThunk(
-    "kyc/collectionType",
-    async (requestParam) => {
-      const response = await axios.post(
-        `${API_URL.save_Business_Info}`,
-        requestParam
-     
-      )
-      .catch((error) => {
-        return error.response;
-      });
-     
-      return response.data;
-    }
-  );
 
-  /////////////////////////////// Get APi for BusinessDetails Tab(For state)
-  export const businessOverviewState= createAsyncThunk(
-    "kyc/businessOverviewState",
-    async (requestParam) => {
-      const response = await axios.get(
-        `${API_URL.Business_overview_state_}`,
-        {
-          headers: {
-           
-          }
+    return response.data;
+  }
+);
+//////////////////////////////////////////////////// Put api for save business info
+export const saveBusinessInfo = createAsyncThunk(
+  "kyc/collectionType",
+  async (requestParam) => {
+    const response = await axios.post(
+      `${API_URL.save_Business_Info}`,
+      requestParam
+
+    )
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+
+/////////////////////////////// Get APi for BusinessDetails Tab(For state)
+export const businessOverviewState = createAsyncThunk(
+  "kyc/businessOverviewState",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.Business_overview_state_}`,
+      {
+        headers: {
+
         }
-      )
+      }
+    )
       .catch((error) => {
         return error.response;
       });
-     
-      return response.data;
-    }
-  );
 
-  ///////////////////////////////////// Put APi for SAVE_MERCHANT_INFO (BusinessDetails Tab)
+    return response.data;
+  }
+);
 
-  export const saveMerchantInfo= createAsyncThunk(
-    "kyc/collectionType",
-    async (requestParam) => {
-      const response = await axios.post(
-        `${API_URL.SAVE_MERCHANT_INFO}`,
-        requestParam
-     
-      )
+///////////////////////////////////// Put APi for SAVE_MERCHANT_INFO (BusinessDetails Tab)
+
+export const saveMerchantInfo = createAsyncThunk(
+  "kyc/collectionType",
+  async (requestParam) => {
+    const response = await axios.post(
+      `${API_URL.SAVE_MERCHANT_INFO}`,
+      requestParam
+
+    )
       .catch((error) => {
         return error.response;
       });
-     
-      return response.data;
-    }
-  );
+
+    return response.data;
+  }
+);
 /////////////////////////////// Get api for Documents Uploads Tab
 
-export const documentsUpload= createAsyncThunk(
-    "kyc/documentsUpload",
-    async (requestParam) => {
-      const response = await axios.get(
-        `${API_URL.DocumentsUpload}`,
-        {
-          headers: {
-           
-          }
+export const documentsUpload = createAsyncThunk(
+  "kyc/documentsUpload",
+  async (requestParam) => {
+    const response = await axios.get(
+      `${API_URL.DocumentsUpload}`,
+      {
+        headers: {
+
         }
-      )
+      }
+    )
       .catch((error) => {
         return error.response;
       });
-     
-      return response.data;
-    }
-  );
 
-  ////////////////////////////////// .Upload_Merchant_document//////////
+    return response.data;
+  }
+);
 
-  export const merchantInfo= createAsyncThunk(
-    "kyc/merchantInfo",
-    async (requestParam) => {
-      const response = await axios.post(
-        `${API_URL.Upload_Merchant_document}`,
-        requestParam
-      )
+////////////////////////////////// .Upload_Merchant_document//////////
+
+export const merchantInfo = createAsyncThunk(
+  "kyc/merchantInfo",
+  async (requestParam) => {
+    const response = await axios.post(
+      `${API_URL.Upload_Merchant_document}`,
+      requestParam
+    )
       .catch((error) => {
         return error.response;
       });
-     
-      return response.data;
-    }
-  );
 
-  ///////////////FOR KYC USER LIST (THATS COMING STRAIGHT FROM THIS API)/////////////////////)
+    return response.data;
+  }
+);
+
+///////////////FOR KYC USER LIST (THATS COMING STRAIGHT FROM THIS API)/////////////////////)
 
 
-  export const kycUserList= createAsyncThunk(
-    "kyc/kycUserList",
-    async (requestParam) => {
-      const response = await axios.post(
-        `${API_URL.Kyc_User_List}`,
-        requestParam
-      )
+export const kycUserList = createAsyncThunk(
+  "kyc/kycUserList",
+  async (requestParam) => {
+    const response = await axios.post(
+      `${API_URL.Kyc_User_List}`,
+      requestParam
+    )
       .catch((error) => {
         return error.response;
       });
-     
-      return response.data;
-    }
-  );
+
+    return response.data;
+  }
+);
 
 
-  //------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 
-  //--------------------For KYC DOCUMENT UPLOAD DATA STRAIGHT FROM THIS API -------------------
+//--------------------For KYC DOCUMENT UPLOAD DATA STRAIGHT FROM THIS API -------------------
 
-  export const kycDocumentUploadList= createAsyncThunk(
-    "kyc/kycDocumentUploadList",
-    async (requestParam) => {
-      const response = await axios.post(
-        `${API_URL.Kyc_Doc_List}`,
-        requestParam,
-      )
+export const kycDocumentUploadList = createAsyncThunk(
+  "kyc/kycDocumentUploadList",
+  async (requestParam) => {
+    const response = await axios.post(
+      `${API_URL.Kyc_Doc_List}`,
+      requestParam,
+    )
       .catch((error) => {
         return error.response;
       });
-     
-      return response.data;
-    }
-  );
-  //----------------------------------------------------------------------------
+
+    return response.data;
+  }
+);
+//----------------------------------------------------------------------------
 
 
-   //--------------------For KYC Verification For All Tabs -----------------------
+//--------------------For KYC Verification For All Tabs -----------------------
 
-   export const kycVerificationForTabs= createAsyncThunk(
-    "kyc/kycVerificationForTabs",
-    async (requestParam) => {
-      const response = await axios.get(
-        `${API_URL.Kyc_Verification_For_All_Tabs}`, 
-      )
+export const kycVerificationForTabs = createAsyncThunk(
+  "kyc/kycVerificationForTabs",
+  async (requestParam) => {
+
+    const response = await axios.get(`${API_URL.Kyc_Verification_For_All_Tabs}/${requestParam?.login_id}`)
       .catch((error) => {
         return error.response;
       });
-     
-      return response.data;
-    }
-  );
-  //--------------------------------------------------------------------------------
+
+    return response.data;
+  }
+);
+//--------------------------------------------------------------------------------
 
 
 
 
 
-   //--------------KYC BANK NAMES --------------------- //
- export const kycBankNames = createAsyncThunk(
+//--------------KYC BANK NAMES --------------------- //
+export const kycBankNames = createAsyncThunk(
   "kyc/kycBankNames",
   async (requestParam) => {
     const response = await axios.get(
       `${API_URL.GET_ALL_BANK_NAMES}`,
       {
         headers: {
-          
+
         }
       }
     )
-    .catch((error) => {
-      return error.response;
-    });
+      .catch((error) => {
+        return error.response;
+      });
     // console.log(response)
     return response.data;
   }
@@ -433,7 +434,7 @@ export const documentsUpload= createAsyncThunk(
 
 
 //----For Saving Merchant Bank Details-----------------// 
-export const saveMerchantBankDetais= createAsyncThunk(
+export const saveMerchantBankDetais = createAsyncThunk(
   "kyc/saveMerchantBankDetais",
   async (requestParam) => {
     const response = await axios.put(
@@ -442,202 +443,209 @@ export const saveMerchantBankDetais= createAsyncThunk(
 
       {
         headers: {
-         
+
         }
       }
     )
-    .catch((error) => {
-      return error.response;
-    });
+      .catch((error) => {
+        return error.response;
+      });
     // console.log(response)
     return response.data;
   }
 );
 /////////////////////////////////KYC APPROVED API
 
-export const kycForPending= createAsyncThunk(
+export const kycForPending = createAsyncThunk(
   "kyc/kycForPending",
   async (data) => {
-    const requestParam =data.page
+    const requestParam = data.page
     const requestParam1 = data.page_size
     const response = await axios.get(
       `${API_URL.KYC_FOR_PENDING}&page=${requestParam}&page_size=${requestParam1}`,
       {
         headers: {
-         
+
         }
       }
     )
-    .catch((error) => {
-      return error.response;
-    });
-   
+      .catch((error) => {
+        return error.response;
+      });
+
     return response.data;
   }
 );
 
 //////////////////////////////////////////////////
-export const kycForVerified= createAsyncThunk(
+export const kycForVerified = createAsyncThunk(
   "kyc/kycForVerified",
   async (data) => {
-    const requestParam =data.page
+    const requestParam = data.page
     const requestParam1 = data.page_size
     const response = await axios.get(
       `${API_URL.KYC_FOR_VERIFIED}&page=${requestParam}&page_size=${requestParam1}`,
       {
         headers: {
-         
+
         }
       }
     )
-    .catch((error) => {
-      return error.response;
-    });
-   
+      .catch((error) => {
+        return error.response;
+      });
+
     return response.data;
   }
 );
 ////////////////////////////////////////////////////
-export const kycForApproved= createAsyncThunk(
+export const kycForApproved = createAsyncThunk(
   "kyc/kycForApproved",
   async (requestParam) => {
     const response = await axios.get(
       `${API_URL.KYC_FOR_APPROVED}`,
       {
         headers: {
-         
+
         }
       }
     )
-    .catch((error) => {
-      return error.response;
-    });
-   
+      .catch((error) => {
+        return error.response;
+      });
+
     return response.data;
   }
 );
 ///////////////////////////////////////////
-export const kycForCompleted= createAsyncThunk(
+export const kycForCompleted = createAsyncThunk(
   "kyc/kycForCompleted",
   async (requestParam) => {
     const response = await axios.get(
       `${API_URL.KYC_FOR_COMPLETED}`,
       {
         headers: {
-         
+
         }
       }
     )
-    .catch((error) => {
-      return error.response;
-    });
-   
+      .catch((error) => {
+        return error.response;
+      });
+
     return response.data;
   }
 );
 
 /////////////////////////////////////////
-export const UploadLoginId= createAsyncThunk(
+export const UploadLoginId = createAsyncThunk(
   "kyc/UploadLoginId",
   async (requestParam) => {
     const response = await axios.post(
       `${API_URL.DOCUMENT_BY_LOGINID}`,
       requestParam
     )
-    .catch((error) => {
-      return error.response;
-    });
-   
+      .catch((error) => {
+        return error.response;
+      });
+
     return response.data;
   }
 );
 
 
 
- export const kycSlice = createSlice({
-    name: 'kyc',
-    initialState,
-    reducers:{
-      getBusinessType : (state)=>{
-        state.businessType= []
-      },
-      getBusinessCategory : (state)=>{
-        state.busiCategory = []
-      },
-      loadKycUserList : (state)=>{
-        state.kycUserList=[]
-      },
-      loadKycVericationForAllTabs : (state)=>{
-        state.kycVerificationForAllTabs=[]
-      },
-
-      
+export const kycSlice = createSlice({
+  name: 'kyc',
+  initialState,
+  reducers: {
+    getBusinessType: (state) => {
+      state.businessType = []
     },
-    extraReducers:{
-      [kycUserList.pending]: (state, action) => {
-        state.status = "pending";
-      },
-      [kycUserList.fulfilled]: (state, action) => {
-        state.kycUserList = action.payload;
-      },
-      [kycUserList.rejected]: (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      },
-      ///////////////////////////////////
-      [kycForApproved.pending]: (state, action) => {
-        state.status = "pending";
-      },
-      [kycForApproved.fulfilled]: (state, action) => {
-        // console.log("action-11 ====>",action.payload)
-        state.kycApproved = action.payload;
-      },
-      [kycForApproved.rejected]: (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      },
-      ////////////////////////////////////////
-      [UploadLoginId.pending]: (state, action) => {
-        state.status = "pending";
-      },
-      [UploadLoginId.fulfilled]: (state, action) => {
-        // console.log("action-11 ====>",action.payload)
-        state.documentByloginId = action.payload;
-      },
-      [UploadLoginId.rejected]: (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      },
-
-
-
-      // DOC UPLOAD KYC //
-      [kycDocumentUploadList.pending]: (state, action) => {
-        state.status = "pending";
-      },
-      [kycDocumentUploadList.fulfilled]: (state, action) => {
-       
-        state.KycDocUpload = action.payload;
-      },
-      [kycDocumentUploadList.rejected]: (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      },
-      //Kyc Verification for All Tabs
-      [kycVerificationForTabs.pending]: (state, action) => {
-        state.status = "pending";
-      },
-      [kycVerificationForTabs.fulfilled]: (state, action) => {
-        state.kycVerificationForAllTabs = action.payload;
-      },
-      [kycVerificationForTabs.rejected]: (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
-      },
-
+    getBusinessCategory: (state) => {
+      state.busiCategory = []
+    },
+    loadKycUserList: (state) => {
+      state.kycUserList = []
+    },
+    loadKycVericationForAllTabs: (state) => {
+      state.kycVerificationForAllTabs = []
+    },
+    enableKycTab: (state,action) => {
+        state.enableKycTab = action.payload;
+       },
+    kycModalToggle: (state,action) => { 
+      state.kycModalClose = action.payload;
     }
+
+
+
+  },
+  extraReducers: {
+    [kycUserList.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [kycUserList.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+    },
+    [kycUserList.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+    ///////////////////////////////////
+    [kycForApproved.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [kycForApproved.fulfilled]: (state, action) => {
+      // console.log("action-11 ====>",action.payload)
+      state.kycApproved = action.payload;
+    },
+    [kycForApproved.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+    ////////////////////////////////////////
+    [UploadLoginId.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [UploadLoginId.fulfilled]: (state, action) => {
+      // console.log("action-11 ====>",action.payload)
+      state.documentByloginId = action.payload;
+    },
+    [UploadLoginId.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+
+
+
+    // DOC UPLOAD KYC //
+    [kycDocumentUploadList.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [kycDocumentUploadList.fulfilled]: (state, action) => {
+
+      state.KycDocUpload = action.payload;
+    },
+    [kycDocumentUploadList.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+    //Kyc Verification for All Tabs
+    [kycVerificationForTabs.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [kycVerificationForTabs.fulfilled]: (state, action) => {
+      state.kycVerificationForAllTabs = action.payload;
+    },
+    [kycVerificationForTabs.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+
+  }
 })
 
 
-export const {getBusinessType,getBusinessCategory,loadKycUserList,loadKycVericationForAllTabs} = kycSlice.actions
+export const { getBusinessType, getBusinessCategory, loadKycUserList, loadKycVericationForAllTabs,enableKycTab,kycModalToggle } = kycSlice.actions
 export const kycReducer = kycSlice.reducer

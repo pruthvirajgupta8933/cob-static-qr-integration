@@ -76,8 +76,8 @@ const Subsciption = () => {
       "applicationName": "Payment Gateway",
       "applicationDescription": "",
       "active": true,
-      "applicationUrl": "https://sabpaisa.in/paylink/",
-      "epUrl": "https://sabpaisa.in/paylink/",
+      "applicationUrl": "https://sabpaisa.in/payment-gateway/",
+      "epUrl": "https://sabpaisa.in/payment-gateway/",
       "planMaster": [
         {
           "planId": 1,
@@ -117,8 +117,8 @@ const Subsciption = () => {
       "applicationName": "Paylink",
       "applicationDescription": "",
       "active": true,
-      "applicationUrl": "https://sabpaisa.in/payout/",
-      "epUrl": "https://sabpaisa.in/payout/",
+      "applicationUrl": "https://sabpaisa.in/paylink/",
+      "epUrl": "https://sabpaisa.in/paylink/",
       "planMaster": [
         {
           "planId": 22,

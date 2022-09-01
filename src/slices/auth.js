@@ -7,7 +7,7 @@ import AuthService from "../services/auth.service";
 
 const user = JSON.parse(localStorage.getItem("user"));
 // console.log("user",user);
-const userAlreadyLoggedIn = user && user.loginId!==null ? true :false;
+const userAlreadyLoggedIn = user && user.loginId !== null ? true : false;
 
 const auth = {
   LoginResponse: { message: "", verification_token: "", response_code: "" },
@@ -29,42 +29,42 @@ const auth = {
       response_code: "",
     },
   },
-  user:user,
-  isLoggedIn:null,
+  user: user,
+  isLoggedIn: null,
   currentUser: {},
   status: "",
   error: "",
   userAlreadyLoggedIn: userAlreadyLoggedIn,
   otpVerified: false,
-  isUserRegistered:null,
+  isUserRegistered: null,
   subscriptionplandetail: [],
-  createClientProfile:[],
-  passwordChange:null,
-  forgotPassword:{
-    otpResponse:{
-      verification_token:"",
-      status:false
+  createClientProfile: [],
+  passwordChange: null,
+  forgotPassword: {
+    otpResponse: {
+      verification_token: "",
+      status: false
     },
-    sendUserName:{
-      username:"",
-      isValid:null
+    sendUserName: {
+      username: "",
+      isValid: null
     },
-    otpVerify:{
-      emailOtp:null,
-      smsOtp:null,
+    otpVerify: {
+      emailOtp: null,
+      smsOtp: null,
     },
-    createNewPassowrd:null,
-    isNewPasswordCreated:null,
+    createNewPassowrd: null,
+    isNewPasswordCreated: null,
   },
-  payLinkPermission:[]
+  payLinkPermission: []
 };
 
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ firstName, lastName, mobileNumber, email, password,businessType }, thunkAPI) => {
+  async ({ firstName, lastName, mobileNumber, email, password, businessType }, thunkAPI) => {
     try {
-      const response = await AuthService.register(firstName, lastName, mobileNumber, email, password,businessType);
+      const response = await AuthService.register(firstName, lastName, mobileNumber, email, password, businessType);
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
@@ -85,11 +85,11 @@ export const login = createAsyncThunk(
   async ({ username, password }, thunkAPI) => {
     try {
       // console.log("auth",username);
-      
+
       const data = await AuthService.login(username, password);
-      localStorage.setItem("p",password);
-        localStorage.setItem("i",username);
-        console.log("set local");
+      localStorage.setItem("p", password);
+      localStorage.setItem("i", username);
+      console.log("set local");
       return { user: data };
     } catch (error) {
       const message =
@@ -97,9 +97,9 @@ export const login = createAsyncThunk(
           error.response.data &&
           error.response.data.message) ||
         error.message ||
-        error.toString()||error.request.toString();
-        // console.log("message",message);
-        
+        error.toString() || error.request.toString();
+      // console.log("message",message);
+
       thunkAPI.dispatch(setMessage(message));
       return thunkAPI.rejectWithValue();
     }
@@ -142,14 +142,14 @@ export const OTPVerificationApi = createAsyncThunk(
 export const logout = createAsyncThunk("auth/logout", async () => {
   // console.log("comes to logout");
   await AuthService.logout();
-  
+
 });
 
 export const udpateRegistrationStatus = createAsyncThunk("auth/udpateRegistrationStatus", async () => {
   // console.log("comes to");
   // update status
   await AuthService.logout();
-  
+
 });
 
 // check and remove fn
@@ -158,8 +158,8 @@ export const successTxnSummary = createAsyncThunk(
   async (object, thunkAPI) => {
     try {
       // console.log(object);
-      const {fromDate,toDate,clientCode} = object;
-      const response = await AuthService.successTxnSummary(fromDate,toDate,clientCode );
+      const { fromDate, toDate, clientCode } = object;
+      const response = await AuthService.successTxnSummary(fromDate, toDate, clientCode);
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
@@ -188,7 +188,7 @@ export const createClientProfile = createAsyncThunk(
       thunkAPI.dispatch(setMessage(response.data.message));
 
       const userLocalData = JSON.parse(localStorage?.getItem("user"));
-      const allData = Object.assign(userLocalData,response.data);
+      const allData = Object.assign(userLocalData, response.data);
       // first time need to assign all request data into temp data
       allData.accountHolderName = data.accountHolderName;
       allData.accountNumber = data.accountNumber;
@@ -199,7 +199,7 @@ export const createClientProfile = createAsyncThunk(
       allData.ifscCode = data.ifscCode;
       allData.pan = data.pan;
       allData.clientMobileNo = data.phone;
-     
+
       // console.log("allData--s",allData);
       const clientMerchantDetailsListObj = {
         "clientId": null,
@@ -230,9 +230,9 @@ export const createClientProfile = createAsyncThunk(
         "pocAccountManager": null
       };
 
-      const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj,response.data);
+      const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
       // console.log("mergeclientMerchantDetailsList",mergeclientMerchantDetailsList)
-      const clientMerchantDetailsList =  [mergeclientMerchantDetailsList];
+      const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
       localStorage.setItem("user", JSON.stringify(allData))
 
@@ -253,15 +253,15 @@ export const createClientProfile = createAsyncThunk(
 
 export const updateClientProfile = createAsyncThunk(
   "auth/updateClientProfile",
-  async ({data,clientId}, thunkAPI) => {
+  async ({ data, clientId }, thunkAPI) => {
     try {
       // console.log("update functon",data);
       // console.log("update functon",clientId);
       // console.log({ fromdate, todate, clientcode });===update fn call
-      const response = await AuthService.updateClientProfile(data,clientId);
+      const response = await AuthService.updateClientProfile(data, clientId);
       thunkAPI.dispatch(setMessage(response.data.message));
       const userLocalData = JSON.parse(localStorage?.getItem("user"));
-      const allData = Object.assign(userLocalData,data);
+      const allData = Object.assign(userLocalData, data);
       // console.log("userLocalData",userLocalData);
       // console.log("data",data);
       // console.log("response.data",response.data);
@@ -296,9 +296,9 @@ export const updateClientProfile = createAsyncThunk(
         "pocAccountManager": null
       };
 
-      const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj,response.data);
+      const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
       // console.log("mergeclientMerchantDetailsList",mergeclientMerchantDetailsList)
-      const clientMerchantDetailsList =  [mergeclientMerchantDetailsList];
+      const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
       // console.log("after update user",allData);
       localStorage.setItem("user", JSON.stringify(allData))
@@ -351,8 +351,8 @@ export const changePasswordSlice = createAsyncThunk(
 
 export const getEmailToSendOtpSlice = createAsyncThunk(
   "auth/getEmailToSendOtp",
-  async(data,thunkAPI)=>{
-    try{
+  async (data, thunkAPI) => {
+    try {
       // console.log("getEmailToSendOtp",data);
       const response = await AuthService.getEmailToSendOTP(data);
       thunkAPI.dispatch(setMessage(response.data.message));
@@ -360,10 +360,10 @@ export const getEmailToSendOtpSlice = createAsyncThunk(
       response.data.username = data.username
       // console.log("getEmailToSendOtp-response",response.headers)
       return response.data;
-    }catch(error){
+    } catch (error) {
       const message =
-      (error.response &&
-        error.response.data &&
+        (error.response &&
+          error.response.data &&
           error.response.data.message) ||
         error.message ||
         error.toString();
@@ -379,17 +379,17 @@ export const getEmailToSendOtpSlice = createAsyncThunk(
 
 export const verifyOtpOnForgotPwdSlice = createAsyncThunk(
   "auth/verifyOtpOnForgotPwd",
-  async(data,thunkAPI)=>{
-    try{
+  async (data, thunkAPI) => {
+    try {
       // console.log("verifyOtpOnForgotPwd",data);
       const response = await AuthService.verifyOtpOnForgotPwd(data);
       thunkAPI.dispatch(setMessage(response.data.message));
       // console.log("verifyOtpOnForgotPwd",response)
       return response.data;
-    }catch(error){
+    } catch (error) {
       const message =
-      (error.response &&
-        error.response.data &&
+        (error.response &&
+          error.response.data &&
           error.response.data.message) ||
         error.message ||
         error.toString();
@@ -404,17 +404,17 @@ export const verifyOtpOnForgotPwdSlice = createAsyncThunk(
 
 export const createNewPasswordSlice = createAsyncThunk(
   "auth/createNewPassword",
-  async(data,thunkAPI)=>{
-    try{
+  async (data, thunkAPI) => {
+    try {
       // console.log("createNewPassword",data);
       const response = await AuthService.changePassword(data);
       thunkAPI.dispatch(setMessage(response.data.message));
       // console.log("getEmailToSendOtp-response",response)
       return response.data;
-    }catch(error){
+    } catch (error) {
       const message =
-      (error.response &&
-        error.response.data &&
+        (error.response &&
+          error.response.data &&
           error.response.data.message) ||
         error.message ||
         error.toString();
@@ -428,17 +428,17 @@ export const createNewPasswordSlice = createAsyncThunk(
 
 export const checkPermissionSlice = createAsyncThunk(
   "auth/checkPermission",
-  async(data,thunkAPI)=>{
-    try{
-    
+  async (data, thunkAPI) => {
+    try {
+
       const response = await AuthService.checkPermission(data);
       thunkAPI.dispatch(setMessage(response.data.message));
       // console.log("getEmailToSendOtp-response",response)
       return response.data;
-    }catch(error){
+    } catch (error) {
       const message =
-      (error.response &&
-        error.response.data &&
+        (error.response &&
+          error.response.data &&
           error.response.data.message) ||
         error.message ||
         error.toString();
@@ -475,7 +475,7 @@ const authSlice = createSlice({
       state.isLoggedIn = null
       state.isUserRegistered = null;
     },
-   
+
     [successTxnSummary.fulfilled]: (state, action) => {
       state.successTxnsumry = action.payload;
     },
@@ -491,31 +491,22 @@ const authSlice = createSlice({
     [login.fulfilled]: (state, action) => {
 
       let loggedInStatus = false;
-      let isValidData ='';
-
-      // if(action.payload.user && action.payload.user!==null){
-        const loginState = action.payload?.user?.loginStatus;
+      let isValidData = '';
+      const loginState = action.payload?.user?.loginStatus;
+      loggedInStatus = false;
+      if (loginState === "Activate") {
+        loggedInStatus = true;
+        isValidData = 'Yes';
+      } else {
         loggedInStatus = false;
-        // console.log("loginState",loginState);
-          if(loginState==="Activate"){
-              loggedInStatus = true;
-              isValidData = 'Yes';
-              
-            }else{
-              loggedInStatus = false;
-              isValidData = 'No';
-            }
-        // }else{
-                // loggedInStatus = false;
-                // isValidData = 'No';
-        // }
-
+        isValidData = 'No';
+      }
       state.isLoggedIn = loggedInStatus;
       state.user = action.payload.user;
-      state.user.clientMerchantDetailsList  = action.payload.user.clientMerchantDetailsList
-    
-        
-      localStorage.setItem("user",JSON.stringify(state.user))
+      state.user.clientMerchantDetailsList = action.payload.user.clientMerchantDetailsList
+
+
+      localStorage.setItem("user", JSON.stringify(state.user))
       state.isValidUser = isValidData;
     },
     [login.pending]: (state) => {
@@ -535,7 +526,7 @@ const authSlice = createSlice({
       state.userAlreadyLoggedIn = false;
       state.isValidUser = '';
       state.user = null;
-      state=undefined;
+      state = undefined;
     },
     [OTPVerificationApi.pending]: (state, action) => {
       state.status = "pending";
@@ -556,91 +547,91 @@ const authSlice = createSlice({
       state.status = "failed";
       state.error = action.error.message;
     },
-    [createClientProfile.pending]:(state)=>{
+    [createClientProfile.pending]: (state) => {
       console.log("pending...create profile of client")
     },
-    [createClientProfile.fulfilled]:(state,action)=>{
+    [createClientProfile.fulfilled]: (state, action) => {
       state.createClientProfile = action.payload
       state.user = action.payload
-      console.log("client create and update",state.user);
+      console.log("client create and update", state.user);
     },
-    [createClientProfile.rejected]:(state)=>{
+    [createClientProfile.rejected]: (state) => {
       console.log("Client Profile not update!");
     },
-    [updateClientProfile.pending]:(state)=>{
-        console.log('pending profile');
+    [updateClientProfile.pending]: (state) => {
+      console.log('pending profile');
     },
-    [updateClientProfile.fulfilled]:(state,action)=>{
+    [updateClientProfile.fulfilled]: (state, action) => {
       console.log('fulfilled profile');
       state.user = action.payload
     },
-    [updateClientProfile.rejected]:()=>{
+    [updateClientProfile.rejected]: () => {
       console.log('rejected profile');
     },
-    [changePasswordSlice.fulfilled]:(state,action)=>{
+    [changePasswordSlice.fulfilled]: (state, action) => {
       console.log('fullfiled profile');
       state.passwordChange = true;
     },
-    [changePasswordSlice.pending]:(state)=>{
+    [changePasswordSlice.pending]: (state) => {
       console.log('rejected profile');
       state.passwordChange = null;
     },
-    [changePasswordSlice.rejected]:(state)=>{
+    [changePasswordSlice.rejected]: (state) => {
       console.log('rejected profile');
       state.passwordChange = false;
     },
 
-    [getEmailToSendOtpSlice.fulfilled]:(state,action)=>{
-      state.forgotPassword.otpResponse=action.payload;
+    [getEmailToSendOtpSlice.fulfilled]: (state, action) => {
+      state.forgotPassword.otpResponse = action.payload;
       const username = action.payload.username;
       const status = action.payload.status;
       state.forgotPassword.sendUserName.username = username;
       state.forgotPassword.sendUserName.isValid = status ? true : false;
       //state.passwordChange = true;
     },
-    [getEmailToSendOtpSlice.pending]:(state)=>{
+    [getEmailToSendOtpSlice.pending]: (state) => {
       console.log('pending profile');
       //state.passwordChange = null;
     },
-    [getEmailToSendOtpSlice.rejected]:(state,action)=>{
-      console.log('rejected ',action);
+    [getEmailToSendOtpSlice.rejected]: (state, action) => {
+      console.log('rejected ', action);
       state.forgotPassword.sendUserName.isValid = false;
       //state.passwordChange = false;
     },
-    
-    [verifyOtpOnForgotPwdSlice.fulfilled]:(state,action)=>{
-      console.log('fullfiled ',action);
+
+    [verifyOtpOnForgotPwdSlice.fulfilled]: (state, action) => {
+      console.log('fullfiled ', action);
       // state.passwordChange = true;
     },
-    [verifyOtpOnForgotPwdSlice.pending]:(state)=>{
+    [verifyOtpOnForgotPwdSlice.pending]: (state) => {
       console.log('pending profile');
       // state.passwordChange = null;
     },
-    [verifyOtpOnForgotPwdSlice.rejected]:(state)=>{
+    [verifyOtpOnForgotPwdSlice.rejected]: (state) => {
       console.log('rejected profile');
       // state.passwordChange = false;
     },
-    
-    [createNewPasswordSlice.fulfilled]:(state,action)=>{
-      console.log('fullfiled',action);
+
+    [createNewPasswordSlice.fulfilled]: (state, action) => {
+      console.log('fullfiled', action);
       // state.passwordChange = true;
     },
-    [createNewPasswordSlice.pending]:(state)=>{
+    [createNewPasswordSlice.pending]: (state) => {
       console.log('pending profile');
       // state.passwordChange = null;
     },
-    [createNewPasswordSlice.rejected]:(state)=>{
+    [createNewPasswordSlice.rejected]: (state) => {
       console.log('rejected profile');
       // state.passwordChange = false;
     },
-    
-    [checkPermissionSlice.fulfilled]:(state,action)=>{
+
+    [checkPermissionSlice.fulfilled]: (state, action) => {
       // console.log('rejected profile');
       // state.passwordChange = false;
       state.payLinkPermission = action.payload
     }
 
-    
+
 
   },
 });
