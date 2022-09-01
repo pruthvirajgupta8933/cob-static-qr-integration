@@ -1,5 +1,6 @@
 import React, {  useState } from "react";
 import { useHistory } from "react-router-dom";
+import API_URL from "../../config";
 // import { Formik, Field, Form, ErrorMessage } from "formik";
 // import * as Yup from "yup";
 import validation from "../validation";
@@ -30,9 +31,6 @@ const verification_token=auth.forgotPassword.otpResponse.verification_token;
 // console.log(verification_token,"here is my verification token")
 
     // const {handleFormSubmit} = props;
-
-    const url="https://stgcobapi.sabpaisa.in/auth-service/account/verify-otp"
-
     const Email = (e) => {
       setEmailotp(e.target.value)
     }
@@ -52,13 +50,13 @@ const verification_token=auth.forgotPassword.otpResponse.verification_token;
       // props.props('a3');
 
       //dispatch(verifyOtpOnForgotPwdSlice())
-      if(verify){
+      // if(verify){
         const sendOtp = JSON.stringify({
                             verification_token:verification_token,
                             otp: emailotp
                         });
 
-       await axios.post(url,sendOtp,{headers:{"Content-Type" : "application/json"}})
+       await axios.post(API_URL. AUTH_VERIFY_OTP_ON_FWD,sendOtp,{headers:{"Content-Type" : "application/json"}})
        .then((response)=>{
          console.log(response)
          if (response.status === 200) {
@@ -73,7 +71,7 @@ const verification_token=auth.forgotPassword.otpResponse.verification_token;
          
      
         // dispatch(verifyOtpOnForgotPwdSlice(sendOtp))
-      }
+      // }
 
     }
 

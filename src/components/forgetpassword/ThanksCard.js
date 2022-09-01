@@ -13,7 +13,7 @@ function ThanksCard(props) {
             Password Changed
         </div>
         <div className="card-body">
-            <h5 className="card-title">Password Reset successfully </h5>
+            <h5 className="card-title">Password Change successfully </h5>
             
             <p className="card-text" style={{display: "block"}}>With supporting text below as a natural lead-in to additional content.</p>
             <Link to="/" >Back to login</Link>

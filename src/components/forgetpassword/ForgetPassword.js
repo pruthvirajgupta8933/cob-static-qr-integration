@@ -28,10 +28,10 @@ const ForgetPassword = () => {
         <></>
       )}
 
-      {/* reset password */}
+      {/* Create password */}
       {showCard === "a3" ? <CreatePassword props={handleFormSubmit} /> : <></>}
 
-      {/* reset password */}
+      {/* Thanks card */}
       {showCard === "a4" ? <ThanksCard props={handleFormSubmit} /> : <></>}
     </React.Fragment>
   );

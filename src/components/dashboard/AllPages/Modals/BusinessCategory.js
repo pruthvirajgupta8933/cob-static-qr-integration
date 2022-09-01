@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import API_URL from '../../../../config';
 import { checkPermissionSlice } from '../../../../slices/auth';
 import "../../css/abhishek.css"
-import ReactTooltip from "react-tooltip";
 
 
 
