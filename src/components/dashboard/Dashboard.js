@@ -26,6 +26,7 @@ import SettlementReportNew from './AllPages/SettlementReportNew';
 import TransactionHistoryDownload from './AllPages/TransactionHistoryDownload';
 import Approver from '../ApproverNVerifier/Approver';
 import ThanksPage from '../Otherpages/ThanksPage';
+import ChangePassword from './AllPages/ChangePassword';
 
 
 
@@ -65,9 +66,9 @@ function Dashboard() {
                 <Route exact path={`${path}/profile`}> 
                      <Profile />
                 </Route>
-                {/* <Route exact path={`${path}/change-password`}>
+                <Route exact path={`${path}/change-password`}>
                      <ChangePassword />
-                </Route> */}
+                </Route>
                 <Route exact path={`${path}/transaction`}>
                      <Transaction/>
                 </Route>

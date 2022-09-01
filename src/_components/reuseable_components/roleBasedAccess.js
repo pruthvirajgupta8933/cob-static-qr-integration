@@ -1,28 +1,27 @@
-export const roleBasedAccess = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const roleId = user?.roleId;
-  const roleBasedTab = {
-    approver: false,
-    verifier: false,
-    bank: false,
-    merchant: false,
-    superadmin: false,
-  };
+export const roleBasedAccess = (pageNo) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const roleId = user?.roleId;
+    // console.log(user);
 
-  let roleAccessObj = roleBasedTab;
+    const roleBasedTab = {
+        approver: false,
+        verifier: false,
+        bank: false,
+        merchant: false,
+    };
 
-  if (roleId === 14) {
-    roleAccessObj = { ...roleAccessObj, verifier: true };
-  } else if (roleId === 15) {
-    roleAccessObj = { ...roleAccessObj, approver: true };
-  } else if (roleId === 1) {
-    roleAccessObj = { ...roleAccessObj, superadmin: true };
-  } else if (roleId === 3 || roleId === 13) {
-    roleAccessObj = { ...roleAccessObj, bank: true };
-  } else if (roleId === 4 || roleId ===5) {
-    roleAccessObj = { ...roleAccessObj, merchant: true };
-  } else {
-    console.log("Permission not match with given roles");
-  }
-  return roleAccessObj;
+    let roleAccessObj = roleBasedTab;
+
+    if (roleId === 14 ) {
+        roleAccessObj = { ...roleAccessObj, verifier: true };
+    } else if (roleId === 15){
+        roleAccessObj = { ...roleAccessObj, approver: true };
+    }else if (roleId === 3 || roleId === 13) {
+        roleAccessObj = { ...roleAccessObj, bank: true };
+    } else if (roleId !== 3 || roleId !== 13) {
+        roleAccessObj = { ...roleAccessObj, merchant: true };
+    } else {
+        console.log("Permission not match with these roles");
+    }
+    return roleAccessObj;
 };

@@ -76,7 +76,7 @@ const indexOfLastRecord = page * pageSize;
 const indexOfFirstRecord = indexOfLastRecord - pageSize;
 const nPages = Math.ceil(newRegistrationData.length / pageSize)
   // console.log(newRegistrationData.length, "<===>")
-  const pageNumbers = [...Array(nPages + 2).keys()].slice(1)
+  const pageNumbers = [...Array(nPages +newRegistrationData.length).keys()].slice(currentPage-1,currentPage+21)
   // console.log(pageNumbers, "<===Page Number===>")
   const handleNextPage = () => {
     if (currentPage < pageNumbers.length) {
@@ -89,7 +89,7 @@ const nPages = Math.ceil(newRegistrationData.length / pageSize)
       setCurrentPage(currentPage - 1)
     }
   }
-
+ 
   return (
 
     <div className="row">  
@@ -149,21 +149,25 @@ const nPages = Math.ceil(newRegistrationData.length / pageSize)
                 </table>
                 <nav aria-label="Page navigation example">
           <ul class="pagination">
-            <li class="page-item"><button class="page-link" onClick={handlePrevPage}>Previous</button></li>
+            <li class="page-item"><button class="page-link" onClick={handlePrevPage} >Previous</button></li>
 
-            {pageNumbers.map(pgNumber => (
-              <li key={pgNumber}
-                className={`page-item ${currentPage == pgNumber ? 'active' : ''} `} >
+            {pageNumbers.map((pgNumber,i) => (
 
-                <button onClick={() => setCurrentPage(pgNumber)}
-                  className='page-link'
-                >
 
-                  {pgNumber}
-                </button>
+              <li key={pgNumber,i}
+              className={
+                pgNumber === currentPage ? " page-item active" : "page-item"
+              }> 
+               <a href={()=>false} className={`page-link data_${i}`} >  
+                              <p onClick={() => setCurrentPage(pgNumber)}>
+                              {page}
+                              </p>
+                            </a>
+
+              
               </li>
             ))}
-            <li class="page-item"><button class="page-link" onClick={handleNextPage}>Next</button></li>
+            <li class="page-item"><button class="page-link"  onClick={handleNextPage} >Next</button></li>
           </ul>
         </nav>
 
