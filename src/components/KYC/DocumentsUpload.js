@@ -8,19 +8,25 @@ import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import "../KYC/kyc-style.css";
 import API_URL from "../../config";
-import { approveDoc, documentsUpload, merchantInfo, verifyKycDocumentTab, verifyKycEachTab } from "../../slices/kycSlice";
+import {
+  approveDoc,
+  documentsUpload,
+  merchantInfo,
+  verifyKycDocumentTab,
+  // verifyKycEachTab,
+} from "../../slices/kycSlice";
 
 function DocumentsUpload(props) {
-  const { role, kycid } = props;
+  const { role } = props;
   const [docTypeList, setDocTypeList] = useState([]);
   const [fieldValue, setFieldValue] = useState(null);
-  const [visibility, setVisibility] = useState(false);
+  // const [visibility, setVisibility] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
 
-  const [photos, setPhotos] = useState([]);
+  // const [photos, setPhotos] = useState([]);
   const { user } = useSelector((state) => state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  // var clientMerchantDetailsList = user.clientMerchantDetailsList;
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
   const dispatch = useDispatch();
@@ -31,18 +37,21 @@ function DocumentsUpload(props) {
     (state) => state.kyc.KycDocUpload[0]?.status
   );
 
-console.log(KycDocList)
+  console.log(KycDocList);
 
   const initialValues = {
-    docType: KycDocList[0]?.type,
-    docFile: KycDocList[0]?.filePath,
+    docType: KycDocList[0]?.type ? KycDocList[0]?.type : "",
+    docFile: KycDocList[0]?.filePath ? KycDocList[0]?.filePath : "",
     isRejected: false,
   };
+
+  console.log(initialValues);
 
   const documentId = useSelector(
     (state) => state.kyc.KycDocUpload[0]?.documentId
   );
 
+  console.log(documentId);
   const ImgUrl = `${API_URL.Image_Preview}/?document_id=${documentId}`;
   // console.log(ImgUrl,"<===========KYC DOC Id===========>")
   // console.log(KycDocList,"<===========KYC DOC List===========>")
@@ -53,40 +62,45 @@ console.log(KycDocList)
         const data = convertToFormikSelectJson(
           "id",
           "name",
-          resp.payload.results
+          resp?.payload?.results
         );
         setDocTypeList(data);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
+
 
   const validationSchema = Yup.object({
-    docType: Yup.string().required("Required").nullable(),
-    docFile: Yup.mixed()
-      .required("Required file format PNG/JPEG/JPG/PDF").nullable()
+    docType: Yup.string()
+      .required("Required")
+      .nullable(),
+    docFile: Yup.mixed().nullable(),
   });
 
-  const displayImages = () => {
-    return photos.map((photo) => {
-      return <img src={photo} alt="" />;
-    });
-  };
+  // const displayImages = () => {
+  //   return photos.map((photo) => {
+  //     return <img src={photo} alt="" />;
+  //   });
+  // };
 
   //----------------------------------------------------------------------
-
+  // console.log(fieldValue);
   //-------------------------------------------------------------------------
   const onSubmit = (values, action) => {
-
-
     if (role.merchant) {
-      console.log("eee");
+      // console.log("eee");
       const bodyFormData = new FormData();
-      bodyFormData.append("files", fieldValue);
+
+      bodyFormData.append("files", values.docFile);
       bodyFormData.append("login_id", loginId);
       bodyFormData.append("modified_by", loginId);
       bodyFormData.append("type", values.docType);
+
+      // console.log("body",bodyFormData);
+      for (var pair of bodyFormData.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
       dispatch(merchantInfo(bodyFormData)).then((res) => {
         if (
           res.meta.requestStatus === "fulfilled" &&
@@ -97,72 +111,67 @@ console.log(KycDocList)
           toast.error("Something Went Wrong! Please try again.");
         }
       });
-
     } else if (role.verifier) {
-
       if (action === "submit") {
         const veriferDetails = {
-          "verified_by": loginId,
-          "document_id": documentId
-        }
-        dispatch(verifyKycDocumentTab(veriferDetails)).then(resp => {
-
-          resp?.payload?.status ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message);
-
-        }).catch((e) => { toast.error("Try Again Network Error") });
-
+          verified_by: loginId,
+          document_id: documentId,
+        };
+        dispatch(verifyKycDocumentTab(veriferDetails))
+          .then((resp) => {
+            resp?.payload?.status
+              ? toast.success(resp?.payload?.message)
+              : toast.error(resp?.payload?.message);
+          })
+          .catch((e) => {
+            toast.error("Try Again Network Error");
+          });
       }
-
 
       if (action === "reject") {
         const rejectDetails = {
-          "document_id": documentId,
-          "rejected_by": loginId,
-        "comment": "Document Rejected"
+          document_id: documentId,
+          rejected_by: loginId,
+          comment: "Document Rejected",
+        };
+        dispatch(verifyKycDocumentTab(rejectDetails))
+          .then((resp) => {
+            resp?.payload?.status
+              ? toast.success(resp?.payload?.message)
+              : toast.error(resp?.payload?.message);
+          })
+          .catch((e) => {
+            toast.error("Try Again Network Error");
+          });
       }
-      dispatch(verifyKycDocumentTab(rejectDetails)).then(resp => {
-     
-        resp?.payload?.status ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message);
-  
-      }).catch((e) => { toast.error("Try Again Network Error") });
-  
-  
-      }
-
-    }else if(role.approver){
-
+    } else if (role.approver) {
       if (action === "approve") {
-
         const approverDocDetails = {
-          "approved_by": loginId,
-          "document_id": documentId
-        }
-        dispatch(approveDoc(approverDocDetails)).then(resp => {
-
-          resp?.payload?.status ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message);
-
-        }).catch((e) => { toast.error("Try Again Network Error") });
+          approved_by: loginId,
+          document_id: documentId,
+        };
+        dispatch(approveDoc(approverDocDetails))
+          .then((resp) => {
+            resp?.payload?.status
+              ? toast.success(resp?.payload?.message)
+              : toast.error(resp?.payload?.message);
+          })
+          .catch((e) => {
+            toast.error("Try Again Network Error");
+          });
       }
-
     }
-
-    
-
-
-
-
-
   };
 
   useEffect(() => {
     if (role.approver) {
-      setReadOnly(true)
-      setButtonText("Approve Document")
+      setReadOnly(true);
+      setButtonText("Approve Document");
     } else if (role.verifier) {
-      setReadOnly(true)
-      setButtonText("Verify and Next")
+      setReadOnly(true);
+      setButtonText("Verify and Next");
     }
-  }, [role])
+  }, [role]);
 
   let submitAction = undefined;
 
@@ -170,7 +179,6 @@ console.log(KycDocList)
     <div className="col-md-12 col-md-offset-4">
       <div className="">
         <p>
-
           Note : Please complete Business Overview Section to view the list of
           applicable documents!
         </p>
@@ -179,12 +187,13 @@ console.log(KycDocList)
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          onSubmit(values, submitAction)
+          console.log(values);
+          onSubmit(values, submitAction);
         }}
       >
         {(formik) => (
           <Form>
-          {console.log(formik)}
+            {/* {console.log(formik)} */}
             <ul className="list-inline  align-items-center ">
               <li className="list-inline-item align-middle  w-25">
                 <div className="form-group col-md-12">
@@ -200,52 +209,80 @@ console.log(KycDocList)
                 </div>
               </li>
               <li className="list-inline-item align-middle   w-25">
-
-                {role.merchant ? <div className="form-group col-md-12">
-                  <FormikController
-                    control="file"
-                    type="file"
-                    label="Select Document"
-                    name="docFile"
-                    className="form-control-file"
-                    onChange={(event) => {
-                      // setFieldValue(event.target.files[0]);
-                      setFieldValue(
-                        "docFile",
-                        event.target.files[0].name
-                      );
-                    }}
-                    accept="image/jpeg,image/jpg,image/png,application/pdf"
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
-                    readOnly={readOnly}
-
-                  // onChange={(event)=>{setFieldValue(event.target.files[0])}}
-                  />
-                </div> : <></>}
-
+                {role.merchant ? (
+                  <div className="form-group col-md-12">
+                    <FormikController
+                      control="file"
+                      type="file"
+                      label="Select Document"
+                      name="docFile"
+                      className="form-control-file"
+                      onChange={(event) => {
+                        setFieldValue("docFile", event.target.files[0].name);
+                      }}
+                      accept="image/jpeg,image/jpg,image/png,application/pdf"
+                      disabled={VerifyKycStatus === "Verified" ? true : false}
+                      readOnly={readOnly}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
               </li>
               <li className="list-inline-item align-middle w-25">
-                {role.merchant ?  <button className="btn btn-primary mb-0" type="button" onClick={() => { formik.handleSubmit() }}>
-                      {buttonText}
-                    </button> :<></>}
+                {role.merchant ? (
+                  <button
+                    className="btn btn-primary mb-0"
+                    type="button"
+                    onClick={() => {
+                      formik.handleSubmit();
+                    }}
+                  >
+                    {buttonText}
+                  </button>
+                ) : (
+                  <></>
+                )}
 
-                {((role.approver===true || role.verifier===true) && VerifyKycStatus !== "Approved") &&  
-                     <>
-                     {role.verifier===true ? 
-                      <button className="btn btn-primary mb-0" type="button" onClick={() => { submitAction = "submit"; formik.handleSubmit() }}>
-                      {buttonText}
-                    </button>
-                    :  
-                    <button className="btn btn-primary mb-0" type="button" onClick={() => { submitAction = "approve"; formik.handleSubmit() }}>
-                      {buttonText}
-                    </button> }
-                    
-                     <button className="btn btn-danger mb-0 text-white" type="button"
-                      onClick={() => { submitAction = "reject"; formik.handleSubmit() }} >
-                      Reject Document
-                    </button>
-                     </> 
-                     }
+                {(role.approver === true || role.verifier === true) &&
+                  VerifyKycStatus !== "Approved" && (
+                    <>
+                      {role.verifier === true ? (
+                        <button
+                          className="btn btn-primary mb-0"
+                          type="button"
+                          onClick={() => {
+                            submitAction = "submit";
+                            formik.handleSubmit();
+                          }}
+                        >
+                          {buttonText}
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn-primary mb-0"
+                          type="button"
+                          onClick={() => {
+                            submitAction = "approve";
+                            formik.handleSubmit();
+                          }}
+                        >
+                          {buttonText}
+                        </button>
+                      )}
+
+                      <button
+                        className="btn btn-danger mb-0 text-white"
+                        type="button"
+                        onClick={() => {
+                          submitAction = "reject";
+                          formik.handleSubmit();
+                        }}
+                      >
+                        Reject Document
+                      </button>
+                    </>
+                  )}
               </li>
               {/* <li className="list-inline-item align-middle   w-25" > Download</li> */}
             </ul>
@@ -254,19 +291,21 @@ console.log(KycDocList)
         )}
       </Formik>
       <div></div>
+      {/* {console.log(documentId)} */}
       {user?.roleId === 3 && user?.roleId === 13 ? (
         <></>
       ) : documentId === null ? (
-        ""
-      ) :
-        documentId !== 'undefined' ? <div class="mt-md-4">
+        <></>
+      ) : typeof documentId !== "undefined" ? (
+        <div class="mt-md-4">
           <h4 class="font-weight-bold mt-xl-4">ImagePreview</h4>
           <a href={ImgUrl} target="_blank" rel="noreferrer">
             <img src={ImgUrl} alt="" width="150px" height="150px" />
           </a>
-        </div> : <></>}
-
-
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

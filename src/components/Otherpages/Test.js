@@ -4,18 +4,43 @@ import FormikWrapper from "../../_components/formik/FormikWrapper";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 
 function Test() {
+
+  // a local state to store the currently selected file.
+  const [selectedFile, setSelectedFile] = React.useState(null);
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const formData = new FormData();
+    formData.append("files", selectedFile);
+    formData.append("login_id", 10439);
+    formData.append("modified_by", 10439);
+    formData.append("type", 2);
+    try {
+      //Request URL: https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/
+
+     axios({
+        method: "post",
+        url: "https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
+  const handleFileSelect = (event) => {
+    setSelectedFile(event.target.files[0])
+  }
+
+
   return (
     <div className="container bg-white">
 
-      <select id="basic" className="form-control" onMouseLeave={(e)=>console.log(e)} onMouseMove={(e)=>console.log(e)}>
-        <option value={0} title="Finding your IMEI number">One</option>
-        <option value={1} title="Next title">Two</option>
-        <option value={2} title="Next ssds">Three</option>
-        <option value={3} title="Next dfsdf">Four</option>
-        <option value={4} title="Next drter">Five</option>
-        <option value={5} title="Next grete">Six</option>
-      </select>
-
+<form onSubmit={handleSubmit}>
+      <input type="file" onChange={handleFileSelect}/>
+      <input type="submit" value="Upload File" />
+    </form>
     </div>
   );
 }
