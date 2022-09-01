@@ -36,7 +36,7 @@ password:Yup.string().required("password is required")
           });
     
     
-        // props.props('a4')
+        props.props('a4')
         // console.log("You clicked submit.");
       };
     

@@ -75,7 +75,7 @@ function SideNavbar() {
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
                       <Link to={`${url}/approver`} className='txt-white' ><i className="fa fa-list" aria-hidden="true" /> <span>Merchant List</span><span class="new-tab">new</span></Link>
                     </li>
-                    : <React.Fragment></React.Fragment>}
+                     : <React.Fragment></React.Fragment>} 
 
 
 
