@@ -516,9 +516,11 @@ export const kycForVerified = createAsyncThunk(
 ////////////////////////////////////////////////////
 export const kycForApproved = createAsyncThunk(
   "kyc/kycForApproved",
-  async (requestParam) => {
+  async (data) => {
+    const requestParam = data.page;
+    const requestParam1 = data.page_size;
     const response = await axios
-      .get(`${API_URL.KYC_FOR_APPROVED}`, {
+      .get(`${API_URL.KYC_FOR_APPROVED}&page=${requestParam}&page_size=${requestParam1}`, {
         headers: {},
       })
       .catch((error) => {

@@ -2,6 +2,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+
 import { logout } from "./slices/auth";
 import AllRoutes from "./AllRoutes";
 import IdleTimerContainer from "./utilities/IdleTimer";

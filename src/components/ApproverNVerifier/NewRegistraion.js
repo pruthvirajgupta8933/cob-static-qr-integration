@@ -84,7 +84,7 @@ function NewRegistraion() {
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
   const nPages = Math.ceil(newRegistrationData.length / pageSize)
   // console.log(newRegistrationData.length, "<===>")
-  const pageNumbers = [...Array(nPages + newRegistrationData.length).keys()].slice(currentPage - 1, currentPage + 21)
+  const pageNumbers = [...Array(nPages + newRegistrationData.length).keys()].slice(1)
   // const pageNumbers = []
   // console.log(pageNumbers, "<===Page Number===>")
   const handleNextPage = () => {
@@ -144,7 +144,7 @@ function NewRegistraion() {
               {spinner && (
                 <Spinner />
               )}
-              {data.length == 0 ? <h1 className="d-flex align-items-center">No data found</h1> :
+              {data.length == 0 ? <h1 >No data found</h1> :
                 (data.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
@@ -171,18 +171,19 @@ function NewRegistraion() {
 
           <ul class="pagination w-25">
             {pageNumbers.length > 0 && <li class="page-item"><button class="page-link" onClick={handlePrevPage} >Previous</button></li>}
-            {pageNumbers.map((pgNumber, i) => (
+            {pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
               <li key={pgNumber, i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }>
+                  {console.log(pageNumbers)}
                 <a href={() => false} className={`page-link data_${i}`} >
                   <p onClick={() => {
                     setCurrentPage(pgNumber)
                   }
                   }
                   >
-                    {pgNumber + 1}
+                    {pgNumber}
                   </p>
                 </a>
               </li>
