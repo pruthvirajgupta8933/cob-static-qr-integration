@@ -5,4 +5,37 @@
     /* justify-content: center; */
 }
 
+.activepaylink-kyc {
+    background-color:  #4BB543;
+    color: white !important ;
+    
+}
 
+.btnbackground {
+    background-color:#0156B3;
+    
+}
+
+.optbtn{
+    position: absolute !important;
+    right: -130px;
+    z-index: 999;
+    top: 43px;
+}
+.optbtn2{
+    position: absolute !important;
+    right: -20px;
+    z-index: 999;
+    top: 330px;
+}
+
+.border-dotted {
+    border-style: dotted;
+    border-width: 2px;
+    border-color: black;
+   }
+.pan-card {
+   z-index: 999;
+   position: relative;
+   right: 337px;
+}

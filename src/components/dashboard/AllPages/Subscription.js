@@ -9,6 +9,7 @@ import API_URL from '../../../config';
 import { Link } from 'react-router-dom';
 import CreateClientCode from './Modals/CreateClientCode';
 import BusinessCategory from './Modals/BusinessCategory';
+import NavBar from '../NavBar/NavBar';
 // import paymentGateWay from '../../../payment-gateway/'
 
 
@@ -286,7 +287,8 @@ const Subsciption = () => {
   // console.log("subscriptionPlanData",subscriptionPlanData);
   return (
     <section className="ant-layout">
-      <div className="profileBarStatus">
+    <div>
+      <NavBar />
         {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
       </div>
       <main className="gx-layout-content ant-layout-content">

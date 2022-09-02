@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import API_URL from '../../../config';
 import FormikController from '../../../_components/formik/FormikController';
 import PrintDocument from '../../../_components/reuseable_components/PrintDocument';
+import NavBar from '../NavBar/NavBar';
 
 
 
@@ -99,7 +100,8 @@ function TransactionEnquirey() {
   return (
     <section className="ant-layout">
    
-      <div className="profileBarStatus">
+      <div>
+        <NavBar />
         {/*
                     <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
                                 className="btn">Upload Here</span></span></div>*/}

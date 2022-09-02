@@ -5,6 +5,7 @@ import BulkPayer from './createpaymentlink/BulkPayer';
 import Reports from './createpaymentlink/Reports';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import NavBar from '../NavBar/NavBar';
 
 
 function Paylink() {
@@ -29,7 +30,8 @@ function Paylink() {
    
   return (
 <section className="ant-layout">
-<div className="profileBarStatus">
+<div>
+  <NavBar />
 </div>
 <main className="gx-layout-content ant-layout-content">
   <div className="gx-main-content-wrapper">

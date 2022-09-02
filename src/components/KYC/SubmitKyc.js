@@ -61,7 +61,7 @@ function SubmitKyc(props) {
       the term “Customer” shall refer to such entity and its Affiliates. If the individual accepting this Agreement does not have such authority, or does not agree with these terms and conditions, such individual must not accept this Agreement and may not
       use the Solution or the Services.</p>
     </div>
-    <button type="button" className="btn btn-primary">Submit KYC</button>
+    <button className="btn float-lg-left" type="submit" style={{backgroundColor:"#0156B3"}}> <h4 className="text-white font-weight-bold">Submit KYC</h4></button>
   </form> 
   :  role.verifer ?
   
@@ -72,7 +72,7 @@ function SubmitKyc(props) {
     
   <div className="col-lg-12">
   
-  <button type="button" className="btn btn-sm btn-primary" onClick={()=>{verifyApprove("verify")}}>Verify Complete</button></div>
+   <button className="btn float-lg-left" type="submit" style={{backgroundColor:"#0156B3"}} onClick={()=>{verifyApprove("verify")}}><h4 className="text-white font-weight-bold">Verify Complete</h4></button></div>
 
   
   </div> 
@@ -85,7 +85,7 @@ function SubmitKyc(props) {
   
 <div className="col-lg-12">
 
-<button type="button" className="btn btn-sm btn-primary" onClick={()=>{verifyApprove("approve")}}>Approve KYC</button></div>
+<button className="btn float-lg-left" type="submit" style={{backgroundColor:"#0156B3"}} onClick={()=>{verifyApprove("approve")}}><h4 className="text-white font-weight-bold">Approve KYC</h4></button></div>
 
 
 </div>  
