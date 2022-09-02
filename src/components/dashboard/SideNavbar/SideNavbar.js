@@ -4,6 +4,7 @@ import { Link, useRouteMatch } from 'react-router-dom'
 import { checkPermissionSlice, logout } from '../../../slices/auth'
 // import { enableKycTab, kycModalToggle } from '../../../slices/kycSlice';
 import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
+import SabpaisaLogo2 from "../../../assets/images/sabpaisa-logo2.png"
 
 function SideNavbar() {
   const { auth, kyc } = useSelector((state) => state)
@@ -48,13 +49,20 @@ function SideNavbar() {
     <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{ flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px' }}>
       <div className="ant-layout-sider-children">
         <div className="gx-sidebar-content">
-          <div className="side_top_wrap">
-            <span className="switch_live_label">Live</span>
-            <div className="side_top_wrap_profile">
+        <div className="brand-logo d-flex-item-right">
+        <div class="float-centre p-4">
+                    <img
+                      src={SabpaisaLogo2}
+                      width={150}
+                      alt="sabpaisa"
+                      title="sabpaisa"
+                    />
+                    </div>
+            {/* <div className="side_top_wrap_profile">
               <div className="side_top_wrap_toggle"><i className="fa fa-angle-down" /></div>
               <p title="username" className="text-md text-ellipsis text-capitalize ng-binding">{clientContactPersonName}</p>
               {roleBasedShowTab?.merchant === true ? <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link> : <></>}
-            </div>
+            </div> */}
           </div>
           <div className="sidebar_menu_list">
             <div className="gx-layout-sider-scrollbar" style={{ position: 'relative', overflow: 'hidden', width: '100%', height: '100%' }}>

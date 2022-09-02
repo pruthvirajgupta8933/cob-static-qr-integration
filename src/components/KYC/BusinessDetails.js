@@ -214,12 +214,12 @@ function BusinessDetails(props) {
             {console.log(formik)}
             <div className="form-row">
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Business Name <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
                   type="text"
-                  label="Business Name *"
                   name="company_name"
-                  placeholder="Enter Your Business Name"
+                
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
@@ -230,10 +230,10 @@ function BusinessDetails(props) {
                 <div className="form-group col-md-4">"show company logo" </div>
               ) : (
                 <div className="form-group col-md-4">
+                      <label><h4 class ="font-weight-bold">Company Logo<span style={{color:"red"}}>*</span></h4></label>
                   <FormikController
                     control="file"
                     type="file"
-                    label="Company Logo *"
                     name="company_logo"
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
@@ -251,9 +251,9 @@ function BusinessDetails(props) {
               )}
 
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">GSTIN <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
-                  label="GSTIN *"
                   name="registerd_with_gst"
                   onChange={(e) => {
                     handleShowHide(e);
@@ -267,12 +267,12 @@ function BusinessDetails(props) {
               </div>
               {formik.values?.registerd_with_gst === "True" && (
                 <div className="form-group col-md-4">
+                   <label><h4 class ="font-weight-bold">Enter Gst No  <span style={{color:"red"}}>*</span></h4></label>
                   <FormikController
                     control="input"
                     type="text"
-                    label="Enter Gst No *"
                     name="gst_number"
-                    placeholder="Enter Gst No"
+                  
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                     readOnly={readOnly}
@@ -283,12 +283,12 @@ function BusinessDetails(props) {
 
             <div className="form-row">
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Business PAN <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
                   type="text"
-                  label="Business Pan *"
                   name="signatory_pan"
-                  placeholder="Enter Business PAN"
+          
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
@@ -296,45 +296,45 @@ function BusinessDetails(props) {
               </div>
 
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">PAN Owner's Name <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
                   type="text"
-                  label=" PAN Owner's Name *"
                   name="name_on_pancard"
-                  placeholder="Pan owner's Name"
+             
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">PIN Code <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
                   type="number"
-                  label=" Pin code *"
                   name="pin_code"
-                  placeholder="Pin code"
+          
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">City <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
                   type="text"
-                  label="City *"
                   name="city_id"
-                  placeholder="Enter City"
+                
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">State <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
-                  label="State *"
                   name="state_id"
                   options={BusinessOverview}
                   className="form-control"
@@ -344,12 +344,12 @@ function BusinessDetails(props) {
               </div>
 
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Authorised Signatory PAN<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
                   type="text"
-                  label="Authorised Signatory PAN *"
                   name="pan_card"
-                  placeholder="Enter Authorised Signatory PAN"
+                  
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
@@ -357,12 +357,12 @@ function BusinessDetails(props) {
               </div>
 
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Registered Address<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="textArea"
                   type="textArea"
-                  label="Registered Address *"
                   name="registered_business_address"
-                  placeholder="Enter Registered Address"
+                
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
@@ -390,7 +390,7 @@ function BusinessDetails(props) {
                   type="textArea"
                   disabled={checked}
                   name="operational_address"
-                  placeholder="Enter Operational Address"
+               
                   className="form-control"
                   value={operationvalue}
                   readOnly={readOnly}
@@ -398,8 +398,8 @@ function BusinessDetails(props) {
               </div>
             </div>
             {VerifyKycStatus === "Verified" ? null : (
-              <button className="btn btn-primary" type="submit">
-                {buttonText}
+               <button type="submit" className="btn float-lg-right" style={{backgroundColor:"#0156B3"}}>
+              <h4 className="text-white font-weight-bold"> {buttonText}</h4> 
               </button>
             )}
           </Form>

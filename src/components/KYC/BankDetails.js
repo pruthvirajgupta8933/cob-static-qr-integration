@@ -123,129 +123,105 @@ function BankDetails(props) {
       setButtonText("Verify and Next")
     }
   }, [role])
-  
 
   return (
     <div className="col-md-12 col-md-offset-4">
-      <div className="form-row ">
-        <p>
-          We will deposit a small amount of money in your account to verify the
-          account.
-        </p>
-      </div>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-        enableReinitialize={true}
-      >
-        {(formik) => (
-          <Form>
-            <div className="form-row">
-              <div className="form-group col-md-4">
-                <FormikController
-                  control="input"
-                  type="text"
-                  label="Account Name *"
-                  name="account_holder_name"
-                  placeholder="Account Holder Name"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+      enableReinitialize={true}
+    >
+      {formik => (
 
-              <div className="form-group col-md-4">
-                <FormikController
-                  control="input"
-                  type="text"
-                  label="Account Type *"
-                  name="account_type"
-                  placeholder="Account Type"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div>
-
-              <div className="form-group col-md-4">
-                <FormikController
-                  control="select"
-                  label="Bank Name*"
-                  name="bank_id"
-                  className="form-control"
-                  placeholder="Enter Bank Name"
-                  options={data}
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div>
+        <Form>
+          {console.log(formik)}
+          <div className="form-row align-items-centre">
+            <div className="col-lg-10">
+            <label><h4 class ="font-weight-bold">Account Holder Name<span style={{color:"red"}}>*</span></h4></label>
+            <FormikController
+                        control="input"
+                        type="text"
+                        name="account_holder_name"
+                        className="form-control"
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
+                        readOnly={readOnly}
+                      />
             </div>
 
-            <div className="form-row">
-              <div className="form-group col-md-3">
-                <FormikController
-                  control="input"
-                  type="text"
-                  label="Branch *"
-                  name="branch"
-                  placeholder="Enter Branch Name"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
+            
+              <div className="col-lg-10">
+              <label><h4 class ="font-weight-bold">Account Type<span style={{color:"red"}}>*</span></h4></label>
+              <FormikController
+                        control="input"
+                        type="text"
+                        name="account_type"
+                        className="form-control"
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
+                        readOnly={readOnly}
+                      />
               </div>
 
-              <div className="form-group col-md-3">
-                <FormikController
-                  control="input"
-                  type="text"
-                  label="Branch IFSC Code *"
-                  name="ifsc_code"
-                  placeholder="IFSC Code"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
+              <div className="col-lg-10">
+              <label><h4 class ="font-weight-bold">IFSC Code<span style={{color:"red"}}>*</span></h4></label>
+              <FormikController
+                        control="input"
+                        type="text"
+                        name="ifsc_code"
+                        className="form-control"
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
+                        readOnly={readOnly}
+                      />
               </div>
+          
 
-              <div className="form-group col-md-3">
-                <FormikController
-                  control="input"
-                  type="text"
-                  label="Account Number *"
-                  name="account_number"
-                  placeholder="Account Number"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div>
 
-              <div className="form-group col-md-3">
-                <FormikController
-                  control="input"
-                  type="text"
-                  label="Confirm Account Number  *"
-                  name="confirm_account_number"
-                  placeholder="Re-Enter Account Number"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div>
+
+          </div>
+
+          <div className="form-row">
+            <div className="col-lg-10">
+            <label><h4 class ="font-weight-bold">Bank Name<span style={{color:"red"}}>*</span></h4></label>
+                       <FormikController
+                          control="select"                          
+                          name="bank_id"
+                          className="form-control"
+                          options={data}
+                          disabled={VerifyKycStatus === "Verified" ? true : false}
+                          readOnly={readOnly}
+                        />
+                    
             </div>
 
-            {VerifyKycStatus === "Verified" ? null : (
-              <button className="btn btn-primary" type="submit">
-                {buttonText}
+
+            <div className="col-lg-10">
+            <label><h4 class ="font-weight-bold">Account Number<span style={{color:"red"}}>*</span></h4></label>
+            <FormikController
+                          control="input"
+                          type="text"
+                          name="account_number"
+                          className="form-control"
+                          disabled={VerifyKycStatus === "Verified" ? true : false}
+                          readOnly={readOnly}
+                        />
+            </div>
+
+           
+          </div>
+          <div class="card-footer">
+          <div class="mt-lg-2">
+          {VerifyKycStatus === "Verified" ? null : (
+         <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
+               <h4 className="text-white font-weight-bold"> {buttonText}</h4>
               </button>
             )}
-          </Form>
-        )}
-      </Formik>
-    </div>
-  );
-}
+          </div>
+          </div>
+        </Form>
+      )}
+    </Formik>
 
-export default BankDetails;
+  </div>
+)
+}
+export default BankDetails

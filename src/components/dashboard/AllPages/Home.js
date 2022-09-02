@@ -10,6 +10,7 @@ import '../css/Home.css';
 import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
 import { kycModalToggle, kycVerificationForTabs } from '../../../slices/kycSlice';
 import KycAlert from '../../KYC/KycAlert';
+import NavBar from '../NavBar/NavBar';
 
 
 
@@ -136,8 +137,9 @@ function Home() {
 {/* {console.log("kyc?.kycVerificationForAllTabs?.is_verified",kyc?.kycVerificationForAllTabs?.is_verified)} */}
       {/* {kyc?.kycVerificationForAllTabs?.is_verified === false ? <KycModal /> : <></>} */}
 
-      <div className="profileBarStatus">
-      </div>
+    <div>
+      <NavBar />
+    </div>
      
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">

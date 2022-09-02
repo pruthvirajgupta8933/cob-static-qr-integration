@@ -252,9 +252,9 @@ function BusinessOverview(props) {
           <Form>
             <div className="form-row">
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Business Type <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
-                  label="Business Type* "
                   name="business_type"
                   options={data}
                   className="form-control"
@@ -264,9 +264,9 @@ function BusinessOverview(props) {
               </div>
 
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Business Category <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
-                  label="Business Category *"
                   name="business_category"
                   options={businessCategory}
                   className="form-control"
@@ -276,12 +276,13 @@ function BusinessOverview(props) {
               </div>
 
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Business Model <span style={{color:"red"}}>*</span></h4></label>
+                
                 <FormikController
                   control="input"
                   type="text"
-                  label="Business Model *"
+                 
                   name="business_model"
-                  placeholder="Business Model"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
@@ -291,22 +292,21 @@ function BusinessOverview(props) {
 
             <div className="form-row">
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Billing Label <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
                   type="text"
-                  label="Billing Label *"
                   name="billing_label"
-                  placeholder="Billing Label"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
 
-              <div className="form-group col-md-4">
+              <div className="form-group col-md-3">
+              <label><h4 class ="font-weight-bold">Do you have you own ERP<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
-                  label="Do you have you own ERP *"
                   name="erp_check"
                   options={Erp}
                   className="form-control"
@@ -316,9 +316,10 @@ function BusinessOverview(props) {
               </div>
 
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Platform<span style={{color:"red"}}>*</span></h4></label>
+                
                 <FormikController
                   control="select"
-                  label="Platform *"
                   name="platform_id"
                   options={platform}
                   className="form-control"
@@ -330,6 +331,7 @@ function BusinessOverview(props) {
 
             <div className="form-row">
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Website/App url<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
                   onChange={(e) => {
@@ -339,7 +341,6 @@ function BusinessOverview(props) {
                       e.target.value
                     );
                   }}
-                  label="Website/App url *"
                   name="seletcted_website_app_url"
                   options={WebsiteAppUrl}
                   className="form-control"
@@ -350,12 +351,11 @@ function BusinessOverview(props) {
 
               {formik.values?.seletcted_website_app_url === "Yes" && (
                 <div className="form-group col-md-4">
+                      <label><h4 class ="font-weight-bold">Website/App url<span style={{color:"red"}}>*</span></h4></label>
                   <FormikController
                     control="input"
                     type="text"
-                    label="Website/App url *"
                     name="website_app_url"
-                    placeholder="Enter Website/App URL"
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                     readOnly={readOnly}
@@ -364,9 +364,10 @@ function BusinessOverview(props) {
               )}
 
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Type Of Collection <span style={{color:"red"}}>*</span></h4></label>
+                
                 <FormikController
                   control="select"
-                  label="Type Of Collection *"
                   name="collection_type_id"
                   options={collection}
                   className="form-control"
@@ -378,9 +379,9 @@ function BusinessOverview(props) {
 
             <div className="form-row">
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Collection Frequency <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
-                  label="Collection Frequency *"
                   name="collection_frequency_id"
                   options={CollectFreqency}
                   className="form-control"
@@ -389,12 +390,12 @@ function BusinessOverview(props) {
                 />
               </div>
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Company website <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
                   type="text"
-                  label="Company website *"
                   name="company_website"
-                  placeholder="Enter Ticket Size"
+                 
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
@@ -402,34 +403,32 @@ function BusinessOverview(props) {
               </div>
 
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Ticket size<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
                   type="text"
-                  label="Ticket size *"
                   name="ticket_size"
-                  placeholder="Enter Ticket Size"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
               <div className="form-group col-md-4">
+              <label><h4 class ="font-weight-bold">Expected Transactions <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
                   type="text"
-                  label="Expected Transactions *"
                   name="expected_transactions"
-                  placeholder="Enter Expected Transactions"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
 
-              <div className="form-group col-md-4">
+              <div className="form-group col-md-5">
+              <label><h4 class ="font-weight-bold">Do you need SabPaisa to built your form<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
-                  label="Do you need SabPaisa to built your form *"
                   name="form_build"
                   options={BuildYourForm}
                   className="form-control"
@@ -440,11 +439,8 @@ function BusinessOverview(props) {
             </div>
 
             {VerifyKycStatus === "Verified" ? null : (
-              <button
-                type="submit"
-                className="btn btn-primary"
-              >
-                {buttonText}
+             <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
+                <h4 className="text-white font-weight-bold">  {buttonText}</h4>
               </button>
             )}
           </Form>

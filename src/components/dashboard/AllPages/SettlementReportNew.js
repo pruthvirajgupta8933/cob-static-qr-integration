@@ -12,6 +12,7 @@ import { clearSettlementReport, fetchSettlementReportSlice } from "../../../slic
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
+import NavBar from "../NavBar/NavBar";
 
 function SettlementReportNew() {
   const dispatch = useDispatch();
@@ -212,7 +213,9 @@ function SettlementReportNew() {
 
   return (
     <section className="ant-layout">
-      <div className="profileBarStatus"></div>
+     <div>
+      <NavBar />
+     </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
