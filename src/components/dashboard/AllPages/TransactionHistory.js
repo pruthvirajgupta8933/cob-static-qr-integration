@@ -164,86 +164,44 @@ function TransactionHistory() {
     setCurrentPage(pageNo);
   };
 
-  const submitHandler = (values) => {
+  const submitHandler = values =>{
     // console.log(values)
-    isButtonClicked(true)
-
-    const { fromDate, endDate, transaction_status, payment_mode } = values;
+    
+    const {fromDate, endDate, transaction_status, payment_mode} = values
     const dateRangeValid = checkValidation(fromDate, endDate);
 
-    if (dateRangeValid) {
+    if(dateRangeValid){ 
       // isLoading(true);
       // isButtonClicked(true);
-      let strClientCode,
-        clientCodeArrLength = "";
-      if (clientCode === "All") {
-        const allClientCode = [];
-        clientMerchantDetailsList?.map((item) => {
-          allClientCode.push(item.clientCode);
-        });
+      let strClientCode, clientCodeArrLength ="";
+        if(clientCode==="All"){
+        const allClientCode = []
+        clientMerchantDetailsList?.map((item)=>{
+          allClientCode.push(item.clientCode)
+        })
         clientCodeArrLength = allClientCode.length.toString();
         strClientCode = allClientCode.join().toString();
-      } else {
+      }else{
         strClientCode = clientCode;
-        clientCodeArrLength = "1";
+        clientCodeArrLength = "1"
       }
 
       let paramData = {
-        clientCode: strClientCode,
-        paymentStatus: transaction_status,
-        paymentMode: payment_mode,
-        fromDate: fromDate,
-        endDate: endDate,
+        clientCode:strClientCode,
+        paymentStatus:transaction_status,
+        paymentMode:payment_mode,
+        fromDate:fromDate,
+        endDate:endDate,
         length: "0",
         page: "0",
-        NoOfClient: clientCodeArrLength,
-      };
-      // console.log(paramData)
-      {
-        roles?.merchant === true
-          ? dispatch(fetchTransactionHistorySlice(paramData))
-          : ({
-              clientCode,
-              fromDate,
-              endDate,
-              transaction_status,
-              payment_mode,
-            } = values);
-        const dateRangeValid = checkValidation(fromDate, endDate);
+        NoOfClient: clientCodeArrLength
+      } 
+  console.log(paramData)
+      dispatch(fetchTransactionHistorySlice(paramData))
+}
 
-        if (dateRangeValid) {
-          // isLoading(true);
-          // isButtonClicked(true);
-          let strClientCode,
-            clientCodeArrLength = "";
-          if (clientCode === "All") {
-            const allClientCode = [];
-            clientMerchantDetailsList?.map((item) => {
-              allClientCode.push(item.clientCode);
-            });
-            clientCodeArrLength = allClientCode.length.toString();
-            strClientCode = allClientCode.join().toString();
-          } else {
-            strClientCode = clientCode;
-            clientCodeArrLength = "1";
-          }
 
-          let paramData1 = {
-            clientCode: strClientCode,
-            paymentStatus: transaction_status,
-            paymentMode: payment_mode,
-            fromDate: fromDate,
-            endDate: endDate,
-            length: "0",
-            page: "0",
-            NoOfClient: clientCodeArrLength,
-          };
-          dispatch(fetchTransactionHistorySlice(paramData1));
-        }
-      }
-    }
-  };
-
+  }
   const checkValidation = (fromDate = "", toDate = "") => {
     var flag = true;
     if (fromDate === 0 || toDate === "") {
