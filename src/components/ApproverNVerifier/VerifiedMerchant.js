@@ -6,11 +6,14 @@ import axios from "axios";
 import DropDownCountPerPage from '../../_components/reuseable_components/DropDownCountPerPage';
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
 import { Link } from 'react-router-dom';
+import toastConfig from '../../utilities/toastTypes';
+import Spinner from './Spinner';
 
 
 function VerifiedMerchant() {
 
   const [verfiedMerchant, setVerifiedMerchant] = useState([])
+  const [spinner, setSpinner] = useState(true);
   const [merchantData, setMerchantData] = useState([])
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
@@ -34,18 +37,20 @@ function VerifiedMerchant() {
       })
   }
 
-  console.log(allVerifiedMerchants, "myyyy alll documents")
+ 
 
   useEffect(() => {
     // handleFetchData();
     allVerifiedMerchants();
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize })).then((resp) => {
+      toastConfig.successToast("Approved Data Loaded")
+      setSpinner(false)
       const data = resp.payload.results
 
       setVerifiedMerchant(data);
     })
 
-      .catch((err) => console.log(err));
+      .catch((err) => toastConfig.errorToast("Data not loaded"));
   }, [currentPage, pageSize]);
 
 
@@ -108,7 +113,11 @@ function VerifiedMerchant() {
             </tr>
           </thead>
           <tbody>
-            {verfiedMerchant.map((user, i) => (
+          {spinner && (
+       <Spinner/>
+        )}
+            {verfiedMerchant.length == 0 ? <h1 className="d-flex align-items-center">No data found</h1> :
+            (verfiedMerchant.map((user, i) => (
               <tr key={i}>
                 <td>{i + 1}</td>
                 <td>{user.merchantId}</td>
@@ -125,7 +134,7 @@ function VerifiedMerchant() {
                   </td> : <></>
                 }
               </tr>
-            ))}
+            )))}
           </tbody>
         </table>
         <nav aria-label="Page navigation example">

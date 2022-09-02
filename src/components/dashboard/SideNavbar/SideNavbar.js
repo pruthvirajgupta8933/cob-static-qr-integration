@@ -6,7 +6,7 @@ import { checkPermissionSlice, logout } from '../../../slices/auth'
 import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
 
 function SideNavbar() {
-  const {auth , kyc} = useSelector((state) => state)
+  const { auth, kyc } = useSelector((state) => state)
 
   const { user, payLinkPermission } = auth
 
@@ -33,7 +33,7 @@ function SideNavbar() {
     if (user.clientMerchantDetailsList?.length > 0) {
       dispatch(checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode))
     }
-    
+
   }, [])
 
 
@@ -42,7 +42,7 @@ function SideNavbar() {
 
 
   // console.log("roleBasedShowTab", roleBasedShowTab)
-// console.log(kyc.enableKycTab)
+  // console.log(kyc.enableKycTab)
 
   return (
     <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{ flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px' }}>
@@ -66,16 +66,19 @@ function SideNavbar() {
                     </li>
                     : <React.Fragment></React.Fragment>}
 
+                  {roleBasedShowTab?.merchant === true &&
+                    roleBasedShowTab?.approver === false && roleBasedShowTab?.verifier === false ?
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
                       <Link to={`${url}/kyc`} className='txt-white' ><i className="fa fa-file-o" aria-hidden="true" /> <span>Fill KYC Form</span><span class="new-tab">new</span></Link>
                     </li>
-                  
+                    : <React.Fragment></React.Fragment>}
+
 
                   {roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true ?
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
                       <Link to={`${url}/approver`} className='txt-white' ><i className="fa fa-list" aria-hidden="true" /> <span>Merchant List</span><span class="new-tab">new</span></Link>
                     </li>
-                     : <React.Fragment></React.Fragment>} 
+                    : <React.Fragment></React.Fragment>}
 
 
 
@@ -106,31 +109,31 @@ function SideNavbar() {
                         <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
                           <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link>
                         </li>
-                        :   <React.Fragment></React.Fragment> }
+                        : <React.Fragment></React.Fragment>}
 
 
-                        {roleBasedShowTab?.merchant === true ?
-                          <React.Fragment>
+                      {roleBasedShowTab?.merchant === true ?
+                        <React.Fragment>
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
                             <Link to={`${url}/settlement-report-new`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
                               &nbsp; <span>Settlement Report</span><span class="new-tab">new</span></Link>
                           </li>
 
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
-                          <Link to={`${url}/product-catalogue`} className='txt-white'><i className="fa fa-book" aria-hidden="true" />
-                            &nbsp; Product Catalogue</Link>
-                        </li>
-                          </React.Fragment>
-                          :   <React.Fragment></React.Fragment> 
+                            <Link to={`${url}/product-catalogue`} className='txt-white'><i className="fa fa-book" aria-hidden="true" />
+                              &nbsp; Product Catalogue</Link>
+                          </li>
+                        </React.Fragment>
+                        : <React.Fragment></React.Fragment>
                       }
 
-                   
 
-                      { payLinkPermission.length > 0 && payLinkPermission[0].clientId === 1 && roleBasedShowTab?.merchant===true?
-                          <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
-                            <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
-                              &nbsp; Create Payment Link</Link>
-                          </li> : <React.Fragment></React.Fragment>
+
+                      {payLinkPermission.length > 0 && payLinkPermission[0].clientId === 1 && roleBasedShowTab?.merchant === true ?
+                        <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
+                          <Link to={`${url}/paylink`} className='txt-white'><i className="fa fa-address-book" aria-hidden="true" />
+                            &nbsp; Create Payment Link</Link>
+                        </li> : <React.Fragment></React.Fragment>
                       }
 
                       <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }} onClick={() => handle()}>

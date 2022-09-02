@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import API_URL from "../../config";
 import { kycForApproved } from "../../slices/kycSlice"
+import toastConfig from "../../utilities/toastTypes";
 
 
 function ApprovedMerchant() {
@@ -31,13 +32,14 @@ function ApprovedMerchant() {
   }, []);
   const kycapproved=()=>{ 
     dispatch(kycForApproved()).then((resp) => {
+      toastConfig.successToast("Approved Data Loaded")
       const data = resp.payload.results
 
       setApproveMerchant(data);
 
 })
 
-      .catch((err) => console.log(err));
+      .catch((err) => toastConfig.errorToast("Data not loaded"));
   }
 
  
@@ -90,7 +92,6 @@ function ApprovedMerchant() {
             <th>Name</th>
             <th> Email</th>
             <th>Bank</th>
-            <th>Aadhar Number</th>
             <th>PAN No.</th>
             <th>Status</th>
             <th>View document</th>
@@ -105,7 +106,6 @@ function ApprovedMerchant() {
               <td>{user.name}</td>
               <td>{user.emailId}</td>
               <td>{user.bankName}</td>
-              <td>{user.aadharNumber}</td>
               <td>{user.panCard}</td>
 
               <td>{user.status}</td>
