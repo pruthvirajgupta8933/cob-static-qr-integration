@@ -140,7 +140,7 @@ function Registration() {
 return (
   <>
     <HeaderPage />
-    <div className="container-fluid toppad">
+    <div className="container toppad">
       <div className="row">
         <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
           <div className="col-sm-5 authfy-panel-left">
@@ -212,10 +212,8 @@ return (
                     <div className="logmod__tab-wrapper">
                       <div className="show logmod__tab lgm-1">
                         <div className="logmod__heading">
-                          <span className='fontfigma'>
-                          Welcome to SabPaisa{" "}
-                           </span><br/><br/>
-                             <strong className='Signupfigma'>Signup to Create New Account</strong> 
+                          <h1 className="mb-0">Welcome to SabPaisa</h1>
+                          <p className="mb-0">Signup to Create New Account</p> 
                         </div>
                         <div className="logmod__form">
                           <Formik
@@ -436,7 +434,7 @@ return (
                               <div className="sminputs">
                                 <div className="simform__actions">
                                   <button
-                                    className="figmabtn text-white"
+                                    className="btn btn-primary w-100 mt-4 mb-0 text-white"
                                     name="commit"
                                     type="submit"
                                     defaultValue="Create Account"
