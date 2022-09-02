@@ -10,6 +10,7 @@ import { isUserAlreadyLogin, login } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
 import { toast } from "react-toastify";
 import "./Login.css";
+import imageSlide1 from "../../assets/images/rafiki.png"
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",
@@ -107,37 +108,20 @@ function LoginPage() {
       });
   };
 
-  // useEffect(() => {
-
-  //   if (isLoggedIn) {
-
-  //       console.log("login2");
-  //       console.log(user)
-  //       // if(user?.role==='14' || user?.role==='15'){
-  //       //   history.push("/dashboard/approver")
-  //       // }else{
-  //       //   history.push("/dashboard")
-  //       // }
-  //   }
-
-  //     // setLoading(false);
-
-  // }, [isLoggedIn])
-
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
-
-
   return (
     <>
       <HeaderPage />
+      {/* <div className="gfg-div">dddfdfd</div> */}
       {/* <p className="showErrormsg">{message && message!=''?message:''}</p> */}
       <div className="container-fluid toppad">
         <div className="row">
-          <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
-            <div className="col-sm-7 authfy-panel-right push-right nopad">
+          <div className="col-lg-1"></div>
+          <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-10 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
+            <div className="col-sm-7 authfy-panel-right login-float-right nopad login-float-none">
               {/* authfy-login start */}
               <div className="authfy-login">
                 {/* panel-login start */}
@@ -145,23 +129,23 @@ function LoginPage() {
                   <div className="logmod__wrapper">
                     <span className="logmod__close">Close</span>
                     <div className="logmod__container">
-                      <ul className="logmod__tabs">
+                      {/* <ul className="logmod__tabs">
                         <li data-tabtar="lgm-2" className="current">
                           <a href={() => false} style={{ width: "100%" }}>
                             Login
                           </a>
                         </li>
-                        {/*<li data-tabtar="lgm-1"><a href="#">Sign Up</a></li>*/}
-                      </ul>
+                      </ul> */}
                       <div className="logmod__tab-wrapper">
                         <div className="logmod__tab lgm-2 show">
                           <div className="logmod__heading">
                             <span className="logmod__heading-subtitle">
-                              Enter your email and password{" "}
-                              <strong>to sign in</strong>
+                            
                             </span>
+                            <h1>Welcome to your Dashboard</h1>
+                            <p>You can login to track and record every transaction in real time.</p>
                           </div>
-                          <div className="logmod__form">
+                          <div className="logmod__form m-r-l-100 m0">
                             <Formik
                               initialValues={{
                                 ...INITIAL_FORM_STATE,
@@ -176,16 +160,15 @@ function LoginPage() {
                                       className="string optional"
                                       htmlFor="user-name"
                                     >
-                                      User name*
+                                      User name
                                     </label>
                                     <Field
                                       className="string optional"
                                       maxLength={255}
                                       id="user-email"
-                                      placeholder="user name"
+                                      placeholder="Type your username here"
                                       type="text"
                                       name="clientUserId"
-                                      autoComplete="username"
                                     />
                                     <ErrorMessage name="clientUserId">
                                       {(msg) => (
@@ -209,13 +192,13 @@ function LoginPage() {
                                       className="string optional"
                                       htmlFor="user-pw"
                                     >
-                                      Password *
+                                    Enter Your  Password
                                     </label>
                                     <Field
                                       className="string optional"
                                       maxLength={255}
                                       id="user-pw"
-                                      placeholder="Password"
+                                      placeholder="Type your password here"
                                       type={
                                         values.showPassword
                                           ? "text"
@@ -223,7 +206,6 @@ function LoginPage() {
                                       }
                                       size={50}
                                       name="userPassword"
-                                      autoComplete="current-password"
                                     />
                                     <ErrorMessage name="userPassword">
                                       {(msg) => (
@@ -251,9 +233,9 @@ function LoginPage() {
                                 <div className="simform__actions">
                                   {/*<input className="sumbit" name="commit" type="sumbit" value="Log In" />*/}
                                   <button
-                                    className="sumbit"
+                                    className="sumbit btn-0156B3"
                                     type="sumbit"
-                                    style={{ color: "#fff" }}
+                                    
                                     disabled={loading ? true : false}
                                   >
                                     {loading && (
@@ -278,6 +260,8 @@ function LoginPage() {
                               </Form>
                             </Formik>
                           </div>
+                          <div className="logmod__form m-r-l-100" ><p>Term of Service | Privacy Policy |  Contact us
+</p></div>
                         </div>
                       </div>
                     </div>
@@ -343,19 +327,15 @@ function LoginPage() {
               </div>{" "}
               {/* ./authfy-login */}
             </div>
-            <div className="col-sm-5 authfy-panel-left push-left">
+            <div className="col-sm-5 authfy-panel-left">
               <div className="brand-col">
-                <div className="headline">
-                  {/* brand-logo start */}
-                  <div className="brand-logo">
-                    <img
-                      src={sabpaisalogo}
-                      width={150}
-                      alt="SabPaisa"
-                      title="SabPaisa"
-                    />
+                  <div class="heading1 pt-5">
+                    <p className="font-text-large mb-0">An all-in-one</p>
+                    <p className="font-size-32 mb-2"> Transaction Dashboard</p>
+                    <p className="">Power of real-time payment analysis</p>
+                    <img src={imageSlide1} alt="slide" width="80%" />
                   </div>
-                  {/* ./brand-logo */}
+                {/* <div className="headline">
                   <p style={{ fontSize: "24px", lineHeight: "20px" }}>
                     Receive Payments, The Easy Way
                   </p>
@@ -363,11 +343,12 @@ function LoginPage() {
                   <h1 style={{ fontSize: "24px", whiteSpace: "10px" }}>
                     Businesses,&nbsp;SMEs,&nbsp;Freelancers, Homepreneurs.
                   </h1>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
-        </div>{" "}
+          <div className="col-lg-1"></div>
+        </div>
         {/* ./row */}
       </div>
     </>

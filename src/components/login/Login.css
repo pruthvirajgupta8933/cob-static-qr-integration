@@ -130,6 +130,38 @@
 
 } */
 
+/* login page */
+
+
+.login-bg-CCD7E9{
+  background-color: #CCD7E9;
+}
+
+.bg-white{
+  background-color: #fff;
+}
+
+
+.font-text-large{
+  font-size: 4em;
+}
+
+.mt-40{
+  margin-top: 40px;
+}
+
+.font-size-32{
+  font-size: 32px;
+}
+
+.m-r-l-100{
+  margin: 0 100px 0 100px;
+}
+
+
+
+
+
 .list-items li {
 
   padding-right:20px;
@@ -210,7 +242,6 @@
     .toppad{
     padding-top:82px;
 }
-
 
 
 }

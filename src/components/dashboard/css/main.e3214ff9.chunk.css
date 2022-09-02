@@ -7163,6 +7163,7 @@ button.bg-dark:hover {
         align-self: stretch !important;
     }
 }
+
 .float-left {
     float: left !important;
 }
@@ -7172,6 +7173,7 @@ button.bg-dark:hover {
 .float-none {
     float: none !important;
 }
+
 @media (min-width: 576px) {
     .float-sm-left {
         float: left !important;
@@ -7182,6 +7184,8 @@ button.bg-dark:hover {
     .float-sm-none {
         float: none !important;
     }
+
+    
 }
 @media (min-width: 768px) {
     .float-md-left {
@@ -7193,6 +7197,7 @@ button.bg-dark:hover {
     .float-md-none {
         float: none !important;
     }
+
 }
 @media (min-width: 992px) {
     .float-lg-left {

@@ -107,7 +107,7 @@ html {
 }
 .logmod__heading {
   text-align: center;
-  padding: 12px 0 12px 0;
+  padding: 30px 0 12px 0;
 }
 .logmod__heading-subtitle {
   display: block;
@@ -197,13 +197,13 @@ html {
 }
 .simform__actions .sumbit {
   height: 48px;
-  float: right;
+  /* float: right; */
   color: #FFF;
-  width: 50%;
+  width: 100%;
   font-size: 16px;
   /*font-weight: 700;
   background: #4CAF50;*/
-  background: #000;
+  /* background: #000; */
   margin-top: 7px;
 }
 .simform__actions .sumbit::after {
@@ -239,7 +239,7 @@ html {
   width: 50%;
   height: 96px;
   padding: 11px 24px;
-  border-right: 1px solid #e5e5e5;
+  /* border-right: 1px solid #e5e5e5; */
   border-bottom: none;
   float: left;
   background-color: #FFF;
@@ -264,10 +264,10 @@ html {
   white-space: nowrap;
   display: block;
   width: 100%;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   letter-spacing: 1px;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
   line-height: 24px;
   text-align:left;
@@ -710,4 +710,11 @@ table.list{
   width: 100%; /* Temporary width is given you can remove it later on. */
   display: inline-block;
   padding: 10px 20px;
+}
+
+
+/* Abhishek Css */
+
+.btn-0156B3{
+  background-color: #0156B3;
 }

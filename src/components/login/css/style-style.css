@@ -37,7 +37,8 @@
 
 body, html {
     background-color: #f0f2f5;
-    background-image: url("https://1.bp.blogspot.com/-fd1WXKk-TAc/XyqfngP4PiI/AAAAAAAAVMw/umQz3tkxtg43uPIy8W5og6gAkpCfjaTvACLcBGAsYHQ/w1563-h1563/bg-snell.png");
+    /* background-image: url("https://1.bp.blogspot.com/-fd1WXKk-TAc/XyqfngP4PiI/AAAAAAAAVMw/umQz3tkxtg43uPIy8W5og6gAkpCfjaTvACLcBGAsYHQ/w1563-h1563/bg-snell.png"); */
+    background-image: url("../../../assets/images/bg-cob.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 100%;
@@ -176,8 +177,8 @@ a:focus {
 }
 
 .authfy-panel-left {
-  background-color: rgb(12 14 33 / 92%);
-  color: #ffffff;
+  background-color: #CCD7E9;
+  color: #000000;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   -webkit-box-shadow: 0px 3px 6px #1d2030;
@@ -199,7 +200,7 @@ a:focus {
 .authfy-panel-left .brand-col {
   display: table;
   width: 100%;
-  /*padding: 25px;*/
+  text-align: center;
 }
 
 .authfy-panel-left .brand-col .headline {
@@ -414,6 +415,12 @@ a:focus {
   .max-height-signup {
     max-height: calc(70vh - 200px);
   }
+
+  .float-none{
+    float: none;
+  }
+
+ 
     
 }
 
