@@ -162,6 +162,7 @@ function TransactionHistory() {
 
   const submitHandler = values =>{
     // console.log(values)
+    isButtonClicked(true)
     
     const {fromDate, endDate, transaction_status, payment_mode} = values
     const dateRangeValid = checkValidation(fromDate, endDate);
