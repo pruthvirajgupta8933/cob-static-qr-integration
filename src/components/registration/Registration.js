@@ -4,7 +4,8 @@ import '../login/css/home.css'
 import '../login/css/homestyle.css'
 import '../login/css/style-style.css'
 import '../login/css/style.css'
-import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
+// import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
+import onlineshopinglogo from '../../assets/images/onlineshopinglogo.png'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -146,22 +147,37 @@ return (
             <div className="brand-col">
               <div className="headline">
                 {/* brand-logo start */}
-                <div className="brand-logo">
+                {/* <div className="brand-logo">
                   <img
                     src={sabpaisalogo}
                     width={150}
                     alt="SabPaisa"
                     title="SabPaisa"
                   />
-                </div>
+                </div> */}
                 {/* ./brand-logo */}
-                <p style={{ fontSize: "20px", lineHeight: "20px" }}>
-                  Receive Payments, The Easy Way
-                </p>
-                <h1 style={{ fontSize: "26px" }}>A Payments Solution for</h1>
+                <h1 style={{ fontSize: "30px" ,fontStyle:"Satoshi", color:"#0143A1"}} class="text-center" >Empower your</h1>
+                <h1 style={{ fontSize: "30px", whiteSpace: "20px" ,fontStyle:"Satoshi",color:"#0143A1"}} class="text-center">
+                  business,&nbsp;&nbsp;boost
+                </h1>
+                <h1 style={{ fontSize: "30px", whiteSpace: "20px",fontStyle:"Satoshi",color:"#0143A1" }} class="text-center">
+                your&nbsp;finance
+                </h1>
+               
+                <div className="brand-logo">
+                  <div class="text-center">
+                  <img
+                    src={onlineshopinglogo}
+                    width={300}
+                    alt="SabPaisa"
+                    title="SabPaisa"
+                  />
+                  </div>
+                </div>
+                {/* <h1 style={{ fontSize: "26px" }}>A Payments Solution for</h1>
                 <h1 style={{ fontSize: "26px", whiteSpace: "10px" }}>
                   Businesses,&nbsp;SMEs,&nbsp;Freelancers, Homepreneurs.
-                </h1>
+                </h1> */}
               </div>
             </div>
           </div>
@@ -196,10 +212,10 @@ return (
                     <div className="logmod__tab-wrapper">
                       <div className="show logmod__tab lgm-1">
                         <div className="logmod__heading">
-                          <span className="logmod__heading-subtitle">
-                            Enter your personal details{" "}
-                            <strong>to create an account</strong>
-                          </span>
+                          <span className='fontfigma'>
+                          Welcome to SabPaisa{" "}
+                           </span><br/><br/>
+                             <strong className='Signupfigma'>Signup to Create New Account</strong> 
                         </div>
                         <div className="logmod__form">
                           <Formik
@@ -420,7 +436,7 @@ return (
                               <div className="sminputs">
                                 <div className="simform__actions">
                                   <button
-                                    className="sumbit"
+                                    className="figmabtn text-white"
                                     name="commit"
                                     type="submit"
                                     defaultValue="Create Account"
