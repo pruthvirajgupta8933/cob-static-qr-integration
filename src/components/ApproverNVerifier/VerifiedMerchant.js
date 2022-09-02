@@ -116,7 +116,7 @@ function VerifiedMerchant() {
           {spinner && (
        <Spinner/>
         )}
-            {verfiedMerchant.length == 0 ? <h1 className="d-flex align-items-center">No data found</h1> :
+            {verfiedMerchant.length == 0 ?<h1 className="showMsg">No data found</h1> :
             (verfiedMerchant.map((user, i) => (
               <tr key={i}>
                 <td>{i + 1}</td>
