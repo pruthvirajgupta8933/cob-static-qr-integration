@@ -7,7 +7,7 @@ import BusinessOverview from "./BusinessOverview";
 import ContactInfo from "./ContactInfo";
 import DocumentsUpload from "./DocumentsUpload";
 import DocumentsUploadNew from "./DocumentsUploadNew";
-import SubmitKyc from "./SubmitKyc";
+import SubmitKyc from "./SubmitKyc"; 
 import {
   kycUserList,
   kycDocumentUploadList,
