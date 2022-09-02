@@ -47,6 +47,11 @@ table.tables tr:nth-child(odd) {
   animation: blinker 1s linear infinite;
 }
 
+.approve{
+  background:#0156B3;
+  
+}
+
 
 @keyframes blinker {
   50% {

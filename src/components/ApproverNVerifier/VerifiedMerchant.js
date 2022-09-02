@@ -31,7 +31,6 @@ function VerifiedMerchant() {
     await axios.get(`${API_URL.KYC_FOR_VERIFIED}`)
       .then(res => {
         const data = res.data.results;
-        console.log(data)
         setMerchantData(data)
 
       })
@@ -130,34 +129,37 @@ function VerifiedMerchant() {
                 <td>{user.status}</td>
                 {roles.approver===true ?
                   <td>
-                    <Link to={`/dashboard/kyc/?kycid=${user.loginMasterId}`} className="btn btn-primary  btn-xs" >Approve KYC</Link>
+                    <Link to={`/dashboard/kyc/?kycid=${user.loginMasterId}`} className="btn approve text-white btn-xs" >Approve KYC</Link>
                   </td> : <></>
                 }
               </tr>
             )))}
           </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item"><button class="page-link" onClick={handlePrevPage}>Previous</button></li>
+        <nav aria-label="Page navigation example" >
 
-            {pageNumbers.map(pgNumber => (
-
-
-              <li key={pgNumber}
-                className={`page-item ${currentPage == pgNumber ? 'active' : ''} `} >
-
-                <button onClick={() => setCurrentPage(pgNumber)}
-                  className='page-link'
-                >
-
-                  {pgNumber}
-                </button>
-              </li>
-            ))}
-            <li class="page-item"><button class="page-link" onClick={handleNextPage}>Next</button></li>
-          </ul>
-        </nav>
+<ul class="pagination w-25">
+  {pageNumbers.length > 0 && <li class="page-item"><button class="page-link" onClick={handlePrevPage} >Previous</button></li>}
+  {pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
+    <li key={pgNumber, i}
+      className={
+        pgNumber === currentPage ? " page-item active" : "page-item"
+      }>
+        {console.log(pageNumbers)}
+      <a href={() => false} className={`page-link data_${i}`} >
+        <p onClick={() => {
+          setCurrentPage(pgNumber)
+        }
+        }
+        >
+          {pgNumber}
+        </p>
+      </a>
+    </li>
+  ))}
+  {pageNumbers.length > 0 && <li class="page-item"><button class="page-link" onClick={handleNextPage} >Next</button></li>}
+</ul>
+</nav>
 
       </div>
     </div>
