@@ -82,7 +82,8 @@ function VerifiedMerchant() {
   }
 
   return (
-    <div className="row">
+    <div className="container-fluid flleft">
+      
       <div className="col-lg-4 mrg-btm- bgcolor">
         <label>Search</label>
         <input className='form-control' onChange={kycSearch} type="text" placeholder="Search Here" />
@@ -94,7 +95,8 @@ function VerifiedMerchant() {
           <DropDownCountPerPage datalength={verfiedMerchant.length} />
         </select>
       </div>
-      <div className="col-md-12 col-md-offset-4">
+      <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+        <div className='scroll overflow-auto'>
         <table className="table table-bordered">
           <thead>
             <tr>
@@ -115,7 +117,7 @@ function VerifiedMerchant() {
           {spinner && (
        <Spinner/>
         )}
-            {verfiedMerchant.length == 0 ?<h1 className="showMsg">No data found</h1> :
+            {verfiedMerchant.length == 0 ?<tr> <td colSpan={'9'}><h1 className="nodatafound" >No data found</h1></td></tr> :
             (verfiedMerchant.map((user, i) => (
               <tr key={i}>
                 <td>{i + 1}</td>
@@ -136,6 +138,7 @@ function VerifiedMerchant() {
             )))}
           </tbody>
         </table>
+        </div>
         <nav aria-label="Page navigation example" >
 
 <ul class="pagination w-25">
@@ -162,6 +165,7 @@ function VerifiedMerchant() {
 </nav>
 
       </div>
+      
     </div>
 
 

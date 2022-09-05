@@ -55,8 +55,8 @@ table.tables tr:nth-child(odd) {
 /* Css for Registration*/
 .figmabtn{
   background:#0156B3;
-  width:657px;
-height:65px;
+  width:600px;
+height:51px;
 top:751px;
 left:616px;
 border-radius:6px
@@ -77,20 +77,14 @@ margin-left: 97px;
 
 .fontfigma{
   color:#012167;
-  font-family: 'Satoshi';
-font-style: normal;
-font-weight: 700;
-font-size: 33px;
-line-height: 156.5%;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 25px;
 }
 .Signupfigma{
   color:#012167;
-  font-family: 'Nunito Sans';
-font-style: normal;
-font-weight: 400;
-font-size: 21px;
-margin-top: -154px;
-line-height: 156.5%;
+  font-weight: 400;
+  font-size: 14px;  
 }
 
 
