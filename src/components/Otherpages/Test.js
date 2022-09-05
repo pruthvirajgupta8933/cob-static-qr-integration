@@ -37,6 +37,7 @@ function Test() {
   return (
     <div className="container bg-white">
 
+<FormikWrapper />
 <form onSubmit={handleSubmit}>
       <input type="file" onChange={handleFileSelect}/>
       <input type="submit" value="Upload File" />
