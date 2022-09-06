@@ -143,11 +143,6 @@ function SideNavbar() {
                             &nbsp; Create Payment Link</Link>
                         </li> : <React.Fragment></React.Fragment>
                       }
-
-                      <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }} onClick={() => handle()}>
-                        <a href={() => false} ><i className="fa fa-briefcase" aria-hidden="true" />
-                          &nbsp; Logout</a>
-                      </li>
                     </ul>
                   </li>
 

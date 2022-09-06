@@ -310,10 +310,11 @@ function ContactInfo(props) {
                     </span> :
                     (
                       role.merchant ? 
-                      <div class="position-sticky col-5 col-sm-4 optbtn">
+                      <div class="position-sticky col-5 col-sm-4">
+                        {/* optbtn */}
                       <a
                         href={() => false}
-                        className="btn btnbackground text-white font-weight-bold"
+                        className="btn btnbackground text-white"
                         onClick={() => {
                           checkInputIsValid(
                             formik.errors,
@@ -370,10 +371,11 @@ function ContactInfo(props) {
                </span>
                  : (
                   role.merchant ? 
-                  <div class="position-sticky col-5 col-sm-4 optbtn">
+                  <div class="position-sticky col-5 col-sm-4">
+                    {/* optbtn */}
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white font-weight-bold"
+                    className="btn btnbackground text-white"
                     onClick={() => {
                       checkInputIsValid(
                         formik.errors,
@@ -392,17 +394,17 @@ function ContactInfo(props) {
              
           </div>
          
-          <div class="card-footer">
-          <div class="mt-lg-2">
+        
+          <div class="float-right ml-5">
             
             {VerifyKycStatus === "Verified" ? null : (
-                  <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
-                <h4 className="text-white font-weight-bold">{buttonText}</h4>
+                  <button className="btn" type="submit" style={{backgroundColor:"#0156B3"}}>
+                <h4 className="text-white">{buttonText}</h4>
                 </button>
                     )}
           
           </div>
-          </div>
+       
       
         </Form>
       )}
