@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import profileService from "../../../services/profile.service";
 import { toast, Zoom } from "react-toastify";
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
+import NavBar from "../NavBar/NavBar";
 
 export const Profile = () => {
   const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
@@ -248,7 +249,9 @@ export const Profile = () => {
 
   return (
     <section className="ant-layout">
-      <div className="profileBarStatus"></div>
+    <div>
+      <NavBar />
+    </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper">
@@ -332,8 +335,8 @@ export const Profile = () => {
                       {/* start form area */}
                       <div className="row- justify-content-center">
                         <div className="col-md-12-">
-
-                        <Link to="/reset" className="float-right " style={{margin:"-23px"}}>Change Password</Link>
+{/* 
+                        <Link to="/reset" className="float-right " style={{margin:"-23px"}}>Change Password</Link> */}
  
                           <div className="card">
                             <div className="card-header">Basic Details</div>

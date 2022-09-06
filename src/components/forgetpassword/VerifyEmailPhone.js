@@ -9,8 +9,6 @@ import validation from "../validation";
 import {  useSelector } from "react-redux";
 import { toast } from 'react-toastify'
 import axios from "axios";
-import ResetPassword from "./ResetPassword";
-
 
 
 const VerifyEmailPhone = (props)  => {

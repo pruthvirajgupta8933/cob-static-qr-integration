@@ -51,6 +51,19 @@ function TransactionHistory() {
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
 
+
+  // const [date, setDate] = useState(currentDate);
+  
+  // const currentDate = () => {
+  // let current = new Date();
+  // let myDate = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
+  //  setDate(myDate)
+
+  // } 
+  
+
+  // console.log(date, "<=== Today's  Date ===>")
+
   var clientMerchantDetailsList = [];
   if (
     user &&
@@ -477,6 +490,7 @@ function TransactionHistory() {
                           // value={startDate}
                           // onChange={(e)=>setStartDate(e.target.value)}
                         />
+                      
                       </div>
 
                       <div className="form-group col-md-2 mx-4">

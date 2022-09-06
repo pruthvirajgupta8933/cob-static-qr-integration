@@ -1,18 +1,22 @@
 import React, { useEffect } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { Formik, Field, Form, ErrorMessage} from "formik";
+import { useHistory } from "react-router-dom";
 import * as Yup from 'yup'
 import "yup-phone"
 import {changePasswordSlice} from '../../../slices/auth' 
 // import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
 import { toast, Zoom } from 'react-toastify';
+import NavBar from '../NavBar/NavBar';
 
 
 
 function ChangePassword() {
   const dispatch= useDispatch();
+  let history = useHistory();
+
   // let { path, url } = useRouteMatch();
-  const { user ,passwordChange} = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
 // console.log(passwordChange);
   const { 
@@ -22,25 +26,25 @@ function ChangePassword() {
   
   // const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
 
-useEffect(() => {
+// useEffect(() => {
 
-    if(passwordChange===true){
+//     if(passwordChange===true){
 
-        toast.success("Your password has been changed",{
-            autoClose:2000,
-            limit :1,
-            transition:Zoom
-          })
-    } 
-    if(passwordChange===false){
+//         toast.success("Your password has been changed",{
+//             autoClose:2000,
+//             limit :1,
+//             transition:Zoom
+//           })
+//     } 
+//     if(passwordChange===false){
 
-      toast.error("Password Change Unsuccessful.",{
-        autoClose:2000,
-        limit :1,
-        transition:Zoom
-      })}
+//       toast.error("Password Change Unsuccessful.",{
+//         autoClose:2000,
+//         limit :1,
+//         transition:Zoom
+//       })}
 
-}, [passwordChange])
+// }, [passwordChange])
 
 
 
@@ -79,13 +83,26 @@ const FORM_VALIDATION = Yup.object().shape({
     // console.log(isCreateorUpdate)
     // console.log("send client id",clientId);
     // console.log("send data",data);
-    dispatch(changePasswordSlice({clientEmail:data.email,oldPassword:data.old_password,newPassword:data.new_password}))
-    // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
-  };
+    dispatch(changePasswordSlice({email:data.email,password:data.old_password,newpassword:data.new_password}))      
+    .then((res) => {
+      console.log("This is the response", res);
+      if (res.meta.requestStatus === "fulfilled") {
+        if (res.payload.status === true) {
+          toast.success(res.payload.message)
+          history.push('/dashboard/profile')
+        
+        } else if (res.payload.status === false) {
+          toast.error(res.payload.message)
+        }
+      }
+    });
+
+  }
 
     return (
         <section className="ant-layout">
-        <div className="profileBarStatus">
+        <div>
+          <NavBar />
         </div>
         <main className="gx-layout-content ant-layout-content">
           <div className="gx-main-content-wrapper">

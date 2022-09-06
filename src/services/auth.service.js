@@ -102,7 +102,7 @@ const fetchDcBankList=()=>{
 
 const changePassword = (object) => {
   // console.log("profileservice",object)
-  return axios.post(API_URL.AUTH_CHANGE_PASSWORD, object)
+  return axios.put(API_URL.AUTH_CHANGE_PASSWORD, object)
 };
 
 

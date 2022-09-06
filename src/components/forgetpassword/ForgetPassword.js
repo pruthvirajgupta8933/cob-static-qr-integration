@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import HeaderPage from "../login/HeaderPage";
 import EnterUserID from "./EnterUserID";
-import ResetPassword from "./ResetPassword";
 import VerifyEmailPhone from "./VerifyEmailPhone";
 import ThanksCard from "./ThanksCard";
 import CreatePassword from "./CreatePassword";
