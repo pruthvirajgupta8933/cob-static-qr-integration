@@ -132,7 +132,7 @@ function TransactionEnquirey() {
                                   className="form-control"
                                 />
 
-                                <button  className=" btn bttn bttnbackgroundkyc mt-2" type="submit">View</button>
+                                <button className="btn text-white mt-2" style={{backgroundColor: "rgb(1, 86, 179)"}} type="submit">View</button>
                             </div>
                           </div>
                          

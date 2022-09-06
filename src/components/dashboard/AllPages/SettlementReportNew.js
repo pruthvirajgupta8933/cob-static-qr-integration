@@ -264,7 +264,7 @@ function SettlementReportNew() {
             </div>
             <div className="form-row" >
                 <div className="form-group col-md-1">
-                  <button className=" btn bttn bttnbackgroundkyc" type="submit">Search </button>
+                  <button className="btn btn-sm text-white"  style={{backgroundColor: "rgb(1, 86, 179)"}} type="submit">Search </button>
                 </div>
                 {txnList?.length > 0 ? 
                 <div className="form-group col-md-1">

@@ -208,15 +208,15 @@ function BankDetails(props) {
 
            
           </div>
-          
+          <div class="card-footer">
           <div class="mt-lg-2">
           {VerifyKycStatus === "Verified" ? null : (
          <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
-               <h4 className="text-white"> {buttonText}</h4>
+               <h4 className="text-white font-weight-bold"> {buttonText}</h4>
               </button>
             )}
           </div>
-         
+          </div>
         </Form>
       )}
     </Formik>

@@ -397,7 +397,7 @@ function BusinessDetails(props) {
             </div>
             {VerifyKycStatus === "Verified" ? null : (
                <button type="submit" className="btn float-lg-right" style={{backgroundColor:"#0156B3"}}>
-              <h4 className="text-white"> {buttonText}</h4> 
+              <h4 className="text-white font-weight-bold"> {buttonText}</h4> 
               </button>
             )}
           </Form>

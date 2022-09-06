@@ -612,7 +612,7 @@ const Subsciption = () => {
                           
                             <p className="mb-0">
                               <a
-                                className=" btn bttn bttnbackgroundkyc collapsed"
+                                className="btn text-white collapsed"
                                 data-toggle="collapse"
                                 href={`#collapseExample${s.applicationId}`}
                                 role="button"
@@ -623,7 +623,8 @@ const Subsciption = () => {
                                 Read More
                               </a>
                               <button
-                               className=" btn bttn bttnbackgroundkyc collapsed"
+                                className="btn text-white collapsed"
+                                style={{backgroundColor: "rgb(1, 86, 179)"}}
                                 type="button"
                               >
                                 Subscribe

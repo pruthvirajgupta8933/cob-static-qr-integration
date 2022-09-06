@@ -37,20 +37,20 @@ const NavBar = () => {
         
  <nav class="navbar navbar-light" style={{backgroundColor:"#111D4A"}}>
     
-  <span class="navbar-brand mb-0 h1"><img src={profile}  alt="profile" title="profile"/><h4 className='text-white float-right'>Welcome back,</h4>
+  <span class="navbar-brand mb-0 h1"><img src={profile}  alt="profile" title="profile"/><h4 className='text-white float-right'><b>{username}</b>, Welcome back</h4>
   <div class="mr-0"style={{fontSize:"15px"}}>
   <span class="text-white text-sm" style={{paddingLeft: '40px'}}>Login Id: &nbsp; {loginId}</span>
   </div>
   </span>
  
- <div>
+ <div class="mr-5">
 {/* Dropdown in the Nav Bar */}
  <div class="dropdown">
  <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
   <i class="fa fa-cog fa-2xl" aria-hidden="true" style={{fontSize:"24px",color:"white"}}></i>
  <span class="glyphicon glyphicon-cog text-white" style={{color:"white"}}></span>
-                <span class="caret text-white">{username}</span></button>
-                <div class="dropdown-menu" style={{backgroundColor:"#1D265E", height:"5rem", width:"10rem"}}>
+                <span class="caret"></span></button>
+                <div class="dropdown-menu mr-5" style={{backgroundColor:"#1D265E", height:"5rem", width:"10rem"}}>
                 <div class="row px-md-4 p-2">
                  <Link to = "/dashboard/profile" class="dropdown-item text-warning">My Profile</Link>
                  <Link onClick={exitback} class="dropdown-item text-warning ">Log out</Link>
