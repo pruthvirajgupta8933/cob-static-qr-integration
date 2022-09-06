@@ -132,7 +132,7 @@ function TransactionEnquirey() {
                                   className="form-control"
                                 />
 
-                                <button className="btn btn-primary mt-2" type="submit">View</button>
+                                <button  className=" btn bttn font-weight-bold bttnbackgroundkyc mt-2" type="submit">View</button>
                             </div>
                           </div>
                          
@@ -241,7 +241,7 @@ function TransactionEnquirey() {
                   <button
                     Value="click"
                     onClick={onClick}
-                    className="view_history float-right"
+                    className=" btn bttn font-weight-bold bttnbackgroundkyc float-right"
                   >
                     Print
                   </button>

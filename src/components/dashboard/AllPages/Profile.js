@@ -676,7 +676,7 @@ export const Profile = () => {
                                 <div className="col-lg-4 offset-md-4- topmar">
                                   <button
                                     type="submit"
-                                    className="btn btn-primary"
+                                    className="btn bttn font-weight-bold bttnbackgroundkyc"
                                   >
                                     {isCreateorUpdate
                                       ? "Create Profile"

@@ -281,6 +281,26 @@ header{ /*float: left;*/ width:100%; padding:0px;/* font-family:Stack,Helvetica,
     line-height: 24px;
     white-space: nowrap;}
 
+
+    /* Harris CSS  */
+
+    .bttn {
+        color: white;
+    }
+    .bttnbackgroundkyc {
+        background-color: #0156B3;
+    }
+
+    .eyeicon {
+     position: absolute;
+    right: 28px;
+    top: 10px;
+    z-index: 999;
+    }
+
+
+    /* Harris CSS  */
+
 .header_second_list li .btnlink svg{float: right;fill:#0B4A94;margin-top:5px;}
 .header_second_list li .btnlink:hover svg{fill: #fff;opacity:0.5;}
 .header_second_list li .btnlink:hover{background: #0B4A94;color: #fff;}

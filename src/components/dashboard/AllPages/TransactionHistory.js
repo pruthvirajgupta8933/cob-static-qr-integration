@@ -526,7 +526,7 @@ function TransactionHistory() {
                     <div className="form-row">
                       <div className="form-group col-md-1 ml-3">
                         <button
-                          className="btn btn-sm btn-primary"
+                          className=" btn bttn font-weight-bold bttnbackgroundkyc"
                           type="submit"
                         >
                           Search

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector,useDispatch } from 'react-redux'
 import { Formik, Field, Form, ErrorMessage} from "formik";
 import { useHistory } from "react-router-dom";
@@ -57,15 +57,22 @@ function ChangePassword() {
 
 };
 
+const [values, setValues] = useState({
+  new_password:'',
+  old_password:'',
+  confirm_password:'',
+  showPassword: false,
+});
+
 // console.log("INITIAL_FORM_STATE----",INITIAL_FORM_STATE);
 
 const FORM_VALIDATION = Yup.object().shape({
   loginId:Yup.string().required("Required"),
   email: Yup.string().required("Required"),
 
-    old_password:Yup.string().required("Password Required"),
+    old_password:Yup.string().required("Old Password Required"),
 
-    new_password:Yup.string().required("Password Required").matches(
+    new_password:Yup.string().required("New Password Required").matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"),
 
@@ -73,6 +80,10 @@ const FORM_VALIDATION = Yup.object().shape({
     .oneOf([Yup.ref('new_password'), null], 'Passwords must match').required("Confirm Password Required"),
 
 });
+
+const handleClickShowPassword = () => {
+  setValues({ ...values, showPassword: !values.showPassword });
+};
 
 
 
@@ -157,28 +168,45 @@ const FORM_VALIDATION = Yup.object().shape({
                         <label className="control-label col-sm-2" htmlFor="email">Old Password :</label>
                         <div className="col-sm-10">
                         <Field
-
-                          type="password"
+                             type={
+                              values.showPassword
+                                ? "text"
+                                : "password"
+                            }
                           name="old_password" 
                           placeholder="Enter Old Password" 
                           className="form-control"
+                          
                         />
+                          <span class="input-group-addon eyeicon">
+                            <a onClick={handleClickShowPassword}> {values.showPassword ? <i class="fa fa-eye" aria-hidden="true"></i> : <i class="fa fa-eye-slash" aria-hidden="true"></i>}</a>
+                            </span>
+                           
                         <ErrorMessage name="old_password">
                             { msg => <div className="error_msg_display" >{msg}</div> }
                         </ErrorMessage>  
                          </div>
                       </div>
+                      
                      
 
                       <div className="form-group  col-sm-12">
                         <label className="control-label col-sm-2" htmlFor="newPassword">   New Password  :</label>
                         <div className="col-sm-10">
                         <Field
-                          type="password"
+                           type={
+                            values.showPassword
+                              ? "text"
+                              : "password"
+                          }
                           name="new_password"
                           placeholder="Enter New Password" 
                           className="form-control"
                         />
+                          <span class="input-group-addon eyeicon">
+                            <a onClick={handleClickShowPassword}> {values.showPassword ? <i class="fa fa-eye" aria-hidden="true"></i> : <i class="fa fa-eye-slash" aria-hidden="true"></i>}</a>
+                            </span>
+                      
                         <ErrorMessage name="new_password">
                             { msg => <div className="error_msg_display" >{msg}</div> }
                         </ErrorMessage>  
@@ -189,11 +217,18 @@ const FORM_VALIDATION = Yup.object().shape({
                         <label className="control-label col-sm-2" htmlFor="changepassword"> Confirm Password :</label>
                         <div className="col-sm-10">
                         <Field
-                          type="password"
+                           type={
+                            values.showPassword
+                              ? "text"
+                              : "password"
+                          }
                           name="confirm_password" 
                           placeholder="Enter Confirm Password" 
                           className="form-control"
                         />
+                          <span class="input-group-addon eyeicon">
+                            <a onClick={handleClickShowPassword}> {values.showPassword ? <i class="fa fa-eye" aria-hidden="true"></i> : <i class="fa fa-eye-slash" aria-hidden="true"></i>}</a>
+                            </span>
                           <ErrorMessage name="confirm_password">
                             { msg => <div className="error_msg_display" >{msg}</div> }
                         </ErrorMessage>  
@@ -202,7 +237,7 @@ const FORM_VALIDATION = Yup.object().shape({
                     
                       <div className="form-group  ">
                       <div className="col-sm-12">
-                      <button type="sumbit" style={{margin: '10px', float: "right", width: '25%'}} className="btn btn-primary" > Update Password</button>
+                      <button type="sumbit" style={{margin: '10px', float: "right", width: '25%'}} className=" btn bttn font-weight-bold bttnbackgroundkyc"> Update Password</button>
                       </div>
                       </div>
                           <br />
