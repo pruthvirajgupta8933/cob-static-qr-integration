@@ -3,6 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { getEmailToSendOtpSlice } from "../../slices/auth";
 import { useDispatch,useSelector } from "react-redux";
+import toastConfig from "../../utilities/toastTypes";
 
 
 
@@ -16,6 +17,7 @@ const EnterUserID = (props) => {
 
   const handleSubmit = (data) => {
     // console.log("You clicked");
+    toastConfig.successToast("OTP Sent Succesfully")
   
      props.props("a2",data);
      dispatch(getEmailToSendOtpSlice({
@@ -86,7 +88,7 @@ const EnterUserID = (props) => {
                       </div>
                       <button
                         type="submit"
-                        className="btn btn-primary"
+                        className="userIdbutton text-white"
                       >
                         Submit
                       </button>

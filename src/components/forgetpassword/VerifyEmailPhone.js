@@ -58,11 +58,11 @@ const verification_token=auth.forgotPassword.otpResponse.verification_token;
        .then((response)=>{
          console.log(response)
          if (response.status === 200) {
+          toast.success(response.data.message);
           props.props('a3')
-           toast.success(response.message);
-        }
+           }
         else {
-          toast.error(response.message);
+          toast.error(response.data.message);
       }
         })
       

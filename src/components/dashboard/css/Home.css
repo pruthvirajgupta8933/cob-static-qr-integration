@@ -47,10 +47,7 @@ table.tables tr:nth-child(odd) {
   animation: blinker 1s linear infinite;
 }
 
-.approve{
-  background:#0156B3;
-  
-}
+
 
 /* Css for Registration*/
 .figmabtn{
@@ -92,4 +89,41 @@ margin-left: 97px;
   50% {
     opacity: 0;
   }
+}
+
+.viewicon{
+  position: absolute;
+    right: 14px;
+    top: 10px;
+    z-index: 999;
+}
+
+/*All Approvekyc button color class */
+.approve{
+  background:#0156B3;
+  
+}
+
+
+/*All forget password button color here */
+
+
+.userIdbutton{
+  background: #0156B3;
+  border: 0;
+  border-radius: 4px;
+  padding:8px 20px;
+}
+.verifyclr{
+  background: #0156B3;
+  border: 0;
+  border-radius: 3px;
+  padding:8px 20px;
+}
+
+.createpasswordBtn{
+  background: #0156B3;
+  border: 0;
+  border-radius: 3px;
+  padding:8px 20px;
 }
