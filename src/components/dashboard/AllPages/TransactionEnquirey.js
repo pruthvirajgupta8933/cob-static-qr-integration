@@ -241,7 +241,7 @@ function TransactionEnquirey() {
                   <button
                     Value="click"
                     onClick={onClick}
-                    className="view_history float-right"
+                    className=" btn bttn font-weight-bold bttnbackgroundkyc float-right"
                   >
                     Print
                   </button>

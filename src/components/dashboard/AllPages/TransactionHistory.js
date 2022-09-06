@@ -650,8 +650,6 @@ function TransactionHistory() {
                         <button className="view_history topmarg" onClick={()=>exportToExcelFn()}>Export </button>
                     :  '' }
                   </div>
-
-
                   {  show ? 
                   <React.Fragment>
                   <div className="col-lg-4 mrg-btm- bgcolor">
