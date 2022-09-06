@@ -17,7 +17,6 @@ function Test() {
     formData.append("type", 2);
     try {
       //Request URL: https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/
-
      axios({
         method: "post",
         url: "https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/",
