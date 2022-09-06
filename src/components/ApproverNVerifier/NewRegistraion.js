@@ -144,7 +144,7 @@ function NewRegistraion() {
               {spinner && (
                 <Spinner />
               )}
-              {data.length == 0 ? <h1 >No data found</h1> :
+              {data.length == 0 ? <tr> <td colSpan={'8'}><h1 className="nodatafound" >No data found</h1></td></tr> :
                 (data.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
