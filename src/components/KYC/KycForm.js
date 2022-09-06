@@ -277,7 +277,7 @@ function KycForm() {
 
                 <div className="container-fluid">
                   <div className="row">
-                  {(tab === 1 && <ContactInfo role={roles} kycid={kycid} />) ||
+                        {(tab === 1 && <ContactInfo role={roles} kycid={kycid} />) ||
                         (tab === 2 && <BusinessOverview role={roles} kycid={kycid} />) ||
                         (tab === 3 && <BusinessDetails role={roles} kycid={kycid} />) ||
                         (tab === 4 && <BankDetails role={roles} kycid={kycid} />) ||

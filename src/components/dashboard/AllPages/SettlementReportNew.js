@@ -264,11 +264,11 @@ function SettlementReportNew() {
             </div>
             <div className="form-row" >
                 <div className="form-group col-md-1">
-                  <button className="btn btn-sm btn-primary" type="submit">Search </button>
+                  <button className="btn btn-sm text-white"  style={{backgroundColor: "rgb(1, 86, 179)"}} type="submit">Search </button>
                 </div>
                 {txnList?.length > 0 ? 
                 <div className="form-group col-md-1">
-                <button className="btn btn-sm  btn-success text-white" type="" onClick={()=>exportToExcelFn()}>Export </button>
+                <button className="btn btn-sm text-white"style={{backgroundColor: "rgb(1, 86, 179)"}}  type="button" onClick={()=>exportToExcelFn()}>Export </button>
                 </div>
                 : <></> }
             </div>

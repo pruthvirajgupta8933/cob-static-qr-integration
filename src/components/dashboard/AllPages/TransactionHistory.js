@@ -526,8 +526,9 @@ function TransactionHistory() {
                     <div className="form-row">
                       <div className="form-group col-md-1 ml-3">
                         <button
-                          className="btn btn-sm btn-primary"
+                          className="btn btn-sm text-white"
                           type="submit"
+                          style={{backgroundColor: "rgb(1, 86, 179)"}}
                         >
                           Search
                         </button>
@@ -537,9 +538,10 @@ function TransactionHistory() {
                           <div className="form-row">
                           <div className="form-group col-md-1 ml-4">
                             <button
-                              className="btn btn-sm  btn-success text-white"
-                              type=""
+                              className="btn btn-sm text-white"
+                              type="button"
                               onClick={() => exportToExcelFn()}
+                              style={{backgroundColor: "rgb(1, 86, 179)"}}
                             >
                               Export
                             </button>

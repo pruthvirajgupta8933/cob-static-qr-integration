@@ -351,7 +351,7 @@ function BusinessOverview(props) {
 
               {formik.values?.seletcted_website_app_url === "Yes" && (
                 <div className="form-group col-md-4">
-                      <label><h4 class ="font-weight-bold">Website/App url<span style={{color:"red"}}>*</span></h4></label>
+                      <label><h4 class ="font-weight-bold">Enter Website/App url<span style={{color:"red"}}>*</span></h4></label>
                   <FormikController
                     control="input"
                     type="text"
@@ -426,7 +426,7 @@ function BusinessOverview(props) {
               </div>
 
               <div className="form-group col-md-5">
-              <label><h4 class ="font-weight-bold">Do you need SabPaisa to built your form<span style={{color:"red"}}>*</span></h4></label>
+              <label><h4 class ="font-weight-bold">Do you need SabPaisa to build your form<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
                   name="form_build"

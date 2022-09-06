@@ -612,17 +612,19 @@ const Subsciption = () => {
                           
                             <p className="mb-0">
                               <a
-                                className="btn btn-primary collapsed"
+                                className="btn text-white collapsed"
                                 data-toggle="collapse"
                                 href={`#collapseExample${s.applicationId}`}
                                 role="button"
                                 aria-expanded="false"
                                 aria-controls={`collapseExample${s.applicationId}`}
+                                style={{backgroundColor: "rgb(1, 86, 179)"}}
                               >
                                 Read More
                               </a>
                               <button
-                                className="btn btn-primary collapsed"
+                                className="btn text-white collapsed"
+                                style={{backgroundColor: "rgb(1, 86, 179)"}}
                                 type="button"
                               >
                                 Subscribe

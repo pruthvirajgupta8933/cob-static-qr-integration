@@ -211,7 +211,6 @@ function BusinessDetails(props) {
       >
         {(formik) => (
           <Form>
-            {console.log(formik)}
             <div className="form-row">
               <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Business Name <span style={{color:"red"}}>*</span></h4></label>
@@ -388,9 +387,8 @@ function BusinessDetails(props) {
                 <FormikController
                   control="textArea"
                   type="textArea"
-                  disabled={checked}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   name="operational_address"
-               
                   className="form-control"
                   value={operationvalue}
                   readOnly={readOnly}

@@ -186,6 +186,7 @@ function DocumentsUpload(props) {
 
   let submitAction = undefined;
 
+  console.log(role)
   return (
     <div className="col-md-12 col-md-offset-4">
       <div className="">
@@ -201,6 +202,7 @@ function DocumentsUpload(props) {
           console.log(values);
           onSubmit(values, submitAction);
         }}
+        enableReinitialize={true}
       >
         {(formik) => (
           <Form>
@@ -214,7 +216,7 @@ function DocumentsUpload(props) {
                     name="docType"
                     className="form-control"
                     options={docTypeList}
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    // disabled={VerifyKycStatus === "Verified" ? true : false}
                     readOnly={readOnly}
                   />
                 </div>
@@ -245,11 +247,12 @@ function DocumentsUpload(props) {
               <li className="list-inline-item align-middle w-25">
                 {role.merchant ? (
                   <button
-                    className="btn btn-primary mb-0"
+                    className="btn text-white mb-0"
                     type="button"
                     onClick={() => {
                       formik.handleSubmit();
                     }}
+                    style={{backgroundColor: "rgb(1, 86, 179)"}}
                   >
                     {buttonText}
                   </button>
@@ -262,8 +265,9 @@ function DocumentsUpload(props) {
                     <>
                       {role.verifier === true ? (
                         <button
-                          className="btn btn-primary mb-0"
+                          className="btn text-white mb-0"
                           type="button"
+                          style={{backgroundColor: "rgb(1, 86, 179)"}}
                           onClick={() => {
                             submitAction = "submit";
                             formik.handleSubmit();
@@ -273,8 +277,9 @@ function DocumentsUpload(props) {
                         </button>
                       ) : (
                         <button
-                          className="btn btn-primary mb-0"
+                          className="btn text-white mb-0"
                           type="button"
+                          style={{backgroundColor: "rgb(1, 86, 179)"}}
                           onClick={() => {
                             submitAction = "approve";
                             formik.handleSubmit();
@@ -287,6 +292,7 @@ function DocumentsUpload(props) {
                       <button
                         className="btn btn-danger mb-0 text-white"
                         type="button"
+                        style={{backgroundColor: "rgb(1, 86, 179)"}}
                         onClick={() => {
                           submitAction = "reject";
                           formik.handleSubmit();

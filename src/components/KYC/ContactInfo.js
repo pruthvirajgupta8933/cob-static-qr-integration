@@ -26,6 +26,7 @@ function ContactInfo(props) {
   const { user } = auth
   const { loginId } = user;
   const KycList = kyc.kycUserList
+  console.log(KycList)
 
   const VerifyKycStatus = kyc.kycVerificationForAllTabs.general_info_status;
 
@@ -236,6 +237,7 @@ function ContactInfo(props) {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmitContact}
+      enableReinitialize={true}
     >
       {formik => (
         <Form>
