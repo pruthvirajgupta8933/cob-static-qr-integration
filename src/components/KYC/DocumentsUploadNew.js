@@ -11,7 +11,7 @@ import API_URL from '../../config';
 import { documentsUpload, merchantInfo } from "../../slices/kycSlice"
 import plus from "../../assets/images/plus.png"
 import { set } from 'lodash';
-import $ from "jquery"
+// import $ from "jquery"
 
 function DocumentsUpload() {
   const [docTypeList, setDocTypeList] = useState([])
