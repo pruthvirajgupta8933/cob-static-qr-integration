@@ -374,11 +374,29 @@ export const documentsUpload = createAsyncThunk(
 export const merchantInfo = createAsyncThunk(
   "kyc/merchantInfo",
   async (requestParam) => {
-    const response = await axios
-      .post(`${API_URL.Upload_Merchant_document}`, requestParam)
-      .catch((error) => {
+    const headers = {
+      "Content-Type": "multipart/form-data",
+    }
+
+ 
+      //Request URL: https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/
+      const response = await axios({
+        method: "post",
+        url: "https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/",
+        data: requestParam,
+        headers: { "Content-Type": "multipart/form-data" },
+      }).catch((error) => {
         return error.response;
       });
+      
+
+    // const response = await axios
+    //   .post(`${API_URL.Upload_Merchant_document}`, requestParam, {
+    //     headers: headers
+    //   })
+    //   .catch((error) => {
+    //     return error.response;
+    //   });
 
     return response.data;
   }
