@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import Axios from "axios";
+import API_URL from "../config";
+
 
 import AuthService from "../services/auth.service";
 // import { NULL } from "node-sass";
@@ -321,31 +323,27 @@ export const updateClientProfile = createAsyncThunk(
 
 /* ======End Profile Function ======= */
 
-// change password
 
+// change password
 
 export const changePasswordSlice = createAsyncThunk(
   "auth/changePasswordSlice",
-  async (data, thunkAPI) => {
-    try {
-      // console.log({ fromdate, todate, clientcode });===update fn call
-      // console.log(data);
-      const response = await AuthService.changePassword(data);
-      thunkAPI.dispatch(setMessage(response.data.message));
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue();
-    }
+  async (requestParam) => {
+    const response = await AuthService.changePassword(
+        requestParam,
+        {
+          headers: {
+            // Authorization: ""
+          }
+        }
+      )
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
   }
 );
-
 
 // forgot password
 
