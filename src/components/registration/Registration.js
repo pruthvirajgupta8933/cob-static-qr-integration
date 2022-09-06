@@ -438,7 +438,7 @@ return (
                               <div className="sminputs">
                                 <div className="simform__actions">
                                   <button
-                                    className="figmabtn text-white"
+                                    className="figmabtn text-white mt-4"
                                     name="commit"
                                     type="submit"
                                     defaultValue="Create Account"
