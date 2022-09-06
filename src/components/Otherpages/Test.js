@@ -17,7 +17,6 @@ function Test() {
     formData.append("type", 2);
     try {
       //Request URL: https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/
-
      axios({
         method: "post",
         url: "https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/",
@@ -37,6 +36,7 @@ function Test() {
   return (
     <div className="container bg-white">
 
+<FormikWrapper />
 <form onSubmit={handleSubmit}>
       <input type="file" onChange={handleFileSelect}/>
       <input type="submit" value="Upload File" />

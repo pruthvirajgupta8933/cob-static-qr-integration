@@ -8,30 +8,27 @@ import moment from "moment"
 
 function FormikWrapper() {
 
+  // get today date
   var now = moment().format('YYYY-M-D');
-
   var splitDate = now.split("-");
-  
   if(splitDate[1].length===1){
     splitDate[1] = '0'+splitDate[1]; 
-  }
-  
-  
+  }  
   if(splitDate[2].length===1){
     splitDate[2] = '0'+splitDate[2];
   }
   splitDate =splitDate.join('-');
-  console.log(splitDate);
   
+
+
+
   const choices = [
     { key: "choice a", value: "choicea" },
     { key: "choice b", value: "choiceb" },
   ]
 
-  let date = moment().format("Y-M-D")
-  date = date.toString()
-  // console.log(date.toString());
-  const [todayDate, setTodayDate] = useState(date);
+
+  const [todayDate, setTodayDate] = useState(splitDate);
 
 
 

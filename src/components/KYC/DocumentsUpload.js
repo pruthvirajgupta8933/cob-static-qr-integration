@@ -20,6 +20,8 @@ function DocumentsUpload(props) {
   const { role } = props;
   const [docTypeList, setDocTypeList] = useState([]);
   const [fieldValue, setFieldValue] = useState(null);
+  
+  const [selectedFile, setSelectedFile] = React.useState(null);
   // const [visibility, setVisibility] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
@@ -91,8 +93,7 @@ function DocumentsUpload(props) {
     if (role.merchant) {
       // console.log("eee");
       const bodyFormData = new FormData();
-
-      bodyFormData.append("files", values.docFile);
+      bodyFormData.append("files", selectedFile);
       bodyFormData.append("login_id", loginId);
       bodyFormData.append("modified_by", loginId);
       bodyFormData.append("type", values.docType);
@@ -101,6 +102,10 @@ function DocumentsUpload(props) {
       for (var pair of bodyFormData.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
+
+
+   
+
       dispatch(merchantInfo(bodyFormData)).then((res) => {
         if (
           res.meta.requestStatus === "fulfilled" &&
@@ -173,6 +178,12 @@ function DocumentsUpload(props) {
     }
   }, [role]);
 
+
+  const handleFileSelect = (event) => {
+    console.log(event.target.files)
+    setSelectedFile(event.target.files[0])
+  }
+
   let submitAction = undefined;
 
   return (
@@ -218,7 +229,9 @@ function DocumentsUpload(props) {
                       name="docFile"
                       className="form-control-file"
                       onChange={(event) => {
+                        handleFileSelect(event);
                         setFieldValue("docFile", event.target.files[0].name);
+                        
                       }}
                       accept="image/jpeg,image/jpg,image/png,application/pdf"
                       disabled={VerifyKycStatus === "Verified" ? true : false}

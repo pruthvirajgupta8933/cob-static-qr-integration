@@ -115,7 +115,7 @@ useEffect(() => {
 };
 
  return (
-    <div className="row">
+    <div className="container-fluid flleft">
       <div className="col-lg-4 mrg-btm- bgcolor">
         <label>Search</label>
         <input className='form-control' onChange={approvedSearch} type="text" placeholder="Search Here" />
@@ -147,7 +147,7 @@ useEffect(() => {
         {spinner && (
        <Spinner/>
         )}
-          {approveMerchant.length == 0 ?<h1 className="showMsg">No data found</h1> :
+          {approveMerchant.length == 0 ?<tr> <td colSpan={'8'}><h1 className="nodatafound" >No data found</h1></td></tr> :
           (approveMerchant.map((user, i) => (
             <tr key={i}>
               <td>{i + 1}</td>

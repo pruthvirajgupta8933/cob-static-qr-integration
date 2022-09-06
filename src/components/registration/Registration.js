@@ -140,7 +140,7 @@ function Registration() {
 return (
   <>
     <HeaderPage />
-    <div className="container toppad">
+    <div className="container-fluid toppad">
       <div className="row">
         <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
           <div className="col-sm-5 authfy-panel-left">
@@ -212,8 +212,12 @@ return (
                     <div className="logmod__tab-wrapper">
                       <div className="show logmod__tab lgm-1">
                         <div className="logmod__heading">
-                          <h1 className="mb-0">Welcome to SabPaisa</h1>
-                          <p className="mb-0">Signup to Create New Account</p> 
+                          <span className='fontfigma'>
+                          Welcome to SabPaisa{" "}
+                           </span>
+                           <div className='flex'> 
+                             <span className='Signupfigma mt-2'>Signup to Create New Account</span> 
+                             </div>
                         </div>
                         <div className="logmod__form">
                           <Formik
@@ -241,7 +245,7 @@ return (
                                     className="string optional"
                                     htmlFor="first-name"
                                   >
-                                    First Name *
+                                    First Name 
                                   </label>
                                   <Field
                                     className="string optional"
@@ -274,7 +278,7 @@ return (
                                     className="string optional"
                                     htmlFor="last-name"
                                   >
-                                    Last Name*
+                                    Last Name
                                   </label>
                                   <Field
                                     className="string optional"
@@ -305,7 +309,7 @@ return (
                               </div>
                               <div className="sminputs">
                               <div className="input full- optional">
-                                  <label className="string optional" htmlFor="mobile">Mobile Number*</label>
+                                  <label className="string optional" htmlFor="mobile">Enter Mobile</label>
                                   <Field className="string optional" maxLength={10} id="mobile" placeholder="Mobile Number" name = 'mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) =>["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}/>
                                   {<ErrorMessage name="mobilenumber">
                                                 {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
@@ -316,7 +320,7 @@ return (
                                     className="string optional"
                                     htmlFor="user-email"
                                   >
-                                    Email*
+                                    Enter Email id
                                   </label>
                                   <Field
                                     className="string optional"
@@ -351,13 +355,13 @@ return (
                                     className="string optional"
                                     htmlFor="user-pw"
                                   >
-                                   Create Password *
+                                   Enter Password
                                   </label>
                                   <Field
                                     className="string optional"
                                     maxLength={255}
                                     id="user-pw"
-                                    placeholder="Password"
+                                    placeholder="Type your password here"
                                     type={
                                       valuesIn.showPassword ? "text" : "password"
                                     }
@@ -388,13 +392,13 @@ return (
                                     className="string optional"
                                     htmlFor="user-cpw"
                                   >
-                                    Confirm Password *
+                                    Confirm Password 
                                   </label>
                                   <Field
                                     className="string optional"
                                     maxLength={255}
                                     id="user-cpw"
-                                    placeholder="Confirm Password"
+                                    placeholder="Confirm password"
                                     type={
                                       valuesIn.showPassword ? "text" : "password"
                                     }
@@ -434,7 +438,7 @@ return (
                               <div className="sminputs">
                                 <div className="simform__actions">
                                   <button
-                                    className="btn btn-primary w-100 mt-4 mb-0 text-white"
+                                    className="figmabtn text-white"
                                     name="commit"
                                     type="submit"
                                     defaultValue="Create Account"
