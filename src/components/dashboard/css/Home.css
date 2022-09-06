@@ -97,6 +97,12 @@ margin-left: 97px;
     top: 10px;
     z-index: 999;
 }
+.viewicons{
+  position: absolute;
+    right: 58px;
+    top: 221px;
+    z-index: 999;
+}
 
 /*All Approvekyc button color class */
 .approve{

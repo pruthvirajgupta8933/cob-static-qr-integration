@@ -11,16 +11,27 @@ const CreatePassword = (props) => {
   const verification_token = auth.forgotPassword.otpResponse.verification_token;
   const validationSchema = Yup.object().shape({
 
-    password: Yup.string().required("password is required")
+    password: Yup.string().required("password is required"),
+    // confirmpassword: Yup.string().required("Confirm Password Required")
 
   })
   const [values, setValues] = useState({
     password: "",
     showPassword: false,
   });
+  const [passwordType, setPasswordType] = useState(true);
+  const [passwordInput, setPasswordInput] = useState("");
+  const handlePasswordChange =(evnt)=>{
+      setPasswordInput(evnt.target.value);
+  }
+  const togglePassword =()=>{
+   console.log(999)
+    setPasswordType(!passwordType)
+  }
 
   const initialValues = {
     password: "",
+    confirmpassword:""
   };
 
   const handleClickShowPassword = () => {
@@ -111,7 +122,40 @@ const CreatePassword = (props) => {
                             </div>
                           )}
                         </ErrorMessage>
+                        <div className="form-group mt-4">
 
+                        <Field
+                            name="confirmpassword"
+                            className="form-control"
+                            id="exampleInputPassword1"
+                            aria-describedby="PasswordHelp"
+                            placeholder="Enter Confirm Password"
+                            type={passwordType ? "text" : "password"}
+                             onChange={handlePasswordChange}
+                              value={passwordInput}
+                           
+                          />
+                           <div class="input-group-addon viewicons">
+                     <a  onClick={togglePassword}>
+                     { passwordType==="confirmpassword"? <i class="fa fa-eye-slash" aria-hidden="true"></i> : <i class="fa fa-eye" aria-hidden="true"></i> }
+                     </a>
+                    </div>
+                          
+                           <ErrorMessage name="confirmpassword">
+                          {(msg) => (
+                            <div
+                              className="abhitest"
+                              style={{
+                                color: "red",
+                                position: "absolute",
+                                zIndex: " 999",
+                              }}
+                            >
+                              {msg}
+                            </div>
+                          )}
+                        </ErrorMessage>
+                        </div>
 
                       </div>
 

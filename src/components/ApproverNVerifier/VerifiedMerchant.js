@@ -92,7 +92,12 @@ function VerifiedMerchant() {
       <div className="col-lg-4 mrg-btm- bgcolor">
         <label>Count Per Page</label>
         <select value={pageSize} rel={pageSize} onChange={(e) => setPageSize(parseInt(e.target.value))} className="ant-input" >
-          <DropDownCountPerPage datalength={verfiedMerchant.length} />
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="500">500</option>
         </select>
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">

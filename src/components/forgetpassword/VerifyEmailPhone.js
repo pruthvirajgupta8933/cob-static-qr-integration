@@ -102,11 +102,8 @@ const verification_token=auth.forgotPassword.otpResponse.verification_token;
             <h5 className="card-title">We have sent the OTP on your registered Email Address and on Phone Number.  </h5>
             <form className="form-inline" onSubmit={handleSubmit} >
                     <div className="form-inline" >
-                        <div className="form-group mb-2">
-                        <label htmlFor="staticEmail2" className="sr-only">Email OTP</label>
-                        <input type="text" readOnly className="form-control-plaintext" id="staticEmail2" />
-                        </div>
-                            <div className="form-group mx-sm-3 mb-2">
+                      
+                            <div className="form-group mx-sm-3 mb-2 float-center">
                                 <label htmlFor="inputEmailOTP" className="sr-only">emailOTP</label>
                                 <input type="text"  className="form-control" id="inputEmailOTP" value={emailotp} onChange={Email} placeholder="Email OTP"/>
                                 <br />
