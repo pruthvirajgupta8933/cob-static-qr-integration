@@ -291,7 +291,7 @@ function BusinessOverview(props) {
             </div>
 
             <div className="form-row">
-              <div className="form-group col-md-4">
+              <div className="form-group col-md-4 mt-3">
               <label><h4 class ="font-weight-bold">Billing Label <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
@@ -303,7 +303,7 @@ function BusinessOverview(props) {
                 />
               </div>
 
-              <div className="form-group col-md-3">
+              <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Do you have you own ERP<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
@@ -315,7 +315,7 @@ function BusinessOverview(props) {
                 />
               </div>
 
-              <div className="form-group col-md-4">
+              <div className="form-group col-md-4 mt-3">
               <label><h4 class ="font-weight-bold">Platform<span style={{color:"red"}}>*</span></h4></label>
                 
                 <FormikController
@@ -389,7 +389,7 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div>
-              <div className="form-group col-md-4">
+              <div className="form-group col-md-4 mt-3">
               <label><h4 class ="font-weight-bold">Company website <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
@@ -402,7 +402,7 @@ function BusinessOverview(props) {
                 />
               </div>
 
-              <div className="form-group col-md-4">
+              <div className="form-group col-md-4 mt-3">
               <label><h4 class ="font-weight-bold">Ticket size<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
@@ -413,7 +413,11 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div>
-              <div className="form-group col-md-4">
+            </div>
+
+
+          <div className="form-row">
+             <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Expected Transactions <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
@@ -424,8 +428,7 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div>
-
-              <div className="form-group col-md-5">
+            <div className="form-group col-md-5">
               <label><h4 class ="font-weight-bold">Do you need SabPaisa to built your form<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
@@ -436,11 +439,11 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div>
-            </div>
+              </div>
 
             {VerifyKycStatus === "Verified" ? null : (
              <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
-                <h4 className="text-white font-weight-bold">  {buttonText}</h4>
+                <h4 className="text-white">  {buttonText}</h4>
               </button>
             )}
           </Form>

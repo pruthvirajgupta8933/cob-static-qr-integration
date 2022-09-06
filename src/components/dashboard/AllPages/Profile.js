@@ -260,7 +260,7 @@ export const Profile = () => {
               <Link to={`/dashboard/change-password`}>
                <button
                  type="button"
-                 className="ant-btn change_password pull-right"
+                className="btn bttn bttnbackgroundkyc pull-right"
                >
                  <i className="fa fa-key" />
                  <span> Change Password</span>
@@ -338,7 +338,7 @@ export const Profile = () => {
 {/* 
                         <Link to="/reset" className="float-right " style={{margin:"-23px"}}>Change Password</Link> */}
  
-                          <div className="card">
+                          <div className="card mt-0">
                             <div className="card-header">Basic Details</div>
                             <div className="card-body-">
                               <form onSubmit={handleSubmit(onSubmit)}>
@@ -676,7 +676,7 @@ export const Profile = () => {
                                 <div className="col-lg-4 offset-md-4- topmar">
                                   <button
                                     type="submit"
-                                    className="btn bttn font-weight-bold bttnbackgroundkyc"
+                                    className="btn bttn bttnbackgroundkyc"
                                   >
                                     {isCreateorUpdate
                                       ? "Create Profile"

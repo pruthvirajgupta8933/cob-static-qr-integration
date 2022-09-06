@@ -612,7 +612,7 @@ const Subsciption = () => {
                           
                             <p className="mb-0">
                               <a
-                                className=" btn bttn font-weight-bold bttnbackgroundkyc collapsed"
+                                className=" btn bttn bttnbackgroundkyc collapsed"
                                 data-toggle="collapse"
                                 href={`#collapseExample${s.applicationId}`}
                                 role="button"
@@ -622,7 +622,7 @@ const Subsciption = () => {
                                 Read More
                               </a>
                               <button
-                               className=" btn bttn font-weight-bold bttnbackgroundkyc collapsed"
+                               className=" btn bttn bttnbackgroundkyc collapsed"
                                 type="button"
                               >
                                 Subscribe

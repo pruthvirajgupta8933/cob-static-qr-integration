@@ -245,7 +245,7 @@ function DocumentsUpload(props) {
               <li className="list-inline-item align-middle w-25">
                 {role.merchant ? (
                   <button
-                    className="btn btn-primary mb-0"
+                  className=" btn bttn bttnbackgroundkyc"
                     type="button"
                     onClick={() => {
                       formik.handleSubmit();

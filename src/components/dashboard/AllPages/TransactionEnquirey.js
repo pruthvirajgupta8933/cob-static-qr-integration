@@ -132,7 +132,7 @@ function TransactionEnquirey() {
                                   className="form-control"
                                 />
 
-                                <button  className=" btn bttn font-weight-bold bttnbackgroundkyc mt-2" type="submit">View</button>
+                                <button  className=" btn bttn bttnbackgroundkyc mt-2" type="submit">View</button>
                             </div>
                           </div>
                          
