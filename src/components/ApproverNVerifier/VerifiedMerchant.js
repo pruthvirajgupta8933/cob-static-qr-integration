@@ -106,7 +106,6 @@ function VerifiedMerchant() {
               <th>Name</th>
               <th> Email</th>
               <th>Bank</th>
-              <th>Aadhar Number</th>
               <th>PAN No.</th>
               <th>Status</th>
               {roles.approver===true ? <th>Approve KYC</th> : <></>}

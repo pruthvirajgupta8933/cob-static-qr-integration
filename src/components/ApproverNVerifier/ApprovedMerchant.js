@@ -161,7 +161,7 @@ useEffect(() => {
               <td>{user.status}</td>
               {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
               <td>
-                <button type="button" class="btn btn-primary" data-toggle="modal" onClick={()=>viewDocument(user.loginMasterId)} data-target="#exampleModal">
+                <button type="button" class="btn approve text-white btn-xs" data-toggle="modal" onClick={()=>viewDocument(user.loginMasterId)} data-target="#exampleModal">
                   View Document
                 </button>
 
