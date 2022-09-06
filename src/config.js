@@ -172,5 +172,6 @@ const API_URL = API_LIVE;
 export default API_URL;
 
 export const TIMEOUT = 1200; // 1200 seconds = 20 minutes
+export const AUTH_TOKEN = "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69"
 
 // COB PG credential

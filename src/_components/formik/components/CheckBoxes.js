@@ -5,7 +5,6 @@ function Checkboxes(props) {
   const { label, name, options, ...rest } = props
   return (
     <React.Fragment>
-      <label>{label}</label>
       <Field name={name}>
         {formik => {
           const { field } = formik
@@ -20,7 +19,8 @@ function Checkboxes(props) {
                   value={option.value}
                   checked={field.value.includes(option.value)}
                 />
-                <label>{option.key}</label>
+                <label>{option?.isHyperLink && <a href={option?.hyperLink} target="_blank" rel="noreferrer">{option.key} </a> }   
+                {option?.isHyperLink===false && option.key } </label>
               </div>
             )
           })

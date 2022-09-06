@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import API_URL from "../config";
+import API_URL, { AUTH_TOKEN } from "../config";
 import axios from "axios";
+
+
+axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
 const initialState = {
   documentByloginId: {
