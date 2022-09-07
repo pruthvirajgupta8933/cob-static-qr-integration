@@ -71,7 +71,7 @@ function NewRegistraion() {
         Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
     } else {
       dispatch(kycForPending({ page, page_size })).then((resp) => {
-        const data = resp.payload.results
+        const data = resp?.payload.results
 
         setData(data.slice(indexOfFirstRecord, indexOfLastRecord));
       })
@@ -115,7 +115,14 @@ function NewRegistraion() {
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Count Per Page</label>
           <select value={pageSize} rel={pageSize} onChange={(e) => setPageSize(parseInt(e.target.value))} className="ant-input" >
-            <DropDownCountPerPage datalength={data.length} />
+            <option datalength={data.length} selected></option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="500">500</option>
+
           </select>
 
         </div>
@@ -176,7 +183,7 @@ function NewRegistraion() {
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }>
-                  {console.log(pageNumbers)}
+                {console.log(pageNumbers)}
                 <a href={() => false} className={`page-link data_${i}`} >
                   <p onClick={() => {
                     setCurrentPage(pgNumber)
