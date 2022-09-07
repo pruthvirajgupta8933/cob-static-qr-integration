@@ -319,7 +319,7 @@ function BusinessDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
-              <div className="form-group col-md-4">
+              <div className="form-group col-md-4 mt-4">
               <label><h4 class ="font-weight-bold">City <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
@@ -331,7 +331,7 @@ function BusinessDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
-              <div className="form-group col-md-4">
+              <div className="form-group col-md-4 mt-4">
               <label><h4 class ="font-weight-bold">State <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
@@ -343,7 +343,7 @@ function BusinessDetails(props) {
                 />
               </div>
 
-              <div className="form-group col-md-4">
+              <div className="form-group col-md-4 mt-1">
               <label><h4 class ="font-weight-bold">Authorised Signatory PAN<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
