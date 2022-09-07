@@ -53,7 +53,7 @@ function NewRegistraion() {
       toastConfig.successToast("Pending Data Loaded")
       setSpinner(false)
 
-      const data = resp.payload.results
+      const data = resp?.payload.results
 
       setData(data);
     })
@@ -73,7 +73,7 @@ function NewRegistraion() {
       dispatch(kycForPending({ page, page_size })).then((resp) => {
         const data = resp?.payload.results
 
-        setData(data.slice(indexOfFirstRecord, indexOfLastRecord));
+        setData(data);
       })
 
     }
@@ -115,7 +115,6 @@ function NewRegistraion() {
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Count Per Page</label>
           <select value={pageSize} rel={pageSize} onChange={(e) => setPageSize(parseInt(e.target.value))} className="ant-input" >
-            <option datalength={data.length} selected></option>
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>

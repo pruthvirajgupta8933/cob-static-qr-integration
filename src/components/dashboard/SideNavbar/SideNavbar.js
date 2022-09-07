@@ -5,6 +5,7 @@ import { checkPermissionSlice, logout } from '../../../slices/auth'
 // import { enableKycTab, kycModalToggle } from '../../../slices/kycSlice';
 import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
 import SabpaisaLogo2 from "../../../assets/images/sabpaisa-logo2.png"
+import SabpaisaLogo1 from "../../../assets/images/sabpaisa-logo-white.png"
 
 function SideNavbar() {
   const { auth, kyc } = useSelector((state) => state)
@@ -52,7 +53,7 @@ function SideNavbar() {
         <div className="brand-logo d-flex-item-right">
         <div class="float-centre p-4">
                     <img
-                      src={SabpaisaLogo2}
+                      src={SabpaisaLogo1}
                       width={150}
                       alt="sabpaisa"
                       title="sabpaisa"
@@ -91,8 +92,9 @@ function SideNavbar() {
 
 
                   <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open" role="menuitem">
+                      {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
                     <div className="ant-menu-submenu-title" aria-expanded="true" aria-owns="settlement$Menu" aria-haspopup="true" style={{ paddingLeft: '24px' }}><span className="sidebar-menu-divider">Your
-                      Business</span><i className="ant-menu-submenu-arrow" /></div>
+                      Business</span><i className="ant-menu-submenu-arrow" /></div> : <></>}
 
 
 
