@@ -304,7 +304,7 @@ function BusinessOverview(props) {
               </div>
 
               <div className="form-group col-md-4">
-              <label><h4 class ="font-weight-bold">Do you have you own ERP<span style={{color:"red"}}>*</span></h4></label>
+              <label><h4 class ="font-weight-bold">Do you have your own ERP<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
                   name="erp_check"
