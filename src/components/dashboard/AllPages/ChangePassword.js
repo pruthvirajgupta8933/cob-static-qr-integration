@@ -24,16 +24,6 @@ function ChangePassword() {
           userName,
         } = user;
   
-
-        const [passwordType, setPasswordType] = useState(true);
-        const [passwordInput, setPasswordInput] = useState("");
-
-
-        const togglePassword =()=>{
-          // console.log(999)
-           setPasswordType(!passwordType)
-         }
-
   // const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
 
 // useEffect(() => {
@@ -94,12 +84,6 @@ const FORM_VALIDATION = Yup.object().shape({
 const handleClickShowPassword = () => {
   setValues({ ...values, showPassword: !values.showPassword });
 };
-
-const handlePasswordChange =(evnt)=>{
-  setPasswordInput(evnt.target.value);
-}
-
-
 
 
 
@@ -187,7 +171,7 @@ const handlePasswordChange =(evnt)=>{
                         <Field
                              type={
                               values.showPassword
-                                ? "text"
+                                ? "old_password"
                                 : "password"
                             }
                           name="old_password" 
@@ -195,9 +179,9 @@ const handlePasswordChange =(evnt)=>{
                           className="form-control"
                           
                         />
-                          <span class="input-group-addon eyeicon">
+                          {/* <span class="input-group-addon eyeicon">
                             <a onClick={handleClickShowPassword}> {values.showPassword ? <i class="fa fa-eye" aria-hidden="true"></i> : <i class="fa fa-eye-slash" aria-hidden="true"></i>}</a>
-                            </span>
+                            </span> */}
                            
                         <ErrorMessage name="old_password">
                             { msg => <div className="error_msg_display" >{msg}</div> }
@@ -211,16 +195,18 @@ const handlePasswordChange =(evnt)=>{
                         <label className="control-label col-sm-2" htmlFor="newPassword">   New Password  :</label>
                         <div className="col-sm-10">
                         <Field
+                           type={
+                            values.showPassword
+                              ? "text"
+                              : "password"
+                          }
                           name="new_password"
                           placeholder="Enter New Password" 
                           className="form-control"
-                          type={passwordType ? "text" : "password"}
-                          onChange={handlePasswordChange}
-                          value={passwordInput}
                         />
-                          <span class="input-group-addon eyeicon">
-                            <a onClick={togglePassword}> {passwordType==="new_password" ? <i class="fa fa-eye" aria-hidden="true"></i> : <i class="fa fa-eye-slash" aria-hidden="true"></i>}</a>
-                            </span>
+                          {/* <span class="input-group-addon eyeicon">
+                            <a onClick={handleClickShowPassword}> {values.showPassword ? <i class="fa fa-eye" aria-hidden="true"></i> : <i class="fa fa-eye-slash" aria-hidden="true"></i>}</a>
+                            </span> */}
                       
                         <ErrorMessage name="new_password">
                             { msg => <div className="error_msg_display" >{msg}</div> }
@@ -232,15 +218,17 @@ const handlePasswordChange =(evnt)=>{
                         <label className="control-label col-sm-2" htmlFor="changepassword"> Confirm Password :</label>
                         <div className="col-sm-10">
                         <Field
+                           type={
+                            values.showPassword
+                              ? "text"
+                              : "password"
+                          }
                           name="confirm_password" 
                           placeholder="Enter Confirm Password" 
                           className="form-control"
-                          type={passwordType ? "text" : "password"}
-                          onChange={handlePasswordChange}
-                          value={passwordInput}
                         />
                           <span class="input-group-addon eyeicon">
-                            <a onClick={togglePassword}> {passwordType==="confirm_password" ? <i class="fa fa-eye" aria-hidden="true"></i> : <i class="fa fa-eye-slash" aria-hidden="true"></i>}</a>
+                            <a onClick={handleClickShowPassword}> {values.showPassword ? <i class="fa fa-eye" aria-hidden="true"></i> : <i class="fa fa-eye-slash" aria-hidden="true"></i>}</a>
                             </span>
                           <ErrorMessage name="confirm_password">
                             { msg => <div className="error_msg_display" >{msg}</div> }
@@ -273,4 +261,3 @@ const handlePasswordChange =(evnt)=>{
 }
 
 export default ChangePassword
-
