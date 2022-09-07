@@ -1,13 +1,13 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import API_URL from "../../config";
+import API_URL ,{ AUTH_TOKEN }from "../../config";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { kycForApproved } from "../../slices/kycSlice"
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 
-
+axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
 function ApprovedMerchant() {
   const [approveMerchant, setApproveMerchant] = useState([])
@@ -60,7 +60,6 @@ useEffect(() => {
   
    
 
- 
 
 
   /////////////////////////////////////Search filter
@@ -96,23 +95,40 @@ useEffect(() => {
   }
 
 
+
+ 
+
+
   
 
   const viewDocument = async (loginMaidsterId) => {
-    const res = await axios.post(`https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/document-by-login-id/`, {
+    const res = await axios.post(API_URL.DOCUMENT_BY_LOGINID, {
       login_id: loginMaidsterId
+    },{
+      headers: {
+        "Authorization" : AUTH_TOKEN
+      }
     }).then(res => {
       if (res.status === 200) {
         const data = res.data;
+        const myHeaders = new Headers();
         const docId = data[0].documentId;
-        const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;
-        setDocumentImg(ImgUrl)
+        const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId},`;
+        
+        axios.get(ImgUrl,{
+          headers: {
+            "Authorization" : AUTH_TOKEN
+          }
+        }).then(res=>console.log(res))
       }
     })
       .catch(error => {
         console.error('There was an error!', error);
       });
 };
+
+
+
 
  return (
     <div className="container-fluid flleft">
@@ -123,7 +139,6 @@ useEffect(() => {
       <div className="col-lg-4 mrg-btm- bgcolor">
         <label>Count Per Page</label>
         <select value={pageSize} rel={pageSize} onChange={(e) => setPageSize(parseInt(e.target.value))} className="ant-input" >
-          <option datalength={approveMerchant.length} selected></option>
           <option value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>
@@ -186,7 +201,7 @@ useEffect(() => {
 
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn approve text-white btn-xs" data-dismiss="modal">Close</button>
 
                       </div>
 
@@ -210,13 +225,13 @@ useEffect(() => {
       }>
         {console.log(pageNumbers)}
       <a href={() => false} className={`page-link data_${i}`} >
-        <p onClick={() => {
+        <span onClick={() => {
           setCurrentPage(pgNumber)
         }
         }
         >
           {pgNumber}
-        </p>
+        </span>
       </a>
     </li>
   ))}

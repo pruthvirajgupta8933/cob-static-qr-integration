@@ -184,13 +184,13 @@ function NewRegistraion() {
                 }>
                 {console.log(pageNumbers)}
                 <a href={() => false} className={`page-link data_${i}`} >
-                  <p onClick={() => {
+                  <span onClick={() => {
                     setCurrentPage(pgNumber)
                   }
                   }
                   >
                     {pgNumber}
-                  </p>
+                  </span>
                 </a>
               </li>
             ))}
