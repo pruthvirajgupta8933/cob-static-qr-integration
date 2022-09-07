@@ -1,6 +1,9 @@
 import axios from "axios";
-import API_URL from "../config";
+import API_URL, { AUTH_TOKEN } from "../config";
 
+
+
+axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
 // const SIGNUP_URL = "https://cobapi.sabpaisa.in/auth-service/auth/";
 
