@@ -7,7 +7,6 @@ import { kycForApproved } from "../../slices/kycSlice"
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 
-axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
 function ApprovedMerchant() {
   const [approveMerchant, setApproveMerchant] = useState([])
@@ -104,22 +103,14 @@ useEffect(() => {
   const viewDocument = async (loginMaidsterId) => {
     const res = await axios.post(API_URL.DOCUMENT_BY_LOGINID, {
       login_id: loginMaidsterId
-    },{
-      headers: {
-        "Authorization" : AUTH_TOKEN
-      }
     }).then(res => {
       if (res.status === 200) {
         const data = res.data;
-        const myHeaders = new Headers();
+      
         const docId = data[0].documentId;
         const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId},`;
         
-        axios.get(ImgUrl,{
-          headers: {
-            "Authorization" : AUTH_TOKEN
-          }
-        }).then(res=>console.log(res))
+        axios.get(ImgUrl).then(res=>console.log(res))
       }
     })
       .catch(error => {
@@ -219,7 +210,7 @@ useEffect(() => {
 <ul class="pagination w-25">
   {pageNumbers.length > 0 && <li class="page-item"><button class="page-link" onClick={handlePrevPage} >Previous</button></li>}
   {pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
-    <li key={pgNumber, i}
+    <li key={pgNumber}
       className={
         pgNumber === currentPage ? " page-item active" : "page-item"
       }>
