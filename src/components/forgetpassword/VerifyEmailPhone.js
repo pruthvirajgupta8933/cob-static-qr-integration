@@ -64,7 +64,7 @@ const verification_token=auth.forgotPassword.otpResponse.verification_token;
         else {
           toast.error(response.data.message);
       }
-        })
+        }).catch((error) =>{ toast.error("Invalid OTP") });
       
          
      

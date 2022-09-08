@@ -70,7 +70,7 @@ useEffect(() => {
         Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
     } else {
       dispatch(kycForApproved()).then((resp) => {
-        toastConfig.successToast("Approved Data Loaded")
+       
         const data = resp.payload.results
   
         setApproveMerchant(data.slice(indexOfFirstRecord, indexOfLastRecord));
@@ -111,15 +111,17 @@ useEffect(() => {
     }).then(res => {
       if (res.status === 200) {
         const data = res.data;
-        const myHeaders = new Headers();
+       console.log(data,"===>")
         const docId = data[0].documentId;
-        const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId},`;
+        console.log(docId,"myyyyyyyyyyyyyyyyyy")
+        const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;
         
         axios.get(ImgUrl,{
           headers: {
             "Authorization" : AUTH_TOKEN
           }
         }).then(res=>console.log(res))
+        setDocumentImg(ImgUrl)
       }
     })
       .catch(error => {

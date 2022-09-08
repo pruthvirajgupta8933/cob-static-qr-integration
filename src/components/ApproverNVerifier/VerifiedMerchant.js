@@ -152,7 +152,6 @@ function VerifiedMerchant() {
       className={
         pgNumber === currentPage ? " page-item active" : "page-item"
       }>
-        {console.log(pageNumbers)}
       <a href={() => false} className={`page-link data_${i}`} >
         <span onClick={() => {
           setCurrentPage(pgNumber)
