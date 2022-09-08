@@ -54,15 +54,13 @@ function TransactionHistory() {
 
   // const [date, setDate] = useState(currentDate);
   
-  // const currentDate = () => {
-  // let current = new Date();
-  // let myDate = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
+ 
+  let current = new Date();
+  let myDate = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
   //  setDate(myDate)
 
-  // } 
-  
 
-  // console.log(date, "<=== Today's  Date ===>")
+  console.log(myDate, "<=== Today's  Date ===>")
 
   var clientMerchantDetailsList = [];
   if (

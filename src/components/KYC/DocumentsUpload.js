@@ -238,9 +238,9 @@ function DocumentsUpload(props) {
                   />
                 </div>
               </li>
-              <li className="list-inline-item align-middle   w-25">
+              <li className="list-inline-item align-middle   w-50">
                 {role.merchant ? (
-                  <div className="form-group col-md-12">
+                  <div className="form-group col-lg-12">
                     <FormikController
                       control="file"
                       type="file"

@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import NewRegistraion from './NewRegistraion';
 import VerifiedMerchant from './VerifiedMerchant';
 import ApprovedMerchant from './ApprovedMerchant';
+import NavBar from "../../components/dashboard/NavBar/NavBar"
+
 // import SingleDocument from './SingleDocument';
 // import DocumentsUpload from './DocumentsUpload';
 // import SubmitKyc from './SubmitKyc';
@@ -32,8 +34,9 @@ function Approver() {
 
   return (
     <section className="ant-layout">
-    <div className="profileBarStatus">
-    </div>
+   <div>
+     <NavBar />
+   </div>
     <main className="gx-layout-content ant-layout-content">
       <div className="gx-main-content-wrapper">
         <div className="right_layout my_account_wrapper right_side_heading">

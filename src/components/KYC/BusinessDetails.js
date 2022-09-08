@@ -211,6 +211,7 @@ function BusinessDetails(props) {
       >
         {(formik) => (
           <Form>
+            {console.log(formik)}
             <div className="form-row">
               <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Business Name <span style={{color:"red"}}>*</span></h4></label>
@@ -367,7 +368,8 @@ function BusinessDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
-              <div className="form-group col-md-4 d-flex">
+              <div className="form-group col-md-5 d-flex">
+              <label><p>Same as Registered Address</p></label>
                 <FormikController
                   control="checkbox"
                   name="checkBoxChoice"
@@ -383,12 +385,14 @@ function BusinessDetails(props) {
                     formik.values.registered_business_address
                   )
                 )}
-
+               
+               
                 <FormikController
                   control="textArea"
                   type="textArea"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  disabled={checked}
                   name="operational_address"
+               
                   className="form-control"
                   value={operationvalue}
                   readOnly={readOnly}
