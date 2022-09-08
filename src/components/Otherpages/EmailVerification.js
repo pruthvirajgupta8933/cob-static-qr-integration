@@ -3,6 +3,7 @@ import { Link ,useParams} from 'react-router-dom';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
 import axios from 'axios';
 import API_URL from '../../config';
+import { axiosInstance } from '../../utilities/axiosInstance';
 
 
 const EmailVerification = () => {
@@ -12,7 +13,7 @@ const EmailVerification = () => {
 
 
   useEffect(() => {
-    axios.put(`${API_URL.EMAIL_VERIFY}${loginId}`)
+    axiosInstance.put(`${API_URL.EMAIL_VERIFY}${loginId}`)
     .then((response) => {
       setData(response);
     })

@@ -1,9 +1,10 @@
 import axios from "axios";
+import { axiosInstance } from "../utilities/axiosInstance";
 
 const SUBSCRIPTION_URL = "https://spl.sabpaisa.in/client-subscription-service/";
 
 const subscriptionPlan = () => {
-  return axios.get(SUBSCRIPTION_URL + "fetchAppAndPlan")
+  return axiosInstance.get(SUBSCRIPTION_URL + "fetchAppAndPlan")
   .then((response) => {
     if (response.data) {
       localStorage.setItem("subscriptionplan", JSON.stringify(response.data));
@@ -15,7 +16,7 @@ const subscriptionPlan = () => {
 };
 
 const subscriptionChargesDetail = () => {
-    return axios.post(SUBSCRIPTION_URL + "subscribe")
+    return axiosInstance.post(SUBSCRIPTION_URL + "subscribe")
     .then((response) => {
       if (response.data) {
         localStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));

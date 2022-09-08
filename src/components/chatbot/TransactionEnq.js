@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios';
+import { axiosInstance } from '../../utilities/axiosInstance';
 
 const initState = {
     "status":"",
@@ -18,7 +19,7 @@ function TransactionEnq(props) {
     const clientTxnId = steps[5].value;
 
     const obj = {clientCode,clientTxnId}
-    axios.post("https://chatbotadmin.sabpaisa.in/chatbot/getTransaction",obj).then(res=>{
+    axiosInstance.post("https://chatbotadmin.sabpaisa.in/chatbot/getTransaction",obj).then(res=>{
     const status = res.data?.transactionStatus?.status
     const paidAmount = res.data?.transactionStatus?.paidAmount
     const message =  res.data?.transactionStatus?.message

@@ -10,6 +10,7 @@ import API_URL from '../../../config';
 import FormikController from '../../../_components/formik/FormikController';
 import PrintDocument from '../../../_components/reuseable_components/PrintDocument';
 import NavBar from '../NavBar/NavBar';
+import { axiosInstance } from '../../../utilities/axiosInstance';
 
 
 
@@ -39,7 +40,7 @@ function TransactionEnquirey() {
     setData({});
     const transaction_id = input.transaction_id
 
-    axios.get(API_URL.VIEW_TXN+`/${transaction_id}`)
+    axiosInstance.get(API_URL.VIEW_TXN+`/${transaction_id}`)
     .then((response) => {
       if(response?.data.length>0){
         setIsShow(true);
@@ -109,7 +110,7 @@ function TransactionEnquirey() {
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Transaction Enquiry</h1>
+            <h1 className="m-b-sm gx-float-left">Transaction Enquiryyyyy</h1>
           </div>
           <section className="features8 cid-sg6XYTl25a flleft col-lg-12" id="features08-3-">
             <div className="container-fluid">

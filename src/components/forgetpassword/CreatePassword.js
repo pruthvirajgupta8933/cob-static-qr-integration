@@ -5,6 +5,7 @@ import API_URL from '../../config';
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import { toast } from 'react-toastify'
+import { axiosInstanceAuth } from '../../utilities/axiosInstance';
 
 const CreatePassword = (props) => {
   const { auth } = useSelector(state => state);
@@ -40,7 +41,7 @@ const CreatePassword = (props) => {
 
 
   const onSubmit = async (values) => {
-    const res = await axios.put(API_URL.AUTH_CREATE_NEW_PASSWORD, {
+    const res = await axiosInstanceAuth.put(API_URL.AUTH_CREATE_NEW_PASSWORD, {
       email: "textbhuvi@gmail.com",
       verification_token: verification_token,
       password: values.password,

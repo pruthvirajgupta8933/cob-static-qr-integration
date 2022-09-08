@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { ArrayToDate } from '../../../utilities/emandateDateFormat';
 import API_URL from '../../../config';
+import { axiosInstance } from '../../../utilities/axiosInstance';
 
 // import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
 const Emandate = () => {
@@ -19,7 +20,7 @@ const Emandate = () => {
     const mandateRegId = mendateRegIdParam;
     
     const getManteDetails = (mandateRegId)=>{
-      axios.get(baseUrl+mandateRegId).then((response)=>{
+      axiosInstance.get(baseUrl+mandateRegId).then((response)=>{
             setDetails(response.data);
     }).catch(error => console.log(error,"error"));
   }
@@ -59,7 +60,7 @@ useEffect(() => {
         };
         // console.log(postData)
 
-        axios.post(API_URL.SUBSCRIBE_FETCH_APP_AND_PLAN ,postData).then((response)=>{
+        axiosInstance.post(API_URL.SUBSCRIBE_FETCH_APP_AND_PLAN ,postData).then((response)=>{
             // console.log(response)
         }).catch(error=>console.log(error))
     }

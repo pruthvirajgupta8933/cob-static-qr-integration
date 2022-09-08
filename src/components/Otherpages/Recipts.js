@@ -5,7 +5,7 @@ import { Formik, Form } from "formik"
 import sabpaisalogo from '../../assets/images/sabpaisalogo.png';
 import API_URL from '../../config';
 import FormikController from '../../_components/formik/FormikController';
-
+import { axiosInstance } from '../../utilities/axiosInstance';
 
 export const Recipts = () => {
 
@@ -31,7 +31,7 @@ export const Recipts = () => {
 
     const transaction_id = value.transaction_id;
       setIsLoading(true);
-      axios.get(`${API_URL.VIEW_TXN}/${transaction_id}`)
+      axiosInstance.get(`${API_URL.VIEW_TXN}/${transaction_id}`)
       .then((response) => {
         
         if(response.data?.length> 0){

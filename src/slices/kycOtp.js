@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import API_URL from "../config";
 import axios from "axios";
+import { axiosInstanceAuth } from "../utilities/axiosInstance";
 
 
 const KycAuth = {
@@ -28,7 +29,7 @@ const KycAuth = {
 export const otpForContactInfo = createAsyncThunk(
   "OtpForContact/otpContactInfo",
   async (requestParam) => {
-    const response = await axios.post(
+    const response = await axiosInstanceAuth.post(
         `${API_URL.Send_OTP}`,
         requestParam,
 
@@ -52,7 +53,7 @@ export const otpVerificationForContactForPhone = createAsyncThunk(
   "OtpVerificationForContactForPhone/otpVerificationForContactForPhone",
   async (requestParam) => {
     // console.log("requestParam",requestParam)
-    const response = await axios.post(
+    const response = await axiosInstanceAuth.post(
       `${API_URL.Verify_OTP}`,
       requestParam,
     ).catch((error) => {
@@ -68,7 +69,7 @@ export const otpVerificationForContactForEmail = createAsyncThunk(
   "OtpVerificationForContactForEmail/otpVerificationForContactForEmail",
   async (requestParam) => {
     // console.log("requestParam",requestParam)
-    const response = await axios.post(
+    const response = await axiosInstanceAuth.post(
       `${API_URL.Verify_OTP}`,
       requestParam,
     ).catch((error) => {

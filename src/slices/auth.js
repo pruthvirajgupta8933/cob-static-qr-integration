@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import Axios from "axios";
 import API_URL from "../config";
+import { axiosInstance } from "../utilities/axiosInstance";
+
 
 
 import AuthService from "../services/auth.service";
@@ -131,7 +133,7 @@ export const sendEmail = createAsyncThunk(
 export const OTPVerificationApi = createAsyncThunk(
   "auth/OTPVerification",
   async (requestParam) => {
-    const response = await Axios.post(
+    const response = await axiosInstance.post(
       `https://api.msg91.com/api/sendhttp.php?sender=SPTRAN&route=4&mobiles=mobileNO&authkey=177009ASboH8XM59ce18cb&DLT_TE_ID=1107161794798561616&country=91&message=Dear,`,
       { ...requestParam, type: "back_office" }
     ).catch((error) => {

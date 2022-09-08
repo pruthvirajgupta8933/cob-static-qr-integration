@@ -8,7 +8,7 @@ import FormikController from '../../../_components/formik/FormikController';
 import {Regex ,RegexMsg} from '../../../_components/formik/ValidationRegex';
 import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
 import PrintDocument from '../../../_components/reuseable_components/PrintDocument';
-
+import { axiosInstance } from '../../../utilities/axiosInstance';
 
 
 
@@ -116,7 +116,7 @@ const onSubmit = (value)=>{
         setLoading(true)
         //https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam/{txnID}/{CltTxnID}/{pemail}/{pmob}
         const URL = `${API_URL.ViewTxnEnqMultiParam}/${value.spTxnID ==="" ? "ALL" : value.spTxnID}/${value.clientTxnID ==="" ? "ALL" : value.clientTxnID }/${value.pemail===""?"ALL":value.pemail}/${value.pmob ==="" ? "ALL" : value.pmob }`;
-        axios.get(URL)
+        axiosInstance.get(URL)
         .then(res=>{
             setShowData(res.data)
             SetTxnList(res.data)

@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import API_URL from '../../../../config';
 import FormikController from '../../../../_components/formik/FormikController';
 import {Regex, RegexMsg} from '../../../../_components/formik/ValidationRegex';
+import { axiosInstance } from '../../../../utilities/axiosInstance';
 
 export const Edituser = (props) => {
 
@@ -51,7 +52,7 @@ export const Edituser = (props) => {
 
 
     const editHandler =  values => {
-        axios.put(API_URL.EDIT_CUSTOMER, {
+        axiosInstance.put(API_URL.EDIT_CUSTOMER, {
             name: values.name,
             email: values.email,
             phone_number: values.phone_number,
@@ -77,7 +78,7 @@ export const Edituser = (props) => {
        
     };
     const getDrop = async (e) => {
-        await axios.get(API_URL.GET_CUSTOMER_TYPE)
+        await axiosInstance.get(API_URL.GET_CUSTOMER_TYPE)
             .then(res => {
                 let res_data = res.data
                 let data_arr = []

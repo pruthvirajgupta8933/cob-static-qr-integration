@@ -1,7 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom'
 import { Formik, Field, Form, ErrorMessage } from 'formik'
@@ -13,8 +12,7 @@ import { Edituser } from './Edituser';
 import API_URL from '../../../../config';
 import toastConfig from '../../../../utilities/toastTypes';
 import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
-
-
+import { axiosInstance } from '../../../../utilities/axiosInstance';
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 
@@ -66,7 +64,7 @@ const PayerDetails = () => {
 
     // Alluser data API INTEGRATION
     const loadUser = async () => {
-        await axios.get(API_URL.GET_CUSTOMERS + clientCode)
+        await  axiosInstance.get(API_URL.GET_CUSTOMERS + clientCode)
             .then(res => {
                 // console.log(res)
                 setData(res.data);
@@ -121,7 +119,7 @@ const PayerDetails = () => {
     // ADD User Dropdown api integration
 
     const getDrop = async (e) => {
-        await axios.get(API_URL.GET_CUSTOMER_TYPE)
+        await  axiosInstance.get(API_URL.GET_CUSTOMER_TYPE)
             .then(res => {
                 setCustomerType(res.data);
             })
@@ -134,7 +132,7 @@ const PayerDetails = () => {
     //ADD user API Integration
     const onSubmit = async (e) => {
         // console.log(e)
-        const res = await axios.post(API_URL.ADD_CUSTOMER, {
+        const res = await  axiosInstance.post(API_URL.ADD_CUSTOMER, {
             name: e.name,
             email: e.email,
             phone_number: e.phone_number,
@@ -189,7 +187,7 @@ const PayerDetails = () => {
         // confirm("do you confirm to delete it");
         var iscConfirm = window.confirm("Are you sure you want to delete it");
         if (iscConfirm) {
-            await axios.delete(`${API_URL.DELETE_CUSTOMER}?Client_Code=${clientCode}&Customer_id=${id}`);
+            await  axiosInstance.delete(`${API_URL.DELETE_CUSTOMER}?Client_Code=${clientCode}&Customer_id=${id}`);
             loadUser();
         }
     };

@@ -6,8 +6,8 @@ import DropDownCountPerPage from "../../_components/reuseable_components/DropDow
 import { kycForApproved } from "../../slices/kycSlice"
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
+import {axiosInstanceAuth} from "../../utilities/axiosInstance"
 
-axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
 function ApprovedMerchant() {
   const [approveMerchant, setApproveMerchant] = useState([])
@@ -37,7 +37,7 @@ function ApprovedMerchant() {
   };
 
   const allApprovedMerchants = async () => {
-    await axios.get(`${API_URL.KYC_FOR_APPROVED}`)
+    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_APPROVED}`)
       .then(res => {
         const data = res.data.results;
         console.log(data)
@@ -102,26 +102,17 @@ useEffect(() => {
   
 
   const viewDocument = async (loginMaidsterId) => {
-    const res = await axios.post(API_URL.DOCUMENT_BY_LOGINID, {
+    const res = await axiosInstanceAuth.post(API_URL.DOCUMENT_BY_LOGINID, {
       login_id: loginMaidsterId
-    },{
-      headers: {
-        "Authorization" : AUTH_TOKEN
-      }
     }).then(res => {
       if (res.status === 200) {
         const data = res.data;
-       console.log(data,"===>")
+      
         const docId = data[0].documentId;
         console.log(docId,"myyyyyyyyyyyyyyyyyy")
         const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;
         
-        axios.get(ImgUrl,{
-          headers: {
-            "Authorization" : AUTH_TOKEN
-          }
-        }).then(res=>console.log(res))
-        setDocumentImg(ImgUrl)
+        axiosInstanceAuth.get(ImgUrl).then(res=>console.log(res))
       }
     })
       .catch(error => {
@@ -221,7 +212,7 @@ useEffect(() => {
 <ul class="pagination w-25">
   {pageNumbers.length > 0 && <li class="page-item"><button class="page-link" onClick={handlePrevPage} >Previous</button></li>}
   {pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
-    <li key={pgNumber, i}
+    <li key={pgNumber}
       className={
         pgNumber === currentPage ? " page-item active" : "page-item"
       }>

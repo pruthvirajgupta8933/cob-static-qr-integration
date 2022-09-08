@@ -18,7 +18,7 @@ import DropDownCountPerPage from "../../../_components/reuseable_components/Drop
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../../dashboard/NavBar/NavBar"
-
+import { axiosInstance } from "../../../utilities/axiosInstance"
 function TransactionHistory() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -123,7 +123,7 @@ function TransactionHistory() {
   //  }
 
   const getPaymentStatusList = async () => {
-    await axios
+    await axiosInstance
       .get(API_URL.GET_PAYMENT_STATUS_LIST)
       .then((res) => {
         // console.log(res)
@@ -135,9 +135,8 @@ function TransactionHistory() {
   };
 
   const paymodeList = async () => {
-    await axios
-      .get(API_URL.PAY_MODE_LIST)
-      .then((res) => {
+    await axiosInstance
+      .get(API_URL.PAY_MODE_LIST).then((res) => {
         // console.log(res)
         SetPaymentModeList(res.data);
       })
@@ -858,7 +857,7 @@ function TransactionHistory() {
                     </div>
                   </div>
                 ) : buttonClicked === true && txnList.length === 0 ? (
-                  <div className="showMsg">Data Not Found</div>
+                  <div className="showMsg"><h1 class="float-centre mr-5">Data Not Found</h1></div>
                 ) : (
                   <div></div>
                 )}

@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API_URL, { AUTH_TOKEN } from "../config";
 import axios from "axios";
+import { axiosInstanceAuth } from "../utilities/axiosInstance";
 
 
-axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
 const initialState = {
   documentByloginId: {
@@ -177,7 +177,7 @@ const initialState = {
 export const otpForContactInfo = createAsyncThunk(
   "OtpForContact/otpContactInfo",
   async (requestParam) => {
-    const response = await axios.post(
+    const response = await axiosInstanceAuth.post(
       `${API_URL.Send_OTP}`,
       requestParam,
 
@@ -201,7 +201,7 @@ export const otpVerificationForContactForPhone = createAsyncThunk(
   "OtpVerificationForContactForPhone/otpVerificationForContactForPhone",
   async (requestParam) => {
     // console.log("requestParam",requestParam)
-    const response = await axios.post(
+    const response = await axiosInstanceAuth.post(
       `${API_URL.Verify_OTP}`,
       requestParam,
     ).catch((error) => {
@@ -217,7 +217,7 @@ export const otpVerificationForContactForEmail = createAsyncThunk(
   "OtpVerificationForContactForEmail/otpVerificationForContactForEmail",
   async (requestParam) => {
     // console.log("requestParam",requestParam)
-    const response = await axios.post(
+    const response = await axiosInstanceAuth.post(
       `${API_URL.Verify_OTP}`,
       requestParam,
     ).catch((error) => {
@@ -238,7 +238,7 @@ export const otpVerificationForContactForEmail = createAsyncThunk(
 export const businessType = createAsyncThunk(
   "kyc/businessType",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(`${API_URL.Business_type}`, {
         headers: {},
       })
@@ -253,7 +253,7 @@ export const businessType = createAsyncThunk(
 export const busiCategory = createAsyncThunk(
   "kyc/busiCategory",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(`${API_URL.Business_Category}`, {
         headers: {},
       })
@@ -268,7 +268,7 @@ export const busiCategory = createAsyncThunk(
 export const platformType = createAsyncThunk(
   "kyc/platformType",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(`${API_URL.Platform_type}`, {
         headers: {},
       })
@@ -284,7 +284,7 @@ export const platformType = createAsyncThunk(
 export const collectionFrequency = createAsyncThunk(
   "kyc/platformType",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(`${API_URL.Collection_frequency}`, {
         headers: {},
       })
@@ -300,7 +300,7 @@ export const collectionFrequency = createAsyncThunk(
 export const collectionType = createAsyncThunk(
   "kyc/collectionType",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(`${API_URL.Get_ALL_Collection_Type}`, {
         headers: {},
       })
@@ -315,7 +315,7 @@ export const collectionType = createAsyncThunk(
 export const saveBusinessInfo = createAsyncThunk(
   "kyc/collectionType",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .put(`${API_URL.save_Business_Info}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -329,7 +329,7 @@ export const saveBusinessInfo = createAsyncThunk(
 export const businessOverviewState = createAsyncThunk(
   "kyc/businessOverviewState",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(`${API_URL.Business_overview_state_}`, {
         headers: {},
       })
@@ -346,7 +346,7 @@ export const businessOverviewState = createAsyncThunk(
 export const saveMerchantInfo = createAsyncThunk(
   "kyc/collectionType",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .post(`${API_URL.SAVE_MERCHANT_INFO}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -360,7 +360,7 @@ export const saveMerchantInfo = createAsyncThunk(
 export const documentsUpload = createAsyncThunk(
   "kyc/documentsUpload",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(`${API_URL.DocumentsUpload}`, {
         headers: {},
       })
@@ -383,7 +383,7 @@ export const merchantInfo = createAsyncThunk(
 
  
       //Request URL: https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/
-      const response = await axios({
+      const response = await axiosInstanceAuth({
         method: "post",
         url: "https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/",
         data: requestParam,
@@ -410,7 +410,7 @@ export const merchantInfo = createAsyncThunk(
 export const kycUserList = createAsyncThunk(
   "kyc/kycUserList",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .post(`${API_URL.Kyc_User_List}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -427,7 +427,7 @@ export const kycUserList = createAsyncThunk(
 export const kycDocumentUploadList = createAsyncThunk(
   "kyc/kycDocumentUploadList",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .post(`${API_URL.Kyc_Doc_List}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -443,7 +443,7 @@ export const kycDocumentUploadList = createAsyncThunk(
 export const kycVerificationForTabs = createAsyncThunk(
   "kyc/kycVerificationForTabs",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(`${API_URL.Kyc_Verification_For_All_Tabs}/${requestParam?.login_id}`)
       .catch((error) => {
         return error.response;
@@ -458,7 +458,7 @@ export const kycVerificationForTabs = createAsyncThunk(
 export const kycBankNames = createAsyncThunk(
   "kyc/kycBankNames",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(`${API_URL.GET_ALL_BANK_NAMES}`, {
         headers: {},
       })
@@ -499,7 +499,7 @@ export const kycForPending = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(
         `${API_URL.KYC_FOR_PENDING}&page=${requestParam}&page_size=${requestParam1}`,
         {
@@ -520,7 +520,7 @@ export const kycForVerified = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(
         `${API_URL.KYC_FOR_VERIFIED}&page=${requestParam}&page_size=${requestParam1}`,
         {
@@ -540,7 +540,7 @@ export const kycForApproved = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(`${API_URL.KYC_FOR_APPROVED}&page=${requestParam}&page_size=${requestParam1}`, {
         headers: {},
       })
@@ -555,7 +555,7 @@ export const kycForApproved = createAsyncThunk(
 export const kycForCompleted = createAsyncThunk(
   "kyc/kycForCompleted",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .get(`${API_URL.KYC_FOR_COMPLETED}`, {
         headers: {},
       })
@@ -571,7 +571,7 @@ export const kycForCompleted = createAsyncThunk(
 export const UploadLoginId = createAsyncThunk(
   "kyc/UploadLoginId",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .post(`${API_URL.DOCUMENT_BY_LOGINID}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -587,7 +587,7 @@ export const UploadLoginId = createAsyncThunk(
 export const verifyKycEachTab = createAsyncThunk(
   "kyc/verifyKycEachTab",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .post(`${API_URL.VERIFY_EACH_TAB}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -609,7 +609,7 @@ export const verifyKycDocumentTab= createAsyncThunk(
 
     }
 
-    const response = await axios
+    const response = await axiosInstanceAuth
       .put(URL_FOR_DOCUMENT_VERIFY,requestParam)
       .catch((error) => {
         return error.response;
@@ -624,7 +624,7 @@ export const verifyKycDocumentTab= createAsyncThunk(
 export const verifyComplete = createAsyncThunk(
   "kyc/verifyKycEachTab",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .post(`${API_URL.VERIFY_FINAL_ALL}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -636,7 +636,7 @@ export const verifyComplete = createAsyncThunk(
 export const approveDoc = createAsyncThunk(
   "kyc/approveDoc",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .put(`${API_URL.APPROVE_DOCUMENT}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -650,7 +650,7 @@ export const approveDoc = createAsyncThunk(
 export const approvekyc = createAsyncThunk(
   "kyc/approvekyc",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .post(`${API_URL.APPROVE_KYC}`, requestParam)
       .catch((error) => {
         return error.response;
