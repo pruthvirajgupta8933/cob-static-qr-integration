@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { kycForPending } from "../../slices/kycSlice"
 import API_URL from '../../config';
-import axios from "axios";
+// import axios from "axios";
 import DropDownCountPerPage from '../../_components/reuseable_components/DropDownCountPerPage';
 import { Link, useRouteMatch } from 'react-router-dom';
 import toastConfig from '../../utilities/toastTypes';
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
 import Spinner from './Spinner';
+import {axiosInstanceAuth} from "../../utilities/axiosInstance"
 
 
 function NewRegistraion() {
 
   const { url } = useRouteMatch();
   const roles = roleBasedAccess();
-  console.log(roles)
+
 
 
   const [data, setData] = useState([]);
@@ -34,7 +35,7 @@ function NewRegistraion() {
 
 
   const newAllRegistration = async () => {
-    await axios.get(`${API_URL.KYC_FOR_PENDING}`)
+    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_PENDING}`)
       .then(res => {
         const data = res.data.results;
         // console.log(data)
@@ -182,7 +183,6 @@ function NewRegistraion() {
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }>
-                {console.log(pageNumbers)}
                 <a href={() => false} className={`page-link data_${i}`} >
                   <span onClick={() => {
                     setCurrentPage(pgNumber)

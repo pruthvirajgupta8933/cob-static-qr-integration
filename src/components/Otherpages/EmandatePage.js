@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import {useLocation} from "react-router-dom"
 import axios from 'axios';
 import API_URL from "../../config";
+import { axiosInstance } from "../../utilities/axiosInstance";
 
 
 const EmandatePage = () => {
@@ -13,7 +14,7 @@ const EmandatePage = () => {
   const baseUrl = API_URL.MANDATE_REGISTRATION_STATUS;
   const mandateRegId = mendateRegIdParam;
     const getManteDetails = (mandateRegId)=>{
-      axios.get(baseUrl+mandateRegId).then((response)=>{
+      axiosInstance.get(baseUrl+mandateRegId).then((response)=>{
             setDetails(response.data);
     }).catch(error => console.log(error,"error"));
   }
@@ -59,7 +60,7 @@ const detailList = detailsKey.map((item,i)=>{
     }
     
 
-    await axios.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
+    await axiosInstance.get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
       .then((response) => {
         // console.warn(response);
         // setData(response.data);

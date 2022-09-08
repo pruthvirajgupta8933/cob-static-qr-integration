@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { getEmailToSendOtpSlice } from "../../slices/auth";
 import { useDispatch,useSelector } from "react-redux";
 import toastConfig from "../../utilities/toastTypes";
+import { toast } from "react-toastify";
 
 
 
@@ -17,16 +18,22 @@ const EnterUserID = (props) => {
 
   const handleSubmit = (data) => {
     // console.log("You clicked");
-    toastConfig.successToast("OTP Sent Succesfully")
-  
-     props.props("a2",data);
+    // toastConfig.successToast("OTP Sent Succesfully")
+    
      dispatch(getEmailToSendOtpSlice({
       email:data.email,
       otp_type:"both",
-    otp_for: "Forgot Password"
-      
-      
-     }))
+    otp_for: "Forgot Password"})).then((res) => {
+      // console.log("This is the response", res);
+      if (res.meta.requestStatus === "fulfilled") {
+        if (res.payload.status === true) {
+          props.props("a2",data);
+          toast.success("OTP Sent Successfully")} 
+      } else {
+         toast.error("Email is Incorrect")
+
+      }
+    });
   };
 
   const initialValues = {

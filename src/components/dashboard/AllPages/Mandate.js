@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import API_URL from "../../../config";
+import { axiosInstance } from "../../../utilities/axiosInstance";
 // import { saveSubscribedPlan } from "../../../slices/dashboardSlice";
 
 function Emandate(props) {
@@ -46,7 +47,7 @@ function Emandate(props) {
       mandateStartTime : data.mandateStartDate,
       mandateEndTime  : data.mandateEndDate,
   };
-  axios.post(API_URL.SUBSCRIBE_FETCH_APP_AND_PLAN ,postData).then((response)=>{
+  axiosInstance.post(API_URL.SUBSCRIBE_FETCH_APP_AND_PLAN ,postData).then((response)=>{
             // console.log(response);
             setDisplayMsg('block');
             setTimeout(function() {

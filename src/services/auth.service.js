@@ -1,14 +1,12 @@
-import axios from "axios";
 import API_URL, { AUTH_TOKEN } from "../config";
+import { axiosInstance,axiosInstanceAuth } from "../utilities/axiosInstance";
 
-
-
-axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+// axiosInstanceAuth.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
 // const SIGNUP_URL = "https://cobapi.sabpaisa.in/auth-service/auth/";
 
 const register = (firstName, lastName, mobileNumber, email, password,businessType) => {
-  return axios.post(API_URL.AUTH_SIGNUP, {
+  return axiosInstanceAuth.post(API_URL.AUTH_SIGNUP, {
     name: firstName+' '+ lastName,
     mobileNumber: mobileNumber,
     email: email,
@@ -21,7 +19,7 @@ const register = (firstName, lastName, mobileNumber, email, password,businessTyp
 // login new url : https://cobtest.sabpaisa.in/auth-service/auth/login
 // https://cobapi.sabpaisa.in/auth-service/auth/login
 const login = (username, password) => {
-  return axios
+  return axiosInstanceAuth
     .post(API_URL.AUTH_LOGIN, {
       clientUserId:username,
       userPassword:password,
@@ -52,7 +50,7 @@ const logout = () => {
 // Home,
 
 const sendEmail = (toEmail, toCc, subject, msg) => {
-  return axios.post(API_URL.EMAIL_BASE_URL, {
+  return axiosInstanceAuth.post(API_URL.EMAIL_BASE_URL, {
     toEmail,
     toCc,
     subject,
@@ -76,36 +74,36 @@ const BASE_URL = "https://cobapi.sabpaisa.in/auth-service/client";
 const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
 const createClintCode = (object) => {
   // console.log("profileservice",object)
-  return axios.post(API_URL.AUTH_CLIENT_CREATE, object)
+  return axiosInstanceAuth.post(API_URL.AUTH_CLIENT_CREATE, object)
 };
 
 
 const updateClientProfile = (object,clientId)=>{
-    return axios.post(BASE_URL + "/update/"+clientId, object);
+    return axiosInstanceAuth.post(BASE_URL + "/update/"+clientId, object);
 }
 
 
 const verifyClientCode=(clientCode)=>{
-  return axios.get(BASE_URL + "//verifyClientCode/"+clientCode);
+  return axiosInstanceAuth.get(BASE_URL + "//verifyClientCode/"+clientCode);
 }
  
 
 const verifyIfcsCode=(ifsc_code)=>{
-  return axios.get( "https://ifsc.razorpay.com/"+ifsc_code);
+  return axiosInstance.get( "https://ifsc.razorpay.com/"+ifsc_code);
 }
 
 const fetchNbBankList=()=>{
-  return axios.get(BANK_LIST_URL + "nb");
+  return axiosInstance.get(BANK_LIST_URL + "nb");
 }
 
 const fetchDcBankList=()=>{
-  return axios.get(BANK_LIST_URL + "dc");
+  return axiosInstance.get(BANK_LIST_URL + "dc");
 }
 
 
 const changePassword = (object) => {
   // console.log("profileservice",object)
-  return axios.put(API_URL.AUTH_CHANGE_PASSWORD, object)
+  return axiosInstanceAuth.put(API_URL.AUTH_CHANGE_PASSWORD, object)
 };
 
 
@@ -113,25 +111,25 @@ const changePassword = (object) => {
 const getEmailToSendOTP=(object)=>{
   // here we pass the valid email-id / username to send OTP on Phone number and email
 
-   return axios.post(API_URL.AUTH_GET_EMAIL_TO_SEND_OTP ,object)
+   return axiosInstanceAuth.post(API_URL.AUTH_GET_EMAIL_TO_SEND_OTP ,object)
 }
 
 
 const verifyOtpOnForgotPwd=(object)=>{
   // here we pass received OTP on email / phone number
-  return axios.post(API_URL.AUTH_VERIFY_OTP_ON_FWD ,object)
+  return axiosInstanceAuth.post(API_URL.AUTH_VERIFY_OTP_ON_FWD ,object)
 }
 
 const createNewPassword=(object)=>{
   //CREATE NEW PASSWORD
-  return axios.post(API_URL.AUTH_CREATE_NEW_PASSWORD ,object)
+  return axiosInstanceAuth.post(API_URL.AUTH_CREATE_NEW_PASSWORD ,object)
 }
 
 
 // CHECK_PERMISSION_PAYLINK
 const checkPermission=(object)=>{
   //pass client code
-  return axios.get(`${API_URL.CHECK_PERMISSION_PAYLINK}${object}`)
+  return axiosInstanceAuth.get(`${API_URL.CHECK_PERMISSION_PAYLINK}${object}`)
 }
 
 const authService = {

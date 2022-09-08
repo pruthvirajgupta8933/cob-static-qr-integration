@@ -7,6 +7,7 @@ import axios from 'axios'
 import API_URL from '../../../../config'
 import { createClientProfile } from '../../../../slices/auth'
 import { toast} from 'react-toastify';
+import { axiosInstance } from '../../../../utilities/axiosInstance'
 
 
 
@@ -46,7 +47,7 @@ function CreateClientCode(props) {
         setIsCodeValid(null);
         if(inputText.length===6 || inputText.length===5){
             const data  = {"client_code": inputText}
-            axios.post("https://stgcobapi.sabpaisa.in/auth-service/account/check-clientcode",data).then(
+            axiosInstance.post("https://stgcobapi.sabpaisa.in/auth-service/account/check-clientcode",data).then(
                 res=>{
                     // console.log(res.data.status)
                     setIsCodeValid(res.data.status);

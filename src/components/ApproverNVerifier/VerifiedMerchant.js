@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { kycForVerified } from "../../slices/kycSlice"
 import API_URL from '../../config';
-import axios from "axios";
-import DropDownCountPerPage from '../../_components/reuseable_components/DropDownCountPerPage';
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
 import { Link } from 'react-router-dom';
 import toastConfig from '../../utilities/toastTypes';
 import Spinner from './Spinner';
-
+import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 
 function VerifiedMerchant() {
 
@@ -28,7 +26,7 @@ function VerifiedMerchant() {
   };
 
   const allVerifiedMerchants = async () => {
-    await axios.get(`${API_URL.KYC_FOR_VERIFIED}`)
+    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_VERIFIED}`)
       .then(res => {
         const data = res.data.results;
         setMerchantData(data)
@@ -152,7 +150,6 @@ function VerifiedMerchant() {
       className={
         pgNumber === currentPage ? " page-item active" : "page-item"
       }>
-        {console.log(pageNumbers)}
       <a href={() => false} className={`page-link data_${i}`} >
         <span onClick={() => {
           setCurrentPage(pgNumber)

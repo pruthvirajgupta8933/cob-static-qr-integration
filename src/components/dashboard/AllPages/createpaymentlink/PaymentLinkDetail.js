@@ -1,14 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import _ from 'lodash';
 import FormPaymentLink from "./FormPaymentLink";
 import API_URL from "../../../../config";
 import toastConfig from '../../../../utilities/toastTypes';
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
-
-
+import { axiosInstance } from "../../../../utilities/axiosInstance";
 const PaymentLinkDetail = () => {
 
   const [pageSize, setPageSize] = useState(10);
@@ -25,7 +23,7 @@ const PaymentLinkDetail = () => {
 
   useEffect(() => {
     toastConfig.infoToast("Loading")
-    axios.get(`${API_URL.GET_LINKS}${clientCode}`)
+     axiosInstance.get(`${API_URL.GET_LINKS}${clientCode}`)
       .then((res) => {
         toastConfig.successToast("Payment Link Data Loaded")
         setData(res.data);

@@ -13,7 +13,7 @@ import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
 import API_URL from '../../../config';
 import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
 import { convertToFormikSelectJson } from '../../../_components/reuseable_components/convertToFormikSelectJson';
-
+import { axiosInstance } from '../../../utilities/axiosInstance';
 
 
 function TransactionHistoryDownload() {
@@ -99,7 +99,7 @@ function TransactionHistoryDownload() {
 
 
   const getPaymentStatusList = async () => {  
-    await axios.get(API_URL.GET_PAYMENT_STATUS_LIST)  
+    await axiosInstance.get(API_URL.GET_PAYMENT_STATUS_LIST)  
     .then(res => {  
       // console.log(res)  
       SetPaymentStatusList(res.data);
@@ -110,7 +110,7 @@ function TransactionHistoryDownload() {
   }  
 
   const paymodeList = async () => {  
-    await axios.get(API_URL.PAY_MODE_LIST)  
+    await axiosInstance.get(API_URL.PAY_MODE_LIST)  
     .then(res => {  
       // console.log(res)
       SetPaymentModeList(res.data);  

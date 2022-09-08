@@ -1,11 +1,11 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import API_URL from '../../../../config';
 import { checkPermissionSlice } from '../../../../slices/auth';
 import "../../css/abhishek.css"
-
+import { axiosInstance } from '../../../../utilities/axiosInstance';
+// import { axiosInstance } from '../../.../';
 
 
 
@@ -28,7 +28,7 @@ function BusinessCategory(props) {
 
 
     const checkRateMappingStatus = (clientCodeF, clientCodeT, loginId) => {
-        axios.get(`${API_URL.RATE_MAPPING_CLONE}/${clientCodeF}/${clientCodeT}/${loginId}`)
+         axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${clientCodeF}/${clientCodeT}/${loginId}`)
             .then((resp) => {
                 const data = resp.data;
                 setRateCloneStatus(data[0].ID)
@@ -96,18 +96,18 @@ function BusinessCategory(props) {
 
             console.log(inputData);
             // 1 - run RATE_MAPPING_GenerateClientFormForCob 
-            axios.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
+             axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
                 console.log("1 api run")
 
 
                 localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
                 //2 - rate map clone 
-                axios.get(`${API_URL.RATE_MAPPING_CLONE}/${businessType}/${clientCode}/${loginId}`).then(res => {
+                 axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${businessType}/${clientCode}/${loginId}`).then(res => {
                     console.log("2 api run")
 
                     localStorage.setItem('enablePaylink', "api trigger");
                     // 3- enable pay link
-                    axios.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
+                     axiosInstance.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
                         localStorage.setItem('enablePaylink', "api trigger");
                         console.log("3 api run")
                         dispatch(checkPermissionSlice(clientCode));

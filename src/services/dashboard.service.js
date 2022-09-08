@@ -1,10 +1,11 @@
 import axios from "axios";
 import API_URL from "../config";
+import  { axiosInstance } from "../utilities/axiosInstance"
 
 // Home - successTxnSummary 
 
 const successTxnSummary = (fromdate, todate, clientcode) => {
-  return axios.post(API_URL.SUCCESS_TXN_SUMMARY, {
+  return axiosInstance.post(API_URL.SUCCESS_TXN_SUMMARY, {
     fromdate,
     todate,
     clientcode,
@@ -14,7 +15,7 @@ const successTxnSummary = (fromdate, todate, clientcode) => {
 };
 
 const subscriptionplan = () => {
-  return axios.get(API_URL.FETCH_APP_AND_PLAN)
+  return axiosInstance.get(API_URL.FETCH_APP_AND_PLAN)
   .then((response) => {
     // console.log("subscribe data - service", response )
     if (response.data) {
@@ -27,7 +28,7 @@ const subscriptionplan = () => {
 };
 
 const subscriptionPlanDetail = () => {
-    return axios.post(API_URL.SUBSCRIBE_SERVICE)
+    return axiosInstance.post(API_URL.SUBSCRIBE_SERVICE)
     .then((response) => {
       if (response.data) {
         localStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
@@ -43,12 +44,15 @@ const fetchTransactionHistory=(paramData)=>
 { 
   // const {clientCode,fromDate,payModeId,toDate,txnStatus,ref1,ref2} = paramData;
   // console.log("hit",`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
-  return axios.post(API_URL.GetMerchantTxnHistory,paramData);
+  
+
+  return axiosInstance.post(API_URL.GetMerchantTxnHistory,paramData);
+  // axiosInstance.defaults.headers.common["Authorization"] = ';
 }
 
 
 const settlementReport=(paramData) => {
-  return axios.post(API_URL.SettlementReport,paramData)
+  return axiosInstance.post(API_URL.SettlementReport,paramData)
 }
 
 export const Dashboardservice = {

@@ -9,6 +9,7 @@ import validation from "../validation";
 import {  useSelector } from "react-redux";
 import { toast } from 'react-toastify'
 import axios from "axios";
+import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 
 
 const VerifyEmailPhone = (props)  => {
@@ -54,7 +55,7 @@ const verification_token=auth.forgotPassword.otpResponse.verification_token;
                             otp: emailotp
                         });
 
-       await axios.post(API_URL. AUTH_VERIFY_OTP_ON_FWD,sendOtp,{headers:{"Content-Type" : "application/json"}})
+       await axiosInstanceAuth.post(API_URL. AUTH_VERIFY_OTP_ON_FWD,sendOtp,{headers:{"Content-Type" : "application/json"}})
        .then((response)=>{
          console.log(response)
          if (response.status === 200) {
@@ -64,7 +65,7 @@ const verification_token=auth.forgotPassword.otpResponse.verification_token;
         else {
           toast.error(response.data.message);
       }
-        })
+        }).catch((error) =>{ toast.error("Invalid OTP") });
       
          
      

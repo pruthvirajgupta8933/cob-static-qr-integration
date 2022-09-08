@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API_URL from "../config";
 import axios from "axios";
+import { axiosInstanceAuth } from "../utilities/axiosInstance";
 
 
 const ContactInfo = {
@@ -17,7 +18,7 @@ const ContactInfo = {
     export const updateContactInfo = createAsyncThunk(
         "UpdateContactInfo/updateContactInfo",
         async (requestParam) => {
-          const response = await axios.put(
+          const response = await axiosInstanceAuth.put(
             `${API_URL.Save_General_Info}`,
             requestParam,
             {
