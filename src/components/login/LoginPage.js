@@ -224,9 +224,6 @@ function LoginPage() {
                                     </ErrorMessage>
 
 
-                                    <Link to={`/forget`} className="pull-right">Forgot Passowrd ?</Link>
-
-
                                     <span
                                       className="hide-password"
                                       onClick={handleClickShowPassword}
@@ -255,6 +252,8 @@ function LoginPage() {
                                     )}
                                     LogIn
                                   </button>
+                                  <Link to={`/forget`} className="pull-right mt-2">Forgot Passowrd ?</Link>
+
                                   {/* <span className="simform__actions-sidetext">
                                      <Link
                                       className="special"
