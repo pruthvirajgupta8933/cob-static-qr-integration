@@ -31,7 +31,7 @@ function KycAlert() {
 
 
   return (
-    <div className="alert alert-warning" role="alert"> Your KYC is  {status}</div>
+    <div className="alert alert-warning" role="alert"> Your KYC is {status}</div>
 
   )
 }

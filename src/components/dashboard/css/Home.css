@@ -48,7 +48,15 @@ table.tables tr:nth-child(odd) {
 }
 
 
+/* Css for terms and condition close button*/
 
+.closebtn{
+  background:#0156B3;
+  width:50%;
+  height:30px;  
+  border-radius:4px;
+  border:none;
+}
 /* Css for Registration*/
 .figmabtn{
   background:#0156B3;
@@ -132,4 +140,74 @@ margin-left: 97px;
   border: 0;
   border-radius: 3px;
   padding:8px 20px;
+}
+
+
+.announcement-banner-container {
+  padding: 20px;
+  padding-bottom: 0;
+}
+.announcement-banner {
+  background: #fff;
+  height: 50px;
+  position: relative;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+  display: table;
+  width: 100%;
+  padding: 20px;
+}
+.announcement-banner .title {
+  position: relative;
+  height: 100%;
+  font-size: 50px;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 2px 0 0 2px;
+  padding-right: 50px;
+  background: rgb(255, 195, 0);
+}
+.announcement-banner .title:before {
+  bottom: 0;
+  width: 60px;
+  height: 100%;
+  opacity: .5;
+  right: 25px;
+  background-color: currentColor;
+  transform: skew(30deg);
+}
+
+.announcement-banner .title:before, .announcement-banner .title:after {
+  position: absolute;
+  display: block;
+  content: '';
+}
+
+
+.onboarding-illustration-top{
+    position: absolute;
+    top: -40px;
+    right: -81px;
+    
+    height: 60px;
+    display: flow-root;
+}
+.cardkyc{
+  padding:10px !important;
+  
+  border: 1px solid #8ec2ff !important;
+}
+.cardkyc .card-body{
+  padding: 0 !important;
+  line-height: 47px;
+}
+.kycbtns{
+    line-height: 17px !important;
+    margin: 8px 0 0 14px !important;
+    border: 0;
+    border-radius: 3px;
+    padding:8px 20px;
+}
+.newcard{
+  color: #cd8214;
 }
