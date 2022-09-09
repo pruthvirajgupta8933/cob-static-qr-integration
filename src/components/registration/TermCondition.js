@@ -195,7 +195,7 @@ function TermCondition({acceptTnC,callbackHandler, setFieldValues}) {
                 </div>
               
                 <div className="w-25 m-3" >
-                <button  type="button" className="btn btn-secondary btn-sm text-white" onClick={()=>onChangeHandler()}>Close</button></div>
+                <button  type="button" className="closebtn text-white" onClick={()=>onChangeHandler()}>Close</button></div>
                 
                 <div className="dropdown-divider"></div>
         <div className="modal-footer">

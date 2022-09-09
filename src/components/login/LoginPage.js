@@ -11,6 +11,7 @@ import { clearMessage } from "../../slices/message";
 import { toast } from "react-toastify";
 import "./Login.css";
 import imageSlide1 from "../../assets/images/rafiki.png"
+import { Link } from "react-router-dom";
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",
@@ -140,7 +141,7 @@ function LoginPage() {
                         <div className="logmod__tab lgm-2 show">
                           <div className="logmod__heading">
                             <span className="logmod__heading-subtitle">
-                            
+
                             </span>
                             <h1>Welcome to your Dashboard</h1>
                             <p>You can login to track and record every transaction in real time.</p>
@@ -192,7 +193,7 @@ function LoginPage() {
                                       className="string optional"
                                       htmlFor="user-pw"
                                     >
-                                    Enter Your  Password
+                                      Enter Your  Password
                                     </label>
                                     <Field
                                       className="string optional"
@@ -221,6 +222,11 @@ function LoginPage() {
                                         </div>
                                       )}
                                     </ErrorMessage>
+
+
+                                    <Link to={`/forget`} className="pull-right">Forgot Passowrd ?</Link>
+
+
                                     <span
                                       className="hide-password"
                                       onClick={handleClickShowPassword}
@@ -235,12 +241,15 @@ function LoginPage() {
                                   <button
                                     className="sumbit btn-0156B3"
                                     type="sumbit"
-                                    
+
                                     disabled={loading ? true : false}
                                   >
+
+
+
                                     {loading && (
                                       <span
-                                        className="spinner-border "
+                                        className="spinner-border"
                                         role="status"
                                       ></span>
                                     )}
@@ -261,7 +270,7 @@ function LoginPage() {
                             </Formik>
                           </div>
                           <div className="logmod__form m-r-l-100" ><p>Term of Service | Privacy Policy |  Contact us
-</p></div>
+                          </p></div>
                         </div>
                       </div>
                     </div>
@@ -329,12 +338,12 @@ function LoginPage() {
             </div>
             <div className="col-sm-5 authfy-panel-left">
               <div className="brand-col">
-                  <div class="heading1 pt-5">
-                    <p className="font-text-large mb-0">An all-in-one</p>
-                    <p className="font-size-32 mb-2"> Transaction Dashboard</p>
-                    <p className="">Power of real-time payment analysis</p>
-                    <img src={imageSlide1} alt="slide" width="80%" />
-                  </div>
+                <div class="heading1 pt-5">
+                  <p className="font-text-large mb-0">An all-in-one</p>
+                  <p className="font-size-32 mb-2"> Transaction Dashboard</p>
+                  <p className="">Power of real-time payment analysis</p>
+                  <img src={imageSlide1} alt="slide" width="80%" />
+                </div>
                 {/* <div className="headline">
                   <p style={{ fontSize: "24px", lineHeight: "20px" }}>
                     Receive Payments, The Easy Way
