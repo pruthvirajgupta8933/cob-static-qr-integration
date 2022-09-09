@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import axios from "axios";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -28,6 +28,7 @@ function DocumentsUpload(props) {
 
   // const [photos, setPhotos] = useState([]);
   const { user } = useSelector((state) => state.auth);
+  const filesharhe_ref = useRef()
   // var clientMerchantDetailsList = user.clientMerchantDetailsList;
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
@@ -71,13 +72,29 @@ function DocumentsUpload(props) {
       .catch((err) => console.log(err));
   }, []);
 
-
+  const FILE_SIZE = 1024;
+  const SUPPORTED_FORMATS = ["PNG","JPEG","JPG","PDF"]
 
   const validationSchema = Yup.object({
     docType: Yup.string()
       .required("Required")
       .nullable(),
-    docFile: Yup.mixed().nullable(),
+    docFile: Yup.mixed().test('FILE_SIZE', "Uploaded file is too big."
+    ,(value) => {
+       return(
+        value && filesharhe_ref.current ?
+            (filesharhe_ref.current.files[0].size<=FILE_SIZE? true: false)
+             : true)
+    }).test(
+    'FILE_Type', "Not valid!"
+    , (value) => {
+        console.log(filesharhe_ref.current.files[0])
+        return (
+            value && filesharhe_ref.current ?
+                (SUPPORTED_FORMATS.includes(filesharhe_ref.current.files[0].type) ? true : false)
+                : true)
+    }
+)
   });
 
   // const displayImages = () => {

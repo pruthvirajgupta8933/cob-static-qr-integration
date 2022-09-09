@@ -1,5 +1,5 @@
 import API_URL, { AUTH_TOKEN } from "../config";
-import { axiosInstanceAuth } from "../utilities/axiosInstance";
+import { axiosInstance,axiosInstanceAuth } from "../utilities/axiosInstance";
 
 // axiosInstanceAuth.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
@@ -89,15 +89,15 @@ const verifyClientCode=(clientCode)=>{
  
 
 const verifyIfcsCode=(ifsc_code)=>{
-  return axiosInstanceAuth.get( "https://ifsc.razorpay.com/"+ifsc_code);
+  return axiosInstance.get( "https://ifsc.razorpay.com/"+ifsc_code);
 }
 
 const fetchNbBankList=()=>{
-  return axiosInstanceAuth.get(BANK_LIST_URL + "nb");
+  return axiosInstance.get(BANK_LIST_URL + "nb");
 }
 
 const fetchDcBankList=()=>{
-  return axiosInstanceAuth.get(BANK_LIST_URL + "dc");
+  return axiosInstance.get(BANK_LIST_URL + "dc");
 }
 
 

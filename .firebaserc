@@ -3,7 +3,8 @@
     "default": "cob-staging-test-account",
     "cob-test-account": "cob-staging-test-account",
     "cob-staging-test-account": "cob-staging-test-account",
-    "staging": "cob-staging-test-account"
+    "staging": "cob-staging-test-account",
+    "cob-staging": "cob-staging-test-account"
   },
   "targets": {},
   "etags": {}
