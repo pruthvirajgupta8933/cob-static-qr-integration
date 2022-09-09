@@ -188,7 +188,7 @@ function DocumentsUpload(props) {
 
   console.log(role)
   return (
-    <div className="col-md-12 col-md-offset-4">
+    <div className="col-md-12 p-3">
       <div className="">
         <p>
           Note : Please complete Business Overview Section to view the list of

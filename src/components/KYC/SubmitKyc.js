@@ -7,7 +7,6 @@ import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
 
 function SubmitKyc(props) {
-
   const { role, kycid } = props;
 
   const [check, setCheck] = useState(false);
@@ -16,25 +15,24 @@ function SubmitKyc(props) {
 
   const { user } = useSelector((state) => state.auth);
   const { loginId } = user;
-  const VerifyKycStatus = useSelector( (state) => state.kyc.kycVerificationForAllTabs.merchant_info_status);
-    
+  const VerifyKycStatus = useSelector(
+    (state) => state.kyc.kycVerificationForAllTabs.merchant_info_status
+  );
 
   const [readOnly, setReadOnly] = useState(false);
 
-
   const initialValues = {
     checkBoxChoice: "",
-    privacyPolicy:"",
-    termAndCondition:"",
-    serviceAgreement:""
+    privacyPolicy: "",
+    termAndCondition: "",
+    serviceAgreement: "",
   };
 
   const validationSchema = Yup.object({
-
     checkBoxChoice: Yup.array().nullable(),
     privacyPolicy: Yup.array().nullable(),
     termAndCondition: Yup.array().nullable(),
-    serviceAgreement: Yup.array().nullable()
+    serviceAgreement: Yup.array().nullable(),
   });
 
   useEffect(() => {
@@ -45,33 +43,41 @@ function SubmitKyc(props) {
     }
   }, [role]);
 
-
-
   const privacyPolicyOption = [
-    { key: "Privacy Policy", value: "yes", isHyperLink:true, hyperLink : "https://sabpaisa.in/privacy-policy/" }
-  ]
+    {
+      key: "Privacy Policy",
+      value: "yes",
+      isHyperLink: true,
+      hyperLink: "https://sabpaisa.in/privacy-policy/",
+    },
+  ];
 
-
-  const termAndConditionOption = [{ key: "Term & Conditions", value: "yes", isHyperLink:true, hyperLink : "https://sabpaisa.in/term-conditions/" }]
-
-
+  const termAndConditionOption = [
+    {
+      key: "Term & Conditions",
+      value: "yes",
+      isHyperLink: true,
+      hyperLink: "https://sabpaisa.in/term-conditions/",
+    },
+  ];
 
   const serviceAgreementOption = [
-    { key: "Service Agreement", value: "yes", isHyperLink:true, hyperLink : "https://sabpaisa.in/service-agreement" }
-  ]
+    {
+      key: "Service Agreement",
+      value: "yes",
+      isHyperLink: true,
+      hyperLink: "https://sabpaisa.in/service-agreement",
+    },
+  ];
 
   const verifyApprove = (val) => {
     if (val === "verify") {
       const data = {
-
-
         login_id: kycid,
         verified_by: loginId,
       };
 
-   
       // const [readOnly, setReadOnly] = useState(false);
-    
 
       dispatch(verifyComplete(data))
         .then((resp) => {
@@ -86,80 +92,81 @@ function SubmitKyc(props) {
     }
 
     if (val === "approve") {
-
       const dataAppr = {
-
         login_id: kycid,
         approved_by: loginId,
       };
 
       dispatch(approvekyc(dataAppr))
-      .then((resp) => {
-        resp?.payload?.status_code === 401 ||
-        resp?.payload?.status_code === 404
-          ? toast.error(resp?.payload?.message)
-          : toast.success(resp?.payload?.message);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
-};
-const onSubmit = () => {};
+        .then((resp) => {
+          resp?.payload?.status_code === 401 ||
+          resp?.payload?.status_code === 404
+            ? toast.error(resp?.payload?.message)
+            : toast.success(resp?.payload?.message);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  };
+  const onSubmit = () => {};
 
-
-return (
-  <div className="col-md-12 col-md-offset-4">
-   {role.merchant && (
+  return (
+    <div className="col-md-12 p-3">
+      {role.merchant && (
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={onSubmit}
           enableReinitialize={true}
         >
-           {(formik) => (
+          {(formik) => (
             <Form>
               {console.log(formik)}
-              <div className="form-row align-items-centre">
 
-              <div className="form-group col-md-12">
-                  <FormikController
-                    control="checkbox"
+              <div class="form-check form-check-inline">
+                <FormikController
+                  control="checkbox"
+                  name="privacyPolicy"
+                  options={privacyPolicyOption}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                  checked={readOnly}
+                  className="mr-3"
+                />
+              </div>
+              <div class="form-check form-check-inline">
+                <FormikController
+                  control="checkbox"
+                  name="termAndCondition"
+                  options={termAndConditionOption}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                  checked={readOnly}
+                  className="mr-3"
+                />
+              </div>
+              <div class="form-check form-check-inline">
+                <FormikController
+                  control="checkbox"
+                  name="serviceAgreement"
+                  options={serviceAgreementOption}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                  checked={readOnly}
+                  className="mr-3"
+                />
+              </div>
 
-                    name="privacyPolicy"
-                    options={privacyPolicyOption}
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
-                    readOnly={readOnly}
-                    checked={readOnly}
-                    className="mr-3"
-                  />
-                </div>
-                <div className="form-group col-md-12">
-                  <FormikController
-                    control="checkbox"
-                    name="termAndCondition"
-                    options={termAndConditionOption}
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
-                    readOnly={readOnly}
-                    checked={readOnly}
-                    className="mr-3"
-                  />
-                </div>
-                <div className="form-group col-md-12">
-                  <FormikController
-                    control="checkbox"
-                    name="serviceAgreement"
-                    options={serviceAgreementOption}
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
-                    readOnly={readOnly}
-                    checked={readOnly}
-                    className="mr-3"
-                  />
-                </div>
-
-                </div>
-              <div class="card-footer">
-                <div class="mt-lg-2">
+              <div class="my-5 p-2">
+                <hr
+                  style={{
+                    borderColor: "#D9D9D9",
+                    textShadow: "2px 2px 5px grey",
+                    width: "100%",
+                  }}
+                />
+                <div class="mt-3">
                   {VerifyKycStatus === "Verified" ? null : (
                     <button
                       className="btn float-lg-right"
@@ -169,25 +176,24 @@ return (
                       <h4 className="text-white font-weight-bold"> Submit</h4>
                     </button>
                   )}
-                  </div>
+                </div>
               </div>
             </Form>
           )}
         </Formik>
-        )}
+      )}
 
-{role.verifier && (
-  <div className="row">
-
-<div className="col-lg-12">
-<p>
+      {role.verifier && (
+        <div className="row">
+          <div className="col-lg-12">
+            <p>
               After Verify all the tab's , Kindly click on the{" "}
               <strong> complete verify</strong> button{" "}
             </p>
           </div>
 
           <div className="col-lg-12">
-          <button
+            <button
               className="btn float-lg-left"
               type="submit"
               style={{ backgroundColor: "#0156B3" }}
@@ -199,19 +205,18 @@ return (
             </button>
           </div>
         </div>
-        )}
+      )}
       {role.approver && (
         <div className="row">
-
           <div className="col-lg-12">
-          <p>
+            <p>
               After Verify all the tab's , Kindly click on the{" "}
               <strong> Approve KYC</strong> button{" "}
             </p>
           </div>
 
           <div className="col-lg-12">
-          <button
+            <button
               className="btn float-lg-left"
               type="submit"
               style={{ backgroundColor: "#0156B3" }}
@@ -223,9 +228,9 @@ return (
             </button>
           </div>
         </div>
-        )}
+      )}
     </div>
-     );
-    }
-    
-    export default SubmitKyc
+  );
+}
+
+export default SubmitKyc;

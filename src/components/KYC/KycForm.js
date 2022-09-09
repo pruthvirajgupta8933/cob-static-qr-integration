@@ -15,6 +15,7 @@ import {
 } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../dashboard/NavBar/NavBar";
+import RegisteredAddress from "./RegisteredAddress";
 
 function KycForm() {
   
@@ -204,9 +205,9 @@ function KycForm() {
                           Registered Address
                         </a>
                       </li> */}
-                      
 
-                      <li className="nav-item font-weight-bold p-2">
+
+                  <li className="nav-item font-weight-bold p-2">
                         <a
                           href={() => false}
                           className={
@@ -215,6 +216,23 @@ function KycForm() {
                           }
                           onClick={() => {
                             SetTab(4);
+                            setTitle("Registered Address");
+                          }}
+                        >
+                          Registered Address
+                        </a>
+                      </li>
+                      
+
+                      <li className="nav-item font-weight-bold p-2">
+                        <a
+                          href={() => false}
+                          className={
+                            "nav-link " +
+                            (tab === 5 ? "activepaylink-kyc" : "inactive")
+                          }
+                          onClick={() => {
+                            SetTab(5);
                             setTitle("BANK DETAILS");
                           }}
                         >
@@ -228,10 +246,10 @@ function KycForm() {
                           href={() => false}
                           className={
                             "nav-link " +
-                            (tab === 5 ? "activepaylink-kyc" : "inactive")
+                            (tab === 6 ? "activepaylink-kyc" : "inactive")
                           }
                           onClick={() => {
-                            SetTab(5);
+                            SetTab(6);
                             setTitle("DOCUMENTS UPLOAD");
                           }}
                         >
@@ -245,10 +263,10 @@ function KycForm() {
                           href={() => false}
                           className={
                             "nav-link " +
-                            (tab === 6 ? "activepaylink-kyc" : "inactive")
+                            (tab === 7 ? "activepaylink-kyc" : "inactive")
                           }
                           onClick={() => {
-                            SetTab(6);
+                            SetTab(7);
                             setTitle("SUBMIT KYC");
                           }}
                         >
@@ -278,12 +296,14 @@ function KycForm() {
 
                 <div className="container-fluid">
                   <div className="row">
+                  {/* role={roles} kycid={kycid} */}
                         {(tab === 1 && <ContactInfo role={roles} kycid={kycid} />) ||
                         (tab === 2 && <BusinessOverview role={roles} kycid={kycid} />) ||
                         (tab === 3 && <BusinessDetails role={roles} kycid={kycid} />) ||
-                        (tab === 4 && <BankDetails role={roles} kycid={kycid} />) ||
-                        (tab === 5 && <DocumentsUpload  role={roles} kycid={kycid} />) ||
-                        (tab === 6 && <SubmitKyc role={roles} kycid={kycid} />) ||
+                        (tab === 4 && <RegisteredAddress  />) ||
+                        (tab === 5 && <BankDetails role={roles} kycid={kycid} />) ||
+                        (tab === 6 && <DocumentsUploadNew  role={roles} kycid={kycid} />) ||
+                        (tab === 7 && <SubmitKyc role={roles} kycid={kycid} />) ||
                          <ContactInfo role={roles}  kycid={kycid} />}
                   </div>
                 </div>

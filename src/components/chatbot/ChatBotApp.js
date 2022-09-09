@@ -6,12 +6,12 @@ import { steps } from './steps';
 // Creating our own theme
 const theme = {
   background: '#fff',
-  headerBgColor: '#ff3e06',
+  headerBgColor: '#0156B3',
   headerFontSize: '20px',
   botBubbleColor: '#000',
   headerFontColor: 'white',
   botFontColor: 'white',
-  userBubbleColor: '#FF5733',
+  userBubbleColor: '#0156B3',
   userFontColor: 'white',
 };
 
