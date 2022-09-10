@@ -84,6 +84,23 @@ export const Profile = () => {
   //   console.log(clientMerchantDetailsList && clientMerchantDetailsList[0]?.address)
   //  console.log(isCreateorUpdate);
   //   initial values
+
+
+  // const INITIAL_FORM_STATE = {
+  //   loginId: loginId,
+  //   clientName: clientContactPersonName,
+  //   phone: clientMobileNo,
+  //   email: clientEmail,
+  //   ...(isCreateorUpdate && { clientCode: "" }),
+  //   address: clientMerchantDetailsList && clientMerchantDetailsList[0]?.address,
+  //   accountHolderName: accountHolderName,
+  //   bankName: bankName,
+  //   accountNumber: accountNumber,
+  //   ifscCode: userIfscCode,
+  //   pan: pan,
+  //   clientAuthenticationType: clientAuthenticationType,
+  // };
+
   const INITIAL_FORM_STATE = {
     loginId: loginId,
     clientName: clientContactPersonName,
@@ -91,12 +108,12 @@ export const Profile = () => {
     email: clientEmail,
     ...(isCreateorUpdate && { clientCode: "" }),
     address: clientMerchantDetailsList && clientMerchantDetailsList[0]?.address,
-    accountHolderName: accountHolderName,
-    bankName: bankName,
-    accountNumber: accountNumber,
-    ifscCode: userIfscCode,
-    pan: pan,
-    clientAuthenticationType: clientAuthenticationType,
+    // accountHolderName: accountHolderName,
+    // bankName: bankName,
+    // accountNumber: accountNumber,
+    // ifscCode: userIfscCode,
+    // pan: pan,
+    // clientAuthenticationType: clientAuthenticationType,
   };
 
   // form validation rules
@@ -115,29 +132,29 @@ export const Profile = () => {
         .nullable(),
     }),
     address: Yup.string().matches(Regex.address, RegexMsg.address).required("Required").nullable(),
-    accountHolderName: Yup.string()
-      .required("Required")
-      .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-      .nullable(),
-    bankName: Yup.string()
-      .required("Required")
-      .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-      .nullable(),
-    accountNumber: Yup.string()
-      .matches(Regex.digit, RegexMsg.digit)
-      .required("Required")
-      .max(20, "Bank Account number length under 20 digits")
-      .nullable(),
-    ifscCode: Yup.string()
-      .required("Required")
-      .matches(/^[a-zA-Z0-9\s]+$/, "IFCS Code not valid ")
-      .nullable(),
-    pan: Yup.string()
-      .matches(/^[a-zA-Z0-9\s]+$/, "Pan Card not valid ")
-      .nullable(),
-    clientAuthenticationType: Yup.string().required(
-      "Select Authentication Mode"
-    ),
+    // accountHolderName: Yup.string()
+    //   .required("Required")
+    //   .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
+    //   .nullable(),
+    // bankName: Yup.string()
+    //   .required("Required")
+    //   .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
+    //   .nullable(),
+    // accountNumber: Yup.string()
+    //   .matches(Regex.digit, RegexMsg.digit)
+    //   .required("Required")
+    //   .max(20, "Bank Account number length under 20 digits")
+    //   .nullable(),
+    // ifscCode: Yup.string()
+    //   .required("Required")
+    //   .matches(/^[a-zA-Z0-9\s]+$/, "IFCS Code not valid ")
+    //   .nullable(),
+    // pan: Yup.string()
+    //   .matches(/^[a-zA-Z0-9\s]+$/, "Pan Card not valid ")
+    //   .nullable(),
+    // clientAuthenticationType: Yup.string().required(
+    //   "Select Authentication Mode"
+    // ),
   });
 
   //   console.log(validationSchema);
@@ -488,7 +505,7 @@ export const Profile = () => {
                                   </div>
                                 </div>
 
-                                <div className="col-lg-4 col-md-6 col-sm-12">
+                                {/* <div className="col-lg-4 col-md-6 col-sm-12">
                                   <label
                                     htmlFor="accountHolderName"
                                     className="col-form-label text-md-right"
@@ -671,7 +688,7 @@ export const Profile = () => {
                                   <div className="invalid-feedback">
                                     {errors.pan?.message}
                                   </div>
-                                </div>
+                                </div> */}
 
                                 <div className="col-lg-4 offset-md-4- topmar">
                                   <button

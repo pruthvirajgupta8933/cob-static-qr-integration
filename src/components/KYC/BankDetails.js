@@ -44,9 +44,9 @@ function BankDetails(props) {
   const validationSchema = Yup.object({
     account_holder_name: Yup.string().required("Required").nullable(),
     account_number: Yup.string().required("Required").nullable(),
-    confirm_account_number: Yup.string()
-      .oneOf([Yup.ref("account_number"), null], "Account Number  must match")
-      .required("Confirm Account Number Required").nullable(),
+    // confirm_account_number: Yup.string()
+    //   .oneOf([Yup.ref("account_number"), null], "Account Number  must match")
+    //   .required("Confirm Account Number Required").nullable(),
     ifsc_code: Yup.string().required("Required").nullable(),
     account_type: Yup.string().required("Required").nullable(),
     branch: Yup.string().required("Required").nullable(),
@@ -113,19 +113,8 @@ function BankDetails(props) {
     
   };
 
-
-  useEffect(() => {
-    if (role.approver) {
-      setReadOnly(true)
-      setButtonText("Approve and Next") 
-    }else if(role.verifier){
-      setReadOnly(true)
-      setButtonText("Verify and Next")
-    }
-  }, [role])
-
   return (
-    <div className="col-md-12 col-md-offset-4">
+    <div className="col-md-12 p-3">
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
@@ -136,10 +125,15 @@ function BankDetails(props) {
 
         <Form>
           {console.log(formik)}
-          <div className="form-row align-items-centre">
-            <div className="col-lg-10">
-            <label><h4 class ="font-weight-bold">Account Holder Name<span style={{color:"red"}}>*</span></h4></label>
-            <FormikController
+          <div class="form-group row">
+              <label class="col-sm-2 col-form-label p-2">
+                <h4 class="font-weight-bold text-nowrap">
+                Account Holder Name<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              &nbsp;  &nbsp;  &nbsp;
+              <div class="col-sm-8 ml-5">
+              <FormikController
                         control="input"
                         type="text"
                         name="account_holder_name"
@@ -147,11 +141,18 @@ function BankDetails(props) {
                         disabled={VerifyKycStatus === "Verified" ? true : false}
                         readOnly={readOnly}
                       />
+              </div>
             </div>
+      
 
             
-              <div className="col-lg-10">
-              <label><h4 class ="font-weight-bold">Account Type<span style={{color:"red"}}>*</span></h4></label>
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label p-2">
+                <h4 class="font-weight-bold text-nowrap">
+                  Account Type<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-8 ml-5">
               <FormikController
                         control="input"
                         type="text"
@@ -161,9 +162,15 @@ function BankDetails(props) {
                         readOnly={readOnly}
                       />
               </div>
-
-              <div className="col-lg-10">
-              <label><h4 class ="font-weight-bold">IFSC Code<span style={{color:"red"}}>*</span></h4></label>
+            </div>
+            
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label p-2">
+                <h4 class="font-weight-bold text-nowrap">
+                  IFSC Code<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-8 ml-5">
               <FormikController
                         control="input"
                         type="text"
@@ -173,16 +180,34 @@ function BankDetails(props) {
                         readOnly={readOnly}
                       />
               </div>
-          
+            </div>
 
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label p-2">
+                <h4 class="font-weight-bold text-nowrap">
+                  Branch<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-8 ml-5">
+              <FormikController
+                        control="input"
+                        type="text"
+                        name="branch"
+                        className="form-control"
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
+                        readOnly={readOnly}
+                      />
+              </div>
+            </div>
 
-
-          </div>
-
-          <div className="form-row">
-            <div className="col-lg-10">
-            <label><h4 class ="font-weight-bold">Bank Name<span style={{color:"red"}}>*</span></h4></label>
-                       <FormikController
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label p-2">
+                <h4 class="font-weight-bold text-nowrap">
+                  Bank Name<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-8 ml-5">
+              <FormikController
                           control="select"                          
                           name="bank_id"
                           className="form-control"
@@ -191,12 +216,17 @@ function BankDetails(props) {
                           readOnly={readOnly}
                         />
                     
+              </div>
             </div>
 
-
-            <div className="col-lg-10">
-            <label><h4 class ="font-weight-bold">Account Number<span style={{color:"red"}}>*</span></h4></label>
-            <FormikController
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label p-2">
+                <h4 class="font-weight-bold text-nowrap">
+                  Account Number <span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-8 ml-5">
+              <FormikController
                           control="input"
                           type="text"
                           name="account_number"
@@ -204,17 +234,30 @@ function BankDetails(props) {
                           disabled={VerifyKycStatus === "Verified" ? true : false}
                           readOnly={readOnly}
                         />
+              </div>
             </div>
+          
+
+            <div class="my-5 p-2">
+              <hr
+                style={{
+                  borderColor: "#D9D9D9",
+                  textShadow: "2px 2px 5px grey",
+                  width: "100%",
+                }}
+              />
+              <div class="mt-3">
 
            
-          </div>
+    
           
-          <div class="mt-lg-2">
+       
           {VerifyKycStatus === "Verified" ? null : (
          <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
                <h4 className="text-white"> {buttonText}</h4>
               </button>
             )}
+          </div>
           </div>
          
         </Form>

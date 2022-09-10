@@ -35,7 +35,7 @@ const NavBar = () => {
   return (
     <div>
         
- <nav class="navbar navbar-light" style={{backgroundColor:"#111D4A"}}>
+ <nav class="navbar navbar-light" style={{backgroundColor:"#0156B3"}}>
     
   <span class="navbar-brand mb-0 h1"><img src={profile}  alt="profile" title="profile"/><h4 className='text-white float-right'>Welcome back,</h4>
   <div class="mr-0"style={{fontSize:"15px"}}>
@@ -50,10 +50,10 @@ const NavBar = () => {
   <i class="fa fa-cog fa-2xl" aria-hidden="true" style={{fontSize:"24px",color:"white"}}></i>
  <span class="glyphicon glyphicon-cog text-white" style={{color:"white"}}></span>
                 <span class="caret text-white">{username}</span></button>
-                <div class="dropdown-menu" style={{backgroundColor:"#1D265E", height:"5rem", width:"10rem"}}>
+                <div class="dropdown-menu" style={{backgroundColor:"#0156B3", height:"5rem", width:"10rem"}}>
                 <div class="row px-md-4 p-2">
-                 <Link to = "/dashboard/profile" class="dropdown-item text-warning">My Profile</Link>
-                 <Link onClick={exitback} class="dropdown-item text-warning ">Log out</Link>
+                 <Link to = "/dashboard/profile" class="dropdown-item text-white">My Profile</Link>
+                 <Link onClick={exitback} class="dropdown-item text-white ">Log out</Link>
 
                  </div>
                  

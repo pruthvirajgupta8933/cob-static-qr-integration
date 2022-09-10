@@ -476,7 +476,7 @@ export const kycBankNames = createAsyncThunk(
 export const saveMerchantBankDetais = createAsyncThunk(
   "kyc/saveMerchantBankDetais",
   async (requestParam) => {
-    const response = await axios
+    const response = await axiosInstanceAuth
       .put(
         `${API_URL.Save_Settlement_Info}`,
         requestParam,

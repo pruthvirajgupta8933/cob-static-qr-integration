@@ -26,6 +26,7 @@ function ContactInfo(props) {
   const { user } = auth
   const { loginId } = user;
   const KycList = kyc.kycUserList
+  console.log(KycList)
 
   const VerifyKycStatus = kyc.kycVerificationForAllTabs.general_info_status;
 
@@ -37,7 +38,7 @@ function ContactInfo(props) {
   const KycVerifyStatusForPhone = kyc.OtpVerificationResponseForPhone.status
   const KycVerifyStatusForEmail = kyc.OtpVerificationResponseForEmail.status
 
-  const initialValueskyc = {
+  const initialValues = {
     name: KycList?.name,
     contact_number: KycList?.contactNumber,
     email_id: KycList?.emailId,
@@ -46,22 +47,6 @@ function ContactInfo(props) {
     isEmailVerified: KycList?.isEmailVerified === 1 ? "1" : "",
   };
 
-
-
-  const [initialValues, setInitialValues] = useState(initialValueskyc);
-
-
-  useEffect(() => {
-    setInitialValues({
-      name: KycList?.name,
-      contact_number: KycList?.contactNumber,
-      email_id: KycList?.emailId,
-      contact_designation: KycList?.contactDesignation,
-      isPhoneVerified: KycList?.isContactNumberVerified === 1 ? "1" : "",
-      isEmailVerified: KycList?.isEmailVerified === 1 ? "1" : "",
-    })
-  }, [KycList])
-  
 
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -247,177 +232,208 @@ function ContactInfo(props) {
 
 
   return (
-    <div className="col-md-12 col-md-offset-4">
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        enableReinitialize={true}
-        onSubmit={handleSubmitContact}
-        
-      >
-        {formik => (
-          <Form>
+    <div className="col-md-12 col-md-offset-4" style={{width: "100%"}}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmitContact}
+      enableReinitialize={true}
+    >
+      {formik => (
+        <Form>
           {console.log(formik)}
-            <div className="form-row">
-              <div className="col-lg-10">
-                <label><h4 class="font-weight-bold">Contact Name<span style={{ color: "red" }}>*</span></h4></label>
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="name"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div>
-
-
-
-              <div className="col-lg-10">
-                <label><h4 class="font-weight-bold">Contact Designation<span style={{ color: "red" }}>*</span></h4></label>
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="contact_designation"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div>
-
-              {/*  Modal Popup for Otp Verification Email*/}
-              <MailVerificationModal show={showOtpVerifyModalEmail} setShow={handlerModal} />
-              {/*  Modal Popup for Otp Verification Email*/}
-
-              <div className="col-lg-10">
-                <label><h4 class="font-weight-bold">Contact Number<span style={{ color: "red" }}>*</span></h4></label>
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="contact_number"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-
-
-                {KycList?.isContactNumberVerified === 1 ?
-                  <span>
-                    <p className="text-success">
-                      Verified{" "}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        class="bi bi-check"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                      </svg>
-                    </p>
-                  </span> :
-                  (
-                    role.merchant ?
-                      <div class="position-sticky col-5 col-sm-4 optbtn">
-                        <a
-                          href={() => false}
-                          className="btn btnbackground text-white font-weight-bold"
-                          onClick={() => {
-                            checkInputIsValid(
-                              formik.errors,
-                              formik.values,
-                              formik.setFieldError,
-                              "contact_number"
-                            );
-                          }}
-                        >
-                          Send OTP
-                        </a> </div> : <></>
-                  )
-                }
-
-
-
-                {formik?.errors?.isPhoneVerified && <span className="text-danger">{formik?.errors?.isPhoneVerified}</span>}
-
-
+          <div class="form-group row">
+              <label class="col-sm-2 col-form-label p-2">
+                <h4 class="font-weight-bold text-nowrap">
+                Contact Name<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              &nbsp;  &nbsp;  &nbsp;
+              <div class="col-sm-8 ml-5">
+              <FormikController
+                control="input"
+                type="text"
+                name="name"
+                className="form-control"
+                disabled={VerifyKycStatus === "Verified" ? true : false}
+                readOnly={readOnly}
+              />
               </div>
             </div>
-            {/*  Modal Popup for Otp Verification */}
-            <PhoneVerficationModal show={showOtpVerifyModalPhone} setShow={handlerModal} />
-            {/*  Modal Popup for Otp Verification Mobile */}
 
-            <div className="form-row">
-              <div className="form-group col-lg-10">
-                <label><h4 class="font-weight-bold">Email Id<span style={{ color: "red" }}>*</span></h4></label>
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="email_id"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-
-                />
-
-                {KycList?.isEmailVerified === 1 ?
-                  <span>
-                    <p className="text-success">
-                      Verified
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        class="bi bi-check"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                      </svg>
-                    </p>
-                  </span>
-                  : (
-                    role.merchant ?
-                      <div class="position-sticky col-5 col-sm-4 optbtn">
-                        <a
-                          href={() => false}
-                          className="btn btnbackground text-white font-weight-bold"
-                          onClick={() => {
-                            checkInputIsValid(
-                              formik.errors,
-                              formik.values,
-                              formik.setFieldError,
-                              "email_id"
-                            );
-                          }}
-                        >
-                          Send OTP
-                        </a> </div> : <></>
-                  )
-                }
-                {formik?.errors?.isEmailVerified && <span className="text-danger">{formik?.errors?.isEmailVerified}</span>}
+          <div class="form-group row">
+              <label class="col-sm-2 col-form-label p-2">
+                <h4 class="font-weight-bold text-nowrap">
+                Contact Designation<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              &nbsp;  &nbsp;  &nbsp;
+              <div class="col-sm-8 ml-5">
+              <FormikController
+                control="input"
+                type="text"
+                name="contact_designation"
+                className="form-control"
+                disabled={VerifyKycStatus === "Verified" ? true : false}
+                readOnly={readOnly}
+              />
               </div>
-
             </div>
 
+            {/*  Modal Popup for Otp Verification Email*/}
+            <MailVerificationModal show={showOtpVerifyModalEmail} setShow={handlerModal} />
+            {/*  Modal Popup for Otp Verification Email*/}
 
-            <div class="mt-lg-2">
 
-              {VerifyKycStatus === "Verified" ? null : (
-                <button className="btn float-lg-right" type="submit" style={{ backgroundColor: "#0156B3" }}>
-                  <h4 className="text-white font-weight-bold">{buttonText}</h4>
+
+        
+          <div class="form-group row">
+              <label class="col-sm-2 col-form-label p-2">
+                <h4 class="font-weight-bold text-nowrap">
+                Contact Number<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              &nbsp;  &nbsp;  &nbsp;
+              <div class="col-sm-8 ml-5">
+              <FormikController
+                control="input"
+                type="text"
+                name="contact_number"
+                className="form-control"
+                disabled={VerifyKycStatus === "Verified" ? true : false}
+                readOnly={readOnly}
+              /> 
+              
+
+
+{ KycList?.isContactNumberVerified === 1 ?
+  <span>
+                      <p className="text-success">
+                        Verified{" "}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-check"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                        </svg>
+                      </p>
+                    </span> :
+                    (
+                      role.merchant ? 
+                      <div class="position-sticky pull-right">
+                        {/* optbtn */}
+                      <a
+                        href={() => false}
+                        className="btn btnbackground text-white btn-sm"
+                        onClick={() => {
+                          checkInputIsValid(
+                            formik.errors,
+                            formik.values,
+                            formik.setFieldError,
+                            "contact_number"
+                          );
+                        }}
+                      >
+                        Send OTP
+                      </a> </div>: <></>
+                    )
+                }
+           
+
+         
+           {formik?.errors?.isPhoneVerified && <span className="text-danger">{formik?.errors?.isPhoneVerified}</span>}
+         
+         
+            </div>
+            </div>
+            
+          {/*  Modal Popup for Otp Verification */}
+          <PhoneVerficationModal show={showOtpVerifyModalPhone} setShow={handlerModal} />
+          {/*  Modal Popup for Otp Verification Mobile */}
+
+
+       
+          <div class="form-group row">
+              <label class="col-sm-2 col-form-label p-2">
+                <h4 class="font-weight-bold text-nowrap">
+                Email Id<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              &nbsp;  &nbsp;  &nbsp;
+              <div class="col-sm-8 ml-5">
+              <FormikController
+                control="input"
+                type="text"
+                name="email_id"
+                className="form-control"
+                disabled={VerifyKycStatus === "Verified" ? true : false}
+                readOnly={readOnly}
+
+              />
+
+              
+               { KycList?.isEmailVerified === 1 ?
+                 <span>
+                 <p className="text-success">
+                   Verified
+                   <svg
+                     xmlns="http://www.w3.org/2000/svg"
+                     width="16"
+                     height="16"
+                     fill="currentColor"
+                     class="bi bi-check"
+                     viewBox="0 0 16 16"
+                   >
+                     <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                   </svg>
+                 </p>
+               </span>
+                 : (
+                  role.merchant ? 
+                  <div class="position-sticky pull-right">
+                    {/* optbtn */}
+                  <a
+                    href={() => false}
+                    className="btn btnbackground text-white btn-sm"
+                    onClick={() => {
+                      checkInputIsValid(
+                        formik.errors,
+                        formik.values,
+                        formik.setFieldError,
+                        "email_id"
+                      );
+                    }}
+                  >
+                    Send OTP
+                  </a> </div>: <></>
+                )
+              }
+              {formik?.errors?.isEmailVerified && <span className="text-danger">{formik?.errors?.isEmailVerified}</span>}
+            </div>
+             
+          </div>
+         
+        
+          <div class="float-right ml-5">
+            
+            {VerifyKycStatus === "Verified" ? null : (
+                  <button className="btn" type="submit" style={{backgroundColor:"#0156B3"}}>
+                <h4 className="text-white">{buttonText}</h4>
                 </button>
-              )}
-
-
-            </div>
-
-          </Form>
-        )}
-      </Formik>
-    </div>
-  );
+                    )}
+          
+          </div>
+       
+      
+        </Form>
+      )}
+    </Formik>
+  </div>
+);
 }
 
 export default ContactInfo;
