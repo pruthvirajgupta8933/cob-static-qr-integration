@@ -45,7 +45,7 @@ function SubmitKyc(props) {
 
   const privacyPolicyOption = [
     {
-      key: "Privacy Policy",
+      key: "Privacy Policy , Term & Conditions and Service Agreement",
       value: "yes",
       isHyperLink: true,
       hyperLink: "https://sabpaisa.in/privacy-policy/",
@@ -135,7 +135,7 @@ function SubmitKyc(props) {
                   className="mr-3"
                 />
               </div>
-              <div class="form-check form-check-inline">
+              {/* <div class="form-check form-check-inline">
                 <FormikController
                   control="checkbox"
                   name="termAndCondition"
@@ -145,8 +145,8 @@ function SubmitKyc(props) {
                   checked={readOnly}
                   className="mr-3"
                 />
-              </div>
-              <div class="form-check form-check-inline">
+              </div> */}
+              {/* <div class="form-check form-check-inline">
                 <FormikController
                   control="checkbox"
                   name="serviceAgreement"
@@ -156,7 +156,7 @@ function SubmitKyc(props) {
                   checked={readOnly}
                   className="mr-3"
                 />
-              </div>
+              </div> */}
 
               <div class="my-5 p-2">
                 <hr
