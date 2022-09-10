@@ -47,7 +47,7 @@ function SideNavbar() {
   // console.log(kyc.enableKycTab)
 
   return (
-    <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{ flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px' }}>
+    <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{ background: 'rgb(1, 86, 179)', flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px',borderRight: '1px solid' }}>
       <div className="ant-layout-sider-children">
         <div className="gx-sidebar-content">
         <div className="brand-logo d-flex-item-right">
@@ -68,7 +68,7 @@ function SideNavbar() {
           <div className="sidebar_menu_list">
             <div className="gx-layout-sider-scrollbar" style={{ position: 'relative', overflow: 'hidden', width: '100%', height: '100%' }}>
               <div style={{ position: 'absolute', inset: '0px', overflow: 'scroll', marginRight: '-3px', marginBottom: '-3px' }}>
-                <ul className="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" role="menu">
+                <ul className="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" role="menu" style={{background: 'rgb(1, 86, 179)'}}>
                   {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
                       <Link to={`${url}`} className='txt-white'><i className="fa fa-home" aria-hidden="true" /> <span>Dashboard</span></Link>
