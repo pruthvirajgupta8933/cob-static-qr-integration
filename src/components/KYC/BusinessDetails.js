@@ -27,7 +27,7 @@ function BusinessDetails(props) {
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
   const [gstin, setGstin] = useState("");
-  const [fieldValue, setFieldValue] = useState(null);
+  const [fieldValue, setFieldValue] = useState("src/_components/assets/images/plus.png");
   const [checked, setChecked] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
@@ -65,30 +65,30 @@ function BusinessDetails(props) {
       setOperationvalue(null);
     }
   };
-  // const initialValues = {
-  //   company_name: KycList.companyName,
-  //   company_logo: KycList.companyLogoPath,
-  //   registerd_with_gst: KycList.registerdWithGST,
-  //   gst_number: KycList.gstNumber,
-  //   pan_card: KycList.panCard,
-  //   signatory_pan: KycList.signatoryPAN,
-  //   name_on_pancard: KycList.nameOnPanCard,
-  //   pin_code: KycList.pinCode,
-  //   city_id: KycList.cityId,
-  //   state_id: KycList.stateId,
-  //   registered_business_address: KycList.registeredBusinessAdress,
-  //   operational_address: KycList.registeredBusinessAdress,
-  //   checkBoxChoice: "",
-  // };
-
   const initialValues = {
     company_name: KycList.companyName,
+    company_logo: "/filePath/logo.png",
+    registerd_with_gst: KycList.registerdWithGST,
     gst_number: KycList.gstNumber,
     pan_card: KycList.panCard,
     signatory_pan: KycList.signatoryPAN,
     name_on_pancard: KycList.nameOnPanCard,
-   
+    pin_code:"10070",
+    city_id: "12093",
+    state_id: "06",
+    registered_business_address: "Delhi",
+    operational_address: "Delhi",
+    // checkBoxChoice: "",
   };
+
+  // const initialValues = {
+  //   company_name: KycList.companyName,
+  //   gst_number: KycList.gstNumber,
+  //   pan_card: KycList.panCard,
+  //   signatory_pan: KycList.signatoryPAN,
+  //   name_on_pancard: KycList.nameOnPanCard,
+   
+  // };
   // const validationSchema = Yup.object({
   
   //   company_name: Yup.string()
@@ -167,27 +167,27 @@ function BusinessDetails(props) {
     if (role.merchant) {
       const bodyFormData = new FormData();
       bodyFormData.append("company_name", values.company_name);
-      // bodyFormData.append("registerd_with_gst", values.registerd_with_gst);
+      bodyFormData.append("registerd_with_gst", values.registerd_with_gst);
       bodyFormData.append("gst_number", values.gst_number);
       bodyFormData.append("pan_card", values.pan_card);
       bodyFormData.append("signatory_pan", values.signatory_pan);
       bodyFormData.append("name_on_pancard", values.name_on_pancard);
-      // bodyFormData.append("pin_code", values.pin_code);
-      // bodyFormData.append("city_id", values.city_id);
-      // bodyFormData.append("state_id", values.state_id);
-      // if (checked === true) {
-      //   bodyFormData.append(
-      //     "operational_address",
-      //     values.registered_business_address
-      //   );
-      // } else {
-      //   bodyFormData.append("operational_address", values.operational_address);
-      // }
-      // bodyFormData.append(
-      //   "registered_business_address",
-      //   values.registered_business_address
-      // );
-      // bodyFormData.append("files", fieldValue);
+      bodyFormData.append("pin_code", values.pin_code);
+      bodyFormData.append("city_id", values.city_id);
+      bodyFormData.append("state_id", values.state_id);
+      if (checked === true) {
+        bodyFormData.append(
+          "operational_address",
+          values.registered_business_address
+        );
+      } else {
+        bodyFormData.append("operational_address", values.operational_address);
+      }
+      bodyFormData.append(
+        "registered_business_address",
+        values.registered_business_address
+      );
+      bodyFormData.append("files", fieldValue);
       bodyFormData.append("modified_by", loginId);
       bodyFormData.append("login_id", loginId);
 

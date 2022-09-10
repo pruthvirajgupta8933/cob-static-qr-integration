@@ -44,9 +44,9 @@ function BankDetails(props) {
   const validationSchema = Yup.object({
     account_holder_name: Yup.string().required("Required").nullable(),
     account_number: Yup.string().required("Required").nullable(),
-    confirm_account_number: Yup.string()
-      .oneOf([Yup.ref("account_number"), null], "Account Number  must match")
-      .required("Confirm Account Number Required").nullable(),
+    // confirm_account_number: Yup.string()
+    //   .oneOf([Yup.ref("account_number"), null], "Account Number  must match")
+    //   .required("Confirm Account Number Required").nullable(),
     ifsc_code: Yup.string().required("Required").nullable(),
     account_type: Yup.string().required("Required").nullable(),
     branch: Yup.string().required("Required").nullable(),
@@ -113,17 +113,6 @@ function BankDetails(props) {
     
   };
 
-
-  useEffect(() => {
-    if (role.approver) {
-      setReadOnly(true)
-      setButtonText("Approve and Next") 
-    }else if(role.verifier){
-      setReadOnly(true)
-      setButtonText("Verify and Next")
-    }
-  }, [role])
-
   return (
     <div className="col-md-12 p-3">
     <Formik
@@ -186,6 +175,24 @@ function BankDetails(props) {
                         control="input"
                         type="text"
                         name="ifsc_code"
+                        className="form-control"
+                        disabled={VerifyKycStatus === "Verified" ? true : false}
+                        readOnly={readOnly}
+                      />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label p-2">
+                <h4 class="font-weight-bold text-nowrap">
+                  Branch<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-8 ml-5">
+              <FormikController
+                        control="input"
+                        type="text"
+                        name="branch"
                         className="form-control"
                         disabled={VerifyKycStatus === "Verified" ? true : false}
                         readOnly={readOnly}

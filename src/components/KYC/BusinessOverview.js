@@ -96,10 +96,21 @@ function BusinessOverview(props) {
   const initialValues = {
     business_type: KycList.businessType,
     business_category: KycList.businessCategory,
+    business_model: "Working",
     billing_label: KycList.billingLabel,
+    erp_check: KycList.erpCheck === true ? "True" : "False",
+    platform_id: "1234567",
     company_website: KycList.companyWebsite,
-    expected_transactions: KycList.expectedTransactions,
-  }
+    seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
+    website_app_url: "False",
+    collection_type_id: "6752767",
+    collection_frequency_id: "3787910",
+    ticket_size: "10",
+    expected_transactions: "10,000",
+    form_build: "Yes",
+  };
+
+ 
   // const validationSchema = Yup.object({
   //   business_type: Yup.string().required("Select BusinessType").nullable(),
   //   business_category: Yup.string().required("Select Business Category").nullable(),
@@ -199,25 +210,27 @@ function BusinessOverview(props) {
 
   const onSubmit = (values) => {
 
+
+    console.log(values,"===>")
     if (role.merchant) {
       dispatch(
         saveBusinessInfo({
           business_type: values.business_type,
           business_category: values.business_category,
-          // business_model: values.business_model,
-          // billing_label: values.billing_label,
+           business_model: values.business_model,
+           billing_label: values.billing_label,
           company_website: values.company_website,
-          // erp_check: values.erp_check,
-          // platform_id: values.platform_id,
-          // collection_type_id: values.collection_type_id,
-          // collection_frequency_id: values.collection_frequency_id,
+           erp_check: values.erp_check,
+           platform_id: values.platform_id,
+           collection_type_id: values.collection_type_id,
+           collection_frequency_id: values.collection_frequency_id,
           expected_transactions: values.expected_transactions,
-          // form_build: values.form_build,
-          // ticket_size: values.ticket_size,
+          form_build: values.form_build,
+           ticket_size: values.ticket_size,
           modified_by: loginId,
           login_id: loginId,
-          // is_website_url: values.seletcted_website_app_url==="Yes" ? "True" : "False",
-          // website_app_url:values.website_app_url
+           is_website_url: values.seletcted_website_app_url==="Yes" ? "True" : "False",
+           website_app_url:values.website_app_url
         })
       ).then((res) => {
         if (res.meta.requestStatus === "fulfilled" && res.payload.status) {

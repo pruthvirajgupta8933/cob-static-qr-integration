@@ -71,6 +71,7 @@ const sendEmail = (toEmail, toCc, subject, msg) => {
 
 // profile service
 const BASE_URL = "https://cobapi.sabpaisa.in/auth-service/client";
+const BASE_URL_FOR_PROFILE="https://stgcobapi.sabpaisa.in/auth-service"
 const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
 const createClintCode = (object) => {
   // console.log("profileservice",object)
@@ -79,7 +80,7 @@ const createClintCode = (object) => {
 
 
 const updateClientProfile = (object,clientId)=>{
-    return axiosInstanceAuth.post(BASE_URL + "/update/"+clientId, object);
+    return axiosInstanceAuth.post(BASE_URL_FOR_PROFILE + "/updateProfile/"+clientId, object);
 }
 
 
