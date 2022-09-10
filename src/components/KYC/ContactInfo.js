@@ -417,7 +417,7 @@ function ContactInfo(props) {
              
           </div>
          
-        
+{/*         
           <div class="float-right ml-5">
             
             {VerifyKycStatus === "Verified" ? null : (
@@ -426,7 +426,28 @@ function ContactInfo(props) {
                 </button>
                     )}
           
-          </div>
+          </div> */}
+
+          <div class="my-5 p-2">
+              <hr
+                style={{
+                  borderColor: "#D9D9D9",
+                  textShadow: "2px 2px 5px grey",
+                  width: "100%",
+                }}
+              />
+              <div class="mt-3">
+                {VerifyKycStatus === "Verified" ? null : (
+                  <button
+                    type="submit"
+                    className="btn float-lg-right"
+                    style={{ backgroundColor: "#0156B3" }}
+                  >
+                    <h4 className="text-white"> {buttonText}</h4>
+                  </button>
+                )}
+              </div>
+            </div>
        
       
         </Form>

@@ -81,7 +81,7 @@ function BusinessDetails(props) {
   //   operational_address: KycList.registeredBusinessAdress,
   //   checkBoxChoice: "",
   // };
-   const initialValues = {
+  const initialValues = {
     company_name: KycList.companyName,
     company_logo: "/filePath/logo.png",
     registerd_with_gst: KycList.registerdWithGST,
@@ -89,7 +89,7 @@ function BusinessDetails(props) {
     pan_card: KycList.panCard,
     signatory_pan: KycList.signatoryPAN,
     name_on_pancard: KycList.nameOnPanCard,
-    pin_code:"10070",
+    pin_code: "10070",
     city_id: "12093",
     state_id: "06",
     registered_business_address: "Delhi",
@@ -103,10 +103,10 @@ function BusinessDetails(props) {
   //   pan_card: KycList.panCard,
   //   signatory_pan: KycList.signatoryPAN,
   //   name_on_pancard: KycList.nameOnPanCard,
-   
+
   // };
   // const validationSchema = Yup.object({
-  
+
   //   company_name: Yup.string()
   //     .required("Required")
   //     .nullable(),
@@ -147,7 +147,7 @@ function BusinessDetails(props) {
   // });
 
   const validationSchema = Yup.object({
-  
+
     company_name: Yup.string()
       .required("Required")
       .nullable(),
@@ -256,13 +256,13 @@ function BusinessDetails(props) {
           <Form>
             {/* {console.log(formik)} */}
             <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Buisiness Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
-              <FormikController
+              <div class="col-sm-7">
+                <FormikController
                   control="input"
                   type="text"
                   name="company_name"
@@ -289,7 +289,7 @@ function BusinessDetails(props) {
                 />
               </div> */}
 
-              {/* {role.verifier || role.approver ? (
+            {/* {role.verifier || role.approver ? (
                 <div className="form-group col-md-4">"show company logo" </div>
               ) : (
                 <div className="form-group col-md-4">
@@ -318,7 +318,7 @@ function BusinessDetails(props) {
               )} */}
 
 
-              {/* <div class="form-group row">
+            {/* <div class="form-group row">
               <label class="col-sm-2 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   GSTIN<span style={{ color: "red" }}>*</span>
@@ -341,25 +341,25 @@ function BusinessDetails(props) {
             </div> */}
 
             <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   GSTIN<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
-              <FormikController
-                    control="input"
-                    type="text"
-                    name="gst_number"
-                    className="form-control"
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
-                    readOnly={readOnly}
-                  />
-            
+              <div class="col-sm-7">
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="gst_number"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+
               </div>
             </div>
 
-              {/* {formik.values?.registerd_with_gst === "True" && (
+            {/* {formik.values?.registerd_with_gst === "True" && (
                 <div className="form-group col-md-4">
                   <label>
                     <h4 class="font-weight-bold">
@@ -378,14 +378,14 @@ function BusinessDetails(props) {
               )}
              */}
 
-<div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Buisiness PAN<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
-              <FormikController
+              <div class="col-sm-7">
+                <FormikController
                   control="input"
                   type="text"
                   name="signatory_pan"
@@ -397,13 +397,13 @@ function BusinessDetails(props) {
             </div>
 
             <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   PAN Owner's Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
-              <FormikController
+              <div class="col-sm-7">
+                <FormikController
                   control="input"
                   type="text"
                   name="name_on_pancard"
@@ -414,7 +414,7 @@ function BusinessDetails(props) {
               </div>
             </div>
 
-              {/* <div className="form-group col-md-4">
+            {/* <div className="form-group col-md-4">
                 <label>
                   <h4 class="font-weight-bold">
                     PAN Owner's Name <span style={{ color: "red" }}>*</span>
@@ -429,7 +429,7 @@ function BusinessDetails(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-              {/* <div className="form-group col-md-4">
+            {/* <div className="form-group col-md-4">
                 <label>
                   <h4 class="font-weight-bold">
                     PIN Code <span style={{ color: "red" }}>*</span>
@@ -444,7 +444,7 @@ function BusinessDetails(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-              {/* <div className="form-group col-md-4 mt-4">
+            {/* <div className="form-group col-md-4 mt-4">
                 <label>
                   <h4 class="font-weight-bold">
                     City <span style={{ color: "red" }}>*</span>
@@ -459,7 +459,7 @@ function BusinessDetails(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-              {/* <div className="form-group col-md-4 mt-4">
+            {/* <div className="form-group col-md-4 mt-4">
                 <label>
                   <h4 class="font-weight-bold">
                     State <span style={{ color: "red" }}>*</span>
@@ -477,14 +477,14 @@ function BusinessDetails(props) {
 
 
 
-<div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+            <div class="form-group row">
+              <label class="col-sm-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
-              Authorize  Signatory PAN<span style={{ color: "red" }}>*</span>
+                  Authorize  Signatory PAN<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5 pull-right">
-              <FormikController
+              <div class="col-sm-7 pull-right">
+                <FormikController
                   control="input"
                   type="text"
                   name="pan_card"
@@ -494,7 +494,7 @@ function BusinessDetails(props) {
                 />
               </div>
             </div>
-{/* 
+            {/* 
               <div className="form-group col-md-4 mt-1">
                 <label>
                   <h4 class="font-weight-bold">
@@ -512,7 +512,7 @@ function BusinessDetails(props) {
                 />
               </div> */}
 
-              {/* <div className="form-group col-md-4">
+            {/* <div className="form-group col-md-4">
                 <label>
                   <h4 class="font-weight-bold">
                     Registered Address<span style={{ color: "red" }}>*</span>
@@ -566,16 +566,16 @@ function BusinessDetails(props) {
                 }}
               />
               <div class="mt-3">
-            {VerifyKycStatus === "Verified" ? null : (
-              <button
-                type="submit"
-                className="btn float-lg-right"
-                style={{ backgroundColor: "#0156B3" }}
-              >
-                <h4 className="text-white"> {buttonText}</h4>
-              </button>
-            )}
-            </div>
+                {VerifyKycStatus === "Verified" ? null : (
+                  <button
+                    type="submit"
+                    className="btn float-lg-right"
+                    style={{ backgroundColor: "#0156B3" }}
+                  >
+                    <h4 className="text-white"> {buttonText}</h4>
+                  </button>
+                )}
+              </div>
             </div>
           </Form>
         )}
