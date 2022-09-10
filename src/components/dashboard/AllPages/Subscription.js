@@ -73,390 +73,390 @@ const Subsciption = () => {
   //  const dispatch = useDispatch();
   const tempData = [
     {
-        applicationId: 10,
-        applicationCode: "SABPAISA",
-        applicationName: "Online and Offline Payment Gateway",
-        applicationDescription: "SabPaisa is the World`s 1st API Driven Unified Payment Experience Platform having the Best Payment Gateway India. Collect, transfer &amp; refund your payments online &amp; offline. Get the best success rates with maximum payment modes available including Debit cards,Credit Card, Wallets, UPI, Bharat QR, etc. The Hybrid PG helps businesses collect payments from all the clients and consumers, urban or rural, young or old, online or offline, without worrying about consumer payment behaviour.",
-        active: true,
-        applicationUrl: "https://sabpaisa.in/payment-gateway/",
-        epUrl: "https://sabpaisa.in/payment-gateway/",
-        planMaster: [
-          {
-            planId: 1,
-            planName:
-              "Package 1/Monthly Basis(No of txn -100 and Max Txn Amt- 500)",
-            planCode: "005",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 850.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 20,
-            planName:
-              "Package 2/Monthly Basis(No of txn -100 and Max Txn Amt- 1000)",
-            planCode: "006",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 1700.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 26,
-            planName:
-              "Package Monthly Basis(No of txn -100 and Max Txn Amt- 500)",
-            planCode: "012",
-            planType: "trial",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 850.0,
-            planValidityDays: 30,
-          },
-        ],
-      },
-      
-      {
-        applicationId: 11,
-        applicationCode: "SABPAISA",
-        applicationName: "Payment Links",
-        applicationDescription: "SabPaisa Payment Link is the World’s first Unified link-based payment method, for payment collections with the help of links for a wide range of payment modes. Collect Payments even without a website via easy payment links. Payment Link offers protected and shortened payment links for payment collection.",
-        active: true,
-        applicationUrl: "https://sabpaisa.in/paylink/",
-        epUrl: "https://sabpaisa.in/paylink/",
-        planMaster: [
-          {
-            planId: 22,
-            planName:
-              "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
-            planCode: "008",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 1000.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 21,
-            planName:
-              "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "007",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 25,
-            planName:
-              "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "011",
-            planType: "trial",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-        ],
-      },
-    
-      {
-        applicationId: 12,
-        applicationCode: "SABPAISA",
-        applicationName: "Subscriptions",
-        applicationDescription: "Subscriptions are a unique mandate processing and payment collection platform that offers recurring subscription payments through e-NACH/e-mandates for more than 50 banks to merchants. Single platform for processing all modes of payment mandates, viz. NACH, Net Banking, debit card, credit card, UPI.",
-        active: true,
-        applicationUrl: "https://sabpaisa.in/paylink/",
-        epUrl: "https://sabpaisa.in/paylink/",
-        planMaster: [
-          {
-            planId: 22,
-            planName:
-              "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
-            planCode: "008",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 1000.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 21,
-            planName:
-              "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "007",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 25,
-            planName:
-              "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "011",
-            planType: "trial",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-        ],
-      },
-    
-      {
-        applicationId: 13,
-        applicationCode: "SABPAISA",
-        applicationName: "Payouts",
-        applicationDescription: "SabPaisa Payouts is India’s 1st Payout Aggregator for Businesses that seek to pay out to their Partners/Vendors/Customers with complete control over the transactions and a system with the easiest reconciliation and settlement. With SabPaisa Payouts Merchants do not need to deposit money in the aggregator’s account or a third-party wallet. Merchants can execute the payout from their accounts.",
-        active: true,
-        applicationUrl: "https://sabpaisa.in/paylink/",
-        epUrl: "https://sabpaisa.in/paylink/",
-        planMaster: [
-          {
-            planId: 22,
-            planName:
-              "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
-            planCode: "008",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 1000.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 21,
-            planName:
-              "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "007",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 25,
-            planName:
-              "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "011",
-            planType: "trial",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-        ],
-      },
-    
-      {
-        applicationId: 14,
-        applicationCode: "SABPAISA",
-        applicationName: "QwikForm",
-        applicationDescription: "QwikForms is one of India’s most advanced dynamic online form builders which can be used to create workflows no matter how complex. In addition, when paired with Hybrid Gateway and LinkPaisa, QwikForms becomes India’s most powerful, robust, and secure payment platform capable of creating and deploying any online payment form within minutes and hours.",
-        active: true,
-        applicationUrl: "https://sabpaisa.in/paylink/",
-        epUrl: "https://sabpaisa.in/paylink/",
-        planMaster: [
-          {
-            planId: 22,
-            planName:
-              "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
-            planCode: "008",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 1000.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 21,
-            planName:
-              "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "007",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 25,
-            planName:
-              "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "011",
-            planType: "trial",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-        ],
-      },
-    
-      {
-        applicationId: 15,
-        applicationCode: "SABPAISA",
-        applicationName: "E-Challan",
-        applicationDescription: "SabPaisa E-Challan is the World’s first e-offline payments platform, a unique innovation by SabPaisa consisting of e-offline modes like e-cash, e-NEFT, e-RTGS, and e-IMPS. It enables business houses to collect offline payments through more than 10 Lac cash counters across India.",
-        active: true,
-        applicationUrl: "https://sabpaisa.in/paylink/",
-        epUrl: "https://sabpaisa.in/paylink/",
-        planMaster: [
-          {
-            planId: 22,
-            planName:
-              "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
-            planCode: "008",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 1000.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 21,
-            planName:
-              "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "007",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 25,
-            planName:
-              "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "011",
-            planType: "trial",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-        ],
-      },
-    
-      {
-        applicationId: 16,
-        applicationCode: "SABPAISA",
-        applicationName: "E-POS App",
-        applicationDescription: "The SabPaisa E-POS App is an all-in-one advance app that provides all the data regarding the user’s payments, settlements, refunds, collections, customer support and official communication with end-to-end control over everything.",
-        active: true,
-        applicationUrl: "https://sabpaisa.in/paylink/",
-        epUrl: "https://sabpaisa.in/paylink/",
-        planMaster: [
-          {
-            planId: 22,
-            planName:
-              "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
-            planCode: "008",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 1000.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 21,
-            planName:
-              "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "007",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 25,
-            planName:
-              "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "011",
-            planType: "trial",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-        ],
-      },
-    
-      {
-        applicationId: 17,
-        applicationCode: "SABPAISA",
-        applicationName: "LinkPaisa",
-        applicationDescription: "LinkPaisa is a complete and reliable link management platform. LinkPaisa aggregates all modes of the messaging platform – Whatsapp, email, Facebook, SMS, Telegram etc. The Message Content can be customised.",
-        active: true,
-        applicationUrl: "https://sabpaisa.in/paylink/",
-        epUrl: "https://sabpaisa.in/paylink/",
-        planMaster: [
-          {
-            planId: 22,
-            planName:
-              "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
-            planCode: "008",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 1000.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 21,
-            planName:
-              "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "007",
-            planType: "Monthly",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-          {
-            planId: 25,
-            planName:
-              "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
-            planCode: "011",
-            planType: "trial",
-            planDescription:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            active: true,
-            planPrice: 500.0,
-            planValidityDays: 30,
-          },
-        ],
-      },
-    
-    ]
+      applicationId: 10,
+      applicationCode: "SABPAISA",
+      applicationName: "Online and Offline Payment Gateway",
+      applicationDescription: "SabPaisa is the World`s 1st API Driven Unified Payment Experience Platform having the Best Payment Gateway India. Collect, transfer &amp; refund your payments online &amp; offline. Get the best success rates with maximum payment modes available including Debit cards,Credit Card, Wallets, UPI, Bharat QR, etc. The Hybrid PG helps businesses collect payments from all the clients and consumers, urban or rural, young or old, online or offline, without worrying about consumer payment behaviour.",
+      active: true,
+      applicationUrl: "https://sabpaisa.in/payment-gateway/",
+      epUrl: "https://sabpaisa.in/payment-gateway/",
+      planMaster: [
+        {
+          planId: 1,
+          planName:
+            "Package 1/Monthly Basis(No of txn -100 and Max Txn Amt- 500)",
+          planCode: "005",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 850.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 20,
+          planName:
+            "Package 2/Monthly Basis(No of txn -100 and Max Txn Amt- 1000)",
+          planCode: "006",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 1700.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 26,
+          planName:
+            "Package Monthly Basis(No of txn -100 and Max Txn Amt- 500)",
+          planCode: "012",
+          planType: "trial",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 850.0,
+          planValidityDays: 30,
+        },
+      ],
+    },
+
+    {
+      applicationId: 11,
+      applicationCode: "SABPAISA",
+      applicationName: "Payment Links",
+      applicationDescription: "SabPaisa Payment Link is the World’s first Unified link-based payment method, for payment collections with the help of links for a wide range of payment modes. Collect Payments even without a website via easy payment links. Payment Link offers protected and shortened payment links for payment collection.",
+      active: true,
+      applicationUrl: "https://sabpaisa.in/paylink/",
+      epUrl: "https://sabpaisa.in/paylink/",
+      planMaster: [
+        {
+          planId: 22,
+          planName:
+            "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
+          planCode: "008",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 1000.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 21,
+          planName:
+            "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "007",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 25,
+          planName:
+            "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "011",
+          planType: "trial",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+      ],
+    },
+
+    {
+      applicationId: 12,
+      applicationCode: "SABPAISA",
+      applicationName: "Subscriptions",
+      applicationDescription: "Subscriptions are a unique mandate processing and payment collection platform that offers recurring subscription payments through e-NACH/e-mandates for more than 50 banks to merchants. Single platform for processing all modes of payment mandates, viz. NACH, Net Banking, debit card, credit card, UPI.",
+      active: true,
+      applicationUrl: "https://sabpaisa.in/paylink/",
+      epUrl: "https://sabpaisa.in/paylink/",
+      planMaster: [
+        {
+          planId: 22,
+          planName:
+            "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
+          planCode: "008",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 1000.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 21,
+          planName:
+            "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "007",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 25,
+          planName:
+            "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "011",
+          planType: "trial",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+      ],
+    },
+
+    {
+      applicationId: 13,
+      applicationCode: "SABPAISA",
+      applicationName: "Payouts",
+      applicationDescription: "SabPaisa Payouts is India’s 1st Payout Aggregator for Businesses that seek to pay out to their Partners/Vendors/Customers with complete control over the transactions and a system with the easiest reconciliation and settlement. With SabPaisa Payouts Merchants do not need to deposit money in the aggregator’s account or a third-party wallet. Merchants can execute the payout from their accounts.",
+      active: true,
+      applicationUrl: "https://sabpaisa.in/paylink/",
+      epUrl: "https://sabpaisa.in/paylink/",
+      planMaster: [
+        {
+          planId: 22,
+          planName:
+            "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
+          planCode: "008",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 1000.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 21,
+          planName:
+            "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "007",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 25,
+          planName:
+            "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "011",
+          planType: "trial",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+      ],
+    },
+
+    {
+      applicationId: 14,
+      applicationCode: "SABPAISA",
+      applicationName: "QwikForm",
+      applicationDescription: "QwikForms is one of India’s most advanced dynamic online form builders which can be used to create workflows no matter how complex. In addition, when paired with Hybrid Gateway and LinkPaisa, QwikForms becomes India’s most powerful, robust, and secure payment platform capable of creating and deploying any online payment form within minutes and hours.",
+      active: true,
+      applicationUrl: "https://sabpaisa.in/paylink/",
+      epUrl: "https://sabpaisa.in/paylink/",
+      planMaster: [
+        {
+          planId: 22,
+          planName:
+            "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
+          planCode: "008",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 1000.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 21,
+          planName:
+            "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "007",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 25,
+          planName:
+            "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "011",
+          planType: "trial",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+      ],
+    },
+
+    {
+      applicationId: 15,
+      applicationCode: "SABPAISA",
+      applicationName: "E-Challan",
+      applicationDescription: "SabPaisa E-Challan is the World’s first e-offline payments platform, a unique innovation by SabPaisa consisting of e-offline modes like e-cash, e-NEFT, e-RTGS, and e-IMPS. It enables business houses to collect offline payments through more than 10 Lac cash counters across India.",
+      active: true,
+      applicationUrl: "https://sabpaisa.in/paylink/",
+      epUrl: "https://sabpaisa.in/paylink/",
+      planMaster: [
+        {
+          planId: 22,
+          planName:
+            "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
+          planCode: "008",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 1000.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 21,
+          planName:
+            "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "007",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 25,
+          planName:
+            "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "011",
+          planType: "trial",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+      ],
+    },
+
+    {
+      applicationId: 16,
+      applicationCode: "SABPAISA",
+      applicationName: "E-POS App",
+      applicationDescription: "The SabPaisa E-POS App is an all-in-one advance app that provides all the data regarding the user’s payments, settlements, refunds, collections, customer support and official communication with end-to-end control over everything.",
+      active: true,
+      applicationUrl: "https://sabpaisa.in/paylink/",
+      epUrl: "https://sabpaisa.in/paylink/",
+      planMaster: [
+        {
+          planId: 22,
+          planName:
+            "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
+          planCode: "008",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 1000.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 21,
+          planName:
+            "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "007",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 25,
+          planName:
+            "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "011",
+          planType: "trial",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+      ],
+    },
+
+    {
+      applicationId: 17,
+      applicationCode: "SABPAISA",
+      applicationName: "LinkPaisa",
+      applicationDescription: "LinkPaisa is a complete and reliable link management platform. LinkPaisa aggregates all modes of the messaging platform – Whatsapp, email, Facebook, SMS, Telegram etc. The Message Content can be customised.",
+      active: true,
+      applicationUrl: "https://sabpaisa.in/paylink/",
+      epUrl: "https://sabpaisa.in/paylink/",
+      planMaster: [
+        {
+          planId: 22,
+          planName:
+            "Package 2/Monthly Basis(Subscription Price – Rs. 1000 and No of payouts - 1000)",
+          planCode: "008",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 1000.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 21,
+          planName:
+            "Package 1/Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "007",
+          planType: "Monthly",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+        {
+          planId: 25,
+          planName:
+            "Package Monthly Basis(Subscription Price – Rs. 500 and No of payouts - 500)",
+          planCode: "011",
+          planType: "trial",
+          planDescription:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          active: true,
+          planPrice: 500.0,
+          planValidityDays: 30,
+        },
+      ],
+    },
+
+  ]
   const getSubscriptionService = async () => {
     await setSubscriptionData(tempData);
   };
@@ -595,7 +595,7 @@ const Subsciption = () => {
           >
             <div className="container-fluid">
               <div className="row">
-              
+
                 {subscriptionPlanData.length <= 0 ? (
                   <h3>Loading...</h3>
                 ) : (
@@ -604,67 +604,69 @@ const Subsciption = () => {
                       <div className="card">
                         <div className="card-body">
                           <h5 className="card-title font-weight-bold h3">
-                          {s.applicationName}
+                            {s.applicationName}
                           </h5>
                           <p className="card-text" />
                         </div>
                         <div className="card-footer">
-                          
-                            <p className="mb-0">
-                              <a
-                                className=" btn bttn bttnbackgroundkyc collapsed"
-                                data-toggle="collapse"
-                                href={`#collapseExample${s.applicationId}`}
-                                role="button"
-                                aria-expanded="false"
-                                aria-controls={`collapseExample${s.applicationId}`}
-                                style={{backgroundColor: "rgb(1, 86, 179)"}}
-                              >
-                                Read More
-                              </a>
-                              <button type="button"  className=" btn bttn bttnbackgroundkyc collapsed"
-                                data-toggle="modal" data-target="#exampleModal">
-  Subscribe
-</button>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      
-      <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <h2 classname="pull-center"><b>Thank You For Subscribing. We will come back to you Shortly</b></h2>
-       
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn bttn bttnbackgroundkyc collapsed" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+                          <p className="mb-0">
+                            <a
+                              className=" btn bttn bttnbackgroundkyc collapsed"
+                              data-toggle="collapse"
+                              href={`#collapseExample${s.applicationId}`}
+                              role="button"
+                              aria-expanded="false"
+                              aria-controls={`collapseExample${s.applicationId}`}
+                              style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                            >
+                              Read More
+                            </a>
+                            <button type="button" className=" btn bttn bttnbackgroundkyc collapsed"
+                              data-toggle="modal" data-target="#exampleModal"
+                              onClick={() => console.log('this is mapped data for modal : ', s)}
+                            >
+                              Subscribe
+                            </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <h2 classname="pull-center"><b>Thank You For Subscribing. We will come back to you Shortly</b></h2>
+
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn bttn bttnbackgroundkyc collapsed" data-dismiss="modal">Close</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
 
 
 
-                              {/* <button
+                            {/* <button
                                className=" btn bttn bttnbackgroundkyc collapsed"
                                 type="button"
                               >
                                 Subscribe
                               </button> */}
-                              
-                            </p>
-                            <div
-                              className="collapse"
-                              id={`collapseExample${s.applicationId}`}
-                            >
-                              <div className="card card-body m-0">
-                                {s.applicationDescription}
-                              </div>
+
+                          </p>
+                          <div
+                            className="collapse"
+                            id={`collapseExample${s.applicationId}`}
+                          >
+                            <div className="card card-body m-0">
+                              {s.applicationDescription}
                             </div>
-                          
+                          </div>
+
                         </div>
                         <div className="container" />
                       </div>
