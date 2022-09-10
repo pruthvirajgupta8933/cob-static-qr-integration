@@ -65,7 +65,23 @@ function BusinessDetails(props) {
       setOperationvalue(null);
     }
   };
-  const initialValues = {
+
+  // const initialValues = {
+  //   company_name: KycList.companyName,
+  //   company_logo: KycList.companyLogoPath,
+  //   registerd_with_gst: KycList.registerdWithGST,
+  //   gst_number: KycList.gstNumber,
+  //   pan_card: KycList.panCard,
+  //   signatory_pan: KycList.signatoryPAN,
+  //   name_on_pancard: KycList.nameOnPanCard,
+  //   pin_code: KycList.pinCode,
+  //   city_id: KycList.cityId,
+  //   state_id: KycList.stateId,
+  //   registered_business_address: KycList.registeredBusinessAdress,
+  //   operational_address: KycList.registeredBusinessAdress,
+  //   checkBoxChoice: "",
+  // };
+   const initialValues = {
     company_name: KycList.companyName,
     company_logo: "/filePath/logo.png",
     registerd_with_gst: KycList.registerdWithGST,
