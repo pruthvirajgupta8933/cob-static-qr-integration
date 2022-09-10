@@ -500,12 +500,18 @@ return (
               </div>
        
             </div>
+            
             {/* ./authfy-login */}
           </div>
         </div>
+          <p className="footerforcopyright">Copyright 2022 SabPaisa, all rights reserve version 0.1</p>
+ 
       </div>
+      
       {/* ./row */}
+      
     </div>
+    
   </>
 );
 }

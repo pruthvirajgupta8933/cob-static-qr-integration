@@ -120,7 +120,9 @@ function LoginPage() {
       {/* <p className="showErrormsg">{message && message!=''?message:''}</p> */}
       <div className="container-fluid toppad">
         <div className="row">
-          <div className="col-lg-1"></div>
+          <div className="col-lg-1">
+            
+          </div>
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-10 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
             <div className="col-sm-7 authfy-panel-right login-float-right nopad login-float-none">
               {/* authfy-login start */}
@@ -355,7 +357,12 @@ function LoginPage() {
               </div>
             </div>
           </div>
-          <div className="col-lg-1"></div>
+          <div className="col-lg-1">
+
+            
+          </div>
+          <p className="footerforcopyright">Copyright 2022 SabPaisa, all rights reserve version 0.1</p>
+ 
         </div>
         {/* ./row */}
       </div>

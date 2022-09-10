@@ -211,3 +211,44 @@ margin-left: 97px;
 .newcard{
   color: #cd8214;
 }
+
+/* Css for Dashboard Modal*/
+
+.ModalButtonClr{
+  border: 0;
+  background: #0156B3;
+  box-shadow: 0px 14px 10px rgba(66, 133, 248, 0.5);
+border-radius: 4px;
+height: 40px;
+width: 250px;
+}
+.homeModalHeading{
+  color: #000000;
+  font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 156.5%;
+}
+.modalscolrsfortext{
+  font-family: 'Satoshi';
+  color: #000000;
+font-style: normal;
+font-weight: 700;
+font-size: 17px;
+line-height: 224%;
+}
+.footerforcopyright{
+  font-family: 'Nunito Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 156.5%;
+position:absolute;
+top: 610px;
+right: 485px;
+/* or 28px */
+
+
+color: #FFFFFF;
+}
