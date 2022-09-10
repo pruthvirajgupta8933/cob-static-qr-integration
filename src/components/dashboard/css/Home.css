@@ -224,14 +224,14 @@ width: 250px;
 }
 .homeModalHeading{
   color: #000000;
-  font-family: 'Satoshi';
+  /* font-family: 'Satoshi'; */
 font-style: normal;
 font-weight: 700;
 font-size: 32px;
 line-height: 156.5%;
 }
 .modalscolrsfortext{
-  font-family: 'Satoshi';
+  /* font-family: 'Satoshi'; */
   color: #000000;
 font-style: normal;
 font-weight: 700;
