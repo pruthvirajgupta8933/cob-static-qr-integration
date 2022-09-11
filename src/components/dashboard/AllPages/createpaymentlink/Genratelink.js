@@ -341,14 +341,14 @@ let history = useHistory();
                       <button
                         type="submit"
                         style={{ postion: "relative", top: 200, left: 280 }}
-                        className="btn btn-primary "
+                        className="cratepaymentlinkclrsfigma text-white "
                       >
                         SUBMIT
                       </button>
                       <button
                         type="button"
                         style={{ postion: "absolute", top: 290, left: 380 }}
-                        className="btn btn-danger"
+                        className="ColrsforDeletefigma text-white"
                         data-dismiss="modal"
                         onClick={resetForm}
                       >

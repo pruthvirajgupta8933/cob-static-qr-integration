@@ -252,3 +252,18 @@ right: 485px;
 
 color: #FFFFFF;
 }
+/* Css for CreatePaymentLink here*/
+.cratepaymentlinkclrsfigma{
+  background: #0156B3;
+  border: 0;
+  border-radius: 3px;
+  padding:8px 20px;
+
+}
+.ColrsforDeletefigma{
+  background: #FF3E06;
+  border: 0;
+  border-radius: 3px;
+  padding:8px 20px;
+
+}

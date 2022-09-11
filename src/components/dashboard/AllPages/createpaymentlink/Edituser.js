@@ -147,8 +147,8 @@ export const Edituser = (props) => {
                                 options={data}
                                 className="form-control"
                             />
-                            <button type="submit" className=" btn btn-primary btn-sm" >Update</button>
-                            <button type="button" className="btn btn-danger btn-sm text-white " data-dismiss="modal" >Cancel</button>
+                            <button type="submit" className=" cratepaymentlinkclrsfigma text-white " >Update</button>
+                            <button type="button" className="ColrsforDeletefigma ml-2 text-white " data-dismiss="modal" >Cancel</button>
                             </div>
                             
                             </Form>

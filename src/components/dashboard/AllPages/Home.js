@@ -211,11 +211,7 @@ function Home() {
                 </div>
               </div>
             </div>
-
-
-
-
-          </div>
+             </div>
 
 
         </div>
@@ -268,6 +264,7 @@ function Home() {
         </div>
 
       </main>
+       {/* Dashboard open pop up start here*/}
     
       <div className={"modal fade" + (modalState ? " show d-block" : " d-none")} tabIndex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -296,7 +293,6 @@ function Home() {
                 <img
                     src={ bro}
                     className='modalsimageclass'
-                   
                     alt="SabPaisa"
                     title="SabPaisa"
                   />

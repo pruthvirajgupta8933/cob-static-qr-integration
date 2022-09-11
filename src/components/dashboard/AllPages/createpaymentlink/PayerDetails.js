@@ -291,12 +291,12 @@ const PayerDetails = () => {
                                             <div className="modal-footer">
                                                 <button
                                                     type="submit"
-                                                    className="btn btn-primary" >
+                                                    className="cratepaymentlinkclrsfigma text-white" >
                                                     Submit
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    className="btn btn-danger text-white"
+                                                    className="ColrsforDeletefigma text-white"
                                                     data-dismiss="modal"
                                                     onClick={resetForm}>
                                                     Cancel
@@ -317,7 +317,7 @@ const PayerDetails = () => {
                 <div className="container-fluid flleft">
                     <div className="row">
                         <div className="col-lg-4 pl-4">
-                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
+                            <button type="button" className="cratepaymentlinkclrsfigma text-white" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
                         </div>
                     </div>
 
@@ -368,15 +368,15 @@ const PayerDetails = () => {
                                         <td>{user.email}</td>
                                         <td>{user.customer_type}</td>
                                         <td>
-                                            <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)} >Edit</button>
+                                            <button type="button"  className="cratepaymentlinkclrsfigma text-white" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)} >Edit</button>
                                         </td>
                                         <td>
-                                            <button className="btn btn-primary mt-7" onClick={() => deleteUser(user.id)}  >Delete</button>
+                                            <button className="ColrsforDeletefigma text-white mt-7" onClick={() => deleteUser(user.id)}  >Delete</button>
                                         </td>
                                         <td>
                                             <button onClick={(e) => generateli(user.id)}
                                                 type="button"
-                                                className="btn btn-primary"
+                                                className="cratepaymentlinkclrsfigma text-white"
                                                 data-toggle="modal"
                                                 data-target="#bhuvi"
                                                 data-whatever="@getbootstrap"

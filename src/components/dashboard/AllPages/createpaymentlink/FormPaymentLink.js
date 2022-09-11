@@ -303,13 +303,13 @@ useEffect(() => {
                         <div className="col-lg-12 toppad">
                         <button
                           type="submit"
-                          className="btn btn-primary"
+                          className="cratepaymentlinkclrsfigma mb-3 text-white"
                         >
                           SUBMIT
                         </button>
                     <button onClick={resetForm}
                       type="button"
-                      className="btn btn-danger"
+                      className="ColrsforDeletefigma text-white ml-2"
                       data-dismiss="modal"
                     >
                       CANCEL
