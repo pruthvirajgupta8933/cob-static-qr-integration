@@ -11,13 +11,30 @@ import API_URL from '../../config';
 import { documentsUpload, merchantInfo } from "../../slices/kycSlice"
 import plus from "../../assets/images/plus.png"
 import { set } from 'lodash';
-import { readURL,removeUpload } from '../../assets/js/ImageUpload';
+import { readURL, removeUpload } from '../../assets/js/ImageUpload';
 import UploadDocTest from './UploadDocTest';
 
+import  "../../assets/css/kyc-document.css"
+
+import $ from 'jquery';
 
 // import $ from "jquery"
 
 function DocumentsUpload() {
+
+  function readURL(input,id) {  
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          $('.imagepre_sub_'+id).attr('src', e.target.result);
+          $('.imagepre_'+id).show();
+        };
+    
+        reader.readAsDataURL(input.files[0]);
+    
+      } 
+    }
+
   const [docTypeList, setDocTypeList] = useState([])
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
   const [fieldValue, setFieldValue] = useState(null);
@@ -70,105 +87,128 @@ function DocumentsUpload() {
 
   console.log(docTypeIdDropdown, "<=== Id ===>")
 
-  const imageClickHandler = (e) => {
-    document.getElementById('my_file').click();
+  // const imageClickHandler = (e) => {
+  //   document.getElementById('my_file').click();
+  // }
 
+  const handleChange = function (e,id) {
+    // console.log("change event")
+    // console.log(id)
+    readURL(e.target,id)
   }
 
 
   return (
-    <UploadDocTest />
-    // <div className="col-md-12 col-md-offset-4">
-    //   <Formik
-    //     initialValues={initialValues}
-    //     validationSchema={validationSchema}
-    //     onSubmit={onSubmit}
-    //   >
-    //     {formik => (
-    //       <Form>
-    //         {/* {console.log(formik,"<==== Formik ====>")} */}
-    //         <div className="form-row align-items-centre">
-    //           <div className="form-group col-lg-5">
-    //             <FormikController
-    //               control="select"
-    //               label="Document Type"
-    //               name="docType"
-    //               className="form-control"
-    //               options={docTypeList}
-    //             />
-    //             {formik.handleChange("docType", setDocTypeIdDropdown(formik.values.docType))}
-
-    //           </div>
-
-
+    <>
+      {/* <UploadDocTest /> */}
+      <div className="col-md-12 col-md-offset-4">
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+        >
+          {formik => (
+            <Form>
+              {/* {console.log(formik,"<==== Formik ====>")} */}
+              <div className="form-row align-items-centre">
+                <div className="form-group col-lg-5">
+                  <FormikController
+                    control="select"
+                    label="Document Type"
+                    name="docType"
+                    className="form-control"
+                    options={docTypeList}
+                  />
+                  {formik.handleChange("docType", setDocTypeIdDropdown(formik.values.docType))}
+                </div>
 
 
-    //           {docTypeIdDropdown === "1" ?
-    //             <div class="row">
+                <div class="row-xs-10 mt-3 mr-2 p-3">
+                  {/* <div class="card-footer"> */}
+                  <div class="mt-xl-10">
+                    <button className="btn float-lg-right" type="submit" style={{ backgroundColor: "#0156B3" }}>
+                      <h4 className="text-white font-weight-bold"> &nbsp; &nbsp; Save & Next &nbsp; &nbsp;</h4>
+                    </button>
+
+                  </div>
+                  {/* </div> */}
+                </div>
 
 
-    //               <div class="col-sm-6">
-    //                 <div class="card border-dotted" style={{ height: "13rem", width: "17rem" }}>
-    //                   <div class="card-body text-center">
-    //                     <h3 class="card-title">Add Front Aadhaar Card</h3>
-    //                     <input type="image" src={plus} style={{ width: 100 }} />
-    //                     <p class="card-text">Upto 2 MB file size</p>
-    //                   </div>
-    //                 </div>
-    //               </div>
-    //               <div class="col-sm-6">
-    //                 <div class="card border-dotted" style={{ height: "13rem", width: "18rem" }}>
-    //                   <div class="card-body text-center">
-    //                     <h3 class="card-title">Add Back Aadhaar Card</h3>
-    //                     <input type="image" src={plus} style={{ width: 100 }} />
-    //                     <p class="card-text">Upto 2 MB file size </p>
-
-    //                   </div>
-    //                 </div>
-    //               </div>
-    //             </div>
-
-    //             : docTypeIdDropdown === "2" ?
+                {docTypeIdDropdown === "1" ?
+                  <div class="row">
+                    <div class="col-lg-6 width">
+                      <div className="file-upload border-dotted">
+                        <div className="image-upload-wrap ">
+                          <input className="file-upload-input" id="1" type="file" onChange={(e)=>handleChange(e,1)} />
+                          <div className="drag-text">
+                            <h3 class="p-2 font-16">Add Front Aadhaar Card</h3>
+                            <img alt="Doc" src={plus} style={{ width: 30 }} className="mb-4" />
+                            <p class="card-text">Upto 2 MB file size</p>
+                          </div>
+                        </div>
+                      </div>
 
 
+                      {/* uploaded document preview */}
+                      <div className="file-upload-content imagepre_1">
+                        <img className="file-upload-image imagepre_sub_1" src="#" alt="Document" />
+                      </div>
 
-    //               <div class="col-xs-10 mt-5 mr-5">
-    //                 <div class="card border-dotted justify-content-center" style={{ height: "13rem", width: "20rem" }}>
-    //                   <div class="card-body text-center">
-    //                     <h3 class="card-title">Add Front PAN Card</h3>
-    //                     <input type="image" src={plus} alt="PAN" style={{ width: 100 }} onClick={(e) => imageClickHandler(e)} />
-    //                     <input type="file" id="my_file" style={{ display: "none" }} />
+                    </div>
+                    <div class="col-lg-6 width">
+                      <div className="file-upload  border-dotted">
+                        <div className="image-upload-wrap ">
+                          <input className="file-upload-input" id="2" type="file" onChange={(e)=>handleChange(e,2)} />
+                          <div className="drag-text">
+                            <h3 class="p-2 font-16">Add Back Aadhaar Card</h3>
+                            <img alt="Doc" src={plus} style={{ width: 30 }} className="mb-4" />
+                            <p class="card-text">Upto 2 MB file size</p>
+                          </div>
+                        </div>
+                      </div>
 
-    //                     <p class="card-text">Upto 2 MB file size</p>
-    //                   </div>
-    //                 </div>
+                      {/* uploaded document preview */}
+                      <div className="file-upload-content imagepre_2">
+                        <img className="file-upload-image imagepre_sub_2" src="#" alt="Document" />
+                      </div>
+                    </div>
+                  </div>
+                  : docTypeIdDropdown === "2" ?
+                    <>
+                      <div class="col-lg-6 ">
+                        <div className="file-upload  border-dotted">
+                          <div className="image-upload-wrap ">
+                            <input className="file-upload-input" id="3" type="file" onChange={(e)=>handleChange(e,3)} />
+                            <div className="drag-text">
+                              <h3 class="p-2 font-16">Add PAN Card</h3>
+                              <img alt="Doc" src={plus} style={{ width: 30 }} className="mb-4"  />
+                              <p class="card-text">Upto 2 MB file size</p>
+                            </div>
+                          </div>
+                        </div>
+                        {/* uploaded document preview */}
+                        <div className="file-upload-content imagepre_3">
+                          <img className="file-upload-image imagepre_sub_3" src="#" alt="Document" />
+                        </div>
+                      </div>
 
 
-    //               </div>
-
-    //               : <></>
-    //           }
-
-
-    //           <div class="row-xs-10 mt-3 mr-2 p-3">
-    //             {/* <div class="card-footer"> */}
-    //             <div class="mt-xl-10">
-    //               <button className="btn float-lg-right" type="submit" style={{ backgroundColor: "#0156B3" }}>
-    //                 <h4 className="text-white font-weight-bold"> &nbsp; &nbsp; Save & Next &nbsp; &nbsp;</h4>
-    //               </button>
-
-    //             </div>
-    //             {/* </div> */}
-    //           </div>
+                    </>
+                    : <></>
+                }
 
 
-    //         </div>
-    //       </Form>
 
-    //     )}
-    //   </Formik>
+              </div>
+            </Form>
 
-    // </div>
+          )}
+        </Formik>
+
+      </div>
+    </>
+
   )
 }
 

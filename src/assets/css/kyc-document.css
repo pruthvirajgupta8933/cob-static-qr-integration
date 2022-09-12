@@ -1,7 +1,7 @@
 
 .file-upload {
     background-color: #ffffff;
-    width: 600px;
+    /* width: 600px; */
     margin: 0 auto;
     padding: 20px;
   }
@@ -51,14 +51,14 @@
   
   .image-upload-wrap {
     margin-top: 20px;
-    border: 4px dashed #1FB264;
-    position: relative;
+    /* border: 4px dashed #1FB264; */
+    position: relative; 
   }
   
   .image-dropping,
   .image-upload-wrap:hover {
-    background-color: #1FB264;
-    border: 4px dashed #ffffff;
+    /* background-color: #1FB264; */
+    /* border: 4px dashed #ffffff; */
   }
   
   .image-title-wrap {
@@ -72,9 +72,9 @@
   
   .drag-text h3 {
     font-weight: 100;
-    text-transform: uppercase;
-    color: #15824B;
-    padding: 60px 0;
+    /* text-transform: uppercase;  */
+     /* color: #15824B; */
+    /* padding: 60px 0; */
   }
   
   .file-upload-image {
@@ -109,4 +109,13 @@
   .remove-image:active {
     border: 0;
     transition: all .2s ease;
+  }
+
+  .font-16{
+    font-size: 16px;
+  }
+
+
+  .width{
+    width: 600px !important;
   }
