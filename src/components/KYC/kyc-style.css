@@ -16,18 +16,13 @@
     
 }
 
-.optbtn{
+.optbtn {
     position: absolute !important;
-    right: -111px;
+    right: -99px;
     z-index: 999;
-    top: 218px;
+    top: -51px;
 }
-.optbtn2{
-    position: absolute !important;
-    right: -112px;
-    z-index: 999;
-    top:  310px;
-}
+
 
 .border-dotted {
     border-style: dotted;
