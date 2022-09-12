@@ -6,6 +6,7 @@ import { checkPermissionSlice, logout } from '../../../slices/auth'
 import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
 import SabpaisaLogo2 from "../../../assets/images/sabpaisa-logo2.png"
 import SabpaisaLogo1 from "../../../assets/images/sabpaisa-logo-white.png"
+import Sabpaisalogo from "../../../assets/images/sabpaisalogo.png"
 
 function SideNavbar() {
   const { auth, kyc } = useSelector((state) => state)
@@ -53,7 +54,7 @@ function SideNavbar() {
         <div className="brand-logo d-flex-item-right">
         <div class="float-centre p-4">
                     <img
-                      src={SabpaisaLogo1}
+                      src={Sabpaisalogo}
                       width={150}
                       alt="sabpaisa"
                       title="sabpaisa"
