@@ -302,3 +302,10 @@ margin-left: 20px;
   border-radius: 3px;
   padding:8px 20px;
 }
+
+button:disabled,
+button[disabled1]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}

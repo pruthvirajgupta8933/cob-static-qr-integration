@@ -19,7 +19,7 @@ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 
 const FORM_VALIDATION = Yup.object().shape({
   fullname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
-  lastname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
+  // lastname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
   mobilenumber: Yup.string().required("Required").matches(phoneRegExp, 'Phone number is not valid')
     .min(10, "Phone number in not valid")
     .max(10, "too long"),
@@ -40,6 +40,7 @@ function Registration() {
 
   const { isUserRegistered } = datar;
   // const [loading, setLoading] = useState(false);
+  const [checkboxStatus, setCheckboxStatus] = useState(Array(3).fill(false))
   const [isActive, setActive] = useState(true);
   const [acceptTc, setAcceptTc] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
@@ -49,6 +50,12 @@ function Registration() {
     password: '',
     showPassword: false,
   });
+
+  function buttonHandler(index){
+    let status = [...checkboxStatus];
+    status[index] = !status[index]
+    setCheckboxStatus(status)
+  }
 
 
   const dispatch = useDispatch();
@@ -66,16 +73,15 @@ function Registration() {
     setBtnDisable(true)
 
     var businessType = 1;
-    var { firstname, lastname, mobilenumber, emaill, passwordd } = formData;
-    var firstName = firstname;
-    var lastName = lastname;
+    var { fullname, mobilenumber, emaill, passwordd } = formData;
+    var fullname = fullname;
     var mobileNumber = mobilenumber;
     var email = emaill;
     var password = passwordd;
 
     // setLoading(true);
     // console.log(formValue);
-    dispatch(register({ firstName, lastName, mobileNumber, email, password, businessType }))
+    dispatch(register({ fullname, mobileNumber, email, password, businessType }))
       .unwrap()
       .then((res) => {
         setBtnDisable(false)
@@ -222,8 +228,7 @@ function Registration() {
                           <div className="logmod__form">
                             <Formik
                               initialValues={{
-                                firstname: "",
-                                lastname: "",
+                               fullname:"",
                                 mobilenumber: "",
                                 emaill: "",
                                 passwordd: "",
@@ -234,6 +239,7 @@ function Registration() {
                               onSubmit={handleRegistration}
                             >
                               {({ values, setFieldValue }) => (
+
                                 <Form
                                   acceptCharset="utf-8"
                                   action="#"
@@ -475,25 +481,27 @@ function Registration() {
                                   <div className="sminputs">
                                     <div className="simform__actions">
                                       <button
-                                        className="figmabtn text-white mt-4"
+                                        className="figmabtn text-white mt-4 disabled1"
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
-                                        disabled={btnDisable}
-
-                                      >
+                                        // disabled={btnDisable}
+                                        disabled= {checkboxStatus.filter(status => status === true ).length != 1  }
+                                        >
                                         Create Account
                                       </button>
                                    
 
                                       <span className="simform__actions-sidetext">
+                                      {Array(3).fill(0).map((_, index) =>
                                       <Field
                                         type="checkbox"
                                         className="form-check-input"
-                                        name="checkbox"
-                                        // onClick={()=>{ handlerTermCond(trmCond,setFieldValue)}}
-
+                                        // name="checkbox"
+                                        checked={checkboxStatus[index]} onChange={() => buttonHandler(index)}
+                                       
                                       /> 
+                                      )}
 
                                         <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} />
                                      
