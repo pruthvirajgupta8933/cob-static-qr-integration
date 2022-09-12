@@ -18,7 +18,7 @@ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 
 
 const FORM_VALIDATION = Yup.object().shape({
-  firstname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
+  fullname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
   lastname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
   mobilenumber: Yup.string().required("Required").matches(phoneRegExp, 'Phone number is not valid')
     .min(10, "Phone number in not valid")
@@ -245,19 +245,19 @@ function Registration() {
                                         className="string optional"
                                         htmlFor="first-name"
                                       >
-                                        First Name
+                                        Full Name
                                       </label>
                                       <Field
                                         className="string optional"
                                         maxLength={255}
                                         id="first-name"
-                                        placeholder="First Name"
+                                        placeholder="Full Name"
                                         type="text"
-                                        name="firstname"
+                                        name="fullname"
                                         size={50}
                                       />
                                       {
-                                        <ErrorMessage name="firstname">
+                                        <ErrorMessage name="fullname">
                                           {(msg) => (
                                             <p
                                               className="abhitest"
@@ -273,82 +273,119 @@ function Registration() {
                                         </ErrorMessage>
                                       }
                                     </div>
-                                    <div className="input full- optional">
-                                      <label
-                                        className="string optional"
-                                        htmlFor="last-name"
-                                      >
-                                        Last Name
-                                      </label>
-                                      <Field
-                                        className="string optional"
-                                        maxLength={255}
-                                        id="last-name"
-                                        placeholder="Last Name"
-                                        name="lastname"
-                                        type="text"
-                                        size={50}
-                                      />
-                                      {
-                                        <ErrorMessage name="lastname">
-                                          {(msg) => (
-                                            <p
-                                              className="abhitest"
-                                              style={{
-                                                color: "red",
-                                                position: "absolute",
-                                                zIndex: " 999",
-                                              }}
-                                            >
-                                              {msg}
-                                            </p>
-                                          )}
-                                        </ErrorMessage>
-                                      }
+
+                                    <div className="sminputs">
+                                      <div className="input full- optional">
+                                        <label className="string optional" htmlFor="mobile">Enter Mobile</label>
+                                        <Field className="string optional" maxLength={10} id="mobile" placeholder="Mobile Number" name='mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()} />
+                                        {<ErrorMessage name="mobilenumber">
+                                          {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                                        </ErrorMessage>}
+                                      </div>
+                                      <div className="input full- optional">
+                                        <label
+                                          className="string optional"
+                                          htmlFor="user-email"
+                                        >
+                                          Enter Email id
+                                        </label>
+                                        <Field
+                                          className="string optional"
+                                          maxLength={255}
+                                          id="email"
+                                          placeholder="email"
+                                          type="email"
+                                          name="emaill"
+                                          size={50}
+                                        />
+                                        {
+                                          <ErrorMessage name="emaill">
+                                            {(msg) => (
+                                              <p
+                                                className="abhitest"
+                                                style={{
+                                                  color: "red",
+                                                  position: "absolute",
+                                                  zIndex: " 999",
+                                                }}
+                                              >
+                                                {msg}
+                                              </p>
+                                            )}
+                                          </ErrorMessage>
+                                        }
+                                      </div>
+
+                                      <div className="input full- optional">
+                                        <label
+                                          className="string optional"
+                                          htmlFor="user-email"
+                                        >
+                                          Business Category
+                                        </label>
+                                        <Field name="Business_category" className="selct" component="select">
+                                          <option
+                                            type="text"
+                                            className="form-control"
+                                            id="business_category"
+                                          >Select Business Category</option>
+                                          <option value={1}>Retail</option>
+                                          <option value={2}>E-Commerce</option>
+                                          <option value={3}>Education</option>
+                                          <option value={4}>Government</option>
+                                          <option value={5}>Freelancer</option>
+
+                                        </Field>
+
+                                      </div>
                                     </div>
+
+
+
+
+
+
+
+
+                                    {/* <div className="input full- optional">
+                                  <label
+                                    className="string optional"
+                                    htmlFor="last-name"
+                                  >
+                                    Last Name
+                                  </label>
+                                  <Field
+                                    className="string optional"
+                                    maxLength={255}
+                                    id="last-name"
+                                    placeholder="Last Name"
+                                    name="lastname"
+                                    type="text"
+                                    size={50}
+                                  />
+                                  {
+                                    <ErrorMessage name="lastname">
+                                      {(msg) => (
+                                        <p
+                                          className="abhitest"
+                                          style={{
+                                            color: "red",
+                                            position: "absolute",
+                                            zIndex: " 999",
+                                          }}
+                                        >
+                                          {msg}
+                                        </p>
+                                      )}
+                                    </ErrorMessage>
+                                  }
+                                </div> */}
+
+
                                   </div>
-                                  <div className="sminputs">
-                                    <div className="input full- optional">
-                                      <label className="string optional" htmlFor="mobile">Enter Mobile</label>
-                                      <Field className="string optional" maxLength={10} id="mobile" placeholder="Mobile Number" name='mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()} />
-                                      {<ErrorMessage name="mobilenumber">
-                                        {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                                      </ErrorMessage>}
-                                    </div>
-                                    <div className="input full- optional">
-                                      <label
-                                        className="string optional"
-                                        htmlFor="user-email"
-                                      >
-                                        Enter Email id
-                                      </label>
-                                      <Field
-                                        className="string optional"
-                                        maxLength={255}
-                                        id="email"
-                                        placeholder="email"
-                                        type="email"
-                                        name="emaill"
-                                        size={50}
-                                      />
-                                      {
-                                        <ErrorMessage name="emaill">
-                                          {(msg) => (
-                                            <p
-                                              className="abhitest"
-                                              style={{
-                                                color: "red",
-                                                position: "absolute",
-                                                zIndex: " 999",
-                                              }}
-                                            >
-                                              {msg}
-                                            </p>
-                                          )}
-                                        </ErrorMessage>
-                                      }
-                                    </div>
-                                  </div>
+
+
+
                                   <div className="sminputs">
                                     <div className="input full- optional">
                                       <label
@@ -435,61 +472,6 @@ function Registration() {
                                       </span>
                                     </div>
                                   </div>
-
-                                  <div className="sminputs">
-
-                                    {/* <div className="input full- optional">
-                                      <label
-                                        className="string optional"
-                                        htmlFor="user-pw"
-                                      >
-                                        T&c
-                                      </label>
-                                    </div> */}
-                                    <div className="input full- optional">
-
-                                      <label htmlFor="Dropdown" className="">Business Category</label>
-                                      <Field name="Business_category" className="selct" component="select">
-                                        <option
-                                          type="text"
-                                          className="form-control"
-                                          id="business_category"
-                                        >Select Your Choice</option>
-                                        <option value={1}>Retail</option>
-                                        <option value={2}>E-Commerce</option>
-                                        <option value={3}>Education</option>
-                                        <option value={4}>Government</option>
-                                        <option value={5}>Freelancer</option>
-
-                                      </Field>
-                                      <input
-                                        type="hidden"
-                                        name="requestedClientType"
-                                        value="1"
-                                      />
-                                      {
-                                        <ErrorMessage name="Business_category">
-                                          {(msg) => (
-                                            <p
-                                              className="abhitest"
-                                              style={{
-                                                color: "red",
-                                                position: "absolute",
-                                                zIndex: " 999",
-                                              }}
-                                            >
-                                              {msg}
-                                            </p>
-                                          )}
-                                        </ErrorMessage>
-                                      }
-
-
-                                    </div>
-
-                                  </div>
-
-
                                   <div className="sminputs">
                                     <div className="simform__actions">
                                       <button
@@ -502,10 +484,19 @@ function Registration() {
                                       >
                                         Create Account
                                       </button>
+                                   
 
                                       <span className="simform__actions-sidetext">
+                                      <Field
+                                        type="checkbox"
+                                        className="form-check-input"
+                                        name="checkbox"
+                                        // onClick={()=>{ handlerTermCond(trmCond,setFieldValue)}}
+
+                                      /> 
 
                                         <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} />
+                                     
 
                                         {/* <p onClick={()=>{ setAcceptTc(!acceptTc)}} >accept the t&c </p> */}
                                         <p className="mb-0" style={{ cursor: "pointer" }} onClick={() => { callBackFn(acceptTc, isCheck) }} > Click here to accept <span className="text-primary">terms and conditions</span></p>
@@ -543,7 +534,6 @@ function Registration() {
 
                                     </div>
                                   </div>
-
                                 </Form>
                               )}
 
@@ -560,18 +550,11 @@ function Registration() {
               {/* ./authfy-login */}
             </div>
           </div>
-
+          <p className="footerforcopyright">Copyright 2022 SabPaisa, all rights reserve version 0.1</p>
 
         </div>
 
         {/* ./row */}
-
-        <div className="row">
-          <div className="col-lg-12 text-center">
-            <p className="footerforcopyright">Copyright 2022 SabPaisa, all rights reserve version 0.1</p>
-          </div>
-        </div>
-
 
       </div>
 
