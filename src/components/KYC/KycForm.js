@@ -112,7 +112,7 @@ function KycForm() {
         <div class="row">
           <div class="col-sm-4">
             <div class="card" style={{ height: "100%" }}>
-              <div className="gx-main-content-wrapper">
+              
                 <div className="right_layout my_account_wrapper right_side_heading">
                   <h1
                     className="m-b-sm gx-float-left font-weight-bold"
@@ -126,10 +126,7 @@ function KycForm() {
                     </span>
                   </h1>
                 </div>
-                <br />
-                <br />
-                <br />
-                <br />
+            
 
                 <div class="card-body">
                   <div>
@@ -278,11 +275,11 @@ function KycForm() {
                 </div>
               </div>
             </div>
-          </div>
+      
 
 
-             
-          <div class="col-sm-7 col-lg-7">
+       
+          <div class="col-sm-7 col-lg-7 col-md-7">
             <div
               className="card"
               style={{
@@ -294,8 +291,9 @@ function KycForm() {
               <div class="card-body">
                 <h1 class="card-title font-weight-bold">{title}</h1>
 
-                <div className="container-fluid">
-                  <div className="row">
+                  
+                <div className="row">
+                    
                   {/* role={roles} kycid={kycid} */}
                         {(tab === 1 && <ContactInfo role={roles} kycid={kycid} />) ||
                         (tab === 2 && <BusinessOverview role={roles} kycid={kycid} />) ||
@@ -306,12 +304,14 @@ function KycForm() {
                         (tab === 7 && <SubmitKyc role={roles} kycid={kycid} />) ||
                          <ContactInfo role={roles}  kycid={kycid} />}
                   </div>
-                </div>
+                  
+               
               </div>
             </div>
           </div>
         </div>
-      </div>
+        </div>
+    
     </section>
         
     

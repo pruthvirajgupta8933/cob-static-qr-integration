@@ -10,6 +10,7 @@ const RegisteredAddress = () => {
   const dispatch = useDispatch();
   
   const [check,setCheck] = useState(false);
+  const [buttonText, setButtonText] = useState("Save and Next");
   
 
 
@@ -56,12 +57,12 @@ const RegisteredAddress = () => {
           {console.log(formik)}
 
           <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Address<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
+              <div class="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -74,12 +75,12 @@ const RegisteredAddress = () => {
 
        
             <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   City<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
+              <div class="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -91,12 +92,12 @@ const RegisteredAddress = () => {
             </div>
 
             <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   State<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
+              <div class="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -107,12 +108,12 @@ const RegisteredAddress = () => {
             </div>
           
             <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Pincode<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
+              <div class="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -129,7 +130,6 @@ const RegisteredAddress = () => {
           
 
          
-
             <div class="my-5 p-2">
               <hr
                 style={{
@@ -139,14 +139,21 @@ const RegisteredAddress = () => {
                 }}
               />
               <div class="mt-3">
-       
-          <button className="btn float-lg-right"
+              <div class="row">
+              <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
+                
+                  <button
                     type="submit"
-                    style={{ backgroundColor: "#0156B3" }}>
-          <h4 className="text-white font-weight-bold"> &nbsp; &nbsp; Save & Next &nbsp; &nbsp;</h4>
-          </button>
-          </div>
-          </div>
+                    className="btn float-lg-right"
+                    style={{ backgroundColor: "#0156B3" }}
+                  >
+                    <h4 className="text-white"> {buttonText}</h4>
+                  </button>
+              
+              </div>
+              </div>
+              </div>
+            </div>
         </Form>
         
       )}

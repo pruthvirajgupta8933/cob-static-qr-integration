@@ -243,13 +243,12 @@ function ContactInfo(props) {
         <Form>
           {console.log(formik)}
           <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                 Contact Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              &nbsp;  &nbsp;  &nbsp;
-              <div class="col-sm-8 ml-5">
+              <div class="col-sm-7 col-md-7 col-lg-7">
               <FormikController
                 control="input"
                 type="text"
@@ -262,13 +261,13 @@ function ContactInfo(props) {
             </div>
 
           <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                 Contact Designation<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              &nbsp;  &nbsp;  &nbsp;
-              <div class="col-sm-8 ml-5">
+         
+              <div class="col-sm-7 col-md-7 col-lg-7">
               <FormikController
                 control="input"
                 type="text"
@@ -288,13 +287,13 @@ function ContactInfo(props) {
 
         
           <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                 Contact Number<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              &nbsp;  &nbsp;  &nbsp;
-              <div class="col-sm-8 ml-5">
+            
+              <div class="col-sm-7 col-md-7 col-lg-7">
               <FormikController
                 control="input"
                 type="text"
@@ -358,13 +357,13 @@ function ContactInfo(props) {
 
        
           <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                 Email Id<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              &nbsp;  &nbsp;  &nbsp;
-              <div class="col-sm-8 ml-5">
+              
+              <div class="col-sm-7 col-md-7 col-lg-7">
               <FormikController
                 control="input"
                 type="text"
@@ -436,7 +435,9 @@ function ContactInfo(props) {
                   width: "100%",
                 }}
               />
-              <div class="mt-3">
+              <div class="row">
+              <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
+              
                 {VerifyKycStatus === "Verified" ? null : (
                   <button
                     type="submit"
@@ -447,6 +448,7 @@ function ContactInfo(props) {
                   </button>
                 )}
               </div>
+            </div>
             </div>
        
       

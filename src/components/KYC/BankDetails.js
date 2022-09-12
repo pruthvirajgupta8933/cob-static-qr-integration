@@ -114,7 +114,7 @@ function BankDetails(props) {
   };
 
   return (
-    <div className="col-md-12 p-3">
+    <div className="col-md-12 col-md-offset-4" style={{width: "100%"}}>
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
@@ -126,13 +126,13 @@ function BankDetails(props) {
         <Form>
           {console.log(formik)}
           <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                 Account Holder Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              &nbsp;  &nbsp;  &nbsp;
-              <div class="col-sm-8 ml-5">
+             
+              <div class="col-sm-7 col-md-7 col-lg-7">
               <FormikController
                         control="input"
                         type="text"
@@ -147,12 +147,12 @@ function BankDetails(props) {
 
             
             <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Account Type<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
+              <div class="col-sm-7 col-md-7 col-lg-7">
               <FormikController
                         control="input"
                         type="text"
@@ -165,12 +165,12 @@ function BankDetails(props) {
             </div>
             
             <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   IFSC Code<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
+              <div class="col-sm-7 col-md-7 col-lg-7">
               <FormikController
                         control="input"
                         type="text"
@@ -183,12 +183,12 @@ function BankDetails(props) {
             </div>
 
             <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Branch<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
+              <div class="col-sm-7 col-md-7 col-lg-7 ">
               <FormikController
                         control="input"
                         type="text"
@@ -201,12 +201,12 @@ function BankDetails(props) {
             </div>
 
             <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Bank Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
+              <div class="col-sm-7 col-md-7 col-lg-7">
               <FormikController
                           control="select"                          
                           name="bank_id"
@@ -220,12 +220,12 @@ function BankDetails(props) {
             </div>
 
             <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Account Number <span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 ml-5">
+              <div class="col-sm-7 col-md-7 col-lg-7">
               <FormikController
                           control="input"
                           type="text"
@@ -246,12 +246,9 @@ function BankDetails(props) {
                   width: "100%",
                 }}
               />
-              <div class="mt-3">
-
-           
-    
-          
-       
+             
+              <div class="row">
+              <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
           {VerifyKycStatus === "Verified" ? null : (
          <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
                <h4 className="text-white"> {buttonText}</h4>
@@ -259,6 +256,8 @@ function BankDetails(props) {
             )}
           </div>
           </div>
+          </div>
+          
          
         </Form>
       )}

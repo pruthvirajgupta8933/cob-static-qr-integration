@@ -281,8 +281,8 @@ function BusinessOverview(props) {
           <Form>
 
 <div class="form-group row">
-    <label class="col-sm-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Type<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-7">
+    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Type<span style={{color:"red"}}>*</span></h4></label>
+    <div class="col-sm-7 col-md-7 col-lg-7">
     <FormikController
                   control="select"
                   name="business_type"
@@ -294,8 +294,8 @@ function BusinessOverview(props) {
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Category<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-7">
+    <label class="col-sm-4 col-md-4 col-lg-4 p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Sub-Category<span style={{color:"red"}}>*</span></h4></label>
+    <div class="col-sm-7 col-md-7 col-lg-7">
     <FormikController
                   control="select"
                   name="business_category"
@@ -325,8 +325,8 @@ function BusinessOverview(props) {
            
 
            <div class="form-group row">
-    <label class="col-sm-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Label<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-7">
+    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Label<span style={{color:"red"}}>*</span></h4></label>
+    <div class="col-sm-7 col-md-7 col-lg-7">
     <FormikController
                   control="input"
                   type="text"
@@ -427,8 +427,8 @@ function BusinessOverview(props) {
                 />
               </div> */}
    <div class="form-group row">
-  <label class="col-sm-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Company Website<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-7">
+  <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Company Website<span style={{color:"red"}}>*</span></h4></label>
+    <div class="col-sm-7 col-md-7 col-lg-7">
     <FormikController
                   control="input"
                   type="text"
@@ -467,8 +467,8 @@ function BusinessOverview(props) {
            
 
   <div class="form-group row">
-  <label class="col-sm-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Expected Transactions<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-7">
+  <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Expected Transactions<span style={{color:"red"}}>*</span></h4></label>
+    <div class="col-sm-7 col-md-7 col-lg-7">
     &nbsp;  &nbsp;  &nbsp;
        <FormikController
                   control="input"
@@ -498,14 +498,17 @@ function BusinessOverview(props) {
 
            <div class="my-5 p-2">
                 <hr style={{borderColor:'#D9D9D9',textShadow:"2px 2px 5px grey",width:"100%"}}/>
-              <div class="mt-3">
-
+              <div class="mt-2">
+              <div class="row">
+              <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
             {VerifyKycStatus === "Verified" ? null : (
              <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
                 <h4 className="text-white">  {buttonText}</h4>
               </button>
               
             )}
+            </div>
+            </div>
             </div>
             </div>
           </Form>

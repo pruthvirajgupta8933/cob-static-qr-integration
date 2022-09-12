@@ -256,12 +256,12 @@ function BusinessDetails(props) {
           <Form>
             {/* {console.log(formik)} */}
             <div class="form-group row">
-              <label class="col-sm-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label">
                 <h4 class="font-weight-bold text-nowrap">
                   Buisiness Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7">
+              <div class="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -341,12 +341,12 @@ function BusinessDetails(props) {
             </div> */}
 
             <div class="form-group row">
-              <label class="col-sm-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   GSTIN<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7">
+              <div class="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -379,12 +379,12 @@ function BusinessDetails(props) {
              */}
 
             <div class="form-group row">
-              <label class="col-sm-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Buisiness PAN<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7">
+              <div class="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -397,12 +397,12 @@ function BusinessDetails(props) {
             </div>
 
             <div class="form-group row">
-              <label class="col-sm-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   PAN Owner's Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7">
+              <div class="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -478,12 +478,12 @@ function BusinessDetails(props) {
 
 
             <div class="form-group row">
-              <label class="col-sm-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Authorize  Signatory PAN<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7 pull-right">
+              <div class="col-sm-7 col-md-7 col-lg-7 pull-right">
                 <FormikController
                   control="input"
                   type="text"
@@ -566,6 +566,8 @@ function BusinessDetails(props) {
                 }}
               />
               <div class="mt-3">
+              <div class="row">
+              <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
                 {VerifyKycStatus === "Verified" ? null : (
                   <button
                     type="submit"
@@ -575,6 +577,8 @@ function BusinessDetails(props) {
                     <h4 className="text-white"> {buttonText}</h4>
                   </button>
                 )}
+              </div>
+              </div>
               </div>
             </div>
           </Form>

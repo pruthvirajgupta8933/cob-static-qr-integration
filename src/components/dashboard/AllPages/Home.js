@@ -1,5 +1,3 @@
-/* eslint-disable array-callback-return */
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -307,7 +305,6 @@ function Home() {
       <div className='announcement-banner'>
         <div className='title'>tesging</div>
       </div>
-
     </div> */}
 
       <main className="gx-layout-content ant-layout-content">
@@ -332,7 +329,7 @@ function Home() {
 
       <div
         className={
-          "modal fade" + (modalState === "PENDING" ? " show d-block" : " d-none")
+          "modal fade" + (modalState === "APPROVED" ? " show d-block" : " d-none")
         }
         tabIndex="-1"
         role="dialog"
@@ -387,7 +384,7 @@ function Home() {
       
       <div
         className={
-          "modal fade" + (modalState === "APPROVED" ? " show d-block" : " d-none")
+          "modal fade" + (modalState === "PENDING" ? " show d-block" : " d-none")
         }
         tabIndex="-1"
         role="dialog"
@@ -407,26 +404,32 @@ function Home() {
                 <span aria-hidden="true">&times;</span>
               </button>
 
-              <div class="row">
-                <div class="col-md-10">
-                  <h1
+              <div class="container">
+  <div class="row justify-content-md-center">
+    
+    <div class="col-md-auto">
+    <ul>
+   
+    <h1
                     className="text-centre"
-                    style={{ color: "#4BB543",fontWeight:"700", fontStyle:"normal", fontSize:"32px", marginLeft:"165px"}}
+                    style={{ color: "#4BB543",fontWeight:"700", fontStyle:"normal", fontSize:"32px",justifyContent:"center",display:"flex"}}
                   >
                     Congratulations!
                   </h1>
-                </div>
-                </div>
-                <div class="row">
-                <div class="col-md-10 ml-auto">
-                  <p className="modalscolrsfortextapprv" style={{marginLeft:"91px"}}>
+    <p className="modalscolrsfortextapprv" style={{justifyContent:"center",display:"flex"}}>
                     Your KYC is Done!
-                    <p className="modalscolrsfortextapprv" style={{marginLeft:"-94px"}}>
-                    You can start accepting payments now
-                  </p>
-                  </p>
-                  <div class="row">
-                  <div class="col-sm-10">
+                    
+                    </p>
+                    <span className="modalscolrsfortextapprv text-center"style={{display:"table-footer-group",justifyContent:"center",whiteSpace:"nowrap"}}>
+                    You can start accepting payments now 
+                  </span>
+                   
+                  </ul>
+                  
+    </div>
+    
+   
+                  <div class="rounded mx-auto d-block">
                   <img
                     src={congratsImg}
                     width={250}
@@ -435,14 +438,15 @@ function Home() {
                     title="SabPaisa"
                   />
                   </div>
-                  </div>
-                 
-                
-                </div>
-                </div>
-             
+                  
+    
+  </div>
+  
+</div>
 
-                  <Link to={`/dashboard/`}><button className="modalbtnsuccess text-white mt-3 ml-5">Continue</button></Link> 
+                   <div style={{display:"flex",justifyContent:"center"}}>
+                  <button className="modalbtnsuccess text-white mt-3 ml-5" onClick={()=> setModalState(!modalState)}>Continue</button>
+                  </div>
             </div>
           </div>
         </div>
