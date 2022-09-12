@@ -190,7 +190,7 @@ export const Profile = () => {
       dispatch(createClientProfile(data));
     } else {
       delete data.clientCode;
-      dispatch(updateClientProfile({ data, clientId }));
+      dispatch(updateClientProfile({ data }));
     }
     // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
     toast.success("Your Data is Update successfully", {
