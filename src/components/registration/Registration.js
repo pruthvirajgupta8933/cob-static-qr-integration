@@ -560,17 +560,17 @@ function Registration() {
               {/* ./authfy-login */}
             </div>
           </div>
-       
+
 
         </div>
 
         {/* ./row */}
 
-<div className="row">
-  <div className="col-12">
-  <p className="footerforcopyright">Copyright 2022 SabPaisa, all rights reserve version 0.1</p>
-  </div>
-</div>
+        <div className="row">
+          <div className="col-lg-12 text-center">
+            <p className="footerforcopyright">Copyright 2022 SabPaisa, all rights reserve version 0.1</p>
+          </div>
+        </div>
 
 
       </div>
