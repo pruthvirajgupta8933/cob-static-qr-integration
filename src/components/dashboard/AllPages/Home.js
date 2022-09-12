@@ -329,7 +329,7 @@ function Home() {
 
       <div
         className={
-          "modal fade" + (modalState === "APPROVED" ? " show d-block" : " d-none")
+          "modal fade" + (modalState === "PENDING" ? " show d-block" : " d-none")
         }
         tabIndex="-1"
         role="dialog"
@@ -384,7 +384,7 @@ function Home() {
       
       <div
         className={
-          "modal fade" + (modalState === "PENDING" ? " show d-block" : " d-none")
+          "modal fade" + (modalState === "APPROVED" ? " show d-block" : " d-none")
         }
         tabIndex="-1"
         role="dialog"
