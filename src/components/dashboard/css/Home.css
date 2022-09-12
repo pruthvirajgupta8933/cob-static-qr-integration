@@ -212,7 +212,7 @@ margin-left: 97px;
   color: #cd8214;
 }
 
-/* Css for Dashboard Modal*/
+/* Css for Dashboard  IF KYC IS PENDING*/
 
 .ModalButtonClr{
   border: 0;
@@ -248,10 +248,39 @@ position:absolute;
 top: 610px;
 right: 485px;
 /* or 28px */
-
-
 color: #FFFFFF;
 }
+
+/* Css for Dashboard  IF KYC IS APPROVED*/
+.modalbtnsuccess{
+  /* font-family: 'Satoshi'; */
+  border: 0;
+  background: #0156B3;
+  box-shadow: 0px 14px 10px rgba(66, 133, 248, 0.5);
+  border-radius: 4px;
+  height: 40px;
+  width: 250px;
+}
+.modalscolrsfortextapprv{
+  /* font-family: 'Satoshi'; */
+  color: #000000;
+font-style: normal;
+font-weight: 700;
+font-size:24px;
+line-height: 35px;
+align-items: centre;
+margin-left: 20px;
+}
+
+ .congratstext {
+  color: "#4BB543";
+  font-weight: "700";
+  font-size: "24px";
+  size: "32px";
+}
+
+
+
 /* Css for CreatePaymentLink here*/
 .cratepaymentlinkclrsfigma{
   background: #0156B3;
