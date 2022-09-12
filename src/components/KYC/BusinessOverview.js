@@ -281,8 +281,8 @@ function BusinessOverview(props) {
           <Form>
 
 <div class="form-group row">
-    <label class="col-sm-2 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Type<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-8 ml-5">
+    <label class="col-sm-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Type<span style={{color:"red"}}>*</span></h4></label>
+    <div class="col-sm-7">
     <FormikController
                   control="select"
                   name="business_type"
@@ -294,8 +294,8 @@ function BusinessOverview(props) {
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-2 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Category<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-8 ml-5">
+    <label class="col-sm-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Category<span style={{color:"red"}}>*</span></h4></label>
+    <div class="col-sm-7">
     <FormikController
                   control="select"
                   name="business_category"
@@ -325,8 +325,8 @@ function BusinessOverview(props) {
            
 
            <div class="form-group row">
-    <label class="col-sm-2 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Label<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-8 ml-5">
+    <label class="col-sm-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Label<span style={{color:"red"}}>*</span></h4></label>
+    <div class="col-sm-7">
     <FormikController
                   control="input"
                   type="text"
@@ -427,8 +427,8 @@ function BusinessOverview(props) {
                 />
               </div> */}
    <div class="form-group row">
-  <label class="col-sm-2 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Company Website<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-8 ml-5">
+  <label class="col-sm-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Company Website<span style={{color:"red"}}>*</span></h4></label>
+    <div class="col-sm-7">
     <FormikController
                   control="input"
                   type="text"
@@ -467,8 +467,8 @@ function BusinessOverview(props) {
            
 
   <div class="form-group row">
-  <label class="col-sm-2 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Expected Transactions<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-8 ml-5">
+  <label class="col-sm-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Expected Transactions<span style={{color:"red"}}>*</span></h4></label>
+    <div class="col-sm-7">
     &nbsp;  &nbsp;  &nbsp;
        <FormikController
                   control="input"

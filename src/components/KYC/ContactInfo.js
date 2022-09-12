@@ -328,7 +328,7 @@ function ContactInfo(props) {
                         {/* optbtn */}
                       <a
                         href={() => false}
-                        className="btn btnbackground text-white btn-sm"
+                        className="btn btnbackground text-white btn-sm optbtn"
                         onClick={() => {
                           checkInputIsValid(
                             formik.errors,
@@ -398,7 +398,7 @@ function ContactInfo(props) {
                     {/* optbtn */}
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm"
+                    className="btn btnbackground text-white btn-sm optbtn"
                     onClick={() => {
                       checkInputIsValid(
                         formik.errors,
