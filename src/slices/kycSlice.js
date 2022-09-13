@@ -661,6 +661,33 @@ export const approvekyc = createAsyncThunk(
 );
 
 
+//---------------- Registered Address TAP INTEGRATION --------------//
+
+
+export const saveRegisteredAddress = createAsyncThunk(
+  "kyc/saveRegisteredAddress",
+  async (requestParam) => {
+    const response = await axiosInstanceAuth
+      .post(
+        `${API_URL.Registered_Address}`,
+        requestParam,
+
+        {
+          headers: {},
+        }
+      )
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
+
+
+
+
+
 
 export const kycSlice = createSlice({
   name: "kyc",

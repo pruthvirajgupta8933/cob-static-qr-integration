@@ -19,6 +19,7 @@ import { convertToFormikSelectJson } from "../../../_components/reuseable_compon
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../../dashboard/NavBar/NavBar"
 import { axiosInstance } from "../../../utilities/axiosInstance"
+import moment from "moment"
 function TransactionHistory() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -52,15 +53,26 @@ function TransactionHistory() {
   const [buttonClicked, isButtonClicked] = useState(false);
 
 
+
   // const [date, setDate] = useState(currentDate);
   
  
-  let current = new Date();
-  let myDate = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
-  //  setDate(myDate)
+  // let current = new Date();
+  // let myDate = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
+  // //  setDate(myDate)
 
 
-  console.log(myDate, "<=== Today's  Date ===>")
+  var now = moment().format('YYYY-M-D');
+  var splitDate = now.split("-");
+  if(splitDate[1].length===1){
+    splitDate[1] = '0'+splitDate[1]; 
+  }  
+  if(splitDate[2].length===1){
+    splitDate[2] = '0'+splitDate[2];
+  }
+  splitDate =splitDate.join('-');
+
+
 
   var clientMerchantDetailsList = [];
   if (
@@ -81,12 +93,13 @@ function TransactionHistory() {
     : "";
 
   const [clientCode, SetClientCode] = useState(clientcode_rolebased);
+  const [todayDate, setTodayDate] = useState(splitDate);
   // console.log(clientCode)
 
   const initialValues = {
     // clientCode:"",
-    fromDate: "",
-    endDate: "",
+    fromDate: todayDate,
+    endDate: todayDate,
     transaction_status: "All",
     payment_mode: "All",
   };

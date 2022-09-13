@@ -4,10 +4,12 @@ import * as Yup from "yup"
 import FormikController from '../../_components/formik/FormikController'
 import { useSelector , useDispatch } from 'react-redux';
 import { toast } from 'react-toastify'
+import { saveRegisteredAddress } from "../../slices/kycSlice"
 
 
-const RegisteredAddress = () => {
+const RegisteredAddress = (props) => {
   const dispatch = useDispatch();
+  
   
   const [check,setCheck] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
@@ -30,16 +32,39 @@ const RegisteredAddress = () => {
   
   }
   const validationSchema = Yup.object({
-    address: Yup.string().required("Required"),
-    city: Yup.string().required("Required"),
-    state: Yup.string().required("Required"),
-    pin_code: Yup.string().required("Required"),
+    address: Yup.string().required("Required").nullable(),
+    city: Yup.string().required("Required").nullable(),
+    state: Yup.string().required("Required").nullable(),
+    pin_code: Yup.string().required("Required").nullable(),
   })
 
 
 
   const onSubmit =  (values) => {
-   console.log("Form Submitted")
+
+    // console.log("Form Submitted")
+   
+    dispatch(
+      saveRegisteredAddress({
+        address: values.address,
+        city: values.city,
+        state:values.state,
+        pin_code: values.pin_code,
+        login_id: loginId,
+        submit_by: "270",
+      })
+    ).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true
+      ) {
+        // console.log(res)
+        // console.log("This is the response", res);
+        toast.success(res.payload.message);
+      } else {
+        toast.error("Something Went Wrong! Please try again.");
+      }
+    });
 };
 
 

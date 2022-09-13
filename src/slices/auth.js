@@ -572,6 +572,7 @@ const authSlice = createSlice({
     [updateClientProfile.fulfilled]: (state, action) => {
       console.log('fulfilled profile');
       state.user = action.payload
+      // console.log(action.payload,"<=== Res ===>")
     },
     [updateClientProfile.rejected]: () => {
       console.log('rejected profile');
