@@ -6,11 +6,10 @@ import API_URL from "../../config";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { isPhoneVerified, otpForContactInfo, verifyKycEachTab } from "../../slices/kycSlice";
+import { isPhoneVerified, otpForContactInfo, verifyKycEachTab,updateContactInfo } from "../../slices/kycSlice";
 import MailVerificationModal from "./OtpVerificationKYC/MailVerificationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 import { values } from "lodash";
-import { updateContactInfo } from "../../slices/contactInfo";
 // import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 // import verifyKycTab from "../../slices/veriferApproverSlice"
 
