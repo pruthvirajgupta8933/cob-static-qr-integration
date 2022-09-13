@@ -27,6 +27,8 @@ import TransactionHistoryDownload from './AllPages/TransactionHistoryDownload';
 import Approver from '../ApproverNVerifier/Approver';
 import ThanksPage from '../Otherpages/ThanksPage';
 import ChangePassword from './AllPages/ChangePassword';
+import Products from './AllPages/Product Catalogue/Products';
+import SabPaisaPricing from './AllPages/Product Catalogue/SabPaisaPricing';
 
 
 
@@ -85,7 +87,8 @@ function Dashboard() {
                      <SettlementReport/>
                 </Route>
                 <Route exaxt path={`${path}/product-catalogue`}>
-                     <Subsciption />
+                     {/* <Subsciption /> */}
+                     <Products/>
                 </Route>
                 <Route exaxt path={`${path}/paylink`}>
                      <Paylink />
@@ -115,6 +118,9 @@ function Dashboard() {
 
               <Route exact path={`${path}/transaction-history-new`} >
                 <TransactionHistoryDownload />
+              </Route>
+              <Route exact path={`${path}/sabpaisa-pricing`} >
+                <SabPaisaPricing />
               </Route>
 
               <Route exact path={`${path}/kyc`} >

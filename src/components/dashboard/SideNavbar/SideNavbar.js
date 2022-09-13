@@ -7,6 +7,7 @@ import { roleBasedAccess } from '../../../_components/reuseable_components/roleB
 import SabpaisaLogo2 from "../../../assets/images/sabpaisa-logo2.png"
 import SabpaisaLogo1 from "../../../assets/images/sabpaisa-logo-white.png"
 import Sabpaisalogo from "../../../assets/images/sabpaisalogo.png"
+import Products from "../AllPages/Product Catalogue/Products"
 
 function SideNavbar() {
   const { auth, kyc } = useSelector((state) => state)

@@ -257,12 +257,12 @@ export const createClientProfile = createAsyncThunk(
 
 export const updateClientProfile = createAsyncThunk(
   "auth/updateClientProfile",
-  async ({ data, clientId }, thunkAPI) => {
+  async ({ data }, thunkAPI) => {
     try {
       // console.log("update functon",data);
       // console.log("update functon",clientId);
       // console.log({ fromdate, todate, clientcode });===update fn call
-      const response = await AuthService.updateClientProfile(data, clientId);
+      const response = await AuthService.updateClientProfile(data);
       thunkAPI.dispatch(setMessage(response.data.message));
       const userLocalData = JSON.parse(localStorage?.getItem("user"));
       const allData = Object.assign(userLocalData, data);
@@ -272,7 +272,7 @@ export const updateClientProfile = createAsyncThunk(
       // console.log("all data",allData);
 
       const clientMerchantDetailsListObj = {
-        "clientId": clientId,
+        // "clientId": clientId,
         "lookupState": null,
         "address": null,
         "clientAuthenticationType": null,
@@ -572,6 +572,7 @@ const authSlice = createSlice({
     [updateClientProfile.fulfilled]: (state, action) => {
       console.log('fulfilled profile');
       state.user = action.payload
+      // console.log(action.payload,"<=== Res ===>")
     },
     [updateClientProfile.rejected]: () => {
       console.log('rejected profile');

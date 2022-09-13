@@ -294,7 +294,7 @@ function Home() {
               With supporting text below as a natural lead-in to additional
               content.
             </p>
-            <a href="#">View International Methods</a>
+            <Link to={`dashboard/product-catalogue`}><button className="ColrsforredirectProdct text-white mt-2">See All Products</button></Link>
           </div>
         </div>
       </div>

@@ -302,3 +302,263 @@ margin-left: 20px;
   border-radius: 3px;
   padding:8px 20px;
 }
+
+button:disabled,
+button[disabled1]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+/* Css for pricing*/
+
+.headingpricing{
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 700;
+font-size: 41px;
+line-height: 48px;
+text-align: center;
+color: #000000;
+}                                                           
+.forbasicparacss{
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 21px;
+/* identical to box height */
+
+text-align: center;
+
+color: #000000;
+}
+
+.heightcards{
+  height: 500px;
+
+}
+.figmacssforEnterpricechooseplan{
+  background: #4285F8;
+border-radius: 3px;
+position: absolute;
+width: 223px;
+height: 52px;
+left: 73px;
+top: 209px;
+
+}
+.featurespricingforEnterpricing{
+  margin-bottom: 136px;
+  font-family: 'Montserrat';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+text-align: center;
+color: #FFFFFF;
+
+}
+.forEnterPriceparaGcss{
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 16px;
+text-align: center;
+color: #FFFFFF;
+}
+.cardoneheadingcss{
+  font-family: 'Montserrat';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 29px;
+text-align: center;
+color: #000000;
+
+}
+.forimagespricing{
+  margin-left: 88px;
+  /* margin-top: -20px; */
+
+}
+.forimagesEnterpricing{
+  margin-left: 71px;
+  margin-top:-16px
+}
+
+.graphcssforenterprice{
+  font-family: 'Montserrat';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+text-align: center;
+
+color: #DDDDDD;
+
+}
+.paragraphcsss{
+  font-family: 'Montserrat';
+font-style: normal;
+font-weight: 500;
+margin-top: -21px;
+font-size: 14px;
+line-height: 17px;
+text-align: center;
+color: #747474;
+}
+.figmacssforchooseplan{
+border-radius: 4px;
+border: 3px solid #1465FA;
+border-radius: 3px;
+position: absolute;
+width: 223px;
+height: 52px;
+left: 59px;
+top: 210px;
+}
+
+.featurespricing{
+  margin-bottom: 136px;
+    /* margin-left: 40px; */
+    font-family: 'Montserrat';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+text-align: center;
+
+color: #1465FA;
+}
+
+.centered {
+  font-family: 'Montserrat';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+text-align: center;
+color: #1465FA;
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.forThirdscardfigma{
+  font-family: 'Montserrat';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 29px;
+text-align: center;
+color: #000000;
+
+}
+
+.forparacss{
+  
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  
+  color: #747474;
+}
+
+.firstli{
+  position: absolute;
+width: 83px;
+height: 16px;
+left: 125px;
+    top: 359px;
+}
+.secondli{
+  position: absolute;
+width: 103px;
+height: 16px;
+left: 117px;
+    top: 385px;
+}
+
+.thirdli{
+  position: absolute;
+width: 101px;
+height: 16px;
+left: 115px;
+    top: 407px;
+}
+.forthli{
+  position: absolute;
+width: 91px;
+height: 16px;
+left: 120px;
+    top: 430px
+    }
+    .fifthli{
+      position: absolute;
+width: 83px;
+height: 16px;
+left: 122px;
+    top: 454px
+    }
+
+    .forsecondcardfigma{
+      font-family: 'Montserrat';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 29px;
+text-align: center;
+    }
+
+    .Businessoredrcssforcard{
+      font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 16px;
+text-align: center;
+
+color: #747474;
+    }
+
+    .parabusinesscss{
+      font-family: 'Montserrat';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+text-align: center;
+color: #747474;
+
+    }
+
+    .backgroundCard{
+      background: #012167;
+border: 1px solid #DBDBDB;
+box-shadow: 0px 4px 5px 1px rgba(193, 193, 193, 0.35);
+border-radius: 4px;
+    }
+
+    .cssforbusinesscard{
+      margin-left: 71px;
+  margin-top:-15px;
+    }
+    .featuresIncludingforbusiness{
+      font-family: 'Montserrat';
+font-style: normal;
+font-weight: 700;
+margin-bottom: 136px;
+font-size: 14px;
+line-height: 17px;
+text-align: center;
+color: #1465FA;
+    }
+
+

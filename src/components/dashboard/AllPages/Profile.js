@@ -101,20 +101,36 @@ export const Profile = () => {
   //   clientAuthenticationType: clientAuthenticationType,
   // };
 
-  const INITIAL_FORM_STATE = {
+  // const INITIAL_FORM_STATE = {
+  //   loginId: loginId,
+  //   clientName: clientContactPersonName,
+  //   phone: clientMobileNo,
+  //   email: clientEmail,
+  //   ...(isCreateorUpdate && { clientCode: "" }),
+  //   address: clientMerchantDetailsList && clientMerchantDetailsList[0]?.address,
+  //   accountHolderName: accountHolderName,
+  //   bankName: bankName,
+  //   accountNumber: accountNumber,
+  //   ifscCode: userIfscCode,
+  //   pan: pan,
+  //   clientAuthenticationType: clientAuthenticationType,
+  // };
+
+   const INITIAL_FORM_STATE = {
     loginId: loginId,
     clientName: clientContactPersonName,
     phone: clientMobileNo,
     email: clientEmail,
     ...(isCreateorUpdate && { clientCode: "" }),
     address: clientMerchantDetailsList && clientMerchantDetailsList[0]?.address,
-    // accountHolderName: accountHolderName,
-    // bankName: bankName,
-    // accountNumber: accountNumber,
-    // ifscCode: userIfscCode,
-    // pan: pan,
-    // clientAuthenticationType: clientAuthenticationType,
+    accountHolderName: accountHolderName,
+    bankName: "",
+    accountNumber: "",
+    ifscCode: "",
+    pan: "",
+    clientAuthenticationType: "",
   };
+  
 
   // form validation rules
   const validationSchema = Yup.object().shape({
@@ -190,14 +206,10 @@ export const Profile = () => {
       dispatch(createClientProfile(data));
     } else {
       delete data.clientCode;
-      dispatch(updateClientProfile({ data, clientId }));
+      dispatch(updateClientProfile({ data }));
     }
     // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
-    toast.success("Your Data is Update successfully", {
-      autoClose: 2000,
-      limit: 1,
-      transition: Zoom,
-    });
+   
   }
 
   const verifyClientCodeFn = (getCode) => {

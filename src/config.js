@@ -154,6 +154,9 @@ const API_LIVE = {
   /*Image Preview API */
   Image_Preview: `${kyc_url}/kyc/get-merchant-document/`,
 
+  /* Registered Address */
+  Registered_Address: `${kyc_url}/kyc/save-registered-address/`,
+
 
   /* verify each tab of the kyc , URL FOR VERIFER*/
   VERIFY_EACH_TAB: `${kyc_url}/kyc/verify-kyc/update/`,
