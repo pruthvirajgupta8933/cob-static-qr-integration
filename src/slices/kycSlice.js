@@ -6,6 +6,7 @@ import { axiosInstanceAuth } from "../utilities/axiosInstance";
 
 
 const initialState = {
+
   documentByloginId: {
     documentId: "",
     name: "",
@@ -23,6 +24,10 @@ const initialState = {
     merchant: "",
     type: "",
   },
+  DataUpdateResponse: {         
+    status: "",
+    message: ""
+   },
 
   kycApproved: {
     count: null,
@@ -168,6 +173,27 @@ const initialState = {
     message: ""
   }
 };
+
+ //--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
+ export const updateContactInfo = createAsyncThunk(
+  "UpdateContactInfo/updateContactInfo",
+  async (requestParam) => {
+    const response = await axiosInstanceAuth.put(
+      `${API_URL.Save_General_Info}`,
+      requestParam,
+      {
+        headers: {
+          // Authorization: ""
+        }
+      }
+    )
+    .catch((error) => {
+      return error.response;
+    });
+    // console.log(response)
+    return response.data;
+  }
+);
 
 
 // KYC OTP function 
@@ -749,6 +775,19 @@ export const kycSlice = createSlice({
       state.documentByloginId = action.payload;
     },
     [UploadLoginId.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+
+    //Contact Info Post Request 
+
+    [updateContactInfo.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [updateContactInfo.fulfilled]: (state, action) => {
+      state.DataUpdateResponse = action.payload;
+    },
+    [updateContactInfo.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.error.message;
     },

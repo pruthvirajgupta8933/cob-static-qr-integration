@@ -6,9 +6,6 @@ import { dashboardReducer } from './slices/dashboardSlice';
 import reducerSubscription from './slices/subscription'
 // import KycOtpSlice from "./slices/kycOtp"
 import { kycReducer } from './slices/kycSlice';
-import ContactInfoSlice from "./slices/contactInfo"
-
-
 
 
 
@@ -19,7 +16,6 @@ const reducer = {
   dashboard:dashboardReducer,
   subscription:reducerSubscription,
   kyc:kycReducer,
-  ContactInfoSlice:ContactInfoSlice,
 }
 
 const store = configureStore({
