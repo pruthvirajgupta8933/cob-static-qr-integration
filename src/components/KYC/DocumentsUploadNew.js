@@ -121,26 +121,29 @@ function DocumentsUpload() {
                   />
                   {formik.handleChange("docType", setDocTypeIdDropdown(formik.values.docType))}
                 </div>
-
-
                 <div class="row-xs-10 mt-3 mr-2 p-3">
-                  {/* <div class="card-footer"> */}
                   <div class="mt-xl-10">
                     <button className="btn float-lg-right" type="submit" style={{ backgroundColor: "#0156B3" }}>
                       <h4 className="text-white font-weight-bold"> &nbsp; &nbsp; Save & Next &nbsp; &nbsp;</h4>
                     </button>
-
                   </div>
-                  {/* </div> */}
                 </div>
-
-
                 {docTypeIdDropdown === "1" ?
                   <div class="row">
                     <div class="col-lg-6 width">
                       <div className="file-upload border-dotted">
                         <div className="image-upload-wrap ">
-                          <input className="file-upload-input" id="1" type="file" onChange={(e)=>handleChange(e,1)} />
+                        <FormikController
+                            control="file"
+                            type="file"
+                            name="aadhar_front"
+                            className="file-upload-input"
+                            id="1"
+                            onChange={(e)=>handleChange(e,1)}
+                            // disabled={VerifyKycStatus === "Verified" ? true : false}
+                            // readOnly={readOnly}
+                          />
+                          {/* <input className="file-upload-input" id="1" type="file" name="aadharFront" onChange={(e)=>handleChange(e,1)} /> */}
                           <div className="drag-text">
                             <h3 class="p-2 font-16">Add Front Aadhaar Card</h3>
                             <img alt="Doc" src={plus} style={{ width: 30 }} className="mb-4" />
@@ -148,18 +151,25 @@ function DocumentsUpload() {
                           </div>
                         </div>
                       </div>
-
-
                       {/* uploaded document preview */}
                       <div className="file-upload-content imagepre_1">
                         <img className="file-upload-image imagepre_sub_1" src="#" alt="Document" />
                       </div>
-
                     </div>
                     <div class="col-lg-6 width">
                       <div className="file-upload  border-dotted">
                         <div className="image-upload-wrap ">
-                          <input className="file-upload-input" id="2" type="file" onChange={(e)=>handleChange(e,2)} />
+                        <FormikController
+                            control="file"
+                            type="file"
+                            name="aadhar_back"
+                            className="file-upload-input"
+                            id="2"
+                            onChange={(e)=>handleChange(e,2)}
+                            // disabled={VerifyKycStatus === "Verified" ? true : false}
+                            // readOnly={readOnly}
+                          />
+                          {/* <input className="file-upload-input" id="2" type="file" onChange={(e)=>handleChange(e,2)} /> */}
                           <div className="drag-text">
                             <h3 class="p-2 font-16">Add Back Aadhaar Card</h3>
                             <img alt="Doc" src={plus} style={{ width: 30 }} className="mb-4" />
@@ -179,7 +189,17 @@ function DocumentsUpload() {
                       <div class="col-lg-6 ">
                         <div className="file-upload  border-dotted">
                           <div className="image-upload-wrap ">
-                            <input className="file-upload-input" id="3" type="file" onChange={(e)=>handleChange(e,3)} />
+                          <FormikController
+                            control="file"
+                            type="file"
+                            name="pan_card"
+                            className="file-upload-input"
+                            id="3"
+                            onChange={(e)=>handleChange(e,3)}
+                            // disabled={VerifyKycStatus === "Verified" ? true : false}
+                            // readOnly={readOnly}
+                          />
+                            {/* <input className="file-upload-input" id="3" type="file" onChange={(e)=>handleChange(e,3)} /> */}
                             <div className="drag-text">
                               <h3 class="p-2 font-16">Add PAN Card</h3>
                               <img alt="Doc" src={plus} style={{ width: 30 }} className="mb-4"  />
@@ -192,14 +212,9 @@ function DocumentsUpload() {
                           <img className="file-upload-image imagepre_sub_3" src="#" alt="Document" />
                         </div>
                       </div>
-
-
                     </>
                     : <></>
                 }
-
-
-
               </div>
             </Form>
 

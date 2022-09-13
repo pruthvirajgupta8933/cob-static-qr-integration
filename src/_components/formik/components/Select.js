@@ -6,7 +6,7 @@ function Select(props) {
   
   return (
     <React.Fragment>
-      <label htmlFor={name} >{label}</label>
+      {typeof(label)!=="undefined"?<label htmlFor={name}> {label}</label> : <></>}
       <Field as="select" id={name} name={name} {...rest}>
         {options.map((option,i) => {
           return (

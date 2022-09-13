@@ -5,7 +5,7 @@ function RadioButtons(props) {
   const { label, name, options, ...rest } = props
   return (
     <React.Fragment>
-      <label>{label}</label>
+      {typeof(label)!=="undefined"?<label htmlFor={name}> {label}</label> : <></>}
       <Field name={name}>
         {formik => {
           const { field } = formik

@@ -5,7 +5,7 @@ function File(props) {
   const { name, label, ...rest } = props
   return (
     <React.Fragment>
-      <label htmlFor={name}> {label}</label>
+      {typeof(label)!=="undefined"?<label htmlFor={name}> {label}</label> : <></>}
       <input name="name" {...rest} />
       <p className="text-danger"> <ErrorMessage  name={name}/> </p>
     </React.Fragment>
