@@ -52,7 +52,7 @@ const NavBar = () => {
                 <span class="caret text-white">{username}</span></button>
                 <div class="dropdown-menu" style={{backgroundColor:"#0156B3", height:"5rem", width:"10rem"}}>
                 <div class="row px-md-4 p-2">
-                 <Link to = "/dashboard/profile" class="dropdown-item text-white">My Profile</Link>
+                 <Link to = "/dashboard/change-password" class="dropdown-item text-white">Change Password</Link>
                  <Link onClick={exitback} class="dropdown-item text-white ">Log out</Link>
 
                  </div>

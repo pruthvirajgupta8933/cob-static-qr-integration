@@ -80,7 +80,7 @@ const createClintCode = (object) => {
 
 
 const updateClientProfile = (object,clientId)=>{
-    return axiosInstanceAuth.put(BASE_URL_FOR_PROFILE + "/updateProfile/", object);
+    return axiosInstanceAuth.put(BASE_URL_FOR_PROFILE + "/updateProfile", object);
 }
 
 

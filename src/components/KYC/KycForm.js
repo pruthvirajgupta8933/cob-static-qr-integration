@@ -298,7 +298,7 @@ function KycForm() {
                         {(tab === 1 && <ContactInfo role={roles} kycid={kycid} />) ||
                         (tab === 2 && <BusinessOverview role={roles} kycid={kycid} />) ||
                         (tab === 3 && <BusinessDetails role={roles} kycid={kycid} />) ||
-                        (tab === 4 && <RegisteredAddress  />) ||
+                        (tab === 4 && <RegisteredAddress role={roles} kycid={kycid}  />) ||
                         (tab === 5 && <BankDetails role={roles} kycid={kycid} />) ||
                         (tab === 6 && <DocumentsUploadNew  role={roles} kycid={kycid} />) ||
                         (tab === 7 && <SubmitKyc role={roles} kycid={kycid} />) ||
