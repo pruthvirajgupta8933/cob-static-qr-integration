@@ -377,16 +377,10 @@ export const documentsUpload = createAsyncThunk(
 export const merchantInfo = createAsyncThunk(
   "kyc/merchantInfo",
   async (requestParam) => {
-    const headers = {
-      "Content-Type": "multipart/form-data",
-    }
-
- 
-      //Request URL: https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/
       const response = await axiosInstanceAuth({
         method: "post",
-        url: "https://stgcobkyc.sabpaisa.in/kyc/upload-merchant-document/",
-        data: requestParam,
+        url:  requestParam.docType ==='1' ? API_URL.UPLOAD_MERCHANT_AADHAAR : API_URL.Upload_Merchant_document,
+        data: requestParam.bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
       }).catch((error) => {
         return error.response;

@@ -11,8 +11,8 @@ import API_URL from '../../config';
 import { documentsUpload, merchantInfo } from "../../slices/kycSlice"
 import plus from "../../assets/images/plus.png"
 import { set } from 'lodash';
-import { readURL, removeUpload } from '../../assets/js/ImageUpload';
-import UploadDocTest from './UploadDocTest';
+// import { readURL, removeUpload } from '../../assets/js/ImageUpload';
+// import UploadDocTest from './UploadDocTest';
 
 import  "../../assets/css/kyc-document.css"
 
@@ -37,22 +37,28 @@ function DocumentsUpload() {
 
   const [docTypeList, setDocTypeList] = useState([])
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
-  const [fieldValue, setFieldValue] = useState(null);
+  // const [fieldValue, setFieldValue] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFileAadhaar, setSelectedFileAadhaar] = useState(null);
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
+  
+  const dispatch = useDispatch();
+
   const initialValues = {
     docType: "",
-    docFile: ""
-
+    aadhaar_front: "",
+    aadhaar_back: "",
+    pan_card: ""
   }
-  const dispatch = useDispatch();
+
   const validationSchema = Yup.object({
-    docType: Yup.string().required("Required"),
-    docFile: Yup.mixed()
-      .nullable()
-      .required('Required file format PNG/JPEG/JPG/PDF')
+    docType: Yup.string().required("Required").nullable(),
+    aadhaar_front: Yup.mixed().nullable(),
+    aadhaar_back: Yup.mixed().nullable(),
+    pan_card: Yup.mixed().nullable(),
   })
 
   useEffect(() => {
@@ -63,40 +69,55 @@ function DocumentsUpload() {
 
 
   }, [])
-  const onSubmit = values => {
+ 
+
+  const handleChange = function (e,id) {
+    if(id===2){
+      setSelectedFileAadhaar(e.target.files[0])
+    }else{
+      setSelectedFile(e.target.files[0])
+    }
+    readURL(e.target,id)
+  }
 
 
-
+  const onSubmit = (values, action) => {
+  
     const bodyFormData = new FormData();
-    bodyFormData.append('files', fieldValue);
-    // bodyFormData.append("client_code", [clientCode]);
+    let docType = values.docType;
+    if(docType==='1'){
+      console.log(3333)
+      bodyFormData.append('aadhar_front', selectedFile);
+      bodyFormData.append('aadhar_back', selectedFileAadhaar);
+    }else{
+      console.log(5555)
+      bodyFormData.append('files', selectedFile);
+    }
+
     bodyFormData.append('login_id', loginId);
     bodyFormData.append('modified_by', 270);
     bodyFormData.append('type', values.docType);
-    dispatch(merchantInfo(bodyFormData))
+    
+   
+
+    // for (var pair of bodyFormData.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
+
+    // console.log("call submit")
+    
+    const kycData = {bodyFormData,docType}
+    dispatch(merchantInfo(kycData))
       .then(function (response) {
         toast.success("Merchant document saved successfully")
         console.log(response);
       })
       .catch(function (error) {
         console.error("Error:", error);
-        toast.error('Merchant document saved Unsuccessfull')
+        toast.error('Something went wrong while saving the document')
       });
   }
-
-
-  console.log(docTypeIdDropdown, "<=== Id ===>")
-
-  // const imageClickHandler = (e) => {
-  //   document.getElementById('my_file').click();
-  // }
-
-  const handleChange = function (e,id) {
-    // console.log("change event")
-    // console.log(id)
-    readURL(e.target,id)
-  }
-
+  let submitAction = undefined;
 
   return (
     <>
@@ -105,11 +126,16 @@ function DocumentsUpload() {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={onSubmit}
+          onSubmit={(values) => {
+            // console.log("trigger")
+            onSubmit(values, submitAction);
+          }}
+          enableReinitialize={true}
         >
-          {formik => (
+          {(formik) => (
+
             <Form>
-              {/* {console.log(formik,"<==== Formik ====>")} */}
+              {/* {console.log(formik)} */}
               <div className="form-row align-items-centre">
                 <div className="form-group col-lg-5">
                   <FormikController
@@ -123,7 +149,14 @@ function DocumentsUpload() {
                 </div>
                 <div class="row-xs-10 mt-3 mr-2 p-3">
                   <div class="mt-xl-10">
-                    <button className="btn float-lg-right" type="submit" style={{ backgroundColor: "#0156B3" }}>
+                    <button
+                      className="btn float-lg-right"
+                      style={{ backgroundColor: "#0156B3" }}
+                      type="button"
+                       onClick={() => {
+                      formik.handleSubmit();
+                    }}
+                    >
                       <h4 className="text-white font-weight-bold"> &nbsp; &nbsp; Save & Next &nbsp; &nbsp;</h4>
                     </button>
                   </div>
@@ -136,14 +169,14 @@ function DocumentsUpload() {
                         <FormikController
                             control="file"
                             type="file"
-                            name="aadhar_front"
+                            name="aadhaar_front"
                             className="file-upload-input"
                             id="1"
                             onChange={(e)=>handleChange(e,1)}
                             // disabled={VerifyKycStatus === "Verified" ? true : false}
                             // readOnly={readOnly}
                           />
-                          {/* <input className="file-upload-input" id="1" type="file" name="aadharFront" onChange={(e)=>handleChange(e,1)} /> */}
+
                           <div className="drag-text">
                             <h3 class="p-2 font-16">Add Front Aadhaar Card</h3>
                             <img alt="Doc" src={plus} style={{ width: 30 }} className="mb-4" />
@@ -162,14 +195,13 @@ function DocumentsUpload() {
                         <FormikController
                             control="file"
                             type="file"
-                            name="aadhar_back"
+                            name="aadhaar_back"
                             className="file-upload-input"
                             id="2"
                             onChange={(e)=>handleChange(e,2)}
                             // disabled={VerifyKycStatus === "Verified" ? true : false}
                             // readOnly={readOnly}
                           />
-                          {/* <input className="file-upload-input" id="2" type="file" onChange={(e)=>handleChange(e,2)} /> */}
                           <div className="drag-text">
                             <h3 class="p-2 font-16">Add Back Aadhaar Card</h3>
                             <img alt="Doc" src={plus} style={{ width: 30 }} className="mb-4" />
@@ -199,7 +231,6 @@ function DocumentsUpload() {
                             // disabled={VerifyKycStatus === "Verified" ? true : false}
                             // readOnly={readOnly}
                           />
-                            {/* <input className="file-upload-input" id="3" type="file" onChange={(e)=>handleChange(e,3)} /> */}
                             <div className="drag-text">
                               <h3 class="p-2 font-16">Add PAN Card</h3>
                               <img alt="Doc" src={plus} style={{ width: 30 }} className="mb-4"  />
@@ -217,10 +248,8 @@ function DocumentsUpload() {
                 }
               </div>
             </Form>
-
           )}
         </Formik>
-
       </div>
     </>
 

@@ -65,6 +65,7 @@ const API_LIVE = {
 
   /* Transaction Enquiry */
   VIEW_TXN: adminAPIURL+"/Enquiry/ViewTxn",
+  SP2_VIEW_TXN : "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */
   GET_FILE_NAME: adminAPIURL + "/settlementReport/getFileName/",
@@ -105,6 +106,7 @@ const API_LIVE = {
   /**Kyc DocumentsUploads */
   DocumentsUpload: `${kyc_url}/kyc/document-type/`, //get APi
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
+  UPLOAD_MERCHANT_AADHAAR : `${kyc_url}/kyc/upload-merchant-document/aadhar-upload/`, //post APi 
   Business_type: `${kyc_url}/kyc/get-all-business-type/`,
   Platform_type: `${kyc_url}/kyc/get-all-platform-type/`,
   Collection_frequency: `${kyc_url}/kyc/get-all-collection-frequency/`,

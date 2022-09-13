@@ -36,28 +36,35 @@ function TransactionEnquirey() {
   let history = useHistory();
 
 
+ 
   const onSubmit = (input)=>{
     setData({});
     const transaction_id = input.transaction_id
-
-    axiosInstance.get(API_URL.VIEW_TXN+`/${transaction_id}`)
+    axios.get(API_URL.VIEW_TXN+`/${transaction_id}`)
     .then((response) => {
       if(response?.data.length>0){
+        // console.log(566)
         setIsShow(true);
         setData(response?.data[0]);
         setErrMessage(false)
       }else{
-        setIsShow(false);
-        setErrMessage(true)
+        
+        axios.get(API_URL.SP2_VIEW_TXN+`/${transaction_id}`).then((r)=>{
+          if(r?.data.length>0){
+            // console.log(44)
+            setIsShow(true);
+            setData(r?.data[0]);
+            setErrMessage(false)
+          }else{
+            setIsShow(false);
+            setErrMessage(true)
+          }
+        })
       }
      
-    })
-    
-    .catch((e) => {
-      // console.log(e);
+    }).catch((e) => {
       setIsShow(false);
       setErrMessage(true)
-
     })
     
   }
