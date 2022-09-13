@@ -329,12 +329,12 @@ function Home() {
 
       <div
         className={
-          "modal fade" + (modalState === "PENDING" ? " show d-block" : " d-none")
+          "modal fade mymodals" + (modalState === "PENDING" ? " show d-block" : " d-none")
         }
         tabIndex="-1"
         role="dialog"
       >
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered " role="document" >
           <div class="modal-content">
             <div class="modal-body">
               <button
