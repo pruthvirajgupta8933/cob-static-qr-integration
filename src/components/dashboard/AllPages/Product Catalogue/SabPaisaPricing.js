@@ -6,6 +6,7 @@ import Background from "../../../../assets/images/Background.png"
 import EnterPrice from "../../../../assets/images/EnterPrice.png"
 import Rectangle from "../../../../assets/images/Rectangle.png"
 import enterPriceImages from "../../../../assets/images/enterPriceImages.png"
+import ThankYouImages from "../../../../assets/images/congImg.png"
 // import Line1 from "../../../../../assets/images/Line1.png"
 
 const SabPaisaPricing = () => {
@@ -37,19 +38,59 @@ const SabPaisaPricing = () => {
                   <img
                     src={numbersimage}
                     className="forimagespricing pb-5"
-                    alt="SabPaisa"
-                    title="SabPaisa"
+
                   />
                   <h3 className='paragraphcsss'>per user, per month</h3>
-                  <div class="container">
+                  {/* <div class="container">
                     <img
                       src={Background}
                       className="figmacssforchooseplan"
-                      alt="SabPaisa"
-                      title="SabPaisa"
 
                     />
                     <div class="centered">Choose Plan</div>
+                  </div> */}
+                  <button type="button" className="figmacssforchooseplan mt-2" data-toggle="modal" data-target="#exampleModal">
+                    <h5 className="chooseplanheadingcss">Choose Plan</h5>
+                  </button>
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog w-50" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-4">
+                                <div class="text-center">
+                                  <img
+                                    src={ThankYouImages}
+                                    width={250}
+                                    className="Thankusubscribingcss"
+                                    alt="SabPaisa"
+                                    title="SabPaisa"
+                                  />
+                                </div>
+
+                              </div>
+                              <div class="col-5">
+                                <div class="text-center mt-5">
+                                  <h2 className="subscribingproduct">Thank You For Subscribing</h2>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -84,7 +125,7 @@ const SabPaisaPricing = () => {
                     title="SabPaisa"
                   />
                   <h3 className='graphcssforenterprice'>per user, per month</h3>
-                  <div class="container">
+                  {/* <div class="container">
                     <img
                       src={Rectangle}
                       className="figmacssforEnterpricechooseplan"
@@ -93,6 +134,49 @@ const SabPaisaPricing = () => {
 
                     />
                     <div class="centered text-white">Choose Plan</div>
+                  </div> */}
+                  <button type="button" className="figmacssforEnterpricechooseplan text-white mt-2" data-toggle="modal" data-target="#exampleModal">
+                    Choose Plan
+                  </button>
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog w-50" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-4">
+                                <div class="text-center">
+                                  <img
+                                    src={ThankYouImages}
+                                    width={250}
+                                    className="Thankusubscribingcss"
+                                    alt="SabPaisa"
+                                    title="SabPaisa"
+                                  />
+                                </div>
+
+                              </div>
+                              <div class="col-5">
+                                <div class="text-center mt-5">
+                                  <h2 className="subscribingproduct">Thank You For Subscribing</h2>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <h2 className='featurespricingforEnterpricing'>FEATURES INCLUDING</h2>
@@ -107,20 +191,20 @@ const SabPaisaPricing = () => {
             </div>
             <div class="col-sm">
               <div class="card heightcards">
-                                <div class="card-body">
-                                <div class="row">
+                <div class="card-body">
+                  <div class="row">
                     <div class="col-sm">
                       <h1 class="card-title pb-4 forThirdscardfigma">Business</h1>
                     </div>
-                   </div>
-                   <img
+                  </div>
+                  <img
                     src={enterPriceImages}
                     className="cssforbusinesscard mb-4"
                     alt="SabPaisa"
                     title="SabPaisa"
                   />
-                   <h3 className='parabusinesscss'>per user, per month</h3>
-                   <div class="container">
+                  <h3 className='parabusinesscss'>per user, per month</h3>
+                  {/* <div class="container">
                     <img
                       src={Background}
                       className="figmacssforchooseplan"
@@ -129,17 +213,60 @@ const SabPaisaPricing = () => {
 
                     />
                     <div class="centered">Choose Plan</div>
+                  </div> */}
+                  <button type="button" className="figmacssforchooseplan mt-2" data-toggle="modal" data-target="#exampleModal">
+                    <h5 className="chooseplanheadingcss">Choose Plan</h5>
+                  </button>
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog w-50" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-4">
+                                <div class="text-center">
+                                  <img
+                                    src={ThankYouImages}
+                                    width={250}
+                                    className="Thankusubscribingcss"
+                                    alt="SabPaisa"
+                                    title="SabPaisa"
+                                  />
+                                </div>
+
+                              </div>
+                              <div class="col-5">
+                                <div class="text-center mt-5">
+                                  <h2 className="subscribingproduct">Thank You For Subscribing</h2>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  </div>
-                  <h2 className='featuresIncludingforbusiness'>FEATURES INCLUDING</h2>
-                  <ul className="Businessoredrcssforcard">
+                </div>
+                <h2 className='featuresIncludingforbusiness'>FEATURES INCLUDING</h2>
+                <ul className="Businessoredrcssforcard">
                   <li className="firstli">Chat Support</li>
                   <li className="secondli">Complete online</li>
                   <li className="thirdli">400+ Templates</li>
                   <li className="forthli">Calendar View</li>
                   <li className="fifthli">24/7 Support</li>
                 </ul>
-                  
+
 
               </div>
             </div>
