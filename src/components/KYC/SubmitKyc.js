@@ -7,9 +7,12 @@ import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
 import congratsImg from "../../assets/images/congImg.png"
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 
 function SubmitKyc(props) {
+
+  const history = useHistory()
   const { role, kycid } = props;
 
   const [check, setCheck] = useState(false);
@@ -84,7 +87,7 @@ function SubmitKyc(props) {
       dispatch(verifyComplete(data))
         .then((resp) => {
           resp?.payload?.status_code === 401 ||
-          resp?.payload?.status_code === 404
+            resp?.payload?.status_code === 404
             ? toast.error(resp?.payload?.message)
             : toast.success(resp?.payload?.message);
         })
@@ -102,7 +105,7 @@ function SubmitKyc(props) {
       dispatch(approvekyc(dataAppr))
         .then((resp) => {
           resp?.payload?.status_code === 401 ||
-          resp?.payload?.status_code === 404
+            resp?.payload?.status_code === 404
             ? toast.error(resp?.payload?.message)
             : toast.success(resp?.payload?.message);
         })
@@ -113,9 +116,15 @@ function SubmitKyc(props) {
   };
 
   const modalclose = () => {
-    document.getElementById('exampleModal').modal('hide');  
+    document.getElementById('exampleModal').modal('hide');
   }
-  const onSubmit = () => {};
+  const onSubmit = () => { };
+  const redirect = () => {
+    console.log("dd");
+    history.push("/dashboard/product-catalogue");
+   };
+
+
 
   return (
     <div className="col-md-12 p-3">
@@ -131,7 +140,7 @@ function SubmitKyc(props) {
               {console.log(formik)}
 
               <div class="form-check form-check-inline">
-            
+
                 <FormikController
                   control="checkbox"
                   name="privacyPolicy"
@@ -141,9 +150,9 @@ function SubmitKyc(props) {
                   checked={readOnly}
                   className="mr-3"
                 />
-                  I have accepted the <a href="https://sabpaisa.in/term-conditions/" alt="tnz" target="_blank" title="tnc"> Term & Condition</a> , 
-                  <a href="https://sabpaisa.in/privacy-policy/" alt="tnz" target="_blank" title="tnc"> Privacy Policy</a> , 
-                  <a href="https://sabpaisa.in/service-agreement" alt="tnz" target="_blank" title="tnc"> Service Agreement</a>  
+                I have accepted the <a href="https://sabpaisa.in/term-conditions/" alt="tnz" target="_blank" title="tnc"> Term & Condition</a> ,
+                <a href="https://sabpaisa.in/privacy-policy/" alt="tnz" target="_blank" title="tnc"> Privacy Policy</a> ,
+                <a href="https://sabpaisa.in/service-agreement" alt="tnz" target="_blank" title="tnc"> Service Agreement</a>
               </div>
               {/* <div class="form-check form-check-inline">
                 <FormikController
@@ -178,76 +187,82 @@ function SubmitKyc(props) {
                 />
                 <div class="mt-3">
                   {VerifyKycStatus === "Verified" ? null : (
+                    
                     <button
                       className="btn float-lg-right"
                       type="submit"
                       style={{ backgroundColor: "#0156B3" }}
                       data-toggle="modal" data-target="#exampleModal"
                     >
-                      <h4 className="text-white font-weight-bold"> Submit</h4>
+                      <h4 className="text-white font-weight-bold"> Verifying</h4>
                     </button>
                   )}
                 </div>
 
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-       
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+                <div class="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
 
-      <div class="container">
-  <div class="row justify-content-md-center">
-    
-    <div class="col-md-auto">
-    <ul>
-   
-    <h1
-                    className="text-centre"
-                    style={{ color: "#4BB543",fontWeight:"700", fontStyle:"normal", fontSize:"32px",justifyContent:"center",display:"flex"}}
-                  >
-                    Congratulations!
-                  </h1>
-    <p className="modalscolrsfortextapprv" style={{justifyContent:"center",display:"flex"}}>
-                    Your KYC is Done!
-                    
-                    </p>
-                    <span className="modalscolrsfortextapprv text-center"style={{display:"table-footer-group",justifyContent:"center",whiteSpace:"nowrap"}}>
-                    You can start accepting payments now 
-                  </span>
-                  <span className="modalscolrsfortextapprv text-center"style={{display:"table-footer-group",justifyContent:"center",whiteSpace:"nowrap"}}>
-                  View our product catalogue and choose your plan
-                  </span>
-                  
-                   
-                  </ul>
-                  
-    </div>
-    
-   
-                  
-    
-  </div>
-  
-</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
 
-      </div>
-      <div class="modal-footer">
-      <Link to={`product-catalogue`}>
-                    <button type="button" className="ColrsforredirectProdct text-white mt-5" onClick={() => document.getElementById('exampleModal').modal('hide') }>
-                      View Product Catalogue
-                    </button>
-                    </Link>
-      </div>
-    </div>
-  </div>
-</div>
+                        <div class="container">
+                          <div class="row justify-content-md-center">
+
+                            <div class="col-md-auto">
+                              <ul>
+
+                                <h1
+                                  className="text-centre"
+                                  style={{ color: "#4BB543", fontWeight: "700", fontStyle: "normal", fontSize: "32px", justifyContent: "center", display: "flex" }}
+                                >
+                                  Congratulations!
+                                </h1>
+                                <p className="modalscolrsfortextapprv" style={{ justifyContent: "center", display: "flex" }}>
+                                  Your KYC is Done!
+
+                                </p>
+                                <span className="modalscolrsfortextapprv text-center" style={{ display: "table-footer-group", justifyContent: "center", whiteSpace: "nowrap" }}>
+                                  You can start accepting payments now
+                                </span>
+                                <span className="modalscolrsfortextapprv text-center" style={{ display: "table-footer-group", justifyContent: "center", whiteSpace: "nowrap" }}>
+                                  View our product catalogue and choose your plan
+                                </span>
+
+
+                              </ul>
+
+                            </div>
+
+
+
+
+                          </div>
+
+                        </div>
+
+                      </div>
+                      <div class="modal-footer">
+                        {/* <Link to={`product-catalogue`} data-dismiss="modal" aria-label="Close" > */}
+                          <button 
+                          type="button" 
+                          className="btn btn-warning text-white mt-5"
+                          onClick={() =>redirect()}
+                          data-dismiss="modal" aria-label="Close"
+                          >
+                            View Product Catalogue
+                          </button>
+                        {/* </Link> */}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </Form>
           )}

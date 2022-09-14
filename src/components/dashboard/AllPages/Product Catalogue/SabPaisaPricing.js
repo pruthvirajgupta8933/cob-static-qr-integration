@@ -17,9 +17,9 @@ const SabPaisaPricing = () => {
 
   const dispatch = useDispatch();
   const clickHandler = (value) => {
-    // dispatch(productSubscribeState(!dashboard?.productSubscribe))
-    console.log("value", value)
-    dispatch(productSubscribeState(value))
+    dispatch(productSubscribeState(!dashboard?.productSubscribe))
+    // console.log("value", value)
+    // dispatch(productSubscribeState(value))
   }
 
   return (
@@ -46,8 +46,8 @@ const SabPaisaPricing = () => {
                       <h1 class="card-title cardoneheadingcss pb-3">Start-up/Freelancer</h1>
                       <p className='text-center bold-font mb-1'>9,999</p>
                       <h3 className='paragraphcsss text-center'>Per Year</h3>
-                      <button type="button" className="btn choosePlan-1 btn-lg" onClick={() => clickHandler(true)}  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
-                      </div>
+                      <button type="button" className="btn choosePlan-1 btn-lg"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
+                    </div>
                   </div>
 
 
@@ -78,22 +78,22 @@ const SabPaisaPricing = () => {
                   </div>
                   <h2 className='featurespricing'>FEATURES INCLUDING</h2>
 
-{/* <ul className="forparacss">
+                  {/* <ul className="forparacss">
   <li className="firstli">AI Chat Support</li>
   <li className="secondli">Calendar View</li>
   <li className="thirdli">WhatsApp Integration</li>
   <li className="forthli">Advanced Analytics</li>
   <li className="fifthli">Dashboard training</li>
 </ul> */}
-<div className='text-center'>
-  <p className="firstli1 m-1">AI Chat Support</p>
-  <p className="secondli1 m-1">Calendar View</p>
-  <p className="thirdli1 m-1">WhatsApp Integration</p>
-  <p className="forthl1i m-1">Advanced Analytics</p>
-  <p className="fifthli1 m-1">Dashboard training</p>
-</div>
+                  <div className='text-center'>
+                    <p className="firstli1 m-1">AI Chat Support</p>
+                    <p className="secondli1 m-1">Calendar View</p>
+                    <p className="thirdli1 m-1">WhatsApp Integration</p>
+                    <p className="forthl1i m-1">Advanced Analytics</p>
+                    <p className="fifthli1 m-1">Dashboard training</p>
+                  </div>
                 </div>
-              
+
 
               </div>
             </div>
@@ -102,13 +102,13 @@ const SabPaisaPricing = () => {
 
 
                 <div class="card-body">
-                <div class="row mb-5">
+                  <div class="row mb-5">
                     <div className='col-lg-12 text-center text-white'>
                       <h1 class="card-title cardoneheadingcss2 pb-3">SME</h1>
                       <p className='text-center bold-font mb-1'>2.0%</p>
                       <h3 className='paragraphcsss text-center'>3 years and up</h3>
-                      <button type="button" className="btn choosePlan-1 btn-primary btn-lg" onClick={() => clickHandler(true)} data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
-                      </div>
+                      <button type="button" className="btn choosePlan-1 btn-primary btn-lg"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
+                    </div>
                   </div>
                   {/* <div class="row">
                     <div class="col-sm">
@@ -178,29 +178,29 @@ const SabPaisaPricing = () => {
                     </div>
                   </div> */}
                   <h2 className='featurespricingforEnterpricing'>FEATURES INCLUDING</h2>
-                <div className='text-center text-white'>
-                  <p className="firstli1 m-1">Account Manager</p>
-                  <p className="secondli1 m-1">AI Chat Support</p>
-                  <p className="thirdli1 m-1">Calendar View</p>
-                  <p className="thirdli1 m-1">WhatsApp Integration</p>
-                  <p className="forthl1i m-1">Advanced Analytics</p>
-                  <p className="fifthli1 m-1">Dashboard training</p>
+                  <div className='text-center text-white'>
+                    <p className="firstli1 m-1">Account Manager</p>
+                    <p className="secondli1 m-1">AI Chat Support</p>
+                    <p className="thirdli1 m-1">Calendar View</p>
+                    <p className="thirdli1 m-1">WhatsApp Integration</p>
+                    <p className="forthl1i m-1">Advanced Analytics</p>
+                    <p className="fifthli1 m-1">Dashboard training</p>
+                  </div>
                 </div>
-                </div>
-              
+
               </div>
             </div>
             <div class="col-sm">
               <div class="card heightcards">
                 <div class="card-body">
 
-                <div class="row mb-5">
+                  <div class="row mb-5">
                     <div className='col-lg-12 text-center'>
                       <h1 class="card-title cardoneheadingcss pb-3">Enterprise</h1>
                       <p className='text-center bold-font mb-1'></p>
                       <h3 className='paragraphcsss text-center'>Minimum 5 years in Biz</h3>
-                      <button type="button" className="btn choosePlan-1  btn-lg" onClick={() => clickHandler(true)} data-toggle="modal" data-target="#exampleModal">Contact Sales</button>
-                      </div>
+                      <button type="button" className="btn choosePlan-1  btn-lg"  data-toggle="modal" data-target="#exampleModal">Contact Sales</button>
+                    </div>
                   </div>
 
                   {/* <div class="row">
@@ -264,20 +264,20 @@ const SabPaisaPricing = () => {
                     </div>
                   </div> */}
                   <h2 className='featuresIncludingforbusiness'>FEATURES INCLUDING</h2>
-                <div className='text-center'>
-                  <p className="firstli1 m-1">Account Manager</p>
-                  <p className="secondli1 m-1">AI Chat Support</p>
-                  <p className="thirdli1 m-1">Calendar View</p>
-                  <p className="thirdli1 m-1">Advanced Analytics</p>
-                  <p className="fifthli1 m-1">Dashboard training</p>
-                  <p className="fifthli1 m-1">Regular catalog updates</p>
-                  <p className="thirdli1 m-1">WhatsApp Integration</p>
-                  <p className="forthl1i m-1">Discount Coupons</p>
-                  <p className="forthl1i m-1">Personalised feature recommendations</p>
-                  <p className="forthl1i m-1">24/7 Customer Support</p>
+                  <div className='text-center'>
+                    <p className="firstli1 m-1">Account Manager</p>
+                    <p className="secondli1 m-1">AI Chat Support</p>
+                    <p className="thirdli1 m-1">Calendar View</p>
+                    <p className="thirdli1 m-1">Advanced Analytics</p>
+                    <p className="fifthli1 m-1">Dashboard training</p>
+                    <p className="fifthli1 m-1">Regular catalog updates</p>
+                    <p className="thirdli1 m-1">WhatsApp Integration</p>
+                    <p className="forthl1i m-1">Discount Coupons</p>
+                    <p className="forthl1i m-1">Personalised feature recommendations</p>
+                    <p className="forthl1i m-1">24/7 Customer Support</p>
+                  </div>
                 </div>
-                </div>
-              
+
 
               </div>
             </div>

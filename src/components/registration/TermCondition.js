@@ -187,10 +187,10 @@ function TermCondition({acceptTnC,callbackHandler, setFieldValues}) {
                 <h2>Responsibilities Of User Vis-a-Vis The Agreement</h2>
                 <p>The User expressly agrees that use of the services is at their sole risk. To the extent SRS acts only as an agent on behalf of Institutions, it shall not have any liability whatsoever for any aspect of the standards of services provided by the Institutions. In no circumstances shall SRS be liable for the services provided by the Institutions. The services are provided on an “as is” and “as available” basis. SRS may change the features or functionality of the services at any time, in their sole discretion, without notice. SRS expressly disclaims all warranties of any kind, whether express or implied, including, but not limited to the implied warranties of merchantability, fitness for a particular purpose and non-infringement. No advice or information, whether oral or written, which the User obtains from SRS or through the services shall create any warranty not expressly made herein or in the terms and conditions of the services. If the User does not agree with any of the terms above, they are advised not to read the material on any of the SRS pages or otherwise use any of the contents, pages, information or any other material provided by SRS. The sole and exclusive remedy of the User in case of disagreement, in whole or in part, of the user agreement, is to discontinue using the services after notifying SRS in writing.</p>
 
-                <div className="form-check-inline" style={{alignItems:"baseline"}}>
+                {/* <div className="form-check-inline" style={{alignItems:"baseline"}}>
                   <span><input className="form-check-input" type="checkbox"  id="defaultCheck1" checked={checked}  onChange={e => setChecked(!checked)} /></span>
                   <span><label className="form-check-label text-bold text-danger" htmlFor="defaultCheck1" >  I agree to the Terms and Conditions</label></span>
-                </div>
+                </div> */}
                 </div>
                 </div>
               
