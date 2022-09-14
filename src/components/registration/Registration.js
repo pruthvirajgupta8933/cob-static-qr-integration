@@ -68,7 +68,7 @@ function Registration() {
 
   useEffect(() => {
     axiosInstanceAuth.get(API_URL.Business_Category_CODE).then((resp)=>{
-      const data = convertToFormikSelectJson('category_code','category_name', resp.data.message);
+      const data =  resp.data.message
       console.log(data,"my all dattaaa")
      
       setBusinessCode(data)
@@ -91,15 +91,16 @@ function Registration() {
     setBtnDisable(true)
 
     var businessType = 1;
-    var { fullname, mobilenumber, emaill, passwordd } = formData;
+    var { fullname, mobilenumber, emaill, passwordd, business_cat_code } = formData;
     var fullname = fullname;
     var mobileNumber = mobilenumber;
     var email = emaill;
+    var business_cat_code = business_cat_code;
     var password = passwordd;
 
     // setLoading(true);
     // console.log(formValue);
-    dispatch(register({ fullname, mobileNumber, email, password, businessType }))
+    dispatch(register({ fullname, mobileNumber, email, password, business_cat_code, businessType }))
       .unwrap()
       .then((res) => {
         setBtnDisable(false)
@@ -161,6 +162,7 @@ function Registration() {
     setIsCheck(isChecked)
   }
 
+  console.log(businessCode,"===>")
   return (
     <>
       <HeaderPage />
@@ -344,7 +346,7 @@ function Registration() {
                                       <div className="input full- optional">
                                         <label
                                           className="string optional"
-                                          htmlFor="user-email"
+                                          htmlFor="business_category"
                                         >
                                           Business Category
                                         </label>
@@ -352,20 +354,19 @@ function Registration() {
                                         name="business_cat_code" 
                                         className="selct" 
                                         component="select"
-                                        option={businessCode}/>
-                                          {/* <option
+                                        >
+                                          <option
                                             type="text"
                                             className="form-control"
                                             id="business_category"
                                           >Select Business Category</option>
-                                          <option value={1}>Retail</option>
-                                          <option value={2}>E-Commerce</option>
-                                          <option value={3}>Education</option>
-                                          <option value={4}>Government</option>
-                                          <option value={5}>Freelancer</option> */}
+                                          {
+                                                        businessCode.map((business, i) => (
+                                                            <option value={business.category_code} key={i}>{business.category_name}</option>
+                                                        ))} 
 
-                                        {/* </Field> */}
-                                        {/* {
+                                         </Field> 
+                                        {
                                           <ErrorMessage name="business_cat_code">
                                             {(msg) => (
                                               <p
@@ -380,17 +381,10 @@ function Registration() {
                                               </p>
                                             )}
                                           </ErrorMessage>
-                                        } */}
+                                        }
 
                                       </div>
                                     </div>
-
-
-
-
-
-
-
 
                                     {/* <div className="input full- optional">
                                   <label
