@@ -69,7 +69,7 @@ function Registration() {
   useEffect(() => {
     axiosInstanceAuth.get(API_URL.Business_Category_CODE).then((resp)=>{
       const data =  resp.data.message
-      console.log(data,"my all dattaaa")
+      // console.log(data,"my all dattaaa")
      
       setBusinessCode(data)
     }).catch(err=>console.log(err))
@@ -88,6 +88,8 @@ function Registration() {
 
 
   const handleRegistration = (formData) => {
+
+    console.log(formData,"here is form dataaaaaaaaaaaaaaaaaaaaaaaaaaa")
     
     setBtnDisable(true)
 
@@ -96,7 +98,7 @@ function Registration() {
     var fullname = fullname;
     var mobileNumber = mobilenumber;
     var email = emaill;
-    var business_cat_code = business_cat_code;
+    var business_code = business_cat_code;
     var password = passwordd;
 
     // setLoading(true);
@@ -163,7 +165,7 @@ function Registration() {
     setIsCheck(isChecked)
   }
 
-  console.log(businessCode,"===>")
+
   return (
     <>
       <HeaderPage />
@@ -359,7 +361,7 @@ function Registration() {
                                           <option
                                             type="text"
                                             className="form-control"
-                                            id="business_category"
+                                            id="business_code"
                                           >Select Business Category</option>
                                           {
                                                         businessCode.map((business, i) => (
@@ -536,6 +538,7 @@ function Registration() {
                                        
                                       /> 
                                       )}
+
 
                                         <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} />
                                      

@@ -646,93 +646,11 @@ color: #4285F8;
     font-family: 'Roboto';
 font-style: normal;
 font-weight: 700;
-margin-left: 133px;
 font-size: 21px;
 line-height: 25px;
 color: #4285F8;
   }
-  .forpaymentLinks{
-    position: absolute;
-    width: 368px;
-    height: 49px;
-    left: 180px;
-    top: 10px;
-    }
-
-    .forSubscriptionscss{
-      position: absolute;
-    width: 368px;
-    height: 49px;
-    left: 181px;
-    top: 63px
-    }
-    .forpayoutscs{
-      position: absolute;
-      width: 368px;
-      height: 49px;
-      left: 185px;
-      top: 109px
-    }
-    .forQwikForm{
-      position: absolute;
-      width: 368px;
-      height: 49px;
-      left: 185px;
-      top: 157px
-    }
-    .eposapp{
-      position: absolute;
-      width: 368px;
-      height: 49px;
-       left: 445px;
-      top: 10px;
-    }
-    .linkpaisa{
-      position: absolute;
-      width: 368px;
-      height: 49px;
-      left: 446px;
-      top: 64px;
-    }
-    .forimage{
-      position: absolute;
-      top: 63px;
-      left: 151px;
   
-    }
-    .echallancss{
-      position: absolute;
-      width: 368px;
-      height: 49px;
-      left: 446px;
-    top: 109px;
-    }
-    .myimg{
-      position: absolute;
-      top: 109px;
-      left: 151px;
- }
- .forquik{
-  position: absolute;
-  top: 154px;
-    left: 155px;
- }
- .foreposss{
-  position: absolute;
-  top: 10px;
-    left: 410px;
- }
- .forrlink{
-  position: absolute;
-    top: 62px;
-    left: 415px;
- }
- .echllanssss{
-  position: absolute;
-  top: 105px;
-  left: 415px;
- }
-
    
 
 
