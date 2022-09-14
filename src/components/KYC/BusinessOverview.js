@@ -281,7 +281,7 @@ function BusinessOverview(props) {
           <Form>
 
 <div class="form-group row">
-    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Type<span style={{color:"red"}}>*</span></h4></label>
+    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2"><h4 class ="font-weight-bold text-nowrap">Business Type<span style={{color:"red"}}>*</span></h4></label>
     <div class="col-sm-7 col-md-7 col-lg-7">
     <FormikController
                   control="select"
@@ -294,7 +294,7 @@ function BusinessOverview(props) {
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-4 col-md-4 col-lg-4 p-2"><h4 class ="font-weight-bold text-nowrap">Buisiness Sub-Category<span style={{color:"red"}}>*</span></h4></label>
+    <label class="col-sm-4 col-md-4 col-lg-4 p-2"><h4 class ="font-weight-bold text-nowrap">Business Sub-Category<span style={{color:"red"}}>*</span></h4></label>
     <div class="col-sm-7 col-md-7 col-lg-7">
     <FormikController
                   control="select"

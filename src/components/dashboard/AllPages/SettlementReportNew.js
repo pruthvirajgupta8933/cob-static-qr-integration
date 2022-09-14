@@ -13,12 +13,14 @@ import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import NavBar from "../NavBar/NavBar";
+import moment from "moment"
 
 function SettlementReportNew() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
+  
 
   const { isLoadingTxnHistory } = dashboard;
   const [txnList, SetTxnList] = useState([]);
@@ -34,6 +36,19 @@ function SettlementReportNew() {
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
 
+
+  
+  var now = moment().format('YYYY-M-D');
+  var splitDate = now.split("-");
+  if(splitDate[1].length===1){
+    splitDate[1] = '0'+splitDate[1]; 
+  }  
+  if(splitDate[2].length===1){
+    splitDate[2] = '0'+splitDate[2];
+  }
+  splitDate =splitDate.join('-');
+
+
   var clientMerchantDetailsList = [];
   if (
     user &&
@@ -48,11 +63,12 @@ function SettlementReportNew() {
 
   const tempClientList = convertToFormikSelectJson("clientCode","clientName",clientMerchantDetailsList);
 
+ const [todayDate, setTodayDate] = useState(splitDate);
 
   const initialValues = {
     clientCode:"",
-    fromDate:"" ,
-    endDate:"",
+    fromDate:todayDate ,
+    endDate:todayDate,
     noOfClient: "1",
 	  rpttype: "0"
   }

@@ -13,6 +13,7 @@ const NavBar = () => {
 
   const dispatch = useDispatch();
   const {user} = useSelector((state)=>state.auth);
+  console.log(user,"==>")
   const loginId = user.loginId
   const username = user.clientContactPersonName
 
@@ -28,6 +29,7 @@ const NavBar = () => {
   // const boxStyle = {
   //   backgroundColor: isHover ? 'lightblue' : 'rgb(0, 191, 255)' 
   // };
+  
 
   const exitback = () => {
     dispatch(logout());
@@ -39,19 +41,20 @@ const NavBar = () => {
     
   <span class="navbar-brand mb-0 h1"><img src={profile}  alt="profile" title="profile"/><h4 className='text-white float-right'>Welcome back,</h4>
   <div class="mr-0"style={{fontSize:"15px"}}>
-  <span class="text-white text-sm" style={{paddingLeft: '40px'}}>Login Id: &nbsp; {loginId}</span>
+  <span class="text-white text-sm" style={{paddingLeft: '40px'}}>Merchant Id &nbsp;: {loginId}</span>
   </div>
   </span>
  
  <div>
 {/* Dropdown in the Nav Bar */}
- <div class="dropdown">
- <button type="button" class="btn btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+ <div class="dropdown show">
+ <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
   <i class="fa fa-cog fa-2xl" aria-hidden="true" style={{fontSize:"24px",color:"white"}}></i>
  <span class="glyphicon glyphicon-cog text-white" style={{color:"white"}}></span>
-                <span class="caret text-white">{username}</span></button>
-                <div class="dropdown-menu" style={{backgroundColor:"#0156B3", height:"5rem", width:"10rem"}}>
+                <span class="caret text-white">{username}</span></a>
+                <div class="dropdown-menu text-white" style={{backgroundColor:"#0156B3", height:"6rem", width:"10rem"}}>
                 <div class="row px-md-4 p-2">
+                <Link to = "/dashboard/profile" class="dropdown-item text-white">Profile</Link>
                  <Link to = "/dashboard/change-password" class="dropdown-item text-white">Change Password</Link>
                  <Link onClick={exitback} class="dropdown-item text-white ">Log out</Link>
 
