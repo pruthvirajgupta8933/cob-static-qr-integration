@@ -10,6 +10,11 @@ import ThankYouImages from "../../../../assets/images/congImg.png"
 // import Line1 from "../../../../../assets/images/Line1.png"
 
 const SabPaisaPricing = () => {
+
+  const clickHandler = () => {
+
+  }
+
   return (
     <section className="ant-layout">
       <div>
@@ -22,7 +27,7 @@ const SabPaisaPricing = () => {
           <h1 className="text-center headingpricing">SabPaisa Pricing</h1>
           <h3 className="forbasicparacss">We offer a very competitive pricing to match your business needs. Sign Up now to get started.</h3>
         </div>
-
+<button type="button" onClick={clickHandler}>check</button>
         <div class="container mb-10">
           <div class="row">
             <div class="col-sm">
