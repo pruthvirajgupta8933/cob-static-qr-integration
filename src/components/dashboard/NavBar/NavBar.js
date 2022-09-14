@@ -39,11 +39,13 @@ const NavBar = () => {
         
  <nav class="navbar navbar-light" style={{backgroundColor:"#0156B3"}}>
     
-  <span class="navbar-brand mb-0 h1"><img src={profile}  alt="profile" title="profile"/><h4 className='text-white float-right'>Welcome back,</h4>
+  <ul class="navbar-brand mb-0 h1">
+    <img src={profile}  alt="profile" title="profile"/><h4 className='text-white float-right'>Welcome back,</h4>
   <div class="mr-0"style={{fontSize:"15px"}}>
   <span class="text-white text-sm" style={{paddingLeft: '40px'}}>Merchant Id &nbsp;: {loginId}</span>
   </div>
-  </span>
+  </ul>
+  
  
  <div>
 {/* Dropdown in the Nav Bar */}

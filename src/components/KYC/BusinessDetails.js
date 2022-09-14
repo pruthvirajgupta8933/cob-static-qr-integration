@@ -256,7 +256,7 @@ function BusinessDetails(props) {
           <Form>
             {/* {console.log(formik)} */}
             <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0">
                 <h4 class="font-weight-bold text-nowrap">
                   Buisiness Name<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -341,7 +341,7 @@ function BusinessDetails(props) {
             </div> */}
 
             <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   GSTIN<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -379,7 +379,7 @@ function BusinessDetails(props) {
              */}
 
             <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Buisiness PAN<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -397,7 +397,7 @@ function BusinessDetails(props) {
             </div>
 
             <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   PAN Owner's Name<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -478,7 +478,7 @@ function BusinessDetails(props) {
 
 
             <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Authorize  Signatory PAN<span style={{ color: "red" }}>*</span>
                 </h4>
