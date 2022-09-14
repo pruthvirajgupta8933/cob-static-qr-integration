@@ -88,6 +88,7 @@ function Registration() {
 
 
   const handleRegistration = (formData) => {
+    
     setBtnDisable(true)
 
     var businessType = 1;
@@ -277,7 +278,7 @@ function Registration() {
                                       <Field
                                         className="string optional"
                                         maxLength={255}
-                                        id="first-name"
+                                        id="fullname"
                                         placeholder="Full Name"
                                         type="text"
                                         name="fullname"
@@ -304,7 +305,7 @@ function Registration() {
                                     <div className="sminputs">
                                       <div className="input full- optional">
                                         <label className="string optional" htmlFor="mobile">Enter Mobile</label>
-                                        <Field className="string optional" maxLength={10} id="mobile" placeholder="Mobile Number" name='mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()} />
+                                        <Field className="string optional" maxLength={10} id="mobilenumber" placeholder="Mobile Number" name='mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()} />
                                         {<ErrorMessage name="mobilenumber">
                                           {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
                                         </ErrorMessage>}

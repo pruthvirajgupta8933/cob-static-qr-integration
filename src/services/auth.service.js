@@ -5,19 +5,15 @@ import { axiosInstance,axiosInstanceAuth } from "../utilities/axiosInstance";
 
 // const SIGNUP_URL = "https://cobapi.sabpaisa.in/auth-service/auth/";
 
-const register = (fullname, mobileNumber,business_cat_code, email, password,businessType) => {
+const register = (fullname, lastName, mobileNumber, email, password,businessType) => {
   return axiosInstanceAuth.post(API_URL.AUTH_SIGNUP, {
     name: fullname,
     mobileNumber: mobileNumber,
     email: email,
     password: password,
-    business_cat_code:business_cat_code,
     requestedClientType:businessType,
   })
 };
-
-
-
 
 // login old url : https://cobapi.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin 
 // login new url : https://cobtest.sabpaisa.in/auth-service/auth/login
