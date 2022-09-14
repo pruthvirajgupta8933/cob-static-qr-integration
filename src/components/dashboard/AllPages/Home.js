@@ -20,6 +20,7 @@ import KycAlert from "../../KYC/KycAlert";
 import NavBar from "../NavBar/NavBar";
 import bro from "../../../assets/images/bro.png";
 import congratsImg from "../../../assets/images/congImg.png"
+import onlineimg from "../../../assets/images/onlinePayment.png"
 
 function Home() {
   // console.log("home page call");
@@ -282,20 +283,36 @@ function Home() {
         </div>
 
         <div class="card">
-          <h5>
-            <b>
-              Looking to accept international payments from your{" "}
-              <span className="newcard">customers</span> ?
-            </b>
-          </h5>
-          <div class="card-header">
-            <h2 class="card-title">Enable International Payments Today</h2>
+          <div class="card-header w-50" >
+          <div class="container">
+  <div class="row">
+    <div class="col-sm">
+    <h2 class="card-title dashboardEnablecss"><img class="card-img-left" src={onlineimg} alt="onlinepay" width={40}/> &nbsp;Enable International Payments Today</h2>
+    <p className="paragraphcssdashboards">SabPaisa is the World's 1st API Driven Unified Payment Experience Platform having the Best Payment Gateway in India. Collect, transfer & refund your payments online & offline. Get the best success rates with maximum payment modes available including Debit cards, Credit Card, Wallets, UPI, Bharat QR, etc. The Hybrid PG helps businesses collect payments from all the clients and consumers, urban or rural, young or old, online or offline, without worrying about consumer payment behaviour.</p>
+    <p className="pricingclasscss">Read More & Pricing  &nbsp;{'>'}{'>'}</p> 
+    </div>
+    
+    
+  </div>
+</div>
+
+            {/* <h2 class="card-title">Enable International Payments Today</h2>
             <p class="card-text">
               With supporting text below as a natural lead-in to additional
               content.
             </p>
-            <Link to={`dashboard/product-catalogue`}><button className="ColrsforredirectProdct text-white mt-2">See All Products</button></Link>
+            <Link to={`dashboard/product-catalogue`}><button className="ColrsforredirectProdct text-white mt-2">See All Products</button></Link> */}
           </div>
+          {/* <ul className="foralinkscsshere">
+  <li className="forpaymentLinks">Payment Links</li>
+  <li className="forSubscriptionscss">Subscriptions</li>
+  <li className="forpayoutscs">Payouts</li>
+  <li className="forQwikForm">QwikForm</li>
+  <li className="eposapp">E-POS App</li>
+  <li className="linkpaisa">LinkPaisa</li>
+  <li className="echallancss">E-Challan</li>
+</ul> */}
+          
         </div>
       </div>
       {/* KYC container end here */}
@@ -366,6 +383,7 @@ function Home() {
                     </button>
                   </Link>
                 </div>
+                
                 <div class="col-sm">
                   <img
                     src={bro}
@@ -373,9 +391,20 @@ function Home() {
                     alt="SabPaisa"
                     title="SabPaisa"
                   />
-                </div>
+                  <div class="col-sm">
+                  <Link to={`dashboard/product-catalogue`}>
+                    <button className="ColrsforredirectProdct text-white mt-5">
+                      I do This later
+                    </button>
+                    </Link>
               </div>
+                </div>
+                
+                
+              </div>
+              
             </div>
+           
           </div>
         </div>
       </div>

@@ -316,6 +316,7 @@ margin-left: 20px;
   border: 0;
   border-radius: 3px;
   padding:8px 20px;
+  margin-left: 85px;
 }
 
 button:disabled,
@@ -601,6 +602,46 @@ color: #1465FA;
   }
   .dashboardfont{
     font-size: 14px;
+  }
+  .dashboardEnablecss{
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 700;
+font-size: 21px;
+line-height: 25px;
+color: #4285F8;
+  }
+  .paragraphcssdashboards{
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+color: #000000;
+
+  }
+  .pricingclasscss{
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 130.19%;
+color: #4285F8;
+  }
+  .foralinkscsshere{
+    font-family: 'Roboto';
+font-style: normal;
+font-weight: 700;
+font-size: 21px;
+line-height: 25px;
+color: #4285F8;
+  }
+  .forpaymentLinks{
+    position: absolute;
+width: 368px;
+height: 49px;
+left: 994px;
+top: 856px;
   }
 
    

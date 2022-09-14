@@ -10,6 +10,7 @@ import ThankYouImages from "../../../../assets/images/congImg.png"
 // import Line1 from "../../../../../assets/images/Line1.png"
 
 const SabPaisaPricing = () => {
+  
   return (
     <section className="ant-layout">
       <div>
@@ -49,7 +50,7 @@ const SabPaisaPricing = () => {
                     />
                     <div class="centered">Choose Plan</div>
                   </div> */}
-                  <button type="button" className="figmacssforchooseplan mt-2" data-toggle="modal" data-target="#exampleModal">
+                  <button  type="button" className="figmacssforchooseplan mt-2" data-toggle="modal" data-target="#exampleModal">
                     <h5 className="chooseplanheadingcss">Choose Plan</h5>
                   </button>
                   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -214,7 +215,7 @@ const SabPaisaPricing = () => {
                     />
                     <div class="centered">Choose Plan</div>
                   </div> */}
-                  <button type="button" className="figmacssforchooseplan mt-2" data-toggle="modal" data-target="#exampleModal">
+                  <button  type="button" className="figmacssforchooseplan mt-2" data-toggle="modal" data-target="#exampleModal">
                     <h5 className="chooseplanheadingcss">Choose Plan</h5>
                   </button>
                   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -222,7 +223,7 @@ const SabPaisaPricing = () => {
                       <div class="modal-content">
                         <div class="modal-header">
 
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
