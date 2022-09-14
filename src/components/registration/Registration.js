@@ -13,6 +13,10 @@ import { register, udpateRegistrationStatus } from "../../slices/auth";
 import { useHistory } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
 import TermCondition from './TermCondition';
+import API_URL from '../../config';
+import { axiosInstanceAuth } from '../../utilities/axiosInstance';
+import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson';
+
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -28,7 +32,8 @@ const FORM_VALIDATION = Yup.object().shape({
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"),
   confirmpasswordd: Yup.string().oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
-  terms_and_condition: Yup.boolean().oneOf([true], "You must accept the terms and conditions")
+  terms_and_condition: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
+  business_cat_code:Yup.string().required("Required")
 });
 
 function Registration() {
@@ -45,6 +50,9 @@ function Registration() {
   const [acceptTc, setAcceptTc] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const [btnDisable, setBtnDisable] = useState(false);
+  const[businessCode,setBusinessCode]=useState([]);
+
+  
 
   const [valuesIn, setValuesIn] = useState({
     password: '',
@@ -56,6 +64,16 @@ function Registration() {
     status[index] = !status[index]
     setCheckboxStatus(status)
   }
+
+
+  useEffect(() => {
+    axiosInstanceAuth.get(API_URL.Business_Category_CODE).then((resp)=>{
+      const data = convertToFormikSelectJson('category_code','category_name', resp.data.message);
+      console.log(data,"my all dattaaa")
+     
+      setBusinessCode(data)
+    }).catch(err=>console.log(err))
+  }, [])
 
 
   const dispatch = useDispatch();
@@ -232,6 +250,7 @@ function Registration() {
                                 mobilenumber: "",
                                 emaill: "",
                                 passwordd: "",
+                                business_cat_code:"",
                                 confirmpasswordd: "",
                                 terms_and_condition: false,
                               }}
@@ -329,8 +348,12 @@ function Registration() {
                                         >
                                           Business Category
                                         </label>
-                                        <Field name="Business_category" className="selct" component="select">
-                                          <option
+                                        <Field 
+                                        name="business_cat_code" 
+                                        className="selct" 
+                                        component="select"
+                                        option={businessCode}/>
+                                          {/* <option
                                             type="text"
                                             className="form-control"
                                             id="business_category"
@@ -339,9 +362,25 @@ function Registration() {
                                           <option value={2}>E-Commerce</option>
                                           <option value={3}>Education</option>
                                           <option value={4}>Government</option>
-                                          <option value={5}>Freelancer</option>
+                                          <option value={5}>Freelancer</option> */}
 
-                                        </Field>
+                                        {/* </Field> */}
+                                        {/* {
+                                          <ErrorMessage name="business_cat_code">
+                                            {(msg) => (
+                                              <p
+                                                className="abhitest"
+                                                style={{
+                                                  color: "red",
+                                                  position: "absolute",
+                                                  zIndex: " 999",
+                                                }}
+                                              >
+                                                {msg}
+                                              </p>
+                                            )}
+                                          </ErrorMessage>
+                                        } */}
 
                                       </div>
                                     </div>

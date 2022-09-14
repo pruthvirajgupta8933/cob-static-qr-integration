@@ -98,6 +98,9 @@ margin-left: 97px;
     opacity: 0;
   }
 }
+.homeiconsize{
+  font-size: 16px;
+}
 
 .viewicon{
   position: absolute;
@@ -245,7 +248,7 @@ font-weight: 400;
 font-size: 18px;
 line-height: 156.5%;
 position:absolute;
-top: 610px;
+top: 706px;
 right: 485px;
 /* or 28px */
 color: #FFFFFF;
@@ -595,6 +598,9 @@ line-height: 17px;
 text-align: center;
 color: #1465FA;
 
+  }
+  .dashboardfont{
+    font-size: 14px;
   }
 
    

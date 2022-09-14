@@ -15,6 +15,9 @@ const register = (fullname, lastName, mobileNumber, email, password,businessType
   })
 };
 
+
+
+
 // login old url : https://cobapi.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin 
 // login new url : https://cobtest.sabpaisa.in/auth-service/auth/login
 // https://cobapi.sabpaisa.in/auth-service/auth/login

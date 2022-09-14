@@ -22,6 +22,10 @@ const API_LIVE = {
   AUTH_LOGIN: `${url}/auth-service/auth/login`,
   //  AUTH_LOGIN : "${url}/cob/loginapi",
 
+  ////////////////////////////////////---------------------------business_cat_code api
+
+  Business_Category_CODE:`${url}/auth-service/auth/business-category`,
+
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
   AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
   AUTH_UPDATE_PROFILE: `${url}/auth-service/updateProfile`,

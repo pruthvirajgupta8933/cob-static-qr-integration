@@ -73,7 +73,7 @@ function SideNavbar() {
                 <ul className="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" role="menu" style={{background: 'rgb(1, 86, 179)'}}>
                   {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
-                      <Link to={`${url}`} className='txt-white'><i className="fa fa-home" aria-hidden="true" /> <span>Dashboard</span></Link>
+                      <Link to={`${url}`} className='txt-white'><i className="fa fa-home homeiconsize" aria-hidden="true" /> <span style={{fontSize:'15px'}}>Dashboard</span></Link>
                     </li>
                     : <React.Fragment></React.Fragment>}
 
