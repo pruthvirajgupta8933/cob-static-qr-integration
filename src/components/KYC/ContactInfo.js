@@ -242,7 +242,7 @@ function ContactInfo(props) {
         <Form>
           {console.log(formik)}
           <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                 Contact Name<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -260,7 +260,7 @@ function ContactInfo(props) {
             </div>
 
           <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                 Contact Designation<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -286,7 +286,7 @@ function ContactInfo(props) {
 
         
           <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                 Contact Number<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -356,7 +356,7 @@ function ContactInfo(props) {
 
        
           <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                 Email Id<span style={{ color: "red" }}>*</span>
                 </h4>

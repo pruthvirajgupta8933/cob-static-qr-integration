@@ -13,6 +13,10 @@ import { register, udpateRegistrationStatus } from "../../slices/auth";
 import { useHistory } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
 import TermCondition from './TermCondition';
+import API_URL from '../../config';
+import { axiosInstanceAuth } from '../../utilities/axiosInstance';
+import { convertToFormikSelectJson } from '../../_components/reuseable_components/convertToFormikSelectJson';
+
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
@@ -28,7 +32,8 @@ const FORM_VALIDATION = Yup.object().shape({
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"),
   confirmpasswordd: Yup.string().oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
-  terms_and_condition: Yup.boolean().oneOf([true], "You must accept the terms and conditions")
+  terms_and_condition: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
+  business_cat_code:Yup.string().required("Required")
 });
 
 function Registration() {
@@ -45,6 +50,9 @@ function Registration() {
   const [acceptTc, setAcceptTc] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const [btnDisable, setBtnDisable] = useState(false);
+  const[businessCode,setBusinessCode]=useState([]);
+
+  
 
   const [valuesIn, setValuesIn] = useState({
     password: '',
@@ -56,6 +64,16 @@ function Registration() {
     status[index] = !status[index]
     setCheckboxStatus(status)
   }
+
+
+  useEffect(() => {
+    axiosInstanceAuth.get(API_URL.Business_Category_CODE).then((resp)=>{
+      const data =  resp.data.message
+      console.log(data,"my all dattaaa")
+     
+      setBusinessCode(data)
+    }).catch(err=>console.log(err))
+  }, [])
 
 
   const dispatch = useDispatch();
@@ -70,18 +88,20 @@ function Registration() {
 
 
   const handleRegistration = (formData) => {
+    
     setBtnDisable(true)
 
     var businessType = 1;
-    var { fullname, mobilenumber, emaill, passwordd } = formData;
+    var { fullname, mobilenumber, emaill, passwordd, business_cat_code } = formData;
     var fullname = fullname;
     var mobileNumber = mobilenumber;
     var email = emaill;
+    var business_cat_code = business_cat_code;
     var password = passwordd;
 
     // setLoading(true);
     // console.log(formValue);
-    dispatch(register({ fullname, mobileNumber, email, password, businessType }))
+    dispatch(register({ fullname, mobileNumber, email, password, business_cat_code, businessType }))
       .unwrap()
       .then((res) => {
         setBtnDisable(false)
@@ -143,6 +163,7 @@ function Registration() {
     setIsCheck(isChecked)
   }
 
+  console.log(businessCode,"===>")
   return (
     <>
       <HeaderPage />
@@ -232,6 +253,7 @@ function Registration() {
                                 mobilenumber: "",
                                 emaill: "",
                                 passwordd: "",
+                                business_cat_code:"",
                                 confirmpasswordd: "",
                                 terms_and_condition: false,
                               }}
@@ -256,7 +278,7 @@ function Registration() {
                                       <Field
                                         className="string optional"
                                         maxLength={255}
-                                        id="first-name"
+                                        id="fullname"
                                         placeholder="Full Name"
                                         type="text"
                                         name="fullname"
@@ -283,7 +305,7 @@ function Registration() {
                                     <div className="sminputs">
                                       <div className="input full- optional">
                                         <label className="string optional" htmlFor="mobile">Enter Mobile</label>
-                                        <Field className="string optional" maxLength={10} id="mobile" placeholder="Mobile Number" name='mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()} />
+                                        <Field className="string optional" maxLength={10} id="mobilenumber" placeholder="Mobile Number" name='mobilenumber' type="text" pattern="\d{10}" size={10} onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()} />
                                         {<ErrorMessage name="mobilenumber">
                                           {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
                                         </ErrorMessage>}
@@ -325,33 +347,45 @@ function Registration() {
                                       <div className="input full- optional">
                                         <label
                                           className="string optional"
-                                          htmlFor="user-email"
+                                          htmlFor="business_category"
                                         >
                                           Business Category
                                         </label>
-                                        <Field name="Business_category" className="selct" component="select">
+                                        <Field 
+                                        name="business_cat_code" 
+                                        className="selct" 
+                                        component="select"
+                                        >
                                           <option
                                             type="text"
                                             className="form-control"
                                             id="business_category"
                                           >Select Business Category</option>
-                                          <option value={1}>Retail</option>
-                                          <option value={2}>E-Commerce</option>
-                                          <option value={3}>Education</option>
-                                          <option value={4}>Government</option>
-                                          <option value={5}>Freelancer</option>
+                                          {
+                                                        businessCode.map((business, i) => (
+                                                            <option value={business.category_code} key={i}>{business.category_name}</option>
+                                                        ))} 
 
-                                        </Field>
+                                         </Field> 
+                                        {
+                                          <ErrorMessage name="business_cat_code">
+                                            {(msg) => (
+                                              <p
+                                                className="abhitest"
+                                                style={{
+                                                  color: "red",
+                                                  position: "absolute",
+                                                  zIndex: " 999",
+                                                }}
+                                              >
+                                                {msg}
+                                              </p>
+                                            )}
+                                          </ErrorMessage>
+                                        }
 
                                       </div>
                                     </div>
-
-
-
-
-
-
-
 
                                     {/* <div className="input full- optional">
                                   <label

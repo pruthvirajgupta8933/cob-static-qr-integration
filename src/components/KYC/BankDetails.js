@@ -126,7 +126,7 @@ function BankDetails(props) {
         <Form>
           {console.log(formik)}
           <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                 Account Holder Name<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -147,7 +147,7 @@ function BankDetails(props) {
 
             
             <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Account Type<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -165,7 +165,7 @@ function BankDetails(props) {
             </div>
             
             <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   IFSC Code<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -183,7 +183,7 @@ function BankDetails(props) {
             </div>
 
             <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Branch<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -201,7 +201,7 @@ function BankDetails(props) {
             </div>
 
             <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Bank Name<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -220,7 +220,7 @@ function BankDetails(props) {
             </div>
 
             <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
                   Account Number <span style={{ color: "red" }}>*</span>
                 </h4>

@@ -20,6 +20,14 @@ import KycAlert from "../../KYC/KycAlert";
 import NavBar from "../NavBar/NavBar";
 import bro from "../../../assets/images/bro.png";
 import congratsImg from "../../../assets/images/congImg.png"
+import onlineimg from "../../../assets/images/onlinePayment.png"
+import paymentlink from "../../../assets/images/paymentLink.png"
+import subscriptin from "../../../assets/images/subscribe.png"
+import Rupees from "../../../assets/images/payout.png"
+import Quick from "../../../assets/images/qwikform.png"
+import eposs from "../../../assets/images/epos.png"
+import linkpssa from "../../../assets/images/linkPaisa.png"
+import echlln from "../../../assets/images/echallan.png"
 
 function Home() {
   // console.log("home page call");
@@ -283,20 +291,39 @@ function Home() {
         </div>
 
         <div class="card">
-          <h5>
-            <b>
-              Looking to accept international payments from your{" "}
-              <span className="newcard">customers</span> ?
-            </b>
-          </h5>
-          <div class="card-header">
-            <h2 class="card-title">Enable International Payments Today</h2>
+          <div class="container">
+  <div class="row">
+    <div class="col-sm">
+    <h2 class="card-title dashboardEnablecss"><img class="card-img-left" src={onlineimg} alt="onlinepay" width={40}/> &nbsp;Enable International Payments Today</h2>
+    <p className="paragraphcssdashboards">SabPaisa is the World's 1st API Driven Unified Payment Experience Platform having the Best Payment Gateway in India. Collect, transfer & refund your payments online & offline. Get the best success rates with maximum payment modes available including Debit cards, Credit Card, Wallets, UPI, Bharat QR, etc. The Hybrid PG helps businesses collect payments from all the clients and consumers, urban or rural, young or old, online or offline, without worrying about consumer payment behaviour.</p>
+    <p className="pricingclasscss">Read More & Pricing  &nbsp;{'>'}{'>'}</p> 
+    </div>
+    <div class="col-sm">
+    <ul className="foralinkscsshere">
+    <img class="card-img-left mt-2" src={paymentlink} alt="payLink" width={28}/><li className="forpaymentLinks">Payment Links</li>
+    <img class="card-img-left forimage" src={subscriptin} alt="payLink" width={28}/><li className="forSubscriptionscss">Subscriptions</li>
+    <img class="card-img-left myimg" src={Rupees} alt="payLink" width={28}/><li className="forpayoutscs">Payouts</li>
+    <img class="card-img-left forquik" src={Quick} alt="payLink" width={28}/><li className="forQwikForm">QwikForm</li>
+    <img class="card-img-left foreposss" src={eposs} alt="payLink" width={28}/><li className="eposapp">E-POS App</li>
+    <img class="card-img-left forrlink" src={linkpssa} alt="payLink" width={28}/><li className="linkpaisa">LinkPaisa</li>
+    <img class="card-img-left echllanssss" src={echlln} alt="payLink" width={28}/><li className="echallancss">E-Challan</li>
+</ul>
+
+    </div>
+    
+    
+  </div>
+</div>
+
+            {/* <h2 class="card-title">Enable International Payments Today</h2>
             <p class="card-text">
               With supporting text below as a natural lead-in to additional
               content.
             </p>
-            <Link to={`dashboard/product-catalogue`}><button className="ColrsforredirectProdct text-white mt-2">See All Products</button></Link>
-          </div>
+            <Link to={`dashboard/product-catalogue`}><button className="ColrsforredirectProdct text-white mt-2">See All Products</button></Link> */}
+          
+         
+          
         </div>
       </div>
       {/* KYC container end here */}
@@ -367,6 +394,7 @@ function Home() {
                     </button>
                   </Link>
                 </div>
+                
                 <div class="col-sm">
                   <img
                     src={bro}
@@ -374,9 +402,20 @@ function Home() {
                     alt="SabPaisa"
                     title="SabPaisa"
                   />
-                </div>
+                  <div class="col-sm">
+                  <Link to={`dashboard/product-catalogue`}>
+                    <button className="ColrsforredirectProdct text-white mt-5">
+                      I do This later
+                    </button>
+                    </Link>
               </div>
+                </div>
+                
+                
+              </div>
+              
             </div>
+           
           </div>
         </div>
       </div>

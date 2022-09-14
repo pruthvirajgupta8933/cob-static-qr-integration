@@ -297,16 +297,12 @@ export const Profile = () => {
              </Link>
             </h1>
             <div className="ant-tabs ant-tabs-top ant-tabs-line">
-              <div
-                role="tablist"
-                className="ant-tabs-bar ant-tabs-top-bar"
-                tabIndex={0}
-              >
-                <div className="ant-tabs-nav-container">
-                  <div className="ant-tabs-nav-wrap">
-                    <div className="ant-tabs-nav-scroll">
-                      <div className="ant-tabs-nav- ant-tabs-nav-animated">
-                        <div>
+            <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
+                  <div className="ant-tabs-nav-container">
+                    <div className="ant-tabs-nav-wrap">
+                      <div className="ant-tabs-nav-scroll">
+                        <div className="ant-tabs-nav- ant-tabs-nav-animated">
+                          <div>
                           {/* <h4 style={{background: "#ffa2a2",padding: "14px",margin:" auto",textAlign: "center"}}> */}
                           {/* {message} */}
                           {/* </h4> */}
@@ -327,26 +323,13 @@ export const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div
-                tabIndex={0}
-                role="presentation"
-                style={{
-                  width: "0px",
-                  height: "0px",
-                  overflow: "hidden",
-                  position: "absolute",
-                }}
-              />
-              <div
-                className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content"
-                style={{ marginLeft: "0%" }}
-              >
-                <div
-                  role="tabpanel"
-                  aria-hidden="false"
-                  className="ant-tabs-tabpane ant-tabs-tabpane-active"
-                >
-                  <div
+              <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
+                <div className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content" style={{marginLeft: '0%'}}>
+                  <div role="tabpanel" aria-hidden="false" className="ant-tabs-tabpane ant-tabs-tabpane-active">
+                    <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
+                    </div>
+                    <div className="container col-sm-8">
+                  {/* <div
                     tabIndex={0}
                     role="presentation"
                     style={{
@@ -360,26 +343,28 @@ export const Profile = () => {
                     <div
                       className="container-"
                       style={{ margin: "0 !important" }}
-                    >
+                    > */}
                       {/* start form area */}
-                      <div className="row- justify-content-center">
+                      <div className="container col-sm-8">
                         <div className="col-md-12-">
 {/* 
                         <Link to="/reset" className="float-right " style={{margin:"-23px"}}>Change Password</Link> */}
- 
+{/*  
                           <div className="card mt-0">
                             <div className="card-header">Basic Details</div>
-                            <div className="card-body-">
-                              <form onSubmit={handleSubmit(onSubmit)}>
-                                <div className="col-lg-4 col-md-6 col-sm-12">
+                            <div className="card-body-"> */}
+                              <form className="form-horizontal" onSubmit={handleSubmit(onSubmit)}>
+                                <div className="form-group col-sm-12">
+                             
                                   <label
                                     htmlFor="loginId"
-                                    className="col-form-label text-md-right"
+                                    className="control-label col-sm-3"
                                   >
+                                   
                                     {" "}
                                     Login ID
                                   </label>
-
+                                  <div className="col-sm-9">
                                   <input
                                     className={`form-control ${
                                       errors.loginId ? "is-invalid" : ""
@@ -394,16 +379,19 @@ export const Profile = () => {
                                   <div className="invalid-feedback">
                                     {errors.loginId?.message}
                                   </div>
-                                </div>
+                                  </div>
+                                  </div>
+                              
 
-                                <div className="col-lg-4 col-md-6 col-sm-12">
+                              
+                                  <div className="form-group  col-sm-12">
                                   <label
                                     htmlFor="clientName"
-                                    className=" col-form-label text-md-right"
+                                    className="control-label col-sm-3"
                                   >
                                     Client Name
                                   </label>
-
+                                  <div className="col-sm-9">
                                   <input
                                     className={`form-control ${
                                       errors.clientName ? "is-invalid" : ""
@@ -413,20 +401,24 @@ export const Profile = () => {
                                     id="clientName"
                                     name="clientName"
                                     onChange={(e) => e.target.value}
+                                    readonly
+
                                   />
                                   <div className="invalid-feedback">
                                     {errors.clientName?.message}
                                   </div>
                                 </div>
+                                </div>
 
-                                <div className="col-lg-4 col-md-6 col-sm-12">
+                               
+                                <div className="form-group  col-sm-12">
                                   <label
                                     htmlFor="phone"
-                                    className="col-form-label text-md-right"
+                                    className="control-label col-sm-3"
                                   >
                                     Phone
                                   </label>
-
+                                  <div className="col-sm-9">
                                   <input
                                     className={`form-control ${
                                       errors.phone ? "is-invalid" : ""
@@ -436,20 +428,23 @@ export const Profile = () => {
                                     id="phone"
                                     name="phone"
                                     onChange={(e) => e.target.value}
+                                    readonly
                                   />
                                   <div className="invalid-feedback">
                                     {errors.phone?.message}
                                   </div>
                                 </div>
+                                </div>
                                 {/* Client Code Hide if already client created */}
                                 {isCreateorUpdate ? (
-                                  <div className="col-md-4 col-md-6 col-sm-12">
+                                  <div className="form-group col-sm-12">
                                     <label
                                       htmlFor="clientCode"
-                                      className="col-form-label text-md-right"
+                                      className="control-label col-sm-3"
                                     >
                                       Client Code
                                     </label>
+                                    <div className="col-sm-9">
                                     <input
                                       className={`form-control ${
                                         errors.clientCode ? "is-invalid" : ""
@@ -458,6 +453,7 @@ export const Profile = () => {
                                       type="text"
                                       id="clientCode"
                                       name="clientCode"
+                                      readonly
                                       onChange={(e) =>
                                         verifyClientCodeFn(e.target.value)
                                       }
@@ -471,37 +467,43 @@ export const Profile = () => {
                                       {errors.clientCode?.message}
                                     </div>
                                   </div>
+                                  </div>
                                 ) : (
                                   <></>
                                 )}
 
-                                <div className="col-lg-4 col-md-6 col-sm-12">
+                                 <div className="form-group col-sm-12">
+                                  
                                   <label
                                     htmlFor="email"
-                                    className="col-form-label text-md-right"
+                                    className="control-label col-sm-3"
                                   >
                                     E-Mail Address
                                   </label>
-
+                                  
+                                  <div className="col-sm-9">
                                   <input
                                     type="text"
                                     id="email"
                                     className="form-control"
                                     name="email"
                                     {...register("email")}
+                                    readonly
                                   />
                                   <p>{errors.email?.message}</p>
                                 </div>
+                                </div>
 
-                                <div className="col-lg-4 col-md-6 col-sm-12">
+                                <div className="form-group col-sm-12">
                                   <label
                                     htmlFor="address"
-                                    className="col-form-label text-md-right"
+                                    className="control-label col-sm-3"
                                   >
                                     {" "}
                                     Address
                                   </label>
-
+                                
+                                  <div className="col-sm-9">
                                   <input
                                     className={`form-control ${
                                       errors.address ? "is-invalid" : ""
@@ -511,10 +513,12 @@ export const Profile = () => {
                                     id="address"
                                     name="address"
                                     onChange={(e) => e.target.value}
+                                    readonly
                                   />
                                   <div className="invalid-feedback">
                                     {errors.address?.message}
                                   </div>
+                                </div>
                                 </div>
 
                                 {/* <div className="col-lg-4 col-md-6 col-sm-12">
@@ -703,6 +707,7 @@ export const Profile = () => {
                                 </div> */}
 
                                 <div className="col-lg-4 offset-md-4- topmar">
+                                <div class="invisible">
                                   <button
                                     type="submit"
                                     className="btn bttn bttnbackgroundkyc"
@@ -712,12 +717,12 @@ export const Profile = () => {
                                       : "Update Profile"}
                                   </button>
                                 </div>
+                                </div>
                               </form>
-                            </div>
-                          </div>
-                        </div>
+                          
                       </div>
                       {/* end form area */}
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -743,7 +748,9 @@ export const Profile = () => {
                 position: "absolute",
               }}
             />
+          {/* </div>
           </div>
+        </div> */}
         </div>
       </main>
     </section>
