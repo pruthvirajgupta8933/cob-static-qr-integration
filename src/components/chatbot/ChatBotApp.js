@@ -3,7 +3,8 @@ import { ThemeProvider } from 'styled-components';
 import ChatBot from 'react-simple-chatbot';
 import {steps} from './Chatbot/Step'
 import botFace from './media/botFace.png'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { productSubscribeState } from '../../slices/dashboardSlice';
 
 
 // Creating our own theme
@@ -25,15 +26,21 @@ const theme = {
 function ChatBotApp(props) {
   // Set some properties of the bot
   // console.log(props)
-  var {user} = useSelector((state)=>state.auth);
-  const [opened, setOpened] = useState(false)
+  const {dashboard} = useSelector((state)=>state);
+  
+  //state
+  const [opened, setOpened] = useState(true)
 // console.log(user);
   
 
 useEffect(() => {
-  const flag =user?.loginId===795? true : false;
-  toggleFloating(flag);  
-}, [user])
+  
+  const flag =dashboard?.productSubscribe;
+  // console.log(dashboard?.productSubscribe)
+  toggleFloating(flag); 
+  
+   
+}, [dashboard])
 
 
 const toggleFloating =(boolen)=>{

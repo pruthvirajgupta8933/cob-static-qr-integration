@@ -47,3 +47,11 @@ letter-spacing: 0em;
 text-align: left;
 color: #4285F8;
 }
+
+
+.bold-font{
+    font-size: 50px;
+    font-weight: 900;
+}
+
+

@@ -114,6 +114,7 @@ function Home() {
   }, [search]);
 
   useEffect(() => {
+    // localStorage.setItem("subscribePlan",0);
     return () => {
       dispatch(clearSuccessTxnsummary());
     };

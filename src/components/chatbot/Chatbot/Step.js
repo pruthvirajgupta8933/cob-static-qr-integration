@@ -7,7 +7,7 @@ export const steps = [
   {
     id: '1',
     message: "Hello! I'm Mansha, here to answer your queries",
-    trigger: '2',
+    trigger: '4',
   },
   {
     id: '2',
