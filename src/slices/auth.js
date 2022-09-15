@@ -66,7 +66,7 @@ const auth = {
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ fullname, mobileNumber, email, business_cat_code, password,  businessType}, thunkAPI) => {
+  async ({ fullname,  mobileNumber, email, business_cat_code, password,businessType}, thunkAPI) => {
     try {
       const response = await AuthService.register(fullname, mobileNumber, email, business_cat_code, password,  businessType);
       thunkAPI.dispatch(setMessage(response.data.message));
