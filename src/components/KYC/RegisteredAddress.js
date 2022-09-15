@@ -148,7 +148,7 @@ const RegisteredAddress = (props) => {
                   className="form-control"
 
                 />
-                  <p>
+            <p style={{marginLeft:"23px"}}>
             <input class="form-check-input" type="checkbox" value={check} id="flexCheckDefault" />
             Operational address is same as the business address
             </p>

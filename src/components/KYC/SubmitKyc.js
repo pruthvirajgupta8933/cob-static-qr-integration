@@ -188,6 +188,7 @@ function SubmitKyc(props) {
                                                 color: "red",
                                                 position: "absolute",
                                                 zIndex: " 999",
+                                                marginLeft:"30px"
                                               }}
                                             >
                                               {msg}
