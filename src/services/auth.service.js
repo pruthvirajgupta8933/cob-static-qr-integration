@@ -5,13 +5,13 @@ import { axiosInstance,axiosInstanceAuth } from "../utilities/axiosInstance";
 
 // const SIGNUP_URL = "https://cobapi.sabpaisa.in/auth-service/auth/";
 
-const register = (fullname, mobilenumber, emaill, passwordd, business_cat_code,businessType) => {
+const register = (fullname,  mobileNumber, email, business_cat_code, password,businessType) => {
   return axiosInstanceAuth.post(API_URL.AUTH_SIGNUP, {
-    fullname: fullname,
-    mobilenumber: mobilenumber,
-    business_cat_code:business_cat_code,
-    emaill: emaill,
-    passwordd: passwordd,
+    name: fullname,
+    mobileNumber: mobileNumber,
+   email: email,
+   business_cat_code:business_cat_code,
+    password: password,
     requestedClientType:businessType,
   })
 };

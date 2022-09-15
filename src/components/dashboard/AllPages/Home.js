@@ -427,11 +427,7 @@ function Home() {
                     Payment services.
                   </h2>
 
-                  <Link to={`/dashboard/kyc`}>
-                    <button className="ModalButtonClr text-white mt-2">
-                      Complete KYC to activate account
-                    </button>
-                  </Link>
+                  
                 </div>
 
                 <div class="col-sm">
@@ -441,17 +437,25 @@ function Home() {
                     alt="SabPaisa"
                     title="SabPaisa"
                   />
-                  <div class="col-sm">
-                    <Link to={`dashboard/product-catalogue`}>
-                      <button className="ColrsforredirectProdct text-white mt-5">
-                        I'll do this later
-                      </button>
-                    </Link>
-                  </div>
+                  
                 </div>
 
 
               </div>
+              <div class="col-sm">
+                    
+                    <Link to={`/dashboard/kyc`}>
+                    <button className="ModalButtonClr text-white mt-2">
+                      Complete KYC to activate account
+                    </button>
+                  </Link>
+                  <Link to={`dashboard/product-catalogue`}>
+                      <button className="ColrsforredirectProdct text-white mt-5-">
+                        I'll do this later
+                      </button>
+                    </Link>
+
+                  </div>
 
             </div>
 

@@ -110,10 +110,9 @@ function Registration() {
 
     // setLoading(true);
     // console.log(formValue);
-    dispatch(register({ fullname, mobilenumber, emaill, passwordd, business_cat_code,businessType }))
+    dispatch(register({ fullname, mobileNumber, email, business_cat_code, password, businessType }))
       .unwrap()
       .then((res) => {
-        console.log(res,"registration response")
         setBtnDisable(false)
       })
       .catch((err) => {

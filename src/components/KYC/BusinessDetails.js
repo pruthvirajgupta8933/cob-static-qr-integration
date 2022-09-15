@@ -255,14 +255,11 @@ function BusinessDetails(props) {
         {(formik) => (
           <Form>
             {/* {console.log(formik)} */}
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0">
-                <h4 class="font-weight-bold text-nowrap">
-                  Business Name<span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
-                <FormikController
+         
+    <div class="form-group row">
+    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2"><h4 class ="font-weight-bold text-nowrap">Business Name<span style={{color:"red"}}>*</span></h4></label>
+    <div class="col-sm-7 col-md-7 col-lg-7">
+    <FormikController
                   control="input"
                   type="text"
                   name="company_name"
@@ -270,8 +267,8 @@ function BusinessDetails(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-              </div>
-            </div>
+    </div>
+  </div>
             {/* <div className="form-row">
               <div className="form-group col-md-4">
                 <label>

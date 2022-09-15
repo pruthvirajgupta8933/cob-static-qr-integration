@@ -189,21 +189,22 @@ function SubmitKyc(props) {
               </div>
 
               {
-                <ErrorMessage name="term_condition">
-                  {(msg) => (
-                    <p
-                      className="abhitest ml-4"
-                      style={{
-                        color: "red",
-                        position: "absolute",
-                        zIndex: " 999",
-                      }}
-                    >
-                      {msg}
-                    </p>
-                  )}
-                </ErrorMessage>
-              }
+                                        <ErrorMessage name="term_condition">
+                                          {(msg) => (
+                                            <p
+                                              className="abhitest"
+                                              style={{
+                                                color: "red",
+                                                position: "absolute",
+                                                zIndex: " 999",
+                                                marginLeft:"30px"
+                                              }}
+                                            >
+                                              {msg}
+                                            </p>
+                                          )}
+                                        </ErrorMessage>
+                                      }
               {/* {formik.setFieldValue("termAndCondition",setChecked(true))} */}
               {/* <div class="form-check form-check-inline">
                 <FormikController

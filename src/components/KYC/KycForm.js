@@ -162,7 +162,7 @@ function KycForm() {
                           }
                           onClick={() => {
                             SetTab(2);
-                            setTitle("BUISINESS OVERVIEW");
+                            setTitle("BUSINESS OVERVIEW");
                           }}
                         >
                           Business Overview 
@@ -289,7 +289,7 @@ function KycForm() {
               }}
             >
               <div class="card-body">
-                <h1 class="card-title font-weight-bold">{title}</h1>
+                <h1 class="card-title font-weight-bold mb-5">{title}</h1>
 
                   
                 <div className="row">
