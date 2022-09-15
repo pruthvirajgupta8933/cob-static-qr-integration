@@ -9,6 +9,8 @@ import { saveRegisteredAddress } from "../../slices/kycSlice"
 
 const RegisteredAddress = (props) => {
   const dispatch = useDispatch();
+  const KycList = useSelector((state) => state.kyc.kycUserList);
+  // console.log(KycList.merchant_address_details.pin_code,"<===List==>")
   
   
   const [check,setCheck] = useState(false);
@@ -25,17 +27,17 @@ const RegisteredAddress = (props) => {
   const { loginId } = user;
 
   const initialValues = {
-    address: "",
-    city: "",
-    state:"",
-    pincode: "",
+    address: KycList.merchant_address_details.address,
+    city: KycList.merchant_address_details.city,
+    state:KycList.merchant_address_details.state,
+    pincode: KycList.merchant_address_details.pin_code,
   
   }
   const validationSchema = Yup.object({
     address: Yup.string().required("Required").nullable(),
     city: Yup.string().required("Required").nullable(),
     state: Yup.string().required("Required").nullable(),
-    pin_code: Yup.string().required("Required").nullable(),
+    pincode: Yup.string().required("Required").nullable(),
   })
 
 
@@ -142,7 +144,7 @@ const RegisteredAddress = (props) => {
                 <FormikController
                   control="input"
                   type="text"
-                  name="pin_code"
+                  name="pincode"
                   className="form-control"
 
                 />

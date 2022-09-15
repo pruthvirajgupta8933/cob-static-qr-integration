@@ -33,7 +33,8 @@ const FORM_VALIDATION = Yup.object().shape({
     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"),
   confirmpasswordd: Yup.string().oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
   terms_and_condition: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
-  business_cat_code:Yup.string().required("Required")
+  business_cat_code: Yup.string().required("Required"),
+  // termsAndConditions: Yup.boolean().oneOf([true], "Required"),
 });
 
 function Registration() {
@@ -49,17 +50,21 @@ function Registration() {
   const [isActive, setActive] = useState(true);
   const [acceptTc, setAcceptTc] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
-  const [btnDisable, setBtnDisable] = useState(false);
-  const[businessCode,setBusinessCode]=useState([]);
+  const [btnDisable, setBtnDisable] = useState(true);
+  const [trmCond, setTrmCond] = useState(false);
 
-  
+  const [businessCode, setBusinessCode] = useState([]);
+
+
 
   const [valuesIn, setValuesIn] = useState({
     password: '',
     showPassword: false,
   });
 
-  function buttonHandler(index){
+  function buttonHandler(index) {
+   
+
     let status = [...checkboxStatus];
     status[index] = !status[index]
     setCheckboxStatus(status)
@@ -67,12 +72,12 @@ function Registration() {
 
 
   useEffect(() => {
-    axiosInstanceAuth.get(API_URL.Business_Category_CODE).then((resp)=>{
-      const data =  resp.data.message
-      console.log(data,"my all dattaaa")
-     
+    axiosInstanceAuth.get(API_URL.Business_Category_CODE).then((resp) => {
+      const data = resp.data.message
+      // console.log(data,"my all dattaaa")
+
       setBusinessCode(data)
-    }).catch(err=>console.log(err))
+    }).catch(err => console.log(err))
   }, [])
 
 
@@ -88,8 +93,10 @@ function Registration() {
 
 
   const handleRegistration = (formData) => {
-    
-    setBtnDisable(true)
+
+    // console.log(formData, "here is form dataaaaaaaaaaaaaaaaaaaaaaaaaaa")
+
+    // setBtnDisable(true)
 
     var businessType = 1;
     var { fullname, mobilenumber, emaill, passwordd, business_cat_code } = formData;
@@ -99,11 +106,14 @@ function Registration() {
     var business_cat_code = business_cat_code;
     var password = passwordd;
 
+
+
     // setLoading(true);
     // console.log(formValue);
-    dispatch(register({ fullname, mobileNumber, email, password, business_cat_code, businessType }))
+    dispatch(register({ fullname, mobilenumber, emaill, passwordd, business_cat_code,businessType }))
       .unwrap()
       .then((res) => {
+        console.log(res,"registration response")
         setBtnDisable(false)
       })
       .catch((err) => {
@@ -163,7 +173,10 @@ function Registration() {
     setIsCheck(isChecked)
   }
 
-  console.log(businessCode,"===>")
+  const handlerTermCond = (isChecked)=>{
+      setBtnDisable(isChecked)
+  }
+  console.log("btnDisable",btnDisable)
   return (
     <>
       <HeaderPage />
@@ -249,12 +262,13 @@ function Registration() {
                           <div className="logmod__form">
                             <Formik
                               initialValues={{
-                               fullname:"",
+                                fullname: "",
                                 mobilenumber: "",
                                 emaill: "",
                                 passwordd: "",
-                                business_cat_code:"",
+                                business_cat_code: "",
                                 confirmpasswordd: "",
+                                // termsAndConditions: false,
                                 terms_and_condition: false,
                               }}
                               validationSchema={FORM_VALIDATION}
@@ -267,11 +281,12 @@ function Registration() {
                                   action="#"
                                   className="simform"
                                 >
+                                  {/* {console.log(values)} */}
                                   <div className="sminputs">
                                     <div className="input full- optional">
                                       <label
                                         className="string optional"
-                                        htmlFor="first-name"
+                                        htmlFor="full-name"
                                       >
                                         Full Name
                                       </label>
@@ -351,22 +366,22 @@ function Registration() {
                                         >
                                           Business Category
                                         </label>
-                                        <Field 
-                                        name="business_cat_code" 
-                                        className="selct" 
-                                        component="select"
+                                        <Field
+                                          name="business_cat_code"
+                                          className="selct"
+                                          component="select"
                                         >
                                           <option
                                             type="text"
                                             className="form-control"
-                                            id="business_category"
+                                            id="business_code"
                                           >Select Business Category</option>
                                           {
-                                                        businessCode.map((business, i) => (
-                                                            <option value={business.category_code} key={i}>{business.category_name}</option>
-                                                        ))} 
+                                            businessCode.map((business, i) => (
+                                              <option value={business.category_code} key={i}>{business.category_name}</option>
+                                            ))}
 
-                                         </Field> 
+                                        </Field>
                                         {
                                           <ErrorMessage name="business_cat_code">
                                             {(msg) => (
@@ -519,31 +534,25 @@ function Registration() {
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
-                                        // disabled={btnDisable}
-                                        disabled= {checkboxStatus.filter(status => status === true ).length != 1  }
-                                        >
+                                        disabled={btnDisable}
+                                        data-rel={btnDisable}
+                                      >
                                         Create Account
                                       </button>
-                                   
+
 
                                       <span className="simform__actions-sidetext">
-                                      {Array(3).fill(0).map((_, index) =>
-                                      <Field
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        // name="checkbox"
-                                        checked={checkboxStatus[index]} onChange={() => buttonHandler(index)}
-                                       
-                                      /> 
-                                      )}
+                                        {/* {Array(3).fill(0).map((_, index) =>
+                                          <Field
+                                            type="checkbox"
+                                            className="form-check-input"
+                                            name="termsAndConditions"
+                                            checked={checkboxStatus[index]} onChange={() => buttonHandler(index)}
 
-                                        <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} />
-                                     
-
-                                        {/* <p onClick={()=>{ setAcceptTc(!acceptTc)}} >accept the t&c </p> */}
-                                        <p className="mb-0" style={{ cursor: "pointer" }} onClick={() => { callBackFn(acceptTc, isCheck) }} > Click here to accept <span className="text-primary">terms and conditions</span></p>
-                                        {
-                                          <ErrorMessage name="terms_and_condition">
+                                          />
+                                        )} */}
+                                        {/* {
+                                          <ErrorMessage name="termsAndConditions">
                                             {(msg) => (
                                               <p
                                                 className="abhitest"
@@ -556,23 +565,45 @@ function Registration() {
                                               </p>
                                             )}
                                           </ErrorMessage>
-                                        }
-                                        {/* <span className="ant-checkbox">
+                                        } */}
+
+                                        {/* <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} /> */}
+
+
+                                        {/* <p onClick={()=>{ setAcceptTc(!acceptTc)}} >accept the t&c </p> */}
+                                        {/* <p className="mb-0" style={{ cursor: "pointer" }} onClick={() => { callBackFn(acceptTc, isCheck) }} > Click here to accept <span className="text-primary">terms and conditions</span></p> */}
+                                        {/* {
+                                          
+                                        } */}
+                                        <span className="ant-checkbox">
                                       <Field
-                                        style={{ marginTop: "-7px" }}
                                         type="checkbox"
-                                        className="form-check-input"
+                                        className="form-check-input mt-0"
                                         name="terms_and_condition"
-                                        // onClick={()=>{ handlerTermCond(trmCond,setFieldValue)}}
-
+                                        onClick={()=>{ handlerTermCond(values?.terms_and_condition)}}
                                       /> 
+                                         <p className=" ml-2" style={{ cursor: "pointer" }} onClick={() => { callBackFn(acceptTc, isCheck) }} > Click here to accept <span className="text-primary">terms and conditions</span></p>
                                     </span>
-
-                                    I agree to the{" "}
+                                 
+                      <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} />
+                                    {/* I agree to the{" "}
                                     <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" className="special" target="_blank" >
                                       Terms &amp; Conditions
                                     </a> */}
                                       </span>
+                                      {  <ErrorMessage name="terms_and_condition">
+                                              {(msg) => (
+                                                <p
+                                                  className="abhitest"
+                                                  style={{
+                                                    color: "red",
+                                                    float: "left",
+                                                  }}
+                                                >
+                                                  {msg}
+                                                </p>
+                                              )}
+                                            </ErrorMessage>}
 
                                     </div>
                                   </div>

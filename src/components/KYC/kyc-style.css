@@ -40,3 +40,8 @@
     bottom: -24px;
     position: relative;
 }
+
+.verfy-btn {
+    line-height: 18px;
+    background-color: #0156B3;
+}

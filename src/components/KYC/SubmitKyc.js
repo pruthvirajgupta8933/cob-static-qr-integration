@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { approvekyc, verifyComplete } from "../../slices/kycSlice";
-import { Formik, Form } from "formik";
+import { Formik, Form,Field ,ErrorMessage} from "formik";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
 import congratsImg from "../../assets/images/congImg.png"
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { saveKycConsent } from "../../slices/kycSlice"
 
 
 function SubmitKyc(props) {
@@ -15,7 +16,7 @@ function SubmitKyc(props) {
   const history = useHistory()
   const { role, kycid } = props;
 
-  const [check, setCheck] = useState(false);
+  const [checkboxStatus, setCheckboxStatus] = useState(false)
   const [modalState, setModalState] = useState(false);
 
   const dispatch = useDispatch();
@@ -29,17 +30,17 @@ function SubmitKyc(props) {
   const [readOnly, setReadOnly] = useState(false);
 
   const initialValues = {
-    checkBoxChoice: "",
-    privacyPolicy: "",
-    termAndCondition: "",
-    serviceAgreement: "",
+    // checkBoxChoice: "",
+    // privacyPolicy: "",
+    term_condition: false,
+    // serviceAgreement: "",
   };
 
   const validationSchema = Yup.object({
-    checkBoxChoice: Yup.array().nullable(),
-    privacyPolicy: Yup.array().nullable(),
-    termAndCondition: Yup.array().nullable(),
-    serviceAgreement: Yup.array().nullable(),
+    // checkBoxChoice: Yup.array().nullable(),
+    // privacyPolicy: Yup.array().nullable(),
+    term_condition:Yup.string().oneOf(["true"], "You must accept all the specified terms & conditions")
+    // serviceAgreement: Yup.array().nullable(),
   });
 
   useEffect(() => {
@@ -50,30 +51,36 @@ function SubmitKyc(props) {
     }
   }, [role]);
 
-  const privacyPolicyOption = [
-    {
-      key: "",
-      value: "yes",
-    },
-  ];
+  // const termAndConditionOption = [
+  //   {
+  //     key: "",
+  //     value: "false",
+  //   },
+  // ];
 
-  const termAndConditionOption = [
-    {
-      key: "Term & Conditions",
-      value: "yes",
-      isHyperLink: true,
-      hyperLink: "https://sabpaisa.in/term-conditions/",
-    },
-  ];
 
-  const serviceAgreementOption = [
-    {
-      key: "Service Agreement",
-      value: "yes",
-      isHyperLink: true,
-      hyperLink: "https://sabpaisa.in/service-agreement",
-    },
-  ];
+  const [checked, setChecked] = useState(false);
+
+  
+
+
+  // const termAndConditionOption = [
+  //   {
+  //     key: "Term & Conditions",
+  //     value: "yes",
+  //     isHyperLink: true,
+  //     hyperLink: "https://sabpaisa.in/term-conditions/",
+  //   },
+  // ];
+
+  // const serviceAgreementOption = [
+  //   {
+  //     key: "Service Agreement",
+  //     value: "yes",
+  //     isHyperLink: true,
+  //     hyperLink: "https://sabpaisa.in/service-agreement",
+  //   },
+  // ];
 
   const verifyApprove = (val) => {
     if (val === "verify") {
@@ -115,12 +122,28 @@ function SubmitKyc(props) {
     }
   };
 
-  const modalclose = () => {
-    document.getElementById('exampleModal').modal('hide');
-  }
-  const onSubmit = () => { };
+  
+  const onSubmit = () => {
+        dispatch(
+      saveKycConsent({
+        term_condition:true,
+        login_id: loginId,
+        submitted_by: "270",
+      })
+    ).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true
+      ) {
+        // console.log(res)
+        // console.log("This is the response", res);
+        toast.success(res.payload.message);
+      } else {
+        toast.error("Something Went Wrong! Please try again.");
+      }
+    });
+   };
   const redirect = () => {
-    console.log("dd");
     history.push("/dashboard/product-catalogue");
    };
 
@@ -141,19 +164,38 @@ function SubmitKyc(props) {
 
               <div class="form-check form-check-inline">
 
-                <FormikController
-                  control="checkbox"
-                  name="privacyPolicy"
-                  options={privacyPolicyOption}
+                <Field
+                  type="checkbox"
+                  name="term_condition"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                  checked={readOnly}
+                  // readOnly={readOnly}
+                  // checked={readOnly}
                   className="mr-3"
                 />
-                I have accepted the <a href="https://sabpaisa.in/term-conditions/" alt="tnz" target="_blank" title="tnc"> Term & Condition</a> ,
-                <a href="https://sabpaisa.in/privacy-policy/" alt="tnz" target="_blank" title="tnc"> Privacy Policy</a> ,
-                <a href="https://sabpaisa.in/service-agreement" alt="tnz" target="_blank" title="tnc"> Service Agreement</a>
+                  
+          
+                I have accepted the <a href="https://sabpaisa.in/term-conditions/" alt="tnz" target="_blank" title="tnc"> Term & Condition</a> ,&nbsp;
+                <a href="https://sabpaisa.in/privacy-policy/" alt="tnz" target="_blank" title="tnc"> Privacy Policy</a> ,&nbsp;
+                <a href="https://sabpaisa.in/service-agreement" alt="tnz" target="_blank" title="tnc"> Service Agreement</a>&nbsp;
               </div>
+              
+              {
+                                        <ErrorMessage name="term_condition">
+                                          {(msg) => (
+                                            <p
+                                              className="abhitest"
+                                              style={{
+                                                color: "red",
+                                                position: "absolute",
+                                                zIndex: " 999",
+                                              }}
+                                            >
+                                              {msg}
+                                            </p>
+                                          )}
+                                        </ErrorMessage>
+                                      }
+              {/* {formik.setFieldValue("termAndCondition",setChecked(true))} */}
               {/* <div class="form-check form-check-inline">
                 <FormikController
                   control="checkbox"
@@ -192,7 +234,7 @@ function SubmitKyc(props) {
                       className="btn float-lg-right"
                       type="submit"
                       style={{ backgroundColor: "#0156B3" }}
-                      data-toggle="modal" data-target="#exampleModal"
+                      data-toggle="modal"  data-target="#exampleModal"
                     >
                       <h4 className="text-white font-weight-bold"> Verifying</h4>
                     </button>
@@ -252,11 +294,12 @@ function SubmitKyc(props) {
                         {/* <Link to={`product-catalogue`} data-dismiss="modal" aria-label="Close" > */}
                           <button 
                           type="button" 
-                          className="btn btn-warning text-white mt-5"
+                          className="btn btn-lg text-white mt-5 verfy-btn"
                           onClick={() =>redirect()}
                           data-dismiss="modal" aria-label="Close"
+                         
                           >
-                            View Product Catalogue
+                            <h4>View Product Catalogue</h4>
                           </button>
                         {/* </Link> */}
                       </div>

@@ -106,7 +106,7 @@ const SabPaisaPricing = () => {
                     <div className='col-lg-12 text-center text-white'>
                       <h1 class="card-title cardoneheadingcss2 pb-3">SME</h1>
                       <p className='text-center bold-font mb-1'>2.0%</p>
-                      <h3 className='paragraphcsss text-center'>3 years and up</h3>
+                      <h3 className='paragraphcsss text-white text-center'>3 years and up</h3>
                       <button type="button" className="btn choosePlan-1 btn-primary btn-lg"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
                     </div>
                   </div>
@@ -197,9 +197,10 @@ const SabPaisaPricing = () => {
                   <div class="row mb-5">
                     <div className='col-lg-12 text-center'>
                       <h1 class="card-title cardoneheadingcss pb-3">Enterprise</h1>
-                      <p className='text-center bold-font mb-1'></p>
-                      <h3 className='paragraphcsss text-center'>Minimum 5 years in Biz</h3>
-                      <button type="button" className="btn choosePlan-1  btn-lg"  data-toggle="modal" data-target="#exampleModal">Contact Sales</button>
+                      {/* <p className='text-center bold-font mb-1'></p> */}
+                      <h3 className='bold-font text-center mb-1'>5 Yr</h3>
+                      <h3 className='paragraphcsss text-center'>Minimum 5 years in buisness</h3>
+                      <button type="button" className="btn choosePlan-1  btn-lg mt-"  data-toggle="modal" data-target="#exampleModal">Contact Sales</button>
                     </div>
                   </div>
 

@@ -37,7 +37,7 @@ function Home() {
   let { path } = useRouteMatch();
 
   const [clientCode, setClientCode] = useState("1");
-  const [modalState, setModalState] = useState("PENDING" ||"APPROVED");
+  const [modalState, setModalState] = useState("PENDING" || "APPROVED");
 
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
@@ -110,13 +110,13 @@ function Home() {
   useEffect(() => {
     search !== ""
       ? SetShowData(
-          txnList.filter((txnItme) =>
-            Object.values(txnItme)
-              .join(" ")
-              .toLowerCase()
-              .includes(search.toLocaleLowerCase())
-          )
+        txnList.filter((txnItme) =>
+          Object.values(txnItme)
+            .join(" ")
+            .toLowerCase()
+            .includes(search.toLocaleLowerCase())
         )
+      )
       : SetShowData(txnList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
@@ -292,38 +292,77 @@ function Home() {
 
         <div class="card">
           <div class="container">
-  <div class="row">
-    <div class="col-sm">
-    <h2 class="card-title dashboardEnablecss"><img class="card-img-left" src={onlineimg} alt="onlinepay" width={40}/> &nbsp;Enable International Payments Today</h2>
-    <p className="paragraphcssdashboards">SabPaisa is the World's 1st API Driven Unified Payment Experience Platform having the Best Payment Gateway in India. Collect, transfer & refund your payments online & offline. Get the best success rates with maximum payment modes available including Debit cards, Credit Card, Wallets, UPI, Bharat QR, etc. The Hybrid PG helps businesses collect payments from all the clients and consumers, urban or rural, young or old, online or offline, without worrying about consumer payment behaviour.</p>
-    <p className="pricingclasscss">Read More & Pricing  &nbsp;{'>'}{'>'}</p> 
-    </div>
-    <div class="col-sm">
-    <ul className="foralinkscsshere">
-    <img class="card-img-left mt-2" src={paymentlink} alt="payLink" width={28}/><li className="forpaymentLinks">Payment Links</li>
-    <img class="card-img-left forimage" src={subscriptin} alt="payLink" width={28}/><li className="forSubscriptionscss">Subscriptions</li>
-    <img class="card-img-left myimg" src={Rupees} alt="payLink" width={28}/><li className="forpayoutscs">Payouts</li>
-    <img class="card-img-left forquik" src={Quick} alt="payLink" width={28}/><li className="forQwikForm">QwikForm</li>
-    <img class="card-img-left foreposss" src={eposs} alt="payLink" width={28}/><li className="eposapp">E-POS App</li>
-    <img class="card-img-left forrlink" src={linkpssa} alt="payLink" width={28}/><li className="linkpaisa">LinkPaisa</li>
-    <img class="card-img-left echllanssss" src={echlln} alt="payLink" width={28}/><li className="echallancss">E-Challan</li>
-</ul>
+            <div class="row">
+              <div class="col-sm">
+                <h2 class="card-title dashboardEnablecss"><img class="card-img-left" src={onlineimg} alt="onlinepay" width={40} /> &nbsp;Enable International Payments Today</h2>
+                <p className="paragraphcssdashboards">SabPaisa is the World's 1st API Driven Unified Payment Experience Platform having the Best Payment Gateway in India. Collect, transfer & refund your payments online & offline. Get the best success rates with maximum payment modes available including Debit cards, Credit Card, Wallets, UPI, Bharat QR, etc. The Hybrid PG helps businesses collect payments from all the clients and consumers, urban or rural, young or old, online or offline, without worrying about consumer payment behaviour.</p>
+                <Link to={`/dashboard/sabpaisa-pricing`}><p className="pricingclasscss">Read More & Pricing  &nbsp;{'>'}{'>'}</p></Link> 
+              </div>
+              <div class="col-sm">
+                <div className="row pt-2">
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img className="card-img-left mr-2" src={paymentlink} alt="payLink" width={"41px"} height={"41px"} />
+                    <p className="foralinkscsshere " style={{lineHeight:"25px"}}>Payment Links</p>
+                  </div>
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                     className="card-img-left mr-2"
+                      src={subscriptin} alt="payLink" width={"41px"} height={"41px"} />
+                      <p className="foralinkscsshere" style={{lineHeight:"25px"}}>Subscriptions</p>
+                      
+                  </div>
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                      className="card-img-left mr-2"
+                      src={Rupees} alt="payLink" width={"41px"} height={"41px"} />
+                      <p className="foralinkscsshere" style={{lineHeight:"25px"}}>Payouts</p>
+                  </div>
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                       className="card-img-left mr-2"
+                       width={"41px"} height={"41px"}
+                      src={Quick} alt="payLink"  />
+                       <p className="foralinkscsshere" style={{lineHeight:"25px"}}>QwikForm</p>
+                  </div>
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                       className="card-img-left mr-2"
+                       width={"41px"} height={"41px"}
+                      src={eposs} alt="payLink" />
+                       <p className="foralinkscsshere" style={{lineHeight:"25px"}}>E-POS App</p>
+                  </div>
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                      className="card-img-left mr-2"
+                      width={"41px"} height={"41px"}
+                      src={linkpssa} alt="payLink"  />
+                      <p className="foralinkscsshere" style={{lineHeight:"25px"}}>LinkPaisa</p>
+                  </div>
+                  <div className="col-6 d-flex flex-wrap">
+                    <img
+                      className="card-img-left mr-2"
+                      width={"41px"} height={"41px"}
+                      src={echlln} alt="payLink"  />
+                      <p className="foralinkscsshere" style={{lineHeight:"25px"}}>E-Challan</p>
 
-    </div>
-    
-    
-  </div>
-</div>
+                  </div>
+                </div>
 
-            {/* <h2 class="card-title">Enable International Payments Today</h2>
+              </div>
+
+
+            </div>
+          </div>
+
+          {/* <h2 class="card-title">Enable International Payments Today</h2>
             <p class="card-text">
               With supporting text below as a natural lead-in to additional
               content.
             </p>
             <Link to={`dashboard/product-catalogue`}><button className="ColrsforredirectProdct text-white mt-2">See All Products</button></Link> */}
-          
-         
-          
+
+
+
         </div>
       </div>
       {/* KYC container end here */}
@@ -394,7 +433,7 @@ function Home() {
                     </button>
                   </Link>
                 </div>
-                
+
                 <div class="col-sm">
                   <img
                     src={bro}
@@ -403,25 +442,25 @@ function Home() {
                     title="SabPaisa"
                   />
                   <div class="col-sm">
-                  <Link to={`dashboard/product-catalogue`}>
-                    <button className="ColrsforredirectProdct text-white mt-5">
-                      I do This later
-                    </button>
+                    <Link to={`dashboard/product-catalogue`}>
+                      <button className="ColrsforredirectProdct text-white mt-5">
+                        I'll do this later
+                      </button>
                     </Link>
-              </div>
+                  </div>
                 </div>
-                
-                
+
+
               </div>
-              
+
             </div>
-           
+
           </div>
         </div>
       </div>
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
       {/* Dashboard open pop up start here {IF KYC IS APPROVED}*/}
-      
+
       <div
         className={
           "modal fade" + (modalState === "APPROVED" ? " show d-block" : " d-none")
@@ -445,48 +484,48 @@ function Home() {
               </button>
 
               <div class="container">
-  <div class="row justify-content-md-center">
-    
-    <div class="col-md-auto">
-    <ul>
-   
-    <h1
-                    className="text-centre"
-                    style={{ color: "#4BB543",fontWeight:"700", fontStyle:"normal", fontSize:"32px",justifyContent:"center",display:"flex"}}
-                  >
-                    Congratulations!
-                  </h1>
-    <p className="modalscolrsfortextapprv" style={{justifyContent:"center",display:"flex"}}>
-                    Your KYC is Done!
-                    
-                    </p>
-                    <span className="modalscolrsfortextapprv text-center"style={{display:"table-footer-group",justifyContent:"center",whiteSpace:"nowrap"}}>
-                    You can start accepting payments now 
-                  </span>
-                   
-                  </ul>
-                  
-    </div>
-    
-   
-                  <div class="rounded mx-auto d-block">
-                  <img
-                    src={congratsImg}
-                    width={250}
-                    className="modalsimageclass"
-                    alt="SabPaisa"
-                    title="SabPaisa"
-                  />
-                  </div>
-                  
-    
-  </div>
-  
-</div>
+                <div class="row justify-content-md-center">
 
-                   <div style={{display:"flex",justifyContent:"center"}}>
-                  <button className="modalbtnsuccess text-white mt-3 ml-5" onClick={()=> setModalState(!modalState)}>Continue</button>
+                  <div class="col-md-auto">
+                    <ul>
+
+                      <h1
+                        className="text-centre"
+                        style={{ color: "#4BB543", fontWeight: "700", fontStyle: "normal", fontSize: "32px", justifyContent: "center", display: "flex" }}
+                      >
+                        Congratulations!
+                      </h1>
+                      <p className="modalscolrsfortextapprv" style={{ justifyContent: "center", display: "flex" }}>
+                        Your KYC is Done!
+
+                      </p>
+                      <span className="modalscolrsfortextapprv text-center" style={{ display: "table-footer-group", justifyContent: "center", whiteSpace: "nowrap" }}>
+                        You can start accepting payments now
+                      </span>
+
+                    </ul>
+
                   </div>
+
+
+                  <div class="rounded mx-auto d-block">
+                    <img
+                      src={congratsImg}
+                      width={250}
+                      className="modalsimageclass"
+                      alt="SabPaisa"
+                      title="SabPaisa"
+                    />
+                  </div>
+
+
+                </div>
+
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <button className="modalbtnsuccess text-white mt-3 ml-5" onClick={() => setModalState(!modalState)}>Continue</button>
+              </div>
             </div>
           </div>
         </div>
