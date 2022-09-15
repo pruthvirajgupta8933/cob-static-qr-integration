@@ -80,14 +80,14 @@ function SideNavbar() {
                   {roleBasedShowTab?.merchant === true &&
                     roleBasedShowTab?.approver === false && roleBasedShowTab?.verifier === false ?
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
-                      <Link to={`${url}/kyc`} className='txt-white' ><i className="fa fa-file-o" aria-hidden="true" /> <span>Fill KYC Form</span><span class="new-tab">new</span></Link>
+                      <Link to={`${url}/kyc`} className='txt-white' ><i className="fa fa-file-o" aria-hidden="true" /> <span>Complete KYC</span><span class="new-tab">new</span></Link>
                     </li>
                     : <React.Fragment></React.Fragment>}
 
 
                   {roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true ?
                     <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
-                      <Link to={`${url}/approver`} className='txt-white' ><i className="fa fa-list" aria-hidden="true" /> <span>Merchant List</span><span class="new-tab">new</span></Link>
+                      <Link to={`${url}/approver`} className='txt-white' ><i className="fa fa-list" aria-hidden="true" /><span>Merchant List</span><span class="new-tab">new</span></Link>
                     </li>
                     : <React.Fragment></React.Fragment>}
 
