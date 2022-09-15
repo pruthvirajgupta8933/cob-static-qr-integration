@@ -296,7 +296,7 @@ function Home() {
               <div class="col-sm">
                 <h2 class="card-title dashboardEnablecss"><img class="card-img-left" src={onlineimg} alt="onlinepay" width={40} /> &nbsp;Enable International Payments Today</h2>
                 <p className="paragraphcssdashboards">SabPaisa is the World's 1st API Driven Unified Payment Experience Platform having the Best Payment Gateway in India. Collect, transfer & refund your payments online & offline. Get the best success rates with maximum payment modes available including Debit cards, Credit Card, Wallets, UPI, Bharat QR, etc. The Hybrid PG helps businesses collect payments from all the clients and consumers, urban or rural, young or old, online or offline, without worrying about consumer payment behaviour.</p>
-                <p className="pricingclasscss">Read More & Pricing  &nbsp;{'>'}{'>'}</p>
+                <Link to={`/dashboard/sabpaisa-pricing`}><p className="pricingclasscss">Read More & Pricing  &nbsp;{'>'}{'>'}</p></Link> 
               </div>
               <div class="col-sm">
                 <div className="row pt-2">

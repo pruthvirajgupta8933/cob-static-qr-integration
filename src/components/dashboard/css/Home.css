@@ -436,9 +436,14 @@ font-style: normal;
 font-weight: 500;
 /* margin-top: -21px; */
 font-size: 14px;
-line-height: 17px;
+/* line-height: 17px; */
 text-align: center;
 color: #747474;
+}
+
+.myfont{
+  font-size: 50px;
+font-weight: 900;
 }
 .figmacssforchooseplan{
 border-radius: 4px;
@@ -658,7 +663,8 @@ color: #4285F8;
     font-size: 1em !important;
     line-height: 0 !important;
     width: 100% !important;
-    border: 4px solid #4285f8 !important;
+    /* border: 4px solid #4285f8 !important; */
+    box-shadow: 0 0 0 1px #038fde, inset 0 0 0 1px #fff !important;
   }
   /* .choosePlan-2{
     padding: 2em;
