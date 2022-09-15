@@ -703,6 +703,36 @@ export const saveRegisteredAddress = createAsyncThunk(
     return response.data;
   }
 );
+//---------------- Registered Address TAP INTEGRATION --------------//
+
+
+
+//---------------- KYC CONSENT TAP API INTEGRATION --------------//
+
+export const saveKycConsent = createAsyncThunk(
+  "kyc/saveKycConsent",
+  async (requestParam) => {
+    const response = await axiosInstanceAuth
+      .post(
+        `${API_URL.Kyc_Consent}`,
+        requestParam,
+
+        {
+          headers: {},
+        }
+      )
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
+
+
+//---------------- KYC CONSENT TAP API INTEGRATION --------------//
+
+
 
 
 

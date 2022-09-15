@@ -162,6 +162,11 @@ const API_LIVE = {
 
   /* Registered Address */
   Registered_Address: `${kyc_url}/kyc/save-registered-address/`,
+  
+  /* Registered Address */
+  Kyc_Consent: `${kyc_url}/kyc/kyc-submit/`,
+
+
 
 
   /* verify each tab of the kyc , URL FOR VERIFER*/

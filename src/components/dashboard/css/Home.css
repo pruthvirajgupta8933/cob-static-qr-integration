@@ -220,7 +220,6 @@ margin-left: 97px;
 .ModalButtonClr{
   border: 0;
   background: #0156B3;
-  box-shadow: 0px 14px 10px rgba(66, 133, 248, 0.5);
 border-radius: 4px;
 height: 40px;
 width: 250px;
@@ -314,11 +313,11 @@ margin-left: 20px;
 .ColrsforredirectProdct{
   background: #FF3E06;
   border: 0;
-  border-radius: 3px;
+  border-radius: 4px;
   position: absolute;
-  top: 93px;
-    left: -124px;
-  padding:8px 20px;
+  top: 88px;
+  left: -137px;
+  padding: 10px 20px;
   margin-left: 85px;
 }
 

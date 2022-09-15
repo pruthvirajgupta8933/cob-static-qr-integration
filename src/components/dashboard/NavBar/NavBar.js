@@ -40,8 +40,8 @@ const NavBar = () => {
  <nav class="navbar navbar-light" style={{backgroundColor:"#0156B3"}}>
     
   <ul class="navbar-brand mb-0 h1">
-    <img src={profile}  alt="profile" title="profile"/><h4 className='text-white float-right'>Welcome back,</h4>
-  <div class="mr-0"style={{fontSize:"15px"}}>
+    <img src={profile}  alt="profile" title="profile"/><h3 className='text-white float-right'>Welcome back,</h3>
+  <div style={{fontSize:"13px"}}>
   <span class="text-white text-sm" style={{paddingLeft: '40px'}}>Merchant Id &nbsp;: {loginId}</span>
   </div>
   </ul>
