@@ -378,7 +378,7 @@ function BusinessDetails(props) {
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="font-weight-bold text-nowrap">
-                  Buisiness PAN<span style={{ color: "red" }}>*</span>
+                  Business PAN<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
               <div class="col-sm-7 col-md-7 col-lg-7">

@@ -285,7 +285,7 @@ function KycForm() {
               style={{
                 backgroundColor: "#F2F2F2",
                 height: "100%",
-                width: "47rem"
+                width: "53rem"
               }}
             >
               <div class="card-body">

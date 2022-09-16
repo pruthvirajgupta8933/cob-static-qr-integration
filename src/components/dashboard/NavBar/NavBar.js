@@ -40,7 +40,7 @@ const NavBar = () => {
  <nav class="navbar navbar-light" style={{backgroundColor:"#0156B3"}}>
     
   <ul class="navbar-brand mb-0 h1">
-    <img src={profile}  alt="profile" title="profile"/><h3 className='text-white float-right'>Welcome back,</h3>
+    <img src={profile}  alt="profile" title="profile"/><h3 className='text-white float-right mt-0'>Welcome back,</h3>
   <div style={{fontSize:"13px"}}>
   <span class="text-white text-sm" style={{paddingLeft: '40px'}}>Merchant Id &nbsp;: {loginId}</span>
   </div>
@@ -51,10 +51,10 @@ const NavBar = () => {
 {/* Dropdown in the Nav Bar */}
  <div class="dropdown show">
  <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-  <i class="fa fa-cog fa-2xl" aria-hidden="true" style={{fontSize:"24px",color:"white"}}></i>
+ <i class="fa fa-user fa-2xl" aria-hidden="true" style={{fontSize:"24px",color:"white"}}></i>
  <span class="glyphicon glyphicon-cog text-white" style={{color:"white"}}></span>
                 <span class="caret text-white">{username}</span></a>
-                <div class="dropdown-menu text-white" style={{backgroundColor:"#0156B3", height:"6rem", width:"10rem"}}>
+                <div class="dropdown-menu text-white" style={{backgroundColor:"#0156B3", height:"7rem", width:"10rem"}}>
                 <div class="row px-md-4 p-2">
                 <Link to = "/dashboard/profile" class="dropdown-item text-white">Profile</Link>
                  <Link to = "/dashboard/change-password" class="dropdown-item text-white">Change Password</Link>

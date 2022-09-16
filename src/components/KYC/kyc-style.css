@@ -45,3 +45,10 @@
     line-height: 18px;
     background-color: #0156B3;
 }
+
+.para-style {
+    font-weight: 520;
+    font-size: 14px;
+    line-height: 224%;
+    font-style: normal;
+}

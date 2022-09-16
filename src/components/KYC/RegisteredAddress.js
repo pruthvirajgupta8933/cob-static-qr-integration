@@ -51,7 +51,7 @@ const RegisteredAddress = (props) => {
         address: values.address,
         city: values.city,
         state:values.state,
-        pin_code: values.pin_code,
+        pin_code: values.pincode,
         login_id: loginId,
         submit_by: "270",
       })
