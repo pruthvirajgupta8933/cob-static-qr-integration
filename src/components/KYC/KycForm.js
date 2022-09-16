@@ -121,7 +121,7 @@ function KycForm() {
                     KYC Form
                     <span>
                       <h6 class="font-weight-bold">
-                      Complete the KYC to start accepting payments
+                      Complete KYC to start accepting payments
                       </h6>
                     </span>
                   </h1>

@@ -1,37 +1,45 @@
-table.tables th{
+table.tables th {
   background: #f7f7f7;
   padding: 8px;
   font-size: 14px;
 }
+
 table.tables {
   padding: 8px;
   font-size: 13px;
   border: 1px solid #f7f7f7;
 }
+
 table.tables tr:nth-child(even) {
   background: #fff;
 }
+
 table.tables tr:nth-child(odd) {
   background: #fcfcfc;
 }
+
 .mrg-btm {
   margin-bottom: 10px;
 }
+
 .mar-top {
   margin-top: 10px;
 }
+
 .bgcolor {
   background: #fcfcfc;
   padding: 10px 0;
 }
+
 .my_account_wrapper .merchant-detail-container {
   justify-content: none !important;
 }
-.nopad{
+
+.nopad {
   padding: 0 0 0 0 !important;
 }
 
-.new-tab{
+.new-tab {
   padding-top: 5px;
   margin-left: 5px;
   font-size: 10px;
@@ -50,46 +58,49 @@ table.tables tr:nth-child(odd) {
 
 /* Css for terms and condition close button*/
 
-.closebtn{
-  background:#0156B3;
-  width:50%;
-  height:30px;  
-  border-radius:4px;
-  border:none;
+.closebtn {
+  background: #0156B3;
+  width: 50%;
+  height: 30px;
+  border-radius: 4px;
+  border: none;
 }
+
 /* Css for Registration*/
-.figmabtn{
-  background:#0156B3;
-  width:100%;
-  height:40px;  
-  border-radius:6px;
-  border:none;
+.figmabtn {
+  background: #0156B3;
+  width: 100%;
+  height: 40px;
+  border-radius: 6px;
+  border: none;
 
 }
-.parafigma{
+
+.parafigma {
   color: #0143A1;
   font-family: Satoshi;
-font-size: 36px;
-font-weight: 700;
-line-height: 48px;
-letter-spacing: 0em;
-text-align: center;
-width:299px;
-height:115px;
-margin-top: -154px;
-margin-left: 97px;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 48px;
+  letter-spacing: 0em;
+  text-align: center;
+  width: 299px;
+  height: 115px;
+  margin-top: -154px;
+  margin-left: 97px;
 }
 
-.fontfigma{
-  color:#012167;
+.fontfigma {
+  color: #012167;
   font-style: normal;
   font-weight: 700;
   font-size: 25px;
 }
-.Signupfigma{
-  color:#012167;
+
+.Signupfigma {
+  color: #012167;
   font-weight: 400;
-  font-size: 14px;  
+  font-size: 14px;
 }
 
 
@@ -98,51 +109,54 @@ margin-left: 97px;
     opacity: 0;
   }
 }
-.homeiconsize{
+
+.homeiconsize {
   font-size: 16px;
 }
 
-.viewicon{
+.viewicon {
   position: absolute;
-    right: 14px;
-    top: 10px;
-    z-index: 999;
+  right: 14px;
+  top: 10px;
+  z-index: 999;
 }
-.viewicons{
+
+.viewicons {
   position: absolute;
-    right: 58px;
-    top: 221px;
-    z-index: 999;
+  right: 58px;
+  top: 221px;
+  z-index: 999;
 }
 
 /*All Approvekyc button color class */
-.approve{
-  background:#0156B3;
-  
+.approve {
+  background: #0156B3;
+
 }
 
 
 /*All forget password button color here */
 
 
-.userIdbutton{
+.userIdbutton {
   background: #0156B3;
   border: 0;
   border-radius: 4px;
-  padding:8px 20px;
-}
-.verifyclr{
-  background: #0156B3;
-  border: 0;
-  border-radius: 3px;
-  padding:8px 20px;
+  padding: 8px 20px;
 }
 
-.createpasswordBtn{
+.verifyclr {
   background: #0156B3;
   border: 0;
   border-radius: 3px;
-  padding:8px 20px;
+  padding: 8px 20px;
+}
+
+.createpasswordBtn {
+  background: #0156B3;
+  border: 0;
+  border-radius: 3px;
+  padding: 8px 20px;
 }
 
 
@@ -150,6 +164,7 @@ margin-left: 97px;
   padding: 20px;
   padding-bottom: 0;
 }
+
 .announcement-banner {
   background: #fff;
   height: 50px;
@@ -160,6 +175,7 @@ margin-left: 97px;
   width: 100%;
   padding: 20px;
 }
+
 .announcement-banner .title {
   position: relative;
   height: 100%;
@@ -170,6 +186,7 @@ margin-left: 97px;
   padding-right: 50px;
   background: rgb(255, 195, 0);
 }
+
 .announcement-banner .title:before {
   bottom: 0;
   width: 60px;
@@ -180,93 +197,101 @@ margin-left: 97px;
   transform: skew(30deg);
 }
 
-.announcement-banner .title:before, .announcement-banner .title:after {
+.announcement-banner .title:before,
+.announcement-banner .title:after {
   position: absolute;
   display: block;
   content: '';
 }
 
 
-.onboarding-illustration-top{
-    position: absolute;
-    top: -40px;
-    right: -81px;
-    
-    height: 60px;
-    display: flow-root;
+.onboarding-illustration-top {
+  position: absolute;
+  top: -40px;
+  right: -81px;
+
+  height: 60px;
+  display: flow-root;
 }
-.cardkyc{
-  padding:10px !important;
-  
+
+.cardkyc {
+  padding: 10px !important;
+
   border: 1px solid #8ec2ff !important;
 }
-.cardkyc .card-body{
+
+.cardkyc .card-body {
   padding: 0 !important;
   line-height: 47px;
 }
-.kycbtns{
-    line-height: 17px !important;
-    margin: 8px 0 0 14px !important;
-    border: 0;
-    border-radius: 3px;
-    padding:8px 20px;
+
+.kycbtns {
+  line-height: 17px !important;
+  margin: 8px 0 0 14px !important;
+  border: 0;
+  border-radius: 3px;
+  padding: 8px 20px;
 }
-.newcard{
+
+.newcard {
   color: #cd8214;
 }
 
 /* Css for Dashboard  IF KYC IS PENDING*/
 
-.ModalButtonClr{
+.ModalButtonClr {
   border: 0;
   background: #0156B3;
-border-radius: 4px;
-height: 40px;
-width: 250px;
-}
-.homeModalHeading{
-  color: #000000;
-  /* font-family: 'Satoshi'; */
-font-style: normal;
-font-weight: 700;
-font-size: 32px;
-line-height: 156.5%;
-}
-.modalscolrsfortext{
-  /* font-family: 'Satoshi'; */
-  color: #000000;
-font-style: normal;
-font-weight: 700;
-font-size: 17px;
-line-height: 224%;
-}
-.footerforcopyright{
-  font-family: 'Nunito Sans';
-font-style: normal;
-font-weight: 400;
-font-size: 18px;
-line-height: 156.5%;
-position:absolute;
-top: 706px;
-right: 485px;
-/* or 28px */
-color: #FFFFFF;
+  border-radius: 4px;
+  height: 40px;
+  width: 250px;
 }
 
-.mymodals{
+.homeModalHeading {
+  color: #000000;
+  /* font-family: 'Satoshi'; */
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 156.5%;
+}
+
+.modalscolrsfortext {
+  /* font-family: 'Satoshi'; */
+  color: #000000;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 224%;
+}
+
+.footerforcopyright {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 156.5%;
   position: absolute;
-top: 0;
-left: 0;
-width: 100vw;
-height: 100vh;
-background: rgba(0, 0, 0, 0.5);
-display: flex;
-align-items: center;
-justify-content: center;
+  top: 706px;
+  right: 485px;
+  /* or 28px */
+  color: #FFFFFF;
+}
+
+.mymodals {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Css for Dashboard  IF KYC IS APPROVED*/
-.modalbtnsuccess{
+.modalbtnsuccess {
   /* font-family: 'Satoshi'; */
   border: 0;
   background: #0156B3;
@@ -275,18 +300,21 @@ justify-content: center;
   height: 40px;
   width: 250px;
 }
-.modalscolrsfortextapprv{
+
+.modalscolrsfortextapprv {
   /* font-family: 'Satoshi'; */
   color: #000000;
-font-style: normal;
-font-weight: 700;
-font-size:24px;
-line-height: 35px;
-align-items: centre;
-margin-left: 20px;
+  font-style: normal;
+  /* font-weight: 700; */
+  font-size: 18px;
+  line-height: 24px;
+  align-items: centre;
+  /* margin-left: 20px; */
+  /* line-height: 0.4; */
+  
 }
 
- .congratstext {
+.congratstext {
   color: "#4BB543";
   font-weight: "700";
   font-size: "24px";
@@ -296,30 +324,32 @@ margin-left: 20px;
 
 
 /* Css for CreatePaymentLink here*/
-.cratepaymentlinkclrsfigma{
+.cratepaymentlinkclrsfigma {
   background: #0156B3;
   border: 0;
   border-radius: 3px;
-  padding:8px 20px;
+  padding: 8px 20px;
 
 }
-.ColrsforDeletefigma{
+
+.ColrsforDeletefigma {
   background: #FF3E06;
   border: 0;
   border-radius: 3px;
-  padding:8px 20px;
+  padding: 8px 20px;
 
 }
-.ColrsforredirectProdct{
+
+.ColrsforredirectProdct {
   background: #FF3E06;
-    border: 0;
-    border-radius: 4px;
-    padding: 10px 20px;
-    margin-left: 10px;
+  border: 0;
+  border-radius: 4px;
+  padding: 10px 20px;
+  margin-left: 75px;
 }
 
 button:disabled,
-button[disabled1]{
+button[disabled1] {
   border: 1px solid #999999;
   background-color: #cccccc;
   color: #666666;
@@ -327,347 +357,370 @@ button[disabled1]{
 
 /* Css for pricing*/
 
-.headingpricing{
+.headingpricing {
   font-family: 'Roboto';
-font-style: normal;
-font-weight: 700;
-font-size: 41px;
-line-height: 48px;
-text-align: center;
-color: #000000;
-}                                                           
-.forbasicparacss{
-  font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-size: 18px;
-line-height: 21px;
-/* identical to box height */
-
-text-align: center;
-
-color: #000000;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 41px;
+  line-height: 48px;
+  text-align: center;
+  color: #000000;
 }
 
-.heightcards{
+.forbasicparacss {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #000000;
+}
+
+.heightcards {
   height: 600px;
 
 }
-.figmacssforEnterpricechooseplan{
+
+.figmacssforEnterpricechooseplan {
   background: #4285F8;
-border-radius: 3px;
-position: absolute;
-width: 223px;
-height: 52px;
-left: 73px;
-top: 209px;
+  border-radius: 3px;
+  position: absolute;
+  width: 223px;
+  height: 52px;
+  left: 73px;
+  top: 209px;
 
 }
-.featurespricingforEnterpricing{
+
+.featurespricingforEnterpricing {
   /* margin-bottom: 136px; */
   /* font-family: 'Montserrat !important'; */
-font-style: normal;
-font-weight: 700;
-font-size: 14px;
-line-height: 17px;
-text-align: center;
-color: #FFFFFF;
-letter-spacing: 2px;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #FFFFFF;
+  letter-spacing: 2px;
 
 }
-.forEnterPriceparaGcss{
+
+.forEnterPriceparaGcss {
   font-family: 'Roboto ';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-line-height: 16px;
-text-align: center;
-color: #FFFFFF;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  color: #FFFFFF;
 }
-.cardoneheadingcss{
+
+.cardoneheadingcss {
   font-family: 'Montserrat';
-font-style: normal;
-font-weight: 700;
-font-size: 24px;
-line-height: 29px;
-text-align: center;
-color: #000000;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  color: #000000;
 
 }
 
-.cardoneheadingcss2{
+.cardoneheadingcss2 {
   font-family: 'Montserrat';
-font-style: normal;
-font-weight: 700;
-font-size: 24px;
-line-height: 29px;
-text-align: center;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
 
 
 }
-.forimagespricing{
+
+.forimagespricing {
   margin-left: 88px;
   /* margin-top: -20px; */
 
 }
-.forimagesEnterpricing{
+
+.forimagesEnterpricing {
   margin-left: 71px;
-  margin-top:-16px
+  margin-top: -16px
 }
 
-.graphcssforenterprice{
+.graphcssforenterprice {
   font-family: 'Montserrat';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-line-height: 17px;
-/* identical to box height */
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  /* identical to box height */
 
-text-align: center;
+  text-align: center;
 
-color: #DDDDDD;
+  color: #DDDDDD;
 
 }
-.paragraphcsss{
+
+.paragraphcsss {
   font-family: 'Montserrat';
-font-style: normal;
-font-weight: 500;
-/* margin-top: -21px; */
-font-size: 14px;
-/* line-height: 17px; */
-text-align: center;
-color: #747474;
+  font-style: normal;
+  font-weight: 500;
+  /* margin-top: -21px; */
+  font-size: 14px;
+  /* line-height: 17px; */
+  text-align: center;
+  color: #747474;
 }
 
-.myfont{
+.myfont {
   font-size: 50px;
-font-weight: 900;
-}
-.figmacssforchooseplan{
-border-radius: 4px;
-border: 3px solid #1465FA;
-border-radius: 3px;
-position: absolute;
-width: 223px;
-height: 52px;
-left: 59px;
-/* top: 210px; */
+  font-weight: 900;
 }
 
-.featurespricing{
+.figmacssforchooseplan {
+  border-radius: 4px;
+  border: 3px solid #1465FA;
+  border-radius: 3px;
+  position: absolute;
+  width: 223px;
+  height: 52px;
+  left: 59px;
+  /* top: 210px; */
+}
+
+.featurespricing {
   /* margin-bottom: 136px; */
-    /* margin-left: 40px; */
-    /* font-family: 'Montserrat featurespricing'; */
-font-style: normal;
-font-weight: 700;
-font-size: 14px;
-line-height: 17px;
-text-align: center;
-letter-spacing: 2px;
-color: #1465FA;
+  /* margin-left: 40px; */
+  /* font-family: 'Montserrat featurespricing'; */
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  letter-spacing: 2px;
+  color: #1465FA;
 }
 
 .centered {
   font-family: 'Montserrat';
-font-style: normal;
-font-weight: 700;
-font-size: 14px;
-line-height: 17px;
-text-align: center;
-color: #1465FA;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #1465FA;
   position: absolute;
   top: 47%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.forThirdscardfigma{
+
+.forThirdscardfigma {
   font-family: 'Montserrat';
-font-style: normal;
-font-weight: 700;
-font-size: 24px;
-line-height: 29px;
-text-align: center;
-color: #000000;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  color: #000000;
 
 }
 
-.forparacss{
-  
+.forparacss {
+
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
   text-align: center;
-  
+
   color: #747474;
 }
 
 
-.firstli1{
+.firstli1 {
   font-family: 'Roboto';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-line-height: 16px;
-/* text-align: center; */
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  /* text-align: center; */
 
-color: #747474;
+  color: #747474;
 
 }
-.secondli1{
+
+.secondli1 {
   font-family: 'Roboto';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-line-height: 16px;
-color: #FFFFFF;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #FFFFFF;
 
 }
-.thirdli1{
+
+.thirdli1 {
   font-family: 'Roboto';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-line-height: 16px;
-color: #747474;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #747474;
 
 }
-    .forsecondcardfigma{
-      font-family: 'Montserrat';
-font-style: normal;
-font-weight: 700;
-font-size: 24px;
-line-height: 29px;
-text-align: center;
-    }
 
-    .Businessoredrcssforcard{
-      font-family: 'Roboto';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-line-height: 16px;
-text-align: center;
+.forsecondcardfigma {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+}
 
-color: #747474;
-    }
+.Businessoredrcssforcard {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
 
-    .parabusinesscss{
-      font-family: 'Montserrat';
-font-style: normal;
-font-weight: 500;
-font-size: 14px;
-line-height: 17px;
-text-align: center;
-color: #747474;
+  color: #747474;
+}
 
-    }
+.parabusinesscss {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #747474;
 
-    .backgroundCard{
-      background: #012167;
-border: 1px solid #DBDBDB;
-box-shadow: 0px 4px 5px 1px rgba(193, 193, 193, 0.35);
-border-radius: 4px;
-    }
+}
 
-    .cssforbusinesscard{
-      margin-left: 71px;
-  margin-top:-15px;
-    }
-    .featuresIncludingforbusiness{
-      /* font-family: 'Montserrat'; */
-font-style: normal;
-font-weight: 700;
-/* margin-bottom: 136px; */
-font-size: 14px;
-line-height: 17px;
-text-align: center;
-color: #1465FA;
-letter-spacing: 2px;
-    }
+.backgroundCard {
+  background: #012167;
+  border: 1px solid #DBDBDB;
+  box-shadow: 0px 4px 5px 1px rgba(193, 193, 193, 0.35);
+  border-radius: 4px;
+}
 
-.subscribingproduct{
-      font-family: 'Satoshi';
-font-style: normal;
-font-weight: 700;
-font-size: 32px;
-line-height: 156.5%;
-text-align: center;
-color: #464145;
-  }
- .Thankusubscribingcss{
-      margin-right:20px;
+.cssforbusinesscard {
+  margin-left: 71px;
+  margin-top: -15px;
+}
 
-  }  
-  .chooseplanheadingcss{
-    font-family: 'Montserrat';
-font-style: normal;
-font-weight: 700;
-font-size: 14px;
-line-height: 17px;
-text-align: center;
-color: #1465FA;
+.featuresIncludingforbusiness {
+  /* font-family: 'Montserrat'; */
+  font-style: normal;
+  font-weight: 700;
+  /* margin-bottom: 136px; */
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #1465FA;
+  letter-spacing: 2px;
+}
 
-  }
-  .dashboardfont{
-    font-size: 14px;
-  }
-  .dashboardEnablecss{
-    font-family: 'Roboto';
-font-style: normal;
-font-weight: 700;
-font-size: 21px;
-line-height: 25px;
-color: #4285F8;
-  }
-  .paragraphcssdashboards{
-    font-family: 'Roboto';
-font-style: normal;
-font-weight: 400;
-font-size: 12px;
-line-height: 16px;
-color: #000000;
+.subscribingproduct {
+  font-family: 'Satoshi';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 156.5%;
+  text-align: center;
+  color: #464145;
+}
 
-  }
-  .pricingclasscss{
-    font-family: 'Roboto';
-font-style: normal;
-font-weight: 700;
-font-size: 14px;
-line-height: 130.19%;
-color: #4285F8;
-  }
-  .foralinkscsshere{
-    font-family: 'Roboto';
-font-style: normal;
-font-weight: 500;
-font-size: 19px;
-line-height: 25px;
-color: #4285F8;
-  }
-  .manshacss{
-    font-family: 'Satoshi';
-font-style: normal;
-font-weight: 500;
-font-size: 17px;
-line-height: 224%;
-color: #000000;
+.Thankusubscribingcss {
+  margin-right: 20px;
 
-  }
-  
-   
+}
+
+.chooseplanheadingcss {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #1465FA;
+
+}
+
+.dashboardfont {
+  font-size: 14px;
+}
+
+.dashboardEnablecss {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 21px;
+  line-height: 25px;
+  color: #4285F8;
+}
+
+.paragraphcssdashboards {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #000000;
+
+}
+
+.pricingclasscss {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 130.19%;
+  color: #4285F8;
+}
+
+.foralinkscsshere {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 25px;
+  color: #4285F8;
+}
+
+.manshacss {
+  font-family: 'Satoshi';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 224%;
+  color: #000000;
+
+}
 
 
-  .choosePlan-1{
-    padding: 2em !important; 
-    font-size: 1em !important;
-    line-height: 0 !important;
-    width: 100% !important;
-    /* border: 4px solid #4285f8 !important; */
-    box-shadow: 0 0 0 1px #038fde, inset 0 0 0 1px #fff !important;
-  }
-  /* .choosePlan-2{
+
+
+.choosePlan-1 {
+  padding: 2em !important;
+  font-size: 1em !important;
+  line-height: 0 !important;
+  width: 100% !important;
+  /* border: 4px solid #4285f8 !important; */
+  box-shadow: 0 0 0 1px #038fde, inset 0 0 0 1px #fff !important;
+}
+
+/* .choosePlan-2{
     padding: 2em;
     font-size: 1em;
     line-height: 0;

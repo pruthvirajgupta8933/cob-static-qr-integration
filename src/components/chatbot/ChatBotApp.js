@@ -5,6 +5,7 @@ import {steps} from './Chatbot/Step'
 import botFace from './media/botFace.png'
 import { useDispatch, useSelector } from 'react-redux';
 import { productSubscribeState } from '../../slices/dashboardSlice';
+import HeaderChatBot from './Components/HeaderChatBot';
 
 
 // Creating our own theme
@@ -26,31 +27,44 @@ const theme = {
 function ChatBotApp(props) {
   // Set some properties of the bot
   // console.log(props)
+  const dispatch = useDispatch()
   const {dashboard} = useSelector((state)=>state);
-  
+  // console.log("state changed",dashboard)
   //state
   const [opened, setOpened] = useState(true)
 // console.log(user);
   
 
 useEffect(() => {
+  // console.log("toggle useEffect Run")
+
+  const flag = dashboard?.productSubscribe;
+  console.log("toggle useEffect Run",dashboard?.productSubscribe)
+  // console.log("flag",flag)
+  // if(flag===false){
+  //   console.log("toggle useEffect run")
+  //   toggleFloating(flag); 
+  // }
   
-  const flag =dashboard?.productSubscribe;
-  // console.log(dashboard?.productSubscribe)
-  toggleFloating(flag); 
-  
-   
+  toggleFloating(flag);
+
+
 }, [dashboard])
 
 
 const toggleFloating =(boolen)=>{
+  console.log("toggle run",boolen)
+  dispatch(productSubscribeState(boolen))
   setOpened(!boolen);
 }
 
+
+
 const config = {
   floating: true,
-  headerTitle: "Mansha Bot",
+  headerTitle:<HeaderChatBot />,
   opened:opened,
+  // headerIcon:<HeaderChatBot />
 
 };
   return (  

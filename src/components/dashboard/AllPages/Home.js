@@ -452,7 +452,7 @@ function Home() {
                 </Link>
                 <Link to={`dashboard/product-catalogue`}>
                   <button className="ColrsforredirectProdct text-white mt-5-">
-                    I'll do this later
+                    No, I'll do this later
                   </button>
                 </Link>
 

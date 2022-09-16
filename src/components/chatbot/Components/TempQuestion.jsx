@@ -21,10 +21,14 @@ const TempQuestion = (props)=>{
 
     const {steps} = props
     const personalDetail = {
-        name : steps[3].value.name,
-        mobile: steps[3].value.contactNumber,
-        email: steps[3].value.email,
-        CategoryId: steps[3].value.CategoryId
+        // name : steps[3].value.name,
+        // mobile: steps[3].value.contactNumber,
+        // email: steps[3].value.email,
+        // CategoryId: steps[3].value.CategoryId
+        name : "ManshaAdmin",
+        mobile: 1111111111,
+        email: 'abc@sabpaisa.in',
+        CategoryId: 1
     }
     const [Detail, setDetails]= useState(personalDetail)
     const SetValues = (e)=>{
@@ -41,7 +45,7 @@ const TempQuestion = (props)=>{
                 'authorization': 'ddbf42c6-078a-404f-b4ed-d47faaa52bbf'
             }
         }).then((res)=>{
-            props.triggerNextStep({ trigger: 4 })
+            props.triggerNextStep({ trigger: 64 })
         }).catch((err)=>{
             props.triggerNextStep({ trigger: 500 })
         })  

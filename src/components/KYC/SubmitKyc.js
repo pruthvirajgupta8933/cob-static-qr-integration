@@ -268,10 +268,7 @@ function SubmitKyc(props) {
                         data-toggle="modal"
                         data-target="#exampleModal"
                       ></button>
-                      <h4 className="text-white">
-                        {" "}
-                        Verifying
-                      </h4>
+                      <h4 className="text-white"> Verifying</h4>
                     </button>
                   )}
                 </div>
@@ -284,9 +281,13 @@ function SubmitKyc(props) {
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
                 >
-                  <div class="modal-dialog" role="document">
+                  <div
+                    class="modal-dialog"
+                    role="document"
+                    style={{ maxWidth: 480 }}
+                  >
                     <div class="modal-content">
-                      <div class="modal-header">
+                      <div class="modal-header modal-header-fignma">
                         <button
                           type="button"
                           class="close"
@@ -297,10 +298,10 @@ function SubmitKyc(props) {
                         </button>
                       </div>
                       <div class="modal-body">
-                      <div class="row">
-                          <div class="col-sm-8">
+                        <div class="row">
+                          <div class="col-lg-12">
                             <h1
-                              className="text-centre"
+                              className="text-center"
                               style={{
                                 color: "#4BB543",
                                 fontWeight: "700",
@@ -310,10 +311,25 @@ function SubmitKyc(props) {
                             >
                               Congratulations!
                             </h1>
+                            <p className="modalscolrsfortextapprv m-0 text-center">
+                              Your KYC is Done!
+                            </p>
+                            <p className="modalscolrsfortextapprv m-0 text-center">
+                              You can start accepting payments now
+                            </p>
+                            <p className="modalscolrsfortextapprv m-0 text-center">
+                              View our product catalogue and choose your plan
+                            </p>
+                            {/* <p className="modalscolrsfortextapprv m-0 text-center">
+                              You can start accepting payments now
+                            </p> */}
+                            {/* <p className="modalscolrsfortextapprv m-0 text-center">
+                            View our product catalogue and choose your plan
+                            </p> */}
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-sm">
+                          {/* <div class="col-sm">
                             <p className="modalscolrsfortextapprv" style={{display:"contents"}}>
                               Your KYC is Done!
                             </p>
@@ -330,29 +346,31 @@ function SubmitKyc(props) {
                             >
                               View our product catalogue and choose your plan
                             </span>
-                          </div>
-                          <div class="col-sm">
+                          </div> */}
+                          <div class="col-lg-12 text-center">
                             <img
                               src={congImg}
-                              width={150}
-                              className="modalsimageclass"
+                              className="modalsimageclass-1"
                               alt="SabPaisa"
                               title="SabPaisa"
                             />
                           </div>
                         </div>
                       </div>
-                      <div class="modal-footer">
+                      <div class="modal-footer p-2">
                         {/* <Link to={`product-catalogue`} data-dismiss="modal" aria-label="Close" > */}
-                        <button
-                          type="button"
-                          className="btn btn-lg text-white mt-5 verfy-btn"
-                          onClick={() => redirect()}
-                          data-dismiss="modal"
-                          aria-label="Close"
-                        >
-                          <h4>View Product Catalogue</h4>
-                        </button>
+                        <div className="col-lg-12 p-0 m-0 text-center">
+                          <button
+                            type="button"
+                            className="btn btn-lg text-white mb-0 verfy-btn"
+                            onClick={() => redirect()}
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <h4>View Product Catalogue</h4>
+                          </button>
+                        </div>
+
                         {/* </Link> */}
                       </div>
                     </div>

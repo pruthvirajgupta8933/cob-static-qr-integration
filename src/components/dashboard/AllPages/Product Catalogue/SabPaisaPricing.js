@@ -6,7 +6,7 @@ import Background from "../../../../assets/images/Background.png"
 import EnterPrice from "../../../../assets/images/EnterPrice.png"
 import Rectangle from "../../../../assets/images/Rectangle.png"
 import enterPriceImages from "../../../../assets/images/enterPriceImages.png"
-import ThankYouImages from "../../../../assets/images/congImg.png"
+import rafiki from "../../../../assets/images/rafiki.png"
 import { productSubscribeState } from '../../../../slices/dashboardSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import "./product.css"
@@ -17,7 +17,7 @@ const SabPaisaPricing = () => {
 
   const dispatch = useDispatch();
   const clickHandler = (value) => {
-    dispatch(productSubscribeState(!dashboard?.productSubscribe))
+    dispatch(productSubscribeState(value))
     // console.log("value", value)
     // dispatch(productSubscribeState(value))
   }
@@ -56,23 +56,38 @@ const SabPaisaPricing = () => {
                   </button> */}
 
                   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog w-25" role="document">
+                    <div class="modal-dialog" style={{ maxWidth: 480 }} role="document">
                       <div class="modal-content">
-                        <div class="modal-header" style={{backgroundColor:"#1465FA"}}>
-                      
+                        <div class="modal-header modal-header-fignma" >
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={() => clickHandler(false)}>
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                         <div class="modal-body">
-                        <h2 className="subscribingproduct">Thank You For Subscribing</h2>
+                        <h2 className="subscribingproduct mb-0" >Thank You For Subscribing</h2>
 
-                          <div class="text-center mt-5">
-                            <h2 className="manshacss">Mansha(bot) will now help you integrate your website with your payment product.</h2>
+                          <div class="text-center">
+                            <h2 className="manshacss">Mansha(bot) will now help you integrate your website with our payment product.
+                            </h2>
+
+                          </div>
+                          <div class="row">
+                          <div class="col-lg-12 text-center">
+                            <img
+                              src={rafiki}
+                              className="modalsimageclass-1"
+                              alt="SabPaisa"
+                              title="SabPaisa"
+                              style={{width:250}}
+                            />
                           </div>
                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="ColrsforredirectProdct text-white" onClick={() => clickHandler(false)} data-dismiss="modal">Talk with Mansha</button>
+                        </div>
+                        <div class="modal-footer m-0 p-2">
+                        <div className="col-lg-12 text-center">
+                            <button type="button" class="ColrsforredirectProdct text-white m-0" onClick={() => clickHandler(false)} data-dismiss="modal">Talk with Mansha</button>
+                        </div>
+                         
                         </div>
                       </div>
                     </div>

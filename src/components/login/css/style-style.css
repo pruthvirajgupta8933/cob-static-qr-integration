@@ -181,8 +181,8 @@ a:focus {
   color: #000000;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  -webkit-box-shadow: 0px 3px 6px #1d2030;
-  box-shadow: 0px 3px 6px #1d2030;
+  /* -webkit-box-shadow: 0px 3px 6px #1d2030; */
+  /* box-shadow: 0px 3px 6px #1d2030; */
 }
 
 .authfy-panel-right {
