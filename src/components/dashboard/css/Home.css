@@ -502,43 +502,36 @@ color: #000000;
   color: #747474;
 }
 
-.firstli{
-  position: absolute;
-/* width: 83px; */
-height: 16px;
-left: 125px;
-    top: 359px;
-}
-.secondli{
-  position: absolute;
-/* width: 103px; */
-height: 16px;
-left: 117px;
-    top: 385px;
-}
 
-.thirdli{
-  position: absolute;
-/* width: 101px; */
-height: 16px;
-left: 115px;
-    top: 407px;
-}
-.forthli{
-  position: absolute;
-/* width: 91px; */
-height: 16px;
-left: 120px;
-    top: 430px
-    }
-    .fifthli{
-      position: absolute;
-/* width: 83px; */
-height: 16px;
-left: 122px;
-    top: 454px
-    }
+.firstli1{
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 16px;
+/* text-align: center; */
 
+color: #747474;
+
+}
+.secondli1{
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 16px;
+color: #FFFFFF;
+
+}
+.thirdli1{
+  font-family: 'Roboto';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 16px;
+color: #747474;
+
+}
     .forsecondcardfigma{
       font-family: 'Montserrat';
 font-style: normal;
@@ -596,8 +589,8 @@ color: #1465FA;
       font-family: 'Satoshi';
 font-style: normal;
 font-weight: 700;
-font-size: 28px;
-line-height: 128%;
+font-size: 32px;
+line-height: 156.5%;
 text-align: center;
 color: #464145;
   }
@@ -650,6 +643,15 @@ font-weight: 500;
 font-size: 19px;
 line-height: 25px;
 color: #4285F8;
+  }
+  .manshacss{
+    font-family: 'Satoshi';
+font-style: normal;
+font-weight: 500;
+font-size: 17px;
+line-height: 224%;
+color: #000000;
+
   }
   
    
