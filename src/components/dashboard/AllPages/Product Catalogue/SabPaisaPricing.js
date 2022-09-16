@@ -46,7 +46,7 @@ const SabPaisaPricing = () => {
                       <h1 class="card-title cardoneheadingcss pb-3">Start-up/Freelancer</h1>
                       <p className='text-center bold-font mb-1'>9,999</p>
                       <h3 className='paragraphcsss text-center'>Per Year</h3>
-                      <button type="button" className="btn choosePlan-1 btn-lg"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
+                      <button type="button" className=" font-weight-bold btn choosePlan-1 btn-lg"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
                     </div>
                   </div>
 
@@ -87,11 +87,11 @@ const SabPaisaPricing = () => {
   <li className="fifthli">Dashboard training</li>
 </ul> */}
                   <div className='text-center'>
-                    <p className="firstli1 m-1">AI Chat Support</p>
-                    <p className=" firstli1 m-1">Calendar View</p>
-                    <p className="firstli1 m-1">WhatsApp Integration</p>
-                    <p className="firstli1 m-1">Advanced Analytics</p>
-                    <p className="firstli1 m-1">Dashboard training</p>
+                    <p className="firstli1 mb-2">AI Chat Support</p>
+                    <p className=" firstli1 mb-2">Calendar View</p>
+                    <p className="firstli1 mb-2">WhatsApp Integration</p>
+                    <p className="firstli1 mb-2">Advanced Analytics</p>
+                    <p className="firstli1 mb-2">Dashboard training</p>
                   </div>
                 </div>
 
@@ -108,7 +108,7 @@ const SabPaisaPricing = () => {
                       <h1 class="card-title cardoneheadingcss2 pb-3">SME</h1>
                       <p className='text-center text-white bold-font mb-1'>2.0%</p>
                       <h3 className='paragraphcsss text-white text-center'>3 years and up</h3>
-                      <button type="button" className="btn choosePlan-1 btn-primary btn-lg"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
+                      <button type="button" className="btn choosePlan-1 btn-primary btn-lg font-weight-bold"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
                     </div>
                   </div>
                   {/* <div class="row">
@@ -180,12 +180,12 @@ const SabPaisaPricing = () => {
                   </div> */}
                   <h2 className='featurespricingforEnterpricing'>FEATURES INCLUDING</h2>
                   <div className='text-center text-white'>
-                    <p className="secondli1 m-1">Account Manager</p>
-                    <p className="secondli1 m-1">AI Chat Support</p>
-                    <p className="secondli1 m-1">Calendar View</p>
-                    <p className="secondli1 m-1">WhatsApp Integration</p>
-                    <p className="secondli1 m-1">Advanced Analytics</p>
-                    <p className="secondli1 m-1">Dashboard training</p>
+                    <p className="secondli1 mb-2">Account Manager</p>
+                    <p className="secondli1 mb-2">AI Chat Support</p>
+                    <p className="secondli1 mb-2">Calendar View</p>
+                    <p className="secondli1 mb-2">WhatsApp Integration</p>
+                    <p className="secondli1 mb-2">Advanced Analytics</p>
+                    <p className="secondli1 mb-2">Dashboard training</p>
                   </div>
                 </div>
 
@@ -201,7 +201,7 @@ const SabPaisaPricing = () => {
                       {/* <p className='text-center bold-font mb-1'></p> */}
                       <h3 className='bold-font text-center mb-1'>5 Yr</h3>
                       <h3 className='paragraphcsss text-center'>Minimum 5 years in buisness</h3>
-                      <button type="button" className="btn choosePlan-1  btn-lg mt-"  data-toggle="modal" data-target="#exampleModal">Contact Sales</button>
+                      <button type="button" className="btn choosePlan-1  btn-lg font-weight-bold"  data-toggle="modal" data-target="#exampleModal">Contact Sales</button>
                     </div>
                   </div>
 
@@ -267,16 +267,16 @@ const SabPaisaPricing = () => {
                   </div> */}
                   <h2 className='featuresIncludingforbusiness'>FEATURES INCLUDING</h2>
                   <div className='text-center'>
-                    <p className="thirdli1 m-1">Account Manager</p>
-                    <p className="thirdli1 m-1">AI Chat Support</p>
-                    <p className="thirdli1 m-1">Calendar View</p>
-                    <p className="thirdli1 m-1">Advanced Analytics</p>
-                    <p className="thirdli1 m-1">Dashboard training</p>
-                    <p className="thirdli1 m-1">Regular catalog updates</p>
-                    <p className="thirdli1 m-1">WhatsApp Integration</p>
-                    <p className="thirdli1 m-1">Discount Coupons</p>
-                    <p className="thirdli1 m-1">Personalised feature recommendations</p>
-                    <p className="thirdli1 m-1">24/7 Customer Support</p>
+                    <p className="thirdli1 mb-2">Account Manager</p>
+                    <p className="thirdli1 mb-2">AI Chat Support</p>
+                    <p className="thirdli1 mb-2">Calendar View</p>
+                    <p className="thirdli1 mb-2">Advanced Analytics</p>
+                    <p className="thirdli1 mb-2">Dashboard training</p>
+                    <p className="thirdli1 mb-2">Regular catalog updates</p>
+                    <p className="thirdli1 mb-2">WhatsApp Integration</p>
+                    <p className="thirdli1 mb-2">Discount Coupons</p>
+                    <p className="thirdli1 mb-2">Personalised feature recommendations</p>
+                    <p className="thirdli1 mb-2">24/7 Customer Support</p>
                   </div>
                 </div>
 

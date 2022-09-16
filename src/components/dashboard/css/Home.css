@@ -350,7 +350,7 @@ color: #000000;
 }
 
 .heightcards{
-  height: 550px;
+  height: 600px;
 
 }
 .figmacssforEnterpricechooseplan{
@@ -365,17 +365,18 @@ top: 209px;
 }
 .featurespricingforEnterpricing{
   /* margin-bottom: 136px; */
-  font-family: 'Montserrat';
+  /* font-family: 'Montserrat !important'; */
 font-style: normal;
 font-weight: 700;
 font-size: 14px;
 line-height: 17px;
 text-align: center;
 color: #FFFFFF;
+letter-spacing: 2px;
 
 }
 .forEnterPriceparaGcss{
-  font-family: 'Roboto';
+  font-family: 'Roboto ';
 font-style: normal;
 font-weight: 500;
 font-size: 14px;
@@ -456,13 +457,13 @@ left: 59px;
 .featurespricing{
   /* margin-bottom: 136px; */
     /* margin-left: 40px; */
-    font-family: 'Montserrat';
+    /* font-family: 'Montserrat featurespricing'; */
 font-style: normal;
 font-weight: 700;
 font-size: 14px;
 line-height: 17px;
 text-align: center;
-
+letter-spacing: 2px;
 color: #1465FA;
 }
 
@@ -575,7 +576,7 @@ border-radius: 4px;
   margin-top:-15px;
     }
     .featuresIncludingforbusiness{
-      font-family: 'Montserrat';
+      /* font-family: 'Montserrat'; */
 font-style: normal;
 font-weight: 700;
 /* margin-bottom: 136px; */
@@ -583,6 +584,7 @@ font-size: 14px;
 line-height: 17px;
 text-align: center;
 color: #1465FA;
+letter-spacing: 2px;
     }
 
 .subscribingproduct{
