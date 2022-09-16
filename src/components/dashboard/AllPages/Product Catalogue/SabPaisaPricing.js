@@ -106,7 +106,7 @@ const SabPaisaPricing = () => {
                   <div class="row mb-5">
                     <div className='col-lg-12 text-center text-white'>
                       <h1 class="card-title cardoneheadingcss2 pb-3">SME</h1>
-                      <p className='text-center bold-font mb-1'>2.0%</p>
+                      <p className='text-center text-white bold-font mb-1'>2.0%</p>
                       <h3 className='paragraphcsss text-white text-center'>3 years and up</h3>
                       <button type="button" className="btn choosePlan-1 btn-primary btn-lg"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
                     </div>
