@@ -290,71 +290,72 @@ function Home() {
           </div>
         </div>
 
-        <div class="card">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm  m-0">
+              <div class="card" style={{ height: "236px", width: "462px" }}>
                 <h2 class="card-title dashboardEnablecss"><img class="card-img-left" src={onlineimg} alt="onlinepay" width={40} /> &nbsp;Enable International Payments Today</h2>
                 <p className="paragraphcssdashboards">SabPaisa is the World's 1st API Driven Unified Payment Experience Platform having the Best Payment Gateway in India. Collect, transfer & refund your payments online & offline. Get the best success rates with maximum payment modes available including Debit cards, Credit Card, Wallets, UPI, Bharat QR, etc. The Hybrid PG helps businesses collect payments from all the clients and consumers, urban or rural, young or old, online or offline, without worrying about consumer payment behaviour.</p>
-                <Link to={`/dashboard/sabpaisa-pricing`}><p className="pricingclasscss">Read More & Pricing  &nbsp;{'>'}{'>'}</p></Link> 
+                <Link to={`/dashboard/sabpaisa-pricing`}><p className="pricingclasscss">Read More & Pricing  &nbsp;{'>'}{'>'}</p></Link>
               </div>
-              <div class="col-sm">
-                <div className="row pt-2">
-                  <div className="col-6 d-flex flex-wrap my-2">
-                    <img className="card-img-left mr-2" src={paymentlink} alt="payLink" width={"41px"} height={"41px"} />
-                    <p className="foralinkscsshere " style={{lineHeight:"25px"}}>Payment Links</p>
-                  </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
-                    <img
-                     className="card-img-left mr-2"
-                      src={subscriptin} alt="payLink" width={"41px"} height={"41px"} />
-                      <p className="foralinkscsshere" style={{lineHeight:"25px"}}>Subscriptions</p>
-                      
-                  </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
-                    <img
-                      className="card-img-left mr-2"
-                      src={Rupees} alt="payLink" width={"41px"} height={"41px"} />
-                      <p className="foralinkscsshere" style={{lineHeight:"25px"}}>Payouts</p>
-                  </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
-                    <img
-                       className="card-img-left mr-2"
-                       width={"41px"} height={"41px"}
-                      src={Quick} alt="payLink"  />
-                       <p className="foralinkscsshere" style={{lineHeight:"25px"}}>QwikForm</p>
-                  </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
-                    <img
-                       className="card-img-left mr-2"
-                       width={"41px"} height={"41px"}
-                      src={eposs} alt="payLink" />
-                       <p className="foralinkscsshere" style={{lineHeight:"25px"}}>E-POS App</p>
-                  </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
-                    <img
-                      className="card-img-left mr-2"
-                      width={"41px"} height={"41px"}
-                      src={linkpssa} alt="payLink"  />
-                      <p className="foralinkscsshere" style={{lineHeight:"25px"}}>LinkPaisa</p>
-                  </div>
-                  <div className="col-6 d-flex flex-wrap">
-                    <img
-                      className="card-img-left mr-2"
-                      width={"41px"} height={"41px"}
-                      src={echlln} alt="payLink"  />
-                      <p className="foralinkscsshere" style={{lineHeight:"25px"}}>E-Challan</p>
-
-                  </div>
+            </div>
+            <div class="col-sm" style={{ margin: "59px" }}>
+              <div className="row pt-2">
+                <div className="col-6 d-flex flex-wrap my-2">
+                  <img className="card-img-left mr-2" src={paymentlink} alt="payLink" width={"39px"} height={"39px"} />
+                  <p className="foralinkscsshere my-auto " style={{ lineHeight: "25px" }}>Payment Links</p>
                 </div>
+                <div className="col-6 d-flex flex-wrap my-2">
+                  <img
+                    className="card-img-left mr-2"
+                    src={subscriptin} alt="payLink" width={"41px"} height={"41px"} />
+                  <p className="foralinkscsshere my-auto" style={{ lineHeight: "25px" }}>Subscriptions</p>
 
+                </div>
+                <div className="col-6 d-flex flex-wrap my-2">
+                  <img
+                    className="card-img-left mr-2"
+                    src={Rupees} alt="payLink" width={"41px"} height={"41px"} />
+                  <p className="foralinkscsshere my-auto" style={{ lineHeight: "25px" }}>Payouts</p>
+                </div>
+                <div className="col-6 d-flex flex-wrap my-2">
+                  <img
+                    className="card-img-left mr-2"
+                    width={"41px"} height={"41px"}
+                    src={Quick} alt="payLink" />
+                  <p className="foralinkscsshere my-auto" style={{ lineHeight: "25px" }}>QwikForm</p>
+                </div>
+                <div className="col-6 d-flex flex-wrap my-2">
+                  <img
+                    className="card-img-left mr-2"
+                    width={"41px"} height={"41px"}
+                    src={eposs} alt="payLink" />
+                  <p className="foralinkscsshere my-auto" style={{ lineHeight: "25px" }}>E-POS App</p>
+                </div>
+                <div className="col-6 d-flex flex-wrap my-2">
+                  <img
+                    className="card-img-left mr-2"
+                    width={"41px"} height={"41px"}
+                    src={linkpssa} alt="payLink" />
+                  <p className="foralinkscsshere my-auto" style={{ lineHeight: "25px" }}>LinkPaisa</p>
+                </div>
+                <div className="col-6 d-flex flex-wrap ">
+                  <img
+                    className="card-img-left mr-2"
+                    width={"41px"} height={"41px"}
+                    src={echlln} alt="payLink" />
+                  <p className="foralinkscsshere my-auto" style={{ lineHeight: "25px" }}>E-Challan</p>
+
+                </div>
               </div>
-
 
             </div>
-          </div>
 
-          {/* <h2 class="card-title">Enable International Payments Today</h2>
+
+          </div>
+        </div>
+
+        {/* <h2 class="card-title">Enable International Payments Today</h2>
             <p class="card-text">
               With supporting text below as a natural lead-in to additional
               content.
@@ -363,8 +364,8 @@ function Home() {
 
 
 
-        </div>
       </div>
+      {/* </div> */}
       {/* KYC container end here */}
 
       {/* 
@@ -427,7 +428,7 @@ function Home() {
                     Payment services.
                   </h2>
 
-                  
+
                 </div>
 
                 <div class="col-sm">
@@ -437,25 +438,25 @@ function Home() {
                     alt="SabPaisa"
                     title="SabPaisa"
                   />
-                  
+
                 </div>
 
 
               </div>
               <div class="col-sm">
-                    
-                    <Link to={`/dashboard/kyc`}>
-                    <button className="ModalButtonClr text-white mt-2">
-                      Complete KYC to activate account
-                    </button>
-                  </Link>
-                  <Link to={`dashboard/product-catalogue`}>
-                      <button className="ColrsforredirectProdct text-white mt-5-">
-                        I'll do this later
-                      </button>
-                    </Link>
 
-                  </div>
+                <Link to={`/dashboard/kyc`}>
+                  <button className="ModalButtonClr text-white mt-2">
+                    Complete KYC to activate account
+                  </button>
+                </Link>
+                <Link to={`dashboard/product-catalogue`}>
+                  <button className="ColrsforredirectProdct text-white mt-5-">
+                    I'll do this later
+                  </button>
+                </Link>
+
+              </div>
 
             </div>
 
@@ -535,8 +536,8 @@ function Home() {
         </div>
       </div>
 
-      {/* Dashboard open pop up start here {IF KYC IS APPROVED}*/}
-    </section>
+      {/* Dashboard open pop up start here {IF KYC IS APPROVED}*/ }
+    </section >
   );
 }
 
