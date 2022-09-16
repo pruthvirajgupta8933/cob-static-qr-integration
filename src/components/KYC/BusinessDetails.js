@@ -27,7 +27,7 @@ function BusinessDetails(props) {
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
   const [gstin, setGstin] = useState("");
-  const [fieldValue, setFieldValue] = useState("src/_components/assets/images/plus.png");
+  const [fieldValue, setFieldValue] = useState("");
   const [checked, setChecked] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
@@ -83,8 +83,8 @@ function BusinessDetails(props) {
   // };
   const initialValues = {
     company_name: KycList.companyName,
-    company_logo: "/filePath/logo.png",
-    registerd_with_gst: KycList.registerdWithGST,
+    company_logo: "",
+    registerd_with_gst: "True",
     gst_number: KycList.gstNumber,
     pan_card: KycList.panCard,
     signatory_pan: KycList.signatoryPAN,
