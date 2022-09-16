@@ -165,26 +165,26 @@ function SubmitKyc(props) {
               {console.log(formik)}
 
               <div class="form-group row">
-                <div class="col-sm-1 col-form-label">
+                <div class="col-sm-1 col-form-label pr-0">
                   <Field
                     type="checkbox"
                     name="term_condition"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                     // readOnly={readOnly}
                     // checked={readOnly}
-                    className="mr-3"
+                    className="mr-0"
                   />
                 </div>
 
-                <div class="col-sm-10">
-                  <p className="para-style">
+                <div class="col-sm-10 pl-0 para-style">
+                  <p className="">
                     By accepting this Agreement, through one of the following
                     means: (i) executing the Order Form that references this
                     Agreement; or (ii) paying the Fees set out in the relevant
                     Order Form, the Customer agrees to the terms of this
                     Agreement.
                   </p>
-                  <p className="para-style">
+                  <p className="">
                     1.2 &nbsp; &nbsp;If the individual accepting this Agreement
                     is accepting on behalf of a company or other legal entity,
                     such individual represents that they have the authority to

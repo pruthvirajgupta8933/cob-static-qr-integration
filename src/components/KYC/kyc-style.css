@@ -21,6 +21,7 @@
     right: -99px;
     z-index: 999;
     top: -51px;
+    margin-right: 5px !important;
 }
 
 
@@ -47,9 +48,10 @@
 }
 
 .para-style {
-    font-weight: 520;
+    font-family: Satoshi;
     font-size: 14px;
-    line-height: 224%;
-    font-style: normal;
-    font-family: "Satoshi";
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0em;
+    text-align: left;
 }
