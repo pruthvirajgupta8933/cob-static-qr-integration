@@ -55,7 +55,7 @@ const NavBar = () => {
  <span class="glyphicon glyphicon-cog text-white" style={{color:"white"}}></span>
                 <span class="caret text-white">{username}</span></a>
                 <div class="dropdown-menu text-white" style={{backgroundColor:"#0156B3", height:"7rem", width:"10rem"}}>
-                <div class="row px-md-4 p-2">
+                <div class="row px-md-3 p-2">
                 <Link to = "/dashboard/profile" class="dropdown-item text-white">Profile</Link>
                  <Link to = "/dashboard/change-password" class="dropdown-item text-white">Change Password</Link>
                  <Link onClick={exitback} class="dropdown-item text-white ">Log out</Link>

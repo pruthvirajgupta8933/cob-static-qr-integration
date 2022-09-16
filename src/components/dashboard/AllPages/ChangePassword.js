@@ -215,7 +215,7 @@ const handleClickShowPassword = () => {
                       </div>
 
                       <div className="form-group  col-sm-12">
-                        <label className="control-label col-sm-2" htmlFor="changepassword"> Confirm Password :</label>
+                        <label className="control-label col-sm-2" htmlFor="changepassword"> Confirm New Password :</label>
                         <div className="col-sm-10">
                         <Field
                            type={

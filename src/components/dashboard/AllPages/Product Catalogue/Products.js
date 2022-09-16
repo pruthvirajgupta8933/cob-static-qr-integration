@@ -123,7 +123,7 @@ const Products = () => {
     <div class="card" style={{width:"31rem",height:"16rem"}} >
       <div class="card-body">
       <h5 class="card-title prod-header"><img class="card-img-left" src={epos} alt="epos" width={40}/>&nbsp;E-POS App</h5>
-        <p class="card-text prod-content">The E-POS App is an all-in-one advanced app that provides all the data regarding the user’s payments, settlements, refunds, collections, customer support and official communication with end-to-end control over everything.es of payment mandates, viz. NACH, Net Banking, Debit Card, Credit Card, UPI.</p>
+        <p class="card-text prod-content">The E-POS App is an all-in-one advanced app that provides all the data regarding the user’s payments, settlements, refunds, collections, customer support and official communication with end-to-end control over everything of payment mandates viz. NACH, Net Banking, Debit Card, Credit Card, UPI.</p>
      <div>
      <p class="prod-read"><Link to='/dashboard/sabpaisa-pricing'>Read More & Pricing  &nbsp;{'>'}{'>'}</Link></p> 
     </div>

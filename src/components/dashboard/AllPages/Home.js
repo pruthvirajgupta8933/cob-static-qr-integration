@@ -423,8 +423,8 @@ function Home() {
                   </h1>
                   <h2 className="modalscolrsfortext">
                     Complete the KYC to activate your account and start
-                    accepting payments, You are step away from activating your
-                    account. Fill in all the information to start you SabPaisa
+                    accepting payments, you are step away from activating your
+                    account. Fill in all the information to start your SabPaisa
                     Payment services.
                   </h2>
 

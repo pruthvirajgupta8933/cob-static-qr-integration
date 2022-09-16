@@ -268,7 +268,7 @@ function SubmitKyc(props) {
                         data-toggle="modal"
                         data-target="#exampleModal"
                       ></button>
-                      <h4 className="text-white font-weight-bold">
+                      <h4 className="text-white">
                         {" "}
                         Verifying
                       </h4>
