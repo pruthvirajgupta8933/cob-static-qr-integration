@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { approvekyc, verifyComplete } from "../../slices/kycSlice";
-import { Formik, Form,Field ,ErrorMessage} from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
 import congratsImg from "../../assets/images/congImg.png"
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent } from "../../slices/kycSlice"
+import $ from 'jquery'
 
 
 function SubmitKyc(props) {
+
 
   const history = useHistory()
   const { role, kycid } = props;
@@ -39,7 +41,7 @@ function SubmitKyc(props) {
   const validationSchema = Yup.object({
     // checkBoxChoice: Yup.array().nullable(),
     // privacyPolicy: Yup.array().nullable(),
-    term_condition:Yup.string().oneOf(["true"], "You must accept all the specified terms & conditions")
+    term_condition: Yup.string().oneOf(["true"], "You must accept all the specified terms & conditions")
     // serviceAgreement: Yup.array().nullable(),
   });
 
@@ -61,7 +63,7 @@ function SubmitKyc(props) {
 
   const [checked, setChecked] = useState(false);
 
-  
+
 
 
   // const termAndConditionOption = [
@@ -122,32 +124,39 @@ function SubmitKyc(props) {
     }
   };
 
-  
+
   const onSubmit = () => {
-        dispatch(
-      saveKycConsent({
-        term_condition:true,
-        login_id: loginId,
-        submitted_by: "270",
-      })
+    $(".cick").click()
+
+    dispatch(saveKycConsent({
+      term_condition: true,
+      login_id: loginId,
+      submitted_by: "270",
+    })
     ).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true
       ) {
-        // console.log(res)
-        // console.log("This is the response", res);
         toast.success(res.payload.message);
+        
       } else {
         toast.error("Something Went Wrong! Please try again.");
       }
     });
-   };
+  };
+
+
   const redirect = () => {
     history.push("/dashboard/product-catalogue");
-   };
+  };
 
 
+  const modalHandler = () => {
+
+    // $(".modalbody1").attr("id","exampleModal");
+    // $(".float-lg-right").click()
+  }
 
   return (
     <div className="col-md-12 p-3">
@@ -172,13 +181,13 @@ function SubmitKyc(props) {
                   // checked={readOnly}
                   className="mr-3"
                 />
-                  
-          
-                I have accepted the <a href="https://sabpaisa.in/term-conditions/" alt="tnz" target="_blank" title="tnc"> Term & Condition</a> ,&nbsp;
+
+
+                I have accepted the<a href="https://sabpaisa.in/term-conditions/"  alt="tnz" target="_blank" title="tnc">&nbsp;Term & Condition</a> ,&nbsp;
                 <a href="https://sabpaisa.in/privacy-policy/" alt="tnz" target="_blank" title="tnc"> Privacy Policy</a> ,&nbsp;
                 <a href="https://sabpaisa.in/service-agreement" alt="tnz" target="_blank" title="tnc"> Service Agreement</a>&nbsp;
               </div>
-              
+
               {
                                         <ErrorMessage name="term_condition">
                                           {(msg) => (
@@ -188,6 +197,7 @@ function SubmitKyc(props) {
                                                 color: "red",
                                                 position: "absolute",
                                                 zIndex: " 999",
+                                                marginLeft:"30px"
                                               }}
                                             >
                                               {msg}
@@ -229,13 +239,17 @@ function SubmitKyc(props) {
                 />
                 <div class="mt-3">
                   {VerifyKycStatus === "Verified" ? null : (
-                    
+
                     <button
                       className="btn float-lg-right"
                       type="submit"
                       style={{ backgroundColor: "#0156B3" }}
-                      data-toggle="modal"  data-target="#exampleModal"
+                      // data-toggle="modal"
+                      // data-target="#exampleModal"
+
                     >
+                     <button className="btn cick d-none" data-toggle="modal"
+                      data-target="#exampleModal"></button>
                       <h4 className="text-white font-weight-bold"> Verifying</h4>
                     </button>
                   )}
@@ -243,7 +257,7 @@ function SubmitKyc(props) {
 
 
 
-                <div class="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade modalbody1" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -292,15 +306,15 @@ function SubmitKyc(props) {
                       </div>
                       <div class="modal-footer">
                         {/* <Link to={`product-catalogue`} data-dismiss="modal" aria-label="Close" > */}
-                          <button 
-                          type="button" 
+                        <button
+                          type="button"
                           className="btn btn-lg text-white mt-5 verfy-btn"
-                          onClick={() =>redirect()}
+                          onClick={() => redirect()}
                           data-dismiss="modal" aria-label="Close"
-                         
-                          >
-                            <h4>View Product Catalogue</h4>
-                          </button>
+
+                        >
+                          <h4>View Product Catalogue</h4>
+                        </button>
                         {/* </Link> */}
                       </div>
                     </div>
