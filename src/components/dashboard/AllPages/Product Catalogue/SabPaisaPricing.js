@@ -58,20 +58,21 @@ const SabPaisaPricing = () => {
                   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog w-25" role="document">
                       <div class="modal-content">
-                        <div class="modal-header">
-
+                        <div class="modal-header" style={{backgroundColor:"#1465FA"}}>
+                      
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={() => clickHandler(false)}>
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                         <div class="modal-body">
+                        <h2 className="subscribingproduct">Thank You For Subscribing</h2>
+
                           <div class="text-center mt-5">
-                            <h2 className="subscribingproduct">Thank You For Subscribing</h2>
-                            <p>Our team will get back to you.</p>
+                            <h2 className="manshacss">Mansha(bot) will now help you integrate your website with your payment product.</h2>
                           </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-primary" onClick={() => clickHandler(false)} data-dismiss="modal">Close</button>
+                          <button type="button" class="ColrsforredirectProdct text-white" onClick={() => clickHandler(false)} data-dismiss="modal">Talk with Mansha</button>
                         </div>
                       </div>
                     </div>
@@ -87,10 +88,10 @@ const SabPaisaPricing = () => {
 </ul> */}
                   <div className='text-center'>
                     <p className="firstli1 m-1">AI Chat Support</p>
-                    <p className="secondli1 m-1">Calendar View</p>
-                    <p className="thirdli1 m-1">WhatsApp Integration</p>
-                    <p className="forthl1i m-1">Advanced Analytics</p>
-                    <p className="fifthli1 m-1">Dashboard training</p>
+                    <p className=" firstli1 m-1">Calendar View</p>
+                    <p className="firstli1 m-1">WhatsApp Integration</p>
+                    <p className="firstli1 m-1">Advanced Analytics</p>
+                    <p className="firstli1 m-1">Dashboard training</p>
                   </div>
                 </div>
 
@@ -179,12 +180,12 @@ const SabPaisaPricing = () => {
                   </div> */}
                   <h2 className='featurespricingforEnterpricing'>FEATURES INCLUDING</h2>
                   <div className='text-center text-white'>
-                    <p className="firstli1 m-1">Account Manager</p>
+                    <p className="secondli1 m-1">Account Manager</p>
                     <p className="secondli1 m-1">AI Chat Support</p>
-                    <p className="thirdli1 m-1">Calendar View</p>
-                    <p className="thirdli1 m-1">WhatsApp Integration</p>
-                    <p className="forthl1i m-1">Advanced Analytics</p>
-                    <p className="fifthli1 m-1">Dashboard training</p>
+                    <p className="secondli1 m-1">Calendar View</p>
+                    <p className="secondli1 m-1">WhatsApp Integration</p>
+                    <p className="secondli1 m-1">Advanced Analytics</p>
+                    <p className="secondli1 m-1">Dashboard training</p>
                   </div>
                 </div>
 
@@ -266,16 +267,16 @@ const SabPaisaPricing = () => {
                   </div> */}
                   <h2 className='featuresIncludingforbusiness'>FEATURES INCLUDING</h2>
                   <div className='text-center'>
-                    <p className="firstli1 m-1">Account Manager</p>
-                    <p className="secondli1 m-1">AI Chat Support</p>
+                    <p className="thirdli1 m-1">Account Manager</p>
+                    <p className="thirdli1 m-1">AI Chat Support</p>
                     <p className="thirdli1 m-1">Calendar View</p>
                     <p className="thirdli1 m-1">Advanced Analytics</p>
-                    <p className="fifthli1 m-1">Dashboard training</p>
-                    <p className="fifthli1 m-1">Regular catalog updates</p>
+                    <p className="thirdli1 m-1">Dashboard training</p>
+                    <p className="thirdli1 m-1">Regular catalog updates</p>
                     <p className="thirdli1 m-1">WhatsApp Integration</p>
-                    <p className="forthl1i m-1">Discount Coupons</p>
-                    <p className="forthl1i m-1">Personalised feature recommendations</p>
-                    <p className="forthl1i m-1">24/7 Customer Support</p>
+                    <p className="thirdli1 m-1">Discount Coupons</p>
+                    <p className="thirdli1 m-1">Personalised feature recommendations</p>
+                    <p className="thirdli1 m-1">24/7 Customer Support</p>
                   </div>
                 </div>
 
