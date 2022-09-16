@@ -297,7 +297,7 @@ function SubmitKyc(props) {
                         </button>
                       </div>
                       <div class="modal-body">
-                        <div class="row">
+                      <div class="row">
                           <div class="col-sm-8">
                             <h1
                               className="text-centre"
@@ -314,14 +314,14 @@ function SubmitKyc(props) {
                         </div>
                         <div class="row">
                           <div class="col-sm">
-                            <p className="modalscolrsfortextapprv">
+                            <p className="modalscolrsfortextapprv" style={{display:"contents"}}>
                               Your KYC is Done!
                             </p>
-                            <span className="modalscolrsfortextapprv text-center">
+                            <span className="modalscolrsfortextapprv" style={{display:"table-cell"}}>
                               You can start accepting payments now
                             </span>
                             <span
-                              className="modalscolrsfortextapprv text-center"
+                              className="modalscolrsfortextapprv"
                               style={{
                                 display: "table-footer-group",
                                 justifyContent: "center",
