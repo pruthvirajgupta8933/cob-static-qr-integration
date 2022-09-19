@@ -13,7 +13,7 @@ const NavBar = () => {
 
   const dispatch = useDispatch();
   const {user} = useSelector((state)=>state.auth);
-  console.log(user,"==>")
+  // console.log(user,"==>")
   const loginId = user.loginId
   const username = user.clientContactPersonName
 

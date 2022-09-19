@@ -29,7 +29,7 @@ const FORM_VALIDATION = Yup.object().shape({
     .max(10, "too long"),
   emaill: Yup.string().email('Must be a valid email').max(255).required("Required"),
   passwordd: Yup.string().required("Password Required").matches(
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"),
   confirmpasswordd: Yup.string().oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
   terms_and_condition: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
@@ -175,7 +175,7 @@ function Registration() {
   const handlerTermCond = (isChecked)=>{
       setBtnDisable(isChecked)
   }
-  console.log("btnDisable",btnDisable)
+  // console.log("btnDisable",btnDisable)
   return (
     <>
       <HeaderPage />
