@@ -21,6 +21,7 @@
     right: -99px;
     z-index: 999;
     top: -51px;
+    margin-right: 5px !important;
 }
 
 
@@ -47,9 +48,31 @@
 }
 
 .para-style {
-    font-weight: 520;
+    font-family: Satoshi;
     font-size: 14px;
-    line-height: 224%;
-    font-style: normal;
-    font-family: "Satoshi";
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+
+.modal-header-fignma{
+    padding: 5px 14px 4px 14px;
+    background-color: #4285F8;
+}
+
+.modal-close-button{
+    padding:12px 20px 18px 0px;
+}
+
+
+.modalsimageclass{
+    width: 100%;
+    margin-top: 6em;
+}
+
+
+.modalsimageclass-1{
+    width: 45%;
 }

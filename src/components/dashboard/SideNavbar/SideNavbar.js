@@ -7,6 +7,7 @@ import { roleBasedAccess } from '../../../_components/reuseable_components/roleB
 import SabpaisaLogo2 from "../../../assets/images/sabpaisa-logo2.png"
 import SabpaisaLogo1 from "../../../assets/images/sabpaisa-logo-white.png"
 import Sabpaisalogo from "../../../assets/images/sabpaisalogo.png"
+import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png"
 import Products from "../AllPages/Product Catalogue/Products"
 
 function SideNavbar() {
@@ -55,7 +56,7 @@ function SideNavbar() {
         <div className="brand-logo d-flex-item-right">
         <div class="float-centre p-4">
                     <img
-                      src={Sabpaisalogo}
+                      src={Sabpaisalogo3}
                       width={150}
                       alt="sabpaisa"
                       title="sabpaisa"
@@ -70,24 +71,28 @@ function SideNavbar() {
           <div className="sidebar_menu_list">
             <div className="gx-layout-sider-scrollbar" style={{ position: 'relative', overflow: 'hidden', width: '100%', height: '100%' }}>
               <div style={{ position: 'absolute', inset: '0px', overflow: 'scroll', marginRight: '-3px', marginBottom: '-3px' }}>
-                <ul className="ant-menu ant-menu-dark ant-menu-root ant-menu-inline" role="menu" style={{background: 'rgb(1, 86, 179)'}}>
+                <ul className="desktop-sidenave-typography ant-menu ant-menu-dark ant-menu-root ant-menu-inline" role="menu" style={{background: 'rgb(1, 86, 179)'}}>
                   {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
-                    <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
-                      <Link to={`${url}`} className='txt-white'><i className="fa fa-home homeiconsize" aria-hidden="true" /> <span style={{fontSize:'15px'}}>Dashboard</span></Link>
+                    <li className="ant-menu-item" role="menuitem" >
+                      <Link to={`${url}`} className='txt-white'><i className="fa fa-home homeiconsize" aria-hidden="true" /> <span>&nbsp;Dashboard</span></Link>
                     </li>
                     : <React.Fragment></React.Fragment>}
 
                   {roleBasedShowTab?.merchant === true &&
                     roleBasedShowTab?.approver === false && roleBasedShowTab?.verifier === false ?
-                    <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
-                      <Link to={`${url}/kyc`} className='txt-white' ><i className="fa fa-file-o" aria-hidden="true" /> <span>Complete KYC</span><span class="new-tab">new</span></Link>
+                    <li className="ant-menu-item" role="menuitem" >
+                      <Link to={`${url}/kyc`} className='txt-white' ><i className="fa fa-file-o" aria-hidden="true" /> <span>&nbsp;Complete KYC</span>
+                      {/* <span class="new-tab">new</span> */}
+                      </Link>
                     </li>
                     : <React.Fragment></React.Fragment>}
 
 
                   {roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true ?
-                    <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '24px', color: 'white' }}>
-                      <Link to={`${url}/approver`} className='txt-white' ><i className="fa fa-list" aria-hidden="true" /><span>Merchant List</span><span class="new-tab">new</span></Link>
+                    <li className="ant-menu-item" role="menuitem" >
+                      <Link to={`${url}/approver`} className='txt-white' ><i className="fa fa-list" aria-hidden="true" /><span>&nbsp;Merchant List</span>
+                      {/* <span class="new-tab">new</span> */}
+                      </Link>
                     </li>
                     : <React.Fragment></React.Fragment>}
 
@@ -104,12 +109,12 @@ function SideNavbar() {
                       {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
                         <React.Fragment>
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
-                            <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-calendar" aria-hidden="true" />   Transaction History </Link>
+                            <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-calendar" aria-hidden="true" />&nbsp;Transaction History </Link>
                           </li>
 
 
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
-                            <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />   Transaction Enquiry </Link>
+                            <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />&nbsp;Transaction Enquiry</Link>
                           </li>
                         </React.Fragment>
                         : <React.Fragment></React.Fragment>}
@@ -128,12 +133,13 @@ function SideNavbar() {
                         <React.Fragment>
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
                             <Link to={`${url}/settlement-report-new`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
-                              &nbsp; <span>Settlement Report</span><span class="new-tab">new</span></Link>
+                              &nbsp;<span>Settlement Report</span>
+                              {/* <span class="new-tab">new</span> */}
+                              </Link>
                           </li>
 
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
-                            <Link to={`${url}/product-catalogue`} className='txt-white'><i className="fa fa-book" aria-hidden="true" />
-                              &nbsp; Product Catalogue</Link>
+                            <Link to={`${url}/product-catalogue`} className='txt-white'><i className="fa fa-book" aria-hidden="true" />&nbsp;Product Catalogue</Link>
                           </li>
                         </React.Fragment>
                         : <React.Fragment></React.Fragment>

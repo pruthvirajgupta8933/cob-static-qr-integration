@@ -164,14 +164,14 @@ function Home() {
             {" "}
             <img
               src={onlineshopinglogo}
-              width={300}
+              width={400}
               alt="SabPaisa"
               title="SabPaisa"
             />
           </div>
           <div className="row">
             <div
-              className="col-12 col-md-4 aos-init aos-animate"
+              className="col-12 col-md-3 aos-init aos-animate"
               data-aos="fade-up"
             >
               <div className="icon text-primary mb-3">
@@ -339,7 +339,7 @@ function Home() {
                     src={linkpssa} alt="payLink" />
                   <p className="foralinkscsshere my-auto" style={{ lineHeight: "25px" }}>LinkPaisa</p>
                 </div>
-                <div className="col-6 d-flex flex-wrap ">
+                <div className="col-6 d-flex flex-wrap my-2">
                   <img
                     className="card-img-left mr-2"
                     width={"41px"} height={"41px"}
@@ -452,7 +452,7 @@ function Home() {
                 </Link>
                 <Link to={`dashboard/product-catalogue`}>
                   <button className="ColrsforredirectProdct text-white mt-5-">
-                    I'll do this later
+                    No, I'll do this later
                   </button>
                 </Link>
 

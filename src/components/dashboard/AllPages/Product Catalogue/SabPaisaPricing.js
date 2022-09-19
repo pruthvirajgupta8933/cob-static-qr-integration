@@ -6,7 +6,7 @@ import Background from "../../../../assets/images/Background.png"
 import EnterPrice from "../../../../assets/images/EnterPrice.png"
 import Rectangle from "../../../../assets/images/Rectangle.png"
 import enterPriceImages from "../../../../assets/images/enterPriceImages.png"
-import ThankYouImages from "../../../../assets/images/congImg.png"
+import rafiki from "../../../../assets/images/rafiki.png"
 import { productSubscribeState } from '../../../../slices/dashboardSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import "./product.css"
@@ -17,7 +17,7 @@ const SabPaisaPricing = () => {
 
   const dispatch = useDispatch();
   const clickHandler = (value) => {
-    dispatch(productSubscribeState(!dashboard?.productSubscribe))
+    dispatch(productSubscribeState(value))
     // console.log("value", value)
     // dispatch(productSubscribeState(value))
   }
@@ -46,7 +46,7 @@ const SabPaisaPricing = () => {
                       <h1 class="card-title cardoneheadingcss pb-3">Start-up/Freelancer</h1>
                       <p className='text-center bold-font mb-1'>9,999</p>
                       <h3 className='paragraphcsss text-center'>Per Year</h3>
-                      <button type="button" className="btn choosePlan-1 btn-lg"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
+                      <button type="button" className=" font-weight-bold btn choosePlan-1 btn-lg"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
                     </div>
                   </div>
 
@@ -56,23 +56,38 @@ const SabPaisaPricing = () => {
                   </button> */}
 
                   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog w-25" role="document">
+                    <div class="modal-dialog" style={{ maxWidth: 480 }} role="document">
                       <div class="modal-content">
-                        <div class="modal-header" style={{backgroundColor:"#1465FA"}}>
-                      
+                        <div class="modal-header modal-header-fignma" >
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close" onClick={() => clickHandler(false)}>
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                         <div class="modal-body">
-                        <h2 className="subscribingproduct">Thank You For Subscribing</h2>
+                        <h2 className="subscribingproduct mb-0" >Thank You For Subscribing</h2>
 
-                          <div class="text-center mt-5">
-                            <h2 className="manshacss">Mansha(bot) will now help you integrate your website with your payment product.</h2>
+                          <div class="text-center">
+                            <h2 className="manshacss">Mansha(bot) will now help you integrate your website with our payment product.
+                            </h2>
+
+                          </div>
+                          <div class="row">
+                          <div class="col-lg-12 text-center">
+                            <img
+                              src={rafiki}
+                              className="modalsimageclass-1"
+                              alt="SabPaisa"
+                              title="SabPaisa"
+                              style={{width:250}}
+                            />
                           </div>
                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="ColrsforredirectProdct text-white" onClick={() => clickHandler(false)} data-dismiss="modal">Talk with Mansha</button>
+                        </div>
+                        <div class="modal-footer m-0 p-2">
+                        <div className="col-lg-12 text-center">
+                            <button type="button" class="ColrsforredirectProdct text-white m-0" onClick={() => clickHandler(false)} data-dismiss="modal">Talk with Mansha</button>
+                        </div>
+                         
                         </div>
                       </div>
                     </div>
@@ -87,11 +102,11 @@ const SabPaisaPricing = () => {
   <li className="fifthli">Dashboard training</li>
 </ul> */}
                   <div className='text-center'>
-                    <p className="firstli1 m-1">AI Chat Support</p>
-                    <p className=" firstli1 m-1">Calendar View</p>
-                    <p className="firstli1 m-1">WhatsApp Integration</p>
-                    <p className="firstli1 m-1">Advanced Analytics</p>
-                    <p className="firstli1 m-1">Dashboard training</p>
+                    <p className="firstli1 mb-2">AI Chat Support</p>
+                    <p className=" firstli1 mb-2">Calendar View</p>
+                    <p className="firstli1 mb-2">WhatsApp Integration</p>
+                    <p className="firstli1 mb-2">Advanced Analytics</p>
+                    <p className="firstli1 mb-2">Dashboard training</p>
                   </div>
                 </div>
 
@@ -108,7 +123,7 @@ const SabPaisaPricing = () => {
                       <h1 class="card-title cardoneheadingcss2 pb-3">SME</h1>
                       <p className='text-center text-white bold-font mb-1'>2.0%</p>
                       <h3 className='paragraphcsss text-white text-center'>3 years and up</h3>
-                      <button type="button" className="btn choosePlan-1 btn-primary btn-lg"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
+                      <button type="button" className="btn choosePlan-1 btn-primary btn-lg font-weight-bold"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
                     </div>
                   </div>
                   {/* <div class="row">
@@ -180,12 +195,12 @@ const SabPaisaPricing = () => {
                   </div> */}
                   <h2 className='featurespricingforEnterpricing'>FEATURES INCLUDING</h2>
                   <div className='text-center text-white'>
-                    <p className="secondli1 m-1">Account Manager</p>
-                    <p className="secondli1 m-1">AI Chat Support</p>
-                    <p className="secondli1 m-1">Calendar View</p>
-                    <p className="secondli1 m-1">WhatsApp Integration</p>
-                    <p className="secondli1 m-1">Advanced Analytics</p>
-                    <p className="secondli1 m-1">Dashboard training</p>
+                    <p className="secondli1 mb-2">Account Manager</p>
+                    <p className="secondli1 mb-2">AI Chat Support</p>
+                    <p className="secondli1 mb-2">Calendar View</p>
+                    <p className="secondli1 mb-2">WhatsApp Integration</p>
+                    <p className="secondli1 mb-2">Advanced Analytics</p>
+                    <p className="secondli1 mb-2">Dashboard training</p>
                   </div>
                 </div>
 
@@ -201,7 +216,7 @@ const SabPaisaPricing = () => {
                       {/* <p className='text-center bold-font mb-1'></p> */}
                       <h3 className='bold-font text-center mb-1'>5 Yr</h3>
                       <h3 className='paragraphcsss text-center'>Minimum 5 years in buisness</h3>
-                      <button type="button" className="btn choosePlan-1  btn-lg mt-"  data-toggle="modal" data-target="#exampleModal">Contact Sales</button>
+                      <button type="button" className="btn choosePlan-1  btn-lg font-weight-bold"  data-toggle="modal" data-target="#exampleModal">Contact Sales</button>
                     </div>
                   </div>
 
@@ -267,16 +282,16 @@ const SabPaisaPricing = () => {
                   </div> */}
                   <h2 className='featuresIncludingforbusiness'>FEATURES INCLUDING</h2>
                   <div className='text-center'>
-                    <p className="thirdli1 m-1">Account Manager</p>
-                    <p className="thirdli1 m-1">AI Chat Support</p>
-                    <p className="thirdli1 m-1">Calendar View</p>
-                    <p className="thirdli1 m-1">Advanced Analytics</p>
-                    <p className="thirdli1 m-1">Dashboard training</p>
-                    <p className="thirdli1 m-1">Regular catalog updates</p>
-                    <p className="thirdli1 m-1">WhatsApp Integration</p>
-                    <p className="thirdli1 m-1">Discount Coupons</p>
-                    <p className="thirdli1 m-1">Personalised feature recommendations</p>
-                    <p className="thirdli1 m-1">24/7 Customer Support</p>
+                    <p className="thirdli1 mb-2">Account Manager</p>
+                    <p className="thirdli1 mb-2">AI Chat Support</p>
+                    <p className="thirdli1 mb-2">Calendar View</p>
+                    <p className="thirdli1 mb-2">Advanced Analytics</p>
+                    <p className="thirdli1 mb-2">Dashboard training</p>
+                    <p className="thirdli1 mb-2">Regular catalog updates</p>
+                    <p className="thirdli1 mb-2">WhatsApp Integration</p>
+                    <p className="thirdli1 mb-2">Discount Coupons</p>
+                    <p className="thirdli1 mb-2">Personalised feature recommendations</p>
+                    <p className="thirdli1 mb-2">24/7 Customer Support</p>
                   </div>
                 </div>
 
