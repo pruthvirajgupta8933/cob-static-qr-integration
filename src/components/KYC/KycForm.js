@@ -108,15 +108,20 @@ function KycForm() {
   return (
     <section className="ant-layout">
     <div><NavBar /></div>
-    <div class="card-group" style={{ height: "100%" }}>
-        <div class="row">
-          <div class="col-sm-4">
-            <div class="card" style={{ height: "100%" }}>
+    <div class="card-group">
+   
+    <div class="row">
+    <div class="col-lg-3">
+            <div class="card" style={{
+                width: "47rem",
+                height: "100%",
+              }}>
               
-                <div className="right_layout my_account_wrapper right_side_heading">
+              
+             
                   <h1
                     className="m-b-sm gx-float-left font-weight-bold"
-                    style={{ color: "#0C090A" }}
+                    style={{ color: "#0C090A"}}
                   >
                     KYC Form
                     <span>
@@ -125,7 +130,7 @@ function KycForm() {
                       </h6>
                     </span>
                   </h1>
-                </div>
+                
             
 
                 <div class="card-body">
@@ -274,25 +279,25 @@ function KycForm() {
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
+        
+        
       
+      
+               <div class="col-">
 
-
-       
-          <div class="col-sm-7 col-lg-7 col-md-7">
             <div
               className="card"
               style={{
                 backgroundColor: "#F2F2F2",
+                width: "47rem",
                 height: "100%",
-                width: "47rem"
               }}
             >
               <div class="card-body">
                 <h1 class="card-title font-weight-bold mb-5">{title}</h1>
 
-                  
-                <div className="row">
+             
                     
                   {/* role={roles} kycid={kycid} */}
                         {(tab === 1 && <ContactInfo role={roles} kycid={kycid} />) ||
@@ -307,10 +312,12 @@ function KycForm() {
                   
                
               </div>
+              </div>
             </div>
-          </div>
-        </div>
-        </div>
+            </div>
+          
+  
+      
     
     </section>
         
