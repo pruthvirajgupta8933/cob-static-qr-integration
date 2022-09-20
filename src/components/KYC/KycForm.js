@@ -5,7 +5,6 @@ import BankDetails from "./BankDetails";
 import BusinessDetails from "./BusinessDetails";
 import BusinessOverview from "./BusinessOverview";
 import ContactInfo from "./ContactInfo";
-import DocumentsUpload from "./DocumentsUpload";
 import DocumentsUploadNew from "./DocumentsUploadNew";
 import SubmitKyc from "./SubmitKyc"; 
 import {
@@ -51,9 +50,7 @@ function KycForm() {
   const merchantList = user.clientMerchantDetailsList;
   //  console.log(merchantList, "<=====Merchant List =======>")
 
-  const MerchantClietCode = merchantList.map((merchants) => {
-    return merchants.clientCode;
-  });
+ 
 
   // console.log(MerchantClietCode, "============>")
 
@@ -101,9 +98,6 @@ function KycForm() {
     )
   }, [kycDocumentUploadList,merchantloginMasterId]);
 
-  // const handleSubmit = (e) => {
-  //   console.log("Login Id ============>");
-  // };
 
   return (
     <section className="ant-layout">
@@ -154,8 +148,10 @@ function KycForm() {
                             setTitle("CONTACT INFO");
                           }}
                         >
-                          Merchant Contact Info
+                          Merchant Contact Info 
+                       
                         </a>
+                        
                       </li>
                     
 
@@ -193,21 +189,7 @@ function KycForm() {
                       </li>
                     
 
-                      {/* <li className="nav-item font-weight-bold p-2">
-                        <a
-                          href={() => false}
-                          className={
-                            "nav-link " +
-                            (tab === 4 ? "activepaylink-kyc" : "inactive")
-                          }
-                          onClick={() => {
-                            SetTab(4);
-                            setTitle("REGISTERED ADDRESS");
-                          }}
-                        >
-                          Registered Address
-                        </a>
-                      </li> */}
+                 
 
 
                   <li className="nav-item font-weight-bold p-2">

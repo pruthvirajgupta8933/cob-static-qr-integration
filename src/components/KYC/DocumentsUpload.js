@@ -108,14 +108,13 @@ function DocumentsUpload(props) {
   //-------------------------------------------------------------------------
   const onSubmit = (values, action) => {
     if (role.merchant) {
-      // console.log("eee");
+    
       const bodyFormData = new FormData();
       bodyFormData.append("files", selectedFile);
       bodyFormData.append("login_id", loginId);
       bodyFormData.append("modified_by", loginId);
       bodyFormData.append("type", values.docType);
 
-      // console.log("body",bodyFormData);
       for (var pair of bodyFormData.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
@@ -223,7 +222,7 @@ function DocumentsUpload(props) {
       >
         {(formik) => (
           <Form>
-            {/* {console.log(formik)} */}
+          
             <ul className="list-inline  align-items-center ">
               <li className="list-inline-item align-middle  w-25">
                 <div className="form-group col-md-12">
@@ -327,7 +326,7 @@ function DocumentsUpload(props) {
         )}
       </Formik>
       <div></div>
-      {/* {console.log(documentId)} */}
+  
       {user?.roleId === 3 && user?.roleId === 13 ? (
         <></>
       ) : documentId === null ? (
