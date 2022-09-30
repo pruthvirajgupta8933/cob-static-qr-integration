@@ -373,7 +373,7 @@ function Registration() {
                                           <option
                                             type="text"
                                             className="form-control"
-                                            id="business_code"
+                                            id="businesscode"
                                           >Select Business Category</option>
                                           {
                                             businessCode.map((business, i) => (

@@ -278,12 +278,14 @@ function Home() {
                     You can accept payments upto ₹15,000 for now To extend the
                     limit complete your KYC and get it approved.
                   </span>
+                  <Link to={`/dashboard/kyc`}>
                   <button
                     class="text-white pull-right kycbtns"
                     style={{ backgroundColor: "#0156B3", paddingLeft: "10px" }}
                   >
                     Complete KYC
                   </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -450,11 +452,11 @@ function Home() {
                     Complete KYC to activate account
                   </button>
                 </Link>
-                <Link to={`dashboard/product-catalogue`}>
+                {/* <Link to={`dashboard/product-catalogue`}>
                   <button className="ColrsforredirectProdct text-white mt-5-">
                     No, I'll do this later
                   </button>
-                </Link>
+                </Link> */}
 
               </div>
 

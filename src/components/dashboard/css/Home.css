@@ -271,12 +271,37 @@ table.tables tr:nth-child(odd) {
   font-weight: 400;
   font-size: 18px;
   line-height: 156.5%;
-  position: absolute;
-  top: 706px;
-  right: 485px;
+  margin-left: 32%;
   /* or 28px */
   color: #FFFFFF;
 }
+#fullname:focus { 
+    outline: none !important;
+    border-bottom:2px solid #54E28D;
+     }
+     #mobilenumber:focus { 
+      outline: none !important;
+      border-bottom:2px solid #54E28D;
+       }
+       #email:focus{
+        outline: none !important;
+        border-bottom:2px solid #54E28D;
+       }
+       #businesscode:focus{
+        outline: none !important;
+        border-bottom:2px solid #54E28D;
+       }
+       #user-pw:focus{
+        outline: none !important;
+        border-bottom:2px solid #54E28D;
+       }
+       #user-cpw:focus{
+        outline: none !important;
+        border-bottom:2px solid #54E28D;
+       }
+
+
+
 
 .mymodals {
   position: absolute;
