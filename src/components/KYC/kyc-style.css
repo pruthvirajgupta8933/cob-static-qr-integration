@@ -8,6 +8,8 @@
 .activepaylink-kyc {
     background-color:  #4BB543;
     color: white !important ;
+    margin-left: -54px;
+    padding-left: 71px;
     
 }
 
@@ -16,12 +18,14 @@
     
 }
 
-.optbtn {
-    position: absolute !important;
-    right: -99px;
-    z-index: 999;
-    top: -51px;
-    margin-right: 5px !important;
+.paymentsHeader {
+
+font-size: 13px;
+font-weight: 510;
+line-height: 16px;
+letter-spacing: 0em;
+text-align: left;
+
 }
 
 
@@ -75,4 +79,65 @@
 
 .modalsimageclass-1{
     width: 45%;
+}
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+    .optbtn {
+        display: none;
+    }
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .optbtn {
+       display: none;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .optbtn {
+       display: none;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .optbtn {
+        position: absolute !important;
+        right: -99px;
+        z-index: 999;
+        top: -51px;
+        margin-right: -5px !important;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .optbtn {
+        position: absolute !important;
+        right: -99px;
+        z-index: 999;
+        top: -51px;
+        margin-right: -5px !important;
+    }
+}
+
+.kyc-modal_form {
+    width: 1696px;
+    display: revert;
+    margin-left: -6rem;
+    height: 711px;
+    margin-top: 88px;
+}
+
+.cross_KYC {
+    height: 34px;
+    width: 38px;
+    margin-top: -3rem;
 }

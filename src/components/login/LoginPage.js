@@ -37,6 +37,7 @@ function LoginPage() {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [auth, setAuthData] = useState(authentication);
+  const [namee,setNamee] = useState("")
   // const [otp, setOtp] = useState({ otp: "" });
   const [values, setValues] = useState({
     password: "",
@@ -172,7 +173,10 @@ function LoginPage() {
                                       placeholder="Type your username here"
                                       type="text"
                                       name="clientUserId"
+                                      onClick={() => setNamee("clientUserId")}
                                     />
+                                    {namee === "clientUserId" ? 
+                                    <span><p style={{padding:"3px", backgroundColor:"#54E28D"}}></p></span> : ""}
                                     <ErrorMessage name="clientUserId">
                                       {(msg) => (
                                         <div
@@ -180,7 +184,9 @@ function LoginPage() {
                                           style={{
                                             color: "red",
                                             position: "absolute",
+                                            top:"101px",
                                             zIndex: " 999",
+
                                           }}
                                         >
                                           {msg}
@@ -209,7 +215,10 @@ function LoginPage() {
                                       }
                                       size={50}
                                       name="userPassword"
+                                      onClick={() => setNamee("userPassword")}
                                     />
+                                   {namee === "userPassword" ? 
+                                    <span><p style={{padding:"1px", backgroundColor:"#54E28D"}}></p></span> : ""}
                                     <ErrorMessage name="userPassword">
                                       {(msg) => (
                                         <div
@@ -217,6 +226,7 @@ function LoginPage() {
                                           style={{
                                             color: "red",
                                             position: "absolute",
+                                            top:"99px",
                                             zIndex: " 999",
                                           }}
                                         >
@@ -339,12 +349,40 @@ function LoginPage() {
             </div>
             <div className="col-sm-5 authfy-panel-left">
               <div className="brand-col">
-                <div class="heading1 pt-5">
-                  <p className="font-text-large mb-0">An all-in-one</p>
-                  <p className="font-size-32 mb-2"> Transaction Dashboard</p>
-                  <p className="">Power of real-time payment analysis</p>
-                  <img src={imageSlide1} alt="slide" width="80%" />
-                </div>
+              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators" style={{position:"absolute",zIndex:"999",top:"554px"}}>
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+    <div class="heading1 pt-5">
+                 <p className="font-text-large mb-0" style={{color:"#012167"}}>An all-in-one</p>
+                  <p className="font-size-32 mb-2" style={{color:"#012167"}}> Transaction Dashboard</p>
+                  <p className=""> 1 Power of real-time payment analysis</p>
+    <img class="d-block" src={imageSlide1} alt="slide" width="100%" />
+    </div>
+    </div>
+    <div class="carousel-item">
+    <div class="heading1 pt-5">
+                 <p className="font-text-large mb-0" style={{color:"#012167"}}>An all-in-one</p>
+                  <p className="font-size-32 mb-2" style={{color:"#012167"}}> Transaction Dashboard</p>
+                  <p className="">2 Power of real-time payment analysis</p>
+    <img class="d-block" src={imageSlide1} alt="slide" width="100%" />
+    </div>
+    </div>
+    <div class="carousel-item">
+    <div class="heading1 pt-5">
+                 <p className="font-text-large mb-0" style={{color:"#012167"}}>An all-in-one</p>
+                  <p className="font-size-32 mb-2" style={{color:"#012167"}}> Transaction Dashboard</p>
+                  <p className="">3 Power of real-time payment analysis</p>
+    <img class="d-block" src={imageSlide1} alt="slide" width="100%" />
+    </div>
+    </div>
+  </div>
+ 
+</div>
                 {/* <div className="headline">
                   <p style={{ fontSize: "24px", lineHeight: "20px" }}>
                     Receive Payments, The Easy Way

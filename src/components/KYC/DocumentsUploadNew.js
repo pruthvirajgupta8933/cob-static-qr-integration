@@ -122,7 +122,7 @@ function DocumentsUpload() {
   return (
     <>
       {/* <UploadDocTest /> */}
-      <div className="col-md-12 col-md-offset-4">
+      <div className="col-md-12">
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -136,8 +136,9 @@ function DocumentsUpload() {
 
             <Form>
               {/* {console.log(formik)} */}
-              <div className="form-row align-items-centre">
-                <div className="form-group col-lg-5">
+              <div className="form-row">
+                <div className="col-lg-7">
+                  <div style={{width:"310px"}}>
                   <FormikController
                     control="select"
                     label="Document Type"
@@ -146,21 +147,9 @@ function DocumentsUpload() {
                     options={docTypeList}
                   />
                   {formik.handleChange("docType", setDocTypeIdDropdown(formik.values.docType))}
-                </div>
-                <div class="row-xs-10 mt-3 mr-2 p-3">
-                  <div class="mt-xl-10">
-                    <button
-                      className="btn float-lg-right"
-                      style={{ backgroundColor: "#0156B3" }}
-                      type="button"
-                       onClick={() => {
-                      formik.handleSubmit();
-                    }}
-                    >
-                      <h4 className="text-white"> &nbsp; &nbsp; Save & Next &nbsp; &nbsp;</h4>
-                    </button>
                   </div>
                 </div>
+             
                 {docTypeIdDropdown === "1" ?
                   <div class="row">
                     <div class="col-lg-6 width">
@@ -246,7 +235,34 @@ function DocumentsUpload() {
                     </>
                     : <></>
                 }
-              </div>
+             
+              <hr
+                style={{
+                  borderColor: "#D9D9D9",
+                  textShadow: "2px 2px 5px grey",
+                  width: "100%",
+                  padding:"4px",
+                  marginTop:"102px"
+                  
+                }}
+              />
+            
+
+                   
+                  <div class="col-12">
+                    <button
+                      className="btn float-lg-right"
+                      style={{ backgroundColor: "#0156B3" }}
+                      type="button"
+                       onClick={() => {
+                      formik.handleSubmit();
+                    }}
+                    >
+                      <h4 className="text-white"> &nbsp; &nbsp; Save & Next &nbsp; &nbsp;</h4>
+                    </button>
+                  </div>
+                </div>
+            
             </Form>
           )}
         </Formik>

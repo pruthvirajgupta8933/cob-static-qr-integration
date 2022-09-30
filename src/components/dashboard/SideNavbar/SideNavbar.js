@@ -81,8 +81,9 @@ function SideNavbar() {
                   {roleBasedShowTab?.merchant === true &&
                     roleBasedShowTab?.approver === false && roleBasedShowTab?.verifier === false ?
                     <li className="ant-menu-item" role="menuitem" >
-                      <Link to={`${url}/kyc`} className='txt-white' ><i className="fa fa-file-o" aria-hidden="true" /> <span>&nbsp;Complete KYC</span>
+                      <Link to={`${url}/kyc`} className='txt-white' data-toggle="modal" data-target="#exampleModalCenter" ><i className="fa fa-file-o" aria-hidden="true" /> <span>&nbsp;Complete KYC</span>
                       {/* <span class="new-tab">new</span> */}
+               
                       </Link>
                     </li>
                     : <React.Fragment></React.Fragment>}

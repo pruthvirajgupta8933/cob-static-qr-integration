@@ -280,6 +280,7 @@ function SubmitKyc(props) {
                   role="dialog"
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
+                  style={{marginLeft:"212px",marginTop:"107px"}}
                 >
                   <div
                     class="modal-dialog"

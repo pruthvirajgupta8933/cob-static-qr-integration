@@ -15,10 +15,12 @@ import {
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../dashboard/NavBar/NavBar";
 import RegisteredAddress from "./RegisteredAddress";
-
+import cross from "../../assets/images/Multiply.png" 
+import { History } from "history";
 function KycForm() {
   
   const dispatch = useDispatch();
+
   const search = useLocation().search;
   // kycid as login id
   const kycid = new URLSearchParams(search).get('kycid');
@@ -98,18 +100,31 @@ function KycForm() {
     )
   }, [kycDocumentUploadList,merchantloginMasterId]);
 
+  const redirect = () => {
+    history.push("/dashboard");
+  };
+
+
 
   return (
     <section className="ant-layout">
     <div><NavBar /></div>
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content kyc-modal_form">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      <div class="modal-body" style={{display:"contents"}}>
     <div class="card-group">
    
     <div class="row">
     <div class="col-lg-3">
             <div class="card" style={{
-                width: "47rem",
-                height: "100%",
-                marginTop:"0rem"
+                width: "67rem",
+                height: "711px",
+                marginTop:"0rem",
+
               }}>
               
               
@@ -120,11 +135,12 @@ function KycForm() {
                   >
                     KYC Form
                     <span>
-                      <h6 class="font-weight-bold">
+                      <h6 class="paymentsHeader">
                       Complete KYC to start accepting payments
                       </h6>
                     </span>
                   </h1>
+                  
                 
             
 
@@ -267,19 +283,25 @@ function KycForm() {
         
       
       
-               <div class="col-">
+               <div class="col-lg-9">
 
             <div
               className="card"
               style={{
                 backgroundColor: "#F2F2F2",
-                width: "55rem",
-                height: "100%",
-                marginTop:"0rem"
+                // width: "55rem",
+                height: "711px",
+                marginTop:"0rem",
+                width:"797px"
               }}
             >
               <div class="card-body">
-                <h1 class="card-title font-weight-bold mb-5">{title}</h1>
+                <h1 class="card-title font-weight-bold mb-5">{title}
+                <button onClick = {() => redirect()} type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span><img className="cross_KYC" src={cross}/></span>
+    
+        </button></h1>
+               
 
              
                     
@@ -299,6 +321,10 @@ function KycForm() {
               </div>
             </div>
             </div>
+            </div>
+            </div>
+  </div>
+</div>
           
   
       

@@ -278,7 +278,7 @@ function Home() {
                     You can accept payments upto ₹15,000 for now To extend the
                     limit complete your KYC and get it approved.
                   </span>
-                  <Link to={`/dashboard/kyc`}>
+                  <Link to={`/dashboard/kyc`} data-toggle="modal" data-target="#exampleModalCenter">
                   <button
                     class="text-white pull-right kycbtns"
                     style={{ backgroundColor: "#0156B3", paddingLeft: "10px" }}
@@ -447,7 +447,7 @@ function Home() {
               </div>
               <div class="col-sm">
 
-                <Link to={`/dashboard/kyc`}>
+                <Link to={`/dashboard/kyc`} data-toggle="modal" data-target="#exampleModalCenter">
                   <button className="ModalButtonClr text-white mt-2">
                     Complete KYC to activate account
                   </button>

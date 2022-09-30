@@ -4,16 +4,21 @@ import * as Yup from "yup"
 import FormikController from '../../_components/formik/FormikController'
 import { useSelector , useDispatch } from 'react-redux';
 import { toast } from 'react-toastify'
-import { saveRegisteredAddress } from "../../slices/kycSlice"
+import { saveRegisteredAddress,verifyKycEachTab  } from "../../slices/kycSlice"
 
 
 const RegisteredAddress = (props) => {
   const dispatch = useDispatch();
+  const { role, kycid } = props;
   const KycList = useSelector((state) => state.kyc.kycUserList);
+  const VerifyKycStatus = useSelector(
+    (state) => state.kyc.kycVerificationForAllTabs.merchant_address_status
+  );
   // console.log(KycList.merchant_address_details.pin_code,"<===List==>")
   
   
   const [check,setCheck] = useState(false);
+  const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
   
 
@@ -45,7 +50,7 @@ const RegisteredAddress = (props) => {
   const onSubmit =  (values) => {
 
     // console.log("Form Submitted")
-   
+    if (role.merchant) {
     dispatch(
       saveRegisteredAddress({
         address: values.address,
@@ -67,7 +72,21 @@ const RegisteredAddress = (props) => {
         toast.error("Something Went Wrong! Please try again.");
       }
     });
-};
+
+} else if (role.verifier) {
+      const veriferDetails = {
+        "login_id": kycid,
+        "merchant_address_verified_by": loginId
+      }
+      dispatch(verifyKycEachTab(veriferDetails)).then(resp => {
+        resp?.payload?.settlement_info_status && toast.success(resp?.payload?.merchant_address_status);
+        resp?.payload?.detail && toast.error(resp?.payload?.detail);
+      }).catch((e) => { toast.error("Try Again Network Error") });
+
+    }
+    
+  };
+
 
 
 
@@ -95,6 +114,8 @@ const RegisteredAddress = (props) => {
                   type="text"
                   name="address"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 
                 />
               </div>
@@ -113,6 +134,8 @@ const RegisteredAddress = (props) => {
                   type="text"
                   name="city"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                  
                 />
               </div>
@@ -130,6 +153,8 @@ const RegisteredAddress = (props) => {
                   type="text"
                   name="state"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
               </div>
             </div>
@@ -146,7 +171,8 @@ const RegisteredAddress = (props) => {
                   type="text"
                   name="pincode"
                   className="form-control"
-
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
                 />
             <p style={{marginLeft:"23px"}}>
             <input class="form-check-input" type="checkbox" value={check} id="flexCheckDefault" />

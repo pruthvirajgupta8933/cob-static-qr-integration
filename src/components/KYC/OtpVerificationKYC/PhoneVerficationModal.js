@@ -63,7 +63,8 @@ const PhoneVerficationModal = ({ show, setShow }) => {
         role="dialog"
         aria-labelledby="phoneModal"
         aria-hidden="true"
-        style={{ display: show ? "block" : "none" }}
+        style={{ display: show ? "block" : "none" ,marginLeft:"233px",marginTop:"107px"}}
+       
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content">
