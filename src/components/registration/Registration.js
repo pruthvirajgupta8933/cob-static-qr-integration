@@ -451,7 +451,7 @@ function Registration() {
                                       <Field
                                         className="string optional"
                                         maxLength={255}
-                                        id="user-pw"
+                                        id="user-pws"
                                         placeholder="Type your password here"
                                         type={
                                           valuesIn.showPassword ? "text" : "password"

@@ -291,7 +291,7 @@ table.tables tr:nth-child(odd) {
         outline: none !important;
         border-bottom:2px solid #54E28D;
        }
-       #user-pw:focus{
+       #user-pws:focus{
         outline: none !important;
         border-bottom:2px solid #54E28D;
        }
