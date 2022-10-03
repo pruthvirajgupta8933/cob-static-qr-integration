@@ -47,6 +47,9 @@ function KycForm() {
 
 
 
+
+
+
   let history = useHistory();
 
   const merchantList = user.clientMerchantDetailsList;
@@ -292,7 +295,10 @@ function KycForm() {
                 // width: "55rem",
                 height: "711px",
                 marginTop:"0rem",
-                width:"797px"
+                width:"797px",
+                boxShadow: '0px 4px 14px 4px rgba(0, 0, 0, 0.25)',
+                borderRadius: '0px'
+
               }}
             >
               <div class="card-body">
