@@ -52,12 +52,11 @@ text-align: left;
 }
 
 .para-style {
-    font-family: Satoshi;
-    font-size: 14px;
+     font-family: 'Satoshi';
+    font-style: normal;
     font-weight: 700;
-    line-height: 25px;
-    letter-spacing: 0em;
-    text-align: left;
+    font-size: 13px;
+    line-height: 225%;
 }
 
 
@@ -141,3 +140,37 @@ text-align: left;
     width: 38px;
     margin-top: -3rem;
 }
+
+.text-font {
+font-family: Satoshi;
+font-size: 15px;
+font-weight: 700;
+line-height: 26px;
+letter-spacing: 0em;
+
+}
+
+.text-kyc-header {
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 224%;
+}
+
+
+.text-kyc-label {
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 15px;
+}
+
+.text-kyc-sumit {
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 17px;
+}
+
+

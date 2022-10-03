@@ -316,7 +316,7 @@ function HeaderPage() {
           <li>
     
             <h5 className="btnlink contactHeader blueColr">
-            <img  src={agent} alt="slide" width="10%" className="agentImage"/>  &nbsp;
+            <img  src={agent} alt="slide" className="agentImage"/>  &nbsp;
               Call 011 4173 3223
             </h5>
             <p className="loginContacthelp">Need Help ?</p>

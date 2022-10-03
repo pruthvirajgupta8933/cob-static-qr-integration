@@ -257,7 +257,7 @@ function BusinessDetails(props) {
             {/* {console.log(formik)} */}
          
     <div class="form-group row">
-    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2"><h4 class ="font-weight-bold text-nowrap">Business Name<span style={{color:"red"}}>*</span></h4></label>
+    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2"><h4 class ="text-kyc-label text-nowrap">Business Name<span style={{color:"red"}}>*</span></h4></label>
     <div class="col-sm-7 col-md-7 col-lg-7">
     <FormikController
                   control="input"
@@ -339,7 +339,7 @@ function BusinessDetails(props) {
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   GSTIN<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -377,7 +377,7 @@ function BusinessDetails(props) {
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   Business PAN<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -395,7 +395,7 @@ function BusinessDetails(props) {
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   PAN Owner's Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -476,7 +476,7 @@ function BusinessDetails(props) {
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   Authorized  Signatory PAN<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -571,7 +571,7 @@ function BusinessDetails(props) {
                     className="btn float-lg-right"
                     style={{ backgroundColor: "#0156B3" }}
                   >
-                    <h4 className="text-white"> {buttonText}</h4>
+                    <h4 className="text-white text-kyc-sumit"> {buttonText}</h4>
                   </button>
                 )}
               </div>

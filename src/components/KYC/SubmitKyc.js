@@ -268,19 +268,19 @@ function SubmitKyc(props) {
                         data-toggle="modal"
                         data-target="#exampleModal"
                       ></button>
-                      <h4 className="text-white"> Verifying</h4>
+                      <h4 className="text-white text-kyc-sumit"> Verifying</h4>
                     </button>
                   )}
                 </div>
 
                 <div
-                  class="modal fade modalbody1"
+                  class="modal fade"
                   id="exampleModal"
                   tabIndex="-1"
                   role="dialog"
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
-                  style={{marginLeft:"212px",marginTop:"107px"}}
+                  style={{marginLeft:"212px",marginTop:"107px",background: "rgba(0, 0, 0, 0.5)"}}
                 >
                   <div
                     class="modal-dialog"

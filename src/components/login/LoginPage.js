@@ -125,7 +125,7 @@ function LoginPage() {
             
           </div>
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-10 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
-            <div className="col-sm-7 authfy-panel-right login-float-right nopad login-float-none">
+            <div className="col-sm-6 authfy-panel-right login-float-right nopad login-float-none">
               {/* authfy-login start */}
               <div className="authfy-login">
                 {/* panel-login start */}
@@ -147,7 +147,7 @@ function LoginPage() {
 
                             </span>
                             <h1>Welcome to your Dashboard</h1>
-                            <p>You can login to track and record every transaction in real time.</p>
+                            <p style={{color:"#0A2FB6"}}>You can login to track and record every transaction in real time.</p>
                           </div>
                           <div className="logmod__form m-r-l-100 m0">
                             <Formik
@@ -219,6 +219,7 @@ function LoginPage() {
                                     />
                                    {namee === "userPassword" ? 
                                     <span><p style={{padding:"1px", backgroundColor:"#54E28D"}}></p></span> : ""}
+                                     <Link to={`/forget`} className="pull-right mt-2" style={{color:"#0A2FB6"}}>Forgot Password ?</Link>
                                     <ErrorMessage name="userPassword">
                                       {(msg) => (
                                         <div
@@ -245,11 +246,15 @@ function LoginPage() {
                                   </div>
                                 </div>
 
-                                <div className="simform__actions">
+                                <div className="simform__actions mt-3">
                                   {/*<input className="sumbit" name="commit" type="sumbit" value="Log In" />*/}
                                   <button
                                     className="sumbit btn-0156B3"
                                     type="sumbit"
+                                    style={{
+                                      boxShadow: '0px 14px 10px rgba(66, 133, 248, 0.5)',
+                                      borderRadius:"6px"
+                                    }}
 
                                     disabled={loading ? true : false}
                                   >
@@ -264,7 +269,7 @@ function LoginPage() {
                                     )}
                                     LogIn
                                   </button>
-                                  <Link to={`/forget`} className="pull-right mt-2">Forgot Passowrd ?</Link>
+                                 
 
                                   {/* <span className="simform__actions-sidetext">
                                      <Link
@@ -280,7 +285,7 @@ function LoginPage() {
                               </Form>
                             </Formik>
                           </div>
-                          <div className="logmod__form m-r-l-100" ><p>Term of Service | Privacy Policy |  Contact us
+                          <div className="logmod__form m-r-l-100 mt-3"><p>Term of Service | Privacy Policy |  Contact us
                           </p></div>
                         </div>
                       </div>
@@ -347,10 +352,10 @@ function LoginPage() {
               </div>{" "}
               {/* ./authfy-login */}
             </div>
-            <div className="col-sm-5 authfy-panel-left">
+            <div className="col-sm-6 authfy-panel-left">
               <div className="brand-col">
               <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators" style={{position:"absolute",zIndex:"999",top:"554px"}}>
+  <ol class="carousel-indicators" style={{position:"absolute",zIndex:"999",top:"588px"}}>
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
@@ -360,24 +365,24 @@ function LoginPage() {
     <div class="heading1 pt-5">
                  <p className="font-text-large mb-0" style={{color:"#012167"}}>An all-in-one</p>
                   <p className="font-size-32 mb-2" style={{color:"#012167"}}> Transaction Dashboard</p>
-                  <p className=""> 1 Power of real-time payment analysis</p>
-    <img class="d-block" src={imageSlide1} alt="slide" width="100%" />
+                  <p className=""> Power of real-time payment analysis</p>
+    <img class="d-block loginscreenimage" src={imageSlide1} alt="slide" />
     </div>
     </div>
     <div class="carousel-item">
     <div class="heading1 pt-5">
                  <p className="font-text-large mb-0" style={{color:"#012167"}}>An all-in-one</p>
                   <p className="font-size-32 mb-2" style={{color:"#012167"}}> Transaction Dashboard</p>
-                  <p className="">2 Power of real-time payment analysis</p>
-    <img class="d-block" src={imageSlide1} alt="slide" width="100%" />
+                  <p className=""> Power of real-time payment analysis</p>
+    <img class="d-block loginscreenimage" src={imageSlide1} alt="slide"/>
     </div>
     </div>
     <div class="carousel-item">
     <div class="heading1 pt-5">
                  <p className="font-text-large mb-0" style={{color:"#012167"}}>An all-in-one</p>
                   <p className="font-size-32 mb-2" style={{color:"#012167"}}> Transaction Dashboard</p>
-                  <p className="">3 Power of real-time payment analysis</p>
-    <img class="d-block" src={imageSlide1} alt="slide" width="100%" />
+                  <p className=""> Power of real-time payment analysis</p>
+    <img class="d-block loginscreenimage" src={imageSlide1} alt="slide" />
     </div>
     </div>
   </div>

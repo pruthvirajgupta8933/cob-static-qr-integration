@@ -258,7 +258,7 @@ function DocumentsUpload() {
                       formik.handleSubmit();
                     }}
                     >
-                      <h4 className="text-white"> &nbsp; &nbsp; Save & Next &nbsp; &nbsp;</h4>
+                      <h4 className="text-white text-kyc-sumit"> &nbsp; &nbsp; Save & Next &nbsp; &nbsp;</h4>
                     </button>
                   </div>
                 </div>

@@ -281,7 +281,7 @@ function BusinessOverview(props) {
           <Form>
 
 <div class="form-group row">
-    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2"><h4 class ="font-weight-bold text-nowrap">Business Type<span style={{color:"red"}}>*</span></h4></label>
+    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2"><h4 class ="text-kyc-label text-nowrap">Business Type<span style={{color:"red"}}>*</span></h4></label>
     <div class="col-sm-7 col-md-7 col-lg-7">
     <FormikController
                   control="select"
@@ -294,7 +294,7 @@ function BusinessOverview(props) {
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-4 col-md-4 col-lg-4 p-2 mt-0"><h4 class ="font-weight-bold text-nowrap">Business Sub-Category<span style={{color:"red"}}>*</span></h4></label>
+    <label class="col-sm-4 col-md-4 col-lg-4 p-2 mt-0"><h4 class ="text-kyc-label text-nowrap">Business Sub-Category<span style={{color:"red"}}>*</span></h4></label>
     <div class="col-sm-7 col-md-7 col-lg-7">
     <FormikController
                   control="select"
@@ -325,7 +325,7 @@ function BusinessOverview(props) {
            
 
            <div class="form-group row">
-    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0"><h4 class ="font-weight-bold text-nowrap">Business Label<span style={{color:"red"}}>*</span></h4></label>
+    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0"><h4 class ="text-kyc-label text-nowrap">Business Label<span style={{color:"red"}}>*</span></h4></label>
     <div class="col-sm-7 col-md-7 col-lg-7">
     <FormikController
                   control="input"
@@ -427,7 +427,7 @@ function BusinessOverview(props) {
                 />
               </div> */}
    <div class="form-group row">
-  <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0"><h4 class ="font-weight-bold text-nowrap">Company Website<span style={{color:"red"}}>*</span></h4></label>
+  <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0"><h4 class ="text-kyc-label text-nowrap">Company Website<span style={{color:"red"}}>*</span></h4></label>
     <div class="col-sm-7 col-md-7 col-lg-7">
     <FormikController
                   control="input"
@@ -467,7 +467,7 @@ function BusinessOverview(props) {
            
 
   <div class="form-group row">
-  <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0"><h4 class ="font-weight-bold text-nowrap">Expected Transactions<span style={{color:"red"}}>*</span></h4></label>
+  <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0"><h4 class ="text-kyc-label text-nowrap">Expected Transactions<span style={{color:"red"}}>*</span></h4></label>
     <div class="col-sm-7 col-md-7 col-lg-7">
        <FormikController
                   control="input"
@@ -502,7 +502,7 @@ function BusinessOverview(props) {
               <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
             {VerifyKycStatus === "Verified" ? null : (
              <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
-                <h4 className="text-white">  {buttonText}</h4>
+                <h4 className="text-white text-kyc-sumit">  {buttonText}</h4>
               </button>
               
             )}

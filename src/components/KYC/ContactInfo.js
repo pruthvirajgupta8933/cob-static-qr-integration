@@ -243,7 +243,7 @@ function ContactInfo(props) {
           {console.log(formik)}
           <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                 Contact Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -261,7 +261,7 @@ function ContactInfo(props) {
 
           <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                 Contact Designation<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -287,7 +287,7 @@ function ContactInfo(props) {
         
           <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                 Contact Number<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -327,6 +327,8 @@ function ContactInfo(props) {
                       <a
                         href={() => false}
                         className="btn btnbackground text-white btn-sm optbtn"
+                        style={{ boxShadow: '0px 11px 14px 4px rgba(0, 0, 0, 0.25)',
+                        borderRadius: '6px'}}
                         onClick={() => {
                           checkInputIsValid(
                             formik.errors,
@@ -336,7 +338,7 @@ function ContactInfo(props) {
                           );
                         }}
                       >
-                        Send OTP
+                        Send Otp
                       </a> </div>: <></>
                     )
                 }
@@ -397,6 +399,8 @@ function ContactInfo(props) {
                   <a
                     href={() => false}
                     className="btn btnbackground text-white btn-sm optbtn"
+                    style={{ boxShadow: '0px 11px 14px 4px rgba(0, 0, 0, 0.25)',
+                    borderRadius: '6px'}}
                     onClick={() => {
                       checkInputIsValid(
                         formik.errors,
@@ -406,7 +410,7 @@ function ContactInfo(props) {
                       );
                     }}
                   >
-                    Send OTP
+                    Send Otp
                   </a> </div>: <></>
                 )
               }
@@ -443,7 +447,7 @@ function ContactInfo(props) {
                     className="btn float-lg-right"
                     style={{ backgroundColor: "#0156B3" }}
                   >
-                    <h4 className="text-white"> {buttonText}</h4>
+                    <h4 className="text-white text-kyc-sumit"> {buttonText}</h4>
                   </button>
                 )}
               </div>

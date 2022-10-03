@@ -127,7 +127,7 @@ function BankDetails(props) {
           {console.log(formik)}
           <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                 Account Holder Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -148,7 +148,7 @@ function BankDetails(props) {
             
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   Account Type<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -166,7 +166,7 @@ function BankDetails(props) {
             
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   IFSC Code<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -184,7 +184,7 @@ function BankDetails(props) {
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   Branch<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -202,7 +202,7 @@ function BankDetails(props) {
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   Bank Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -221,7 +221,7 @@ function BankDetails(props) {
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   Account Number <span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -251,7 +251,7 @@ function BankDetails(props) {
               <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
           {VerifyKycStatus === "Verified" ? null : (
          <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
-               <h4 className="text-white"> {buttonText}</h4>
+               <h4 className="text-white text-kyc-sumit"> {buttonText}</h4>
               </button>
             )}
           </div>

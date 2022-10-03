@@ -151,16 +151,16 @@ function KycForm() {
                   <div>
                     <ul
                       style={{
-                        color: "#4BB543",
+                        color: "black",
                         fontFamily: "Arial, Helvetica, sans-serif",
                       }}
                     >
-                      <li className="nav-item font-weight-bold p-2">
+                      <li className="nav-item p-2">
                         <a
                           href={() => false}
                           className={
                             "nav-link " +
-                            (tab === 1 ? "activepaylink-kyc" : "inactive")
+                            (tab === 1 ? "activepaylink-kyc text-font" : "inactive text-font")
                           }
                           onClick={() => {
                             SetTab(1);
@@ -174,12 +174,12 @@ function KycForm() {
                       </li>
                     
 
-                      <li className="nav-item font-weight-bold p-2">
+                      <li className="nav-item p-2">
                         <a
                           href={() => false}
                           className={
                             "nav-link " +
-                            (tab === 2 ? "activepaylink-kyc" : "inactive")
+                            (tab === 2 ? "activepaylink-kyc text-font" : "inactive text-font")
                           }
                           onClick={() => {
                             SetTab(2);
@@ -191,12 +191,12 @@ function KycForm() {
                       </li>
                     
 
-                      <li className="nav-item font-weight-bold p-2">
+                      <li className="nav-item p-2">
                         <a
                           href={() => false}
                           className={
                             "nav-link " +
-                            (tab === 3 ? "activepaylink-kyc" : "inactive")
+                            (tab === 3 ? "activepaylink-kyc text-font" : "inactive text-font")
                           }
                           onClick={() => {
                             SetTab(3);
@@ -211,12 +211,12 @@ function KycForm() {
                  
 
 
-                  <li className="nav-item font-weight-bold p-2">
+                  <li className="nav-item p-2">
                         <a
                           href={() => false}
                           className={
                             "nav-link " +
-                            (tab === 4 ? "activepaylink-kyc" : "inactive")
+                            (tab === 4 ? "activepaylink-kyc text-font" : "inactive text-font")
                           }
                           onClick={() => {
                             SetTab(4);
@@ -228,12 +228,12 @@ function KycForm() {
                       </li>
                       
 
-                      <li className="nav-item font-weight-bold p-2">
+                      <li className="nav-item p-2">
                         <a
                           href={() => false}
                           className={
                             "nav-link " +
-                            (tab === 5 ? "activepaylink-kyc" : "inactive")
+                            (tab === 5 ? "activepaylink-kyc text-font" : "inactive text-font")
                           }
                           onClick={() => {
                             SetTab(5);
@@ -245,12 +245,12 @@ function KycForm() {
                       </li>
                   
 
-                      <li className="nav-item font-weight-bold p-2">
+                      <li className="nav-item p-2">
                         <a
                           href={() => false}
                           className={
                             "nav-link " +
-                            (tab === 6 ? "activepaylink-kyc" : "inactive")
+                            (tab === 6 ? "activepaylink-kyc text-font" : "inactive text-font")
                           }
                           onClick={() => {
                             SetTab(6);
@@ -262,12 +262,12 @@ function KycForm() {
                       </li>
                     
 
-                      <li className="nav-item font-weight-bold p-2">
+                      <li className="nav-item p-2">
                         <a
                           href={() => false}
                           className={
                             "nav-link " +
-                            (tab === 7 ? "activepaylink-kyc" : "inactive")
+                            (tab === 7 ? "activepaylink-kyc text-font" : "inactive text-font")
                           }
                           onClick={() => {
                             SetTab(7);
@@ -302,7 +302,7 @@ function KycForm() {
               }}
             >
               <div class="card-body">
-                <h1 class="card-title font-weight-bold mb-5">{title}
+                <h1 class="card-title text-kyc-header mb-5">{title}
                 <button onClick = {() => redirect()} type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span><img className="cross_KYC" src={cross}/></span>
     

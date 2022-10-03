@@ -264,7 +264,7 @@ function DocumentsUpload(props) {
               <li className="list-inline-item align-middle w-25">
                 {role.merchant ? (
                   <button
-                    className="btn text-white mb-0"
+                    className="btn text-white mb-0 text-kyc-sumit"
                     type="button"
                     onClick={() => {
                       formik.handleSubmit();
@@ -282,7 +282,7 @@ function DocumentsUpload(props) {
                     <>
                       {role.verifier === true ? (
                         <button
-                          className="btn text-white mb-0"
+                          className="btn text-white text-kyc-sumit mb-0"
                           type="button"
                           style={{backgroundColor: "rgb(1, 86, 179)"}}
                           onClick={() => {
@@ -294,7 +294,7 @@ function DocumentsUpload(props) {
                         </button>
                       ) : (
                         <button
-                          className="btn text-white mb-0"
+                          className="btn text-white text-kyc-sumit mb-0"
                           type="button"
                           style={{backgroundColor: "rgb(1, 86, 179)"}}
                           onClick={() => {

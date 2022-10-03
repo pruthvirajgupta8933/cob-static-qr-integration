@@ -104,7 +104,7 @@ const RegisteredAddress = (props) => {
 
           <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   Address<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -124,7 +124,7 @@ const RegisteredAddress = (props) => {
        
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   City<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -143,7 +143,7 @@ const RegisteredAddress = (props) => {
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   State<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -161,7 +161,7 @@ const RegisteredAddress = (props) => {
           
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                   Pincode<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
@@ -200,7 +200,7 @@ const RegisteredAddress = (props) => {
                     className="btn float-lg-right"
                     style={{ backgroundColor: "#0156B3" }}
                   >
-                    <h4 className="text-white"> {buttonText}</h4>
+                    <h4 className="text-white text-kyc-sumit"> {buttonText}</h4>
                   </button>
               
               </div>
