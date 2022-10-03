@@ -42,7 +42,7 @@ const NavBar = () => {
 
         <div>
           {/* Dropdown in the Nav Bar */}
-          <div class="dropdown show" style={{ marginRight: "28px" }}>
+          <div class="dropdown show" style={{ marginRight: "35px" }}>
             <a
               class="btn dropdown-toggle"
               href="#"
