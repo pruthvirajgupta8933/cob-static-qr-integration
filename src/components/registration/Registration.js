@@ -182,7 +182,7 @@ function Registration() {
       <div className="container toppad">
         <div className="row">
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
-            <div className="col-sm-5 authfy-panel-left">
+            <div className="col-sm-4 authfy-panel-left">
               <div className="brand-col">
                 <div className="headline">
                   {/* brand-logo start */}
@@ -220,7 +220,7 @@ function Registration() {
                 </div>
               </div>
             </div>
-            <div className="col-sm-7- authfy-panel-right">
+            <div className="col-sm-9- authfy-panel-right">
               {/* authfy-login start */}
               <div className="authfy-login">
                 {/* panel-login start */}

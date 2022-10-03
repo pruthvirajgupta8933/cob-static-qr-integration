@@ -38,7 +38,7 @@ const SabPaisaPricing = () => {
         <div class="container mb-10">
           <div class="row">
             <div class="col-sm">
-              <div class="card heightcards" style={{height:"529px", width:"300px"}}>
+              <div class="card heightcards" style={{height:"602px", width:"300px"}}>
 
                 <div class="card-body">
                   <div class="row mb-5">
@@ -114,7 +114,7 @@ const SabPaisaPricing = () => {
               </div>
             </div>
             <div class="col-sm">
-              <div class="card heightcards" style={{ background: "#012167", border: "1px solid #DBDBDB", boxShadow: "0px 4px 5px 1px rgb(193 193 193 / 35%)", borderRadius: "4px",height:"529px",width:"300px" }}>
+              <div class="card heightcards" style={{ background: "#012167", border: "1px solid #DBDBDB", boxShadow: "0px 4px 5px 1px rgb(193 193 193 / 35%)", borderRadius: "4px",height:"602px",width:"300px" }}>
 
 
                 <div class="card-body">
@@ -207,7 +207,7 @@ const SabPaisaPricing = () => {
               </div>
             </div>
             <div class="col-sm">
-              <div class="card heightcards" style={{height:"529px", width:"300px"}}>
+              <div class="card heightcards" style={{height:"602px", width:"300px"}}>
                 <div class="card-body">
 
                   <div class="row mb-5">

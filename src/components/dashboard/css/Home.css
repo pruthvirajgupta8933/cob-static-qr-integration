@@ -257,7 +257,7 @@ table.tables tr:nth-child(odd) {
 }
 
 .modalscolrsfortext {
-  /* font-family: 'Satoshi'; */
+  font-family: 'Satoshi'; 
   color: #000000;
   font-style: normal;
   font-weight: 700;
