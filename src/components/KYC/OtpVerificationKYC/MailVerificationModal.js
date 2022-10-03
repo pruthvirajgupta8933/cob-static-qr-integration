@@ -80,21 +80,21 @@ const MailVerificationModal = ({ show, setShow }) => {
 
             <>
               <div className="modal-header">
-                <h3 className="modal-title" id="exampleModalLabel">
+                <h3 className="modal-title paymentHeader" id="exampleModalLabel">
                   OTP Verification
                 </h3>
                 <button
                   type="button"
                   className="close"
-                  data-dismiss="modal"
+                  data-dismiss="modal1"
                   aria-label="Close"
                   onClick={() =>setShow(false,"email")}
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="mx-auto  py-3">
-                <h1>
+              <div class="mx-auto py-3">
+                <h1 className="subHeaderForModal">
                   Please enter the verification code sent to your
                   email !
                 </h1>
@@ -127,7 +127,7 @@ const MailVerificationModal = ({ show, setShow }) => {
                 <button className="btn" type="submit" style={{backgroundColor:"#0156B3"}}
                     onClick={handleVerificationOfEmail}
                   >
-                    <h4 className="text-white">Verify</h4>  
+                    <h4 className="text-white text-kyc-sumit">Verify</h4>  
                   </button>
                 </div>
 

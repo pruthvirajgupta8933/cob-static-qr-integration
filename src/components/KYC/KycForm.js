@@ -133,12 +133,10 @@ function KycForm() {
               
              
                   <h1
-                    className="m-b-sm gx-float-left font-weight-bold"
-                    style={{ color: "#0C090A"}}
-                  >
+                    className="m-b-sm gx-float-left paymentHeader">
                     KYC Form
                     <span>
-                      <h6 class="paymentsHeader">
+                      <h6 class="paymentSubHeader">
                       Complete KYC to start accepting payments
                       </h6>
                     </span>
@@ -304,7 +302,7 @@ function KycForm() {
               <div class="card-body">
                 <h1 class="card-title text-kyc-header mb-5">{title}
                 <button onClick = {() => redirect()} type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span><img className="cross_KYC" src={cross}/></span>
+                <span aria-hidden="true">&times;</span>
     
         </button></h1>
                

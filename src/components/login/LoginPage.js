@@ -124,7 +124,7 @@ function LoginPage() {
           <div className="col-lg-1">
             
           </div>
-          <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-10 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
+          <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
             <div className="col-sm-6 authfy-panel-right login-float-right nopad login-float-none">
               {/* authfy-login start */}
               <div className="authfy-login">

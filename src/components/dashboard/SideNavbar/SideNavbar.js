@@ -9,6 +9,10 @@ import SabpaisaLogo1 from "../../../assets/images/sabpaisa-logo-white.png"
 import Sabpaisalogo from "../../../assets/images/sabpaisalogo.png"
 import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png"
 import Products from "../AllPages/Product Catalogue/Products"
+import dashboard from "../../../assets/images/dashb.png"
+import transHis from "../../../assets/images/transImage.png"
+import enquire from "../../../assets/images/enquiry.png"
+
 
 function SideNavbar() {
   const { auth, kyc } = useSelector((state) => state)
@@ -74,14 +78,18 @@ function SideNavbar() {
                 <ul className="desktop-sidenave-typography ant-menu ant-menu-dark ant-menu-root ant-menu-inline" role="menu" style={{background: 'rgb(1, 86, 179)'}}>
                   {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
                     <li className="ant-menu-item" role="menuitem" >
-                      <Link to={`${url}`} className='txt-white'><i className="fa fa-home homeiconsize" aria-hidden="true" /> <span>&nbsp;Dashboard</span></Link>
+                      <Link to={`${url}`} className='txt-white sidenavFonts'><img
+                      src={dashboard}
+                      width={17}
+                      alt="sabpaisa"
+                    /> <span>&nbsp;Dashboard</span></Link>
                     </li>
                     : <React.Fragment></React.Fragment>}
 
                   {roleBasedShowTab?.merchant === true &&
                     roleBasedShowTab?.approver === false && roleBasedShowTab?.verifier === false ?
                     <li className="ant-menu-item" role="menuitem" >
-                      <Link to={`${url}/kyc`} className='txt-white' data-toggle="modal" data-target="#exampleModalCenter" ><i className="fa fa-file-o" aria-hidden="true" /> <span>&nbsp;Complete KYC</span>
+                      <Link to={`${url}/kyc`} className='txt-white sidenavFonts' data-toggle="modal" data-target="#exampleModalCenter" ><i className="fa fa-file-o" aria-hidden="true" /> <span>&nbsp;Complete KYC</span>
                       {/* <span class="new-tab">new</span> */}
                
                       </Link>
@@ -91,7 +99,7 @@ function SideNavbar() {
 
                   {roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true ?
                     <li className="ant-menu-item" role="menuitem" >
-                      <Link to={`${url}/approver`} className='txt-white' ><i className="fa fa-list" aria-hidden="true" /><span>&nbsp;Merchant List</span>
+                      <Link to={`${url}/approver`} className='txt-white sidenavFonts' ><i className="fa fa-list" aria-hidden="true" /><span>&nbsp;Merchant List</span>
                       {/* <span class="new-tab">new</span> */}
                       </Link>
                     </li>
@@ -110,12 +118,22 @@ function SideNavbar() {
                       {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
                         <React.Fragment>
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
-                            <Link to={`${url}/transaction-history`} className='txt-white'><i className="fa fa-calendar" aria-hidden="true" />&nbsp;Transaction History </Link>
+                            <Link to={`${url}/transaction-history`} className='txt-white sidenavFonts'><img
+                      src={transHis}
+                      width={17}
+                      alt="sabpaisa"
+                      title="sabpaisa"
+                    />&nbsp;Transaction History </Link>
                           </li>
 
 
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
-                            <Link to={`${url}/transaction-enquiry`} className='txt-white'><i className="fa fa-university" aria-hidden="true" />&nbsp;Transaction Enquiry</Link>
+                            <Link to={`${url}/transaction-enquiry`} className='txt-white sidenavFonts'><img
+                      src={enquire}
+                      width={17}
+                      alt="sabpaisa"
+                      title="sabpaisa"
+                    />&nbsp;Transaction Enquiry</Link>
                           </li>
                         </React.Fragment>
                         : <React.Fragment></React.Fragment>}
@@ -125,7 +143,7 @@ function SideNavbar() {
                       </li> */}
                       {roleBasedShowTab?.bank === true ?
                         <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
-                          <Link to={`${url}/client-list`} className='txt-white'><i className="fa fa-university" aria-hidden="true" /> Client List </Link>
+                          <Link to={`${url}/client-list`} className='txt-white sidenavFonts'><i className="fa fa-university" aria-hidden="true" /> Client List </Link>
                         </li>
                         : <React.Fragment></React.Fragment>}
 
@@ -133,14 +151,14 @@ function SideNavbar() {
                       {roleBasedShowTab?.merchant === true ?
                         <React.Fragment>
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
-                            <Link to={`${url}/settlement-report-new`} className='txt-white'><i className="fa fa-bars" aria-hidden="true" />
+                            <Link to={`${url}/settlement-report-new`} className='txt-white sidenavFonts'><i className="fa fa-bars" aria-hidden="true" />
                               &nbsp;<span>Settlement Report</span>
                               {/* <span class="new-tab">new</span> */}
                               </Link>
                           </li>
 
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
-                            <Link to={`${url}/product-catalogue`} className='txt-white'><i className="fa fa-book" aria-hidden="true" />&nbsp;Product Catalogue</Link>
+                            <Link to={`${url}/product-catalogue`} className='txt-white sidenavFonts'><i className="fa fa-book" aria-hidden="true" />&nbsp;Product Catalogue</Link>
                           </li>
                         </React.Fragment>
                         : <React.Fragment></React.Fragment>

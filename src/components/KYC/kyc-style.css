@@ -18,15 +18,27 @@
     
 }
 
-.paymentsHeader {
-
-font-size: 13px;
-font-weight: 510;
-line-height: 16px;
-letter-spacing: 0em;
-text-align: left;
-
+.paymentSubHeader {
+font-family: 'Satoshi';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
 }
+
+.subHeaderForModal {
+font-family: 'Satoshi';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.paymentHeader {
+    font-family: 'Satoshi';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    
+    }
 
 
 .border-dotted {
