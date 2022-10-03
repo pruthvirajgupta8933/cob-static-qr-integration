@@ -1,15 +1,14 @@
-.Test{
-    background-color: rgb(255, 255, 255);
+.Test {
+  background-color: rgb(255, 255, 255);
 }
 
-.logo-h{
+.logo-h {
   height: 50px !important;
 }
 
-
 .header {
   background-color: #fff;
-  box-shadow: 1px 1px 4px 0 rgba(0,0,0,.1);
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.1);
   position: fixed;
   width: 100%;
   z-index: 3;
@@ -48,7 +47,7 @@
 .header .menu {
   clear: both;
   max-height: 0;
-  transition: max-height .2s ease-out;
+  transition: max-height 0.2s ease-out;
 }
 
 /* menu icon */
@@ -67,18 +66,18 @@
   display: block;
   height: 2px;
   position: relative;
-  transition: background .2s ease-out;
+  transition: background 0.2s ease-out;
   width: 18px;
 }
 
 .header .menu-icon .navicon:before,
 .header .menu-icon .navicon:after {
   background: #333;
-  content: '';
+  content: "";
   display: block;
   height: 100%;
   position: absolute;
-  transition: all .2s ease-out;
+  transition: all 0.2s ease-out;
   width: 100%;
 }
 
@@ -116,61 +115,58 @@
 .header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
   top: 0;
 }
-.whtcolr{
-    color:#fff !important; 
-    font-weight: 500 !important;  
+.whtcolr {
+  color: #fff !important;
+  font-weight: 500 !important;
 }
 /* Harris CSS */
 
 .loginHeaderr {
-  font-family: 'Nunito Sans';
-    font-style: normal;
-    font-weight: 700;
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 700;
 }
 .loginFontForLabel {
-  font-family: 'Nunito Sans';
-font-style: normal;
-font-weight: 600;
-font-size: 20px;
-line-height: 156.5%;
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 156.5%;
 }
 
 .loginpara1 {
-  font-family: 'Nunito Sans';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
-line-height: 22px;
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
 }
 .blueColr {
-font-family: Nunito Sans;
-font-size: 20px;
-font-weight: 700;
-line-height: 31px;
-letter-spacing: 0em;
-text-align: left;
-color:#014DAD;
-
-
+  font-family: Nunito Sans;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 31px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #014dad;
 }
 .loginContacthelp {
   font-family: Nunito Sans;
-font-size: 14px;
-font-weight: 700;
-line-height: 1px;
-letter-spacing: 0.02em;
-text-align: center;
-margin-left: 47px;
-color:#014DAD;
-
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1px;
+  letter-spacing: 0.02em;
+  text-align: center;
+  margin-left: 47px;
+  color: #014dad;
 }
 .agentImage {
   width: 28px;
 }
 
 /* Harris Css */
-.toppad{
-    padding:70px 40px 0 40px;
+.toppad {
+  padding: 70px 40px 0 40px;
 }
 
 /*Abhishek Verma*/
@@ -181,118 +177,107 @@ color:#014DAD;
 
 /* login page */
 
-
-.login-bg-CCD7E9{
-  background-color: #CCD7E9;
+.login-bg-CCD7E9 {
+  background-color: #ccd7e9;
 }
 
-.bg-white{
+.bg-white {
   background-color: #fff;
 }
 
-
-.font-text-large{
+.font-text-large {
   font-size: 4em;
 }
 
-.mt-40{
+.mt-40 {
   margin-top: 40px;
 }
 
-.font-size-32{
+.font-size-32 {
   font-size: 32px;
 }
 
-.m-r-l-100{
+.m-r-l-100 {
   margin: 0 100px 0 100px;
 }
 
-
-
-
-
 .list-items li {
-
-  padding-right:20px;
-  padding-left:20px;
+  padding-right: 20px;
+  padding-left: 20px;
   border-right: 1px solid #f4f4f4;
   border-bottom: 1px solid #d1d1d1;
 }
 
-.list-items li a{
+.list-items li a {
   display: block;
   padding: 20px 20px;
- 
+
   text-decoration: none;
 }
 
-.tel-no{
+.tel-no {
   background-color: black;
   border-right: 0px;
 }
 
-.bg-orange{
+.bg-orange {
   background: #ff3e06;
 }
 
-.p-25{
+.p-25 {
   padding: 25px;
 }
 
-.center-left-content{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
+.center-left-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
-.font-size-24{
+.font-size-24 {
   font-size: 24px;
 }
 
-.bg-black{
+.bg-black {
   background-color: black;
 }
 
-.h-full{
+.h-full {
   height: calc(100vh - 60px);
 }
 
 /* Medium Devices, Desktops */
-@media only screen and (max-width : 992px) {
+@media only screen and (max-width: 992px) {
+  /* mobile view start */
+  .mobile-view-col {
+    flex-direction: column-reverse;
+  }
 
+  .left-panal-logo-mt {
+    margin-top: 3em;
+  }
 
-/* mobile view start */
-.mobile-view-col{
-  flex-direction: column-reverse;
-}
+  .left-panal-logo-mb {
+    margin-bottom: 3em;
+  }
 
-.left-panal-logo-mt{
-  margin-top: 3em;
-}
+  .header-m {
+    position: absolute;
+    z-index: 1;
+  }
 
-.left-panal-logo-mb{
-  margin-bottom: 3em;
-}
-
-.header-m{
-  position: absolute;
-  z-index: 1;
-}
-
-.login-m-container{
-  position: relative;
-  top: calc(100vh - 712px);
-}
+  .login-m-container {
+    position: relative;
+    top: calc(100vh - 712px);
+  }
 }
 
 /* 48em = 768px */
 @media (max-width: 768px) {
-    .toppad{
-    padding:82px 20px;
-}
-
-
+  .toppad {
+    padding: 82px 20px;
+  }
 }
 @media (min-width: 48em) {
   .header li {
@@ -309,14 +294,7 @@ color:#014DAD;
   .header .menu-icon {
     display: none;
   }
-
-  
-  
 }
-
-
-
-
 
 /*Registration page css*/
 
@@ -324,12 +302,12 @@ color:#014DAD;
   max-height: calc(80vh - 200px);
 }
 
-.login-type{
+.login-type {
   width: 50%;
   text-align: center;
 }
 
-.sign-up-type-btn{
+.sign-up-type-btn {
   width: 94%;
   margin: 10px;
   border: none;
@@ -337,22 +315,29 @@ color:#014DAD;
   font-weight: 600;
 }
 
-.selected-btn{
+.selected-btn {
   background: black;
 }
 
 .arrow-down {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
-  
+
   border-top: 20px solid #f00;
 }
 
 .eyeicon2 {
   position: absolute;
-    right: 36px;
-    top: 65px;
-    z-index: 999;
+  right: 36px;
+  top: 65px;
+  z-index: 999;
+}
+
+.loginBanSubHeader {
+  font-size: 18px;
+  font-weight: 550;
+  line-height: 27px;
+  letter-spacing: 0.03em;
 }

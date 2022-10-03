@@ -399,7 +399,7 @@ function LoginPage() {
                     style={{
                       position: "absolute",
                       zIndex: "999",
-                      top: "588px",
+                      top: "595px",
                     }}
                   >
                     <li
@@ -432,9 +432,12 @@ function LoginPage() {
                           {" "}
                           Transaction Dashboard
                         </p>
-                        <p className=""> Power of real-time payment analysis</p>
+                        <p className="mt-4 loginBanSubHeader">
+                          {" "}
+                          Power of real-time payment analysis
+                        </p>
                         <img
-                          class="d-block loginscreenimage"
+                          class="loginscreenimage"
                           src={imageSlide1}
                           alt="slide"
                         />
@@ -455,9 +458,12 @@ function LoginPage() {
                           {" "}
                           Transaction Dashboard
                         </p>
-                        <p className=""> Power of real-time payment analysis</p>
+                        <p className="mt-4 loginBanSubHeader">
+                          {" "}
+                          Power of real-time payment analysis
+                        </p>
                         <img
-                          class="d-block loginscreenimage"
+                          class="loginscreenimage"
                           src={imageSlide1}
                           alt="slide"
                         />
@@ -478,9 +484,12 @@ function LoginPage() {
                           {" "}
                           Transaction Dashboard
                         </p>
-                        <p className=""> Power of real-time payment analysis</p>
+                        <p className="mt-4 loginBanSubHeader">
+                          {" "}
+                          Power of real-time payment analysis
+                        </p>
                         <img
-                          class="d-block loginscreenimage"
+                          class="loginscreenimage"
                           src={imageSlide1}
                           alt="slide"
                         />
