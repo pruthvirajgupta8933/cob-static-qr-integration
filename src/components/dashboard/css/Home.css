@@ -783,8 +783,13 @@ border-radius: 0px;
       max-width: 100% !important;
     }
   }
-  hr.solid {
-    border-top: 2px solid rgb(187, 0, 0);
-}
+  .foraccount{
+    font-family: 'Satoshi';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 156.5%;
+color: #696969;
 
+  }
 
