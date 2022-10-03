@@ -229,7 +229,9 @@ function LoginPage() {
                                             top:"99px",
                                             zIndex: " 999",
                                           }}
-                                        >
+                                        >Transaction Dashboard
+
+                                        1 Power of real-time payment analysis
                                           {msg}
                                         </div>
                                       )}

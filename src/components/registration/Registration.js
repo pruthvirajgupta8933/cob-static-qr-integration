@@ -63,7 +63,7 @@ function Registration() {
   });
 
   function buttonHandler(index) {
-   
+
 
     let status = [...checkboxStatus];
     status[index] = !status[index]
@@ -172,8 +172,8 @@ function Registration() {
     setIsCheck(isChecked)
   }
 
-  const handlerTermCond = (isChecked)=>{
-      setBtnDisable(isChecked)
+  const handlerTermCond = (isChecked) => {
+    setBtnDisable(isChecked)
   }
   // console.log("btnDisable",btnDisable)
   return (
@@ -204,13 +204,55 @@ function Registration() {
                   </h1>
 
                   <div className="brand-logo">
-                    <div class="text-center">
+                    {/* <div class="text-center">
                       <img
                         src={onlineshopinglogo}
                         width={300}
                         alt="SabPaisa"
                         title="SabPaisa"
                       />
+                    </div> */}
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                      <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                      </ol>
+                      <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <img
+                            src={onlineshopinglogo}
+                            width={400}
+                            alt="SabPaisa"
+                            title="SabPaisa"
+                          />
+                        </div>
+                        <div class="carousel-item">
+                          
+                          <img
+                            src={onlineshopinglogo}
+                            width={400}
+                            alt="SabPaisa"
+                            title="SabPaisa"
+                          />
+                        </div>
+                        <div class="carousel-item">
+                          <img
+                            src={onlineshopinglogo}
+                            width={400}
+                            alt="SabPaisa"
+                            title="SabPaisa"
+                          />
+                        </div>
+                      </div>
+                      {/* <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                      </a> */}
                     </div>
                   </div>
                   {/* <h1 style={{ fontSize: "26px" }}>A Payments Solution for</h1>
@@ -220,7 +262,7 @@ function Registration() {
                 </div>
               </div>
             </div>
-            <div className="col-sm-9- authfy-panel-right">
+            <div className="col-sm-8- authfy-panel-right">
               {/* authfy-login start */}
               <div className="authfy-login">
                 {/* panel-login start */}
@@ -540,6 +582,7 @@ function Registration() {
                                       </button>
 
 
+
                                       <span className="simform__actions-sidetext">
                                         {/* {Array(3).fill(0).map((_, index) =>
                                           <Field
@@ -575,34 +618,34 @@ function Registration() {
                                           
                                         } */}
                                         <span className="ant-checkbox">
-                                      <Field
-                                        type="checkbox"
-                                        className="form-check-input mt-0"
-                                        name="terms_and_condition"
-                                        onClick={()=>{ handlerTermCond(values?.terms_and_condition)}}
-                                      /> 
-                                         <p className=" ml-2" style={{ cursor: "pointer" }} onClick={() => { callBackFn(acceptTc, isCheck) }} > Click here to accept <span className="text-primary">terms and conditions</span></p>
-                                    </span>
-                                 
-                      <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} />
-                                    {/* I agree to the{" "}
+                                          <Field
+                                            type="checkbox"
+                                            className="form-check-input mt-0"
+                                            name="terms_and_condition"
+                                            onClick={() => { handlerTermCond(values?.terms_and_condition) }}
+                                          />
+                                          <p className=" ml-2" style={{ cursor: "pointer" }} onClick={() => { callBackFn(acceptTc, isCheck) }} > Click here to accept <span className="text-primary">terms and conditions</span></p>
+                                        </span>
+
+                                        <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} />
+                                        {/* I agree to the{" "}
                                     <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" className="special" target="_blank" >
                                       Terms &amp; Conditions
                                     </a> */}
                                       </span>
-                                      {  <ErrorMessage name="terms_and_condition">
-                                              {(msg) => (
-                                                <p
-                                                  className="abhitest"
-                                                  style={{
-                                                    color: "red",
-                                                    float: "left",
-                                                  }}
-                                                >
-                                                  {msg}
-                                                </p>
-                                              )}
-                                            </ErrorMessage>}
+                                      {<ErrorMessage name="terms_and_condition">
+                                        {(msg) => (
+                                          <p
+                                            className="abhitest"
+                                            style={{
+                                              color: "red",
+                                              float: "left",
+                                            }}
+                                          >
+                                            {msg}
+                                          </p>
+                                        )}
+                                      </ErrorMessage>}
 
                                     </div>
                                   </div>
@@ -618,6 +661,7 @@ function Registration() {
                 </div>
 
               </div>
+
 
               {/* ./authfy-login */}
             </div>
