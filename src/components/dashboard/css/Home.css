@@ -263,7 +263,7 @@ table.tables tr:nth-child(odd) {
   font-family: 'Satoshi'; 
   color: #000000;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 17px;
   line-height: 224%;
 }
