@@ -274,13 +274,13 @@ function SubmitKyc(props) {
                 </div>
 
                 <div
-                  class="modal fade"
+                  class="modal fade modalbody1"
                   id="exampleModal"
                   tabIndex="-1"
                   role="dialog"
                   aria-labelledby="exampleModalLabel"
                   aria-hidden="true"
-                  style={{marginLeft:"212px",marginTop:"107px",background: "rgba(0, 0, 0, 0.5)"}}
+                  style={{marginLeft:"212px",marginTop:"107px"}}
                 >
                   <div
                     class="modal-dialog"
