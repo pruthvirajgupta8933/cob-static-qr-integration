@@ -10,7 +10,7 @@ import { isUserAlreadyLogin, login } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
 import { toast } from "react-toastify";
 import "./Login.css";
-import imageSlide1 from "../../assets/images/rafiki.png"
+import imageSlide1 from "../../assets/images/rafiki.png";
 import { Link } from "react-router-dom";
 
 const INITIAL_FORM_STATE = {
@@ -37,7 +37,7 @@ function LoginPage() {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [auth, setAuthData] = useState(authentication);
-  const [namee,setNamee] = useState("")
+  const [namee, setNamee] = useState("");
   // const [otp, setOtp] = useState({ otp: "" });
   const [values, setValues] = useState({
     password: "",
@@ -121,9 +121,7 @@ function LoginPage() {
       {/* <p className="showErrormsg">{message && message!=''?message:''}</p> */}
       <div className="container-fluid toppad">
         <div className="row">
-          <div className="col-lg-1">
-            
-          </div>
+          <div className="col-lg-1"></div>
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
             <div className="col-sm-6 authfy-panel-right login-float-right nopad login-float-none">
               {/* authfy-login start */}
@@ -143,11 +141,17 @@ function LoginPage() {
                       <div className="logmod__tab-wrapper">
                         <div className="logmod__tab lgm-2 show">
                           <div className="logmod__heading">
-                            <span className="logmod__heading-subtitle">
-
-                            </span>
-                            <h1 className="loginHeaderr">Welcome to your Dashboard</h1>
-                            <p style={{color:"#0A2FB6"}} className="loginpara1">You can login to track and record every transaction in real time.</p>
+                            <span className="logmod__heading-subtitle"></span>
+                            <h1 className="loginHeaderr">
+                              Welcome to your Dashboard
+                            </h1>
+                            <p
+                              style={{ color: "#0A2FB6" }}
+                              className="loginpara1"
+                            >
+                              You can login to track and record every
+                              transaction in real time.
+                            </p>
                           </div>
                           <div className="logmod__form m-r-l-100 m0">
                             <Formik
@@ -175,8 +179,18 @@ function LoginPage() {
                                       name="clientUserId"
                                       onClick={() => setNamee("clientUserId")}
                                     />
-                                    {namee === "clientUserId" ? 
-                                    <span><p style={{padding:"3px", backgroundColor:"#54E28D"}}></p></span> : ""}
+                                    {namee === "clientUserId" ? (
+                                      <span>
+                                        <p
+                                          style={{
+                                            padding: "3px",
+                                            backgroundColor: "#54E28D",
+                                          }}
+                                        ></p>
+                                      </span>
+                                    ) : (
+                                      ""
+                                    )}
                                     <ErrorMessage name="clientUserId">
                                       {(msg) => (
                                         <div
@@ -184,9 +198,8 @@ function LoginPage() {
                                           style={{
                                             color: "red",
                                             position: "absolute",
-                                            top:"101px",
+                                            top: "101px",
                                             zIndex: " 999",
-
                                           }}
                                         >
                                           {msg}
@@ -201,7 +214,7 @@ function LoginPage() {
                                       className="string optional loginFontForLabel"
                                       htmlFor="user-pw"
                                     >
-                                      Enter Your  Password
+                                      Enter Your Password
                                     </label>
                                     <Field
                                       className="string optional"
@@ -217,9 +230,25 @@ function LoginPage() {
                                       name="userPassword"
                                       onClick={() => setNamee("userPassword")}
                                     />
-                                   {namee === "userPassword" ? 
-                                    <span><p style={{padding:"1px", backgroundColor:"#54E28D"}}></p></span> : ""}
-                                     <Link to={`/forget`} className="pull-right mt-2" style={{color:"#0A2FB6"}}>Forgot Password ?</Link>
+                                    {namee === "userPassword" ? (
+                                      <span>
+                                        <p
+                                          style={{
+                                            padding: "1px",
+                                            backgroundColor: "#54E28D",
+                                          }}
+                                        ></p>
+                                      </span>
+                                    ) : (
+                                      ""
+                                    )}
+                                    <Link
+                                      to={`/forget`}
+                                      className="pull-right mt-2"
+                                      style={{ color: "#0A2FB6" }}
+                                    >
+                                      Forgot Password ?
+                                    </Link>
                                     <ErrorMessage name="userPassword">
                                       {(msg) => (
                                         <div
@@ -227,7 +256,7 @@ function LoginPage() {
                                           style={{
                                             color: "red",
                                             position: "absolute",
-                                            top:"99px",
+                                            top: "99px",
                                             zIndex: " 999",
                                           }}
                                         >
@@ -236,12 +265,21 @@ function LoginPage() {
                                       )}
                                     </ErrorMessage>
 
-
                                     <span
-                                      className="hide-password"
+                                      class="input-group-addon eyeicon2"
                                       onClick={handleClickShowPassword}
                                     >
-                                      {values.showPassword ? "Hide" : "Show"}
+                                      {values.showPassword ? (
+                                        <i
+                                          class="fa fa-eye"
+                                          aria-hidden="true"
+                                        ></i>
+                                      ) : (
+                                        <i
+                                          class="fa fa-eye-slash"
+                                          aria-hidden="true"
+                                        ></i>
+                                      )}
                                     </span>
                                   </div>
                                 </div>
@@ -252,15 +290,12 @@ function LoginPage() {
                                     className="sumbit btn-0156B3"
                                     type="sumbit"
                                     style={{
-                                      boxShadow: '0px 14px 10px rgba(66, 133, 248, 0.5)',
-                                      borderRadius:"6px"
+                                      boxShadow:
+                                        "0px 14px 10px rgba(66, 133, 248, 0.5)",
+                                      borderRadius: "6px",
                                     }}
-
                                     disabled={loading ? true : false}
                                   >
-
-
-
                                     {loading && (
                                       <span
                                         className="spinner-border"
@@ -269,7 +304,6 @@ function LoginPage() {
                                     )}
                                     LogIn
                                   </button>
-                                 
 
                                   {/* <span className="simform__actions-sidetext">
                                      <Link
@@ -285,8 +319,9 @@ function LoginPage() {
                               </Form>
                             </Formik>
                           </div>
-                          <div className="logmod__form m-r-l-100 mt-3"><p>Term of Service | Privacy Policy |  Contact us
-                          </p></div>
+                          <div className="logmod__form m-r-l-100 mt-3">
+                            <p>Term of Service | Privacy Policy | Contact us</p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -354,40 +389,105 @@ function LoginPage() {
             </div>
             <div className="col-sm-6 authfy-panel-left">
               <div className="brand-col">
-              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators" style={{position:"absolute",zIndex:"999",top:"588px"}}>
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-    <div class="heading1 pt-5">
-                 <p className="font-text-large mb-0" style={{color:"#012167"}}>An all-in-one</p>
-                  <p className="font-size-32 mb-2" style={{color:"#012167"}}> Transaction Dashboard</p>
-                  <p className=""> Power of real-time payment analysis</p>
-    <img class="d-block loginscreenimage" src={imageSlide1} alt="slide" />
-    </div>
-    </div>
-    <div class="carousel-item">
-    <div class="heading1 pt-5">
-                 <p className="font-text-large mb-0" style={{color:"#012167"}}>An all-in-one</p>
-                  <p className="font-size-32 mb-2" style={{color:"#012167"}}> Transaction Dashboard</p>
-                  <p className=""> Power of real-time payment analysis</p>
-    <img class="d-block loginscreenimage" src={imageSlide1} alt="slide"/>
-    </div>
-    </div>
-    <div class="carousel-item">
-    <div class="heading1 pt-5">
-                 <p className="font-text-large mb-0" style={{color:"#012167"}}>An all-in-one</p>
-                  <p className="font-size-32 mb-2" style={{color:"#012167"}}> Transaction Dashboard</p>
-                  <p className=""> Power of real-time payment analysis</p>
-    <img class="d-block loginscreenimage" src={imageSlide1} alt="slide" />
-    </div>
-    </div>
-  </div>
- 
-</div>
+                <div
+                  id="carouselExampleIndicators"
+                  class="carousel slide"
+                  data-ride="carousel"
+                >
+                  <ol
+                    class="carousel-indicators"
+                    style={{
+                      position: "absolute",
+                      zIndex: "999",
+                      top: "588px",
+                    }}
+                  >
+                    <li
+                      data-target="#carouselExampleIndicators"
+                      data-slide-to="0"
+                      class="active"
+                    ></li>
+                    <li
+                      data-target="#carouselExampleIndicators"
+                      data-slide-to="1"
+                    ></li>
+                    <li
+                      data-target="#carouselExampleIndicators"
+                      data-slide-to="2"
+                    ></li>
+                  </ol>
+                  <div class="carousel-inner">
+                    <div class="carousel-item active">
+                      <div class="heading1 pt-5">
+                        <p
+                          className="font-text-large mb-0"
+                          style={{ color: "#012167" }}
+                        >
+                          An all-in-one
+                        </p>
+                        <p
+                          className="font-size-32 mb-2"
+                          style={{ color: "#012167" }}
+                        >
+                          {" "}
+                          Transaction Dashboard
+                        </p>
+                        <p className=""> Power of real-time payment analysis</p>
+                        <img
+                          class="d-block loginscreenimage"
+                          src={imageSlide1}
+                          alt="slide"
+                        />
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <div class="heading1 pt-5">
+                        <p
+                          className="font-text-large mb-0"
+                          style={{ color: "#012167" }}
+                        >
+                          An all-in-one
+                        </p>
+                        <p
+                          className="font-size-32 mb-2"
+                          style={{ color: "#012167" }}
+                        >
+                          {" "}
+                          Transaction Dashboard
+                        </p>
+                        <p className=""> Power of real-time payment analysis</p>
+                        <img
+                          class="d-block loginscreenimage"
+                          src={imageSlide1}
+                          alt="slide"
+                        />
+                      </div>
+                    </div>
+                    <div class="carousel-item">
+                      <div class="heading1 pt-5">
+                        <p
+                          className="font-text-large mb-0"
+                          style={{ color: "#012167" }}
+                        >
+                          An all-in-one
+                        </p>
+                        <p
+                          className="font-size-32 mb-2"
+                          style={{ color: "#012167" }}
+                        >
+                          {" "}
+                          Transaction Dashboard
+                        </p>
+                        <p className=""> Power of real-time payment analysis</p>
+                        <img
+                          class="d-block loginscreenimage"
+                          src={imageSlide1}
+                          alt="slide"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 {/* <div className="headline">
                   <p style={{ fontSize: "24px", lineHeight: "20px" }}>
                     Receive Payments, The Easy Way
@@ -400,12 +500,10 @@ function LoginPage() {
               </div>
             </div>
           </div>
-          <div className="col-lg-1">
-
-            
-          </div>
-          <p className="footerforcopyright">Copyright 2022 SabPaisa, all rights reserve version 0.1</p>
- 
+          <div className="col-lg-1"></div>
+          <p className="footerforcopyright">
+            Copyright 2022 SabPaisa, all rights reserve version 0.1
+          </p>
         </div>
         {/* ./row */}
       </div>
@@ -413,4 +511,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage
+export default LoginPage;

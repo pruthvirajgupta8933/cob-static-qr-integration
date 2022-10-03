@@ -349,3 +349,10 @@ color:#014DAD;
   
   border-top: 20px solid #f00;
 }
+
+.eyeicon2 {
+  position: absolute;
+    right: 36px;
+    top: 65px;
+    z-index: 999;
+}
