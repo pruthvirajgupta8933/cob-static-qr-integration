@@ -73,6 +73,7 @@ table.tables tr:nth-child(odd) {
   height: 40px;
   border-radius: 6px;
   border: none;
+  box-shadow: rgb(66 133 248 / 50%) 0px 14px 10px;
 
 }
 
