@@ -449,7 +449,7 @@ function Home() {
 
                 <Link to={`/dashboard/kyc`} data-toggle="modal" data-target="#exampleModalCenter">
                   <button className="ModalButtonClr text-white mt-2">
-                    Complete KYC to activate account
+                   <h5 style={{fontFamily:"Satoshi"}}> Complete KYC to activate account</h5>
                   </button>
                 </Link>
                 {/* <Link to={`dashboard/product-catalogue`}>

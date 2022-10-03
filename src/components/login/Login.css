@@ -149,7 +149,7 @@ color:#014DAD;
 
 /* Harris Css */
 .toppad{
-    padding-top:40px;
+    padding:70px 40px 0 40px;
 }
 
 /*Abhishek Verma*/
@@ -268,7 +268,7 @@ color:#014DAD;
 /* 48em = 768px */
 @media (max-width: 768px) {
     .toppad{
-    padding-top:82px;
+    padding:82px 20px;
 }
 
 

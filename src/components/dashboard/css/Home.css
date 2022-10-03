@@ -245,6 +245,8 @@ table.tables tr:nth-child(odd) {
   border-radius: 4px;
   height: 40px;
   width: 250px;
+  
+  
 }
 
 .homeModalHeading {
@@ -730,8 +732,8 @@ border-radius: 0px;
 .foralinkscsshere {
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 500;
-  font-size: 19px;
+  font-weight: 700;
+  font-size: 21px;
   line-height: 25px;
   color: #4285F8;
 }
@@ -754,8 +756,8 @@ border-radius: 0px;
   font-size: 1em !important;
   line-height: 0 !important;
   width: 100% !important;
-  /* border: 4px solid #4285f8 !important; */
-  box-shadow: 0 0 0 1px #038fde, inset 0 0 0 1px #fff !important;
+  border: 3px solid  #1465FA !important;
+  /* box-shadow: 0 0 0 1px #038fde, inset 0 0 0 1px #fff !important; */
 }
 
 /* .choosePlan-2{
@@ -765,3 +767,11 @@ border-radius: 0px;
     width: 100%;
     border: 4px solid #4285f8;
   } */
+
+    @media (min-width: 1200px){
+    .container {
+      max-width: 100% !important;
+    }
+  }
+
+
