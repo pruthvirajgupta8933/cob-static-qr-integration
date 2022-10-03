@@ -46,9 +46,12 @@ const SabPaisaPricing = () => {
                       <h1 class="card-title cardoneheadingcss pb-3">Start-up/Freelancer</h1>
                       <p className='text-center bold-font mb-1'>9,999</p>
                       <h3 className='paragraphcsss text-center'>Per Year</h3>
-                      <button type="button" className=" font-weight-bold btn choosePlan-1 btn-lg"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
+                      <button type="button" className=" font-weight-bold btn choosePlan-1 btn-lg"  data-toggle="modal" data-target="#exampleModal"><span style={{color:"#1465FA"}}>Choose Plan</span></button>
                     </div>
+                    
+                    
                   </div>
+                  
 
 
                   {/* <button onClick={() => clickHandler(true)} type="button" className="figmacssforchooseplan mt-2" data-toggle="modal" data-target="#exampleModal">
@@ -123,7 +126,7 @@ const SabPaisaPricing = () => {
                       <h1 class="card-title cardoneheadingcss2 pb-3">SME</h1>
                       <p className='text-center text-white bold-font mb-1'>2.0%</p>
                       <h3 className='paragraphcsss text-white text-center'>3 years and up</h3>
-                      <button type="button" className="btn choosePlan-1 btn-primary btn-lg font-weight-bold"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
+                      <button type="button" className="btn choosePlan-2 btn-primary btn-lg font-weight-bold"  data-toggle="modal" data-target="#exampleModal">Choose Plan</button>
                     </div>
                   </div>
                   {/* <div class="row">

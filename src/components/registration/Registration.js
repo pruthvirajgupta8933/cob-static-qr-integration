@@ -195,11 +195,11 @@ function Registration() {
                   />
                 </div> */}
                   {/* ./brand-logo */}
-                  <h1 style={{ fontSize: "30px", fontStyle: "Satoshi", color: "#0143A1" }} class="text-center" >Empower your</h1>
+                  <h1 style={{ fontSize: "30px", fontStyle: "Satoshi", color: "#0143A1",lineHeight:"8px" }} class="text-center" >Empower your</h1>
                   <h1 style={{ fontSize: "30px", whiteSpace: "20px", fontStyle: "Satoshi", color: "#0143A1" }} class="text-center">
-                    business,&nbsp;&nbsp;boost
+                    business,&nbsp;boost
                   </h1>
-                  <h1 style={{ fontSize: "30px", whiteSpace: "20px", fontStyle: "Satoshi", color: "#0143A1" }} class="text-center">
+                  <h1 style={{ fontSize: "30px", whiteSpace: "20px", fontStyle: "Satoshi", color: "#0143A1",lineHeight:"10px" }} class="text-center">
                     your&nbsp;finance
                   </h1>
 
@@ -297,7 +297,7 @@ function Registration() {
                               Welcome to SabPaisa{" "}
                             </span>
                             <div className='flex'>
-                              <span className='Signupfigma mt-2'>Signup to Create New Account</span>
+                              <span className='Signupfigma mt-2'><span style={{color:"#4BB543"}}>Signup</span> to Create New Account</span>
                             </div>
                           </div>
                           <div className="logmod__form">

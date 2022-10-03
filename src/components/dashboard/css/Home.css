@@ -769,18 +769,22 @@ border-radius: 0px;
   /* box-shadow: 0 0 0 1px #038fde, inset 0 0 0 1px #fff !important; */
 }
 
-/* .choosePlan-2{
-    padding: 2em;
-    font-size: 1em;
-    line-height: 0;
-    width: 100%;
-    border: 4px solid #4285f8;
-  } */
+.choosePlan-2{
+  padding: 2em !important;
+  font-size: 1em !important;
+  line-height: 0 !important;
+  width: 100% !important;
+  background: #4285F8;
+  border-radius: 3px;
+  }
 
     @media (min-width: 1200px){
     .container {
       max-width: 100% !important;
     }
   }
+  hr.solid {
+    border-top: 2px solid rgb(187, 0, 0);
+}
 
 
