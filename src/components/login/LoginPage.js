@@ -146,8 +146,8 @@ function LoginPage() {
                             <span className="logmod__heading-subtitle">
 
                             </span>
-                            <h1>Welcome to your Dashboard</h1>
-                            <p style={{color:"#0A2FB6"}}>You can login to track and record every transaction in real time.</p>
+                            <h1 className="loginHeaderr">Welcome to your Dashboard</h1>
+                            <p style={{color:"#0A2FB6"}} className="loginpara1">You can login to track and record every transaction in real time.</p>
                           </div>
                           <div className="logmod__form m-r-l-100 m0">
                             <Formik
@@ -161,7 +161,7 @@ function LoginPage() {
                                 <div className="sminputs">
                                   <div className="input full">
                                     <label
-                                      className="string optional"
+                                      className="string optional loginFontForLabel"
                                       htmlFor="user-name"
                                     >
                                       User name
@@ -198,7 +198,7 @@ function LoginPage() {
                                 <div className="sminputs">
                                   <div className="input full">
                                     <label
-                                      className="string optional"
+                                      className="string optional loginFontForLabel"
                                       htmlFor="user-pw"
                                     >
                                       Enter Your  Password
@@ -230,9 +230,7 @@ function LoginPage() {
                                             top:"99px",
                                             zIndex: " 999",
                                           }}
-                                        >Transaction Dashboard
-
-                                        1 Power of real-time payment analysis
+                                        >
                                           {msg}
                                         </div>
                                       )}
@@ -248,7 +246,7 @@ function LoginPage() {
                                   </div>
                                 </div>
 
-                                <div className="simform__actions mt-3">
+                                <div className="simform__actions mt-4">
                                   {/*<input className="sumbit" name="commit" type="sumbit" value="Log In" />*/}
                                   <button
                                     className="sumbit btn-0156B3"
