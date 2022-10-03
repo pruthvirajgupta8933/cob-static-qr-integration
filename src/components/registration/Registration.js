@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { register, udpateRegistrationStatus } from "../../slices/auth";
 import { useHistory } from "react-router-dom";
 import { toast, Zoom } from 'react-toastify';
+import { Link } from 'react-router-dom';
 import TermCondition from './TermCondition';
 import API_URL from '../../config';
 import { axiosInstanceAuth } from '../../utilities/axiosInstance';
@@ -32,7 +33,7 @@ const FORM_VALIDATION = Yup.object().shape({
     /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
     "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"),
   confirmpasswordd: Yup.string().oneOf([Yup.ref('passwordd'), null], 'Passwords must match').required("Confirm Password Required"),
-  terms_and_condition: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
+  // terms_and_condition: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
   business_cat_code: Yup.string().required("Required"),
   // termsAndConditions: Yup.boolean().oneOf([true], "Required"),
 });
@@ -575,7 +576,7 @@ function Registration() {
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
-                                        disabled={btnDisable}
+                                        // disabled={btnDisable}
                                         data-rel={btnDisable}
                                       >
                                         Signup
@@ -617,7 +618,10 @@ function Registration() {
                                         {/* {
                                           
                                         } */}
-                                        <span className="ant-checkbox">
+
+
+                                      
+                                        {/* <span className="ant-checkbox">
                                           <Field
                                             type="checkbox"
                                             className="form-check-input mt-0"
@@ -627,7 +631,7 @@ function Registration() {
                                           <p className=" ml-2" style={{ cursor: "pointer" }} onClick={() => { callBackFn(acceptTc, isCheck) }} > Click here to accept <span className="text-primary">terms and conditions</span></p>
                                         </span>
 
-                                        <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} />
+                                        <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} /> */}
                                         {/* I agree to the{" "}
                                     <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" className="special" target="_blank" >
                                       Terms &amp; Conditions
@@ -649,6 +653,7 @@ function Registration() {
 
                                     </div>
                                   </div>
+                                 <p className='foraccount'>Already have an account?<Link to={`/login`} style={{color:'#0156B3'}}> Sign in</Link></p> 
                                 </Form>
                               )}
 
