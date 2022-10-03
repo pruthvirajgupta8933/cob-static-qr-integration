@@ -1,0 +1,20 @@
+.dropdown-menu a {
+  color: white !important;
+}
+
+.dropdown-menu a:hover {
+  background: #014464 !important;
+  background: linear-gradient(left, #0272a7, #013953);
+  background: -moz-linear-gradient(left, #0272a7, #013953) !important;
+  background: -webkit-gradient(
+    linear,
+    100% 100%,
+    0% 0%,
+    from(#adadad),
+    to(#ebebeb)
+  ) !important;
+  color: black !important;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}

@@ -3,6 +3,7 @@ import { logout } from "../../../slices/auth";
 import { useDispatch, useSelector } from "react-redux";
 import profile from "../../../assets/images/profile.png";
 import { Link } from "react-router-dom";
+import "./navBar.css";
 
 const NavBar = () => {
   const dispatch = useDispatch();
