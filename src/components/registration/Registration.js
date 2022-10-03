@@ -298,7 +298,7 @@ function Registration() {
                               Welcome to SabPaisa{" "}
                             </span>
                             <div className='flex'>
-                              <span className='Signupfigma mt-2'><span style={{color:"#4BB543"}}>Signup</span> to Create New Account</span>
+                              <span className='Signupfigma mt-2'><span style={{color:"#4BB543" ,fontWeight: "700",fontSize: "18px"}}>Signup</span> to Create New Account</span>
                             </div>
                           </div>
                           <div className="logmod__form">
