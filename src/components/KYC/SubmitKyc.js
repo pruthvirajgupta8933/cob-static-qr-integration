@@ -292,7 +292,7 @@ function SubmitKyc(props) {
                         <button
                           type="button"
                           class="close"
-                          data-dismiss="modal"
+                          data-dismiss="modal3"
                           aria-label="Close"
                         >
                           <span aria-hidden="true">&times;</span>
