@@ -306,7 +306,12 @@ function KycForm() {
                             data-dismiss="modal"
                             aria-label="Close"
                           >
-                            <span aria-hidden="true">&times;</span>
+                            <span
+                              aria-hidden="true"
+                              style={{ fontSize: "38px" }}
+                            >
+                              &times;
+                            </span>
                           </button>
                         </h1>
 
