@@ -1,188 +1,178 @@
 .align-items-center {
-    -ms-flex-align: center!important;
-    align-items: center!important;
-    display: flex;
-    /* justify-content: center; */
+  -ms-flex-align: center !important;
+  align-items: center !important;
+  display: flex;
+  /* justify-content: center; */
 }
 
 .activepaylink-kyc {
-    background-color:  #4BB543;
-    color: white !important ;
-    margin-left: -54px;
-    padding-left: 71px;
-    
+  background-color: #4bb543;
+  color: white !important ;
+  margin-left: -54px;
+  padding-left: 71px;
 }
 
 .btnbackground {
-    background-color:#0156B3;
-    
+  background-color: #0156b3;
 }
 
 .paymentSubHeader {
-font-family: 'Satoshi';
-font-style: normal;
-font-weight: 700;
-font-size: 12px;
+  font-family: "Satoshi";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  color: black;
 }
 
 .subHeaderForModal {
-font-family: 'Satoshi';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 24px;
+  font-family: "Satoshi";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
 }
 
 .paymentHeader {
-    font-family: 'Satoshi';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    
-    }
-
+  font-family: "Satoshi";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  color: black;
+}
 
 .border-dotted {
-    border-style: dotted;
-    border-width: 2px;
-    border-color: black;
-   }
-.pan-card {
-   z-index: 999;
-   position: relative;
-   right: 337px;
+  border-style: dotted;
+  border-width: 2px;
+  border-color: black;
 }
-.emailotp{
-    vertical-align: middle;
-    text-align: center;
-    bottom: -24px;
-    position: relative;
+.pan-card {
+  z-index: 999;
+  position: relative;
+  right: 337px;
+}
+.emailotp {
+  vertical-align: middle;
+  text-align: center;
+  bottom: -24px;
+  position: relative;
 }
 
 .verfy-btn {
-    line-height: 18px;
-    background-color: #0156B3;
+  line-height: 18px;
+  background-color: #0156b3;
 }
 
 .para-style {
-     font-family: 'Satoshi';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 13px;
-    line-height: 225%;
+  font-family: "Satoshi";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 225%;
+  color: black;
 }
 
-
-.modal-header-fignma{
-    padding: 5px 14px 4px 14px;
-    background-color: #4285F8;
+.modal-header-fignma {
+  padding: 5px 14px 4px 14px;
+  background-color: #4285f8;
 }
 
-.modal-close-button{
-    padding:12px 20px 18px 0px;
+.modal-close-button {
+  padding: 12px 20px 18px 0px;
 }
 
-
-.modalsimageclass{
-    width: 100%;
-    margin-top: 6em;
+.modalsimageclass {
+  width: 100%;
+  margin-top: 6em;
 }
 
-
-.modalsimageclass-1{
-    width: 45%;
+.modalsimageclass-1 {
+  width: 45%;
 }
-
-
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-
-    .optbtn {
-        display: none;
-    }
-
+  .optbtn {
+    display: none;
+  }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-    .optbtn {
-       display: none;
-    }
+  .optbtn {
+    display: none;
+  }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-    .optbtn {
-       display: none;
-    }
+  .optbtn {
+    display: none;
+  }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-    .optbtn {
-        position: absolute !important;
-        right: -99px;
-        z-index: 999;
-        top: -51px;
-        margin-right: -5px !important;
-    }
+  .optbtn {
+    position: absolute !important;
+    right: -99px;
+    z-index: 999;
+    top: -51px;
+    margin-right: -5px !important;
+  }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-    .optbtn {
-        position: absolute !important;
-        right: -99px;
-        z-index: 999;
-        top: -51px;
-        margin-right: -5px !important;
-    }
+  .optbtn {
+    position: absolute !important;
+    right: -99px;
+    z-index: 999;
+    top: -51px;
+    margin-right: -5px !important;
+  }
 }
 
 .kyc-modal_form {
-    width: 1696px;
-    display: revert;
-    margin-left: -6rem;
-    height: 711px;
-    margin-top: 88px;
+  width: 1696px;
+  display: revert;
+  margin-left: -6rem;
+  height: 711px;
+  margin-top: 88px;
 }
 
 .cross_KYC {
-    height: 34px;
-    width: 38px;
-    margin-top: -3rem;
+  height: 34px;
+  width: 38px;
+  margin-top: -3rem;
 }
 
 .text-font {
-font-family: Satoshi;
-font-size: 15px;
-font-weight: 700;
-line-height: 26px;
-letter-spacing: 0em;
-
+  font-family: Satoshi;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: 0em;
 }
 
 .text-kyc-header {
-font-family: 'Satoshi';
-font-style: normal;
-font-weight: 700;
-font-size: 20px;
-line-height: 224%;
+  font-family: "Satoshi";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 224%;
+  color: black;
 }
 
-
 .text-kyc-label {
-font-family: 'Satoshi';
-font-style: normal;
-font-weight: 700;
-font-size: 15px;
+  font-family: "Satoshi";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  color: black;
 }
 
 .text-kyc-sumit {
-font-family: 'Satoshi';
-font-style: normal;
-font-weight: 700;
-font-size: 17px;
+  font-family: "Satoshi";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 17px;
 }
-
-
