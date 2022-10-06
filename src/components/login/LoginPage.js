@@ -143,7 +143,7 @@ function LoginPage() {
                           <div className="logmod__heading">
                             <span className="logmod__heading-subtitle"></span>
                             <h1 className="loginHeaderr">
-                              Welcome to your Dashboard-
+                              Welcome to your Dashboard
                             </h1>
                             <p
                               style={{ color: "#0A2FB6" }}
