@@ -224,7 +224,7 @@ const handleClickShowPassword = () => {
                               : "password"
                           }
                           name="confirm_password" 
-                          placeholder="Enter Confirm Password" 
+                          placeholder="Re-type New Password" 
                           className="form-control"
                         />
                           <span class="input-group-addon eyeicon">

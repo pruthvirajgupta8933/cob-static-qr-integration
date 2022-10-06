@@ -359,7 +359,7 @@ function ContactInfo(props) {
        
           <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="font-weight-bold text-nowrap">
+                <h4 class="text-kyc-label text-nowrap">
                 Email Id<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
