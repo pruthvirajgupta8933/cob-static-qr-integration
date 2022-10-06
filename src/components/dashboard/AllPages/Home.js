@@ -275,7 +275,7 @@ function Home() {
               <div class="card col-lg-12- cardkyc pull-left">
                 <div class="font-weight-bold card-body">
                   <span>
-                    You can accept payments upto ₹15,000 for now To extend the
+                    You can accept payments upto ₹15,000 for now.To extend the
                     limit complete your KYC and get it approved.
                   </span>
                   <Link to={`/dashboard/kyc`} data-toggle="modal" data-target="#exampleModalCenter">
