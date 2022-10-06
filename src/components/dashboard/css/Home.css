@@ -243,9 +243,11 @@ table.tables tr:nth-child(odd) {
 .ModalButtonClr {
   border: 0;
   background: #0156B3;
-  border-radius: 4px;
+  border-radius: 6px;
   height: 40px;
   width: 250px;
+  box-shadow: 0px 14px 10px rgba(66, 133, 248, 0.5);
+border-radius: 6px;
   
   
 }
