@@ -97,7 +97,7 @@ const handleClickShowPassword = () => {
     // console.log("send data",data);
     dispatch(changePasswordSlice({email:data.email,password:data.old_password,newpassword:data.new_password}))      
     .then((res) => {
-      console.log("This is the response", res);
+      // console.log("This is the response", res);
       if (res.meta.requestStatus === "fulfilled") {
         if (res.payload.status === true) {
           toast.success(res.payload.message)

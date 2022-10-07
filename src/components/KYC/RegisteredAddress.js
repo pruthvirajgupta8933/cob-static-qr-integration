@@ -32,10 +32,10 @@ const RegisteredAddress = (props) => {
   const { loginId } = user;
 
   const initialValues = {
-    address: KycList.merchant_address_details.address,
-    city: KycList.merchant_address_details.city,
-    state:KycList.merchant_address_details.state,
-    pincode: KycList.merchant_address_details.pin_code,
+    address: KycList?.merchant_address_details?.address,
+    city: KycList?.merchant_address_details?.city,
+    state:KycList?.merchant_address_details?.state,
+    pincode: KycList?.merchant_address_details?.pin_code,
   
   }
   const validationSchema = Yup.object({

@@ -133,7 +133,7 @@ function VerifiedMerchant() {
                 <td>{user.status}</td>
                 {roles.approver===true ?
                   <td>
-                    <Link to={`/dashboard/kyc/?kycid=${user.loginMasterId}`} className="btn approve text-white btn-xs" >Approve KYC</Link>
+                    <Link to={`/dashboard/kyc/?kycid=${user.loginMasterId}`} className="btn approve text-white btn-xs" data-toggle="modal" data-target="#exampleModalCenter" >Approve KYC</Link>
                   </td> : <></>
                 }
               </tr>
