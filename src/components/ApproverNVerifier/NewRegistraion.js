@@ -164,7 +164,7 @@ function NewRegistraion() {
                     <td>{user.status}</td>
                     {roles.verifier === true ?
                       <td>
-                        <Link to={`/dashboard/kyc/?kycid=${user.loginMasterId}`} className="btn approve text-white  btn-xs" >Verify KYC</Link>
+                        <Link to={`/dashboard/kyc/?kycid=${user.loginMasterId}`} className="btn approve text-white  btn-xs" data-toggle="modal" data-target="#exampleModalCenter">Verify KYC</Link>
                       </td> : <></>
                     }
 

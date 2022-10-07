@@ -99,6 +99,16 @@ function KycForm() {
     history.push("/dashboard");
   };
 
+
+
+
+  // useEffect(() => {
+  //   if(window.location.reload === true) {
+  //     console.log("Hello")
+  //     redirect()
+  //   }
+  // },[])
+
   return (
     <section className="ant-layout">
       <div>
