@@ -12,6 +12,12 @@
   padding-left: 71px;
 }
 
+.activepaylink-kyc::after {
+  content: ">";
+  transform: matrix(1, 0, 0, -1, 11, 1);
+  display: inline-block;
+}
+
 .btnbackground {
   background-color: #0156b3;
 }
