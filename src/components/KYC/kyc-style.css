@@ -16,7 +16,7 @@
   position: fixed;
   left: 144px;
   content: ">";
-  transform: matrix(1, 0, 0, -1, 11, 1);
+  transform: matrix(1, 0, 0, -1, 11, 3);
   display: inline-block;
 }
 
