@@ -14,9 +14,9 @@
 
 .activepaylink-kyc::after {
   position: fixed;
-  left: 144px;
-  content: ">";
-  transform: matrix(1, 0, 0, -1, 11, 3);
+  left: 153px;
+  content: url(../../assets/images/arrow_back_ios.png);
+  transform: matrix(1, 0, 0, -1, 11, 1);
   display: inline-block;
 }
 
