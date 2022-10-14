@@ -5,6 +5,9 @@ import { getEmailToSendOtpSlice } from "../../slices/auth";
 import { useDispatch,useSelector } from "react-redux";
 import toastConfig from "../../utilities/toastTypes";
 import { toast } from "react-toastify";
+import {Regex,RegexMsg} from ".././../_components/formik/ValidationRegex"
+
+
 
 
 
@@ -13,8 +16,12 @@ const EnterUserID = (props) => {
   const dispatch = useDispatch();
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().required("Required"),
+    email: Yup.string()
+    .email("Must be a valid email")
+    .max(255)
+    .required("Required"),
   });
+  
 
   const handleSubmit = (data) => {
     // console.log("You clicked");
@@ -24,7 +31,7 @@ const EnterUserID = (props) => {
       email:data.email,
       otp_type:"both",
     otp_for: "Forgot Password"})).then((res) => {
-      // console.log("This is the response", res);
+       console.log("This is the response", res);
       if (res.meta.requestStatus === "fulfilled") {
         if (res.payload.status === true) {
           props.props("a2",data);

@@ -19,10 +19,11 @@ const INITIAL_FORM_STATE = {
 };
 
 const FORM_VALIDATION = Yup.object().shape({
-  clientUserId: Yup.string().required("Required"),
+  clientUserId: Yup.string()
+    .required("Required"),
   userPassword: Yup.string()
-    .min(6, "Password minimum length should be 6")
-    .required("Password is required"),
+    .required("Password Required")
+
 });
 
 function LoginPage() {
@@ -38,6 +39,8 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [auth, setAuthData] = useState(authentication);
   const [namee, setNamee] = useState("");
+
+
   // const [otp, setOtp] = useState({ otp: "" });
   const [values, setValues] = useState({
     password: "",
@@ -84,6 +87,7 @@ function LoginPage() {
     setLoading(true);
     dispatch(login({ username, password }))
       .then((res) => {
+        console.log('this is response ', res)
         // console.log(res?.payload?.user)
         if (res?.payload?.user) {
           const activeStatus = res?.payload?.user?.loginStatus;
@@ -94,13 +98,13 @@ function LoginPage() {
             setLoading(false);
           } else {
             if (loginMessage === "Pending") {
-              toast.error("User Not Verified, Please Check your email");
+              toast.error(loginMessage);
             }
             setLoading(false);
           }
         } else {
           setLoading(false);
-          toast.error("Username or Email Not Correct");
+          toast.error(res.error.message);
         }
       })
       .catch((err) => {
@@ -155,12 +159,16 @@ function LoginPage() {
                           </div>
                           <div className="logmod__form m-r-l-100 m0">
                             <Formik
+
                               initialValues={{
                                 ...INITIAL_FORM_STATE,
                               }}
                               validationSchema={FORM_VALIDATION}
                               onSubmit={handleLogin}
                             >
+                              {(formik) => (
+
+
                               <Form>
                                 <div className="sminputs">
                                   <div className="input full">
@@ -294,7 +302,14 @@ function LoginPage() {
                                         "0px 14px 10px rgba(66, 133, 248, 0.5)",
                                       borderRadius: "6px",
                                     }}
-                                    disabled={loading ? true : false}
+                                     disabled={(!(formik.isValid && formik.dirty)) ? true : false}
+                                    // disabled={
+                                    //   (
+                                    //     INITIAL_FORM_STATE.clientUserId == ""
+                                    //     &&
+                                    //     INITIAL_FORM_STATE.userPassword == ""
+                                    //   )
+                                    //     ? true : false}
                                   >
                                     {loading && (
                                       <span
@@ -317,6 +332,7 @@ function LoginPage() {
                                   </span>*/}
                                 </div>
                               </Form>
+                              )}
                             </Formik>
                           </div>
                           <div className="logmod__form m-r-l-100 mt-3">

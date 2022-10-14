@@ -421,13 +421,10 @@ function Home() {
               <div class="row">
                 <div class="col-sm">
                   <h1 className="homeModalHeading">
-                    Welcome to your SabPaisa Dashboard
-                  </h1>
+                  Welcome to SabPaisa!
+                 </h1>
                   <h2 className="modalscolrsfortext">
-                    Complete the KYC to activate your account and start
-                    accepting payments, you are step away from activating your
-                    account. Fill in all the information to start your SabPaisa
-                    Payment services.
+                  Complete the KYC to activate your account and start accepting payments. Fill in all the information to start your SabPaisa Payment services.
                   </h2>
 
 
@@ -452,11 +449,19 @@ function Home() {
                    <h5 style={{fontFamily:"Satoshi",lineHeight:"9px"}}> Complete KYC to activate account</h5>
                   </button>
                 </Link>
-                {/* <Link to={`dashboard/product-catalogue`}>
-                  <button className="ColrsforredirectProdct text-white mt-5-">
-                    No, I'll do this later
+                <Link to={`/dashboard`}>
+                  <button 
+                  className="ColrsforredirectProdct  text-white mt-5-"
+                  onClick={() => {
+                    setModalState(!modalState);
+                  }}
+                  
+                  
+                  aria-label="Close">
+                  Try out our dashboard
+
                   </button>
-                </Link> */}
+                </Link>
 
               </div>
 

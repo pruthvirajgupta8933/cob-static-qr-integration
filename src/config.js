@@ -24,7 +24,7 @@ const API_LIVE = {
 
   ////////////////////////////////////---------------------------business_cat_code api
 
-  Business_Category_CODE:`${url}/auth-service/auth/business-category`,
+  Business_Category_CODE:`${kyc_url}/kyc/get-all-business-category/`,
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
   AUTH_CLIENT_CREATE: `${url}/auth-service/client`,

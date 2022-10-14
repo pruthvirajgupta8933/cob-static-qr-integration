@@ -12,8 +12,15 @@ const CreatePassword = (props) => {
   const verification_token = auth.forgotPassword.otpResponse.verification_token;
   const validationSchema = Yup.object().shape({
 
-    password: Yup.string().required("password is required"),
-    // confirmpassword: Yup.string().required("Confirm Password Required")
+    password: Yup.string()
+    .required("Password Required")
+    .matches(
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    ),
+     confirmpassword: Yup.string()
+     .oneOf([Yup.ref("password"), null], "Passwords must match")
+     .required("Confirm Password Required"),
 
   })
   const [values, setValues] = useState({
