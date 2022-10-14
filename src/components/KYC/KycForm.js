@@ -285,7 +285,7 @@ function KycForm() {
                                     : "inactive text-font")
                                 }
                                 onClick={() => {
-                                  SetTab(7);
+                                  SetTab(6);
                                   setTitle("SUBMIT KYC");
                                 }}
                               >
