@@ -10,6 +10,9 @@ import profileService from "../../../services/profile.service";
 import { toast, Zoom } from "react-toastify";
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 import NavBar from "../NavBar/NavBar";
+import  {message_icon} from "../../../assets/images/message_icon.png"
+// import  {notification_icon} from "../../../assets/images/notification_icon.png"
+// import  {profile_icon} from "../../../assets/images/profile_icon.png"
 
 export const Profile = () => {
   const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
@@ -284,6 +287,14 @@ export const Profile = () => {
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper">
+            {/* <div className="profile-header">
+              <div>
+              Choose Account 
+              </div>
+              <div>
+
+              </div>
+            </div> */}
             <h1 className="right_side_heading">
               My Profile{" "}
               <Link to={`/dashboard/change-password`}>

@@ -801,4 +801,14 @@ line-height: 156.5%;
 color: #696969;
 
   }
+  /* Profile CSS HERE START*/
+  .profile-header{
+    display:flex;
+    align-items: center;
+  }
+
+
+
+
+  
 
