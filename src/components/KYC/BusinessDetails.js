@@ -16,6 +16,10 @@ import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 
 function BusinessDetails(props) {
   const setTab = props.tab;
+  const setTitle = props.title;
+
+  console.log(props, "====>");
+
   const { role, kycid } = props;
   const KycList = useSelector((state) => state.kyc.kycUserList);
 
@@ -236,6 +240,7 @@ function BusinessDetails(props) {
         ) {
           toast.success(res.payload.message);
           setTab(4);
+          setTitle("BANK DETAILS");
         } else {
           toast.error("Something Went Wrong! Please try again.");
         }

@@ -22,6 +22,8 @@ import $ from "jquery";
 
 function DocumentsUpload(props) {
   const setTab = props.tab;
+  const setTitle = props.title;
+
   function readURL(input, id) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
@@ -110,6 +112,7 @@ function DocumentsUpload(props) {
     dispatch(merchantInfo(kycData))
       .then(function(response) {
         setTab(6);
+        setTitle("SUBMIT KYC");
         toast.success("Merchant document saved successfully");
         console.log(response);
       })

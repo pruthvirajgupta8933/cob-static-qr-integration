@@ -23,11 +23,7 @@ const API_LIVE = {
 
   ////////////////////////////////////---------------------------business_cat_code api
 
-<<<<<<< HEAD
-  Business_Category_CODE:`${kyc_url}/kyc/get-all-business-category/`,
-=======
   Business_Category_CODE: `${url}/auth-service/auth/business-category`,
->>>>>>> 8919857118b7b5140653257a65542b04e1a4f0f5
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
   AUTH_CLIENT_CREATE: `${url}/auth-service/client`,

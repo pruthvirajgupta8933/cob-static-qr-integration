@@ -21,6 +21,8 @@ import { values } from "lodash";
 
 function ContactInfo(props) {
   const setTab = props.tab;
+  const setTitle = props.title;
+
   const dispatch = useDispatch();
 
   const { role, kycid } = props;
@@ -99,6 +101,7 @@ function ContactInfo(props) {
           res.payload?.status_code !== 500
         ) {
           setTab(2);
+          setTitle("BUSINESS OVERVIEW");
           // console.log("This is the response", res);
           toast.success(res.payload?.message);
         } else {

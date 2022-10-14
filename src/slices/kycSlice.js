@@ -29,6 +29,10 @@ const initialState = {
     message: "",
     status: false,
   },
+  BusiOverviewwStatus: {
+    message: "",
+    status: false,
+  },
 
   kycApproved: {
     count: null,
@@ -802,6 +806,18 @@ export const kycSlice = createSlice({
       // console.log(action.payload, "===>");
     },
     [saveBusinessInfo.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+
+    [saveMerchantInfo.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [saveMerchantInfo.fulfilled]: (state, action) => {
+      state.BusiOverviewwStatus = action.payload;
+      // console.log(action.payload, "===>");
+    },
+    [saveMerchantInfo.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.error.message;
     },

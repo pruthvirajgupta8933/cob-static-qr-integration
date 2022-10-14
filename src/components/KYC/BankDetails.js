@@ -16,6 +16,8 @@ import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 
 function BankDetails(props) {
   const setTab = props.tab;
+  const setTitle = props.title;
+
   const { role, kycid } = props;
   const dispatch = useDispatch();
 
@@ -116,6 +118,7 @@ function BankDetails(props) {
           // console.log("This is the response", res);
           toast.success(res.payload.message);
           setTab(5);
+          setTitle("DOCUMENTS UPLOAD");
         } else {
           toast.error("Something Went Wrong! Please try again.");
         }
