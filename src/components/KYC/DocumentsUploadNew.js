@@ -20,7 +20,8 @@ import $ from "jquery";
 
 // import $ from "jquery"
 
-function DocumentsUpload() {
+function DocumentsUpload(props) {
+  const setTab = props.tab;
   function readURL(input, id) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
@@ -108,6 +109,7 @@ function DocumentsUpload() {
     const kycData = { bodyFormData, docType };
     dispatch(merchantInfo(kycData))
       .then(function(response) {
+        setTab(6);
         toast.success("Merchant document saved successfully");
         console.log(response);
       })

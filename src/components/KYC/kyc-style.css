@@ -12,6 +12,12 @@
   padding-left: 71px;
 }
 
+/* .inactive::before {
+  position: fixed;
+  left: -48px;
+  content: url(../../assets/images/check.png);
+  display: inline-block;
+} */
 .activepaylink-kyc::after {
   position: fixed;
   left: 153px;
@@ -159,6 +165,21 @@
   font-weight: 700;
   line-height: 26px;
   letter-spacing: 0em;
+}
+
+.text-font-ForStatusChange::before {
+  position: fixed;
+  left: -48px;
+  content: url(../../assets/images/check.png);
+  display: inline-block;
+}
+.text-font-ForStatusChange {
+  font-family: Satoshi;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: 0em;
+  color: green;
 }
 
 .text-kyc-header {

@@ -3,10 +3,7 @@ import API_URL, { AUTH_TOKEN } from "../config";
 import axios from "axios";
 import { axiosInstanceAuth } from "../utilities/axiosInstance";
 
-
-
 const initialState = {
-
   documentByloginId: {
     documentId: "",
     name: "",
@@ -24,10 +21,14 @@ const initialState = {
     merchant: "",
     type: "",
   },
-  DataUpdateResponse: {         
+  DataUpdateResponse: {
     status: "",
-    message: ""
-   },
+    message: "",
+  },
+  BusiOverviewwStatus: {
+    message: "",
+    status: false,
+  },
 
   kycApproved: {
     count: null,
@@ -166,53 +167,25 @@ const initialState = {
   OtpResponse: { status: "", verification_token: "" },
   OtpVerificationResponseForPhone: {
     status: false,
-    message: ""
+    message: "",
   },
+
   OtpVerificationResponseForEmail: {
     status: false,
-    message: ""
-  }
+    message: "",
+  },
 };
 
- //--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
- export const updateContactInfo = createAsyncThunk(
+//--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
+export const updateContactInfo = createAsyncThunk(
   "UpdateContactInfo/updateContactInfo",
   async (requestParam) => {
-    const response = await axiosInstanceAuth.put(
-      `${API_URL.Save_General_Info}`,
-      requestParam,
-      {
+    const response = await axiosInstanceAuth
+      .put(`${API_URL.Save_General_Info}`, requestParam, {
         headers: {
           // Authorization: ""
-        }
-      }
-    )
-    .catch((error) => {
-      return error.response;
-    });
-    // console.log(response)
-    return response.data;
-  }
-);
-
-
-// KYC OTP function 
-
-
-//--------------For Sending the Contact Otp ---------------------
-export const otpForContactInfo = createAsyncThunk(
-  "OtpForContact/otpContactInfo",
-  async (requestParam) => {
-    const response = await axiosInstanceAuth.post(
-      `${API_URL.Send_OTP}`,
-      requestParam,
-
-      {
-        headers: {
-          // Authorization: ""
-        }
-      }
-    )
+        },
+      })
       .catch((error) => {
         return error.response;
       });
@@ -221,18 +194,41 @@ export const otpForContactInfo = createAsyncThunk(
   }
 );
 
+// KYC OTP function
+
+//--------------For Sending the Contact Otp ---------------------
+export const otpForContactInfo = createAsyncThunk(
+  "OtpForContact/otpContactInfo",
+  async (requestParam) => {
+    const response = await axiosInstanceAuth
+      .post(
+        `${API_URL.Send_OTP}`,
+        requestParam,
+
+        {
+          headers: {
+            // Authorization: ""
+          },
+        }
+      )
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
 
 //---------VERIFICATION OTP For Phone ------------------------
 export const otpVerificationForContactForPhone = createAsyncThunk(
   "OtpVerificationForContactForPhone/otpVerificationForContactForPhone",
   async (requestParam) => {
     // console.log("requestParam",requestParam)
-    const response = await axiosInstanceAuth.post(
-      `${API_URL.Verify_OTP}`,
-      requestParam,
-    ).catch((error) => {
-      return error.response;
-    });
+    const response = await axiosInstanceAuth
+      .post(`${API_URL.Verify_OTP}`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
     // console.log("res",response);
     return response.data;
   }
@@ -243,22 +239,17 @@ export const otpVerificationForContactForEmail = createAsyncThunk(
   "OtpVerificationForContactForEmail/otpVerificationForContactForEmail",
   async (requestParam) => {
     // console.log("requestParam",requestParam)
-    const response = await axiosInstanceAuth.post(
-      `${API_URL.Verify_OTP}`,
-      requestParam,
-    ).catch((error) => {
-      return error.response;
-    });
+    const response = await axiosInstanceAuth
+      .post(`${API_URL.Verify_OTP}`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
     // console.log("res",response);
     return response.data;
   }
 );
 
-
 // END kyc otp function
-
-
-
 
 //--------------Kyc BusinessType get api (BusinessOverview Tab)---------------------
 export const businessType = createAsyncThunk(
@@ -403,15 +394,17 @@ export const documentsUpload = createAsyncThunk(
 export const merchantInfo = createAsyncThunk(
   "kyc/merchantInfo",
   async (requestParam) => {
-      const response = await axiosInstanceAuth({
-        method: "post",
-        url:  requestParam.docType ==='1' ? API_URL.UPLOAD_MERCHANT_AADHAAR : API_URL.Upload_Merchant_document,
-        data: requestParam.bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" },
-      }).catch((error) => {
-        return error.response;
-      });
-      
+    const response = await axiosInstanceAuth({
+      method: "post",
+      url:
+        requestParam.docType === "1"
+          ? API_URL.UPLOAD_MERCHANT_AADHAAR
+          : API_URL.Upload_Merchant_document,
+      data: requestParam.bodyFormData,
+      headers: { "Content-Type": "multipart/form-data" },
+    }).catch((error) => {
+      return error.response;
+    });
 
     // const response = await axios
     //   .post(`${API_URL.Upload_Merchant_document}`, requestParam, {
@@ -561,9 +554,12 @@ export const kycForApproved = createAsyncThunk(
     const requestParam = data.page;
     const requestParam1 = data.page_size;
     const response = await axiosInstanceAuth
-      .get(`${API_URL.KYC_FOR_APPROVED}&page=${requestParam}&page_size=${requestParam1}`, {
-        headers: {},
-      })
+      .get(
+        `${API_URL.KYC_FOR_APPROVED}&page=${requestParam}&page_size=${requestParam1}`,
+        {
+          headers: {},
+        }
+      )
       .catch((error) => {
         return error.response;
       });
@@ -601,8 +597,7 @@ export const UploadLoginId = createAsyncThunk(
   }
 );
 
-
-// ================== veify kyc 
+// ================== veify kyc
 
 export const verifyKycEachTab = createAsyncThunk(
   "kyc/verifyKycEachTab",
@@ -617,20 +612,18 @@ export const verifyKycEachTab = createAsyncThunk(
   }
 );
 
-export const verifyKycDocumentTab= createAsyncThunk(
+export const verifyKycDocumentTab = createAsyncThunk(
   "kyc/verifyKycDocumentTab",
   async (requestParam) => {
-
-    let URL_FOR_DOCUMENT_VERIFY ="";
-    if(requestParam?.rejected_by){
-      URL_FOR_DOCUMENT_VERIFY = API_URL.DOCUMENT_REJECT 
-    }else{
-      URL_FOR_DOCUMENT_VERIFY = API_URL.DOCUMENT_VERIFY 
-
+    let URL_FOR_DOCUMENT_VERIFY = "";
+    if (requestParam?.rejected_by) {
+      URL_FOR_DOCUMENT_VERIFY = API_URL.DOCUMENT_REJECT;
+    } else {
+      URL_FOR_DOCUMENT_VERIFY = API_URL.DOCUMENT_VERIFY;
     }
 
     const response = await axiosInstanceAuth
-      .put(URL_FOR_DOCUMENT_VERIFY,requestParam)
+      .put(URL_FOR_DOCUMENT_VERIFY, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -638,8 +631,6 @@ export const verifyKycDocumentTab= createAsyncThunk(
     return response.data;
   }
 );
-
-
 
 export const verifyComplete = createAsyncThunk(
   "kyc/verifyKycEachTab",
@@ -666,7 +657,6 @@ export const approveDoc = createAsyncThunk(
   }
 );
 
-
 export const approvekyc = createAsyncThunk(
   "kyc/approvekyc",
   async (requestParam) => {
@@ -680,9 +670,7 @@ export const approvekyc = createAsyncThunk(
   }
 );
 
-
 //---------------- Registered Address TAP INTEGRATION --------------//
-
 
 export const saveRegisteredAddress = createAsyncThunk(
   "kyc/saveRegisteredAddress",
@@ -704,8 +692,6 @@ export const saveRegisteredAddress = createAsyncThunk(
   }
 );
 //---------------- Registered Address TAP INTEGRATION --------------//
-
-
 
 //---------------- KYC CONSENT TAP API INTEGRATION --------------//
 
@@ -729,15 +715,7 @@ export const saveKycConsent = createAsyncThunk(
   }
 );
 
-
 //---------------- KYC CONSENT TAP API INTEGRATION --------------//
-
-
-
-
-
-
-
 
 export const kycSlice = createSlice({
   name: "kyc",
@@ -765,7 +743,7 @@ export const kycSlice = createSlice({
       // console.log(action);
       // console.log(state.OtpVerificationResponseForPhone.status);
       // state.transactionHistory = []
-    }
+    },
   },
   extraReducers: {
     [kycUserList.pending]: (state, action) => {
@@ -803,7 +781,8 @@ export const kycSlice = createSlice({
       state.error = action.error.message;
     },
 
-    //Contact Info Post Request 
+    //All Kyc Tabs status stored in redux as false
+    //Contact Info Post Request
 
     [updateContactInfo.pending]: (state, action) => {
       state.status = "pending";
@@ -815,6 +794,19 @@ export const kycSlice = createSlice({
       state.status = "failed";
       state.error = action.error.message;
     },
+    [saveBusinessInfo.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [saveBusinessInfo.fulfilled]: (state, action) => {
+      state.BusiOverviewwStatus = action.payload;
+      // console.log(action.payload, "===>");
+    },
+    [saveBusinessInfo.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+
+    //All Kyc Tabs status stored in redux as false
 
     // DOC UPLOAD KYC //
     [kycDocumentUploadList.pending]: (state, action) => {
@@ -861,9 +853,8 @@ export const kycSlice = createSlice({
       state.OtpVerificationResponseForPhone = action.payload;
 
       if (action.payload?.status === true) {
-        state.kycUserList.isContactNumberVerified = 1
+        state.kycUserList.isContactNumberVerified = 1;
       }
-
     },
     [otpVerificationForContactForPhone.rejected]: (state, action) => {
       state.status = "failed";
@@ -877,7 +868,7 @@ export const kycSlice = createSlice({
     [otpVerificationForContactForEmail.fulfilled]: (state, action) => {
       state.OtpVerificationResponseForEmail = action.payload;
       if (action.payload?.status === true) {
-        state.kycUserList.isEmailVerified = 1
+        state.kycUserList.isEmailVerified = 1;
       }
 
       // console.log(action.payload.status,"==> Verification")
@@ -889,7 +880,6 @@ export const kycSlice = createSlice({
     [verifyKycEachTab.fulfilled]: (state, action) => {
       state.kycVerificationForAllTabs = action.payload;
     },
-
   },
 });
 
@@ -899,7 +889,6 @@ export const {
   loadKycUserList,
   loadKycVericationForAllTabs,
 
- 
   isPhoneVerified,
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;
