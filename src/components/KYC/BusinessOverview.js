@@ -21,6 +21,7 @@ import {
 
 function BusinessOverview(props) {
   const setTab = props.tab;
+  const setTitle = props.title;
   const { role, kycid } = props;
   const [data, setData] = useState([]);
   const [appUrl, setAppUrl] = useState("");
@@ -255,6 +256,7 @@ function BusinessOverview(props) {
           // console.log("This is the response", res);
           toast.success(res.payload.message);
           setTab(3);
+          setTitle("BUSINESS DETAILS");
         } else {
           toast.error("Something Went Wrong! Please try again.");
         }

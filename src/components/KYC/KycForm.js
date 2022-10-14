@@ -49,33 +49,10 @@ function KycForm() {
     (state) => state.kyc.BusiOverviewwStatus.status
   );
 
-  console.log(
-    BusinessOverviewStatus,
-    "<===  Business Overview Response Status ===>"
-  );
-
-  const BusiOverviewStatus = () => {
-    return (
-      <a
-        href={() => false}
-        className={
-          tab === 2
-            ? " nav-link activepaylink-kyc text-font"
-            : "inactive text-font"
-            ? BusinessOverviewStatus === true
-              ? "nav-link inactive text-font-ForStatusChange text-success"
-              : "nav-link inactive text-font"
-            : ""
-        }
-        onClick={() => {
-          SetTab(2);
-          setTitle("BUSINESS OVERVIEW");
-        }}
-      >
-        Business Overview
-      </a>
-    );
-  };
+  // console.log(
+  //   BusinessOverviewStatus,
+  //   "<===  Business Overview Response Status ===>"
+  // );
 
   let history = useHistory();
 
@@ -209,24 +186,21 @@ function KycForm() {
                             </li>
 
                             <li className="nav-item p-2">
-                              <BusiOverviewStatus>
-                                {" "}
-                                <a
-                                  href={() => false}
-                                  className={
-                                    "nav-link " +
-                                    (tab === 2
-                                      ? "activepaylink-kyc text-font"
-                                      : "inactive text-font")
-                                  }
-                                  onClick={() => {
-                                    SetTab(2);
-                                    setTitle("BUSINESS OVERVIEW");
-                                  }}
-                                >
-                                  Business Overview
-                                </a>
-                              </BusiOverviewStatus>
+                              <a
+                                href={() => false}
+                                className={
+                                  "nav-link " +
+                                  (tab === 2
+                                    ? "activepaylink-kyc text-font"
+                                    : "inactive text-font")
+                                }
+                                onClick={() => {
+                                  SetTab(2);
+                                  setTitle("BUSINESS OVERVIEW");
+                                }}
+                              >
+                                Business Overview
+                              </a>
                             </li>
 
                             <li className="nav-item p-2">
@@ -363,6 +337,7 @@ function KycForm() {
                             role={roles}
                             kycid={kycid}
                             tab={SetTab}
+                            title={setTitle}
                           />
                         )) ||
                           (tab === 2 && (
@@ -370,6 +345,7 @@ function KycForm() {
                               role={roles}
                               kycid={kycid}
                               tab={SetTab}
+                              title={setTitle}
                             />
                           )) ||
                           (tab === 3 && (
@@ -377,6 +353,7 @@ function KycForm() {
                               role={roles}
                               kycid={kycid}
                               tab={SetTab}
+                              title={setTitle}
                             />
                           )) ||
                           /* (tab === 4 && (
@@ -391,6 +368,7 @@ function KycForm() {
                               role={roles}
                               kycid={kycid}
                               tab={SetTab}
+                              title={setTitle}
                             />
                           )) ||
                           (tab === 5 && (
@@ -398,6 +376,7 @@ function KycForm() {
                               role={roles}
                               kycid={kycid}
                               tab={SetTab}
+                              title={setTitle}
                             />
                           )) ||
                           (tab === 6 && (
