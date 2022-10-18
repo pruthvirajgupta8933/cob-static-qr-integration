@@ -67,7 +67,7 @@ const NavBar = () => {
             <div
               class="dropdown-menu text-white"
               style={{
-                backgroundColor: "#0156B3",
+                backgroundColor: "rgb(20, 6, 51)",
                 height: "7rem",
                 width: "10rem",
               }}

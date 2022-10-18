@@ -527,7 +527,7 @@ function BusinessOverview(props) {
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
                 <h4 class="text-kyc-label text-nowrap">
-                  Avg ticket size<span style={{ color: "red" }}>*</span>
+                  Avg Ticket Size<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
               <div class="col-sm-7 col-md-7 col-lg-7">
