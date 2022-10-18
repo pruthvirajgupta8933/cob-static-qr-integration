@@ -114,7 +114,7 @@ const VerifyEmailPhone = (props) => {
                       <br />
                       {errors.emailotp && <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999", top: '157px' }} >{errors.emailotp}</p>}
                     </div>
-                    <button type="button" name="emailverify" className="btn btn-primary mb-2" value="firstone" onClick={() => emailverify()} >Verify</button>
+                    <button type="button" name="emailverify" className="userIdbutton text-white mb-2" value="firstone" onClick={() => emailverify()} >Verify</button>
                     {/* onClick={()=>props.props('a3')} */}
                   </div>
 
@@ -129,7 +129,7 @@ const VerifyEmailPhone = (props) => {
                       <br />
                       {errors.smsotp && <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999", top: '214px' }} >{errors.smsotp}</p>}
                     </div>
-                    <button type="submit" name="otpverify" value="secondone" className="btn btn-primary mb-2" onClick={() => smsverify()} >Verify</button>
+                    <button type="submit" name="otpverify" value="secondone" className="userIdbutton mb-2" onClick={() => smsverify()} >Verify</button>
                     {/* onClick={()=>props.props('a3')}  */}
                   </div>
                 </form>

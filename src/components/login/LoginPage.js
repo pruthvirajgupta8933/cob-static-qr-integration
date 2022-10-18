@@ -87,7 +87,6 @@ function LoginPage() {
     setLoading(true);
     dispatch(login({ username, password }))
       .then((res) => {
-        console.log('this is response ', res)
         // console.log(res?.payload?.user)
         if (res?.payload?.user) {
           const activeStatus = res?.payload?.user?.loginStatus;
@@ -104,10 +103,13 @@ function LoginPage() {
           }
         } else {
           setLoading(false);
+          console.log("toasrerror",res)
+         
           toast.error(res.error.message);
         }
       })
       .catch((err) => {
+        
         toast.error("Something went wrong" + err?.message);
         setLoading(false);
         // console.log(err)
