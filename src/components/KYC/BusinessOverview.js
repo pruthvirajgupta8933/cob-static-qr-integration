@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import API_URL from "../../config";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
+import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import {
   businessType,
   busiCategory,
@@ -19,6 +20,8 @@ import {
 } from "../../slices/kycSlice";
 
 function BusinessOverview(props) {
+  const setTab = props.tab;
+  const setTitle = props.title;
   const { role, kycid } = props;
   const [data, setData] = useState([]);
   const [appUrl, setAppUrl] = useState("");
@@ -29,7 +32,7 @@ function BusinessOverview(props) {
   const [collection, setCollection] = useState([]);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
-  
+
   const { user } = useSelector((state) => state.auth);
   var clientMerchantDetailsList = user.clientMerchantDetailsList;
 
@@ -64,7 +67,7 @@ function BusinessOverview(props) {
   ];
 
   // console.log(ErpCheck,"<======Erp Check=====>")
-  console.log(KycList, "<===List===>");
+  // console.log(KycList, "<===List===>");
 
   // const erpCheck = () => {
   //   if(ErpCheck === true)
@@ -103,14 +106,14 @@ function BusinessOverview(props) {
     company_website: KycList.companyWebsite,
     seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
     website_app_url: "False",
+    avg_ticket_size: KycList?.avg_ticket_size,
     collection_type_id: "6752767",
     collection_frequency_id: "3787910",
     ticket_size: "10",
-    expected_transactions: "10,000",
+    expected_transactions: "",
     form_build: "Yes",
   };
 
- 
   // const validationSchema = Yup.object({
   //   business_type: Yup.string().required("Select BusinessType").nullable(),
   //   business_category: Yup.string().required("Select Business Category").nullable(),
@@ -128,12 +131,28 @@ function BusinessOverview(props) {
   //   form_build: Yup.string().required("Required").nullable(),
   // });
   const validationSchema = Yup.object({
-    business_type: Yup.string().required("Select BusinessType").nullable(),
-    business_category: Yup.string().required("Select Business Category").nullable(),
-    billing_label: Yup.string().required("Required").nullable(),
-    company_website: Yup.string().required("Required").nullable(),
-    expected_transactions: Yup.string().required("Required").nullable(),
-  
+    business_type: Yup.string()
+      .required("Select BusinessType")
+      .nullable(),
+    business_category: Yup.string()
+      .required("Select Business Category")
+      .nullable(),
+    billing_label: Yup.string()
+      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .required("Required")
+      .nullable(),
+    company_website: Yup.string()
+      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .required("Required")
+      .nullable(),
+    expected_transactions: Yup.string()
+      .required("Required")
+      .matches(Regex.digit, RegexMsg.digit)
+      .nullable(),
+    avg_ticket_size: Yup.string()
+      .matches(Regex.digit, RegexMsg.digit)
+      .required("Required")
+      .nullable(),
   });
 
   ////Get Api for Buisness overview///////////
@@ -209,48 +228,53 @@ function BusinessOverview(props) {
   }, []);
 
   const onSubmit = (values) => {
-
-
-    console.log(values,"===>")
+    // console.log(values, "===>");
     if (role.merchant) {
       dispatch(
         saveBusinessInfo({
           business_type: values.business_type,
           business_category: values.business_category,
-           business_model: values.business_model,
-           billing_label: values.billing_label,
+          business_model: values.business_model,
+          billing_label: values.billing_label,
           company_website: values.company_website,
-           erp_check: values.erp_check,
-           platform_id: values.platform_id,
-           collection_type_id: values.collection_type_id,
-           collection_frequency_id: values.collection_frequency_id,
+          erp_check: values.erp_check,
+          platform_id: values.platform_id,
+          collection_type_id: values.collection_type_id,
+          collection_frequency_id: values.collection_frequency_id,
           expected_transactions: values.expected_transactions,
           form_build: values.form_build,
-           ticket_size: values.ticket_size,
+          avg_ticket_size: values.avg_ticket_size,
+          ticket_size: values.ticket_size,
           modified_by: loginId,
           login_id: loginId,
-           is_website_url: values.seletcted_website_app_url==="Yes" ? "True" : "False",
-           website_app_url:values.website_app_url
+          is_website_url:
+            values.seletcted_website_app_url === "Yes" ? "True" : "False",
+          website_app_url: values.website_app_url,
         })
       ).then((res) => {
         if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
           // console.log("This is the response", res);
           toast.success(res.payload.message);
+          setTab(3);
+          setTitle("BUSINESS DETAILS");
         } else {
           toast.error("Something Went Wrong! Please try again.");
         }
       });
     } else if (role.verifier) {
       const veriferDetails = {
-        "login_id": kycid,
-        "business_info_verified_by": loginId
-      }
-      dispatch(verifyKycEachTab(veriferDetails)).then(resp => {
-        resp?.payload?.business_info_status && toast.success(resp?.payload?.business_info_status);
-        resp?.payload?.detail && toast.error(resp?.payload?.detail);
-
-      }).catch((e) => { toast.error("Try Again Network Error") });
-
+        login_id: kycid,
+        business_info_verified_by: loginId,
+      };
+      dispatch(verifyKycEachTab(veriferDetails))
+        .then((resp) => {
+          resp?.payload?.business_info_status &&
+            toast.success(resp?.payload?.business_info_status);
+          resp?.payload?.detail && toast.error(resp?.payload?.detail);
+        })
+        .catch((e) => {
+          toast.error("Try Again Network Error");
+        });
     }
   };
 
@@ -261,13 +285,13 @@ function BusinessOverview(props) {
 
   useEffect(() => {
     if (role.approver) {
-      setReadOnly(true)
-      setButtonText("Approve and Next") 
-    }else if(role.verifier){
-      setReadOnly(true)
-      setButtonText("Verify and Next")
+      setReadOnly(true);
+      setButtonText("Approve and Next");
+    } else if (role.verifier) {
+      setReadOnly(true);
+      setButtonText("Verify and Next");
     }
-  }, [role])
+  }, [role]);
 
   return (
     <div className="col-md-12 p-3">
@@ -279,11 +303,14 @@ function BusinessOverview(props) {
       >
         {(formik) => (
           <Form>
-
-<div class="form-group row">
-    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2"><h4 class ="text-kyc-label text-nowrap">Business Type<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-7 col-md-7 col-lg-7">
-    <FormikController
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+                <h4 class="text-kyc-label text-nowrap">
+                  Business Type<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
                   control="select"
                   name="business_type"
                   options={data}
@@ -291,12 +318,16 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-    </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-sm-4 col-md-4 col-lg-4 p-2 mt-0"><h4 class ="text-kyc-label text-nowrap">Business Sub-Category<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-7 col-md-7 col-lg-7">
-    <FormikController
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 p-2 mt-0">
+                <h4 class="text-kyc-label text-nowrap">
+                  Business Category<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
                   control="select"
                   name="business_category"
                   options={businessCategory}
@@ -304,11 +335,10 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-    </div>
-  </div>
+              </div>
+            </div>
 
-          
-{/* 
+            {/* 
               <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Business Model <span style={{color:"red"}}>*</span></h4></label>
                 
@@ -322,25 +352,37 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-           
 
-           <div class="form-group row">
-    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0"><h4 class ="text-kyc-label text-nowrap">Business Label<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-7 col-md-7 col-lg-7">
-    <FormikController
-                  control="input"
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
+                <h4 class="text-kyc-label text-nowrap">
+                  Business Label<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
+                  control="textArea"
                   type="text"
                   name="billing_label"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-    </div>
-  </div>
+              </div>
+              <div
+                class="col-sm-7 col-md-7 col-lg-7 "
+                style={{ marginLeft: "238px", color: "red", fontSize: "12px" }}
+              >
+                <span>
+                  Please give a brief description of the nature of your
+                  business. Please give examples of products you sell, business
+                  categories you operate in, your customers and channels through
+                  which you operate (website, offline retail).
+                </span>
+              </div>
+            </div>
 
-           
-
-              {/* <div className="form-group col-md-4">
+            {/* <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Do you have your own ERP<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
@@ -352,7 +394,7 @@ function BusinessOverview(props) {
                 />
               </div> */}
 
-              {/* <div className="form-group col-md-4 mt-3">
+            {/* <div className="form-group col-md-4 mt-3">
               <label><h4 class ="font-weight-bold">Platform<span style={{color:"red"}}>*</span></h4></label>
                 
                 <FormikController
@@ -364,7 +406,6 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-          
 
             {/* <div className="form-row">
               <div className="form-group col-md-4">
@@ -386,7 +427,7 @@ function BusinessOverview(props) {
                 />
               </div> */}
 
-              {/* {formik.values?.seletcted_website_app_url === "Yes" && (
+            {/* {formik.values?.seletcted_website_app_url === "Yes" && (
                 <div className="form-group col-md-4">
                       <label><h4 class ="font-weight-bold">Enter Website/App url<span style={{color:"red"}}>*</span></h4></label>
                   <FormikController
@@ -400,7 +441,7 @@ function BusinessOverview(props) {
                 </div>
               )} */}
 
-              {/* <div className="form-group col-md-4">
+            {/* <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Type Of Collection <span style={{color:"red"}}>*</span></h4></label>
                 
                 <FormikController
@@ -412,10 +453,8 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-           
 
-          
-              {/* <div className="form-group col-md-4">
+            {/* <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Collection Frequency <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="select"
@@ -426,21 +465,24 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-   <div class="form-group row">
-  <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0"><h4 class ="text-kyc-label text-nowrap">Company Website<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-7 col-md-7 col-lg-7">
-    <FormikController
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
+                <h4 class="text-kyc-label text-nowrap">
+                  Company Website<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
                   control="input"
                   type="text"
                   name="company_website"
-                 
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-    </div>
-  </div>
-              {/* <div className="form-group col-md-4 mt-3">
+              </div>
+            </div>
+            {/* <div className="form-group col-md-4 mt-3">
               <label><h4 class ="font-weight-bold">Company website <span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
                   control="input"
@@ -452,7 +494,7 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-{/* 
+            {/* 
               <div className="form-group col-md-4 mt-3">
               <label><h4 class ="font-weight-bold">Ticket size<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
@@ -464,12 +506,15 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-           
 
-  <div class="form-group row">
-  <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0"><h4 class ="text-kyc-label text-nowrap">Expected Transactions<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-7 col-md-7 col-lg-7">
-       <FormikController
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
+                <h4 class="text-kyc-label text-nowrap">
+                  Expected Transactions<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
                   control="input"
                   type="text"
                   name="expected_transactions"
@@ -477,11 +522,26 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-    </div>
-  </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
+                <h4 class="text-kyc-label text-nowrap">
+                  Avg Ticket Size<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="avg_ticket_size"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+              </div>
+            </div>
 
-        
-          
             {/* <div className="form-group col-md-5">
               <label><h4 class ="font-weight-bold">Do you need SabPaisa to build your form<span style={{color:"red"}}>*</span></h4></label>
                 <FormikController
@@ -493,22 +553,33 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-           
 
-           <div class="my-5 p-2">
-                <hr style={{borderColor:'#D9D9D9',textShadow:"2px 2px 5px grey",width:"100%"}}/>
+            <div class="my-5 p-2">
+              <hr
+                style={{
+                  borderColor: "#D9D9D9",
+                  textShadow: "2px 2px 5px grey",
+                  width: "100%",
+                }}
+              />
               <div class="mt-2">
-              <div class="row">
-              <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
-            {VerifyKycStatus === "Verified" ? null : (
-             <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
-                <h4 className="text-white text-kyc-sumit">  {buttonText}</h4>
-              </button>
-              
-            )}
-            </div>
-            </div>
-            </div>
+                <div class="row">
+                  <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
+                    {VerifyKycStatus === "Verified" ? null : (
+                      <button
+                        className="btn float-lg-right"
+                        type="submit"
+                        style={{ backgroundColor: "#0156B3" }}
+                      >
+                        <h4 className="text-white text-kyc-sumit">
+                          {" "}
+                          {buttonText}
+                        </h4>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </Form>
         )}

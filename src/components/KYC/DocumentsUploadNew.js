@@ -20,7 +20,10 @@ import $ from "jquery";
 
 // import $ from "jquery"
 
-function DocumentsUpload() {
+function DocumentsUpload(props) {
+  const setTab = props.tab;
+  const setTitle = props.title;
+
   function readURL(input, id) {
     if (input.files && input.files[0]) {
       var reader = new FileReader();
@@ -108,6 +111,8 @@ function DocumentsUpload() {
     const kycData = { bodyFormData, docType };
     dispatch(merchantInfo(kycData))
       .then(function(response) {
+        setTab(6);
+        setTitle("SUBMIT KYC");
         toast.success("Merchant document saved successfully");
         console.log(response);
       })
@@ -268,6 +273,83 @@ function DocumentsUpload() {
                       </div>
                     </div>
                   </>
+                ) : docTypeIdDropdown === "3" ? (
+                  <>
+                  <div class="col-lg-6 ">
+                    <div className="file-upload  border-dotted">
+                      <div className="image-upload-wrap ">
+                        <FormikController
+                          control="file"
+                          type="file"
+                          name="pan_card"
+                          className="file-upload-input"
+                          id="3"
+                          onChange={(e) => handleChange(e, 4)}
+                          // disabled={VerifyKycStatus === "Verified" ? true : false}
+                          // readOnly={readOnly}
+                        />
+                        <div className="drag-text">
+                          <h3 class="p-2 font-16">Upload TIN</h3>
+                          <img
+                            alt="Doc"
+                            src={plus}
+                            style={{ width: 30 }}
+                            className="mb-4"
+                          />
+                          <p class="card-text">Upto 2 MB file size</p>
+                        </div>
+                      </div>
+                    </div>
+                    {/* uploaded document preview */}
+                    <div className="file-upload-content imagepre_3">
+                      <img
+                        className="file-upload-image imagepre_sub_3"
+                        src="#"
+                        alt="Document"
+                      />
+                    </div>
+                  </div>
+                </>
+                
+                ) : docTypeIdDropdown === "4" ? (
+                  <>
+                  <div class="col-lg-6 ">
+                    <div className="file-upload  border-dotted">
+                      <div className="image-upload-wrap ">
+                        <FormikController
+                          control="file"
+                          type="file"
+                          name="pan_card"
+                          className="file-upload-input"
+                          id="3"
+                          onChange={(e) => handleChange(e, 4)}
+                          // disabled={VerifyKycStatus === "Verified" ? true : false}
+                          // readOnly={readOnly}
+                        />
+                        <div className="drag-text">
+                          <h3 class="p-2 font-16">Upload GSTIN</h3>
+                          <img
+                            alt="Doc"
+                            src={plus}
+                            style={{ width: 30 }}
+                            className="mb-4"
+                          />
+                          <p class="card-text">Upto 2 MB file size</p>
+                        </div>
+                      </div>
+                    </div>
+                    {/* uploaded document preview */}
+                    <div className="file-upload-content imagepre_3">
+                      <img
+                        className="file-upload-image imagepre_sub_3"
+                        src="#"
+                        alt="Document"
+                      />
+                    </div>
+                  </div>
+                </>
+                
+                
                 ) : (
                   <></>
                 )}

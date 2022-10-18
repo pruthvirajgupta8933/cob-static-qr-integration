@@ -18,6 +18,7 @@ import API_URL from "../../config";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 
+
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const FORM_VALIDATION = Yup.object().shape({
@@ -81,7 +82,7 @@ function Registration() {
     axiosInstanceAuth
       .get(API_URL.Business_Category_CODE)
       .then((resp) => {
-        const data = resp.data.message;
+        const data = resp.data;
         // console.log(data,"my all dattaaa")
 
         setBusinessCode(data);
@@ -150,7 +151,7 @@ function Registration() {
   useEffect(() => {
     // console.log("isUserRegistered",isUserRegistered);
     if (isUserRegistered === true) {
-      toast.success("User Registered, Verify Your Email", {
+      toast.success(message.message, {
         position: "top-right",
         autoClose: 2000,
         limit: 1,
@@ -375,12 +376,15 @@ function Registration() {
                               validationSchema={FORM_VALIDATION}
                               onSubmit={handleRegistration}
                             >
-                              {({ values, setFieldValue }) => (
+                               {(formik) => (
+                                
+
                                 <Form
                                   acceptCharset="utf-8"
                                   action="#"
                                   className="simform"
                                 >
+                                  
                                   {/* {console.log(values)} */}
                                   <div className="sminputs">
                                     <div className="input full- optional">
@@ -512,7 +516,7 @@ function Registration() {
                                           </option>
                                           {businessCode.map((business, i) => (
                                             <option
-                                              value={business.category_code}
+                                              value={business.category_id}
                                               key={i}
                                             >
                                               {business.category_name}
@@ -673,6 +677,7 @@ function Registration() {
                                         type="submit"
                                         defaultValue="Create Account"
                                         // disabled={btnDisable}
+                                        disabled={(!(formik.isValid && formik.dirty)) ? true : false}
                                         data-rel={btnDisable}
                                       >
                                         Signup
@@ -770,7 +775,7 @@ function Registration() {
             </div>
           </div>
           <p className="footerforcopyright">
-            Copyright 2022 SabPaisa, all rights reserve version 0.1
+            Copyright  © 2022 SabPaisa, all rights reserve version 0.1
           </p>
         </div>
 

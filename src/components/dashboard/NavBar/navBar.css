@@ -10,7 +10,7 @@
     linear,
     100% 100%,
     0% 0%,
-    from(#0156b3),
+    from(rgb(20, 6, 51)),
     to(#ebebeb)
   ) !important;
   color: black !important;

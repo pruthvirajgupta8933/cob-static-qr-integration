@@ -12,6 +12,20 @@
   padding-left: 71px;
 }
 
+/* .inactive::before {
+  position: fixed;
+  left: -48px;
+  content: url(../../assets/images/check.png);
+  display: inline-block;
+} */
+.activepaylink-kyc::after {
+  position: fixed;
+  left: 153px;
+  content: url(../../assets/images/arrow_back_ios.png);
+  transform: matrix(1, 0, 0, -1, 11, 1);
+  display: inline-block;
+}
+
 .btnbackground {
   background-color: #0156b3;
 }
@@ -131,6 +145,54 @@
   }
 }
 
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .optbtn {
+    display: none;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .optbtn {
+    display: none;
+  }
+}
+
+/* For PAN VALIDATION IN BUSINESS Details */
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .panbtn {
+    display: none;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .panbtn {
+    position: absolute !important;
+    right: -85px;
+    z-index: 999;
+    top: -1px;
+    margin-right: -5px !important;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .panbtn {
+    position: absolute !important;
+    right: -85px;
+    z-index: 999;
+    top: -1px;
+    margin-right: -5px !important;
+  }
+}
+
+/* For PAN VALIDATION IN BUSINESS Details */
+
 .kyc-modal_form {
   width: 1696px;
   display: revert;
@@ -151,6 +213,21 @@
   font-weight: 700;
   line-height: 26px;
   letter-spacing: 0em;
+}
+
+.text-font-ForStatusChange::before {
+  position: fixed;
+  left: -48px;
+  content: url(../../assets/images/check.png);
+  display: inline-block;
+}
+.text-font-ForStatusChange {
+  font-family: Satoshi;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: 0em;
+  color: green;
 }
 
 .text-kyc-header {

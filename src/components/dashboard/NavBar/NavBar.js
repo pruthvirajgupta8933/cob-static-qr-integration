@@ -30,7 +30,7 @@ const NavBar = () => {
   };
   return (
     <div>
-      <nav class="navbar navbar-light" style={{ backgroundColor: "#0156B3" }}>
+      <nav class="navbar navbar-light" style={{ background: '#140633' }}>
         <ul class="navbar-brand mb-0 h1">
           <img src={profile} alt="profile" title="profile" />
           <h3 className="text-white float-right mt-0">Welcome back</h3>
@@ -67,7 +67,7 @@ const NavBar = () => {
             <div
               class="dropdown-menu text-white"
               style={{
-                backgroundColor: "#0156B3",
+                backgroundColor: "rgb(20, 6, 51)",
                 height: "7rem",
                 width: "10rem",
               }}

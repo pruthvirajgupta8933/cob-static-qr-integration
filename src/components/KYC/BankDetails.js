@@ -7,9 +7,17 @@ import axios from "axios";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { kycBankNames, saveMerchantBankDetais, verifyKycEachTab } from "../../slices/kycSlice";
+import {
+  kycBankNames,
+  saveMerchantBankDetais,
+  verifyKycEachTab,
+} from "../../slices/kycSlice";
+import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 
 function BankDetails(props) {
+  const setTab = props.tab;
+  const setTitle = props.title;
+
   const { role, kycid } = props;
   const dispatch = useDispatch();
 
@@ -37,20 +45,37 @@ function BankDetails(props) {
     account_number: KycList?.accountNumber,
     confirm_account_number: KycList?.accountNumber,
     ifsc_code: KycList?.ifscCode,
-    bank_id:  KycList?.merchant_account_details?.bankId,
+    bank_id: KycList?.merchant_account_details?.bankId,
     account_type: KycList?.bankName,
-    branch:  KycList?.merchant_account_details?.branch,
+    branch: KycList?.merchant_account_details?.branch,
   };
   const validationSchema = Yup.object({
-    account_holder_name: Yup.string().required("Required").nullable(),
-    account_number: Yup.string().required("Required").nullable(),
+    account_holder_name: Yup.string()
+      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .required("Required")
+      .nullable(),
+    account_number: Yup.string()
+      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      .required("Required")
+      .nullable(),
     // confirm_account_number: Yup.string()
     //   .oneOf([Yup.ref("account_number"), null], "Account Number  must match")
     //   .required("Confirm Account Number Required").nullable(),
-    ifsc_code: Yup.string().required("Required").nullable(),
-    account_type: Yup.string().required("Required").nullable(),
-    branch: Yup.string().required("Required").nullable(),
-    bank_id: Yup.string().required("Required").nullable(),
+    ifsc_code: Yup.string()
+      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+      .required("Required")
+      .nullable(),
+    account_type: Yup.string()
+      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .required("Required")
+      .nullable(),
+    branch: Yup.string()
+      .required("Required")
+      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .nullable(),
+    bank_id: Yup.string()
+      .required("Required")
+      .nullable(),
   });
 
   //---------------GET ALL BANK NAMES DROPDOWN--------------------
@@ -72,9 +97,7 @@ function BankDetails(props) {
   // ------------------------------------------
 
   const onSubmit = (values) => {
-
     if (role.merchant) {
-
       dispatch(
         saveMerchantBankDetais({
           account_holder_name: values.account_holder_name,
@@ -94,58 +117,59 @@ function BankDetails(props) {
           // console.log(res)
           // console.log("This is the response", res);
           toast.success(res.payload.message);
+          setTab(5);
+          setTitle("DOCUMENTS UPLOAD");
         } else {
           toast.error("Something Went Wrong! Please try again.");
         }
       });
-      
     } else if (role.verifier) {
       const veriferDetails = {
-        "login_id": kycid,
-        "settlement_info_verified_by": loginId
-      }
-      dispatch(verifyKycEachTab(veriferDetails)).then(resp => {
-        resp?.payload?.settlement_info_status && toast.success(resp?.payload?.settlement_info_status);
-        resp?.payload?.detail && toast.error(resp?.payload?.detail);
-      }).catch((e) => { toast.error("Try Again Network Error") });
-
+        login_id: kycid,
+        settlement_info_verified_by: loginId,
+      };
+      dispatch(verifyKycEachTab(veriferDetails))
+        .then((resp) => {
+          resp?.payload?.settlement_info_status &&
+            toast.success(resp?.payload?.settlement_info_status);
+          resp?.payload?.detail && toast.error(resp?.payload?.detail);
+        })
+        .catch((e) => {
+          toast.error("Try Again Network Error");
+        });
     }
-    
   };
 
   return (
-    <div className="col-md-12 col-md-offset-4" style={{width: "100%"}}>
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-      enableReinitialize={true}
-    >
-      {formik => (
-
-        <Form>
-          {console.log(formik)}
-          <div class="form-group row">
+    <div className="col-md-12 col-md-offset-4" style={{ width: "100%" }}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+        enableReinitialize={true}
+      >
+        {(formik) => (
+          <Form>
+            {/* {console.log(formik)} */}
+            <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
-                Account Holder Name<span style={{ color: "red" }}>*</span>
+                  Account Holder Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-             
+
               <div class="col-sm-7 col-md-7 col-lg-7">
-              <FormikController
-                        control="input"
-                        type="text"
-                        name="account_holder_name"
-                        className="form-control"
-                        disabled={VerifyKycStatus === "Verified" ? true : false}
-                        readOnly={readOnly}
-                      />
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="account_holder_name"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
               </div>
             </div>
-      
 
-            
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -153,17 +177,17 @@ function BankDetails(props) {
                 </h4>
               </label>
               <div class="col-sm-7 col-md-7 col-lg-7">
-              <FormikController
-                        control="input"
-                        type="text"
-                        name="account_type"
-                        className="form-control"
-                        disabled={VerifyKycStatus === "Verified" ? true : false}
-                        readOnly={readOnly}
-                      />
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="account_type"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
               </div>
             </div>
-            
+
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -171,14 +195,14 @@ function BankDetails(props) {
                 </h4>
               </label>
               <div class="col-sm-7 col-md-7 col-lg-7">
-              <FormikController
-                        control="input"
-                        type="text"
-                        name="ifsc_code"
-                        className="form-control"
-                        disabled={VerifyKycStatus === "Verified" ? true : false}
-                        readOnly={readOnly}
-                      />
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="ifsc_code"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
               </div>
             </div>
 
@@ -189,14 +213,14 @@ function BankDetails(props) {
                 </h4>
               </label>
               <div class="col-sm-7 col-md-7 col-lg-7 ">
-              <FormikController
-                        control="input"
-                        type="text"
-                        name="branch"
-                        className="form-control"
-                        disabled={VerifyKycStatus === "Verified" ? true : false}
-                        readOnly={readOnly}
-                      />
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="branch"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
               </div>
             </div>
 
@@ -207,15 +231,14 @@ function BankDetails(props) {
                 </h4>
               </label>
               <div class="col-sm-7 col-md-7 col-lg-7">
-              <FormikController
-                          control="select"                          
-                          name="bank_id"
-                          className="form-control"
-                          options={data}
-                          disabled={VerifyKycStatus === "Verified" ? true : false}
-                          readOnly={readOnly}
-                        />
-                    
+                <FormikController
+                  control="select"
+                  name="bank_id"
+                  className="form-control"
+                  options={data}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
               </div>
             </div>
 
@@ -226,17 +249,16 @@ function BankDetails(props) {
                 </h4>
               </label>
               <div class="col-sm-7 col-md-7 col-lg-7">
-              <FormikController
-                          control="input"
-                          type="text"
-                          name="account_number"
-                          className="form-control"
-                          disabled={VerifyKycStatus === "Verified" ? true : false}
-                          readOnly={readOnly}
-                        />
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="account_number"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
               </div>
             </div>
-          
 
             <div class="my-5 p-2">
               <hr
@@ -246,24 +268,28 @@ function BankDetails(props) {
                   width: "100%",
                 }}
               />
-             
-              <div class="row">
-              <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
-          {VerifyKycStatus === "Verified" ? null : (
-         <button className="btn float-lg-right" type="submit" style={{backgroundColor:"#0156B3"}}>
-               <h4 className="text-white text-kyc-sumit"> {buttonText}</h4>
-              </button>
-            )}
-          </div>
-          </div>
-          </div>
-          
-         
-        </Form>
-      )}
-    </Formik>
 
-  </div>
-)
+              <div class="row">
+                <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
+                  {VerifyKycStatus === "Verified" ? null : (
+                    <button
+                      className="btn float-lg-right"
+                      type="submit"
+                      style={{ backgroundColor: "#0156B3" }}
+                    >
+                      <h4 className="text-white text-kyc-sumit">
+                        {" "}
+                        {buttonText}
+                      </h4>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </div>
+  );
 }
-export default BankDetails
+export default BankDetails;

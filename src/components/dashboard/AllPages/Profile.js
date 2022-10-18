@@ -10,6 +10,11 @@ import profileService from "../../../services/profile.service";
 import { toast, Zoom } from "react-toastify";
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 import NavBar from "../NavBar/NavBar";
+import { message_icon } from "../../../assets/images/message_icon.png"
+import green_profile from "../../../assets/images/green_profile.png"
+import dark_profile from "../../../assets/images/dark_profile.png"
+// import  {notification_icon} from "../../../assets/images/notification_icon.png"
+// import  {profile_icon} from "../../../assets/images/profile_icon.png"
 
 export const Profile = () => {
   const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
@@ -46,7 +51,7 @@ export const Profile = () => {
   if (localStorage.getItem("DC_bank_list") !== null) {
     initDClist = JSON.parse(localStorage.getItem("DC_bank_list"));
   }
-// console.log(clientMerchantDetailsList)
+  // console.log(clientMerchantDetailsList)
   // const clientMerchantDetailsList = user?.clientMerchantDetailsList;
   const clientId = user?.clientMerchantDetailsList[0]?.clientId;
   // console.log(clientId)
@@ -116,7 +121,7 @@ export const Profile = () => {
   //   clientAuthenticationType: clientAuthenticationType,
   // };
 
-   const INITIAL_FORM_STATE = {
+  const INITIAL_FORM_STATE = {
     loginId: loginId,
     clientName: clientContactPersonName,
     phone: clientMobileNo,
@@ -124,13 +129,14 @@ export const Profile = () => {
     ...(isCreateorUpdate && { clientCode: "" }),
     address: clientMerchantDetailsList && clientMerchantDetailsList[0]?.address,
     accountHolderName: accountHolderName,
+    accountType: "merchant",
     bankName: "",
     accountNumber: "",
     ifscCode: "",
     pan: "",
     clientAuthenticationType: "",
   };
-  
+
 
   // form validation rules
   const validationSchema = Yup.object().shape({
@@ -209,19 +215,19 @@ export const Profile = () => {
       dispatch(updateClientProfile({ data }));
     }
     // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
-   
+
   }
 
   const verifyClientCodeFn = (getCode) => {
     getCode.length > 5 && getCode.length < 7
       ? verifyClientCode(getCode)
-          .then((res) => {
-            setIsClientCodeValid(res.data);
-          })
-          .catch((error) => {
-            console.log(error);
-            setIsClientCodeValid(false);
-          })
+        .then((res) => {
+          setIsClientCodeValid(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsClientCodeValid(false);
+        })
       : setIsClientCodeValid(null);
   };
 
@@ -229,13 +235,13 @@ export const Profile = () => {
     // console.log(ifscCodeInput);
     ifscCodeInput.length > 5
       ? verifyIfcsCode(ifscCodeInput)
-          .then((res) => {
-            setIsIfscValid(res.data);
-          })
-          .catch((error) => {
-            console.log(error);
-            setIsIfscValid(false);
-          })
+        .then((res) => {
+          setIsIfscValid(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          setIsIfscValid(false);
+        })
       : setIsIfscValid(true);
   };
 
@@ -278,31 +284,43 @@ export const Profile = () => {
 
   return (
     <section className="ant-layout">
-    <div>
-      <NavBar />
-    </div>
+      <div>
+        <NavBar />
+      </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper">
+            {/* <div className="profile-header">
+              <div>
+                Choose Account
+              </div>
+              <div>
+
+              </div>
+            </div>
+            <img
+              
+              style={{Width:"36.67px",height:"36.67px",}}
+              src={green_profile} alt="" /> */}
             <h1 className="right_side_heading">
               My Profile{" "}
-              <Link to={`/dashboard/change-password`}>
-               <button
-                 type="button"
-                className="btn bttn bttnbackgroundkyc pull-right"
-               >
-                 <i className="fa fa-key" />
-                 <span> Change Password</span>
-               </button>
-             </Link>
+              {/* <Link to={`/dashboard/change-password`}>
+                <button
+                  type="button"
+                  className="btn bttn bttnbackgroundkyc pull-right"
+                >
+                  <i className="fa fa-key" />
+                  <span> Change Password</span>
+                </button>
+              </Link> */}
             </h1>
             <div className="ant-tabs ant-tabs-top ant-tabs-line">
-            <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
-                  <div className="ant-tabs-nav-container">
-                    <div className="ant-tabs-nav-wrap">
-                      <div className="ant-tabs-nav-scroll">
-                        <div className="ant-tabs-nav- ant-tabs-nav-animated">
-                          <div>
+              <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
+                <div className="ant-tabs-nav-container">
+                  <div className="ant-tabs-nav-wrap">
+                    <div className="ant-tabs-nav-scroll">
+                      <div className="ant-tabs-nav- ant-tabs-nav-animated">
+                        <div>
                           {/* <h4 style={{background: "#ffa2a2",padding: "14px",margin:" auto",textAlign: "center"}}> */}
                           {/* {message} */}
                           {/* </h4> */}
@@ -323,13 +341,13 @@ export const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
-                <div className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content" style={{marginLeft: '0%'}}>
-                  <div role="tabpanel" aria-hidden="false" className="ant-tabs-tabpane ant-tabs-tabpane-active">
-                    <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}}>
-                    </div>
-                    <div className="container col-sm-8">
-                  {/* <div
+              <div tabIndex={0} role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }} />
+              <div className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content" style={{ marginLeft: '0%' }}>
+                <div role="tabpanel" aria-hidden="false" className="ant-tabs-tabpane ant-tabs-tabpane-active">
+                  <div tabIndex={0} role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }}>
+                  </div>
+                  <div className="container col-sm-12 d-flex">
+                    {/* <div
                     tabIndex={0}
                     role="presentation"
                     style={{
@@ -344,184 +362,302 @@ export const Profile = () => {
                       className="container-"
                       style={{ margin: "0 !important" }}
                     > */}
-                      {/* start form area */}
-                      <div className="container col-sm-8">
-                        <div className="col-md-12-">
-{/* 
+                    {/* start form area */}
+                    <div className="container col-sm-8">
+                      <div className="col-md-12 ">
+                        {/* 
                         <Link to="/reset" className="float-right " style={{margin:"-23px"}}>Change Password</Link> */}
-{/*  
+                        {/*  
                           <div className="card mt-0">
                             <div className="card-header">Basic Details</div>
                             <div className="card-body-"> */}
-                              <form className="form-horizontal" onSubmit={handleSubmit(onSubmit)}>
-                                <div className="form-group col-sm-12">
+                        <form className="form-horizontal form_cmplt" onSubmit={handleSubmit(onSubmit)}>
+                          {/* <div className="form-group col-sm-12">
+
+                            <label
+                              htmlFor="loginId"
+                              className="control-label col-sm-3"
+                            >
+
+                              {" "}
+                              Login ID
+                            </label>
+                            <div className="col-sm-9">
+                              <input
+                                className={`form-control ${errors.loginId ? "is-invalid" : ""
+                                  }`}
+                                {...register("loginId")}
+                                type="text"
+                                id="loginId"
+                                name="loginId"
+                                style={{
+                                  width: "220px",
+                                  height: "50px"
+                                }}
+                                onChange={(e) => e.target.value}
+                                disabled
+                              />
+                              <div className="invalid-feedback">
+                                {errors.loginId?.message}
+                              </div>
+                            </div>
+                          </div> */}
+                          {/* <div className="form-group  col-sm-12">
+                            <label
+                              htmlFor="clientName"
+                              className="control-label col-sm-3 for_Headingss"
+                            >
+                              Profile Picture
+                            </label>
+                            <div className="col-sm-9">
                              
-                                  <label
-                                    htmlFor="loginId"
-                                    className="control-label col-sm-3"
-                                  >
-                                   
-                                    {" "}
-                                    Login ID
-                                  </label>
-                                  <div className="col-sm-9">
-                                  <input
-                                    className={`form-control ${
-                                      errors.loginId ? "is-invalid" : ""
+                              <button
+                                style={{ width: "176px", height: "40px" }}
+                                type="button"
+                                className="btn bttn bttnbackgroundkyc"
+                              >
+                                <i className="fa fa-key" />
+                                <span> Change Profile Photo</span>
+                              </button>
+                            
+                              <div className="invalid-feedback">
+                                {errors.clientName?.message}
+                              </div>
+                            </div>
+                          </div> */}
+
+
+
+                          <div className="form-group  col-sm-12 mt-3">
+                            <label
+                              htmlFor="clientName"
+                              className="control-label col-sm-4 for_Headingss"
+
+                            >
+                              User Name
+                            </label>
+                            <div className="col-sm-6 ml-3 float-start">
+                              <input
+                                className={`form-control ${errors.clientName ? "is-invalid" : ""
+                                  }`}
+                                {...register("clientName")}
+                                type="text"
+                                id="clientName"
+                                name="clientName"
+
+                                style={{
+                                  width: "220px",
+                                  height: "50px"
+                                }}
+                                onChange={(e) => e.target.value}
+                                readonly
+
+                              />
+                              <div className="invalid-feedback">
+                                {errors.clientName?.message}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="form-group col-sm-12 mt-3">
+                            <label
+                              htmlFor="email"
+                              className="control-label col-sm-4 for_Headingss"
+                            >
+                              Email id
+                            </label>
+
+                            <div className="col-sm-6 ml-3">
+                              <input
+                                type="text"
+                                id="email"
+                                style={{
+                                  width: "220px",
+                                  height: "50px"
+                                }}
+                                className="form-control border-0"
+                                name="email"
+                                {...register("email")}
+                                readonly
+                              />
+                              <p>{errors.email?.message}</p>
+                            </div>
+                          </div>
+                          <div className="form-group  col-sm-12 mt-3">
+                            <label
+                              htmlFor="clientName"
+                              className="control-label col-sm-4 for_Headingss"
+                            >
+                              Change Password
+                            </label>
+                            <div className="col-sm-6 ml-3">
+                              <Link to={`/dashboard/change-password`}>
+                                <button
+                                  style={{ width: "176px", height: "40px", border: "1px solid #4285F8" }}
+                                  type="button"
+
+                                >
+
+                                  <span className="for_passwrd">Change Password</span>
+                                </button>
+                              </Link>
+                              {/* <input
+                                className={`form-control ${errors.clientName ? "is-invalid" : ""
+                                  }`}
+                                {...register("clientName")}
+                                type="text"
+                                id="changepassword"
+                                name="changePassword"
+                                style={{
+                                  width: "220px",
+                                  height: "50px"
+                                }}
+                                onChange={(e) => e.target.value}
+                                readonly
+
+                              /> */}
+                              <div className="invalid-feedback">
+                                {errors.clientName?.message}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="form-group  col-sm-12 mt-3">
+                            <label
+                              htmlFor="phone"
+                              className="control-label col-sm-4 for_Headingss"
+                            >
+                              Account Type
+                            </label>
+                            <div className="col-sm-6 ml-3 ">
+                              <input
+                                className={`form-control border-0 ${errors.phone ? "is-invalid" : ""
+                                  }`}
+                                {...register("accountType")}
+                                type="text"
+                                id="accountType"
+                                name="accountType"
+                                style={{
+                                  width: "220px",
+                                  height: "50px"
+                                }}
+                                onChange={(e) => e.target.value}
+                                readonly
+                              />
+                              <div className="invalid-feedback">
+                                {errors.phone?.message}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="form-group  col-sm-12 mt-3">
+                            <label
+                              htmlFor="phone"
+                              className="control-label col-sm-4 for_Headingss"
+                            >
+                              Phone No.
+                            </label>
+                            <div className="col-sm-6 ml-3"> <input
+                              className={`form-control border-0 ${errors.phone ? "is-invalid" : ""
+                                }`}
+                              {...register("phone")}
+                              type="text"
+                              id="phone"
+                              name="phone"
+                              style={{
+                                width: "220px",
+                                height: "50px"
+                              }}
+                              onChange={(e) => e.target.value}
+                              readonly
+                            />
+                              <div className="invalid-feedback">
+                                {errors.phone?.message}
+                              </div>
+                            </div>
+                          </div>
+                          {/* Client Code Hide if already client created */}
+                          {isCreateorUpdate ? (
+                            <div className="form-group col-sm-12">
+                              <label
+                                htmlFor="clientCode"
+                                className="control-label col-sm-3"
+                              >
+                                Client Code
+                              </label>
+                              <div className="col-sm-9">
+                                <input
+                                  className={`form-control ${errors.clientCode ? "is-invalid" : ""
                                     }`}
-                                    {...register("loginId")}
-                                    type="text"
-                                    id="loginId"
-                                    name="loginId"
-                                    onChange={(e) => e.target.value}
-                                    disabled
-                                  />
-                                  <div className="invalid-feedback">
-                                    {errors.loginId?.message}
-                                  </div>
-                                  </div>
-                                  </div>
-                              
+                                  {...register("clientCode")}
+                                  type="text"
+                                  id="clientCode"
+                                  name="clientCode"
+                                  style={{
+                                    width: "220px",
+                                    height: "50px"
+                                  }}
+                                  readonly
+                                  onChange={(e) =>
+                                    verifyClientCodeFn(e.target.value)
+                                  }
+                                />
+                                <div className="">
+                                  {isClientCodeValid
+                                    ? "Valid Client Code"
+                                    : "Try another Client Code"}
+                                </div>
+                                <div className="invalid-feedback">
+                                  {errors.clientCode?.message}
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <></>
+                          )}
 
-                              
-                                  <div className="form-group  col-sm-12">
-                                  <label
-                                    htmlFor="clientName"
-                                    className="control-label col-sm-3"
-                                  >
-                                    Client Name
-                                  </label>
-                                  <div className="col-sm-9">
-                                  <input
-                                    className={`form-control ${
-                                      errors.clientName ? "is-invalid" : ""
-                                    }`}
-                                    {...register("clientName")}
-                                    type="text"
-                                    id="clientName"
-                                    name="clientName"
-                                    onChange={(e) => e.target.value}
-                                    readonly
 
-                                  />
-                                  <div className="invalid-feedback">
-                                    {errors.clientName?.message}
-                                  </div>
-                                </div>
-                                </div>
 
-                               
-                                <div className="form-group  col-sm-12">
-                                  <label
-                                    htmlFor="phone"
-                                    className="control-label col-sm-3"
-                                  >
-                                    Phone
-                                  </label>
-                                  <div className="col-sm-9">
-                                  <input
-                                    className={`form-control ${
-                                      errors.phone ? "is-invalid" : ""
-                                    }`}
-                                    {...register("phone")}
-                                    type="text"
-                                    id="phone"
-                                    name="phone"
-                                    onChange={(e) => e.target.value}
-                                    readonly
-                                  />
-                                  <div className="invalid-feedback">
-                                    {errors.phone?.message}
-                                  </div>
-                                </div>
-                                </div>
-                                {/* Client Code Hide if already client created */}
-                                {isCreateorUpdate ? (
-                                  <div className="form-group col-sm-12">
-                                    <label
-                                      htmlFor="clientCode"
-                                      className="control-label col-sm-3"
-                                    >
-                                      Client Code
-                                    </label>
-                                    <div className="col-sm-9">
-                                    <input
-                                      className={`form-control ${
-                                        errors.clientCode ? "is-invalid" : ""
-                                      }`}
-                                      {...register("clientCode")}
-                                      type="text"
-                                      id="clientCode"
-                                      name="clientCode"
-                                      readonly
-                                      onChange={(e) =>
-                                        verifyClientCodeFn(e.target.value)
-                                      }
-                                    />
-                                    <div className="">
-                                      {isClientCodeValid
-                                        ? "Valid Client Code"
-                                        : "Try another Client Code"}
-                                    </div>
-                                    <div className="invalid-feedback">
-                                      {errors.clientCode?.message}
-                                    </div>
-                                  </div>
-                                  </div>
-                                ) : (
-                                  <></>
-                                )}
+                          {/* <div className="form-group col-sm-12">
+                            <label
+                              htmlFor="address"
+                              className="control-label col-sm-3"
+                            >
+                              {" "}
+                              Address
+                            </label>
 
-                                 <div className="form-group col-sm-12">
-                                  
-                                  <label
-                                    htmlFor="email"
-                                    className="control-label col-sm-3"
-                                  >
-                                    E-Mail Address
-                                  </label>
-                                  
-                                  <div className="col-sm-9">
-                                  <input
-                                    type="text"
-                                    id="email"
-                                    className="form-control"
-                                    name="email"
-                                    {...register("email")}
-                                    readonly
-                                  />
-                                  <p>{errors.email?.message}</p>
-                                </div>
-                                </div>
+                            <div className="col-sm-9">
+                              <input
+                                className={`form-control ${errors.address ? "is-invalid" : ""
+                                  }`}
+                                {...register("address")}
+                                type="text"
+                                id="address"
+                                name="address"
+                                style={{
+                                  width: "220px",
+                                  height: "50px"
+                                }}
+                                onChange={(e) => e.target.value}
+                                readonly
+                              />
+                              <div className="invalid-feedback">
+                                {errors.address?.message}
+                              </div>
+                            </div>
+                          </div> */}
+                          <div class="row">
+                            <div class="col-6">
+                              <button type="button" class="edits_buttn mt-4 ml-2" style={{ width: "154px", height: "50px" }}><span className="edit_nop">Edit</span></button>
+                            </div>
 
-                                <div className="form-group col-sm-12">
-                                  <label
-                                    htmlFor="address"
-                                    className="control-label col-sm-3"
-                                  >
-                                    {" "}
-                                    Address
-                                  </label>
-                                
-                                  <div className="col-sm-9">
-                                  <input
-                                    className={`form-control ${
-                                      errors.address ? "is-invalid" : ""
-                                    }`}
-                                    {...register("address")}
-                                    type="text"
-                                    id="address"
-                                    name="address"
-                                    onChange={(e) => e.target.value}
-                                    readonly
-                                  />
-                                  <div className="invalid-feedback">
-                                    {errors.address?.message}
-                                  </div>
-                                </div>
-                                </div>
+                            <div class="col-6">
+                              <button type="button" class="save_buttns mt-4" style={{ width: "154px", height: "50px", marginLeft: "-100px" }}><span className="edit_nop">Save</span></button>
+                            </div>
 
-                                {/* <div className="col-lg-4 col-md-6 col-sm-12">
+
+                          </div>
+
+
+                          {/* <div className="col-lg-4 col-md-6 col-sm-12">
                                   <label
                                     htmlFor="accountHolderName"
                                     className="col-form-label text-md-right"
@@ -706,48 +842,48 @@ export const Profile = () => {
                                   </div>
                                 </div> */}
 
-                                <div className="col-lg-4 offset-md-4- topmar">
-                                <div class="invisible">
-                                  <button
-                                    type="submit"
-                                    className="btn bttn bttnbackgroundkyc"
-                                  >
-                                    {isCreateorUpdate
-                                      ? "Create Profile"
-                                      : "Update Profile"}
-                                  </button>
-                                </div>
-                                </div>
-                              </form>
-                          
+                          <div className="col-lg-4 offset-md-4- topmar">
+                            <div class="invisible">
+                              <button
+                                type="submit"
+                                className="btn bttn bttnbackgroundkyc"
+                              >
+                                {isCreateorUpdate
+                                  ? "Create Profile"
+                                  : "Update Profile"}
+                              </button>
+                            </div>
+                          </div>
+                        </form>
+
                       </div>
                       {/* end form area */}
                     </div>
-                    </div>
                   </div>
                 </div>
-                <div
-                  tabIndex={0}
-                  role="presentation"
-                  style={{
-                    width: "0px",
-                    height: "0px",
-                    overflow: "hidden",
-                    position: "absolute",
-                  }}
-                ></div>
               </div>
+              <div
+                tabIndex={0}
+                role="presentation"
+                style={{
+                  width: "0px",
+                  height: "0px",
+                  overflow: "hidden",
+                  position: "absolute",
+                }}
+              ></div>
             </div>
-            <div
-              tabIndex={0}
-              role="presentation"
-              style={{
-                width: "0px",
-                height: "0px",
-                overflow: "hidden",
-                position: "absolute",
-              }}
-            />
+          </div>
+          <div
+            tabIndex={0}
+            role="presentation"
+            style={{
+              width: "0px",
+              height: "0px",
+              overflow: "hidden",
+              position: "absolute",
+            }}
+          />
           {/* </div>
           </div>
         </div> */}

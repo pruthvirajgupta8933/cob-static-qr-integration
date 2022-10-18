@@ -12,8 +12,14 @@ import {
   saveMerchantInfo,
   verifyKycEachTab,
 } from "../../slices/kycSlice";
+import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 
 function BusinessDetails(props) {
+  const setTab = props.tab;
+  const setTitle = props.title;
+
+  console.log(props, "====>");
+
   const { role, kycid } = props;
   const KycList = useSelector((state) => state.kyc.kycUserList);
 
@@ -82,18 +88,18 @@ function BusinessDetails(props) {
   //   checkBoxChoice: "",
   // };
   const initialValues = {
-    company_name: KycList.companyName,
+    company_name: KycList?.companyName,
     company_logo: "",
     registerd_with_gst: "True",
-    gst_number: KycList.gstNumber,
-    pan_card: KycList.panCard,
-    signatory_pan: KycList.signatoryPAN,
-    name_on_pancard: KycList.nameOnPanCard,
-    pin_code: "10070",
-    city_id: "12093",
-    state_id: "06",
+    gst_number: KycList?.gstNumber,
+    pan_card: KycList?.panCard,
+    signatory_pan: KycList?.signatoryPAN,
+    name_on_pancard: KycList?.nameOnPanCard,
+    pin_code: "",
+    city_id: "",
+    state_id: "",
     registered_business_address: "Delhi",
-    operational_address: "Delhi",
+    operational_address: "",
     // checkBoxChoice: "",
   };
 
@@ -147,22 +153,42 @@ function BusinessDetails(props) {
   // });
 
   const validationSchema = Yup.object({
-
     company_name: Yup.string()
+      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
     gst_number: Yup.string()
+      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .required("Required")
       .nullable(),
     pan_card: Yup.string()
+      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .required("Required")
       .nullable(),
     signatory_pan: Yup.string()
+      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .required("Required")
       .nullable(),
     name_on_pancard: Yup.string()
+      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
-      .nullable()
+      .nullable(),
+    city_id: Yup.string()
+      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .required("Required")
+      .nullable(),
+    state_id: Yup.string()
+      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .required("Required")
+      .nullable(),
+    pin_code: Yup.string()
+      .matches(Regex.digit, RegexMsg.digit)
+      .required("Required")
+      .nullable(),
+    operational_address: Yup.string()
+      .matches(Regex.address, RegexMsg.address)
+      .required("Required")
+      .nullable(),
   });
 
   useEffect(() => {
@@ -213,6 +239,8 @@ function BusinessDetails(props) {
           res.payload.status === true
         ) {
           toast.success(res.payload.message);
+          setTab(4);
+          setTitle("BANK DETAILS");
         } else {
           toast.error("Something Went Wrong! Please try again.");
         }
@@ -255,11 +283,116 @@ function BusinessDetails(props) {
         {(formik) => (
           <Form>
             {/* {console.log(formik)} */}
-         
-    <div class="form-group row">
-    <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2"><h4 class ="text-kyc-label text-nowrap">Business Name<span style={{color:"red"}}>*</span></h4></label>
-    <div class="col-sm-7 col-md-7 col-lg-7">
-    <FormikController
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+                <h4 class="text-kyc-label text-nowrap">
+                  GSTIN<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="gst_number"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+              </div>
+              <div class="position-sticky pull-right">
+                    <a
+                      href={() => false}
+                      className="btn btnbackground text-white btn-sm panbtn"
+                      style={{
+                        boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                        borderRadius: "6px",
+                      }}
+                      onClick={() => {
+                       console.log("Hello")
+                      }}
+                    >
+                      Verify
+                    </a>
+                  </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+                <h4 class="text-kyc-label text-nowrap">
+                  Business PAN<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="signatory_pan"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+              </div>
+              <div class="position-sticky pull-right">
+                    <a
+                      href={() => false}
+                      className="btn btnbackground text-white btn-sm panbtn"
+                      style={{
+                        boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                        borderRadius: "6px",
+                      }}
+                      onClick={() => {
+                       console.log("Hello")
+                      }}
+                    >
+                      Verify
+                    </a>
+                  </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+                <h4 class="text-kyc-label text-nowrap">
+                  Authorized Signatory PAN
+                  <span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7 pull-right">
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="pan_card"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+              </div>
+              <div class="position-sticky pull-right">
+                    <a
+                      href={() => false}
+                      className="btn btnbackground text-white btn-sm panbtn"
+                      style={{
+                        boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                        borderRadius: "6px",
+                      }}
+                      onClick={() => {
+                       console.log("Hello")
+                      }}
+                    >
+                      Verify
+                    </a>
+                  </div>
+            </div>
+
+
+            
+
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+                <h4 class="text-kyc-label text-nowrap">
+                  Business Name<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
                   control="input"
                   type="text"
                   name="company_name"
@@ -267,8 +400,8 @@ function BusinessDetails(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-    </div>
-  </div>
+              </div>
+            </div>
             {/* <div className="form-row">
               <div className="form-group col-md-4">
                 <label>
@@ -314,7 +447,6 @@ function BusinessDetails(props) {
                 </div>
               )} */}
 
-
             {/* <div class="form-group row">
               <label class="col-sm-2 col-form-label p-2">
                 <h4 class="font-weight-bold text-nowrap">
@@ -337,25 +469,7 @@ function BusinessDetails(props) {
               </div>
             </div> */}
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
-                  GSTIN<span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="gst_number"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-
-              </div>
-            </div>
-
+         
             {/* {formik.values?.registerd_with_gst === "True" && (
                 <div className="form-group col-md-4">
                   <label>
@@ -375,23 +489,7 @@ function BusinessDetails(props) {
               )}
              */}
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
-                  Business PAN<span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="signatory_pan"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div>
-            </div>
+          
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
@@ -410,6 +508,8 @@ function BusinessDetails(props) {
                 />
               </div>
             </div>
+
+           
 
             {/* <div className="form-group col-md-4">
                 <label>
@@ -472,19 +572,72 @@ function BusinessDetails(props) {
                 />
               </div> */}
 
-
+        
 
             <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="text-kyc-label text-nowrap">
-                  Authorized  Signatory PAN<span style={{ color: "red" }}>*</span>
+                  Address<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7 pull-right">
+              <div class="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
-                  name="pan_card"
+                  name="operational_address"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+                <h4 class="text-kyc-label text-nowrap">
+                  City<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="city_id"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+                <h4 class="text-kyc-label text-nowrap">
+                  State<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="state_id"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+                <h4 class="text-kyc-label text-nowrap">
+                  Pincode<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="pin_code"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
@@ -563,19 +716,22 @@ function BusinessDetails(props) {
                 }}
               />
               <div class="mt-3">
-              <div class="row">
-              <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
-                {VerifyKycStatus === "Verified" ? null : (
-                  <button
-                    type="submit"
-                    className="btn float-lg-right"
-                    style={{ backgroundColor: "#0156B3" }}
-                  >
-                    <h4 className="text-white text-kyc-sumit"> {buttonText}</h4>
-                  </button>
-                )}
-              </div>
-              </div>
+                <div class="row">
+                  <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
+                    {VerifyKycStatus === "Verified" ? null : (
+                      <button
+                        type="submit"
+                        className="btn float-lg-right"
+                        style={{ backgroundColor: "#0156B3" }}
+                      >
+                        <h4 className="text-white text-kyc-sumit">
+                          {" "}
+                          {buttonText}
+                        </h4>
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </Form>

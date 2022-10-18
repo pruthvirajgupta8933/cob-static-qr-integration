@@ -29,6 +29,7 @@ function KycForm() {
 
   const [tab, SetTab] = useState(1);
   const [title, setTitle] = useState("CONTACT INFO");
+  const [status, setStatus] = useState(false);
   const { auth } = useSelector((state) => state);
   const { user } = auth;
 
@@ -43,6 +44,15 @@ function KycForm() {
   } else if (roles.merchant) {
     merchantloginMasterId = loginId;
   }
+
+  const BusinessOverviewStatus = useSelector(
+    (state) => state.kyc.BusiOverviewwStatus.status
+  );
+
+  // console.log(
+  //   BusinessOverviewStatus,
+  //   "<===  Business Overview Response Status ===>"
+  // );
 
   let history = useHistory();
 
@@ -98,9 +108,6 @@ function KycForm() {
   const redirect = () => {
     history.push("/dashboard");
   };
-
-
-
 
   // useEffect(() => {
   //   if(window.location.reload === true) {
@@ -158,7 +165,6 @@ function KycForm() {
                           <ul
                             style={{
                               color: "black",
-                              fontFamily: "Arial, Helvetica, sans-serif",
                             }}
                           >
                             <li className="nav-item p-2">
@@ -215,7 +221,7 @@ function KycForm() {
                               </a>
                             </li>
 
-                            <li className="nav-item p-2">
+                            {/* <li className="nav-item p-2">
                               <a
                                 href={() => false}
                                 className={
@@ -231,6 +237,24 @@ function KycForm() {
                               >
                                 Registered Address
                               </a>
+                            </li> */}
+
+                            <li className="nav-item p-2">
+                              <a
+                                href={() => false}
+                                className={
+                                  "nav-link " +
+                                  (tab === 4
+                                    ? "activepaylink-kyc text-font"
+                                    : "inactive text-font")
+                                }
+                                onClick={() => {
+                                  SetTab(4);
+                                  setTitle("BANK DETAILS");
+                                }}
+                              >
+                                Bank Details
+                              </a>
                             </li>
 
                             <li className="nav-item p-2">
@@ -244,10 +268,10 @@ function KycForm() {
                                 }
                                 onClick={() => {
                                   SetTab(5);
-                                  setTitle("BANK DETAILS");
+                                  setTitle("DOCUMENTS UPLOAD");
                                 }}
                               >
-                                Bank Details
+                                Upload Document
                               </a>
                             </li>
 
@@ -262,24 +286,6 @@ function KycForm() {
                                 }
                                 onClick={() => {
                                   SetTab(6);
-                                  setTitle("DOCUMENTS UPLOAD");
-                                }}
-                              >
-                                Upload Document
-                              </a>
-                            </li>
-
-                            <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={
-                                  "nav-link " +
-                                  (tab === 7
-                                    ? "activepaylink-kyc text-font"
-                                    : "inactive text-font")
-                                }
-                                onClick={() => {
-                                  SetTab(7);
                                   setTitle("SUBMIT KYC");
                                 }}
                               >
@@ -327,24 +333,53 @@ function KycForm() {
 
                         {/* role={roles} kycid={kycid} */}
                         {(tab === 1 && (
-                          <ContactInfo role={roles} kycid={kycid} />
+                          <ContactInfo
+                            role={roles}
+                            kycid={kycid}
+                            tab={SetTab}
+                            title={setTitle}
+                          />
                         )) ||
                           (tab === 2 && (
-                            <BusinessOverview role={roles} kycid={kycid} />
+                            <BusinessOverview
+                              role={roles}
+                              kycid={kycid}
+                              tab={SetTab}
+                              title={setTitle}
+                            />
                           )) ||
                           (tab === 3 && (
-                            <BusinessDetails role={roles} kycid={kycid} />
+                            <BusinessDetails
+                              role={roles}
+                              kycid={kycid}
+                              tab={SetTab}
+                              title={setTitle}
+                            />
                           )) ||
+                          /* (tab === 4 && (
+                            <RegisteredAddress
+                              role={roles}
+                              kycid={kycid}
+                              tab={SetTab}
+                            />
+                          )) || */
                           (tab === 4 && (
-                            <RegisteredAddress role={roles} kycid={kycid} />
+                            <BankDetails
+                              role={roles}
+                              kycid={kycid}
+                              tab={SetTab}
+                              title={setTitle}
+                            />
                           )) ||
                           (tab === 5 && (
-                            <BankDetails role={roles} kycid={kycid} />
+                            <DocumentsUploadNew
+                              role={roles}
+                              kycid={kycid}
+                              tab={SetTab}
+                              title={setTitle}
+                            />
                           )) ||
                           (tab === 6 && (
-                            <DocumentsUploadNew role={roles} kycid={kycid} />
-                          )) ||
-                          (tab === 7 && (
                             <SubmitKyc role={roles} kycid={kycid} />
                           )) || <ContactInfo role={roles} kycid={kycid} />}
                       </div>
