@@ -145,6 +145,54 @@
   }
 }
 
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .optbtn {
+    display: none;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .optbtn {
+    display: none;
+  }
+}
+
+/* For PAN VALIDATION IN BUSINESS Details */
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .panbtn {
+    display: none;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .panbtn {
+    position: absolute !important;
+    right: -85px;
+    z-index: 999;
+    top: -1px;
+    margin-right: -5px !important;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .panbtn {
+    position: absolute !important;
+    right: -85px;
+    z-index: 999;
+    top: -1px;
+    margin-right: -5px !important;
+  }
+}
+
+/* For PAN VALIDATION IN BUSINESS Details */
+
 .kyc-modal_form {
   width: 1696px;
   display: revert;
