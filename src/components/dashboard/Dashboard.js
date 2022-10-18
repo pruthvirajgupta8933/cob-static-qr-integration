@@ -29,6 +29,7 @@ import ThanksPage from '../Otherpages/ThanksPage';
 import ChangePassword from './AllPages/ChangePassword';
 import Products from './AllPages/Product Catalogue/Products';
 import SabPaisaPricing from './AllPages/Product Catalogue/SabPaisaPricing';
+import TransactionSummery from './AllPages/TransactionSummery';
 
 
 
@@ -73,6 +74,9 @@ function Dashboard() {
                 </Route>
                 <Route exact path={`${path}/transaction`}>
                      <Transaction/>
+                </Route>
+                <Route exact path={`${path}/transaction-summery`}>
+                     <TransactionSummery/>
                 </Route>
                 <Route exact path={`${path}/transaction-enquiry`}>
                      <TransactionEnquirey/>

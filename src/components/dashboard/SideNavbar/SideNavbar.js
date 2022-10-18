@@ -115,6 +115,14 @@ function SideNavbar() {
 
 
                     <ul id="settlement$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu">
+                    <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
+                            <Link to={`${url}/transaction-summery`} className='txt-white sidenavFonts'><img
+                      src={enquire}
+                      width={17}
+                      alt="sabpaisa"
+                      title="sabpaisa"
+                    />&nbsp;Transaction Summery</Link>
+                          </li>
                       {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ?
                         <React.Fragment>
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
