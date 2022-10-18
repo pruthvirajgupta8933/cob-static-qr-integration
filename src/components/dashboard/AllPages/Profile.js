@@ -555,19 +555,19 @@ export const Profile = () => {
                               Phone No.
                             </label>
                             <div className="col-sm-6 ml-3"> <input
-                                className={`form-control border-0 ${errors.phone ? "is-invalid" : ""
-                                  }`}
-                                {...register("phone")}
-                                type="text"
-                                id="phone"
-                                name="phone"
-                                style={{
-                                  width: "220px",
-                                  height: "50px"
-                                }}
-                                onChange={(e) => e.target.value}
-                                readonly
-                              />
+                              className={`form-control border-0 ${errors.phone ? "is-invalid" : ""
+                                }`}
+                              {...register("phone")}
+                              type="text"
+                              id="phone"
+                              name="phone"
+                              style={{
+                                width: "220px",
+                                height: "50px"
+                              }}
+                              onChange={(e) => e.target.value}
+                              readonly
+                            />
                               <div className="invalid-feedback">
                                 {errors.phone?.message}
                               </div>
@@ -646,11 +646,11 @@ export const Profile = () => {
                           </div> */}
                           <div class="row">
                             <div class="col-6">
-                              <button type="button" class="edits_buttn" style={{ width: "154px", height: "50px" }}><span className="edit_nop">Edit</span></button>
+                              <button type="button" class="edits_buttn mt-4 ml-2" style={{ width: "154px", height: "50px" }}><span className="edit_nop">Edit</span></button>
                             </div>
 
                             <div class="col-6">
-                              <button type="button" class="save_buttns" style={{ width: "154px", height: "50px", marginLeft: "-100px" }}><span className="edit_nop">Save</span></button>
+                              <button type="button" class="save_buttns mt-4" style={{ width: "154px", height: "50px", marginLeft: "-100px" }}><span className="edit_nop">Save</span></button>
                             </div>
 
 
