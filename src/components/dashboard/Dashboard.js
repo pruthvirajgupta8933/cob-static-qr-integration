@@ -30,6 +30,11 @@ import ChangePassword from './AllPages/ChangePassword';
 import Products from './AllPages/Product Catalogue/Products';
 import SabPaisaPricing from './AllPages/Product Catalogue/SabPaisaPricing';
 import TransactionSummery from './AllPages/TransactionSummery';
+import axios from 'axios';
+import { axiosInstanceAuth } from '../../utilities/axiosInstance';
+// import js-file-download from "js-file-download"
+
+
 
 
 
@@ -37,6 +42,7 @@ function Dashboard() {
     let history = useHistory();
     let { path } = useRouteMatch();
     const { user } = useSelector((state) => state.auth);
+
 //   user!==null && user?. return (<Redirect to="/login-page" />)
     //  console.log("user",user);
     //  useEffect(() => {
@@ -59,8 +65,53 @@ function Dashboard() {
      return <Redirect to="/login-page" />
   }
 
+// const exportCSV = (e) =>{
+//      // alert()
+//      // var axios = require('axios');
+//      var data = JSON.stringify({
+//      "start_date": "2022-03-01 00:00:00",
+//      "end_date": "2022-10-18 23:59:59",
+//      "mode": "all",
+//      "merchant_id": "11",
+//      "trans_status": "all"
+//      });
+ 
+//      var config = {
+//      method: 'post',
+//      url: 'https://staging-payout.sabpaisa.in/api/downloadAccountSummary/',
+//      headers: { 
+//      'auth-token': 'CklPC/Ks1VJNX3aRZoNaUA==', 
+//      'Content-Type': 'application/json'
+//      },
+//       responseType: 'blob',
+//      data : data
+//      };
+
+//      axios(config)
+//      .then(function (response) {
+               
+//      console.log(response.data);
+//      let blob = new Blob([response.data], {type: 'application/octet-stream'})
+//      // let blob = new Blob([response.data], {type: 'text/csv; charset=UTF-16LE; application/octet-stream'})
+//      let ref = document.getElementById('ref');
+//      // let ref = this
+//      ref.href = URL.createObjectURL(blob)
+//      ref.download = 'data.xls'
+//      ref.click()
+
+//      })
+//      .catch(function (error) {
+//      console.log(error);
+//      });
+// }
+     
+
     return (
         <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
+         <div>
+                {/* <a style={{display: "none"}} href="empty" id="ref" >ref</a>
+                <button onClick={(e)=>exportCSV(e)}>Export CSV</button> */}
+            </div>
                 <SideNavbar />
                 <Switch>
                 <Route exact path={path}>
