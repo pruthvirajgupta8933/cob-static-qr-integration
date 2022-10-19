@@ -25,15 +25,25 @@ const initialState = {
     status: "",
     message: "",
   },
-  BusiOverviewwStatus: {
-    message: "",
-    status: false,
+  allTabValidate:{
+    merchantContactInfo : {
+      submitStatus: {
+       status:"",
+       message:""
+      },
+      aadhaar: {
+        isValidate: false,
+        response:{
+          "name": "",
+          valid: false,
+          message: "",
+          status: false
+            
+        }
+      }
+    }
   },
-  BusiOverviewwStatus: {
-    message: "",
-    status: false,
-  },
-
+  
   kycApproved: {
     count: null,
     next: null,
@@ -748,6 +758,7 @@ export const kycSlice = createSlice({
       // console.log(state.OtpVerificationResponseForPhone.status);
       // state.transactionHistory = []
     },
+
   },
   extraReducers: {
     [kycUserList.pending]: (state, action) => {
