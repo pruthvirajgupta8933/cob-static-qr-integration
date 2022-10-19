@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import HeaderPage from "./HeaderPage";
 import { useDispatch, useSelector } from "react-redux";
-import sabpaisalogo from "../../assets/images/sabpaisa-logo-white.png";
+// import sabpaisalogo from "../../assets/images/sabpaisa-logo-white.png";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -27,12 +27,12 @@ const FORM_VALIDATION = Yup.object().shape({
 });
 
 function LoginPage() {
-  console.log("load components");
 
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const authentication = useSelector((state) => state.auth);
-  console.log(authentication);
+
   // const {auth} = useSelector(state => state);
 
   const history = useHistory();
@@ -87,13 +87,13 @@ function LoginPage() {
     setLoading(true);
     dispatch(login({ username, password }))
       .then((res) => {
-        console.log('this is response ', res)
         // console.log(res?.payload?.user)
+        // console.log('asdfghjkl', res, res.payload)
         if (res?.payload?.user) {
           const activeStatus = res?.payload?.user?.loginStatus;
           const loginMessage = res?.payload?.user?.loginMessage;
           if (activeStatus === "Activate" && loginMessage === "success") {
-            // console.log("user redirect to dashboard")
+            
             history.push("/dashboard");
             setLoading(false);
           } else {
@@ -104,14 +104,15 @@ function LoginPage() {
           }
         } else {
           setLoading(false);
-          toast.error(res.error.message);
+           toast.error(res?.payload ?? "Rejected");       ///////it means when we have server or api response is diffrent it show rejected
         }
       })
-      .catch((err) => {
-        toast.error("Something went wrong" + err?.message);
-        setLoading(false);
-        // console.log(err)
-      });
+      // .catch((err) => {
+      //   // console.log(err,"eeeeeeeeeeeeeeeeeeeee")
+      //   toast.error("Something went wrong" + err?.message);
+      //   setLoading(false);
+      //   // console.log(err)
+      // });
   };
 
   const handleClickShowPassword = () => {

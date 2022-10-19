@@ -546,7 +546,9 @@ function Home() {
                       }}
                       aria-label="Close"
                     >
+                      <h5 style={{ fontFamily: "Satoshi", lineHeight: "9px" }}>
                       Try out our dashboard
+                      </h5>
                     </button>
                   </Link>
                 </div>

@@ -19,7 +19,7 @@ const CreatePassword = (props) => {
       ),
     confirmpassword: Yup.string()
        .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm Password Required khljh"),
+      .required("Confirm Password Required"),
   })
   const [values, setValues] = useState({
     password: "",
@@ -127,7 +127,7 @@ const CreatePassword = (props) => {
                         {/* <label htmlFor="exampleInputPassword2">
                           New Password
                         </label> */}
-                        <div className="form-group mt-4 d-flex">
+                        <div className="form-group mt-4">
                           <Field
                             name="confirmpassword"
                             className="form-control"

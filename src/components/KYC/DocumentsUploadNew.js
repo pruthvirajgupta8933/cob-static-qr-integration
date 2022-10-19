@@ -53,6 +53,7 @@ function DocumentsUpload(props) {
     aadhaar_front: "",
     aadhaar_back: "",
     pan_card: "",
+
   };
 
   const validationSchema = Yup.object({
@@ -90,7 +91,7 @@ function DocumentsUpload(props) {
     const bodyFormData = new FormData();
     let docType = values.docType;
     if (docType === "1") {
-      console.log(3333);
+      // console.log(3333);
       bodyFormData.append("aadhar_front", selectedFile);
       bodyFormData.append("aadhar_back", selectedFileAadhaar);
     } else {
@@ -283,7 +284,7 @@ function DocumentsUpload(props) {
                           type="file"
                           name="pan_card"
                           className="file-upload-input"
-                          id="3"
+                          id="4"
                           onChange={(e) => handleChange(e, 4)}
                           // disabled={VerifyKycStatus === "Verified" ? true : false}
                           // readOnly={readOnly}
@@ -301,9 +302,9 @@ function DocumentsUpload(props) {
                       </div>
                     </div>
                     {/* uploaded document preview */}
-                    <div className="file-upload-content imagepre_3">
+                    <div className="file-upload-content imagepre_4">
                       <img
-                        className="file-upload-image imagepre_sub_3"
+                        className="file-upload-image imagepre_sub_4"
                         src="#"
                         alt="Document"
                       />
@@ -321,8 +322,8 @@ function DocumentsUpload(props) {
                           type="file"
                           name="pan_card"
                           className="file-upload-input"
-                          id="3"
-                          onChange={(e) => handleChange(e, 4)}
+                          id="5"
+                          onChange={(e) => handleChange(e, 5)}
                           // disabled={VerifyKycStatus === "Verified" ? true : false}
                           // readOnly={readOnly}
                         />
@@ -339,9 +340,9 @@ function DocumentsUpload(props) {
                       </div>
                     </div>
                     {/* uploaded document preview */}
-                    <div className="file-upload-content imagepre_3">
+                    <div className="file-upload-content imagepre_5">
                       <img
-                        className="file-upload-image imagepre_sub_3"
+                        className="file-upload-image imagepre_sub_5"
                         src="#"
                         alt="Document"
                       />

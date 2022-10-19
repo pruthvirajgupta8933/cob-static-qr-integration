@@ -117,7 +117,7 @@ showData.map((item)=>{
             <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
               <div className="container-fluid">
                 <div className="row bgcolor">
-                  <div className="col-lg-6 mrg-btm- bgcolor-">
+                  <div className="col-lg-4 mrg-btm- bgcolor-">
                     <label>Successful Transaction Summary</label>
                     <select
                       className="ant-input"
@@ -135,7 +135,7 @@ showData.map((item)=>{
                   </div>
 
                   {txnList.length > 0 ? (
-                    <div className="col-lg-6 mrg-btm-">
+                    <div className="col-lg-4 mrg-btm-">
                       <label>Search</label>
                       <input
                         type="text"
