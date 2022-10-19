@@ -41,7 +41,11 @@ const VerifyEmailPhone = (props) => {
   //Email OTP
 
   const emailverify = async (e) => {
-    setErrors(validation({ emailotp }))
+    if (emailotp.length > 6) {
+      setErrors(validation({ emailotp }))
+      errors?.emailotp === false ? setverify(true) : setverify(false)
+    }else{
+      setErrors(validation({ emailotp }))
     // e.preventDefault();
 
     errors?.emailotp === false ? setverify(true) : setverify(false)
@@ -68,6 +72,9 @@ const VerifyEmailPhone = (props) => {
       }).catch((error) => {
         toast.error(error?.response?.data["message"])
       });
+
+    }
+    
 
 
 

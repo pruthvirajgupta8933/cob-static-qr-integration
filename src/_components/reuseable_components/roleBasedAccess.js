@@ -12,6 +12,7 @@ export const roleBasedAccess = (pageNo) => {
 
     let roleAccessObj = roleBasedTab;
 
+    console.log('role base tab is ', roleAccessObj)
     if (roleId === 14 ) {
         roleAccessObj = { ...roleAccessObj, verifier: true };
     } else if (roleId === 15){
@@ -23,5 +24,7 @@ export const roleBasedAccess = (pageNo) => {
     } else {
         console.log("Permission not match with these roles");
     }
+    console.log(roleAccessObj,'asdfghjkl', roleId)
+
     return roleAccessObj;
 };

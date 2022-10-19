@@ -48,9 +48,7 @@ function SideNavbar() {
 
   const roleBasedShowTab = roleBasedAccess()
 
-
-
-  // console.log("roleBasedShowTab", roleBasedShowTab)
+   console.log("roleBasedShowTab", roleBasedShowTab)
   // console.log(kyc.enableKycTab)
 
   return (
@@ -97,7 +95,7 @@ function SideNavbar() {
                     : <React.Fragment></React.Fragment>}
 
 
-                  {roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true ?
+                  {((roleBasedShowTab?.approver === true ) || (roleBasedShowTab?.verifier === true)) ?
                     <li className="ant-menu-item" role="menuitem" >
                       <Link to={`${url}/approver`} className='txt-white sidenavFonts' ><i className="fa fa-list" aria-hidden="true" /><span>&nbsp;Merchant List</span>
                         {/* <span class="new-tab">new</span> */}
@@ -105,7 +103,7 @@ function SideNavbar() {
                     </li>
                     : <React.Fragment></React.Fragment>}
 
-                  {roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true ?
+                  {((roleBasedShowTab?.approver === true ) || (roleBasedShowTab?.verifier === true)) ?
                     <li className="ant-menu-item" role="menuitem" >
                       <Link to={`${url}/onboard-merchant`} className='txt-white sidenavFonts'><span>&nbsp;Onboard Merchant</span>
                         {/* <span class="new-tab">new</span> */}

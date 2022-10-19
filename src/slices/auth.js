@@ -7,10 +7,8 @@ import { axiosInstance } from "../utilities/axiosInstance";
 
 
 import AuthService from "../services/auth.service";
-// import { NULL } from "node-sass";
 
 const user = JSON.parse(localStorage.getItem("user"));
-// console.log("user",user);
 const userAlreadyLoggedIn = user && user.loginId !== null ? true : false;
 
 const auth = {
@@ -66,9 +64,9 @@ const auth = {
 
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ fullname,  mobileNumber, email, business_cat_code, password,businessType}, thunkAPI) => {
+  async ({ fullname, mobileNumber, email, business_cat_code, password, businessType }, thunkAPI) => {
     try {
-      const response = await AuthService.register(fullname, mobileNumber, email, business_cat_code, password,  businessType);
+      const response = await AuthService.register(fullname, mobileNumber, email, business_cat_code, password, businessType);
       thunkAPI.dispatch(setMessage(response.data.message));
       return response.data;
     } catch (error) {
@@ -88,12 +86,11 @@ export const login = createAsyncThunk(
   "auth/login",
   async ({ username, password }, thunkAPI) => {
     try {
-      // console.log("auth",username);
-
       const data = await AuthService.login(username, password);
       localStorage.setItem("p", password);
       localStorage.setItem("i", username);
-      console.log("set local");
+      // console.log("set local");
+      // console.log('data is ', data)
       return { user: data };
     } catch (error) {
       const message =
@@ -102,10 +99,8 @@ export const login = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString() || error.request.toString();
-      // console.log("message",message);
-
       thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue();
+      return thunkAPI.rejectWithValue(message);              // here we pass message for error
     }
   }
 );
@@ -332,13 +327,13 @@ export const changePasswordSlice = createAsyncThunk(
   "auth/changePasswordSlice",
   async (requestParam) => {
     const response = await AuthService.changePassword(
-        requestParam,
-        {
-          headers: {
-            // Authorization: ""
-          }
+      requestParam,
+      {
+        headers: {
+          // Authorization: ""
         }
-      )
+      }
+    )
       .catch((error) => {
         return error.response;
       });
@@ -458,8 +453,8 @@ export const checkPermissionSlice = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: auth,
-  reducers: { 
-    isUserAlreadyLogin : (state,action) => {
+  reducers: {
+    isUserAlreadyLogin: (state, action) => {
       console.log(action)
       // state.userAlreadyLoggedIn = 
     }
@@ -521,7 +516,7 @@ const authSlice = createSlice({
       state.isValidUser = '';
       state.user = null;
     },
-    [login.rejected]: (state,action) => {
+    [login.rejected]: (state, action) => {
       state.isLoggedIn = false;
       state.userAlreadyLoggedIn = false;
       state.isValidUser = '';
@@ -646,6 +641,6 @@ const authSlice = createSlice({
 });
 
 
-export const { isUserAlreadyLogin} = authSlice.actions
-const { reducer  } = authSlice;
+export const { isUserAlreadyLogin } = authSlice.actions
+const { reducer } = authSlice;
 export default reducer;
