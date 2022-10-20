@@ -268,7 +268,7 @@ function HeaderPage() {
           <span className="navicon"></span>
         </label>
         <ul className="menu">
-          {/* <li>
+          <li>
             <a
               href="https://sabpaisa.in/"
               target="_blank"
@@ -304,23 +304,22 @@ function HeaderPage() {
             >
               Pricing
             </a>
-          </li> */}
+          </li>
           {/* </ul>
         <ul className="header_second_list hidden-xs"> */}
-          {/* <li>
+          <li>
             <Link to="/login-page">Login</Link>
-          </li> */}
+          </li>
           <li>
             <Link to="/Registration">Sign up</Link>
           </li>
-          <li>
-    
+          {/* <li>
             <h5 className="btnlink contactHeader blueColr">
             <img  src={agent} alt="slide" className="agentImage"/>  &nbsp;
               Call 011 4173 3223
             </h5>
             <p className="loginContacthelp">Need Help ?</p>
-          </li>
+          </li> */}
         </ul>
       </header>
     </div>
