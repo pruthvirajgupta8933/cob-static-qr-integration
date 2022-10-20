@@ -55,11 +55,16 @@ const settlementReport=(paramData) => {
   return axiosInstance.post(API_URL.SettlementReport,paramData)
 }
 
+const RefundTransactionHistory =(paramData) => {
+  return axiosInstance.post(API_URL.RefundTransactionHistory,paramData)
+}
+
 export const Dashboardservice = {
     successTxnSummary,
     subscriptionplan,
     subscriptionPlanDetail,
     fetchTransactionHistory,
+    RefundTransactionHistory,
     settlementReport
   };
   

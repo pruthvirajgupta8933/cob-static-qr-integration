@@ -40,7 +40,6 @@ const login = (username, password) => {
 };
 
 const logout = () => {
-  // console.log('remove user from LS');
   localStorage.removeItem("user");
   localStorage.clear();
   console.log('logout call auth service');
@@ -131,7 +130,7 @@ const createNewPassword=(object)=>{
 // CHECK_PERMISSION_PAYLINK
 const checkPermission=(object)=>{
   //pass client code
-  return axiosInstanceAuth.get(`${API_URL.CHECK_PERMISSION_PAYLINK}${object}`)
+  return axiosInstance.get(`${API_URL.CHECK_PERMISSION_PAYLINK}${object}`)
 }
 
 const authService = {

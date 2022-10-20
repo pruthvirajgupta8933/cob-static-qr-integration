@@ -18,7 +18,7 @@ function SideNavbar() {
   const { auth, kyc } = useSelector((state) => state)
 
   const { user, payLinkPermission } = auth
-
+  
 
 
   if (user !== null && user.userAlreadyLoggedIn) {
@@ -48,8 +48,11 @@ function SideNavbar() {
 
   const roleBasedShowTab = roleBasedAccess()
 
-   console.log("roleBasedShowTab", roleBasedShowTab)
-  // console.log(kyc.enableKycTab)
+  // console.log("roleBasedShowTab", roleBasedShowTab)
+  // // console.log(kyc.enableKycTab)
+  // console.log('pay lenght', payLinkPermission.length > 0)
+  // console.log('permission', payLinkPermission)
+
 
   return (
     <aside className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark" style={{ background: '#140633', flex: '0 0 200px', maxWidth: '200px', minWidth: '200px', width: '200px', borderRight: '1px solid' }}>
@@ -95,7 +98,7 @@ function SideNavbar() {
                     : <React.Fragment></React.Fragment>}
 
 
-                  {((roleBasedShowTab?.approver === true ) || (roleBasedShowTab?.verifier === true)) ?
+                  {((roleBasedShowTab?.approver === true) || (roleBasedShowTab?.verifier === true)) ?
                     <li className="ant-menu-item" role="menuitem" >
                       <Link to={`${url}/approver`} className='txt-white sidenavFonts' ><i className="fa fa-list" aria-hidden="true" /><span>&nbsp;Merchant List</span>
                         {/* <span class="new-tab">new</span> */}
@@ -103,9 +106,9 @@ function SideNavbar() {
                     </li>
                     : <React.Fragment></React.Fragment>}
 
-                  {((roleBasedShowTab?.approver === true ) || (roleBasedShowTab?.verifier === true)) ?
+                  {((roleBasedShowTab?.approver === true) || (roleBasedShowTab?.verifier === true)) ?
                     <li className="ant-menu-item" role="menuitem" >
-                      <Link to={`${url}/onboard-merchant`} className='txt-white sidenavFonts'><span>&nbsp;Onboard Merchant</span>
+                      <Link to={`${url}/onboard-merchant`} className='txt-white sidenavFonts'><i class="fa fa-user" aria-hidden="true"></i><span>&nbsp;Onboard Merchant</span>
                         {/* <span class="new-tab">new</span> */}
                       </Link>
                     </li>
@@ -174,6 +177,13 @@ function SideNavbar() {
                               {/* <span class="new-tab">new</span> */}
                             </Link>
                           </li>
+                          <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
+                            <Link to={`${url}/refund-transaction-history`} className='txt-white sidenavFonts'><i className="fa fa-bars" aria-hidden="true" />
+                              &nbsp;<span>Refund Transaction History</span>
+                              {/* <span class="new-tab">new</span> */}
+                            </Link>
+                          </li>
+
 
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
                             <Link to={`${url}/product-catalogue`} className='txt-white sidenavFonts'><i className="fa fa-book" aria-hidden="true" />&nbsp;Product Catalogue</Link>
@@ -181,6 +191,7 @@ function SideNavbar() {
                         </React.Fragment>
                         : <React.Fragment></React.Fragment>
                       }
+
 
 
 

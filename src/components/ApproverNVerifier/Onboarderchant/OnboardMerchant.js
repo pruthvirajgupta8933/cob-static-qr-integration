@@ -159,7 +159,7 @@ const OnboardMerchant = () => {
       });
       // setTimeout(() => {
       //   // alert("aa4");
-      //   history.push("/login-page");
+         history.push("/dashboard/approver");
       // }, 2000);
     }
 
@@ -172,7 +172,7 @@ const OnboardMerchant = () => {
       });
     }
     return () => {
-      dispatch(udpateRegistrationStatus());
+      // dispatch(udpateRegistrationStatus());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserRegistered]);

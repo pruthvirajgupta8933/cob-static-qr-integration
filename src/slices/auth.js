@@ -87,10 +87,6 @@ export const login = createAsyncThunk(
   async ({ username, password }, thunkAPI) => {
     try {
       const data = await AuthService.login(username, password);
-      localStorage.setItem("p", password);
-      localStorage.setItem("i", username);
-      // console.log("set local");
-      // console.log('data is ', data)
       return { user: data };
     } catch (error) {
       const message =
@@ -428,7 +424,7 @@ export const checkPermissionSlice = createAsyncThunk(
 
       const response = await AuthService.checkPermission(data);
       thunkAPI.dispatch(setMessage(response.data.message));
-      // console.log("getEmailToSendOtp-response",response)
+      console.log("getEmailToSendOtp-response",response)
       return response.data;
     } catch (error) {
       const message =
@@ -630,10 +626,11 @@ const authSlice = createSlice({
     },
 
     [checkPermissionSlice.fulfilled]: (state, action) => {
-      // console.log('rejected profile');
+       
       // state.passwordChange = false;
       state.payLinkPermission = action.payload
     }
+
 
 
 
