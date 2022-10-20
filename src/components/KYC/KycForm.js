@@ -46,13 +46,41 @@ function KycForm() {
   }
 
   const BusinessOverviewStatus = useSelector(
-    (state) => state.kyc?.BusiOverviewwStatus?.status
+    (state) => state.kyc.allTabsValidate.BusiOverviewwStatus.submitStatus.status
   );
-
-  // console.log(
-  //   BusinessOverviewStatus,
-  //   "<===  Business Overview Response Status ===>"
+  // const BusinessDetailsStatus = useSelector(
+  //   (state) => state.kyc.allTabsValidate.BusinessDetailsStatus.submitStatus.status
   // );
+
+
+
+  console.log("All Tabs Submit Status ===> Business Overrview",BusinessOverviewStatus)
+
+  
+  const BusiOverviewStatus = () => {
+    return (
+      <a
+        href={() => false}
+        className={
+          tab === 2
+            ? " nav-link activepaylink-kyc text-font"
+            : "inactive text-font"
+            ? BusinessOverviewStatus === true
+              ? "nav-link inactive text-font-ForStatusChange text-success"
+              : "nav-link inactive text-font"
+            :<></>
+        }
+        onClick={() => {
+          SetTab(2);
+          setTitle("BUSINESS OVERVIEW");
+        }}
+      >
+        Business Overview
+      </a>
+    );
+  };
+
+
 
   let history = useHistory();
 
@@ -186,21 +214,10 @@ function KycForm() {
                             </li>
 
                             <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={
-                                  "nav-link " +
-                                  (tab === 2
-                                    ? "activepaylink-kyc text-font"
-                                    : "inactive text-font")
-                                }
-                                onClick={() => {
-                                  SetTab(2);
-                                  setTitle("BUSINESS OVERVIEW");
-                                }}
-                              >
-                                Business Overview
-                              </a>
+                          <BusiOverviewStatus>
+                              Business Overview
+                              </BusiOverviewStatus>
+
                             </li>
 
                             <li className="nav-item p-2">

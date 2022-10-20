@@ -204,7 +204,8 @@ function TransactionHistory() {
       // isLoading(true);
       // isButtonClicked(true);
       let strClientCode, clientCodeArrLength ="";
-        if(clientCode==="All"){
+        
+      if(clientCode==="All"){
         const allClientCode = []
         clientMerchantDetailsList?.map((item)=>{
           allClientCode.push(item.clientCode)
@@ -226,7 +227,7 @@ function TransactionHistory() {
         page: "0",
         NoOfClient: clientCodeArrLength
       } 
-  console.log(paramData)
+  // console.log(paramData)
       dispatch(fetchTransactionHistorySlice(paramData))
 }
 

@@ -65,7 +65,7 @@ function LoginPage() {
       (userAlreadyLoggedIn || isLoggedInLc) &&
       user?.loginStatus === "Activate"
     ) {
-      // console.log("login1");
+    
       history.push("/dashboard");
     }
   }, [userAlreadyLoggedIn, user]);

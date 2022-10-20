@@ -1,12 +1,8 @@
 {
   "projects": {
-    "default": "cob-staging-test-account",
-    "cob-test-account": "cob-staging-test-account",
-    "cob-staging-test-account": "cob-staging-test-account",
-    "staging": "cob-staging-test-account",
-    "cob-staging": "cob-staging-test-account",
-    "staging-test": "cob-staging-test-account",
-    "test": "cob-staging-test-account"
+    "default": "cob-nf-dev",
+    "cob-new-flow-dev": "cob-nf-dev",
+    "cob-staging-dev": "cob-nf-dev"
   },
   "targets": {},
   "etags": {}
