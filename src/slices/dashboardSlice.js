@@ -100,6 +100,14 @@ export const successTxnSummary = createAsyncThunk(
     }
   );
 
+  ////////////////////////////////////////////
+  
+
+  
+  //////////////////////////////////////
+
+  
+
 
   export const fetchSettlementReportSlice = createAsyncThunk(
     "dashbaord/fetchSettlementReport",
@@ -119,6 +127,31 @@ export const successTxnSummary = createAsyncThunk(
       }
     }
   );  
+
+  //////////////////////////////////////////////////////////
+  export const RefundTransactionHistory = createAsyncThunk(
+    "dashbaord/GetRefundTxnHistory",
+    async (data, thunkAPI) => {
+      try {
+        const response = await Dashboardservice.RefundTransactionHistory(data);
+        return response.data;
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+      }
+    }
+  );  
+
+  //////////////////////////////////////////////////////////////
+
+
+
 
   export const dashboardSlice = createSlice({
     name: 'dashboard',

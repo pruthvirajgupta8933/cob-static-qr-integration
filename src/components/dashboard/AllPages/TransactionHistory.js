@@ -164,6 +164,8 @@ function TransactionHistory() {
     isExtraDataRequired = true;
     extraDataObj = { key: "All", value: "All" };
   }
+
+  console.log(clientMerchantDetailsList,"clientMerchantDetailsList,")
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
     "clientName",
@@ -171,6 +173,8 @@ function TransactionHistory() {
     extraDataObj,
     isExtraDataRequired
   );
+
+  console.log()
 
   const tempPayStatus = [{ key: "All", value: "All" }];
   paymentStatusList.map((item) => {
@@ -455,7 +459,7 @@ function TransactionHistory() {
   const finalDate = year + "-" + month + "-" + day;
 
   // console.log(startDate);
-
+// console.log("statrehere,",clientCodeOption)
   return (
     <section className="ant-layout">
      <div>

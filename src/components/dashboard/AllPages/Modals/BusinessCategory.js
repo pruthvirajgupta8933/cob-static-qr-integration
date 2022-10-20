@@ -99,7 +99,6 @@ function BusinessCategory(props) {
              axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
                 console.log("1 api run")
 
-
                 localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
                 //2 - rate map clone 
                  axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${businessType}/${clientCode}/${loginId}`).then(res => {
