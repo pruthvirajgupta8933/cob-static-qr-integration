@@ -24,7 +24,7 @@ function SubmitKyc(props) {
   const { user } = useSelector((state) => state.auth);
   const { loginId } = user;
   const VerifyKycStatus = useSelector(
-    (state) => state.kyc.kycVerificationForAllTabs.merchant_info_status
+    (state) => state.kyc.KycTabStatusStore.merchant_info_status
   );
 
   const [readOnly, setReadOnly] = useState(false);

@@ -76,7 +76,7 @@ function BusinessOverview(props) {
   // }
 
   const VerifyKycStatus = useSelector(
-    (state) => state.kyc.kycVerificationForAllTabs.business_info_status
+    (state) => state.kyc.KycTabStatusStore.business_info_status
   );
 
   // const initialValues = {

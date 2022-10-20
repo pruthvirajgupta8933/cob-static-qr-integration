@@ -13,7 +13,7 @@ import SubmitKyc from "./SubmitKyc";
 import {
   kycUserList,
   kycDocumentUploadList,
-  kycVerificationForTabs,
+  GetKycTabsStatus,
 } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../dashboard/NavBar/NavBar";
@@ -127,7 +127,7 @@ function KycForm() {
 
   useEffect(() => {
     dispatch(
-      kycVerificationForTabs({
+      GetKycTabsStatus({
         login_id: merchantloginMasterId,
       })
     );

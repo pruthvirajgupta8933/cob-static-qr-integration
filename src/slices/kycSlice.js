@@ -32,75 +32,7 @@ const initialState = {
     results: null,
   },
   kycUserList: {
-    merchantId: "",
-    name: "",
-    emailId: "",
-    isEmailVerified: 0,
-    isContactNumberVerified: 0,
-    contactNumber: "",
-    contactDesignation: "",
-    aadharNumber: null,
-    panCard: "",
-    accountNumber: "",
-    bankName: "",
-    accountHolderName: "",
-    ifscCode: "",
-    companyName: "",
-    companyLogoPath: "",
-    companyImagePath: "",
-    companyDescription: "",
-    companyType: null,
-    companyWebsite: "",
-    clientName: "",
-    clientCode: "",
-    successUrl: "",
-    failureUrl: "",
-    loginMasterId: "",
-    created_date: "",
-    modifiedDate: "",
-    modified_by: "",
-    status: "",
-    reason: null,
-    businessType: "",
-    yourRole: null,
-    nameOnPanCard: "",
-    registeredBusinessAdress: "",
-    stateId: "",
-    pinCode: "",
-    registerdWithGST: null,
-    gstNumber: "",
-    monthlyRevenue: null,
-    partnerBankId: "",
-    mouAgreement: "",
-    constitutionOfMerchant: null,
-    addressProof: null,
-    entityProof: null,
-    utilityBill: null,
-    panProof: null,
-    kycOneProof: null,
-    kycTwoProof: null,
-    kycThreeProof: null,
-    kycFourProof: null,
-    kycFiveProof: null,
-    bankLetter: null,
-    onBoardFrom: "",
-    requestId: "",
-    clientType: "",
-    parentClientId: "",
-    businessCategory: "",
-    businessModel: "",
-    billingLabel: "",
-    erpCheck: null,
-    platformId: "",
-    collectionTypeId: "",
-    collectionFrequencyId: "",
-    expectedTransactions: "",
-    formBuild: "",
-    ticketSize: "",
-    signatoryPAN: "",
-    cityId: "",
-    operationalAddress: "",
-    merchant_account_details: "",
+    
   },
   KycDocUpload: {
     documentId: "",
@@ -119,26 +51,9 @@ const initialState = {
     merchant: "",
     type: "",
   },
-  kycVerificationForAllTabs: {
-    approved_date: null,
-    is_approved: false,
-    is_verified: false,
-    general_info_status: "",
-    merchant_info_status: "",
-    business_info_status: "",
-    settlement_info_status: "",
-    general_info_verified_date: null,
-    merchant_info_verified_date: null,
-    business_info_verified_date: null,
-    settlement_info_verified_date: null,
-    status: "",
-    login_id: "",
-    approved_by: null,
-    general_info_verified_by: null,
-    merchant_info_verified_by: null,
-    business_info_verified_by: null,
-    settlement_info_verified_by: null,
-  },
+  
+  KycTabStatusStore: { },
+
   businessType: [],
   busiCategory: [],
   platformType: [],
@@ -484,11 +399,11 @@ export const kycDocumentUploadList = createAsyncThunk(
 
 //--------------------For KYC Verification For All Tabs -----------------------
 
-export const kycVerificationForTabs = createAsyncThunk(
-  "kyc/kycVerificationForTabs",
+export const GetKycTabsStatus = createAsyncThunk(
+  "kyc/GetKycTabsStatus",
   async (requestParam) => {
     const response = await axiosInstanceAuth
-      .get(`${API_URL.Kyc_Verification_For_All_Tabs}/${requestParam?.login_id}`)
+      .get(`${API_URL.KYC_TAB_STATUS_URL}/${requestParam?.login_id}`)
       .catch((error) => {
         return error.response;
       });
@@ -762,7 +677,7 @@ export const kycSlice = createSlice({
       state.kycUserList = [];
     },
     loadKycVericationForAllTabs: (state) => {
-      state.kycVerificationForAllTabs = [];
+      state.KycTabStatusStore = [];
     },
     enableKycTab: (state, action) => {
       state.enableKycTab = action.payload;
@@ -864,13 +779,13 @@ export const kycSlice = createSlice({
       state.error = action.error.message;
     },
     //Kyc Verification for All Tabs
-    [kycVerificationForTabs.pending]: (state, action) => {
+    [GetKycTabsStatus.pending]: (state, action) => {
       state.status = "pending";
     },
-    [kycVerificationForTabs.fulfilled]: (state, action) => {
-      state.kycVerificationForAllTabs = action.payload;
+    [GetKycTabsStatus.fulfilled]: (state, action) => {
+      state.KycTabStatusStore = action.payload;
     },
-    [kycVerificationForTabs.rejected]: (state, action) => {
+    [GetKycTabsStatus.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.error.message;
     },
@@ -922,7 +837,7 @@ export const kycSlice = createSlice({
       state.error = action.error.message;
     },
     [verifyKycEachTab.fulfilled]: (state, action) => {
-      state.kycVerificationForAllTabs = action.payload;
+      state.KycTabStatusStore = action.payload;
     },
   },
 });

@@ -33,7 +33,7 @@ function ContactInfo(props) {
   const KycList = kyc.kycUserList;
   // console.log(KycList);
 
-  const VerifyKycStatus = kyc.kycVerificationForAllTabs.general_info_status;
+  const VerifyKycStatus = kyc?.KycTabStatusStore?.general_info_status;
 
   const [showOtpVerifyModalEmail, setShowOtpVerifyModalEmail] = useState(false);
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
