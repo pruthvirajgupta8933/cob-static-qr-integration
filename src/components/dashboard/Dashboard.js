@@ -32,6 +32,7 @@ import SabPaisaPricing from './AllPages/Product Catalogue/SabPaisaPricing';
 import TransactionSummery from './AllPages/TransactionSummery';
 import OnboardMerchant from '../ApproverNVerifier/Onboarderchant/OnboardMerchant';
 import RefundTransactionHistory from './AllPages/RefundTransactionHistory';
+import ChargeBackTxnHistory from './AllPages/ChargeBackTxnHistory';
 
 
 
@@ -97,6 +98,9 @@ function Dashboard() {
                 </Route>
                 <Route exaxt path={`${path}/refund-transaction-history`}>
                      <RefundTransactionHistory/>
+                </Route>
+                <Route exaxt path={`${path}/chargeback-transaction-history`}>
+                     <ChargeBackTxnHistory/>
                 </Route>
                 <Route exaxt path={`${path}/product-catalogue`}>
                      {/* <Subsciption /> */}

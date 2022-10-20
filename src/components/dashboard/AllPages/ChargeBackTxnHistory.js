@@ -8,7 +8,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
 import { toast } from 'react-toastify';
-import { clearSettlementReport, fetchRefundTransactionHistory,fetchSettlementReportSlice} from "../../../slices/dashboardSlice";
+import { clearSettlementReport, fetchChargebackTxnHistory,fetchSettlementReportSlice} from "../../../slices/dashboardSlice";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
@@ -16,7 +16,7 @@ import NavBar from "../NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import moment from "moment"
 
-function RefundTransactionHistory() {
+function ChargeBackTxnHistory() {
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
   const history = useHistory();
@@ -138,7 +138,9 @@ var clientMerchantDetailsList = [];
 //   console.log(fetchRefundTransactionHistory,"urllllllllllll")
 
   const onSubmitHandler = (values)=>{
-    dispatch(fetchRefundTransactionHistory(values))
+    dispatch(fetchChargebackTxnHistory(values),)
+
+
 
     .then(res=>{
 
@@ -332,7 +334,7 @@ var clientMerchantDetailsList = [];
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Refund Transaction History</h1>
+            <h1 className="m-b-sm gx-float-left">Chargeback Transaction History</h1>
           </div>
           <section
             className="features8 cid-sg6XYTl25a flleft w-100">
@@ -551,4 +553,4 @@ var clientMerchantDetailsList = [];
   );
 }
 
-export default RefundTransactionHistory;
+export default ChargeBackTxnHistory;

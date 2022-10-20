@@ -270,7 +270,7 @@ function Home() {
                 so you never have to reverse engineer anything.
               </p>
             </div>
-
+            {roles?.merchant === true ?
             <div className="col-12 col-md-12">
               <div class="card col-lg-12- cardkyc pull-left">
                 <div class="font-weight-bold card-body">
@@ -296,9 +296,11 @@ function Home() {
                 </div>
               </div>
             </div>
+             :<React.Fragment></React.Fragment>}
           </div>
+         
         </div>
-
+        {roles?.merchant === true ?
         <div class="container">
           <div class="row">
             <div class="col-sm  m-0">
@@ -442,6 +444,7 @@ function Home() {
             </div>
           </div>
         </div>
+        :<React.Fragment></React.Fragment>}
 
         {/* <h2 class="card-title">Enable International Payments Today</h2>
             <p class="card-text">

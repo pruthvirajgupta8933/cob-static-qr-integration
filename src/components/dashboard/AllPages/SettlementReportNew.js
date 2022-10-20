@@ -109,6 +109,8 @@ function SettlementReportNew() {
   const onSubmitHandler = (values)=>{
     dispatch(fetchSettlementReportSlice(values))
     .then(res=>{
+
+      console.log(res,"thehere")
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
         if(ApiStatus==="rejected"){
