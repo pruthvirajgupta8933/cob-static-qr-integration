@@ -7,19 +7,17 @@ import { createClientProfile, updateClientProfile } from "../../../slices/auth";
 import { Link } from "react-router-dom";
 
 import profileService from "../../../services/profile.service";
-import { toast, Zoom } from "react-toastify";
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 import NavBar from "../NavBar/NavBar";
-import { message_icon } from "../../../assets/images/message_icon.png"
-import green_profile from "../../../assets/images/green_profile.png"
-import dark_profile from "../../../assets/images/dark_profile.png"
-// import  {notification_icon} from "../../../assets/images/notification_icon.png"
-// import  {profile_icon} from "../../../assets/images/profile_icon.png"
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+
+
 
 export const Profile = () => {
   const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
-  const { fetchDcBankList, fetchNbBankList, verifyClientCode, verifyIfcsCode } =
-    profileService;
+  
+  const roleBasedShowTab = roleBasedAccess()
+
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { dashboard } = useSelector((state) => state);
@@ -79,47 +77,14 @@ export const Profile = () => {
     // setCreateProfileResponse(dashboard.createClientProfile)
   }, [dashboard]);
 
-  //temp variable
-  // const temp1 = createProfileResponse
 
-  // console.log(authenticationMode);
 
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-  //   console.log(clientMerchantDetailsList && clientMerchantDetailsList[0]?.address)
-  //  console.log(isCreateorUpdate);
-  //   initial values
 
+// console.log(roleBasedShowTab);
 
-  // const INITIAL_FORM_STATE = {
-  //   loginId: loginId,
-  //   clientName: clientContactPersonName,
-  //   phone: clientMobileNo,
-  //   email: clientEmail,
-  //   ...(isCreateorUpdate && { clientCode: "" }),
-  //   address: clientMerchantDetailsList && clientMerchantDetailsList[0]?.address,
-  //   accountHolderName: accountHolderName,
-  //   bankName: bankName,
-  //   accountNumber: accountNumber,
-  //   ifscCode: userIfscCode,
-  //   pan: pan,
-  //   clientAuthenticationType: clientAuthenticationType,
-  // };
-
-  // const INITIAL_FORM_STATE = {
-  //   loginId: loginId,
-  //   clientName: clientContactPersonName,
-  //   phone: clientMobileNo,
-  //   email: clientEmail,
-  //   ...(isCreateorUpdate && { clientCode: "" }),
-  //   address: clientMerchantDetailsList && clientMerchantDetailsList[0]?.address,
-  //   accountHolderName: accountHolderName,
-  //   bankName: bankName,
-  //   accountNumber: accountNumber,
-  //   ifscCode: userIfscCode,
-  //   pan: pan,
-  //   clientAuthenticationType: clientAuthenticationType,
-  // };
+const LoggedUser = Object.keys(roleBasedShowTab).find(key => roleBasedShowTab[key] === true);
 
   const INITIAL_FORM_STATE = {
     loginId: loginId,
@@ -129,7 +94,7 @@ export const Profile = () => {
     ...(isCreateorUpdate && { clientCode: "" }),
     address: clientMerchantDetailsList && clientMerchantDetailsList[0]?.address,
     accountHolderName: accountHolderName,
-    accountType: "merchant",
+    accountType: LoggedUser,
     bankName: "",
     accountNumber: "",
     ifscCode: "",
@@ -218,69 +183,22 @@ export const Profile = () => {
 
   }
 
-  const verifyClientCodeFn = (getCode) => {
-    getCode.length > 5 && getCode.length < 7
-      ? verifyClientCode(getCode)
-        .then((res) => {
-          setIsClientCodeValid(res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-          setIsClientCodeValid(false);
-        })
-      : setIsClientCodeValid(null);
-  };
+  // const verifyClientCodeFn = (getCode) => {
+  //   getCode.length > 5 && getCode.length < 7
+  //     ? verifyClientCode(getCode)
+  //       .then((res) => {
+  //         setIsClientCodeValid(res.data);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //         setIsClientCodeValid(false);
+  //       })
+  //     : setIsClientCodeValid(null);
+  // };
 
-  const verifyIfcdCodeFn = (ifscCodeInput) => {
-    // console.log(ifscCodeInput);
-    ifscCodeInput.length > 5
-      ? verifyIfcsCode(ifscCodeInput)
-        .then((res) => {
-          setIsIfscValid(res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-          setIsIfscValid(false);
-        })
-      : setIsIfscValid(true);
-  };
 
-  useEffect(() => {
-    // fetch bank list
-    fetchDcBankList()
-      .then((response) => {
-        localStorage.setItem("DC_bank_list", JSON.stringify(response.data));
-        setListOfNetBank(response.data);
-      })
-      .catch((error) => console.log(error));
 
-    fetchNbBankList()
-      .then((response) => {
-        localStorage.setItem("NB_bank_list", JSON.stringify(response.data));
-        setListOfDebitCardBank(response.data);
-      })
-      .catch((error) => console.log(error));
-    setIsCreateorUpdate(
-      clientMerchantDetailsList && clientMerchantDetailsList !== null
-        ? false
-        : true
-    );
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (authenticationMode === "NetBank") {
-      setSelectedListForOption(listOfNetBank);
-    }
-    if (authenticationMode === "Debitcard") {
-      setSelectedListForOption(listOfDebitCardBank);
-    }
-  }, [authenticationMode, listOfNetBank, listOfDebitCardBank]);
-
-  // console.log(authenticationMode);
-  // console.log(bankName);
-  // console.log(selectedListForOption);
 
   return (
     <section className="ant-layout">
@@ -290,29 +208,9 @@ export const Profile = () => {
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper">
-            {/* <div className="profile-header">
-              <div>
-                Choose Account
-              </div>
-              <div>
-
-              </div>
-            </div>
-            <img
-              
-              style={{Width:"36.67px",height:"36.67px",}}
-              src={green_profile} alt="" /> */}
+        
             <h1 className="right_side_heading">
-              My Profile{" "}
-              {/* <Link to={`/dashboard/change-password`}>
-                <button
-                  type="button"
-                  className="btn bttn bttnbackgroundkyc pull-right"
-                >
-                  <i className="fa fa-key" />
-                  <span> Change Password</span>
-                </button>
-              </Link> */}
+              My Profile
             </h1>
             <div className="ant-tabs ant-tabs-top ant-tabs-line">
               <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
@@ -347,21 +245,7 @@ export const Profile = () => {
                   <div tabIndex={0} role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }}>
                   </div>
                   <div className="container col-sm-12 d-flex">
-                    {/* <div
-                    tabIndex={0}
-                    role="presentation"
-                    style={{
-                      width: "0px",
-                      height: "0px",
-                      overflow: "hidden",
-                      position: "absolute",
-                    }}
-                  ></div>
-                  <div className="panel" style={{ maxWidth: "100%" }}>
-                    <div
-                      className="container-"
-                      style={{ margin: "0 !important" }}
-                    > */}
+                    
                     {/* start form area */}
                     <div className="container col-sm-8">
                       <div className="col-md-12 ">
@@ -500,21 +384,7 @@ export const Profile = () => {
                                   <span className="for_passwrd">Change Password</span>
                                 </button>
                               </Link>
-                              {/* <input
-                                className={`form-control ${errors.clientName ? "is-invalid" : ""
-                                  }`}
-                                {...register("clientName")}
-                                type="text"
-                                id="changepassword"
-                                name="changePassword"
-                                style={{
-                                  width: "220px",
-                                  height: "50px"
-                                }}
-                                onChange={(e) => e.target.value}
-                                readonly
-
-                              /> */}
+                        
                               <div className="invalid-feedback">
                                 {errors.clientName?.message}
                               </div>
@@ -529,7 +399,7 @@ export const Profile = () => {
                             </label>
                             <div className="col-sm-6 ml-3 ">
                               <input
-                                className={`form-control border-0 ${errors.phone ? "is-invalid" : ""
+                                className={`form-control text-uppercase border-0 ${errors.phone ? "is-invalid" : ""
                                   }`}
                                 {...register("accountType")}
                                 type="text"
@@ -574,7 +444,7 @@ export const Profile = () => {
                             </div>
                           </div>
                           {/* Client Code Hide if already client created */}
-                          {isCreateorUpdate ? (
+                          {/* {isCreateorUpdate ? (
                             <div className="form-group col-sm-12">
                               <label
                                 htmlFor="clientCode"
@@ -595,9 +465,7 @@ export const Profile = () => {
                                     height: "50px"
                                   }}
                                   readonly
-                                  onChange={(e) =>
-                                    verifyClientCodeFn(e.target.value)
-                                  }
+                               
                                 />
                                 <div className="">
                                   {isClientCodeValid
@@ -611,39 +479,10 @@ export const Profile = () => {
                             </div>
                           ) : (
                             <></>
-                          )}
+                          )} */}
 
 
 
-                          {/* <div className="form-group col-sm-12">
-                            <label
-                              htmlFor="address"
-                              className="control-label col-sm-3"
-                            >
-                              {" "}
-                              Address
-                            </label>
-
-                            <div className="col-sm-9">
-                              <input
-                                className={`form-control ${errors.address ? "is-invalid" : ""
-                                  }`}
-                                {...register("address")}
-                                type="text"
-                                id="address"
-                                name="address"
-                                style={{
-                                  width: "220px",
-                                  height: "50px"
-                                }}
-                                onChange={(e) => e.target.value}
-                                readonly
-                              />
-                              <div className="invalid-feedback">
-                                {errors.address?.message}
-                              </div>
-                            </div>
-                          </div> */}
                           <div class="row">
                             <div class="col-6">
                               <button type="button" class="edits_buttn mt-4 ml-2" style={{ width: "154px", height: "50px" }}><span className="edit_nop">Edit</span></button>
@@ -655,192 +494,6 @@ export const Profile = () => {
 
 
                           </div>
-
-
-                          {/* <div className="col-lg-4 col-md-6 col-sm-12">
-                                  <label
-                                    htmlFor="accountHolderName"
-                                    className="col-form-label text-md-right"
-                                  >
-                                    {" "}
-                                    Name in Bank Account{" "}
-                                  </label>
-
-                                  <input
-                                    type="text"
-                                    id="accountHolderName"
-                                    className="form-control"
-                                    name="accountHolderName"
-                                    {...register("accountHolderName")}
-                                  />
-                                  <p>{errors.accountHolderName?.message}</p>
-                                </div>
-
-                                <div className="col-lg-4 col-md-6 col-sm-12">
-                                  <label
-                                    htmlFor="clientAuthenticationType"
-                                    className="col-form-label text-md-right"
-                                  >
-                                    Authentication Mode
-                                  </label>
-                                  <div className="col-md-12">
-                                    <input
-                                      className={`form-control- margn ${
-                                        errors.clientAuthenticationType
-                                          ? "is-invalid"
-                                          : ""
-                                      }`}
-                                      {...register("clientAuthenticationType")}
-                                      type="radio"
-                                      name="clientAuthenticationType"
-                                      onChange={(e) =>
-                                        setAuthenticationMode(e.target.value)
-                                      }
-                                      defaultChecked={
-                                        authenticationMode === "Netbank"
-                                      }
-                                      value="NetBank"
-                                    />
-                                    <label htmlFor="html">Net Banking</label>
-
-                                    <div className="invalid-feedback">
-                                      {errors.clientAuthenticationType?.message}
-                                    </div>
-
-                                    <input
-                                      className={`form-control- margn ${
-                                        errors.clientAuthenticationType
-                                          ? "is-invalid"
-                                          : ""
-                                      }`}
-                                      {...register("clientAuthenticationType")}
-                                      type="radio"
-                                      name="clientAuthenticationType"
-                                      onChange={(e) =>
-                                        setAuthenticationMode(e.target.value)
-                                      }
-                                      defaultChecked={
-                                        authenticationMode === "Debitcard"
-                                      }
-                                      value="Debitcard"
-                                    />
-                                    <label htmlFor="html">Debit Card</label>
-
-                                    <div className="invalid-feedback">
-                                      {errors.clientAuthenticationType?.message}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="col-lg-4 col-md-6 col-sm-12">
-                                  <label
-                                    htmlFor="bankName"
-                                    className="col-form-label text-md-right"
-                                  >
-                                    Bank Name{" "}
-                                  </label>
-
-                                  <select
-                                    name="bankName"
-                                    {...register("bankName")}
-                                    className={`form-control ${
-                                      errors.bankName ? "is-invalid" : ""
-                                    }`}
-                                  >
-                                    <option value="0">
-                                      Please Select Bank
-                                    </option>
-                                    {selectedListForOption.map((option) => {
-                                      return (
-                                        <option
-                                          key={option.id}
-                                          value={option.code}
-                                        >
-                                          {option.description}
-                                        </option>
-                                      );
-                                    })}
-                                  </select>
-                                  <div className="invalid-feedback">
-                                    {errors.bankName?.message}
-                                  </div>
-                                </div>
-
-                                <div className="col-lg-4 col-md-6 col-sm-12">
-                                  <label
-                                    htmlFor="accountNumber"
-                                    className="col-form-label text-md-right"
-                                  >
-                                    Bank Account Number
-                                  </label>
-
-                                  <input
-                                    className={`form-control ${
-                                      errors.accountNumber ? "is-invalid" : ""
-                                    }`}
-                                    {...register("accountNumber")}
-                                    type="text"
-                                    id="accountNumber"
-                                    name="accountNumber"
-                                    onChange={(e) => e.target.value}
-                                  />
-                                  <div className="invalid-feedback">
-                                    {errors.accountNumber?.message}
-                                  </div>
-                                </div>
-
-                                <div className="col-lg-4 col-md-6 col-sm-12">
-                                  <label
-                                    htmlFor="ifscCode"
-                                    className="col-form-label text-md-right"
-                                  >
-                                    {" "}
-                                    IFSC Code{" "}
-                                  </label>
-
-                                  <input
-                                    className={`form-control ${
-                                      errors.ifscCode ? "is-invalid" : ""
-                                    }`}
-                                    {...register("ifscCode")}
-                                    type="text"
-                                    id="ifscCode"
-                                    name="ifscCode"
-                                    onChange={(e) =>
-                                      verifyIfcdCodeFn(e.target.value)
-                                    }
-                                  />
-                                  <p>
-                                    {isIfcsValid
-                                      ? "IFSC is Valid"
-                                      : "IFSC is Not Valid"}
-                                  </p>
-                                  <div className="invalid-feedback">
-                                    {errors.ifscCode?.message}
-                                  </div>
-                                </div>
-
-                                <div className="col-lg-4 col-md-6 col-sm-12">
-                                  <label
-                                    htmlFor="pan"
-                                    className="col-form-label text-md-right"
-                                  >
-                                    Pan{" "}
-                                  </label>
-
-                                  <input
-                                    className={`form-control ${
-                                      errors.pan ? "is-invalid" : ""
-                                    }`}
-                                    {...register("pan")}
-                                    type="text"
-                                    id="pan"
-                                    name="pan"
-                                    onChange={(e) => e.target.value}
-                                  />
-                                  <div className="invalid-feedback">
-                                    {errors.pan?.message}
-                                  </div>
-                                </div> */}
 
                           <div className="col-lg-4 offset-md-4- topmar">
                             <div class="invisible">
