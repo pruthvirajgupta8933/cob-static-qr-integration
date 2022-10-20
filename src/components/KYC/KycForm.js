@@ -45,12 +45,12 @@ function KycForm() {
     merchantloginMasterId = loginId;
   }
 
-  const BusinessOverviewStatus = useSelector(
-    (state) => state.kyc.allTabsValidate.BusiOverviewwStatus.submitStatus.status
-  );
-  // const BusinessDetailsStatus = useSelector(
-  //   (state) => state.kyc.allTabsValidate.BusinessDetailsStatus.submitStatus.status
+  // const BusinessOverviewStatus = useSelector(
+  //   (state) => state.kyc.BusiOverviewwStatus.submitStatus.status
   // );
+
+
+  let BusinessOverviewStatus = "";
 
 
 
