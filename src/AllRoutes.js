@@ -45,8 +45,6 @@ function AllRoutes(){
               <Route path="/forget">
                 <ForgetPassword />
               </Route>
-          
-
 
               <Route exact path="/emailverification/:loginId">
                 <EmailVerification />
