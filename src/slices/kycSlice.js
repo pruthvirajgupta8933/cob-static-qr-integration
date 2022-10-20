@@ -25,25 +25,6 @@ const initialState = {
     status: "",
     message: "",
   },
-  allTabValidate:{
-    merchantContactInfo : {
-      submitStatus: {
-       status:"",
-       message:""
-      },
-      aadhaar: {
-        isValidate: false,
-        response:{
-          "name": "",
-          valid: false,
-          message: "",
-          status: false
-            
-        }
-      }
-    }
-  },
-  
   kycApproved: {
     count: null,
     next: null,
@@ -177,6 +158,34 @@ const initialState = {
   UploadLoginId: [],
   enableKycTab: false,
   kycModalClose: true,
+
+  allTabsValidate:{
+    merchantContactInfo : {
+      submitStatus: {
+       status: false,
+       message:""
+      },
+      aadhaar: {
+        isValidate: false,
+        response:{
+          name: "",
+          valid: false,
+          message: "",
+          status: false
+            
+        }
+      }
+    },
+    BusiOverviewwStatus : {
+      submitStatus: {
+        status:false,
+        message:""
+        },
+      },
+      
+      
+  },
+  
 
   OtpResponse: { status: "", verification_token: "" },
   OtpVerificationResponseForPhone: {
@@ -344,14 +353,18 @@ export const collectionType = createAsyncThunk(
 );
 //////////////////////////////////////////////////// Put api for save business info
 export const saveBusinessInfo = createAsyncThunk(
-  "kyc/collectionType",
+  "kyc/saveBusinessInfo",
   async (requestParam) => {
     const response = await axiosInstanceAuth
-      .put(`${API_URL.save_Business_Info}`, requestParam)
+      .put(`${API_URL.save_Business_Info}`, requestParam, {
+        headers: {
+          // Authorization: ""
+        },
+      })
       .catch((error) => {
         return error.response;
       });
-
+    // console.log(response,"==========RESPONSE ============>")
     return response.data;
   }
 );
@@ -375,14 +388,18 @@ export const businessOverviewState = createAsyncThunk(
 ///////////////////////////////////// Put APi for SAVE_MERCHANT_INFO (BusinessDetails Tab)
 
 export const saveMerchantInfo = createAsyncThunk(
-  "kyc/collectionType",
+  "kyc/saveBusinessInfo",
   async (requestParam) => {
     const response = await axiosInstanceAuth
-      .post(`${API_URL.SAVE_MERCHANT_INFO}`, requestParam)
+      .post(`${API_URL.SAVE_MERCHANT_INFO}`, requestParam, {
+        headers: {
+          // Authorization: ""
+        },
+      })
       .catch((error) => {
         return error.response;
       });
-
+    // console.log(response,"==========RESPONSE ============>")
     return response.data;
   }
 );
@@ -813,8 +830,8 @@ export const kycSlice = createSlice({
       state.status = "pending";
     },
     [saveBusinessInfo.fulfilled]: (state, action) => {
-      state.BusiOverviewwStatus = action.payload;
-      // console.log(action.payload, "===>");
+      state.allTabsValidate.BusiOverviewwStatus.submitStatus = action.payload;
+      // console.log(action.payload, " ACTION  ===>");
     },
     [saveBusinessInfo.rejected]: (state, action) => {
       state.status = "failed";
@@ -825,7 +842,7 @@ export const kycSlice = createSlice({
       state.status = "pending";
     },
     [saveMerchantInfo.fulfilled]: (state, action) => {
-      state.BusiOverviewwStatus = action.payload;
+      state.allTabsValidate.BusiOverviewwStatus.submitStatus = action.payload;
       // console.log(action.payload, "===>");
     },
     [saveMerchantInfo.rejected]: (state, action) => {
