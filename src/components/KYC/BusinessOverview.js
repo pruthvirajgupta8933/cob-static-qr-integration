@@ -75,7 +75,7 @@ function BusinessOverview(props) {
   // }
 
   const VerifyKycStatus = useSelector(
-    (state) => state.kyc.KycTabStatusStore.business_info_status
+    (state) => state.kyc?.kycVerificationForAllTabs?.business_info_status
   );
 
   const urlRegex = "((http|https)://)(www.)?"
@@ -413,11 +413,14 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-
-            <div className="form-row">
-              <div className="form-group col-md-4">
-              <label><h4 class ="font-weight-bold">Website/App url<span style={{color:"red"}}>*</span></h4></label>
-                <FormikController
+                <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
+                <h4 class="text-kyc-label text-nowrap">
+                How do you wish to accept payments?<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-8 col-md-10 col-lg-10">
+              <FormikController
                   control="radio"
                   onChange={(e) => {
                     handleShowHide(e);
@@ -433,10 +436,8 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div>
-
-            {formik.values?.seletcted_website_app_url === "Yes" && (
-                <div className="form-group col-md-4">
-                      <label><h4 class ="font-weight-bold">Enter Website/App url<span style={{color:"red"}}>*</span></h4></label>
+              {formik.values?.seletcted_website_app_url === "Yes" && (
+                <div className="form-group col-lg-7">
                   <FormikController
                     control="input"
                     type="text"
@@ -448,6 +449,8 @@ function BusinessOverview(props) {
                 </div>
               )}
               </div>
+
+          
 
             {/* <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Type Of Collection <span style={{color:"red"}}>*</span></h4></label>
