@@ -8,7 +8,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
 import { toast } from 'react-toastify';
-import { clearSettlementReport, fetchSettlementReportSlice ,RefundTransactionHistory} from "../../../slices/dashboardSlice";
+import { clearSettlementReport, fetchRefundTransactionHistory,fetchSettlementReportSlice} from "../../../slices/dashboardSlice";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
@@ -16,7 +16,7 @@ import NavBar from "../NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import moment from "moment"
 
-function SettlementReportNew() {
+function RefundTransactionHistory() {
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
   const history = useHistory();
@@ -135,9 +135,14 @@ var clientMerchantDetailsList = [];
     setCurrentPage(pageNo);
   };
 
+//   console.log(fetchRefundTransactionHistory,"urllllllllllll")
+
   const onSubmitHandler = (values)=>{
-    dispatch(RefundTransactionHistory(values))
+    dispatch(fetchRefundTransactionHistory(values))
+
     .then(res=>{
+
+        console.log(res,"myreesss")
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
         if(ApiStatus==="rejected"){
@@ -546,4 +551,4 @@ var clientMerchantDetailsList = [];
   );
 }
 
-export default SettlementReportNew;
+export default RefundTransactionHistory;

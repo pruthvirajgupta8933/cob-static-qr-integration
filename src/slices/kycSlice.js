@@ -90,16 +90,15 @@ const initialState = {
             
         }
       }
-    },
-    BusiOverviewwStatus : {
-      submitStatus: {
-        status:false,
-        message:""
-        },
-      },
-      
-      
+    },      
   },
+
+  BusiOverviewwStatus : {
+    submitStatus: {
+      status:false,
+      message:""
+      },
+    },
   
 
   OtpResponse: { status: "", verification_token: "" },
@@ -276,6 +275,7 @@ export const saveBusinessInfo = createAsyncThunk(
           // Authorization: ""
         },
       })
+      
       .catch((error) => {
         return error.response;
       });
@@ -745,8 +745,8 @@ export const kycSlice = createSlice({
       state.status = "pending";
     },
     [saveBusinessInfo.fulfilled]: (state, action) => {
-      state.allTabsValidate.BusiOverviewwStatus.submitStatus = action.payload;
-      // console.log(action.payload, " ACTION  ===>");
+      state.saveBusinessInfo = action.payload;
+      // console.log(action.payload,"=============================================================>")
     },
     [saveBusinessInfo.rejected]: (state, action) => {
       state.status = "failed";
@@ -757,8 +757,7 @@ export const kycSlice = createSlice({
       state.status = "pending";
     },
     [saveMerchantInfo.fulfilled]: (state, action) => {
-      state.allTabsValidate.BusiOverviewwStatus.submitStatus = action.payload;
-      // console.log(action.payload, "===>");
+    state.saveMerchantInfo = action.payload;
     },
     [saveMerchantInfo.rejected]: (state, action) => {
       state.status = "failed";

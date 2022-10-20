@@ -124,15 +124,15 @@ function SideNavbar() {
 
 
                     <ul id="settlement$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu">
-                      {roleBasedShowTab?.merchant === true &&
-                        roleBasedShowTab?.approver === false && roleBasedShowTab?.verifier === false ?
+                      {roleBasedShowTab?.merchant === true ||
+                        roleBasedShowTab?.bank === true  ?
                         <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
                           <Link to={`${url}/transaction-summery`} className='txt-white sidenavFonts'><img
                             src={enquire}
                             width={17}
                             alt="sabpaisa"
                             title="sabpaisa"
-                          />&nbsp;Transaction Summery</Link>
+                          />&nbsp;Transaction Summary</Link>
                         </li>
                         : <React.Fragment></React.Fragment>}
 
@@ -179,7 +179,13 @@ function SideNavbar() {
                           </li>
                           <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
                             <Link to={`${url}/refund-transaction-history`} className='txt-white sidenavFonts'><i className="fa fa-bars" aria-hidden="true" />
-                              &nbsp;<span>Refund Transaction History</span>
+                              &nbsp;<span>Refund Txn History</span>
+                              {/* <span class="new-tab">new</span> */}
+                            </Link>
+                          </li>
+                          <li className="ant-menu-item" role="menuitem" style={{ paddingLeft: '48px' }}>
+                            <Link to={`${url}/chargeback-transaction-history`} className='txt-white sidenavFonts'><i className="fa fa-bars" aria-hidden="true" />
+                              &nbsp;<span>Chargeback Txn History</span>
                               {/* <span class="new-tab">new</span> */}
                             </Link>
                           </li>

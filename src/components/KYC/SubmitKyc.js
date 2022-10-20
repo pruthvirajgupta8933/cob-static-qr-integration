@@ -36,6 +36,10 @@ function SubmitKyc(props) {
     // serviceAgreement: "",
   };
 
+  const redirectt = () => {
+    history.push("/dashboard");
+  };
+
   const validationSchema = Yup.object({
     // checkBoxChoice: Yup.array().nullable(),
     // privacyPolicy: Yup.array().nullable(),
@@ -290,6 +294,7 @@ function SubmitKyc(props) {
                     <div class="modal-content">
                       <div class="modal-header modal-header-fignma">
                         <button
+                           onClick={() => redirectt()}
                           type="button"
                           class="close"
                           data-dismiss="modal3"

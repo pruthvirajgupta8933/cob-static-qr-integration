@@ -27,6 +27,9 @@ function BusinessDetails(props) {
     (state) => state.kyc.KycTabStatusStore.merchant_info_status
   );
 
+
+  const regexGSTN = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$"
+
   const { user } = useSelector((state) => state.auth);
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
@@ -160,7 +163,7 @@ function BusinessDetails(props) {
       .required("Required")
       .nullable(),
     gst_number: Yup.string()
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric).matches(regexGSTN,"GSTIN Number is Invalid")
       .required("Required")
       .nullable(),
     pan_card: Yup.string()
@@ -180,7 +183,6 @@ function BusinessDetails(props) {
       .required("Required")
       .nullable(),
     state_id: Yup.string()
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
     pin_code: Yup.string()
@@ -201,7 +203,7 @@ function BusinessDetails(props) {
           "stateName",
           resp.payload
         );
-        //  console.log(resp, "my all dattaaa")
+         console.log(resp, "my all dattaaa")
         setBusinessOverview(data);
       })
       .catch((err) => console.log(err));
@@ -615,10 +617,10 @@ function BusinessDetails(props) {
                 </h4>
               </label>
               <div class="col-sm-7 col-md-7 col-lg-7">
-                <FormikController
-                  control="input"
-                  type="text"
+              <FormikController
+                  control="select"
                   name="state_id"
+                  options={BusinessOverview}
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
