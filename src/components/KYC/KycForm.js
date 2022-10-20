@@ -46,7 +46,7 @@ function KycForm() {
   }
 
   const BusinessOverviewStatus = useSelector(
-    (state) => state.kyc.BusiOverviewwStatus.status
+    (state) => state.kyc?.BusiOverviewwStatus?.status
   );
 
   // console.log(
