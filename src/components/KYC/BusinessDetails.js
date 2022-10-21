@@ -18,17 +18,19 @@ function BusinessDetails(props) {
   const setTab = props.tab;
   const setTitle = props.title;
 
-  console.log(props, "====>");
+
 
   const { role, kycid } = props;
   const KycList = useSelector((state) => state.kyc.kycUserList);
 
   const VerifyKycStatus = useSelector(
-    (state) => state.kyc.kycVerificationForAllTabs.merchant_info_status
+    (state) => state.kyc.KycTabStatusStore.merchant_info_status
   );
 
+
+  const regexGSTN = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$"
+
   const { user } = useSelector((state) => state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
@@ -87,6 +89,9 @@ function BusinessDetails(props) {
   //   operational_address: KycList.registeredBusinessAdress,
   //   checkBoxChoice: "",
   // };
+
+  console.log("KycList", KycList)
+
   const initialValues = {
     company_name: KycList?.companyName,
     company_logo: "",
@@ -95,11 +100,11 @@ function BusinessDetails(props) {
     pan_card: KycList?.panCard,
     signatory_pan: KycList?.signatoryPAN,
     name_on_pancard: KycList?.nameOnPanCard,
-    pin_code: "",
-    city_id: "",
-    state_id: "",
-    registered_business_address: "Delhi",
-    operational_address: "",
+    pin_code: KycList?.merchant_address_details?.pin_code,
+    city_id: KycList?.merchant_address_details?.city,
+    state_id: KycList?.merchant_address_details?.state,
+    registered_business_address: KycList?.merchant_address_details?.address,
+    operational_address: KycList?.merchant_address_details?.address,
     // checkBoxChoice: "",
   };
 
@@ -158,7 +163,7 @@ function BusinessDetails(props) {
       .required("Required")
       .nullable(),
     gst_number: Yup.string()
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric).matches(regexGSTN,"GSTIN Number is Invalid")
       .required("Required")
       .nullable(),
     pan_card: Yup.string()
@@ -178,7 +183,6 @@ function BusinessDetails(props) {
       .required("Required")
       .nullable(),
     state_id: Yup.string()
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
     pin_code: Yup.string()
@@ -199,7 +203,7 @@ function BusinessDetails(props) {
           "stateName",
           resp.payload
         );
-        //  console.log(resp, "my all dattaaa")
+         console.log(resp, "my all dattaaa")
         setBusinessOverview(data);
       })
       .catch((err) => console.log(err));
@@ -272,6 +276,8 @@ function BusinessDetails(props) {
     }
   }, [role]);
 
+  console.log("readOnly",readOnly)
+
   return (
     <div className="col-md-12 col-md-offset-4">
       <Formik
@@ -295,25 +301,24 @@ function BusinessDetails(props) {
                   type="text"
                   name="gst_number"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
               <div class="position-sticky pull-right">
-                    <a
-                      href={() => false}
-                      className="btn btnbackground text-white btn-sm panbtn"
-                      style={{
-                        boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                        borderRadius: "6px",
-                      }}
-                      onClick={() => {
-                       console.log("Hello")
-                      }}
-                    >
-                      Verify
-                    </a>
-                  </div>
+                <a
+                  href={() => false}
+                  className="btn btnbackground text-white btn-sm panbtn"
+                  style={{
+                    boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                    borderRadius: "6px",
+                  }}
+                  onClick={() => {
+                    //  console.log("Hello")
+                  }}
+                >
+                  Verify
+                </a>
+              </div>
             </div>
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
@@ -327,25 +332,24 @@ function BusinessDetails(props) {
                   type="text"
                   name="signatory_pan"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
               <div class="position-sticky pull-right">
-                    <a
-                      href={() => false}
-                      className="btn btnbackground text-white btn-sm panbtn"
-                      style={{
-                        boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                        borderRadius: "6px",
-                      }}
-                      onClick={() => {
-                       console.log("Hello")
-                      }}
-                    >
-                      Verify
-                    </a>
-                  </div>
+                <a
+                  href={() => false}
+                  className="btn btnbackground text-white btn-sm panbtn"
+                  style={{
+                    boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                    borderRadius: "6px",
+                  }}
+                  onClick={() => {
+                    //  console.log("Hello")
+                  }}
+                >
+                  Verify
+                </a>
+              </div>
             </div>
 
             <div class="form-group row">
@@ -361,29 +365,28 @@ function BusinessDetails(props) {
                   type="text"
                   name="pan_card"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
               <div class="position-sticky pull-right">
-                    <a
-                      href={() => false}
-                      className="btn btnbackground text-white btn-sm panbtn"
-                      style={{
-                        boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                        borderRadius: "6px",
-                      }}
-                      onClick={() => {
-                       console.log("Hello")
-                      }}
-                    >
-                      Verify
-                    </a>
-                  </div>
+                <a
+                  href={() => false}
+                  className="btn btnbackground text-white btn-sm panbtn"
+                  style={{
+                    boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                    borderRadius: "6px",
+                  }}
+                  onClick={() => {
+                    //  console.log("Hello")
+                  }}
+                >
+                  Verify
+                </a>
+              </div>
             </div>
 
 
-            
+
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
@@ -397,7 +400,6 @@ function BusinessDetails(props) {
                   type="text"
                   name="company_name"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
@@ -469,7 +471,7 @@ function BusinessDetails(props) {
               </div>
             </div> */}
 
-         
+
             {/* {formik.values?.registerd_with_gst === "True" && (
                 <div className="form-group col-md-4">
                   <label>
@@ -489,7 +491,7 @@ function BusinessDetails(props) {
               )}
              */}
 
-          
+
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
@@ -503,13 +505,12 @@ function BusinessDetails(props) {
                   type="text"
                   name="name_on_pancard"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
             </div>
 
-           
+
 
             {/* <div className="form-group col-md-4">
                 <label>
@@ -572,7 +573,7 @@ function BusinessDetails(props) {
                 />
               </div> */}
 
-        
+
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
@@ -616,10 +617,10 @@ function BusinessDetails(props) {
                 </h4>
               </label>
               <div class="col-sm-7 col-md-7 col-lg-7">
-                <FormikController
-                  control="input"
-                  type="text"
+              <FormikController
+                  control="select"
                   name="state_id"
+                  options={BusinessOverview}
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}

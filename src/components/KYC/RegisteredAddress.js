@@ -12,7 +12,7 @@ const RegisteredAddress = (props) => {
   const { role, kycid } = props;
   const KycList = useSelector((state) => state.kyc.kycUserList);
   const VerifyKycStatus = useSelector(
-    (state) => state.kyc.kycVerificationForAllTabs.merchant_address_status
+    (state) => state.kyc.KycTabStatusStore.merchant_address_status
   );
   // console.log(KycList.merchant_address_details.pin_code,"<===List==>")
   

@@ -24,7 +24,7 @@ function SubmitKyc(props) {
   const { user } = useSelector((state) => state.auth);
   const { loginId } = user;
   const VerifyKycStatus = useSelector(
-    (state) => state.kyc.kycVerificationForAllTabs.merchant_info_status
+    (state) => state.kyc.KycTabStatusStore.merchant_info_status
   );
 
   const [readOnly, setReadOnly] = useState(false);
@@ -34,6 +34,10 @@ function SubmitKyc(props) {
     // privacyPolicy: "",
     term_condition: false,
     // serviceAgreement: "",
+  };
+
+  const redirectt = () => {
+    history.push("/dashboard");
   };
 
   const validationSchema = Yup.object({
@@ -290,6 +294,7 @@ function SubmitKyc(props) {
                     <div class="modal-content">
                       <div class="modal-header modal-header-fignma">
                         <button
+                           onClick={() => redirectt()}
                           type="button"
                           class="close"
                           data-dismiss="modal3"

@@ -13,7 +13,7 @@ import SubmitKyc from "./SubmitKyc";
 import {
   kycUserList,
   kycDocumentUploadList,
-  kycVerificationForTabs,
+  GetKycTabsStatus,
 } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../dashboard/NavBar/NavBar";
@@ -45,14 +45,42 @@ function KycForm() {
     merchantloginMasterId = loginId;
   }
 
-  const BusinessOverviewStatus = useSelector(
-    (state) => state.kyc?.BusiOverviewwStatus?.status
-  );
-
-  // console.log(
-  //   BusinessOverviewStatus,
-  //   "<===  Business Overview Response Status ===>"
+  // const BusinessOverviewStatus = useSelector(
+  //   (state) => state.kyc.BusiOverviewwStatus.submitStatus.status
   // );
+
+
+  let BusinessOverviewStatus = "";
+
+
+
+  console.log("All Tabs Submit Status ===> Business Overrview",BusinessOverviewStatus)
+
+  
+  const BusiOverviewStatus = () => {
+    return (
+      <a
+        href={() => false}
+        className={
+          tab === 2
+            ? " nav-link activepaylink-kyc text-font"
+            : "inactive text-font"
+            ? BusinessOverviewStatus === true
+              ? "nav-link inactive text-font-ForStatusChange text-success"
+              : "nav-link inactive text-font"
+            :<></>
+        }
+        onClick={() => {
+          SetTab(2);
+          setTitle("BUSINESS OVERVIEW");
+        }}
+      >
+        Business Overview
+      </a>
+    );
+  };
+
+
 
   let history = useHistory();
 
@@ -99,7 +127,7 @@ function KycForm() {
 
   useEffect(() => {
     dispatch(
-      kycVerificationForTabs({
+      GetKycTabsStatus({
         login_id: merchantloginMasterId,
       })
     );
@@ -186,21 +214,10 @@ function KycForm() {
                             </li>
 
                             <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={
-                                  "nav-link " +
-                                  (tab === 2
-                                    ? "activepaylink-kyc text-font"
-                                    : "inactive text-font")
-                                }
-                                onClick={() => {
-                                  SetTab(2);
-                                  setTitle("BUSINESS OVERVIEW");
-                                }}
-                              >
-                                Business Overview
-                              </a>
+                          <BusiOverviewStatus>
+                              Business Overview
+                              </BusiOverviewStatus>
+
                             </li>
 
                             <li className="nav-item p-2">
