@@ -72,7 +72,7 @@ function Home() {
     SetShowData(DefaulttxnList);
     // console.log(objParam);
     dispatch(subscriptionplan);
-    dispatch(successTxnSummary(objParam));
+    // dispatch(successTxnSummary(objParam));
     dispatch(
       GetKycTabsStatus({
         login_id: user?.loginId,

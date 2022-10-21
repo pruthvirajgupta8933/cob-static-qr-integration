@@ -4,23 +4,7 @@ import axios from "axios";
 import { axiosInstanceAuth } from "../utilities/axiosInstance";
 
 const initialState = {
-  documentByloginId: {
-    documentId: "",
-    name: "",
-    filePath: "",
-    isApproved: false,
-    approvedDate: null,
-    approvedBy: null,
-    isLatest: true,
-    createdDate: "",
-    createdBy: "",
-    modifiedDate: "",
-    modifiedBy: "",
-    status: "",
-    comment: null,
-    merchant: "",
-    type: "",
-  },
+  documentByloginId: { },
   DataUpdateResponse: {
     status: "",
     message: "",
@@ -70,7 +54,7 @@ const initialState = {
   kycForVerified: [],
   kycForApproved: [],
   kycForCompleted: [],
-  UploadLoginId: [],
+  // UploadLoginId: [],
   enableKycTab: false,
   kycModalClose: true,
 
@@ -387,7 +371,7 @@ export const kycDocumentUploadList = createAsyncThunk(
   "kyc/kycDocumentUploadList",
   async (requestParam) => {
     const response = await axiosInstanceAuth
-      .post(`${API_URL.Kyc_Doc_List}`, requestParam)
+      .post(`${API_URL.DOCUMENT_BY_LOGINID}`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -530,18 +514,18 @@ export const kycForCompleted = createAsyncThunk(
 );
 
 /////////////////////////////////////////
-export const UploadLoginId = createAsyncThunk(
-  "kyc/UploadLoginId",
-  async (requestParam) => {
-    const response = await axiosInstanceAuth
-      .post(`${API_URL.DOCUMENT_BY_LOGINID}`, requestParam)
-      .catch((error) => {
-        return error.response;
-      });
+// export const UploadLoginId = createAsyncThunk(
+//   "kyc/UploadLoginId",
+//   async (requestParam) => {
+//     const response = await axiosInstanceAuth
+//       .post(`${API_URL.DOCUMENT_BY_LOGINID}`, requestParam)
+//       .catch((error) => {
+//         return error.response;
+//       });
 
-    return response.data;
-  }
-);
+//     return response.data;
+//   }
+// );
 
 // ================== veify kyc
 
@@ -716,17 +700,17 @@ export const kycSlice = createSlice({
       state.error = action.error.message;
     },
     ////////////////////////////////////////
-    [UploadLoginId.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [UploadLoginId.fulfilled]: (state, action) => {
-      // console.log("action-11 ====>",action.payload)
-      state.documentByloginId = action.payload;
-    },
-    [UploadLoginId.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
+    // [UploadLoginId.pending]: (state, action) => {
+    //   state.status = "pending";
+    // },
+    // [UploadLoginId.fulfilled]: (state, action) => {
+    //   // console.log("action-11 ====>",action.payload)
+    //   state.documentByloginId = action.payload;
+    // },
+    // [UploadLoginId.rejected]: (state, action) => {
+    //   state.status = "failed";
+    //   state.error = action.error.message;
+    // },
 
     //All Kyc Tabs status stored in redux as false
     //Contact Info Post Request
