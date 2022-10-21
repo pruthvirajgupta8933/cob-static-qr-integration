@@ -109,7 +109,7 @@ useEffect(() => {
         const data = res.data;
       
         const docId = data[0].documentId;
-        console.log(docId,"myyyyyyyyyyyyyyyyyy")
+        // console.log(docId,"myyyyyyyyyyyyyyyyyy")
         const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;
         
         axiosInstanceAuth.get(ImgUrl).then(res=>console.log(res))

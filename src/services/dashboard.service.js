@@ -1,6 +1,6 @@
 import axios from "axios";
 import API_URL from "../config";
-import  { axiosInstance } from "../utilities/axiosInstance"
+import  { axiosInstance,axiosInstanceAuth} from "../utilities/axiosInstance"
 
 // Home - successTxnSummary 
 
@@ -50,13 +50,19 @@ const fetchTransactionHistory=(paramData)=>
   // axiosInstance.defaults.headers.common["Authorization"] = ';
 }
 
-
+// const refund_url=`https://reportapi.sabpaisa.in/SabPaisaReport/REST/`
 const settlementReport=(paramData) => {
   return axiosInstance.post(API_URL.SettlementReport,paramData)
 }
 
-const RefundTransactionHistory =(paramData) => {
-  return axiosInstance.post(API_URL.RefundTransactionHistory,paramData)
+const refundTransactionHistory =(paramData) => {
+  console.log("check3")
+  return axiosInstance.post(API_URL.refundTransactionHistory,paramData)
+ 
+}
+const chargebackTxnHistory =(paramData) => {
+  return axiosInstance.post(API_URL.chargebackTxnHistory,paramData)
+ 
 }
 
 export const Dashboardservice = {
@@ -64,7 +70,8 @@ export const Dashboardservice = {
     subscriptionplan,
     subscriptionPlanDetail,
     fetchTransactionHistory,
-    RefundTransactionHistory,
-    settlementReport
+    settlementReport,
+    refundTransactionHistory,
+    chargebackTxnHistory
   };
   

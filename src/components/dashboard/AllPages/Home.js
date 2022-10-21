@@ -14,7 +14,7 @@ import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import {
   kycModalToggle,
-  kycVerificationForTabs,
+  GetKycTabsStatus,
 } from "../../../slices/kycSlice";
 import KycAlert from "../../KYC/KycAlert";
 import NavBar from "../NavBar/NavBar";
@@ -37,13 +37,17 @@ function Home() {
   let { path } = useRouteMatch();
 
   const [clientCode, setClientCode] = useState("1");
-  const [modalState, setModalState] = useState("PENDING" || "APPROVED");
+  
 
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
   // const [roleType, setRoleType] = useState(roles);
   const { dashboard, auth, kyc } = useSelector((state) => state);
+  const {KycTabStatusStore} = kyc
+  
+  const [modalState, setModalState] = useState("Not-Filled");
+
   // console.log("dashboard",dashboard)
   const { isLoading, successTxnsumry } = dashboard;
   const { user } = auth;
@@ -68,14 +72,20 @@ function Home() {
     SetShowData(DefaulttxnList);
     // console.log(objParam);
     dispatch(subscriptionplan);
-    dispatch(successTxnSummary(objParam));
+    // dispatch(successTxnSummary(objParam));
     dispatch(
-      kycVerificationForTabs({
+      GetKycTabsStatus({
         login_id: user?.loginId,
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientCode]);
+
+
+  useEffect(() => {
+    setModalState(KycTabStatusStore?.status)
+  }, [KycTabStatusStore])
+  
 
   //make client code array
   if (
@@ -110,13 +120,13 @@ function Home() {
   useEffect(() => {
     search !== ""
       ? SetShowData(
-          txnList.filter((txnItme) =>
-            Object.values(txnItme)
-              .join(" ")
-              .toLowerCase()
-              .includes(search.toLocaleLowerCase())
-          )
+        txnList.filter((txnItme) =>
+          Object.values(txnItme)
+            .join(" ")
+            .toLowerCase()
+            .includes(search.toLocaleLowerCase())
         )
+      )
       : SetShowData(txnList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
@@ -146,12 +156,12 @@ function Home() {
     totalAmt += item.payeeamount;
   });
 
-  // console.log(kyc?.kycVerificationForAllTabs?.is_verified)
+  // console.log(kyc?.KycTabStatusStore?.is_verified)
 
   return (
     <section className="ant-layout">
-      {/* {console.log("kyc?.kycVerificationForAllTabs?.is_verified",kyc?.kycVerificationForAllTabs?.is_verified)} */}
-      {/* {kyc?.kycVerificationForAllTabs?.is_verified === false ? <KycModal /> : <></>} */}
+      {/* {console.log("kyc?.KycTabStatusStore?.is_verified",kyc?.KycTabStatusStore?.is_verified)} */}
+      {/* {kyc?.KycTabStatusStore?.is_verified === false ? <KycModal /> : <></>} */}
 
       <div>
         <NavBar />
@@ -270,7 +280,7 @@ function Home() {
                 so you never have to reverse engineer anything.
               </p>
             </div>
-
+            {roles?.merchant === true ?
             <div className="col-12 col-md-12">
               <div class="card col-lg-12- cardkyc pull-left">
                 <div class="font-weight-bold card-body">
@@ -296,9 +306,11 @@ function Home() {
                 </div>
               </div>
             </div>
+             :<React.Fragment></React.Fragment>}
           </div>
+         
         </div>
-
+        {roles?.merchant === true ?
         <div class="container">
           <div class="row">
             <div class="col-sm  m-0">
@@ -442,6 +454,7 @@ function Home() {
             </div>
           </div>
         </div>
+        :<React.Fragment></React.Fragment>}
 
         {/* <h2 class="card-title">Enable International Payments Today</h2>
             <p class="card-text">
@@ -483,7 +496,7 @@ function Home() {
       <div
         className={
           "modal fade mymodals" +
-          (modalState === "PENDING" ? " show d-block" : " d-none")
+          (modalState === "Not-Filled" ? " show d-block" : " d-none")
         }
         tabIndex="-1"
         role="dialog"
@@ -521,6 +534,7 @@ function Home() {
                   />
                 </div>
               </div>
+
               <div class="row">
                 <div class="col-lg-4">
                   <Link
@@ -540,22 +554,25 @@ function Home() {
                   <Link to={`/dashboard`}>
                     <button
                       className="ColrsforredirectProdct  text-white"
-                      style={{marginTop:"9px"}}
+                      style={{ marginTop: "9px" }}
                       onClick={() => {
                         setModalState(!modalState);
                       }}
                       aria-label="Close"
                     >
                       <h5 style={{ fontFamily: "Satoshi", lineHeight: "9px" }}>
-                      Try out our dashboard
+                        Try out our dashboard
                       </h5>
                     </button>
                   </Link>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
+
+
       </div>
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}

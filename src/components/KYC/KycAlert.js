@@ -7,11 +7,11 @@ function KycAlert() {
   const [kycStatus, setKycStatus] = useState("")
 
   const kyc = useSelector(state => state.kyc)
-  const kycVerificationForAllTabs = kyc.kycVerificationForAllTabs
+  const KycTabStatusStore = kyc.KycTabStatusStore
 
-  console.log(kycVerificationForAllTabs);
+  console.log(KycTabStatusStore);
 
-  const status = kycVerificationForAllTabs?.status;
+  const status = KycTabStatusStore?.status;
 
   useEffect(() => {
     if (status === "Pending") {

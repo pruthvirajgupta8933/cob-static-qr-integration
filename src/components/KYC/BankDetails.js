@@ -24,7 +24,7 @@ function BankDetails(props) {
   const KycList = useSelector((state) => state.kyc.kycUserList);
 
   const VerifyKycStatus = useSelector(
-    (state) => state.kyc.kycVerificationForAllTabs.settlement_info_status
+    (state) => state.kyc.KycTabStatusStore.settlement_info_status
   );
 
   const [readOnly, setReadOnly] = useState(false);
@@ -140,6 +140,17 @@ function BankDetails(props) {
     }
   };
 
+  useEffect(() => {
+    if (role.approver) {
+      setReadOnly(true);
+      setButtonText("Approve and Next");
+    } else if (role.verifier) {
+      setReadOnly(true);
+      setButtonText("Verify and Next");
+    }
+  }, [role]);
+
+
   return (
     <div className="col-md-12 col-md-offset-4" style={{ width: "100%" }}>
       <Formik
@@ -164,7 +175,6 @@ function BankDetails(props) {
                   type="text"
                   name="account_holder_name"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
@@ -182,7 +192,6 @@ function BankDetails(props) {
                   type="text"
                   name="account_type"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
@@ -200,7 +209,6 @@ function BankDetails(props) {
                   type="text"
                   name="ifsc_code"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
@@ -218,7 +226,6 @@ function BankDetails(props) {
                   type="text"
                   name="branch"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
@@ -236,7 +243,6 @@ function BankDetails(props) {
                   name="bank_id"
                   className="form-control"
                   options={data}
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>
@@ -254,7 +260,6 @@ function BankDetails(props) {
                   type="text"
                   name="account_number"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
               </div>

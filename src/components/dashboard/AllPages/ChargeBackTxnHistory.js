@@ -8,15 +8,17 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
 import { toast } from 'react-toastify';
-import { clearSettlementReport, fetchSettlementReportSlice } from "../../../slices/dashboardSlice";
+import { clearSettlementReport, fetchChargebackTxnHistory,fetchSettlementReportSlice} from "../../../slices/dashboardSlice";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import NavBar from "../NavBar/NavBar";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import moment from "moment"
 
-function SettlementReportNew() {
+function ChargeBackTxnHistory() {
   const dispatch = useDispatch();
+  const roles = roleBasedAccess();
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
@@ -49,7 +51,18 @@ function SettlementReportNew() {
   splitDate =splitDate.join('-');
 
 
-  var clientMerchantDetailsList = [];
+//   var clientMerchantDetailsList = [];
+//   if (
+//     user &&
+//     user?.clientMerchantDetailsList === null &&
+//     user?.roleId !== 3 &&
+//     user?.roleId !== 13
+//   ) {
+//     history.push("/dashboard/profile");
+//   } else {
+//     clientMerchantDetailsList = user?.clientMerchantDetailsList;
+//   }
+var clientMerchantDetailsList = [];
   if (
     user &&
     user?.clientMerchantDetailsList === null &&
@@ -60,6 +73,13 @@ function SettlementReportNew() {
   } else {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
+
+  const clientcode_rolebased = roles.bank
+    ? "All"
+    : roles.merchant
+    ? clientMerchantDetailsList[0]?.clientCode
+    : "";
+
 
   const tempClientList = convertToFormikSelectJson("clientCode","clientName",clientMerchantDetailsList);
 
@@ -81,6 +101,15 @@ function SettlementReportNew() {
       "End date can't be before Start date"
     ).required("Required")
   })
+
+  const clientCodeOption = convertToFormikSelectJson(
+    "clientCode",
+    "clientName",
+    clientMerchantDetailsList,
+    // extraDataObj,
+    // isExtraDataRequired
+  );
+  console.log(clientMerchantDetailsList,"hereeeeeeeeeeee")
 
 
   useEffect(() => {
@@ -106,13 +135,16 @@ function SettlementReportNew() {
     setCurrentPage(pageNo);
   };
 
+//   console.log(fetchRefundTransactionHistory,"urllllllllllll")
+
   const onSubmitHandler = (values)=>{
-  
-    
-    dispatch(fetchSettlementReportSlice(values))
+    dispatch(fetchChargebackTxnHistory(values),)
+
+
+
     .then(res=>{
 
-      console.log(res,"thehere")
+        console.log(res,"myreesss")
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
         if(ApiStatus==="rejected"){
@@ -123,6 +155,69 @@ function SettlementReportNew() {
         }
     })
   }
+// const onSubmitHandler = values =>{
+//     // console.log(values)
+    
+//     isButtonClicked(true)
+    
+//     const {fromDate, endDate, transaction_status, payment_mode} = values
+//     const dateRangeValid = checkValidation(fromDate, endDate);
+
+//     if(dateRangeValid){ 
+//       // isLoading(true);
+//       // isButtonClicked(true);
+//       let strClientCode, clientCodeArrLength ="";
+//         if(clientCode==="All"){
+//         const allClientCode = []
+//         clientMerchantDetailsList?.map((item)=>{
+//           allClientCode.push(item.clientCode)
+//         })
+//         clientCodeArrLength = allClientCode.length.toString();
+//         strClientCode = allClientCode.join().toString();
+//       }else{
+//         strClientCode = clientCode;
+//         clientCodeArrLength = "1"
+//       }
+
+//       let paramData = {
+//         clientCode:strClientCode,
+//         paymentStatus:transaction_status,
+//         paymentMode:payment_mode,
+//         fromDate:fromDate,
+//         endDate:endDate,
+//         length: "0",
+//         page: "0",
+//         NoOfClient: clientCodeArrLength
+//       } 
+//   console.log(paramData)
+//       dispatch(fetchTransactionHistorySlice(paramData))
+// }
+
+
+//   }
+//   const checkValidation = (fromDate = "", toDate = "") => {
+//     var flag = true;
+//     if (fromDate === 0 || toDate === "") {
+//       alert("Please select the date.");
+//       flag = false;
+//     } else if (fromDate !== "" || toDate !== "") {
+//       const date1 = new Date(fromDate);
+//       const date2 = new Date(toDate);
+//       const diffTime = Math.abs(date2 - date1);
+//       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+//       // console.log("days",diffDays);
+//       if (diffDays < 0 || diffDays > 90) {
+//         flag = false;
+//         alert("The date range should be under 3 months");
+//       }
+//     } else {
+//       flag = true;
+//     }
+
+//     return flag;
+//   };
+
+
 
 
 
@@ -239,7 +334,7 @@ function SettlementReportNew() {
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Settlement Report</h1>
+            <h1 className="m-b-sm gx-float-left">Chargeback Transaction History</h1>
           </div>
           <section
             className="features8 cid-sg6XYTl25a flleft w-100">
@@ -253,12 +348,12 @@ function SettlementReportNew() {
             <Form>
             <div className="form-row">
               <div className="form-group col-md-4">
-                        <FormikController
-                            control="select"                          
+              <FormikController
+                            control="select"
                             label="Client Code"
                             name="clientCode"
                             className="form-control rounded-0"
-                            options={tempClientList}
+                            options={clientCodeOption}
                           />
                 </div>
 
@@ -458,4 +553,4 @@ function SettlementReportNew() {
   );
 }
 
-export default SettlementReportNew;
+export default ChargeBackTxnHistory;

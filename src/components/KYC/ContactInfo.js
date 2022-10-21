@@ -33,7 +33,7 @@ function ContactInfo(props) {
   const KycList = kyc.kycUserList;
   // console.log(KycList);
 
-  const VerifyKycStatus = kyc.kycVerificationForAllTabs.general_info_status;
+  const VerifyKycStatus = kyc?.KycTabStatusStore?.general_info_status;
 
   const [showOtpVerifyModalEmail, setShowOtpVerifyModalEmail] = useState(false);
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
@@ -54,6 +54,7 @@ function ContactInfo(props) {
   };
 
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  const aadhaarRegex =/(^[0-9]{4}[0-9]{4}[0-9]{4}$)|(^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|(^[0-9]{4}-[0-9]{4}-[0-9]{4}$)/
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -76,7 +77,7 @@ function ContactInfo(props) {
     //   .required("Required")
     //   .nullable(),
     aadhar_number: Yup.string()
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      .matches(Regex.acceptNumber, RegexMsg.acceptNumber).matches(aadhaarRegex,"Aadhaar Number is Invalid")
       .required("Required")
       .nullable(),
     isPhoneVerified: Yup.string().required("You need to verify Your Phone"),

@@ -61,9 +61,8 @@ function BusinessOverview(props) {
     { key: "False", value: "No" },
   ];
   const WebsiteAppUrl = [
-    { key: "Select Option", value: "Select Option" },
-    { key: "No", value: "We do not have url" },
-    { key: "Yes", value: "Website/App url" },
+    { key: "No", value: "No" },
+    { key: "Yes", value: "Yes" },
   ];
 
   // console.log(ErpCheck,"<======Erp Check=====>")
@@ -76,8 +75,15 @@ function BusinessOverview(props) {
   // }
 
   const VerifyKycStatus = useSelector(
-    (state) => state.kyc.kycVerificationForAllTabs.business_info_status
+    (state) => state.kyc?.kycVerificationForAllTabs?.business_info_status
   );
+
+  const urlRegex = "((http|https)://)(www.)?"
+  + "[a-zA-Z0-9@:%._\\+~#?&//=]"
+  + "{2,256}\\.[a-z]"
+  + "{2,6}\\b([-a-zA-Z0-9@:%"
+  + "._\\+~#?&//=]*)";
+
 
   // const initialValues = {
   //   business_type: KycList.businessType,
@@ -105,12 +111,12 @@ function BusinessOverview(props) {
     platform_id: "1234567",
     company_website: KycList.companyWebsite,
     seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
-    website_app_url: "False",
+    website_app_url: KycList?.website_app_url,
     avg_ticket_size: KycList?.avg_ticket_size,
     collection_type_id: "6752767",
     collection_frequency_id: "3787910",
     ticket_size: "10",
-    expected_transactions: "",
+    expected_transactions: KycList?.expectedTransactions,
     form_build: "Yes",
   };
 
@@ -142,7 +148,7 @@ function BusinessOverview(props) {
       .required("Required")
       .nullable(),
     company_website: Yup.string()
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .matches(urlRegex,"Website Url is not Valid")
       .required("Required")
       .nullable(),
     expected_transactions: Yup.string()
@@ -252,6 +258,7 @@ function BusinessOverview(props) {
           website_app_url: values.website_app_url,
         })
       ).then((res) => {
+        
         if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
           // console.log("This is the response", res);
           toast.success(res.payload.message);
@@ -406,12 +413,15 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-
-            {/* <div className="form-row">
-              <div className="form-group col-md-4">
-              <label><h4 class ="font-weight-bold">Website/App url<span style={{color:"red"}}>*</span></h4></label>
-                <FormikController
-                  control="select"
+                <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
+                <h4 class="text-kyc-label text-nowrap">
+                How do you wish to accept payments?<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-8 col-md-10 col-lg-10">
+              <FormikController
+                  control="radio"
                   onChange={(e) => {
                     handleShowHide(e);
                     formik.setFieldValue(
@@ -425,11 +435,9 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-              </div> */}
-
-            {/* {formik.values?.seletcted_website_app_url === "Yes" && (
-                <div className="form-group col-md-4">
-                      <label><h4 class ="font-weight-bold">Enter Website/App url<span style={{color:"red"}}>*</span></h4></label>
+              </div>
+              {formik.values?.seletcted_website_app_url === "Yes" && (
+                <div className="form-group col-lg-7">
                   <FormikController
                     control="input"
                     type="text"
@@ -439,7 +447,10 @@ function BusinessOverview(props) {
                     readOnly={readOnly}
                   />
                 </div>
-              )} */}
+              )}
+              </div>
+
+          
 
             {/* <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Type Of Collection <span style={{color:"red"}}>*</span></h4></label>

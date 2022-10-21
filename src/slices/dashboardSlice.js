@@ -10,10 +10,10 @@ const initialState = {
   subscriptionplandetail: [],
   transactionHistory:[],
   settlementReport:[],
+  chargebackTxnHistory:[],
+  refundTransactionHistory:[],
   isLoadingTxnHistory:false,
   productSubscribe : true,
-
-
 };
 
 
@@ -129,13 +129,15 @@ export const successTxnSummary = createAsyncThunk(
   );  
 
   //////////////////////////////////////////////////////////
-  export const RefundTransactionHistory = createAsyncThunk(
+  export const fetchRefundTransactionHistory = createAsyncThunk(
     "dashbaord/GetRefundTxnHistory",
     async (data, thunkAPI) => {
       try {
-        const response = await Dashboardservice.RefundTransactionHistory(data);
+        console.log("check1",data)
+        const response = await Dashboardservice.refundTransactionHistory(data);
         return response.data;
       } catch (error) {
+        console.log("check2",error.response)
         const message =
           (error.response &&
             error.response.data &&
@@ -148,7 +150,30 @@ export const successTxnSummary = createAsyncThunk(
     }
   );  
 
-  //////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////// chargebackslice
+  export const fetchChargebackTxnHistory = createAsyncThunk(
+    "dashbaord/GetChargebackTxnHistory",
+    async (data, thunkAPI) => {
+      try {
+        // console.log("check1",data)
+        const response = await Dashboardservice.chargebackTxnHistory(data);
+        return response.data;
+      } catch (error) {
+        // console.log("check2",error.response)
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+      }
+    }
+  );  
+
+
+  /////////////////////////////////////////////////////////////////////
 
 
 
@@ -219,6 +244,37 @@ export const successTxnSummary = createAsyncThunk(
         // state.isLoadingTxnHistory = false;
         state.transactionHistory=[];
       },
+
+      [fetchRefundTransactionHistory.fulfilled]: (state, action) => {
+        // state.isLoadingTxnHistory = false;
+        state.refundTransactionHistory = action.payload;
+
+        console.log(state.refundTransactionHistory = action.payload,"my payload")
+      },
+      [fetchRefundTransactionHistory.pending]: (state) => {
+        // state.isLoadingTxnHistory = true;
+        state.transactionHistory=[];
+      },
+      [fetchRefundTransactionHistory.rejected]: (state) => {
+        // state.isLoadingTxnHistory = false;
+        state.transactionHistory=[];
+      },
+
+      [fetchChargebackTxnHistory.fulfilled]: (state, action) => {
+        // state.isLoadingTxnHistory = false;
+        state.chargebackTxnHistory = action.payload;
+      },
+      [fetchChargebackTxnHistory.pending]: (state) => {
+        // state.isLoadingTxnHistory = true;
+        state.transactionHistory=[];
+      },
+      [fetchChargebackTxnHistory.rejected]: (state) => {
+        // state.isLoadingTxnHistory = false;
+        state.transactionHistory=[];
+      },
+
+
+
 
       
       },
