@@ -61,8 +61,8 @@ function BusinessOverview(props) {
     { key: "False", value: "No" },
   ];
   const WebsiteAppUrl = [
-    { key: "No", value: "No" },
-    { key: "Yes", value: "Yes" },
+    { key: "Without Website/app", value: "No" },
+    { key: "On my website/app", value: "Yes" },
   ];
 
   // console.log(ErpCheck,"<======Erp Check=====>")

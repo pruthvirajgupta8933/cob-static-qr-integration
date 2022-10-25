@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API_URL, { AUTH_TOKEN } from "../config";
 import axios from "axios";
-import { axiosInstanceAuth } from "../utilities/axiosInstance";
+import { axiosInstanceAuth,kycValidatorAuth } from "../utilities/axiosInstance";
 import { ContactlessOutlined } from "@mui/icons-material";
 
 const initialState = {
@@ -12,7 +12,9 @@ const initialState = {
     previous: null,
     results: null,
   },
-  kycUserList: {},
+  kycUserList: {
+    
+  },
   KycDocUpload: {
     documentId: "",
     name: "",
@@ -60,13 +62,8 @@ const initialState = {
         message: "",
       },
       aadhaar: {
-        isValidate: false,
-        response: {
-          name: "",
-          valid: false,
-          message: "",
-          status: false,
-        },
+        status:false,
+        valid:false
       },
     },
     BusiOverviewwStatus: {
@@ -76,6 +73,20 @@ const initialState = {
       },
     },
     BusinessDetailsStatus: {
+      AuthPanValidation: {
+        first_name: "",
+        last_name: "",
+        valid: false,
+        message: "",
+        status: false
+      },
+      PanValidation: {
+        first_name: "",
+        last_name: "",
+        valid: false,
+        message: "",
+        status: false
+      },
       submitStatus: {
         status: false,
         message: "",
@@ -106,6 +117,10 @@ const initialState = {
     message: "",
   },
 };
+
+
+
+const validatorUrl = "https://stage-kycvalidator.sabpaisa.in/validator"
 
 //--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
 export const updateContactInfo = createAsyncThunk(
@@ -596,6 +611,37 @@ export const approveDoc = createAsyncThunk(
     return response.data;
   }
 );
+//----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
+export const panValidation = createAsyncThunk(
+  "kyc/panValidation", async (requestParam) => {
+    const response =  await kycValidatorAuth.post(`${validatorUrl}`+'/validate-pan/', requestParam)
+    .catch((error) => {
+      return error.response;
+    });
+
+  return response.data;
+}
+)
+
+export const authPanValidation = createAsyncThunk(
+  "kyc/authPanValidation", async (requestParam) => {
+    const response =  await kycValidatorAuth.post(`${validatorUrl}`+'/validate-pan/', requestParam)
+    .catch((error) => {
+      return error.response;
+    });
+
+  return response.data;
+}
+)
+
+
+
+
+
+//----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
+
+
+
 
 export const approvekyc = createAsyncThunk(
   "kyc/approvekyc",
@@ -775,12 +821,41 @@ export const kycSlice = createSlice({
     },
     [merchantInfo.fulfilled]: (state, action) => {
       state.allTabsValidate.UploadDoc.submitStatus = action.payload;
-      console.log(action.payload,"Action ===> 12")
+      // console.log(action.payload,"Action ===> 12")
     },
     [merchantInfo.rejected]: (state, action) => {
       state.status = "failed";
     },
 
+
+    //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
+
+    [panValidation.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [panValidation.fulfilled]: (state, action) => {
+    
+     state.allTabsValidate.BusinessDetailsStatus.PanValidation = action.payload;
+     state.kycUserList.panCard =  action?.meta?.arg?.pan_number
+    },
+    [panValidation.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+
+    [authPanValidation.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [authPanValidation.fulfilled]: (state, action) => {
+     state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation = action.payload;
+     state.kycUserList.signatoryPAN =  action?.meta?.arg?.pan_number
+      // console.log(action.payload,"Action ===> 12")
+    },
+    [panValidation.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+
+
+    //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 
 
     //All Kyc Tabs status stored in redux as false
@@ -828,10 +903,6 @@ export const kycSlice = createSlice({
     },
     [otpVerificationForContactForPhone.fulfilled]: (state, action) => {
       state.OtpVerificationResponseForPhone = action.payload;
-
-      if (action.payload?.status === true) {
-        state.kycUserList.isContactNumberVerified = 1;
-      }
     },
     [otpVerificationForContactForPhone.rejected]: (state, action) => {
       state.status = "failed";
@@ -865,7 +936,6 @@ export const {
   getBusinessCategory,
   loadKycUserList,
   loadKycVericationForAllTabs,
-
   isPhoneVerified,
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

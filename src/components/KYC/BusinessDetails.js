@@ -11,6 +11,9 @@ import {
   businessOverviewState,
   saveMerchantInfo,
   verifyKycEachTab,
+  panValidation,
+  authPanValidation
+
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 
@@ -25,8 +28,8 @@ function BusinessDetails(props) {
     (state) => state.kyc.KycTabStatusStore.merchant_info_status
   );
 
-  const regexGSTN = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
-
+  const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+  const reqexPAN =/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
   const { user } = useSelector((state) => state.auth);
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
@@ -41,6 +44,18 @@ function BusinessDetails(props) {
     KycList.registeredBusinessAdress
   );
   const dispatch = useDispatch();
+  
+  const panStatus = useSelector(
+    (state) =>
+      state.kyc.allTabsValidate.BusinessDetailsStatus.PanValidation.status
+  );
+  const panValidStatus = useSelector(
+    (state) =>
+      state.kyc.allTabsValidate.BusinessDetailsStatus.PanValidation.valid
+  );
+
+  console.log(panStatus,"PAN Validate Status =====>")
+  console.log(panValidStatus,"PAN Validate Valid =====>")
 
   const choicesCheckBox = [{ key: "Same As Registered Address", value: "yes" }];
 
@@ -71,6 +86,40 @@ function BusinessDetails(props) {
     }
   };
 
+  const panValidate = (values) => {
+    console.log("Values ========>",values)
+    dispatch(panValidation({
+      pan_number: values
+        })).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
+        console.log("This is the response", res);
+        toast.success(res.payload.message);
+      } else {
+        toast.error("Your PAN Number is not Valid.");
+      }
+
+    })
+
+  }
+
+  const authValidation = (values) => {
+    // console.log("Values ========>",values)
+    dispatch(authPanValidation({
+      pan_number: values
+        })).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
+        console.log("This is the response", res);
+        toast.success(res.payload.message);
+      } else {
+        toast.error("Your PAN Number is not Valid.");
+      }
+
+    })
+
+  }
+
   // const initialValues = {
   //   company_name: KycList.companyName,
   //   company_logo: KycList.companyLogoPath,
@@ -87,21 +136,23 @@ function BusinessDetails(props) {
   //   checkBoxChoice: "",
   // };
 
-  console.log("KycList", KycList);
+  // console.log("KycList", KycList);
 
   const initialValues = {
     company_name: KycList?.companyName,
     company_logo: "",
     registerd_with_gst: "True",
     gst_number: KycList?.gstNumber,
-    pan_card: KycList?.panCard,
-    signatory_pan: KycList?.signatoryPAN,
+    pan_card: KycList?.signatoryPAN,
+    signatory_pan: KycList?.panCard,
     name_on_pancard: KycList?.nameOnPanCard,
     pin_code: KycList?.merchant_address_details?.pin_code,
     city_id: KycList?.merchant_address_details?.city,
     state_id: KycList?.merchant_address_details?.state,
     registered_business_address: KycList?.merchant_address_details?.address,
     operational_address: KycList?.merchant_address_details?.address,
+    isPANVerified: KycList?.panCard !== null ? "1" : "",
+    isAuthPANVerified: KycList?.signatoryPAN !== null ? "1" : ""
     // checkBoxChoice: "",
   };
 
@@ -165,11 +216,11 @@ function BusinessDetails(props) {
       .required("Required")
       .nullable(),
     pan_card: Yup.string()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+      .matches(reqexPAN,"Authorized PAN number is Invalid")
       .required("Required")
       .nullable(),
     signatory_pan: Yup.string()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+      .matches(reqexPAN,"PAN number is Invalid")
       .required("Required")
       .nullable(),
     name_on_pancard: Yup.string()
@@ -191,6 +242,8 @@ function BusinessDetails(props) {
       .matches(Regex.address, RegexMsg.address)
       .required("Required")
       .nullable(),
+      isPANVerified: Yup.string().required("You need to verify Your PAN Number"),
+      isAuthPANVerified:  Yup.string().required("You need to verify Your Authorized Signatory PAN Number"),
   });
 
   useEffect(() => {
@@ -207,6 +260,20 @@ function BusinessDetails(props) {
       .catch((err) => console.log(err));
   }, []);
 
+  const checkInputIsValid = (err, val, setErr, key) => {
+    const hasErr = err.hasOwnProperty(key);
+    if (hasErr) {
+      if (val[key] === "") {
+        setErr(key, true);
+      }
+    }
+    if (!hasErr && val[key] !== "" && key === "signatory_pan") {
+      panValidate(val[key]);
+    }
+    if (!hasErr && val[key] !== "" && key === "pan_card") {
+      authValidation(val[key]);
+    }
+  };
   const onSubmit = (values) => {
     if (role.merchant) {
       const bodyFormData = new FormData();
@@ -333,6 +400,23 @@ function BusinessDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
+              {formik?.initialValues?.isPANVerified === "1" ? (
+                <span>
+                <p className="panVerfied text-success">
+                  Verified
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-check"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                  </svg>
+                </p>
+              </span> 
+              ) : (
               <div class="position-sticky pull-right">
                 <a
                   href={() => false}
@@ -342,13 +426,28 @@ function BusinessDetails(props) {
                     borderRadius: "6px",
                   }}
                   onClick={() => {
-                    //  console.log("Hello")
+
+                    // console.log("Values ==>>><<<",formik?.values)
+                    checkInputIsValid(
+                      formik.errors,
+                      formik.values,
+                      formik.setFieldError,
+                      "signatory_pan"
+                    );
                   }}
                 >
                   Verify
                 </a>
               </div>
+                )}
+                  {formik?.errors?.isPANVerified && (
+                  <span className="notVerifiedtext text-danger">
+                    {formik?.errors?.isPANVerified}
+                  </span>
+                  )}
             </div>
+            
+            
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
@@ -366,6 +465,23 @@ function BusinessDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
+              {formik?.initialValues?.isAuthPANVerified === "1" ? (
+                <span>
+                <p className="panVerfied text-success">
+                  Verified
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-check"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                  </svg>
+                </p>
+              </span> 
+              ) : (
               <div class="position-sticky pull-right">
                 <a
                   href={() => false}
@@ -375,12 +491,25 @@ function BusinessDetails(props) {
                     borderRadius: "6px",
                   }}
                   onClick={() => {
-                    //  console.log("Hello")
+
+                    // console.log("Values ==>>><<<",formik?.values)
+                    checkInputIsValid(
+                      formik.errors,
+                      formik.values,
+                      formik.setFieldError,
+                      "pan_card"
+                    );
                   }}
                 >
                   Verify
                 </a>
               </div>
+                )}
+                  {formik?.errors?.isAuthPANVerified && (
+                  <span className="notVerifiedtext text-danger">
+                    {formik?.errors?.isAuthPANVerified}
+                  </span>
+                  )}
             </div>
 
             <div class="form-group row">
