@@ -2,22 +2,17 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API_URL, { AUTH_TOKEN } from "../config";
 import axios from "axios";
 import { axiosInstanceAuth } from "../utilities/axiosInstance";
+import { ContactlessOutlined } from "@mui/icons-material";
 
 const initialState = {
-  documentByloginId: { },
-  DataUpdateResponse: {
-    status: "",
-    message: "",
-  },
+  documentByloginId: {},
   kycApproved: {
     count: null,
     next: null,
     previous: null,
     results: null,
   },
-  kycUserList: {
-    
-  },
+  kycUserList: {},
   KycDocUpload: {
     documentId: "",
     name: "",
@@ -35,8 +30,8 @@ const initialState = {
     merchant: "",
     type: "",
   },
-  
-  KycTabStatusStore: { },
+
+  KycTabStatusStore: {},
 
   businessType: [],
   busiCategory: [],
@@ -58,32 +53,41 @@ const initialState = {
   enableKycTab: false,
   kycModalClose: true,
 
-  allTabsValidate:{
-    merchantContactInfo : {
+  allTabsValidate: {
+    merchantContactInfo: {
       submitStatus: {
-       status: false,
-       message:""
+        status: false,
+        message: "",
       },
       aadhaar: {
         isValidate: false,
-        response:{
+        response: {
           name: "",
           valid: false,
           message: "",
-          status: false
-            
-        }
-      }
-    },      
-  },
-
-  BusiOverviewwStatus : {
-    submitStatus: {
-      status:false,
-      message:""
+          status: false,
+        },
       },
     },
-  
+    BusiOverviewwStatus: {
+      submitStatus: {
+        status: false,
+        message: "",
+      },
+    },
+    BusinessDetailsStatus: {
+      submitStatus: {
+        status: false,
+        message: "",
+      },
+    },
+    BankDetails: {
+      submitStatus: {
+        status: false,
+        message: "",
+      },
+    },
+  },
 
   OtpResponse: { status: "", verification_token: "" },
   OtpVerificationResponseForPhone: {
@@ -259,7 +263,7 @@ export const saveBusinessInfo = createAsyncThunk(
           // Authorization: ""
         },
       })
-      
+
       .catch((error) => {
         return error.response;
       });
@@ -287,7 +291,7 @@ export const businessOverviewState = createAsyncThunk(
 ///////////////////////////////////// Put APi for SAVE_MERCHANT_INFO (BusinessDetails Tab)
 
 export const saveMerchantInfo = createAsyncThunk(
-  "kyc/saveBusinessInfo",
+  "kyc/saveMerchantInfo",
   async (requestParam) => {
     const response = await axiosInstanceAuth
       .post(`${API_URL.SAVE_MERCHANT_INFO}`, requestParam, {
@@ -674,7 +678,6 @@ export const kycSlice = createSlice({
       // console.log(state.OtpVerificationResponseForPhone.status);
       // state.transactionHistory = []
     },
-
   },
   extraReducers: {
     [kycUserList.pending]: (state, action) => {
@@ -719,7 +722,11 @@ export const kycSlice = createSlice({
       state.status = "pending";
     },
     [updateContactInfo.fulfilled]: (state, action) => {
-      state.DataUpdateResponse = action.payload;
+      state.allTabsValidate.merchantContactInfo.submitStatus = action.payload;
+      console.log(
+        action.payload,
+        "=============================================================>"
+      );
     },
     [updateContactInfo.rejected]: (state, action) => {
       state.status = "failed";
@@ -729,8 +736,7 @@ export const kycSlice = createSlice({
       state.status = "pending";
     },
     [saveBusinessInfo.fulfilled]: (state, action) => {
-      state.saveBusinessInfo = action.payload;
-      // console.log(action.payload,"=============================================================>")
+      state.allTabsValidate.BusiOverviewwStatus.submitStatus = action.payload;
     },
     [saveBusinessInfo.rejected]: (state, action) => {
       state.status = "failed";
@@ -741,11 +747,21 @@ export const kycSlice = createSlice({
       state.status = "pending";
     },
     [saveMerchantInfo.fulfilled]: (state, action) => {
-    state.saveMerchantInfo = action.payload;
+      state.allTabsValidate.BusinessDetailsStatus.submitStatus = action.payload;
     },
     [saveMerchantInfo.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.error.message;
+    },
+
+    [saveMerchantBankDetais.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [saveMerchantBankDetais.fulfilled]: (state, action) => {
+      state.allTabsValidate.BankDetails.submitStatus = action.payload;
+    },
+    [saveMerchantBankDetais.rejected]: (state, action) => {
+      state.status = "failed";
     },
 
     //All Kyc Tabs status stored in redux as false

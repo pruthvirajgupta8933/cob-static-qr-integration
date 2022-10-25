@@ -18,8 +18,6 @@ function BusinessDetails(props) {
   const setTab = props.tab;
   const setTitle = props.title;
 
-
-
   const { role, kycid } = props;
   const KycList = useSelector((state) => state.kyc.kycUserList);
 
@@ -27,8 +25,7 @@ function BusinessDetails(props) {
     (state) => state.kyc.KycTabStatusStore.merchant_info_status
   );
 
-
-  const regexGSTN = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$"
+  const regexGSTN = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
 
   const { user } = useSelector((state) => state.auth);
   // const { clientCode } = clientMerchantDetailsList[0];
@@ -90,7 +87,7 @@ function BusinessDetails(props) {
   //   checkBoxChoice: "",
   // };
 
-  console.log("KycList", KycList)
+  console.log("KycList", KycList);
 
   const initialValues = {
     company_name: KycList?.companyName,
@@ -163,7 +160,8 @@ function BusinessDetails(props) {
       .required("Required")
       .nullable(),
     gst_number: Yup.string()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric).matches(regexGSTN,"GSTIN Number is Invalid")
+      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+      .matches(regexGSTN, "GSTIN Number is Invalid")
       .required("Required")
       .nullable(),
     pan_card: Yup.string()
@@ -203,7 +201,7 @@ function BusinessDetails(props) {
           "stateName",
           resp.payload
         );
-         console.log(resp, "my all dattaaa")
+        console.log(resp, "my all dattaaa");
         setBusinessOverview(data);
       })
       .catch((err) => console.log(err));
@@ -276,7 +274,7 @@ function BusinessDetails(props) {
     }
   }, [role]);
 
-  console.log("readOnly",readOnly)
+  console.log("readOnly", readOnly);
 
   return (
     <div className="col-md-12 col-md-offset-4">
@@ -385,9 +383,6 @@ function BusinessDetails(props) {
               </div>
             </div>
 
-
-
-
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -471,7 +466,6 @@ function BusinessDetails(props) {
               </div>
             </div> */}
 
-
             {/* {formik.values?.registerd_with_gst === "True" && (
                 <div className="form-group col-md-4">
                   <label>
@@ -491,8 +485,6 @@ function BusinessDetails(props) {
               )}
              */}
 
-
-
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -509,8 +501,6 @@ function BusinessDetails(props) {
                 />
               </div>
             </div>
-
-
 
             {/* <div className="form-group col-md-4">
                 <label>
@@ -573,8 +563,6 @@ function BusinessDetails(props) {
                 />
               </div> */}
 
-
-
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -617,7 +605,7 @@ function BusinessDetails(props) {
                 </h4>
               </label>
               <div class="col-sm-7 col-md-7 col-lg-7">
-              <FormikController
+                <FormikController
                   control="select"
                   name="state_id"
                   options={BusinessOverview}
