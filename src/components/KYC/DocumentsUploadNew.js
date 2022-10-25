@@ -95,7 +95,7 @@ function DocumentsUpload(props) {
       bodyFormData.append("aadhar_front", selectedFile);
       bodyFormData.append("aadhar_back", selectedFileAadhaar);
     } else {
-      console.log(5555);
+      // console.log(5555);
       bodyFormData.append("files", selectedFile);
     }
 
@@ -115,8 +115,6 @@ function DocumentsUpload(props) {
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true
       ) {
-        // console.log(res)
-        // console.log("This is the response", res);
         toast.success(res.payload.message);
         setTab(6);
         setTitle("SUBMIT KYC");

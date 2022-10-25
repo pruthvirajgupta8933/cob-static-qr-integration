@@ -87,6 +87,12 @@ const initialState = {
         message: "",
       },
     },
+    UploadDoc: {
+      submitStatus: {
+        status: false,
+        message: "",
+      },
+    },
   },
 
   OtpResponse: { status: "", verification_token: "" },
@@ -723,10 +729,10 @@ export const kycSlice = createSlice({
     },
     [updateContactInfo.fulfilled]: (state, action) => {
       state.allTabsValidate.merchantContactInfo.submitStatus = action.payload;
-      console.log(
-        action.payload,
-        "=============================================================>"
-      );
+      // console.log(
+      //   action.payload,
+      //   "=============================================================>"
+      // );
     },
     [updateContactInfo.rejected]: (state, action) => {
       state.status = "failed";
@@ -763,6 +769,19 @@ export const kycSlice = createSlice({
     [saveMerchantBankDetais.rejected]: (state, action) => {
       state.status = "failed";
     },
+
+    [merchantInfo.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [merchantInfo.fulfilled]: (state, action) => {
+      state.allTabsValidate.UploadDoc.submitStatus = action.payload;
+      console.log(action.payload,"Action ===> 12")
+    },
+    [merchantInfo.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+
+
 
     //All Kyc Tabs status stored in redux as false
 

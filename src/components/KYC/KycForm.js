@@ -62,7 +62,11 @@ function KycForm() {
     (state) => state.kyc.allTabsValidate.merchantContactInfo.submitStatus.status
   );
 
-  console.log("All Tabs Submit Status ===> contactInfo", contactInfo);
+  const uploadDocuments = useSelector(
+    (state) => state.kyc.allTabsValidate.UploadDoc.submitStatus.status
+  );
+
+  console.log("All Tabs Submit Status ===> uploadDocuments", uploadDocuments);
 
   const BusiOverviewStatus = () => {
     return (
@@ -303,10 +307,17 @@ function KycForm() {
                               <a
                                 href={() => false}
                                 className={
-                                  "nav-link " +
-                                  (tab === 5
-                                    ? "activepaylink-kyc text-font"
-                                    : "inactive text-font")
+                                  tab === 5 ? (
+                                    " nav-link activepaylink-kyc text-font"
+                                  ) : "inactive text-font" ? (
+                                    uploadDocuments === true ? (
+                                      "nav-link inactive text-font-ForStatusChange text-success"
+                                    ) : (
+                                      "nav-link inactive text-font"
+                                    )
+                                  ) : (
+                                    <></>
+                                  )
                                 }
                                 onClick={() => {
                                   SetTab(5);
