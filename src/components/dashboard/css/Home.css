@@ -122,6 +122,13 @@ table.tables tr:nth-child(odd) {
   top: 10px;
   z-index: 999;
 }
+.viewfor {
+  position: absolute;
+  right: 39px;
+    top: 61px;
+  z-index: 999;
+}
+
 
 .viewicons {
   position: absolute;

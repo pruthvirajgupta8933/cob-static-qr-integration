@@ -66,17 +66,26 @@ function Registration() {
   const [trmCond, setTrmCond] = useState(false);
 
   const [businessCode, setBusinessCode] = useState([]);
+  const [passwordType, setPasswordType] = useState(true);
 
   const [valuesIn, setValuesIn] = useState({
     password: "",
     showPassword: false,
   });
+  const togglePassword = () => {
+    console.log(999)
+    setPasswordType(!passwordType)
+  }
+
+
+
 
   function buttonHandler(index) {
     let status = [...checkboxStatus];
     status[index] = !status[index];
     setCheckboxStatus(status);
   }
+
 
   useEffect(() => {
     axiosInstanceAuth
@@ -376,15 +385,15 @@ function Registration() {
                               validationSchema={FORM_VALIDATION}
                               onSubmit={handleRegistration}
                             >
-                               {(formik) => (
-                                
+                              {(formik) => (
+
 
                                 <Form
                                   acceptCharset="utf-8"
                                   action="#"
                                   className="simform"
                                 >
-                                  
+
                                   {/* {console.log(values)} */}
                                   <div className="sminputs">
                                     <div className="input full- optional">
@@ -599,6 +608,10 @@ function Registration() {
                                         size={50}
                                         autoComplete="off"
                                       />
+                                      <div class="input-group-addon viewfor">
+                                        <a onClick={handleClickShowPassword}> {valuesIn.showPassword ? <i class="fa fa-eye-slash" aria-hidden="true"></i> : <i class="fa fa-eye" aria-hidden="true"></i>}</a>
+                                      </div>
+
                                       {
                                         <ErrorMessage name="passwordd">
                                           {(msg) => (
@@ -629,14 +642,16 @@ function Registration() {
                                         maxLength={255}
                                         id="user-cpw"
                                         placeholder="Confirm password"
-                                        type={
-                                          valuesIn.showPassword
-                                            ? "text"
-                                            : "password"
-                                        }
+                                        type={passwordType ? "password" : "text"}
                                         name="confirmpasswordd"
                                         size={50}
                                       />
+
+                                      <div class="input-group-addon viewfor">
+                                        <a onClick={togglePassword}>
+                                          {passwordType === "confirmpassword" ? <i class="fa fa-eye-slash" aria-hidden="true"></i> : <i class="fa fa-eye" aria-hidden="true"></i>}
+                                        </a>
+                                      </div>
                                       <input
                                         type="hidden"
                                         name="requestedClientType"
@@ -659,14 +674,14 @@ function Registration() {
                                         </ErrorMessage>
                                       }
 
-                                      <span
+                                      {/* <span
                                         className="hide-password"
                                         onClick={handleClickShowPassword}
                                       >
                                         {valuesIn.showPassword
                                           ? "Hide"
                                           : "Show"}
-                                      </span>
+                                      </span> */}
                                     </div>
                                   </div>
                                   <div className="sminputs">

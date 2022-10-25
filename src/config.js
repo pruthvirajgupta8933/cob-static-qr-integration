@@ -170,6 +170,11 @@ const API_LIVE = {
 
   /* Registered Address */
   Kyc_Consent: `${kyc_url}/kyc/kyc-submit/`,
+  /* Product catalogue */
+
+ PRODUCT_DETAILS:`https://stgcobapi.sabpaisa.in/product/product-details`,
+ PRODUCT_SUB_DETAILS:`https://stgcobapi.sabpaisa.in/product/product-sub-details`,
+
 
   /* verify each tab of the kyc , URL FOR VERIFER*/
   VERIFY_EACH_TAB: `${kyc_url}/kyc/verify-kyc/update/`,
@@ -182,6 +187,7 @@ const API_LIVE = {
   // VERIFY_EACH_TAB : `${kyc_url}kyc/verify-kyc/update/`,
 };
 
+ 
 const API_URL = API_LIVE;
 export default API_URL;
 

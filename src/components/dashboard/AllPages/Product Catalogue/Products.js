@@ -1,7 +1,4 @@
-import React from 'react'
-import { History } from '@mui/icons-material';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import SabPaisaPricing from './SabPaisaPricing';
+import React,{useState,useEffect} from 'react'
 import NavBar from '../../NavBar/NavBar';
 import { Link } from 'react-router-dom'
 import './product.css'
@@ -13,12 +10,38 @@ import qwikform from "../../../../assets/images/qwikform.png"
 import echallan from "../../../../assets/images/echallan.png"
 import epos from "../../../../assets/images/epos.png"
 import linkPaisa from "../../../../assets/images/linkPaisa.png"
+import API_URL from '../../../../config';
+import { axiosInstanceAuth } from '../../../../utilities/axiosInstance';
 
 
 const Products = () => {
 
-    const history = useHistory();
+  const[product,setProduct]=useState([]);
+ const iconImg = [
+      onlinePayment,
+      paymentLink,
+      subscribe,
+      payout,
+      qwikform,
+      echallan,
+      epos,
+      linkPaisa 
+     ]
 
+    useEffect(() => {
+      axiosInstanceAuth
+        .get(API_URL.PRODUCT_DETAILS
+          )
+        .then((resp) => {
+          const data = resp.data.ProductDetail;
+  
+          setProduct(data);
+        })
+        .catch((err) => console.log(err));
+    }, []);
+
+   
+    
     
   return (
     <section className="ant-layout">
@@ -41,20 +64,27 @@ const Products = () => {
     </div>
     </div>
     <div class="row">
+
+    {product.map((Products,i) => (
   <div class="col-sm-6 col-md-6 col-lg-6">
+
     <div class="card" style={{width:"31rem",height:"17rem"}} >
       <div class="card-body">
-        <h5 class="card-title prod-header">  <img class="card-img-left" src={onlinePayment} alt="onlinepay" width={40}/> &nbsp;Online and Offline Payment Gateway</h5>
-        <p class="card-text prod-content">SabPaisa is the World’s 1st API Driven Unified Payment Experience Platform having the Best Payment Gateway in India. Collect, transfer & refund your payments online & offline. Get the best success rates with maximum payment modes available including Debit cards, Credit Card, Wallets, UPI, Bharat QR, etc. The Hybrid PG helps businesses collect payments from all the clients and consumers, urban or rural, young or old, online or offline, without worrying about consumer payment behaviour.</p>
-    
+        <h5 class="card-title prod-header">  
+        <img class="card-img-left" src={iconImg[i]} alt="onlinepay" width={40}/>
+         &nbsp;
+         {Products.application_name}
+         </h5>
+          <p  class="card-text prod-content" > {Products.application_description}</p> 
     <div >
-     <p class="prod-read"><Link to='/dashboard/sabpaisa-pricing'>Read More & Pricing  &nbsp;{'>'}{'>'}</Link></p> 
+     <p class="prod-read"> <Link to={`/dashboard/sabpaisa-pricing/${Products.application_id}`}>Read More & Pricing  &nbsp;{'>'}{'>'}</Link></p> 
     </div>
-
+    {/* <Link to={`/dashboard/sabpaisa-pricing/${Products.application_id}`} */}
       </div>
     </div>
   </div>
-  <div class="col-sm-6 col-md-6 col-lg-6">
+  ))}
+  {/* <div class="col-sm-6 col-md-6 col-lg-6">
     <div class="card" style={{width:"32rem"}}>
       <div class="card-body">
         <h5 class="card-title prod-header"><img class="card-img-left" src={paymentLink} alt="payLink" width={40}/>&nbsp;Payment Links</h5>
@@ -65,14 +95,15 @@ const Products = () => {
    
       </div>
     </div>
-  </div>
+  </div> */}
 </div>
-<div class="row">
+
+{/* <div class="row">
   <div class="col-sm-6 col-md-6 col-lg-6">
     <div class="card" style={{width:"31rem"}}>
       <div class="card-body">
         <h5 class="card-title prod-header"><img class="card-img-left" src={subscribe} alt="payLink" width={40}/>&nbsp;Subscriptions</h5>
-        <p class="card-text prod-content">Subscriptions is a unique mandate processing and payment collection platform that offers recurring subscription payments through e-NACH/e-mandates for more than 50 banks to merchants. It is a single platform for processing all modes of payment mandates, viz. NACH, Net Banking, Debit Card, Credit Card, UPI.</p>
+        <p class="card-text prod-content"></p>
 <div>
      <p class="prod-read"><Link to='/dashboard/sabpaisa-pricing'>Read More & Pricing  &nbsp;{'>'}{'>'}</Link></p> 
      </div>
@@ -143,7 +174,7 @@ const Products = () => {
       </div>
     </div>
   </div>
-</div>
+</div> */}
 
 
  
