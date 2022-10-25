@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -20,7 +20,7 @@ function DocumentsUpload(props) {
   const { role } = props;
   const [docTypeList, setDocTypeList] = useState([]);
   const [fieldValue, setFieldValue] = useState(null);
-  
+
   const [selectedFile, setSelectedFile] = React.useState(null);
   // const [visibility, setVisibility] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
@@ -28,7 +28,7 @@ function DocumentsUpload(props) {
 
   // const [photos, setPhotos] = useState([]);
   const { user } = useSelector((state) => state.auth);
-  const filesharhe_ref = useRef()
+  const filesharhe_ref = useRef();
   // var clientMerchantDetailsList = user.clientMerchantDetailsList;
   // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
@@ -57,7 +57,7 @@ function DocumentsUpload(props) {
   console.log(documentId);
   const ImgUrl = `${API_URL.Image_Preview}/?document_id=${documentId}`;
   // console.log(ImgUrl,"<===========KYC DOC Id===========>")
-  // console.log(KycDocList,"<===========KYC DOC List===========>")
+  console.log(KycDocList, "<===========KYC DOC List===========>");
 
   useEffect(() => {
     dispatch(documentsUpload())
@@ -73,28 +73,28 @@ function DocumentsUpload(props) {
   }, []);
 
   const FILE_SIZE = 1024;
-  const SUPPORTED_FORMATS = ["PNG","JPEG","JPG","PDF"]
+  const SUPPORTED_FORMATS = ["PNG", "JPEG", "JPG", "PDF"];
 
   const validationSchema = Yup.object({
     docType: Yup.string()
       .required("Required")
       .nullable(),
-    docFile: Yup.mixed().test('FILE_SIZE', "Uploaded file is too big."
-    ,(value) => {
-       return(
-        value && filesharhe_ref.current ?
-            (filesharhe_ref.current.files[0].size<=FILE_SIZE? true: false)
-             : true)
-    }).test(
-    'FILE_Type', "Not valid!"
-    , (value) => {
-        console.log(filesharhe_ref.current.files[0])
-        return (
-            value && filesharhe_ref.current ?
-                (SUPPORTED_FORMATS.includes(filesharhe_ref.current.files[0].type) ? true : false)
-                : true)
-    }
-)
+    docFile: Yup.mixed()
+      .test("FILE_SIZE", "Uploaded file is too big.", (value) => {
+        return value && filesharhe_ref.current
+          ? filesharhe_ref.current.files[0].size <= FILE_SIZE
+            ? true
+            : false
+          : true;
+      })
+      .test("FILE_Type", "Not valid!", (value) => {
+        console.log(filesharhe_ref.current.files[0]);
+        return value && filesharhe_ref.current
+          ? SUPPORTED_FORMATS.includes(filesharhe_ref.current.files[0].type)
+            ? true
+            : false
+          : true;
+      }),
   });
 
   // const displayImages = () => {
@@ -119,9 +119,6 @@ function DocumentsUpload(props) {
       for (var pair of bodyFormData.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
-
-
-   
 
       dispatch(merchantInfo(bodyFormData)).then((res) => {
         if (
@@ -195,15 +192,14 @@ function DocumentsUpload(props) {
     }
   }, [role]);
 
-
   const handleFileSelect = (event) => {
-    console.log(event.target.files)
-    setSelectedFile(event.target.files[0])
-  }
+    console.log(event.target.files);
+    setSelectedFile(event.target.files[0]);
+  };
 
   let submitAction = undefined;
 
-  console.log(role)
+  console.log(role);
   return (
     <div className="col-md-12 p-3">
       <div className="">
@@ -250,7 +246,6 @@ function DocumentsUpload(props) {
                       onChange={(event) => {
                         handleFileSelect(event);
                         setFieldValue("docFile", event.target.files[0].name);
-                        
                       }}
                       accept="image/jpeg,image/jpg,image/png,application/pdf"
                       disabled={VerifyKycStatus === "Verified" ? true : false}
@@ -269,7 +264,7 @@ function DocumentsUpload(props) {
                     onClick={() => {
                       formik.handleSubmit();
                     }}
-                    style={{backgroundColor: "rgb(1, 86, 179)"}}
+                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
                   >
                     {buttonText}
                   </button>
@@ -284,7 +279,7 @@ function DocumentsUpload(props) {
                         <button
                           className="btn text-white text-kyc-sumit mb-0"
                           type="button"
-                          style={{backgroundColor: "rgb(1, 86, 179)"}}
+                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
                           onClick={() => {
                             submitAction = "submit";
                             formik.handleSubmit();
@@ -296,7 +291,7 @@ function DocumentsUpload(props) {
                         <button
                           className="btn text-white text-kyc-sumit mb-0"
                           type="button"
-                          style={{backgroundColor: "rgb(1, 86, 179)"}}
+                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
                           onClick={() => {
                             submitAction = "approve";
                             formik.handleSubmit();
@@ -309,7 +304,7 @@ function DocumentsUpload(props) {
                       <button
                         className="btn btn-danger mb-0 text-white"
                         type="button"
-                        style={{backgroundColor: "rgb(1, 86, 179)"}}
+                        style={{ backgroundColor: "rgb(1, 86, 179)" }}
                         onClick={() => {
                           submitAction = "reject";
                           formik.handleSubmit();
