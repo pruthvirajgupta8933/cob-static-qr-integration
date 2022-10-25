@@ -23,7 +23,7 @@ const API_LIVE = {
 
   ////////////////////////////////////---------------------------business_cat_code api
 
-  Business_Category_CODE:`${kyc_url}/kyc/get-all-business-category/`,
+  Business_Category_CODE: `${kyc_url}/kyc/get-all-business-category/`,
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
   AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
@@ -156,8 +156,6 @@ const API_LIVE = {
   /*KYC USER LIST */
   Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`,
 
-  /*KYC Document Upload LIST */
-  Kyc_Doc_List: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
 
   /* KYC VERIFICATION FOR ALL TABS */
   KYC_TAB_STATUS_URL: `${kyc_url}/kyc/verify-kyc`,

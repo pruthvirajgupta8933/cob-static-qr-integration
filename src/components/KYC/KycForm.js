@@ -45,30 +45,45 @@ function KycForm() {
     merchantloginMasterId = loginId;
   }
 
-  // const BusinessOverviewStatus = useSelector(
-  //   (state) => state.kyc.BusiOverviewwStatus.submitStatus.status
-  // );
+  const BusinessOverviewStatus = useSelector(
+    (state) => state.kyc.allTabsValidate.BusiOverviewwStatus.submitStatus.status
+  );
 
+  const BusinessDetailsStatus = useSelector(
+    (state) =>
+      state.kyc.allTabsValidate.BusinessDetailsStatus.submitStatus.status
+  );
 
-  let BusinessOverviewStatus = "";
+  const bankDetails = useSelector(
+    (state) => state.kyc.allTabsValidate.BankDetails.submitStatus.status
+  );
 
+  const contactInfo = useSelector(
+    (state) => state.kyc.allTabsValidate.merchantContactInfo.submitStatus.status
+  );
 
+  const uploadDocuments = useSelector(
+    (state) => state.kyc.allTabsValidate.UploadDoc.submitStatus.status
+  );
 
-  console.log("All Tabs Submit Status ===> Business Overrview",BusinessOverviewStatus)
+  console.log("All Tabs Submit Status ===> uploadDocuments", uploadDocuments);
 
-  
   const BusiOverviewStatus = () => {
     return (
       <a
         href={() => false}
         className={
-          tab === 2
-            ? " nav-link activepaylink-kyc text-font"
-            : "inactive text-font"
-            ? BusinessOverviewStatus === true
-              ? "nav-link inactive text-font-ForStatusChange text-success"
-              : "nav-link inactive text-font"
-            :<></>
+          tab === 2 ? (
+            " nav-link activepaylink-kyc text-font"
+          ) : "inactive text-font" ? (
+            BusinessOverviewStatus === true ? (
+              "nav-link inactive text-font-ForStatusChange text-success"
+            ) : (
+              "nav-link inactive text-font"
+            )
+          ) : (
+            <></>
+          )
         }
         onClick={() => {
           SetTab(2);
@@ -80,7 +95,59 @@ function KycForm() {
     );
   };
 
+  const BusinessDetailStatus = () => {
+    return (
+      <a
+        href={() => false}
+        className={
+          tab === 3 ? (
+            " nav-link activepaylink-kyc text-font"
+          ) : "inactive text-font" ? (
+            BusinessDetailsStatus === true ? (
+              "nav-link inactive text-font-ForStatusChange text-success"
+            ) : (
+              "nav-link inactive text-font"
+            )
+          ) : (
+            <></>
+          )
+        }
+        onClick={() => {
+          SetTab(3);
+          setTitle("BUSINESS DETAILS");
+        }}
+      >
+        Business Details
+      </a>
+    );
+  };
 
+  const FundDetails = () => {
+    return (
+      <a
+        href={() => false}
+        className={
+          tab === 4 ? (
+            " nav-link activepaylink-kyc text-font"
+          ) : "inactive text-font" ? (
+            bankDetails === true ? (
+              "nav-link inactive text-font-ForStatusChange text-success"
+            ) : (
+              "nav-link inactive text-font"
+            )
+          ) : (
+            <></>
+          )
+        }
+        onClick={() => {
+          SetTab(4);
+          setTitle("BANK DETAILS");
+        }}
+      >
+        Bank Details
+      </a>
+    );
+  };
 
   let history = useHistory();
 
@@ -199,10 +266,17 @@ function KycForm() {
                               <a
                                 href={() => false}
                                 className={
-                                  "nav-link " +
-                                  (tab === 1
-                                    ? "activepaylink-kyc text-font"
-                                    : "inactive text-font")
+                                  tab === 1 ? (
+                                    " nav-link activepaylink-kyc text-font"
+                                  ) : "inactive text-font" ? (
+                                    contactInfo === true ? (
+                                      "nav-link inactive text-font-ForStatusChange text-success"
+                                    ) : (
+                                      "nav-link inactive text-font"
+                                    )
+                                  ) : (
+                                    <></>
+                                  )
                                 }
                                 onClick={() => {
                                   SetTab(1);
@@ -214,74 +288,36 @@ function KycForm() {
                             </li>
 
                             <li className="nav-item p-2">
-                          <BusiOverviewStatus>
-                              Business Overview
+                              <BusiOverviewStatus>
+                                Business Overview
                               </BusiOverviewStatus>
+                            </li>
 
+                            <li className="nav-item p-2"></li>
+
+                            <BusinessDetailStatus>
+                              Business Details
+                            </BusinessDetailStatus>
+
+                            <li className="nav-item p-2">
+                              <FundDetails>Bank Details</FundDetails>
                             </li>
 
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}
                                 className={
-                                  "nav-link " +
-                                  (tab === 3
-                                    ? "activepaylink-kyc text-font"
-                                    : "inactive text-font")
-                                }
-                                onClick={() => {
-                                  SetTab(3);
-                                  setTitle("BUSINESS DETAILS");
-                                }}
-                              >
-                                Business Details
-                              </a>
-                            </li>
-
-                            {/* <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={
-                                  "nav-link " +
-                                  (tab === 4
-                                    ? "activepaylink-kyc text-font"
-                                    : "inactive text-font")
-                                }
-                                onClick={() => {
-                                  SetTab(4);
-                                  setTitle("Registered Address");
-                                }}
-                              >
-                                Registered Address
-                              </a>
-                            </li> */}
-
-                            <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={
-                                  "nav-link " +
-                                  (tab === 4
-                                    ? "activepaylink-kyc text-font"
-                                    : "inactive text-font")
-                                }
-                                onClick={() => {
-                                  SetTab(4);
-                                  setTitle("BANK DETAILS");
-                                }}
-                              >
-                                Bank Details
-                              </a>
-                            </li>
-
-                            <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={
-                                  "nav-link " +
-                                  (tab === 5
-                                    ? "activepaylink-kyc text-font"
-                                    : "inactive text-font")
+                                  tab === 5 ? (
+                                    " nav-link activepaylink-kyc text-font"
+                                  ) : "inactive text-font" ? (
+                                    uploadDocuments === true ? (
+                                      "nav-link inactive text-font-ForStatusChange text-success"
+                                    ) : (
+                                      "nav-link inactive text-font"
+                                    )
+                                  ) : (
+                                    <></>
+                                  )
                                 }
                                 onClick={() => {
                                   SetTab(5);

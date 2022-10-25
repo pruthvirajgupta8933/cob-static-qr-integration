@@ -95,7 +95,7 @@ function DocumentsUpload(props) {
       bodyFormData.append("aadhar_front", selectedFile);
       bodyFormData.append("aadhar_back", selectedFileAadhaar);
     } else {
-      console.log(5555);
+      // console.log(5555);
       bodyFormData.append("files", selectedFile);
     }
 
@@ -110,17 +110,18 @@ function DocumentsUpload(props) {
     // console.log("call submit")
 
     const kycData = { bodyFormData, docType };
-    dispatch(merchantInfo(kycData))
-      .then(function(response) {
+    dispatch(merchantInfo(kycData)).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true
+      ) {
+        toast.success(res.payload.message);
         setTab(6);
         setTitle("SUBMIT KYC");
-        toast.success("Merchant document saved successfully");
-        console.log(response);
-      })
-      .catch(function(error) {
-        console.error("Error:", error);
-        toast.error("Something went wrong while saving the document");
-      });
+      } else {
+        toast.error("Something Went Wrong! Please try again.");
+      }
+    })
   };
   let submitAction = undefined;
 
