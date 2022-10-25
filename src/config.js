@@ -54,12 +54,9 @@ const API_LIVE = {
   BANK_LIST_DC:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
   SEND_EMAIL: adminAPIURL + "/Email/sendEmail",
-  SUBSCRIBE_FETCH_APP_AND_PLAN:
-    "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
-  FETCH_APP_AND_PLAN:
-    "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
-  SUBSCRIBE_SERVICE:
-    "https://spl.sabpaisa.in/client-subscription-service/subscribe",
+  SUBSCRIBE_FETCH_APP_AND_PLAN:    "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
+  FETCH_APP_AND_PLAN:    "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
+  SUBSCRIBE_SERVICE:    "https://spl.sabpaisa.in/client-subscription-service/subscribe",
 
   /* transaction history  */
   //old api of txn history
@@ -116,8 +113,11 @@ const API_LIVE = {
 
   /**Kyc DocumentsUploads */
   DocumentsUpload: `${kyc_url}/kyc/document-type/`, //get APi
+
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
+  upload_Single_Doc: `${kyc_url}/kyc/upload-merchant-document/single-file/`, //post APi
   UPLOAD_MERCHANT_AADHAAR: `${kyc_url}/kyc/upload-merchant-document/aadhar-upload/`, //post APi
+  
   Business_type: `${kyc_url}/kyc/get-all-business-type/`,
   Platform_type: `${kyc_url}/kyc/get-all-platform-type/`,
   Collection_frequency: `${kyc_url}/kyc/get-all-collection-frequency/`,

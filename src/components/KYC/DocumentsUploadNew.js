@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -7,22 +6,21 @@ import { useSelector, useDispatch } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import "../KYC/kyc-style.css";
-import API_URL from "../../config";
-import { documentsUpload, merchantInfo } from "../../slices/kycSlice";
+import { documentsUpload, merchantInfo, verifyKycEachTab } from "../../slices/kycSlice";
 import plus from "../../assets/images/plus.png";
-import { set } from "lodash";
-// import { readURL, removeUpload } from '../../assets/js/ImageUpload';
-// import UploadDocTest from './UploadDocTest';
-
 import "../../assets/css/kyc-document.css";
-
 import $ from "jquery";
+import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import API_URL from "../../config";
 
-// import $ from "jquery"
 
 function DocumentsUpload(props) {
   const setTab = props.tab;
   const setTitle = props.title;
+  const { role, kycid } = props;
+  
+  const dispatch = useDispatch();
+
 
   function readURL(input, id) {
     if (input.files && input.files[0]) {
@@ -38,18 +36,43 @@ function DocumentsUpload(props) {
 
   const [docTypeList, setDocTypeList] = useState([]);
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
-  // const [fieldValue, setFieldValue] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFileAadhaar, setSelectedFileAadhaar] = useState(null);
-  const { user } = useSelector((state) => state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  // const { clientCode } = clientMerchantDetailsList[0];
-  const { loginId } = user;
+  const [savedData,setSavedData] = useState({})
+  const [readOnly, setReadOnly] = useState(false);
+  const [buttonText, setButtonText] = useState("Save and Next");
 
-  const dispatch = useDispatch();
+  const { auth, kyc  } = useSelector((state) => state);
+  const {user} = auth; 
+
+  const { loginId } = user;
+  const { KycDocUpload } = kyc
+
+  
+  useEffect(() => {
+    let dataDoc = [];
+    let doc;
+    
+    if(KycDocUpload?.length>0){ 
+      doc = KycDocUpload[KycDocUpload?.length-1]
+      if(doc?.type==="1"){ 
+          dataDoc.push(KycDocUpload[KycDocUpload?.length-1])
+          dataDoc.push(KycDocUpload[KycDocUpload?.length-2])
+      }else{
+        dataDoc.push(KycDocUpload[KycDocUpload?.length-1])
+      }
+        
+    }
+
+    setSavedData(dataDoc)
+
+  }, [KycDocUpload])
+  
+
+
 
   const initialValues = {
-    docType: "",
+    docType: savedData[0]?.type,
     aadhaar_front: "",
     aadhaar_back: "",
     pan_card: "",
@@ -88,40 +111,77 @@ function DocumentsUpload(props) {
   };
 
   const onSubmit = (values, action) => {
-    const bodyFormData = new FormData();
-    let docType = values.docType;
-    if (docType === "1") {
-      // console.log(3333);
-      bodyFormData.append("aadhar_front", selectedFile);
-      bodyFormData.append("aadhar_back", selectedFileAadhaar);
-    } else {
-      console.log(5555);
-      bodyFormData.append("files", selectedFile);
+    // console.log(action)
+    if (role.merchant) {
+      const bodyFormData = new FormData();
+      let docType = values.docType;
+      if (docType === "1") {
+        bodyFormData.append("aadhar_front", selectedFile);
+        bodyFormData.append("aadhar_back", selectedFileAadhaar);
+      } else {
+        bodyFormData.append("files", selectedFile);
+      }
+  
+      bodyFormData.append("login_id", loginId);
+      bodyFormData.append("modified_by", loginId);
+      bodyFormData.append("type", values.docType);
+  
+      const kycData = { bodyFormData, docType };
+      dispatch(merchantInfo(kycData))
+        .then(function(response) {
+          setTitle("SUBMIT KYC");
+          toast.success("Merchant document saved successfully");
+          // console.log(response);
+        })
+        .catch(function(error) {
+          console.error("Error:", error);
+          toast.error("Something went wrong while saving the document");
+        });
+
+    }else if(role.verifier){
+      const veriferDetails = {
+        login_id: kycid,
+        settlement_info_verified_by: loginId,
+      };
+      dispatch(verifyKycEachTab(veriferDetails))
+        .then((resp) => {
+          resp?.payload?.settlement_info_status &&
+            toast.success(resp?.payload?.settlement_info_status);
+          resp?.payload?.detail && toast.error(resp?.payload?.detail);
+        })
+        .catch((e) => {
+          toast.error("Try Again Network Error");
+        });
     }
-
-    bodyFormData.append("login_id", loginId);
-    bodyFormData.append("modified_by", 270);
-    bodyFormData.append("type", values.docType);
-
-    // for (var pair of bodyFormData.entries()) {
-    //   console.log(pair[0] + ", " + pair[1]);
-    // }
-
-    // console.log("call submit")
-
-    const kycData = { bodyFormData, docType };
-    dispatch(merchantInfo(kycData))
-      .then(function(response) {
-        setTab(6);
-        setTitle("SUBMIT KYC");
-        toast.success("Merchant document saved successfully");
-        console.log(response);
-      })
-      .catch(function(error) {
-        console.error("Error:", error);
-        toast.error("Something went wrong while saving the document");
-      });
+   
   };
+
+  const verifyApproveDoc = (doc_id) =>{
+        const postData = {
+          "document_id": doc_id,
+          "verified_by": loginId
+        }
+        if(role?.verifier){
+           
+        }
+
+        if(role?.approver){
+         
+        }
+  }
+
+
+  useEffect(() => {
+    if (role.approver) {
+      setReadOnly(true);
+      setButtonText("Approve and Next");
+    } else if (role.verifier) {
+      setReadOnly(true);
+      setButtonText("Verify and Next");
+    }
+  }, [role]);
+
+
   let submitAction = undefined;
 
   return (
@@ -132,14 +192,12 @@ function DocumentsUpload(props) {
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            // console.log("trigger")
             onSubmit(values, submitAction);
           }}
           enableReinitialize={true}
         >
           {(formik) => (
             <Form>
-              {/* {console.log(formik)} */}
               <div className="form-row">
                 <div class="form-group row">
                   <label class="col-sm-5 col-md-5 col-lg-5 col-form-label mt-0 p-2">
@@ -155,6 +213,7 @@ function DocumentsUpload(props) {
                         name="docType"
                         className="form-control"
                         options={docTypeList}
+                        readOnly={readOnly}
                       />
                       {formik.handleChange(
                         "docType",
@@ -163,8 +222,9 @@ function DocumentsUpload(props) {
                     </div>
                   </div>
                 </div>
-
-                {docTypeIdDropdown === "1" ? (
+                
+                {role?.merchant ?       
+                docTypeIdDropdown === "1" ? (
                   <div class="row">
                     <div class="col-lg-6 width">
                       <div className="file-upload border-dotted">
@@ -353,9 +413,17 @@ function DocumentsUpload(props) {
                 
                 ) : (
                   <></>
-                )}
+                )
+                :
+                <></>
+                
+                 }
 
-                <hr
+              
+
+                 {role?.merchant ?
+                 <>
+                 <hr
                   style={{
                     borderColor: "#D9D9D9",
                     textShadow: "2px 2px 5px grey",
@@ -375,15 +443,37 @@ function DocumentsUpload(props) {
                     }}
                   >
                     <h4 className="text-white text-kyc-sumit">
-                      {" "}
-                      &nbsp; &nbsp; Save & Next &nbsp; &nbsp;
+                  
+                      &nbsp; &nbsp;{buttonText} &nbsp; &nbsp;
                     </h4>
                   </button>
                 </div>
+                </>
+                 : <></>}
+
               </div>
             </Form>
           )}
         </Formik>
+
+
+        
+        {savedData?.length>0  && role?.verifier ? 
+                
+                savedData.map((img,i) => 
+                
+                <div className="col-lg-6 mt-4 test">
+                  <img className="file-upload" src={img?.filePath} alt="kyc docuement" />
+                  <div>
+                   <button className="btn btn-sm btn-primary m-3" onClick={()=>{verifyApproveDoc(img?.documentId)}}>Verify </button>
+                   <button className="btn btn-sm btn-warning m-3">Reject </button>
+                  </div>  
+                </div>
+                
+                )
+                :
+                <></>
+                }
       </div>
     </>
   );

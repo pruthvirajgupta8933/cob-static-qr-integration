@@ -333,7 +333,7 @@ export const merchantInfo = createAsyncThunk(
       url:
         requestParam.docType === "1"
           ? API_URL.UPLOAD_MERCHANT_AADHAAR
-          : API_URL.Upload_Merchant_document,
+          : API_URL.upload_Single_Doc,
       data: requestParam.bodyFormData,
       headers: { "Content-Type": "multipart/form-data" },
     }).catch((error) => {
