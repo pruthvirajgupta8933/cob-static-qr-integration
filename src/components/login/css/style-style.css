@@ -164,7 +164,7 @@ a:focus {
 
 .brand-logo {
   margin-top: 0px;
-  margin-bottom: 35px;
+  margin-bottom: 0px;
 }
 
 /*--------------------*/
@@ -173,7 +173,7 @@ a:focus {
 
 .authfy-container {
   margin-top: 33px;
-  margin-bottom: 33px;
+  margin-bottom: 10px;
 }
 
 .authfy-panel-left {
@@ -195,7 +195,7 @@ a:focus {
 
 .authfy-login, 
 .authfy-panel-left .brand-col {
-  height: 624px;
+  height: 480px;
 }
 .authfy-panel-left .brand-col {
   display: table;
@@ -548,4 +548,6 @@ a:focus {
   /* float: inline-end; */
 }
 
-
+.slide{
+  height: 100%;
+}

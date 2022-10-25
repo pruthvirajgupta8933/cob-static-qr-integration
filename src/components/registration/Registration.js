@@ -189,12 +189,15 @@ function Registration() {
   return (
     <>
       <HeaderPage />
-      <div className="container toppad">
+      <div className="container-fluid toppad">
         <div className="row">
+          <div className="col-lg-1"></div>
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
-            <div className="col-sm-4 authfy-panel-left">
+            
+          
+            <div className="col-sm-4 authfy-panel-left nopad- login-float-none">
               <div className="brand-col">
-                <div className="headline pt-5">
+                <div className="headline pt-3">
                   {/* brand-logo start */}
                   {/* <div className="brand-logo">
                   <img
@@ -210,13 +213,14 @@ function Registration() {
                       fontSize: "30px",
                       fontStyle: "Satoshi",
                       color: "#0143A1",
-                      lineHeight: "8px",
+                      lineHeight: "30px",
+
                     }}
                     class="text-center"
                   >
-                    Empower your
+                    Empower your <br/>business,&nbsp;boost <br/> your&nbsp;finance
                   </h1>
-                  <h1
+                  {/* <h1
                     style={{
                       fontSize: "30px",
                       whiteSpace: "20px",
@@ -238,7 +242,7 @@ function Registration() {
                     class="text-center"
                   >
                     your&nbsp;finance
-                  </h1>
+                  </h1> */}
 
                   <div className="brand-logo">
                     {/* <div class="text-center">
@@ -273,7 +277,7 @@ function Registration() {
                         <div class="carousel-item active">
                           <img
                             src={onlineshopinglogo}
-                            width={400}
+                            // width={400}
                             alt="SabPaisa"
                             title="SabPaisa"
                           />
@@ -281,7 +285,7 @@ function Registration() {
                         <div class="carousel-item">
                           <img
                             src={onlineshopinglogo}
-                            width={400}
+                            // width={400}
                             alt="SabPaisa"
                             title="SabPaisa"
                           />
@@ -289,7 +293,7 @@ function Registration() {
                         <div class="carousel-item">
                           <img
                             src={onlineshopinglogo}
-                            width={400}
+                            // width={400}
                             alt="SabPaisa"
                             title="SabPaisa"
                           />
@@ -312,7 +316,7 @@ function Registration() {
                 </div>
               </div>
             </div>
-            <div className="col-sm-8- authfy-panel-right">
+            <div className="col-sm-8 authfy-panel-right">
               {/* authfy-login start */}
               <div className="authfy-login">
                 {/* panel-login start */}
@@ -774,6 +778,7 @@ function Registration() {
               {/* ./authfy-login */}
             </div>
           </div>
+          <div className="col-lg-1"></div>
           <p className="footerforcopyright">
             Copyright  © 2022 SabPaisa, all rights reserve version 0.1
           </p>

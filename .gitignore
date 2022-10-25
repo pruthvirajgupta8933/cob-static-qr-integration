@@ -35,3 +35,7 @@ yarn.lock
 .firebaserc
 .firebaserc
 package-lock.json
+package-lock.json
+.firebaserc
+buildspecs.yml
+package-lock.json

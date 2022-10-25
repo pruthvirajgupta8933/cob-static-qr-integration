@@ -416,7 +416,7 @@ function LoginPage() {
                     style={{
                       position: "absolute",
                       zIndex: "999",
-                      top: "595px",
+                      top: "450px",
                     }}
                   >
                     <li
@@ -435,7 +435,7 @@ function LoginPage() {
                   </ol>
                   <div class="carousel-inner">
                     <div class="carousel-item active">
-                      <div class="heading1 pt-5">
+                      <div class="heading1 pt-2">
                         <p
                           className="font-text-large mb-0"
                           style={{ color: "#012167" }}
@@ -461,7 +461,7 @@ function LoginPage() {
                       </div>
                     </div>
                     <div class="carousel-item">
-                      <div class="heading1 pt-5">
+                      <div class="heading1 pt-2">
                         <p
                           className="font-text-large mb-0"
                           style={{ color: "#012167" }}
@@ -487,7 +487,7 @@ function LoginPage() {
                       </div>
                     </div>
                     <div class="carousel-item">
-                      <div class="heading1 pt-5">
+                      <div class="heading1 pt-2">
                         <p
                           className="font-text-large mb-0"
                           style={{ color: "#012167" }}
