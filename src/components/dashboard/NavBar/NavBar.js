@@ -4,26 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import profile from "../../../assets/images/profile.png";
 import { Link } from "react-router-dom";
 import "./navBar.css";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+
 
 const NavBar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  // console.log(user,"==>")
   const loginId = user.loginId;
   const username = user.clientContactPersonName;
+  const roles = roleBasedAccess()
+  const loggedUser = Object.keys(roles).find(key => roles[key] === true);
 
-  // const [isHover, setIsHover] = useState(false);
 
-  // const handleMouseEnter = () => {
-  //    setIsHover(true);
-  // };
-  // const handleMouseLeave = () => {
-  //    setIsHover(false);
-  // };
-
-  // const boxStyle = {
-  //   backgroundColor: isHover ? 'lightblue' : 'rgb(0, 191, 255)'
-  // };
 
   const exitback = () => {
     dispatch(logout());
@@ -35,8 +27,8 @@ const NavBar = () => {
           <img src={profile} alt="profile" title="profile" />
           <h3 className="text-white float-right mt-0">Welcome back</h3>
           <div style={{ fontSize: "13px" }}>
-            <span class="text-white text-sm" style={{ paddingLeft: "40px" }}>
-              Merchant Id &nbsp;: {loginId}
+            <span class="text-white text-sm text-uppercase" style={{ paddingLeft: "40px" }}>
+             {loggedUser} Id &nbsp;: {loginId}
             </span>
           </div>
         </ul>
