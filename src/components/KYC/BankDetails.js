@@ -31,7 +31,7 @@ function BankDetails(props) {
 
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
-  const [ifsc,setIfsc] = useState("");
+  const [ifscNo,setIfscNo] = useState("");
   // console.log(VerifyKycStatus,"<==STATUS==>")
 
   //  console.log(KycList ,"====================>")
@@ -115,7 +115,7 @@ function BankDetails(props) {
     // console.log("Values ========>",values)
     dispatch(bankAccountVerification({
       account_number: values,
-      ifsc: ""
+      ifsc: ifscNo
         })).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
@@ -271,6 +271,7 @@ function BankDetails(props) {
                     borderRadius: "6px",
                   }}
                   onClick={() => {
+                    setIfscNo(formik.values.ifsc_code)
 
                     // console.log("Values ==>>><<<",formik?.values)
                     checkInputIsValid(
