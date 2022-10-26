@@ -891,7 +891,9 @@ export const kycSlice = createSlice({
     [panValidation.fulfilled]: (state, action) => {
     
      state.allTabsValidate.BusinessDetailsStatus.PanValidation = action.payload;
+     if(action?.payload?.status_code===200){
      state.kycUserList.panCard =  action?.meta?.arg?.pan_number
+     }
     },
     [panValidation.rejected]: (state, action) => {
       state.status = "failed";
@@ -902,8 +904,10 @@ export const kycSlice = createSlice({
     },
     [authPanValidation.fulfilled]: (state, action) => {
      state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation = action.payload;
+     if(action?.payload?.status_code===200){
      state.kycUserList.signatoryPAN =  action?.meta?.arg?.pan_number
-      // console.log(action.payload,"Action ===> 12")
+     } 
+     // console.log(action.payload,"Action ===> 12")
     },
     [authPanValidation.rejected]: (state, action) => {
       state.status = "failed";
@@ -930,8 +934,10 @@ export const kycSlice = createSlice({
     },
     [ifscValidation.fulfilled]: (state, action) => {
      state.allTabsValidate.BusinessDetailsStatus.IfscValidation = action.payload;
-     state.kycUserList.ifscCode =  action?.meta?.arg?.ifsc_code
-      // console.log(action.payload,"Action ===> 1222222222")
+
+     if(action?.payload?.status===true && action?.payload?.valid===true){
+     state.kycUserList.ifscCode =  action?.meta?.arg?.ifsc_number
+     }
     },
     [ifscValidation.rejected]: (state, action) => {
       state.status = "failed";
@@ -942,8 +948,10 @@ export const kycSlice = createSlice({
     },
     [bankAccountVerification.fulfilled]: (state, action) => {
      state.allTabsValidate.BusinessDetailsStatus.accountValidation = action.payload;
+     if(action?.payload?.status===true && action?.payload?.valid===true){
      state.kycUserList.accountNumber =  action?.meta?.arg?.account_number
-      // console.log(action.payload,"Action Account Number ===> 1222222222")
+     } 
+     // console.log(action.payload,"Action Account Number ===> 1222222222")
     },
     [bankAccountVerification.rejected]: (state, action) => {
       state.status = "failed";
@@ -1010,10 +1018,6 @@ export const kycSlice = createSlice({
     },
     [otpVerificationForContactForEmail.fulfilled]: (state, action) => {
       state.OtpVerificationResponseForEmail = action.payload;
-      if (action.payload?.status === true) {
-        state.kycUserList.isEmailVerified = 1;
-      }
-
       // console.log(action.payload.status,"==> Verification")
     },
     [otpVerificationForContactForEmail.rejected]: (state, action) => {
