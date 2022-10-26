@@ -153,7 +153,6 @@
   }
 }
 
-
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .optbtn {
@@ -225,7 +224,7 @@
 
 .text-font-ForStatusChange::before {
   position: fixed;
-  left: -48px;
+  left: -55px;
   content: url(../../assets/images/check.png);
   display: inline-block;
 }
@@ -233,7 +232,7 @@
   font-family: Satoshi;
   font-size: 15px;
   font-weight: 700;
-  line-height: 26px;
+  line-height: 36px;
   letter-spacing: 0em;
   color: green;
 }
