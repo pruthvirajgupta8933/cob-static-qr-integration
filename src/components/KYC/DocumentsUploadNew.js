@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import "../KYC/kyc-style.css";
-import { documentsUpload, merchantInfo, verifyKycEachTab } from "../../slices/kycSlice";
+import { approveDoc, documentsUpload, merchantInfo, verifyKycDocumentTab, verifyKycEachTab } from "../../slices/kycSlice";
 import plus from "../../assets/images/plus.png";
 import "../../assets/css/kyc-document.css";
 import $ from "jquery";
@@ -157,19 +157,61 @@ function DocumentsUpload(props) {
   };
 
   const verifyApproveDoc = (doc_id) =>{
-        const postData = {
-          "document_id": doc_id,
-          "verified_by": loginId
-        }
+    let postData = {};
         if(role?.verifier){
+          postData = {
+            "document_id": doc_id,
+            "verified_by": loginId
+          }
+
+          dispatch(verifyKycDocumentTab(postData))
+          .then((resp) => {
+            resp?.payload?.status
+              ? toast.success(resp?.payload?.message)
+              : toast.error(resp?.payload?.message);
+          })
+          .catch((e) => {
+            toast.error("Try Again Network Error");
+          });
+
            
         }
 
         if(role?.approver){
-         
+          const approverDocDetails = {
+            approved_by: loginId,
+            document_id: doc_id,
+          };
+          dispatch(approveDoc(approverDocDetails))
+            .then((resp) => {
+              resp?.payload?.status
+                ? toast.success(resp?.payload?.message)
+                : toast.error(resp?.payload?.message);
+            })
+            .catch((e) => {
+              toast.error("Try Again Network Error");
+            });
         }
   }
 
+
+
+  const rejectDoc = (doc_id) => {
+    const rejectDetails = {
+      document_id: doc_id,
+      rejected_by: loginId,
+      comment: "Document Rejected",
+    };
+    dispatch(verifyKycDocumentTab(rejectDetails))
+      .then((resp) => {
+        resp?.payload?.status
+          ? toast.success(resp?.payload?.message)
+          : toast.error(resp?.payload?.message);
+      })
+      .catch((e) => {
+        toast.error("Try Again Network Error");
+      });
+  }
 
   useEffect(() => {
     if (role.approver) {
@@ -419,6 +461,21 @@ function DocumentsUpload(props) {
                 
                  }
 
+               { savedData?.length>0  ? 
+                savedData.map((img,i) => 
+                img?.status==="Rejected" ? 
+                <div className="col-lg-6 mt-4 test">
+                  <p className="text-danger"> {img?.comment}</p>
+                  <img className="file-upload" src={img?.filePath} alt="kyc docuement" />
+                </div>
+                :
+                <></>
+                
+                )
+                :
+                <></>
+                }
+
               
 
                  {role?.merchant ?
@@ -457,16 +514,20 @@ function DocumentsUpload(props) {
         </Formik>
 
 
-        
-        {savedData?.length>0  && role?.verifier ? 
-                
+        {/* button visible for the verifier */}
+              { savedData?.length>0  && role?.verifier ? 
                 savedData.map((img,i) => 
-                
                 <div className="col-lg-6 mt-4 test">
                   <img className="file-upload" src={img?.filePath} alt="kyc docuement" />
                   <div>
-                   <button className="btn btn-sm btn-primary m-3" onClick={()=>{verifyApproveDoc(img?.documentId)}}>Verify </button>
-                   <button className="btn btn-sm btn-warning m-3">Reject </button>
+                  {img?.status !== "Verified" ? 
+                    <>
+                    <button className="btn btn-sm btn-primary m-3" onClick={()=>{verifyApproveDoc(img?.documentId)}}>Verify </button>
+                    <button className="btn btn-sm btn-warning m-3" onClick={()=>{rejectDoc(img?.documentId)}} > Reject </button></>
+                    : 
+                    <></>
+                  }
+                  
                   </div>  
                 </div>
                 
@@ -474,6 +535,10 @@ function DocumentsUpload(props) {
                 :
                 <></>
                 }
+
+              
+
+                
       </div>
     </>
   );
