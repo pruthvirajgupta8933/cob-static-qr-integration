@@ -12,7 +12,8 @@ import {
   saveMerchantInfo,
   verifyKycEachTab,
   panValidation,
-  authPanValidation
+  authPanValidation,
+  gstValidation
 
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
@@ -54,8 +55,8 @@ function BusinessDetails(props) {
       state.kyc.allTabsValidate.BusinessDetailsStatus.PanValidation.valid
   );
 
-  console.log(panStatus,"PAN Validate Status =====>")
-  console.log(panValidStatus,"PAN Validate Valid =====>")
+  // console.log(panStatus,"PAN Validate Status =====>")
+  // console.log(panValidStatus,"PAN Validate Valid =====>")
 
   const choicesCheckBox = [{ key: "Same As Registered Address", value: "yes" }];
 
@@ -87,7 +88,7 @@ function BusinessDetails(props) {
   };
 
   const panValidate = (values) => {
-    console.log("Values ========>",values)
+    // console.log("Values ========>",values)
     dispatch(panValidation({
       pan_number: values
         })).then((res) => {
@@ -97,6 +98,25 @@ function BusinessDetails(props) {
         toast.success(res.payload.message);
       } else {
         toast.error("Your PAN Number is not Valid.");
+      }
+
+    })
+
+  }
+
+  const gstinValidate = (values) => {
+    // console.log("Values GSTIN ========>",values)
+    dispatch(gstValidation({
+        gst_number: values,
+        "fetchFilings": false,
+        "fy": "2018-19"
+        })).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
+        // console.log("This is the response", res);
+        toast.success(res.payload.message);
+      } else {
+        toast.error("Your GSTIN Number is not Valid.");
       }
 
     })
@@ -152,7 +172,8 @@ function BusinessDetails(props) {
     registered_business_address: KycList?.merchant_address_details?.address,
     operational_address: KycList?.merchant_address_details?.address,
     isPANVerified: KycList?.panCard !== null ? "1" : "",
-    isAuthPANVerified: KycList?.signatoryPAN !== null ? "1" : ""
+    isAuthPANVerified: KycList?.signatoryPAN !== null ? "1" : "",
+    isGSTINVerified: KycList?.gstNumber !== null ? "1" : ""
     // checkBoxChoice: "",
   };
 
@@ -242,8 +263,9 @@ function BusinessDetails(props) {
       .matches(Regex.address, RegexMsg.address)
       .required("Required")
       .nullable(),
-      isPANVerified: Yup.string().required("You need to verify Your PAN Number"),
-      isAuthPANVerified:  Yup.string().required("You need to verify Your Authorized Signatory PAN Number"),
+      isPANVerified: Yup.string().required("You need to verify Your PAN Number").nullable(),
+      isAuthPANVerified:  Yup.string().required("You need to verify Your Authorized Signatory PAN Number").nullable(),
+      isGSTINVerified: Yup.string().required("You need to verify Your GSTIN Number").nullable()
   });
 
   useEffect(() => {
@@ -272,6 +294,9 @@ function BusinessDetails(props) {
     }
     if (!hasErr && val[key] !== "" && key === "pan_card") {
       authValidation(val[key]);
+    }
+    if (!hasErr && val[key] !== "" && key === "gst_number") {
+      gstinValidate(val[key]);
     }
   };
   const onSubmit = (values) => {
@@ -369,6 +394,24 @@ function BusinessDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
+            
+              {formik?.initialValues?.isGSTINVerified === "1" ? (
+                <span>
+                <p className="panVerfied text-success">
+                  Verified
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-check"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                  </svg>
+                </p>
+              </span> 
+              ) : (
               <div class="position-sticky pull-right">
                 <a
                   href={() => false}
@@ -378,12 +421,25 @@ function BusinessDetails(props) {
                     borderRadius: "6px",
                   }}
                   onClick={() => {
-                    //  console.log("Hello")
+
+                    // console.log("Values ==>>><<<",formik?.values)
+                    checkInputIsValid(
+                      formik.errors,
+                      formik.values,
+                      formik.setFieldError,
+                      "gst_number"
+                    );
                   }}
                 >
                   Verify
                 </a>
               </div>
+                )}
+                  {formik?.errors?.isGSTINVerified && (
+                  <span className="notVerifiedtext text-danger">
+                    {formik?.errors?.isGSTINVerified}
+                  </span>
+                  )}
             </div>
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">

@@ -87,12 +87,35 @@ const initialState = {
         message: "",
         status: false
       },
+      GSTINValidation:{
+        legalName: "",
+        message: "",
+        status: false,
+        valid: false,
+      },
       submitStatus: {
         status: false,
         message: "",
       },
     },
     BankDetails: {
+    IfscValidation: {
+    bank: "",
+    branch: "",
+    address: "",
+    valid: false,
+    message: "",
+    status: false
+      },
+      accountValidation : {
+        first_name: "RAHMAT",
+        last_name: "ALI",
+        account_status: "ACTIVE",
+        valid: false,
+        message: "",
+        status: false
+      },
+
       submitStatus: {
         status: false,
         message: "",
@@ -634,6 +657,38 @@ export const authPanValidation = createAsyncThunk(
 }
 )
 
+export const gstValidation = createAsyncThunk(
+  "kyc/gstValidation", async (requestParam) => {
+    const response =  await kycValidatorAuth.post(`${validatorUrl}`+'/validate-gst/', requestParam)
+    .catch((error) => {
+      return error.response;
+    });
+
+  return response.data;
+}
+)
+
+export const ifscValidation = createAsyncThunk(
+  "kyc/ifscValidation", async (requestParam) => {
+    const response =  await kycValidatorAuth.post(`${validatorUrl}`+'/validate-ifsc/', requestParam)
+    .catch((error) => {
+      return error.response;
+    });
+
+  return response.data;
+}
+)
+
+export const bankAccountVerification = createAsyncThunk(
+  "kyc/bankAccountVerification", async (requestParam) => {
+    const response =  await kycValidatorAuth.post(`${validatorUrl}`+'/validate-account/', requestParam)
+    .catch((error) => {
+      return error.response;
+    });
+
+  return response.data;
+}
+)
 
 
 
@@ -850,7 +905,43 @@ export const kycSlice = createSlice({
      state.kycUserList.signatoryPAN =  action?.meta?.arg?.pan_number
       // console.log(action.payload,"Action ===> 12")
     },
-    [panValidation.rejected]: (state, action) => {
+    [authPanValidation.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+
+    [gstValidation.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [gstValidation.fulfilled]: (state, action) => {
+     state.allTabsValidate.BusinessDetailsStatus.GSTINValidation = action.payload;
+     state.kycUserList.gstNumber =  action?.meta?.arg?.gst_number
+      // console.log(action.payload,"Action ===> 12")
+    },
+    [gstValidation.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+
+    [ifscValidation.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [ifscValidation.fulfilled]: (state, action) => {
+     state.allTabsValidate.BusinessDetailsStatus.IfscValidation = action.payload;
+     state.kycUserList.ifscCode =  action?.meta?.arg?.ifsc_code
+      // console.log(action.payload,"Action ===> 1222222222")
+    },
+    [ifscValidation.rejected]: (state, action) => {
+      state.status = "failed";
+    },
+
+    [bankAccountVerification.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [bankAccountVerification.fulfilled]: (state, action) => {
+     state.allTabsValidate.BusinessDetailsStatus.accountValidation = action.payload;
+     state.kycUserList.accountNumber =  action?.meta?.arg?.account_number
+      // console.log(action.payload,"Action Account Number ===> 1222222222")
+    },
+    [bankAccountVerification.rejected]: (state, action) => {
       state.status = "failed";
     },
 
