@@ -914,7 +914,11 @@ export const kycSlice = createSlice({
     },
     [gstValidation.fulfilled]: (state, action) => {
      state.allTabsValidate.BusinessDetailsStatus.GSTINValidation = action.payload;
-     state.kycUserList.gstNumber =  action?.meta?.arg?.gst_number
+    //  console.log(action.payload)
+     if(action?.payload?.status_code===200){
+      state.kycUserList.gstNumber =  action?.meta?.arg?.gst_number
+     }
+     
       // console.log(action.payload,"Action ===> 12")
     },
     [gstValidation.rejected]: (state, action) => {

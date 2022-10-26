@@ -73,7 +73,10 @@ function BankDetails(props) {
     ifsc_code: Yup.string()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .matches(IFSCRegex,"Your IFSC Number is Invalid")
+      .min(6, 'Username must be at least 6 characters')
+      .max(20, 'Username must not exceed 20 characters')
       .required("Required")
+
       .nullable(),
     account_type: Yup.string()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
@@ -159,7 +162,7 @@ function BankDetails(props) {
           account_type: values.account_type,
           branch: values.branch,
           login_id: loginId,
-          modified_by: "270",
+          modified_by: loginId,
         })
       ).then((res) => {
         if (
@@ -271,9 +274,12 @@ function BankDetails(props) {
                     borderRadius: "6px",
                   }}
                   onClick={() => {
+<<<<<<< HEAD
                     setIfscNo(formik.values.ifsc_code)
 
                     // console.log("Values ==>>><<<",formik?.values)
+=======
+>>>>>>> d5516c590c7187b51a3e18fd0c59cb4b7142a055
                     checkInputIsValid(
                       formik.errors,
                       formik.values,

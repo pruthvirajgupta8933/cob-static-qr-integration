@@ -113,10 +113,9 @@ function BusinessDetails(props) {
         })).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
-        // console.log("This is the response", res);
         toast.success(res.payload.message);
       } else {
-        toast.error("Your GSTIN Number is not Valid.");
+        toast.error(res?.payload?.message);
       }
 
     })
@@ -282,23 +281,34 @@ function BusinessDetails(props) {
       .catch((err) => console.log(err));
   }, []);
 
-  const checkInputIsValid = (err, val, setErr, key) => {
+  const checkInputIsValid = (err, val, setErr, setFieldTouched, key) => {
+ 
     const hasErr = err.hasOwnProperty(key);
+
+    const fieldVal = val[key];
+    let  isValidVal = true;
+    if(fieldVal===null || fieldVal===undefined){
+      isValidVal = false
+      setFieldTouched(key, true);
+    }
+
+
     if (hasErr) {
       if (val[key] === "") {
         setErr(key, true);
       }
     }
-    if (!hasErr && val[key] !== "" && key === "signatory_pan") {
+    if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
       panValidate(val[key]);
     }
-    if (!hasErr && val[key] !== "" && key === "pan_card") {
+    if (!hasErr && isValidVal && val[key] !== "" && key === "pan_card") {
       authValidation(val[key]);
     }
-    if (!hasErr && val[key] !== "" && key === "gst_number") {
+    if (!hasErr && isValidVal && val[key] !== "" && key === "gst_number") {
       gstinValidate(val[key]);
     }
   };
+
   const onSubmit = (values) => {
     if (role.merchant) {
       const bodyFormData = new FormData();
@@ -378,7 +388,7 @@ function BusinessDetails(props) {
       >
         {(formik) => (
           <Form>
-            {/* {console.log(formik)} */}
+            {console.log(formik)}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -421,12 +431,11 @@ function BusinessDetails(props) {
                     borderRadius: "6px",
                   }}
                   onClick={() => {
-
-                    // console.log("Values ==>>><<<",formik?.values)
                     checkInputIsValid(
                       formik.errors,
                       formik.values,
                       formik.setFieldError,
+                      formik.setFieldTouched,
                       "gst_number"
                     );
                   }}
@@ -488,6 +497,7 @@ function BusinessDetails(props) {
                       formik.errors,
                       formik.values,
                       formik.setFieldError,
+                      formik.setFieldTouched,
                       "signatory_pan"
                     );
                   }}
@@ -553,6 +563,7 @@ function BusinessDetails(props) {
                       formik.errors,
                       formik.values,
                       formik.setFieldError,
+                      formik.setFieldTouched,
                       "pan_card"
                     );
                   }}
