@@ -105,7 +105,7 @@ function BankDetails(props) {
         // console.log("This is the response", res);
         toast.success(res.payload.message);
       } else {
-        toast.error("Your IFSC Number is not Valid.");
+        toast.error(res?.payload?.message);
       }
 
     })
@@ -115,7 +115,7 @@ function BankDetails(props) {
 
   
   const bankAccountValidate = (values) => {
-    // console.log("Values ========>",values)
+    console.log("Values ========>",values)
     dispatch(bankAccountVerification({
       account_number: values,
       ifsc: ifscNo
@@ -125,7 +125,7 @@ function BankDetails(props) {
         // console.log("This is the response", res);
         toast.success(res.payload.message);
       } else {
-        toast.error("Your IFSC Number is not Valid.");
+        toast.error(res?.payload?.message);
       }
 
     })
@@ -274,12 +274,9 @@ function BankDetails(props) {
                     borderRadius: "6px",
                   }}
                   onClick={() => {
-<<<<<<< HEAD
                     setIfscNo(formik.values.ifsc_code)
 
                     // console.log("Values ==>>><<<",formik?.values)
-=======
->>>>>>> d5516c590c7187b51a3e18fd0c59cb4b7142a055
                     checkInputIsValid(
                       formik.errors,
                       formik.values,
