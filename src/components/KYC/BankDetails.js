@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
-import API_URL from "../../config";
-import axios from "axios";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -12,9 +10,11 @@ import {
   saveMerchantBankDetais,
   verifyKycEachTab,
   ifscValidation,
-  bankAccountVerification
+  bankAccountVerification,
+  getBankId
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
+
 
 function BankDetails(props) {
   const setTab = props.tab;
@@ -23,36 +23,40 @@ function BankDetails(props) {
   const { role, kycid } = props;
   const dispatch = useDispatch();
 
-  const KycList = useSelector((state) => state.kyc.kycUserList);
+  const {kyc, auth } = useSelector((state) => state)
+  const { kycUserList, KycTabStatusStore, GetBankid, allTabsValidate } = kyc 
+  const KycList = kycUserList;
+  const VerifyKycStatus = KycTabStatusStore?.settlement_info_status
+  const bankDetailsById = GetBankid
 
-  const VerifyKycStatus = useSelector(
-    (state) => state.kyc.KycTabStatusStore.settlement_info_status
-  );
+  const {user} = auth
+  const AccfirstName = allTabsValidate?.BankDetails?.accountValidation?.first_name
+  const AcclastName = allTabsValidate?.BankDetails?.accountValidation?.last_name
+  const branch = allTabsValidate?.BankDetails?.IfscValidation?.branch
+
+
+  // console.log(AccfirstName,"=====>")
+  let accHolderName = `${AccfirstName} ${AcclastName}`;
+
+  // console.log("Account Holder Name ===>",accHolderName.length)
 
   const [readOnly, setReadOnly] = useState(false);
-  const [buttonText, setButtonText] = useState("Save and Next");
-  // const [ifscNo,setIfscNo] = useState("");
-  // console.log(VerifyKycStatus,"<==STATUS==>")
+  const [buttonText, setButtonText] = useState("Save and Next")
 
-  //  console.log(KycList ,"====================>")
 
   const [data, setData] = useState([]);
   const IFSCRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/
   const AccountNoRgex = /^[a-zA-Z0-9]{2,25}$/
 
-
-  const { user } = useSelector((state) => state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
   const initialValues = {
-    account_holder_name: KycList?.accountHolderName,
+    account_holder_name: accHolderName.length > 2 ? accHolderName : KycList?.accountHolderName,
     account_number: KycList?.accountNumber,
     confirm_account_number: KycList?.accountNumber,
     ifsc_code: KycList?.ifscCode,
-    bank_id: KycList?.merchant_account_details?.bankId,
-    account_type: KycList?.bankName,
+    bank_id: bankDetailsById?.length > 0 ? bankDetailsById[0]?.bankId : KycList?.merchant_account_details?.bankId, // change stste
+    account_type: KycList?.merchant_account_details?.accountType,
     branch: KycList?.merchant_account_details?.branch,
     isIFSCCode: KycList?.ifscCode !== null ? "1" : "",
     isAccountNumberVerified: KycList?.accountNumber !== null ? "1" : ""
@@ -64,7 +68,7 @@ function BankDetails(props) {
       .nullable(),
     account_number: Yup.string()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .matches(AccountNoRgex,"Your Account Number is Invalid")
+      .matches(AccountNoRgex, "Your Account Number is Invalid")
       .required("Required")
       .nullable(),
     // confirm_account_number: Yup.string()
@@ -72,7 +76,7 @@ function BankDetails(props) {
     //   .required("Confirm Account Number Required").nullable(),
     ifsc_code: Yup.string()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .matches(IFSCRegex,"Your IFSC Number is Invalid")
+      .matches(IFSCRegex, "Your IFSC Number is Invalid")
       .min(6, 'Username must be at least 6 characters')
       .max(20, 'Username must not exceed 20 characters')
       .required("Required")
@@ -89,47 +93,48 @@ function BankDetails(props) {
     bank_id: Yup.string()
       .required("Required")
       .nullable(),
-      isIFSCCode: Yup.string().required("You need to verify Your IFSC Code"),
-      isAccountNumberVerified:Yup.string().required("You need to verify Your Account Number")
+    isIFSCCode: Yup.string().required("You need to verify Your IFSC Code"),
+    isAccountNumberVerified: Yup.string().required("You need to verify Your Account Number")
   });
 
 
-  const ifscValidationNo= (values) => {
+  const ifscValidationNo = (values) => {
     // console.log("Values ========>",values)
-    if(values?.length !== 0 || typeof(values?.length) !== 'undefined' ) {
-    dispatch(ifscValidation({
+    if (values?.length !== 0 || typeof (values?.length) !== 'undefined') {
+      dispatch(ifscValidation({
         ifsc_number: values
-        })).then((res) => {
-      if (
-        res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
-        // console.log("This is the response", res);
-        toast.success(res?.payload?.message);
-      } else {
-        toast.error(res?.payload?.message);
-      }
+      })).then((res) => {
+        if (
+          res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
+          const postData = { "bank_name": res?.payload?.bank }
+          dispatch(getBankId(postData))
+          toast.success(res?.payload?.message);
+        } else {
+          toast.error(res?.payload?.message);
+        }
 
-    })
+      })
+    }
+
   }
 
-  }
 
-  
   const bankAccountValidate = (values, ifsc) => {
     // console.log("Values ========>",values)
     dispatch(bankAccountVerification({
       account_number: values,
       ifsc: ifsc
-        })).then((res) => {
+    })).then((res) => {
       if (
         res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === true && res?.payload?.valid === true) {
-        // console.log("This is the response", res);
+        console.log("This is the response", res);
         toast.success(res?.payload?.message);
       } else {
         toast.error(res?.payload?.message);
       }
 
     })
-  
+
 
   }
 
@@ -209,8 +214,8 @@ function BankDetails(props) {
     const hasErr = err.hasOwnProperty(key);
 
     const fieldVal = val[key];
-    let  isValidVal = true;
-    if(fieldVal===null || fieldVal===undefined){
+    let isValidVal = true;
+    if (fieldVal === null || fieldVal === undefined) {
       isValidVal = false
       setFieldTouched(key, true);
     }
@@ -230,9 +235,9 @@ function BankDetails(props) {
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "account_number") {
       const ifscCodeVal = val?.ifsc_code;
-      bankAccountValidate(val[key],ifscCodeVal);
+      bankAccountValidate(val[key], ifscCodeVal);
     }
- 
+
   };
 
 
@@ -246,9 +251,9 @@ function BankDetails(props) {
       >
         {(formik) => (
           <Form>
-            {console.log(formik)}
+            {/* {console.log(formik)} */}
             <div class="form-group row">
-            <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
                   IFSC Code<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -264,52 +269,52 @@ function BankDetails(props) {
               </div>
               {formik?.initialValues?.isIFSCCode === "1" ? (
                 <span>
-                <p className="panVerfied text-success">
-                  Verified
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-check"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                  </svg>
-                </p>
-              </span> 
+                  <p className="panVerfied text-success">
+                    Verified
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-check"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                    </svg>
+                  </p>
+                </span>
               ) : (
-              <div class="position-sticky pull-right">
-                <a
-                  href={() => false}
-                  className="btn btnbackground text-white btn-sm panbtn"
-                  style={{
-                    boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                    borderRadius: "6px",
-                  }}
-                  onClick={() => {
-                    checkInputIsValid(
-                      formik.errors,
-                      formik.values,
-                      formik.setFieldError,
-                      formik.setFieldTouched,
-                      "ifsc_code"
-                    );
-                  }}
-                >
-                  Verify
-                </a>
-              </div>
-                )}
-                  {formik?.errors?.isIFSCCode && (
-                  <span className="notVerifiedtext text-danger">
-                    {formik?.errors?.isIFSCCode}
-                  </span>
-                  )}
+                <div class="position-sticky pull-right">
+                  <a
+                    href={() => false}
+                    className="btn btnbackground text-white btn-sm panbtn"
+                    style={{
+                      boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                      borderRadius: "6px",
+                    }}
+                    onClick={() => {
+                      checkInputIsValid(
+                        formik.errors,
+                        formik.values,
+                        formik.setFieldError,
+                        formik.setFieldTouched,
+                        "ifsc_code"
+                      );
+                    }}
+                  >
+                    Verify
+                  </a>
+                </div>
+              )}
+              {formik?.errors?.isIFSCCode && (
+                <span className="notVerifiedtext text-danger">
+                  {formik?.errors?.isIFSCCode}
+                </span>
+              )}
             </div>
 
             <div class="form-group row">
-            <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
                   Account Number <span style={{ color: "red" }}>*</span>
                 </h4>
@@ -325,54 +330,54 @@ function BankDetails(props) {
               </div>
               {formik?.initialValues?.isAccountNumberVerified === "1" ? (
                 <span>
-                <p className="panVerfied text-success">
-                  Verified
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-check"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                  </svg>
-                </p>
-              </span> 
+                  <p className="panVerfied text-success">
+                    Verified
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-check"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                    </svg>
+                  </p>
+                </span>
               ) : (
-              <div class="position-sticky pull-right">
-                <a
-                  href={() => false}
-                  className="btn btnbackground text-white btn-sm panbtn"
-                  style={{
-                    boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                    borderRadius: "6px",
-                  }}
-                  onClick={() => {
+                <div class="position-sticky pull-right">
+                  <a
+                    href={() => false}
+                    className="btn btnbackground text-white btn-sm panbtn"
+                    style={{
+                      boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                      borderRadius: "6px",
+                    }}
+                    onClick={() => {
 
-                    // console.log("Values ==>>><<<",formik?.values)
-                    checkInputIsValid(
-                      formik.errors,
-                      formik.values,
-                      formik.setFieldError,
-                      formik.setFieldTouched,
-                      "account_number"
-                    );
-                  }}
-                >
-                  Verify
-                </a>
-              </div>
-                )}
-                  {formik?.errors?.isAccountNumberVerified && (
-                  <span className="notVerifiedtext text-danger">
-                    {formik?.errors?.isAccountNumberVerified}
-                  </span>
-                  )}
-              </div>
+                      // console.log("Values ==>>><<<",formik?.values)
+                      checkInputIsValid(
+                        formik.errors,
+                        formik.values,
+                        formik.setFieldError,
+                        formik.setFieldTouched,
+                        "account_number"
+                      );
+                    }}
+                  >
+                    Verify
+                  </a>
+                </div>
+              )}
+              {formik?.errors?.isAccountNumberVerified && (
+                <span className="notVerifiedtext text-danger">
+                  {formik?.errors?.isAccountNumberVerified}
+                </span>
+              )}
+            </div>
 
             <div class="form-group row">
-            <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
                   Account Holder Name<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -390,7 +395,7 @@ function BankDetails(props) {
             </div>
 
             <div class="form-group row">
-            <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
                   Account Type<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -404,7 +409,7 @@ function BankDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
-            
+
             </div>
 
             <div class="form-group row">
@@ -425,7 +430,7 @@ function BankDetails(props) {
             </div>
 
             <div class="form-group row">
-            <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
                   Branch<span style={{ color: "red" }}>*</span>
                 </h4>
@@ -439,8 +444,8 @@ function BankDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
-         
-             
+
+
             </div>
 
             <div class="my-5 p-2">
