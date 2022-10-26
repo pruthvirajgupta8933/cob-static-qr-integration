@@ -31,7 +31,7 @@ function BankDetails(props) {
 
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
-  const [ifscNo,setIfscNo] = useState("");
+  // const [ifscNo,setIfscNo] = useState("");
   // console.log(VerifyKycStatus,"<==STATUS==>")
 
   //  console.log(KycList ,"====================>")
@@ -103,7 +103,7 @@ function BankDetails(props) {
       if (
         res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
         // console.log("This is the response", res);
-        toast.success(res.payload.message);
+        toast.success(res?.payload?.message);
       } else {
         toast.error(res?.payload?.message);
       }
@@ -114,16 +114,16 @@ function BankDetails(props) {
   }
 
   
-  const bankAccountValidate = (values) => {
-    console.log("Values ========>",values)
+  const bankAccountValidate = (values, ifsc) => {
+    // console.log("Values ========>",values)
     dispatch(bankAccountVerification({
       account_number: values,
-      ifsc: ifscNo
+      ifsc: ifsc
         })).then((res) => {
       if (
-        res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
+        res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === true && res?.payload?.valid === true) {
         // console.log("This is the response", res);
-        toast.success(res.payload.message);
+        toast.success(res?.payload?.message);
       } else {
         toast.error(res?.payload?.message);
       }
@@ -171,11 +171,11 @@ function BankDetails(props) {
         ) {
           // console.log(res)
           // console.log("This is the response", res);
-          toast.success(res.payload.message);
+          toast.success(res?.payload?.message);
           setTab(5);
           setTitle("DOCUMENTS UPLOAD");
         } else {
-          toast.error("Something Went Wrong! Please try again.");
+          toast.error(res?.payload?.message);
         }
       });
     } else if (role.verifier) {
@@ -205,18 +205,32 @@ function BankDetails(props) {
     }
   }, [role]);
 
-  const checkInputIsValid = (err, val, setErr, key) => {
+  const checkInputIsValid = (err, val, setErr, setFieldTouched, key) => {
     const hasErr = err.hasOwnProperty(key);
+
+    const fieldVal = val[key];
+    let  isValidVal = true;
+    if(fieldVal===null || fieldVal===undefined){
+      isValidVal = false
+      setFieldTouched(key, true);
+    }
+
+
+
+
     if (hasErr) {
       if (val[key] === "") {
         setErr(key, true);
       }
     }
-    if (!hasErr && val[key] !== "" && key === "ifsc_code") {
+
+
+    if (!hasErr && isValidVal && val[key] !== "" && key === "ifsc_code") {
       ifscValidationNo(val[key]);
     }
-    if (!hasErr && val[key] !== "" && key === "account_number") {
-      bankAccountValidate(val[key]);
+    if (!hasErr && isValidVal && val[key] !== "" && key === "account_number") {
+      const ifscCodeVal = val?.ifsc_code;
+      bankAccountValidate(val[key],ifscCodeVal);
     }
  
   };
@@ -232,7 +246,7 @@ function BankDetails(props) {
       >
         {(formik) => (
           <Form>
-            {/* {console.log(formik)} */}
+            {console.log(formik)}
             <div class="form-group row">
             <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -274,13 +288,11 @@ function BankDetails(props) {
                     borderRadius: "6px",
                   }}
                   onClick={() => {
-                    setIfscNo(formik.values.ifsc_code)
-
-                    // console.log("Values ==>>><<<",formik?.values)
                     checkInputIsValid(
                       formik.errors,
                       formik.values,
                       formik.setFieldError,
+                      formik.setFieldTouched,
                       "ifsc_code"
                     );
                   }}
@@ -343,6 +355,7 @@ function BankDetails(props) {
                       formik.errors,
                       formik.values,
                       formik.setFieldError,
+                      formik.setFieldTouched,
                       "account_number"
                     );
                   }}

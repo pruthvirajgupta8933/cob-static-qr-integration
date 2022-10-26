@@ -5,7 +5,6 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
-import API_URL from "../../config";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import {
   businessOverviewState,
@@ -339,14 +338,14 @@ function BusinessDetails(props) {
 
       dispatch(saveMerchantInfo(bodyFormData)).then((res) => {
         if (
-          res.meta.requestStatus === "fulfilled" &&
-          res.payload.status === true
+          res?.meta?.requestStatus === "fulfilled" &&
+          res?.payload?.status === true
         ) {
-          toast.success(res.payload.message);
+          toast.success(res?.payload?.message);
           setTab(4);
           setTitle("BANK DETAILS");
         } else {
-          toast.error("Something Went Wrong! Please try again.");
+          toast.error(res?.payload?.message);
         }
       });
     } else if (role.verifier) {
