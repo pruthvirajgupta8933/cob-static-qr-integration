@@ -1019,6 +1019,11 @@ export const kycSlice = createSlice({
     },
     [otpVerificationForContactForPhone.fulfilled]: (state, action) => {
       state.OtpVerificationResponseForPhone = action.payload;
+      
+      if (action.payload?.status === true) {
+        state.kycUserList.isContactNumberVerified = 1;
+      }
+  
     },
     [otpVerificationForContactForPhone.rejected]: (state, action) => {
       state.status = "failed";
@@ -1031,6 +1036,10 @@ export const kycSlice = createSlice({
     },
     [otpVerificationForContactForEmail.fulfilled]: (state, action) => {
       state.OtpVerificationResponseForEmail = action.payload;
+
+      if (action.payload?.status === true) {
+        state.kycUserList.isEmailVerified = 1;
+      }
       // console.log(action.payload.status,"==> Verification")
     },
     [otpVerificationForContactForEmail.rejected]: (state, action) => {
