@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import NavBar from '../../NavBar/NavBar';
 import { Link } from 'react-router-dom'
 import './product.css'
@@ -16,75 +16,79 @@ import { axiosInstanceAuth } from '../../../../utilities/axiosInstance';
 
 const Products = () => {
 
-  const[product,setProduct]=useState([]);
- const iconImg = [
-      onlinePayment,
-      paymentLink,
-      subscribe,
-      payout,
-      qwikform,
-      echallan,
-      epos,
-      linkPaisa 
-     ]
+  const [product, setProduct] = useState([]);
+  const iconImg = [
+    onlinePayment,
+    paymentLink,
+    subscribe,
+    payout,
+    qwikform,
+    echallan,
+    epos,
+    linkPaisa
+  ]
 
-    useEffect(() => {
-      axiosInstanceAuth
-        .get(API_URL.PRODUCT_DETAILS
-          )
-        .then((resp) => {
-          const data = resp.data.ProductDetail;
-  
-          setProduct(data);
-        })
-        .catch((err) => console.log(err));
-    }, []);
+  useEffect(() => {
+    axiosInstanceAuth
+      .get(API_URL.PRODUCT_DETAILS
+      )
+      .then((resp) => {
+        const data = resp.data.ProductDetail;
 
-   
-    
-    
+        setProduct(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  const map1 = product.map((Singleproduct, i) =>
+    localStorage.setItem(`application_Name ${i}`, Singleproduct.application_name)
+  );
+
+
+
+
+
   return (
     <section className="ant-layout">
-    <div>
-      <NavBar />
-      {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
-    </div>
-    <main className="gx-layout-content ant-layout-content">
-
-    <div class="container">
-  <div class="row justify-content-md-center">
-    
-    <div class="col-md-auto">
-    
-   
-    <h1 className="text-centre prodHeader" style={{fontSize:"xx-large"}}>Explore wide range of our Products</h1>
-    <p className="prodpara">
-    We offer a very competitive pricing to match your business needs. Sign up now to get started  </p>           
-    </div>
-    </div>
-    </div>
-    <div class="row">
-
-    {product.map((Products,i) => (
-  <div class="col-sm-6 col-md-6 col-lg-6">
-
-    <div class="card" style={{width:"31rem",height:"17rem"}} >
-      <div class="card-body">
-        <h5 class="card-title prod-header">  
-        <img class="card-img-left" src={iconImg[i]} alt="onlinepay" width={40}/>
-         &nbsp;
-         {Products.application_name}
-         </h5>
-          <p  class="card-text prod-content" > {Products.application_description}</p> 
-    <div >
-     <p class="prod-read"> <Link to={`/dashboard/sabpaisa-pricing/${Products.application_id}`}>Read More & Pricing  &nbsp;{'>'}{'>'}</Link></p> 
-    </div>
-    {/* <Link to={`/dashboard/sabpaisa-pricing/${Products.application_id}`} */}
+      <div>
+        <NavBar />
+        {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
       </div>
-    </div>
-  </div>
-  ))}
-  {/* <div class="col-sm-6 col-md-6 col-lg-6">
+      <main className="gx-layout-content ant-layout-content">
+
+        <div class="container">
+          <div class="row justify-content-md-center">
+
+            <div class="col-md-auto">
+
+
+              <h1 className="text-centre prodHeader" style={{ fontSize: "xx-large" }}>Explore wide range of our Products</h1>
+              <p className="prodpara">
+                We offer a very competitive pricing to match your business needs. Sign up now to get started  </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+
+          {product.map((Products, i) => (
+            <div class="col-sm-6 col-md-6 col-lg-6">
+
+              <div class="card" style={{ width: "31rem", height: "17rem" }} >
+                <div class="card-body">
+                  <h5 class="card-title prod-header">
+                    <img class="card-img-left" src={iconImg[i]} alt="onlinepay" width={40} />
+                    &nbsp;
+                    {Products.application_name}
+                  </h5>
+                  <p class="card-text prod-content" > {Products.application_description}</p>
+                  <div >
+                    <p class="prod-read"> <Link to={`/dashboard/sabpaisa-pricing/${Products.application_id}/${Products.application_name}`}>Read More & Pricing  &nbsp;{'>'}{'>'}</Link></p>
+                  </div>
+                  {/* <Link to={`/dashboard/sabpaisa-pricing/${Products.application_id}`} */}
+                </div>
+              </div>
+            </div>
+          ))}
+          {/* <div class="col-sm-6 col-md-6 col-lg-6">
     <div class="card" style={{width:"32rem"}}>
       <div class="card-body">
         <h5 class="card-title prod-header"><img class="card-img-left" src={paymentLink} alt="payLink" width={40}/>&nbsp;Payment Links</h5>
@@ -96,9 +100,9 @@ const Products = () => {
       </div>
     </div>
   </div> */}
-</div>
+        </div>
 
-{/* <div class="row">
+        {/* <div class="row">
   <div class="col-sm-6 col-md-6 col-lg-6">
     <div class="card" style={{width:"31rem"}}>
       <div class="card-body">
@@ -177,11 +181,8 @@ const Products = () => {
 </div> */}
 
 
- 
 
 
-        
-    
 
 
 
@@ -244,12 +245,15 @@ const Products = () => {
 
 
 
-    {/* <p><Link to='/dashboard/sabpaisa-pricing'>Read More & Pricing</Link></p> */}
-    {/*  <=========== Old Product Catalogue ===========> */}
 
 
 
-    {/* <div className="gx-main-content-wrapper">
+        {/* <p><Link to='/dashboard/sabpaisa-pricing'>Read More & Pricing</Link></p> */}
+        {/*  <=========== Old Product Catalogue ===========> */}
+
+
+
+        {/* <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Product Catalogue</h1>
           </div>
@@ -257,14 +261,14 @@ const Products = () => {
             className="features8 cid-sg6XYTl25a flleft"
             id="features08-3-"
           > */}
-            <div className="container-fluid">
-              <div className="row">
+        <div className="container-fluid">
+          <div className="row">
 
-                {/* {subscriptionPlanData.length <= 0 ? (
+            {/* {subscriptionPlanData.length <= 0 ? (
                   <h3>Loading...</h3>
                 ) : ( */}
-                  {/* subscriptionPlanData.map((s, i) => ( */}
-                    {/* <div className="col col-lg-5 ">
+            {/* subscriptionPlanData.map((s, i) => ( */}
+            {/* <div className="col col-lg-5 ">
                       <div className="card">
                         <div className="card-body">
                           <h5 className="card-title font-weight-bold h3">
@@ -314,14 +318,14 @@ const Products = () => {
 
 
 
-                            {/* <button
+            {/* <button
                                className=" btn bttn bttnbackgroundkyc collapsed"
                                 type="button"
                               >
                                 Subscribe
                               </button> */}
 
-                          {/* </p>
+            {/* </p>
                           <div
                             className="collapse"
                             id={`collapseExample${s.applicationId}`}
@@ -335,18 +339,18 @@ const Products = () => {
                         <div className="container" />
                       </div>
                     </div> */}
-                  {/* )) */}
-                {/* )} */}
-              {/* </div>
+            {/* )) */}
+            {/* )} */}
+            {/* </div>
             </div>
           </section> */}
-              {/*  <=========== Old Product Catalogue ===========> */}
-        </div>
+            {/*  <=========== Old Product Catalogue ===========> */}
+          </div>
         </div>
 
-    </main>
-  </section>
-);
+      </main>
+    </section>
+  );
 };
 
 

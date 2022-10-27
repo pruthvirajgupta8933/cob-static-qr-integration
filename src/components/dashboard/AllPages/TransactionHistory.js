@@ -165,7 +165,6 @@ function TransactionHistory() {
     extraDataObj = { key: "All", value: "All" };
   }
 
-  console.log(clientMerchantDetailsList,"clientMerchantDetailsList,")
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
     "clientName",

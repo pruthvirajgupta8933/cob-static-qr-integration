@@ -97,6 +97,7 @@ function SubmitKyc(props) {
       dispatch(verifyComplete(data))
         .then((resp) => {
           resp?.payload?.status_code === 401 ||
+          resp?.payload?.status_code === 400 ||
           resp?.payload?.status_code === 404
             ? toast.error(resp?.payload?.message)
             : toast.success(resp?.payload?.message);
@@ -132,16 +133,16 @@ function SubmitKyc(props) {
       saveKycConsent({
         term_condition: true,
         login_id: loginId,
-        submitted_by: "270",
+        submitted_by: loginId,
       })
     ).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true
       ) {
-        toast.success(res.payload.message);
+        toast.success(res?.payload?.message);
       } else {
-        toast.error("Something Went Wrong! Please try again.");
+        toast.error(res?.payload?.message);
       }
     });
   };

@@ -424,7 +424,6 @@ export const checkPermissionSlice = createAsyncThunk(
 
       const response = await AuthService.checkPermission(data);
       thunkAPI.dispatch(setMessage(response.data.message));
-      console.log("getEmailToSendOtp-response",response)
       return response.data;
     } catch (error) {
       const message =

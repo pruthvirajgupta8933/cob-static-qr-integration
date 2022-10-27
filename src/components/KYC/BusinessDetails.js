@@ -22,16 +22,21 @@ function BusinessDetails(props) {
   const setTitle = props.title;
 
   const { role, kycid } = props;
-  const KycList = useSelector((state) => state.kyc.kycUserList);
-
-  const VerifyKycStatus = useSelector(
-    (state) => state.kyc.KycTabStatusStore.merchant_info_status
-  );
 
   const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
   const reqexPAN =/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
-  const { user } = useSelector((state) => state.auth);
-  // const { clientCode } = clientMerchantDetailsList[0];
+
+  const { auth, kyc} = useSelector((state) => state);
+
+  const {user} = auth
+  const {allTabsValidate, kycUserList, KycTabStatusStore } = kyc
+
+  const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus
+
+  const KycList = kycUserList
+
+  const VerifyKycStatus = KycTabStatusStore?.merchant_info_status
+  
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
   const [gstin, setGstin] = useState("");
@@ -45,17 +50,20 @@ function BusinessDetails(props) {
   );
   const dispatch = useDispatch();
   
-  const panStatus = useSelector(
-    (state) =>
-      state.kyc.allTabsValidate.BusinessDetailsStatus.PanValidation.status
-  );
-  const panValidStatus = useSelector(
-    (state) =>
-      state.kyc.allTabsValidate.BusinessDetailsStatus.PanValidation.valid
-  );
+  const panStatus = BusinessDetailsStatus?.PanValidation?.status
+  
+  const panValidStatus = BusinessDetailsStatus?.PanValidation?.valid
 
-  // console.log(panStatus,"PAN Validate Status =====>")
-  // console.log(panValidStatus,"PAN Validate Valid =====>")
+  const busiFirstName = BusinessDetailsStatus?.PanValidation?.first_name === null ? "" : BusinessDetailsStatus?.PanValidation?.first_name
+
+  const busiLastName = BusinessDetailsStatus?.PanValidation?.last_name === null ? "" : BusinessDetailsStatus?.PanValidation?.last_name
+  
+  const busiAuthFirstName = BusinessDetailsStatus.AuthPanValidation.first_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.first_name
+
+  const busiAuthLastName = BusinessDetailsStatus?.AuthPanValidation?.last_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.last_name;
+
+  let businessNamee = `${busiFirstName} ${busiLastName}`;
+  let businessAuthName = `${busiAuthFirstName} ${busiAuthLastName}`;
 
   const choicesCheckBox = [{ key: "Same As Registered Address", value: "yes" }];
 
@@ -93,10 +101,10 @@ function BusinessDetails(props) {
         })).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
-        console.log("This is the response", res);
-        toast.success(res.payload.message);
+        // console.log("This is the response", res);
+        toast.success(res?.payload?.message);
       } else {
-        toast.error("Your PAN Number is not Valid.");
+        toast.error(res?.payload?.message);
       }
 
     })
@@ -112,7 +120,7 @@ function BusinessDetails(props) {
         })).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
-        toast.success(res.payload.message);
+        toast.success(res?.payload?.message);
       } else {
         toast.error(res?.payload?.message);
       }
@@ -128,42 +136,25 @@ function BusinessDetails(props) {
         })).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
-        console.log("This is the response", res);
+        // console.log("This is the response", res);
         toast.success(res.payload.message);
       } else {
-        toast.error("Your PAN Number is not Valid.");
+        toast.error(res?.payload?.message);
       }
 
     })
 
   }
 
-  // const initialValues = {
-  //   company_name: KycList.companyName,
-  //   company_logo: KycList.companyLogoPath,
-  //   registerd_with_gst: KycList.registerdWithGST,
-  //   gst_number: KycList.gstNumber,
-  //   pan_card: KycList.panCard,
-  //   signatory_pan: KycList.signatoryPAN,
-  //   name_on_pancard: KycList.nameOnPanCard,
-  //   pin_code: KycList.pinCode,
-  //   city_id: KycList.cityId,
-  //   state_id: KycList.stateId,
-  //   registered_business_address: KycList.registeredBusinessAdress,
-  //   operational_address: KycList.registeredBusinessAdress,
-  //   checkBoxChoice: "",
-  // };
-
-  // console.log("KycList", KycList);
 
   const initialValues = {
-    company_name: KycList?.companyName,
+    company_name: businessNamee.length > 2 ? businessNamee : KycList?.companyName,
     company_logo: "",
     registerd_with_gst: "True",
     gst_number: KycList?.gstNumber,
-    pan_card: KycList?.signatoryPAN,
-    signatory_pan: KycList?.panCard,
-    name_on_pancard: KycList?.nameOnPanCard,
+    pan_card: KycList?.panCard,
+    signatory_pan: KycList?.signatoryPAN,
+    name_on_pancard: businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard,
     pin_code: KycList?.merchant_address_details?.pin_code,
     city_id: KycList?.merchant_address_details?.city,
     state_id: KycList?.merchant_address_details?.state,
@@ -175,54 +166,7 @@ function BusinessDetails(props) {
     // checkBoxChoice: "",
   };
 
-  // const initialValues = {
-  //   company_name: KycList.companyName,
-  //   gst_number: KycList.gstNumber,
-  //   pan_card: KycList.panCard,
-  //   signatory_pan: KycList.signatoryPAN,
-  //   name_on_pancard: KycList.nameOnPanCard,
-
-  // };
-  // const validationSchema = Yup.object({
-
-  //   company_name: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   registerd_with_gst: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   gst_number: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   pan_card: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   signatory_pan: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   name_on_pancard: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   pin_code: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   city_id: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   state_id: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   registered_business_address: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   operational_address: Yup.string()
-  //     .when("checkBoxChoice", {
-  //       is: "yes",
-  //       then: Yup.string().required("Required"),
-  //     })
-  //     .nullable(),
-  //   checkBoxChoice: Yup.array().nullable(),
-  // });
+ 
 
   const validationSchema = Yup.object({
     company_name: Yup.string()
@@ -274,7 +218,7 @@ function BusinessDetails(props) {
           "stateName",
           resp.payload
         );
-        console.log(resp, "my all dattaaa");
+        // console.log(resp?.payload?.message);
         setBusinessOverview(data);
       })
       .catch((err) => console.log(err));
@@ -375,7 +319,7 @@ function BusinessDetails(props) {
     }
   }, [role]);
 
-  console.log("readOnly", readOnly);
+  // console.log("readOnly", readOnly);
 
   return (
     <div className="col-md-12 col-md-offset-4">
@@ -387,7 +331,7 @@ function BusinessDetails(props) {
       >
         {(formik) => (
           <Form>
-            {console.log(formik)}
+            {/* {console.log(formik)} */}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
