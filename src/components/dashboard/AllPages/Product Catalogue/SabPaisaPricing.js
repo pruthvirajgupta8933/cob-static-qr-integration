@@ -20,6 +20,7 @@ const SabPaisaPricing = () => {
     dispatch(productSubscribeState(value))
   }
   const { user } = useSelector((state) => state.auth);
+  console.log("user",user)
   const { clientId, clientName } = user.clientMerchantDetailsList[0];
 
   const param = useParams()
@@ -29,7 +30,7 @@ const SabPaisaPricing = () => {
     // console.log("parma",param);
     const id = param?.id;
     const name = param
-    console.log("this is params : ", name?.name)
+    // console.log("this is params : ", name?.name)
     let url = API_URL.PRODUCT_SUB_DETAILS + "/" + id
     axiosInstanceAuth
       .get(url
@@ -51,15 +52,16 @@ const SabPaisaPricing = () => {
 
 
   const handleClick = async (plan_id, plan_name) => {
-    const res = await axiosInstanceAuth.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, {
+    const postData = {
       clientId: clientId,
-      // clientName: clientName,
       applicationName:param?.name,
       planId: plan_id,
       planName: plan_name,
       applicationId: param?.id,
-    });
-    // console.log(res,"main error")
+    };
+    console.log("postData",postData)
+
+    const res = await axiosInstanceAuth.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, postData);
     if (res.status === 200) {
       toastConfig.successToast(res.data.message)
     } else {
