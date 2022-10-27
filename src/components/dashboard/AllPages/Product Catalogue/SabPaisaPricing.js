@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import API_URL from '../../../../config';
 import { axiosInstanceAuth } from '../../../../utilities/axiosInstance';
 import "./product.css"
+import toastConfig from '../../../../utilities/toastTypes';
 import { useParams } from 'react-router-dom'
 
 const SabPaisaPricing = () => {
@@ -27,6 +28,8 @@ const SabPaisaPricing = () => {
   useEffect(() => {
     // console.log("parma",param);
     const id = param?.id;
+    const name = param
+    console.log("this is params : ", name?.name)
     let url = API_URL.PRODUCT_SUB_DETAILS + "/" + id
     axiosInstanceAuth
       .get(url
@@ -45,16 +48,35 @@ const SabPaisaPricing = () => {
   }, [param]);
 
 
-  const handleClick = (plan_id) => {
-    const data = {
-      clientId: clientId,
-      clientName: clientName,
-      plan_id: plan_id,
-      application_id: param?.id,
-    }
 
-    console.log("the main data", data)
+
+  const handleClick = async (plan_id, plan_name) => {
+    const res = await axiosInstanceAuth.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, {
+      clientId: clientId,
+      // clientName: clientName,
+      applicationName:param?.name,
+      planId: plan_id,
+      planName: plan_name,
+      applicationId: param?.id,
+    });
+    // console.log(res,"main error")
+    if (res.status === 200) {
+      toastConfig.successToast(res.data.message)
+    } else {
+      toastConfig.errorToast("something went wrong")
+    }
   }
+
+  // const handleClick = (plan_id) => {
+  //   const data = {
+  //     clientId: clientId,
+  //     clientName: clientName,
+  //     plan_id: plan_id,
+  //     application_id: param?.id,
+  //   }
+
+  //   console.log("the main data", data)
+  // }
   return (
     <section className="ant-layout">
       <div>
@@ -79,7 +101,8 @@ const SabPaisaPricing = () => {
                       <h1 class="card-title cardoneheadingcss pb-3">{productDetails[0]?.plan_name}</h1>
                       <p className='text-center bold-font mb-1'>{productDetails[0]?.plan_price}</p>
                       <h3 className='paragraphcsss text-center'>{productDetails[0]?.plan_type}</h3>
-                      <button type="button" className=" font-weight-bold btn choosePlan-1 btn-lg" data-toggle="modal" data-target="#exampleModal"><span style={{ color: "#1465FA" }} onClick={() => handleClick(productDetails[0].plan_id)}>Choose Plan</span></button>
+                      <button type="button" className=" font-weight-bold btn choosePlan-1 btn-lg" data-toggle="modal" data-target="#exampleModal" onClick={() => handleClick(productDetails[0].plan_id, productDetails[0].plan_name)}  >Choose Plan</button>
+                      {/* <button type="button" className=" font-weight-bold btn choosePlan-1 btn-lg" data-toggle="modal" data-target="#exampleModal"><span style={{ color: "#1465FA" }} onClick={() => handleClick(productDetails[0].plan_id)}>Choose Plan</span></button> */}
                     </div>
 
 
@@ -125,7 +148,7 @@ const SabPaisaPricing = () => {
                           <div className="col-lg-12 text-center">
                             <button type="button" class="ColrsforredirectProdct text-white m-0"
                               // onClick={() => clickHandler(false)}
-                              data-dismiss="modal">Talk with Mansha</button>
+                              data-dismiss="modal">Close</button>
                           </div>
 
                         </div>
@@ -157,13 +180,13 @@ const SabPaisaPricing = () => {
                       <h1 class="card-title cardoneheadingcss2 pb-3">{productDetails[1]?.plan_name}</h1>
                       <p className='text-center text-white bold-font mb-1'>{productDetails[1]?.plan_price}</p>
                       <h3 className='paragraphcsss text-white text-center'>{productDetails[1]?.plan_type}</h3>
-                      <button type="button" className="btn choosePlan-2 btn-primary btn-lg font-weight-bold" data-toggle="modal" data-target="#exampleModal" onClick={() => handleClick(productDetails[1].plan_id)}  >Choose Plan</button>
+                      <button type="button" className="btn choosePlan-2 btn-primary btn-lg font-weight-bold" data-toggle="modal" data-target="#exampleModal" onClick={() => handleClick(productDetails[1].plan_id, productDetails[1].plan_name)}  >Choose Plan</button>
                     </div>
                   </div>
 
                   <h2 className='featurespricingforEnterpricing'>FEATURES INCLUDING</h2>
                   <div className='text-center text-white'>
-                  {productDetails[1]?.plan_description.split(',').map((details, i) => <p className="firstli1 mb-2 text-white">{details}</p>)}
+                    {productDetails[1]?.plan_description.split(',').map((details, i) => <p className="firstli1 mb-2 text-white">{details}</p>)}
                   </div>
                 </div>
 
@@ -179,12 +202,12 @@ const SabPaisaPricing = () => {
                       {/* <p className='text-center bold-font mb-1'></p> */}
                       <h3 className='bold-font text-center mb-1'>{productDetails[2]?.plan_price}</h3>
                       <h3 className='paragraphcsss text-center'>{productDetails[2]?.plan_type}</h3>
-                      <button type="button" className="btn choosePlan-1  btn-lg font-weight-bold" data-toggle="modal" data-target="#exampleModal" onClick={() => handleClick(productDetails[2].plan_id)}  >Contact Sales</button>
+                      <button type="button" className="btn choosePlan-1  btn-lg font-weight-bold" data-toggle="modal" data-target="#exampleModal" onClick={() => handleClick(productDetails[2].plan_id, productDetails[2].plan_name)}  >Contact Sales</button>
                     </div>
                   </div>
                   <h2 className='featuresIncludingforbusiness'>FEATURES INCLUDING</h2>
                   <div className='text-center'>
-                  {productDetails[2]?.plan_description.split(',').map((details, i) => <p className="firstli1 mb-2">{details}</p>)}
+                    {productDetails[2]?.plan_description.split(',').map((details, i) => <p className="firstli1 mb-2">{details}</p>)}
                   </div>
                 </div>
 

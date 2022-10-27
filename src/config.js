@@ -172,7 +172,7 @@ const API_LIVE = {
 
  PRODUCT_DETAILS:`https://stgcobapi.sabpaisa.in/product/product-details`,
  PRODUCT_SUB_DETAILS:`https://stgcobapi.sabpaisa.in/product/product-sub-details`,
-
+ SUBSCRIBE_FETCHAPPAND_PLAN:`https://stgcobapi.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan`,
 
   /* verify each tab of the kyc , URL FOR VERIFER*/
   VERIFY_EACH_TAB: `${kyc_url}/kyc/verify-kyc/update/`,

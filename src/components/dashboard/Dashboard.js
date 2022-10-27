@@ -181,7 +181,7 @@ function Dashboard() {
               <Route exact path={`${path}/transaction-history-new`} >
                 <TransactionHistoryDownload />
               </Route>
-              <Route exact path={`${path}/sabpaisa-pricing/:id`} >
+              <Route exact path={`${path}/sabpaisa-pricing/:id/:name`} >
                 <SabPaisaPricing />
               </Route>
 
