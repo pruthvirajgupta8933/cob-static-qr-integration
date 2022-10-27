@@ -23,7 +23,9 @@ function BankDetails(props) {
   const { role, kycid } = props;
   const dispatch = useDispatch();
 
+
   const {kyc, auth } = useSelector((state) => state)
+  
   const { kycUserList, KycTabStatusStore, GetBankid, allTabsValidate } = kyc 
   const KycList = kycUserList;
   const VerifyKycStatus = KycTabStatusStore?.settlement_info_status
@@ -41,6 +43,7 @@ function BankDetails(props) {
   // console.log("Account Holder Name ===>",accHolderName.length)
 
   const [readOnly, setReadOnly] = useState(false);
+  const [checkIfscChange, setCheckIfscChange] = useState("")
   const [buttonText, setButtonText] = useState("Save and Next")
 
 
@@ -106,7 +109,8 @@ function BankDetails(props) {
       })).then((res) => {
         if (
           res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
-            console.log("<==== IFSC Validation Response ===>",res)
+            // console.log("<==== IFSC Validation Response ===>",res)
+            setCheckIfscChange(values)
           const postData = { "bank_name": res?.payload?.bank }
           dispatch(getBankId(postData))
           toast.success(res?.payload?.message);
@@ -139,6 +143,10 @@ function BankDetails(props) {
 
   }
 
+
+  // const checkValueChange = (val) => {
+  //   if()
+  // }
   //---------------GET ALL BANK NAMES DROPDOWN--------------------
 
   useEffect(() => {
@@ -242,6 +250,8 @@ function BankDetails(props) {
   };
 
 
+  // {console.log("IFSC PAYLODE VALUE =====>",checkIfscChange)}
+
   return (
     <div className="col-md-12 col-md-offset-4" style={{ width: "100%" }}>
       <Formik
@@ -285,6 +295,7 @@ function BankDetails(props) {
                   </p>
                 </span>
               ) : (
+                  // formik.values.ifsc_code !== checkIfscChange && formik.values.ifsc_code === "" ? 
                 <div class="position-sticky pull-right">
                   <a
                     href={() => false}
@@ -294,6 +305,7 @@ function BankDetails(props) {
                       borderRadius: "6px",
                     }}
                     onClick={() => {
+                      // {console.log("Values =======>",formik.values)}
                       checkInputIsValid(
                         formik.errors,
                         formik.values,
@@ -306,6 +318,7 @@ function BankDetails(props) {
                     Verify
                   </a>
                 </div>
+                // : <></>
               )}
               {formik?.errors?.isIFSCCode && (
                 <span className="notVerifiedtext text-danger">

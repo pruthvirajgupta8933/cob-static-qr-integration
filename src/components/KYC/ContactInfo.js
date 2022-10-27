@@ -99,7 +99,7 @@ function ContactInfo(props) {
       ).then((res) => {
         if (
           res.meta.requestStatus === "fulfilled" &&
-          res.payload?.status_code !== 500
+          res.payload?.status_code !== 400 
         ) {
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
