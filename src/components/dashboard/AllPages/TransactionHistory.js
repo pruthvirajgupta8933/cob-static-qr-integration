@@ -687,7 +687,7 @@ function TransactionHistory() {
                 <>
                  <div class="row">
                 <div className="form-group col-md-3 mt-2">
-                            <label>Search</label>
+                            <label>Search Transaction ID</label>
                             <input
                               className="form-control"
                               onChange={getSearchTerm}
