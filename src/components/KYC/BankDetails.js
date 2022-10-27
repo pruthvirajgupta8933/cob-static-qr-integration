@@ -51,7 +51,7 @@ function BankDetails(props) {
   const { loginId } = user;
 
   const initialValues = {
-    account_holder_name: accHolderName.length > 2 ? accHolderName : KycList?.accountHolderName,
+    account_holder_name: accHolderName.length > 2 ? accHolderName : KycList?.accountHolderName ? KycList?.accountHolderName : "",
     account_number: KycList?.accountNumber,
     confirm_account_number: KycList?.accountNumber,
     ifsc_code: KycList?.ifscCode,
@@ -106,6 +106,7 @@ function BankDetails(props) {
       })).then((res) => {
         if (
           res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
+            console.log("<==== IFSC Validation Response ===>",res)
           const postData = { "bank_name": res?.payload?.bank }
           dispatch(getBankId(postData))
           toast.success(res?.payload?.message);
