@@ -174,6 +174,11 @@ const API_LIVE = {
  PRODUCT_SUB_DETAILS:`https://stgcobapi.sabpaisa.in/product/product-sub-details`,
  SUBSCRIBE_FETCHAPPAND_PLAN:`https://stgcobapi.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan`,
 
+
+/* get bank Id */
+GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
+/* get bank Id */
+
   /* verify each tab of the kyc , URL FOR VERIFER*/
   VERIFY_EACH_TAB: `${kyc_url}/kyc/verify-kyc/update/`,
   VERIFY_FINAL_ALL: `${kyc_url}/kyc/verify-kyc/verify/`,

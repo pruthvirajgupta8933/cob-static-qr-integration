@@ -97,6 +97,7 @@ function SubmitKyc(props) {
       dispatch(verifyComplete(data))
         .then((resp) => {
           resp?.payload?.status_code === 401 ||
+          resp?.payload?.status_code === 400 ||
           resp?.payload?.status_code === 404
             ? toast.error(resp?.payload?.message)
             : toast.success(resp?.payload?.message);
@@ -132,16 +133,16 @@ function SubmitKyc(props) {
       saveKycConsent({
         term_condition: true,
         login_id: loginId,
-        submitted_by: "270",
+        submitted_by: loginId,
       })
     ).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true
       ) {
-        toast.success(res.payload.message);
+        toast.success(res?.payload?.message);
       } else {
-        toast.error("Something Went Wrong! Please try again.");
+        toast.error(res?.payload?.message);
       }
     });
   };
@@ -169,8 +170,9 @@ function SubmitKyc(props) {
               {console.log(formik)}
 
               <div class="form-group row">
-                <div class="col-sm-1 col-form-label pr-0">
-                  <Field
+              <div class="row">
+    <div class="col-lg- checkboxstyle">
+    <Field
                     type="checkbox"
                     name="term_condition"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
@@ -178,8 +180,17 @@ function SubmitKyc(props) {
                     // checked={readOnly}
                     className="mr-0"
                   />
+    </div>
+    <div class="col-lg-11 para-style text-nowrap">
+ 
+              I have accepted the<a href="https://sabpaisa.in/term-conditions/"  alt="tnz" target="_blank" title="tnc">&nbsp;Term & Condition</a> ,&nbsp;
+                <a href="https://sabpaisa.in/privacy-policy/" alt="tnz" target="_blank" title="tnc"> Privacy Policy</a> ,&nbsp;
+                <a href="https://sabpaisa.in/service-agreement" alt="tnz" target="_blank" title="tnc"> Service Agreement</a>&nbsp;
                 </div>
 
+  </div>
+             
+{/* 
                 <div class="col-sm-10 pl-0 para-style">
                   <p className="">
                     By accepting this Agreement, through one of the following
@@ -200,12 +211,9 @@ function SubmitKyc(props) {
                     not accept this Agreement and may not use the Solution or
                     the Services.
                   </p>
-                </div>
+                </div> */}
               </div>
-
-              {/* I have accepted the<a href="https://sabpaisa.in/term-conditions/"  alt="tnz" target="_blank" title="tnc">&nbsp;Term & Condition</a> ,&nbsp;
-                <a href="https://sabpaisa.in/privacy-policy/" alt="tnz" target="_blank" title="tnc"> Privacy Policy</a> ,&nbsp;
-                <a href="https://sabpaisa.in/service-agreement" alt="tnz" target="_blank" title="tnc"> Service Agreement</a>&nbsp; */}
+             
               {/* By accepting this Agreement, through one of the following means: (i) executing the Order Form that references this Agreement; or (ii) paying the Fees set out in the relevant Order Form, the Customer agrees to the terms of this Agreement.
 1.2  If the individual accepting this Agreement is accepting on behalf of a company or other legal entity, such individual represents that they have the authority to bind such entity and its Affiliates to these terms and conditions, in which case the term “Customer” shall refer to such entity and its Affiliates. If the individual accepting this Agreement does not have such authority, or does not agree with these terms and conditions, such individual must not accept this Agreement and may not use the Solution or the Services. */}
 
@@ -218,7 +226,6 @@ function SubmitKyc(props) {
                         color: "red",
                         position: "absolute",
                         zIndex: " 999",
-                        marginLeft: "60px",
                       }}
                     >
                       {msg}

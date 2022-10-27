@@ -38,6 +38,10 @@
   margin-left: 250px;
 }
 
+.checkboxstyle {
+  margin-top: 8px;
+}
+
 .paymentSubHeader {
   font-family: "Satoshi";
   font-style: normal;

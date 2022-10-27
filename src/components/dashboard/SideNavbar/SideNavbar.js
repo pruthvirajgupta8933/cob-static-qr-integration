@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useRouteMatch } from 'react-router-dom'
-import { checkPermissionSlice, logout } from '../../../slices/auth'
-// import { enableKycTab, kycModalToggle } from '../../../slices/kycSlice';
+import { checkPermissionSlice, logout } from '../../../slices/auth';
 import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
-import SabpaisaLogo2 from "../../../assets/images/sabpaisa-logo2.png"
-import SabpaisaLogo1 from "../../../assets/images/sabpaisa-logo-white.png"
-import Sabpaisalogo from "../../../assets/images/sabpaisalogo.png"
+
 import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png"
 import Products from "../AllPages/Product Catalogue/Products"
 import dashboard from "../../../assets/images/dashb.png"
@@ -106,13 +103,14 @@ function SideNavbar() {
                     </li>
                     : <React.Fragment></React.Fragment>}
 
-                  {((roleBasedShowTab?.approver === true) || (roleBasedShowTab?.verifier === true)) ?
+                  {/* {((roleBasedShowTab?.approver === true) || (roleBasedShowTab?.verifier === true)) ?
                     <li className="ant-menu-item" role="menuitem" >
                       <Link to={`${url}/onboard-merchant`} className='txt-white sidenavFonts'><i class="fa fa-user" aria-hidden="true"></i><span>&nbsp;Onboard Merchant</span>
-                        {/* <span class="new-tab">new</span> */}
                       </Link>
                     </li>
-                    : <React.Fragment></React.Fragment>}
+                    : 
+                    <React.Fragment></React.Fragment>
+                    } */}
 
 
 

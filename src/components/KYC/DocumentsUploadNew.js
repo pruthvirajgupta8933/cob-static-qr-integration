@@ -38,7 +38,7 @@ function DocumentsUpload(props) {
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFileAadhaar, setSelectedFileAadhaar] = useState(null);
-  const [savedData,setSavedData] = useState({})
+  const [savedData,setSavedData] = useState([])
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
 
@@ -54,6 +54,7 @@ function DocumentsUpload(props) {
     let doc;
     
     if(KycDocUpload?.length>0){ 
+      console.log(KycDocUpload)
       doc = KycDocUpload[KycDocUpload?.length-1]
       if(doc?.type==="1"){ 
           dataDoc.push(KycDocUpload[KycDocUpload?.length-1])
@@ -66,7 +67,7 @@ function DocumentsUpload(props) {
 
     setSavedData(dataDoc)
 
-  }, [KycDocUpload])
+  }, [])
   
 
 
@@ -216,15 +217,17 @@ function DocumentsUpload(props) {
   useEffect(() => {
     if (role.approver) {
       setReadOnly(true);
-      setButtonText("Approve and Next");
+      setButtonText("Approve");
     } else if (role.verifier) {
       setReadOnly(true);
-      setButtonText("Verify and Next");
+      setButtonText("Verify");
     }
   }, [role]);
 
 
   let submitAction = undefined;
+
+  console.log("savedData",savedData)
 
   return (
     <>
@@ -515,14 +518,14 @@ function DocumentsUpload(props) {
 
 
         {/* button visible for the verifier */}
-              { savedData?.length>0  && role?.verifier ? 
-                savedData.map((img,i) => 
+              { savedData?.length>0  && role?.verifier ||  role?.approver ? 
+                savedData?.map((img,i) => 
                 <div className="col-lg-6 mt-4 test">
                   <img className="file-upload" src={img?.filePath} alt="kyc docuement" />
                   <div>
-                  {img?.status !== "Verified" ? 
+                  {img?.status !== "Verified" || img?.status !== "Approved"  ? 
                     <>
-                    <button className="btn btn-sm btn-primary m-3" onClick={()=>{verifyApproveDoc(img?.documentId)}}>Verify </button>
+                    <button className="btn btn-sm btn-primary m-3" onClick={()=>{verifyApproveDoc(img?.documentId)}}> {buttonText} </button>
                     <button className="btn btn-sm btn-warning m-3" onClick={()=>{rejectDoc(img?.documentId)}} > Reject </button></>
                     : 
                     <></>
