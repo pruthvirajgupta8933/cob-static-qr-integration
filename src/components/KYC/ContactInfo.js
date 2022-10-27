@@ -99,7 +99,7 @@ function ContactInfo(props) {
       ).then((res) => {
         if (
           res.meta.requestStatus === "fulfilled" &&
-          res.payload?.status_code !== 500
+          res.payload?.status_code !== 400 
         ) {
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
@@ -176,8 +176,7 @@ function ContactInfo(props) {
       // console.log("This is the response", res);
       if (
         res.meta.requestStatus === "fulfilled" &&
-        res.payload.status === true
-      ) {
+        res.payload.status === true ) {
         toast.success("OTP Sent to the Registered Mobile Number ");
         setShowOtpVerifyModalPhone(true);
       } else {

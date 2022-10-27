@@ -193,7 +193,7 @@ function SettlementReportNew() {
       "Settlement Bank Ref",
       "Settlement UTR",
       "Settlement Remarks", 
-      "Settlement By",
+      // "Settlement By",
     ];
     const excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
@@ -212,7 +212,7 @@ function SettlementReportNew() {
         settlement_bank_ref: item.settlement_bank_ref === null ? "" : item.settlement_bank_ref,
         settlement_utr: item.settlement_utr === null ? "" : item.settlement_utr,
         settlement_remarks: item.settlement_remarks === null ? "" : item.settlement_remarks,
-        settlement_by: item.settlement_by === null ? "" : item.settlement_by,
+        // settlement_by: item.settlement_by === null ? "" : item.settlement_by,
       };
 
       excelArr.push(Object.values(allowDataToShow));
@@ -347,7 +347,7 @@ function SettlementReportNew() {
                         <th> Settlement Bank Ref </th>
                         <th> Settlement UTR </th>
                         <th> Settlement Remarks </th>
-                        <th> Settlement By </th>
+                        {/* <th> Settlement By </th> */}
                       </tr>
                     ) : (
                       <></>
@@ -369,7 +369,7 @@ function SettlementReportNew() {
                             <td>{item.settlement_bank_ref}</td>
                             <td>{item.settlement_utr}</td>
                             <td>{item.settlement_remarks}</td>
-                            <td>{item.settlement_by}</td>
+                            {/* <td>{item.settlement_by}</td> */}
                           </tr>
                         );
                       })}

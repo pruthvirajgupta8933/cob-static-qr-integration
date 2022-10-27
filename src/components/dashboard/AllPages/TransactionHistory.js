@@ -641,37 +641,37 @@ function TransactionHistory() {
             <div className="container-fluid  p-3 my-3 ">
               {txnList.length > 0 ? (
                 <>
-                  <div class="row">
-                    <div className="form-group col-md-3 mt-2">
-                      <label>Search</label>
-                      <input
-                        className="form-control"
-                        onChange={getSearchTerm}
-                        type="text"
-                        placeholder="Search Here"
-                      />
-                    </div>
-
-                    <div className="form-group col-md-3  mt-2">
-                      <label>Count Per Page</label>
-                      <select
-                        value={pageSize}
-                        rel={pageSize}
-                        className="ant-input"
-                        onChange={(e) =>
-                          setPageSize(parseInt(e.target.value))
-                        }
-                      >
-                        <DropDownCountPerPage
-                          datalength={txnList.length}
-                        />
-                      </select>
-                    </div>
-
-                  </div>
-                  <h4>Total Record : {txnList.length} </h4>
-
-                </>
+                 <div class="row">
+                <div className="form-group col-md-3 mt-2">
+                            <label>Search Transaction ID</label>
+                            <input
+                              className="form-control"
+                              onChange={getSearchTerm}
+                              type="text"
+                              placeholder="Search Here"
+                            />
+                          </div>
+                         
+                          <div className="form-group col-md-3  mt-2">
+                            <label>Count Per Page</label>
+                            <select
+                              value={pageSize}
+                              rel={pageSize}
+                              className="ant-input"
+                              onChange={(e) =>
+                                setPageSize(parseInt(e.target.value))
+                              }
+                            >
+                              <DropDownCountPerPage
+                                datalength={txnList.length}
+                              />
+                            </select>
+                          </div>
+                        
+                          </div>
+                <h4>Total Record : {txnList.length} </h4>
+               
+                          </>
               ) : (
                 <></>
               )}
