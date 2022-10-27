@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom'
 const SabPaisaPricing = () => {
   // const { dashboard } = useSelector((state) => state);
   const [productDetails, setProductDetails] = useState([]);
+  const [spinner, setSpinner] = useState(true);
   const productArr = [];
 
   // const [serviceId, setServiceId] = useState(null)
@@ -36,6 +37,7 @@ const SabPaisaPricing = () => {
       )
       .then((resp) => {
         const data = resp.data.ProductDetail;
+        setSpinner(false)
 
         setProductDetails(data);
         // productDetails.map((product)=>const arr = product.plan_description.split(","))
@@ -92,12 +94,20 @@ const SabPaisaPricing = () => {
         {/* <button type="button" onClick={clickHandler}>check</button> */}
         <div class="container mb-10">
           <div class="row">
+          
+
             <div class="col-sm">
               <div class="card heightcards" style={{ height: "620px", width: "300px" }}>
 
                 <div class="card-body">
                   <div class="row mb-5">
                     <div className='col-lg-12 text-center'>
+                    {spinner && (
+            <span
+              className="spinner-border borders"
+              role="status"
+            ></span>
+          )}
                       <h1 class="card-title cardoneheadingcss pb-3">{productDetails[0]?.plan_name}</h1>
                       <p className='text-center bold-font mb-1'>{productDetails[0]?.plan_price}</p>
                       <h3 className='paragraphcsss text-center'>{productDetails[0]?.plan_type}</h3>
