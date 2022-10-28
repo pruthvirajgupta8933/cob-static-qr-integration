@@ -250,7 +250,8 @@ function BankDetails(props) {
   };
 
 
-  // {console.log("IFSC PAYLODE VALUE =====>",checkIfscChange)}
+  {console.log("IFSC PAYLODE VALUE =====>",checkIfscChange)}
+  
 
   return (
     <div className="col-md-12 col-md-offset-4" style={{ width: "100%" }}>
@@ -278,7 +279,7 @@ function BankDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
-              {formik?.initialValues?.isIFSCCode === "1" ? (
+              {formik?.initialValues?.isIFSCCode === "1" && formik?.values?.ifsc_code === checkIfscChange ? (
                 <span>
                   <p className="panVerfied text-success">
                     Verified
