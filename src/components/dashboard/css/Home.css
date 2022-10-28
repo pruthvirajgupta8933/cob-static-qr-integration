@@ -863,6 +863,19 @@ line-height: 156.5%;
 color: #4285F8;
 
 }
+.spinner-border{
+	position: absolute; 
+	top: 50%; 
+	left: 50%; 
+	transform: translate (-50%); 
+
+}
+.borders{
+  position: absolute; 
+	top: -82px;
+  left: 429px;
+	transform: translate (-50%); 
+}
 .form_cmplt{
   align-items: center;
 }
@@ -884,6 +897,10 @@ border-radius: 0px 0px 5px 5px;
   color: #FFFFFF;
   
  }
+ .mycss{
+   align-items: center;
+ }
 
+ 
 
 

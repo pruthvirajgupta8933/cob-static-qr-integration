@@ -54,23 +54,15 @@ function TransactionHistory() {
 
 
 
-  // const [date, setDate] = useState(currentDate);
-  
- 
-  // let current = new Date();
-  // let myDate = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
-  // //  setDate(myDate)
-
-
   var now = moment().format('YYYY-M-D');
   var splitDate = now.split("-");
-  if(splitDate[1].length===1){
-    splitDate[1] = '0'+splitDate[1]; 
-  }  
-  if(splitDate[2].length===1){
-    splitDate[2] = '0'+splitDate[2];
+  if (splitDate[1].length === 1) {
+    splitDate[1] = '0' + splitDate[1];
   }
-  splitDate =splitDate.join('-');
+  if (splitDate[2].length === 1) {
+    splitDate[2] = '0' + splitDate[2];
+  }
+  splitDate = splitDate.join('-');
 
 
 
@@ -89,8 +81,8 @@ function TransactionHistory() {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   const [clientCode, SetClientCode] = useState(clientcode_rolebased);
   const [todayDate, setTodayDate] = useState(splitDate);
@@ -105,7 +97,6 @@ function TransactionHistory() {
   };
 
   const validationSchema = Yup.object({
-    // clientCode : Yup.string().required("Required"),
     fromDate: Yup.date().required("Required"),
     endDate: Yup.date()
       .min(Yup.ref("fromDate"), "End date can't be before Start date")
@@ -173,7 +164,6 @@ function TransactionHistory() {
     isExtraDataRequired
   );
 
-  console.log()
 
   const tempPayStatus = [{ key: "All", value: "All" }];
   paymentStatusList.map((item) => {
@@ -191,44 +181,44 @@ function TransactionHistory() {
     setCurrentPage(pageNo);
   };
 
-  const submitHandler = values =>{
+  const submitHandler = values => {
     // console.log(values)
-    
+
     isButtonClicked(true)
-    
-    const {fromDate, endDate, transaction_status, payment_mode} = values
+
+    const { fromDate, endDate, transaction_status, payment_mode } = values
     const dateRangeValid = checkValidation(fromDate, endDate);
 
-    if(dateRangeValid){ 
+    if (dateRangeValid) {
       // isLoading(true);
       // isButtonClicked(true);
-      let strClientCode, clientCodeArrLength ="";
-        
-      if(clientCode==="All"){
+      let strClientCode, clientCodeArrLength = "";
+
+      if (clientCode === "All") {
         const allClientCode = []
-        clientMerchantDetailsList?.map((item)=>{
+        clientMerchantDetailsList?.map((item) => {
           allClientCode.push(item.clientCode)
         })
         clientCodeArrLength = allClientCode.length.toString();
         strClientCode = allClientCode.join().toString();
-      }else{
+      } else {
         strClientCode = clientCode;
         clientCodeArrLength = "1"
       }
 
       let paramData = {
-        clientCode:strClientCode,
-        paymentStatus:transaction_status,
-        paymentMode:payment_mode,
-        fromDate:fromDate,
-        endDate:endDate,
+        clientCode: strClientCode,
+        paymentStatus: transaction_status,
+        paymentMode: payment_mode,
+        fromDate: fromDate,
+        endDate: endDate,
         length: "0",
         page: "0",
         NoOfClient: clientCodeArrLength
-      } 
-  // console.log(paramData)
+      }
+      // console.log(paramData)
       dispatch(fetchTransactionHistorySlice(paramData))
-}
+    }
 
 
   }
@@ -254,40 +244,6 @@ function TransactionHistory() {
     return flag;
   };
 
-  // const txnHistory =  () => {
-  //   var isValid = checkValidation();
-  //         if(isValid){
-  //           // isLoading(true);
-  //           isButtonClicked(true);
-  //           let strClientCode, clientCodeArrLength ="";
-  //             if(clientCode==="All"){
-  //             const allClientCode = []
-  //             clientMerchantDetailsList?.map((item)=>{
-  //               allClientCode.push(item.clientCode)
-  //             })
-  //             clientCodeArrLength = allClientCode.length.toString();
-  //             strClientCode = allClientCode.join().toString();
-  //           }else{
-  //             strClientCode = clientCode;
-  //             clientCodeArrLength = "1"
-  //           }
-
-  //           let paramData = {
-  //             clientCode:strClientCode,
-  //             paymentStatus:txnStatus,
-  //             paymentMode:payModeId,
-  //             fromDate:fromDate,
-  //             endDate:toDate,
-  //             length: "0",
-  //             page: "0",
-  //             NoOfClient: clientCodeArrLength
-  //           }
-
-  //           dispatch(fetchTransactionHistorySlice(paramData))
-  //     }else{
-  //       console.log('API not trigger!');
-  //     }
-  // }
 
   useEffect(() => {
     // Remove initiated from transaction history response
@@ -459,12 +415,12 @@ function TransactionHistory() {
   const finalDate = year + "-" + month + "-" + day;
 
   // console.log(startDate);
-// console.log("statrehere,",clientCodeOption)
+  // console.log("statrehere,",clientCodeOption)
   return (
     <section className="ant-layout">
-     <div>
-      <NavBar />
-     </div>
+      <div>
+        <NavBar />
+      </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
@@ -501,10 +457,10 @@ function TransactionHistory() {
                           label="From Date"
                           name="fromDate"
                           className="form-control rounded-0"
-                          // value={startDate}
-                          // onChange={(e)=>setStartDate(e.target.value)}
+                        // value={startDate}
+                        // onChange={(e)=>setStartDate(e.target.value)}
                         />
-                      
+
                       </div>
 
                       <div className="form-group col-md-2 mx-4">
@@ -542,7 +498,7 @@ function TransactionHistory() {
                         <button
                           className="btn btn-sm text-white"
                           type="submit"
-                          style={{backgroundColor: "rgb(1, 86, 179)"}}
+                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
                         >
                           Search
                         </button>
@@ -550,21 +506,21 @@ function TransactionHistory() {
                       {txnList?.length > 0 ? (
                         <>
                           <div className="form-row">
-                          <div className="form-group col-md-1 ml-4">
-                            <button
-                              className="btn btn-sm text-white"
-                              type="button"
-                              onClick={() => exportToExcelFn()}
-                              style={{backgroundColor: "rgb(1, 86, 179)"}}
-                            >
-                              Export
-                            </button>
+                            <div className="form-group col-md-1 ml-4">
+                              <button
+                                className="btn btn-sm text-white"
+                                type="button"
+                                onClick={() => exportToExcelFn()}
+                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                              >
+                                Export
+                              </button>
+                            </div>
                           </div>
-                          </div>
-                          
-                          
-                     
-                          
+
+
+
+
                         </>
                       ) : (
                         <></>

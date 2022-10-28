@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom'
 const SabPaisaPricing = () => {
   // const { dashboard } = useSelector((state) => state);
   const [productDetails, setProductDetails] = useState([]);
+  const [spinner, setSpinner] = useState(true);
   const productArr = [];
 
   // const [serviceId, setServiceId] = useState(null)
@@ -20,6 +21,7 @@ const SabPaisaPricing = () => {
     dispatch(productSubscribeState(value))
   }
   const { user } = useSelector((state) => state.auth);
+  console.log("user",user)
   const { clientId, clientName } = user.clientMerchantDetailsList[0];
 
   const param = useParams()
@@ -29,13 +31,14 @@ const SabPaisaPricing = () => {
     // console.log("parma",param);
     const id = param?.id;
     const name = param
-    console.log("this is params : ", name?.name)
+    // console.log("this is params : ", name?.name)
     let url = API_URL.PRODUCT_SUB_DETAILS + "/" + id
     axiosInstanceAuth
       .get(url
       )
       .then((resp) => {
         const data = resp.data.ProductDetail;
+        setSpinner(false)
 
         setProductDetails(data);
         // productDetails.map((product)=>const arr = product.plan_description.split(","))
@@ -51,15 +54,16 @@ const SabPaisaPricing = () => {
 
 
   const handleClick = async (plan_id, plan_name) => {
-    const res = await axiosInstanceAuth.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, {
+    const postData = {
       clientId: clientId,
-      // clientName: clientName,
       applicationName:param?.name,
       planId: plan_id,
       planName: plan_name,
       applicationId: param?.id,
-    });
-    // console.log(res,"main error")
+    };
+    console.log("postData",postData)
+
+    const res = await axiosInstanceAuth.post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, postData);
     if (res.status === 200) {
       toastConfig.successToast(res.data.message)
     } else {
@@ -92,12 +96,20 @@ const SabPaisaPricing = () => {
         {/* <button type="button" onClick={clickHandler}>check</button> */}
         <div class="container mb-10">
           <div class="row">
+          
+
             <div class="col-sm">
               <div class="card heightcards" style={{ height: "620px", width: "300px" }}>
 
                 <div class="card-body">
                   <div class="row mb-5">
                     <div className='col-lg-12 text-center'>
+                    {spinner && (
+            <span
+              className="spinner-border borders"
+              role="status"
+            ></span>
+          )}
                       <h1 class="card-title cardoneheadingcss pb-3">{productDetails[0]?.plan_name}</h1>
                       <p className='text-center bold-font mb-1'>{productDetails[0]?.plan_price}</p>
                       <h3 className='paragraphcsss text-center'>{productDetails[0]?.plan_type}</h3>
