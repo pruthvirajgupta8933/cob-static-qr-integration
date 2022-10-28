@@ -54,6 +54,12 @@ function BusinessDetails(props) {
   
   const panValidStatus = BusinessDetailsStatus?.PanValidation?.valid
 
+
+  
+  const notValid = useSelector(
+    (state) =>
+      state.kyc.allTabsValidate.BusinessDetailsStatus.AuthPanValidation.message
+  );
   const busiFirstName = BusinessDetailsStatus?.PanValidation?.first_name === null ? "" : BusinessDetailsStatus?.PanValidation?.first_name
 
   const busiLastName = BusinessDetailsStatus?.PanValidation?.last_name === null ? "" : BusinessDetailsStatus?.PanValidation?.last_name
@@ -154,7 +160,7 @@ function BusinessDetails(props) {
     gst_number: KycList?.gstNumber,
     pan_card: KycList?.panCard,
     signatory_pan: KycList?.signatoryPAN,
-    name_on_pancard: businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard,
+    name_on_pancard: businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard ? notValid : "",
     pin_code: KycList?.merchant_address_details?.pin_code,
     city_id: KycList?.merchant_address_details?.city,
     state_id: KycList?.merchant_address_details?.state,
@@ -165,6 +171,10 @@ function BusinessDetails(props) {
     isGSTINVerified: KycList?.gstNumber !== null ? "1" : ""
     // checkBoxChoice: "",
   };
+
+  const businessNameField = (businessAuthName) => {
+    if(businessAuthName === undefined) return ""
+  }
 
  
 
