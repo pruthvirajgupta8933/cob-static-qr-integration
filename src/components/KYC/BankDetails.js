@@ -279,7 +279,7 @@ function BankDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
-              {formik?.initialValues?.isIFSCCode === "1" && formik?.values?.ifsc_code === checkIfscChange ? (
+              {formik?.initialValues?.isIFSCCode === "1" && formik?.values?.ifsc_code === checkIfscChange ? ( 
                 <span>
                   <p className="panVerfied text-success">
                     Verified
@@ -295,7 +295,7 @@ function BankDetails(props) {
                     </svg>
                   </p>
                 </span>
-              ) : (
+              )  : (
                   // formik.values.ifsc_code !== checkIfscChange && formik.values.ifsc_code === "" ? 
                 <div class="position-sticky pull-right">
                   <a

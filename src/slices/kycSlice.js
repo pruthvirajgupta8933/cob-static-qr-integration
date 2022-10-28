@@ -906,6 +906,12 @@ export const kycSlice = createSlice({
       state.status = "pending";
     },
     [authPanValidation.fulfilled]: (state, action) => {
+      // if (action?.payload?.status === true && action?.payload?.valid === true) {
+        state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation = action.payload;
+        //  if(action?.payload?.status === true && action?.payload?.valid === false) {
+        //   return  state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation = action.payload
+        // }
+      // }
       state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation = action.payload;
       if (action?.payload?.status === true && action?.payload?.valid === true) {
         state.kycUserList.signatoryPAN = action?.meta?.arg?.pan_number
