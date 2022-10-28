@@ -34,11 +34,17 @@ function BusinessOverview(props) {
   const [buttonText, setButtonText] = useState("Save and Next");
 
   const { user } = useSelector((state) => state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  let clientMerchantDetailsList = {}
+  if (user?.clientMerchantDetailsList && user?.clientMerchantDetailsList?.length > 0) {
+    clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  }
+
+  console.log("clientMerchantDetailsList", clientMerchantDetailsList)
 
   const KycList = useSelector((state) => state.kyc.kycUserList);
 
-  // const { clientCode } = clientMerchantDetailsList[0];
+  const { clientCode, business_cat_code } = clientMerchantDetailsList[0];
+
   const { loginId } = user;
 
   const dispatch = useDispatch();
@@ -79,32 +85,25 @@ function BusinessOverview(props) {
   );
 
   const urlRegex = "((http|https)://)(www.)?"
-  + "[a-zA-Z0-9@:%._\\+~#?&//=]"
-  + "{2,256}\\.[a-z]"
-  + "{2,6}\\b([-a-zA-Z0-9@:%"
-  + "._\\+~#?&//=]*)";
+    + "[a-zA-Z0-9@:%._\\+~#?&//=]"
+    + "{2,256}\\.[a-z]"
+    + "{2,6}\\b([-a-zA-Z0-9@:%"
+    + "._\\+~#?&//=]*)";
 
 
-  // const initialValues = {
-  //   business_type: KycList.businessType,
-  //   business_category: KycList.businessCategory,
-  //   business_model: KycList.businessModel,
-  //   billing_label: KycList.billingLabel,
-  //   erp_check: KycList.erpCheck === true ? "True" : "False",
-  //   platform_id: KycList.platformId,
-  //   company_website: KycList.companyWebsite,
-  //   seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
-  //   website_app_url: KycList?.website_app_url,
-  //   collection_type_id: KycList.collectionTypeId,
-  //   collection_frequency_id: KycList.collectionFrequencyId,
-  //   ticket_size: KycList.ticketSize,
-  //   expected_transactions: KycList.expectedTransactions,
-  //   form_build: KycList.formBuild,
-  // };
+  // check if data exists 
+  let business_category_code;
+  if (business_cat_code !== null) {
+    business_category_code = business_cat_code
+  }
+  if (KycList?.businessCategory !== null) {
+    business_category_code = KycList?.businessCategory
+  }
+
 
   const initialValues = {
     business_type: KycList.businessType,
-    business_category: KycList.businessCategory,
+    business_category: business_category_code,
     business_model: "Working",
     billing_label: KycList.billingLabel,
     erp_check: KycList.erpCheck === true ? "True" : "False",
@@ -148,7 +147,7 @@ function BusinessOverview(props) {
       .required("Required")
       .nullable(),
     company_website: Yup.string()
-      .matches(urlRegex,"Website Url is not Valid")
+      .matches(urlRegex, "Website Url is not Valid")
       .required("Required")
       .nullable(),
     expected_transactions: Yup.string()
@@ -258,7 +257,7 @@ function BusinessOverview(props) {
           website_app_url: values.website_app_url,
         })
       ).then((res) => {
-        
+
         if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
           // console.log("This is the response", res);
           toast.success(res.payload.message);
@@ -413,14 +412,14 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-                <div class="form-group row">
+            <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
                 <h4 class="text-kyc-label text-nowrap">
-                How do you wish to accept payments?<span style={{ color: "red" }}>*</span>
+                  How do you wish to accept payments?<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
               <div class="col-sm-8 col-md-10 col-lg-10">
-              <FormikController
+                <FormikController
                   control="radio"
                   onChange={(e) => {
                     handleShowHide(e);
@@ -448,9 +447,9 @@ function BusinessOverview(props) {
                   />
                 </div>
               )}
-              </div>
+            </div>
 
-          
+
 
             {/* <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Type Of Collection <span style={{color:"red"}}>*</span></h4></label>

@@ -483,32 +483,6 @@ function DocumentsUpload(props) {
                   <></>
                 }
 
-
-
-        {/* button visible for the verifier */}
-        {savedData?.length > 0 && role?.verifier || role?.approver || role?.merchant ?
-          savedData?.map((img, i) =>
-            <div className="col-lg-6 mt-4 test">
-              <img className="file-upload" src={img?.filePath} alt="kyc docuement" />
-              <div>
-                {img?.status !== "Verified" || img?.status !== "Approved" ?
-                  <>
-                    <button className="btn btn-sm btn-primary m-3" onClick={() => { verifyApproveDoc(img?.documentId) }}> {buttonText} </button>
-                    <button className="btn btn-sm btn-warning m-3" onClick={() => { rejectDoc(img?.documentId) }} > Reject </button></>
-                  :
-                  <></>
-                }
-
-              </div>
-            </div>
-
-          )
-          :
-          <></>
-        }
-
-
-
                 {role?.merchant ?
                   <>
                     <hr
@@ -521,7 +495,32 @@ function DocumentsUpload(props) {
                       }}
                     />
 
+        {/* button visible for the verifier */}
+        {savedData?.length > 0 && role?.verifier || role?.approver || role?.merchant ?
+          savedData?.map((img, i) =>
+            <div className="col-lg-6 mt-4 test">
+              <img className="file-upload" src={img?.filePath} alt="kyc docuement" />
+              <div>
+                {img?.status !== "Verified" || img?.status !== "Approved" ?
+                  <>
+                  {role?.verifier || role?.approver ? <>
+                    <button className="btn btn-sm btn-primary m-3" onClick={() => { verifyApproveDoc(img?.documentId) }}> {buttonText} </button>
+                    <button className="btn btn-sm btn-warning m-3" onClick={() => { rejectDoc(img?.documentId) }} > Reject </button>
+                  </> :  <button className="btn btn-sm btn-warning m-3" onClick={() => { rejectDoc(img?.documentId) }} > Remove - working </button>}
+                    </>
+                  :
+                  <></>
+                }
+
+              </div>
+            </div>
+
+          )
+          :
+          <></>
+        }
                     <div class="col-12">
+
                       <button
                         className="btn float-lg-right"
                         style={{ backgroundColor: "#0156B3" }}
@@ -538,11 +537,13 @@ function DocumentsUpload(props) {
                     </div>
                   </>
                   : <></>}
-
               </div>
             </Form>
           )}
         </Formik>
+
+
+
 
 
 

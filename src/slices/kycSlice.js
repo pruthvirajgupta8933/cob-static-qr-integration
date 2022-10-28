@@ -922,9 +922,6 @@ export const kycSlice = createSlice({
       state.status = "failed";
     },
 
-    [gstValidation.pending]: (state, action) => {
-      state.status = "pending";
-    },
     [gstValidation.fulfilled]: (state, action) => {
       state.allTabsValidate.BusinessDetailsStatus.GSTINValidation = action.payload;
       //  console.log(action.payload)
@@ -933,9 +930,6 @@ export const kycSlice = createSlice({
       }
 
       // console.log(action.payload,"Action ===> 12")
-    },
-    [gstValidation.rejected]: (state, action) => {
-      state.status = "failed";
     },
 
     [ifscValidation.pending]: (state, action) => {

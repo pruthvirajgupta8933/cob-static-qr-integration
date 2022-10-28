@@ -23,20 +23,22 @@ function BusinessDetails(props) {
 
   const { role, kycid } = props;
 
-  const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
-  const reqexPAN =/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+  // const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+  const regexGSTN = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/;
 
-  const { auth, kyc} = useSelector((state) => state);
+  const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 
-  const {user} = auth
-  const {allTabsValidate, kycUserList, KycTabStatusStore } = kyc
+  const { auth, kyc } = useSelector((state) => state);
+
+  const { user } = auth
+  const { allTabsValidate, kycUserList, KycTabStatusStore } = kyc
 
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus
 
   const KycList = kycUserList
 
   const VerifyKycStatus = KycTabStatusStore?.merchant_info_status
-  
+
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
   const [gstin, setGstin] = useState("");
@@ -44,18 +46,35 @@ function BusinessDetails(props) {
   const [checked, setChecked] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
+  const [matchWord, setMatchWord] = useState(false);
+
+  const enableButtonState = [
+    {
+      input: "gst_number",
+      state: false
+    },
+    {
+      input: "pan_card",
+      state: false
+    },
+    {
+      input: "signatory_pan",
+      state: false
+    }
+  ]
+  const [enableVerifyButton, setEnableVerifyButton] = useState(enableButtonState);
 
   const [operationvalue, setOperationvalue] = useState(
     KycList.registeredBusinessAdress
   );
   const dispatch = useDispatch();
-  
+
   const panStatus = BusinessDetailsStatus?.PanValidation?.status
-  
+
   const panValidStatus = BusinessDetailsStatus?.PanValidation?.valid
 
 
-  
+
   const notValid = useSelector(
     (state) =>
       state.kyc.allTabsValidate.BusinessDetailsStatus.AuthPanValidation.message
@@ -63,7 +82,7 @@ function BusinessDetails(props) {
   const busiFirstName = BusinessDetailsStatus?.PanValidation?.first_name === null ? "" : BusinessDetailsStatus?.PanValidation?.first_name
 
   const busiLastName = BusinessDetailsStatus?.PanValidation?.last_name === null ? "" : BusinessDetailsStatus?.PanValidation?.last_name
-  
+
   const busiAuthFirstName = BusinessDetailsStatus.AuthPanValidation.first_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.first_name
 
   const busiAuthLastName = BusinessDetailsStatus?.AuthPanValidation?.last_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.last_name;
@@ -104,7 +123,7 @@ function BusinessDetails(props) {
     // console.log("Values ========>",values)
     dispatch(panValidation({
       pan_number: values
-        })).then((res) => {
+    })).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
         // console.log("This is the response", res);
@@ -120,10 +139,10 @@ function BusinessDetails(props) {
   const gstinValidate = (values) => {
     // console.log("Values GSTIN ========>",values)
     dispatch(gstValidation({
-        gst_number: values,
-        "fetchFilings": false,
-        "fy": "2018-19"
-        })).then((res) => {
+      gst_number: values,
+      "fetchFilings": false,
+      "fy": "2018-19"
+    })).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
         toast.success(res?.payload?.message);
@@ -139,7 +158,7 @@ function BusinessDetails(props) {
     // console.log("Values ========>",values)
     dispatch(authPanValidation({
       pan_number: values
-        })).then((res) => {
+    })).then((res) => {
       if (
         res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
         // console.log("This is the response", res);
@@ -153,30 +172,132 @@ function BusinessDetails(props) {
   }
 
 
+  // console.log("KycList",KycList)
+
+  const formikHandlerChange = (input, value) => {
+    if (input === "gst_number") {
+      if (value?.length === 15) {
+        const oldVal = KycList?.gstNumber;
+        const newVal = value
+        const result = oldVal.match(newVal);
+        if (result === null) {
+          setMatchWord(false);
+          enableVerifyButton.map((status, i) => {
+            if (status.input === input) {
+              const tempObj = enableVerifyButton;
+              tempObj[i].state = !matchWord
+              setEnableVerifyButton(tempObj)
+            }
+          })
+          console.log("Enable veirfy button")
+        } else {
+          setMatchWord(true);
+          enableVerifyButton.map((status, i) => {
+            if (status.input === input) {
+              const tempObj = enableVerifyButton;
+              tempObj[i].state = !matchWord
+              setEnableVerifyButton(tempObj)
+            }
+          })
+          console.log("hide verify button")
+        }
+      }
+    }
+
+
+
+    if (input === "pan_card" || input === "signatory_pan") {
+      if (value?.length === 10) {
+        
+        const oldVal = KycList?.gstNumber;
+        const newVal = value
+        const result = oldVal.match(newVal);
+        if (result === null) {
+          setMatchWord(false);
+          enableVerifyButton.map((status, i) => {
+            if (status.input === input) {
+              const tempObj = enableVerifyButton;
+              tempObj[i].state = !matchWord
+              setEnableVerifyButton(tempObj)
+            }
+          })
+          console.log("Enable veirfy button")
+        } else {
+          setMatchWord(true);
+          enableVerifyButton.map((status, i) => {
+            if (status.input === input) {
+              const tempObj = enableVerifyButton;
+              tempObj[i].state = !matchWord
+              setEnableVerifyButton(tempObj)
+            }
+          })
+          console.log("hide verify button")
+        }
+      }
+    }
+
+    
+
+  }
+
+  // console.log("!matchWord",matchWord)
+  ////// check is verified
+
+  // let enabledVerifyButton = !matchWord;
+
+
+  // only for gst 
+  let isGstVerify = false;
+  if (KycList?.gstNumber !== null || matchWord) {
+    isGstVerify = true;
+  }
+
+  if (isGstVerify && matchWord) {
+    console.log("GST verified :)")
+  } else {
+    console.log("you need to verify your gst")
+  }
+
+  // if our already exists input diffrent from the new input
+  // we use the formil value
+  //  let text = "SBIN00CARDS";
+  // let result = text.match("KKN00CARDS");
+
+  // if(KycList?.gstNumber!==formik.value.gstNumber){
+
+  // }
+
+  // one shot verification
+  // if(enabledVerifyButton){
+  //   console.log("display verify button to trigger API")
+  // }else{
+  //   console.log("Hide verify button to trigger API")
+  // }
+
+  console.log("enableVerifyButton", enableVerifyButton)
+
+
   const initialValues = {
     company_name: businessNamee.length > 2 ? businessNamee : KycList?.companyName,
     company_logo: "",
     registerd_with_gst: "True",
-    gst_number: KycList?.gstNumber,
+    gst_number: KycList?.gstNumber !== null ? KycList?.gstNumber : null,
     pan_card: KycList?.panCard,
     signatory_pan: KycList?.signatoryPAN,
-    name_on_pancard: businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard ? notValid : "",
+    name_on_pancard: businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard,
     pin_code: KycList?.merchant_address_details?.pin_code,
     city_id: KycList?.merchant_address_details?.city,
     state_id: KycList?.merchant_address_details?.state,
     registered_business_address: KycList?.merchant_address_details?.address,
     operational_address: KycList?.merchant_address_details?.address,
-    isPANVerified: KycList?.panCard !== null ? "1" : "",
-    isAuthPANVerified: KycList?.signatoryPAN !== null ? "1" : "",
-    isGSTINVerified: KycList?.gstNumber !== null ? "1" : ""
-    // checkBoxChoice: "",
+  
   };
 
   const businessNameField = (businessAuthName) => {
-    if(businessAuthName === undefined) return ""
+    if (businessAuthName === undefined) return ""
   }
 
- 
+
 
   const validationSchema = Yup.object({
     company_name: Yup.string()
@@ -184,16 +305,15 @@ function BusinessDetails(props) {
       .required("Required")
       .nullable(),
     gst_number: Yup.string()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .matches(regexGSTN, "GSTIN Number is Invalid")
       .required("Required")
       .nullable(),
     pan_card: Yup.string()
-      .matches(reqexPAN,"Authorized PAN number is Invalid")
+      .matches(reqexPAN, "Authorized PAN number is Invalid")
       .required("Required")
       .nullable(),
     signatory_pan: Yup.string()
-      .matches(reqexPAN,"PAN number is Invalid")
+      .matches(reqexPAN, "PAN number is Invalid")
       .required("Required")
       .nullable(),
     name_on_pancard: Yup.string()
@@ -214,10 +334,7 @@ function BusinessDetails(props) {
     operational_address: Yup.string()
       .matches(Regex.address, RegexMsg.address)
       .required("Required")
-      .nullable(),
-      isPANVerified: Yup.string().required("You need to verify Your PAN Number").nullable(),
-      isAuthPANVerified:  Yup.string().required("You need to verify Your Authorized Signatory PAN Number").nullable(),
-      isGSTINVerified: Yup.string().required("You need to verify Your GSTIN Number").nullable()
+      .nullable()
   });
 
   useEffect(() => {
@@ -235,12 +352,12 @@ function BusinessDetails(props) {
   }, []);
 
   const checkInputIsValid = (err, val, setErr, setFieldTouched, key) => {
- 
+
     const hasErr = err.hasOwnProperty(key);
 
     const fieldVal = val[key];
-    let  isValidVal = true;
-    if(fieldVal===null || fieldVal===undefined){
+    let isValidVal = true;
+    if (fieldVal === null || fieldVal === undefined) {
       isValidVal = false
       setFieldTouched(key, true);
     }
@@ -330,7 +447,7 @@ function BusinessDetails(props) {
   }, [role]);
 
   // console.log("readOnly", readOnly);
-
+  //09AAACO4007A1CE
   return (
     <div className="col-md-12 col-md-offset-4">
       <Formik
@@ -356,52 +473,56 @@ function BusinessDetails(props) {
                   className="form-control"
                   readOnly={readOnly}
                 />
-              </div>
-            
-              {formik?.initialValues?.isGSTINVerified === "1" ? (
-                <span>
-                <p className="panVerfied text-success">
-                  Verified
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-check"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                  </svg>
-                </p>
-              </span> 
-              ) : (
-              <div class="position-sticky pull-right">
-                <a
-                  href={() => false}
-                  className="btn btnbackground text-white btn-sm panbtn"
-                  style={{
-                    boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                    borderRadius: "6px",
-                  }}
-                  onClick={() => {
-                    checkInputIsValid(
-                      formik.errors,
-                      formik.values,
-                      formik.setFieldError,
-                      formik.setFieldTouched,
-                      "gst_number"
-                    );
-                  }}
-                >
-                  Verify
-                </a>
-              </div>
+                {formik.handleChange(
+                  "gst_number",
+                  formikHandlerChange("gst_number", formik.values.gst_number)
                 )}
-                  {formik?.errors?.isGSTINVerified && (
-                  <span className="notVerifiedtext text-danger">
-                    {formik?.errors?.isGSTINVerified}
-                  </span>
-                  )}
+              </div>
+              
+              {enableVerifyButton[0]?.state===false ? (
+                <span>
+                  <p className="panVerfied text-success">
+                    Verified
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-check"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                    </svg>
+                  </p>
+                </span>
+              ) : (
+                <div class="position-sticky pull-right">
+                  <a
+                    href={() => false}
+                    className="btn btnbackground text-white btn-sm panbtn"
+                    style={{
+                      boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                      borderRadius: "6px",
+                    }}
+                    onClick={() => {
+                      checkInputIsValid(
+                        formik.errors,
+                        formik.values,
+                        formik.setFieldError,
+                        formik.setFieldTouched,
+                        "gst_number"
+                      );
+                    }}
+                  >
+                    Verify
+                  </a>
+                </div>
+              )}
+              {formik?.errors?.isGSTINVerified && (
+                <span className="notVerifiedtext text-danger">
+                  {formik?.errors?.isGSTINVerified}
+                </span>
+              )}
             </div>
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
@@ -420,53 +541,53 @@ function BusinessDetails(props) {
               </div>
               {formik?.initialValues?.isPANVerified === "1" ? (
                 <span>
-                <p className="panVerfied text-success">
-                  Verified
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-check"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                  </svg>
-                </p>
-              </span> 
+                  <p className="panVerfied text-success">
+                    Verified
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-check"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                    </svg>
+                  </p>
+                </span>
               ) : (
-              <div class="position-sticky pull-right">
-                <a
-                  href={() => false}
-                  className="btn btnbackground text-white btn-sm panbtn"
-                  style={{
-                    boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                    borderRadius: "6px",
-                  }}
-                  onClick={() => {
+                <div class="position-sticky pull-right">
+                  <a
+                    href={() => false}
+                    className="btn btnbackground text-white btn-sm panbtn"
+                    style={{
+                      boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                      borderRadius: "6px",
+                    }}
+                    onClick={() => {
 
-                    // console.log("Values ==>>><<<",formik?.values)
-                    checkInputIsValid(
-                      formik.errors,
-                      formik.values,
-                      formik.setFieldError,
-                      formik.setFieldTouched,
-                      "signatory_pan"
-                    );
-                  }}
-                >
-                  Verify
-                </a>
-              </div>
-                )}
-                  {formik?.errors?.isPANVerified && (
-                  <span className="notVerifiedtext text-danger">
-                    {formik?.errors?.isPANVerified}
-                  </span>
-                  )}
+                      // console.log("Values ==>>><<<",formik?.values)
+                      checkInputIsValid(
+                        formik.errors,
+                        formik.values,
+                        formik.setFieldError,
+                        formik.setFieldTouched,
+                        "signatory_pan"
+                      );
+                    }}
+                  >
+                    Verify
+                  </a>
+                </div>
+              )}
+              {formik?.errors?.isPANVerified && (
+                <span className="notVerifiedtext text-danger">
+                  {formik?.errors?.isPANVerified}
+                </span>
+              )}
             </div>
-            
-            
+
+
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
@@ -486,50 +607,50 @@ function BusinessDetails(props) {
               </div>
               {formik?.initialValues?.isAuthPANVerified === "1" ? (
                 <span>
-                <p className="panVerfied text-success">
-                  Verified
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-check"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                  </svg>
-                </p>
-              </span> 
+                  <p className="panVerfied text-success">
+                    Verified
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-check"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                    </svg>
+                  </p>
+                </span>
               ) : (
-              <div class="position-sticky pull-right">
-                <a
-                  href={() => false}
-                  className="btn btnbackground text-white btn-sm panbtn"
-                  style={{
-                    boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                    borderRadius: "6px",
-                  }}
-                  onClick={() => {
+                <div class="position-sticky pull-right">
+                  <a
+                    href={() => false}
+                    className="btn btnbackground text-white btn-sm panbtn"
+                    style={{
+                      boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                      borderRadius: "6px",
+                    }}
+                    onClick={() => {
 
-                    // console.log("Values ==>>><<<",formik?.values)
-                    checkInputIsValid(
-                      formik.errors,
-                      formik.values,
-                      formik.setFieldError,
-                      formik.setFieldTouched,
-                      "pan_card"
-                    );
-                  }}
-                >
-                  Verify
-                </a>
-              </div>
-                )}
-                  {formik?.errors?.isAuthPANVerified && (
-                  <span className="notVerifiedtext text-danger">
-                    {formik?.errors?.isAuthPANVerified}
-                  </span>
-                  )}
+                      // console.log("Values ==>>><<<",formik?.values)
+                      checkInputIsValid(
+                        formik.errors,
+                        formik.values,
+                        formik.setFieldError,
+                        formik.setFieldTouched,
+                        "pan_card"
+                      );
+                    }}
+                  >
+                    Verify
+                  </a>
+                </div>
+              )}
+              {formik?.errors?.isAuthPANVerified && (
+                <span className="notVerifiedtext text-danger">
+                  {formik?.errors?.isAuthPANVerified}
+                </span>
+              )}
             </div>
 
             <div class="form-group row">
