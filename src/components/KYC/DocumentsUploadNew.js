@@ -132,6 +132,7 @@ function DocumentsUpload(props) {
         .then(function (response) {
           if (response?.payload?.status) {
             setTitle("SUBMIT KYC");
+            setTab(6)
             toast.success(response?.payload?.message);
           } else {
             toast.error(response?.payload?.message);
