@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import "../KYC/kyc-style.css";
-import { approveDoc, documentsUpload, merchantInfo, verifyKycDocumentTab, verifyKycEachTab } from "../../slices/kycSlice";
+import { approveDoc, documentsUpload, merchantInfo, removeDocument, verifyKycDocumentTab, verifyKycEachTab } from "../../slices/kycSlice";
 import plus from "../../assets/images/plus.png";
 import "../../assets/css/kyc-document.css";
 import $ from "jquery";
@@ -54,18 +54,11 @@ function DocumentsUpload(props) {
     let doc;
 
     if (KycDocUpload?.length > 0) {
-      // console.log(KycDocUpload)
-      // doc = KycDocUpload[KycDocUpload?.length - 1]
-      // if (doc?.type === "1") {
-      //   dataDoc.push(KycDocUpload[KycDocUpload?.length - 1])
-      //   dataDoc.push(KycDocUpload[KycDocUpload?.length - 2])
-      // } else {
-      //   dataDoc.push(KycDocUpload[KycDocUpload?.length - 1])
-      // }
+
       setSavedData(KycDocUpload)
     }
 
-   
+
 
   }, [])
 
@@ -112,52 +105,53 @@ function DocumentsUpload(props) {
   };
 
   const onSubmit = (values, action) => {
-    // console.log(action)
-    if (role.merchant) {
-      const bodyFormData = new FormData();
-      let docType = values.docType;
-      if (docType === "1") {
-        bodyFormData.append("aadhar_front", selectedFile);
-        bodyFormData.append("aadhar_back", selectedFileAadhaar);
-      } else {
-        bodyFormData.append("files", selectedFile);
-      }
+    console.log(values,action)
+    
+    // if (role.merchant) {
+    //   const bodyFormData = new FormData();
+    //   let docType = values.docType;
+    //   if (docType === "1") {
+    //     bodyFormData.append("aadhar_front", selectedFile);
+    //     bodyFormData.append("aadhar_back", selectedFileAadhaar);
+    //   } else {
+    //     bodyFormData.append("files", selectedFile);
+    //   }
 
-      bodyFormData.append("login_id", loginId);
-      bodyFormData.append("modified_by", loginId);
-      bodyFormData.append("type", values.docType);
+    //   bodyFormData.append("login_id", loginId);
+    //   bodyFormData.append("modified_by", loginId);
+    //   bodyFormData.append("type", values.docType);
 
-      const kycData = { bodyFormData, docType };
-      dispatch(merchantInfo(kycData))
-        .then(function (response) {
-          if (response?.payload?.status) {
-            setTitle("SUBMIT KYC");
-            toast.success(response?.payload?.message);
-          } else {
-            toast.error(response?.payload?.message);
-          }
+    //   const kycData = { bodyFormData, docType };
+    //   dispatch(merchantInfo(kycData))
+    //     .then(function (response) {
+    //       if (response?.payload?.status) {
+    //         setTitle("SUBMIT KYC");
+    //         toast.success(response?.payload?.message);
+    //       } else {
+    //         toast.error(response?.payload?.message);
+    //       }
 
-        })
-        .catch(function (error) {
-          console.error("Error:", error);
-          toast.error("Something went wrong while saving the document");
-        });
+    //     })
+    //     .catch(function (error) {
+    //       console.error("Error:", error);
+    //       toast.error("Something went wrong while saving the document");
+    //     });
 
-    } else if (role.verifier) {
-      const veriferDetails = {
-        login_id: kycid,
-        settlement_info_verified_by: loginId,
-      };
-      dispatch(verifyKycEachTab(veriferDetails))
-        .then((resp) => {
-          resp?.payload?.settlement_info_status &&
-            toast.success(resp?.payload?.settlement_info_status);
-          resp?.payload?.detail && toast.error(resp?.payload?.detail);
-        })
-        .catch((e) => {
-          toast.error("Try Again Network Error");
-        });
-    }
+    // } else if (role.verifier) {
+    //   const veriferDetails = {
+    //     login_id: kycid,
+    //     settlement_info_verified_by: loginId,
+    //   };
+    //   dispatch(verifyKycEachTab(veriferDetails))
+    //     .then((resp) => {
+    //       resp?.payload?.settlement_info_status &&
+    //         toast.success(resp?.payload?.settlement_info_status);
+    //       resp?.payload?.detail && toast.error(resp?.payload?.detail);
+    //     })
+    //     .catch((e) => {
+    //       toast.error("Try Again Network Error");
+    //     });
+    // }
 
   };
 
@@ -207,16 +201,34 @@ function DocumentsUpload(props) {
       rejected_by: loginId,
       comment: "Document Rejected",
     };
-    dispatch(verifyKycDocumentTab(rejectDetails))
-      .then((resp) => {
-        resp?.payload?.status
-          ? toast.success(resp?.payload?.message)
-          : toast.error(resp?.payload?.message);
-      })
-      .catch((e) => {
-        toast.error("Try Again Network Error");
-      });
+    // dispatch(verifyKycDocumentTab(rejectDetails))
+    //   .then((resp) => {
+    //     resp?.payload?.status
+    //       ? toast.success(resp?.payload?.message)
+    //       : toast.error(resp?.payload?.message);
+    //   })
+    //   .catch((e) => {
+    //     toast.error("Try Again Network Error");
+    //   });
   }
+
+
+  const removeDoc = (doc_id) => {
+    const rejectDetails = {
+      document_id: doc_id,
+      removed_by: loginId
+    };
+    // dispatch(removeDocument(rejectDetails))
+    //   .then((resp) => {
+    //     resp?.payload?.status
+    //       ? toast.success(resp?.payload?.message)
+    //       : toast.error(resp?.payload?.message);
+    //   })
+    //   .catch((e) => {
+    //     toast.error("Try Again Network Error");
+    //   });
+  }
+
 
   useEffect(() => {
     if (role.approver) {
@@ -495,30 +507,38 @@ function DocumentsUpload(props) {
                       }}
                     />
 
-        {/* button visible for the verifier */}
-        {savedData?.length > 0 && role?.verifier || role?.approver || role?.merchant ?
-          savedData?.map((img, i) =>
-            <div className="col-lg-6 mt-4 test">
-              <img className="file-upload" src={img?.filePath} alt="kyc docuement" />
-              <div>
-                {img?.status !== "Verified" || img?.status !== "Approved" ?
-                  <>
-                  {role?.verifier || role?.approver ? <>
-                    <button className="btn btn-sm btn-primary m-3" onClick={() => { verifyApproveDoc(img?.documentId) }}> {buttonText} </button>
-                    <button className="btn btn-sm btn-warning m-3" onClick={() => { rejectDoc(img?.documentId) }} > Reject </button>
-                  </> :  <button className="btn btn-sm btn-warning m-3" onClick={() => { rejectDoc(img?.documentId) }} > Remove - working </button>}
-                    </>
-                  :
-                  <></>
-                }
+                    {/* button visible for the verifier */}
+                    {savedData?.length > 0 && (role?.verifier || role?.approver || role?.merchant )?
+                      savedData?.map((img, i) =>
+                        <div className="col-lg-6 mt-4 test">
+                          <img className="file-upload" src={img?.filePath} alt="kyc docuement" />
+                          <div>
+                            {img?.status !== "Verified" || img?.status !== "Approved" ?
+                              <>
+                                {role?.verifier || role?.approver ? <>
+                                  <button 
+                                   type="button"
+                                  className="btn btn-sm btn-primary m-3" 
+                                  // onClick={() => { verifyApproveDoc(img?.documentId) }}
+                                  onClick={() => {
+                                  submitAction ="buttonText"
+                                  formik.handleSubmit();
+                                }}
+                                  > {buttonText} </button>
+                                  <button  type="button" className="btn btn-sm btn-warning m-3" onClick={() => { rejectDoc(img?.documentId) }} > Reject </button>
+                                </> : <button  type="button" className="btn btn-sm btn-warning m-3" onClick={() => { removeDoc(img?.documentId) }} > Remove - working </button>}
+                              </>
+                              :
+                              <></>
+                            }
 
-              </div>
-            </div>
+                          </div>
+                        </div>
 
-          )
-          :
-          <></>
-        }
+                      )
+                      :
+                      <></>
+                    }
                     <div class="col-12">
 
                       <button

@@ -184,6 +184,7 @@ GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
   VERIFY_FINAL_ALL: `${kyc_url}/kyc/verify-kyc/verify/`,
   DOCUMENT_VERIFY: `${kyc_url}/kyc/upload-merchant-document/verify/`,
   DOCUMENT_REJECT: `${kyc_url}/kyc/upload-merchant-document/reject/`,
+  DOCUMENT_REMOVE: `${kyc_url}/kyc/upload-merchant-document/remove/`,
   APPROVE_DOCUMENT: `${kyc_url}/kyc/upload-merchant-document/approve/`,
   APPROVE_KYC: `${kyc_url}/kyc/verify-kyc/approve/`,
 

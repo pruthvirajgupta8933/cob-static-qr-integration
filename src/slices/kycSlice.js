@@ -601,6 +601,19 @@ export const verifyKycDocumentTab = createAsyncThunk(
   }
 );
 
+export const removeDocument = createAsyncThunk(
+  "kyc/removeDocument",
+  async (requestParam) => {
+    const response = await axiosInstanceAuth
+      .put(API_URL.DOCUMENT_REMOVE, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+
 export const verifyComplete = createAsyncThunk(
   "kyc/verifyKycEachTab",
   async (requestParam) => {
