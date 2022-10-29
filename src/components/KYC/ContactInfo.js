@@ -32,7 +32,7 @@ function ContactInfo(props) {
   const { loginId } = user;
   const KycList = kyc.kycUserList;
 
-  console.log("KycList",KycList);
+  // console.log("KycList",KycList);
 
   const VerifyKycStatus = kyc?.KycTabStatusStore?.general_info_status;
 
@@ -93,14 +93,19 @@ function ContactInfo(props) {
           aadhar_number: values.aadhar_number,
         })
       ).then((res) => {
+        console.log(res)
         if (
-          res.meta.requestStatus === "fulfilled" &&
-          res.payload?.status_code === 200
+
+          res?.meta?.requestStatus === "fulfilled" &&
+          res.payload?.status === true
         ) {
+          // console.log("chec2")
+
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
           toast.success(res.payload?.message);
         } else {
+          // console.log("chec1")
           toast.error(res.payload?.message);
           toast.error(res.payload?.detail);
           setShowOtpVerifyModalEmail(false);
@@ -242,7 +247,7 @@ function ContactInfo(props) {
       >
         {(formik) => (
           <Form>
-            {console.log(formik)}
+            {/* {console.log(formik)} */}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
