@@ -914,37 +914,40 @@ export const kycSlice = createSlice({
     [panValidation.rejected]: (state, action) => {
       state.status = "failed";
     },
+//-----------------------------------
 
-    [authPanValidation.pending]: (state, action) => {
-      state.status = "pending";
-    },
+
     [authPanValidation.fulfilled]: (state, action) => {
-      // if (action?.payload?.status === true && action?.payload?.valid === true) {
-        state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation = action.payload;
-        //  if(action?.payload?.status === true && action?.payload?.valid === false) {
-        //   return  state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation = action.payload
-        // }
-      // }
+
       state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation = action.payload;
+
       if (action?.payload?.status === true && action?.payload?.valid === true) {
-        state.kycUserList.signatoryPAN = action?.meta?.arg?.pan_number
+        console.log("dataa",action)
+        // state.kycUserList.signatoryPAN = action?.meta?.arg?.signatory_pan
+        state.kycUserList.signatoryPAN = "test"
       }
+
       // console.log(action.payload,"Action ===> 12")
     },
-    [authPanValidation.rejected]: (state, action) => {
-      state.status = "failed";
+  
+// ------------------------------------
+    [gstValidation.pending]: (state, action) => {
+      state.status = "pending";
     },
-
     [gstValidation.fulfilled]: (state, action) => {
       state.allTabsValidate.BusinessDetailsStatus.GSTINValidation = action.payload;
-      //  console.log(action.payload)
+       console.log("state",state)
       if (action?.payload?.status === true && action?.payload?.valid === true) {
         state.kycUserList.gstNumber = action?.meta?.arg?.gst_number
       }
 
       // console.log(action.payload,"Action ===> 12")
     },
+    [gstValidation.rejected]: (state, action) => {
+      state.status = "failed";
+    },
 
+    //-----------------------------------
     [ifscValidation.pending]: (state, action) => {
       state.status = "pending";
     },
@@ -959,6 +962,7 @@ export const kycSlice = createSlice({
       state.status = "failed";
     },
 
+    //---------------------------------------
     [bankAccountVerification.pending]: (state, action) => {
       state.status = "pending";
     },
@@ -967,7 +971,7 @@ export const kycSlice = createSlice({
       if (action?.payload?.status === true && action?.payload?.valid === true) {
         state.kycUserList.accountNumber = action?.meta?.arg?.account_number
       }
-      console.log(action.payload,"Action Account Number ===> 1222222222")
+      // console.log(action.payload,"Action Account Number ===> 1222222222")
     },
     [bankAccountVerification.rejected]: (state, action) => {
       state.status = "failed";
@@ -975,6 +979,9 @@ export const kycSlice = createSlice({
 
 
     //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
+
+
+
 
     //-----------------Saving Bank Details by sending bank id -----------------//
     
