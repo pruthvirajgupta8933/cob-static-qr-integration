@@ -322,7 +322,7 @@ function Home() {
                     alt="onlinepay"
                     width={40}
                   />{" "}
-                  &nbsp;Enable International Payments Today
+                  &nbsp;Payment Links
                 </h2>
                 <p className="paragraphcssdashboards">
                   SabPaisa is the World's 1st API Driven Unified Payment
@@ -335,7 +335,7 @@ function Home() {
                   online or offline, without worrying about consumer payment
                   behaviour.
                 </p>
-                <Link to={`/dashboard/sabpaisa-pricing`}>
+                <Link to={`/dashboard/sabpaisa-pricing/10/Payment%20Links`}>
                   <p className="pricingclasscss">
                     Read More & Pricing &nbsp;{">"}
                     {">"}
