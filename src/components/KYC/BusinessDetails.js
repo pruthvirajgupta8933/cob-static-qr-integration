@@ -955,7 +955,6 @@ function BusinessDetails(props) {
                     formik.values.registered_business_address
                   )
                 )}
-
                 <FormikController
                   control="textArea"
                   type="textArea"

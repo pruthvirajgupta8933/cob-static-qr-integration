@@ -44,6 +44,7 @@ function BankDetails(props) {
 
   const [readOnly, setReadOnly] = useState(false);
   const [checkIfscChange, setCheckIfscChange] = useState("")
+  const [ifscVerifed, isIfscVerifed] = useState("")
   const [buttonText, setButtonText] = useState("Save and Next")
 
 
@@ -58,11 +59,14 @@ function BankDetails(props) {
     account_number: KycList?.accountNumber,
     confirm_account_number: KycList?.accountNumber,
     ifsc_code: KycList?.ifscCode,
+    oldIfscCode : KycList?.ifscCode,
     bank_id: bankDetailsById?.length > 0 ? bankDetailsById[0]?.bankId : KycList?.merchant_account_details?.bankId, // change stste
     account_type: KycList?.merchant_account_details?.accountType,
     branch: KycList?.merchant_account_details?.branch,
-    isIFSCCode: KycList?.ifscCode !== null ? "1" : "",
+    // isIFSCCode: KycList?.ifscCode !== null ? "1" : "",
+    isIFSCCode: ifscVerifed,
     isAccountNumberVerified: KycList?.accountNumber !== null ? "1" : ""
+
   };
   const validationSchema = Yup.object({
     account_holder_name: Yup.string()
@@ -97,7 +101,10 @@ function BankDetails(props) {
       .required("Required")
       .nullable(),
     isIFSCCode: Yup.string().required("You need to verify Your IFSC Code"),
-    isAccountNumberVerified: Yup.string().required("You need to verify Your Account Number")
+    isAccountNumberVerified: Yup.string().required("You need to verify Your Account Number"),
+    oldIfscCode: Yup.string()
+    .oneOf([Yup.ref("ifsc_code"), null], "You need to verify Your IFSC Code")
+    .required("IFSC in required"),
   });
 
 
@@ -110,7 +117,7 @@ function BankDetails(props) {
         if (
           res.meta.requestStatus === "fulfilled" && res.payload.status === true && res.payload.valid === true) {
             // console.log("<==== IFSC Validation Response ===>",res)
-            setCheckIfscChange(values)
+            // setCheckIfscChange(values)
           const postData = { "bank_name": res?.payload?.bank }
           dispatch(getBankId(postData))
           toast.success(res?.payload?.message);
@@ -132,7 +139,7 @@ function BankDetails(props) {
     })).then((res) => {
       if (
         res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === true && res?.payload?.valid === true) {
-        console.log("This is the response", res);
+        // console.log("This is the response", res);
         toast.success(res?.payload?.message);
       } else {
         toast.error(res?.payload?.message);
@@ -161,6 +168,10 @@ function BankDetails(props) {
       })
 
       .catch((err) => console.log(err));
+
+      // setCheckIfscChange update data from the KYC state
+      // setCheckIfscChange(KycList?.ifscCode)
+      KycList?.ifscCode ? isIfscVerifed("1") : isIfscVerifed("")
   }, []);
 
   // ------------------------------------------
@@ -219,6 +230,8 @@ function BankDetails(props) {
     }
   }, [role]);
 
+  
+
   const checkInputIsValid = (err, val, setErr, setFieldTouched, key) => {
     const hasErr = err.hasOwnProperty(key);
 
@@ -249,8 +262,33 @@ function BankDetails(props) {
 
   };
 
+//  const formikHandlerChange = (input, oldValue, newVal, setFormikVal) => {
+//   // 
+//     if (input === "ifsc_code") {
+//       if (newVal?.length === 11) {
+//         if(oldValue!==newVal){
+//           // setFormikVal("isIFSCCode","")
+//           // setFormikVal(input,newVal)
+//           // setFormikVal("isIFSCCode","")
+//           // isIfscVerifed("")
+//           console.log("set blank = =")
+//         }else{
+//           // isIfscVerifed("1")
 
-  {console.log("IFSC PAYLODE VALUE =====>",checkIfscChange)}
+//           // setFormikVal("isIFSCCode","1")
+//           console.log("set blank = 1")
+//         }
+//       }
+//     }
+//   }
+
+  // useEffect(() => {
+  //    setTimeout(() => {
+  //     isIfscVerifed("")
+  //    }, 2000);
+  // }, [])
+  
+  // {console.log("IFSC PAYLODE VALUE =====>",checkIfscChange)}
   
 
   return (
@@ -261,9 +299,11 @@ function BankDetails(props) {
         onSubmit={onSubmit}
         enableReinitialize={true}
       >
-        {(formik) => (
+        {({values,setFieldValue, initialValues, errors, setFieldError, setFieldTouched, handleChange}) => (
           <Form>
-            {/* {console.log(formik)} */}
+            {console.log("values",values)}
+            {console.log("initialValues",initialValues)}
+            {console.log("errors",errors)}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -277,9 +317,19 @@ function BankDetails(props) {
                   name="ifsc_code"
                   className="form-control"
                   readOnly={readOnly}
+                
                 />
+
+                 {/* {handleChange(
+                  "ifsc_code",
+                  formikHandlerChange("ifsc_code", values?.ifsc_code, KycList?.ifscCode, setFieldValue)
+                )} */}
               </div>
-              {formik?.initialValues?.isIFSCCode === "1" && formik?.values?.ifsc_code === checkIfscChange ? ( 
+              {/* {console.log("initialValues.isIFSCCode",initialValues.isIFSCCode)} */}
+              {/* {console.log("checkIfscChange",checkIfscChange)} */}
+              {/* {console.log("ifsc_code",values.ifsc_code)} */}
+
+              {initialValues?.isIFSCCode === "1" && values?.ifsc_code === KycList?.ifscCode ? ( 
                 <span>
                   <p className="panVerfied text-success">
                     Verified
@@ -296,7 +346,7 @@ function BankDetails(props) {
                   </p>
                 </span>
               )  : (
-                  // formik.values.ifsc_code !== checkIfscChange && formik.values.ifsc_code === "" ? 
+                  // values.ifsc_code !== checkIfscChange && values.ifsc_code === "" ? 
                 <div class="position-sticky pull-right">
                   <a
                     href={() => false}
@@ -306,12 +356,13 @@ function BankDetails(props) {
                       borderRadius: "6px",
                     }}
                     onClick={() => {
-                      // {console.log("Values =======>",formik.values)}
+                      // {console.log("Values =======>",values)}
                       checkInputIsValid(
-                        formik.errors,
-                        formik.values,
-                        formik.setFieldError,
-                        formik.setFieldTouched,
+                        errors,
+                        values,
+                        setFieldError,
+                        setFieldTouched,
+
                         "ifsc_code"
                       );
                     }}
@@ -321,9 +372,12 @@ function BankDetails(props) {
                 </div>
                 // : <></>
               )}
-              {formik?.errors?.isIFSCCode && (
+
+              {/* {console.log("eorro",errors)}
+              {console.log(errors?.isIFSCCode)} */}
+              {errors?.isIFSCCode || errors?.oldIfscCode && (
                 <span className="notVerifiedtext text-danger">
-                  {formik?.errors?.isIFSCCode}
+                  {errors?.isIFSCCode || errors?.oldIfscCode }
                 </span>
               )}
             </div>
@@ -343,7 +397,7 @@ function BankDetails(props) {
                   readOnly={readOnly}
                 />
               </div>
-              {formik?.initialValues?.isAccountNumberVerified === "1" ? (
+              {initialValues?.isAccountNumberVerified === "1" ? (
                 <span>
                   <p className="panVerfied text-success">
                     Verified
@@ -370,12 +424,12 @@ function BankDetails(props) {
                     }}
                     onClick={() => {
 
-                      // console.log("Values ==>>><<<",formik?.values)
+                      // console.log("Values ==>>><<<",values)
                       checkInputIsValid(
-                        formik.errors,
-                        formik.values,
-                        formik.setFieldError,
-                        formik.setFieldTouched,
+                        errors,
+                        values,
+                        setFieldError,
+                        setFieldTouched,
                         "account_number"
                       );
                     }}
@@ -384,9 +438,9 @@ function BankDetails(props) {
                   </a>
                 </div>
               )}
-              {formik?.errors?.isAccountNumberVerified && (
+              {errors?.isAccountNumberVerified && (
                 <span className="notVerifiedtext text-danger">
-                  {formik?.errors?.isAccountNumberVerified}
+                  {errors?.isAccountNumberVerified}
                 </span>
               )}
             </div>
