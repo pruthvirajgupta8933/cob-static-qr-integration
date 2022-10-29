@@ -99,10 +99,7 @@ function KycForm() {
   //-----------Kyc Document Upload List ------//
 
   useEffect(() => {
-    dispatch(
-      kycDocumentUploadList({
-        login_id: merchantloginMasterId,
-      })
+    dispatch(kycDocumentUploadList({login_id: merchantloginMasterId})
     ).then((res) => {
       // console.log(res)
     });

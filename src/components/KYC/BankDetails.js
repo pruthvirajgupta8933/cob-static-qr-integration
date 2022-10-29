@@ -70,7 +70,8 @@ function BankDetails(props) {
         ? bankDetailsById[0]?.bankId
         : KycList?.merchant_account_details?.bankId, // change stste
     account_type: KycList?.merchant_account_details?.accountType,
-    branch: KycList?.merchant_account_details?.branch,
+  
+    branch: branch?.length>2  ? branch : KycList?.merchant_account_details?.branch,
     // isIFSCCode: KycList?.ifscCode !== null ? "1" : "",
     // isIFSCCode: ifscVerifed,
     isAccountNumberVerified: KycList?.accountNumber !== null ? "1" : "",
@@ -165,7 +166,9 @@ function BankDetails(props) {
         res?.payload?.valid === true
       ) {
         // console.log("This is the response", res);
-        toast.success(res?.payload?.message);
+        // console.log(res?.payload?.ifsc[0])
+        toast.success(res?.payload?.message) 
+
       } else {
         toast.error(res?.payload?.message);
       }
@@ -322,9 +325,9 @@ function BankDetails(props) {
           handleChange,
         }) => (
           <Form>
-            {/* {console.log("values", values)}
+            {console.log("values", values)}
             {console.log("initialValues", initialValues)}
-            {console.log("errors", errors)} */}
+            {console.log("errors", errors)}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -440,6 +443,7 @@ function BankDetails(props) {
                   </p>
                 </span>
               ) : (
+                !errors.hasOwnProperty("oldIfscCode") && !errors.hasOwnProperty("ifsc_code") ? 
                 <div class="position-sticky pull-right">
                   <a
                     href={() => false}
@@ -461,7 +465,7 @@ function BankDetails(props) {
                   >
                     Verify
                   </a>
-                </div>
+                </div> : <> </> 
               )}
 
               {errors?.oldAccountNumber && (

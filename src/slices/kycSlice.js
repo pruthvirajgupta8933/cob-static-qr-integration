@@ -12,9 +12,7 @@ const initialState = {
     previous: null,
     results: null,
   },
-  kycUserList: {
-
-  },
+  kycUserList: {},
   KycDocUpload: {
     documentId: "",
     name: "",
@@ -68,19 +66,19 @@ const initialState = {
     BusiOverviewwStatus: {
       submitStatus: {
         status: false,
-      
+
       },
     },
     BusinessDetailsStatus: {
       AuthPanValidation: {
-        first_name:"",
-        last_name:"",
+        first_name: "",
+        last_name: "",
         valid: false,
         status: false
       },
       PanValidation: {
-        first_name:"",
-        last_name:"",
+        first_name: "",
+        last_name: "",
         valid: false,
         status: false
       },
@@ -99,8 +97,8 @@ const initialState = {
         status: false
       },
       accountValidation: {
-        first_name:"",
-        last_name:"",
+        first_name: "",
+        last_name: "",
         valid: false,
         status: false
       },
@@ -120,7 +118,12 @@ const initialState = {
 
   GetBankid: [],
 
-  OtpResponse: { status: "", verification_token: "" },
+  OtpResponse: {
+     status: "",
+     verification_token: "",
+     tempEmail:"",
+     tempPhone:""
+    },
   OtpVerificationResponseForPhone: {
     status: false,
     message: "",
@@ -163,18 +166,11 @@ export const otpForContactInfo = createAsyncThunk(
     const response = await axiosInstanceAuth
       .post(
         `${API_URL.Send_OTP}`,
-        requestParam,
-
-        {
-          headers: {
-            // Authorization: ""
-          },
-        }
-      )
+        requestParam    
+        )
       .catch((error) => {
         return error.response;
       });
-    // console.log(response)
     return response.data;
   }
 );
@@ -901,81 +897,64 @@ export const kycSlice = createSlice({
 
     //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 
-    [panValidation.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [panValidation.fulfilled]: (state, action) => {
 
-      state.allTabsValidate.BusinessDetailsStatus.PanValidation = action.payload;
-      if (action?.payload?.status === true && action?.payload?.valid === true) {
-        state.kycUserList.panCard = action?.meta?.arg?.pan_number
-      }
-    },
-    [panValidation.rejected]: (state, action) => {
-      state.status = "failed";
-    },
-//-----------------------------------
+    // [panValidation.fulfilled]: (state, action) => {
+    //   console.log("panValidation")
+
+    //   state.allTabsValidate.BusinessDetailsStatus.PanValidation = action.payload;
+    //   if (action?.payload?.status === true && action?.payload?.valid === true) {
+    //     state.kycUserList.panCard = action?.meta?.arg?.pan_number
+    //   }
+    // },
+
+    //-----------------------------------
 
 
     [authPanValidation.fulfilled]: (state, action) => {
 
-      state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation = action.payload;
-
       if (action?.payload?.status === true && action?.payload?.valid === true) {
-        console.log("dataa",action)
-        // state.kycUserList.signatoryPAN = action?.meta?.arg?.signatory_pan
-        state.kycUserList.signatoryPAN = "test"
+        state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation = action.payload;
+        state.kycUserList.signatoryPAN = action?.meta?.arg?.pan_number
+
       }
 
       // console.log(action.payload,"Action ===> 12")
     },
-  
-// ------------------------------------
-    [gstValidation.pending]: (state, action) => {
-      state.status = "pending";
-    },
+
+    // ------------------------------------
+
     [gstValidation.fulfilled]: (state, action) => {
-      state.allTabsValidate.BusinessDetailsStatus.GSTINValidation = action.payload;
-       console.log("state",state)
+
       if (action?.payload?.status === true && action?.payload?.valid === true) {
+        state.allTabsValidate.BusinessDetailsStatus.GSTINValidation = action.payload;
         state.kycUserList.gstNumber = action?.meta?.arg?.gst_number
       }
 
       // console.log(action.payload,"Action ===> 12")
     },
-    [gstValidation.rejected]: (state, action) => {
-      state.status = "failed";
-    },
 
     //-----------------------------------
-    [ifscValidation.pending]: (state, action) => {
-      state.status = "pending";
-    },
+ 
     [ifscValidation.fulfilled]: (state, action) => {
-      state.allTabsValidate.BankDetails.IfscValidation = action.payload;
-
+   
       if (action?.payload?.status === true && action?.payload?.valid === true) {
+        state.allTabsValidate.BankDetails.IfscValidation = action.payload;
         state.kycUserList.ifscCode = action?.meta?.arg?.ifsc_number
       }
     },
-    [ifscValidation.rejected]: (state, action) => {
-      state.status = "failed";
-    },
+  
 
     //---------------------------------------
-    [bankAccountVerification.pending]: (state, action) => {
-      state.status = "pending";
-    },
+
     [bankAccountVerification.fulfilled]: (state, action) => {
-      state.allTabsValidate.BankDetails.accountValidation = action.payload;
       if (action?.payload?.status === true && action?.payload?.valid === true) {
+      state.allTabsValidate.BankDetails.accountValidation = action.payload;
+
         state.kycUserList.accountNumber = action?.meta?.arg?.account_number
       }
       // console.log(action.payload,"Action Account Number ===> 1222222222")
     },
-    [bankAccountVerification.rejected]: (state, action) => {
-      state.status = "failed";
-    },
+ 
 
 
     //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
@@ -984,14 +963,14 @@ export const kycSlice = createSlice({
 
 
     //-----------------Saving Bank Details by sending bank id -----------------//
-    
+
     [getBankId.fulfilled]: (state, action) => {
 
       state.GetBankid = action.payload;
       //  console.log("Action Bank id ===>122",action.payload)
 
     },
-        //-----------------Saving Bank Details by sending bank id -----------------//
+    //-----------------Saving Bank Details by sending bank id -----------------//
 
 
     //All Kyc Tabs status stored in redux as false
@@ -1020,52 +999,49 @@ export const kycSlice = createSlice({
     },
 
     ////////////////////////////////////////////////////
-    [otpForContactInfo.pending]: (state, action) => {
-      state.status = "pending";
-    },
+  
     [otpForContactInfo.fulfilled]: (state, action) => {
-      // console.log("action-11 ====>",action.payload)
-      state.OtpResponse = action.payload;
+      if(action?.payload?.status){
+        state.OtpResponse = action.payload;
+        if(action?.meta?.arg?.email){
+          state.OtpResponse.tempEmail = action?.meta?.arg?.email
+        }
+
+        if(action?.meta?.arg?.mobile_number){
+          state.OtpResponse.tempPhone = action?.meta?.arg?.mobile_number
+        }
+        
+      }
+      
     },
-    [otpForContactInfo.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
+   
     ////////////////////////////////////////////////////////////
     // OTP state update
 
-    [otpVerificationForContactForPhone.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [otpVerificationForContactForPhone.fulfilled]: (state, action) => {
-      state.OtpVerificationResponseForPhone = action.payload;
-      
-      if (action.payload?.status === true) {
-        state.kycUserList.isContactNumberVerified = 1;
-      }
   
+    [otpVerificationForContactForPhone.fulfilled]: (state, action) => {
+     
+      if (action.payload?.status === true) {
+        state.OtpVerificationResponseForPhone = action.payload;
+        state.kycUserList.isContactNumberVerified = 1;
+        state.kycUserList.contactNumber = state.OtpResponse.tempPhone
+        state.OtpResponse.tempPhone = ""
+      }
+
     },
-    [otpVerificationForContactForPhone.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
+  
     /////////////////////////////////////////////////////////////////
 
-    [otpVerificationForContactForEmail.pending]: (state, action) => {
-      state.status = "pending";
-    },
+   
     [otpVerificationForContactForEmail.fulfilled]: (state, action) => {
-      state.OtpVerificationResponseForEmail = action.payload;
-
       if (action.payload?.status === true) {
+        state.OtpVerificationResponseForEmail = action.payload;
         state.kycUserList.isEmailVerified = 1;
+        state.kycUserList.emailId = state.OtpResponse.tempEmail
+        state.OtpResponse.tempEmail = ""
       }
-      // console.log(action.payload.status,"==> Verification")
     },
-    [otpVerificationForContactForEmail.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
+   
     [verifyKycEachTab.fulfilled]: (state, action) => {
       state.KycTabStatusStore = action.payload;
     },
