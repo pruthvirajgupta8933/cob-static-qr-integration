@@ -208,7 +208,6 @@ function BusinessDetails(props) {
 
     if (input === "pan_card" || input === "signatory_pan") {
       if (value?.length === 10) {
-        
         const oldVal = KycList?.gstNumber;
         const newVal = value
         const result = oldVal.match(newVal);
@@ -243,7 +242,7 @@ function BusinessDetails(props) {
   // console.log("!matchWord",matchWord)
   ////// check is verified
 
-  // let enabledVerifyButton = !matchWord;
+  let enabledVerifyButton = !matchWord;
 
 
   // only for gst 
@@ -255,6 +254,7 @@ function BusinessDetails(props) {
   if (isGstVerify && matchWord) {
     console.log("GST verified :)")
   } else {
+
     console.log("you need to verify your gst")
   }
 
@@ -268,13 +268,13 @@ function BusinessDetails(props) {
   // }
 
   // one shot verification
-  // if(enabledVerifyButton){
-  //   console.log("display verify button to trigger API")
-  // }else{
-  //   console.log("Hide verify button to trigger API")
-  // }
+  if(enabledVerifyButton){
+    console.log("display verify button to trigger API")
+  }else{
+    console.log("Hide verify button to trigger API")
+  }
 
-  console.log("enableVerifyButton", enableVerifyButton)
+  // console.log("enableVerifyButton", enableVerifyButton)
 
 
   const initialValues = {
