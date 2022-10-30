@@ -107,54 +107,88 @@ function TransactionSummery() {
       </div>
       {/* <div className="profileBarStatus">
         </div> */}
-      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Transaction Summary</h1>
-          </div>
-          <section
-            className="features8 cid-sg6XYTl25a flleft"
-            id="features08-3-"
-          >
-            <div className="container-fluid">
-              <div className="row bgcolor">
-                <div className="col-lg-4 mrg-btm- bgcolor-">
-                  <label>Successful Transaction Summary</label>
-                  <select
-                    className="ant-input"
-                    value={clientCode}
-                    onChange={(e) => setClientCode(e.currentTarget.value)}
-                  >
-                    <option defaultValue="selected" value="1">
-                      Today
-                    </option>
-                    <option value="2">Yesterday</option>
-                    <option value="3">Last 7 Days</option>
-                    <option value="4">Current Month</option>
-                    <option value="5">Last Month</option>
-                  </select>
-                </div>
-
-                {txnList.length > 0 ? (
-                  <div className="col-lg-4 mrg-btm-">
-                    <label>Search</label>
-                    <input
-                      type="text"
+        <main className="gx-layout-content ant-layout-content Satoshi-Medium">
+          <div className="gx-main-content-wrapper">
+            <div className="right_layout my_account_wrapper right_side_heading">
+              <h1 className="m-b-sm gx-float-left">Transaction Summary</h1>
+            </div>
+            <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
+              <div className="container-fluid">
+                <div className="row bgcolor">
+                  <div className="col-lg-4 ml-4 mrg-btm- bgcolor-">
+                    <label>Successful Transaction Summary</label>
+                    <select
                       className="ant-input"
-                      onChange={(e) => {
-                        handleChange(e.currentTarget.value);
-                      }}
-                      placeholder="Search from here"
-                    />
+                      value={clientCode}
+                      onChange={(e) => setClientCode(e.currentTarget.value)}
+                    >
+                      <option defaultValue="selected" value="1">
+                        Today
+                      </option>
+                      <option value="2">Yesterday</option>
+                      <option value="3">Last 7 Days</option>
+                      <option value="4">Current Month</option>
+                      <option value="5">Last Month</option>
+                    </select>
                   </div>
-                ) : (
-                  <></>
-                )}
-                <div className="gap">
-                  <p>
-                    Total Successful Transactions: {totalSuccessTxn} | Total
-                    Amount {`(INR)`}: {totalAmt}{" "}
-                  </p>
+
+                  {txnList.length > 0 ? (
+                    <div className="col-lg-4 mrg-btm-">
+                      <label>Search</label>
+                      <input
+                        type="text"
+                        className="ant-input "
+                        onChange={(e) => {
+                          handleChange(e.currentTarget.value);
+                        }}
+                        placeholder="Search from here"
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                  <div className="gap ml-4">
+                    <p>
+                      Total Successful Transactions: {totalSuccessTxn} | Total
+                      Amount {`(INR)`}: {totalAmt}{" "}
+                    </p>
+                  </div>
+                  <table
+                    cellspaccing={0}
+                    cellPadding={10}
+                    border={0}
+                    width="100%"
+                    className="tables ml-4"
+                  >
+                    <tbody>
+                      <tr>
+                        <th>Sr. No.</th>
+                        <th>Client's Name</th>
+                        <th>Transactions</th>
+                        <th>Amount</th>
+                      </tr>
+                      {showData &&
+                        !isLoading &&
+                        showData.map((item, i) => {
+                          return (
+                            <tr key={i}>
+                              <td>{i + 1}</td>
+                              <td>{item.clientName}</td>
+                              <td>{item.noOfTransaction}</td>
+                              <td>Rs {item.payeeamount}</td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+
+                  {showData.length <= 0 && isLoading === false ? (
+                    <div className="showMsg ml-4"> No Record Found</div>
+                  ) : (
+                    <></>
+                  )}
+
+                  {isLoading ? <ProgressBar /> : <></>}
                 </div>
                 <table
                   cellspaccing={0}
