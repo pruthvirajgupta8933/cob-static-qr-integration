@@ -119,7 +119,7 @@ function TransactionSummery() {
             <div className="container-fluid">
               <div className="row bgcolor">
                 <div className="form-group col-md-4 mx-4 mrg-btm- bgcolor-">
-                  <label>Successful Transaction Summary</label>
+                  {/* <label>Successful Transaction Summary</label> */}
                   <select
                     className="ant-input"
                     value={clientCode}

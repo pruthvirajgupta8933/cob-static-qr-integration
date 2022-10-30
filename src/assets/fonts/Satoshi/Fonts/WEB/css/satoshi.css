@@ -117,9 +117,7 @@
   src: url('../fonts/Satoshi-Medium.woff2') format('woff2'),
        url('../fonts/Satoshi-Medium.woff') format('woff'),
        url('../fonts/Satoshi-Medium.ttf') format('truetype');
-       font-weight: 500;
-       font-display: swap;
-       font-style: normal;
+       
 }
 
 

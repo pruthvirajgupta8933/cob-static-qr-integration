@@ -540,8 +540,7 @@ function Home() {
                     data-target="#exampleModalCenter"
                   >
                     <button className="ModalButtonClr text-white mt-2">
-                      <h5 style={{ fontFamily: "Satoshi", lineHeight: "9px" }}>
-                        {" "}
+                      <h5 className="m-0">
                         Complete KYC to activate account
                       </h5>
                     </button>
@@ -557,7 +556,7 @@ function Home() {
                       }}
                       aria-label="Close"
                     >
-                      <h5 style={{ fontFamily: "Satoshi", lineHeight: "9px" }}>
+                      <h5 className="m-0">
                         Try out our dashboard
                       </h5>
                     </button>

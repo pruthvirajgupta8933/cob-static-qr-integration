@@ -21,16 +21,19 @@ function SubmitKyc(props) {
 
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state.auth);
+  const {auth, kyc} =useSelector((state) => state); 
+  const { user } = auth
+  
   const { loginId } = user;
-  const VerifyKycStatus = useSelector(
-    (state) => state.kyc.KycTabStatusStore.merchant_info_status
-  );
 
+
+  const {KycTabStatusStore, kycUserList} = kyc
+  const VerifyKycStatus = KycTabStatusStore?.merchant_info_status
+  const merchant_consent = kycUserList?.merchant_consent?.term_condition
   const [readOnly, setReadOnly] = useState(false);
 
   const initialValues = {
-    term_condition: false,
+    term_condition: merchant_consent,
   };
 
   const redirectt = () => {
@@ -206,11 +209,11 @@ function SubmitKyc(props) {
                     >
                       <p className="text-white text-kyc-sumit"> Verifying</p>
                     </button>
-                    <button
+                    {/* <button
                         className="btn cick"
                         data-toggle="modal"
                         data-target="#kycSumitModal"
-                      >modal button</button>
+                      >modal button</button> */}
                     </>
                  
 

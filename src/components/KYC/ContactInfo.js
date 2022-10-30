@@ -51,9 +51,7 @@ function ContactInfo(props) {
     email_id: KycList?.emailId,
     oldEmailId: KycList?.emailId,
     oldContactNumber: KycList?.contactNumber,
-    // contact_designation: KycList?.contactDesignation,
-    aadhar_number: KycList?.aadharNumber,
-    // isEmailVerified: KycList?.isEmailVerified === 1 ? "1" : "",
+    aadhar_number: KycList?.aadharNumber
   };
 
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -90,9 +88,7 @@ function ContactInfo(props) {
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .matches(aadhaarRegex, "Aadhaar Number is Invalid")
       .required("Required")
-      .nullable(),
-    // isPhoneVerified: Yup.string().required("You need to verify Your Phone"),
-    // isEmailVerified: Yup.string().required("You need to verify Your Email"),
+      .nullable()
   });
 
   const handleSubmitContact = (values) => {
@@ -325,15 +321,14 @@ function ContactInfo(props) {
                 />
 
                 {KycList?.contactNumber !== null &&
-                KycList?.isContactNumberVerified === 1 &&
-                !errors.hasOwnProperty("contact_number") &&
-                !errors.hasOwnProperty("oldContactNumber") ? (
+                  KycList?.isContactNumberVerified === 1 &&
+                  !errors.hasOwnProperty("contact_number") &&
+                  !errors.hasOwnProperty("oldContactNumber") ? (
                   <span>
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>
                 ) : role.merchant ? (
                   <div class="position-sticky pull-right">
-                    {/* optbtn */}
                     <a
                       href={() => false}
                       className="btn btnbackground text-white btn-sm optbtn"
@@ -351,7 +346,7 @@ function ContactInfo(props) {
                       }}
                     >
                       Send Otp
-                    </a>{" "}
+                    </a>
                   </div>
                 ) : (
                   <></>
@@ -390,9 +385,9 @@ function ContactInfo(props) {
                 />
 
                 {KycList?.emailId !== null &&
-                KycList?.isEmailVerified === 1 &&
-                !errors.hasOwnProperty("email_id") &&
-                !errors.hasOwnProperty("oldEmailId") ? (
+                  KycList?.isEmailVerified === 1 &&
+                  !errors.hasOwnProperty("email_id") &&
+                  !errors.hasOwnProperty("oldEmailId") ? (
                   <span>
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>

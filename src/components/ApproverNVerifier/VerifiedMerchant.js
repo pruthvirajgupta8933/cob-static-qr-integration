@@ -119,8 +119,8 @@ function VerifiedMerchant() {
           {spinner && (
        <Spinner/>
         )}
-            {verfiedMerchant.length == 0 ?<tr> <td colSpan={'9'}><h1 className="nodatafound" >No data found</h1></td></tr> :
-            (verfiedMerchant.map((user, i) => (
+            {verfiedMerchant?.length === 0 ?<tr> <td colSpan={'9'}><h1 className="nodatafound" >No data found</h1></td></tr> :
+            (verfiedMerchant?.map((user, i) => (
               <tr key={i}>
                 <td>{i + 1}</td>
                 <td>{user.merchantId}</td>
@@ -128,7 +128,6 @@ function VerifiedMerchant() {
                 <td>{user.name}</td>
                 <td>{user.emailId}</td>
                 <td>{user.bankName}</td>
-                <td>{user.aadharNumber}</td>
                 <td>{user.panCard}</td>
                 <td>{user.status}</td>
                 {roles.approver===true ?
@@ -144,9 +143,9 @@ function VerifiedMerchant() {
         <nav aria-label="Page navigation example" >
 
 <ul class="pagination w-25">
-  {pageNumbers.length > 0 && <li class="page-item"><button class="page-link" onClick={handlePrevPage} >Previous</button></li>}
+  {pageNumbers?.length > 0 && <li class="page-item"><button class="page-link" onClick={handlePrevPage} >Previous</button></li>}
   {pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
-    <li key={pgNumber, i}
+    <li key={i}
       className={
         pgNumber === currentPage ? " page-item active" : "page-item"
       }>
@@ -161,7 +160,7 @@ function VerifiedMerchant() {
       </a>
     </li>
   ))}
-  {pageNumbers.length > 0 && <li class="page-item"><button class="page-link" onClick={handleNextPage} >Next</button></li>}
+  {pageNumbers?.length > 0 && <li class="page-item"><button class="page-link" onClick={handleNextPage} >Next</button></li>}
 </ul>
 </nav>
 

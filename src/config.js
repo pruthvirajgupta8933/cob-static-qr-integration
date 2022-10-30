@@ -127,7 +127,7 @@ const API_LIVE = {
 
   /////////////////////////Kyc approver
   /* For pending*/
-  KYC_FOR_PENDING: `${kyc_url}/kyc/get-merchant-data/?search=pending&order_by=-merchantId`,
+  KYC_FOR_PENDING: `${kyc_url}/kyc/get-merchant-data/?search=processing&order_by=-merchantId`,
   KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
   KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=approved&order_by=-merchantId`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,

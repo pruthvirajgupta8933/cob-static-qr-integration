@@ -116,7 +116,7 @@ const PhoneVerficationModal = ({ show, setShow }) => {
                   />
                 </div>
                 <div class="col-md-11 text-center">
-                <button className="btn" type="submit" style={{backgroundColor:"#0156B3"}}
+                <button className="btn" type="button" style={{backgroundColor:"#0156B3"}}
                     onClick={handleVerificationOfPhone}
                   >
                        <h4 className="text-white text-kyc-sumit">Verify</h4>

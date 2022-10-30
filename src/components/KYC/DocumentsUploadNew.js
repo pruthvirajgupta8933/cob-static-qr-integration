@@ -521,7 +521,7 @@ function DocumentsUpload(props) {
                   <></>
                 }
 
-                {role?.merchant ?
+                {true ?
                   <>
                     <hr
                       style={{
@@ -534,17 +534,18 @@ function DocumentsUpload(props) {
                     />
 
         {/* button visible for the verifier */}
-        {savedData?.length > 0 && role?.verifier || role?.approver || role?.merchant ?
+        {savedData?.length > 0  ?
           savedData?.map((img, i) =>
             <div className="col-lg-6 mt-4 test">
+            
               <img className="file-upload" src={img?.filePath} alt="kyc docuement" />
               <div>
                 {img?.status !== "Verified" || img?.status !== "Approved" ?
                   <>
                   {role?.verifier || role?.approver ? 
                   <>
-                    <button className="btn btn-sm btn-primary m-3" onClick={() => { verifyApproveDoc(img?.documentId) }}> {buttonText} </button>
-                    <button className="btn btn-sm btn-warning m-3" onClick={() => { rejectDoc(img?.documentId) }} > Reject </button>
+                  <a   href={() => false} className="btn btn-sm btn-primary m-3"  onClick={() => { verifyApproveDoc(img?.documentId) }}> {buttonText} </a>
+                  <a   href={() => false} className="btn btn-sm btn-warning m-3" onClick={() => { rejectDoc(img?.documentId) }} > Reject </a>
 
                     
                   </> :  <a   href={() => false} className="btn btn-sm btn-warning m-3" onClick={() => { removeDoc(img?.documentId) }} > <i className="fa fa-trash"></i> </a>}
@@ -582,14 +583,6 @@ function DocumentsUpload(props) {
             </Form>
           )}
         </Formik>
-
-
-
-
-
-
-
-
       </div>
     </>
   );
