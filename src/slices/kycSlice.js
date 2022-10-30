@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API_URL from "../config";
-import { axiosInstanceAuth, kycValidatorAuth } from "../utilities/axiosInstance";
-
+import {
+  axiosInstanceAuth,
+  kycValidatorAuth,
+} from "../utilities/axiosInstance";
 
 const initialState = {
   documentByloginId: {},
@@ -59,13 +61,12 @@ const initialState = {
       },
       aadhaar: {
         status: false,
-        valid: false
+        valid: false,
       },
     },
     BusiOverviewwStatus: {
       submitStatus: {
         status: false,
-
       },
     },
     BusinessDetailsStatus: {
@@ -73,13 +74,13 @@ const initialState = {
         first_name: "",
         last_name: "",
         valid: false,
-        status: false
+        status: false,
       },
       PanValidation: {
         first_name: "",
         last_name: "",
         valid: false,
-        status: false
+        status: false,
       },
       GSTINValidation: {
         status: false,
@@ -93,13 +94,13 @@ const initialState = {
     BankDetails: {
       IfscValidation: {
         valid: false,
-        status: false
+        status: false,
       },
       accountValidation: {
         first_name: "",
         last_name: "",
         valid: false,
-        status: false
+        status: false,
       },
 
       submitStatus: {
@@ -118,11 +119,11 @@ const initialState = {
   GetBankid: [],
 
   OtpResponse: {
-     status: "",
-     verification_token: "",
-     tempEmail:"",
-     tempPhone:""
-    },
+    status: "",
+    verification_token: "",
+    tempEmail: "",
+    tempPhone: "",
+  },
   OtpVerificationResponseForPhone: {
     status: false,
     message: "",
@@ -134,9 +135,7 @@ const initialState = {
   },
 };
 
-
-
-const validatorUrl = "https://stage-kycvalidator.sabpaisa.in/validator"
+const validatorUrl = "https://stage-kycvalidator.sabpaisa.in/validator";
 
 //--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
 export const updateContactInfo = createAsyncThunk(
@@ -163,10 +162,7 @@ export const otpForContactInfo = createAsyncThunk(
   "OtpForContact/otpContactInfo",
   async (requestParam) => {
     const response = await axiosInstanceAuth
-      .post(
-        `${API_URL.Send_OTP}`,
-        requestParam    
-        )
+      .post(`${API_URL.Send_OTP}`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -635,79 +631,87 @@ export const approveDoc = createAsyncThunk(
 );
 //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 export const panValidation = createAsyncThunk(
-  "kyc/panValidation", async (requestParam) => {
-    const response = await kycValidatorAuth.post(`${validatorUrl}` + '/validate-pan/', requestParam)
+  "kyc/panValidation",
+  async (requestParam) => {
+    const response = await kycValidatorAuth
+      .post(`${validatorUrl}` + "/validate-pan/", requestParam)
       .catch((error) => {
         return error.response;
       });
 
     return response.data;
   }
-)
+);
 
 export const authPanValidation = createAsyncThunk(
-  "kyc/authPanValidation", async (requestParam) => {
-    const response = await kycValidatorAuth.post(`${validatorUrl}` + '/validate-pan/', requestParam)
+  "kyc/authPanValidation",
+  async (requestParam) => {
+    const response = await kycValidatorAuth
+      .post(`${validatorUrl}` + "/validate-pan/", requestParam)
       .catch((error) => {
         return error.response;
       });
 
     return response.data;
   }
-)
+);
 
 export const gstValidation = createAsyncThunk(
-  "kyc/gstValidation", async (requestParam) => {
-    const response = await kycValidatorAuth.post(`${validatorUrl}` + '/validate-gst/', requestParam)
+  "kyc/gstValidation",
+  async (requestParam) => {
+    const response = await kycValidatorAuth
+      .post(`${validatorUrl}` + "/validate-gst/", requestParam)
       .catch((error) => {
         return error.response;
       });
 
     return response.data;
   }
-)
+);
 
 export const ifscValidation = createAsyncThunk(
-  "kyc/ifscValidation", async (requestParam) => {
-    const response = await kycValidatorAuth.post(`${validatorUrl}/validate-ifsc/`, requestParam)
+  "kyc/ifscValidation",
+  async (requestParam) => {
+    const response = await kycValidatorAuth
+      .post(`${validatorUrl}/validate-ifsc/`, requestParam)
       .catch((error) => {
         return error.response;
       });
 
     return response.data;
   }
-)
+);
 
 export const bankAccountVerification = createAsyncThunk(
-  "kyc/bankAccountVerification", async (requestParam) => {
-    const response = await kycValidatorAuth.post(`${validatorUrl}` + '/validate-account/', requestParam)
+  "kyc/bankAccountVerification",
+  async (requestParam) => {
+    const response = await kycValidatorAuth
+      .post(`${validatorUrl}` + "/validate-account/", requestParam)
       .catch((error) => {
         return error.response;
       });
 
     return response.data;
   }
-)
+);
 
 //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 
-
 //--Get Bank Id ------------//
 export const getBankId = createAsyncThunk(
-  "kyc/getBankId", async (requestParam) => {
-    console.log(requestParam)
-    const response = await axiosInstanceAuth.post(`${API_URL.GET_BANK_ID}`, requestParam)
+  "kyc/getBankId",
+  async (requestParam) => {
+    console.log(requestParam);
+    const response = await axiosInstanceAuth
+      .post(`${API_URL.GET_BANK_ID}`, requestParam)
       .catch((error) => {
         return error.response;
       });
 
     return response.data;
   }
-)
+);
 //--Get Bank Id ------------//
-
-
-
 
 export const approvekyc = createAsyncThunk(
   "kyc/approvekyc",
@@ -791,14 +795,9 @@ export const kycSlice = createSlice({
     kycModalToggle: (state, action) => {
       state.kycModalClose = action.payload;
     },
-    isPhoneVerified: (state, action) => {
-      // console.log(action);
-      // console.log(state.OtpVerificationResponseForPhone.status);
-      // state.transactionHistory = []
-    },
     clearKycState: (state) => {
-      state.kycUserList = {}
-    }
+      state.kycUserList = {};
+    },
   },
   extraReducers: {
     [kycUserList.pending]: (state, action) => {
@@ -896,9 +895,7 @@ export const kycSlice = createSlice({
       state.status = "failed";
     },
 
-
     //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
-
 
     // [panValidation.fulfilled]: (state, action) => {
     //   console.log("panValidation")
@@ -911,13 +908,11 @@ export const kycSlice = createSlice({
 
     //-----------------------------------
 
-
     [authPanValidation.fulfilled]: (state, action) => {
-
       if (action?.payload?.status === true && action?.payload?.valid === true) {
-        state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation = action.payload;
-        state.kycUserList.signatoryPAN = action?.meta?.arg?.pan_number
-
+        state.allTabsValidate.BusinessDetailsStatus.AuthPanValidation =
+          action.payload;
+        state.kycUserList.signatoryPAN = action?.meta?.arg?.pan_number;
       }
 
       // console.log(action.payload,"Action ===> 12")
@@ -926,54 +921,44 @@ export const kycSlice = createSlice({
     // ------------------------------------
 
     [gstValidation.fulfilled]: (state, action) => {
-
       if (action?.payload?.status === true && action?.payload?.valid === true) {
-        state.allTabsValidate.BusinessDetailsStatus.GSTINValidation = action.payload;
-        state.kycUserList.gstNumber = action?.meta?.arg?.gst_number
+        state.allTabsValidate.BusinessDetailsStatus.GSTINValidation =
+          action.payload;
+        state.kycUserList.gstNumber = action?.meta?.arg?.gst_number;
       }
 
       // console.log(action.payload,"Action ===> 12")
     },
 
     //-----------------------------------
- 
+
     [ifscValidation.fulfilled]: (state, action) => {
-   
       if (action?.payload?.status === true && action?.payload?.valid === true) {
         state.allTabsValidate.BankDetails.IfscValidation = action.payload;
-        state.kycUserList.ifscCode = action?.meta?.arg?.ifsc_number
+        state.kycUserList.ifscCode = action?.meta?.arg?.ifsc_number;
       }
     },
-  
 
     //---------------------------------------
 
     [bankAccountVerification.fulfilled]: (state, action) => {
       if (action?.payload?.status === true && action?.payload?.valid === true) {
-      state.allTabsValidate.BankDetails.accountValidation = action.payload;
+        state.allTabsValidate.BankDetails.accountValidation = action.payload;
 
-        state.kycUserList.accountNumber = action?.meta?.arg?.account_number
+        state.kycUserList.accountNumber = action?.meta?.arg?.account_number;
       }
       // console.log(action.payload,"Action Account Number ===> 1222222222")
     },
- 
-
 
     //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
-
-
-
 
     //-----------------Saving Bank Details by sending bank id -----------------//
 
     [getBankId.fulfilled]: (state, action) => {
-
       state.GetBankid = action.payload;
       //  console.log("Action Bank id ===>122",action.payload)
-
     },
     //-----------------Saving Bank Details by sending bank id -----------------//
-
 
     //All Kyc Tabs status stored in redux as false
 
@@ -1001,49 +986,43 @@ export const kycSlice = createSlice({
     },
 
     ////////////////////////////////////////////////////
-  
+
     [otpForContactInfo.fulfilled]: (state, action) => {
-      if(action?.payload?.status){
+      if (action?.payload?.status) {
         state.OtpResponse = action.payload;
-        if(action?.meta?.arg?.email){
-          state.OtpResponse.tempEmail = action?.meta?.arg?.email
+        if (action?.meta?.arg?.email) {
+          state.OtpResponse.tempEmail = action?.meta?.arg?.email;
         }
 
-        if(action?.meta?.arg?.mobile_number){
-          state.OtpResponse.tempPhone = action?.meta?.arg?.mobile_number
+        if (action?.meta?.arg?.mobile_number) {
+          state.OtpResponse.tempPhone = action?.meta?.arg?.mobile_number;
         }
-        
       }
-      
     },
-   
+
     ////////////////////////////////////////////////////////////
     // OTP state update
 
-  
     [otpVerificationForContactForPhone.fulfilled]: (state, action) => {
-     
       if (action.payload?.status === true) {
         state.OtpVerificationResponseForPhone = action.payload;
         state.kycUserList.isContactNumberVerified = 1;
-        state.kycUserList.contactNumber = state.OtpResponse.tempPhone
-        state.OtpResponse.tempPhone = ""
+        state.kycUserList.contactNumber = state.OtpResponse.tempPhone;
+        state.OtpResponse.tempPhone = "";
       }
-
     },
-  
+
     /////////////////////////////////////////////////////////////////
 
-   
     [otpVerificationForContactForEmail.fulfilled]: (state, action) => {
       if (action.payload?.status === true) {
         state.OtpVerificationResponseForEmail = action.payload;
         state.kycUserList.isEmailVerified = 1;
-        state.kycUserList.emailId = state.OtpResponse.tempEmail
-        state.OtpResponse.tempEmail = ""
+        state.kycUserList.emailId = state.OtpResponse.tempEmail;
+        state.OtpResponse.tempEmail = "";
       }
     },
-   
+
     [verifyKycEachTab.fulfilled]: (state, action) => {
       state.KycTabStatusStore = action.payload;
     },
@@ -1056,6 +1035,6 @@ export const {
   loadKycUserList,
   loadKycVericationForAllTabs,
   isPhoneVerified,
-  clearKycState
+  clearKycState,
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

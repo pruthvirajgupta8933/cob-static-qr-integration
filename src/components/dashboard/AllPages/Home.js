@@ -277,7 +277,7 @@ function Home() {
             {roles?.merchant === true ? (
               <div className="col-12 col-md-12">
                 <div class="card col-lg-12- cardkyc pull-left">
-                  <div class="font-weight-bold card-body">
+                  <div class="font-weight-bold card-body Satoshi-Medium">
                     <span>
                       You can accept payments upto ₹15,000 for now.To extend the
                       limit complete your KYC and get it approved.
@@ -500,7 +500,7 @@ function Home() {
       >
         <div class="modal-dialog modal-dialog-centered " role="document">
           <div class="modal-content">
-            <div class="modal-body">
+            <div class="modal-body Satoshi-Medium">
               <button
                 type="button"
                 onClick={() => {
@@ -582,7 +582,7 @@ function Home() {
       >
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
-            <div class="modal-body">
+            <div class="modal-body Satoshi-Medium">
               <button
                 type="button"
                 onClick={() => {
@@ -595,7 +595,7 @@ function Home() {
                 <span aria-hidden="true">&times;</span>
               </button>
 
-              <div class="container">
+              <div class="container Satoshi-Medium">
                 <div class="row justify-content-md-center">
                   <div class="col-md-auto">
                     <ul>
