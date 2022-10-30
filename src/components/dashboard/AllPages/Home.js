@@ -532,7 +532,7 @@ function Home() {
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row Satoshi-Medium">
                 <div class="col-lg-4">
                   <Link
                     to={`/dashboard/kyc`}
