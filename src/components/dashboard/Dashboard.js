@@ -11,7 +11,7 @@ import TransactionEnquirey from './AllPages/TransactionEnquirey';
 import SettlementReport from './AllPages/SettlementReport';
 import TransactionHistory from './AllPages/TransactionHistory';
 import { useRouteMatch, Switch, Route, Redirect, useHistory } from 'react-router-dom'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ClientList from './AllPages/ClientList';
 import PaymentLinkDetail from './AllPages/createpaymentlink/PaymentLinkDetail';
 import Paylink from './AllPages/Paylink';
@@ -33,6 +33,7 @@ import OnboardMerchant from '../ApproverNVerifier/Onboarderchant/OnboardMerchant
 import RefundTransactionHistory from './AllPages/RefundTransactionHistory';
 import ChargeBackTxnHistory from './AllPages/ChargeBackTxnHistory';
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
+import { createClientProfile } from '../../slices/auth';
 
 
 
@@ -42,12 +43,34 @@ function Dashboard() {
      const { user } = useSelector((state) => state.auth);
      const roles = roleBasedAccess()
 
+     const dispatch = useDispatch()
+
 
      useEffect(() => {
-          if(roles?.merchant){
-               console.log(user)
+          if (roles?.merchant) {
+               if (user?.clientMerchantDetailsList) {
+                    if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
+                         const uuidCode = Math.random().toString(36).slice(-6).toUpperCase();
+
+                         const data = {
+                              "loginId": user?.loginId,
+                              "clientName": user?.clientContactPersonName,
+                              "clientCode": uuidCode,
+                         }
+
+                         dispatch(createClientProfile(data))
+                         // .then(res => {
+                         //      console.log(res)
+                         // }).catch(err => {
+                         //      console.log(err)
+                         // })
+                         console.log("client code is null")
+                    } else {
+                         console.log("client code is not null")
+                    }
+               }
           }
-     }, [roles,user])
+     }, [])
 
      if (user !== null && user.userAlreadyLoggedIn) {
           history.push("/login-page");
@@ -56,8 +79,8 @@ function Dashboard() {
           return <Redirect to="/login-page" />
      }
 
-  
-     
+
+
 
 
      return (

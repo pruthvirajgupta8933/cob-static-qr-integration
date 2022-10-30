@@ -95,7 +95,8 @@ position:absolute;
   top:5%;
 }
 
-	@import url('https://fonts.googleapis.com/css?family=Titillium+Web:300,400,600,700,900');
+	/* @import url('https://fonts.googleapis.com/css?family=Titillium+Web:300,400,600,700,900'); */
+	@import url('../../../assets/fonts/Satoshi/Fonts/WEB/css/satoshi.css');
 
 /*--------------------*/
 /* 02. Common CSS */
@@ -103,7 +104,7 @@ position:absolute;
 
 
 body {
-  font-family: 'Titillium Web', sans-serif;
+  font-family: 'Satoshi-Regular';
   font-size: 14px;
   font-weight: 400;
   color: #44525f;
@@ -126,15 +127,6 @@ a:focus {
   text-decoration: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6{
-  font-family: 'Titillium Web', sans-serif;
-  /* color: #2d385e; */
-}
 
 a, 
 a:hover, 

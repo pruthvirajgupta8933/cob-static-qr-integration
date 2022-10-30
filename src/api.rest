@@ -1,0 +1,5 @@
+POST https://stgcobkyc.sabpaisa.in/kyc/kyc-submit/
+authorization: 2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69
+content-type: application/json
+
+{"term_condition":true,"login_id":10453,"submitted_by":10453}

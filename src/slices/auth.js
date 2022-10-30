@@ -222,13 +222,15 @@ export const createClientProfile = createAsyncThunk(
         "clientType": null,
         "parentClientId": null,
         "businessType": null,
-        "pocAccountManager": null
+        "pocAccountManager": null,
+        "business_cat_code": null
       };
 
       const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
       // console.log("mergeclientMerchantDetailsList",mergeclientMerchantDetailsList)
       const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
+      // console.log("user",allData)
       localStorage.setItem("user", JSON.stringify(allData))
 
 
@@ -288,7 +290,8 @@ export const updateClientProfile = createAsyncThunk(
         "clientType": null,
         "parentClientId": null,
         "businessType": null,
-        "pocAccountManager": null
+        "pocAccountManager": null,
+        "business_cat_code": null
       };
 
       const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
@@ -450,7 +453,7 @@ const authSlice = createSlice({
   initialState: auth,
   reducers: {
     isUserAlreadyLogin: (state, action) => {
-      console.log(action)
+      // console.log(action)
       // state.userAlreadyLoggedIn = 
     }
   },
@@ -485,6 +488,7 @@ const authSlice = createSlice({
       //code 
     },
     [login.fulfilled]: (state, action) => {
+      // console.log("action",action)
 
       let loggedInStatus = false;
       let isValidData = '';
@@ -499,9 +503,9 @@ const authSlice = createSlice({
       }
       state.isLoggedIn = loggedInStatus;
       state.user = action.payload.user;
-      state.user.clientMerchantDetailsList = action.payload.user.clientMerchantDetailsList
+      // state.user.clientMerchantDetailsList = action.payload.user.clientMerchantDetailsList
 
-
+      // console.log("user",user)
       localStorage.setItem("user", JSON.stringify(state.user))
       state.isValidUser = isValidData;
     },
@@ -516,7 +520,7 @@ const authSlice = createSlice({
       state.userAlreadyLoggedIn = false;
       state.isValidUser = '';
       state.user = null;
-      console.log(action)
+      // console.log(action)
       // state.login_error= action.payload
     },
     [logout.fulfilled]: (state, action) => {

@@ -122,12 +122,12 @@
 /* Harris CSS */
 
 .loginHeaderr {
-  font-family: "Nunito Sans";
+  /* font-family: "Nunito Sans"; */
   font-style: normal;
   font-weight: 700;
 }
 .loginFontForLabel {
-  font-family: "Nunito Sans";
+  /* font-family: "Nunito Sans"; */
   font-style: normal;
   font-weight: 600;
   font-size: 20px;
@@ -135,14 +135,14 @@
 }
 
 .loginpara1 {
-  font-family: "Nunito Sans";
+  /* font-family: "Nunito Sans"; */
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
 }
 .blueColr {
-  font-family: Nunito Sans;
+  /* font-family: Nunito Sans; */
   font-size: 20px;
   font-weight: 700;
   line-height: 31px;
@@ -151,7 +151,7 @@
   color: #014dad;
 }
 .loginContacthelp {
-  font-family: Nunito Sans;
+  /* font-family: Nunito Sans; */
   font-size: 14px;
   font-weight: 700;
   line-height: 1px;
