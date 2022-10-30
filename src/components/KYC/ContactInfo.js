@@ -48,7 +48,6 @@ function ContactInfo(props) {
     name: KycList?.name,
     contact_number: KycList?.contactNumber,
     email_id: KycList?.emailId,
-    // contact_designation: KycList?.contactDesignation,
     aadhar_number: KycList?.aadharNumber,
     isPhoneVerified: KycList?.isContactNumberVerified === 1 ? "1" : "",
     isEmailVerified: KycList?.isEmailVerified === 1 ? "1" : "",
@@ -128,11 +127,11 @@ function ContactInfo(props) {
     }
   };
 
-  useEffect(() => {
-    if (initialValues.contact_number === "") {
-      dispatch(isPhoneVerified(false));
-    }
-  }, [KycVerifyStatusForPhone]);
+  // useEffect(() => {
+  //   if (initialValues.contact_number === "") {
+  //     dispatch(isPhoneVerified(false));
+  //   }
+  // }, [KycVerifyStatusForPhone]);
 
   //-----------------Functionality To Send OTP Via Email Through Button ----------------------
   const handleToSendOTPForVerificationEmail = (values) => {

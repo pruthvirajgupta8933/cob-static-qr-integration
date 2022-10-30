@@ -312,7 +312,7 @@ html {
 html {
   font-size: 16px;
   line-height: 24px;
-  font-family: "Lato", sans-serif;
+  /* font-family: "Lato", sans-serif; */
 }
 
 .btn, .simform__actions .sumbit {

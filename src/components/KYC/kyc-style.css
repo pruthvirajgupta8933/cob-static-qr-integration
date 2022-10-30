@@ -43,7 +43,7 @@
 }
 
 .paymentSubHeader {
-  font-family: "Satoshi";
+ /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -51,14 +51,14 @@
 }
 
 .subHeaderForModal {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
 }
 
 .paymentHeader {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -88,7 +88,7 @@
 }
 
 .para-style {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 700;
   font-size: 13px;
@@ -219,7 +219,7 @@
 }
 
 .text-font {
-  font-family: Satoshi;
+  /* font-family: Satoshi; */
   font-size: 15px;
   font-weight: 700;
   line-height: 26px;
@@ -233,7 +233,7 @@
   display: inline-block;
 }
 .text-font-ForStatusChange {
-  font-family: Satoshi;
+  /* font-family: Satoshi; */
   font-size: 15px;
   font-weight: 700;
   line-height: 36px;
@@ -242,7 +242,7 @@
 }
 
 .text-kyc-header {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -251,7 +251,7 @@
 }
 
 .text-kyc-label {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 700;
   font-size: 15px;
@@ -259,7 +259,7 @@
 }
 
 .text-kyc-sumit {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 700;
   font-size: 17px;
