@@ -20,17 +20,16 @@ function SubmitKyc(props) {
   // const [modalState, setModalState] = useState(false);
 
   const dispatch = useDispatch();
-
-  const { user } = useSelector((state) => state.auth);
+  const {auth, kyc} =useSelector((state) => state); 
+  const { user } = auth
   const { loginId } = user;
-  const VerifyKycStatus = useSelector(
-    (state) => state.kyc.KycTabStatusStore.merchant_info_status
-  );
-
+  const {KycTabStatusStore, kycUserList} = kyc
+  const VerifyKycStatus = KycTabStatusStore?.merchant_info_status
+  const merchant_consent = kycUserList?.merchant_consent?.term_condition
   const [readOnly, setReadOnly] = useState(false);
 
   const initialValues = {
-    term_condition: false,
+    term_condition: merchant_consent,
   };
 
   const redirectt = () => {
@@ -134,6 +133,7 @@ function SubmitKyc(props) {
                       type="checkbox"
                       name="term_condition"
                       readOnly={readOnly}
+                      // checked={merchant_consent? "checked" : "unchecked"}
                       // checked={readOnly}
                       className="mr-0"
                     />
@@ -207,6 +207,7 @@ function SubmitKyc(props) {
                       <p className="text-white text-kyc-sumit"> Verifying</p>
                     </button>
                     <button
+                        type="button"
                         className="btn cick"
                         data-toggle="modal"
                         data-target="#kycSumitModal"

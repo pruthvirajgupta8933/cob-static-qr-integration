@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
-import API_URL from "../../config";
-import axios from "axios";
+
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -17,8 +16,6 @@ import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import { values } from "lodash";
 import gotVerified from "../../assets/images/verified.png";
-// import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
-// import verifyKycTab from "../../slices/veriferApproverSlice"
 
 function ContactInfo(props) {
   const setTab = props.tab;
@@ -49,11 +46,10 @@ function ContactInfo(props) {
     name: KycList?.name,
     contact_number: KycList?.contactNumber,
     email_id: KycList?.emailId,
-    oldEmailId: KycList?.emailId,
-    oldContactNumber: KycList?.contactNumber,
-    // contact_designation: KycList?.contactDesignation,
     aadhar_number: KycList?.aadharNumber,
-    // isEmailVerified: KycList?.isEmailVerified === 1 ? "1" : "",
+    isPhoneVerified: KycList?.isContactNumberVerified === 1 ? "1" : "",
+    isEmailVerified: KycList?.isEmailVerified === 1 ? "1" : "",
+
   };
 
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -68,31 +64,24 @@ function ContactInfo(props) {
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .required("Required")
       .matches(phoneRegExp, "Phone number is not valid")
-      .min(10, "Phone number is not valid")
+      .min(10, "Phone number in not valid")
       .max(10, "too long")
-      .nullable(),
-    oldContactNumber: Yup.string()
-      .oneOf(
-        [Yup.ref("contact_number"), null],
-        "You need to verify Your Contact Number"
-      )
-      .required("You need to verify Your Contact Number")
+      
       .nullable(),
     email_id: Yup.string()
       .email("Invalid email")
       .required("Required")
-      .nullable(),
-    oldEmailId: Yup.string()
-      .oneOf([Yup.ref("email_id"), null], "You need to verify Your Email Id")
-      .required("You need to verify Your Email Id")
       .nullable(),
     aadhar_number: Yup.string()
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .matches(aadhaarRegex, "Aadhaar Number is Invalid")
       .required("Required")
       .nullable(),
-    // isPhoneVerified: Yup.string().required("You need to verify Your Phone"),
-    // isEmailVerified: Yup.string().required("You need to verify Your Email"),
+    isPhoneVerified: Yup.string().test(
+      ['gender']
+    ),
+
+    isEmailVerified: Yup.string().required("You need to verify Your Email"),
   });
 
   const handleSubmitContact = (values) => {
@@ -112,15 +101,14 @@ function ContactInfo(props) {
           res?.meta?.requestStatus === "fulfilled" &&
           res.payload?.status === true
         ) {
-          // console.log("chec2")
-
+  
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
           toast.success(res.payload?.message);
         } else {
           // console.log("chec1")
           toast.error(res.payload?.message);
-          toast.error(res.payload?.detail);
+          // toast.error(res.payload?.detail);
           setShowOtpVerifyModalEmail(false);
         }
       });
@@ -141,11 +129,11 @@ function ContactInfo(props) {
     }
   };
 
-  // useEffect(() => {
-  //   if (initialValues.contact_number === "") {
-  //     dispatch(isPhoneVerified(false));
-  //   }
-  // }, [KycVerifyStatusForPhone]);
+  useEffect(() => {
+    if (initialValues.contact_number === "") {
+      dispatch(isPhoneVerified(false));
+    }
+  }, [KycVerifyStatusForPhone]);
 
   //-----------------Functionality To Send OTP Via Email Through Button ----------------------
   const handleToSendOTPForVerificationEmail = (values) => {
@@ -255,17 +243,9 @@ function ContactInfo(props) {
         onSubmit={handleSubmitContact}
         enableReinitialize={true}
       >
-        {({
-          values,
-          setFieldValue,
-          initialValues,
-          errors,
-          setFieldError,
-          setFieldTouched,
-          handleChange,
-        }) => (
+        {(formik) => (
           <Form>
-            {/* {console.log(formik)} */}
+            {console.log(formik)}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -324,10 +304,8 @@ function ContactInfo(props) {
                   readOnly={readOnly}
                 />
 
-                {KycList?.contactNumber !== null &&
-                KycList?.isContactNumberVerified === 1 &&
-                !errors.hasOwnProperty("contact_number") &&
-                !errors.hasOwnProperty("oldContactNumber") ? (
+                {KycList?.isContactNumberVerified === 1 &&
+                KycList?.contactNumber === formik.values?.contact_number ? (
                   <span>
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>
@@ -343,9 +321,9 @@ function ContactInfo(props) {
                       }}
                       onClick={() => {
                         checkInputIsValid(
-                          errors,
-                          values,
-                          setFieldError,
+                          formik.errors,
+                          formik.values,
+                          formik.setFieldError,
                           "contact_number"
                         );
                       }}
@@ -357,9 +335,9 @@ function ContactInfo(props) {
                   <></>
                 )}
 
-                {errors?.oldContactNumber && (
+                {formik?.errors?.isPhoneVerified && (
                   <span className="text-danger">
-                    {errors?.oldContactNumber}
+                    {formik?.errors?.isPhoneVerified}
                   </span>
                 )}
               </div>
@@ -389,10 +367,8 @@ function ContactInfo(props) {
                   readOnly={readOnly}
                 />
 
-                {KycList?.emailId !== null &&
-                KycList?.isEmailVerified === 1 &&
-                !errors.hasOwnProperty("email_id") &&
-                !errors.hasOwnProperty("oldEmailId") ? (
+                {KycList?.isEmailVerified === 1 &&
+                KycList?.emailId === formik.values?.email_id ? (
                   <span>
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>
@@ -408,9 +384,9 @@ function ContactInfo(props) {
                       }}
                       onClick={() => {
                         checkInputIsValid(
-                          errors,
-                          values,
-                          setFieldError,
+                          formik.errors,
+                          formik.values,
+                          formik.setFieldError,
                           "email_id"
                         );
                       }}
@@ -421,8 +397,10 @@ function ContactInfo(props) {
                 ) : (
                   <></>
                 )}
-                {errors?.oldEmailId && (
-                  <span className="text-danger">{errors?.oldEmailId}</span>
+                {formik?.errors?.isEmailVerified && (
+                  <span className="text-danger">
+                    {formik?.errors?.isEmailVerified}
+                  </span>
                 )}
               </div>
             </div>
