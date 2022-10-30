@@ -14,6 +14,7 @@ import {
   getBankId,
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
+import gotVerified from "../../assets/images/verified.png";
 
 function BankDetails(props) {
   const setTab = props.tab;
@@ -70,8 +71,9 @@ function BankDetails(props) {
         ? bankDetailsById[0]?.bankId
         : KycList?.merchant_account_details?.bankId, // change stste
     account_type: KycList?.merchant_account_details?.accountType,
-  
-    branch: branch?.length>2  ? branch : KycList?.merchant_account_details?.branch,
+
+    branch:
+      branch?.length > 2 ? branch : KycList?.merchant_account_details?.branch,
     // isIFSCCode: KycList?.ifscCode !== null ? "1" : "",
     // isIFSCCode: ifscVerifed,
     isAccountNumberVerified: KycList?.accountNumber !== null ? "1" : "",
@@ -167,8 +169,7 @@ function BankDetails(props) {
       ) {
         // console.log("This is the response", res);
         // console.log(res?.payload?.ifsc[0])
-        toast.success(res?.payload?.message) 
-
+        toast.success(res?.payload?.message);
       } else {
         toast.error(res?.payload?.message);
       }
@@ -358,19 +359,7 @@ function BankDetails(props) {
               !errors.hasOwnProperty("oldIfscCode") ? (
                 // {initialValues?.isIFSCCode === "1" && values?.ifsc_code === KycList?.ifscCode ? (
                 <span>
-                  <p className="panVerfied text-success">
-                    Verified
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-check"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                    </svg>
-                  </p>
+                  <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
                 (// values.ifsc_code !== checkIfscChange && values.ifsc_code === "" ?
@@ -395,7 +384,7 @@ function BankDetails(props) {
                   >
                     Verify
                   </a>
-                </div> /*: <></>*/)
+                </div> /*: <></>*/ /*: <></>*/ /*: <></>*/ /*: <></>*/)
                 // : <></>
               )}
 
@@ -428,22 +417,10 @@ function BankDetails(props) {
               !errors.hasOwnProperty("account_number") &&
               !errors.hasOwnProperty("oldAccountNumber") ? (
                 <span>
-                  <p className="panVerfied text-success">
-                    Verified
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-check"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                    </svg>
-                  </p>
+                  <img src={gotVerified} alt="" title="" width="26" />
                 </span>
-              ) : (
-                !errors.hasOwnProperty("oldIfscCode") && !errors.hasOwnProperty("ifsc_code") ? 
+              ) : !errors.hasOwnProperty("oldIfscCode") &&
+                !errors.hasOwnProperty("ifsc_code") ? (
                 <div class="position-sticky pull-right">
                   <a
                     href={() => false}
@@ -465,7 +442,9 @@ function BankDetails(props) {
                   >
                     Verify
                   </a>
-                </div> : <> </> 
+                </div>
+              ) : (
+                <> </>
               )}
 
               {errors?.oldAccountNumber && (
