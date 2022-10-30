@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import API_URL, { AUTH_TOKEN } from "../config";
-import axios from "axios";
+import API_URL from "../config";
 import { axiosInstanceAuth, kycValidatorAuth } from "../utilities/axiosInstance";
-import { ContactlessOutlined } from "@mui/icons-material";
+
 
 const initialState = {
   documentByloginId: {},
@@ -797,6 +796,9 @@ export const kycSlice = createSlice({
       // console.log(state.OtpVerificationResponseForPhone.status);
       // state.transactionHistory = []
     },
+    clearKycState: (state) => {
+      state.kycUserList = {}
+    }
   },
   extraReducers: {
     [kycUserList.pending]: (state, action) => {
@@ -1054,5 +1056,6 @@ export const {
   loadKycUserList,
   loadKycVericationForAllTabs,
   isPhoneVerified,
+  clearKycState
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

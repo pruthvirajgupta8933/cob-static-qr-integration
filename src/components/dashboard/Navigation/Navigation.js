@@ -2,27 +2,25 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Link,
-  useParams,
   useRouteMatch,
-  useHistory,
-  Redirect,
+  useHistory
 } from "react-router-dom";
 import { logout } from "../../../slices/auth";
+import { clearKycState } from "../../../slices/kycSlice";
 
 function SideNavbarNav() {
   let history = useHistory();
   const { user } = useSelector((state) => state.auth);
-  // console.log(user);
   if (user !== null && user.userAlreadyLoggedIn) {
     alert("no login");
-    // <Redirect to="/login-page" />
     history.push("/login-page");
   }
-  var { roleId, clientContactPersonName } = user;
-  let { path, url } = useRouteMatch();
+  var { roleId } = user;
+  let { url } = useRouteMatch();
   const dispatch = useDispatch();
   const handle = () => {
     dispatch(logout());
+    dispatch(clearKycState());
   };
 
   return (

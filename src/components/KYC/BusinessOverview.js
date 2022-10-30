@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
-import { Zoom } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import * as Yup from "yup";
-import API_URL from "../../config";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
