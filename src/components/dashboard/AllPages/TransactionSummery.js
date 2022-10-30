@@ -117,7 +117,7 @@ showData.map((item)=>{
             <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
               <div className="container-fluid">
                 <div className="row bgcolor">
-                  <div className="col-lg-4 ml-4 mrg-btm- bgcolor-">
+                  <div className="form-group col-md-4 mx-4 mrg-btm- bgcolor-">
                     <label>Successful Transaction Summary</label>
                     <select
                       className="ant-input"
