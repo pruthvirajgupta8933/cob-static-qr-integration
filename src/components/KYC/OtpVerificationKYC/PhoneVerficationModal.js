@@ -13,6 +13,9 @@ const PhoneVerficationModal = ({ show, setShow }) => {
   );
 
   const [otpForPhone, setOtpForPhone] = useState({ otp: "" })
+
+
+
   const dispatch = useDispatch();
 
   const handleChangeForOtpPhone = (otp) => {
@@ -113,8 +116,8 @@ const PhoneVerficationModal = ({ show, setShow }) => {
                   />
                 </div>
                 <div class="col-md-11 text-center">
-                <button className="btn" type="button" style={{backgroundColor:"#0156B3"}}
-                    onClick={()=>handleVerificationOfPhone()}
+                <button className="btn" type="submit" style={{backgroundColor:"#0156B3"}}
+                    onClick={handleVerificationOfPhone}
                   >
                        <h4 className="text-white text-kyc-sumit">Verify</h4>
                   </button>
