@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "Montserrat-Regular";
+  src: url("../Montserrat/Fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat-Medium";
+  src: url("../Montserrat/Fonts/Montserrat-Medium.ttf") format("truetype");
+}

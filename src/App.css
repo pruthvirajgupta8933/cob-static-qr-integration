@@ -1,6 +1,8 @@
 @import url("../src/assets/fonts/Satoshi/Fonts/WEB/css/satoshi.css");
 @import url("../src/assets/fonts/OpenSans/Fonts/opensans.css");
 @import url("../src/assets/fonts/NunitoSans/nunitosans.css");
+@import url("../src/assets/fonts/Roboto/roboto.css");
+@import url("../src/assets/fonts/Roboto/roboto.css");
 
 label {
   display: block;
@@ -188,6 +190,22 @@ label {
 
 .NunitoSans-Medium {
   font-family: "NunitoSans-Medium" !important;
+}
+
+.Roboto-Regular {
+  font-family: "Roboto-Regular" !important;
+}
+
+.Roboto-Medium {
+  font-family: "Roboto-Medium" !important;
+}
+
+.Montserrat-Regular {
+  font-family: "Montserrat-Regular" !important;
+}
+
+.Montserrat-Medium {
+  font-family: "Montserrat-Medium" !important;
 }
 /* .OpenSans-Regular {
   font-family: "O" !important;
