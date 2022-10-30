@@ -99,10 +99,11 @@ function KycForm() {
   //-----------Kyc Document Upload List ------//
 
   useEffect(() => {
-    dispatch(kycDocumentUploadList({login_id: merchantloginMasterId})
-    ).then((res) => {
-      // console.log(res)
-    });
+    dispatch(kycDocumentUploadList({ login_id: merchantloginMasterId })).then(
+      (res) => {
+        // console.log(res)
+      }
+    );
   }, [kycDocumentUploadList, merchantloginMasterId]);
 
   //--------------------------------------//
@@ -152,7 +153,7 @@ function KycForm() {
               <span aria-hidden="true">&times;</span>
             </button>
             <div class="modal-body" style={{ display: "contents" }}>
-              <div class="card-group">
+              <div class="card-group Satoshi-Medium">
                 <div class="row">
                   <div class="col-lg-3">
                     <div
