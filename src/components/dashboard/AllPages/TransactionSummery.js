@@ -117,7 +117,7 @@ showData.map((item)=>{
             <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
               <div className="container-fluid">
                 <div className="row bgcolor">
-                  <div className="col-lg-4 mrg-btm- bgcolor-">
+                  <div className="col-lg-4 ml-4 mrg-btm- bgcolor-">
                     <label>Successful Transaction Summary</label>
                     <select
                       className="ant-input"
@@ -139,7 +139,7 @@ showData.map((item)=>{
                       <label>Search</label>
                       <input
                         type="text"
-                        className="ant-input"
+                        className="ant-input "
                         onChange={(e) => {
                           handleChange(e.currentTarget.value);
                         }}
@@ -149,7 +149,7 @@ showData.map((item)=>{
                   ) : (
                     <></>
                   )}
-                  <div className="gap">
+                  <div className="gap ml-4">
                     <p>
                       Total Successful Transactions: {totalSuccessTxn} | Total
                       Amount {`(INR)`}: {totalAmt}{" "}
@@ -160,7 +160,7 @@ showData.map((item)=>{
                     cellPadding={10}
                     border={0}
                     width="100%"
-                    className="tables"
+                    className="tables ml-4"
                   >
                     <tbody>
                       <tr>
@@ -185,7 +185,7 @@ showData.map((item)=>{
                   </table>
 
                   {showData.length <= 0 && isLoading === false ? (
-                    <div className="showMsg"> No Record Found</div>
+                    <div className="showMsg ml-4"> No Record Found</div>
                   ) : (
                     <></>
                   )}
