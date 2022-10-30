@@ -6,29 +6,32 @@ import { Link } from "react-router-dom";
 import "./navBar.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
-
 const NavBar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const loginId = user.loginId;
   const username = user.clientContactPersonName;
-  const roles = roleBasedAccess()
-  const loggedUser = Object.keys(roles).find(key => roles[key] === true);
-
-
+  const roles = roleBasedAccess();
+  const loggedUser = Object.keys(roles).find((key) => roles[key] === true);
 
   const exitback = () => {
     dispatch(logout());
   };
   return (
     <div>
-      <nav class="navbar navbar-light" style={{ background: '#140633' }}>
+      <nav
+        class="navbar navbar-light Satoshi-Medium"
+        style={{ background: "#140633" }}
+      >
         <ul class="navbar-brand mb-0 h1">
           <img src={profile} alt="profile" title="profile" />
           <h3 className="text-white float-right mt-0">Welcome back</h3>
           <div style={{ fontSize: "13px" }}>
-            <span class="text-white text-sm text-uppercase" style={{ paddingLeft: "40px" }}>
-             {loggedUser} Id &nbsp;: {loginId}
+            <span
+              class="text-white text-sm text-uppercase"
+              style={{ paddingLeft: "40px" }}
+            >
+              {loggedUser} Id &nbsp;: {loginId}
             </span>
           </div>
         </ul>

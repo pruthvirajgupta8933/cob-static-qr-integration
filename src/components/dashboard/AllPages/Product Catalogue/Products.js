@@ -1,22 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import NavBar from '../../NavBar/NavBar';
-import { Link } from 'react-router-dom'
-import './product.css'
-import onlinePayment from "../../../../assets/images/onlinePayment.png"
-import paymentLink from "../../../../assets/images/paymentLink.png"
-import subscribe from "../../../../assets/images/subscribe.png"
-import payout from "../../../../assets/images/payout.png"
-import qwikform from "../../../../assets/images/qwikform.png"
-import echallan from "../../../../assets/images/echallan.png"
-import epos from "../../../../assets/images/epos.png"
-import linkPaisa from "../../../../assets/images/linkPaisa.png"
-import Spinner from './Spinner';
-import API_URL from '../../../../config';
-import { axiosInstanceAuth } from '../../../../utilities/axiosInstance';
-
+import React, { useState, useEffect } from "react";
+import NavBar from "../../NavBar/NavBar";
+import { Link } from "react-router-dom";
+import "./product.css";
+import onlinePayment from "../../../../assets/images/onlinePayment.png";
+import paymentLink from "../../../../assets/images/paymentLink.png";
+import subscribe from "../../../../assets/images/subscribe.png";
+import payout from "../../../../assets/images/payout.png";
+import qwikform from "../../../../assets/images/qwikform.png";
+import echallan from "../../../../assets/images/echallan.png";
+import epos from "../../../../assets/images/epos.png";
+import linkPaisa from "../../../../assets/images/linkPaisa.png";
+import Spinner from "./Spinner";
+import API_URL from "../../../../config";
+import { axiosInstanceAuth } from "../../../../utilities/axiosInstance";
 
 const Products = () => {
-
   const [product, setProduct] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const iconImg = [
@@ -27,29 +25,26 @@ const Products = () => {
     qwikform,
     echallan,
     epos,
-    linkPaisa
-  ]
+    linkPaisa,
+  ];
 
   useEffect(() => {
     axiosInstanceAuth
-      .get(API_URL.PRODUCT_DETAILS
-      )
+      .get(API_URL.PRODUCT_DETAILS)
       .then((resp) => {
         const data = resp.data.ProductDetail;
-        setSpinner(false)
-
+        setSpinner(false);
 
         setProduct(data);
       })
       .catch((err) => console.log(err));
   }, []);
   const map1 = product.map((Singleproduct, i) =>
-    localStorage.setItem(`application_Name ${i}`, Singleproduct.application_name)
+    localStorage.setItem(
+      `application_Name ${i}`,
+      Singleproduct.application_name
+    )
   );
-
-
-
-
 
   return (
     <section className="ant-layout">
@@ -57,124 +52,64 @@ const Products = () => {
         <NavBar />
         {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
       </div>
-      <main className="gx-layout-content ant-layout-content">
-
+      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
         <div class="container">
           <div class="row justify-content-md-center">
-
             <div class="col-md-auto">
-
-
-              <h1 className="text-centre prodHeader" style={{ fontSize: "xx-large" }}>Explore wide range of our Products</h1>
+              <h1
+                className="text-centre prodHeader"
+                style={{ fontSize: "xx-large" }}
+              >
+                Explore wide range of our Products
+              </h1>
               <p className="prodpara">
-                We offer a very competitive pricing to match your business needs. Sign up now to get started  </p>
+                We offer a very competitive pricing to match your business
+                needs. Sign up now to get started{" "}
+              </p>
             </div>
           </div>
         </div>
         <div class="row">
-          {spinner && (
-            <span
-              className="spinner-border"
-              role="status"
-            ></span>
-          )}
+          {spinner && <span className="spinner-border" role="status"></span>}
 
           {product.map((Products, i) => (
             <div class="col-sm-6 col-md-6 col-lg-6">
-
-              <div class="card" style={{ width: "31rem", height: "17rem" }} >
+              <div class="card" style={{ width: "31rem", height: "17rem" }}>
                 <div class="card-body">
                   <h5 class="card-title prod-header">
-                    <img class="card-img-left" src={iconImg[i]} alt="onlinepay" width={40} />
+                    <img
+                      class="card-img-left"
+                      src={iconImg[i]}
+                      alt="onlinepay"
+                      width={40}
+                    />
                     &nbsp;
                     {Products.application_name}
                   </h5>
-                  <p class="card-text prod-content" > {Products.application_description}</p>
-                  <div >
-                    <p class="prod-read"> <Link to={`/dashboard/sabpaisa-pricing/${Products.application_id}/${Products.application_name}`}>Read More & Pricing  &nbsp;{'>'}{'>'}</Link></p>
+                  <p class="card-text prod-content">
+                    {" "}
+                    {Products.application_description}
+                  </p>
+                  <div>
+                    <p class="prod-read">
+                      {" "}
+                      <Link
+                        to={`/dashboard/sabpaisa-pricing/${Products.application_id}/${Products.application_name}`}
+                      >
+                        Read More & Pricing &nbsp;{">"}
+                        {">"}
+                      </Link>
+                    </p>
                   </div>
                   {/* <Link to={`/dashboard/sabpaisa-pricing/${Products.application_id}`} */}
                 </div>
               </div>
             </div>
           ))}
-        
         </div>
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         {/* <p><Link to='/dashboard/sabpaisa-pricing'>Read More & Pricing</Link></p> */}
         {/*  <=========== Old Product Catalogue ===========> */}
-
-
 
         {/* <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
@@ -186,7 +121,6 @@ const Products = () => {
           > */}
         <div className="container-fluid">
           <div className="row">
-
             {/* {subscriptionPlanData.length <= 0 ? (
                   <h3>Loading...</h3>
                 ) : ( */}
@@ -239,8 +173,6 @@ const Products = () => {
                               </div>
                             </div> */}
 
-
-
             {/* <button
                                className=" btn bttn bttnbackgroundkyc collapsed"
                                 type="button"
@@ -270,11 +202,9 @@ const Products = () => {
             {/*  <=========== Old Product Catalogue ===========> */}
           </div>
         </div>
-
       </main>
     </section>
   );
 };
 
-
-export default Products
+export default Products;

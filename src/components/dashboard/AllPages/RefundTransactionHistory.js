@@ -7,14 +7,18 @@ import _ from "lodash";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
-import { toast } from 'react-toastify';
-import { clearSettlementReport, fetchRefundTransactionHistory,fetchSettlementReportSlice} from "../../../slices/dashboardSlice";
+import { toast } from "react-toastify";
+import {
+  clearSettlementReport,
+  fetchRefundTransactionHistory,
+  fetchSettlementReportSlice,
+} from "../../../slices/dashboardSlice";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import NavBar from "../NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import moment from "moment"
+import moment from "moment";
 
 function RefundTransactionHistory() {
   const dispatch = useDispatch();
@@ -22,7 +26,6 @@ function RefundTransactionHistory() {
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
-  
 
   const { isLoadingTxnHistory } = dashboard;
   const [txnList, SetTxnList] = useState([]);
@@ -38,31 +41,28 @@ function RefundTransactionHistory() {
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
 
-
-  
-  var now = moment().format('YYYY-M-D');
+  var now = moment().format("YYYY-M-D");
   var splitDate = now.split("-");
-  if(splitDate[1].length===1){
-    splitDate[1] = '0'+splitDate[1]; 
-  }  
-  if(splitDate[2].length===1){
-    splitDate[2] = '0'+splitDate[2];
+  if (splitDate[1].length === 1) {
+    splitDate[1] = "0" + splitDate[1];
   }
-  splitDate =splitDate.join('-');
+  if (splitDate[2].length === 1) {
+    splitDate[2] = "0" + splitDate[2];
+  }
+  splitDate = splitDate.join("-");
 
-
-//   var clientMerchantDetailsList = [];
-//   if (
-//     user &&
-//     user?.clientMerchantDetailsList === null &&
-//     user?.roleId !== 3 &&
-//     user?.roleId !== 13
-//   ) {
-//     history.push("/dashboard/profile");
-//   } else {
-//     clientMerchantDetailsList = user?.clientMerchantDetailsList;
-//   }
-var clientMerchantDetailsList = [];
+  //   var clientMerchantDetailsList = [];
+  //   if (
+  //     user &&
+  //     user?.clientMerchantDetailsList === null &&
+  //     user?.roleId !== 3 &&
+  //     user?.roleId !== 13
+  //   ) {
+  //     history.push("/dashboard/profile");
+  //   } else {
+  //     clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  //   }
+  var clientMerchantDetailsList = [];
   if (
     user &&
     user?.clientMerchantDetailsList === null &&
@@ -80,37 +80,38 @@ var clientMerchantDetailsList = [];
     ? clientMerchantDetailsList[0]?.clientCode
     : "";
 
+  const tempClientList = convertToFormikSelectJson(
+    "clientCode",
+    "clientName",
+    clientMerchantDetailsList
+  );
 
-  const tempClientList = convertToFormikSelectJson("clientCode","clientName",clientMerchantDetailsList);
-
- const [todayDate, setTodayDate] = useState(splitDate);
+  const [todayDate, setTodayDate] = useState(splitDate);
 
   const initialValues = {
-    clientCode:"",
-    fromDate:todayDate ,
-    endDate:todayDate,
+    clientCode: "",
+    fromDate: todayDate,
+    endDate: todayDate,
     noOfClient: "1",
-	  rpttype: "0"
-  }
+    rpttype: "0",
+  };
 
   const validationSchema = Yup.object({
     clientCode: Yup.string().required("Required"),
     fromDate: Yup.date().required("Required"),
-    endDate: Yup.date().min(
-      Yup.ref('fromDate'),
-      "End date can't be before Start date"
-    ).required("Required")
-  })
+    endDate: Yup.date()
+      .min(Yup.ref("fromDate"), "End date can't be before Start date")
+      .required("Required"),
+  });
 
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
     "clientName",
-    clientMerchantDetailsList,
+    clientMerchantDetailsList
     // extraDataObj,
     // isExtraDataRequired
   );
-  console.log(clientMerchantDetailsList,"hereeeeeeeeeeee")
-
+  console.log(clientMerchantDetailsList, "hereeeeeeeeeeee");
 
   useEffect(() => {
     // console.log("showData", showData.length);
@@ -129,95 +130,85 @@ var clientMerchantDetailsList = [];
     });
   }, [showData, updateTxnList]);
 
-  
-
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
   };
 
-//   console.log(fetchRefundTransactionHistory,"urllllllllllll")
+  //   console.log(fetchRefundTransactionHistory,"urllllllllllll")
 
-  const onSubmitHandler = (values)=>{
-    dispatch(fetchRefundTransactionHistory(values))
-
-    .then(res=>{
-
-        console.log(res,"myreesss")
+  const onSubmitHandler = (values) => {
+    dispatch(fetchRefundTransactionHistory(values)).then((res) => {
+      console.log(res, "myreesss");
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
-        if(ApiStatus==="rejected"){
-          toast.error("Request Rejected");
-        }
-        if(ApiPayload?.length<1 && ApiStatus==="fulfilled" ){
-          toast.error("No Data Found");
-        }
-    })
-  }
-// const onSubmitHandler = values =>{
-//     // console.log(values)
-    
-//     isButtonClicked(true)
-    
-//     const {fromDate, endDate, transaction_status, payment_mode} = values
-//     const dateRangeValid = checkValidation(fromDate, endDate);
+      if (ApiStatus === "rejected") {
+        toast.error("Request Rejected");
+      }
+      if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
+        toast.error("No Data Found");
+      }
+    });
+  };
+  // const onSubmitHandler = values =>{
+  //     // console.log(values)
 
-//     if(dateRangeValid){ 
-//       // isLoading(true);
-//       // isButtonClicked(true);
-//       let strClientCode, clientCodeArrLength ="";
-//         if(clientCode==="All"){
-//         const allClientCode = []
-//         clientMerchantDetailsList?.map((item)=>{
-//           allClientCode.push(item.clientCode)
-//         })
-//         clientCodeArrLength = allClientCode.length.toString();
-//         strClientCode = allClientCode.join().toString();
-//       }else{
-//         strClientCode = clientCode;
-//         clientCodeArrLength = "1"
-//       }
+  //     isButtonClicked(true)
 
-//       let paramData = {
-//         clientCode:strClientCode,
-//         paymentStatus:transaction_status,
-//         paymentMode:payment_mode,
-//         fromDate:fromDate,
-//         endDate:endDate,
-//         length: "0",
-//         page: "0",
-//         NoOfClient: clientCodeArrLength
-//       } 
-//   console.log(paramData)
-//       dispatch(fetchTransactionHistorySlice(paramData))
-// }
+  //     const {fromDate, endDate, transaction_status, payment_mode} = values
+  //     const dateRangeValid = checkValidation(fromDate, endDate);
 
+  //     if(dateRangeValid){
+  //       // isLoading(true);
+  //       // isButtonClicked(true);
+  //       let strClientCode, clientCodeArrLength ="";
+  //         if(clientCode==="All"){
+  //         const allClientCode = []
+  //         clientMerchantDetailsList?.map((item)=>{
+  //           allClientCode.push(item.clientCode)
+  //         })
+  //         clientCodeArrLength = allClientCode.length.toString();
+  //         strClientCode = allClientCode.join().toString();
+  //       }else{
+  //         strClientCode = clientCode;
+  //         clientCodeArrLength = "1"
+  //       }
 
-//   }
-//   const checkValidation = (fromDate = "", toDate = "") => {
-//     var flag = true;
-//     if (fromDate === 0 || toDate === "") {
-//       alert("Please select the date.");
-//       flag = false;
-//     } else if (fromDate !== "" || toDate !== "") {
-//       const date1 = new Date(fromDate);
-//       const date2 = new Date(toDate);
-//       const diffTime = Math.abs(date2 - date1);
-//       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-//       // console.log("days",diffDays);
-//       if (diffDays < 0 || diffDays > 90) {
-//         flag = false;
-//         alert("The date range should be under 3 months");
-//       }
-//     } else {
-//       flag = true;
-//     }
+  //       let paramData = {
+  //         clientCode:strClientCode,
+  //         paymentStatus:transaction_status,
+  //         paymentMode:payment_mode,
+  //         fromDate:fromDate,
+  //         endDate:endDate,
+  //         length: "0",
+  //         page: "0",
+  //         NoOfClient: clientCodeArrLength
+  //       }
+  //   console.log(paramData)
+  //       dispatch(fetchTransactionHistorySlice(paramData))
+  // }
 
-//     return flag;
-//   };
+  //   }
+  //   const checkValidation = (fromDate = "", toDate = "") => {
+  //     var flag = true;
+  //     if (fromDate === 0 || toDate === "") {
+  //       alert("Please select the date.");
+  //       flag = false;
+  //     } else if (fromDate !== "" || toDate !== "") {
+  //       const date1 = new Date(fromDate);
+  //       const date2 = new Date(toDate);
+  //       const diffTime = Math.abs(date2 - date1);
+  //       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  //       // console.log("days",diffDays);
+  //       if (diffDays < 0 || diffDays > 90) {
+  //         flag = false;
+  //         alert("The date range should be under 3 months");
+  //       }
+  //     } else {
+  //       flag = true;
+  //     }
 
-
-
-
+  //     return flag;
+  //   };
 
   useEffect(() => {
     // Remove initiated from transaction history response
@@ -227,14 +218,24 @@ var clientMerchantDetailsList = [];
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
     SetTxnList(TxnListArrUpdated);
-    setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value());
+    setPaginatedData(
+      _(TxnListArrUpdated)
+        .slice(0)
+        .take(pageSize)
+        .value()
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard]);
 
   // console.log("buttonclicked",buttonClicked);
 
   useEffect(() => {
-    setPaginatedData(_(showData).slice(0).take(pageSize).value());
+    setPaginatedData(
+      _(showData)
+        .slice(0)
+        .take(pageSize)
+        .value()
+    );
     setPageCount(
       showData.length > 0 ? Math.ceil(showData.length / pageSize) : 0
     );
@@ -243,7 +244,10 @@ var clientMerchantDetailsList = [];
   useEffect(() => {
     //  console.log("page chagne no")
     const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
+    const paginatedPost = _(showData)
+      .slice(startIndex)
+      .take(pageSize)
+      .value();
     setPaginatedData(paginatedPost);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -254,7 +258,6 @@ var clientMerchantDetailsList = [];
       dispatch(clearSettlementReport());
     };
   }, []);
-
 
   useEffect(() => {
     if (searchText !== "") {
@@ -285,7 +288,7 @@ var clientMerchantDetailsList = [];
       "Settlement Date",
       "Settlement Bank Ref",
       "Settlement UTR",
-      "Settlement Remarks", 
+      "Settlement Remarks",
       "Settlement By",
     ];
     const excelArr = [excelHeaderRow];
@@ -299,12 +302,21 @@ var clientMerchantDetailsList = [];
         client_name: item.client_name === null ? "" : item.client_name,
         txn_id: item.txn_id === null ? "" : item.txn_id,
         client_txn_id: item.client_txn_id === null ? "" : item.client_txn_id,
-        payee_amount: item.payee_amount === null ? "" : Number.parseFloat(item.payee_amount),
-        settlement_amount: item.settlement_amount === null ? "" : Number.parseFloat(item.settlement_amount),
-        settlement_date: item.settlement_date === null ? "" : item.settlement_date,
-        settlement_bank_ref: item.settlement_bank_ref === null ? "" : item.settlement_bank_ref,
+        payee_amount:
+          item.payee_amount === null
+            ? ""
+            : Number.parseFloat(item.payee_amount),
+        settlement_amount:
+          item.settlement_amount === null
+            ? ""
+            : Number.parseFloat(item.settlement_amount),
+        settlement_date:
+          item.settlement_date === null ? "" : item.settlement_date,
+        settlement_bank_ref:
+          item.settlement_bank_ref === null ? "" : item.settlement_bank_ref,
         settlement_utr: item.settlement_utr === null ? "" : item.settlement_utr,
-        settlement_remarks: item.settlement_remarks === null ? "" : item.settlement_remarks,
+        settlement_remarks:
+          item.settlement_remarks === null ? "" : item.settlement_remarks,
         settlement_by: item.settlement_by === null ? "" : item.settlement_by,
       };
 
@@ -326,93 +338,112 @@ var clientMerchantDetailsList = [];
 
   return (
     <section className="ant-layout">
-     <div>
-      <NavBar />
-     </div>
-      <main className="gx-layout-content ant-layout-content">
+      <div>
+        <NavBar />
+      </div>
+      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Refund Transaction History</h1>
           </div>
-          <section
-            className="features8 cid-sg6XYTl25a flleft w-100">
+          <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid">
-            <Formik
+              <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={onSubmitHandler}
               >
-          {formik => (
-            <Form>
-            <div className="form-row">
-              <div className="form-group col-md-4">
-              <FormikController
-                            control="select"
-                            label="Client Code"
-                            name="clientCode"
-                            className="form-control rounded-0"
-                            options={clientCodeOption}
-                          />
-                </div>
-
-                <div className="form-group col-md-4">
+                {(formik) => (
+                  <Form>
+                    <div className="form-row">
+                      <div className="form-group col-md-4">
                         <FormikController
-                            control="input"
-                            type="date"                          
-                            label="From Date"
-                            name="fromDate"
-                            className="form-control rounded-0"
-                          />
-                </div>
+                          control="select"
+                          label="Client Code"
+                          name="clientCode"
+                          className="form-control rounded-0"
+                          options={clientCodeOption}
+                        />
+                      </div>
 
-                <div className="form-group col-md-4">
+                      <div className="form-group col-md-4">
                         <FormikController
-                            control="input"
-                            type="date"                          
-                            label="End Date"
-                            name="endDate"
-                            className="form-control rounded-0"
-                          />
-                </div>
-            </div>
-            <div className="form-row" >
-                <div className="form-group col-md-1">
-                  <button className=" btn bttn bttnbackgroundkyc" type="submit">Search </button>
-                </div>
-                {txnList?.length > 0 ? 
-                <div className="form-group col-md-1">
-                <button className="btn btn-sm text-white"style={{backgroundColor: "rgb(1, 86, 179)"}}  type="button" onClick={()=>exportToExcelFn()}>Export </button>
-                </div>
-                : <></> }
-            </div>
-            
-            </Form>
-          )}
-          </Formik>
-          <hr className="hr" />
-          {txnList?.length > 0 ?  <div className="form-row">
-          <div className="form-group col-md-3">
-          <label>Search</label>
-                        <input
-                            type="text"                          
-                            label="Search"
-                            name="search"
-                            placeholder="Search Here"
-                            className="form-control rounded-0"
-                            onChange={(e)=>{SetSearchText(e.target.value)}} 
-                          />
-                </div>
-                <div className="form-group col-md-3">
-                <label>Count Per Page</label>
-                        <select value={pageSize} rel={pageSize} className="form-control rounded-0" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
-                            <DropDownCountPerPage datalength={txnList.length} />
-                        </select>
-                </div>
-          </div> : <> </> }
-         
+                          control="input"
+                          type="date"
+                          label="From Date"
+                          name="fromDate"
+                          className="form-control rounded-0"
+                        />
+                      </div>
 
-  
-
+                      <div className="form-group col-md-4">
+                        <FormikController
+                          control="input"
+                          type="date"
+                          label="End Date"
+                          name="endDate"
+                          className="form-control rounded-0"
+                        />
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group col-md-1">
+                        <button
+                          className=" btn bttn bttnbackgroundkyc"
+                          type="submit"
+                        >
+                          Search{" "}
+                        </button>
+                      </div>
+                      {txnList?.length > 0 ? (
+                        <div className="form-group col-md-1">
+                          <button
+                            className="btn btn-sm text-white"
+                            style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                            type="button"
+                            onClick={() => exportToExcelFn()}
+                          >
+                            Export{" "}
+                          </button>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+              <hr className="hr" />
+              {txnList?.length > 0 ? (
+                <div className="form-row">
+                  <div className="form-group col-md-3">
+                    <label>Search</label>
+                    <input
+                      type="text"
+                      label="Search"
+                      name="search"
+                      placeholder="Search Here"
+                      className="form-control rounded-0"
+                      onChange={(e) => {
+                        SetSearchText(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="form-group col-md-3">
+                    <label>Count Per Page</label>
+                    <select
+                      value={pageSize}
+                      rel={pageSize}
+                      className="form-control rounded-0"
+                      onChange={(e) => setPageSize(parseInt(e.target.value))}
+                    >
+                      <DropDownCountPerPage datalength={txnList.length} />
+                    </select>
+                  </div>
+                </div>
+              ) : (
+                <> </>
+              )}
             </div>
           </section>
 
@@ -456,8 +487,14 @@ var clientMerchantDetailsList = [];
                             <td>{item.client_name}</td>
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
-                            <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
-                            <td>{Number.parseFloat(item.settlement_amount).toFixed(2)}</td>
+                            <td>
+                              {Number.parseFloat(item.payee_amount).toFixed(2)}
+                            </td>
+                            <td>
+                              {Number.parseFloat(
+                                item.settlement_amount
+                              ).toFixed(2)}
+                            </td>
                             <td>{item.settlement_date}</td>
                             <td>{item.settlement_bank_ref}</td>
                             <td>{item.settlement_utr}</td>

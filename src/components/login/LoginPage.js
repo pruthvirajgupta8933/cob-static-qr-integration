@@ -19,16 +19,11 @@ const INITIAL_FORM_STATE = {
 };
 
 const FORM_VALIDATION = Yup.object().shape({
-  clientUserId: Yup.string()
-    .required("Required"),
-  userPassword: Yup.string()
-    .required("Password Required")
-
+  clientUserId: Yup.string().required("Required"),
+  userPassword: Yup.string().required("Password Required"),
 });
 
 function LoginPage() {
-
-
   // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const authentication = useSelector((state) => state.auth);
@@ -39,7 +34,6 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [auth, setAuthData] = useState(authentication);
   const [namee, setNamee] = useState("");
-
 
   // const [otp, setOtp] = useState({ otp: "" });
   const [values, setValues] = useState({
@@ -65,7 +59,6 @@ function LoginPage() {
       (userAlreadyLoggedIn || isLoggedInLc) &&
       user?.loginStatus === "Activate"
     ) {
-    
       history.push("/dashboard");
     }
   }, [userAlreadyLoggedIn, user]);
@@ -85,34 +78,32 @@ function LoginPage() {
     const password = userPassword;
 
     setLoading(true);
-    dispatch(login({ username, password }))
-      .then((res) => {
-        // console.log(res?.payload?.user)
-        // console.log('asdfghjkl', res, res.payload)
-        if (res?.payload?.user) {
-          const activeStatus = res?.payload?.user?.loginStatus;
-          const loginMessage = res?.payload?.user?.loginMessage;
-          if (activeStatus === "Activate" && loginMessage === "success") {
-            
-            history.push("/dashboard");
-            setLoading(false);
-          } else {
-            if (loginMessage === "Pending") {
-              toast.error(loginMessage);
-            }
-            setLoading(false);
-          }
-        } else {
+    dispatch(login({ username, password })).then((res) => {
+      // console.log(res?.payload?.user)
+      // console.log('asdfghjkl', res, res.payload)
+      if (res?.payload?.user) {
+        const activeStatus = res?.payload?.user?.loginStatus;
+        const loginMessage = res?.payload?.user?.loginMessage;
+        if (activeStatus === "Activate" && loginMessage === "success") {
+          history.push("/dashboard");
           setLoading(false);
-           toast.error(res?.payload ?? "Rejected");       ///////it means when we have server or api response is diffrent it show rejected
+        } else {
+          if (loginMessage === "Pending") {
+            toast.error(loginMessage);
+          }
+          setLoading(false);
         }
-      })
-      // .catch((err) => {
-      //   // console.log(err,"eeeeeeeeeeeeeeeeeeeee")
-      //   toast.error("Something went wrong" + err?.message);
-      //   setLoading(false);
-      //   // console.log(err)
-      // });
+      } else {
+        setLoading(false);
+        toast.error(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
+      }
+    });
+    // .catch((err) => {
+    //   // console.log(err,"eeeeeeeeeeeeeeeeeeeee")
+    //   toast.error("Something went wrong" + err?.message);
+    //   setLoading(false);
+    //   // console.log(err)
+    // });
   };
 
   const handleClickShowPassword = () => {
@@ -147,12 +138,12 @@ function LoginPage() {
                         <div className="logmod__tab lgm-2 show">
                           <div className="logmod__heading">
                             <span className="logmod__heading-subtitle"></span>
-                            <h1 className="loginHeaderr">
+                            <h1 className="loginHeaderr OpenSans-Regular">
                               Welcome to your Dashboard
                             </h1>
                             <p
                               style={{ color: "#0A2FB6" }}
-                              className="loginpara1"
+                              className="loginpara1 OpenSans-Regular"
                             >
                               You can login to track and record every
                               transaction in real time.
@@ -160,7 +151,6 @@ function LoginPage() {
                           </div>
                           <div className="logmod__form m-r-l-100 m0">
                             <Formik
-
                               initialValues={{
                                 ...INITIAL_FORM_STATE,
                               }}
@@ -168,160 +158,162 @@ function LoginPage() {
                               onSubmit={handleLogin}
                             >
                               {(formik) => (
-
-
-                              <Form>
-                                <div className="sminputs">
-                                  <div className="input full">
-                                    <label
-                                      className="string optional loginFontForLabel"
-                                      htmlFor="user-name"
-                                    >
-                                      User name
-                                    </label>
-                                    <Field
-                                      className="string optional"
-                                      maxLength={255}
-                                      id="user-email"
-                                      placeholder="Type your username here"
-                                      type="text"
-                                      name="clientUserId"
-                                      onClick={() => setNamee("clientUserId")}
-                                    />
-                                    {namee === "clientUserId" ? (
-                                      <span>
-                                        <p
-                                          style={{
-                                            padding: "3px",
-                                            backgroundColor: "#54E28D",
-                                          }}
-                                        ></p>
-                                      </span>
-                                    ) : (
-                                      ""
-                                    )}
-                                    <ErrorMessage name="clientUserId">
-                                      {(msg) => (
-                                        <div
-                                          className="abhitest"
-                                          style={{
-                                            color: "red",
-                                            position: "absolute",
-                                            top: "101px",
-                                            zIndex: " 999",
-                                          }}
-                                        >
-                                          {msg}
-                                        </div>
-                                      )}
-                                    </ErrorMessage>
-                                  </div>
-                                </div>
-                                <div className="sminputs">
-                                  <div className="input full">
-                                    <label
-                                      className="string optional loginFontForLabel"
-                                      htmlFor="user-pw"
-                                    >
-                                      Enter Your Password
-                                    </label>
-                                    <Field
-                                      className="string optional"
-                                      maxLength={255}
-                                      id="user-pw"
-                                      placeholder="Type your password here"
-                                      type={
-                                        values.showPassword
-                                          ? "text"
-                                          : "password"
-                                      }
-                                      size={50}
-                                      name="userPassword"
-                                      onClick={() => setNamee("userPassword")}
-                                    />
-                                    {namee === "userPassword" ? (
-                                      <span>
-                                        <p
-                                          style={{
-                                            padding: "1px",
-                                            backgroundColor: "#54E28D",
-                                          }}
-                                        ></p>
-                                      </span>
-                                    ) : (
-                                      ""
-                                    )}
-                                    <Link
-                                      to={`/forget`}
-                                      className="pull-right mt-2"
-                                      style={{ color: "#0A2FB6" }}
-                                    >
-                                      Forgot Password ?
-                                    </Link>
-                                    <ErrorMessage name="userPassword">
-                                      {(msg) => (
-                                        <div
-                                          className="abhitest"
-                                          style={{
-                                            color: "red",
-                                            position: "absolute",
-                                            top: "99px",
-                                            zIndex: " 999",
-                                          }}
-                                        >
-                                          {msg}
-                                        </div>
-                                      )}
-                                    </ErrorMessage>
-
-                                    <span
-                                      class="input-group-addon eyeicon2"
-                                      onClick={handleClickShowPassword}
-                                    >
-                                      {values.showPassword ? (
-                                        <i
-                                          class="fa fa-eye"
-                                          aria-hidden="true"
-                                        ></i>
+                                <Form>
+                                  <div className="sminputs">
+                                    <div className="input full">
+                                      <label
+                                        className="string optional loginFontForLabel"
+                                        htmlFor="user-name"
+                                      >
+                                        User name
+                                      </label>
+                                      <Field
+                                        className="string optional"
+                                        maxLength={255}
+                                        id="user-email"
+                                        placeholder="Type your username here"
+                                        type="text"
+                                        name="clientUserId"
+                                        onClick={() => setNamee("clientUserId")}
+                                      />
+                                      {namee === "clientUserId" ? (
+                                        <span>
+                                          <p
+                                            style={{
+                                              padding: "3px",
+                                              backgroundColor: "#54E28D",
+                                            }}
+                                          ></p>
+                                        </span>
                                       ) : (
-                                        <i
-                                          class="fa fa-eye-slash"
-                                          aria-hidden="true"
-                                        ></i>
+                                        ""
                                       )}
-                                    </span>
+                                      <ErrorMessage name="clientUserId">
+                                        {(msg) => (
+                                          <div
+                                            className="abhitest"
+                                            style={{
+                                              color: "red",
+                                              position: "absolute",
+                                              top: "101px",
+                                              zIndex: " 999",
+                                            }}
+                                          >
+                                            {msg}
+                                          </div>
+                                        )}
+                                      </ErrorMessage>
+                                    </div>
                                   </div>
-                                </div>
+                                  <div className="sminputs">
+                                    <div className="input full">
+                                      <label
+                                        className="string optional loginFontForLabel"
+                                        htmlFor="user-pw"
+                                      >
+                                        Enter Your Password
+                                      </label>
+                                      <Field
+                                        className="string optional"
+                                        maxLength={255}
+                                        id="user-pw"
+                                        placeholder="Type your password here"
+                                        type={
+                                          values.showPassword
+                                            ? "text"
+                                            : "password"
+                                        }
+                                        size={50}
+                                        name="userPassword"
+                                        onClick={() => setNamee("userPassword")}
+                                      />
+                                      {namee === "userPassword" ? (
+                                        <span>
+                                          <p
+                                            style={{
+                                              padding: "1px",
+                                              backgroundColor: "#54E28D",
+                                            }}
+                                          ></p>
+                                        </span>
+                                      ) : (
+                                        ""
+                                      )}
+                                      <Link
+                                        to={`/forget`}
+                                        className="pull-right mt-2"
+                                        style={{ color: "#0A2FB6" }}
+                                      >
+                                        Forgot Password ?
+                                      </Link>
+                                      <ErrorMessage name="userPassword">
+                                        {(msg) => (
+                                          <div
+                                            className="abhitest"
+                                            style={{
+                                              color: "red",
+                                              position: "absolute",
+                                              top: "99px",
+                                              zIndex: " 999",
+                                            }}
+                                          >
+                                            {msg}
+                                          </div>
+                                        )}
+                                      </ErrorMessage>
 
-                                <div className="simform__actions mt-4">
-                                  {/*<input className="sumbit" name="commit" type="sumbit" value="Log In" />*/}
-                                  <button
-                                    className="sumbit btn-0156B3"
-                                    type="sumbit"
-                                    style={{
-                                      boxShadow:
-                                        "0px 14px 10px rgba(66, 133, 248, 0.5)",
-                                      borderRadius: "6px",
-                                    }}
-                                     disabled={(!(formik.isValid && formik.dirty)) ? true : false}
-                                    // disabled={
-                                    //   (
-                                    //     INITIAL_FORM_STATE.clientUserId == ""
-                                    //     &&
-                                    //     INITIAL_FORM_STATE.userPassword == ""
-                                    //   )
-                                    //     ? true : false}
-                                  >
-                                    {loading && (
                                       <span
-                                        className="spinner-border"
-                                        role="status"
-                                      ></span>
-                                    )}
-                                    LogIn
-                                  </button>
+                                        class="input-group-addon eyeicon2"
+                                        onClick={handleClickShowPassword}
+                                      >
+                                        {values.showPassword ? (
+                                          <i
+                                            class="fa fa-eye"
+                                            aria-hidden="true"
+                                          ></i>
+                                        ) : (
+                                          <i
+                                            class="fa fa-eye-slash"
+                                            aria-hidden="true"
+                                          ></i>
+                                        )}
+                                      </span>
+                                    </div>
+                                  </div>
 
-                                  {/* <span className="simform__actions-sidetext">
+                                  <div className="simform__actions mt-4">
+                                    {/*<input className="sumbit" name="commit" type="sumbit" value="Log In" />*/}
+                                    <button
+                                      className="sumbit btn-0156B3"
+                                      type="sumbit"
+                                      style={{
+                                        boxShadow:
+                                          "0px 14px 10px rgba(66, 133, 248, 0.5)",
+                                        borderRadius: "6px",
+                                      }}
+                                      disabled={
+                                        !(formik.isValid && formik.dirty)
+                                          ? true
+                                          : false
+                                      }
+                                      // disabled={
+                                      //   (
+                                      //     INITIAL_FORM_STATE.clientUserId == ""
+                                      //     &&
+                                      //     INITIAL_FORM_STATE.userPassword == ""
+                                      //   )
+                                      //     ? true : false}
+                                    >
+                                      {loading && (
+                                        <span
+                                          className="spinner-border"
+                                          role="status"
+                                        ></span>
+                                      )}
+                                      LogIn
+                                    </button>
+
+                                    {/* <span className="simform__actions-sidetext">
                                      <Link
                                       className="special"
                                       role="link"
@@ -331,12 +323,12 @@ function LoginPage() {
                                       Forgot your password? Click here
                                     </Link> 
                                   </span>*/}
-                                </div>
-                              </Form>
+                                  </div>
+                                </Form>
                               )}
                             </Formik>
                           </div>
-                          <div className="logmod__form m-r-l-100 mt-3">
+                          <div className="logmod__form m-r-l-100 mt-3 termsconditionss">
                             <p>Term of Service | Privacy Policy | Contact us</p>
                           </div>
                         </div>
@@ -433,12 +425,12 @@ function LoginPage() {
                       data-slide-to="2"
                     ></li>
                   </ol>
-                  <div class="carousel-inner">
+                  <div class="carousel-inner OpenSans-Regular">
                     <div class="carousel-item active">
                       <div class="heading1 pt-5">
                         <p
                           className="font-text-large mb-0"
-                          style={{ color: "#012167" }}
+                          style={{ color: "#012167", fontWeight: "700" }}
                         >
                           An all-in-one
                         </p>
@@ -464,7 +456,7 @@ function LoginPage() {
                       <div class="heading1 pt-5">
                         <p
                           className="font-text-large mb-0"
-                          style={{ color: "#012167" }}
+                          style={{ color: "#012167", fontWeight: "700" }}
                         >
                           An all-in-one
                         </p>
@@ -490,7 +482,7 @@ function LoginPage() {
                       <div class="heading1 pt-5">
                         <p
                           className="font-text-large mb-0"
-                          style={{ color: "#012167" }}
+                          style={{ color: "#012167", fontWeight: "700" }}
                         >
                           An all-in-one
                         </p>

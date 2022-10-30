@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "OpenSans-Regular";
+  src: url("../Fonts/OpenSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "OpenSans-Medum";
+  src: url("../Fonts/OpenSans-Medium.ttf") format("truetype");
+}

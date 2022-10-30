@@ -18,7 +18,6 @@ import API_URL from "../../config";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 
-
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const FORM_VALIDATION = Yup.object().shape({
@@ -73,19 +72,15 @@ function Registration() {
     showPassword: false,
   });
   const togglePassword = () => {
-    console.log(999)
-    setPasswordType(!passwordType)
-  }
-
-
-
+    console.log(999);
+    setPasswordType(!passwordType);
+  };
 
   function buttonHandler(index) {
     let status = [...checkboxStatus];
     status[index] = !status[index];
     setCheckboxStatus(status);
   }
-
 
   useEffect(() => {
     axiosInstanceAuth
@@ -202,7 +197,7 @@ function Registration() {
         <div className="row">
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
             <div className="col-sm-4 authfy-panel-left">
-              <div className="brand-col">
+              <div className="brand-col Satoshi-Medium">
                 <div className="headline pt-5">
                   {/* brand-logo start */}
                   {/* <div className="brand-logo">
@@ -351,7 +346,7 @@ function Registration() {
                     </ul> */}
                       <div className="logmod__tab-wrapper">
                         <div className="show logmod__tab lgm-1">
-                          <div className="logmod__heading">
+                          <div className="logmod__heading Satoshi-Medium">
                             <span className="fontfigma">
                               Welcome to SabPaisa{" "}
                             </span>
@@ -370,7 +365,7 @@ function Registration() {
                               </span>
                             </div>
                           </div>
-                          <div className="logmod__form">
+                          <div className="logmod__form Satoshi-Medium">
                             <Formik
                               initialValues={{
                                 fullname: "",
@@ -386,14 +381,11 @@ function Registration() {
                               onSubmit={handleRegistration}
                             >
                               {(formik) => (
-
-
                                 <Form
                                   acceptCharset="utf-8"
                                   action="#"
                                   className="simform"
                                 >
-
                                   {/* {console.log(values)} */}
                                   <div className="sminputs">
                                     <div className="input full- optional">
@@ -609,7 +601,20 @@ function Registration() {
                                         autoComplete="off"
                                       />
                                       <div class="input-group-addon viewfor">
-                                        <a onClick={handleClickShowPassword}> {valuesIn.showPassword ? <i class="fa fa-eye-slash" aria-hidden="true"></i> : <i class="fa fa-eye" aria-hidden="true"></i>}</a>
+                                        <a onClick={handleClickShowPassword}>
+                                          {" "}
+                                          {valuesIn.showPassword ? (
+                                            <i
+                                              class="fa fa-eye-slash"
+                                              aria-hidden="true"
+                                            ></i>
+                                          ) : (
+                                            <i
+                                              class="fa fa-eye"
+                                              aria-hidden="true"
+                                            ></i>
+                                          )}
+                                        </a>
                                       </div>
 
                                       {
@@ -642,14 +647,27 @@ function Registration() {
                                         maxLength={255}
                                         id="user-cpw"
                                         placeholder="Confirm password"
-                                        type={passwordType ? "password" : "text"}
+                                        type={
+                                          passwordType ? "password" : "text"
+                                        }
                                         name="confirmpasswordd"
                                         size={50}
                                       />
 
                                       <div class="input-group-addon viewfor">
                                         <a onClick={togglePassword}>
-                                          {passwordType === "confirmpassword" ? <i class="fa fa-eye-slash" aria-hidden="true"></i> : <i class="fa fa-eye" aria-hidden="true"></i>}
+                                          {passwordType ===
+                                          "confirmpassword" ? (
+                                            <i
+                                              class="fa fa-eye-slash"
+                                              aria-hidden="true"
+                                            ></i>
+                                          ) : (
+                                            <i
+                                              class="fa fa-eye"
+                                              aria-hidden="true"
+                                            ></i>
+                                          )}
                                         </a>
                                       </div>
                                       <input
@@ -687,12 +705,16 @@ function Registration() {
                                   <div className="sminputs">
                                     <div className="simform__actions">
                                       <button
-                                        className="figmabtn text-white mt-4 disabled1"
+                                        className="figmabtn Satoshi-Medium text-white mt-4 disabled1"
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
                                         // disabled={btnDisable}
-                                        disabled={(!(formik.isValid && formik.dirty)) ? true : false}
+                                        disabled={
+                                          !(formik.isValid && formik.dirty)
+                                            ? true
+                                            : false
+                                        }
                                         data-rel={btnDisable}
                                       >
                                         Signup
@@ -765,7 +787,7 @@ function Registration() {
                                       }
                                     </div>
                                   </div>
-                                  <p className="foraccount">
+                                  <p className="foraccount Satoshi-Medium">
                                     Already have an account?
                                     <Link
                                       to={`/login`}
@@ -790,7 +812,7 @@ function Registration() {
             </div>
           </div>
           <p className="footerforcopyright">
-            Copyright  © 2022 SabPaisa, all rights reserve version 0.1
+            Copyright © 2022 SabPaisa, all rights reserve version 0.1
           </p>
         </div>
 
