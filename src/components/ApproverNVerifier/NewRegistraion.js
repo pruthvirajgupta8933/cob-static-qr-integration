@@ -35,7 +35,7 @@ function NewRegistraion() {
 
 
   const newAllRegistration = async () => {
-    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_PENDING}`)
+    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_PROCESSING}`)
       .then(res => {
         const data = res.data.results;
         // console.log(data)

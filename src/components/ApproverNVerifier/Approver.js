@@ -5,6 +5,9 @@ import NewRegistraion from './NewRegistraion';
 import VerifiedMerchant from './VerifiedMerchant';
 import ApprovedMerchant from './ApprovedMerchant';
 import NavBar from "../../components/dashboard/NavBar/NavBar"
+import PendindKyc from './PendindKyc';
+import NotFilledKYC from './NotFilledKYC';
+import RejectedKYC from './RejectedKYC';
 
 // import SingleDocument from './SingleDocument';
 // import DocumentsUpload from './DocumentsUpload';
@@ -47,14 +50,23 @@ function Approver() {
             <div className="row bgcolor">
               <div className="col-lg-12 mb-4 bgcolor-">
               <ul className="nav nav-tabs">
-                          <li className="nav-item">
-                          <a href={()=>false} className={"nav-link " +  (tab===1? "activepaylink":"inactive") } onClick={()=>SetTab(1)} >Pending Verification</a>
+              <li className="nav-item">
+                          <a href={()=>false} className={"nav-link " +  (tab===1? "activepaylink":"inactive") } onClick={()=>SetTab(1)} >Not Filled KYC</a>
                           </li>
                           <li className="nav-item">
-                          <a href={()=>false} className={"nav-link " +  (tab===2? "activepaylink":"inactive") } onClick={()=>SetTab(2)} >Pending Approval</a>
+                          <a href={()=>false} className={"nav-link " +  (tab===2? "activepaylink":"inactive") } onClick={()=>SetTab(2)} >Pending KYC</a>
                           </li>
                           <li className="nav-item">
-                          <a href={()=>false} className={"nav-link " +  (tab===3? "activepaylink":"inactive") }  onClick={()=>SetTab(3)}>Approved</a>
+                          <a href={()=>false} className={"nav-link " +  (tab===3? "activepaylink":"inactive") } onClick={()=>SetTab(3)} >Pending Verification</a>
+                          </li>
+                          <li className="nav-item">
+                          <a href={()=>false} className={"nav-link " +  (tab===4? "activepaylink":"inactive") } onClick={()=>SetTab(4)} >Pending Approval</a>
+                          </li>
+                          <li className="nav-item">
+                          <a href={()=>false} className={"nav-link " +  (tab===5? "activepaylink":"inactive") }  onClick={()=>SetTab(5)}>Approved</a>
+                          </li>
+                          <li className="nav-item">
+                          <a href={()=>false} className={"nav-link " +  (tab===6? "activepaylink":"inactive") } onClick={()=>SetTab(6)} >Rejected</a>
                           </li>
                       </ul>
               </div>
@@ -65,13 +77,22 @@ function Approver() {
               {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
                 lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
 
-                  {(tab === 1 &&
+                  {(tab === 1 && 
+                  <NotFilledKYC />)
+                  ||
+                  (tab === 2 && 
+                  <PendindKyc />)
+                  ||
+                  (tab === 3 &&
                       <NewRegistraion />)
-                  || (tab === 2 &&
+                  || (tab === 4 &&
                       <VerifiedMerchant />)                        
-                  ||  (tab === 3 &&
+                  ||  (tab === 5 &&
                       <ApprovedMerchant/>)
                   ||
+                  (tab === 6 &&
+                    <RejectedKYC />)
+                    ||
                       <NewRegistraion />
                   }
             </div>
