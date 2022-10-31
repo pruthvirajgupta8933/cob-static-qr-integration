@@ -43,6 +43,8 @@ function DocumentsUpload(props) {
   const [buttonText, setButtonText] = useState("Save and Next");
 
   const { auth, kyc } = useSelector((state) => state);
+  const KycList = kyc?.kycUserList;
+  
   const { user } = auth;
 
   const { loginId } = user;
@@ -301,6 +303,7 @@ function DocumentsUpload(props) {
                         className="form-control"
                         options={docTypeList}
                         readOnly={readOnly}
+                        
                       />
                       {formik.handleChange(
                         "docType",
@@ -310,8 +313,10 @@ function DocumentsUpload(props) {
                   </div>
                 </div>
 
-                {role?.merchant ?
-                  docTypeIdDropdown === "1" ? (
+                       
+                {role?.merchant ? 
+                  KycList?.status!=="Approved" && KycList?.status!=="Verified" ?
+                  docTypeIdDropdown === "1"  ? (
                     <div class="row">
                       <div class="col-lg-6 width">
                         <div className="file-upload border-dotted">
@@ -503,6 +508,8 @@ function DocumentsUpload(props) {
                   )
                   :
                   <></>
+                  :
+                  <></>
 
                 }
 
@@ -548,7 +555,7 @@ function DocumentsUpload(props) {
                   <a   href={() => false} className="btn btn-sm btn-warning m-3" onClick={() => { rejectDoc(img?.documentId) }} > Reject </a>
 
                     
-                  </> :  <a   href={() => false} className="btn btn-sm btn-warning m-3" onClick={() => { removeDoc(img?.documentId) }} > <i className="fa fa-trash"></i> </a>}
+                  </> : KycList?.status!=="Approved" && KycList?.status!=="Verified" ?  <a   href={() => false} className="btn btn-sm btn-warning m-3" onClick={() => { removeDoc(img?.documentId) }} > <i className="fa fa-trash"></i> </a> : <></>}
                     </>
                   :
                   <></>
@@ -561,22 +568,23 @@ function DocumentsUpload(props) {
           :
           <></>
         }
-                    <div class="col-12">
+        {KycList?.status!=="Approved" && KycList?.status!=="Verified" ?  <div class="col-12">
 
-                      <button
-                        className="btn float-lg-right"
-                        style={{ backgroundColor: "#0156B3" }}
-                        type="button"
-                        onClick={() => {
-                          formik.handleSubmit();
-                        }}
-                      >
-                        <h4 className="text-white text-kyc-sumit">
+<button
+  className="btn float-lg-right"
+  style={{ backgroundColor: "#0156B3" }}
+  type="button"
+  onClick={() => {
+    formik.handleSubmit();
+  }}
+>
+  <h4 className="text-white text-kyc-sumit">
 
-                          &nbsp; &nbsp;{buttonText} &nbsp; &nbsp;
-                        </h4>
-                      </button>
-                    </div>
+    &nbsp; &nbsp;{buttonText} &nbsp; &nbsp;
+  </h4>
+</button>
+</div> : <></>  }
+                    
                   </>
                   : <></>}
               </div>

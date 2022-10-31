@@ -291,6 +291,7 @@ function ContactInfo(props) {
                   control="input"
                   type="text"
                   name="aadhar_number"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   className="form-control"
                   readOnly={readOnly}
                 />
@@ -318,6 +319,8 @@ function ContactInfo(props) {
                   name="contact_number"
                   className="form-control"
                   readOnly={readOnly}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                 />
 
                 {KycList?.contactNumber !== null &&
