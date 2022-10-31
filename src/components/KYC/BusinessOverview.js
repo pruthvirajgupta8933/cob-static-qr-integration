@@ -30,15 +30,17 @@ function BusinessOverview(props) {
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
 
-  const { user } = useSelector((state) => state.auth);
+  const {auth , kyc} =useSelector((state) => state) 
+  
+  const { user } = auth;
   let clientMerchantDetailsList = {}
   if (user?.clientMerchantDetailsList && user?.clientMerchantDetailsList?.length > 0) {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
-  console.log("clientMerchantDetailsList", clientMerchantDetailsList)
-
-  const KycList = useSelector((state) => state.kyc.kycUserList);
+  const KycList = kyc?.kycUserList;
+  const KycTabStatusStore = kyc?.KycTabStatusStore
+  console.log("KycTabStatusStore",KycTabStatusStore)
 
   const { clientCode, business_cat_code } = clientMerchantDetailsList[0];
 
@@ -46,7 +48,7 @@ function BusinessOverview(props) {
 
   const dispatch = useDispatch();
 
-  const ErpCheck = useSelector((state) => state.kyc.kycUserList.erpCheck);
+  const ErpCheck = KycList?.erpCheck;
 
   const ErpCheckStatus = () => {
     if (ErpCheck === true) return "Yes";
@@ -77,9 +79,7 @@ function BusinessOverview(props) {
   //   else return "No"
   // }
 
-  const VerifyKycStatus = useSelector(
-    (state) => state.kyc?.kycVerificationForAllTabs?.business_info_status
-  );
+  const VerifyKycStatus = KycTabStatusStore?.business_info_status
 
   const urlRegex = "((http|https)://)(www.)?"
     + "[a-zA-Z0-9@:%._\\+~#?&//=]"
@@ -572,6 +572,7 @@ function BusinessOverview(props) {
               <div class="mt-2">
                 <div class="row">
                   <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
+                  {console.log("VerifyKycStatus",VerifyKycStatus)}
                     {VerifyKycStatus === "Verified" ? null : (
                       <button
                         className="btn float-lg-right"
@@ -579,7 +580,6 @@ function BusinessOverview(props) {
                         style={{ backgroundColor: "#0156B3" }}
                       >
                         <h4 className="text-white text-kyc-sumit">
-                          {" "}
                           {buttonText}
                         </h4>
                       </button>

@@ -341,6 +341,8 @@ function BankDetails(props) {
                   type="text"
                   name="ifsc_code"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                   readOnly={readOnly}
                 />
 
@@ -410,6 +412,8 @@ function BankDetails(props) {
                   name="account_number"
                   className="form-control"
                   readOnly={readOnly}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                 />
               </div>
               {KycList?.accountNumber !== null &&
@@ -468,6 +472,8 @@ function BankDetails(props) {
                   name="account_holder_name"
                   className="form-control"
                   readOnly={readOnly}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                 />
               </div>
             </div>
@@ -485,6 +491,8 @@ function BankDetails(props) {
                   name="account_type"
                   className="form-control"
                   readOnly={readOnly}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                 />
               </div>
             </div>
@@ -502,6 +510,8 @@ function BankDetails(props) {
                   className="form-control"
                   options={data}
                   readOnly={readOnly}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                 />
               </div>
             </div>
@@ -519,6 +529,8 @@ function BankDetails(props) {
                   name="branch"
                   className="form-control"
                   readOnly={readOnly}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                 />
               </div>
             </div>

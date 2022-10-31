@@ -30,12 +30,13 @@ function BusinessDetails(props) {
 
   const { user } = auth;
   const { allTabsValidate, kycUserList, KycTabStatusStore } = kyc;
+  const VerifyKycStatus = KycTabStatusStore?.merchant_info_status
+
+  // console.log("VerifyKycStatus",VerifyKycStatus)
 
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
   const KycList = kycUserList;
-  console.log("KycList", KycList);
-
-  const VerifyKycStatus = KycTabStatusStore?.merchant_info_status;
+  
 
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
@@ -406,7 +407,10 @@ function BusinessDetails(props) {
                   type="text"
                   name="gst_number"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                   readOnly={readOnly}
+
                 />
               </div>
 
@@ -523,6 +527,8 @@ function BusinessDetails(props) {
                   type="text"
                   name="signatory_pan"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                   readOnly={readOnly}
                 />
               </div>
