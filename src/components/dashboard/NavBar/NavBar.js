@@ -63,7 +63,7 @@ const NavBar = () => {
               class="dropdown-menu text-white"
               style={{
                 backgroundColor: "rgb(20, 6, 51)",
-                height: "7rem",
+                height: "5rem",
                 width: "10rem",
               }}
             >
