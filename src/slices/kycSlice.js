@@ -46,7 +46,9 @@ const initialState = {
   merchantInfo: [],
   kycBankNames: [],
   saveMerchantBankDetais: [],
+  kycForPendingMerchants:[],
   kycForPending: [],
+  kycForRejectedMerchants: [],
   kycForVerified: [],
   kycForApproved: [],
   kycForCompleted: [],
@@ -467,6 +469,69 @@ export const saveMerchantBankDetais = createAsyncThunk(
 );
 /////////////////////////////////KYC APPROVED API
 
+
+export const kycForNotFilled = createAsyncThunk(
+  "kyc/kycForNotFilled",
+  async (data) => {
+    const requestParam = data.page;
+    const requestParam1 = data.page_size;
+    const response = await axiosInstanceAuth
+      .get(
+        `${API_URL. KYC_FOR_NOT_FILLED}&page=${requestParam}&page_size=${requestParam1}`,
+        {
+          headers: {},
+        }
+      )
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+
+export const kycForPendingMerchants = createAsyncThunk(
+  "kyc/kycForPendingMerchants",
+  async (data) => {
+    const requestParam = data.page;
+    const requestParam1 = data.page_size;
+    const response = await axiosInstanceAuth
+      .get(
+        `${API_URL.KYC_FOR_PENDING_MERCHANTS}&page=${requestParam}&page_size=${requestParam1}`,
+        {
+          headers: {},
+        }
+      )
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+
+export const kycForRejectedMerchants = createAsyncThunk(
+  "kyc/kycForRejectedMerchants",
+  async (data) => {
+    const requestParam = data.page;
+    const requestParam1 = data.page_size;
+    const response = await axiosInstanceAuth
+      .get(
+        `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&page=${requestParam}&page_size=${requestParam1}`,
+        {
+          headers: {},
+        }
+      )
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+
+
+
 export const kycForPending = createAsyncThunk(
   "kyc/kycForPending",
   async (data) => {
@@ -474,7 +539,7 @@ export const kycForPending = createAsyncThunk(
     const requestParam1 = data.page_size;
     const response = await axiosInstanceAuth
       .get(
-        `${API_URL.KYC_FOR_PENDING}&page=${requestParam}&page_size=${requestParam1}`,
+        `${API_URL.KYC_FOR_PROCESSING}&page=${requestParam}&page_size=${requestParam1}`,
         {
           headers: {},
         }
