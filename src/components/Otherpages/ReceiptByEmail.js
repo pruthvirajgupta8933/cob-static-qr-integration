@@ -67,7 +67,7 @@ const ReceiptByEmail = () => {
       })
 
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         alert("Kindly enter SabPaisa Transaction Id Or Student Email ID");
         setIsLoading(false);
         // console.log(e);
@@ -121,7 +121,7 @@ const ReceiptByEmail = () => {
               <form
                     action="#"
                     onSubmit={() => {
-                      console.log();
+                   
                     }}
                   >
                     <div className="form-group">

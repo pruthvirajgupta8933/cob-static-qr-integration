@@ -28,7 +28,7 @@ const ResetPassword = (props) => {
     confirmpassword: "",
   };
   const resetSubmit = async (values) => {
-    console.log(values, "here is the response");
+    // console.log(values, "here is the response");
     const res = await axios
       .put(API_URL.AUTH_CHANGE_PASSWORD, {
         email: "textbhuvi@gmail.com",
@@ -37,7 +37,7 @@ const ResetPassword = (props) => {
         newpassword: values.newpassword,
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         // if (res.status === 200) {
         //   const data = res.data;
         //         }

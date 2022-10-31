@@ -29,7 +29,7 @@ const EnterUserID = (props) => {
         otp_for: "Forgot Password",
       })
     ).then((res) => {
-      console.log("This is the response", res);
+      // console.log("This is the response", res);
       if (res.meta.requestStatus === "fulfilled") {
         if (res.payload.status === true) {
           props.props("a2", data);

@@ -105,7 +105,7 @@ function TransactionHistoryDownload() {
       SetPaymentStatusList(res.data);
     })  
     .catch(err => {  
-      console.log(err)  
+      // console.log(err)  
     });  
   }  
 
@@ -116,7 +116,7 @@ function TransactionHistoryDownload() {
       SetPaymentModeList(res.data);  
     })  
     .catch(err => {  
-      console.log(err)  
+      // console.log(err)  
     });  
   }  
 
@@ -180,7 +180,7 @@ function TransactionHistoryDownload() {
         page: "0",
         NoOfClient: clientCodeArrLength
       } 
-  console.log(paramData)
+  // console.log(paramData)
       dispatch(fetchTransactionHistorySlice(paramData))
 }
 
@@ -369,7 +369,7 @@ const pages = _.range(1, pageCount + 1)
   const finalDate = year +'-'+month+'-'+day;
 
 
-  console.log(startDate)
+  // console.log(startDate)
   
 
   return (

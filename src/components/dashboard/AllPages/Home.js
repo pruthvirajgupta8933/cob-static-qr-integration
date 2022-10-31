@@ -150,7 +150,7 @@ function Home() {
     totalAmt += item.payeeamount;
   });
 
-  console.log("modalState",modalState)
+  // console.log("modalState",modalState)
 
   return (
     <section className="ant-layout Satoshi-Medium">

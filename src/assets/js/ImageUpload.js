@@ -3,7 +3,7 @@ import $ from 'jquery';
 
 function readURL(input) {
     // console.log(33);
-    console.log(333);
+    // console.log(333);
     if (input.files && input.files[0]) {
   
       var reader = new FileReader();
@@ -25,7 +25,7 @@ function readURL(input) {
   }
   
   function removeUpload() {
-    console.log(222);
+    // console.log(222);
     $('.file-upload-input').replaceWith($('.file-upload-input').clone());
     $('.file-upload-content').hide();
     $('.image-upload-wrap').show();

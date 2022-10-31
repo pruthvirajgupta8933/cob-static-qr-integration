@@ -31,7 +31,7 @@ function PaymentResponse() {
     if(clientCode !== clientMerchantDetailsList[0].clientCode){
       // console.log("Client details does not match!")
     }else{
-      console.log("match code")
+      // console.log("match code")
       setVerifyClientCode(true)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

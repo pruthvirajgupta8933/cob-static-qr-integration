@@ -69,7 +69,7 @@ function SubmitKyc(props) {
         })
         .catch((e) => {
           toast.error("Something went wrong, Please Try Again later")
-          console.log(e);
+          // console.log(e);
         });
     }
 

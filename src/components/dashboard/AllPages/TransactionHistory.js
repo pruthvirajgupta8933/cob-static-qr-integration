@@ -130,7 +130,7 @@ function TransactionHistory() {
         SetPaymentStatusList(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -142,7 +142,7 @@ function TransactionHistory() {
         SetPaymentModeList(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 

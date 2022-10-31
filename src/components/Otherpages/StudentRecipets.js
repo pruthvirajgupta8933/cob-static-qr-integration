@@ -42,7 +42,7 @@ const StudentRecipets = () => {
       })
 
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         alert("Kindly enter SabPaisa Transaction Id Or Student Id");
         setIsLoading(false);
         // console.log(e);
@@ -78,7 +78,7 @@ const StudentRecipets = () => {
                   <form
                     action="#"
                     onSubmit={() => {
-                      console.log();
+                      // console.log();
                     }}
                   >
                     <div className="form-group">

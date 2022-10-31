@@ -550,37 +550,37 @@ const authSlice = createSlice({
       state.error = action.error.message;
     },
     [createClientProfile.pending]: (state) => {
-      console.log("pending...create profile of client")
+      // console.log("pending...create profile of client")
     },
     [createClientProfile.fulfilled]: (state, action) => {
       state.createClientProfile = action.payload
       state.user = action.payload
-      console.log("client create and update", state.user);
+      // console.log("client create and update", state.user);
     },
     [createClientProfile.rejected]: (state) => {
-      console.log("Client Profile not update!");
+      // console.log("Client Profile not update!");
     },
     [updateClientProfile.pending]: (state) => {
-      console.log('pending profile');
+      // console.log('pending profile');
     },
     [updateClientProfile.fulfilled]: (state, action) => {
-      console.log('fulfilled profile');
+      // console.log('fulfilled profile');
       state.user = action.payload
       // console.log(action.payload,"<=== Res ===>")
     },
     [updateClientProfile.rejected]: () => {
-      console.log('rejected profile');
+      // console.log('rejected profile');
     },
     [changePasswordSlice.fulfilled]: (state, action) => {
-      console.log('fullfiled profile');
+      // console.log('fullfiled profile');
       state.passwordChange = true;
     },
     [changePasswordSlice.pending]: (state) => {
-      console.log('rejected profile');
+      // console.log('rejected profile');
       state.passwordChange = null;
     },
     [changePasswordSlice.rejected]: (state) => {
-      console.log('rejected profile');
+      // console.log('rejected profile');
       state.passwordChange = false;
     },
 
@@ -593,38 +593,38 @@ const authSlice = createSlice({
       //state.passwordChange = true;
     },
     [getEmailToSendOtpSlice.pending]: (state) => {
-      console.log('pending profile');
+      // console.log('pending profile');
       //state.passwordChange = null;
     },
     [getEmailToSendOtpSlice.rejected]: (state, action) => {
-      console.log('rejected ', action);
+      // console.log('rejected ', action);
       state.forgotPassword.sendUserName.isValid = false;
       //state.passwordChange = false;
     },
 
     [verifyOtpOnForgotPwdSlice.fulfilled]: (state, action) => {
-      console.log('fullfiled ', action);
+      // console.log('fullfiled ', action);
       // state.passwordChange = true;
     },
     [verifyOtpOnForgotPwdSlice.pending]: (state) => {
-      console.log('pending profile');
+      // console.log('pending profile');
       // state.passwordChange = null;
     },
     [verifyOtpOnForgotPwdSlice.rejected]: (state) => {
-      console.log('rejected profile');
+      // console.log('rejected profile');
       // state.passwordChange = false;
     },
 
     [createNewPasswordSlice.fulfilled]: (state, action) => {
-      console.log('fullfiled', action);
+      // console.log('fullfiled', action);
       // state.passwordChange = true;
     },
     [createNewPasswordSlice.pending]: (state) => {
-      console.log('pending profile');
+      // console.log('pending profile');
       // state.passwordChange = null;
     },
     [createNewPasswordSlice.rejected]: (state) => {
-      console.log('rejected profile');
+      // console.log('rejected profile');
       // state.passwordChange = false;
     },
 

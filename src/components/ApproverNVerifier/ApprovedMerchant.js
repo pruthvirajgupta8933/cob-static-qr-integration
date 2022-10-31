@@ -112,7 +112,7 @@ useEffect(() => {
         // console.log("Data ========> ", data)
         setDocImageData(data)
         const docId = data[0].documentId;
-        console.log(docId,"<===== Document Id =====>")
+        // console.log(docId,"<===== Document Id =====>")
         const file = data[0].filePath
         // console.log("file ====> ",file)
         // const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;

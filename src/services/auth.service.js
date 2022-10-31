@@ -42,7 +42,7 @@ const login = (username, password) => {
 const logout = () => {
   localStorage.removeItem("user");
   localStorage.clear();
-  console.log('logout call auth service');
+  // console.log('logout call auth service');
 };
 
 

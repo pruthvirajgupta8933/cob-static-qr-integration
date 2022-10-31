@@ -766,7 +766,7 @@ export const bankAccountVerification = createAsyncThunk(
 export const getBankId = createAsyncThunk(
   "kyc/getBankId",
   async (requestParam) => {
-    console.log(requestParam);
+    // console.log(requestParam);
     const response = await axiosInstanceAuth
       .post(`${API_URL.GET_BANK_ID}`, requestParam)
       .catch((error) => {

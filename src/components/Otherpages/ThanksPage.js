@@ -7,7 +7,7 @@ function ThanksPage() {
     const planid = new URLSearchParams(search).get('planid');
   
 
-    console.log(planid);
+    // console.log(planid);
 let tt = "";
 
 if(planid==="10"){

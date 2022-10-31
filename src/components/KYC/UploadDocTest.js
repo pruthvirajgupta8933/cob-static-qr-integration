@@ -10,7 +10,7 @@ function UploadDocTest() {
     
 function readURL(input) {
   // var id = input.id;
-        console.log(input)
+        // console.log(input)
 
     if (input.files && input.files[0]) {
   
@@ -48,7 +48,7 @@ function readURL(input) {
 
   const handleChange = function (e,id) {
     // console.log("change event")
-    console.log(id)
+    // console.log(id)
     readURL(e.target)
   }
 

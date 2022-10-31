@@ -326,9 +326,9 @@ function BankDetails(props) {
           handleChange,
         }) => (
           <Form>
-            {console.log("values", values)}
+            {/* {console.log("values", values)}
             {console.log("initialValues", initialValues)}
-            {console.log("errors", errors)}
+            {console.log("errors", errors)} */}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">

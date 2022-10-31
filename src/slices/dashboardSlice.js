@@ -133,11 +133,11 @@ export const successTxnSummary = createAsyncThunk(
     "dashbaord/GetRefundTxnHistory",
     async (data, thunkAPI) => {
       try {
-        console.log("check1",data)
+        // console.log("check1",data)
         const response = await Dashboardservice.refundTransactionHistory(data);
         return response.data;
       } catch (error) {
-        console.log("check2",error.response)
+        // console.log("check2",error.response)
         const message =
           (error.response &&
             error.response.data &&
@@ -249,7 +249,7 @@ export const successTxnSummary = createAsyncThunk(
         // state.isLoadingTxnHistory = false;
         state.refundTransactionHistory = action.payload;
 
-        console.log(state.refundTransactionHistory = action.payload,"my payload")
+        // console.log(state.refundTransactionHistory = action.payload,"my payload")
       },
       [fetchRefundTransactionHistory.pending]: (state) => {
         // state.isLoadingTxnHistory = true;

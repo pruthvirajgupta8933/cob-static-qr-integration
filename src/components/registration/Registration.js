@@ -72,7 +72,7 @@ function Registration() {
     showPassword: false,
   });
   const togglePassword = () => {
-    console.log(999);
+    // console.log(999);
     setPasswordType(!passwordType);
   };
 

@@ -47,7 +47,7 @@ function FormPaymentLink() {
         setDrop(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -87,7 +87,7 @@ useEffect(() => {
             transition: Zoom,
             limit: 2,
           })
-        console.log(error);
+        // console.log(error);
       });
   };
 

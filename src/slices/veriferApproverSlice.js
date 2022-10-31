@@ -48,7 +48,7 @@ export const verifyKyc = createAsyncThunk(
   });
 
 
-  console.log(veriferApproverSlice)
+  // console.log(veriferApproverSlice)
   const { veriferApprover} = veriferApproverSlice;
 
 export default veriferApprover;

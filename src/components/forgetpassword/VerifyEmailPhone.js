@@ -15,7 +15,7 @@ const VerifyEmailPhone = (props) => {
   const { handleFormSubmit } = props;
   // const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
-  console.log(auth.forgotPassword.sendUserName);
+  // console.log(auth.forgotPassword.sendUserName);
   let history = useHistory();
 
   const [emailotp, setEmailotp] = useState("");
@@ -62,7 +62,7 @@ const VerifyEmailPhone = (props) => {
           headers: { "Content-Type": "application/json" },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           if (response.status === 200) {
             toast.success(response.data.message);
             props.props("a3");

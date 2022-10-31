@@ -111,7 +111,7 @@ function RefundTransactionHistory() {
     // extraDataObj,
     // isExtraDataRequired
   );
-  console.log(clientMerchantDetailsList, "hereeeeeeeeeeee");
+  // console.log(clientMerchantDetailsList, "hereeeeeeeeeeee");
 
   useEffect(() => {
     // console.log("showData", showData.length);
@@ -138,7 +138,7 @@ function RefundTransactionHistory() {
 
   const onSubmitHandler = (values) => {
     dispatch(fetchRefundTransactionHistory(values)).then((res) => {
-      console.log(res, "myreesss");
+      // console.log(res, "myreesss");
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {

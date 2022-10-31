@@ -64,9 +64,9 @@ function Dashboard() {
                          // }).catch(err => {
                          //      console.log(err)
                          // })
-                         console.log("client code is null")
+                         // console.log("client code is null")
                     } else {
-                         console.log("client code is not null")
+                         // console.log("client code is not null")
                     }
                }
           }

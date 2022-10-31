@@ -21,14 +21,14 @@ function SettlementReport() {
   const { user } = useSelector((state) => state.auth);
   let clientCode = "";
   if (isKycCompleted) {
-    console.log("kyc has completed");
+    // console.log("kyc has completed");
     if (isClientCodeCreated) {
-      console.log("client code has created");
+      // console.log("client code has created");
     } else {
-      console.log("kyc done client code is not create");
+      // console.log("kyc done client code is not create");
     }
   } else {
-    console.log("kyc not completed");
+    // console.log("kyc not completed");
   }
 
   if (user && user?.clientMerchantDetailsList) {
@@ -48,7 +48,7 @@ function SettlementReport() {
         setData(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

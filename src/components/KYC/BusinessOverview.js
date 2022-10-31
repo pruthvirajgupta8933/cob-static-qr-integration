@@ -40,7 +40,7 @@ function BusinessOverview(props) {
 
   const KycList = kyc?.kycUserList;
   const KycTabStatusStore = kyc?.KycTabStatusStore
-  console.log("KycTabStatusStore",KycTabStatusStore)
+  // console.log("KycTabStatusStore",KycTabStatusStore)
 
   const { clientCode, business_cat_code } = clientMerchantDetailsList[0];
 
@@ -504,7 +504,7 @@ function BusinessOverview(props) {
               <div class="mt-2">
                 <div class="row">
                   <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
-                  {console.log("VerifyKycStatus",VerifyKycStatus)}
+                  {/* {console.log("VerifyKycStatus",VerifyKycStatus)} */}
                     {VerifyKycStatus === "Verified" ? null : (
                       <button
                         className="btn float-lg-right"

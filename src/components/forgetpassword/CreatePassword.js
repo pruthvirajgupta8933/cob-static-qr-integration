@@ -31,7 +31,6 @@ const CreatePassword = (props) => {
     setPasswordInput(evnt.target.value);
   };
   const togglePassword = () => {
-    console.log(999);
     setPasswordType(!passwordType);
   };
 

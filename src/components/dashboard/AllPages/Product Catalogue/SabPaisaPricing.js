@@ -21,7 +21,7 @@ const SabPaisaPricing = () => {
     dispatch(productSubscribeState(value));
   };
   const { user } = useSelector((state) => state.auth);
-  console.log("user", user);
+  // console.log("user", user);
   const { clientId, clientName } = user.clientMerchantDetailsList[0];
 
   const param = useParams();
@@ -45,7 +45,9 @@ const SabPaisaPricing = () => {
         //  productArr =  productDetails[0].plan_description.split(',');
         //  console.log("><<<<<<<<<<<", productArr)
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>{
+        //  console.log(err)
+        });
   }, [param]);
 
   const handleClick = async (plan_id, plan_name) => {
@@ -56,7 +58,7 @@ const SabPaisaPricing = () => {
       planName: plan_name,
       applicationId: param?.id,
     };
-    console.log("postData", postData);
+    // console.log("postData", postData);
 
     const res = await axiosInstanceAuth.post(
       API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,

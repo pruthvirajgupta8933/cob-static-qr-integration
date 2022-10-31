@@ -19,7 +19,7 @@ export const roleBasedAccess = (pageNo) => {
     } else if (roleId !== 3 || roleId !== 13) {
         roleAccessObj = { ...roleAccessObj, merchant: true };
     } else {
-        console.log("Permission not match with these roles");
+        // console.log("Permission not match with these roles");
     }
 
     return roleAccessObj;

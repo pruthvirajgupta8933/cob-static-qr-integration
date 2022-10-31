@@ -91,7 +91,7 @@ let history = useHistory();
         // console.log(JSON.stringify(response.data));
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         toast.error("Payment Link Creation Failed ")
       });
 
