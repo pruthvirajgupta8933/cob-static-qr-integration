@@ -71,12 +71,12 @@ const NavBar = () => {
                 <Link to="/dashboard/profile" class="dropdown-item text-white">
                   Profile
                 </Link>
-                <Link
+                {/* <Link
                   to="/dashboard/change-password"
                   class="dropdown-item text-white"
                 >
                   Change Password
-                </Link>
+                </Link> */}
                 <Link onClick={exitback} class="dropdown-item text-white ">
                   Log out
                 </Link>

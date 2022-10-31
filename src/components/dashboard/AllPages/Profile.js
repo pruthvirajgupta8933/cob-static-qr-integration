@@ -15,7 +15,7 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 
 export const Profile = () => {
   const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
-  
+
   const roleBasedShowTab = roleBasedAccess()
 
   const dispatch = useDispatch();
@@ -82,9 +82,9 @@ export const Profile = () => {
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-// console.log(roleBasedShowTab);
+  // console.log(roleBasedShowTab);
 
-const LoggedUser = Object.keys(roleBasedShowTab).find(key => roleBasedShowTab[key] === true);
+  const LoggedUser = Object.keys(roleBasedShowTab).find(key => roleBasedShowTab[key] === true);
 
   const INITIAL_FORM_STATE = {
     loginId: loginId,
@@ -208,10 +208,15 @@ const LoggedUser = Object.keys(roleBasedShowTab).find(key => roleBasedShowTab[ke
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper">
-        
+
             <h1 className="right_side_heading">
               My Profile
             </h1>
+
+
+
+
+
             <div className="ant-tabs ant-tabs-top ant-tabs-line">
               <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
                 <div className="ant-tabs-nav-container">
@@ -232,8 +237,6 @@ const LoggedUser = Object.keys(roleBasedShowTab).find(key => roleBasedShowTab[ke
                             width: "116px",
                           }}
                         ></div>
-
-
                       </div>
                     </div>
                   </div>
@@ -245,7 +248,7 @@ const LoggedUser = Object.keys(roleBasedShowTab).find(key => roleBasedShowTab[ke
                   <div tabIndex={0} role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }}>
                   </div>
                   <div className="container col-sm-12 d-flex">
-                    
+
                     {/* start form area */}
                     <div className="container col-sm-8">
                       <div className="col-md-12 ">
@@ -256,256 +259,75 @@ const LoggedUser = Object.keys(roleBasedShowTab).find(key => roleBasedShowTab[ke
                             <div className="card-header">Basic Details</div>
                             <div className="card-body-"> */}
                         <form className="form-horizontal form_cmplt" onSubmit={handleSubmit(onSubmit)}>
-                          {/* <div className="form-group col-sm-12">
+                          <div class="card card-main">
+                            {/* <div class="card-header text-center">
+                My Profile
+              </div> */}
 
-                            <label
-                              htmlFor="loginId"
-                              className="control-label col-sm-3"
-                            >
-
-                              {" "}
-                              Login ID
-                            </label>
-                            <div className="col-sm-9">
-                              <input
-                                className={`form-control ${errors.loginId ? "is-invalid" : ""
-                                  }`}
-                                {...register("loginId")}
-                                type="text"
-                                id="loginId"
-                                name="loginId"
-                                style={{
-                                  width: "220px",
-                                  height: "50px"
-                                }}
-                                onChange={(e) => e.target.value}
-                                disabled
-                              />
-                              <div className="invalid-feedback">
-                                {errors.loginId?.message}
+                            <div class="form-group card-body no-pad">
+                              <label htmlFor="clientName" className="control-label col-sm-4 for_Headingss">User Name</label>
+                              <div class="col-sm-8">
+                                <input className={`form-control ${errors.clientName ? "is-invalid" : ""}`}
+                                  {...register("clientName")} type="text" id="clientName " name="clientName" className="form-control border-0"
+                                  onChange={(e) => e.target.value} readonly />
+                                <p className="invalid-feedback">
+                                  {errors.clientName?.message}
+                                </p>
                               </div>
                             </div>
-                          </div> */}
-                          {/* <div className="form-group  col-sm-12">
-                            <label
-                              htmlFor="clientName"
-                              className="control-label col-sm-3 for_Headingss"
-                            >
-                              Profile Picture
-                            </label>
-                            <div className="col-sm-9">
-                             
-                              <button
-                                style={{ width: "176px", height: "40px" }}
-                                type="button"
-                                className="btn bttn bttnbackgroundkyc"
-                              >
-                                <i className="fa fa-key" />
-                                <span> Change Profile Photo</span>
-                              </button>
-                            
-                              <div className="invalid-feedback">
-                                {errors.clientName?.message}
+
+                            <div class="form-group card-body no-pad">
+                              <label htmlFor="email" className="control-label col-sm-4 for_Headingss">Email id</label>
+                              <div class="col-sm-8">
+                                <input type="text" id="email" className="form-control border-0" name="email" {...register("email")} readonly />
+                                <p>{errors.email?.message}</p>
                               </div>
                             </div>
-                          </div> */}
 
+                            <div class="form-group card-body no-pad">
+                              <label htmlFor="clientName" className="control-label col-sm-4 for_Headingss"> Change&nbsp;Password</label>
+                              <div class="col-sm-8">
+                                <Link to={`/dashboard/change-password`}>
+                                  <button
+                                    style={{ width: "176px", height: "40px", border: "1px solid #4285F8" }}
+                                    type="button"
 
+                                  >
 
-                          <div className="form-group  col-sm-12 mt-3">
-                            <label
-                              htmlFor="clientName"
-                              className="control-label col-sm-4 for_Headingss"
-
-                            >
-                              User Name
-                            </label>
-                            <div className="col-sm-6 ml-3 float-start">
-                              <input
-                                className={`form-control ${errors.clientName ? "is-invalid" : ""
-                                  }`}
-                                {...register("clientName")}
-                                type="text"
-                                id="clientName"
-                                name="clientName"
-
-                                style={{
-                                  width: "220px",
-                                  height: "50px"
-                                }}
-                                onChange={(e) => e.target.value}
-                                readonly
-
-                              />
-                              <div className="invalid-feedback">
-                                {errors.clientName?.message}
+                                    <span className="for_passwrd">Change Password</span>
+                                  </button>
+                                </Link>
+                                <p className="invalid-feedback">{errors.clientName?.message}</p>
                               </div>
                             </div>
-                          </div>
-                          <div className="form-group col-sm-12 mt-3">
-                            <label
-                              htmlFor="email"
-                              className="control-label col-sm-4 for_Headingss"
-                            >
-                              Email id
-                            </label>
 
-                            <div className="col-sm-6 ml-3">
-                              <input
-                                type="text"
-                                id="email"
-                                style={{
-                                  width: "220px",
-                                  height: "50px"
-                                }}
-                                className="form-control border-0"
-                                name="email"
-                                {...register("email")}
-                                readonly
-                              />
-                              <p>{errors.email?.message}</p>
-                            </div>
-                          </div>
-                          <div className="form-group  col-sm-12 mt-3">
-                            <label
-                              htmlFor="clientName"
-                              className="control-label col-sm-4 for_Headingss"
-                            >
-                              Change Password
-                            </label>
-                            <div className="col-sm-6 ml-3">
-                              <Link to={`/dashboard/change-password`}>
-                                <button
-                                  style={{ width: "176px", height: "40px", border: "1px solid #4285F8" }}
-                                  type="button"
-
-                                >
-
-                                  <span className="for_passwrd">Change Password</span>
-                                </button>
-                              </Link>
-                        
-                              <div className="invalid-feedback">
-                                {errors.clientName?.message}
+                            <div class="form-group card-body no-pad">
+                              <label htmlFor="phone" className="control-label col-sm-4 for_Headingss"> Account Type</label>
+                              <div class="col-sm-8">
+                                <input className={`form-control text-uppercase border-0 ${errors.phone ? "is-invalid" : ""}`}
+                                  {...register("accountType")} type="text" id="accountType" name="accountType" onChange={(e) => e.target.value} readonly />
+                                <p className="invalid-feedback">
+                                  {errors.phone?.message}
+                                </p>
                               </div>
                             </div>
-                          </div>
-                          <div className="form-group  col-sm-12 mt-3">
-                            <label
-                              htmlFor="phone"
-                              className="control-label col-sm-4 for_Headingss"
-                            >
-                              Account Type
-                            </label>
-                            <div className="col-sm-6 ml-3 ">
-                              <input
-                                className={`form-control text-uppercase border-0 ${errors.phone ? "is-invalid" : ""
-                                  }`}
-                                {...register("accountType")}
-                                type="text"
-                                id="accountType"
-                                name="accountType"
-                                style={{
-                                  width: "220px",
-                                  height: "50px"
-                                }}
-                                onChange={(e) => e.target.value}
-                                readonly
-                              />
-                              <div className="invalid-feedback">
-                                {errors.phone?.message}
+
+                            <div class="form-group card-body no-pad">
+                              <label htmlFor="phone" className="control-label col-sm-4 for_Headingss">Phone No.</label>
+                              <div class="col-sm-8">
+                                <input className={`form-control border-0 ${errors.phone ? "is-invalid" : ""}`}
+                                  {...register("phone")} type="text" id="phone" name="phone" onChange={(e) => e.target.value} readonly />
+                                <p className="invalid-feedback">
+                                  {errors.phone?.message}
+                                </p>
                               </div>
                             </div>
-                          </div>
-                          <div className="form-group  col-sm-12 mt-3">
-                            <label
-                              htmlFor="phone"
-                              className="control-label col-sm-4 for_Headingss"
-                            >
-                              Phone No.
-                            </label>
-                            <div className="col-sm-6 ml-3"> <input
-                              className={`form-control border-0 ${errors.phone ? "is-invalid" : ""
-                                }`}
-                              {...register("phone")}
-                              type="text"
-                              id="phone"
-                              name="phone"
-                              style={{
-                                width: "220px",
-                                height: "50px"
-                              }}
-                              onChange={(e) => e.target.value}
-                              readonly
-                            />
-                              <div className="invalid-feedback">
-                                {errors.phone?.message}
-                              </div>
-                            </div>
-                          </div>
-                          {/* Client Code Hide if already client created */}
-                          {/* {isCreateorUpdate ? (
-                            <div className="form-group col-sm-12">
-                              <label
-                                htmlFor="clientCode"
-                                className="control-label col-sm-3"
-                              >
-                                Client Code
-                              </label>
-                              <div className="col-sm-9">
-                                <input
-                                  className={`form-control ${errors.clientCode ? "is-invalid" : ""
-                                    }`}
-                                  {...register("clientCode")}
-                                  type="text"
-                                  id="clientCode"
-                                  name="clientCode"
-                                  style={{
-                                    width: "220px",
-                                    height: "50px"
-                                  }}
-                                  readonly
-                               
-                                />
-                                <div className="">
-                                  {isClientCodeValid
-                                    ? "Valid Client Code"
-                                    : "Try another Client Code"}
-                                </div>
-                                <div className="invalid-feedback">
-                                  {errors.clientCode?.message}
-                                </div>
-                              </div>
-                            </div>
-                          ) : (
-                            <></>
-                          )} */}
 
 
 
-                          <div class="row">
-                            <div class="col-6">
-                              <button type="button" class="edits_buttn mt-4 ml-2" style={{ width: "154px", height: "50px" }}><span className="edit_nop">Edit</span></button>
-                            </div>
-
-                            <div class="col-6">
-                              <button type="button" class="save_buttns mt-4" style={{ width: "154px", height: "50px", marginLeft: "-100px" }}><span className="edit_nop">Save</span></button>
-                            </div>
 
 
-                          </div>
 
-                          <div className="col-lg-4 offset-md-4- topmar">
-                            <div class="invisible">
-                              <button
-                                type="submit"
-                                className="btn bttn bttnbackgroundkyc"
-                              >
-                                {isCreateorUpdate
-                                  ? "Create Profile"
-                                  : "Update Profile"}
-                              </button>
-                            </div>
                           </div>
                         </form>
 
