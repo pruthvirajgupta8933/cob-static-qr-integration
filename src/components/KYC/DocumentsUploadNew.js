@@ -44,7 +44,7 @@ function DocumentsUpload(props) {
 
   const { auth, kyc } = useSelector((state) => state);
   const KycList = kyc?.kycUserList;
-  
+  const kyc_status = KycList?.status
   const { user } = auth;
 
   const { loginId } = user;
@@ -155,26 +155,6 @@ function DocumentsUpload(props) {
 
 
   };
-
-
-//   const viewDocument = async (loginMaidsterId) => {
-//     const res = await axiosInstanceAuth.post(API_URL.DOCUMENT_BY_LOGINID, {
-//       login_id: loginMaidsterId
-//     }).then(res => {
-//       if (res.status === 200) {
-//         const data = res.data;
-      
-//         const docId = data[0].documentId;
-//         // console.log(docId,"myyyyyyyyyyyyyyyyyy")
-//         const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;
-        
-//         axiosInstanceAuth.get(ImgUrl).then(res=>console.log(res))
-//       }
-//     })
-//       .catch(error => {
-//         console.error('There was an error!', error);
-//       });
-// };
 
 
   const verifyApproveDoc = (doc_id) => {
@@ -303,6 +283,7 @@ function DocumentsUpload(props) {
                         className="form-control"
                         options={docTypeList}
                         readOnly={readOnly}
+                      disabled={(kyc_status === "Verified" || kyc_status === "Approved" )  ? true : false}
                         
                       />
                       {formik.handleChange(

@@ -70,15 +70,6 @@ function BusinessOverview(props) {
     { key: "On my website/app", value: "Yes" },
   ];
 
-  // console.log(ErpCheck,"<======Erp Check=====>")
-  // console.log(KycList, "<===List===>");
-
-  // const erpCheck = () => {
-  //   if(ErpCheck === true)
-  //   return "Yes"
-  //   else return "No"
-  // }
-
   const VerifyKycStatus = KycTabStatusStore?.business_info_status
 
   const urlRegex = "((http|https)://)(www.)?"
@@ -116,22 +107,7 @@ function BusinessOverview(props) {
     form_build: "Yes",
   };
 
-  // const validationSchema = Yup.object({
-  //   business_type: Yup.string().required("Select BusinessType").nullable(),
-  //   business_category: Yup.string().required("Select Business Category").nullable(),
-  //   business_model: Yup.string().required("Required").nullable(),
-  //   billing_label: Yup.string().required("Required").nullable(),
-  //   erp_check: Yup.string().required("Select Erp").nullable(),
-  //   platform_id: Yup.string().required("Required").nullable(),
-  //   seletcted_website_app_url: Yup.string().required("Select website app Url").nullable(),
-  //   website_app_url: Yup.string().required("Required").nullable(),
-  //   company_website: Yup.string().required("Required").nullable(),
-  //   collection_type_id: Yup.string().required("Required").nullable(),
-  //   collection_frequency_id: Yup.string().required("Required").nullable(),
-  //   ticket_size: Yup.string().required("Required").nullable(),
-  //   expected_transactions: Yup.string().required("Required").nullable(),
-  //   form_build: Yup.string().required("Required").nullable(),
-  // });
+  
   const validationSchema = Yup.object({
     business_type: Yup.string()
       .required("Select BusinessType")
@@ -249,8 +225,7 @@ function BusinessOverview(props) {
           ticket_size: values.ticket_size,
           modified_by: loginId,
           login_id: loginId,
-          is_website_url:
-            values.seletcted_website_app_url === "Yes" ? "True" : "False",
+          is_website_url: values.seletcted_website_app_url === "Yes" ? "True" : "False",
           website_app_url: values.website_app_url,
         })
       ).then((res) => {
@@ -341,21 +316,6 @@ function BusinessOverview(props) {
               </div>
             </div>
 
-            {/* 
-              <div className="form-group col-md-4">
-              <label><h4 class ="font-weight-bold">Business Model <span style={{color:"red"}}>*</span></h4></label>
-                
-                <FormikController
-                  control="input"
-                  type="text"
-                 
-                  name="business_model"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div> */}
-
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
                 <h4 class="text-kyc-label text-nowrap">
@@ -371,12 +331,7 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-              </div>
-              <div
-                class="col-sm-7 col-md-7 col-lg-7 "
-                style={{ marginLeft: "238px", color: "red", fontSize: "12px" }}
-              >
-                <span>
+                  <span style={{fontSize: "12px" }}>
                   Please give a brief description of the nature of your
                   business. Please give examples of products you sell, business
                   categories you operate in, your customers and channels through
@@ -385,37 +340,13 @@ function BusinessOverview(props) {
               </div>
             </div>
 
-            {/* <div className="form-group col-md-4">
-              <label><h4 class ="font-weight-bold">Do you have your own ERP<span style={{color:"red"}}>*</span></h4></label>
-                <FormikController
-                  control="select"
-                  name="erp_check"
-                  options={Erp}
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div> */}
-
-            {/* <div className="form-group col-md-4 mt-3">
-              <label><h4 class ="font-weight-bold">Platform<span style={{color:"red"}}>*</span></h4></label>
-                
-                <FormikController
-                  control="select"
-                  name="platform_id"
-                  options={platform}
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div> */}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
-                <h4 class="text-kyc-label text-nowrap">
+                <h4 class="text-kyc-label text-wrap">
                   How do you wish to accept payments?<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 col-md-10 col-lg-10">
+              <div class="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="radio"
                   onChange={(e) => {
@@ -431,9 +362,8 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-              </div>
-              {formik.values?.seletcted_website_app_url === "Yes" && (
-                <div className="form-group col-lg-7">
+                {formik.values?.seletcted_website_app_url === "Yes" && (
+                <div className="form-group">
                   <FormikController
                     control="input"
                     type="text"
@@ -444,6 +374,8 @@ function BusinessOverview(props) {
                   />
                 </div>
               )}
+              </div>
+              
             </div>
 
 

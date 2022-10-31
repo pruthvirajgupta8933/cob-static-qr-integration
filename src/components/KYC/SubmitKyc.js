@@ -5,11 +5,11 @@ import { approvekyc, verifyComplete } from "../../slices/kycSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 // import FormikController from "../../_components/formik/FormikController";
-import congratsImg from "../../assets/images/congImg.png";
-import { Link } from "react-router-dom";
+// import congratsImg from "../../assets/images/congImg.png";
+// import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent } from "../../slices/kycSlice";
-import $ from "jquery";
+// import $ from "jquery";
 import congImg from "../../assets/images/congImg.png";
 
 function SubmitKyc(props) {
@@ -27,9 +27,9 @@ function SubmitKyc(props) {
   const { loginId } = user;
 
 
-  const {KycTabStatusStore, kycUserList} = kyc
-  const VerifyKycStatus = KycTabStatusStore?.merchant_info_status
+  const {kycUserList} = kyc
   const merchant_consent = kycUserList?.merchant_consent?.term_condition
+  const kyc_status = kycUserList?.status
   const [readOnly, setReadOnly] = useState(false);
 
   const initialValues = {
@@ -128,8 +128,6 @@ function SubmitKyc(props) {
         >
           {(formik) => (
             <Form>
-              {console.log(formik)}
-
               <div class="form-group row">
                 <div class="row">
                   <div class="col-lg- checkboxstyle">
@@ -137,7 +135,7 @@ function SubmitKyc(props) {
                       type="checkbox"
                       name="term_condition"
                       readOnly={readOnly}
-                      // checked={readOnly}
+                      disabled={(kyc_status === "Verified" || kyc_status === "Approved" )  ? true : false}
                       className="mr-0"
                     />
                   </div>
@@ -172,7 +170,7 @@ function SubmitKyc(props) {
                   control="checkbox"
                   name="termAndCondition"
                   options={termAndConditionOption}
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  disabled={kyc_status === "Verified" ? true : false}
                   readOnly={readOnly}
                   checked={readOnly}
                   className="mr-3"
@@ -183,7 +181,7 @@ function SubmitKyc(props) {
                   control="checkbox"
                   name="serviceAgreement"
                   options={serviceAgreementOption}
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  disabled={kyc_status === "Verified" ? true : false}
                   readOnly={readOnly}
                   checked={readOnly}
                   className="mr-3"
@@ -199,7 +197,7 @@ function SubmitKyc(props) {
                   }}
                 />
                 <div class="mt-3">
-                  {VerifyKycStatus === "Verified" ? null : (
+                  {(kyc_status === "Verified" || kyc_status === "Approved" ) ? null : (
                     <>
                     <button
                       className="btn float-lg-right"

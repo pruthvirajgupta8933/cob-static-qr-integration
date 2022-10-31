@@ -150,7 +150,7 @@ function Home() {
     totalAmt += item.payeeamount;
   });
 
-  // console.log(kyc?.KycTabStatusStore?.is_verified)
+  console.log("modalState",modalState)
 
   return (
     <section className="ant-layout Satoshi-Medium">
@@ -274,7 +274,7 @@ function Home() {
                 so you never have to reverse engineer anything.
               </p>
             </div>
-            {roles?.merchant === true ? (
+            {roles?.merchant === true && modalState!=="Approved" ? (
               <div className="col-12 col-md-12">
                 <div class="card col-lg-12- cardkyc pull-left">
                   <div class="font-weight-bold card-body Satoshi-Medium">
