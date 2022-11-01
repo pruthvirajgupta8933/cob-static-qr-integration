@@ -236,7 +236,7 @@ function BusinessOverview(props) {
           setTab(3);
           setTitle("BUSINESS DETAILS");
         } else {
-          toast.error("Something Went Wrong! Please try again.");
+          toast.error(res?.payload?.message ? res?.payload?.message: "Something Went Wrong! Please try again after some time.");
         }
       });
     } else if (role.verifier) {
