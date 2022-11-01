@@ -224,7 +224,7 @@ export const busiCategory = createAsyncThunk(
   "kyc/busiCategory",
   async (requestParam) => {
     const response = await axiosInstanceAuth
-      .get(`${API_URL.Business_Category}`, {
+      .get(`${API_URL.Business_Category_CODE}`, {
         headers: {},
       })
       .catch((error) => {

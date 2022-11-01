@@ -86,10 +86,9 @@ function Registration() {
     axiosInstanceAuth
       .get(API_URL.Business_Category_CODE)
       .then((resp) => {
-        const data = resp.data;
-        // console.log(data,"my all dattaaa")
-
-        setBusinessCode(data);
+        const data = resp?.data;
+        const sortAlpha = data?.sort((a, b) => a.category_name.toLowerCase().localeCompare(b.category_name.toLowerCase()))
+        setBusinessCode(sortAlpha);
       })
       .catch((err) => console.log(err));
   }, []);

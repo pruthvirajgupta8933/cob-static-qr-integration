@@ -57,11 +57,11 @@ const settlementReport=(paramData) => {
 
 const refundTransactionHistory =(paramData) => {
   // console.log("check3")
-  return axiosInstance.post(API_URL.refundTransactionHistory,paramData)
+  return axiosInstance.post(API_URL.RefundTxnHistory,paramData)
  
 }
 const chargebackTxnHistory =(paramData) => {
-  return axiosInstance.post(API_URL.chargebackTxnHistory,paramData)
+  return axiosInstance.post(API_URL.ChargeBankTxnHistory,paramData)
  
 }
 
