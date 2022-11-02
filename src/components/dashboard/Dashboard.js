@@ -34,6 +34,7 @@ import RefundTransactionHistory from './AllPages/RefundTransactionHistory';
 import ChargeBackTxnHistory from './AllPages/ChargeBackTxnHistory';
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
 import { createClientProfile } from '../../slices/auth';
+import HarrisTest from "../Otherpages/HarrisTest"
 
 
 
@@ -149,6 +150,9 @@ function Dashboard() {
                     <Route exact path={`${path}/test/`}>
                          <Test />
                     </Route>
+                    {/* <Route exact path={`${path}/harris-test/`}>
+                         <HarrisTest />
+                    </Route> */}
                     <Route exact path={`${path}/view-transaction-with-filter`} >
                          <ViewTransactionWithFilter />
                     </Route>
