@@ -723,6 +723,11 @@ button[disabled1] {
 
 }
 
+.forSpinner {
+  margin-top: 126px;
+  margin-left: 30px;
+}
+
 /* Harris CSS For Login Image Dynamic and Side Nav Font*/
 .loginscreenimage {
 height: 363px;

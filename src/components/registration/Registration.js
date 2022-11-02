@@ -605,12 +605,12 @@ function Registration() {
                                           {" "}
                                           {valuesIn.showPassword ? (
                                             <i
-                                              class="fa fa-eye-slash"
+                                              class="fa fa-eye"
                                               aria-hidden="true"
                                             ></i>
                                           ) : (
                                             <i
-                                              class="fa fa-eye"
+                                              class="fa fa-eye-slash"
                                               aria-hidden="true"
                                             ></i>
                                           )}
@@ -659,12 +659,12 @@ function Registration() {
                                           {passwordType ===
                                           "confirmpassword" ? (
                                             <i
-                                              class="fa fa-eye-slash"
+                                              class="fa fa-eye"
                                               aria-hidden="true"
                                             ></i>
                                           ) : (
                                             <i
-                                              class="fa fa-eye"
+                                              class="fa fa-eye-slash"
                                               aria-hidden="true"
                                             ></i>
                                           )}

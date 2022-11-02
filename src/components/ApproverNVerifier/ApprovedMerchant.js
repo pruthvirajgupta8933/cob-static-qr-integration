@@ -187,8 +187,9 @@ useEffect(() => {
 
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
-                    <div class="modal-content" style={{width:750}}>
+                    <div class="modal-content" style={{width:787}}>
                       <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Document Details</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -211,7 +212,7 @@ useEffect(() => {
                         </thead>
                        
                         <td>{merchantData.documentId}</td>
-                        <td><img src={merchantData.filePath} alt="Document"/></td>
+                        <td><a href={merchantData.filePath} target="_blank" alt="Document">{merchantData.filePath}</a></td>
                         <td>{merchantData.status}</td>
                           </table>
                           </div>

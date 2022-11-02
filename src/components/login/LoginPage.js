@@ -306,7 +306,7 @@ function LoginPage() {
                                     >
                                       {loading && (
                                         <span
-                                          className="spinner-border"
+                                          className="spinner-border forSpinner"
                                           role="status"
                                         ></span>
                                       )}
