@@ -141,10 +141,14 @@ function SubmitKyc(props) {
                   </div>
                   <div class="col-lg-11 para-style text-nowrap">
 
-                    I have accepted the<a href="https://sabpaisa.in/term-conditions/"  rel="noreferrer"  alt="tnz" target="_blank" title="tnc">&nbsp;Term & Condition</a> ,&nbsp;
+                  I have read and understood the <a href="https://sabpaisa.in/term-conditions/"  rel="noreferrer"  alt="tnz" target="_blank" title="tnc">&nbsp;Term & Condition</a> ,&nbsp;
                     <a  href="https://sabpaisa.in/privacy-policy/" alt="tnz" target="_blank" title="tnc"  rel="noreferrer" > Privacy Policy</a> ,&nbsp;
                     <a href="https://sabpaisa.in/service-agreement" alt="tnz" target="_blank" title="tnc"  rel="noreferrer" > Service Agreement</a>&nbsp;
                   </div>
+                  <div class="col-lg-11 para-style2 text-nowrap">
+                    By submitting the form, I agree to abide by the rules at all times.
+
+                    </div>
 
                 </div>
               </div>

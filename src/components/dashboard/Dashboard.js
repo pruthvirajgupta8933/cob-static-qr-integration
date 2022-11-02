@@ -35,6 +35,7 @@ import ChargeBackTxnHistory from './AllPages/ChargeBackTxnHistory';
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
 import { createClientProfile } from '../../slices/auth';
 import Sandbox from '../SandBox/SendBox';
+import HarrisTest from "../Otherpages/HarrisTest"
 
 
 
@@ -150,6 +151,9 @@ function Dashboard() {
                     <Route exact path={`${path}/test/`}>
                          <Test />
                     </Route>
+                    {/* <Route exact path={`${path}/harris-test/`}>
+                         <HarrisTest />
+                    </Route> */}
                     <Route exact path={`${path}/view-transaction-with-filter`} >
                          <ViewTransactionWithFilter />
                     </Route>
@@ -175,7 +179,7 @@ function Dashboard() {
                     <Route exact path={`${path}/thanks`} >
                          <ThanksPage />
                     </Route>
-                    
+
                     <Route exact path={`${path}/Sandbox`} >
                          <Sandbox />
                     </Route>

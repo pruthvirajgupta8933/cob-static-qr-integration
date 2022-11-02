@@ -16,7 +16,6 @@ import Test from './components/Otherpages/Test';
 import InternetConnection from './_components/reuseable_components/InternetConnection';
 import MobileNavbar from './components/dashboard/SideNavbar/MobileNavbar';
 import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetails';
-
 import DemoReg from './components/login/DemoReg';
 import DemoLogin from './components/login/DemoLogin';
 

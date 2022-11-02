@@ -123,6 +123,11 @@ function BusinessOverview(props) {
       .matches(urlRegex, "Website Url is not Valid")
       .required("Required")
       .nullable(),
+      website_app_url: Yup.string().when(['seletcted_website_app_url'], {
+        is: "Yes",
+        then: Yup.string().ensure().required("Website App Url is required"),
+        otherwise:Yup.string().notRequired()
+      }),
     expected_transactions: Yup.string()
       .required("Required")
       .matches(Regex.digit, RegexMsg.digit)
@@ -131,7 +136,7 @@ function BusinessOverview(props) {
       .matches(Regex.digit, RegexMsg.digit)
       .required("Required")
       .nullable(),
-  });
+  },[['seletcted_website_app_url']]);
 
   ////Get Api for Buisness overview///////////
   useEffect(() => {
@@ -281,6 +286,8 @@ function BusinessOverview(props) {
       >
         {(formik) => (
           <Form>
+            {console.log(formik)}
+            {console.log(formik.errors)}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
