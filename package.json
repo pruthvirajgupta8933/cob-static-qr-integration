@@ -36,6 +36,8 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "^5.0.0",
     "react-simple-chatbot": "^0.6.1",
+    "react-step-progress": "^1.0.3",
+    "react-step-progress-bar": "^1.0.3",
     "react-toastify": "^8.1.0",
     "react-tooltip": "^4.2.21",
     "styled-components": "^4.4.1",

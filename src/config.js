@@ -67,6 +67,8 @@ const API_LIVE = {
   GetMerchantTxnHistory: adminAPIURL + "/REST/GetMerchantTxnHistory",
   /* Settlement Report */
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
+  RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
+  ChargeBankTxnHistory: reportAPIURL + "/REST/GetChargebackTxnHistory",
 
   /* Transaction Enquiry */
   VIEW_TXN: adminAPIURL + "/Enquiry/ViewTxn",
@@ -79,8 +81,7 @@ const API_LIVE = {
   GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
   SMART_UPLOAD: "https://paybylink.sabpaisa.in/paymentlink/smartupload",
   EDIT_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/editCustomer/",
-  GET_CUSTOMER_TYPE:
-    "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
+  GET_CUSTOMER_TYPE: "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
   ADD_LINK: "https://paybylink.sabpaisa.in/paymentlink/addLink",
   ADD_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/addCustomers",
   DELETE_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/deleteCustomer",

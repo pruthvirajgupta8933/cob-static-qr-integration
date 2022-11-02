@@ -139,6 +139,7 @@ function ChargeBackTxnHistory() {
   const onSubmitHandler = (values) => {
     dispatch(fetchChargebackTxnHistory(values)).then((res) => {
       // console.log(res, "myreesss");
+      console.log(res)
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {

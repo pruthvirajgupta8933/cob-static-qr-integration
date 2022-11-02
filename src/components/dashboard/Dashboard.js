@@ -34,6 +34,7 @@ import RefundTransactionHistory from './AllPages/RefundTransactionHistory';
 import ChargeBackTxnHistory from './AllPages/ChargeBackTxnHistory';
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
 import { createClientProfile } from '../../slices/auth';
+import Sandbox from '../SandBox/SendBox';
 import HarrisTest from "../Otherpages/HarrisTest"
 
 
@@ -179,6 +180,9 @@ function Dashboard() {
                          <ThanksPage />
                     </Route>
 
+                    <Route exact path={`${path}/Sandbox`} >
+                         <Sandbox />
+                    </Route>
                </Switch>
           </section>
      )
