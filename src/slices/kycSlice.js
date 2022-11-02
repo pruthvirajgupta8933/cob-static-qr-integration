@@ -907,11 +907,8 @@ export const kycSlice = createSlice({
       state.status = "pending";
     },
     [updateContactInfo.fulfilled]: (state, action) => {
+      
       state.allTabsValidate.merchantContactInfo.submitStatus = action.payload;
-      // console.log(
-      //   action.payload,
-      //   "=============================================================>"
-      // );
     },
     [updateContactInfo.rejected]: (state, action) => {
       state.status = "failed";

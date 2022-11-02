@@ -13,6 +13,7 @@ import {
   panValidation,
   authPanValidation,
   gstValidation,
+  kycUserList,
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
@@ -29,13 +30,13 @@ function BusinessDetails(props) {
   const { auth, kyc } = useSelector((state) => state);
 
   const { user } = auth;
-  const { allTabsValidate, kycUserList, KycTabStatusStore } = kyc;
+  const { allTabsValidate, KycTabStatusStore } = kyc;
   const VerifyKycStatus = KycTabStatusStore?.merchant_info_status
 
   // console.log("VerifyKycStatus",VerifyKycStatus)
 
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
-  const KycList = kycUserList;
+  const KycList = kyc?.kycUserList;
   
 
   const { loginId } = user;
@@ -340,6 +341,9 @@ function BusinessDetails(props) {
           toast.success(res?.payload?.message);
           setTab(4);
           setTitle("BANK DETAILS");
+          console.log("data trigger")
+          dispatch(kycUserList({ login_id: loginId }))
+
         } else {
           toast.error(res?.payload?.message);
         }

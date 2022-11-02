@@ -30,7 +30,8 @@ function KycForm() {
   const [tab, SetTab] = useState(1);
   const [title, setTitle] = useState("CONTACT INFO");
   const [status, setStatus] = useState(false);
-  const { auth } = useSelector((state) => state);
+
+  const { auth ,kyc } = useSelector((state) => state);
   const { user } = auth;
 
   const { loginId } = user;
@@ -48,63 +49,40 @@ function KycForm() {
   // const BusinessOverviewStatus = useSelector(
   //   (state) => state.kyc.BusiOverviewwStatus.submitStatus.status
   // );
-  const BusinessOverviewStatus = useSelector(
-    (state) => state.kyc.allTabsValidate.BusiOverviewwStatus.submitStatus.status
-  );
 
-  const BusinessDetailsStatus = useSelector(
-    (state) =>
-      state.kyc.allTabsValidate.BusinessDetailsStatus.submitStatus.status
-  );
+  const {allTabsValidate, KycTabStatusStore} = kyc;
 
-  const bankDetails = useSelector(
-    (state) => state.kyc.allTabsValidate.BankDetails.submitStatus.status
-  );
+  const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status  
+  const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus?.submitStatus?.status
+  const bankDetails = allTabsValidate?.BankDetails?.submitStatus?.status
+  const contactInfo = allTabsValidate?.merchantContactInfo?.submitStatus?.status
+  const uploadDocuments = allTabsValidate?.UploadDoc?.submitStatus?.status
 
-  const contactInfo = useSelector(
-    (state) => state.kyc.allTabsValidate.merchantContactInfo.submitStatus.status
-  );
-
-  const uploadDocuments = useSelector(
-    (state) => state.kyc.allTabsValidate.UploadDoc.submitStatus.status
-  );
-
+  
   let history = useHistory();
 
-  const merchantList = user.clientMerchantDetailsList;
-  //  console.log(merchantList, "<=====Merchant List =======>")
+  // const merchantList = user.clientMerchantDetailsList;
 
-  // console.log(MerchantClietCode, "============>")
 
-  if (user.roleId !== 3 && user.roleId !== 13) {
-    if (user.clientMerchantDetailsList === null) {
-      history.push("/dashboard/profile");
-    }
-  }
+  // if (user.roleId !== 3 && user.roleId !== 13) {
+  //   if (user.clientMerchantDetailsList === null) {
+  //     history.push("/dashboard/profile");
+  //   }
+  // }
 
   //------------------------------------------------------------------
 
   //------------- Kyc  User List ------------//
-  useEffect(() => {
-    // console.log("kycuserlist")
-    dispatch(
-      kycUserList({
-        login_id: merchantloginMasterId,
-      })
-    );
-  }, [kycUserList, merchantloginMasterId]);
+  useEffect(() => {dispatch(kycUserList({ login_id: merchantloginMasterId }));
+  }, [ merchantloginMasterId]);
 
   //-----------------------------------------//
 
   //-----------Kyc Document Upload List ------//
 
   useEffect(() => {
-    dispatch(kycDocumentUploadList({ login_id: merchantloginMasterId })).then(
-      (res) => {
-        // console.log(res)
-      }
-    );
-  }, [kycDocumentUploadList, merchantloginMasterId]);
+    dispatch(kycDocumentUploadList({ login_id: merchantloginMasterId }))
+  }, [ merchantloginMasterId]);
 
   //--------------------------------------//
 
@@ -116,18 +94,12 @@ function KycForm() {
         login_id: merchantloginMasterId,
       })
     );
-  }, [kycDocumentUploadList, merchantloginMasterId]);
+  }, [ merchantloginMasterId]);
 
   const redirect = () => {
     history.push("/dashboard");
   };
 
-  // useEffect(() => {
-  //   if(window.location.reload === true) {
-  //     console.log("Hello")
-  //     redirect()
-  //   }
-  // },[])
 
   return (
     <section className="ant-layout">
@@ -187,7 +159,7 @@ function KycForm() {
                                   tab === 1 ? (
                                     " nav-link activepaylink-kyc text-font"
                                   ) : "inactive text-font" ? (
-                                    contactInfo === true ? (
+                                    contactInfo === true || KycTabStatusStore?.general_info_status!=="Not-Filled" ? (
                                       "inactive text-font-ForStatusChange text-success p-3"
                                     ) : (
                                       "nav-link inactive text-font"
@@ -212,7 +184,7 @@ function KycForm() {
                                   tab === 2 ? (
                                     " nav-link activepaylink-kyc text-font"
                                   ) : "inactive text-font" ? (
-                                    BusinessOverviewStatus === true ? (
+                                    BusinessOverviewStatus === true || KycTabStatusStore?.business_info_status!=="Not-Filled"? (
                                       "inactive text-font-ForStatusChange text-success p-3"
                                     ) : (
                                       "nav-link inactive text-font"
@@ -237,7 +209,7 @@ function KycForm() {
                                   tab === 3 ? (
                                     " nav-link activepaylink-kyc text-font"
                                   ) : "inactive text-font" ? (
-                                    BusinessDetailsStatus === true ? (
+                                    BusinessDetailsStatus === true || KycTabStatusStore?.merchant_info_status!=="Not-Filled"? (
                                       "inactive text-font-ForStatusChange text-success p-3"
                                     ) : (
                                       "nav-link inactive text-font"
@@ -280,7 +252,7 @@ function KycForm() {
                                   tab === 4 ? (
                                     " nav-link activepaylink-kyc text-font"
                                   ) : "inactive text-font" ? (
-                                    bankDetails === true ? (
+                                    bankDetails === true || KycTabStatusStore?.settlement_info_status!=="Not-Filled" ? (
                                       "inactive text-font-ForStatusChange text-success p-3"
                                     ) : (
                                       "nav-link inactive text-font"

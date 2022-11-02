@@ -12,6 +12,7 @@ import {
   ifscValidation,
   bankAccountVerification,
   getBankId,
+  kycUserList,
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
@@ -25,8 +26,8 @@ function BankDetails(props) {
 
   const { kyc, auth } = useSelector((state) => state);
 
-  const { kycUserList, KycTabStatusStore, GetBankid, allTabsValidate } = kyc;
-  const KycList = kycUserList;
+  const { KycTabStatusStore, GetBankid, allTabsValidate } = kyc;
+  const KycList = kyc?.kycUserList;
   const VerifyKycStatus = KycTabStatusStore?.settlement_info_status;
   const bankDetailsById = GetBankid;
 
@@ -224,6 +225,8 @@ function BankDetails(props) {
           toast.success(res?.payload?.message);
           setTab(5);
           setTitle("DOCUMENTS UPLOAD");
+          dispatch(kycUserList({ login_id: loginId }))
+
         } else {
           toast.error(res?.payload?.message);
         }

@@ -11,6 +11,7 @@ import {
   otpForContactInfo,
   verifyKycEachTab,
   updateContactInfo,
+  kycUserList,
 } from "../../slices/kycSlice";
 import MailVerificationModal from "./OtpVerificationKYC/MailVerificationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
@@ -108,11 +109,11 @@ function ContactInfo(props) {
           res?.meta?.requestStatus === "fulfilled" &&
           res.payload?.status === true
         ) {
-          // console.log("chec2")
 
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
           toast.success(res.payload?.message);
+          dispatch(kycUserList({ login_id: loginId }))
         } else {
           // console.log("chec1")
           toast.error(res.payload?.message);

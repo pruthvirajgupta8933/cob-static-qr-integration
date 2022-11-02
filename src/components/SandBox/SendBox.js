@@ -1,6 +1,7 @@
 import React from 'react'
 import NavBar from '../dashboard/NavBar/NavBar'
 import "./sandbox.css"
+import congimg from "../../assets/images/congImg.png"
 
 import "react-step-progress-bar/styles.css";
 import { ProgressBar, Step } from "react-step-progress-bar";
@@ -11,7 +12,7 @@ import "react-step-progress/dist/index.css";
 function House() {
     return (
         <svg
-            width="437"
+            width=""
             height="437"
             viewBox="0 0 437 437"
             fill="none"
@@ -351,6 +352,14 @@ function House() {
     );
 }
 
+function Image(){
+    return (
+        <div>
+            <img src={congimg} alt="" />
+        </div>
+    )
+}
+
 function AlertCircle() {
     return (
         <svg
@@ -443,17 +452,17 @@ function Sandbox() {
                     </div>
                     <section className="features8 cid-sg6XYTl25a flleft w-100">
                         <div className="container-fluid">
-                            Form
+                                
                         </div>
                     </section>
 
                     <section className="features8 cid-sg6XYTl25a flleft w-100">
                         <div className="container-fluid  p-3 my-3 ">
 
-                            <div className="App" style={{ width: 547 }}>
+                            <div className="App">
                                 <div>
                                     <div>
-                                        <div>Request Predesign</div>
+                                        <div>KYC Status</div>
                                     </div>
                                     <br />
                                     <br />
@@ -462,28 +471,7 @@ function Sandbox() {
                                             percent={50}
                                             filledBackground="linear-gradient(to right, #ED7D31, #ED7D31)"
                                         >
-                                            <Step transition="scale">
-                                                {({ accomplished }) => (
-                                                    <div
-                                                        style={{
-                                                            display: "flex",
-                                                            height: 100,
-                                                            justifyContent: "center",
-                                                            alignItems: "center"
-                                                        }}
-                                                    >
-                                                        <div style={{ marginTop: 0, position: "absolute" }}>
-                                                            <StepComplete />
-                                                        </div>
-                                                        <div
-                                                            className="steps-text"
-                                                            style={{ width: 60, marginTop: 60 }}
-                                                        >
-                                                            Request Predesign
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </Step>
+                                          
                                             <Step transition="scale">
                                                 {({ accomplished }) => (
                                                     <div
@@ -501,7 +489,7 @@ function Sandbox() {
                                                             className="steps-text"
                                                             style={{ width: 60, marginTop: 60, marginLeft: 0 }}
                                                         >
-                                                            Building Predesign
+                                                            Start
                                                         </div>
                                                     </div>
                                                 )}
@@ -523,7 +511,7 @@ function Sandbox() {
                                                             className="steps-text"
                                                             style={{ width: 60, marginTop: 60, marginLeft: 0 }}
                                                         >
-                                                            Building Predesign
+                                                            Pending
                                                         </div>
                                                     </div>
                                                 )}
@@ -545,7 +533,29 @@ function Sandbox() {
                                                             className="steps-text"
                                                             style={{ width: 60, marginTop: 60, marginLeft: 0 }}
                                                         >
-                                                            Predesign Done
+                                                            In Process
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </Step>
+                                            <Step transition="scale">
+                                                {({ accomplished }) => (
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            height: 100,
+                                                            justifyContent: "center",
+                                                            alignItems: "center"
+                                                        }}
+                                                    >
+                                                        <div style={{ marginTop: 0, position: "absolute" }}>
+                                                            <StepNext />
+                                                        </div>
+                                                        <div
+                                                            className="steps-text"
+                                                            style={{ width: 60, marginTop: 60, marginLeft: 0 }}
+                                                        >
+                                                            Verified
                                                         </div>
                                                     </div>
                                                 )}
@@ -574,7 +584,7 @@ function Sandbox() {
                                             </Step>
                                         </ProgressBar>
                                     </div>
-                                    <House />
+                                    <Image />
                                     <div className="Placeholder" style={{ color: "#191919" }}>
                                         Predesign done on 12/17/2020
                                     </div>
