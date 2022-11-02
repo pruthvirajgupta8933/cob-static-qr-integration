@@ -126,7 +126,7 @@ function BusinessOverview(props) {
       website_app_url: Yup.string().when(['seletcted_website_app_url'], {
         is: "Yes",
         then: Yup.string().ensure().required("Website App Url is required"),
-      otherwise:Yup.string().notRequired()
+        otherwise:Yup.string().notRequired()
       }),
     expected_transactions: Yup.string()
       .required("Required")

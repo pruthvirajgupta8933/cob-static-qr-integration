@@ -96,6 +96,16 @@
   color: black;
 }
 
+.para-style2 {
+  /* font-family: "Satoshi"; */
+  margin-left: 15px;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 225%;
+  color: black;
+}
+
 .modal-header-fignma {
   padding: 5px 14px 4px 14px;
   background-color: #4285f8;
