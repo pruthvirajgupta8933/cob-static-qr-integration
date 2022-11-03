@@ -17,9 +17,7 @@ import {
 } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../dashboard/NavBar/NavBar";
-import RegisteredAddress from "./RegisteredAddress";
-import cross from "../../assets/images/Multiply.png";
-import { History } from "history";
+
 function KycForm() {
   const dispatch = useDispatch();
 
