@@ -31,6 +31,7 @@ function KycForm() {
   const [title, setTitle] = useState("CONTACT INFO");
   const [status, setStatus] = useState(false);
   const { auth } = useSelector((state) => state);
+  const [kycPopUp,setKycPopUp] = useState(true)
   const { user } = auth;
 
   const { loginId } = user;
@@ -135,12 +136,13 @@ function KycForm() {
         <NavBar />
       </div>
       <div
-        class="modal fade"
-        id="exampleModalCenter"
-        tabindex="-1"
+        className={
+          "modal fade mymodals" +
+          (kycPopUp === true ? " show d-block" : " d-none")
+        }
+        tabIndex="-1"
         role="dialog"
-        aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true"
+        style={{overflow:"scroll"}}
       >
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content kyc-modal_form">

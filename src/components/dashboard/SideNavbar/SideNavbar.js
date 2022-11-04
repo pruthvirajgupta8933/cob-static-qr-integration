@@ -117,8 +117,8 @@ function SideNavbar() {
                       <Link
                         to={`${url}/kyc`}
                         className="txt-white sidenavFonts"
-                        data-toggle="modal"
-                        data-target="#exampleModalCenter"
+                        // data-toggle="modal"
+                        // // data-target="#exampleModalCenter"
                       >
                         <i className="fa fa-file-o" aria-hidden="true" />{" "}
                         <span>&nbsp;Complete KYC</span>
