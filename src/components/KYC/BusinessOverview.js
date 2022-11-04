@@ -14,6 +14,7 @@ import {
   collectionType,
   saveBusinessInfo,
   verifyKycEachTab,
+  kycUserList,
 } from "../../slices/kycSlice";
 
 function BusinessOverview(props) {
@@ -240,6 +241,8 @@ function BusinessOverview(props) {
           toast.success(res.payload.message);
           setTab(3);
           setTitle("BUSINESS DETAILS");
+          dispatch(kycUserList({ login_id: loginId }))
+
         } else {
           toast.error(res?.payload?.message ? res?.payload?.message: "Something Went Wrong! Please try again after some time.");
         }

@@ -25,6 +25,7 @@ import Quick from "../../../assets/images/qwikform.png";
 import eposs from "../../../assets/images/epos.png";
 import linkpssa from "../../../assets/images/linkPaisa.png";
 import echlln from "../../../assets/images/echallan.png";
+import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 
 function Home() {
   // console.log("home page call");
@@ -40,6 +41,7 @@ function Home() {
   const [showData, SetShowData] = useState([]);
   // const [roleType, setRoleType] = useState(roles);
   const { dashboard, auth, kyc } = useSelector((state) => state);
+
   const { KycTabStatusStore } = kyc;
 
   const [modalState, setModalState] = useState("Not-Filled");
@@ -163,6 +165,7 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
+      <StepProgressBar  status={kyc?.kycUserList?.status} />
         <div className="announcement-banner-container_new  announcement-banner">
           <div className="onboarding-illustration-top">
             {" "}
@@ -174,10 +177,12 @@ function Home() {
             />
           </div>
           <div className="row">
+
             <div
               className="col-12 col-md-3 aos-init aos-animate"
               data-aos="fade-up"
             >
+            
               <div className="icon text-primary mb-3">
                 <svg
                   width="24"
