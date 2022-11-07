@@ -129,8 +129,6 @@ const NotFilledKYC = () => {
               <th>Contact Number</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Bank</th>
-              <th>PAN No.</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -146,10 +144,7 @@ const NotFilledKYC = () => {
                   <td>{user.contactNumber}</td>
                   <td>{user.name}</td>
                   <td>{user.emailId}</td>
-                  <td>{user.bankName}</td>
-                  <td>{user.panCard}</td>
                   <td>{user.status}</td>
-                
 
                 </tr>
               )))

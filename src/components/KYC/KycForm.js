@@ -50,6 +50,7 @@ function KycForm() {
   // );
 
   const {allTabsValidate, KycTabStatusStore} = kyc;
+  const merchant_consent = kyc?.kycUserList?.merchant_consent
 
   const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status  
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus?.submitStatus?.status
@@ -277,7 +278,7 @@ function KycForm() {
                                   tab === 5 ? (
                                     " nav-link activepaylink-kyc text-font"
                                   ) : "inactive text-font" ? (
-                                    uploadDocuments === true ? (
+                                    uploadDocuments === true || KycTabStatusStore?.document_status!=="Not-Submitted"? (
                                       "inactive text-font-ForStatusChange text-success p-3"
                                     ) : (
                                       "nav-link inactive text-font"
@@ -298,11 +299,19 @@ function KycForm() {
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}
+                             
                                 className={
-                                  "nav-link " +
-                                  (tab === 6
-                                    ? "activepaylink-kyc text-font"
-                                    : "inactive text-font")
+                                  tab === 6 ? (
+                                    " nav-link activepaylink-kyc text-font"
+                                  ) : "inactive text-font" ? (
+                                    uploadDocuments === true || merchant_consent?.term_condition  ? (
+                                      "inactive text-font-ForStatusChange text-success p-3"
+                                    ) : (
+                                      "nav-link inactive text-font"
+                                    )
+                                  ) : (
+                                    <></>
+                                  )
                                 }
                                 onClick={() => {
                                   SetTab(6);
