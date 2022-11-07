@@ -5,15 +5,15 @@ import {
   subscriptionplan,
   clearSuccessTxnsummary,
 } from "../../../slices/dashboardSlice";
-import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
+// import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
 import { useRouteMatch, Redirect } from "react-router-dom";
 import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png";
 import { Link } from "react-router-dom";
 import "../css/Home.css";
-// import { KycModal } from '../../KYC/KycModal';
+
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import { kycModalToggle, GetKycTabsStatus } from "../../../slices/kycSlice";
-import KycAlert from "../../KYC/KycAlert";
+import { kycModalToggle, GetKycTabsStatus, kycUserList } from "../../../slices/kycSlice";
+// import KycAlert from "../../KYC/KycAlert";
 import NavBar from "../NavBar/NavBar";
 import bro from "../../../assets/images/bro.png";
 import congratsImg from "../../../assets/images/congImg.png";
@@ -129,6 +129,8 @@ function Home() {
 
   useEffect(() => {
     // localStorage.setItem("subscribePlan",0);
+
+    dispatch(kycUserList({ login_id: user?.loginId }))
     return () => {
       dispatch(clearSuccessTxnsummary());
     };
