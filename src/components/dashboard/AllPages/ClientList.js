@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react';
 import { useSelector } from 'react-redux';
+import NavBar from '../NavBar/NavBar';
 
 function ClientList() {
 
@@ -29,6 +30,7 @@ const handleChange= (e)=>{
 }
     return (
       <section className="ant-layout">
+        <NavBar/>
       <div className="profileBarStatus">
         {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
       </div>

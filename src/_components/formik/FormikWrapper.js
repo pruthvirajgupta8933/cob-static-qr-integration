@@ -45,7 +45,7 @@ function FormikWrapper() {
   }
 
 
-  console.log(initialValues)
+  // console.log(initialValues)
   const validationSchema = Yup.object ({
     // email: Yup.string().required("Required"),
     // description: Yup.string().required("Required"),
@@ -57,10 +57,10 @@ function FormikWrapper() {
   })
 
   const imageHandler = e =>{
-      console.log(e.target.files[0])
+      // console.log(e.target.files[0])
   }
 
-  const onSubmit = values => console.log("Form data",values)
+  const onSubmit = values => values
   return (
     <Formik
       initialValues={initialValues}

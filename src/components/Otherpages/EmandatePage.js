@@ -16,7 +16,9 @@ const EmandatePage = () => {
     const getManteDetails = (mandateRegId)=>{
       axiosInstance.get(baseUrl+mandateRegId).then((response)=>{
             setDetails(response.data);
-    }).catch(error => console.log(error,"error"));
+    }).catch(error => {
+      // console.log(error,"error")
+    });
   }
 
   useEffect(()=>{
@@ -69,7 +71,7 @@ const detailList = detailsKey.map((item,i)=>{
       })
 
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
         // setIsShow(false);
         // setErrMessage('No Data Found');
 

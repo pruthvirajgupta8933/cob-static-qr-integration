@@ -72,7 +72,7 @@ const PayerDetails = () => {
                 setPaginatedData(_(res.data).slice(0).take(pageSize).value())
             })
             .catch(err => {
-                console.log(err)
+                // console.log(err)
             })
     }
 
@@ -124,7 +124,7 @@ const PayerDetails = () => {
                 setCustomerType(res.data);
             })
             .catch(err => {
-                console.log(err)
+                // console.log(err)
             });
 
     }

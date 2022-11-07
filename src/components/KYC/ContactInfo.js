@@ -11,11 +11,13 @@ import {
   otpForContactInfo,
   verifyKycEachTab,
   updateContactInfo,
+  kycUserList,
 } from "../../slices/kycSlice";
 import MailVerificationModal from "./OtpVerificationKYC/MailVerificationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import { values } from "lodash";
+import gotVerified from "../../assets/images/verified.png";
 // import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 // import verifyKycTab from "../../slices/veriferApproverSlice"
 
@@ -31,7 +33,8 @@ function ContactInfo(props) {
   const { user } = auth;
   const { loginId } = user;
   const KycList = kyc.kycUserList;
-  // console.log(KycList);
+
+  // console.log("KycList",KycList);
 
   const VerifyKycStatus = kyc?.KycTabStatusStore?.general_info_status;
 
@@ -47,14 +50,13 @@ function ContactInfo(props) {
     name: KycList?.name,
     contact_number: KycList?.contactNumber,
     email_id: KycList?.emailId,
-    // contact_designation: KycList?.contactDesignation,
-    aadhar_number: KycList?.aadharNumber,
-    isPhoneVerified: KycList?.isContactNumberVerified === 1 ? "1" : "",
-    isEmailVerified: KycList?.isEmailVerified === 1 ? "1" : "",
+    oldEmailId: KycList?.emailId,
+    oldContactNumber: KycList?.contactNumber,
+    aadhar_number: KycList?.aadharNumber
   };
 
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-  const aadhaarRegex =/(^[0-9]{4}[0-9]{4}[0-9]{4}$)|(^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|(^[0-9]{4}-[0-9]{4}-[0-9]{4}$)/
+  const aadhaarRegex = /(^[0-9]{4}[0-9]{4}[0-9]{4}$)|(^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|(^[0-9]{4}-[0-9]{4}-[0-9]{4}$)/;
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -65,23 +67,29 @@ function ContactInfo(props) {
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .required("Required")
       .matches(phoneRegExp, "Phone number is not valid")
-      .min(10, "Phone number in not valid")
+      .min(10, "Phone number is not valid")
       .max(10, "too long")
+      .nullable(),
+    oldContactNumber: Yup.string()
+      .oneOf(
+        [Yup.ref("contact_number"), null],
+        "You need to verify Your Contact Number"
+      )
+      .required("You need to verify Your Contact Number")
       .nullable(),
     email_id: Yup.string()
       .email("Invalid email")
       .required("Required")
       .nullable(),
-    // contact_designation: Yup.string()
-    //   .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
-    //   .required("Required")
-    //   .nullable(),
-    aadhar_number: Yup.string()
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber).matches(aadhaarRegex,"Aadhaar Number is Invalid")
-      .required("Required")
+    oldEmailId: Yup.string()
+      .oneOf([Yup.ref("email_id"), null], "You need to verify Your Email Id")
+      .required("You need to verify Your Email Id")
       .nullable(),
-    isPhoneVerified: Yup.string().required("You need to verify Your Phone"),
-    isEmailVerified: Yup.string().required("You need to verify Your Email"),
+    aadhar_number: Yup.string()
+      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      .matches(aadhaarRegex, "Aadhaar Number is Invalid")
+      .required("Required")
+      .nullable()
   });
 
   const handleSubmitContact = (values) => {
@@ -92,21 +100,24 @@ function ContactInfo(props) {
           name: values.name,
           contact_number: values.contact_number,
           email_id: values.email_id,
-          // contact_designation: values.contact_designation,
           modified_by: loginId,
           aadhar_number: values.aadhar_number,
         })
       ).then((res) => {
+        // console.log(res);
         if (
-          res.meta.requestStatus === "fulfilled" &&
-          res.payload?.status_code !== 500
+          res?.meta?.requestStatus === "fulfilled" &&
+          res.payload?.status === true
         ) {
+
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
-          // console.log("This is the response", res);
           toast.success(res.payload?.message);
+          dispatch(kycUserList({ login_id: loginId }))
         } else {
+          // console.log("chec1")
           toast.error(res.payload?.message);
+          toast.error(res.payload?.detail);
           setShowOtpVerifyModalEmail(false);
         }
       });
@@ -127,19 +138,14 @@ function ContactInfo(props) {
     }
   };
 
-  useEffect(() => {
-    if (initialValues.contact_number === "") {
-      // console.log("input change")
-      dispatch(isPhoneVerified(false));
-      // console.log(KycVerifyStatusForPhone,"Changed Status ==>")
-    }
-  }, [KycVerifyStatusForPhone]);
-
-  // console.log(formik?.values.contact_number, "==>")
+  // useEffect(() => {
+  //   if (initialValues.contact_number === "") {
+  //     dispatch(isPhoneVerified(false));
+  //   }
+  // }, [KycVerifyStatusForPhone]);
 
   //-----------------Functionality To Send OTP Via Email Through Button ----------------------
   const handleToSendOTPForVerificationEmail = (values) => {
-    // console.log(values)
     dispatch(
       otpForContactInfo({
         email: values,
@@ -151,7 +157,6 @@ function ContactInfo(props) {
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true
       ) {
-        // console.log("This is the response", res);
         toast.success("OTP Sent to the Registered Email ");
         setShowOtpVerifyModalEmail(true);
       } else {
@@ -220,7 +225,7 @@ function ContactInfo(props) {
   };
 
   const handlerModal = (val, key) => {
-    console.log(val);
+    // console.log(val);
     if (key === "phone") {
       setShowOtpVerifyModalPhone(val);
     }
@@ -228,16 +233,6 @@ function ContactInfo(props) {
       setShowOtpVerifyModalEmail(val);
     }
   };
-
-  // meke input field readonly
-
-  // let buttonText = "Save and Next"
-
-  // if (role.approver || role.verifier) {
-
-  //   readOnly = true;
-  //   buttonText = "Verify and Next"
-  // }
 
   useEffect(() => {
     if (role.approver) {
@@ -257,7 +252,15 @@ function ContactInfo(props) {
         onSubmit={handleSubmitContact}
         enableReinitialize={true}
       >
-        {(formik) => (
+        {({
+          values,
+          setFieldValue,
+          initialValues,
+          errors,
+          setFieldError,
+          setFieldTouched,
+          handleChange,
+        }) => (
           <Form>
             {/* {console.log(formik)} */}
             <div class="form-group row">
@@ -278,24 +281,6 @@ function ContactInfo(props) {
               </div>
             </div>
 
-            {/* <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
-                  Contact Designation<span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-
-              <div class="col-sm-7 col-md-7 col-lg-7">
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="contact_designation"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div>
-            </div> */}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -307,8 +292,8 @@ function ContactInfo(props) {
                   control="input"
                   type="text"
                   name="aadhar_number"
-                  className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
+                  className="form-control"
                   readOnly={readOnly}
                 />
               </div>
@@ -334,29 +319,20 @@ function ContactInfo(props) {
                   type="text"
                   name="contact_number"
                   className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                 />
 
-                {KycList?.isContactNumberVerified === 1 ? (
+                {KycList?.contactNumber !== null &&
+                  KycList?.isContactNumberVerified === 1 &&
+                  !errors.hasOwnProperty("contact_number") &&
+                  !errors.hasOwnProperty("oldContactNumber") ? (
                   <span>
-                    <p className="text-success">
-                      Verified{" "}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        class="bi bi-check"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                      </svg>
-                    </p>
+                    <img src={gotVerified} alt="" title="" width="26" />
                   </span>
                 ) : role.merchant ? (
                   <div class="position-sticky pull-right">
-                    {/* optbtn */}
                     <a
                       href={() => false}
                       className="btn btnbackground text-white btn-sm optbtn"
@@ -366,23 +342,23 @@ function ContactInfo(props) {
                       }}
                       onClick={() => {
                         checkInputIsValid(
-                          formik.errors,
-                          formik.values,
-                          formik.setFieldError,
+                          errors,
+                          values,
+                          setFieldError,
                           "contact_number"
                         );
                       }}
                     >
                       Send Otp
-                    </a>{" "}
+                    </a>
                   </div>
                 ) : (
                   <></>
                 )}
 
-                {formik?.errors?.isPhoneVerified && (
+                {errors?.oldContactNumber && (
                   <span className="text-danger">
-                    {formik?.errors?.isPhoneVerified}
+                    {errors?.oldContactNumber}
                   </span>
                 )}
               </div>
@@ -412,21 +388,12 @@ function ContactInfo(props) {
                   readOnly={readOnly}
                 />
 
-                {KycList?.isEmailVerified === 1 ? (
+                {KycList?.emailId !== null &&
+                  KycList?.isEmailVerified === 1 &&
+                  !errors.hasOwnProperty("email_id") &&
+                  !errors.hasOwnProperty("oldEmailId") ? (
                   <span>
-                    <p className="text-success">
-                      Verified
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                        class="bi bi-check"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
-                      </svg>
-                    </p>
+                    <img src={gotVerified} alt="" title="" width="26" />
                   </span>
                 ) : role.merchant ? (
                   <div class="position-sticky pull-right">
@@ -440,9 +407,9 @@ function ContactInfo(props) {
                       }}
                       onClick={() => {
                         checkInputIsValid(
-                          formik.errors,
-                          formik.values,
-                          formik.setFieldError,
+                          errors,
+                          values,
+                          setFieldError,
                           "email_id"
                         );
                       }}
@@ -453,10 +420,8 @@ function ContactInfo(props) {
                 ) : (
                   <></>
                 )}
-                {formik?.errors?.isEmailVerified && (
-                  <span className="text-danger">
-                    {formik?.errors?.isEmailVerified}
-                  </span>
+                {errors?.oldEmailId && (
+                  <span className="text-danger">{errors?.oldEmailId}</span>
                 )}
               </div>
             </div>

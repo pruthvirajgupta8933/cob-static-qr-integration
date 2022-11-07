@@ -5,11 +5,7 @@ import { getEmailToSendOtpSlice } from "../../slices/auth";
 import { useDispatch, useSelector } from "react-redux";
 import toastConfig from "../../utilities/toastTypes";
 import { toast } from "react-toastify";
-import { Regex, RegexMsg } from ".././../_components/formik/ValidationRegex"
-
-
-
-
+import { Regex, RegexMsg } from ".././../_components/formik/ValidationRegex";
 
 const EnterUserID = (props) => {
   // const { handleFormSubmit } = props;
@@ -22,24 +18,25 @@ const EnterUserID = (props) => {
       .required("Required"),
   });
 
-
   const handleSubmit = (data) => {
     // console.log("You clicked");
     // toastConfig.successToast("OTP Sent Succesfully")
 
-    dispatch(getEmailToSendOtpSlice({
-      email: data.email,
-      otp_type: "both",
-      otp_for: "Forgot Password"
-    })).then((res) => {
-      console.log("This is the response", res);
+    dispatch(
+      getEmailToSendOtpSlice({
+        email: data.email,
+        otp_type: "both",
+        otp_for: "Forgot Password",
+      })
+    ).then((res) => {
+      // console.log("This is the response", res);
       if (res.meta.requestStatus === "fulfilled") {
         if (res.payload.status === true) {
           props.props("a2", data);
-          toast.success("OTP Sent Successfully")
+          toast.success("OTP Sent Successfully");
         }
       } else {
-        toast.error("Email is Incorrect")
+        toast.error("Email is Incorrect");
       }
     });
   };
@@ -55,7 +52,7 @@ const EnterUserID = (props) => {
         <div className="col-sm-6 mx-auto">
           <div className="card ">
             <div className="card-header text-center">Forget Password</div>
-            <div className="card-body">
+            <div className="card-body Satoshi-Medium">
               <h5 className="card-title">Please Enter the details. </h5>
               <Formik
                 initialValues={initialValues}
@@ -101,10 +98,7 @@ const EnterUserID = (props) => {
                           We'll never share your email with anyone else.
                         </small>
                       </div>
-                      <button
-                        type="submit"
-                        className="userIdbutton text-white"
-                      >
+                      <button type="submit" className="userIdbutton text-white">
                         Submit
                       </button>
                     </Form>

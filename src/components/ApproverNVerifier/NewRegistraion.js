@@ -35,7 +35,7 @@ function NewRegistraion() {
 
 
   const newAllRegistration = async () => {
-    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_PENDING}`)
+    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_PROCESSING}`)
       .then(res => {
         const data = res.data.results;
         // console.log(data)
@@ -151,8 +151,8 @@ function NewRegistraion() {
               {spinner && (
                 <Spinner />
               )}
-              {data.length == 0 ? <tr> <td colSpan={'8'}><h1 className="nodatafound" >No data found</h1></td></tr> :
-                (data.map((user, i) => (
+              {data?.length === 0 ? <tr> <td colSpan={'8'}><h1 className="nodatafound" >No data found</h1></td></tr> :
+                (data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
                     <td>{user.merchantId}</td>
@@ -164,7 +164,7 @@ function NewRegistraion() {
                     <td>{user.status}</td>
                     {roles.verifier === true ?
                       <td>
-                        <Link to={`/dashboard/kyc/?kycid=${user.loginMasterId}`} className="btn approve text-white  btn-xs" data-toggle="modal" data-target="#exampleModalCenter">Verify KYC</Link>
+                        <Link to={`/dashboard/kyc/?kycid=${user?.loginMasterId}`} className="btn approve text-white  btn-xs" data-toggle="modal" data-target="#exampleModalCenter">Verify KYC</Link>
                       </td> : <></>
                     }
 
@@ -177,9 +177,9 @@ function NewRegistraion() {
         <nav aria-label="Page navigation example" >
 
           <ul class="pagination w-25">
-            {pageNumbers.length > 0 && <li class="page-item"><button class="page-link" onClick={handlePrevPage} >Previous</button></li>}
+            {pageNumbers?.length > 0 && <li class="page-item"><button class="page-link" onClick={handlePrevPage} >Previous</button></li>}
             {pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
-              <li key={pgNumber, i}
+              <li key={i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }>
@@ -194,7 +194,7 @@ function NewRegistraion() {
                 </a>
               </li>
             ))}
-            {pageNumbers.length > 0 && <li class="page-item"><button class="page-link" onClick={handleNextPage} >Next</button></li>}
+            {pageNumbers?.length > 0 && <li class="page-item"><button class="page-link" onClick={handleNextPage} >Next</button></li>}
           </ul>
         </nav>
 

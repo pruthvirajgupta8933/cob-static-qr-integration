@@ -18,7 +18,6 @@ import API_URL from "../../config";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 
-
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const FORM_VALIDATION = Yup.object().shape({
@@ -66,11 +65,16 @@ function Registration() {
   const [trmCond, setTrmCond] = useState(false);
 
   const [businessCode, setBusinessCode] = useState([]);
+  const [passwordType, setPasswordType] = useState(true);
 
   const [valuesIn, setValuesIn] = useState({
     password: "",
     showPassword: false,
   });
+  const togglePassword = () => {
+    // console.log(999);
+    setPasswordType(!passwordType);
+  };
 
   function buttonHandler(index) {
     let status = [...checkboxStatus];
@@ -82,10 +86,9 @@ function Registration() {
     axiosInstanceAuth
       .get(API_URL.Business_Category_CODE)
       .then((resp) => {
-        const data = resp.data;
-        // console.log(data,"my all dattaaa")
-
-        setBusinessCode(data);
+        const data = resp?.data;
+        const sortAlpha = data?.sort((a, b) => a.category_name.toLowerCase().localeCompare(b.category_name.toLowerCase()))
+        setBusinessCode(sortAlpha);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -193,11 +196,9 @@ function Registration() {
         <div className="row">
           <div className="col-lg-1"></div>
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
-            
-          
-            <div className="col-sm-4 authfy-panel-left nopad- login-float-none">
-              <div className="brand-col">
-                <div className="headline pt-3">
+            <div className="col-sm-4 authfy-panel-left">
+              <div className="brand-col Satoshi-Medium">
+                <div className="headline pt-5">
                   {/* brand-logo start */}
                   {/* <div className="brand-logo">
                   <img
@@ -346,7 +347,7 @@ function Registration() {
                     </ul> */}
                       <div className="logmod__tab-wrapper">
                         <div className="show logmod__tab lgm-1">
-                          <div className="logmod__heading">
+                          <div className="logmod__heading Satoshi-Medium">
                             <span className="fontfigma">
                               Welcome to SabPaisa{" "}
                             </span>
@@ -365,7 +366,7 @@ function Registration() {
                               </span>
                             </div>
                           </div>
-                          <div className="logmod__form">
+                          <div className="logmod__form Satoshi-Medium">
                             <Formik
                               initialValues={{
                                 fullname: "",
@@ -380,15 +381,12 @@ function Registration() {
                               validationSchema={FORM_VALIDATION}
                               onSubmit={handleRegistration}
                             >
-                               {(formik) => (
-                                
-
+                              {(formik) => (
                                 <Form
                                   acceptCharset="utf-8"
                                   action="#"
                                   className="simform"
                                 >
-                                  
                                   {/* {console.log(values)} */}
                                   <div className="sminputs">
                                     <div className="input full- optional">
@@ -603,6 +601,23 @@ function Registration() {
                                         size={50}
                                         autoComplete="off"
                                       />
+                                      <div class="input-group-addon viewfor">
+                                        <a onClick={handleClickShowPassword}>
+                                          {" "}
+                                          {valuesIn.showPassword ? (
+                                            <i
+                                              class="fa fa-eye"
+                                              aria-hidden="true"
+                                            ></i>
+                                          ) : (
+                                            <i
+                                              class="fa fa-eye-slash"
+                                              aria-hidden="true"
+                                            ></i>
+                                          )}
+                                        </a>
+                                      </div>
+
                                       {
                                         <ErrorMessage name="passwordd">
                                           {(msg) => (
@@ -634,13 +649,28 @@ function Registration() {
                                         id="user-cpw"
                                         placeholder="Confirm password"
                                         type={
-                                          valuesIn.showPassword
-                                            ? "text"
-                                            : "password"
+                                          passwordType ? "password" : "text"
                                         }
                                         name="confirmpasswordd"
                                         size={50}
                                       />
+
+                                      <div class="input-group-addon viewfor">
+                                        <a onClick={togglePassword}>
+                                          {passwordType ===
+                                          "confirmpassword" ? (
+                                            <i
+                                              class="fa fa-eye"
+                                              aria-hidden="true"
+                                            ></i>
+                                          ) : (
+                                            <i
+                                              class="fa fa-eye-slash"
+                                              aria-hidden="true"
+                                            ></i>
+                                          )}
+                                        </a>
+                                      </div>
                                       <input
                                         type="hidden"
                                         name="requestedClientType"
@@ -663,25 +693,29 @@ function Registration() {
                                         </ErrorMessage>
                                       }
 
-                                      <span
+                                      {/* <span
                                         className="hide-password"
                                         onClick={handleClickShowPassword}
                                       >
                                         {valuesIn.showPassword
                                           ? "Hide"
                                           : "Show"}
-                                      </span>
+                                      </span> */}
                                     </div>
                                   </div>
                                   <div className="sminputs">
                                     <div className="simform__actions">
                                       <button
-                                        className="figmabtn text-white mt-4 disabled1"
+                                        className="figmabtn Satoshi-Medium text-white mt-4 disabled1"
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
                                         // disabled={btnDisable}
-                                        disabled={(!(formik.isValid && formik.dirty)) ? true : false}
+                                        disabled={
+                                          !(formik.isValid && formik.dirty)
+                                            ? true
+                                            : false
+                                        }
                                         data-rel={btnDisable}
                                       >
                                         Signup
@@ -754,7 +788,7 @@ function Registration() {
                                       }
                                     </div>
                                   </div>
-                                  <p className="foraccount">
+                                  <p className="foraccount Satoshi-Medium">
                                     Already have an account?
                                     <Link
                                       to={`/login`}
@@ -780,7 +814,7 @@ function Registration() {
           </div>
           <div className="col-lg-1"></div>
           <p className="footerforcopyright">
-            Copyright  © 2022 SabPaisa, all rights reserve version 0.1
+            Copyright © 2022 SabPaisa, all rights reserve version 0.1
           </p>
         </div>
 

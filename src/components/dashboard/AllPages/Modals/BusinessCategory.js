@@ -13,7 +13,7 @@ function BusinessCategory(props) {
 
     const { subscribePlanData } = props;
 
-    console.log(subscribePlanData)
+    // console.log(subscribePlanData)
     const dispatch = useDispatch();
 
     const { auth } = useSelector((state) => state);
@@ -42,7 +42,7 @@ function BusinessCategory(props) {
 
 
     const changeHandler = (buesin) => {
-        console.log(buesin);
+        // console.log(buesin);
         // setBusniessType(buesin)
         // const clientCode = clientMerchantDetailsList[0]?.clientCode;
 
@@ -94,21 +94,21 @@ function BusinessCategory(props) {
                 businessType: businessType
             };
 
-            console.log(inputData);
+            // console.log(inputData);
             // 1 - run RATE_MAPPING_GenerateClientFormForCob 
              axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
-                console.log("1 api run")
+                // console.log("1 api run")
 
                 localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
                 //2 - rate map clone 
                  axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${businessType}/${clientCode}/${loginId}`).then(res => {
-                    console.log("2 api run")
+                    // console.log("2 api run")
 
                     localStorage.setItem('enablePaylink', "api trigger");
                     // 3- enable pay link
                      axiosInstance.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
                         localStorage.setItem('enablePaylink', "api trigger");
-                        console.log("3 api run")
+                        // console.log("3 api run")
                         dispatch(checkPermissionSlice(clientCode));
                     })
                 })
@@ -133,12 +133,12 @@ function BusinessCategory(props) {
     }
 
     const showTooltip = () => {
-        console.log('showTooltip')
+        // console.log('showTooltip')
     }
 
 
     const hideTooltip = () => {
-        console.log('hideTooltip')
+        // console.log('hideTooltip')
     }
 
     return (

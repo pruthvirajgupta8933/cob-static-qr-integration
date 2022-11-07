@@ -95,11 +95,6 @@ export default function validation(values) {
     errors.emailotp = false;
     }
 
-   
-
-    
-
-    
-console.log(errors)
+// console.log(errors)
     return errors;
 }

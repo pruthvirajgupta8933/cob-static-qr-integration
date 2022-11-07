@@ -39,7 +39,7 @@ useEffect(() => {
   // console.log("toggle useEffect Run")
 
   const flag = dashboard?.productSubscribe;
-  console.log("toggle useEffect Run",dashboard?.productSubscribe)
+  // console.log("toggle useEffect Run",dashboard?.productSubscribe)
   // console.log("flag",flag)
   // if(flag===false){
   //   console.log("toggle useEffect run")
@@ -53,7 +53,7 @@ useEffect(() => {
 
 
 const toggleFloating =(boolen)=>{
-  console.log("toggle run",boolen)
+  // console.log("toggle run",boolen)
   dispatch(productSubscribeState(boolen))
   setOpened(!boolen);
 }

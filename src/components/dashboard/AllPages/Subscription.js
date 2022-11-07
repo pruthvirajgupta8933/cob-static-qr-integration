@@ -57,7 +57,7 @@ const Subsciption = () => {
     if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
       setIsClientCodeCreated(true);
     }
-    console.log("is client code updated useEffect");
+    // console.log("is client code updated useEffect");
   }, []);
 
   // console.log("isClientCodeCreated", isClientCodeCreated)
@@ -574,8 +574,8 @@ const Subsciption = () => {
       setSubscriptionDetails(true);
     }
   };
-  console.log("isClientCodeCreated", isClientCodeCreated);
-  console.log("subscriptionDetails", subscriptionDetails);
+  // console.log("isClientCodeCreated", isClientCodeCreated);
+  // console.log("subscriptionDetails", subscriptionDetails);
 
   // console.log("subscriptionPlanData",subscriptionPlanData);
   return (
@@ -624,7 +624,7 @@ const Subsciption = () => {
                             </a>
                             <button type="button" className=" btn bttn bttnbackgroundkyc collapsed"
                               data-toggle="modal" data-target="#exampleModal"
-                              onClick={() => console.log('this is mapped data for modal : ', s)}
+                              // onClick={() => console.log('this is mapped data for modal : ', s)}
                             >
                               Subscribe
                             </button>

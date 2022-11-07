@@ -9,7 +9,7 @@ function KycAlert() {
   const kyc = useSelector(state => state.kyc)
   const KycTabStatusStore = kyc.KycTabStatusStore
 
-  console.log(KycTabStatusStore);
+  // console.log(KycTabStatusStore);
 
   const status = KycTabStatusStore?.status;
 

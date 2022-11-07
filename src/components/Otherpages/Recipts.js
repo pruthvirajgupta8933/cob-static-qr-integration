@@ -49,7 +49,7 @@ export const Recipts = () => {
       .catch((e) => {
         alert('No Data Found')
         setIsLoading(false);
-        console.log(e);
+        // console.log(e);
         setIsShow(false);
         // setErrMessage('No Data Found');
 

@@ -52,7 +52,7 @@ const Subsciption = () => {
     if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
       setIsClientCodeCreated(true)
     }
-    console.log("is client code updated useEffect")
+    // console.log("is client code updated useEffect")
   }, [])
 
 
@@ -281,8 +281,8 @@ const Subsciption = () => {
       setSubscriptionDetails(true)
     }
   }
-  console.log("isClientCodeCreated", isClientCodeCreated)
-  console.log("subscriptionDetails", subscriptionDetails)
+  // console.log("isClientCodeCreated", isClientCodeCreated)
+  // console.log("subscriptionDetails", subscriptionDetails)
 
   // console.log("subscriptionPlanData",subscriptionPlanData);
   return (

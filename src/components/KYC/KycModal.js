@@ -33,7 +33,7 @@ export const KycModal=()=>{
     setCloseModal(kyc.kycModalClose)
   }, [kyc])
 
-  console.log("closeModal",closeModal)
+  // console.log("closeModal",closeModal)
   
     return (<div><div
         className="modal fade show"

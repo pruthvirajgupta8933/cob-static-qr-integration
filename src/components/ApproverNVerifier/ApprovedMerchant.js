@@ -16,7 +16,8 @@ function ApprovedMerchant() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   // const [documentId, setDocumentId] = useState("")
-  const [documentIdImg, setDocumentImg] = useState("#")
+  // const [documentIdImg, setDocumentImg] = useState("#")
+  const [docImageData,setDocImageData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10);
   const [spinner, setSpinner] = useState(true);
@@ -40,7 +41,7 @@ function ApprovedMerchant() {
     await axiosInstanceAuth.get(`${API_URL.KYC_FOR_APPROVED}`)
       .then(res => {
         const data = res.data.results;
-        console.log(data)
+        // console.log(data)
         setApprovedMerchantData(data)
 
       })
@@ -71,7 +72,7 @@ useEffect(() => {
     } else {
       dispatch(kycForApproved()).then((resp) => {
        
-        const data = resp.payload.results
+        const data = resp?.payload?.results
   
         setApproveMerchant(data.slice(indexOfFirstRecord, indexOfLastRecord));
   
@@ -98,6 +99,7 @@ useEffect(() => {
 
  
 
+  // console.log("Document Id Data", docImageData)
 
   
 
@@ -107,12 +109,15 @@ useEffect(() => {
     }).then(res => {
       if (res.status === 200) {
         const data = res.data;
-      
+        // console.log("Data ========> ", data)
+        setDocImageData(data)
         const docId = data[0].documentId;
-        // console.log(docId,"myyyyyyyyyyyyyyyyyy")
-        const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;
+        // console.log(docId,"<===== Document Id =====>")
+        const file = data[0].filePath
+        // console.log("file ====> ",file)
+        // const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;
         
-        axiosInstanceAuth.get(ImgUrl).then(res=>console.log(res))
+        // axiosInstanceAuth.get(ImgUrl).then(res=>console.log(res))
       }
     })
       .catch(error => {
@@ -182,16 +187,37 @@ useEffect(() => {
 
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
-                    <div class="modal-content">
+                    <div class="modal-content" style={{width:787}}>
                       <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Document Details</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
 
                       </div>
                       <div class="modal-body">
-                        <img src={`${documentIdImg}`}  alt="doc" />
-
+                        {/* <img src={`${documentIdImg}`}  alt="doc" /> */}
+    
+                          {docImageData.map((merchantData) => {
+        return (
+          <div>
+               <table id="dtDynamicVerticalScrollExample" class="table table-striped table-bordered table-sm">
+                        
+                        <thead>
+                          <tr>      
+                            <th>Document Id</th>
+                            <th>Image</th> 
+                            <th>Status</th> 
+                          </tr>
+                        </thead>
+                       
+                        <td>{merchantData.documentId}</td>
+                        <td><a href={merchantData.filePath} target="_blank" alt="Document">{merchantData.filePath}</a></td>
+                        <td>{merchantData.status}</td>
+                          </table>
+                          </div>
+                            )})}
+                          
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn approve text-white btn-xs" data-dismiss="modal">Close</button>
@@ -216,7 +242,7 @@ useEffect(() => {
       className={
         pgNumber === currentPage ? " page-item active" : "page-item"
       }>
-        {console.log(pageNumbers)}
+        {/* {console.log(pageNumbers)} */}
       <a href={() => false} className={`page-link data_${i}`} >
         <span onClick={() => {
           setCurrentPage(pgNumber)

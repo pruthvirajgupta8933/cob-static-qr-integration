@@ -222,13 +222,15 @@ export const createClientProfile = createAsyncThunk(
         "clientType": null,
         "parentClientId": null,
         "businessType": null,
-        "pocAccountManager": null
+        "pocAccountManager": null,
+        "business_cat_code": null
       };
 
       const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
       // console.log("mergeclientMerchantDetailsList",mergeclientMerchantDetailsList)
       const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
+      // console.log("user",allData)
       localStorage.setItem("user", JSON.stringify(allData))
 
 
@@ -288,7 +290,8 @@ export const updateClientProfile = createAsyncThunk(
         "clientType": null,
         "parentClientId": null,
         "businessType": null,
-        "pocAccountManager": null
+        "pocAccountManager": null,
+        "business_cat_code": null
       };
 
       const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
@@ -424,7 +427,6 @@ export const checkPermissionSlice = createAsyncThunk(
 
       const response = await AuthService.checkPermission(data);
       thunkAPI.dispatch(setMessage(response.data.message));
-      console.log("getEmailToSendOtp-response",response)
       return response.data;
     } catch (error) {
       const message =
@@ -451,7 +453,7 @@ const authSlice = createSlice({
   initialState: auth,
   reducers: {
     isUserAlreadyLogin: (state, action) => {
-      console.log(action)
+      // console.log(action)
       // state.userAlreadyLoggedIn = 
     }
   },
@@ -486,6 +488,7 @@ const authSlice = createSlice({
       //code 
     },
     [login.fulfilled]: (state, action) => {
+      // console.log("action",action)
 
       let loggedInStatus = false;
       let isValidData = '';
@@ -500,9 +503,9 @@ const authSlice = createSlice({
       }
       state.isLoggedIn = loggedInStatus;
       state.user = action.payload.user;
-      state.user.clientMerchantDetailsList = action.payload.user.clientMerchantDetailsList
+      // state.user.clientMerchantDetailsList = action.payload.user.clientMerchantDetailsList
 
-
+      // console.log("user",user)
       localStorage.setItem("user", JSON.stringify(state.user))
       state.isValidUser = isValidData;
     },
@@ -517,7 +520,7 @@ const authSlice = createSlice({
       state.userAlreadyLoggedIn = false;
       state.isValidUser = '';
       state.user = null;
-      console.log(action)
+      // console.log(action)
       // state.login_error= action.payload
     },
     [logout.fulfilled]: (state, action) => {
@@ -547,37 +550,37 @@ const authSlice = createSlice({
       state.error = action.error.message;
     },
     [createClientProfile.pending]: (state) => {
-      console.log("pending...create profile of client")
+      // console.log("pending...create profile of client")
     },
     [createClientProfile.fulfilled]: (state, action) => {
       state.createClientProfile = action.payload
       state.user = action.payload
-      console.log("client create and update", state.user);
+      // console.log("client create and update", state.user);
     },
     [createClientProfile.rejected]: (state) => {
-      console.log("Client Profile not update!");
+      // console.log("Client Profile not update!");
     },
     [updateClientProfile.pending]: (state) => {
-      console.log('pending profile');
+      // console.log('pending profile');
     },
     [updateClientProfile.fulfilled]: (state, action) => {
-      console.log('fulfilled profile');
+      // console.log('fulfilled profile');
       state.user = action.payload
       // console.log(action.payload,"<=== Res ===>")
     },
     [updateClientProfile.rejected]: () => {
-      console.log('rejected profile');
+      // console.log('rejected profile');
     },
     [changePasswordSlice.fulfilled]: (state, action) => {
-      console.log('fullfiled profile');
+      // console.log('fullfiled profile');
       state.passwordChange = true;
     },
     [changePasswordSlice.pending]: (state) => {
-      console.log('rejected profile');
+      // console.log('rejected profile');
       state.passwordChange = null;
     },
     [changePasswordSlice.rejected]: (state) => {
-      console.log('rejected profile');
+      // console.log('rejected profile');
       state.passwordChange = false;
     },
 
@@ -590,38 +593,38 @@ const authSlice = createSlice({
       //state.passwordChange = true;
     },
     [getEmailToSendOtpSlice.pending]: (state) => {
-      console.log('pending profile');
+      // console.log('pending profile');
       //state.passwordChange = null;
     },
     [getEmailToSendOtpSlice.rejected]: (state, action) => {
-      console.log('rejected ', action);
+      // console.log('rejected ', action);
       state.forgotPassword.sendUserName.isValid = false;
       //state.passwordChange = false;
     },
 
     [verifyOtpOnForgotPwdSlice.fulfilled]: (state, action) => {
-      console.log('fullfiled ', action);
+      // console.log('fullfiled ', action);
       // state.passwordChange = true;
     },
     [verifyOtpOnForgotPwdSlice.pending]: (state) => {
-      console.log('pending profile');
+      // console.log('pending profile');
       // state.passwordChange = null;
     },
     [verifyOtpOnForgotPwdSlice.rejected]: (state) => {
-      console.log('rejected profile');
+      // console.log('rejected profile');
       // state.passwordChange = false;
     },
 
     [createNewPasswordSlice.fulfilled]: (state, action) => {
-      console.log('fullfiled', action);
+      // console.log('fullfiled', action);
       // state.passwordChange = true;
     },
     [createNewPasswordSlice.pending]: (state) => {
-      console.log('pending profile');
+      // console.log('pending profile');
       // state.passwordChange = null;
     },
     [createNewPasswordSlice.rejected]: (state) => {
-      console.log('rejected profile');
+      // console.log('rejected profile');
       // state.passwordChange = false;
     },
 

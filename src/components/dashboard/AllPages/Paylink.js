@@ -21,7 +21,7 @@ function Paylink() {
 
   if(user.roleId!==3 && user.roleId!==13){
     if(user.clientMerchantDetailsList===null){
-      console.log("paylink");
+      // console.log("paylink");
       history.push('/dashboard/profile');
 
     }

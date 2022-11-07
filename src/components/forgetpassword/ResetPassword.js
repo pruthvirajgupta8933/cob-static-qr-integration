@@ -1,55 +1,52 @@
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import API_URL from "../../config";
 
 const ResetPassword = (props) => {
   // const { handleFormSubmit } = props;
 
   const validationSchema = Yup.object().shape({
-    password:Yup.string()
-    .required(" Old Password Required"),
+    password: Yup.string().required(" Old Password Required"),
     newpassword: Yup.string()
       .required("Password Required")
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
       ),
-      confirmpassword: Yup.string()
+    confirmpassword: Yup.string()
       .oneOf([Yup.ref("newpassword"), null], "Passwords must match")
       .required("Confirm Password Required"),
   });
-  const {auth} = useSelector(state=>state);
+  const { auth } = useSelector((state) => state);
   // const verification_token=auth.forgotPassword.otpResponse.verification_token;
-  
 
   const initialValues = {
     password: "",
     newpassword: "",
-    confirmpassword:"",
+    confirmpassword: "",
   };
-  const resetSubmit = async(values) => {
-    console.log(values,"here is the response")
-    const res = await axios.put(API_URL.AUTH_CHANGE_PASSWORD, {
-      email: "textbhuvi@gmail.com",
-      // verification_token:verification_token,
-      password: values.password,
-      newpassword: values.newpassword
-
-      
-    }).then(res => {
-      console.log(res)
-      // if (res.status === 200) {
-      //   const data = res.data;
-      //         }
-    })
-      .catch(error => {
-        console.error('There was an error!', error);
+  const resetSubmit = async (values) => {
+    // console.log(values, "here is the response");
+    const res = await axios
+      .put(API_URL.AUTH_CHANGE_PASSWORD, {
+        email: "textbhuvi@gmail.com",
+        // verification_token:verification_token,
+        password: values.password,
+        newpassword: values.newpassword,
+      })
+      .then((res) => {
+        // console.log(res);
+        // if (res.status === 200) {
+        //   const data = res.data;
+        //         }
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
       });
 
-
-    props.props('a4')
+    props.props("a4");
     // console.log("You clicked submit.");
   };
 
@@ -59,7 +56,7 @@ const ResetPassword = (props) => {
         <div className="col-sm-6 mx-auto">
           <div className="card ">
             <div className="card-header text-center">Update Password</div>
-            <div className="card-body">
+            <div className="card-body Satoshi-Medium">
               <h5 className="card-title">Please Enter the detatils. </h5>
               <Formik
                 initialValues={initialValues}
@@ -73,7 +70,7 @@ const ResetPassword = (props) => {
                   <>
                     <Form>
                       <div className="form-group">
-                      <label htmlFor="exampleInputPassword1">
+                        <label htmlFor="exampleInputPassword1">
                           Old password
                         </label>
                         <Field
@@ -130,7 +127,7 @@ const ResetPassword = (props) => {
                           aria-describedby="password2Help"
                           placeholder="Enter Confirm Password"
                         />
-                    
+
                         {/* <small
                           id="password2Help"
                           className="form-text text-muted"
@@ -157,7 +154,7 @@ const ResetPassword = (props) => {
                       <button
                         type="submit"
                         className="btn btn-primary"
-                          // onClick={() => props.props("a4")}
+                        // onClick={() => props.props("a4")}
                       >
                         Submit
                       </button>

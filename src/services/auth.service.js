@@ -42,7 +42,7 @@ const login = (username, password) => {
 const logout = () => {
   localStorage.removeItem("user");
   localStorage.clear();
-  console.log('logout call auth service');
+  // console.log('logout call auth service');
 };
 
 
@@ -74,7 +74,6 @@ const BASE_URL = "https://cobapi.sabpaisa.in/auth-service/client";
 const BASE_URL_FOR_PROFILE="https://stgcobapi.sabpaisa.in/auth-service"
 const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
 const createClintCode = (object) => {
-  // console.log("profileservice",object)
   return axiosInstanceAuth.post(API_URL.AUTH_CLIENT_CREATE, object)
 };
 

@@ -54,12 +54,9 @@ const API_LIVE = {
   BANK_LIST_DC:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
   SEND_EMAIL: adminAPIURL + "/Email/sendEmail",
-  SUBSCRIBE_FETCH_APP_AND_PLAN:
-    "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
-  FETCH_APP_AND_PLAN:
-    "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
-  SUBSCRIBE_SERVICE:
-    "https://spl.sabpaisa.in/client-subscription-service/subscribe",
+  SUBSCRIBE_FETCH_APP_AND_PLAN:    "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
+  FETCH_APP_AND_PLAN:    "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
+  SUBSCRIBE_SERVICE:    "https://spl.sabpaisa.in/client-subscription-service/subscribe",
 
   /* transaction history  */
   //old api of txn history
@@ -70,6 +67,8 @@ const API_LIVE = {
   GetMerchantTxnHistory: adminAPIURL + "/REST/GetMerchantTxnHistory",
   /* Settlement Report */
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
+  RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
+  ChargeBankTxnHistory: reportAPIURL + "/REST/GetChargebackTxnHistory",
 
   /* Transaction Enquiry */
   VIEW_TXN: adminAPIURL + "/Enquiry/ViewTxn",
@@ -82,8 +81,7 @@ const API_LIVE = {
   GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
   SMART_UPLOAD: "https://paybylink.sabpaisa.in/paymentlink/smartupload",
   EDIT_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/editCustomer/",
-  GET_CUSTOMER_TYPE:
-    "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
+  GET_CUSTOMER_TYPE: "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
   ADD_LINK: "https://paybylink.sabpaisa.in/paymentlink/addLink",
   ADD_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/addCustomers",
   DELETE_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/deleteCustomer",
@@ -116,8 +114,11 @@ const API_LIVE = {
 
   /**Kyc DocumentsUploads */
   DocumentsUpload: `${kyc_url}/kyc/document-type/`, //get APi
+
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
+  upload_Single_Doc: `${kyc_url}/kyc/upload-merchant-document/single-file/`, //post APi
   UPLOAD_MERCHANT_AADHAAR: `${kyc_url}/kyc/upload-merchant-document/aadhar-upload/`, //post APi
+  
   Business_type: `${kyc_url}/kyc/get-all-business-type/`,
   Platform_type: `${kyc_url}/kyc/get-all-platform-type/`,
   Collection_frequency: `${kyc_url}/kyc/get-all-collection-frequency/`,
@@ -127,7 +128,10 @@ const API_LIVE = {
 
   /////////////////////////Kyc approver
   /* For pending*/
-  KYC_FOR_PENDING: `${kyc_url}/kyc/get-merchant-data/?search=pending&order_by=-merchantId`,
+  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not_Filled&order_by=-merchantId`,
+  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Pending&order_by=-merchantId`,
+  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Rejected&order_by=-merchantId`,
+  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?search=processing&order_by=-merchantId`,
   KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
   KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=approved&order_by=-merchantId`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
@@ -168,18 +172,30 @@ const API_LIVE = {
 
   /* Registered Address */
   Kyc_Consent: `${kyc_url}/kyc/kyc-submit/`,
+  /* Product catalogue */
+
+ PRODUCT_DETAILS:`https://stgcobapi.sabpaisa.in/product/product-details`,
+ PRODUCT_SUB_DETAILS:`https://stgcobapi.sabpaisa.in/product/product-sub-details`,
+ SUBSCRIBE_FETCHAPPAND_PLAN:`https://stgcobapi.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan`,
+
+
+/* get bank Id */
+GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
+/* get bank Id */
 
   /* verify each tab of the kyc , URL FOR VERIFER*/
   VERIFY_EACH_TAB: `${kyc_url}/kyc/verify-kyc/update/`,
   VERIFY_FINAL_ALL: `${kyc_url}/kyc/verify-kyc/verify/`,
   DOCUMENT_VERIFY: `${kyc_url}/kyc/upload-merchant-document/verify/`,
   DOCUMENT_REJECT: `${kyc_url}/kyc/upload-merchant-document/reject/`,
+  DOCUMENT_REMOVE: `${kyc_url}/kyc/upload-merchant-document/remove/`,
   APPROVE_DOCUMENT: `${kyc_url}/kyc/upload-merchant-document/approve/`,
   APPROVE_KYC: `${kyc_url}/kyc/verify-kyc/approve/`,
 
   // VERIFY_EACH_TAB : `${kyc_url}kyc/verify-kyc/update/`,
 };
 
+ 
 const API_URL = API_LIVE;
 export default API_URL;
 

@@ -5,30 +5,40 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
-import API_URL from "../../config";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import {
   businessOverviewState,
   saveMerchantInfo,
   verifyKycEachTab,
+  panValidation,
+  authPanValidation,
+  gstValidation,
+  kycUserList,
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
+import gotVerified from "../../assets/images/verified.png";
 
 function BusinessDetails(props) {
   const setTab = props.tab;
   const setTitle = props.title;
 
   const { role, kycid } = props;
-  const KycList = useSelector((state) => state.kyc.kycUserList);
 
-  const VerifyKycStatus = useSelector(
-    (state) => state.kyc.KycTabStatusStore.merchant_info_status
-  );
+  const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+  const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
 
-  const regexGSTN = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$";
+  const { auth, kyc } = useSelector((state) => state);
 
-  const { user } = useSelector((state) => state.auth);
-  // const { clientCode } = clientMerchantDetailsList[0];
+  const { user } = auth;
+  const { allTabsValidate, KycTabStatusStore } = kyc;
+  const VerifyKycStatus = KycTabStatusStore?.merchant_info_status
+
+  // console.log("VerifyKycStatus",VerifyKycStatus)
+
+  const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
+  const KycList = kyc?.kycUserList;
+  
+
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
   const [gstin, setGstin] = useState("");
@@ -41,6 +51,39 @@ function BusinessDetails(props) {
     KycList.registeredBusinessAdress
   );
   const dispatch = useDispatch();
+
+  const panStatus = BusinessDetailsStatus?.PanValidation?.status;
+
+  const panValidStatus = BusinessDetailsStatus?.PanValidation?.valid;
+
+  const notValid = useSelector(
+    (state) =>
+      state.kyc.allTabsValidate.BusinessDetailsStatus.AuthPanValidation.message
+  );
+  const busiFirstName =
+    BusinessDetailsStatus?.PanValidation?.first_name === null
+      ? ""
+      : BusinessDetailsStatus?.PanValidation?.first_name;
+
+  const busiLastName =
+    BusinessDetailsStatus?.PanValidation?.last_name === null
+      ? ""
+      : BusinessDetailsStatus?.PanValidation?.last_name;
+
+  const busiAuthFirstName =
+    BusinessDetailsStatus.AuthPanValidation.first_name === null
+      ? ""
+      : BusinessDetailsStatus?.AuthPanValidation.first_name;
+
+  const busiAuthLastName =
+    BusinessDetailsStatus?.AuthPanValidation?.last_name === null
+      ? ""
+      : BusinessDetailsStatus?.AuthPanValidation.last_name;
+
+  let businessNamee = `${busiFirstName} ${busiLastName}`;
+  let businessAuthName = `${
+    busiAuthFirstName !== undefined ? busiAuthFirstName : ""
+  } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
 
   const choicesCheckBox = [{ key: "Same As Registered Address", value: "yes" }];
 
@@ -71,88 +114,96 @@ function BusinessDetails(props) {
     }
   };
 
-  // const initialValues = {
-  //   company_name: KycList.companyName,
-  //   company_logo: KycList.companyLogoPath,
-  //   registerd_with_gst: KycList.registerdWithGST,
-  //   gst_number: KycList.gstNumber,
-  //   pan_card: KycList.panCard,
-  //   signatory_pan: KycList.signatoryPAN,
-  //   name_on_pancard: KycList.nameOnPanCard,
-  //   pin_code: KycList.pinCode,
-  //   city_id: KycList.cityId,
-  //   state_id: KycList.stateId,
-  //   registered_business_address: KycList.registeredBusinessAdress,
-  //   operational_address: KycList.registeredBusinessAdress,
-  //   checkBoxChoice: "",
-  // };
+  const panValidate = (values) => {
+    // console.log("Values ========>",values)
+    dispatch(
+      panValidation({
+        pan_number: values,
+      })
+    ).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true &&
+        res.payload.valid === true
+      ) {
+        // console.log("This is the response", res);
+        toast.success(res?.payload?.message);
+      } else {
+        toast.error(res?.payload?.message);
+      }
+    });
+  };
 
-  console.log("KycList", KycList);
+  const gstinValidate = (values) => {
+    // console.log("Values GSTIN ========>",values)
+    dispatch(
+      gstValidation({
+        gst_number: values,
+        fetchFilings: false,
+        fy: "2018-19",
+      })
+    ).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true &&
+        res.payload.valid === true
+      ) {
+        toast.success(res?.payload?.message);
+      } else {
+        toast.error(res?.payload?.message);
+      }
+    });
+  };
+
+  const authValidation = (values) => {
+    dispatch(
+      authPanValidation({
+        pan_number: values,
+      })
+    ).then((res) => {
+      if (
+        res.meta.requestStatus === "fulfilled" &&
+        res.payload.status === true &&
+        res.payload.valid === true
+      ) {
+        toast.success(res.payload.message);
+      } else {
+        toast.error(res?.payload?.message);
+      }
+    });
+  };
+  // console.log(BusinessDetailsStatus, "BusinessDetailsStatus")
+  const gstinData = BusinessDetailsStatus?.GSTINValidation;
 
   const initialValues = {
-    company_name: KycList?.companyName,
+    company_name:
+      gstinData?.legalName?.length > 2
+        ? gstinData?.legalName
+        : KycList?.companyName,
     company_logo: "",
     registerd_with_gst: "True",
     gst_number: KycList?.gstNumber,
-    pan_card: KycList?.panCard,
-    signatory_pan: KycList?.signatoryPAN,
-    name_on_pancard: KycList?.nameOnPanCard,
+    oldGstNumber: KycList?.gstNumber,
+    pan_card: gstinData?.pan?.length > 2 ? gstinData?.pan : KycList?.panCard,
+    // oldPanCard: KycList?.panCard,
+    signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
+    oldSignatoryPan: KycList?.signatoryPAN,
+    name_on_pancard:
+      businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard,
     pin_code: KycList?.merchant_address_details?.pin_code,
     city_id: KycList?.merchant_address_details?.city,
     state_id: KycList?.merchant_address_details?.state,
     registered_business_address: KycList?.merchant_address_details?.address,
     operational_address: KycList?.merchant_address_details?.address,
+    isPANVerified: KycList?.panCard !== null ? "1" : "",
+    isAuthPANVerified: KycList?.signatoryPAN !== null ? "1" : "",
+    isGSTINVerified: KycList?.gstNumber !== null ? "1" : "",
     // checkBoxChoice: "",
   };
 
-  // const initialValues = {
-  //   company_name: KycList.companyName,
-  //   gst_number: KycList.gstNumber,
-  //   pan_card: KycList.panCard,
-  //   signatory_pan: KycList.signatoryPAN,
-  //   name_on_pancard: KycList.nameOnPanCard,
-
-  // };
-  // const validationSchema = Yup.object({
-
-  //   company_name: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   registerd_with_gst: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   gst_number: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   pan_card: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   signatory_pan: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   name_on_pancard: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   pin_code: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   city_id: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   state_id: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   registered_business_address: Yup.string()
-  //     .required("Required")
-  //     .nullable(),
-  //   operational_address: Yup.string()
-  //     .when("checkBoxChoice", {
-  //       is: "yes",
-  //       then: Yup.string().required("Required"),
-  //     })
-  //     .nullable(),
-  //   checkBoxChoice: Yup.array().nullable(),
-  // });
+  const businessNameField = (businessAuthName) => {
+    if (businessAuthName === undefined) return "";
+  };
 
   const validationSchema = Yup.object({
     company_name: Yup.string()
@@ -164,13 +215,31 @@ function BusinessDetails(props) {
       .matches(regexGSTN, "GSTIN Number is Invalid")
       .required("Required")
       .nullable(),
+    oldGstNumber: Yup.string()
+      .oneOf(
+        [Yup.ref("gst_number"), null],
+        "You need to verify Your GSTIN Number"
+      )
+      .required("You need to verify Your GSTIN Number")
+      .nullable(),
     pan_card: Yup.string()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+      .matches(reqexPAN, "PAN number is Invalid")
       .required("Required")
       .nullable(),
+    // oldPanCard: Yup.string()
+    // .oneOf([Yup.ref("pan_card"), null], "You need to verify Your PAN Number")
+    // .required("You need to verify Your PAN Number")
+    // .nullable(),
     signatory_pan: Yup.string()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+      .matches(reqexPAN, "Authorized PAN number is Invalid")
       .required("Required")
+      .nullable(),
+    oldSignatoryPan: Yup.string()
+      .oneOf(
+        [Yup.ref("signatory_pan"), null],
+        "You need to verify Your Authorized Signatory PAN Number"
+      )
+      .required("You need to verify Your Authorized Signatory PAN Number")
       .nullable(),
     name_on_pancard: Yup.string()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
@@ -191,6 +260,9 @@ function BusinessDetails(props) {
       .matches(Regex.address, RegexMsg.address)
       .required("Required")
       .nullable(),
+    // isPANVerified: Yup.string().required("You need to verify Your PAN Number").nullable(),
+    // isAuthPANVerified:  Yup.string().required("You need to verify Your Authorized Signatory PAN Number").nullable(),
+    // isGSTINVerified: Yup.string().required("You need to verify Your GSTIN Number").nullable()
   });
 
   useEffect(() => {
@@ -201,11 +273,37 @@ function BusinessDetails(props) {
           "stateName",
           resp.payload
         );
-        console.log(resp, "my all dattaaa");
+        // console.log(resp?.payload?.message);
         setBusinessOverview(data);
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const checkInputIsValid = (err, val, setErr, setFieldTouched, key) => {
+    const hasErr = err.hasOwnProperty(key);
+
+    const fieldVal = val[key];
+    let isValidVal = true;
+    if (fieldVal === null || fieldVal === undefined) {
+      isValidVal = false;
+      setFieldTouched(key, true);
+    }
+
+    if (hasErr) {
+      if (val[key] === "") {
+        setErr(key, true);
+      }
+    }
+    if (!hasErr && isValidVal && val[key] !== "" && key === "pan_card") {
+      panValidate(val[key]);
+    }
+    if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
+      authValidation(val[key]);
+    }
+    if (!hasErr && isValidVal && val[key] !== "" && key === "gst_number") {
+      gstinValidate(val[key]);
+    }
+  };
 
   const onSubmit = (values) => {
     if (role.merchant) {
@@ -237,14 +335,17 @@ function BusinessDetails(props) {
 
       dispatch(saveMerchantInfo(bodyFormData)).then((res) => {
         if (
-          res.meta.requestStatus === "fulfilled" &&
-          res.payload.status === true
+          res?.meta?.requestStatus === "fulfilled" &&
+          res?.payload?.status === true
         ) {
-          toast.success(res.payload.message);
+          toast.success(res?.payload?.message);
           setTab(4);
           setTitle("BANK DETAILS");
+          console.log("data trigger")
+          dispatch(kycUserList({ login_id: loginId }))
+
         } else {
-          toast.error("Something Went Wrong! Please try again.");
+          toast.error(res?.payload?.message);
         }
       });
     } else if (role.verifier) {
@@ -274,7 +375,7 @@ function BusinessDetails(props) {
     }
   }, [role]);
 
-  console.log("readOnly", readOnly);
+  // console.log("readOnly", readOnly);
 
   return (
     <div className="col-md-12 col-md-offset-4">
@@ -284,9 +385,20 @@ function BusinessDetails(props) {
         onSubmit={onSubmit}
         enableReinitialize={true}
       >
-        {(formik) => (
+        {({
+          values,
+          setFieldValue,
+          initialValues,
+          errors,
+          setFieldError,
+          setFieldTouched,
+          handleChange,
+        }) => (
           <Form>
-            {/* {console.log(formik)} */}
+            {/* {console.log("values", values)}
+            {console.log("initialValues", initialValues)}
+            {console.log("errors", errors)} */}
+
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -299,24 +411,47 @@ function BusinessDetails(props) {
                   type="text"
                   name="gst_number"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                   readOnly={readOnly}
+
                 />
               </div>
-              <div class="position-sticky pull-right">
-                <a
-                  href={() => false}
-                  className="btn btnbackground text-white btn-sm panbtn"
-                  style={{
-                    boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                    borderRadius: "6px",
-                  }}
-                  onClick={() => {
-                    //  console.log("Hello")
-                  }}
-                >
-                  Verify
-                </a>
-              </div>
+
+              {KycList?.gstNumber !== null &&
+              !errors.hasOwnProperty("gst_number") &&
+              !errors.hasOwnProperty("oldGstNumber") ? (
+                <span>
+                  <img src={gotVerified} alt="" title="" width="26" />
+                </span>
+              ) : (
+                <div class="position-sticky pull-right">
+                  <a
+                    href={() => false}
+                    className="btn btnbackground text-white btn-sm panbtn"
+                    style={{
+                      boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                      borderRadius: "6px",
+                    }}
+                    onClick={() => {
+                      checkInputIsValid(
+                        errors,
+                        values,
+                        setFieldError,
+                        setFieldTouched,
+                        "gst_number"
+                      );
+                    }}
+                  >
+                    Verify
+                  </a>
+                </div>
+              )}
+              {errors?.oldGstNumber && (
+                <span className="notVerifiedtext text-danger">
+                  {errors?.oldGstNumber}
+                </span>
+              )}
             </div>
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
@@ -328,11 +463,30 @@ function BusinessDetails(props) {
                 <FormikController
                   control="input"
                   type="text"
-                  name="signatory_pan"
+                  name="pan_card"
                   className="form-control"
-                  readOnly={readOnly}
+                  readOnly={readOnly === false ? true : readOnly}
                 />
               </div>
+              {/* {KycList?.panCard !== null &&
+              !errors.hasOwnProperty("pan_card") &&
+              !errors.hasOwnProperty("oldPanCard") ? (
+                <span>
+                <p className="panVerfied text-success">
+                  Verified
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-check"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                  </svg>
+                </p>
+              </span> 
+              ) : (
               <div class="position-sticky pull-right">
                 <a
                   href={() => false}
@@ -342,12 +496,26 @@ function BusinessDetails(props) {
                     borderRadius: "6px",
                   }}
                   onClick={() => {
-                    //  console.log("Hello")
+
+                    // console.log("Values ==>>><<<",formik?.values)
+                    checkInputIsValid(
+                      errors,
+                      values,
+                      setFieldError,
+                      setFieldTouched,
+                      "pan_card"
+                    );
                   }}
                 >
                   Verify
                 </a>
               </div>
+                )}
+                  {errors?.oldPanCard && (
+                  <span className="notVerifiedtext text-danger">
+                    {errors?.oldPanCard}
+                  </span>
+                  )} */}
             </div>
 
             <div class="form-group row">
@@ -361,26 +529,49 @@ function BusinessDetails(props) {
                 <FormikController
                   control="input"
                   type="text"
-                  name="pan_card"
+                  name="signatory_pan"
                   className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                   readOnly={readOnly}
                 />
               </div>
-              <div class="position-sticky pull-right">
-                <a
-                  href={() => false}
-                  className="btn btnbackground text-white btn-sm panbtn"
-                  style={{
-                    boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                    borderRadius: "6px",
-                  }}
-                  onClick={() => {
-                    //  console.log("Hello")
-                  }}
-                >
-                  Verify
-                </a>
-              </div>
+              {KycList?.signatoryPAN !== null &&
+              !errors.hasOwnProperty("signatory_pan") &&
+              !errors.hasOwnProperty("oldSignatoryPan") ? (
+                <span>
+                  <img src={gotVerified} alt="" title="" width="26" />
+                </span>
+              ) : (
+                <div class="position-sticky pull-right">
+                  <a
+                    href={() => false}
+                    className="btn btnbackground text-white btn-sm panbtn"
+                    style={{
+                      boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                      borderRadius: "6px",
+                    }}
+                    onClick={() => {
+                      // console.log("Values ==>>><<<",formik?.values)
+                      checkInputIsValid(
+                        errors,
+                        values,
+                        setFieldError,
+                        setFieldTouched,
+                        "signatory_pan"
+                      );
+                    }}
+                  >
+                    Verify
+                  </a>
+                </div>
+              )}
+
+              {errors?.oldSignatoryPan && (
+                <span className="notVerifiedtext text-danger">
+                  {errors?.oldSignatoryPan}
+                </span>
+              )}
             </div>
 
             <div class="form-group row">
@@ -395,95 +586,10 @@ function BusinessDetails(props) {
                   type="text"
                   name="company_name"
                   className="form-control"
-                  readOnly={readOnly}
+                  readOnly={readOnly === false ? true : readOnly}
                 />
               </div>
             </div>
-            {/* <div className="form-row">
-              <div className="form-group col-md-4">
-                <label>
-                  <h4 class="font-weight-bold">
-                    Business Name <span style={{ color: "red" }}>*</span>
-                  </h4>
-                </label>
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="company_name"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div> */}
-
-            {/* {role.verifier || role.approver ? (
-                <div className="form-group col-md-4">"show company logo" </div>
-              ) : (
-                <div className="form-group col-md-4">
-                  <label>
-                    <h4 class="font-weight-bold">
-                      Company Logo<span style={{ color: "red" }}>*</span>
-                    </h4>
-                  </label>
-                  <FormikController
-                    control="file"
-                    type="file"
-                    name="company_logo"
-                    className="form-control"
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
-                    readOnly={readOnly}
-                    onChange={(event) => {
-                      setFieldValue(event.target.files[0]);
-                      formik.setFieldValue(
-                        "company_logo",
-                        event.target.files[0].name
-                      );
-                    }}
-                    accept="image/jpeg,image/jpg,image/png "
-                  />
-                </div>
-              )} */}
-
-            {/* <div class="form-group row">
-              <label class="col-sm-2 col-form-label p-2">
-                <h4 class="font-weight-bold text-nowrap">
-                  GSTIN<span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-              <div class="col-sm-8 ml-5">
-              <FormikController
-                  control="select"
-                  name="registerd_with_gst"
-                  onChange={(e) => {
-                    handleShowHide(e);
-                    formik.setFieldValue("registerd_with_gst", e.target.value);
-                  }}
-                  className="form-control"
-                  options={GSTIN}
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div>
-            </div> */}
-
-            {/* {formik.values?.registerd_with_gst === "True" && (
-                <div className="form-group col-md-4">
-                  <label>
-                    <h4 class="font-weight-bold">
-                      Enter Gst No <span style={{ color: "red" }}>*</span>
-                    </h4>
-                  </label>
-                  <FormikController
-                    control="input"
-                    type="text"
-                    name="gst_number"
-                    className="form-control"
-                    disabled={VerifyKycStatus === "Verified" ? true : false}
-                    readOnly={readOnly}
-                  />
-                </div>
-              )}
-             */}
 
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
@@ -497,7 +603,7 @@ function BusinessDetails(props) {
                   type="text"
                   name="name_on_pancard"
                   className="form-control"
-                  readOnly={readOnly}
+                  readOnly={readOnly === false ? true : readOnly}
                 />
               </div>
             </div>
@@ -685,7 +791,6 @@ function BusinessDetails(props) {
                     formik.values.registered_business_address
                   )
                 )}
-
                 <FormikController
                   control="textArea"
                   type="textArea"

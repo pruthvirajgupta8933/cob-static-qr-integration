@@ -14,18 +14,7 @@ const MailVerificationModal = ({ show, setShow }) => {
   );
 
   const [otp, setOtp] = useState({ otp: "" });
-
-
-
-  // console.log(show,"<=====")
-  // console.log(mailValidate,"<=====")
-
   const [checked, setChecked] = useState(false);
-
-  // const onChangeHandler = () => {
-  //   // mailValidate(!check, checked)
-  //   setFieldValue("isMobileVerified", checked)
-  // }
 
   const handleChangeForOtp = (otp) => {
     const regex = /^[0-9]*$/;
@@ -43,11 +32,9 @@ const MailVerificationModal = ({ show, setShow }) => {
         otp: otp.otp,
       })
     ).then((res) => {
-      // console.log("This is the response", res);
       if (res.meta.requestStatus === "fulfilled") {
         if (res.payload.status === true) {
           toast.success(res.payload.message)
-          // check(true)
           setShow(false,"email")
         } else if (res.payload.status === false) {
           toast.error(res.payload.message)
@@ -124,7 +111,7 @@ const MailVerificationModal = ({ show, setShow }) => {
                   />
                 </div>
                 <div class="col-md-11 text-center">
-                <button className="btn" type="submit" style={{backgroundColor:"#0156B3"}}
+                <button className="btn" type="button" style={{backgroundColor:"#0156B3"}}
                     onClick={handleVerificationOfEmail}
                   >
                     <h4 className="text-white text-kyc-sumit">Verify</h4>  

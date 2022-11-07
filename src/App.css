@@ -1,3 +1,9 @@
+@import url("../src/assets/fonts/Satoshi/Fonts/WEB/css/satoshi.css");
+@import url("../src/assets/fonts/OpenSans/Fonts/opensans.css");
+@import url("../src/assets/fonts/NunitoSans/nunitosans.css");
+@import url("../src/assets/fonts/Roboto/roboto.css");
+@import url("../src/assets/fonts/Roboto/roboto.css");
+
 label {
   display: block;
   margin-top: 10px;
@@ -35,63 +41,60 @@ label {
   position: relative;
   display: inline-block;
 }
-.bholu{
+.bholu {
   position: absolute;
-  top:20%;
-  left:18%;
+  top: 20%;
+  left: 18%;
 }
-.sample{
+.sample {
   position: absolute;
-  
-  left:7%;
 
+  left: 7%;
 }
-.joshi{
+.joshi {
   position: absolute;
-  top:40%;
-  left:20%;
-  
+  top: 40%;
+  left: 20%;
 }
-.para{
-
+.para {
   position: absolute;
-  top:264px;
-  left:10px;
+  top: 264px;
+  left: 10px;
 }
-.selct{
+.selct {
   display: block;
-    width: 100%;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .bhuvi {
   display: inline-block;
-    line-height: normal;
-    white-space: nowrap;
-    vertical-align: middle;
-    text-align: center;
-    cursor: pointer;
-    box-sizing: border-box;
-    border: none;
-    outline: none;
-    outline-offset: 0;
-    font-weight: 400;
-    box-shadow: none;
-    
-    padding: 10px 14px;
+  line-height: normal;
+  white-space: nowrap;
+  vertical-align: middle;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  outline-offset: 0;
+  font-weight: 400;
+  box-shadow: none;
+
+  padding: 10px 14px;
 }
 
-   #jjj{
-    width:800px;
-  }
-  /* .btn-link{
+#jjj {
+  width: 800px;
+}
+/* .btn-link{
     font-weight: 400 !important;
     color: #007bff !important;
     text-decoration: none !important;
@@ -100,86 +103,115 @@ label {
     text-decoration-color: initial !important;
 
   } */
-  .bhanu{
-    display: inline-block;
-    font-weight: 400;
-    color: #212529;
-    text-align: center;
-    vertical-align: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-color: transparent;
-    border: 1px solid transparent;
-    padding: 0.375rem 0.75rem;
-    line-height: 1.5;
-    border-radius: 0.25rem;
-    font-weight: 400 !important;
-    color: #007bff !important;
-    text-decoration: none !important;
-    text-decoration-line: none !important;
-    text-decoration-style: initial !important;
-    text-decoration-color: initial !important;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+.bhanu {
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  font-weight: 400 !important;
+  color: #007bff !important;
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-style: initial !important;
+  text-decoration-color: initial !important;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 /* .MuiFormHelperText-root{
   color:red !important;
 } */
 
-
-
-.displayErrorMessage{
+.displayErrorMessage {
   display: flex;
   padding: 10px;
   justify-content: flex-end;
   position: absolute;
   z-index: 999;
   width: 100%;
-
 }
 
-.displayErrorMessage p{
+.displayErrorMessage p {
   background: palevioletred;
   padding: 15px;
 }
 
-
 /* home */
-.nodatafound{
+.nodatafound {
   margin: 25px;
   text-align: center;
   padding: 15px;
   font-size: 24px;
   font-weight: 700;
-  font-family: system-ui;
+  /* font-family: system-ui; */
 }
-
-
 
 .gfg-div {
   background-color: #ffffff;
 }
 
-
-
 /* As per figma css */
 
-.desktop-sidenave-typography{
-  
-  font-family: Roboto !important; 
+.desktop-sidenave-typography {
+  /* font-family: Roboto !important;  */
   font-size: 16px !important;
   font-weight: 400 !important;
   line-height: 24px !important;
   letter-spacing: 0.15000000596046448px !important;
   text-align: left !important;
-
 }
 
+/* font classes  */
+
+.Satoshi-Bold {
+  font-family: "Satoshi-Bold" !important;
+}
+
+.Satoshi-Medium {
+  font-family: "Satoshi-Medium" !important;
+}
+
+.OpenSans-Regular {
+  font-family: "OpenSans-Regular" !important;
+}
+
+.NunitoSans-Regular {
+  font-family: "NunitoSans-Regular" !important;
+}
+
+.NunitoSans-Medium {
+  font-family: "NunitoSans-Medium" !important;
+}
+
+.Roboto-Regular {
+  font-family: "Roboto-Regular" !important;
+}
+
+.Roboto-Medium {
+  font-family: "Roboto-Medium" !important;
+}
+
+.Montserrat-Regular {
+  font-family: "Montserrat-Regular" !important;
+}
+
+.Montserrat-Medium {
+  font-family: "Montserrat-Medium" !important;
+}
+/* .OpenSans-Regular {
+  font-family: "O" !important;
+} */
 
 /* ENd As per figma css */
-
-
 
 /* For Desktop View */
 @media screen and (min-width: 1024px) {
@@ -188,14 +220,13 @@ label {
     color: #fff;
   }
 
-  .login-float-right{
-    float:right !important;
+  .login-float-right {
+    float: right !important;
   }
 }
- 
+
 /* For Tablet View */
-@media screen and (min-device-width: 768px)
-and (max-device-width: 1024px) {
+@media screen and (min-device-width: 768px) and (max-device-width: 1024px) {
   .gfg-div {
     width: 400px;
     height: 400px;
@@ -203,25 +234,19 @@ and (max-device-width: 1024px) {
     color: black;
   }
 }
- 
+
 /* For Mobile Portrait View */
-@media screen and (max-device-width: 480px)
-and (orientation: portrait) {
+@media screen and (max-device-width: 480px) and (orientation: portrait) {
   .gfg-div {
     width: 200px;
     height: 200px;
     background-color: red;
     color: #fff;
   }
-
-  
-
-
 }
- 
+
 /* For Mobile Landscape View */
-@media screen and (max-device-width: 640px)
-and (orientation: landscape) {
+@media screen and (max-device-width: 640px) and (orientation: landscape) {
   .gfg-div {
     width: 400px;
     height: 200px;
@@ -229,7 +254,7 @@ and (orientation: landscape) {
     color: black;
   }
 }
- 
+
 /* For Mobile Phones Portrait or Landscape View */
 @media screen and (max-device-width: 640px) {
   .gfg-div {
@@ -239,18 +264,17 @@ and (orientation: landscape) {
     color: black;
   }
 
-  .login-float-none{
-    float:none ;
+  .login-float-none {
+    float: none;
   }
 
-  .m0{
+  .m0 {
     margin: 0px !important;
   }
 }
- 
+
 /* For iPhone 4 Portrait or Landscape View */
-@media screen and (min-device-width: 320px)
-and (-webkit-min-device-pixel-ratio: 2) {
+@media screen and (min-device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) {
   .gfg-div {
     width: 400px;
     height: 400px;
@@ -258,10 +282,9 @@ and (-webkit-min-device-pixel-ratio: 2) {
     color: black;
   }
 }
- 
+
 /* For iPhone 5 Portrait or Landscape View */
-@media (device-height: 568px) and (device-width: 320px)
-and (-webkit-min-device-pixel-ratio: 2) {
+@media (device-height: 568px) and (device-width: 320px) and (-webkit-min-device-pixel-ratio: 2) {
   .gfg-div {
     width: 400px;
     height: 400px;
@@ -269,10 +292,9 @@ and (-webkit-min-device-pixel-ratio: 2) {
     color: black;
   }
 }
- 
+
 /* For iPhone 6 and 6 plus Portrait or Landscape View */
-@media (min-device-height: 667px) and (min-device-width: 375px)
-and (-webkit-min-device-pixel-ratio: 3) {
+@media (min-device-height: 667px) and (min-device-width: 375px) and (-webkit-min-device-pixel-ratio: 3) {
   .gfg-div {
     width: 400px;
     height: 400px;

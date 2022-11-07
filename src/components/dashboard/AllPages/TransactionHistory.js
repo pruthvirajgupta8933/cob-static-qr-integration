@@ -17,9 +17,9 @@ import API_URL from "../../../config";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import NavBar from "../../dashboard/NavBar/NavBar"
-import { axiosInstance } from "../../../utilities/axiosInstance"
-import moment from "moment"
+import NavBar from "../../dashboard/NavBar/NavBar";
+import { axiosInstance } from "../../../utilities/axiosInstance";
+import moment from "moment";
 function TransactionHistory() {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -52,27 +52,15 @@ function TransactionHistory() {
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
 
-
-
-  // const [date, setDate] = useState(currentDate);
-  
- 
-  // let current = new Date();
-  // let myDate = `${current.getMonth()+1}/${current.getDate()}/${current.getFullYear()}`;
-  // //  setDate(myDate)
-
-
-  var now = moment().format('YYYY-M-D');
+  var now = moment().format("YYYY-M-D");
   var splitDate = now.split("-");
-  if(splitDate[1].length===1){
-    splitDate[1] = '0'+splitDate[1]; 
-  }  
-  if(splitDate[2].length===1){
-    splitDate[2] = '0'+splitDate[2];
+  if (splitDate[1].length === 1) {
+    splitDate[1] = "0" + splitDate[1];
   }
-  splitDate =splitDate.join('-');
-
-
+  if (splitDate[2].length === 1) {
+    splitDate[2] = "0" + splitDate[2];
+  }
+  splitDate = splitDate.join("-");
 
   var clientMerchantDetailsList = [];
   if (
@@ -105,7 +93,6 @@ function TransactionHistory() {
   };
 
   const validationSchema = Yup.object({
-    // clientCode : Yup.string().required("Required"),
     fromDate: Yup.date().required("Required"),
     endDate: Yup.date()
       .min(Yup.ref("fromDate"), "End date can't be before Start date")
@@ -143,18 +130,19 @@ function TransactionHistory() {
         SetPaymentStatusList(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
   const paymodeList = async () => {
     await axiosInstance
-      .get(API_URL.PAY_MODE_LIST).then((res) => {
+      .get(API_URL.PAY_MODE_LIST)
+      .then((res) => {
         // console.log(res)
         SetPaymentModeList(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -165,7 +153,6 @@ function TransactionHistory() {
     extraDataObj = { key: "All", value: "All" };
   }
 
-  console.log(clientMerchantDetailsList,"clientMerchantDetailsList,")
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
     "clientName",
@@ -173,8 +160,6 @@ function TransactionHistory() {
     extraDataObj,
     isExtraDataRequired
   );
-
-  console.log()
 
   const tempPayStatus = [{ key: "All", value: "All" }];
   paymentStatusList.map((item) => {
@@ -192,47 +177,46 @@ function TransactionHistory() {
     setCurrentPage(pageNo);
   };
 
-  const submitHandler = values =>{
+  const submitHandler = (values) => {
     // console.log(values)
-    
-    isButtonClicked(true)
-    
-    const {fromDate, endDate, transaction_status, payment_mode} = values
+
+    isButtonClicked(true);
+
+    const { fromDate, endDate, transaction_status, payment_mode } = values;
     const dateRangeValid = checkValidation(fromDate, endDate);
 
-    if(dateRangeValid){ 
+    if (dateRangeValid) {
       // isLoading(true);
       // isButtonClicked(true);
-      let strClientCode, clientCodeArrLength ="";
-        
-      if(clientCode==="All"){
-        const allClientCode = []
-        clientMerchantDetailsList?.map((item)=>{
-          allClientCode.push(item.clientCode)
-        })
+      let strClientCode,
+        clientCodeArrLength = "";
+
+      if (clientCode === "All") {
+        const allClientCode = [];
+        clientMerchantDetailsList?.map((item) => {
+          allClientCode.push(item.clientCode);
+        });
         clientCodeArrLength = allClientCode.length.toString();
         strClientCode = allClientCode.join().toString();
-      }else{
+      } else {
         strClientCode = clientCode;
-        clientCodeArrLength = "1"
+        clientCodeArrLength = "1";
       }
 
       let paramData = {
-        clientCode:strClientCode,
-        paymentStatus:transaction_status,
-        paymentMode:payment_mode,
-        fromDate:fromDate,
-        endDate:endDate,
+        clientCode: strClientCode,
+        paymentStatus: transaction_status,
+        paymentMode: payment_mode,
+        fromDate: fromDate,
+        endDate: endDate,
         length: "0",
         page: "0",
-        NoOfClient: clientCodeArrLength
-      } 
-  // console.log(paramData)
-      dispatch(fetchTransactionHistorySlice(paramData))
-}
-
-
-  }
+        NoOfClient: clientCodeArrLength,
+      };
+      // console.log(paramData)
+      dispatch(fetchTransactionHistorySlice(paramData));
+    }
+  };
   const checkValidation = (fromDate = "", toDate = "") => {
     var flag = true;
     if (fromDate === 0 || toDate === "") {
@@ -254,41 +238,6 @@ function TransactionHistory() {
 
     return flag;
   };
-
-  // const txnHistory =  () => {
-  //   var isValid = checkValidation();
-  //         if(isValid){
-  //           // isLoading(true);
-  //           isButtonClicked(true);
-  //           let strClientCode, clientCodeArrLength ="";
-  //             if(clientCode==="All"){
-  //             const allClientCode = []
-  //             clientMerchantDetailsList?.map((item)=>{
-  //               allClientCode.push(item.clientCode)
-  //             })
-  //             clientCodeArrLength = allClientCode.length.toString();
-  //             strClientCode = allClientCode.join().toString();
-  //           }else{
-  //             strClientCode = clientCode;
-  //             clientCodeArrLength = "1"
-  //           }
-
-  //           let paramData = {
-  //             clientCode:strClientCode,
-  //             paymentStatus:txnStatus,
-  //             paymentMode:payModeId,
-  //             fromDate:fromDate,
-  //             endDate:toDate,
-  //             length: "0",
-  //             page: "0",
-  //             NoOfClient: clientCodeArrLength
-  //           }
-
-  //           dispatch(fetchTransactionHistorySlice(paramData))
-  //     }else{
-  //       console.log('API not trigger!');
-  //     }
-  // }
 
   useEffect(() => {
     // Remove initiated from transaction history response
@@ -460,12 +409,12 @@ function TransactionHistory() {
   const finalDate = year + "-" + month + "-" + day;
 
   // console.log(startDate);
-// console.log("statrehere,",clientCodeOption)
+  // console.log("statrehere,",clientCodeOption)
   return (
-    <section className="ant-layout">
-     <div>
-      <NavBar />
-     </div>
+    <section className="ant-layout Satoshi-Medium">
+      <div>
+        <NavBar />
+      </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
@@ -505,7 +454,6 @@ function TransactionHistory() {
                           // value={startDate}
                           // onChange={(e)=>setStartDate(e.target.value)}
                         />
-                      
                       </div>
 
                       <div className="form-group col-md-2 mx-4">
@@ -543,7 +491,7 @@ function TransactionHistory() {
                         <button
                           className="btn btn-sm text-white"
                           type="submit"
-                          style={{backgroundColor: "rgb(1, 86, 179)"}}
+                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
                         >
                           Search
                         </button>
@@ -551,21 +499,17 @@ function TransactionHistory() {
                       {txnList?.length > 0 ? (
                         <>
                           <div className="form-row">
-                          <div className="form-group col-md-1 ml-4">
-                            <button
-                              className="btn btn-sm text-white"
-                              type="button"
-                              onClick={() => exportToExcelFn()}
-                              style={{backgroundColor: "rgb(1, 86, 179)"}}
-                            >
-                              Export
-                            </button>
+                            <div className="form-group col-md-1 ml-4">
+                              <button
+                                className="btn btn-sm text-white"
+                                type="button"
+                                onClick={() => exportToExcelFn()}
+                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                              >
+                                Export
+                              </button>
+                            </div>
                           </div>
-                          </div>
-                          
-                          
-                     
-                          
                         </>
                       ) : (
                         <></>
@@ -686,37 +630,31 @@ function TransactionHistory() {
             <div className="container-fluid  p-3 my-3 ">
               {txnList.length > 0 ? (
                 <>
-                 <div class="row">
-                <div className="form-group col-md-3 mt-2">
-                            <label>Search</label>
-                            <input
-                              className="form-control"
-                              onChange={getSearchTerm}
-                              type="text"
-                              placeholder="Search Here"
-                            />
-                          </div>
-                         
-                          <div className="form-group col-md-3  mt-2">
-                            <label>Count Per Page</label>
-                            <select
-                              value={pageSize}
-                              rel={pageSize}
-                              className="ant-input"
-                              onChange={(e) =>
-                                setPageSize(parseInt(e.target.value))
-                              }
-                            >
-                              <DropDownCountPerPage
-                                datalength={txnList.length}
-                              />
-                            </select>
-                          </div>
-                        
-                          </div>
-                <h4>Total Record : {txnList.length} </h4>
-               
-                          </>
+                  <div class="row">
+                    <div className="form-group col-md-3 mt-2">
+                      <label>Search Transaction ID</label>
+                      <input
+                        className="form-control"
+                        onChange={getSearchTerm}
+                        type="text"
+                        placeholder="Search Here"
+                      />
+                    </div>
+
+                    <div className="form-group col-md-3  mt-2">
+                      <label>Count Per Page</label>
+                      <select
+                        value={pageSize}
+                        rel={pageSize}
+                        className="ant-input"
+                        onChange={(e) => setPageSize(parseInt(e.target.value))}
+                      >
+                        <DropDownCountPerPage datalength={txnList.length} />
+                      </select>
+                    </div>
+                  </div>
+                  <h4>Total Record : {txnList.length} </h4>
+                </>
               ) : (
                 <></>
               )}
@@ -875,7 +813,9 @@ function TransactionHistory() {
                     </div>
                   </div>
                 ) : buttonClicked === true && txnList.length === 0 ? (
-                  <div className="showMsg"><h1 class="float-centre mr-5">Data Not Found</h1></div>
+                  <div className="showMsg">
+                    <h1 class="float-centre mr-5">Data Not Found</h1>
+                  </div>
                 ) : (
                   <div></div>
                 )}

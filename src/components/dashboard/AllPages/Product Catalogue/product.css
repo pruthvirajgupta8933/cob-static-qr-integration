@@ -1,7 +1,7 @@
 
 .prodHeader {
     font-weight: 700;
-    font-family: "Roboto";
+      /* font-family: Roboto; */
     color: black;
     size: 41px;
     line-height: 48px;
@@ -10,7 +10,7 @@
 }
 
 .prodpara {
-    font-family: Roboto;
+      /* font-family: Roboto; */
     font-size: 18px;
     font-weight: bold;
     line-height: 21px;
@@ -19,7 +19,7 @@
 }
 
 .prod-header {
-font-family: Roboto;
+  /* font-family: Roboto; */
 font-size: 21px;
 font-weight: 700;
 line-height: 25px;
@@ -29,7 +29,7 @@ color: #4285F8;
 }
 
 .prod-content {
-    font-family: Roboto;
+      /* font-family: Roboto; */
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
@@ -39,7 +39,7 @@ color: #4285F8;
 }
 
 .prod-read {
-    font-family: Roboto;
+      /* font-family: Roboto; */
 font-size: 14px;
 font-weight: 700;
 line-height: 18px;
@@ -50,7 +50,7 @@ color: #4285F8;
 
 
 .bold-font{
-    font-family: 'Montserrat';
+      /* font-family: 'Montserrat'; */
 font-style: normal;
 font-weight: 800;
 font-size: 64px;

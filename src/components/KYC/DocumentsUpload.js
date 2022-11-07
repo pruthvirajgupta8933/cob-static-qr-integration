@@ -40,7 +40,7 @@ function DocumentsUpload(props) {
     (state) => state.kyc.KycDocUpload[0]?.status
   );
 
-  console.log(KycDocList);
+  // console.log(KycDocList);
 
   const initialValues = {
     docType: KycDocList[0]?.type ? KycDocList[0]?.type : "",
@@ -48,16 +48,16 @@ function DocumentsUpload(props) {
     isRejected: false,
   };
 
-  console.log(initialValues);
+  // console.log(initialValues);
 
   const documentId = useSelector(
     (state) => state.kyc.KycDocUpload[0]?.documentId
   );
 
-  console.log(documentId);
+  // console.log(documentId);
   const ImgUrl = `${API_URL.Image_Preview}/?document_id=${documentId}`;
   // console.log(ImgUrl,"<===========KYC DOC Id===========>")
-  console.log(KycDocList, "<===========KYC DOC List===========>");
+  // console.log(KycDocList, "<===========KYC DOC List===========>");
 
   useEffect(() => {
     dispatch(documentsUpload())
@@ -88,7 +88,7 @@ function DocumentsUpload(props) {
           : true;
       })
       .test("FILE_Type", "Not valid!", (value) => {
-        console.log(filesharhe_ref.current.files[0]);
+        // console.log(filesharhe_ref.current.files[0]);
         return value && filesharhe_ref.current
           ? SUPPORTED_FORMATS.includes(filesharhe_ref.current.files[0].type)
             ? true
@@ -117,7 +117,7 @@ function DocumentsUpload(props) {
 
       // console.log("body",bodyFormData);
       for (var pair of bodyFormData.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
+        // console.log(pair[0] + ", " + pair[1]);
       }
 
       dispatch(merchantInfo(bodyFormData)).then((res) => {
@@ -193,13 +193,13 @@ function DocumentsUpload(props) {
   }, [role]);
 
   const handleFileSelect = (event) => {
-    console.log(event.target.files);
+    // console.log(event.target.files);
     setSelectedFile(event.target.files[0]);
   };
 
   let submitAction = undefined;
 
-  console.log(role);
+  // console.log(role);
   return (
     <div className="col-md-12 p-3">
       <div className="">
@@ -212,7 +212,7 @@ function DocumentsUpload(props) {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          console.log(values);
+          // console.log(values);
           onSubmit(values, submitAction);
         }}
         enableReinitialize={true}

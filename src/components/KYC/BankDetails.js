@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
-import API_URL from "../../config";
-import axios from "axios";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -11,8 +9,13 @@ import {
   kycBankNames,
   saveMerchantBankDetais,
   verifyKycEachTab,
+  ifscValidation,
+  bankAccountVerification,
+  getBankId,
+  kycUserList,
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
+import gotVerified from "../../assets/images/verified.png";
 
 function BankDetails(props) {
   const setTab = props.tab;
@@ -21,50 +24,85 @@ function BankDetails(props) {
   const { role, kycid } = props;
   const dispatch = useDispatch();
 
-  const KycList = useSelector((state) => state.kyc.kycUserList);
+  const { kyc, auth } = useSelector((state) => state);
 
-  const VerifyKycStatus = useSelector(
-    (state) => state.kyc.KycTabStatusStore.settlement_info_status
-  );
+  const { KycTabStatusStore, GetBankid, allTabsValidate } = kyc;
+  const KycList = kyc?.kycUserList;
+  const VerifyKycStatus = KycTabStatusStore?.settlement_info_status;
+  const bankDetailsById = GetBankid;
+
+  const { user } = auth;
+  const AccfirstName =
+    allTabsValidate?.BankDetails?.accountValidation?.first_name;
+  const AcclastName =
+    allTabsValidate?.BankDetails?.accountValidation?.last_name;
+  const branch = allTabsValidate?.BankDetails?.IfscValidation?.branch;
+
+  // console.log(AccfirstName,"=====>")
+  let accHolderName = `${AccfirstName} ${AcclastName}`;
+
+  // console.log("Account Holder Name ===>",accHolderName.length)
 
   const [readOnly, setReadOnly] = useState(false);
+  const [checkIfscChange, setCheckIfscChange] = useState("");
+  const [ifscVerifed, isIfscVerifed] = useState("");
+  const [accountNumberVerifed, isAccountNumberVerifed] = useState("");
   const [buttonText, setButtonText] = useState("Save and Next");
-  // console.log(VerifyKycStatus,"<==STATUS==>")
-
-  //  console.log(KycList ,"====================>")
 
   const [data, setData] = useState([]);
+  const IFSCRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+  const AccountNoRgex = /^[a-zA-Z0-9]{2,25}$/;
 
-  const { user } = useSelector((state) => state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  // const { clientCode } = clientMerchantDetailsList[0];
   const { loginId } = user;
 
   const initialValues = {
-    account_holder_name: KycList?.accountHolderName,
+    account_holder_name:
+      accHolderName.length > 2
+        ? accHolderName
+        : KycList?.accountHolderName
+        ? KycList?.accountHolderName
+        : "",
     account_number: KycList?.accountNumber,
-    confirm_account_number: KycList?.accountNumber,
+    oldAccountNumber: KycList?.accountNumber,
+    // confirm_account_number: KycList?.accountNumber,
     ifsc_code: KycList?.ifscCode,
-    bank_id: KycList?.merchant_account_details?.bankId,
-    account_type: KycList?.bankName,
-    branch: KycList?.merchant_account_details?.branch,
+    oldIfscCode: KycList?.ifscCode,
+    bank_id:
+      bankDetailsById?.length > 0
+        ? bankDetailsById[0]?.bankId
+        : KycList?.merchant_account_details?.bankId, // change stste
+    account_type: KycList?.merchant_account_details?.accountType,
+
+    branch:
+      branch?.length > 2 ? branch : KycList?.merchant_account_details?.branch,
+    // isIFSCCode: KycList?.ifscCode !== null ? "1" : "",
+    // isIFSCCode: ifscVerifed,
+    isAccountNumberVerified: KycList?.accountNumber !== null ? "1" : "",
   };
+  //   previousField: yup.bool(),
+  // field: yup.string().test('required', 'please provide value',
+  //   (value, ctx) => !ctx.parent.previousField)
   const validationSchema = Yup.object({
     account_holder_name: Yup.string()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
+    ifsc_code: Yup.string()
+      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+      .matches(IFSCRegex, "Your IFSC Number is Invalid")
+      .min(6, "Username must be at least 6 characters")
+      .max(20, "Username must not exceed 20 characters")
+      .required("Required")
+
+      .nullable(),
     account_number: Yup.string()
-      .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
+      .matches(AccountNoRgex, "Your Account Number is Invalid")
       .required("Required")
       .nullable(),
     // confirm_account_number: Yup.string()
     //   .oneOf([Yup.ref("account_number"), null], "Account Number  must match")
     //   .required("Confirm Account Number Required").nullable(),
-    ifsc_code: Yup.string()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .required("Required")
-      .nullable(),
+
     account_type: Yup.string()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
@@ -76,8 +114,72 @@ function BankDetails(props) {
     bank_id: Yup.string()
       .required("Required")
       .nullable(),
+    isAccountNumberVerified: Yup.string().required(
+      "You need to verify Your Account Number"
+    ),
+    oldIfscCode: Yup.string()
+      .oneOf([Yup.ref("ifsc_code"), null], "You need to verify Your IFSC Code")
+      .required("You need to verify Your IFSC Code")
+      .nullable(),
+    oldAccountNumber: Yup.string()
+      .oneOf(
+        [Yup.ref("account_number"), null],
+        "You need to verify Your Account Number"
+      )
+      .required("You need to verify Your Account Number")
+      .nullable(),
   });
 
+  const ifscValidationNo = (values) => {
+    // console.log("Values ========>",values)
+    if (values?.length !== 0 || typeof values?.length !== "undefined") {
+      dispatch(
+        ifscValidation({
+          ifsc_number: values,
+        })
+      ).then((res) => {
+        if (
+          res.meta.requestStatus === "fulfilled" &&
+          res.payload.status === true &&
+          res.payload.valid === true
+        ) {
+          // console.log("<==== IFSC Validation Response ===>",res)
+          // setCheckIfscChange(values)
+          const postData = { bank_name: res?.payload?.bank };
+          dispatch(getBankId(postData));
+          toast.success(res?.payload?.message);
+        } else {
+          toast.error(res?.payload?.message);
+        }
+      });
+    }
+  };
+
+  const bankAccountValidate = (values, ifsc) => {
+    // console.log("Values ========>",values)
+    dispatch(
+      bankAccountVerification({
+        account_number: values,
+        ifsc: ifsc,
+      })
+    ).then((res) => {
+      if (
+        res?.meta?.requestStatus === "fulfilled" &&
+        res?.payload?.status === true &&
+        res?.payload?.valid === true
+      ) {
+        // console.log("This is the response", res);
+        // console.log(res?.payload?.ifsc[0])
+        toast.success(res?.payload?.message);
+      } else {
+        toast.error(res?.payload?.message);
+      }
+    });
+  };
+
+  // const checkValueChange = (val) => {
+  //   if()
+  // }
   //---------------GET ALL BANK NAMES DROPDOWN--------------------
 
   useEffect(() => {
@@ -92,6 +194,10 @@ function BankDetails(props) {
       })
 
       .catch((err) => console.log(err));
+
+    // setCheckIfscChange update data from the KYC state
+    // setCheckIfscChange(KycList?.ifscCode)
+    KycList?.ifscCode ? isIfscVerifed("1") : isIfscVerifed("");
   }, []);
 
   // ------------------------------------------
@@ -107,7 +213,7 @@ function BankDetails(props) {
           account_type: values.account_type,
           branch: values.branch,
           login_id: loginId,
-          modified_by: "270",
+          modified_by: loginId,
         })
       ).then((res) => {
         if (
@@ -116,11 +222,13 @@ function BankDetails(props) {
         ) {
           // console.log(res)
           // console.log("This is the response", res);
-          toast.success(res.payload.message);
+          toast.success(res?.payload?.message);
           setTab(5);
           setTitle("DOCUMENTS UPLOAD");
+          dispatch(kycUserList({ login_id: loginId }))
+
         } else {
-          toast.error("Something Went Wrong! Please try again.");
+          toast.error(res?.payload?.message);
         }
       });
     } else if (role.verifier) {
@@ -150,6 +258,58 @@ function BankDetails(props) {
     }
   }, [role]);
 
+  const checkInputIsValid = (err, val, setErr, setFieldTouched, key) => {
+    const hasErr = err.hasOwnProperty(key);
+
+    const fieldVal = val[key];
+    let isValidVal = true;
+    if (fieldVal === null || fieldVal === undefined) {
+      isValidVal = false;
+      setFieldTouched(key, true);
+    }
+
+    if (hasErr) {
+      if (val[key] === "") {
+        setErr(key, true);
+      }
+    }
+
+    if (!hasErr && isValidVal && val[key] !== "" && key === "ifsc_code") {
+      ifscValidationNo(val[key]);
+    }
+    if (!hasErr && isValidVal && val[key] !== "" && key === "account_number") {
+      const ifscCodeVal = val?.ifsc_code;
+      bankAccountValidate(val[key], ifscCodeVal);
+    }
+  };
+
+  //  const formikHandlerChange = (input, oldValue, newVal, setFormikVal) => {
+  //   //
+  //     if (input === "ifsc_code") {
+  //       if (newVal?.length === 11) {
+  //         if(oldValue!==newVal){
+  //           // setFormikVal("isIFSCCode","")
+  //           // setFormikVal(input,newVal)
+  //           // setFormikVal("isIFSCCode","")
+  //           // isIfscVerifed("")
+  //           console.log("set blank = =")
+  //         }else{
+  //           // isIfscVerifed("1")
+
+  //           // setFormikVal("isIFSCCode","1")
+  //           console.log("set blank = 1")
+  //         }
+  //       }
+  //     }
+  //   }
+
+  // useEffect(() => {
+  //    setTimeout(() => {
+  //     isIfscVerifed("")
+  //    }, 2000);
+  // }, [])
+
+  // {console.log("IFSC PAYLODE VALUE =====>",checkIfscChange)}
 
   return (
     <div className="col-md-12 col-md-offset-4" style={{ width: "100%" }}>
@@ -159,9 +319,148 @@ function BankDetails(props) {
         onSubmit={onSubmit}
         enableReinitialize={true}
       >
-        {(formik) => (
+        {({
+          values,
+          setFieldValue,
+          initialValues,
+          errors,
+          setFieldError,
+          setFieldTouched,
+          handleChange,
+        }) => (
           <Form>
-            {/* {console.log(formik)} */}
+            {/* {console.log("values", values)}
+            {console.log("initialValues", initialValues)}
+            {console.log("errors", errors)} */}
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+                <h4 class="text-kyc-label text-nowrap">
+                  IFSC Code<span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="ifsc_code"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
+                  readOnly={readOnly}
+                />
+
+                {/* {handleChange(
+                  "ifsc_code",
+                  formikHandlerChange("ifsc_code", values?.ifsc_code, KycList?.ifscCode, setFieldValue)
+                )} */}
+              </div>
+              {/* {console.log("initialValues.isIFSCCode",initialValues.isIFSCCode)} */}
+              {/* {console.log("checkIfscChange",checkIfscChange)} */}
+              {/* {console.log("ifsc_code",values.ifsc_code)} */}
+              {/* obj.hasOwnProperty("key") */}
+              {/* && values?.ifsc_code === KycList?.ifscCode */}
+              {KycList?.ifscCode !== null &&
+              !errors.hasOwnProperty("ifsc_code") &&
+              !errors.hasOwnProperty("oldIfscCode") ? (
+                // {initialValues?.isIFSCCode === "1" && values?.ifsc_code === KycList?.ifscCode ? (
+                <span>
+                  <img src={gotVerified} alt="" title="" width="26" />
+                </span>
+              ) : (
+                (// values.ifsc_code !== checkIfscChange && values.ifsc_code === "" ?
+                <div class="position-sticky pull-right">
+                  <a
+                    href={() => false}
+                    className="btn btnbackground text-white btn-sm panbtn"
+                    style={{
+                      boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                      borderRadius: "6px",
+                    }}
+                    onClick={() => {
+                      // {console.log("Values =======>",values)}
+                      checkInputIsValid(
+                        errors,
+                        values,
+                        setFieldError,
+                        setFieldTouched,
+                        "ifsc_code"
+                      );
+                    }}
+                  >
+                    Verify
+                  </a>
+                </div> /*: <></>*/ /*: <></>*/ /*: <></>*/ /*: <></>*/)
+                // : <></>
+              )}
+
+              {/* {console.log("eorro",errors)}
+              {console.log(errors?.isIFSCCode)} */}
+              {errors?.oldIfscCode && (
+                <span className="notVerifiedtext text-danger">
+                  {errors?.oldIfscCode}
+                </span>
+              )}
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
+                <h4 class="text-kyc-label text-nowrap">
+                  Account Number <span style={{ color: "red" }}>*</span>
+                </h4>
+              </label>
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="account_number"
+                  className="form-control"
+                  readOnly={readOnly}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
+                />
+              </div>
+              {KycList?.accountNumber !== null &&
+              values?.account_number === KycList?.accountNumber &&
+              !errors.hasOwnProperty("account_number") &&
+              !errors.hasOwnProperty("oldAccountNumber") ? (
+                <span>
+                  <img src={gotVerified} alt="" title="" width="26" />
+                </span>
+              ) : !errors.hasOwnProperty("oldIfscCode") &&
+                !errors.hasOwnProperty("ifsc_code") ? (
+                <div class="position-sticky pull-right">
+                  <a
+                    href={() => false}
+                    className="btn btnbackground text-white btn-sm panbtn"
+                    style={{
+                      boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
+                      borderRadius: "6px",
+                    }}
+                    onClick={() => {
+                      // console.log("Values ==>>><<<",values)
+                      checkInputIsValid(
+                        errors,
+                        values,
+                        setFieldError,
+                        setFieldTouched,
+                        "account_number"
+                      );
+                    }}
+                  >
+                    Verify
+                  </a>
+                </div>
+              ) : (
+                <> </>
+              )}
+
+              {errors?.oldAccountNumber && (
+                <span className="notVerifiedtext text-danger">
+                  {errors?.oldAccountNumber}
+                </span>
+              )}
+            </div>
+
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -176,6 +475,8 @@ function BankDetails(props) {
                   name="account_holder_name"
                   className="form-control"
                   readOnly={readOnly}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                 />
               </div>
             </div>
@@ -193,40 +494,8 @@ function BankDetails(props) {
                   name="account_type"
                   className="form-control"
                   readOnly={readOnly}
-                />
-              </div>
-            </div>
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
-                  IFSC Code<span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="ifsc_code"
-                  className="form-control"
-                  readOnly={readOnly}
-                />
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
-                  Branch<span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-              <div class="col-sm-7 col-md-7 col-lg-7 ">
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="branch"
-                  className="form-control"
-                  readOnly={readOnly}
                 />
               </div>
             </div>
@@ -244,6 +513,8 @@ function BankDetails(props) {
                   className="form-control"
                   options={data}
                   readOnly={readOnly}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                 />
               </div>
             </div>
@@ -251,16 +522,18 @@ function BankDetails(props) {
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
-                  Account Number <span style={{ color: "red" }}>*</span>
+                  Branch<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              <div class="col-sm-7 col-md-7 col-lg-7 ">
                 <FormikController
                   control="input"
                   type="text"
-                  name="account_number"
+                  name="branch"
                   className="form-control"
                   readOnly={readOnly}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+
                 />
               </div>
             </div>

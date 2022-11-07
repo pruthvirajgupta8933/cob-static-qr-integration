@@ -30,8 +30,20 @@
   background-color: #0156b3;
 }
 
+.panVerfied {
+  margin-left: 256px;
+}
+
+.notVerifiedtext {
+  margin-left: 250px;
+}
+
+.checkboxstyle {
+  margin-top: 8px;
+}
+
 .paymentSubHeader {
-  font-family: "Satoshi";
+ /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -39,14 +51,14 @@
 }
 
 .subHeaderForModal {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
 }
 
 .paymentHeader {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -76,7 +88,17 @@
 }
 
 .para-style {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
+  font-style: normal;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 225%;
+  color: black;
+}
+
+.para-style2 {
+  /* font-family: "Satoshi"; */
+  margin-left: 15px;
   font-style: normal;
   font-weight: 700;
   font-size: 13px;
@@ -145,7 +167,6 @@
   }
 }
 
-
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .optbtn {
@@ -208,7 +229,7 @@
 }
 
 .text-font {
-  font-family: Satoshi;
+  /* font-family: Satoshi; */
   font-size: 15px;
   font-weight: 700;
   line-height: 26px;
@@ -217,21 +238,21 @@
 
 .text-font-ForStatusChange::before {
   position: fixed;
-  left: -48px;
+  left: -55px;
   content: url(../../assets/images/check.png);
   display: inline-block;
 }
 .text-font-ForStatusChange {
-  font-family: Satoshi;
+  /* font-family: Satoshi; */
   font-size: 15px;
   font-weight: 700;
-  line-height: 26px;
+  line-height: 36px;
   letter-spacing: 0em;
   color: green;
 }
 
 .text-kyc-header {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -240,7 +261,7 @@
 }
 
 .text-kyc-label {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 700;
   font-size: 15px;
@@ -248,7 +269,7 @@
 }
 
 .text-kyc-sumit {
-  font-family: "Satoshi";
+  /* font-family: "Satoshi"; */
   font-style: normal;
   font-weight: 700;
   font-size: 17px;

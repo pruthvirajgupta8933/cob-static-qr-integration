@@ -80,7 +80,7 @@ table.tables tr:nth-child(odd) {
 
 .parafigma {
   color: #0143A1;
-  font-family: Satoshi;
+  /* font-family: Satoshi; */
   font-size: 36px;
   font-weight: 700;
   line-height: 48px;
@@ -122,6 +122,13 @@ table.tables tr:nth-child(odd) {
   top: 10px;
   z-index: 999;
 }
+.viewfor {
+  position: absolute;
+  right: 39px;
+    top: 61px;
+  z-index: 999;
+}
+
 
 .viewicons {
   position: absolute;
@@ -263,7 +270,7 @@ border-radius: 6px;
 }
 
 .modalscolrsfortext {
-  font-family: 'Satoshi'; 
+  /* font-family: 'Satoshi';  */
   color: #000000;
   font-style: normal;
   font-weight: 400;
@@ -272,7 +279,7 @@ border-radius: 6px;
 }
 
 .footerforcopyright {
-  font-family: 'Nunito Sans';
+  /* font-family: 'Nunito Sans'; */
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -394,7 +401,7 @@ button[disabled1] {
 /* Css for pricing*/
 
 .headingpricing {
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 700;
   font-size: 41px;
@@ -404,7 +411,7 @@ button[disabled1] {
 }
 
 .forbasicparacss {
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -446,7 +453,7 @@ button[disabled1] {
 }
 
 .forEnterPriceparaGcss {
-  font-family: 'Roboto ';
+  /* font-family: 'Roboto '; */
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -456,7 +463,7 @@ button[disabled1] {
 }
 
 .cardoneheadingcss {
-  font-family: 'Montserrat';
+    /* font-family: 'Montserrat'; */
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -467,7 +474,7 @@ button[disabled1] {
 }
 
 .cardoneheadingcss2 {
-  font-family: 'Montserrat';
+    /* font-family: 'Montserrat'; */
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -489,7 +496,7 @@ button[disabled1] {
 }
 
 .graphcssforenterprice {
-  font-family: 'Montserrat';
+    /* font-family: 'Montserrat'; */
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -503,7 +510,7 @@ button[disabled1] {
 }
 
 .paragraphcsss {
-  font-family: 'Montserrat';
+    /* font-family: 'Montserrat'; */
   font-style: normal;
   font-weight: 500;
   /* margin-top: -21px; */
@@ -543,7 +550,7 @@ button[disabled1] {
 }
 
 .centered {
-  font-family: 'Montserrat';
+    /* font-family: 'Montserrat'; */
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -557,7 +564,7 @@ button[disabled1] {
 }
 
 .forThirdscardfigma {
-  font-family: 'Montserrat';
+    /* font-family: 'Montserrat'; */
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -569,7 +576,7 @@ button[disabled1] {
 
 .forparacss {
 
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -581,7 +588,7 @@ button[disabled1] {
 
 
 .firstli1 {
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -593,7 +600,7 @@ button[disabled1] {
 }
 
 .secondli1 {
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -603,7 +610,7 @@ button[disabled1] {
 }
 
 .thirdli1 {
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -613,7 +620,7 @@ button[disabled1] {
 }
 
 .forsecondcardfigma {
-  font-family: 'Montserrat';
+    /* font-family: 'Montserrat'; */
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -622,7 +629,7 @@ button[disabled1] {
 }
 
 .Businessoredrcssforcard {
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -633,7 +640,7 @@ button[disabled1] {
 }
 
 .parabusinesscss {
-  font-family: 'Montserrat';
+    /* font-family: 'Montserrat'; */
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -668,7 +675,7 @@ button[disabled1] {
 }
 
 .subscribingproduct {
-  font-family: 'Satoshi';
+  /* font-family: 'Satoshi'; */
   font-style: normal;
   font-weight: 700;
   font-size: 32px;
@@ -683,7 +690,7 @@ button[disabled1] {
 }
 
 .chooseplanheadingcss {
-  font-family: 'Montserrat';
+    /* font-family: 'Montserrat'; */
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -698,7 +705,7 @@ button[disabled1] {
 }
 
 .dashboardEnablecss {
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 700;
   font-size: 21px;
@@ -707,13 +714,18 @@ button[disabled1] {
 }
 
 .paragraphcssdashboards {
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
   color: #000000;
 
+}
+
+.forSpinner {
+  margin-top: 126px;
+  margin-left: 30px;
 }
 
 /* Harris CSS For Login Image Dynamic and Side Nav Font*/
@@ -726,7 +738,7 @@ border-radius: 0px;
 }
 
 .sidenavFonts {
-  font-family: Roboto;
+    /* font-family: Roboto; */
   font-size: 14px;
   font-weight: 400;
 }
@@ -738,7 +750,7 @@ border-radius: 0px;
 /* Harris CSS For Login Image Dynamic*/
 
 .pricingclasscss {
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -747,7 +759,7 @@ border-radius: 0px;
 }
 
 .foralinkscsshere {
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 700;
   font-size: 21px;
@@ -756,7 +768,7 @@ border-radius: 0px;
 }
 
 .manshacss {
-  font-family: 'Satoshi';
+  /* font-family: 'Satoshi'; */
   font-style: normal;
   font-weight: 500;
   font-size: 17px;
@@ -810,7 +822,7 @@ color: #696969;
     position:relative; 
   }
 .cssfor_account{
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
 font-style: normal;
 font-weight: 700;
 font-size: 24px;
@@ -834,7 +846,7 @@ border: 0.6px solid #B1B1B1;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .for_Headingss{
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
 font-style: normal;
 font-weight: 600;
 font-size: 17px;
@@ -845,7 +857,7 @@ line-height: 156.5%;
 color: #263A43;
 }
 .for_passwrd{
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
 font-style: normal;
 font-weight: 500;
 font-size: 16px;
@@ -855,6 +867,19 @@ line-height: 156.5%;
 
 color: #4285F8;
 
+}
+.spinner-border{
+	position: absolute; 
+	top: 50%; 
+	left: 50%; 
+	transform: translate (-50%); 
+
+}
+.borders{
+  position: absolute; 
+	top: -82px;
+  left: 429px;
+	transform: translate (-50%); 
 }
 .form_cmplt{
   align-items: center;
@@ -866,7 +891,7 @@ color: #4285F8;
 border-radius: 0px 0px 5px 5px;
  }
  .edit_nop{
-  font-family: 'Roboto';
+  /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -877,6 +902,14 @@ border-radius: 0px 0px 5px 5px;
   color: #FFFFFF;
   
  }
+ .mycss{
+   align-items: center;
+ }
 
+ 
 
-
+.card-main{
+  padding:0 !important; 
+  max-Width: 33rem;
+}
+.no-pad{padding:0 !important;}

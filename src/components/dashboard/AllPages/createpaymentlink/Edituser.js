@@ -88,7 +88,7 @@ export const Edituser = (props) => {
                 setData(data_arr);
             })
             .catch(err => {
-                console.log(err)
+                // console.log(err)
             });
 
     }

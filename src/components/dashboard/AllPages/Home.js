@@ -12,10 +12,7 @@ import { Link } from "react-router-dom";
 import "../css/Home.css";
 // import { KycModal } from '../../KYC/KycModal';
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import {
-  kycModalToggle,
-  GetKycTabsStatus,
-} from "../../../slices/kycSlice";
+import { kycModalToggle, GetKycTabsStatus } from "../../../slices/kycSlice";
 import KycAlert from "../../KYC/KycAlert";
 import NavBar from "../NavBar/NavBar";
 import bro from "../../../assets/images/bro.png";
@@ -28,6 +25,7 @@ import Quick from "../../../assets/images/qwikform.png";
 import eposs from "../../../assets/images/epos.png";
 import linkpssa from "../../../assets/images/linkPaisa.png";
 import echlln from "../../../assets/images/echallan.png";
+import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 
 function Home() {
   // console.log("home page call");
@@ -37,15 +35,15 @@ function Home() {
   let { path } = useRouteMatch();
 
   const [clientCode, setClientCode] = useState("1");
-  
 
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
   // const [roleType, setRoleType] = useState(roles);
   const { dashboard, auth, kyc } = useSelector((state) => state);
-  const {KycTabStatusStore} = kyc
-  
+
+  const { KycTabStatusStore } = kyc;
+
   const [modalState, setModalState] = useState("Not-Filled");
 
   // console.log("dashboard",dashboard)
@@ -81,11 +79,9 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientCode]);
 
-
   useEffect(() => {
-    setModalState(KycTabStatusStore?.status)
-  }, [KycTabStatusStore])
-  
+    setModalState(KycTabStatusStore?.status);
+  }, [KycTabStatusStore]);
 
   //make client code array
   if (
@@ -120,13 +116,13 @@ function Home() {
   useEffect(() => {
     search !== ""
       ? SetShowData(
-        txnList.filter((txnItme) =>
-          Object.values(txnItme)
-            .join(" ")
-            .toLowerCase()
-            .includes(search.toLocaleLowerCase())
+          txnList.filter((txnItme) =>
+            Object.values(txnItme)
+              .join(" ")
+              .toLowerCase()
+              .includes(search.toLocaleLowerCase())
+          )
         )
-      )
       : SetShowData(txnList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
@@ -156,10 +152,10 @@ function Home() {
     totalAmt += item.payeeamount;
   });
 
-  // console.log(kyc?.KycTabStatusStore?.is_verified)
+  // console.log("modalState",modalState)
 
   return (
-    <section className="ant-layout">
+    <section className="ant-layout Satoshi-Medium">
       {/* {console.log("kyc?.KycTabStatusStore?.is_verified",kyc?.KycTabStatusStore?.is_verified)} */}
       {/* {kyc?.KycTabStatusStore?.is_verified === false ? <KycModal /> : <></>} */}
 
@@ -169,6 +165,7 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
+      <StepProgressBar  status={kyc?.kycUserList?.status} />
         <div className="announcement-banner-container_new  announcement-banner">
           <div className="onboarding-illustration-top">
             {" "}
@@ -180,10 +177,12 @@ function Home() {
             />
           </div>
           <div className="row">
+
             <div
               className="col-12 col-md-3 aos-init aos-animate"
               data-aos="fade-up"
             >
+            
               <div className="icon text-primary mb-3">
                 <svg
                   width="24"
@@ -280,181 +279,184 @@ function Home() {
                 so you never have to reverse engineer anything.
               </p>
             </div>
-            {roles?.merchant === true ?
-            <div className="col-12 col-md-12">
-              <div class="card col-lg-12- cardkyc pull-left">
-                <div class="font-weight-bold card-body">
-                  <span>
-                    You can accept payments upto ₹15,000 for now.To extend the
-                    limit complete your KYC and get it approved.
-                  </span>
-                  <Link
-                    to={`/dashboard/kyc`}
-                    data-toggle="modal"
-                    data-target="#exampleModalCenter"
-                  >
-                    <button
-                      class="text-white pull-right kycbtns"
-                      style={{
-                        backgroundColor: "#0156B3",
-                        paddingLeft: "10px",
-                      }}
+            {roles?.merchant === true && modalState!=="Approved" ? (
+              <div className="col-12 col-md-12">
+                <div class="card col-lg-12- cardkyc pull-left">
+                  <div class="font-weight-bold card-body Satoshi-Medium">
+                    <span>
+                      You can accept payments upto ₹15,000 for now.To extend the
+                      limit complete your KYC and get it approved.
+                    </span>
+                    <Link
+                      to={`/dashboard/kyc`}
+                      data-toggle="modal"
+                      data-target="#exampleModalCenter"
                     >
-                      Complete KYC
-                    </button>
+                      <button
+                        class="text-white pull-right kycbtns"
+                        style={{
+                          backgroundColor: "#0156B3",
+                          paddingLeft: "10px",
+                        }}
+                      >
+                        Complete KYC
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <React.Fragment></React.Fragment>
+            )}
+          </div>
+        </div>
+        {roles?.merchant === true ? (
+          <div class="container">
+            <div class="row">
+              <div class="col-sm  m-0">
+                <div class="card" style={{ height: "236px", width: "462px" }}>
+                  <h2 class="card-title dashboardEnablecss">
+                    <img
+                      class="card-img-left"
+                      src={onlineimg}
+                      alt="onlinepay"
+                      width={40}
+                    />{" "}
+                    &nbsp;Payment Links
+                  </h2>
+                  <p className="paragraphcssdashboards">
+                    SabPaisa is the World's 1st API Driven Unified Payment
+                    Experience Platform having the Best Payment Gateway in
+                    India. Collect, transfer & refund your payments online &
+                    offline. Get the best success rates with maximum payment
+                    modes available including Debit cards, Credit Card, Wallets,
+                    UPI, Bharat QR, etc. The Hybrid PG helps businesses collect
+                    payments from all the clients and consumers, urban or rural,
+                    young or old, online or offline, without worrying about
+                    consumer payment behaviour.
+                  </p>
+                  <Link to={`/dashboard/sabpaisa-pricing/10/Payment%20Links`}>
+                    <p className="pricingclasscss">
+                      Read More & Pricing &nbsp;{">"}
+                      {">"}
+                    </p>
                   </Link>
                 </div>
               </div>
-            </div>
-             :<React.Fragment></React.Fragment>}
-          </div>
-         
-        </div>
-        {roles?.merchant === true ?
-        <div class="container">
-          <div class="row">
-            <div class="col-sm  m-0">
-              <div class="card" style={{ height: "236px", width: "462px" }}>
-                <h2 class="card-title dashboardEnablecss">
-                  <img
-                    class="card-img-left"
-                    src={onlineimg}
-                    alt="onlinepay"
-                    width={40}
-                  />{" "}
-                  &nbsp;Enable International Payments Today
-                </h2>
-                <p className="paragraphcssdashboards">
-                  SabPaisa is the World's 1st API Driven Unified Payment
-                  Experience Platform having the Best Payment Gateway in India.
-                  Collect, transfer & refund your payments online & offline. Get
-                  the best success rates with maximum payment modes available
-                  including Debit cards, Credit Card, Wallets, UPI, Bharat QR,
-                  etc. The Hybrid PG helps businesses collect payments from all
-                  the clients and consumers, urban or rural, young or old,
-                  online or offline, without worrying about consumer payment
-                  behaviour.
-                </p>
-                <Link to={`/dashboard/sabpaisa-pricing`}>
-                  <p className="pricingclasscss">
-                    Read More & Pricing &nbsp;{">"}
-                    {">"}
-                  </p>
-                </Link>
-              </div>
-            </div>
-            <div class="col-sm" style={{ margin: "59px" }}>
-              <div className="row pt-2">
-                <div className="col-6 d-flex flex-wrap my-2">
-                  <img
-                    className="card-img-left mr-2"
-                    src={paymentlink}
-                    alt="payLink"
-                    width={"39px"}
-                    height={"39px"}
-                  />
-                  <p
-                    className="foralinkscsshere my-auto "
-                    style={{ lineHeight: "25px" }}
-                  >
-                    Payment Links
-                  </p>
-                </div>
-                <div className="col-6 d-flex flex-wrap my-2">
-                  <img
-                    className="card-img-left mr-2"
-                    src={subscriptin}
-                    alt="payLink"
-                    width={"41px"}
-                    height={"41px"}
-                  />
-                  <p
-                    className="foralinkscsshere my-auto"
-                    style={{ lineHeight: "25px" }}
-                  >
-                    Subscriptions
-                  </p>
-                </div>
-                <div className="col-6 d-flex flex-wrap my-2">
-                  <img
-                    className="card-img-left mr-2"
-                    src={Rupees}
-                    alt="payLink"
-                    width={"41px"}
-                    height={"41px"}
-                  />
-                  <p
-                    className="foralinkscsshere my-auto"
-                    style={{ lineHeight: "25px" }}
-                  >
-                    Payouts
-                  </p>
-                </div>
-                <div className="col-6 d-flex flex-wrap my-2">
-                  <img
-                    className="card-img-left mr-2"
-                    width={"41px"}
-                    height={"41px"}
-                    src={Quick}
-                    alt="payLink"
-                  />
-                  <p
-                    className="foralinkscsshere my-auto"
-                    style={{ lineHeight: "25px" }}
-                  >
-                    QwikForm
-                  </p>
-                </div>
-                <div className="col-6 d-flex flex-wrap my-2">
-                  <img
-                    className="card-img-left mr-2"
-                    width={"41px"}
-                    height={"41px"}
-                    src={eposs}
-                    alt="payLink"
-                  />
-                  <p
-                    className="foralinkscsshere my-auto"
-                    style={{ lineHeight: "25px" }}
-                  >
-                    E-POS App
-                  </p>
-                </div>
-                <div className="col-6 d-flex flex-wrap my-2">
-                  <img
-                    className="card-img-left mr-2"
-                    width={"41px"}
-                    height={"41px"}
-                    src={linkpssa}
-                    alt="payLink"
-                  />
-                  <p
-                    className="foralinkscsshere my-auto"
-                    style={{ lineHeight: "25px" }}
-                  >
-                    LinkPaisa
-                  </p>
-                </div>
-                <div className="col-6 d-flex flex-wrap my-2">
-                  <img
-                    className="card-img-left mr-2"
-                    width={"41px"}
-                    height={"41px"}
-                    src={echlln}
-                    alt="payLink"
-                  />
-                  <p
-                    className="foralinkscsshere my-auto"
-                    style={{ lineHeight: "25px" }}
-                  >
-                    E-Challan
-                  </p>
+              <div class="col-sm" style={{ margin: "59px" }}>
+                <div className="row pt-2">
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                      className="card-img-left mr-2"
+                      src={paymentlink}
+                      alt="payLink"
+                      width={"39px"}
+                      height={"39px"}
+                    />
+                    <p
+                      className="foralinkscsshere my-auto "
+                      style={{ lineHeight: "25px" }}
+                    >
+                      Payment Links
+                    </p>
+                  </div>
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                      className="card-img-left mr-2"
+                      src={subscriptin}
+                      alt="payLink"
+                      width={"41px"}
+                      height={"41px"}
+                    />
+                    <p
+                      className="foralinkscsshere my-auto"
+                      style={{ lineHeight: "25px" }}
+                    >
+                      Subscriptions
+                    </p>
+                  </div>
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                      className="card-img-left mr-2"
+                      src={Rupees}
+                      alt="payLink"
+                      width={"41px"}
+                      height={"41px"}
+                    />
+                    <p
+                      className="foralinkscsshere my-auto"
+                      style={{ lineHeight: "25px" }}
+                    >
+                      Payouts
+                    </p>
+                  </div>
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                      className="card-img-left mr-2"
+                      width={"41px"}
+                      height={"41px"}
+                      src={Quick}
+                      alt="payLink"
+                    />
+                    <p
+                      className="foralinkscsshere my-auto"
+                      style={{ lineHeight: "25px" }}
+                    >
+                      QwikForm
+                    </p>
+                  </div>
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                      className="card-img-left mr-2"
+                      width={"41px"}
+                      height={"41px"}
+                      src={eposs}
+                      alt="payLink"
+                    />
+                    <p
+                      className="foralinkscsshere my-auto"
+                      style={{ lineHeight: "25px" }}
+                    >
+                      E-POS App
+                    </p>
+                  </div>
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                      className="card-img-left mr-2"
+                      width={"41px"}
+                      height={"41px"}
+                      src={linkpssa}
+                      alt="payLink"
+                    />
+                    <p
+                      className="foralinkscsshere my-auto"
+                      style={{ lineHeight: "25px" }}
+                    >
+                      LinkPaisa
+                    </p>
+                  </div>
+                  <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                      className="card-img-left mr-2"
+                      width={"41px"}
+                      height={"41px"}
+                      src={echlln}
+                      alt="payLink"
+                    />
+                    <p
+                      className="foralinkscsshere my-auto"
+                      style={{ lineHeight: "25px" }}
+                    >
+                      E-Challan
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        :<React.Fragment></React.Fragment>}
+        ) : (
+          <React.Fragment></React.Fragment>
+        )}
 
         {/* <h2 class="card-title">Enable International Payments Today</h2>
             <p class="card-text">
@@ -503,7 +505,7 @@ function Home() {
       >
         <div class="modal-dialog modal-dialog-centered " role="document">
           <div class="modal-content">
-            <div class="modal-body">
+            <div class="modal-body Satoshi-Medium">
               <button
                 type="button"
                 onClick={() => {
@@ -535,7 +537,7 @@ function Home() {
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row Satoshi-Medium">
                 <div class="col-lg-4">
                   <Link
                     to={`/dashboard/kyc`}
@@ -543,8 +545,7 @@ function Home() {
                     data-target="#exampleModalCenter"
                   >
                     <button className="ModalButtonClr text-white mt-2">
-                      <h5 style={{ fontFamily: "Satoshi", lineHeight: "9px" }}>
-                        {" "}
+                      <h5 className="m-0">
                         Complete KYC to activate account
                       </h5>
                     </button>
@@ -560,19 +561,16 @@ function Home() {
                       }}
                       aria-label="Close"
                     >
-                      <h5 style={{ fontFamily: "Satoshi", lineHeight: "9px" }}>
+                      <h5 className="m-0">
                         Try out our dashboard
                       </h5>
                     </button>
                   </Link>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
-
-
       </div>
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
@@ -588,7 +586,7 @@ function Home() {
       >
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
-            <div class="modal-body">
+            <div class="modal-body Satoshi-Medium">
               <button
                 type="button"
                 onClick={() => {
@@ -601,7 +599,7 @@ function Home() {
                 <span aria-hidden="true">&times;</span>
               </button>
 
-              <div class="container">
+              <div class="container Satoshi-Medium">
                 <div class="row justify-content-md-center">
                   <div class="col-md-auto">
                     <ul>

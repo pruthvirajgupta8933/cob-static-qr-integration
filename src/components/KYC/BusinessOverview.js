@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
-import { Zoom } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import * as Yup from "yup";
-import API_URL from "../../config";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
@@ -17,6 +14,7 @@ import {
   collectionType,
   saveBusinessInfo,
   verifyKycEachTab,
+  kycUserList,
 } from "../../slices/kycSlice";
 
 function BusinessOverview(props) {
@@ -33,17 +31,25 @@ function BusinessOverview(props) {
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
 
-  const { user } = useSelector((state) => state.auth);
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
+  const {auth , kyc} =useSelector((state) => state) 
+  
+  const { user } = auth;
+  let clientMerchantDetailsList = {}
+  if (user?.clientMerchantDetailsList && user?.clientMerchantDetailsList?.length > 0) {
+    clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  }
 
-  const KycList = useSelector((state) => state.kyc.kycUserList);
+  const KycList = kyc?.kycUserList;
+  const KycTabStatusStore = kyc?.KycTabStatusStore
+  // console.log("KycTabStatusStore",KycTabStatusStore)
 
-  // const { clientCode } = clientMerchantDetailsList[0];
+  const { clientCode, business_cat_code } = clientMerchantDetailsList[0];
+
   const { loginId } = user;
 
   const dispatch = useDispatch();
 
-  const ErpCheck = useSelector((state) => state.kyc.kycUserList.erpCheck);
+  const ErpCheck = KycList?.erpCheck;
 
   const ErpCheckStatus = () => {
     if (ErpCheck === true) return "Yes";
@@ -61,50 +67,32 @@ function BusinessOverview(props) {
     { key: "False", value: "No" },
   ];
   const WebsiteAppUrl = [
-    { key: "No", value: "No" },
-    { key: "Yes", value: "Yes" },
+    { key: "Without Website/app", value: "No" },
+    { key: "On my website/app", value: "Yes" },
   ];
 
-  // console.log(ErpCheck,"<======Erp Check=====>")
-  // console.log(KycList, "<===List===>");
-
-  // const erpCheck = () => {
-  //   if(ErpCheck === true)
-  //   return "Yes"
-  //   else return "No"
-  // }
-
-  const VerifyKycStatus = useSelector(
-    (state) => state.kyc?.kycVerificationForAllTabs?.business_info_status
-  );
+  const VerifyKycStatus = KycTabStatusStore?.business_info_status
 
   const urlRegex = "((http|https)://)(www.)?"
-  + "[a-zA-Z0-9@:%._\\+~#?&//=]"
-  + "{2,256}\\.[a-z]"
-  + "{2,6}\\b([-a-zA-Z0-9@:%"
-  + "._\\+~#?&//=]*)";
+    + "[a-zA-Z0-9@:%._\\+~#?&//=]"
+    + "{2,256}\\.[a-z]"
+    + "{2,6}\\b([-a-zA-Z0-9@:%"
+    + "._\\+~#?&//=]*)";
 
 
-  // const initialValues = {
-  //   business_type: KycList.businessType,
-  //   business_category: KycList.businessCategory,
-  //   business_model: KycList.businessModel,
-  //   billing_label: KycList.billingLabel,
-  //   erp_check: KycList.erpCheck === true ? "True" : "False",
-  //   platform_id: KycList.platformId,
-  //   company_website: KycList.companyWebsite,
-  //   seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
-  //   website_app_url: KycList?.website_app_url,
-  //   collection_type_id: KycList.collectionTypeId,
-  //   collection_frequency_id: KycList.collectionFrequencyId,
-  //   ticket_size: KycList.ticketSize,
-  //   expected_transactions: KycList.expectedTransactions,
-  //   form_build: KycList.formBuild,
-  // };
+  // check if data exists 
+  let business_category_code;
+  if (business_cat_code !== null) {
+    business_category_code = business_cat_code
+  }
+  if (KycList?.businessCategory !== null) {
+    business_category_code = KycList?.businessCategory
+  }
+
 
   const initialValues = {
     business_type: KycList.businessType,
-    business_category: KycList.businessCategory,
+    business_category: business_category_code,
     business_model: "Working",
     billing_label: KycList.billingLabel,
     erp_check: KycList.erpCheck === true ? "True" : "False",
@@ -120,22 +108,7 @@ function BusinessOverview(props) {
     form_build: "Yes",
   };
 
-  // const validationSchema = Yup.object({
-  //   business_type: Yup.string().required("Select BusinessType").nullable(),
-  //   business_category: Yup.string().required("Select Business Category").nullable(),
-  //   business_model: Yup.string().required("Required").nullable(),
-  //   billing_label: Yup.string().required("Required").nullable(),
-  //   erp_check: Yup.string().required("Select Erp").nullable(),
-  //   platform_id: Yup.string().required("Required").nullable(),
-  //   seletcted_website_app_url: Yup.string().required("Select website app Url").nullable(),
-  //   website_app_url: Yup.string().required("Required").nullable(),
-  //   company_website: Yup.string().required("Required").nullable(),
-  //   collection_type_id: Yup.string().required("Required").nullable(),
-  //   collection_frequency_id: Yup.string().required("Required").nullable(),
-  //   ticket_size: Yup.string().required("Required").nullable(),
-  //   expected_transactions: Yup.string().required("Required").nullable(),
-  //   form_build: Yup.string().required("Required").nullable(),
-  // });
+  
   const validationSchema = Yup.object({
     business_type: Yup.string()
       .required("Select BusinessType")
@@ -148,9 +121,14 @@ function BusinessOverview(props) {
       .required("Required")
       .nullable(),
     company_website: Yup.string()
-      .matches(urlRegex,"Website Url is not Valid")
+      .matches(urlRegex, "Website Url is not Valid")
       .required("Required")
       .nullable(),
+      website_app_url: Yup.string().when(['seletcted_website_app_url'], {
+        is: "Yes",
+        then: Yup.string().ensure().required("Website App Url is required"),
+        otherwise:Yup.string().notRequired()
+      }),
     expected_transactions: Yup.string()
       .required("Required")
       .matches(Regex.digit, RegexMsg.digit)
@@ -159,7 +137,7 @@ function BusinessOverview(props) {
       .matches(Regex.digit, RegexMsg.digit)
       .required("Required")
       .nullable(),
-  });
+  },[['seletcted_website_app_url']]);
 
   ////Get Api for Buisness overview///////////
   useEffect(() => {
@@ -253,19 +231,20 @@ function BusinessOverview(props) {
           ticket_size: values.ticket_size,
           modified_by: loginId,
           login_id: loginId,
-          is_website_url:
-            values.seletcted_website_app_url === "Yes" ? "True" : "False",
+          is_website_url: values.seletcted_website_app_url === "Yes" ? "True" : "False",
           website_app_url: values.website_app_url,
         })
       ).then((res) => {
-        
+
         if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
           // console.log("This is the response", res);
           toast.success(res.payload.message);
           setTab(3);
           setTitle("BUSINESS DETAILS");
+          dispatch(kycUserList({ login_id: loginId }))
+
         } else {
-          toast.error("Something Went Wrong! Please try again.");
+          toast.error(res?.payload?.message ? res?.payload?.message: "Something Went Wrong! Please try again after some time.");
         }
       });
     } else if (role.verifier) {
@@ -310,6 +289,8 @@ function BusinessOverview(props) {
       >
         {(formik) => (
           <Form>
+            {console.log(formik)}
+            {console.log(formik.errors)}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
                 <h4 class="text-kyc-label text-nowrap">
@@ -345,21 +326,6 @@ function BusinessOverview(props) {
               </div>
             </div>
 
-            {/* 
-              <div className="form-group col-md-4">
-              <label><h4 class ="font-weight-bold">Business Model <span style={{color:"red"}}>*</span></h4></label>
-                
-                <FormikController
-                  control="input"
-                  type="text"
-                 
-                  name="business_model"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div> */}
-
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
                 <h4 class="text-kyc-label text-nowrap">
@@ -375,12 +341,7 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-              </div>
-              <div
-                class="col-sm-7 col-md-7 col-lg-7 "
-                style={{ marginLeft: "238px", color: "red", fontSize: "12px" }}
-              >
-                <span>
+                  <span style={{fontSize: "12px" }}>
                   Please give a brief description of the nature of your
                   business. Please give examples of products you sell, business
                   categories you operate in, your customers and channels through
@@ -389,38 +350,14 @@ function BusinessOverview(props) {
               </div>
             </div>
 
-            {/* <div className="form-group col-md-4">
-              <label><h4 class ="font-weight-bold">Do you have your own ERP<span style={{color:"red"}}>*</span></h4></label>
-                <FormikController
-                  control="select"
-                  name="erp_check"
-                  options={Erp}
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div> */}
-
-            {/* <div className="form-group col-md-4 mt-3">
-              <label><h4 class ="font-weight-bold">Platform<span style={{color:"red"}}>*</span></h4></label>
-                
-                <FormikController
-                  control="select"
-                  name="platform_id"
-                  options={platform}
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-              </div> */}
-                <div class="form-group row">
+            <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
-                <h4 class="text-kyc-label text-nowrap">
-                How do you wish to accept payments?<span style={{ color: "red" }}>*</span>
+                <h4 class="text-kyc-label text-wrap">
+                  How do you wish to accept payments?<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-8 col-md-10 col-lg-10">
-              <FormikController
+              <div class="col-sm-7 col-md-7 col-lg-7">
+                <FormikController
                   control="radio"
                   onChange={(e) => {
                     handleShowHide(e);
@@ -435,9 +372,8 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-              </div>
-              {formik.values?.seletcted_website_app_url === "Yes" && (
-                <div className="form-group col-lg-7">
+                {formik.values?.seletcted_website_app_url === "Yes" && (
+                <div className="form-group">
                   <FormikController
                     control="input"
                     type="text"
@@ -449,8 +385,10 @@ function BusinessOverview(props) {
                 </div>
               )}
               </div>
+              
+            </div>
 
-          
+
 
             {/* <div className="form-group col-md-4">
               <label><h4 class ="font-weight-bold">Type Of Collection <span style={{color:"red"}}>*</span></h4></label>
@@ -576,6 +514,7 @@ function BusinessOverview(props) {
               <div class="mt-2">
                 <div class="row">
                   <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
+                  {/* {console.log("VerifyKycStatus",VerifyKycStatus)} */}
                     {VerifyKycStatus === "Verified" ? null : (
                       <button
                         className="btn float-lg-right"
@@ -583,7 +522,6 @@ function BusinessOverview(props) {
                         style={{ backgroundColor: "#0156B3" }}
                       >
                         <h4 className="text-white text-kyc-sumit">
-                          {" "}
                           {buttonText}
                         </h4>
                       </button>

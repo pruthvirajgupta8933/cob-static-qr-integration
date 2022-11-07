@@ -100,7 +100,7 @@ const RegisteredAddress = (props) => {
       {formik => (
 
         <Form>
-          {console.log(formik)}
+          {/* {console.log(formik)} */}
 
           <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">

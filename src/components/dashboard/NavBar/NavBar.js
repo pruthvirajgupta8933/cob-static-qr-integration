@@ -4,39 +4,34 @@ import { useDispatch, useSelector } from "react-redux";
 import profile from "../../../assets/images/profile.png";
 import { Link } from "react-router-dom";
 import "./navBar.css";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
 const NavBar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  // console.log(user,"==>")
   const loginId = user.loginId;
   const username = user.clientContactPersonName;
-
-  // const [isHover, setIsHover] = useState(false);
-
-  // const handleMouseEnter = () => {
-  //    setIsHover(true);
-  // };
-  // const handleMouseLeave = () => {
-  //    setIsHover(false);
-  // };
-
-  // const boxStyle = {
-  //   backgroundColor: isHover ? 'lightblue' : 'rgb(0, 191, 255)'
-  // };
+  const roles = roleBasedAccess();
+  const loggedUser = Object.keys(roles).find((key) => roles[key] === true);
 
   const exitback = () => {
     dispatch(logout());
   };
   return (
     <div>
-      <nav class="navbar navbar-light" style={{ background: '#140633' }}>
+      <nav
+        class="navbar navbar-light Satoshi-Medium"
+        style={{ background: "#140633" }}
+      >
         <ul class="navbar-brand mb-0 h1">
           <img src={profile} alt="profile" title="profile" />
           <h3 className="text-white float-right mt-0">Welcome back</h3>
           <div style={{ fontSize: "13px" }}>
-            <span class="text-white text-sm" style={{ paddingLeft: "40px" }}>
-              Merchant Id &nbsp;: {loginId}
+            <span
+              class="text-white text-sm text-uppercase"
+              style={{ paddingLeft: "40px" }}
+            >
+              {loggedUser} Id &nbsp;: {loginId}
             </span>
           </div>
         </ul>
@@ -68,7 +63,7 @@ const NavBar = () => {
               class="dropdown-menu text-white"
               style={{
                 backgroundColor: "rgb(20, 6, 51)",
-                height: "7rem",
+                height: "5rem",
                 width: "10rem",
               }}
             >
@@ -76,12 +71,12 @@ const NavBar = () => {
                 <Link to="/dashboard/profile" class="dropdown-item text-white">
                   Profile
                 </Link>
-                <Link
+                {/* <Link
                   to="/dashboard/change-password"
                   class="dropdown-item text-white"
                 >
                   Change Password
-                </Link>
+                </Link> */}
                 <Link onClick={exitback} class="dropdown-item text-white ">
                   Log out
                 </Link>
