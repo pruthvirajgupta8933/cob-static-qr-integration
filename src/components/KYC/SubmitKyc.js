@@ -209,7 +209,7 @@ function SubmitKyc(props) {
                       style={{ backgroundColor: "#0156B3" }}
                     
                     >
-                      <p className="text-white text-kyc-sumit"> Verifying</p>
+                      <p className="text-white text-kyc-sumit"> Submit</p>
                     </button>
                     {/* <button
                         className="btn cick"

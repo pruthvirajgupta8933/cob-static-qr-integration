@@ -458,7 +458,7 @@ function SettlementReportNew() {
                           className="page-link"
                           onClick={(nex) => {
                             setCurrentPage((nex) =>
-                              nex === pages.length > 9 ? nex : nex + 1
+                              nex === (pages.length > 9) ? nex : nex + 1
                             );
                           }}
                           href={() => false}

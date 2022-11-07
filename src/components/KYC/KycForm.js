@@ -304,7 +304,7 @@ function KycForm() {
                                   tab === 6 ? (
                                     " nav-link activepaylink-kyc text-font"
                                   ) : "inactive text-font" ? (
-                                    uploadDocuments === true || merchant_consent?.term_condition  ? (
+                                    uploadDocuments === true || merchant_consent?.term_condition ===true ? (
                                       "inactive text-font-ForStatusChange text-success p-3"
                                     ) : (
                                       "nav-link inactive text-font"

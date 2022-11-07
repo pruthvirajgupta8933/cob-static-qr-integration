@@ -549,8 +549,8 @@ function DocumentsUpload(props) {
                       :
                       <></>
                     }
-                    {KycList?.status !== "Approved" && KycList?.status !== "Verified" ? <div class="col-12">
-
+                    {(KycList?.status !== "Approved" && KycList?.status !== "Verified") && role?.merchant  ? 
+                    <div class="col-12">
                       <button
                         className="btn float-lg-right"
                         style={{ backgroundColor: "#0156B3" }}
