@@ -198,7 +198,7 @@ function Registration() {
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
             <div className="col-sm-4 authfy-panel-left">
               <div className="brand-col Satoshi-Medium">
-                <div className="headline pt-5">
+                <div className="headline pt-1">
                   {/* brand-logo start */}
                   {/* <div className="brand-logo">
                   <img
@@ -366,7 +366,7 @@ function Registration() {
                               </span>
                             </div>
                           </div>
-                          <div className="logmod__form Satoshi-Medium">
+                          <div className="logmod__form- Satoshi-Medium">
                             <Formik
                               initialValues={{
                                 fullname: "",
@@ -706,7 +706,7 @@ function Registration() {
                                   <div className="sminputs">
                                     <div className="simform__actions">
                                       <button
-                                        className="figmabtn Satoshi-Medium text-white mt-4 disabled1"
+                                        className="figmabtn Satoshi-Medium text-white mt-4- disabled1"
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
@@ -812,8 +812,8 @@ function Registration() {
               {/* ./authfy-login */}
             </div>
           </div>
-          <div className="col-lg-1"></div>
-          <p className="footerforcopyright">
+          
+          <p className="footerforcopyright text-center NunitoSans-Regular">
             Copyright © 2022 SabPaisa, all rights reserve version 0.1
           </p>
         </div>

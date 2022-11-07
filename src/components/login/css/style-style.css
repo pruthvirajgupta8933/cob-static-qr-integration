@@ -36,10 +36,13 @@
 }
 
 body, html {
-    background-color: #f0f2f5;
-    /* background-image: url("https://1.bp.blogspot.com/-fd1WXKk-TAc/XyqfngP4PiI/AAAAAAAAVMw/umQz3tkxtg43uPIy8W5og6gAkpCfjaTvACLcBGAsYHQ/w1563-h1563/bg-snell.png"); */
+  
+
+    background: linear-gradient(50deg,#0e042b 36%,#1d0a5c 100%);
+    /* background-color: #f0f2f5;
+     background-image: url("https://1.bp.blogspot.com/-fd1WXKk-TAc/XyqfngP4PiI/AAAAAAAAVMw/umQz3tkxtg43uPIy8W5og6gAkpCfjaTvACLcBGAsYHQ/w1563-h1563/bg-snell.png");
     background-image: url("../../../assets/images/bg-cob.png");
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
     background-size: cover;
     background-position: 100%;
     height: 100vh;
@@ -164,7 +167,7 @@ a:focus {
 /*--------------------*/
 
 .authfy-container {
-  margin-top: 33px;
+  margin-top: 48px;
   margin-bottom: 10px;
 }
 
@@ -187,7 +190,8 @@ a:focus {
 
 .authfy-login, 
 .authfy-panel-left .brand-col {
-  height: 480px;
+  height: 490px;
+
 }
 .authfy-panel-left .brand-col {
   display: table;
