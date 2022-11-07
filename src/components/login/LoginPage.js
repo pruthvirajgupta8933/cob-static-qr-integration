@@ -180,7 +180,7 @@ function LoginPage() {
                                         <span>
                                           <p
                                             style={{
-                                              padding: "3px",
+                                              padding: "1px",
                                               backgroundColor: "#54E28D",
                                             }}
                                           ></p>
@@ -195,7 +195,7 @@ function LoginPage() {
                                             style={{
                                               color: "red",
                                               position: "absolute",
-                                              top: "101px",
+                                              top: "91px",
                                               zIndex: " 999",
                                             }}
                                           >
@@ -253,7 +253,7 @@ function LoginPage() {
                                             style={{
                                               color: "red",
                                               position: "absolute",
-                                              top: "99px",
+                                              top: "91px",
                                               zIndex: " 999",
                                             }}
                                           >
