@@ -70,31 +70,35 @@ useEffect(() => {
 
         Object.values(item).join(" ").toLowerCase().includes(searchText.toLocaleLowerCase())))
     } else {
-      dispatch(kycForApproved()).then((resp) => {
-       
-        const data = resp?.payload?.results
-  
-        setApproveMerchant(data.slice(indexOfFirstRecord, indexOfLastRecord));
-  
-  })
-   }
+      dispatch(kycForApproved({ page, page_size })).then((resp) => {
+        const data = resp?.payload.results
+
+        setApproveMerchant(data);
+      })
+
+    }
   }, [searchText])
+
+  
+
   const indexOfLastRecord = page * pageSize;
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
   const nPages = Math.ceil(approvedMerchantData.length / pageSize)
+  // console.log(newRegistrationData.length, "<===>")
   const pageNumbers = [...Array(nPages + approvedMerchantData.length).keys()].slice(1)
-
+  // const pageNumbers = []
+  // console.log(pageNumbers, "<===Page Number===>")
   const handleNextPage = () => {
     if (currentPage < pageNumbers.length) {
       setCurrentPage(currentPage + 1)
     }
   }
+
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1)
     }
   }
-
 
 
  
@@ -145,7 +149,7 @@ useEffect(() => {
             <option value="500">500</option>
         </select>
       </div>
-    <div className="col-md-12 col-md-offset-4">
+
 
       <table className="table table-bordered">
         <thead>
@@ -163,9 +167,6 @@ useEffect(() => {
           </tr>
         </thead>
         <tbody>
-        {spinner && (
-       <Spinner/>
-        )}
           {approveMerchant.length == 0 ?<tr> <td colSpan={'8'}><h1 className="nodatafound" >No data found</h1></td></tr> :
           (approveMerchant.map((user, i) => (
             <tr key={i}>
@@ -235,31 +236,30 @@ useEffect(() => {
       </table>
       <nav aria-label="Page navigation example" >
 
-<ul class="pagination w-25">
-  {pageNumbers.length > 0 && <li class="page-item"><button class="page-link" onClick={handlePrevPage} >Previous</button></li>}
-  {pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
-    <li key={pgNumber}
-      className={
-        pgNumber === currentPage ? " page-item active" : "page-item"
-      }>
-        {/* {console.log(pageNumbers)} */}
-      <a href={() => false} className={`page-link data_${i}`} >
-        <span onClick={() => {
-          setCurrentPage(pgNumber)
-        }
-        }
-        >
-          {pgNumber}
-        </span>
-      </a>
-    </li>
-  ))}
-  {pageNumbers.length > 0 && <li class="page-item"><button class="page-link" onClick={handleNextPage} >Next</button></li>}
-</ul>
+      <ul class="pagination w-25">
+            {pageNumbers?.length > 0 && <li class="page-item"><button class="page-link" onClick={handlePrevPage} >Previous</button></li>}
+            {pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
+              <li key={i}
+                className={
+                  pgNumber === currentPage ? " page-item active" : "page-item"
+                }>
+                <a href={() => false} className={`page-link data_${i}`} >
+                  <span onClick={() => {
+                    setCurrentPage(pgNumber)
+                  }
+                  }
+                  >
+                    {pgNumber}
+                  </span>
+                </a>
+              </li>
+            ))}
+            {pageNumbers?.length > 0 && <li class="page-item"><button class="page-link" onClick={handleNextPage} >Next</button></li>}
+          </ul>
 </nav>
 
     </div>
-    </div>
+
 
 
 
