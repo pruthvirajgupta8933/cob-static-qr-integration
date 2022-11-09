@@ -525,15 +525,17 @@ function DocumentsUpload(props) {
                     {savedData?.length > 0 ?
                       savedData?.map((img, i) =>
                         <div className="col-lg-6 mt-4 test">
-
+                        
                           <img className="file-upload" src={img?.filePath} alt="kyc docuement" />
                           <div>
                             {img?.status !== "Verified" || img?.status !== "Approved" ?
                               <>
-                                {role?.verifier || role?.approver ?
+                                {(role?.verifier || role?.approver)  ?
                                   <>
-                                    <a href={() => false} className="btn btn-sm btn-primary m-3" onClick={() => { verifyApproveDoc(img?.documentId) }}> {buttonText} </a>
-                                    <a href={() => false} className="btn btn-sm btn-warning m-3" onClick={() => { rejectDoc(img?.documentId) }} > Reject </a>
+                                  <p className="m-3">Document Status : {img?.status}</p>
+                                  {img?.status!=="Verified" || role?.approver ? <>  <a href={() => false} className="btn btn-sm btn-primary m-3" onClick={() => { verifyApproveDoc(img?.documentId) }}> {buttonText} </a>
+                                    <a href={() => false} className="btn btn-sm btn-warning m-3" onClick={() => { rejectDoc(img?.documentId) }} > Reject </a> </> : <></>}
+                                   
 
 
                                   </> : KycList?.status !== "Approved" && KycList?.status !== "Verified" ? <a href={() => false} className="btn btn-sm btn-warning m-3" onClick={() => { removeDoc(img?.documentId) }} > <i className="fa fa-trash"></i> </a> : <></>}

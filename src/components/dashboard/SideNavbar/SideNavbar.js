@@ -133,7 +133,7 @@ function SideNavbar() {
                         data-toggle="modal"
                         data-target="#exampleModalCenter"
                       >
-                        <i className="fa fa-file-o" aria-hidden="true" />{" "}
+                        <i className="fa fa-key" aria-hidden="true" />{" "}
                         <span>&nbsp;SandBox</span>
                         {/* <span class="new-tab">new</span> */}
                       </Link>

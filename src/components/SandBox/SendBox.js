@@ -46,9 +46,9 @@ function Sandbox() {
                             </div>
                             <div className="container">
                             <div className="col-lg-12 border m-2 p-2">
-                            <a class="btn" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"><h2>Test Credentials</h2></a>
+                            <a class="btn" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="true" aria-controls="multiCollapseExample1"><h2>Test Credentials </h2></a>
                             {/* <h2>Test Credentials</h2> */}
-                                <form class="collapse multi-collapse" id="multiCollapseExample1">
+                                <form class="collapse multi-collapse show" id="multiCollapseExample1">
                                     <div className="form-group row">
                                         <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">Client Code </label>
                                         <div className="col-sm-5">
