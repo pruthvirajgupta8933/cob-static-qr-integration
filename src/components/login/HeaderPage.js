@@ -1,5 +1,5 @@
 import React from 'react'
-import sabpaisalogo from "../../assets/images/sabpaisalogo.png"
+import sabpaisalogo from "../../assets/images/sabpaisa-white-logo1.png"
 import {Link} from 'react-router-dom';
 import agent from "../../assets/images/supportagent.png"
 

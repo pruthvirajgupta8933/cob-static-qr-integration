@@ -39,7 +39,7 @@ function MobileNavbar() {
             <nav id="navbar1" className="mobile-nav-show navbar navbar-expand-md navbar-dark bg-dark fixed-top ">
                 <div className="container">
                 
-                <span className="navbar-brand">{ `${clientContactPersonName?.slice(0,8)} ...` }</span>
+                <span className="navbar-brand text-uppercase">{ `${clientContactPersonName?.slice(0,8)} ...` }</span>
 
                 <button onClick={()=>{setToggleNav(!toggleNav)}} className={!toggleNav? "navbar-toggler toggler-example" : "navbar-toggler toggler-example collapsed" } type="button" data-toggle="collapse" data-target="" aria-controls="" aria-expanded={toggleNav} aria-label="Toggle navigation"><span className="dark-blue-text">
                 <i className="fa fa-bars fa-1x"></i></span>

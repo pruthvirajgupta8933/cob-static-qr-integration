@@ -282,11 +282,12 @@ border-radius: 6px;
   /* font-family: 'Nunito Sans'; */
   font-style: normal;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 13px;
   line-height: 156.5%;
-  margin-left: 32%;
+  /* margin-left: 32%; */
   /* or 28px */
   color: #FFFFFF;
+  width: 100%;
 }
 #fullname:focus { 
     outline: none !important;
@@ -708,9 +709,9 @@ button[disabled1] {
   /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 700;
-  font-size: 21px;
+  font-size: 20px;
   line-height: 25px;
-  color: #4285F8;
+  color: #44525f;
 }
 
 .paragraphcssdashboards {
@@ -730,8 +731,8 @@ button[disabled1] {
 
 /* Harris CSS For Login Image Dynamic and Side Nav Font*/
 .loginscreenimage {
-height: 363px;
-width: 459px;
+height: 240px;
+/* width: 459px; */
 left: 1485px;
 top: 4347px;
 border-radius: 0px;
@@ -755,16 +756,16 @@ border-radius: 0px;
   font-weight: 700;
   font-size: 14px;
   line-height: 130.19%;
-  color: #4285F8;
+  color: #0156b3;
 }
 
 .foralinkscsshere {
   /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 700;
-  font-size: 21px;
+  font-size: 20px;
   line-height: 25px;
-  color: #4285F8;
+  color: #44525f;
 }
 
 .manshacss {
@@ -808,8 +809,8 @@ border-radius: 0px;
     font-family: 'Satoshi';
 font-style: normal;
 font-weight: 400;
-font-size: 18px;
-line-height: 156.5%;
+font-size: 16px;
+line-height: 92.5%;
 color: #696969;
 
   }
