@@ -57,7 +57,7 @@ const NavBar = () => {
                 class="glyphicon glyphicon-cog text-white"
                 style={{ color: "white" }}
               ></span>
-              <span class="caret text-white">{username}</span>
+              <span class="caret text-white text-uppercase">{username}</span>
             </a>
             <div
               class="dropdown-menu text-white"

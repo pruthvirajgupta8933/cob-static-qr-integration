@@ -343,8 +343,8 @@ function Home() {
                   </Link>
                 </div>
               </div>
-              <div class="col-sm" style={{ margin: "59px" }}>
-                <div className="row pt-2">
+              <div class="col-sm" style={{ margin: "31px 0" }}>
+                <div className="row pt-2 m-0">
                   <div className="col-6 d-flex flex-wrap my-2">
                     <img
                       className="card-img-left mr-2"

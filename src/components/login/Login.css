@@ -7,7 +7,7 @@
 }
 
 .header {
-  background: #fff;
+  background: rgb(20, 6, 51);
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.1);
   position: fixed;
   width: 100%;
@@ -19,26 +19,29 @@
   padding: 0;
   list-style: none;
   overflow: hidden;
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 
 .header li a {
   display: block;
   padding: 20px 20px;
-  border-right: 1px solid #f4f4f4;
+  border-right: 1px solid rgb(23, 9, 52);
   text-decoration: none;
+  color: #fff;
+  font-weight: bold;
 }
 
 .header li a:hover,
 .header .menu-btn:hover {
-  background-color: #f4f4f4;
+  /* background-color: #f4f4f4; */
+  color:#ff3c05;
 }
 
 .header .logo {
   display: block;
   float: left;
   font-size: 2em;
-  padding: 3px 20px;
+  padding: 8px 10px;
   text-decoration: none;
 }
 
@@ -284,7 +287,7 @@
     float: left;
   }
   .header li a {
-    padding: 20px 30px;
+    padding: 25px 30px;
   }
   .header .menu {
     clear: none;
