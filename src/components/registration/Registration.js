@@ -217,7 +217,7 @@ function Registration() {
                       lineHeight: "30px",
 
                     }}
-                    class="text-center"
+                    class="text-center mt-40"
                   >
                     Empower your <br/>business,&nbsp;boost <br/> your&nbsp;finance
                   </h1>
@@ -281,6 +281,7 @@ function Registration() {
                             // width={400}
                             alt="SabPaisa"
                             title="SabPaisa"
+                            class="loginscreenimagereg"
                           />
                         </div>
                         <div class="carousel-item">
@@ -289,6 +290,7 @@ function Registration() {
                             // width={400}
                             alt="SabPaisa"
                             title="SabPaisa"
+                            class="loginscreenimagereg"
                           />
                         </div>
                         <div class="carousel-item">
@@ -297,6 +299,7 @@ function Registration() {
                             // width={400}
                             alt="SabPaisa"
                             title="SabPaisa"
+                            class="loginscreenimagereg"
                           />
                         </div>
                       </div>
@@ -706,7 +709,7 @@ function Registration() {
                                   <div className="sminputs">
                                     <div className="simform__actions">
                                       <button
-                                        className="figmabtn Satoshi-Medium text-white mt-4- disabled1"
+                                        className="figmabtn Satoshi-Medium text-white mt-4- disabled1 w-50"
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"

@@ -731,12 +731,20 @@ button[disabled1] {
 
 /* Harris CSS For Login Image Dynamic and Side Nav Font*/
 .loginscreenimage {
-height: 240px;
+height: 259px;
 /* width: 459px; */
 left: 1485px;
 top: 4347px;
 border-radius: 0px;
 }
+/* Harris CSS For Login Image Dynamic and Side Nav Font*/
+.loginscreenimagereg {
+  height: 349px;
+  /* width: 459px; */
+  left: 1485px;
+  top: 4347px;
+  border-radius: 0px;
+  }
 
 .sidenavFonts {
     /* font-family: Roboto; */
@@ -871,7 +879,7 @@ color: #4285F8;
 }
 .spinner-border{
 	position: absolute; 
-	top: 50%; 
+	top: 48%; 
 	left: 50%; 
 	transform: translate (-50%); 
 
