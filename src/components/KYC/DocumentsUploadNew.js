@@ -10,8 +10,7 @@ import { approveDoc, documentsUpload, kycDocumentUploadList, merchantInfo, remov
 import plus from "../../assets/images/plus.png";
 import "../../assets/css/kyc-document.css";
 import $ from "jquery";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
-import API_URL from "../../config";
+
 
 
 function DocumentsUpload(props) {
@@ -24,7 +23,7 @@ function DocumentsUpload(props) {
 
   function readURL(input, id) {
     if (input.files && input.files[0]) {
-      var reader = new FileReader();
+      let reader = new FileReader();
       reader.onload = function (e) {
         $(".imagepre_sub_" + id).attr("src", e.target.result);
         $(".imagepre_" + id).show();
@@ -57,9 +56,9 @@ function DocumentsUpload(props) {
 
 
 
-
+console.log("savedData",savedData)
   const initialValues = {
-    docType: savedData[0]?.type,
+    docType: savedData[0]?.type ?? "" ,
     aadhaar_front: "",
     aadhaar_back: "",
     pan_card: "",
@@ -155,7 +154,9 @@ function DocumentsUpload(props) {
 
 
   };
-
+  useEffect(() => {
+    dispatch(kycDocumentUploadList({ login_id: loginId }))
+  }, [])
 
   const verifyApproveDoc = (doc_id) => {
     let postData = {};
@@ -222,8 +223,6 @@ function DocumentsUpload(props) {
     };
     dispatch(removeDocument(rejectDetails))
       .then((resp) => {
-        // dispatch(documentsUpload())
-        // viewDocument(loginId)
         setTimeout(() => {
           dispatch(kycDocumentUploadList({ login_id: loginId }))
         }, 1300);
@@ -251,7 +250,8 @@ function DocumentsUpload(props) {
 
   let submitAction = undefined;
 
-  // console.log("savedData", savedData)
+  console.log("docTypeList", docTypeList)
+
 
   return (
     <>
@@ -267,6 +267,7 @@ function DocumentsUpload(props) {
         >
           {(formik) => (
             <Form>
+            {console.log(formik)}
               <div className="form-row">
                 <div class="form-group row">
                   <label class="col-sm-5 col-md-5 col-lg-5 col-form-label mt-0 p-2">
@@ -288,7 +289,7 @@ function DocumentsUpload(props) {
                       />
                       {formik.handleChange(
                         "docType",
-                        setDocTypeIdDropdown(formik.values.docType)
+                        setDocTypeIdDropdown(formik?.values?.docType)
                       )}
                     </div>
                   </div>
@@ -370,8 +371,7 @@ function DocumentsUpload(props) {
                           </div>
                         </div>
                       </div>
-                    ) : docTypeIdDropdown === "2" ? (
-                      <>
+                    ) : (docTypeIdDropdown !== "1" && docTypeIdDropdown !== "") ? (
                         <div class="col-lg-6 ">
                           <div className="file-upload  border-dotted">
                             <div className="image-upload-wrap ">
@@ -382,11 +382,9 @@ function DocumentsUpload(props) {
                                 className="file-upload-input"
                                 id="3"
                                 onChange={(e) => handleChange(e, 3)}
-                              // disabled={VerifyKycStatus === "Verified" ? true : false}
-                              // readOnly={readOnly}
                               />
                               <div className="drag-text">
-                                <h3 class="p-2 font-16">Add PAN Card</h3>
+                                <h3 class="p-2 font-16">Add {docTypeList[docTypeIdDropdown]?.value}</h3>
                                 <img
                                   alt="Doc"
                                   src={plus}
@@ -406,92 +404,13 @@ function DocumentsUpload(props) {
                             />
                           </div>
                         </div>
-                      </>
-                    ) : docTypeIdDropdown === "3" ? (
-                      <>
-                        <div class="col-lg-6 ">
-                          <div className="file-upload  border-dotted">
-                            <div className="image-upload-wrap ">
-                              <FormikController
-                                control="file"
-                                type="file"
-                                name="pan_card"
-                                className="file-upload-input"
-                                id="4"
-                                onChange={(e) => handleChange(e, 4)}
-                              // disabled={VerifyKycStatus === "Verified" ? true : false}
-                              // readOnly={readOnly}
-                              />
-                              <div className="drag-text">
-                                <h3 class="p-2 font-16">Upload TIN</h3>
-                                <img
-                                  alt="Doc"
-                                  src={plus}
-                                  style={{ width: 30 }}
-                                  className="mb-4"
-                                />
-                                <p class="card-text">Upto 2 MB file size</p>
-                              </div>
-                            </div>
-                          </div>
-                          {/* uploaded document preview */}
-                          <div className="file-upload-content imagepre_4">
-                            <img
-                              className="file-upload-image imagepre_sub_4"
-                              src="#"
-                              alt="Document"
-                            />
-                          </div>
-                        </div>
-                      </>
-
-                    ) : docTypeIdDropdown === "4" ? (
-                      <>
-                        <div class="col-lg-6 ">
-                          <div className="file-upload  border-dotted">
-                            <div className="image-upload-wrap ">
-                              <FormikController
-                                control="file"
-                                type="file"
-                                name="pan_card"
-                                className="file-upload-input"
-                                id="5"
-                                onChange={(e) => handleChange(e, 5)}
-                              // disabled={VerifyKycStatus === "Verified" ? true : false}
-                              // readOnly={readOnly}
-                              />
-                              <div className="drag-text">
-                                <h3 class="p-2 font-16">Upload GSTIN</h3>
-                                <img
-                                  alt="Doc"
-                                  src={plus}
-                                  style={{ width: 30 }}
-                                  className="mb-4"
-                                />
-                                <p class="card-text">Upto 2 MB file size</p>
-                              </div>
-                            </div>
-                          </div>
-                          {/* uploaded document preview */}
-                          <div className="file-upload-content imagepre_5">
-                            <img
-                              className="file-upload-image imagepre_sub_5"
-                              src="#"
-                              alt="Document"
-                            />
-                          </div>
-                        </div>
-                      </>
-
-
-                    ) : (
+                    )  : (
                       <></>
                     )
                     :
                     <></>
                   :
                   <></>
-
                 }
 
                 {savedData?.length > 0 ?
