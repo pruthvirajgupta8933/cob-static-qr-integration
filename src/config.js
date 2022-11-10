@@ -9,8 +9,6 @@ if (env === "staging") {
   url = "https://cobapi.sabpaisa.in";
   kyc_url = "https://kycprocess.sabpaisa.in";
 }
-// const stagingUrl = "${url}"
-// const prodUrl = "https://cobapi.sabpaisa.-in"
 
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
@@ -19,7 +17,7 @@ const API_LIVE = {
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
   AUTH_LOGIN: `${url}/auth-service/auth/login`,
-  //  AUTH_LOGIN : "${url}/cob/loginapi",
+
 
   ////////////////////////////////////---------------------------business_cat_code api
 

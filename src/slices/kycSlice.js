@@ -182,7 +182,6 @@ export const otpVerificationForContactForPhone = createAsyncThunk(
       .catch((error) => {
         return error.response;
       });
-    // console.log("res",response);
     return response.data;
   }
 );
@@ -197,7 +196,6 @@ export const otpVerificationForContactForEmail = createAsyncThunk(
       .catch((error) => {
         return error.response;
       });
-    // console.log("res",response);
     return response.data;
   }
 );
@@ -368,14 +366,6 @@ export const merchantInfo = createAsyncThunk(
       return error.response;
     });
 
-    // const response = await axios
-    //   .post(`${API_URL.Upload_Merchant_document}`, requestParam, {
-    //     headers: headers
-    //   })
-    //   .catch((error) => {
-    //     return error.response;
-    //   });
-
     return response.data;
   }
 );
@@ -477,7 +467,7 @@ export const kycForNotFilled = createAsyncThunk(
     const requestParam1 = data.page_size;
     const response = await axiosInstanceAuth
       .get(
-        `${API_URL. KYC_FOR_NOT_FILLED}&page=${requestParam}&page_size=${requestParam1}`,
+        `${API_URL.KYC_FOR_NOT_FILLED}&page=${requestParam}&page_size=${requestParam1}`,
         {
           headers: {},
         }
@@ -699,7 +689,7 @@ export const panValidation = createAsyncThunk(
   "kyc/panValidation",
   async (requestParam) => {
     const response = await kycValidatorAuth
-      .post(`${validatorUrl}` + "/validate-pan/", requestParam)
+      .post(`${validatorUrl}/validate-pan/`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -712,7 +702,7 @@ export const authPanValidation = createAsyncThunk(
   "kyc/authPanValidation",
   async (requestParam) => {
     const response = await kycValidatorAuth
-      .post(`${validatorUrl}` + "/validate-pan/", requestParam)
+      .post(`${validatorUrl}/validate-pan/`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -725,7 +715,7 @@ export const gstValidation = createAsyncThunk(
   "kyc/gstValidation",
   async (requestParam) => {
     const response = await kycValidatorAuth
-      .post(`${validatorUrl}` + "/validate-gst/", requestParam)
+      .post(`${validatorUrl}/validate-gst/`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -751,7 +741,7 @@ export const bankAccountVerification = createAsyncThunk(
   "kyc/bankAccountVerification",
   async (requestParam) => {
     const response = await kycValidatorAuth
-      .post(`${validatorUrl}` + "/validate-account/", requestParam)
+      .post(`${validatorUrl}/validate-account/`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -766,7 +756,6 @@ export const bankAccountVerification = createAsyncThunk(
 export const getBankId = createAsyncThunk(
   "kyc/getBankId",
   async (requestParam) => {
-    // console.log(requestParam);
     const response = await axiosInstanceAuth
       .post(`${API_URL.GET_BANK_ID}`, requestParam)
       .catch((error) => {
