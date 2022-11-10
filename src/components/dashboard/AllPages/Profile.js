@@ -215,7 +215,57 @@ export const Profile = () => {
 
 
 
+<div class="panel panel-default">
+<form className="form-horizontal form_cmplt" onSubmit={handleSubmit(onSubmit)}>
+  <div class="panel-heading text-uppercase">User Details </div>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <div class="col-lg-4">
+          <label><strong>User Name</strong> -</label>
+          <span>
+            <input className={`form-control ${errors.clientName ? "is-invalid" : ""}`} {...register("clientName" )} type="text" id="clientName " name="clientName" className="form-control- border-0 text-uppercase" onChange={(e) => e.target.value} readonly />
+          </span>
+          <p className="invalid-feedback">
+            {errors.clientName?.message}
+          </p>
+      </div>
+      <div class="col-lg-4"> 
+        <label><strong>Email id</strong> -</label>
+        <span>
+          <input type="text" id="email" className="form-control- border-0" name="email" {...register("email")} readonly />
+        </span>
+        <p>{errors.email?.message}</p>
+      </div>
+      <div class="col-lg-4"> 
+        <label><strong>Change Password</strong></label> -
+        <Link to={`/dashboard/change-password`}>
+          <button type="button" class="btn btn-primary for_passwrd" >
+            Change Password
+          </button>
+        </Link>
+        <p className="invalid-feedback">{errors.clientName?.message}</p>
+      </div>
+      <div class="col-lg-4">
+        <label><strong>Account Type</strong> -</label>
+        <input className={` text-uppercase border-0 ${errors.phone ? "is-invalid" : ""}`} {...register("accountType")} type="text" id="accountType" name="accountType" onChange={(e) => e.target.value} readonly />
+        <p className="invalid-feedback">
+          {errors.phone?.message}
+        </p>
+      </div>
+      <div class="col-lg-4">
+        <label><strong>Phone No.</strong> -</label>
+        <span>
+          <input className={`form-control- border-0 ${errors.phone ? "is-invalid" : ""}`} {...register("phone")} type="text" id="phone" name="phone" onChange={(e) => e.target.value} readonly />
+        </span>
+        <p className="invalid-feedback">
+          {errors.phone?.message}
+        </p>
+      </div>
+    </li>
+  </ul>
+</form>
 
+</div>
 
             <div className="ant-tabs ant-tabs-top ant-tabs-line">
               <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
@@ -258,78 +308,7 @@ export const Profile = () => {
                           <div className="card mt-0">
                             <div className="card-header">Basic Details</div>
                             <div className="card-body-"> */}
-                        <form className="form-horizontal form_cmplt" onSubmit={handleSubmit(onSubmit)}>
-                          <div class="card card-main">
-                            {/* <div class="card-header text-center">
-                My Profile
-              </div> */}
-
-                            <div class="form-group card-body no-pad">
-                              <label htmlFor="clientName" className="control-label col-sm-4 for_Headingss">User Name</label>
-                              <div class="col-sm-8">
-                                <input className={`form-control ${errors.clientName ? "is-invalid" : ""}`}
-                                  {...register("clientName")} type="text" id="clientName " name="clientName" className="form-control border-0"
-                                  onChange={(e) => e.target.value} readonly />
-                                <p className="invalid-feedback">
-                                  {errors.clientName?.message}
-                                </p>
-                              </div>
-                            </div>
-
-                            <div class="form-group card-body no-pad">
-                              <label htmlFor="email" className="control-label col-sm-4 for_Headingss">Email id</label>
-                              <div class="col-sm-8">
-                                <input type="text" id="email" className="form-control border-0" name="email" {...register("email")} readonly />
-                                <p>{errors.email?.message}</p>
-                              </div>
-                            </div>
-
-                            <div class="form-group card-body no-pad">
-                              <label htmlFor="clientName" className="control-label col-sm-4 for_Headingss"> Change&nbsp;Password</label>
-                              <div class="col-sm-8">
-                                <Link to={`/dashboard/change-password`}>
-                                  <button
-                                    style={{ width: "176px", height: "40px", border: "1px solid #4285F8" }}
-                                    type="button"
-
-                                  >
-
-                                    <span className="for_passwrd">Change Password</span>
-                                  </button>
-                                </Link>
-                                <p className="invalid-feedback">{errors.clientName?.message}</p>
-                              </div>
-                            </div>
-
-                            <div class="form-group card-body no-pad">
-                              <label htmlFor="phone" className="control-label col-sm-4 for_Headingss"> Account Type</label>
-                              <div class="col-sm-8">
-                                <input className={`form-control text-uppercase border-0 ${errors.phone ? "is-invalid" : ""}`}
-                                  {...register("accountType")} type="text" id="accountType" name="accountType" onChange={(e) => e.target.value} readonly />
-                                <p className="invalid-feedback">
-                                  {errors.phone?.message}
-                                </p>
-                              </div>
-                            </div>
-
-                            <div class="form-group card-body no-pad">
-                              <label htmlFor="phone" className="control-label col-sm-4 for_Headingss">Phone No.</label>
-                              <div class="col-sm-8">
-                                <input className={`form-control border-0 ${errors.phone ? "is-invalid" : ""}`}
-                                  {...register("phone")} type="text" id="phone" name="phone" onChange={(e) => e.target.value} readonly />
-                                <p className="invalid-feedback">
-                                  {errors.phone?.message}
-                                </p>
-                              </div>
-                            </div>
-
-
-
-
-
-
-                          </div>
-                        </form>
+                        
 
                       </div>
                       {/* end form area */}

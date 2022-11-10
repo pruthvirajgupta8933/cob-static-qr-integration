@@ -922,3 +922,4 @@ border-radius: 0px 0px 5px 5px;
   max-Width: 33rem;
 }
 .no-pad{padding:0 !important;}
+.panel{max-width: 100% !important;}

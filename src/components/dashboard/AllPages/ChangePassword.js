@@ -184,14 +184,15 @@ function ChangePassword() {
                         <Field type="hidden" name="loginId" disabled />
                         <Field type="hidden" name="email" disabled />
 
-                        <div className="form-group  col-sm-12">
+                        <div className="form-group">
+                          
+                          <div className="col-lg-4">
                           <label
-                            className="control-label col-sm-2"
+                            className="control-label"
                             htmlFor="email"
                           >
                             Old Password :
                           </label>
-                          <div className="col-sm-10">
                             <Field
                               type={
                                 values.showPassword
@@ -212,17 +213,16 @@ function ChangePassword() {
                               )}
                             </ErrorMessage>
                           </div>
-                        </div>
-
-                        <div className="form-group  col-sm-12">
+                        
+                          
+                          <div className="col-lg-4">
                           <label
-                            className="control-label col-sm-2"
+                            className="control-label"
                             htmlFor="newPassword"
                           >
                             {" "}
                             New Password :
                           </label>
-                          <div className="col-sm-10">
                             <Field
                               type={values.showPassword ? "text" : "password"}
                               name="new_password"
@@ -239,17 +239,15 @@ function ChangePassword() {
                               )}
                             </ErrorMessage>
                           </div>
-                        </div>
 
-                        <div className="form-group  col-sm-12">
+                          <div className="col-lg-4">
                           <label
-                            className="control-label col-sm-2"
+                            className="control-label"
                             htmlFor="changepassword"
                           >
                             {" "}
                             Confirm New Password :
                           </label>
-                          <div className="col-sm-10">
                             <Field
                               type={values.showPassword ? "text" : "password"}
                               name="confirm_password"
@@ -275,7 +273,11 @@ function ChangePassword() {
                               )}
                             </ErrorMessage>
                           </div>
+                        
+                        
                         </div>
+
+                        
 
                         <div className="form-group  ">
                           <div className="col-sm-12">
