@@ -149,7 +149,7 @@ function LoginPage() {
                               transaction in real time.
                             </p>
                           </div>
-                          <div className="logmod__form m-r-l-100 m0">
+                          <div className="logmod__form- m-r-l-100 m0">
                             <Formik
                               initialValues={{
                                 ...INITIAL_FORM_STATE,
@@ -162,13 +162,13 @@ function LoginPage() {
                                   <div className="sminputs">
                                     <div className="input full">
                                       <label
-                                        className="string optional loginFontForLabel"
+                                        className="string optional loginFontForLabel NunitoSans-Regular"
                                         htmlFor="user-name"
                                       >
                                         User name
                                       </label>
                                       <Field
-                                        className="string optional"
+                                        className="string optional NunitoSans-Regular"
                                         maxLength={255}
                                         id="user-email"
                                         placeholder="Type your username here"
@@ -180,7 +180,7 @@ function LoginPage() {
                                         <span>
                                           <p
                                             style={{
-                                              padding: "3px",
+                                              padding: "1px",
                                               backgroundColor: "#54E28D",
                                             }}
                                           ></p>
@@ -195,7 +195,7 @@ function LoginPage() {
                                             style={{
                                               color: "red",
                                               position: "absolute",
-                                              top: "101px",
+                                              top: "91px",
                                               zIndex: " 999",
                                             }}
                                           >
@@ -208,7 +208,7 @@ function LoginPage() {
                                   <div className="sminputs">
                                     <div className="input full">
                                       <label
-                                        className="string optional loginFontForLabel"
+                                        className="string optional loginFontForLabel NunitoSans-Regular"
                                         htmlFor="user-pw"
                                       >
                                         Enter Your Password
@@ -249,11 +249,11 @@ function LoginPage() {
                                       <ErrorMessage name="userPassword">
                                         {(msg) => (
                                           <div
-                                            className="abhitest"
+                                            className="abhitest NunitoSans-Regular"
                                             style={{
                                               color: "red",
                                               position: "absolute",
-                                              top: "99px",
+                                              top: "91px",
                                               zIndex: " 999",
                                             }}
                                           >
@@ -306,7 +306,7 @@ function LoginPage() {
                                     >
                                       {loading && (
                                         <span
-                                          className="spinner-border forSpinner"
+                                          className="spinner-border forSpinner NunitoSans-Regular"
                                           role="status"
                                         ></span>
                                       )}
@@ -328,7 +328,7 @@ function LoginPage() {
                               )}
                             </Formik>
                           </div>
-                          <div className="logmod__form m-r-l-100 mt-3 termsconditionss">
+                          <div className="logmod__form- m-r-l-100 mt-3 termsconditionss NunitoSans-Regular">
                             <p>Term of Service | Privacy Policy | Contact us</p>
                           </div>
                         </div>
@@ -408,7 +408,7 @@ function LoginPage() {
                     style={{
                       position: "absolute",
                       zIndex: "999",
-                      top: "595px",
+                      top: "450px",
                     }}
                   >
                     <li
@@ -427,21 +427,21 @@ function LoginPage() {
                   </ol>
                   <div class="carousel-inner OpenSans-Regular">
                     <div class="carousel-item active">
-                      <div class="heading1 pt-5">
+                      <div class="heading1 pt-2">
                         <p
-                          className="font-text-large mb-0"
+                          className="font-text-large mb-0 OpenSans-Regular"
                           style={{ color: "#012167", fontWeight: "700" }}
                         >
                           An all-in-one
                         </p>
                         <p
-                          className="font-size-32 mb-2"
+                          className="font-size-32 mb-2 OpenSans-Regular"
                           style={{ color: "#012167" }}
                         >
                           {" "}
                           Transaction Dashboard
                         </p>
-                        <p className="mt-4 loginBanSubHeader">
+                        <p className="mt-4 loginBanSubHeader OpenSans-Regular">
                           {" "}
                           Power of real-time payment analysis
                         </p>
@@ -453,21 +453,21 @@ function LoginPage() {
                       </div>
                     </div>
                     <div class="carousel-item">
-                      <div class="heading1 pt-5">
+                      <div class="heading1 pt-2">
                         <p
-                          className="font-text-large mb-0"
+                          className="font-text-large mb-0 OpenSans-Regular"
                           style={{ color: "#012167", fontWeight: "700" }}
                         >
                           An all-in-one
                         </p>
                         <p
-                          className="font-size-32 mb-2"
+                          className="font-size-32 mb-2 OpenSans-Regular"
                           style={{ color: "#012167" }}
                         >
                           {" "}
                           Transaction Dashboard
                         </p>
-                        <p className="mt-4 loginBanSubHeader">
+                        <p className="mt-4 loginBanSubHeader OpenSans-Regular">
                           {" "}
                           Power of real-time payment analysis
                         </p>
@@ -479,21 +479,21 @@ function LoginPage() {
                       </div>
                     </div>
                     <div class="carousel-item">
-                      <div class="heading1 pt-5">
+                      <div class="heading1 pt-2">
                         <p
-                          className="font-text-large mb-0"
+                          className="font-text-large mb-0 OpenSans-Regular "
                           style={{ color: "#012167", fontWeight: "700" }}
                         >
                           An all-in-one
                         </p>
                         <p
-                          className="font-size-32 mb-2"
+                          className="font-size-32 mb-2 OpenSans-Regular "
                           style={{ color: "#012167" }}
                         >
                           {" "}
                           Transaction Dashboard
                         </p>
-                        <p className="mt-4 loginBanSubHeader">
+                        <p className="mt-4 loginBanSubHeader OpenSans-Regular ">
                           {" "}
                           Power of real-time payment analysis
                         </p>
@@ -518,8 +518,8 @@ function LoginPage() {
               </div>
             </div>
           </div>
-          <div className="col-lg-1"></div>
-          <p className="footerforcopyright">
+          
+          <p className="footerforcopyright NunitoSans-Regular text-center">
             Copyright 2022 SabPaisa, all rights reserve version 0.1
           </p>
         </div>

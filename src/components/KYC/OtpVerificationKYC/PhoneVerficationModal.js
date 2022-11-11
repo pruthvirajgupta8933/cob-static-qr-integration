@@ -35,7 +35,6 @@ const PhoneVerficationModal = ({ show, setShow }) => {
         otp: otpForPhone.otp,
       })
     ).then((res) => {
-      // console.log("This is the response", res);
       if (res.meta.requestStatus === "fulfilled") {
         if (res.payload.status === true) {
           toast.success(res.payload.message)
@@ -43,9 +42,7 @@ const PhoneVerficationModal = ({ show, setShow }) => {
         } else if (res.payload.status === false) {
           toast.error(res.payload.message)
         }
-      } else {
-
-      }
+      } 
     });
 
   }

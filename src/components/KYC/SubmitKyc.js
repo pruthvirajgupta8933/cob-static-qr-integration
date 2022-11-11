@@ -4,20 +4,13 @@ import { toast } from "react-toastify";
 import { approvekyc, verifyComplete } from "../../slices/kycSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-// import FormikController from "../../_components/formik/FormikController";
-// import congratsImg from "../../assets/images/congImg.png";
-// import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent } from "../../slices/kycSlice";
-// import $ from "jquery";
 import congImg from "../../assets/images/congImg.png";
 
 function SubmitKyc(props) {
   const history = useHistory();
   const { role, kycid } = props;
-
-  // const [checkboxStatus, setCheckboxStatus] = useState(false);
-  // const [modalState, setModalState] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -61,15 +54,12 @@ function SubmitKyc(props) {
         verified_by: loginId,
       };
 
-      // const [readOnly, setReadOnly] = useState(false);
-
       dispatch(verifyComplete(data))
         .then((resp) => {
           resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
         })
         .catch((e) => {
           toast.error("Something went wrong, Please Try Again later")
-          // console.log(e);
         });
     }
 
@@ -91,8 +81,6 @@ function SubmitKyc(props) {
   };
 
   const onSubmit = () => {
-    // $(".cick").click();
-
     dispatch(
       saveKycConsent({
         term_condition: true,
@@ -112,10 +100,7 @@ function SubmitKyc(props) {
     history.push("/dashboard/product-catalogue");
   };
 
-  const modalHandler = () => {
-    // $(".modalbody1").attr("id","exampleModal");
-    // $(".float-lg-right").click()
-  };
+
 
   return (
     <div className="col-md-12 p-3">
@@ -141,9 +126,9 @@ function SubmitKyc(props) {
                   </div>
                   <div class="col-lg-11 para-style text-nowrap">
 
-                  I have read and understood the <a href="https://sabpaisa.in/term-conditions/"  rel="noreferrer"  alt="tnz" target="_blank" title="tnc">&nbsp;Term & Condition</a> ,&nbsp;
-                    <a  href="https://sabpaisa.in/privacy-policy/" alt="tnz" target="_blank" title="tnc"  rel="noreferrer" > Privacy Policy</a> ,&nbsp;
-                    <a href="https://sabpaisa.in/service-agreement" alt="tnz" target="_blank" title="tnc"  rel="noreferrer" > Service Agreement</a>&nbsp;
+                  I have read and understood the <a href="https://sabpaisa.in/term-conditions/"  rel="noreferrer"  alt="Term & Conditions" target="_blank" title="Term & Conditions">&nbsp;Term & Condition</a> ,&nbsp;
+                    <a  href="https://sabpaisa.in/privacy-policy/" alt="Privacy Policy" target="_blank" title="Privacy Policy"  rel="noreferrer" > Privacy Policy</a> ,&nbsp;
+                    <a href="https://sabpaisa.in/service-agreement" alt="Service Agreement" target="_blank" title="Service Agreement"  rel="noreferrer" > Service Agreement</a>&nbsp;
                   </div>
                   <div class="col-lg-11 para-style2 text-nowrap">
                     By submitting the form, I agree to abide by the rules at all times.

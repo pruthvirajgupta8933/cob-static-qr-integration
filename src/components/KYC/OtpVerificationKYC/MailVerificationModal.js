@@ -14,7 +14,7 @@ const MailVerificationModal = ({ show, setShow }) => {
   );
 
   const [otp, setOtp] = useState({ otp: "" });
-  const [checked, setChecked] = useState(false);
+
 
   const handleChangeForOtp = (otp) => {
     const regex = /^[0-9]*$/;
@@ -39,8 +39,6 @@ const MailVerificationModal = ({ show, setShow }) => {
         } else if (res.payload.status === false) {
           toast.error(res.payload.message)
         }
-      } else {
-
       }
     });
 
