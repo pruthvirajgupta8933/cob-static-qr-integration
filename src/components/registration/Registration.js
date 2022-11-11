@@ -4,7 +4,6 @@ import "../login/css/home.css";
 import "../login/css/homestyle.css";
 import "../login/css/style-style.css";
 import "../login/css/style.css";
-// import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
 import onlineshopinglogo from "../../assets/images/onlineshopinglogo.png";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -24,7 +23,6 @@ const FORM_VALIDATION = Yup.object().shape({
   fullname: Yup.string()
     .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
     .required("Required"),
-  // lastname: Yup.string().matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
   mobilenumber: Yup.string()
     .required("Required")
     .matches(phoneRegExp, "Phone number is not valid")
@@ -43,9 +41,8 @@ const FORM_VALIDATION = Yup.object().shape({
   confirmpasswordd: Yup.string()
     .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
     .required("Confirm Password Required"),
-  // terms_and_condition: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
   business_cat_code: Yup.string().required("Required"),
-  // termsAndConditions: Yup.boolean().oneOf([true], "Required"),
+  
 });
 
 function Registration() {
@@ -56,7 +53,6 @@ function Registration() {
   const datar = auth;
 
   const { isUserRegistered } = datar;
-  // const [loading, setLoading] = useState(false);
   const [checkboxStatus, setCheckboxStatus] = useState(Array(3).fill(false));
   const [isActive, setActive] = useState(true);
   const [acceptTc, setAcceptTc] = useState(false);
@@ -75,17 +71,15 @@ function Registration() {
     showPassword: false,
   });
   const togglePassword = () => {
-    // console.log(999);
-    // setPasswordType(!passwordType);
-    setPasswordType({ ...passwordType, showPasswords: !passwordType.showPasswords });
+   setPasswordType({ ...passwordType, showPasswords: !passwordType.showPasswords });
 
   };
 
-  function buttonHandler(index) {
-    let status = [...checkboxStatus];
-    status[index] = !status[index];
-    setCheckboxStatus(status);
-  }
+  // function buttonHandler(index) {
+  //   let status = [...checkboxStatus];
+  //   status[index] = !status[index];
+  //   setCheckboxStatus(status);
+  // }
 
   useEffect(() => {
     axiosInstanceAuth
@@ -104,13 +98,10 @@ function Registration() {
     return () => {
       dispatch(udpateRegistrationStatus());
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, []);
 
   const handleRegistration = (formData) => {
-    // console.log(formData, "here is form dataaaaaaaaaaaaaaaaaaaaaaaaaaa")
-
-    // setBtnDisable(true)
 
     var businessType = 1;
     var {
@@ -126,8 +117,6 @@ function Registration() {
     var business_cat_code = business_cat_code;
     var password = passwordd;
 
-    // setLoading(true);
-    // console.log(formValue);
     dispatch(
       register({
         fullname,
@@ -144,20 +133,19 @@ function Registration() {
       })
       .catch((err) => {
         setBtnDisable(false);
-        // setLoading(false);
+
       });
   };
 
-  const toggleClass = () => {
-    setActive(!isActive);
-  };
+  // const toggleClass = () => {
+  //   setActive(!isActive);
+  // };
 
   const handleClickShowPassword = () => {
     setValuesIn({ ...valuesIn, showPassword: !valuesIn.showPassword });
   };
 
   useEffect(() => {
-    // console.log("isUserRegistered",isUserRegistered);
     if (isUserRegistered === true) {
       toast.success(message.message, {
         position: "top-right",
@@ -166,7 +154,7 @@ function Registration() {
         transition: Zoom,
       });
       setTimeout(() => {
-        // alert("aa4");
+        
         history.push("/login-page");
       }, 2000);
     }
@@ -182,7 +170,6 @@ function Registration() {
     return () => {
       dispatch(udpateRegistrationStatus());
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserRegistered]);
 
   const callBackFn = (isClickOnAccept, isChecked) => {
@@ -190,10 +177,10 @@ function Registration() {
     setIsCheck(isChecked);
   };
 
-  const handlerTermCond = (isChecked) => {
-    setBtnDisable(isChecked);
-  };
-  // console.log("btnDisable",btnDisable)
+  // const handlerTermCond = (isChecked) => {
+  //   setBtnDisable(isChecked);
+  // };
+  
   return (
     <>
       <HeaderPage />
@@ -226,39 +213,10 @@ function Registration() {
                   >
                     Empower your <br/>business,&nbsp;boost <br/> your&nbsp;finance
                   </h1>
-                  {/* <h1
-                    style={{
-                      fontSize: "30px",
-                      whiteSpace: "20px",
-                      fontStyle: "Satoshi",
-                      color: "#0143A1",
-                    }}
-                    class="text-center"
-                  >
-                    business,&nbsp;boost
-                  </h1>
-                  <h1
-                    style={{
-                      fontSize: "30px",
-                      whiteSpace: "20px",
-                      fontStyle: "Satoshi",
-                      color: "#0143A1",
-                      lineHeight: "10px",
-                    }}
-                    class="text-center"
-                  >
-                    your&nbsp;finance
-                  </h1> */}
+                 
 
                   <div className="brand-logo">
-                    {/* <div class="text-center">
-                      <img
-                        src={onlineshopinglogo}
-                        width={300}
-                        alt="SabPaisa"
-                        title="SabPaisa"
-                      />
-                    </div> */}
+                   
                     <div
                       id="carouselExampleIndicators"
                       class="carousel slide"
@@ -283,7 +241,7 @@ function Registration() {
                         <div class="carousel-item active">
                           <img
                             src={onlineshopinglogo}
-                            // width={400}
+                           
                             alt="SabPaisa"
                             title="SabPaisa"
                             class="loginscreenimagereg"
@@ -292,7 +250,7 @@ function Registration() {
                         <div class="carousel-item">
                           <img
                             src={onlineshopinglogo}
-                            // width={400}
+                            
                             alt="SabPaisa"
                             title="SabPaisa"
                             class="loginscreenimagereg"
@@ -301,27 +259,17 @@ function Registration() {
                         <div class="carousel-item">
                           <img
                             src={onlineshopinglogo}
-                            // width={400}
+                           
                             alt="SabPaisa"
                             title="SabPaisa"
                             class="loginscreenimagereg"
                           />
                         </div>
                       </div>
-                      {/* <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                      </a>
-                      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                      </a> */}
+                     
                     </div>
                   </div>
-                  {/* <h1 style={{ fontSize: "26px" }}>A Payments Solution for</h1>
-                <h1 style={{ fontSize: "26px", whiteSpace: "10px" }}>
-                  Businesses,&nbsp;SMEs,&nbsp;Freelancers, Homepreneurs.
-                </h1> */}
+                
                 </div>
               </div>
             </div>
@@ -333,26 +281,7 @@ function Registration() {
                   <div className="logmod__wrapper">
                     <span className="logmod__close">Close</span>
                     <div className="logmod__container">
-                      {/* <ul className="logmod__tabs">
-                      <li
-                        data-tabtar="lgm-2"
-                        id="lgm-2"
-                        className={isActive ? "current" : "left"}
-                      >
-                        <a id="btnLeft" href={()=>false} >
-                          
-                        </a>
-                      </li>
-                      <li
-                        data-tabtar="lgm-1"
-                        id="lgm-1"
-                        className={isActive ? "current" : "current"}
-                      >
-                       <a id="btnLeft" href={()=>false} >
-                          
-                        </a>
-                      </li>
-                    </ul> */}
+                    
                       <div className="logmod__tab-wrapper">
                         <div className="show logmod__tab lgm-1">
                           <div className="logmod__heading Satoshi-Medium">
@@ -383,7 +312,6 @@ function Registration() {
                                 passwordd: "",
                                 business_cat_code: "",
                                 confirmpasswordd: "",
-                                // termsAndConditions: false,
                                 terms_and_condition: false,
                               }}
                               validationSchema={FORM_VALIDATION}
@@ -395,7 +323,7 @@ function Registration() {
                                   action="#"
                                   className="simform"
                                 >
-                                  {/* {console.log(values)} */}
+                                  
                                   <div className="sminputs">
                                     <div className="input full- optional">
                                       <label
@@ -552,39 +480,7 @@ function Registration() {
                                       </div>
                                     </div>
 
-                                    {/* <div className="input full- optional">
-                                  <label
-                                    className="string optional"
-                                    htmlFor="last-name"
-                                  >
-                                    Last Name
-                                  </label>
-                                  <Field
-                                    className="string optional"
-                                    maxLength={255}
-                                    id="last-name"
-                                    placeholder="Last Name"
-                                    name="lastname"
-                                    type="text"
-                                    size={50}
-                                  />
-                                  {
-                                    <ErrorMessage name="lastname">
-                                      {(msg) => (
-                                        <p
-                                          className="abhitest"
-                                          style={{
-                                            color: "red",
-                                            position: "absolute",
-                                            zIndex: " 999",
-                                          }}
-                                        >
-                                          {msg}
-                                        </p>
-                                      )}
-                                    </ErrorMessage>
-                                  }
-                                </div> */}
+                                   
                                   </div>
 
                                   <div className="sminputs">
@@ -666,20 +562,7 @@ function Registration() {
                                       />
 
                                       <div class="input-group-addon viewfor">
-                                        {/* <a onClick={togglePassword}>
-                                          {passwordType ===
-                                          "confirmpassword" ? (
-                                            <i
-                                              class="fa fa-eye"
-                                              aria-hidden="true"
-                                            ></i>
-                                          ) : (
-                                            <i
-                                              class="fa fa-eye-slash"
-                                              aria-hidden="true"
-                                            ></i>
-                                          )}
-                                        </a> */}
+                                      
                                         <a onClick={togglePassword}>
                                           {" "}
                                           {passwordType.showPasswords ? (
@@ -717,14 +600,7 @@ function Registration() {
                                         </ErrorMessage>
                                       }
 
-                                      {/* <span
-                                        className="hide-password"
-                                        onClick={handleClickShowPassword}
-                                      >
-                                        {valuesIn.showPassword
-                                          ? "Hide"
-                                          : "Show"}
-                                      </span> */}
+                                     
                                     </div>
                                   </div>
                                   <div className="sminputs">
@@ -734,7 +610,7 @@ function Registration() {
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
-                                        // disabled={btnDisable}
+                                        
                                         disabled={
                                           !(formik.isValid && formik.dirty)
                                             ? true
@@ -746,54 +622,9 @@ function Registration() {
                                       </button>
 
                                       <span className="simform__actions-sidetext">
-                                        {/* {Array(3).fill(0).map((_, index) =>
-                                          <Field
-                                            type="checkbox"
-                                            className="form-check-input"
-                                            name="termsAndConditions"
-                                            checked={checkboxStatus[index]} onChange={() => buttonHandler(index)}
-
-                                          />
-                                        )} */}
-                                        {/* {
-                                          <ErrorMessage name="termsAndConditions">
-                                            {(msg) => (
-                                              <p
-                                                className="abhitest"
-                                                style={{
-                                                  color: "red",
-                                                  float: "left",
-                                                }}
-                                              >
-                                                {msg}
-                                              </p>
-                                            )}
-                                          </ErrorMessage>
-                                        } */}
-
-                                        {/* <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} /> */}
-
-                                        {/* <p onClick={()=>{ setAcceptTc(!acceptTc)}} >accept the t&c </p> */}
-                                        {/* <p className="mb-0" style={{ cursor: "pointer" }} onClick={() => { callBackFn(acceptTc, isCheck) }} > Click here to accept <span className="text-primary">terms and conditions</span></p> */}
-                                        {/* {
-                                          
-                                        } */}
-
-                                        {/* <span className="ant-checkbox">
-                                          <Field
-                                            type="checkbox"
-                                            className="form-check-input mt-0"
-                                            name="terms_and_condition"
-                                            onClick={() => { handlerTermCond(values?.terms_and_condition) }}
-                                          />
-                                          <p className=" ml-2" style={{ cursor: "pointer" }} onClick={() => { callBackFn(acceptTc, isCheck) }} > Click here to accept <span className="text-primary">terms and conditions</span></p>
-                                        </span>
-
-                                        <TermCondition acceptTnC={acceptTc} callbackHandler={callBackFn} setFieldValues={setFieldValue} /> */}
-                                        {/* I agree to the{" "}
-                                    <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" className="special" target="_blank" >
-                                      Terms &amp; Conditions
-                                    </a> */}
+                                       
+                                       
+                                       
                                       </span>
                                       {
                                         <ErrorMessage name="terms_and_condition">

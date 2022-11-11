@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useState, useEffect } from "react";
 import HeaderPage from "./HeaderPage";
 import { useDispatch, useSelector } from "react-redux";
-// import sabpaisalogo from "../../assets/images/sabpaisa-logo-white.png";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -44,12 +43,9 @@ function LoginPage() {
   const dispatch = useDispatch();
 
   // message = message?.length>=0?message=null:message;
-  // console.log(message)
   const { user, userAlreadyLoggedIn } = auth;
-  // console.log(auth)
 
   useEffect(() => {
-    // if user already logged in then redirect to the dashboard
     const userLocalData = JSON.parse(localStorage.getItem("user"));
     const isLoggedInLc =
       userLocalData && userLocalData.loginId !== null ? true : false;
@@ -98,12 +94,6 @@ function LoginPage() {
         toast.error(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
       }
     });
-    // .catch((err) => {
-    //   // console.log(err,"eeeeeeeeeeeeeeeeeeeee")
-    //   toast.error("Something went wrong" + err?.message);
-    //   setLoading(false);
-    //   // console.log(err)
-    // });
   };
 
   const handleClickShowPassword = () => {
@@ -113,27 +103,17 @@ function LoginPage() {
   return (
     <>
       <HeaderPage />
-      {/* <div className="gfg-div">dddfdfd</div> */}
-      {/* <p className="showErrormsg">{message && message!=''?message:''}</p> */}
       <div className="container-fluid toppad">
         <div className="row">
           <div className="col-lg-1"></div>
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
             <div className="col-sm-6 authfy-panel-right login-float-right nopad login-float-none">
-              {/* authfy-login start */}
               <div className="authfy-login">
-                {/* panel-login start */}
                 <div className="authfy-panel panel-login text-center active">
                   <div className="logmod__wrapper">
                     <span className="logmod__close">Close</span>
                     <div className="logmod__container">
-                      {/* <ul className="logmod__tabs">
-                        <li data-tabtar="lgm-2" className="current">
-                          <a href={() => false} style={{ width: "100%" }}>
-                            Login
-                          </a>
-                        </li>
-                      </ul> */}
+                    
                       <div className="logmod__tab-wrapper">
                         <div className="logmod__tab lgm-2 show">
                           <div className="logmod__heading">
@@ -313,16 +293,7 @@ function LoginPage() {
                                       LogIn
                                     </button>
 
-                                    {/* <span className="simform__actions-sidetext">
-                                     <Link
-                                      className="special"
-                                      role="link"
-                                      to="#"
-                                      // to="/forget"
-                                    >
-                                      Forgot your password? Click here
-                                    </Link> 
-                                  </span>*/}
+                                 
                                   </div>
                                 </Form>
                               )}
@@ -336,8 +307,7 @@ function LoginPage() {
                     </div>
                   </div>
                 </div>{" "}
-                {/* ./panel-login */}
-                {/* panel-forget start */}
+                
                 <div className="authfy-panel panel-forgot">
                   <div className="row">
                     <div className="col-xs-12 col-sm-12">
@@ -506,15 +476,6 @@ function LoginPage() {
                     </div>
                   </div>
                 </div>
-                {/* <div className="headline">
-                  <p style={{ fontSize: "24px", lineHeight: "20px" }}>
-                    Receive Payments, The Easy Way
-                  </p>
-                  <h1 style={{ fontSize: "24px" }}>A Payments Solution for</h1>
-                  <h1 style={{ fontSize: "24px", whiteSpace: "10px" }}>
-                    Businesses,&nbsp;SMEs,&nbsp;Freelancers, Homepreneurs.
-                  </h1>
-                </div> */}
               </div>
             </div>
           </div>
