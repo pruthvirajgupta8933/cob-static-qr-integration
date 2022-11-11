@@ -65,7 +65,10 @@ function Registration() {
   const [trmCond, setTrmCond] = useState(false);
 
   const [businessCode, setBusinessCode] = useState([]);
-  const [passwordType, setPasswordType] = useState(true);
+  const [passwordType, setPasswordType] =useState({
+    confirmpassword: "",
+    showPasswords: false,
+  });
 
   const [valuesIn, setValuesIn] = useState({
     password: "",
@@ -73,7 +76,9 @@ function Registration() {
   });
   const togglePassword = () => {
     // console.log(999);
-    setPasswordType(!passwordType);
+    // setPasswordType(!passwordType);
+    setPasswordType({ ...passwordType, showPasswords: !passwordType.showPasswords });
+
   };
 
   function buttonHandler(index) {
@@ -652,16 +657,32 @@ function Registration() {
                                         id="user-cpw"
                                         placeholder="Confirm password"
                                         type={
-                                          passwordType ? "password" : "text"
+                                          passwordType.showPasswords
+                                            ? "text"
+                                            : "password"
                                         }
                                         name="confirmpasswordd"
                                         size={50}
                                       />
 
                                       <div class="input-group-addon viewfor">
-                                        <a onClick={togglePassword}>
+                                        {/* <a onClick={togglePassword}>
                                           {passwordType ===
                                           "confirmpassword" ? (
+                                            <i
+                                              class="fa fa-eye"
+                                              aria-hidden="true"
+                                            ></i>
+                                          ) : (
+                                            <i
+                                              class="fa fa-eye-slash"
+                                              aria-hidden="true"
+                                            ></i>
+                                          )}
+                                        </a> */}
+                                        <a onClick={togglePassword}>
+                                          {" "}
+                                          {passwordType.showPasswords ? (
                                             <i
                                               class="fa fa-eye"
                                               aria-hidden="true"
