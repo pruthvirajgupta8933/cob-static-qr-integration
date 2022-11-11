@@ -13,6 +13,8 @@ const SabPaisaPricing = () => {
   // const { dashboard } = useSelector((state) => state);
   const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
+
+  // console.log(spinner,"here is spinner")
   const productArr = [];
 
   // const [serviceId, setServiceId] = useState(null)
@@ -98,28 +100,29 @@ const SabPaisaPricing = () => {
         {/* <button type="button" onClick={clickHandler}>check</button> */}
         <div class="container mb-10">
           <div class="row">
-            <div class="col-sm">
+          {spinner && <span className="spinner-border" role="status"></span>}
+          {productDetails.map((Products, i) => (
+            <div class="col-lg-3">
               <div
                 class="card heightcards"
-                style={{ height: "620px", width: "300px" }}
               >
+                  
                 <div class="card-body">
                   <div class="row mb-5">
                     <div className="col-lg-12 text-center">
-                      {spinner && (
-                        <span
-                          className="spinner-border borders"
-                          role="status"
-                        ></span>
-                      )}
+                    
                       <h1 class="card-title cardoneheadingcss pb-3">
-                        {productDetails[0]?.plan_name}
+                        {Products.plan_name}
                       </h1>
                       <p className="text-center bold-font mb-1">
-                        {productDetails[0]?.plan_price}
+                      {/* {console.log(">>>>>>>>>>",Products.plan_price, Products.plan_type)} */}
+                        {/* {Products?.plan_price} */}
+                        {Products.plan_price=="Connect" && Products.plan_name == "Enterprise" ?null :Products?.plan_price }
+                        
                       </p>
                       <h3 className="paragraphcsss text-center">
-                        {productDetails[0]?.plan_type}
+                      
+                        {Products?.plan_type}
                       </h3>
                       <button
                         type="button"
@@ -128,8 +131,8 @@ const SabPaisaPricing = () => {
                         data-target="#exampleModal"
                         onClick={() =>
                           handleClick(
-                            productDetails[0].plan_id,
-                            productDetails[0].plan_name
+                            Products.plan_id,
+                            Products.plan_name
                           )
                         }
                       >
@@ -206,118 +209,13 @@ const SabPaisaPricing = () => {
                       </div>
                     </div>
                   </div>
+
+
                   <h2 className="featurespricing">FEATURES INCLUDING</h2>
 
-                  {/* <ul className="forparacss">
-  <li className="firstli">AI Chat Support</li>
-  <li className="secondli">Calendar View</li>
-  <li className="thirdli">WhatsApp Integration</li>
-  <li className="forthli">Advanced Analytics</li>
-  <li className="fifthli">Dashboard training</li>
-</ul> */}
-                  <div className="text-center">
-                    {productDetails[0]?.plan_description
-                      .split(",")
-                      .map((details, i) => (
-                        <p className="firstli1 mb-2">{details}</p>
-                      ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm">
-              <div
-                class="card heightcards"
-                style={{
-                  background: "#012167",
-                  border: "1px solid #DBDBDB",
-                  boxShadow: "0px 4px 5px 1px rgb(193 193 193 / 35%)",
-                  borderRadius: "4px",
-                  height: "620px",
-                  width: "300px",
-                }}
-              >
-                <div class="card-body">
-                  <div class="row mb-5">
-                    <div className="col-lg-12 text-center text-white">
-                      <h1 class="card-title cardoneheadingcss2 pb-3">
-                        {productDetails[1]?.plan_name}
-                      </h1>
-                      <p className="text-center text-white bold-font mb-1">
-                        {productDetails[1]?.plan_price}
-                      </p>
-                      <h3 className="paragraphcsss text-white text-center">
-                        {productDetails[1]?.plan_type}
-                      </h3>
-                      <button
-                        type="button"
-                        className="btn choosePlan-2 btn-primary btn-lg font-weight-bold"
-                        data-toggle="modal"
-                        data-target="#exampleModal"
-                        onClick={() =>
-                          handleClick(
-                            productDetails[1].plan_id,
-                            productDetails[1].plan_name
-                          )
-                        }
-                      >
-                        Choose Plan
-                      </button>
-                    </div>
-                  </div>
 
-                  <h2 className="featurespricingforEnterpricing">
-                    FEATURES INCLUDING
-                  </h2>
-                  <div className="text-center text-white">
-                    {productDetails[1]?.plan_description
-                      .split(",")
-                      .map((details, i) => (
-                        <p className="firstli1 mb-2 text-white">{details}</p>
-                      ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm">
-              <div
-                class="card heightcards"
-                style={{ height: "620px", width: "300px" }}
-              >
-                <div class="card-body">
-                  <div class="row mb-5">
-                    <div className="col-lg-12 text-center">
-                      <h1 class="card-title cardoneheadingcss pb-3">
-                        {productDetails[2]?.plan_name}
-                      </h1>
-                      {/* <p className='text-center bold-font mb-1'></p> */}
-                      <h3 className="bold-font text-center mb-1">
-                        {productDetails[2]?.plan_price}
-                      </h3>
-                      <h3 className="paragraphcsss text-center">
-                        {productDetails[2]?.plan_type}
-                      </h3>
-                      <button
-                        type="button"
-                        className="btn choosePlan-1  btn-lg font-weight-bold"
-                        data-toggle="modal"
-                        data-target="#exampleModal"
-                        onClick={() =>
-                          handleClick(
-                            productDetails[2].plan_id,
-                            productDetails[2].plan_name
-                          )
-                        }
-                      >
-                        Contact Sales
-                      </button>
-                    </div>
-                  </div>
-                  <h2 className="featuresIncludingforbusiness">
-                    FEATURES INCLUDING
-                  </h2>
                   <div className="text-center">
-                    {productDetails[2]?.plan_description
+                    {Products?.plan_description
                       .split(",")
                       .map((details, i) => (
                         <p className="firstli1 mb-2">{details}</p>
@@ -326,100 +224,20 @@ const SabPaisaPricing = () => {
                 </div>
               </div>
             </div>
+             ))}
+
+            
+         
+           
           </div>
         </div>
 
-        {/*  <=========== Old Product Catalogue ===========> */}
-
-        {/* <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Product Catalogue</h1>
-          </div>
-          <section
-            className="features8 cid-sg6XYTl25a flleft"
-            id="features08-3-"
-          > */}
+       
         <div className="container-fluid">
           <div className="row">
-            {/* {subscriptionPlanData.length <= 0 ? (
-                  <h3>Loading...</h3>
-                ) : ( */}
-            {/* subscriptionPlanData.map((s, i) => ( */}
-            {/* <div className="col col-lg-5 ">
-                      <div className="card">
-                        <div className="card-body">
-                          <h5 className="card-title font-weight-bold h3">
-                            {s.applicationName}
-                          </h5>
-                          <p className="card-text" />
-                        </div>
-                        <div className="card-footer">
+          
 
-                          <p className="mb-0">
-                            <a
-                              className=" btn bttn bttnbackgroundkyc collapsed"
-                              data-toggle="collapse"
-                              href={`#collapseExample${s.applicationId}`}
-                              role="button"
-                              aria-expanded="false"
-                              aria-controls={`collapseExample${s.applicationId}`}
-                              style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                            >
-                              Read More
-                            </a>
-                            <button type="button" className=" btn bttn bttnbackgroundkyc collapsed"
-                              data-toggle="modal" data-target="#exampleModal"
-                              onClick={() => console.log('this is mapped data for modal : ', s)}
-                            >
-                              Subscribe
-                            </button>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                              <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-
-                                  <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <h2 classname="pull-center"><b>Thank You For Subscribing. We will come back to you Shortly</b></h2>
-
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn bttn bttnbackgroundkyc collapsed" data-dismiss="modal">Close</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div> */}
-
-            {/* <button
-                               className=" btn bttn bttnbackgroundkyc collapsed"
-                                type="button"
-                              >
-                                Subscribe
-                              </button> */}
-
-            {/* </p>
-                          <div
-                            className="collapse"
-                            id={`collapseExample${s.applicationId}`}
-                          >
-                            <div className="card card-body m-0">
-                              {s.applicationDescription}
-                            </div>
-                          </div>
-
-                        </div>
-                        <div className="container" />
-                      </div>
-                    </div> */}
-            {/* )) */}
-            {/* )} */}
-            {/* </div>
-            </div>
-          </section> */}
-            {/*  <=========== Old Product Catalogue ===========> */}
+        
           </div>
         </div>
       </main>
