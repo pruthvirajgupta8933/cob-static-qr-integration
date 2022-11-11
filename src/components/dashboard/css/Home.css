@@ -234,6 +234,17 @@ table.tables tr:nth-child(odd) {
   line-height: 47px;
 }
 
+.card .card-body {
+  padding: 1.25rem 0 !important;
+}
+
+.card .price{
+  line-height: 22px;
+    font-size: 44px;
+    padding: 28px 0 0 0;
+    font-weight: 800;
+}
+
 .kycbtns {
   line-height: 17px !important;
   margin: 8px 0 0 14px !important;
@@ -425,7 +436,9 @@ button[disabled1] {
 }
 
 .heightcards {
-  height: 600px;
+  /* height: 490px; */
+  min-height: 490px;
+  max-height: 600px;
 
 }
 
@@ -467,7 +480,7 @@ button[disabled1] {
     /* font-family: 'Montserrat'; */
   font-style: normal;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 19px;
   line-height: 29px;
   text-align: center;
   color: #000000;
@@ -513,9 +526,9 @@ button[disabled1] {
 .paragraphcsss {
     /* font-family: 'Montserrat'; */
   font-style: normal;
-  font-weight: 500;
+  font-weight: 900;
   /* margin-top: -21px; */
-  font-size: 14px;
+  font-size: 12px;
   /* line-height: 17px; */
   text-align: center;
   color: #747474;
@@ -544,9 +557,9 @@ button[disabled1] {
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
-  line-height: 17px;
+  line-height: 20px;
   text-align: center;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: #1465FA;
 }
 
@@ -592,8 +605,8 @@ button[disabled1] {
   /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 500;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 13px;
+  line-height: 20px;
   /* text-align: center; */
 
   color: #747474;
@@ -790,12 +803,16 @@ border-radius: 0px;
 
 
 .choosePlan-1 {
-  padding: 2em !important;
+  padding: 1.5em !important;
   font-size: 1em !important;
   line-height: 0 !important;
   width: 100% !important;
-  border: 3px solid  #1465FA !important;
+  border: 2px solid  #4285F8 !important;
   /* box-shadow: 0 0 0 1px #038fde, inset 0 0 0 1px #fff !important; */
+}
+.choosePlan-1:hover{
+  background: #4285F8;
+  color:#fff;
 }
 
 .choosePlan-2{
@@ -923,3 +940,14 @@ border-radius: 0px 0px 5px 5px;
 }
 .no-pad{padding:0 !important;}
 .panel{max-width: 100% !important;}
+.prdhead{
+  font-size: 15px;
+    color: #006cbe;
+    text-decoration: underline;
+    text-transform: uppercase;
+}
+.pxsolid{
+  border-top:1px solid #ccc;
+  display: block;
+  margin: auto;
+}

@@ -91,7 +91,8 @@ const SabPaisaPricing = () => {
       </div>
       <main className="gx-layout-content ant-layout-content Satoshi-Medium">
         <div>
-          <h1 className="text-center headingpricing">SabPaisa Pricing</h1>
+          <h1 className="text-center headingpricing text-md-start">SabPaisa Pricing</h1>
+          <h2 className="text-center headingpricing prdhead">{param?.name}</h2>
           <h3 className="forbasicparacss">
             We offer a very competitive pricing to match your business needs.
             Sign Up now to get started.
@@ -102,19 +103,19 @@ const SabPaisaPricing = () => {
           <div class="row">
           {spinner && <span className="spinner-border" role="status"></span>}
           {productDetails.map((Products, i) => (
-            <div class="col-lg-3">
+            <div class="col-lg-3 px-1">
               <div
                 class="card heightcards"
               >
                   
                 <div class="card-body">
-                  <div class="row mb-5">
+                  <div class="row mb-5-">
                     <div className="col-lg-12 text-center">
                     
-                      <h1 class="card-title cardoneheadingcss pb-3">
+                      <h1 class="card-title- cardoneheadingcss pb-3-">
                         {Products.plan_name}
                       </h1>
-                      <p className="text-center bold-font mb-1">
+                      <p className="text-center bold-font mb-1- price">
                       {/* {console.log(">>>>>>>>>>",Products.plan_price, Products.plan_type)} */}
                         {/* {Products?.plan_price} */}
                         {Products.plan_price=="Connect" && Products.plan_name == "Enterprise" ?null :Products?.plan_price }
@@ -210,7 +211,7 @@ const SabPaisaPricing = () => {
                     </div>
                   </div>
 
-
+                  <span class="w-50 pxsolid text-center">&nbsp;</span>
                   <h2 className="featurespricing">FEATURES INCLUDING</h2>
 
 
