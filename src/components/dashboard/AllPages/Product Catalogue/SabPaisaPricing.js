@@ -92,7 +92,7 @@ const SabPaisaPricing = () => {
       <main className="gx-layout-content ant-layout-content Satoshi-Medium">
         <div>
           <h1 className="text-center headingpricing text-md-start">SabPaisa Pricing</h1>
-          <h2 className="text-center headingpricing prdhead">Payment Gateway</h2>
+          <h2 className="text-center headingpricing prdhead">{param?.name}</h2>
           <h3 className="forbasicparacss">
             We offer a very competitive pricing to match your business needs.
             Sign Up now to get started.
