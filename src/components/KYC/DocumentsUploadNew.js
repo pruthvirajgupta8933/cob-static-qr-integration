@@ -56,7 +56,7 @@ function DocumentsUpload(props) {
 
 
 
-console.log("savedData",savedData)
+// console.log("savedData",savedData)
   const initialValues = {
     docType: savedData[0]?.type ?? "" ,
     aadhaar_front: "",
@@ -120,7 +120,11 @@ console.log("savedData",savedData)
             setTab(6)
             toast.success(response?.payload?.message);
           } else {
-            toast.error(response?.payload?.message);
+            const message= ( 
+            response?.payload?.message  ||
+            (response?.payload?.aadhar_back[0] || response?.payload?.aadhar_front[0])  || 
+            response?.payload?.message?.toString() || response?.payload?.aadhar_front[0]?.toString() || response?.payload?.aadhar_back[0]?.toString());
+            toast.error(message);
           }
 
         })
@@ -250,7 +254,7 @@ console.log("savedData",savedData)
 
   let submitAction = undefined;
 
-  console.log("docTypeList", docTypeList)
+  // console.log("docTypeList", docTypeList)
 
 
   return (
@@ -267,7 +271,7 @@ console.log("savedData",savedData)
         >
           {(formik) => (
             <Form>
-            {console.log(formik)}
+            {/* {console.log(formik)} */}
               <div className="form-row">
                 <div class="form-group row">
                   <label class="col-sm-5 col-md-5 col-lg-5 col-form-label mt-0 p-2">
@@ -444,7 +448,7 @@ console.log("savedData",savedData)
                     {savedData?.length > 0 ?
                       savedData?.map((img, i) =>
                         <div className="col-lg-6 mt-4 test">
-                        
+                         {/* add image preview link */}
                           <img className="file-upload" src={img?.filePath} alt="kyc docuement" />
                           <div>
                             {img?.status !== "Verified" || img?.status !== "Approved" ?

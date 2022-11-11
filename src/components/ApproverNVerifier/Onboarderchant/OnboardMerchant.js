@@ -92,12 +92,12 @@ const OnboardMerchant = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    return () => {
-      dispatch(udpateRegistrationStatus());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     dispatch(udpateRegistrationStatus());
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const handleRegistration = (formData) => {
     // console.log(formData, "here is form dataaaaaaaaaaaaaaaaaaaaaaaaaaa")
