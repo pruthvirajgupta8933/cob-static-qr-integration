@@ -7,7 +7,7 @@ import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
-import Pagination from "../../_components/reuseable_components/PaginationForKyc";
+// import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 
 const NotFilledKYC = () => {
   const { url } = useRouteMatch();
@@ -81,7 +81,7 @@ const NotFilledKYC = () => {
   const indexOfLastRecord = currentPage * pageSize;
   const nPages = Math.ceil(notFilledData.length / pageSize);
 
-  console.log(notFilledData.length, "Data =======>");
+  // console.log(notFilledData.length, "Data =======>");
 
   const pageNumbers = [...Array(nPages + notFilledData.length).keys()].slice(1);
   // console.log(pageNumbers, "pageNumbers ===>");

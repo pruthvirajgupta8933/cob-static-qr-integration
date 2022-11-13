@@ -7,7 +7,7 @@ import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
-import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
+// import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
 
 const PendindKyc = () => {
   const { url } = useRouteMatch();
@@ -81,7 +81,7 @@ const PendindKyc = () => {
     1
   );
 
-  console.log(pageNumbers, "pageNumbers ===>");
+  // console.log(pageNumbers, "pageNumbers ===>");
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
   // const currentRecords = pendingKycData.slice(
   //   indexOfFirstRecord,

@@ -82,7 +82,7 @@ const RejectedKYC = () => {
     ...Array(nPages + rejectedMerchants.length).keys(),
   ].slice(1);
 
-  console.log(pageNumbers, "pageNumbers ===>");
+  // console.log(pageNumbers, "pageNumbers ===>");
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
   // const currentRecords = pendingKycData.slice(
   //   indexOfFirstRecord,
