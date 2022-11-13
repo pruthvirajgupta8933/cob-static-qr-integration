@@ -8,8 +8,8 @@
 .activepaylink-kyc {
   background-color: #4bb543;
   color: white !important ;
-  margin-left: -35px;
-  padding-left: 21px;
+  margin-left: -36px;
+  padding-left: 46px;
 }
 
 /* .inactive::before {
@@ -237,8 +237,9 @@
 }
 
 .text-font-ForStatusChange::before {
-  position: fixed;
-  left: -55px;
+  /* position: fixed; */
+  position: relative;
+  left: -7px;
   content: url(../../assets/images/check.png);
   display: inline-block;
 }
@@ -289,3 +290,5 @@
   position: relative !important;
 
 }
+
+

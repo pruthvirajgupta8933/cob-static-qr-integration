@@ -378,7 +378,7 @@ function BusinessDetails(props) {
   // console.log("readOnly", readOnly);
 
   return (
-    <div className="col-md-12 col-md-offset-4">
+    <div className="col-sm-12 col-md-6 col-lg-12 col-md-offset-4">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -399,40 +399,27 @@ function BusinessDetails(props) {
             {console.log("initialValues", initialValues)}
             {console.log("errors", errors)} */}
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
-                  GSTIN<span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
-                <FormikController
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <label class="col-form-label mt-0 p-2">GSTIN<span style={{ color: "red" }}>*</span></label>
+             <FormikController
                   control="input"
                   type="text"
                   name="gst_number"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
-
-                  readOnly={readOnly}
-
-                />
-              </div>
-
-              {KycList?.gstNumber !== null &&
+                  readOnly={readOnly}/>
+             {KycList?.gstNumber !== null &&
               !errors.hasOwnProperty("gst_number") &&
               !errors.hasOwnProperty("oldGstNumber") ? (
                 <span>
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right">
+                <div class="position-sticky pull-right otpbtn">
                   <a
                     href={() => false}
                     className="btn btnbackground text-white btn-sm panbtn"
-                    style={{
-                      boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                      borderRadius: "6px",
-                    }}
+                    
                     onClick={() => {
                       checkInputIsValid(
                         errors,
@@ -453,21 +440,16 @@ function BusinessDetails(props) {
                 </span>
               )}
             </div>
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
-                  Business PAN<span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
-                <FormikController
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <label class="col-form-label mt-0 p-2">Business PAN<span style={{ color: "red" }}>*</span></label>
+              <FormikController
                   control="input"
                   type="text"
                   name="pan_card"
                   className="form-control"
                   readOnly={readOnly === false ? true : readOnly}
                 />
-              </div>
+             
               {/* {KycList?.panCard !== null &&
               !errors.hasOwnProperty("pan_card") &&
               !errors.hasOwnProperty("oldPanCard") ? (
@@ -518,24 +500,17 @@ function BusinessDetails(props) {
                   )} */}
             </div>
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
-                  Authorized Signatory PAN
-                  <span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-              <div class="col-sm-7 col-md-7 col-lg-7 pull-right">
-                <FormikController
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <label class="col-form-label mt-0 p-2">Authorized Signatory PAN <span style={{ color: "red" }}>*</span></label>
+              <FormikController
                   control="input"
                   type="text"
                   name="signatory_pan"
                   className="form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
-
                   readOnly={readOnly}
                 />
-              </div>
+              
               {KycList?.signatoryPAN !== null &&
               !errors.hasOwnProperty("signatory_pan") &&
               !errors.hasOwnProperty("oldSignatoryPan") ? (
@@ -574,38 +549,14 @@ function BusinessDetails(props) {
               )}
             </div>
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
-                  Business Name<span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="company_name"
-                  className="form-control"
-                  readOnly={readOnly === false ? true : readOnly}
-                />
-              </div>
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <label class="col-form-label mt-0 p-2"> Business Name<span style={{ color: "red" }}>*</span></label>
+              <FormikController control="input" type="text" name="company_name" className="form-control" readOnly={readOnly === false ? true : readOnly}/>
             </div>
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
-                  PAN Owner's Name<span style={{ color: "red" }}>*</span>
-                </h4>
-              </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="name_on_pancard"
-                  className="form-control"
-                  readOnly={readOnly === false ? true : readOnly}
-                />
-              </div>
+            <div class="col-sm-12 col-md-6 col-lg-4">
+              <label class="col-form-label mt-0 p-2">PAN Owner's Name<span style={{ color: "red" }}>*</span></label>
+              <FormikController control="input" type="text" name="name_on_pancard" className="form-control"readOnly={readOnly === false ? true : readOnly}/>
             </div>
 
             {/* <div className="form-group col-md-4">

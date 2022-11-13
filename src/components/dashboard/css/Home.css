@@ -237,12 +237,19 @@ table.tables tr:nth-child(odd) {
 .card .card-body {
   padding: 1.25rem 0 !important;
 }
-
+.card{
+  padding: 10px 26px !important;
+}
 .card .price{
   line-height: 22px;
     font-size: 44px;
     padding: 28px 0 0 0;
     font-weight: 800;
+    margin: 32px 0;
+    display: inline-block;
+   
+    line-height: 36px;
+    padding: 0;
 }
 
 .kycbtns {
@@ -437,7 +444,7 @@ button[disabled1] {
 
 .heightcards {
   /* height: 490px; */
-  min-height: 490px;
+  min-height: 486px;
   max-height: 600px;
 
 }

@@ -329,9 +329,10 @@ function BusinessOverview(props) {
             <div class="col-sm-12 col-md-12 col-lg-12">
               <label class="col-form-label p-2 mt-0">
                
-                  Business Label<span style={{ color: "red" }}>*</span>
-                
+                  Business Label <span style={{ color: "red" }}>*</span> 
+                 
               </label>
+              
               
                 <FormikController
                   control="textArea"
@@ -341,12 +342,16 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-                  <span style={{fontSize: "12px" }}>
+                  <span style={{fontSize: "13px" }}>
                   Please give a brief description of the nature of your
                   business. Please give examples of products you sell, business
                   categories you operate in, your customers and channels through
                   which you operate (website, offline retail).
                 </span>
+
+                <div class="my-5- p-2- w-100 pull-left">
+                  <hr style={{ borderColor: "#D9D9D9", textShadow: "2px 2px 5px grey", width: "100%",}}/>
+                </div>
               
             </div>
 
