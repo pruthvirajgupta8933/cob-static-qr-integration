@@ -362,15 +362,15 @@ function BankDetails(props) {
               !errors.hasOwnProperty("ifsc_code") &&
               !errors.hasOwnProperty("oldIfscCode") ? (
                 // {initialValues?.isIFSCCode === "1" && values?.ifsc_code === KycList?.ifscCode ? (
-                <span>
+                <span className="success">
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
                 (// values.ifsc_code !== checkIfscChange && values.ifsc_code === "" ?
-                <div class="position-sticky pull-right">
+                <div class="position-sticky pull-right- otpbtndetail">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtndetail"
+                    className="btn btnbackground text-white btn-sm panbtn "
                     onClick={() => {
                       // {console.log("Values =======>",values)}
                       checkInputIsValid(
@@ -391,7 +391,7 @@ function BankDetails(props) {
               {/* {console.log("eorro",errors)}
               {console.log(errors?.isIFSCCode)} */}
               {errors?.oldIfscCode && (
-                <span className="notVerifiedtext text-danger">
+                <span className="notVerifiedtext- text-danger">
                   {errors?.oldIfscCode}
                 </span>
               )}
@@ -414,12 +414,12 @@ function BankDetails(props) {
               values?.account_number === KycList?.accountNumber &&
               !errors.hasOwnProperty("account_number") &&
               !errors.hasOwnProperty("oldAccountNumber") ? (
-                <span>
+                <span className="success">
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : !errors.hasOwnProperty("oldIfscCode") &&
                 !errors.hasOwnProperty("ifsc_code") ? (
-                <div class="position-sticky pull-right- otpbtndetail">
+                <div class="position-sticky pull-right- otpbtnaccnt">
                   <a
                     href={() => false}
                     className="btn btnbackground text-white btn-sm panbtn "
@@ -442,7 +442,7 @@ function BankDetails(props) {
               )}
 
               {errors?.oldAccountNumber && (
-                <span className="notVerifiedtext text-danger">
+                <span className="notVerifiedtext- text-danger">
                   {errors?.oldAccountNumber}
                 </span>
               )}

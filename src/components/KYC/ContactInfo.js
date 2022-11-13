@@ -331,7 +331,7 @@ function ContactInfo(props) {
                   KycList?.isContactNumberVerified === 1 &&
                   !errors.hasOwnProperty("contact_number") &&
                   !errors.hasOwnProperty("oldContactNumber") ? (
-                  <span>
+                  <span className="success">
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>
                 ) : role.merchant ? (
@@ -391,7 +391,7 @@ function ContactInfo(props) {
                   KycList?.isEmailVerified === 1 &&
                   !errors.hasOwnProperty("email_id") &&
                   !errors.hasOwnProperty("oldEmailId") ? (
-                  <span>
+                  <span className="success">
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>
                 ) : role.merchant ? (

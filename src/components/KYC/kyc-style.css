@@ -290,6 +290,9 @@
     right: 16px;
     top: 38px;
 }
+.otpbtn a{
+  border-radius: 0 6px 6px 0;
+}
 .otpbtngst{
   /* right: 3px;
   
@@ -297,7 +300,8 @@
   border-radius: 0 6px 6px 0; */
     right: 107px;
     position: absolute !important;
-    top: 38px;
+    top: 38px;}
+.otpbtngst a{
     border-radius: 0 6px 6px 0;
 }
 
@@ -305,8 +309,23 @@
   top: 39px;
     position: absolute !important;
     right: 106px;
+}
+.otpbtndetail a{
+    border-radius: 0 6px 6px 0;
+}
+.otpbtnaccnt{
+  top: 39px;
+    position: absolute !important;
+    right: 105px;
+}
+.otpbtnaccnt a{
     border-radius: 0 6px 6px 0;
 }
 .marg-b p.text-danger{
   margin-bottom:0;
+}
+.success img{
+  position: absolute;
+    top: 43px;
+    right: 24px;
 }

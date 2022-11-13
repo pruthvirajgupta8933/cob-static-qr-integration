@@ -400,7 +400,7 @@ function BusinessDetails(props) {
             {console.log("errors", errors)} */}
 
             <div class="col-sm-12 col-md-12 col-lg-12 marg-b">
-              <label class="col-form-label mt-0 p-2">GSTIN sdfsd<span style={{ color: "red" }}>*</span></label>
+              <label class="col-form-label mt-0 p-2">GSTIN<span style={{ color: "red" }}>*</span></label>
              <FormikController
                   control="input"
                   type="text"
@@ -411,7 +411,7 @@ function BusinessDetails(props) {
              {KycList?.gstNumber !== null &&
               !errors.hasOwnProperty("gst_number") &&
               !errors.hasOwnProperty("oldGstNumber") ? (
-                <span>
+                <span className="success">
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
@@ -514,7 +514,7 @@ function BusinessDetails(props) {
               {KycList?.signatoryPAN !== null &&
               !errors.hasOwnProperty("signatory_pan") &&
               !errors.hasOwnProperty("oldSignatoryPan") ? (
-                <span>
+                <span className="success">
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
