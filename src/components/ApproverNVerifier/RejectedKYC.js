@@ -13,6 +13,7 @@ const RejectedKYC = () => {
   const roles = roleBasedAccess();
 
   const [data, setData] = useState([]);
+  const [dataCount, setDataCount] = useState("");
   const [spinner, setSpinner] = useState(true);
   const [rejectedMerchants, setRejectedMerchants] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -34,6 +35,8 @@ const RejectedKYC = () => {
         const data = res.data.results;
         // console.log("<====  Rejected Merchants List ======>")
         setRejectedMerchants(data);
+        const dataCoun = res?.data?.count;
+        setDataCount(dataCoun);
       });
   };
 
@@ -76,11 +79,10 @@ const RejectedKYC = () => {
   }, [searchText]);
 
   const indexOfLastRecord = currentPage * pageSize;
+  const totalPages = Math.ceil(dataCount / pageSize);
   const nPages = Math.ceil(rejectedMerchants.length / pageSize);
 
-  const pageNumbers = [
-    ...Array(nPages + rejectedMerchants.length).keys(),
-  ].slice(1);
+  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
 
   // console.log(pageNumbers, "pageNumbers ===>");
   const indexOfFirstRecord = indexOfLastRecord - pageSize;

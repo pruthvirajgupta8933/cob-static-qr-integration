@@ -83,7 +83,8 @@ const NotFilledKYC = () => {
 
   // console.log(notFilledData.length, "Data =======>");
 
-  const pageNumbers = [...Array(nPages + notFilledData.length).keys()].slice(1);
+  const totalPages = Math.ceil(dataCount / pageSize);
+  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
   // console.log(pageNumbers, "pageNumbers ===>");
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
   // const currentRecords = pendingKycData.slice(

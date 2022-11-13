@@ -16,6 +16,7 @@ function NewRegistraion() {
 
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
+  const [dataCount, setDataCount] = useState("");
   const [newRegistrationData, setNewRegistrationData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,8 +33,10 @@ function NewRegistraion() {
   const newAllRegistration = async () => {
     await axiosInstanceAuth.get(`${API_URL.KYC_FOR_PROCESSING}`).then((res) => {
       const data = res.data.results;
+      const dataCoun = res?.data?.count;
       // console.log(data)
       setNewRegistrationData(data);
+      setDataCount(dataCoun);
     });
   };
 
@@ -78,9 +81,8 @@ function NewRegistraion() {
 
   const indexOfLastRecord = currentPage * pageSize;
   const nPages = Math.ceil(newRegistrationData.length / pageSize);
-  const pageNumbers = [
-    ...Array(nPages + newRegistrationData.length).keys(),
-  ].slice(1);
+  const totalPages = Math.ceil(dataCount / pageSize);
+  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
   // const currentRecords = pendingKycData.slice(
   //   indexOfFirstRecord,

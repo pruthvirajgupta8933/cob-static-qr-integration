@@ -11,6 +11,7 @@ import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 function ApprovedMerchant() {
   const [approveMerchant, setApproveMerchant] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
+  const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -39,6 +40,8 @@ function ApprovedMerchant() {
       const data = res?.data?.results;
       // console.log(data)
       setApprovedMerchantData(data);
+      const dataCoun = res?.data?.count;
+      setDataCount(dataCoun);
     });
   };
 
@@ -75,11 +78,10 @@ function ApprovedMerchant() {
   }, [searchText]);
 
   const indexOfLastRecord = currentPage * pageSize;
+  const totalPages = Math.ceil(dataCount / pageSize);
   const nPages = Math.ceil(approvedMerchantData.length / pageSize);
 
-  const pageNumbers = [
-    ...Array(nPages + approvedMerchantData.length).keys(),
-  ].slice(1);
+  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
 
   // console.log(pageNumbers, "pageNumbers ===>");
   const indexOfFirstRecord = indexOfLastRecord - pageSize;

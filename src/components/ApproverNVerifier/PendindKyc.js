@@ -15,6 +15,7 @@ const PendindKyc = () => {
 
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
+  const [dataCount, setDataCount] = useState("");
   const [pendingKycData, setPendingKycData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,6 +34,8 @@ const PendindKyc = () => {
       .then((res) => {
         const data = res.data.results;
         // console.log("<======== Pending Merchants =======>", data)
+        const dataCoun = res?.data?.count;
+        setDataCount(dataCoun);
         setPendingKycData(data);
       });
   };
@@ -76,10 +79,9 @@ const PendindKyc = () => {
 
   const indexOfLastRecord = currentPage * pageSize;
   const nPages = Math.ceil(pendingKycData.length / pageSize);
+  const totalPages = Math.ceil(dataCount / pageSize);
 
-  const pageNumbers = [...Array(nPages + pendingKycData.length).keys()].slice(
-    1
-  );
+  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
 
   // console.log(pageNumbers, "pageNumbers ===>");
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
