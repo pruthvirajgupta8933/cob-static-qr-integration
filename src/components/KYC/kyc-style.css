@@ -8,8 +8,8 @@
 .activepaylink-kyc {
   background-color: #4bb543;
   color: white !important ;
-  margin-left: -54px;
-  padding-left: 71px;
+  margin-left: -35px;
+  padding-left: 21px;
 }
 
 /* .inactive::before {
@@ -273,4 +273,19 @@
   font-style: normal;
   font-weight: 700;
   font-size: 17px;
+}
+
+.cardsection{
+    background-color: #F2F2F2;                       
+    height: 711px;
+    margin-top: 0rem;
+    width: 797px;
+    box-shadow: 0px 4px 14px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0px;
+    overflow-Y: scroll !important;
+}
+.otpbtn{
+  right: 104px;
+  position: relative !important;
+
 }
