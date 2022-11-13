@@ -335,10 +335,10 @@ function ContactInfo(props) {
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>
                 ) : role.merchant ? (
-                  <div class="position-sticky pull-right otpbtn">
+                  <div class="position-sticky pull-right- otpbtn">
                     <a
                       href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn"
+                      className="btn btnbackground text-white btn-sm optbtn-"
                       onClick={() => {
                         checkInputIsValid(
                           errors,
@@ -395,11 +395,11 @@ function ContactInfo(props) {
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>
                 ) : role.merchant ? (
-                  <div class="position-sticky pull-right otpbtn">
+                  <div class="position-sticky pull-right- otpbtn">
                     {/* optbtn */}
                     <a
                       href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn"
+                      className="btn btnbackground text-white btn-sm optbtn-"
                       onClick={() => {
                         checkInputIsValid(
                           errors,

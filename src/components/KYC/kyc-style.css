@@ -286,9 +286,9 @@
     overflow-Y: scroll !important;
 }
 .otpbtn{
-  right: 104px;
-  position: relative !important;
-  border-radius: 0 6px 6px 0;
+  position: absolute !important;
+    right: 16px;
+    top: 38px;
 }
 .otpbtngst{
   right: 3px;
