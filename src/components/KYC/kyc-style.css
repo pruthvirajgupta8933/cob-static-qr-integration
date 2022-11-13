@@ -288,7 +288,18 @@
 .otpbtn{
   right: 104px;
   position: relative !important;
-
+  border-radius: 0 6px 6px 0;
+}
+.otpbtngst{
+  right: 3px;
+  /* position: relative !important; */
+  top: -51px;
+  border-radius: 0 6px 6px 0;
 }
 
-
+.otpbtndetail{
+  top: -51px;
+    position: absolute;
+    right: 6px;
+    border-radius: 0 6px 6px 0;
+}

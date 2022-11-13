@@ -339,10 +339,6 @@ function ContactInfo(props) {
                     <a
                       href={() => false}
                       className="btn btnbackground text-white btn-sm optbtn"
-                      style={{
-                        boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                        borderRadius: "6px",
-                      }}
                       onClick={() => {
                         checkInputIsValid(
                           errors,
@@ -404,10 +400,6 @@ function ContactInfo(props) {
                     <a
                       href={() => false}
                       className="btn btnbackground text-white btn-sm optbtn"
-                      style={{
-                        boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                        borderRadius: "6px",
-                      }}
                       onClick={() => {
                         checkInputIsValid(
                           errors,
