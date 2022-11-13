@@ -419,10 +419,10 @@ function BankDetails(props) {
                 </span>
               ) : !errors.hasOwnProperty("oldIfscCode") &&
                 !errors.hasOwnProperty("ifsc_code") ? (
-                <div class="position-sticky pull-right">
+                <div class="position-sticky pull-right- otpbtndetail">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtndetail"
+                    className="btn btnbackground text-white btn-sm panbtn "
                     onClick={() => {
                       // console.log("Values ==>>><<<",values)
                       checkInputIsValid(

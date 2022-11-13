@@ -291,15 +291,22 @@
     top: 38px;
 }
 .otpbtngst{
-  right: 3px;
-  /* position: relative !important; */
+  /* right: 3px;
+  
   top: -51px;
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 6px 6px 0; */
+    right: 107px;
+    position: absolute !important;
+    top: 38px;
+    border-radius: 0 6px 6px 0;
 }
 
 .otpbtndetail{
-  top: -51px;
-    position: absolute;
-    right: 6px;
+  top: 39px;
+    position: absolute !important;
+    right: 106px;
     border-radius: 0 6px 6px 0;
+}
+.marg-b p.text-danger{
+  margin-bottom:0;
 }

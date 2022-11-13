@@ -399,8 +399,8 @@ function BusinessDetails(props) {
             {console.log("initialValues", initialValues)}
             {console.log("errors", errors)} */}
 
-            <div class="col-sm-12 col-md-6 col-lg-6">
-              <label class="col-form-label mt-0 p-2">GSTIN<span style={{ color: "red" }}>*</span></label>
+            <div class="col-sm-12 col-md-12 col-lg-12 marg-b">
+              <label class="col-form-label mt-0 p-2">GSTIN sdfsd<span style={{ color: "red" }}>*</span></label>
              <FormikController
                   control="input"
                   type="text"
@@ -415,10 +415,10 @@ function BusinessDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right">
+                <div class="position-sticky pull-right- otpbtngst">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtngst"
+                    className="btn btnbackground text-white btn-sm panbtn "
                     
                     onClick={() => {
                       checkInputIsValid(
@@ -435,7 +435,7 @@ function BusinessDetails(props) {
                 </div>
               )}
               {errors?.oldGstNumber && (
-                <span className="notVerifiedtext- text-danger">
+                <span className="notVerifiedtext- text-danger mb-0">
                   {errors?.oldGstNumber}
                 </span>
               )}
@@ -518,10 +518,10 @@ function BusinessDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right">
+                <div class="position-sticky pull-right- otpbtndetail">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtngst"
+                    className="btn btnbackground text-white btn-sm panbtn"
                     onClick={() => {
                       // console.log("Values ==>>><<<",formik?.values)
                       checkInputIsValid(
@@ -539,7 +539,7 @@ function BusinessDetails(props) {
               )}
 
               {errors?.oldSignatoryPan && (
-                <span className="notVerifiedtext- text-danger">
+                <span className="notVerifiedtext- text-danger mb-0">
                   {errors?.oldSignatoryPan}
                 </span>
               )}
