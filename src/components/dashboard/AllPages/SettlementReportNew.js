@@ -18,7 +18,7 @@ import { convertToFormikSelectJson } from "../../../_components/reuseable_compon
 import NavBar from "../NavBar/NavBar";
 import moment from "moment";
 
-function SettlementReportNew() {
+const SettlementReportNew= () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
@@ -38,8 +38,8 @@ function SettlementReportNew() {
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
 
-  var now = moment().format("YYYY-M-D");
-  var splitDate = now.split("-");
+  let now = moment().format("YYYY-M-D");
+  let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
     splitDate[1] = "0" + splitDate[1];
   }
@@ -48,7 +48,7 @@ function SettlementReportNew() {
   }
   splitDate = splitDate.join("-");
 
-  var clientMerchantDetailsList = [];
+  let clientMerchantDetailsList = [];
   if (
     user &&
     user?.clientMerchantDetailsList === null &&
@@ -85,10 +85,7 @@ function SettlementReportNew() {
   });
 
   useEffect(() => {
-    // console.log("showData", showData.length);
-    // console.log("updateTxnList", updateTxnList.length);
-    // console.log(buttonClicked && dataFound);
-
+   
     setTimeout(() => {
       if (
         showData.length < 1 &&
@@ -107,7 +104,7 @@ function SettlementReportNew() {
 
   const onSubmitHandler = (values) => {
     dispatch(fetchSettlementReportSlice(values)).then((res) => {
-      // console.log(res, "thehere");
+     
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {
@@ -122,7 +119,7 @@ function SettlementReportNew() {
   useEffect(() => {
     // Remove initiated from transaction history response
     const TxnListArrUpdated = dashboard.settlementReport;
-    // console.log(dashboard.settlementReport)
+   
 
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
@@ -136,7 +133,7 @@ function SettlementReportNew() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard]);
 
-  // console.log("buttonclicked",buttonClicked);
+  
 
   useEffect(() => {
     setPaginatedData(
@@ -151,7 +148,7 @@ function SettlementReportNew() {
   }, [pageSize, showData]);
 
   useEffect(() => {
-    //  console.log("page chagne no")
+   
     const startIndex = (currentPage - 1) * pageSize;
     const paginatedPost = _(showData)
       .slice(startIndex)
@@ -203,8 +200,7 @@ function SettlementReportNew() {
     const excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     txnList.map((item, index) => {
-      // console.log(JSON.stringify(item));
-      // console.log("index",index)
+     
       const allowDataToShow = {
         srNo: item.srNo === null ? "" : index + 1,
         client_code: item.client_code === null ? "" : item.client_code,
@@ -231,19 +227,12 @@ function SettlementReportNew() {
 
       excelArr.push(Object.values(allowDataToShow));
     });
-    // console.log("excelArr",excelArr)
+    
     const fileName = "Settlement-Report";
     exportToSpreadsheet(excelArr, fileName);
   };
 
-  // const today = new Date();
-  // const lastThreeMonth = new Date(today);
-  // lastThreeMonth.setDate(lastThreeMonth.getDate() - 90);
-  // lastThreeMonth.toLocaleDateString("en-ca");
-  // var month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
-  // var day = lastThreeMonth.getUTCDate();
-  // var year = lastThreeMonth.getUTCFullYear();
-  // const finalDate = year + "-" + month + "-" + day;
+ 
 
   return (
     <section className="ant-layout">
@@ -417,7 +406,7 @@ function SettlementReportNew() {
               </div>
 
               <div>
-                {/* {console.log("show",show)} */}
+               
                 {txnList.length > 0 ? (
                   <nav aria-label="Page navigation example">
                     <ul className="pagination">
@@ -443,8 +432,7 @@ function SettlementReportNew() {
                                 : "page-item"
                             }
                           >
-                            {/* {console.log("currentPage",currentPage)} */}
-                            {/* {console.log("page",page)} */}
+                            
                             <a
                               className={`page-link data_${i}`}
                               href={() => false}

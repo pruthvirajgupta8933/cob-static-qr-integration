@@ -4,13 +4,11 @@ import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-// import validation from '../../validation';
 
 import API_URL from "../../../config";
 import FormikController from "../../../_components/formik/FormikController";
 import PrintDocument from "../../../_components/reuseable_components/PrintDocument";
 import NavBar from "../NavBar/NavBar";
-import { axiosInstance } from "../../../utilities/axiosInstance";
 
 function TransactionEnquirey() {
   const initialValues = {
@@ -36,14 +34,14 @@ function TransactionEnquirey() {
       .get(API_URL.VIEW_TXN + `/${transaction_id}`)
       .then((response) => {
         if (response?.data.length > 0) {
-          // console.log(566)
+         
           setIsShow(true);
           setData(response?.data[0]);
           setErrMessage(false);
         } else {
           axios.get(API_URL.SP2_VIEW_TXN + `/${transaction_id}`).then((r) => {
             if (r?.data.length > 0) {
-              // console.log(44)
+             
               setIsShow(true);
               setData(r?.data[0]);
               setErrMessage(false);
@@ -82,8 +80,8 @@ function TransactionEnquirey() {
   }, [data]);
 
   const onClick = async () => {
-    var tableContents = document.getElementById("print_docuement").innerHTML;
-    var a = window.open("", "", "height=900, width=900");
+    let tableContents = document.getElementById("print_docuement").innerHTML;
+    let a = window.open("", "", "height=900, width=900");
     a.document.write(tableContents);
     a.document.close();
     await a.print();

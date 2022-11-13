@@ -7,7 +7,7 @@ import { isClientCodeCreated } from "../../../utilities/isClientCodeCreated";
 import { isKycCompleted } from "../../../utilities/isKycCompleted";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 
-function SettlementReport() {
+const SettlementReport = () => {
   const [searchArea, setSearchArea] = useState("");
   const [data, setData] = React.useState([]);
   const [folderArr, setFolderArr] = React.useState([]);
@@ -21,23 +21,20 @@ function SettlementReport() {
   const { user } = useSelector((state) => state.auth);
   let clientCode = "";
   if (isKycCompleted) {
-    // console.log("kyc has completed");
+
     if (isClientCodeCreated) {
-      // console.log("client code has created");
     } else {
-      // console.log("kyc done client code is not create");
+      
     }
   } else {
-    // console.log("kyc not completed");
   }
 
   if (user && user?.clientMerchantDetailsList) {
     history.push("/dashboard/profile");
   } else {
-    var clientMerchantDetailsList = user.clientMerchantDetailsList;
-    // console.log(typeof(user.clientMerchantDetailsList))
+    let clientMerchantDetailsList = user.clientMerchantDetailsList;
+    
     if (user.clientMerchantDetailsList !== undefined) {
-      // console.log(clientMerchantDetailsList)
       clientCode = clientMerchantDetailsList[0].clientCode;
     }
   }
@@ -48,15 +45,13 @@ function SettlementReport() {
         setData(res.data);
       })
       .catch((err) => {
-        // console.log(err);
+       
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     data.filter((item) => folderArr.push(item.folder));
     setFolderArr([...new Set(folderArr)]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
@@ -67,18 +62,18 @@ function SettlementReport() {
           .toLowerCase()
           .includes(searchArea.toLocaleLowerCase())
       );
-      // console.log("data",data);
+      
       setSearchFilterData(data);
     } else {
       setSearchFilterData(showFilterData);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [searchArea]);
 
   const onChangeFolder = (val) => {
     SetSelectedFolder(val);
 
-    var tempArr = [];
+    let tempArr = [];
     data.filter((item) =>
       item.folder === val ? tempArr.push(item.sub_folder) : null
     );
@@ -86,7 +81,7 @@ function SettlementReport() {
   };
 
   useEffect(() => {
-    var tempArr1 = [];
+   let tempArr1 = [];
     data.filter((item) =>
       item.folder === selectedFolder && item.sub_folder === selectedSubFolder
         ? tempArr1.push(item)
@@ -95,7 +90,6 @@ function SettlementReport() {
 
     SetShowFilterData(tempArr1);
     setSearchFilterData(tempArr1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedSubFolder, selectedFolder]);
 
   const getSearchTerm = (e) => {

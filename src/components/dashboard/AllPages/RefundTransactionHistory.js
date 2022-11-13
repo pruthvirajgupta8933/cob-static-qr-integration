@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import {
   clearSettlementReport,
   fetchRefundTransactionHistory,
-  fetchSettlementReportSlice,
+  
 } from "../../../slices/dashboardSlice";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
@@ -20,7 +20,7 @@ import NavBar from "../NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import moment from "moment";
 
-function RefundTransactionHistory() {
+const RefundTransactionHistory = () => {
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
   const history = useHistory();
@@ -29,7 +29,6 @@ function RefundTransactionHistory() {
 
   const { isLoadingTxnHistory } = dashboard;
   const [txnList, SetTxnList] = useState([]);
-  // const [filterList,SetFilterList] = useState([])
   const [searchText, SetSearchText] = useState("");
 
   const [pageSize, setPageSize] = useState(10);
@@ -41,8 +40,8 @@ function RefundTransactionHistory() {
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
 
-  var now = moment().format("YYYY-M-D");
-  var splitDate = now.split("-");
+  let now = moment().format("YYYY-M-D");
+  let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
     splitDate[1] = "0" + splitDate[1];
   }
@@ -51,18 +50,8 @@ function RefundTransactionHistory() {
   }
   splitDate = splitDate.join("-");
 
-  //   var clientMerchantDetailsList = [];
-  //   if (
-  //     user &&
-  //     user?.clientMerchantDetailsList === null &&
-  //     user?.roleId !== 3 &&
-  //     user?.roleId !== 13
-  //   ) {
-  //     history.push("/dashboard/profile");
-  //   } else {
-  //     clientMerchantDetailsList = user?.clientMerchantDetailsList;
-  //   }
-  var clientMerchantDetailsList = [];
+  
+  let clientMerchantDetailsList = [];
   if (
     user &&
     user?.clientMerchantDetailsList === null &&
@@ -74,17 +63,17 @@ function RefundTransactionHistory() {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
-  const clientcode_rolebased = roles.bank
-    ? "All"
-    : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+  // const clientcode_rolebased = roles.bank
+  //   ? "All"
+  //   : roles.merchant
+  //   ? clientMerchantDetailsList[0]?.clientCode
+  //   : "";
 
-  const tempClientList = convertToFormikSelectJson(
-    "clientCode",
-    "clientName",
-    clientMerchantDetailsList
-  );
+  // const tempClientList = convertToFormikSelectJson(
+  //   "clientCode",
+  //   "clientName",
+  //   clientMerchantDetailsList
+  // );
 
   const [todayDate, setTodayDate] = useState(splitDate);
 
@@ -111,12 +100,10 @@ function RefundTransactionHistory() {
     // extraDataObj,
     // isExtraDataRequired
   );
-  // console.log(clientMerchantDetailsList, "hereeeeeeeeeeee");
+  
 
   useEffect(() => {
-    // console.log("showData", showData.length);
-    // console.log("updateTxnList", updateTxnList.length);
-    // console.log(buttonClicked && dataFound);
+  
 
     setTimeout(() => {
       if (
@@ -134,11 +121,11 @@ function RefundTransactionHistory() {
     setCurrentPage(pageNo);
   };
 
-  //   console.log(fetchRefundTransactionHistory,"urllllllllllll")
+  
 
   const onSubmitHandler = (values) => {
     dispatch(fetchRefundTransactionHistory(values)).then((res) => {
-      // console.log(res, "myreesss");
+      
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {
@@ -149,71 +136,12 @@ function RefundTransactionHistory() {
       }
     });
   };
-  // const onSubmitHandler = values =>{
-  //     // console.log(values)
-
-  //     isButtonClicked(true)
-
-  //     const {fromDate, endDate, transaction_status, payment_mode} = values
-  //     const dateRangeValid = checkValidation(fromDate, endDate);
-
-  //     if(dateRangeValid){
-  //       // isLoading(true);
-  //       // isButtonClicked(true);
-  //       let strClientCode, clientCodeArrLength ="";
-  //         if(clientCode==="All"){
-  //         const allClientCode = []
-  //         clientMerchantDetailsList?.map((item)=>{
-  //           allClientCode.push(item.clientCode)
-  //         })
-  //         clientCodeArrLength = allClientCode.length.toString();
-  //         strClientCode = allClientCode.join().toString();
-  //       }else{
-  //         strClientCode = clientCode;
-  //         clientCodeArrLength = "1"
-  //       }
-
-  //       let paramData = {
-  //         clientCode:strClientCode,
-  //         paymentStatus:transaction_status,
-  //         paymentMode:payment_mode,
-  //         fromDate:fromDate,
-  //         endDate:endDate,
-  //         length: "0",
-  //         page: "0",
-  //         NoOfClient: clientCodeArrLength
-  //       }
-  //   console.log(paramData)
-  //       dispatch(fetchTransactionHistorySlice(paramData))
-  // }
-
-  //   }
-  //   const checkValidation = (fromDate = "", toDate = "") => {
-  //     var flag = true;
-  //     if (fromDate === 0 || toDate === "") {
-  //       alert("Please select the date.");
-  //       flag = false;
-  //     } else if (fromDate !== "" || toDate !== "") {
-  //       const date1 = new Date(fromDate);
-  //       const date2 = new Date(toDate);
-  //       const diffTime = Math.abs(date2 - date1);
-  //       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  //       // console.log("days",diffDays);
-  //       if (diffDays < 0 || diffDays > 90) {
-  //         flag = false;
-  //         alert("The date range should be under 3 months");
-  //       }
-  //     } else {
-  //       flag = true;
-  //     }
-
-  //     return flag;
-  //   };
+  
 
   useEffect(() => {
-    // Remove initiated from transaction history response
+    
     const TxnListArrUpdated = dashboard.settlementReport;
-    // console.log(dashboard.settlementReport)
+    
 
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
@@ -227,7 +155,7 @@ function RefundTransactionHistory() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard]);
 
-  // console.log("buttonclicked",buttonClicked);
+  
 
   useEffect(() => {
     setPaginatedData(
@@ -242,7 +170,7 @@ function RefundTransactionHistory() {
   }, [pageSize, showData]);
 
   useEffect(() => {
-    //  console.log("page chagne no")
+    
     const startIndex = (currentPage - 1) * pageSize;
     const paginatedPost = _(showData)
       .slice(startIndex)
@@ -250,7 +178,7 @@ function RefundTransactionHistory() {
       .value();
     setPaginatedData(paginatedPost);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [currentPage]);
 
   useEffect(() => {
@@ -294,8 +222,7 @@ function RefundTransactionHistory() {
     const excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     txnList.map((item, index) => {
-      // console.log(JSON.stringify(item));
-      // console.log("index",index)
+      
       const allowDataToShow = {
         srNo: item.srNo === null ? "" : index + 1,
         client_code: item.client_code === null ? "" : item.client_code,
@@ -322,19 +249,12 @@ function RefundTransactionHistory() {
 
       excelArr.push(Object.values(allowDataToShow));
     });
-    // console.log("excelArr",excelArr)
+    
     const fileName = "Settlement-Report";
     exportToSpreadsheet(excelArr, fileName);
   };
 
-  // const today = new Date();
-  // const lastThreeMonth = new Date(today);
-  // lastThreeMonth.setDate(lastThreeMonth.getDate() - 90);
-  // lastThreeMonth.toLocaleDateString("en-ca");
-  // var month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
-  // var day = lastThreeMonth.getUTCDate();
-  // var year = lastThreeMonth.getUTCFullYear();
-  // const finalDate = year + "-" + month + "-" + day;
+ 
 
   return (
     <section className="ant-layout">
@@ -508,7 +428,7 @@ function RefundTransactionHistory() {
               </div>
 
               <div>
-                {/* {console.log("show",show)} */}
+                
                 {txnList.length > 0 ? (
                   <nav aria-label="Page navigation example">
                     <ul className="pagination">
@@ -534,8 +454,7 @@ function RefundTransactionHistory() {
                                 : "page-item"
                             }
                           >
-                            {/* {console.log("currentPage",currentPage)} */}
-                            {/* {console.log("page",page)} */}
+                            
                             <a
                               className={`page-link data_${i}`}
                               href={() => false}

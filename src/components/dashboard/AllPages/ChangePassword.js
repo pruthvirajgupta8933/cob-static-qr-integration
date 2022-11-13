@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import "yup-phone";
 import { changePasswordSlice } from "../../../slices/auth";
-// import { useRouteMatch } from 'react-router-dom/cjs/react-router-dom.min';
-import { toast, Zoom } from "react-toastify";
+import { toast} from "react-toastify";
 import NavBar from "../NavBar/NavBar";
 
 function ChangePassword() {
@@ -16,7 +15,7 @@ function ChangePassword() {
   // let { path, url } = useRouteMatch();
   const { user } = useSelector((state) => state.auth);
 
-  // console.log(passwordChange);
+  
   const { loginId, userName } = user;
 
   // const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
@@ -56,7 +55,6 @@ function ChangePassword() {
     showPassword: false,
   });
 
-  // console.log("INITIAL_FORM_STATE----",INITIAL_FORM_STATE);
 
   const FORM_VALIDATION = Yup.object().shape({
     loginId: Yup.string().required("Required"),
@@ -81,9 +79,7 @@ function ChangePassword() {
   };
 
   const updataPassword = (data) => {
-    // console.log(isCreateorUpdate)
-    // console.log("send client id",clientId);
-    // console.log("send data",data);
+    
     dispatch(
       changePasswordSlice({
         email: data.email,
@@ -91,7 +87,6 @@ function ChangePassword() {
         newpassword: data.new_password,
       })
     ).then((res) => {
-      // console.log("This is the response", res);
       if (res.meta.requestStatus === "fulfilled") {
         if (res.payload.status === true) {
           toast.success(res.payload.message);
@@ -123,8 +118,7 @@ function ChangePassword() {
                     <div className="ant-tabs-nav-scroll">
                       <div className="ant-tabs-nav- ant-tabs-nav-animated">
                         <div>
-                          {/* <h4 style={{background: "#ffa2a2",padding: "14px",margin:" auto",textAlign: "center"}}>{message}</h4> */}
-                          {/* <div role="tab" aria-disabled="false" aria-selected="true" className="ant-tabs-tab-active ant-tabs-tab">Basic Details</div> */}
+                        
                         </div>
                         <div
                           className="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
@@ -203,9 +197,7 @@ function ChangePassword() {
                               placeholder="Enter Old Password"
                               className="form-control"
                             />
-                            {/* <span class="input-group-addon eyeicon">
-                            <a onClick={handleClickShowPassword}> {values.showPassword ? <i class="fa fa-eye" aria-hidden="true"></i> : <i class="fa fa-eye-slash" aria-hidden="true"></i>}</a>
-                            </span> */}
+                          
 
                             <ErrorMessage name="old_password">
                               {(msg) => (
@@ -229,9 +221,7 @@ function ChangePassword() {
                               placeholder="Enter New Password"
                               className="form-control"
                             />
-                            {/* <span class="input-group-addon eyeicon">
-                            <a onClick={handleClickShowPassword}> {values.showPassword ? <i class="fa fa-eye" aria-hidden="true"></i> : <i class="fa fa-eye-slash" aria-hidden="true"></i>}</a>
-                            </span> */}
+                          
 
                             <ErrorMessage name="new_password">
                               {(msg) => (

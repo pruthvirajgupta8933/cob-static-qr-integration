@@ -12,10 +12,8 @@ import { register, udpateRegistrationStatus } from "../../slices/auth";
 import { useHistory } from "react-router-dom";
 import { toast, Zoom } from "react-toastify";
 import { Link } from "react-router-dom";
-import TermCondition from "./TermCondition";
 import API_URL from "../../config";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
-import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -53,12 +51,9 @@ function Registration() {
   const datar = auth;
 
   const { isUserRegistered } = datar;
-  const [checkboxStatus, setCheckboxStatus] = useState(Array(3).fill(false));
-  const [isActive, setActive] = useState(true);
   const [acceptTc, setAcceptTc] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const [btnDisable, setBtnDisable] = useState(true);
-  const [trmCond, setTrmCond] = useState(false);
 
   const [businessCode, setBusinessCode] = useState([]);
   const [passwordType, setPasswordType] =useState({
