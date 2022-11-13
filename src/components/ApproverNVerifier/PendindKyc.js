@@ -193,19 +193,16 @@ const PendindKyc = () => {
                 </a>
               </li>
             ))}
-            {pageNumbers !== 0 ? (
-              <li class="page-item">
-                <button class="page-link" onClick={nextPage}>
-                  Next
-                </button>
-              </li>
-            ) : (
-              <li class="page-item">
-                <button class="page-link" disabled>
-                  Next
-                </button>
-              </li>
-            )}
+
+            <li class="page-item">
+              <button
+                class="page-link"
+                onClick={nextPage}
+                disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
+              >
+                Next
+              </button>
+            </li>
           </ul>
         </nav>
       </div>
