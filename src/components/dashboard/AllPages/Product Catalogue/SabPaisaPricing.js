@@ -29,7 +29,7 @@ const SabPaisaPricing = () => {
   const { user } = useSelector((state) => state.auth);
 //  console.log("user", user);
   const { clientId,business_cat_code } = user.clientMerchantDetailsList[0];
-  console.log(business_cat_code)
+  
 
   const param = useParams();
 
@@ -112,7 +112,7 @@ const SabPaisaPricing = () => {
             business_cat_code==="37" && Products.plan_code =="005"?<></>:
             
             <div className={Products?.plan_id===45? "col-lg-12 px-1" : "col-lg-3 px-1"}  >
-              {console.log(Products.plan_id , ">>>>>>>>>>", Products.plan_name)}
+              
               <div
                 class="card heightcards"
               >
