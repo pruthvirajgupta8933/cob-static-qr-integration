@@ -195,7 +195,7 @@ function NewRegistraion() {
                 Previous
               </a>
             </li>
-            {pageNumbers.map((pgNumber, i) => (
+            {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
               <li
                 key={i}
                 className={
