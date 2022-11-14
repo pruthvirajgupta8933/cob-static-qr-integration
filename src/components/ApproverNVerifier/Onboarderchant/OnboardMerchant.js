@@ -528,10 +528,16 @@ const OnboardMerchant = () => {
                                       <span
                                         className="hide-password"
                                         onClick={handleClickShowPassword}
+                                        style={{marginTop:"49px",marginRight:"-20px"}}
                                       >
-                                        {valuesIn.showPassword
-                                          ? "Hide"
-                                          : "Show"}
+                                        {valuesIn.showPassword ? (
+                                  <i class="fa fa-eye" aria-hidden="true"></i>
+                                ) : (
+                                  <i
+                                    class="fa fa-eye-slash"
+                                    aria-hidden="true"
+                                  ></i>
+                                )}
                                       </span>
                                     </div>
                                   </div>
