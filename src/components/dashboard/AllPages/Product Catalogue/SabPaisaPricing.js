@@ -27,7 +27,7 @@ const SabPaisaPricing = () => {
     dispatch(productSubscribeState(value));
   };
   const { user } = useSelector((state) => state.auth);
- console.log("user", user);
+//  console.log("user", user);
   const { clientId,business_cat_code } = user.clientMerchantDetailsList[0];
   console.log(business_cat_code)
 
@@ -108,7 +108,11 @@ const SabPaisaPricing = () => {
           <div class="row">
           {spinner && <span className="spinner-border" role="status"></span>}
           {productDetails.map((Products, i) => (
+            
+            business_cat_code==="37" && Products.plan_code =="005"?<></>:
+            
             <div className={Products?.plan_id===45? "col-lg-12 px-1" : "col-lg-3 px-1"}  >
+              {console.log(Products.plan_id , ">>>>>>>>>>", Products.plan_name)}
               <div
                 class="card heightcards"
               >
@@ -187,8 +191,9 @@ const SabPaisaPricing = () => {
 
                           <div class="text-center">
                             <h2 className="manshacss">
-                              Mansha(bot) will now help you integrate your
-                              website with our payment product.
+                            Our team will contact you and help you integrate your platform.
+                            Till then, please familiarize yourself with our <Link to={`/dashboard`}>Dashboard</Link>
+
                             </h2>
                           </div>
                           <div class="row">
