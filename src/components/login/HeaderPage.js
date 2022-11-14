@@ -267,34 +267,63 @@ function HeaderPage() {
         <label className="menu-icon" htmlFor="menu-btn">
           <span className="navicon"></span>
         </label>
+
+        
         <ul className="menu">
-          <li>
-            <a
+          <li className="dropdown">
+            {/* <a
               href="https://sabpaisa.in/"
               target="_blank"
               rel="noreferrer noopener"
             >
               {" "}
               Products
-            </a>
+            </a> */}
+            
+            <button class="dropbtn">Products</button>
+            <div class="dropdown-content">
+              <a href="https://sabpaisa.in/payment-gateway/" target={"_blank"}>Payment Gateway</a>
+              <a href="https://sabpaisa.in/payouts/"  target={"_blank"}>Payouts</a>
+              <a href="https://sabpaisa.in/epos-app/"  target={"_blank"}>E-POS App</a>
+              <a href="https://sabpaisa.in/linkpaisa/"  target={"_blank"}>LinkPaisa</a>
+              <a href="https://sabpaisa.in/payment-links/"  target={"_blank"}>Payment Links</a>
+              <a href="https://sabpaisa.in/subscriptions/"  target={"_blank"}>Subscriptions</a>
+              <a href="https://sabpaisa.in/qwikform/"  target={"_blank"}>QwikForm</a>
+              <a href="https://sabpaisa.in/sabpaisa-e-challan-sabpaisa/"  target={"_blank"}>E-Challan</a>
+            </div>
+          
+           
+            
           </li>
-          <li>
-            <a
+          <li className="dropdown">
+            {/* <a
               href= "https://sabpaisa.in/sabpaisa-apis/"
               target="_blank"
               rel="noreferrer noopener"
             >
               APIs
-            </a>
+            </a> */}
+            <button class="dropbtn">APIs</button>
+            <div class="dropdown-content">
+              <a href="https://sabpaisa.in/subscriptions/" target={"_blank"}>Subscriptions APP</a>
+              <a href="https://sabpaisa.in/payouts-api/"  target={"_blank"}>Payouts API</a>
+              <a href="https://sabpaisa.in/payment-links/"  target={"_blank"}>Payment Links API</a>
+            </div>
           </li>
-          <li>
-            <a
+          <li className="dropdown">
+            {/* <a
               target="_blank"
               href="https://sabpaisa.in/"
               rel="noreferrer noopener"
             >
               Developers
-            </a>
+            </a> */}
+            <button class="dropbtn">Developers</button>
+            <div class="dropdown-content">
+              <a href="https://sabpaisa.in/integration-kits/" target={"_blank"}>Integration Kits</a>
+              <a href="https://sabpaisa.in/uat-checklist/"  target={"_blank"}>UAT Checklist</a>
+              <a href="https://sabpaisa.in/api-reference/"  target={"_blank"}>API Reference</a>
+            </div>
           </li>
           <li>
             <a
@@ -321,6 +350,10 @@ function HeaderPage() {
             <p className="loginContacthelp">Need Help ?</p>
           </li> */}
         </ul>
+
+          
+
+
       </header>
     </div>
   );

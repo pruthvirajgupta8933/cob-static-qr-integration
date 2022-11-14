@@ -291,8 +291,9 @@
   }
   .header .menu {
     clear: none;
-    float: right;
+    /* float: right; */
     max-height: none;
+    margin: 0 25%;
   }
   .header .menu-icon {
     display: none;
@@ -344,3 +345,4 @@
   line-height: 27px;
   letter-spacing: 0.03em;
 }
+
