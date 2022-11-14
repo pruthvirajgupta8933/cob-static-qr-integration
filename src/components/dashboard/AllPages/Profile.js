@@ -198,16 +198,16 @@ export const Profile = () => {
   <ul class="list-group">
     <li class="list-group-item">
       <div class="col-lg-6">
-          <label><strong>User Name</strong> -</label>
+          <label><strong>User Name :</strong></label>
           <span>
-            <input className={`form-control ${errors.clientName ? "is-invalid" : ""}`} {...register("clientName" )} type="text" id="clientName " name="clientName" className="form-control- border-0 text-uppercase" onChange={(e) => e.target.value} readonly />
+            <input className={` border-0  text-uppercase ${errors.clientName ? "is-invalid" : ""}`} {...register("clientName" )} type="text" id="clientName " name="clientName"  onChange={(e) => e.target.value} readonly />
           </span>
           <p className="invalid-feedback">
             {errors.clientName?.message}
           </p>
       </div>
       <div class="col-lg-6"> 
-        <label><strong>Email id</strong> -</label>
+        <label><strong>Email id :</strong></label>
         <span>
           <input type="text" id="email" className="form-control- border-0" name="email" {...register("email")} readonly />
         </span>
@@ -215,14 +215,14 @@ export const Profile = () => {
       </div>
       
       <div class="col-lg-6">
-        <label><strong>Account Type</strong> -</label>
+        <label><strong>Account Type :</strong></label>
         <input className={` text-uppercase border-0 ${errors.phone ? "is-invalid" : ""}`} {...register("accountType")} type="text" id="accountType" name="accountType" onChange={(e) => e.target.value} readonly />
         <p className="invalid-feedback">
           {errors.phone?.message}
         </p>
       </div>
       <div class="col-lg-6">
-        <label><strong>Phone No.</strong> -</label>
+        <label><strong>Phone No. :</strong></label>
         <span>
           <input className={`form-control- border-0 ${errors.phone ? "is-invalid" : ""}`} {...register("phone")} type="text" id="phone" name="phone" onChange={(e) => e.target.value} readonly />
         </span>
@@ -232,9 +232,9 @@ export const Profile = () => {
       </div>
       
     </li>
-    <li class="list-group-item">
+    {roleBasedShowTab.merchant ?  <li class="list-group-item">
     <div class="col-lg-12 text-center"> 
-        <label><strong>Change Password</strong></label> -<br/>
+        {/* <label><strong>Change Password</strong></label> -<br/> */}
         <Link to={`/dashboard/change-password`}>
           <button type="button" class="form-control btn btn-primary for_passwrd w-50" >
             Change Password
@@ -242,7 +242,8 @@ export const Profile = () => {
         </Link>
         <p className="invalid-feedback">{errors.clientName?.message}</p>
       </div>
-      </li>
+      </li> : <></>}
+   
   </ul>
 </form>
 
