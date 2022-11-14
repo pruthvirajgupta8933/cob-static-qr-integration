@@ -108,7 +108,7 @@ const SabPaisaPricing = () => {
           <div class="row">
           {spinner && <span className="spinner-border" role="status"></span>}
           {productDetails.map((Products, i) => (
-            <div class="col-lg-3 px-1">
+            <div className={Products?.plan_id===45? "col-lg-12 px-1" : "col-lg-3 px-1"}  >
               <div
                 class="card heightcards"
               >
@@ -120,12 +120,12 @@ const SabPaisaPricing = () => {
                       <h1 class="card-title- cardoneheadingcss pb-3-">
                         {Products.plan_name}
                       </h1>
-                      <p className="text-center bold-font mb-1- price">
+                      <span className="text-center bold-font mb-1- price">
                       {/* {console.log(">>>>>>>>>>",Products.plan_price, Products.plan_type)} */}
                         {/* {Products?.plan_price} */}
                         {Products.plan_price=="Connect" && Products.plan_name == "Enterprise" ?null :Products?.plan_price }
                         
-                      </p>
+                      </span>
                       <h3 className="paragraphcsss text-center">
                       
                         {Products?.plan_type}
@@ -162,7 +162,7 @@ const SabPaisaPricing = () => {
                   >
                     <div
                       class="modal-dialog"
-                      style={{ maxWidth: 480 }}
+                      style={{ maxWidth: "50%" }}
                       role="document"
                     >
                       <div class="modal-content">
@@ -229,7 +229,7 @@ const SabPaisaPricing = () => {
                     {Products?.plan_description
                       .split(",")
                       .map((details, i) => (
-                        <p className="firstli1 mb-2">{details}</p>
+                        <p className="firstli1 mb-1">{details}</p>
                       ))}
                   </div>
                 </div>

@@ -300,7 +300,7 @@ function LoginPage() {
                             </Formik>
                           </div>
                           <div className="logmod__form- m-r-l-100 mt-3 termsconditionss NunitoSans-Regular">
-                            <p>Term of Service | Privacy Policy | Contact us</p>
+                            <p><a href="https://sabpaisa.in/term-conditions/" target={"_blank"} alt="SabPaisa Terms & Conditions" title="SabPaisa Terms & Conditions">Terms & Conditions</a> | <a href="https://sabpaisa.in/privacy-policy/" target={"_blank"} alt="SabPaisa Privacy Policy" title="SabPaisa Privacy Policy">Privacy Policy</a></p>
                           </div>
                         </div>
                       </div>

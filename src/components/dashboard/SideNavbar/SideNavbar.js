@@ -159,14 +159,14 @@ function SideNavbar() {
                     <React.Fragment></React.Fragment>
                   )}
 
-                  {((roleBasedShowTab?.approver === true) || (roleBasedShowTab?.verifier === true)) ?
+                  {/* {((roleBasedShowTab?.approver === true) || (roleBasedShowTab?.verifier === true)) ?
                     <li className="ant-menu-item" role="menuitem" >
                       <Link to={`${url}/onboard-merchant`} className='txt-white sidenavFonts'><i class="fa fa-user" aria-hidden="true"></i><span>&nbsp;Onboard Merchant</span>
                       </Link>
                     </li>
                     : 
                     <React.Fragment></React.Fragment>
-                    }
+                    } */}
 
                   <li
                     className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open"

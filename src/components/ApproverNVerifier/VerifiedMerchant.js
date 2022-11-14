@@ -11,6 +11,7 @@ import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 function VerifiedMerchant() {
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
   const [spinner, setSpinner] = useState(true);
+  const [dataCount, setDataCount] = useState("");
   const [merchantData, setMerchantData] = useState([]);
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
@@ -28,6 +29,8 @@ function VerifiedMerchant() {
     await axiosInstanceAuth.get(`${API_URL.KYC_FOR_VERIFIED}`).then((res) => {
       const data = res.data.results;
       setMerchantData(data);
+      const dataCoun = res?.data?.count;
+      setDataCount(dataCoun);
     });
   };
 
@@ -64,10 +67,12 @@ function VerifiedMerchant() {
     }
   }, [searchText]);
   const indexOfLastRecord = currentPage * pageSize;
-  const nPages = Math.ceil(merchantData.length / pageSize);
+  // const nPages = Math.ceil(notFilledData.length / pageSize);
 
-  const pageNumbers = [...Array(nPages + merchantData.length).keys()].slice(1);
+  // console.log(notFilledData.length, "Data =======>");
 
+  const totalPages = Math.ceil(dataCount / pageSize);
+  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
   // console.log(pageNumbers, "pageNumbers ===>");
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
   // const currentRecords = pendingKycData.slice(
@@ -178,7 +183,7 @@ function VerifiedMerchant() {
                 Previous
               </a>
             </li>
-            {pageNumbers.map((pgNumber, i) => (
+            {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
               <li
                 key={i}
                 className={

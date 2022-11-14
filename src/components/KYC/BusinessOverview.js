@@ -291,13 +291,13 @@ function BusinessOverview(props) {
           <Form>
             {console.log(formik)}
             {console.log(formik.errors)}
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <label class="col-form-label mt-0 p-2">
+                
                   Business Type<span style={{ color: "red" }}>*</span>
-                </h4>
+                
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              
                 <FormikController
                   control="select"
                   name="business_type"
@@ -306,15 +306,15 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-              </div>
+             
             </div>
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 p-2 mt-0">
-                <h4 class="text-kyc-label text-nowrap">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <label class="p-2 mt-0">
+                
                   Business Category<span style={{ color: "red" }}>*</span>
-                </h4>
+                
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              
                 <FormikController
                   control="select"
                   name="business_category"
@@ -323,16 +323,17 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-              </div>
+              
             </div>
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
-                <h4 class="text-kyc-label text-nowrap">
-                  Business Label<span style={{ color: "red" }}>*</span>
-                </h4>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+              <label class="col-form-label p-2 mt-0">
+               
+                  Business Label <span style={{ color: "red" }}>*</span> 
+                 
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              
+              
                 <FormikController
                   control="textArea"
                   type="text"
@@ -341,22 +342,26 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-                  <span style={{fontSize: "12px" }}>
+                  <span style={{fontSize: "13px" }}>
                   Please give a brief description of the nature of your
                   business. Please give examples of products you sell, business
                   categories you operate in, your customers and channels through
                   which you operate (website, offline retail).
                 </span>
-              </div>
+
+                <div class="my-5- p-2- w-100 pull-left">
+                  <hr style={{ borderColor: "#D9D9D9", textShadow: "2px 2px 5px grey", width: "100%",}}/>
+                </div>
+              
             </div>
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
-                <h4 class="text-kyc-label text-wrap">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+              <label class="col-form-label p-2 mt-0">
+               
                   How do you wish to accept payments?<span style={{ color: "red" }}>*</span>
-                </h4>
+               
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              
                 <FormikController
                   control="radio"
                   onChange={(e) => {
@@ -368,7 +373,7 @@ function BusinessOverview(props) {
                   }}
                   name="seletcted_website_app_url"
                   options={WebsiteAppUrl}
-                  className="form-control"
+                  className="form-control pull-left mr-2"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
@@ -378,13 +383,14 @@ function BusinessOverview(props) {
                     control="input"
                     type="text"
                     name="website_app_url"
-                    className="form-control"
+                    placeHolder="Enter your website/ app URL"
+                    className="form-control pull-left"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                     readOnly={readOnly}
                   />
                 </div>
               )}
-              </div>
+              
               
             </div>
 
@@ -414,13 +420,13 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div> */}
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
-                <h4 class="text-kyc-label text-nowrap">
+            <div class="col-sm-4 col-md-4 col-lg-4">
+              <label class="col-form-label p-2 mt-0">
+                
                   Company Website<span style={{ color: "red" }}>*</span>
-                </h4>
+                
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              
                 <FormikController
                   control="input"
                   type="text"
@@ -429,7 +435,7 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-              </div>
+              
             </div>
             {/* <div className="form-group col-md-4 mt-3">
               <label><h4 class ="font-weight-bold">Company website <span style={{color:"red"}}>*</span></h4></label>
@@ -456,13 +462,13 @@ function BusinessOverview(props) {
                 />
               </div> */}
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
-                <h4 class="text-kyc-label text-nowrap">
+            <div class="col-sm-4 col-md-4 col-lg-4">
+              <label class="col-form-label p-2 mt-0">
+                
                   Expected Transactions<span style={{ color: "red" }}>*</span>
-                </h4>
+                
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              
                 <FormikController
                   control="input"
                   type="text"
@@ -472,14 +478,14 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
-                <h4 class="text-kyc-label text-nowrap">
+            
+            <div class="col-sm-4 col-md-4 col-lg-4">
+              <label class="col-form-label p-2 mt-0">
+               
                   Avg Ticket Size<span style={{ color: "red" }}>*</span>
-                </h4>
+               
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              
                 <FormikController
                   control="input"
                   type="text"
@@ -489,7 +495,7 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div>
-            </div>
+            
 
             {/* <div className="form-group col-md-5">
               <label><h4 class ="font-weight-bold">Do you need SabPaisa to build your form<span style={{color:"red"}}>*</span></h4></label>
@@ -503,7 +509,7 @@ function BusinessOverview(props) {
                 />
               </div> */}
 
-            <div class="my-5 p-2">
+            <div class="my-5- p-2- w-100 pull-left">
               <hr
                 style={{
                   borderColor: "#D9D9D9",
@@ -513,17 +519,17 @@ function BusinessOverview(props) {
               />
               <div class="mt-2">
                 <div class="row">
-                  <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
+                  <div class="col-sm-12 col-md-12 col-lg-12 col-form-label">
                   {/* {console.log("VerifyKycStatus",VerifyKycStatus)} */}
                     {VerifyKycStatus === "Verified" ? null : (
                       <button
-                        className="btn float-lg-right"
+                        className="btn float-lg-right btn-primary"
                         type="submit"
-                        style={{ backgroundColor: "#0156B3" }}
+                        
                       >
-                        <h4 className="text-white text-kyc-sumit">
+                       
                           {buttonText}
-                        </h4>
+                        
                       </button>
                     )}
                   </div>

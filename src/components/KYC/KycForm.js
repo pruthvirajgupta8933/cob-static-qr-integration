@@ -329,17 +329,8 @@ function KycForm() {
 
                   <div class="col-lg-9">
                     <div
-                      className="card"
-                      style={{
-                        backgroundColor: "#F2F2F2",
-                        // width: "55rem",
-                        height: "711px",
-                        marginTop: "0rem",
-                        width: "797px",
-                        boxShadow: "0px 4px 14px 4px rgba(0, 0, 0, 0.25)",
-                        borderRadius: "0px",
-                        overflowY: "scroll",
-                      }}
+                      className="card cardsection"
+                     
                     >
                       <div class="card-body">
                         <h1 class="card-title text-kyc-header mb-5">

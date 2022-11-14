@@ -8,8 +8,8 @@
 .activepaylink-kyc {
   background-color: #4bb543;
   color: white !important ;
-  margin-left: -54px;
-  padding-left: 71px;
+  margin-left: -36px;
+  padding-left: 46px;
 }
 
 /* .inactive::before {
@@ -237,8 +237,9 @@
 }
 
 .text-font-ForStatusChange::before {
-  position: fixed;
-  left: -55px;
+  /* position: fixed; */
+  position: relative;
+  left: -7px;
   content: url(../../assets/images/check.png);
   display: inline-block;
 }
@@ -273,4 +274,58 @@
   font-style: normal;
   font-weight: 700;
   font-size: 17px;
+}
+
+.cardsection{
+    background-color: #F2F2F2;                       
+    height: 711px;
+    margin-top: 0rem;
+    width: 797px;
+    box-shadow: 0px 4px 14px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0px;
+    overflow-Y: scroll !important;
+}
+.otpbtn{
+  position: absolute !important;
+    right: 16px;
+    top: 38px;
+}
+.otpbtn a{
+  border-radius: 0 6px 6px 0;
+}
+.otpbtngst{
+  /* right: 3px;
+  
+  top: -51px;
+  border-radius: 0 6px 6px 0; */
+    right: 107px;
+    position: absolute !important;
+    top: 38px;}
+.otpbtngst a{
+    border-radius: 0 6px 6px 0;
+}
+
+.otpbtndetail{
+  top: 39px;
+    position: absolute !important;
+    right: 106px;
+}
+.otpbtndetail a{
+    border-radius: 0 6px 6px 0;
+}
+.otpbtnaccnt{
+  top: 39px;
+    position: absolute !important;
+    right: 105px;
+}
+.otpbtnaccnt a{
+    border-radius: 0 6px 6px 0;
+}
+.marg-b p.text-danger{
+  margin-bottom:0;
+}
+.success img{
+  position: absolute;
+    top: 43px;
+    right: 24px;
 }

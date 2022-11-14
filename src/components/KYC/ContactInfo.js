@@ -263,13 +263,14 @@ function ContactInfo(props) {
         }) => (
           <Form>
             {/* {console.log(formik)} */}
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
+            
+              <div class="col-sm-6 col-md-6 col-lg-6 ">
+              <label class="col-form-label mt-0 p-2">
+                
                   Contact Name<span style={{ color: "red" }}>*</span>
-                </h4>
+                
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              {/* <div class="col-sm-7 col-md-7 col-lg-7"> */}
                 <FormikController
                   control="input"
                   type="text"
@@ -278,16 +279,18 @@ function ContactInfo(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-              </div>
+              {/* </div> */}
+              
             </div>
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
+            
+            <div class="col-sm-6 col-md-6 col-lg-6 ">
+              <label class="col-form-label mt-0 p-2">
+                
                   Aadhaar No.<span style={{ color: "red" }}>*</span>
-                </h4>
+                
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              
                 <FormikController
                   control="input"
                   type="text"
@@ -297,7 +300,7 @@ function ContactInfo(props) {
                   readOnly={readOnly}
                 />
               </div>
-            </div>
+           
 
             {/*  Modal Popup for Otp Verification Email*/}
             <MailVerificationModal
@@ -306,14 +309,14 @@ function ContactInfo(props) {
             />
             {/*  Modal Popup for Otp Verification Email*/}
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
+            <div class="col-sm-6 col-md-6 col-lg-6 ">
+              <label class="col-form-label mt-0 p-2">
+                
                   Contact Number<span style={{ color: "red" }}>*</span>
-                </h4>
+                
               </label>
 
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              
                 <FormikController
                   control="input"
                   type="text"
@@ -328,18 +331,14 @@ function ContactInfo(props) {
                   KycList?.isContactNumberVerified === 1 &&
                   !errors.hasOwnProperty("contact_number") &&
                   !errors.hasOwnProperty("oldContactNumber") ? (
-                  <span>
+                  <span className="success">
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>
                 ) : role.merchant ? (
-                  <div class="position-sticky pull-right">
+                  <div class="position-sticky pull-right- otpbtn">
                     <a
                       href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn"
-                      style={{
-                        boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                        borderRadius: "6px",
-                      }}
+                      className="btn btnbackground text-white btn-sm optbtn-"
                       onClick={() => {
                         checkInputIsValid(
                           errors,
@@ -361,7 +360,7 @@ function ContactInfo(props) {
                     {errors?.oldContactNumber}
                   </span>
                 )}
-              </div>
+              
             </div>
 
             {/*  Modal Popup for Otp Verification */}
@@ -371,14 +370,14 @@ function ContactInfo(props) {
             />
             {/*  Modal Popup for Otp Verification Mobile */}
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label mt-0 p-2">
-                <h4 class="text-kyc-label text-nowrap">
+            <div class="col-sm-6 col-md-6 col-lg-6 ">
+              <label class="col-form-label mt-0 p-2">
+                
                   Email Id<span style={{ color: "red" }}>*</span>
-                </h4>
+                
               </label>
 
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              
                 <FormikController
                   control="input"
                   type="text"
@@ -392,19 +391,15 @@ function ContactInfo(props) {
                   KycList?.isEmailVerified === 1 &&
                   !errors.hasOwnProperty("email_id") &&
                   !errors.hasOwnProperty("oldEmailId") ? (
-                  <span>
+                  <span className="success">
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>
                 ) : role.merchant ? (
-                  <div class="position-sticky pull-right">
+                  <div class="position-sticky pull-right- otpbtn">
                     {/* optbtn */}
                     <a
                       href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn"
-                      style={{
-                        boxShadow: "0px 11px 14px 4px rgba(0, 0, 0, 0.25)",
-                        borderRadius: "6px",
-                      }}
+                      className="btn btnbackground text-white btn-sm optbtn-"
                       onClick={() => {
                         checkInputIsValid(
                           errors,
@@ -424,7 +419,7 @@ function ContactInfo(props) {
                   <span className="text-danger">{errors?.oldEmailId}</span>
                 )}
               </div>
-            </div>
+                 
 
             {/*         
           <div class="float-right ml-5">
@@ -437,7 +432,7 @@ function ContactInfo(props) {
           
           </div> */}
 
-            <div class="my-5 p-2">
+            <div class="my-5- p-2- w-100 pull-left">
               <hr
                 style={{
                   borderColor: "#D9D9D9",
@@ -446,17 +441,17 @@ function ContactInfo(props) {
                 }}
               />
               <div class="row">
-                <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
+                <div class="col-sm-12 col-md-12 col-lg-12 col-form-label">
                   {VerifyKycStatus === "Verified" ? null : (
                     <button
                       type="submit"
-                      className="btn float-lg-right"
-                      style={{ backgroundColor: "#0156B3" }}
+                      className="btn float-lg-right btn-primary"
+                     
                     >
-                      <h4 className="text-white text-kyc-sumit">
+                      
                         {" "}
                         {buttonText}
-                      </h4>
+                      
                     </button>
                   )}
                 </div>
