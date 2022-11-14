@@ -13,31 +13,23 @@ import { Link } from "react-router-dom";
 
 const SabPaisaPricing = () => {
   const history = useHistory();
-  // const { dashboard } = useSelector((state) => state);
   const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
-
-  // console.log(spinner,"here is spinner")
-  const productArr = [];
-
-  // const [serviceId, setServiceId] = useState(null)
+  
   const dispatch = useDispatch();
   const clickHandler = (value) => {
     history.push("/dashboard");
     dispatch(productSubscribeState(value));
   };
   const { user } = useSelector((state) => state.auth);
-//  console.log("user", user);
   const { clientId,business_cat_code } = user.clientMerchantDetailsList[0];
   
 
   const param = useParams();
 
   useEffect(() => {
-    // console.log("parma",param);
+   
     const id = param?.id;
-    const name = param;
-    // console.log("this is params : ", name?.name)
     let url = API_URL.PRODUCT_SUB_DETAILS + "/" + id;
     axiosInstanceAuth
       .get(url)
@@ -65,7 +57,7 @@ const SabPaisaPricing = () => {
       planName: plan_name,
       applicationId: param?.id,
     };
-    // console.log("postData", postData);
+    
 
     const res = await axiosInstanceAuth.post(
       API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
@@ -77,22 +69,11 @@ const SabPaisaPricing = () => {
       toastConfig.errorToast("something went wrong");
     }
   };
-
-  // const handleClick = (plan_id) => {
-  //   const data = {
-  //     clientId: clientId,
-  //     clientName: clientName,
-  //     plan_id: plan_id,
-  //     application_id: param?.id,
-  //   }
-
-  //   console.log("the main data", data)
-  // }
   return (
     <section className="ant-layout">
       <div>
         <NavBar />
-        {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
+        
       </div>
       <main className="gx-layout-content ant-layout-content Satoshi-Medium">
         <div>
@@ -109,7 +90,7 @@ const SabPaisaPricing = () => {
           {spinner && <span className="spinner-border" role="status"></span>}
           {productDetails.map((Products, i) => (
             
-            business_cat_code==="37" && Products.plan_code =="005"?<></>:
+            business_cat_code==="37" && Products.plan_code ==="005"?<></>:
             
             <div className={Products?.plan_id===45? "col-lg-12 px-1" : "col-lg-3 px-1"}  >
               
@@ -125,9 +106,8 @@ const SabPaisaPricing = () => {
                         {Products.plan_name}
                       </h1>
                       <span className="text-center bold-font mb-1- price">
-                      {/* {console.log(">>>>>>>>>>",Products.plan_price, Products.plan_type)} */}
-                        {/* {Products?.plan_price} */}
-                        {Products.plan_price=="Connect" && Products.plan_name == "Enterprise" ?null :Products?.plan_price }
+                    
+                        {Products.plan_price==="Connect" && Products.plan_name === "Enterprise" ?null :Products?.plan_price }
                         
                       </span>
                       <h3 className="paragraphcsss text-center">
@@ -148,13 +128,11 @@ const SabPaisaPricing = () => {
                       >
                         Choose Plan
                       </button>
-                      {/* <button type="button" className=" font-weight-bold btn choosePlan-1 btn-lg" data-toggle="modal" data-target="#exampleModal"><span style={{ color: "#1465FA" }} onClick={() => handleClick(productDetails[0].plan_id)}>Choose Plan</span></button> */}
+                    
                     </div>
                   </div>
 
-                  {/* <button onClick={() => clickHandler(true)} type="button" className="figmacssforchooseplan mt-2" data-toggle="modal" data-target="#exampleModal">
-                    <h5 className="chooseplanheadingcss">Choose Plan</h5>
-                  </button> */}
+            
 
                   <div
                     class="modal fade"
@@ -192,7 +170,7 @@ const SabPaisaPricing = () => {
                           <div class="text-center">
                             <h2 className="manshacss">
                             Our team will contact you and help you integrate your platform.
-                            Till then, please familiarize yourself with our <Link to={`/dashboard`}>Dashboard</Link>
+                            Till then, please familiarize yourself with our Dashboard
 
                             </h2>
                           </div>
@@ -217,7 +195,7 @@ const SabPaisaPricing = () => {
                                onClick={() => clickHandler(true)}
                                data-dismiss="modal"
                             >
-                              Close
+                              Return to Dashboard
                             </button>
                             
                           </div>
