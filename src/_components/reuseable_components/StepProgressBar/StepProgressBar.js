@@ -113,7 +113,7 @@ function StepProgressBar(props) {
             </div>
             <div
               className="steps-text"
-              style={{ width: 60, marginTop: 60, marginLeft: 0 }}
+              style={{ width: 60, marginTop: 60, marginLeft: 0,fontSize:"12px" }}
             >
               {s.title}
             </div>

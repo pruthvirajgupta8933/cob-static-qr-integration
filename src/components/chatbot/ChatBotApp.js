@@ -65,7 +65,6 @@ const config = {
   headerTitle:<HeaderChatBot />,
   opened:opened,
   // headerIcon:<HeaderChatBot />
-
 };
   return (  
     <ThemeProvider theme={theme}>
