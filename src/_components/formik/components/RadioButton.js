@@ -11,7 +11,7 @@ function RadioButtons(props) {
           const { field } = formik
           return options.map(option => {
             return (
-              <div key={option.key}>
+              <div key={option.key} className="m-2">
                 <input
                   type="radio"
                   id={option.value}
@@ -20,7 +20,7 @@ function RadioButtons(props) {
                   value={option.value}
                   checked={field.value === option.value}
                 />
-                <label htmlFor={option.value}>{option.key}</label>
+                <label htmlFor={option.value} className="d-block">{option.key}</label>
               </div>
             )
           })

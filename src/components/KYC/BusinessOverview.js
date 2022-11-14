@@ -373,7 +373,7 @@ function BusinessOverview(props) {
                   }}
                   name="seletcted_website_app_url"
                   options={WebsiteAppUrl}
-                  className="form-control pull-left"
+                  className="form-control pull-left mr-2"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
@@ -383,6 +383,7 @@ function BusinessOverview(props) {
                     control="input"
                     type="text"
                     name="website_app_url"
+                    placeHolder="Enter your website/ app URL"
                     className="form-control pull-left"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                     readOnly={readOnly}

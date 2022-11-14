@@ -259,6 +259,7 @@ function BankDetails(props) {
   }, [role]);
 
   const checkInputIsValid = (err, val, setErr, setFieldTouched, key) => {
+  
     const hasErr = err.hasOwnProperty(key);
 
     const fieldVal = val[key];
@@ -277,6 +278,9 @@ function BankDetails(props) {
     if (!hasErr && isValidVal && val[key] !== "" && key === "ifsc_code") {
       ifscValidationNo(val[key]);
     }
+
+
+
     if (!hasErr && isValidVal && val[key] !== "" && key === "account_number") {
       const ifscCodeVal = val?.ifsc_code;
       bankAccountValidate(val[key], ifscCodeVal);
