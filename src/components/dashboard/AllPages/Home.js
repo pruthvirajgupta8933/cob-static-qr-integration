@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  successTxnSummary,
   subscriptionplan,
   clearSuccessTxnsummary,
 } from "../../../slices/dashboardSlice";
-// import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
 import { useRouteMatch, Redirect } from "react-router-dom";
 import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png";
 import { Link } from "react-router-dom";
 import "../css/Home.css";
 
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import { kycModalToggle, GetKycTabsStatus, kycUserList } from "../../../slices/kycSlice";
-// import KycAlert from "../../KYC/KycAlert";
+import {  GetKycTabsStatus, kycUserList } from "../../../slices/kycSlice";
 import NavBar from "../NavBar/NavBar";
 import bro from "../../../assets/images/bro.png";
 import congratsImg from "../../../assets/images/congImg.png";
@@ -28,7 +25,6 @@ import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 
 function Home() {
-  // console.log("home page call");
   const roles = roleBasedAccess();
 
   const dispatch = useDispatch();
@@ -62,13 +58,12 @@ function Home() {
   //   setModalState(!modalState);
   // }
 
-  // dispatch action when client code change
+  
   useEffect(() => {
     const objParam = { fromDate, toDate, clientCode };
     var DefaulttxnList = [];
     SetTxnList(DefaulttxnList);
     SetShowData(DefaulttxnList);
-    // console.log(objParam);
     dispatch(subscriptionplan);
     // dispatch(successTxnSummary(objParam));
     dispatch(
@@ -76,7 +71,6 @@ function Home() {
         login_id: user?.loginId,
       })
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clientCode]);
 
   useEffect(() => {
@@ -128,7 +122,6 @@ function Home() {
   }, [search]);
 
   useEffect(() => {
-    // localStorage.setItem("subscribePlan",0);
 
     dispatch(kycUserList({ login_id: user?.loginId }))
     return () => {
@@ -158,7 +151,6 @@ function Home() {
 
   return (
     <section className="ant-layout Satoshi-Medium">
-      {/* {console.log("kyc?.KycTabStatusStore?.is_verified",kyc?.KycTabStatusStore?.is_verified)} */}
       {/* {kyc?.KycTabStatusStore?.is_verified === false ? <KycModal /> : <></>} */}
 
       <div>
@@ -460,28 +452,16 @@ function Home() {
           <React.Fragment></React.Fragment>
         )}
 
-        {/* <h2 class="card-title">Enable International Payments Today</h2>
-            <p class="card-text">
-              With supporting text below as a natural lead-in to additional
-              content.
-            </p>
-            <Link to={`dashboard/product-catalogue`}><button className="ColrsforredirectProdct text-white mt-2">See All Products</button></Link> */}
+       
       </div>
-      {/* </div> */}
+     
       {/* KYC container end here */}
 
-      {/* 
-    <div className='announcement-banner-container'>
-      <div className='announcement-banner'>
-        <div className='title'>tesging</div>
-      </div>
-    </div> */}
+    
 
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
-          {/* <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Dashboard</h1>
-          </div> */}
+        
           <section
             className="features8 cid-sg6XYTl25a flleft"
             id="features08-3"

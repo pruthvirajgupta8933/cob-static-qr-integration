@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { Redirect, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import NewRegistraion from './NewRegistraion';
 import VerifiedMerchant from './VerifiedMerchant';
 import ApprovedMerchant from './ApprovedMerchant';
@@ -16,6 +16,7 @@ import RejectedKYC from './RejectedKYC';
 
 function Approver() {
     const [tab,SetTab] = useState(1);
+  
 
     const { auth} = useSelector((state)=>state);
     const {user} = auth;
@@ -32,6 +33,10 @@ function Approver() {
 
     }
   } 
+
+  const redirect = () => {
+    history.push("/dashboard/onboard-merchant");
+  };
     
    
 
@@ -44,6 +49,13 @@ function Approver() {
       <div className="gx-main-content-wrapper">
         <div className="right_layout my_account_wrapper right_side_heading">
           <h1 className="m-b-sm gx-float-left">Merchant List</h1>
+<div class="container">
+  <div class="row">
+    <div class="mr-5"></div>
+    <button type="button" class="btn" style={{background:"#012167",color:"white"}} onClick={() => redirect()}>OnBoard Merchant</button>
+  </div>
+</div>
+          
         </div>
         <section className="features8 cid-sg6XYTl25a flleft-" id="features08-3-">
           <div className="container-fluid">

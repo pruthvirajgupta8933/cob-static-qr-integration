@@ -5,8 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { createClientProfile, updateClientProfile } from "../../../slices/auth";
 import { Link } from "react-router-dom";
-
-import profileService from "../../../services/profile.service";
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 import NavBar from "../NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
@@ -22,7 +20,6 @@ export const Profile = () => {
   const { user } = useSelector((state) => state.auth);
   const { dashboard } = useSelector((state) => state);
 
-  // const {fetchDcBankList,fetchNbBankList} = profileService
   const {
     clientMerchantDetailsList,
     loginId,
@@ -30,10 +27,7 @@ export const Profile = () => {
     clientEmail,
     clientMobileNo,
     accountHolderName,
-    accountNumber,
-    bankName,
     ifscCode,
-    pan,
     clientAuthenticationType,
   } = user;
 
@@ -49,10 +43,9 @@ export const Profile = () => {
   if (localStorage.getItem("DC_bank_list") !== null) {
     initDClist = JSON.parse(localStorage.getItem("DC_bank_list"));
   }
-  // console.log(clientMerchantDetailsList)
   // const clientMerchantDetailsList = user?.clientMerchantDetailsList;
   const clientId = user?.clientMerchantDetailsList[0]?.clientId;
-  // console.log(clientId)
+  
 
   // const clientId = user?.clientMerchantDetailsList[0]?.clientId;
 
@@ -82,7 +75,6 @@ export const Profile = () => {
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
-  // console.log(roleBasedShowTab);
 
   const LoggedUser = Object.keys(roleBasedShowTab).find(key => roleBasedShowTab[key] === true);
 
@@ -144,8 +136,6 @@ export const Profile = () => {
     // ),
   });
 
-  //   console.log(validationSchema);
-
   const formOptions = { resolver: yupResolver(validationSchema) };
 
   // get functions to build form with useForm() hook
@@ -179,23 +169,10 @@ export const Profile = () => {
       delete data.clientCode;
       dispatch(updateClientProfile({ data }));
     }
-    // isCreateorUpdate ? dispatch(createClientProfile(data)) : delete data.clientCode; dispatch(updateClientProfile({data,clientId}))
-
+    
   }
 
-  // const verifyClientCodeFn = (getCode) => {
-  //   getCode.length > 5 && getCode.length < 7
-  //     ? verifyClientCode(getCode)
-  //       .then((res) => {
-  //         setIsClientCodeValid(res.data);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //         setIsClientCodeValid(false);
-  //       })
-  //     : setIsClientCodeValid(null);
-  // };
-
+ 
 
 
 

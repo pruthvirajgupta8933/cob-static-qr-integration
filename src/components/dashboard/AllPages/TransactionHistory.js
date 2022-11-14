@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
-import axios from "axios";
 import _ from "lodash";
 import {
   clearTransactionHistory,
@@ -20,15 +19,14 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 import NavBar from "../../dashboard/NavBar/NavBar";
 import { axiosInstance } from "../../../utilities/axiosInstance";
 import moment from "moment";
-function TransactionHistory() {
+const TransactionHistory = () =>{
   const dispatch = useDispatch();
   const history = useHistory();
   const roles = roleBasedAccess();
-  // console.log(roles,"===>")
+ 
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
 
-  // console.log(roles,"<=== Roles ===>")
 
   const { isLoadingTxnHistory } = dashboard;
   // console.log(isLoadingTxnHistory,"===>")
@@ -52,8 +50,8 @@ function TransactionHistory() {
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
 
-  var now = moment().format("YYYY-M-D");
-  var splitDate = now.split("-");
+  let now = moment().format("YYYY-M-D");
+  let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
     splitDate[1] = "0" + splitDate[1];
   }
@@ -62,7 +60,7 @@ function TransactionHistory() {
   }
   splitDate = splitDate.join("-");
 
-  var clientMerchantDetailsList = [];
+  let clientMerchantDetailsList = [];
   if (
     user &&
     user?.clientMerchantDetailsList === null &&
@@ -130,7 +128,7 @@ function TransactionHistory() {
         SetPaymentStatusList(res.data);
       })
       .catch((err) => {
-        // console.log(err);
+        
       });
   };
 
@@ -142,7 +140,7 @@ function TransactionHistory() {
         SetPaymentModeList(res.data);
       })
       .catch((err) => {
-        // console.log(err);
+        
       });
   };
 
@@ -186,8 +184,7 @@ function TransactionHistory() {
     const dateRangeValid = checkValidation(fromDate, endDate);
 
     if (dateRangeValid) {
-      // isLoading(true);
-      // isButtonClicked(true);
+      
       let strClientCode,
         clientCodeArrLength = "";
 
@@ -213,12 +210,12 @@ function TransactionHistory() {
         page: "0",
         NoOfClient: clientCodeArrLength,
       };
-      // console.log(paramData)
+      
       dispatch(fetchTransactionHistorySlice(paramData));
     }
   };
   const checkValidation = (fromDate = "", toDate = "") => {
-    var flag = true;
+    let flag = true;
     if (fromDate === 0 || toDate === "") {
       alert("Please select the date.");
       flag = false;
@@ -227,7 +224,6 @@ function TransactionHistory() {
       const date2 = new Date(toDate);
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      // console.log("days",diffDays);
       if (diffDays < 0 || diffDays > 90) {
         flag = false;
         alert("The date range should be under 3 months");
@@ -403,13 +399,12 @@ function TransactionHistory() {
   const lastThreeMonth = new Date(today);
   lastThreeMonth.setDate(lastThreeMonth.getDate() - 90);
   lastThreeMonth.toLocaleDateString("en-ca");
-  var month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
-  var day = lastThreeMonth.getUTCDate();
-  var year = lastThreeMonth.getUTCFullYear();
+  let month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
+  let day = lastThreeMonth.getUTCDate();
+  let year = lastThreeMonth.getUTCFullYear();
   const finalDate = year + "-" + month + "-" + day;
 
-  // console.log(startDate);
-  // console.log("statrehere,",clientCodeOption)
+ 
   return (
     <section className="ant-layout Satoshi-Medium">
       <div>
