@@ -856,6 +856,7 @@ export const kycSlice = createSlice({
   extraReducers: {
     [kycUserList.pending]: (state, action) => {
       state.status = "pending";
+      state.KycTabStatusStore = {}
     },
     [kycUserList.fulfilled]: (state, action) => {
       state.kycUserList = action.payload;

@@ -307,15 +307,10 @@ function DocumentsUpload(props) {
           {(formik) => (
             <Form>
               <div className="form-row">
-                <div class="form-group row">
-                  <label class="col-sm-5 col-md-5 col-lg-5 col-form-label mt-0 p-2">
-                    <h4 class="text-kyc-label text-nowrap">
-                      Select Document Type
-                      <span style={{ color: "red" }}>*</span>
-                    </h4>
-                  </label>
-                  <div className="col-lg-7">
-                    <div style={{ width: "310px" }}>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                  <label class=" col-form-label mt-0 p-2">Select Document Type<span style={{ color: "red" }}>*</span></label>
+                  
+                   
                       <FormikController
                         control="select"
                         name="docType"
@@ -332,8 +327,7 @@ function DocumentsUpload(props) {
                         "docType",
                         setDocTypeIdDropdown(formik?.values?.docType)
                       )}
-                    </div>
-                  </div>
+                    
                 </div>
 
                 {role?.merchant ? (
@@ -573,16 +567,16 @@ function DocumentsUpload(props) {
                     role?.merchant ? (
                       <div class="col-12">
                         <button
-                          className="btn float-lg-right"
-                          style={{ backgroundColor: "#0156B3" }}
+                          className="btn float-lg-right btn-primary"
+                          
                           type="button"
                           onClick={() => {
                             formik.handleSubmit();
                           }}
                         >
-                          <h4 className="text-white text-kyc-sumit">
-                            &nbsp; &nbsp;{buttonText} &nbsp; &nbsp;
-                          </h4>
+                          
+                            {buttonText}
+                          
                         </button>
                       </div>
                     ) : (
