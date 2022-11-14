@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import NewRegistraion from './NewRegistraion';
 import VerifiedMerchant from './VerifiedMerchant';
@@ -8,31 +8,35 @@ import NavBar from "../../components/dashboard/NavBar/NavBar"
 import PendindKyc from './PendindKyc';
 import NotFilledKYC from './NotFilledKYC';
 import RejectedKYC from './RejectedKYC';
-
-// import SingleDocument from './SingleDocument';
-// import DocumentsUpload from './DocumentsUpload';
-// import SubmitKyc from './SubmitKyc';
-
+import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
+import { logout } from '../../slices/auth';
+import { useEffect } from 'react';
 
 function Approver() {
     const [tab,SetTab] = useState(1);
-  
+  const dispatch  = useDispatch();
 
     const { auth} = useSelector((state)=>state);
-    const {user} = auth;
+
     let history = useHistory();
 
-    // if(user && user.clientMerchantDetailsList===null){
-    //       history.push('/dashboard/profile');
-    // } 
-     
-  if(user.roleId!==3 && user.roleId!==13){
-    if(user.clientMerchantDetailsList===null){
-      // console.log("paylink");
-      history.push('/dashboard/profile');
 
-    }
-  } 
+
+    const loggedUser = roleBasedAccess()
+
+
+    useEffect(() => {
+      // console.log("loggedUser",loggedUser)
+      if(loggedUser?.approver || loggedUser?.verifier ){
+        // console.log(" valid")
+      }else{
+        // console.log("not valid")
+        dispatch(logout())
+      }
+  
+     
+    }, [loggedUser])
+
 
   const redirect = () => {
     history.push("/dashboard/onboard-merchant");
@@ -49,12 +53,12 @@ function Approver() {
       <div className="gx-main-content-wrapper">
         <div className="right_layout my_account_wrapper right_side_heading">
           <h1 className="m-b-sm gx-float-left">Merchant List</h1>
-<div class="container">
-  <div class="row">
-    <div class="mr-5"></div>
-    <button type="button" class="btn" style={{background:"#012167",color:"white"}} onClick={() => redirect()}>OnBoard Merchant</button>
-  </div>
-</div>
+            <div class="container">
+              <div class="row">
+                <div class="mr-5"></div>
+                <button type="button" class="btn" style={{background:"#012167",color:"white"}} onClick={() => redirect()}>OnBoard Merchant</button>
+              </div>
+            </div>
           
         </div>
         <section className="features8 cid-sg6XYTl25a flleft-" id="features08-3-">

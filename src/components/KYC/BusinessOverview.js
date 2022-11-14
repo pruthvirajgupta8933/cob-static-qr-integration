@@ -126,8 +126,8 @@ function BusinessOverview(props) {
       .nullable(),
       website_app_url: Yup.string().when(['seletcted_website_app_url'], {
         is: "Yes",
-        then: Yup.string().ensure().required("Website App Url is required"),
-        otherwise:Yup.string().notRequired()
+        then: Yup.string().ensure().required("Website App Url is required").nullable(),
+        otherwise:Yup.string().notRequired().nullable()
       }),
     expected_transactions: Yup.string()
       .required("Required")
@@ -278,6 +278,8 @@ function BusinessOverview(props) {
       setButtonText("Verify and Next");
     }
   }, [role]);
+
+  console.log("seletcted_website_app_url",initialValues)
 
   return (
     <div className="col-md-12 p-3">
