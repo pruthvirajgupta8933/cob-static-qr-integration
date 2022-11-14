@@ -567,16 +567,16 @@ function DocumentsUpload(props) {
                     role?.merchant ? (
                       <div class="col-12">
                         <button
-                          className="btn float-lg-right"
-                          style={{ backgroundColor: "#0156B3" }}
+                          className="btn float-lg-right btn-primary"
+                          
                           type="button"
                           onClick={() => {
                             formik.handleSubmit();
                           }}
                         >
-                          <h4 className="text-white text-kyc-sumit">
-                            &nbsp; &nbsp;{buttonText} &nbsp; &nbsp;
-                          </h4>
+                          
+                            {buttonText}
+                          
                         </button>
                       </div>
                     ) : (

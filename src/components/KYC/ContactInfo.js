@@ -445,13 +445,13 @@ function ContactInfo(props) {
                   {VerifyKycStatus === "Verified" ? null : (
                     <button
                       type="submit"
-                      className="btn float-lg-right"
-                      style={{ backgroundColor: "#0156B3" }}
+                      className="btn float-lg-right btn-primary"
+                     
                     >
-                      <h4 className="text-white text-kyc-sumit">
+                      
                         {" "}
                         {buttonText}
-                      </h4>
+                      
                     </button>
                   )}
                 </div>
