@@ -1,9 +1,4 @@
 import React, { useState } from "react";
-import Button from '@mui/material/Button';
-// import Paper from '@mui/material/Paper';
-// import { styled } from '@mui/material/styles';
-import { TextField } from "@mui/material";
-import Grid from '@mui/material/Grid';
 import axios from 'axios'
 
 
@@ -41,6 +36,7 @@ const DailyEnquiry = (props)=>{
         }
         ).then((res)=>{
             props.triggerNextStep({value: Detail, trigger: 4 })
+            
         }).catch((err)=>{
             props.triggerNextStep({value: Detail, trigger: 500 })
         })
@@ -49,30 +45,30 @@ const DailyEnquiry = (props)=>{
     return(
         <>
         <div>
-        <Grid>
-            <Grid item container spacing={2}>
-            <Grid item container alignItems="center" justifyContent="center" spacing={2}>
-                <Grid item xs={12}>
-                    <TextField id="standard-basic" size="small" label="Name" variant="standard" name="name" onChange={SetValues}/>
-                </Grid>
-            </Grid>
-            <Grid item container alignItems="center" justifyContent="center" spacing={2}>
-                <Grid item xs={12}>
-                    <TextField id="standard-basic" size="small" label="Email" variant="standard" name="email" onChange={SetValues}/>
-                </Grid>
-            </Grid>
-            <Grid item container alignItems="center" justifyContent="center" spacing={2}>
-                <Grid item xs={12}>
-                    <TextField id="standard-basic" size="small" label="Mobile Number" variant="standard" name="contactNumber" onChange={SetValues}/>
-                </Grid>
-            </Grid>
-        </Grid>
-            <Grid item container alignItems="center" justifyContent="center" spacing={2}>
-                <Grid item xs={4}>
-                        <Button style={{"marginTop": "5px"}} className="submitButton" variant="contained" onClick={SubmitValues}>Submit</Button>
-                </Grid>
-            </Grid>
-        </Grid>
+            <div>
+                <div item container spacing={2}>
+                <div item container alignItems="center" justifyContent="center" spacing={2}>
+                    <div item xs={12}>
+                        <input id="standard-basic" size="small" label="Name" variant="standard" name="name" onChange={SetValues}/>
+                    </div>
+                </div>
+                <div item container alignItems="center" justifyContent="center" spacing={2}>
+                    <div item xs={12}>
+                        <input id="standard-basic" size="small" label="Email" variant="standard" name="email" onChange={SetValues}/>
+                    </div>
+                </div>
+                <div item container alignItems="center" justifyContent="center" spacing={2}>
+                    <div item xs={12}>
+                        <input id="standard-basic" size="small" label="Mobile Number" variant="standard" name="contactNumber" onChange={SetValues}/>
+                    </div>
+                </div>
+            </div>
+                <div item container alignItems="center" justifyContent="center" spacing={2}>
+                    <div item xs={4}>
+                            <button style={{"marginTop": "5px"}} className="submitbutton" variant="contained" onClick={SubmitValues}>Submit</button>
+                    </div>
+                </div>
+            </div>
         </div>
         </>
     )

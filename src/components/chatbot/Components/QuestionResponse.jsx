@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import Paper from '@mui/material/Paper';
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
+
 
 
 function SetOfQuestion(props) {
     const [response, setResponse] = useState([])
     const getAnswer = (quesId, Question)=>{
       if(quesId===null && Question==="Other"){
-        props.triggerNextStep({trigger: '8' })
+        props.triggerNextStep({trigger: '15' })
       }else{
         props.triggerNextStep({ value :quesId,trigger: '8' })
       }
@@ -19,23 +17,20 @@ function SetOfQuestion(props) {
       const { steps } = props;
     
     const obj = {
-      qestionId : steps[2].value
+        question : steps[4].value
     }
-    http://127.0.0.1:8000/
-        
-        axios.post("https://chatbotadmin.sabpaisa.in/chatbot/AnswerApi",obj,{
-        // axios.post("https://chatbotadmin.sabpaisa.in/chatbot/setofquestion",obj,{
+        axios.post("https://chatbotadmin.sabpaisa.in/chatbot/setofquestion",obj,{
           headers: {
             'authorization': 'ddbf42c6-078a-404f-b4ed-d47faaa52bbf'
         }
         }).then(res=>{
-                setResponse(res.data)
+                setResponse(res.data.QuestionList)
   }).catch(err=>{
     setResponse([])
-    props.triggerNextStep({ trigger: '8' }) })
-    
+    props.triggerNextStep({ trigger: 500 }) })
     }, [])  
      
+    
 
   return (
    <div>

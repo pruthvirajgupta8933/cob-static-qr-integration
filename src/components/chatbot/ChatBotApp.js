@@ -6,6 +6,7 @@ import botFace from './media/botFace.png'
 import { useDispatch, useSelector } from 'react-redux';
 import { productSubscribeState } from '../../slices/dashboardSlice';
 import HeaderChatBot from './Components/HeaderChatBot';
+import "./styles/chatbot.css"
 
 
 // Creating our own theme

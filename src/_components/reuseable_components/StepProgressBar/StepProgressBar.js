@@ -65,8 +65,8 @@ function StepProgressBar(props) {
         steps: [
           { id: 1, status: "completed", title: "Pending" },
           { id: 2, status: "current", title: "In Process" },
-          { id: 3, status: "next", title: "Verify" },
-          { id: 4, status: "next", title: "Approve" },
+          { id: 3, status: "next", title: "Verified" },
+          { id: 4, status: "next", title: "Approved" },
         //   { id: 5, status: "next", title: "Complete" },
         ],
         title: "KYC Status",
