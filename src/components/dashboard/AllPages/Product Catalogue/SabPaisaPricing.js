@@ -8,8 +8,11 @@ import { axiosInstanceAuth } from "../../../../utilities/axiosInstance";
 import "./product.css";
 import toastConfig from "../../../../utilities/toastTypes";
 import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const SabPaisaPricing = () => {
+  const history = useHistory();
   // const { dashboard } = useSelector((state) => state);
   const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -20,11 +23,13 @@ const SabPaisaPricing = () => {
   // const [serviceId, setServiceId] = useState(null)
   const dispatch = useDispatch();
   const clickHandler = (value) => {
+    history.push("/dashboard");
     dispatch(productSubscribeState(value));
   };
   const { user } = useSelector((state) => state.auth);
-  // console.log("user", user);
-  const { clientId, clientName } = user.clientMerchantDetailsList[0];
+ console.log("user", user);
+  const { clientId,business_cat_code } = user.clientMerchantDetailsList[0];
+  console.log(business_cat_code)
 
   const param = useParams();
 
@@ -162,6 +167,7 @@ const SabPaisaPricing = () => {
                     >
                       <div class="modal-content">
                         <div class="modal-header modal-header-fignma">
+                    
                           <button
                             type="button"
                             class="close"
@@ -169,8 +175,10 @@ const SabPaisaPricing = () => {
                             aria-label="Close"
                             // onClick={() => clickHandler(false)}
                           >
+                           
                             <span aria-hidden="true">&times;</span>
                           </button>
+                          
                         </div>
                         <div class="modal-body">
                           <h2 className="subscribingproduct mb-0">
@@ -197,14 +205,16 @@ const SabPaisaPricing = () => {
                         </div>
                         <div class="modal-footer m-0 p-2">
                           <div className="col-lg-12 text-center">
+                          
                             <button
                               type="button"
                               class="ColrsforredirectProdct text-white m-0"
-                              // onClick={() => clickHandler(false)}
-                              data-dismiss="modal"
+                               onClick={() => clickHandler(true)}
+                               data-dismiss="modal"
                             >
                               Close
                             </button>
+                            
                           </div>
                         </div>
                       </div>
