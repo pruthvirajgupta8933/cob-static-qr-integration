@@ -82,9 +82,9 @@ function Sandbox() {
 
                             </div>
 
-                            <div className="col-lg-12 border m-1 p-2-">
+                            {/* <div className="col-lg-12 border m-1 p-2-">
                             <a class="btn" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2"><h2>Live Credentials</h2></a>
-                            {/* <h2>Live Credentials</h2> */}
+                         
                             <form class="collapse multi-collapse" id="multiCollapseExample2">
                                     <div className="form-group row">
                                     <div className="col-lg-4">
@@ -117,7 +117,7 @@ function Sandbox() {
 
                                 </form>
 
-                            </div>
+                            </div> */}
                            
                             </div>
                         </div>
