@@ -786,6 +786,11 @@ border-radius: 0px;
 
 /* Harris CSS For Login Image Dynamic*/
 
+
+.modalsubmitmodal {
+  margin-left: -136px;
+}
+
 .pricingclasscss {
   /* font-family: 'Roboto'; */
   font-style: normal;

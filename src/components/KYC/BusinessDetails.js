@@ -732,7 +732,7 @@ function BusinessDetails(props) {
                     {VerifyKycStatus === "Verified" ? null : (
                       <button
                         type="submit"
-                        className="btn float-lg-right btn-primary"
+                        className="btn float-lg-right btnbackground text-white"
                         
                       >
                        

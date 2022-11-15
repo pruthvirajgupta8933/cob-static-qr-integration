@@ -523,7 +523,7 @@ function BusinessOverview(props) {
                   {/* {console.log("VerifyKycStatus",VerifyKycStatus)} */}
                     {VerifyKycStatus === "Verified" ? null : (
                       <button
-                        className="btn float-lg-right btn-primary"
+                        className="btn float-lg-right btnbackground text-white"
                         type="submit"
                         
                       >

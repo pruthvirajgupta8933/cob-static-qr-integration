@@ -5,8 +5,9 @@ import { approvekyc, verifyComplete } from "../../slices/kycSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { saveKycConsent } from "../../slices/kycSlice";
+import { saveKycConsent,UpdateModalStatus } from "../../slices/kycSlice";
 import congImg from "../../assets/images/congImg.png";
+import { Link } from "react-router-dom";
 
 function SubmitKyc(props) {
   const history = useHistory();
@@ -22,6 +23,7 @@ function SubmitKyc(props) {
 
   const {kycUserList} = kyc
   const merchant_consent = kycUserList?.merchant_consent?.term_condition
+
   const kyc_status = kycUserList?.status
   const [readOnly, setReadOnly] = useState(false);
 
@@ -29,9 +31,13 @@ function SubmitKyc(props) {
     term_condition: merchant_consent,
   };
 
-  const redirectt = () => {
-    history.push("/dashboard");
-  };
+  // const redirect = () => {
+  //   history.push("/dashboard");
+  // };
+
+  // if(consent_status === true) {
+  //   history.push("/dashboard");
+  // } 
 
   const validationSchema = Yup.object({
     term_condition: Yup.string().oneOf(["true"],"You must accept all the terms & conditions"),
@@ -90,15 +96,24 @@ function SubmitKyc(props) {
     ).then((res) => {
       if ( res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === true) {
         toast.success(res?.payload?.message);
+        const kyc_consent_status = res?.payload?.status
+         dispatch(UpdateModalStatus(true))
+          history.push("/dashboard");
       } else {
         toast.error(res?.payload?.detail);
       }
     });
   };
 
-  const redirect = () => {
-    history.push("/dashboard/product-catalogue");
-  };
+
+  // useEffect(() => {
+  // if(consent_status === true) {
+  //   history.push("/dashboard");
+  // } 
+  // },[consent_status])
+  
+
+
 
 
 
@@ -126,15 +141,11 @@ function SubmitKyc(props) {
                   </div>
                   <div class="col-lg-11 para-style text-nowrap">
 
-                  I have read and understood the <a href="https://sabpaisa.in/term-conditions/"  rel="noreferrer"  alt="Term & Conditions" target="_blank" title="Term & Conditions">&nbsp;Term & Condition</a> ,&nbsp;
-                    <a  href="https://sabpaisa.in/privacy-policy/" alt="Privacy Policy" target="_blank" title="Privacy Policy"  rel="noreferrer" > Privacy Policy</a> ,&nbsp;
-                    <a href="https://sabpaisa.in/service-agreement" alt="Service Agreement" target="_blank" title="Service Agreement"  rel="noreferrer" > Service Agreement</a>&nbsp;
+                  I have read and understood the <a href="https://sabpaisa.in/term-conditions/"  rel="noreferrer"  alt="Term & Conditions" target="_blank" title="Term & Conditions">Term & Condition</a>, <a  href="https://sabpaisa.in/privacy-policy/" alt="Privacy Policy" target="_blank" title="Privacy Policy"  rel="noreferrer" >Privacy Policy</a>, <a href="https://sabpaisa.in/service-agreement" alt="Service Agreement" target="_blank" title="Service Agreement"  rel="noreferrer" >Service Agreement</a>
                   </div>
                   <div class="col-lg-11 para-style2 text-nowrap">
                     By submitting the form, I agree to abide by the rules at all times.
-
                     </div>
-
                 </div>
               </div>
               {
@@ -188,9 +199,10 @@ function SubmitKyc(props) {
                 <div class="mt-3">
                   {(kyc_status === "Verified" || kyc_status === "Approved" ) ? null : (
                     <>
+                  
                     <button
-                      className="btn float-lg-right btn-primary"
-                      type="submit"
+                     className="btn float-lg-right btnbackground text-white"
+                     type="submit"
                      >
                       Submit
                     </button>
@@ -205,112 +217,6 @@ function SubmitKyc(props) {
                   )}
                 </div>
 
-                <div
-                  class="modal fade modalbody1"
-                  id="kycSumitModal"
-                  tabIndex="-1"
-                  role="dialog"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                  style={{ marginLeft: "212px", marginTop: "107px" }}
-                >
-                  <div
-                    class="modal-dialog"
-                    role="document"
-                    style={{ maxWidth: 480 }}
-                  >
-                    <div class="modal-content">
-                      <div class="modal-header modal-header-fignma">
-                        <button
-                          onClick={() => redirectt()}
-                          type="button"
-                          class="close"
-                          data-dismiss="modal3"
-                          aria-label="Close"
-                        >
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <h1
-                              className="text-center"
-                              style={{
-                                color: "#4BB543",
-                                fontWeight: "700",
-                                fontStyle: "normal",
-                                fontSize: "32px",
-                              }}
-                            >
-                              Congratulations!
-                            </h1>
-                            <p className="modalscolrsfortextapprv m-0 text-center">
-                              Your KYC is in-processing!
-                            </p>
-                            <p className="modalscolrsfortextapprv m-0 text-center">
-                              You can start accepting payments now
-                            </p>
-                            <p className="modalscolrsfortextapprv m-0 text-center">
-                              View our product catalogue and choose your plan
-                            </p>
-                            {/* <p className="modalscolrsfortextapprv m-0 text-center">
-                              You can start accepting payments now
-                            </p> */}
-                            {/* <p className="modalscolrsfortextapprv m-0 text-center">
-                            View our product catalogue and choose your plan
-                            </p> */}
-                          </div>
-                        </div>
-                        <div class="row">
-                          {/* <div class="col-sm">
-                            <p className="modalscolrsfortextapprv" style={{display:"contents"}}>
-                              Your KYC is Done!
-                            </p>
-                            <span className="modalscolrsfortextapprv" style={{display:"table-cell"}}>
-                              You can start accepting payments now
-                            </span>
-                            <span
-                              className="modalscolrsfortextapprv"
-                              style={{
-                                display: "table-footer-group",
-                                justifyContent: "center",
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              View our product catalogue and choose your plan
-                            </span>
-                          </div> */}
-                          <div class="col-lg-12 text-center">
-                            <img
-                              src={congImg}
-                              className="modalsimageclass-1"
-                              alt="SabPaisa"
-                              title="SabPaisa"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer p-2">
-                        {/* <Link to={`product-catalogue`} data-dismiss="modal" aria-label="Close" > */}
-                        <div className="col-lg-12 p-0 m-0 text-center">
-                          <button
-                            type="button"
-                            className="btn btn-lg text-white mb-0 verfy-btn"
-                            onClick={() => redirect()}
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <h4>View Product Catalogue</h4>
-                          </button>
-                        </div>
-
-                        {/* </Link> */}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
               </div>
             </Form>
           )}
