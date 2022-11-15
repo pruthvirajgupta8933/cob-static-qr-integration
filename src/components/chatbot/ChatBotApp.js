@@ -29,7 +29,7 @@ const theme = {
 
 function ChatBotApp(props) {
   // Set some properties of the bot
-  console.log(props)
+  // console.log(props)
   const dispatch = useDispatch()
   const {dashboard} = useSelector((state)=>state);
   // console.log("state changed",dashboard)
@@ -71,7 +71,7 @@ const config = {
 };
 
 uniqueId = new Date();
-console.log("Step",Step)
+// console.log("Step",Step)
   return (  
     <ThemeProvider theme={theme}>
     <ChatBot

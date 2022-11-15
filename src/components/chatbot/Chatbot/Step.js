@@ -9,7 +9,7 @@ import SubparentComponent  from './../Components/SubparentComponent';
 import ResponseComponent from '../Components/ResponseComponent';
 import StepComponent from '../Components/StepComponent';
 const Id = localStorage.getItem('categoryId')
-console.log("categoryId",Id)
+
 
 
 // const returnIntialStep = ()=>{

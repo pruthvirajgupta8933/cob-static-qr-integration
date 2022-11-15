@@ -49,7 +49,6 @@ const logOutUser =(isLoggedIn)=>{
   setLoggin(isLoggedIn)
 }
 
-console.log("loggin",loggin)
   return (
       <>
       { loggin 
