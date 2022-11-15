@@ -481,7 +481,8 @@ function LoginPage() {
           </div>
           
           <p className="footerforcopyright NunitoSans-Regular text-center">
-            Copyright 2022 SabPaisa, all rights reserve version 0.1
+            Copyright @ 2022 SabPaisa All Rights Reserved version 1.0 
+            
           </p>
         </div>
         {/* ./row */}

@@ -160,8 +160,9 @@ const TransactionHistory = () =>{
   );
 
   const tempPayStatus = [{ key: "All", value: "All" }];
+ 
   paymentStatusList.map((item) => {
-    if (item !== "INITIATED") {
+   if (item !== "CHALLAN_ENQUIRED" && item !=="INITIATED") {
       tempPayStatus.push({ key: item, value: item });
     }
   });
@@ -326,6 +327,7 @@ const TransactionHistory = () =>{
       "Client Code",
       "Payment Mode",
       "Payee Address",
+      "Encrypted PAN",
       "Udf1",
       "Udf2",
       "Udf3",
@@ -368,6 +370,7 @@ const TransactionHistory = () =>{
         client_code: item.client_code === null ? "" : item.client_code,
         payment_mode: item.payment_mode === null ? "" : item.payment_mode,
         payee_address: item.payee_address === null ? "" : item.payee_address,
+        encrypted_pan:item.encrypted_pan === null? "" : item.encrypted_pan,
         udf1: item.udf1 === null ? "" : item.udf1,
         udf2: item.udf2 === null ? "" : item.udf2,
         udf3: item.udf3 === null ? "" : item.udf3,
@@ -466,7 +469,7 @@ const TransactionHistory = () =>{
                           control="select"
                           label="Transactions Status"
                           name="transaction_status"
-                          className="form-control rounded-0"
+                          className="form-control rounded-0 mt-0"
                           options={tempPayStatus}
                         />
                       </div>
@@ -476,7 +479,7 @@ const TransactionHistory = () =>{
                           control="select"
                           label="Payment Mode"
                           name="payment_mode"
-                          className="form-control rounded-0"
+                          className="form-control rounded-0 mt-0"
                           options={tempPaymode}
                         />
                       </div>
@@ -629,7 +632,7 @@ const TransactionHistory = () =>{
                     <div className="form-group col-md-3 mt-2">
                       <label>Search Transaction ID</label>
                       <input
-                        className="form-control"
+                        className="form-control mt-0"
                         onChange={getSearchTerm}
                         type="text"
                         placeholder="Search Here"
@@ -673,6 +676,7 @@ const TransactionHistory = () =>{
                         <th> Client Code </th>
                         <th> Payment Mode </th>
                         <th> Payer Address </th>
+                        <th> Encrypted PAN </th>
                         <th> Udf1 </th>
                         <th> Udf2 </th>
                         <th> Udf3 </th>
@@ -716,6 +720,7 @@ const TransactionHistory = () =>{
                             <td>{item.client_code}</td>
                             <td>{item.payment_mode}</td>
                             <td>{item.payee_address}</td>
+                            <td>{item.encrypted_pan}</td>
                             <td>{item.udf1}</td>
                             <td>{item.udf2}</td>
                             <td>{item.udf3}</td>

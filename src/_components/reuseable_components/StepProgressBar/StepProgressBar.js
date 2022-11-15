@@ -56,7 +56,7 @@ function StepProgressBar(props) {
   const [percentage,setPercentage] = useState(0);
 
   let status = props?.status;   
-  console.log("status",status)
+  // console.log("status",status)
   status = status?.toLowerCase();
 
   useEffect(() => {
@@ -65,8 +65,8 @@ function StepProgressBar(props) {
         steps: [
           { id: 1, status: "completed", title: "Pending" },
           { id: 2, status: "current", title: "In Process" },
-          { id: 3, status: "next", title: "Verify" },
-          { id: 4, status: "next", title: "Approve" },
+          { id: 3, status: "next", title: "Verified" },
+          { id: 4, status: "next", title: "Approved" },
         //   { id: 5, status: "next", title: "Complete" },
         ],
         title: "KYC Status",
@@ -113,7 +113,7 @@ function StepProgressBar(props) {
             </div>
             <div
               className="steps-text"
-              style={{ width: 60, marginTop: 60, marginLeft: 0,fontSize:"12px" }}
+              style={{ width: 60, marginTop: 60, marginLeft: 0,fontSize:"14px" }}
             >
               {s.title}
             </div>
@@ -130,7 +130,7 @@ function StepProgressBar(props) {
       <div>
         <div style={{ textAlign: "center" }}>
           <div>
-            <h1 className="Satoshi-Medium">KYC Status</h1>
+            <h1 className="Satoshi-Bold">KYC Status</h1>
           </div>
         </div>
         <hr />

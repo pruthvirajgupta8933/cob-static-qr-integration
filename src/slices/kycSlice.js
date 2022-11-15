@@ -119,6 +119,11 @@ const initialState = {
   },
 
   GetBankid: [],
+  
+  consentKyc:{
+    message:"",
+    status: false,
+  },
 
   OtpResponse: {
     status: "",
@@ -135,6 +140,9 @@ const initialState = {
     status: false,
     message: "",
   },
+  OpenModalForKycSubmit: {
+    isOpen:false
+  }
 };
 
 const validatorUrl = "https://stage-kycvalidator.sabpaisa.in/validator";
@@ -852,6 +860,9 @@ export const kycSlice = createSlice({
     clearKycState: (state) => {
       state.kycUserList = {};
     },
+    UpdateModalStatus:(state,action) => {
+      state.OpenModalForKycSubmit.isOpen= action?.payload
+    }
   },
   extraReducers: {
     [kycUserList.pending]: (state, action) => {
@@ -1039,6 +1050,31 @@ export const kycSlice = createSlice({
 
     ////////////////////////////////////////////////////
 
+    [saveKycConsent.pending]: (state, action) => {
+      state.status = "pending";
+    },
+    [saveKycConsent.fulfilled]: (state, action) => {
+      state.consentKyc = action.payload;
+    },
+    [saveKycConsent.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+    
+
+
+
+
+
+
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////
+
     [otpForContactInfo.fulfilled]: (state, action) => {
       if (action?.payload?.status) {
         state.OtpResponse = action.payload;
@@ -1088,5 +1124,6 @@ export const {
   loadKycVericationForAllTabs,
   isPhoneVerified,
   clearKycState,
+  UpdateModalStatus
 } = kycSlice.actions;
 export const kycReducer = kycSlice.reducer;

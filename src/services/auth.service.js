@@ -29,9 +29,11 @@ const login = (username, password) => {
       // response.data.clientMerchantDetailsList = staticClientList
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("categoryId",1)
       }else{
 
         localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("categoryId",1)
       }
       
       // console.log(response.data)

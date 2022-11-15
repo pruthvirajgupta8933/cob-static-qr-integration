@@ -510,7 +510,7 @@ function BankDetails(props) {
                 <div class="col-sm-12 col-md-12 col-lg-12 col-form-label">
                   {VerifyKycStatus === "Verified" ? null : (
                     <button
-                      className="btn float-lg-right btn-primary"
+                      className="btn float-lg-right btnbackground text-white"
                       type="submit"
                       
                     >

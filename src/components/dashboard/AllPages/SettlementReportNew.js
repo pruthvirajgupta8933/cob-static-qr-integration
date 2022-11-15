@@ -188,6 +188,7 @@ const SettlementReportNew= () => {
       "Client Code",
       "Client Name",
       "SP Transaction ID",
+      "GR Number",
       "Client Transaction ID",
       "Amount",
       "Settlement Amount",
@@ -206,6 +207,7 @@ const SettlementReportNew= () => {
         client_code: item.client_code === null ? "" : item.client_code,
         client_name: item.client_name === null ? "" : item.client_name,
         txn_id: item.txn_id === null ? "" : item.txn_id,
+        gr_number: item.gr_number === null ? "" : item.gr_number,
         client_txn_id: item.client_txn_id === null ? "" : item.client_txn_id,
         payee_amount:
           item.payee_amount === null
@@ -259,7 +261,7 @@ const SettlementReportNew= () => {
                           control="select"
                           label="Client Code"
                           name="clientCode"
-                          className="form-control rounded-0"
+                          className="form-control rounded-0 mt-0"
                           options={tempClientList}
                         />
                       </div>
@@ -362,6 +364,7 @@ const SettlementReportNew= () => {
                         <th> Client Code </th>
                         <th> Client Name </th>
                         <th> SP Transaction ID </th>
+                        <th> GR Number </th>
                         <th> Client Transaction ID </th>
                         <th> Amount </th>
                         <th> Settlement Amount </th>
@@ -384,6 +387,7 @@ const SettlementReportNew= () => {
                             <td>{item.client_code}</td>
                             <td>{item.client_name}</td>
                             <td>{item.txn_id}</td>
+                            <td>{item?.gr_number}</td>
                             <td>{item.client_txn_id}</td>
                             <td>
                               {Number.parseFloat(item.payee_amount).toFixed(2)}

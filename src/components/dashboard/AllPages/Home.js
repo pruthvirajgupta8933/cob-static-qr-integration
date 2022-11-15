@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import "../css/Home.css";
 
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import {  GetKycTabsStatus, kycUserList } from "../../../slices/kycSlice";
+import {  GetKycTabsStatus, kycUserList, UpdateModalStatus } from "../../../slices/kycSlice";
 import NavBar from "../NavBar/NavBar";
 import bro from "../../../assets/images/bro.png";
 import congratsImg from "../../../assets/images/congImg.png";
@@ -23,7 +23,9 @@ import eposs from "../../../assets/images/epos.png";
 import linkpssa from "../../../assets/images/linkPaisa.png";
 import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
-
+import congImg from "../../../assets/images/congImg.png"
+import $ from "jquery"
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 function Home() {
   const roles = roleBasedAccess();
 
@@ -36,11 +38,22 @@ function Home() {
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
   // const [roleType, setRoleType] = useState(roles);
-  const { dashboard, auth, kyc } = useSelector((state) => state);
+  const { dashboard, auth, kyc ,consentKyc} = useSelector((state) => state);
 
-  const { KycTabStatusStore } = kyc;
+  const kyc_submit_consent = useSelector(
+    (state) =>
+      state.kyc.consentKyc.status
+
+  );
+
+  
+
+
+  const { KycTabStatusStore ,OpenModalForKycSubmit  } = kyc;
+ 
 
   const [modalState, setModalState] = useState("Not-Filled");
+  const [kycmodalState, setKycModalState] = useState(false);
 
   // console.log("dashboard",dashboard)
   const { isLoading, successTxnsumry } = dashboard;
@@ -76,6 +89,10 @@ function Home() {
   useEffect(() => {
     setModalState(KycTabStatusStore?.status);
   }, [KycTabStatusStore]);
+
+
+
+
 
   //make client code array
   if (
@@ -149,6 +166,11 @@ function Home() {
 
   // console.log("modalState",modalState)
 
+  const handleClose = () => {
+    dispatch(UpdateModalStatus(false))
+  }
+
+
   return (
     <section className="ant-layout Satoshi-Medium">
       {/* {kyc?.KycTabStatusStore?.is_verified === false ? <KycModal /> : <></>} */}
@@ -200,7 +222,7 @@ function Home() {
               </div>
               <h2 className="font-weight-bold">Built for developers</h2>
               <p className="text-muted mb-6 mb-md-0">
-                Landkit is built to make your life easier. Variables, build
+                Our kit is built to make your life easier. Variables, build
                 tooling, documentation, and reusable components.
               </p>
             </div>
@@ -232,7 +254,7 @@ function Home() {
               </div>
               <h2 className="font-weight-bold">Designed to be modern</h2>
               <p className="text-muted mb-6 mb-md-0">
-                Designed with the latest design trends in mind. Landkit feels
+                Designed with the latest design trends in mind. Our kit feels
                 modern, minimal, and beautiful.
               </p>
             </div>
@@ -273,12 +295,16 @@ function Home() {
                 so you never have to reverse engineer anything.
               </p>
             </div>
-            {roles?.merchant === true && modalState!=="Approved" ? (
-              <div className="col-12 col-md-12">
+
+         
+
+
+            {roles?.merchant === true && modalState !=="Approved" ? (
+                <div className="col-12 col-md-12">
                 <div class="card col-lg-12- cardkyc pull-left">
                   <div class="font-weight-bold card-body Satoshi-Medium">
                     <span>
-                      You can accept payments upto ₹15,000 for now.To extend the
+                      You can accept payments upto ₹15,000 for now. To extend the
                       limit complete your KYC and get it approved.
                     </span>
                     <Link
@@ -300,7 +326,26 @@ function Home() {
                 </div>
               </div>
             ) : (
-              <React.Fragment></React.Fragment>
+              <div className="col-12 col-md-12">
+              <div class="card col-lg-12- cardkyc pull-left">
+                <div class="font-weight-bold card-body Satoshi-Medium">
+                  <span>
+                  Congratulations! Your KYC documents have been approved.
+                  </span>
+                      <button
+                        class="text-white pull-right kycbtns"
+                        style={{
+                          backgroundColor: "#0156B3",
+                          paddingLeft: "10px",
+                        }}
+                        disabled
+                      >
+                        KYC Done
+                      </button>
+                </div>
+              </div>
+            </div>
+           
             )}
           </div>
         </div>
@@ -475,6 +520,8 @@ function Home() {
           </section>
         </div>
       </main>
+
+
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
 
       <div
@@ -560,19 +607,19 @@ function Home() {
 
       <div
         className={
-          "modal fade" +
-          (modalState === "APPROVED" ? " show d-block" : " d-none")
+          "modal fade mymodals" +
+          (OpenModalForKycSubmit?.isOpen === true ? " show d-block" : " d-none")
         }
         tabIndex="-1"
         role="dialog"
       >
         <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
+          <div class="modal-content" style={{width:"709px",marginTop:"1px"}}>
             <div class="modal-body Satoshi-Medium">
               <button
                 type="button"
                 onClick={() => {
-                  setModalState(!modalState);
+                  handleClose()
                 }}
                 class="close"
                 data-dismiss="modal"
@@ -598,12 +645,18 @@ function Home() {
                       >
                         Congratulations!
                       </h1>
-                      <p
-                        className="modalscolrsfortextapprv"
-                        style={{ justifyContent: "center", display: "flex" }}
-                      >
-                        Your KYC is Done!
-                      </p>
+
+                      <p className="modalscolrsfortextapprv m-0 text-center">
+                            You can accept payments upto INR 15,000
+                            </p>
+                            <p className="modalscolrsfortextapprv m-0 text-center">
+                            Your KYC is currently under review. 
+                            <br/>
+                            <br/>
+                            <p className="modalscolrsfortextapprv m-0 text-center">The KYC review process ususally takes 3-4 working days.</p>
+                            <p className="modalscolrsfortextapprv m-0 text-center">We will notify you in case we want any clarification on your KYC.</p>
+
+                            </p>
                       <span
                         className="modalscolrsfortextapprv text-center"
                         style={{
@@ -612,8 +665,9 @@ function Home() {
                           whiteSpace: "nowrap",
                         }}
                       >
-                        You can start accepting payments now
+                       
                       </span>
+                      
                     </ul>
                   </div>
 
@@ -628,11 +682,11 @@ function Home() {
                   </div>
                 </div>
               </div>
-
+ <div className="hrForCard"></div>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <button
                   className="modalbtnsuccess text-white mt-3 ml-5"
-                  onClick={() => setModalState(!modalState)}
+                  onClick={() => handleClose()}
                 >
                   Continue
                 </button>
@@ -641,6 +695,100 @@ function Home() {
           </div>
         </div>
       </div>
+
+       {/* KYC SUBMIT MODAL AFTER SUBMITTING THE KYC FORM */}
+       {/* <section>
+       <div
+        className={
+          "modal hide fade mymodals" +
+          (OpenModalForKycSubmit?.isOpen === true ? " show d-block" : " d-none")
+        }
+        tabIndex="-1"
+        role="dialog"
+        style={{ marginLeft: "214px", marginTop: "6px" }}
+        id="submitKyc"
+        data-bs-backdrop="static" data-bs-keyboard="false"
+        aria-labelledby="submitKycLabel"
+      >
+        <div class="modal-dialog modal-dialog-centered " role="document" style={{ maxWidth: 480 }}>
+          <div class="modal-content modalsubmitmodal">
+            <div class="modal-body Satoshi-Medium">
+              <button
+                type="button"
+                data-bs-dismiss="modal"
+                class="close"
+                aria-label="Close"
+                onClick={() => {
+                  handleClose()
+                }}
+              
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="row">
+                          <div class="col-lg-12">
+                            <h1
+                              className="text-center"
+                              style={{
+                                color: "#4BB543",
+                                fontWeight: "700",
+                                fontStyle: "normal",
+                                fontSize: "32px",
+                              }}
+                            >
+                              Congratulations!
+                            </h1>
+                            <p className="modalscolrsfortextapprv m-0 text-center">
+                            You can accept payments upto INR 15,000
+                            </p>
+                            <p className="modalscolrsfortextapprv m-0 text-center">
+                            Your KYC is currently under review. 
+                            <br/>
+                            <br/>
+                            The KYC review process ususally takes 3-4 working days.
+                            We will notify you in case we want any clarification on your KYC.
+
+                            </p>
+                          </div>
+                        </div>
+                        <div class="row">
+                        
+                          <div class="col-lg-12 text-center">
+                            <img
+                              src={congImg}
+                              className="modalsimageclass-1"
+                              alt="SabPaisa"
+                              title="SabPaisa"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer p-2">
+                        <div className="col-lg-12 p-0 m-0 text-center">
+                        <button
+                              type="button"
+                              class="ColrsforredirectProdct text-white m-0"
+                              data-bs-dismiss="modal"
+                              onClick={() => {
+                                handleClose()
+                              }}
+                            
+                            >
+                              Close
+                            </button>
+                        </div> */}
+
+                        {/* </Link> */}
+                      
+            {/* </div>
+          </div>
+        </div>
+      </div>
+      </section>
+       
+   
+       */}
+            {/* KYC SUBMIT MODAL AFTER SUBMITTING THE KYC FORM */}
 
       {/* Dashboard open pop up start here {IF KYC IS APPROVED}*/}
     </section>

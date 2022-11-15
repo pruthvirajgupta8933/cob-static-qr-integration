@@ -28,8 +28,8 @@
 
 .btnbackground {
   background-color: #0156b3;
+ 
 }
-
 .panVerfied {
   margin-left: 256px;
 }
@@ -116,8 +116,9 @@
 }
 
 .modalsimageclass {
-  width: 100%;
-  margin-top: 6em;
+  width: 70%;
+  margin-top: 0rem;
+  margin-left: 66px;
 }
 
 .modalsimageclass-1 {
@@ -274,6 +275,7 @@
   font-style: normal;
   font-weight: 700;
   font-size: 17px;
+  
 }
 
 .cardsection{

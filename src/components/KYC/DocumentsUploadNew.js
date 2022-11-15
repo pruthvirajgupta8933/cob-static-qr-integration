@@ -567,7 +567,7 @@ function DocumentsUpload(props) {
                     role?.merchant ? (
                       <div class="col-12">
                         <button
-                          className="btn float-lg-right btn-primary"
+                          className="btn float-lg-right btnbackground text-white"
                           
                           type="button"
                           onClick={() => {
