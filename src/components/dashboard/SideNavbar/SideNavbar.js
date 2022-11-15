@@ -5,7 +5,7 @@ import { checkPermissionSlice, logout } from "../../../slices/auth";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
 import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png";
-import Products from "../AllPages/Product Catalogue/Products";
+// import Products from "../AllPages/Product Catalogue/Products";
 import dashboard from "../../../assets/images/dashb.png";
 import transHis from "../../../assets/images/transImage.png";
 import enquire from "../../../assets/images/enquiry.png";
@@ -85,7 +85,7 @@ function SideNavbar() {
                   {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true) ? (
                     <li className="ant-menu-item" role="menuitem">
                       <Link to={`${url}`} className="txt-white sidenavFonts">
-                        <img src={dashboard} width={17} alt="sabpaisa" />{" "}
+                        <img src={dashboard} width={17} alt="sabpaisa" />
                         <span>&nbsp;Dashboard</span>
                       </Link>
                     </li>
@@ -119,8 +119,7 @@ function SideNavbar() {
                     <React.Fragment></React.Fragment>
                   )}
 
-                  {roleBasedShowTab?.approver === true ||
-                    roleBasedShowTab?.verifier === true ? (
+                  {(roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true) ? (
                     <li className="ant-menu-item" role="menuitem">
                       <Link
                         to={`${url}/approver`}
@@ -139,8 +138,7 @@ function SideNavbar() {
                     className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open"
                     role="menuitem"
                   >
-                    {roleBasedShowTab?.merchant === true ||
-                      roleBasedShowTab?.bank === true ? (
+                    {( roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true) ? (
                       <div
                         className="ant-menu-submenu-title"
                         aria-expanded="true"
@@ -162,8 +160,7 @@ function SideNavbar() {
                       className="ant-menu ant-menu-sub ant-menu-inline"
                       role="menu"
                     >
-                      {roleBasedShowTab?.merchant === true ||
-                        roleBasedShowTab?.bank === true ? (
+                      {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true) ? (
                         <li
                           className="ant-menu-item"
                           role="menuitem"
@@ -186,8 +183,7 @@ function SideNavbar() {
                         <React.Fragment></React.Fragment>
                       )}
 
-                      {roleBasedShowTab?.merchant === true ||
-                        roleBasedShowTab?.bank === true ? (
+                      {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ? (
                         <React.Fragment>
                           <li
                             className="ant-menu-item"
@@ -204,7 +200,7 @@ function SideNavbar() {
                                 alt="sabpaisa"
                                 title="sabpaisa"
                               />
-                              &nbsp;Transaction History{" "}
+                              &nbsp;Transaction History
                             </Link>
                           </li>
 
@@ -247,13 +243,14 @@ function SideNavbar() {
                             <i
                               className="fa fa-university"
                               aria-hidden="true"
-                            />{" "}
-                            Client List{" "}
+                            />
+                            Client List
                           </Link>
                         </li>
                       ) : (
                         <React.Fragment></React.Fragment>
                       )}
+
 
                       {roleBasedShowTab?.merchant === true ? (
                         <React.Fragment>

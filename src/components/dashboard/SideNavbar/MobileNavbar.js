@@ -10,7 +10,6 @@ function MobileNavbar() {
 
     const roleId = user?.roleId;
     const clientContactPersonName = user?.clientContactPersonName;
-    if (user !== null && user.userAlreadyLoggedIn) {
 
         let { url } = useRouteMatch();
         const dispatch = useDispatch();
@@ -63,7 +62,7 @@ function MobileNavbar() {
                         </span>
                     </button>
                     {/* <li className="nav-item"> 
-                        <Link to={`${url}`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-home" aria-hidden="true" /> Home</Link>
+                        <Link to={`${url}`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"><i className="fa fa-list" aria-hidden="true" /> Home</Link>
                     </li> */}
                     <div
                         className={
@@ -89,7 +88,7 @@ function MobileNavbar() {
                                         }}
                                         className="nav-link"
                                     >
-                                        <i className="fa fa-home" aria-hidden="true" /> &nbsp;Dashboard
+                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;Dashboard
                                     </Link>
                                 </li>) : <></>}
 
@@ -103,7 +102,7 @@ function MobileNavbar() {
                                         }}
                                         className="nav-link"
                                     >
-                                        <i className="fa fa-home" aria-hidden="true" /> &nbsp;Complete KYC
+                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;Complete KYC
                                     </Link>
                                 </li>
                                 <li className="nav-item">
@@ -114,35 +113,89 @@ function MobileNavbar() {
                                         }}
                                         className="nav-link"
                                     >
-                                        <i className="fa fa-home" aria-hidden="true" /> &nbsp;SandBox
+                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;SandBox
                                     </Link>
                                 </li>
+
+                                <li className="nav-item">
+                                    <Link
+                                        to={`${url}/settlement-report-new`}
+                                        onClick={() => {
+                                            setToggleNav(!toggleNav);
+                                        }}
+                                        className="nav-link"
+                                    >
+                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;Settlement Report
+                                    </Link>
+                                </li>
+
+                                <li className="nav-item">
+                                    <Link
+                                        to={`${url}/refund-transaction-history`}
+                                        onClick={() => {
+                                            setToggleNav(!toggleNav);
+                                        }}
+                                        className="nav-link"
+                                    >
+                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;Refund Txn History
+                                    </Link>
+                                </li>
+
+                                <li className="nav-item">
+                                    <Link
+                                        to={`${url}/chargeback-transaction-history`}
+                                        onClick={() => {
+                                            setToggleNav(!toggleNav);
+                                        }}
+                                        className="nav-link"
+                                    >
+                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;Chargeback Txn History
+                                    </Link>
+                                </li>
+
+                                <li className="nav-item">
+                                    <Link
+                                        to={`${url}/product-catalogue`}
+                                        onClick={() => {
+                                            setToggleNav(!toggleNav);
+                                        }}
+                                        className="nav-link"
+                                    >
+                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;Product Catalogue
+                                    </Link>
+                                </li>
+
+
                             </>) : 
                             <React.Fragment></React.Fragment>
                             }
 
-                            <li className="nav-item">
+                            {(roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true) ? (
+                                <li className="nav-item">
                                 <Link
-                                    to={`${url}`}
+                                    to={`${url}/approver`}
                                     onClick={() => {
                                         setToggleNav(!toggleNav);
                                     }}
                                     className="nav-link"
                                 >
-                                    <i className="fa fa-home" aria-hidden="true" /> &nbsp;Home
+                                    <i className="fa fa-list" aria-hidden="true" /> &nbsp;Merchant List
                                 </Link>
                             </li>
-                            <li className="nav-item">
+                            ) : <></>}
+
+                            {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true) ? (
+
+                                <>
+                                <li className="nav-item">
                                 <Link
-                                    to={`${url}/kyc`}
+                                    to={`${url}/transaction-summery`}
                                     onClick={() => {
                                         setToggleNav(!toggleNav);
                                     }}
                                     className="nav-link"
                                 >
-                                    <i className="fa fa-file-o" aria-hidden="true" />{" "}
-                                    <span>&nbsp;KYC</span>
-                                    <span className="new-tab">new</span>
+                                    <i className="fa fa-list" aria-hidden="true" /> &nbsp;Transaction Summary
                                 </Link>
                             </li>
 
@@ -154,22 +207,7 @@ function MobileNavbar() {
                                     }}
                                     className="nav-link"
                                 >
-
-                                    <i className="fa fa-calendar" aria-hidden="true" /> &nbsp;
-                                    Transaction History
-                                </Link>
-                            </li>
-
-                            <li className="nav-item" style={{ display: "none" }}>
-                                <Link
-                                    to={`${url}/kyc`}
-                                    onClick={() => {
-                                        setToggleNav(!toggleNav);
-                                    }}
-                                    className="nav-link"
-                                >
-                                    <i className="fa fa-address-book" aria-hidden="true" /> &nbsp;
-                                    Fill KYC Form
+                                    <i className="fa fa-list" aria-hidden="true" /> &nbsp;Transaction History
                                 </Link>
                             </li>
 
@@ -181,63 +219,29 @@ function MobileNavbar() {
                                     }}
                                     className="nav-link"
                                 >
-                                    {" "}
-                                    <i className="fa fa-calendar" aria-hidden="true" /> &nbsp;
-                                    Transaction Enquiry{" "}
+                                    <i className="fa fa-list" aria-hidden="true" /> &nbsp;Transaction Enquiry
                                 </Link>
                             </li>
+                                </>
+                            ):<></>}
 
-                            {/* <li className="nav-item"> 
-                        <Link to={`${url}/view-transaction-with-filter`} onClick={()=>{setToggleNav(!toggleNav)}} className="nav-link"> <i className="fa fa-filter" aria-hidden="true" /> &nbsp; Transaction Enquiry With Filter </Link>
-                    </li> */}
 
-                            {roleId === 3 || roleId === 13 ? (
+                            {roleBasedShowTab?.bank === true ? (
                                 <li className="nav-item">
-                                    <Link
-                                        to={`${url}/client-list`}
-                                        onClick={() => {
-                                            setToggleNav(!toggleNav);
-                                        }}
-                                        className="nav-link"
-                                    >
-                                        <i className="fa fa-university" aria-hidden="true" />{" "}
-                                        &nbsp;Client List{" "}
-                                    </Link>
-                                </li>
-                            ) : (
-                                <li className="nav-item">
-                                    <Link
-                                        to={`${url}/settlement-report`}
-                                        onClick={() => {
-                                            setToggleNav(!toggleNav);
-                                        }}
-                                        className="nav-link"
-                                    >
-                                        <i className="fa fa-bars" aria-hidden="true" /> &nbsp;
-                                        Settlement Report
-                                    </Link>
-                                </li>
-                            )}
+                                <Link
+                                    to={`${url}/client-list`}
+                                    onClick={() => {
+                                        setToggleNav(!toggleNav);
+                                    }}
+                                    className="nav-link"
+                                >
+                                    <i className="fa fa-list" aria-hidden="true" /> &nbsp;Client List
+                                </Link>
+                            </li>
+                             ) : <></>}
 
-                            {roleId !== 3 && roleId !== 13 ? (
-                                <li className="nav-item">
-                                    <Link
-                                        to={`${url}/product-catalogue`}
-                                        onClick={() => {
-                                            setToggleNav(!toggleNav);
-                                        }}
-                                        className="nav-link"
-                                    >
-                                        <i className="fa fa-book" aria-hidden="true" /> &nbsp;Product
-                                        Catalogue
-                                    </Link>
-                                </li>
-                            ) : (
-                                <></>
-                            )}
 
-                            {payLinkPermission.length > 0 &&
-                                payLinkPermission[0].clientId === 1 ? (
+                            {(payLinkPermission.length > 0 && payLinkPermission[0].clientId === 1) && roleBasedShowTab?.merchant === true ? (
                                 <li className="nav-item">
                                     <Link
                                         to={`${url}/paylink`}
@@ -254,7 +258,7 @@ function MobileNavbar() {
                                 <></>
                             )}
 
-                            {roleId !== 3 && roleId !== 13 ? (
+                            {roleBasedShowTab?.merchant || roleBasedShowTab?.bank ? (
                                 <li className="nav-item">
                                     <Link
                                         to={`${url}/profile`}
