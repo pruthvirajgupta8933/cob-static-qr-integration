@@ -29,7 +29,7 @@ const TransactionHistory = () =>{
 
 
   const { isLoadingTxnHistory } = dashboard;
-  // console.log(isLoadingTxnHistory,"===>")
+ 
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
   // const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
@@ -80,7 +80,7 @@ const TransactionHistory = () =>{
 
   const [clientCode, SetClientCode] = useState(clientcode_rolebased);
   const [todayDate, setTodayDate] = useState(splitDate);
-  // console.log(clientCode)
+  
 
   const initialValues = {
     // clientCode:"",
@@ -124,7 +124,7 @@ const TransactionHistory = () =>{
     await axiosInstance
       .get(API_URL.GET_PAYMENT_STATUS_LIST)
       .then((res) => {
-        // console.log(res)
+       
         SetPaymentStatusList(res.data);
       })
       .catch((err) => {
@@ -136,7 +136,7 @@ const TransactionHistory = () =>{
     await axiosInstance
       .get(API_URL.PAY_MODE_LIST)
       .then((res) => {
-        // console.log(res)
+        
         SetPaymentModeList(res.data);
       })
       .catch((err) => {
@@ -177,7 +177,7 @@ const TransactionHistory = () =>{
   };
 
   const submitHandler = (values) => {
-    // console.log(values)
+   
 
     isButtonClicked(true);
 
@@ -251,7 +251,7 @@ const TransactionHistory = () =>{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard]);
 
-  // console.log("buttonclicked",buttonClicked);
+ 
 
   useEffect(() => {
     setPaginatedData(
@@ -266,7 +266,7 @@ const TransactionHistory = () =>{
   }, [pageSize, showData]);
 
   useEffect(() => {
-    //  console.log("page chagne no")
+   
     const startIndex = (currentPage - 1) * pageSize;
     const paginatedPost = _(showData)
       .slice(startIndex)
@@ -349,8 +349,7 @@ const TransactionHistory = () =>{
     let excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     txnList.map((item, index) => {
-      // console.log(JSON.stringify(item));
-      // console.log("index",index)
+      
       const allowDataToShow = {
         srNo: item.srNo === null ? "" : index + 1,
         txn_id: item.txn_id === null ? "" : item.txn_id,
@@ -393,7 +392,6 @@ const TransactionHistory = () =>{
 
       excelArr.push(Object.values(allowDataToShow));
     });
-    // console.log("excelArr",excelArr)
     const fileName = "Transactions-Report";
     exportToSpreadsheet(excelArr, fileName);
   };
@@ -746,7 +744,7 @@ const TransactionHistory = () =>{
               </div>
 
               <div>
-                {/* {console.log("show",show)} */}
+                
                 {txnList.length > 0 ? (
                   <nav aria-label="Page navigation example">
                     <ul className="pagination">
@@ -772,8 +770,7 @@ const TransactionHistory = () =>{
                                 : "page-item"
                             }
                           >
-                            {/* {console.log("currentPage",currentPage)} */}
-                            {/* {console.log("page",page)} */}
+                            
                             <a
                               className={`page-link data_${i}`}
                               href={() => false}

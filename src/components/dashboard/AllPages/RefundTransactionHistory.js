@@ -359,7 +359,7 @@ const RefundTransactionHistory = () => {
                   <tbody>
                     {txnList.length > 0 &&
                       paginatedata.map((item, i) => {
-                        console.log(paginatedata,"===============> datatt")
+                        
                         return (
                           <tr key={i}>                            
                             <td>{i + 1}</td>

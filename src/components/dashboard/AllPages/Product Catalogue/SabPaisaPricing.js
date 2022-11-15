@@ -92,7 +92,7 @@ const SabPaisaPricing = () => {
             param?.id==='14' ? <div class="card col-lg-8">
             <div class="card-body">
               <div className="col-lg-12">
-                <h2 className="pull-left- bold-font text-center mb-20 price">
+                <h2 className="pull-left- bold-font text-center mb-20 price d_block">
                   {Products.plan_price==="Connect" && Products.plan_name === "Enterprise" ? <></> :  <>{Products?.plan_price?.split("*")[0]} <span className={`title2 ${param?.id==="14" ? 'fontn' : 'fontna'}`}> {Products?.plan_price?.split("*")[1]}</span></>}
                 </h2>
                 <span class="blockquote mb-0 pull-left- text-center">

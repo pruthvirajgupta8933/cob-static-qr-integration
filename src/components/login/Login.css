@@ -60,9 +60,11 @@
   cursor: pointer;
   display: inline-block;
   float: right;
-  padding: 28px 20px;
+  padding: 20px 14px;
   position: relative;
   user-select: none;
+  background: orange;
+    border-radius: 4px;
 }
 
 .header .menu-icon .navicon {
@@ -277,10 +279,34 @@
   }
 }
 
+@media (max-width: 480px) {
+  .m_none{
+    display: none;
+  }
+  .onboarding-illustration-top img{
+    display: none;
+  }
+}
+
+
+@media (max-width: 685px) {
+  .m_none{
+    display: none;
+  }
+  .onboarding-illustration-top img{
+    display: none;
+  }
+}
 /* 48em = 768px */
 @media (max-width: 768px) {
   .toppad {
     padding: 82px 20px;
+  }
+  .m_none{
+    display: none;
+  }
+  .onboarding-illustration-top img{
+    display: none;
   }
 }
 @media (min-width: 48em) {
@@ -294,11 +320,13 @@
     clear: none;
     /* float: right; */
     max-height: none;
-    margin: 0 23%;
+    margin: 0 20%;
   }
   .header .menu-icon {
     display: none;
   }
+  
+  
 }
 
 /*Registration page css*/
@@ -346,4 +374,15 @@
   line-height: 27px;
   letter-spacing: 0.03em;
 }
-
+.d_block{
+  display: block !important;
+}
+.navbar-toggler{
+  background: #ff8f00 !important;
+}
+.navbar-toggler{
+  padding: 0.6rem 0.9rem !important;
+}
+.navbar-dark .navbar-toggler{
+  color:#000 !important;
+}
