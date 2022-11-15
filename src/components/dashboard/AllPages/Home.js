@@ -607,19 +607,19 @@ function Home() {
 
       <div
         className={
-          "modal fade" +
-          (modalState === "APPROVED" ? " show d-block" : " d-none")
+          "modal fade mymodals" +
+          (OpenModalForKycSubmit?.isOpen === true ? " show d-block" : " d-none")
         }
         tabIndex="-1"
         role="dialog"
       >
         <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
+          <div class="modal-content" style={{width:"709px",marginTop:"1px"}}>
             <div class="modal-body Satoshi-Medium">
               <button
                 type="button"
                 onClick={() => {
-                  setModalState(!modalState);
+                  handleClose()
                 }}
                 class="close"
                 data-dismiss="modal"
@@ -645,12 +645,18 @@ function Home() {
                       >
                         Congratulations!
                       </h1>
-                      <p
-                        className="modalscolrsfortextapprv"
-                        style={{ justifyContent: "center", display: "flex" }}
-                      >
-                        Your KYC is Done!
-                      </p>
+
+                      <p className="modalscolrsfortextapprv m-0 text-center">
+                            You can accept payments upto INR 15,000
+                            </p>
+                            <p className="modalscolrsfortextapprv m-0 text-center">
+                            Your KYC is currently under review. 
+                            <br/>
+                            <br/>
+                            <p className="modalscolrsfortextapprv m-0 text-center">The KYC review process ususally takes 3-4 working days.</p>
+                            <p className="modalscolrsfortextapprv m-0 text-center">We will notify you in case we want any clarification on your KYC.</p>
+
+                            </p>
                       <span
                         className="modalscolrsfortextapprv text-center"
                         style={{
@@ -659,8 +665,9 @@ function Home() {
                           whiteSpace: "nowrap",
                         }}
                       >
-                        You can start accepting payments now
+                       
                       </span>
+                      
                     </ul>
                   </div>
 
@@ -675,11 +682,11 @@ function Home() {
                   </div>
                 </div>
               </div>
-
+ <div className="hrForCard"></div>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <button
                   className="modalbtnsuccess text-white mt-3 ml-5"
-                  onClick={() => setModalState(!modalState)}
+                  onClick={() => handleClose()}
                 >
                   Continue
                 </button>
@@ -690,7 +697,7 @@ function Home() {
       </div>
 
        {/* KYC SUBMIT MODAL AFTER SUBMITTING THE KYC FORM */}
-       <section>
+       {/* <section>
        <div
         className={
           "modal hide fade mymodals" +
@@ -769,18 +776,18 @@ function Home() {
                             >
                               Close
                             </button>
-                        </div>
+                        </div> */}
 
                         {/* </Link> */}
                       
-            </div>
+            {/* </div>
           </div>
         </div>
       </div>
       </section>
        
    
-      
+       */}
             {/* KYC SUBMIT MODAL AFTER SUBMITTING THE KYC FORM */}
 
       {/* Dashboard open pop up start here {IF KYC IS APPROVED}*/}
