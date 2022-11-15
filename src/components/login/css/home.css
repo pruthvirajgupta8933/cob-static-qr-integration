@@ -575,6 +575,4 @@ table.tables tr:nth-child(odd) {
 .rightbrd{
     border-right: 1px solid #ccc;
 }
-.card{
-    margin-top: 20px;
-}
+
