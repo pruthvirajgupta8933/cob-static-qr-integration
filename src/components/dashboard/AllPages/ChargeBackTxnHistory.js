@@ -11,7 +11,6 @@ import { toast } from "react-toastify";
 import {
   clearSettlementReport,
   fetchChargebackTxnHistory,
-  fetchSettlementReportSlice,
 } from "../../../slices/dashboardSlice";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
@@ -20,7 +19,7 @@ import NavBar from "../NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import moment from "moment";
 
-function ChargeBackTxnHistory() {
+const ChargeBackTxnHistory= () => {
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
   const history = useHistory();
@@ -29,7 +28,6 @@ function ChargeBackTxnHistory() {
 
   const { isLoadingTxnHistory } = dashboard;
   const [txnList, SetTxnList] = useState([]);
-  // const [filterList,SetFilterList] = useState([])
   const [searchText, SetSearchText] = useState("");
 
   const [pageSize, setPageSize] = useState(10);
@@ -41,8 +39,8 @@ function ChargeBackTxnHistory() {
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
 
-  var now = moment().format("YYYY-M-D");
-  var splitDate = now.split("-");
+ let now = moment().format("YYYY-M-D");
+ let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
     splitDate[1] = "0" + splitDate[1];
   }
@@ -51,18 +49,8 @@ function ChargeBackTxnHistory() {
   }
   splitDate = splitDate.join("-");
 
-  //   var clientMerchantDetailsList = [];
-  //   if (
-  //     user &&
-  //     user?.clientMerchantDetailsList === null &&
-  //     user?.roleId !== 3 &&
-  //     user?.roleId !== 13
-  //   ) {
-  //     history.push("/dashboard/profile");
-  //   } else {
-  //     clientMerchantDetailsList = user?.clientMerchantDetailsList;
-  //   }
-  var clientMerchantDetailsList = [];
+ 
+ let clientMerchantDetailsList = [];
   if (
     user &&
     user?.clientMerchantDetailsList === null &&
@@ -114,9 +102,7 @@ function ChargeBackTxnHistory() {
   console.log(clientMerchantDetailsList, "hereeeeeeeeeeee");
 
   useEffect(() => {
-    // console.log("showData", showData.length);
-    // console.log("updateTxnList", updateTxnList.length);
-    // console.log(buttonClicked && dataFound);
+    
 
     setTimeout(() => {
       if (
@@ -134,12 +120,10 @@ function ChargeBackTxnHistory() {
     setCurrentPage(pageNo);
   };
 
-  //   console.log(fetchRefundTransactionHistory,"urllllllllllll")
 
   const onSubmitHandler = (values) => {
     dispatch(fetchChargebackTxnHistory(values)).then((res) => {
-      // console.log(res, "myreesss");
-      console.log(res)
+    
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {
@@ -150,66 +134,7 @@ function ChargeBackTxnHistory() {
       }
     });
   };
-  // const onSubmitHandler = values =>{
-  //     // console.log(values)
-
-  //     isButtonClicked(true)
-
-  //     const {fromDate, endDate, transaction_status, payment_mode} = values
-  //     const dateRangeValid = checkValidation(fromDate, endDate);
-
-  //     if(dateRangeValid){
-  //       // isLoading(true);
-  //       // isButtonClicked(true);
-  //       let strClientCode, clientCodeArrLength ="";
-  //         if(clientCode==="All"){
-  //         const allClientCode = []
-  //         clientMerchantDetailsList?.map((item)=>{
-  //           allClientCode.push(item.clientCode)
-  //         })
-  //         clientCodeArrLength = allClientCode.length.toString();
-  //         strClientCode = allClientCode.join().toString();
-  //       }else{
-  //         strClientCode = clientCode;
-  //         clientCodeArrLength = "1"
-  //       }
-
-  //       let paramData = {
-  //         clientCode:strClientCode,
-  //         paymentStatus:transaction_status,
-  //         paymentMode:payment_mode,
-  //         fromDate:fromDate,
-  //         endDate:endDate,
-  //         length: "0",
-  //         page: "0",
-  //         NoOfClient: clientCodeArrLength
-  //       }
-  //   console.log(paramData)
-  //       dispatch(fetchTransactionHistorySlice(paramData))
-  // }
-
-  //   }
-  //   const checkValidation = (fromDate = "", toDate = "") => {
-  //     var flag = true;
-  //     if (fromDate === 0 || toDate === "") {
-  //       alert("Please select the date.");
-  //       flag = false;
-  //     } else if (fromDate !== "" || toDate !== "") {
-  //       const date1 = new Date(fromDate);
-  //       const date2 = new Date(toDate);
-  //       const diffTime = Math.abs(date2 - date1);
-  //       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  //       // console.log("days",diffDays);
-  //       if (diffDays < 0 || diffDays > 90) {
-  //         flag = false;
-  //         alert("The date range should be under 3 months");
-  //       }
-  //     } else {
-  //       flag = true;
-  //     }
-
-  //     return flag;
-  //   };
+ 
 
   useEffect(() => {
     // Remove initiated from transaction history response
@@ -228,7 +153,7 @@ function ChargeBackTxnHistory() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard]);
 
-  // console.log("buttonclicked",buttonClicked);
+
 
   useEffect(() => {
     setPaginatedData(
@@ -279,47 +204,51 @@ function ChargeBackTxnHistory() {
 
   const exportToExcelFn = () => {
     const excelHeaderRow = [
-      "S.No",
-      "Client Code",
-      "Client Name",
-      "SP Transaction ID",
-      "Client Transaction ID",
-      "Amount",
-      "Settlement Amount",
-      "Settlement Date",
-      "Settlement Bank Ref",
-      "Settlement UTR",
-      "Settlement Remarks",
-      "Settlement By",
-    ];
+      'S. No.',
+      'arn',
+      'bank_cb_fee',
+      'cb_credit_date_txn_reject',
+      'charge_back_amount',
+      'charge_back_credit_date_to_merchant',
+      'charge_back_date',
+      'charge_back_debit_amount',
+      'charge_back_remarks',
+      'charge_back_status',
+      'client_code',
+      'client_name',
+      'client_txn_id',
+      'merchant_cb_status',
+      'payee_amount',
+      'payment_mode',
+      'prearb_date',
+      'status',
+      'txn_id'
+       ];
     const excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     txnList.map((item, index) => {
-      // console.log(JSON.stringify(item));
-      // console.log("index",index)
       const allowDataToShow = {
-        srNo: item.srNo === null ? "" : index + 1,
-        client_code: item.client_code === null ? "" : item.client_code,
-        client_name: item.client_name === null ? "" : item.client_name,
-        txn_id: item.txn_id === null ? "" : item.txn_id,
-        client_txn_id: item.client_txn_id === null ? "" : item.client_txn_id,
-        payee_amount:
-          item.payee_amount === null
-            ? ""
-            : Number.parseFloat(item.payee_amount),
-        settlement_amount:
-          item.settlement_amount === null
-            ? ""
-            : Number.parseFloat(item.settlement_amount),
-        settlement_date:
-          item.settlement_date === null ? "" : item.settlement_date,
-        settlement_bank_ref:
-          item.settlement_bank_ref === null ? "" : item.settlement_bank_ref,
-        settlement_utr: item.settlement_utr === null ? "" : item.settlement_utr,
-        settlement_remarks:
-          item.settlement_remarks === null ? "" : item.settlement_remarks,
-        settlement_by: item.settlement_by === null ? "" : item.settlement_by,
-      };
+        'srNo': item.srNo === null ? "" : index + 1,
+        'arn' : item.arn === null ? "" : item.arn,
+        'bank_cb_fee' : item.bank_cb_fee === null ? "" : item.bank_cb_fee,
+        'cb_credit_date_txn_reject' : item.cb_credit_date_txn_reject === null ? "" : item.cb_credit_date_txn_reject,
+        'charge_back_amount': item.charge_back_amount === null ? "" : Number.parseFloat(item.charge_back_amount),
+        'charge_back_credit_date_to_merchant': item.charge_back_credit_date_to_merchant === null ? "" : item.charge_back_credit_date_to_merchant,
+        'charge_back_date': item.charge_back_date === null ? "" : item.charge_back_date,
+        'charge_back_debit_amount': item.charge_back_debit_amount === null ? "" : item.charge_back_debit_amount,
+        'charge_back_remarks': item.charge_back_remarks === null ? "" : item.charge_back_remarks,
+        'charge_back_status': item.charge_back_status === null ? "" : item.charge_back_status,
+        'client_code': item.client_code === null ? "" : item.client_code,
+        'client_name': item.client_name === null ? "" : item.client_name,
+        'client_txn_id': item.client_txn_id === null ? "" : item.client_txn_id,
+        'merchant_cb_status': item.merchant_cb_status === null ? "" : item.merchant_cb_status,
+        'payee_amount': item.payee_amount === null ? "" : Number.parseFloat(item.payee_amount),
+        'payment_mode': item.payment_mode === null ? "" : item.payment_mode,
+        'prearb_date': item.prearb_date === null ? "" : item.prearb_date,
+        'status': item.status === null ? "" : item.status,
+        'txn_id': item.txn_id === null ? "" : item.txn_id
+      
+     };
 
       excelArr.push(Object.values(allowDataToShow));
     });
@@ -328,14 +257,7 @@ function ChargeBackTxnHistory() {
     exportToSpreadsheet(excelArr, fileName);
   };
 
-  // const today = new Date();
-  // const lastThreeMonth = new Date(today);
-  // lastThreeMonth.setDate(lastThreeMonth.getDate() - 90);
-  // lastThreeMonth.toLocaleDateString("en-ca");
-  // var month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
-  // var day = lastThreeMonth.getUTCDate();
-  // var year = lastThreeMonth.getUTCFullYear();
-  // const finalDate = year + "-" + month + "-" + day;
+
 
   return (
     <section className="ant-layout">
@@ -462,20 +384,27 @@ function ChargeBackTxnHistory() {
                 <table className="table table-bordered">
                   <thead>
                     {txnList.length > 0 ? (
-                      <tr>
-                        <th> S.No </th>
-                        <th> Client Code </th>
-                        <th> Client Name </th>
-                        <th> SP Transaction ID </th>
-                        <th> Client Transaction ID </th>
-                        <th> Amount </th>
-                        <th> Settlement Amount </th>
-                        <th> Settlement Date </th>
-                        <th> Settlement Bank Ref </th>
-                        <th> Settlement UTR </th>
-                        <th> Settlement Remarks </th>
-                        <th> Settlement By </th>
-                      </tr>
+                       <tr>
+                       <th> S.No </th>
+                       <th> Client Code </th>
+                       <th> Client Name </th>
+                       <th> SP Transaction ID </th>
+                       <th> Client Transaction ID </th>
+                       <th> Amount </th>
+                       <th> ARN </th>
+                       <th> Bank CB Fee </th>
+                       <th> CB Credit Date Txn Reject </th>
+                       <th> Charge Back Amount </th>
+                       <th> Charge Back Credit Date To Merchant </th>
+                       <th> Charge Back Date </th>
+                       <th> Charge Back Debit Amount </th>
+                       <th> Charge Back Remarks </th>
+                       <th> Charge Back Status </th>
+                       <th> Merchant CB Status </th>
+                       <th> Payment Mode </th>
+                       <th> Prearb Date </th>
+                       <th> Status </th>
+                     </tr>
                     ) : (
                       <></>
                     )}
@@ -490,19 +419,20 @@ function ChargeBackTxnHistory() {
                             <td>{item.client_name}</td>
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
-                            <td>
-                              {Number.parseFloat(item.payee_amount).toFixed(2)}
-                            </td>
-                            <td>
-                              {Number.parseFloat(
-                                item.settlement_amount
-                              ).toFixed(2)}
-                            </td>
-                            <td>{item.settlement_date}</td>
-                            <td>{item.settlement_bank_ref}</td>
-                            <td>{item.settlement_utr}</td>
-                            <td>{item.settlement_remarks}</td>
-                            <td>{item.settlement_by}</td>
+                            <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
+                            <td>{item.arn}</td>
+                            <td>{item.bank_cb_fee}</td>
+                            <td>{item.cb_credit_date_txn_reject}</td>
+                            <td>{item.charge_back_amount}</td>
+                            <td>{item.charge_back_credit_date_to_merchant}</td>
+                            <td>{item.charge_back_date}</td>
+                            <td>{Number.parseFloat(item.charge_back_debit_amount).toFixed(2)}</td>
+                            <td>{item.charge_back_remarks}</td>
+                            <td>{item.charge_back_status}</td>
+                            <td>{item.merchant_cb_status}</td>
+                            <td>{item.payment_mode}</td>
+                            <td>{item.prearb_date}</td>
+                            <td>{item.status}</td>
                           </tr>
                         );
                       })}
@@ -511,7 +441,7 @@ function ChargeBackTxnHistory() {
               </div>
 
               <div>
-                {/* {console.log("show",show)} */}
+                
                 {txnList.length > 0 ? (
                   <nav aria-label="Page navigation example">
                     <ul className="pagination">
@@ -537,8 +467,7 @@ function ChargeBackTxnHistory() {
                                 : "page-item"
                             }
                           >
-                            {/* {console.log("currentPage",currentPage)} */}
-                            {/* {console.log("page",page)} */}
+                          
                             <a
                               className={`page-link data_${i}`}
                               href={() => false}

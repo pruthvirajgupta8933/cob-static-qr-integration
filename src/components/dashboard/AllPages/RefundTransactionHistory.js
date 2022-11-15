@@ -22,7 +22,6 @@ import moment from "moment";
 
 const RefundTransactionHistory = () => {
   const dispatch = useDispatch();
-  const roles = roleBasedAccess();
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
@@ -30,6 +29,8 @@ const RefundTransactionHistory = () => {
   const { isLoadingTxnHistory } = dashboard;
   const [txnList, SetTxnList] = useState([]);
   const [searchText, SetSearchText] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([]);
@@ -40,18 +41,7 @@ const RefundTransactionHistory = () => {
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
 
-  let now = moment().format("YYYY-M-D");
-  let splitDate = now.split("-");
-  if (splitDate[1].length === 1) {
-    splitDate[1] = "0" + splitDate[1];
-  }
-  if (splitDate[2].length === 1) {
-    splitDate[2] = "0" + splitDate[2];
-  }
-  splitDate = splitDate.join("-");
-
-  
-  let clientMerchantDetailsList = [];
+  var clientMerchantDetailsList = [];
   if (
     user &&
     user?.clientMerchantDetailsList === null &&
@@ -63,35 +53,29 @@ const RefundTransactionHistory = () => {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
-  // const clientcode_rolebased = roles.bank
-  //   ? "All"
-  //   : roles.merchant
-  //   ? clientMerchantDetailsList[0]?.clientCode
-  //   : "";
+  const tempClientList = convertToFormikSelectJson("clientCode", "clientName", clientMerchantDetailsList);
 
-  // const tempClientList = convertToFormikSelectJson(
-  //   "clientCode",
-  //   "clientName",
-  //   clientMerchantDetailsList
-  // );
-
-  const [todayDate, setTodayDate] = useState(splitDate);
 
   const initialValues = {
     clientCode: "",
-    fromDate: todayDate,
-    endDate: todayDate,
+    fromDate: "",
+    endDate: "",
     noOfClient: "1",
-    rpttype: "0",
-  };
+    rpttype: "0"
+  }
+  
+
+  
+  
 
   const validationSchema = Yup.object({
     clientCode: Yup.string().required("Required"),
     fromDate: Yup.date().required("Required"),
-    endDate: Yup.date()
-      .min(Yup.ref("fromDate"), "End date can't be before Start date")
-      .required("Required"),
-  });
+    endDate: Yup.date().min(
+      Yup.ref('fromDate'),
+      "End date can't be before Start date"
+    ).required("Required")
+  })
 
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
@@ -103,7 +87,6 @@ const RefundTransactionHistory = () => {
   
 
   useEffect(() => {
-  
 
     setTimeout(() => {
       if (
@@ -117,41 +100,40 @@ const RefundTransactionHistory = () => {
     });
   }, [showData, updateTxnList]);
 
+
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
   };
 
   
 
+ 
+
   const onSubmitHandler = (values) => {
-    dispatch(fetchRefundTransactionHistory(values)).then((res) => {
-      
-      const ApiStatus = res?.meta?.requestStatus;
-      const ApiPayload = res?.payload;
-      if (ApiStatus === "rejected") {
-        toast.error("Request Rejected");
-      }
-      if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
-        toast.error("No Data Found");
-      }
-    });
-  };
+    setLoading(true)
+    dispatch(fetchRefundTransactionHistory(values))
+      .then(res => {
+        setLoading(false)
+        const ApiStatus = res?.meta?.requestStatus;
+        const ApiPayload = res?.payload;
+        if (ApiStatus === "rejected") {
+          toast.error("Request Rejected");
+        }
+        if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
+          toast.error("No Data Found");
+        }
+      })
+  }
+
   
 
   useEffect(() => {
-    
+    // Remove initiated from transaction history response
     const TxnListArrUpdated = dashboard.settlementReport;
-    
-
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
     SetTxnList(TxnListArrUpdated);
-    setPaginatedData(
-      _(TxnListArrUpdated)
-        .slice(0)
-        .take(pageSize)
-        .value()
-    );
+    setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard]);
 
@@ -170,15 +152,11 @@ const RefundTransactionHistory = () => {
   }, [pageSize, showData]);
 
   useEffect(() => {
-    
     const startIndex = (currentPage - 1) * pageSize;
-    const paginatedPost = _(showData)
-      .slice(startIndex)
-      .take(pageSize)
-      .value();
+    const paginatedPost = _(showData).slice(startIndex).take(pageSize).value();
     setPaginatedData(paginatedPost);
 
-   
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   useEffect(() => {
@@ -205,52 +183,52 @@ const RefundTransactionHistory = () => {
   const pages = _.range(1, pageCount + 1);
 
   const exportToExcelFn = () => {
+    
     const excelHeaderRow = [
-      "S.No",
-      "Client Code",
-      "Client Name",
-      "SP Transaction ID",
-      "Client Transaction ID",
-      "Amount",
-      "Settlement Amount",
-      "Settlement Date",
-      "Settlement Bank Ref",
-      "Settlement UTR",
-      "Settlement Remarks",
-      "Settlement By",
-    ];
+      'S. No.',
+      'txn_id',
+      'client_txn_id',
+      'trans_date',
+      'payee_amount',
+      'client_code',
+      'client_name',
+      'payment_mode',
+      'bank_name',
+      'amount_available_to_adjust',
+      'amount_adjust_on',
+      'money_asked_from_merchant',
+      'refund_initiated_on',
+      'refund_process_on',
+      'refund_reason',
+      'refunded_amount',
+      'refund_track_id'
+       ];
     const excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     txnList.map((item, index) => {
-      
       const allowDataToShow = {
-        srNo: item.srNo === null ? "" : index + 1,
-        client_code: item.client_code === null ? "" : item.client_code,
-        client_name: item.client_name === null ? "" : item.client_name,
-        txn_id: item.txn_id === null ? "" : item.txn_id,
-        client_txn_id: item.client_txn_id === null ? "" : item.client_txn_id,
-        payee_amount:
-          item.payee_amount === null
-            ? ""
-            : Number.parseFloat(item.payee_amount),
-        settlement_amount:
-          item.settlement_amount === null
-            ? ""
-            : Number.parseFloat(item.settlement_amount),
-        settlement_date:
-          item.settlement_date === null ? "" : item.settlement_date,
-        settlement_bank_ref:
-          item.settlement_bank_ref === null ? "" : item.settlement_bank_ref,
-        settlement_utr: item.settlement_utr === null ? "" : item.settlement_utr,
-        settlement_remarks:
-          item.settlement_remarks === null ? "" : item.settlement_remarks,
-        settlement_by: item.settlement_by === null ? "" : item.settlement_by,
-      };
+        'srNo': item.srNo === null ? "" : index + 1,
+        'txn_id': item.txn_id === null ? "" : item.txn_id,
+        'client_txn_id': item.client_txn_id === null ? "" : item.client_txn_id,
+        'trans_date' : item.trans_date === null ? "" : item.trans_date,
+        'payee_amount': item.payee_amount === null ? "" : Number.parseFloat(item.payee_amount),
+        'client_code': item.client_code === null ? "" : item.client_code,
+        'client_name': item.client_name === null ? "" : item.client_name,
+        'payment_mode': item.payment_mode === null ? "" : item.payment_mode,
+        'bank_name' : item.bank_name === null ? "" : item.bank_name,
+        'amount_available_to_adjust' : item.amount_available_to_adjust === null ? "" : item.amount_available_to_adjust,
+        'amount_adjust_on': item.amount_adjust_on === null ? "" : item.amount_adjust_on,
+        'money_asked_from_merchant': item.money_asked_from_merchant === null ? "" : item.money_asked_from_merchant,
+        'refund_initiated_on': item.refund_initiated_on === null ? "" : item.refund_initiated_on,
+        'refund_process_on': item.refund_process_on === null ? "" : item.refund_process_on,
+        'refund_reason': item.refund_reason === null ? "" : item.refund_reason,
+        'refunded_amount': item.refunded_amount === null ? "" : Number.parseFloat(item.refunded_amount),
+        'refund_track_id': item.refund_track_id === null ? "" : item.refund_track_id
+     };
 
       excelArr.push(Object.values(allowDataToShow));
     });
-    
-    const fileName = "Settlement-Report";
+    const fileName = "Refund-Txn-Report";
     exportToSpreadsheet(excelArr, fileName);
   };
 
@@ -268,12 +246,12 @@ const RefundTransactionHistory = () => {
           </div>
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid">
-              <Formik
+            <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={onSubmitHandler}
               >
-                {(formik) => (
+                {formik => (
                   <Form>
                     <div className="form-row">
                       <div className="form-group col-md-4">
@@ -282,7 +260,7 @@ const RefundTransactionHistory = () => {
                           label="Client Code"
                           name="clientCode"
                           className="form-control rounded-0"
-                          options={clientCodeOption}
+                          options={tempClientList}
                         />
                       </div>
 
@@ -306,64 +284,40 @@ const RefundTransactionHistory = () => {
                         />
                       </div>
                     </div>
-                    <div className="form-row">
+                    <div className="form-row" >
                       <div className="form-group col-md-1">
-                        <button
-                          className=" btn bttn bttnbackgroundkyc"
-                          type="submit"
-                        >
-                          Search{" "}
-                        </button>
+                        <button className="btn btn-sm btn-primary" type="submit"> {loading ? "Loading..." : "Search"} </button>
                       </div>
-                      {txnList?.length > 0 ? (
+                      {txnList?.length > 0 ?
                         <div className="form-group col-md-1">
-                          <button
-                            className="btn btn-sm text-white"
-                            style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                            type="button"
-                            onClick={() => exportToExcelFn()}
-                          >
-                            Export{" "}
-                          </button>
+                          <button className="btn btn-sm  btn-success text-white" type="" onClick={() => { exportToExcelFn() }}>Export </button>
                         </div>
-                      ) : (
-                        <></>
-                      )}
+                        : <></>}
                     </div>
+
                   </Form>
                 )}
               </Formik>
               <hr className="hr" />
-              {txnList?.length > 0 ? (
-                <div className="form-row">
-                  <div className="form-group col-md-3">
-                    <label>Search</label>
-                    <input
-                      type="text"
-                      label="Search"
-                      name="search"
-                      placeholder="Search Here"
-                      className="form-control rounded-0"
-                      onChange={(e) => {
-                        SetSearchText(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="form-group col-md-3">
-                    <label>Count Per Page</label>
-                    <select
-                      value={pageSize}
-                      rel={pageSize}
-                      className="form-control rounded-0"
-                      onChange={(e) => setPageSize(parseInt(e.target.value))}
-                    >
-                      <DropDownCountPerPage datalength={txnList.length} />
-                    </select>
-                  </div>
+              {txnList?.length > 0 ? <div className="form-row">
+                <div className="form-group col-md-3">
+                  <label>Search</label>
+                  <input
+                    type="text"
+                    label="Search"
+                    name="search"
+                    placeholder="Search Here"
+                    className="form-control rounded-0"
+                    onChange={(e) => { SetSearchText(e.target.value) }}
+                  />
                 </div>
-              ) : (
-                <> </>
-              )}
+                <div className="form-group col-md-3">
+                  <label>Count Per Page</label>
+                  <select value={pageSize} rel={pageSize} className="form-control rounded-0" onChange={(e) => setPageSize(parseInt(e.target.value))} >
+                    <DropDownCountPerPage datalength={txnList.length} />
+                  </select>
+                </div>
+              </div> : <> </>}
             </div>
           </section>
 
@@ -386,12 +340,17 @@ const RefundTransactionHistory = () => {
                         <th> SP Transaction ID </th>
                         <th> Client Transaction ID </th>
                         <th> Amount </th>
-                        <th> Settlement Amount </th>
-                        <th> Settlement Date </th>
-                        <th> Settlement Bank Ref </th>
-                        <th> Settlement UTR </th>
-                        <th> Settlement Remarks </th>
-                        <th> Settlement By </th>
+                        <th> amount_adjust_on </th>
+                        <th> amount_available_to_adjust </th>
+                        <th> bank_name </th>
+                        <th> money_asked_from_merchant </th>
+                        <th> Payment Mode </th>
+                        <th> refund_initiated_on </th>
+                        <th> refund_process_on </th>
+                        <th> refund_reason </th>
+                        <th> refund_track_id </th>
+                        <th> refunded_amount </th>
+                        <th> trans_date </th>
                       </tr>
                     ) : (
                       <></>
@@ -400,26 +359,26 @@ const RefundTransactionHistory = () => {
                   <tbody>
                     {txnList.length > 0 &&
                       paginatedata.map((item, i) => {
+                        console.log(paginatedata,"===============> datatt")
                         return (
-                          <tr key={i}>
+                          <tr key={i}>                            
                             <td>{i + 1}</td>
                             <td>{item.client_code}</td>
                             <td>{item.client_name}</td>
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
-                            <td>
-                              {Number.parseFloat(item.payee_amount).toFixed(2)}
-                            </td>
-                            <td>
-                              {Number.parseFloat(
-                                item.settlement_amount
-                              ).toFixed(2)}
-                            </td>
-                            <td>{item.settlement_date}</td>
-                            <td>{item.settlement_bank_ref}</td>
-                            <td>{item.settlement_utr}</td>
-                            <td>{item.settlement_remarks}</td>
-                            <td>{item.settlement_by}</td>
+                            <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
+                            <td>{item.amount_adjust_on}</td>
+                            <td>{item.amount_available_to_adjust}</td>
+                            <td>{item.bank_name}</td>
+                            <td>{item.money_asked_from_merchant}</td>
+                            <td>{item.payment_mode}</td>
+                            <td>{item.refund_initiated_on}</td>
+                            <td>{item.refund_process_on}</td>
+                            <td>{item.refund_reason}</td>
+                            <td>{item.refund_track_id}</td>
+                            <td>{Number.parseFloat(item.refunded_amount)}</td>
+                            <td>{item.trans_date}</td>
                           </tr>
                         );
                       })}
@@ -428,7 +387,6 @@ const RefundTransactionHistory = () => {
               </div>
 
               <div>
-                
                 {txnList.length > 0 ? (
                   <nav aria-label="Page navigation example">
                     <ul className="pagination">
@@ -454,7 +412,6 @@ const RefundTransactionHistory = () => {
                                 : "page-item"
                             }
                           >
-                            
                             <a
                               className={`page-link data_${i}`}
                               href={() => false}
@@ -468,7 +425,7 @@ const RefundTransactionHistory = () => {
                           className="page-link"
                           onClick={(nex) => {
                             setCurrentPage((nex) =>
-                              nex === pages.length > 9 ? nex : nex + 1
+                              nex === (pages.length > 9) ? nex : nex + 1
                             );
                           }}
                           href={() => false}
@@ -503,8 +460,7 @@ const RefundTransactionHistory = () => {
           </section>
         </div>
       </main>
-    </section>
-  );
+    </section>  );
 }
 
 export default RefundTransactionHistory;

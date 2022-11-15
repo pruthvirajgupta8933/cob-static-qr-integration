@@ -238,39 +238,39 @@ export const successTxnSummary = createAsyncThunk(
       },
       [fetchSettlementReportSlice.pending]: (state) => {
         // state.isLoadingTxnHistory = true;
-        state.transactionHistory=[];
+        state.settlementReport=[];
       },
       [fetchSettlementReportSlice.rejected]: (state) => {
         // state.isLoadingTxnHistory = false;
-        state.transactionHistory=[];
+        state.settlementReport=[];
       },
 
       [fetchRefundTransactionHistory.fulfilled]: (state, action) => {
         // state.isLoadingTxnHistory = false;
-        state.refundTransactionHistory = action.payload;
+        state.settlementReport = action.payload;
 
         // console.log(state.refundTransactionHistory = action.payload,"my payload")
       },
       [fetchRefundTransactionHistory.pending]: (state) => {
         // state.isLoadingTxnHistory = true;
-        state.transactionHistory=[];
+        state.settlementReport=[];
       },
       [fetchRefundTransactionHistory.rejected]: (state) => {
         // state.isLoadingTxnHistory = false;
-        state.transactionHistory=[];
+        state.settlementReport=[];
       },
 
       [fetchChargebackTxnHistory.fulfilled]: (state, action) => {
         // state.isLoadingTxnHistory = false;
-        state.chargebackTxnHistory = action.payload;
+        state.settlementReport = action.payload;
       },
       [fetchChargebackTxnHistory.pending]: (state) => {
         // state.isLoadingTxnHistory = true;
-        state.transactionHistory=[];
+        state.settlementReport=[];
       },
       [fetchChargebackTxnHistory.rejected]: (state) => {
         // state.isLoadingTxnHistory = false;
-        state.transactionHistory=[];
+        state.settlementReport=[];
       },
 
 
