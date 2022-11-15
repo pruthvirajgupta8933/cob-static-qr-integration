@@ -259,7 +259,7 @@ const RefundTransactionHistory = () => {
                           control="select"
                           label="Client Code"
                           name="clientCode"
-                          className="form-control rounded-0"
+                          className="form-control rounded-0 mt-0"
                           options={tempClientList}
                         />
                       </div>
