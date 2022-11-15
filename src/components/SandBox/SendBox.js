@@ -13,7 +13,7 @@ function Sandbox() {
     const { user } = auth;
     const kycStatus = kyc?.kycUserList?.status
 
-
+console.log(user)
 
 
     const dispatch = useDispatch()
@@ -52,25 +52,25 @@ function Sandbox() {
                                     <div className="form-group row">                                        
                                         <div className="col-lg-4">
                                             <label htmlFor="inputEmail3" className="col-form-label">Client Code </label>
-                                            <input type="text" className="form-control" id="inputEmail3" disabled="true" value="HUGZT" />
+                                            <input type="text" className="form-control" id="inputEmail3" disabled="true" value="LPSD1" />
                                         </div>
                                         <div className="col-lg-4">
                                             <label htmlFor="inputPassword3" className="col-form-label">UserName </label>
-                                            <input type="text" className="form-control" id="inputPassword3" disabled="true" value="bhabesh.jha_4757" />
+                                            <input type="text" className="form-control" id="inputPassword3" disabled="true" value="Abh789@sp" />
                                         </div>
-                                        <div className="col-lg-4">
+                                        {/* <div className="col-lg-4">
                                             <label htmlFor="inputEmail3" className="col-form-label">Password </label>
                                             <input type="text" className="form-control" id="inputEmail3" disabled="true" value="HUGZT_SP4757" />
-                                        </div>
+                                        </div> */}
                                         <div className="col-lg-4">
                                             <label htmlFor="inputPassword3" className="col-form-label">Authentication Key </label>
-                                            <input type="text" className="form-control" id="inputPassword3" disabled="true" value="wolF0anDeIin6Cdb" />
+                                            <input type="text" className="form-control" id="inputPassword3" disabled="true" value="x0xzPnXsgTq0QqXx" />
                                         </div>
                                         <div className="col-lg-4">
                                             <label htmlFor="inputPassword3" className="col-form-label">Authentication IV </label>
-                                            <input type="text" className="form-control" id="inputPassword3" disabled="true" value="v86CWyr6c7LPWSXQ" />
+                                            <input type="text" className="form-control" id="inputPassword3" disabled="true" value="oLA38cwT6IYNGqb3" />
                                         </div>
-                                        <div className="col-lg-4">
+                                        <div className="col-lg-6">
                                             <label htmlFor="inputPassword3" className="col-form-label">Environment Base URL </label>
                                             <input type="text" className="form-control" id="inputPassword3" disabled="true" value="https://sandbox.sabpaisa.in/SabPaisa/sabPaisaInit?v=1" />
                                         </div>
@@ -82,24 +82,21 @@ function Sandbox() {
 
                             </div>
 
-                            {/* <div className="col-lg-12 border m-1 p-2-">
-                            <a class="btn" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="false" aria-controls="multiCollapseExample2"><h2>Live Credentials</h2></a>
+                            <div className="col-lg-12 border m-1 p-2-">
+                            <a class="btn" data-toggle="collapse" href="#multiCollapseExample2" role="button" aria-expanded="true" aria-controls="multiCollapseExample2"><h2>Live Credentials</h2></a>
                          
-                            <form class="collapse multi-collapse" id="multiCollapseExample2">
+                            <form class="collapse multi-collapse show" id="multiCollapseExample2">
                                     <div className="form-group row">
                                     <div className="col-lg-4">
                                         <label htmlFor="inputEmail3" className="col-form-label">Client Code </label>
                                         
-                                            <input type="text" className="form-control" id="inputEmail3" disabled="true" value="HUGZT" />
+                                            <input type="text" className="form-control" id="inputEmail3" disabled="true" value={user?.clientMerchantDetailsList[0]?.clientCode}  />
                                         </div>
                                         <div className="col-lg-4">
                                             <label htmlFor="inputPassword3" className=" col-form-label">UserName </label>
-                                            <input type="text" className="form-control" id="inputPassword3" disabled="true" value="bhabesh.jha_4757" />
+                                            <input type="text" className="form-control" id="inputPassword3" disabled="true" value={user?.userName} />
                                         </div>
-                                        <div className="col-lg-4">
-                                            <label htmlFor="inputEmail3" className="col-form-label">Password </label>
-                                            <input type="text" className="form-control" id="inputEmail3" disabled="true" value="HUGZT_SP4757" />
-                                        </div>
+                                      
                                         <div className="col-lg-4">
                                             <label htmlFor="inputPassword3" className="col-form-label">Authentication Key </label>
                                          <input type="text" className="form-control" id="inputPassword3" disabled="true" value="wolF0anDeIin6Cdb" />
@@ -108,16 +105,16 @@ function Sandbox() {
                                             <label htmlFor="inputPassword3" className="col-form-label">Authentication IV </label>
                                             <input type="text" className="form-control" id="inputPassword3" disabled="true" value="v86CWyr6c7LPWSXQ" />
                                         </div>
-                                        <div className="col-lg-4">
+                                        <div className="col-lg-6">
                                             <label htmlFor="inputPassword3" className="col-form-label">Environment Base URL </label>
                                         
-                                            <input type="text" className="form-control" id="inputPassword3" disabled="true" value="https://sandbox.sabpaisa.in/SabPaisa/sabPaisaInit?v=1" />
+                                            <input type="text" className="form-control" id="inputPassword3" disabled="true" value="https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1" />
                                         </div>
                                     </div>
 
                                 </form>
 
-                            </div> */}
+                            </div>
                            
                             </div>
                         </div>
