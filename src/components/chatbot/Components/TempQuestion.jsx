@@ -1,19 +1,9 @@
 import React, { useState } from "react";
-import Button from '@mui/material/Button';
-// import Paper from '@mui/material/Paper';
-// import { styled } from '@mui/material/styles';
-import { TextField } from "@mui/material";
-import Grid from '@mui/material/Grid';
+
 import axios from 'axios'
 
 
-// const Item = styled(Paper)(({ theme }) => ({
-//     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-//     ...theme.typography.body2,
-//     padding: theme.spacing(1),
-//     textAlign: 'center',
-//     color: theme.palette.text.secondary,
-//   }));
+
   
 
 
@@ -54,18 +44,18 @@ const TempQuestion = (props)=>{
     return(
         <>
         <div>
-        <Grid>
-            <Grid item container alignItems="center" justifyContent="center" spacing={2}>
-                <Grid item xs={12}>
-                    <TextField style={{"marginTop": "10px"}} id="outlined-multiline-static" label="Question" name="Question" multiline rows={3} onChange={SetValues}/>
-                </Grid>
-            </Grid>
-            <Grid item container alignItems="center" justifyContent="center" spacing={2}>
-                <Grid item xs={4}>
-                        <Button style={{"marginTop": "5px"}} className="submitButton" variant="contained" onClick={SubmitValues}>Submit</Button>
-                </Grid>
-            </Grid>
-        </Grid>
+        <div>
+            <div item container alignItems="center" justifyContent="center" spacing={2}>
+                <div item xs={12}>
+                    <input style={{"marginTop": "10px"}} id="outlined-multiline-static" label="Question" name="Question" multiline rows={3} onChange={SetValues}/>
+                </div>
+            </div>
+            <div item container alignItems="center" justifyContent="center" spacing={2}>
+                <div item xs={4}>
+                        <button style={{"marginTop": "5px"}} className="submitbutton" variant="contained" onClick={SubmitValues}>Submit</button>
+                </div>
+            </div>
+        </div>
         </div>
         </>
     )

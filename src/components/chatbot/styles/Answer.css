@@ -1,0 +1,43 @@
+.answer{
+    background-color: white;
+    padding: 8px;
+    background: #FFFFFF;
+    border-radius: 18px 18px 18px 0;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 15%);
+    color: #333333;
+    display: inline-block;
+    font-size: 14px;
+    max-width: 70%;
+    margin: 0 0 10px 0;
+    overflow: hidden;
+    position: relative;
+    padding: 12px;
+
+}
+
+.outerDiv{
+    /* align-items: baseline; */
+    /* display: flex; */
+}
+
+.innerDiv {
+    /* margin: 2px;
+    margin-right: 4px; */
+    display: contents;
+    border-radius: 50% 50% 0 50%;
+    box-shadow: rgb(0 0 0 / 15%) 0px 1px 2px 0px;
+    height: 40px;
+    min-width: 40px;
+    padding: 3px;
+    width: 40;
+}
+.imgStyle {
+    align-items: flex-end;
+    /* border: 1px solid black; */
+    border-radius: 50% 50% 0 50%;
+    background: #f2f4f9;
+    margin-right: 6px;
+    padding: 3px;
+    box-shadow: rgb(0 0 0 / 15%) 0px 1px 2px 0px;
+    margin-bottom: 8px;
+}
