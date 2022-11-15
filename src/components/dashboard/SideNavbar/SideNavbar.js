@@ -15,19 +15,12 @@ function SideNavbar() {
 
   const { user, payLinkPermission } = auth;
 
-  if (user !== null && user.userAlreadyLoggedIn) {
-    // alert('no login');
-    // <Redirect to="/login-page" />
-    // alert("aa3");
-    // history.push("/login-page");
-  }
   var { clientContactPersonName } = user;
   let { url } = useRouteMatch();
   const dispatch = useDispatch();
   const handle = () => {
     dispatch(logout());
-    // dispatch(kycModalToggle(true));
-    // dispatch(enableKycTab(false));
+
   };
 
   useEffect(() => {
@@ -40,10 +33,6 @@ function SideNavbar() {
 
   const roleBasedShowTab = roleBasedAccess();
 
-  // console.log("roleBasedShowTab", roleBasedShowTab)
-  // // console.log(kyc.enableKycTab)
-  // console.log('pay lenght', payLinkPermission.length > 0)
-  // console.log('permission', payLinkPermission)
 
   return (
     <aside
@@ -68,11 +57,6 @@ function SideNavbar() {
                 title="sabpaisa"
               />
             </div>
-            {/* <div className="side_top_wrap_profile">
-              <div className="side_top_wrap_toggle"><i className="fa fa-angle-down" /></div>
-              <p title="username" className="text-md text-ellipsis text-capitalize ng-binding">{clientContactPersonName}</p>
-              {roleBasedShowTab?.merchant === true ? <Link to={`${url}/profile`} className="text-lighter text-ellipsis ng-binding txt-white">Profile</Link> : <></>}
-            </div> */}
           </div>
           <div className="sidebar_menu_list">
             <div
@@ -98,8 +82,7 @@ function SideNavbar() {
                   role="menu"
                   style={{ background: "#140633" }}
                 >
-                  {roleBasedShowTab?.merchant === true ||
-                  roleBasedShowTab?.bank === true ? (
+                  {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true) ? (
                     <li className="ant-menu-item" role="menuitem">
                       <Link to={`${url}`} className="txt-white sidenavFonts">
                         <img src={dashboard} width={17} alt="sabpaisa" />{" "}
@@ -110,41 +93,34 @@ function SideNavbar() {
                     <React.Fragment></React.Fragment>
                   )}
 
-                  {roleBasedShowTab?.merchant === true &&
-                  roleBasedShowTab?.approver === false &&
-                  roleBasedShowTab?.verifier === false ? (
+                  {roleBasedShowTab?.merchant === true && (roleBasedShowTab?.approver === false && roleBasedShowTab?.verifier === false) ? (
                     <>
-                    <li className="ant-menu-item" role="menuitem">
-                      <Link
-                        to={`${url}/kyc`}
-                        className="txt-white sidenavFonts"
-                        // data-toggle="modal"
-                        // // data-target="#exampleModalCenter"
-                      >
-                        <i className="fa fa-file-o" aria-hidden="true" />{" "}
-                        <span>&nbsp;Complete KYC</span>
-                        {/* <span class="new-tab">new</span> */}
-                      </Link>
-                    </li>
-                    <li className="ant-menu-item" role="menuitem">
-                      <Link
-                        to={`${url}/sandbox`}
-                        className="txt-white sidenavFonts"
-                        data-toggle="modal"
-                        data-target="#exampleModalCenter"
-                      >
-                        <i className="fa fa-key" aria-hidden="true" />{" "}
-                        <span>&nbsp;SandBox</span>
-                        {/* <span class="new-tab">new</span> */}
-                      </Link>
-                    </li>
+                      <li className="ant-menu-item" role="menuitem">
+                        <Link
+                          to={`${url}/kyc`}
+                          className="txt-white sidenavFonts" >
+                          <i className="fa fa-file-o" aria-hidden="true" />{" "}
+                          <span>&nbsp;Complete KYC</span>
+                        </Link>
+                      </li>
+                      <li className="ant-menu-item" role="menuitem">
+                        <Link
+                          to={`${url}/sandbox`}
+                          className="txt-white sidenavFonts"
+                          data-toggle="modal"
+                          data-target="#exampleModalCenter"
+                        >
+                          <i className="fa fa-key" aria-hidden="true" />{" "}
+                          <span>&nbsp;SandBox</span>
+                        </Link>
+                      </li>
                     </>
                   ) : (
                     <React.Fragment></React.Fragment>
                   )}
 
                   {roleBasedShowTab?.approver === true ||
-                  roleBasedShowTab?.verifier === true ? (
+                    roleBasedShowTab?.verifier === true ? (
                     <li className="ant-menu-item" role="menuitem">
                       <Link
                         to={`${url}/approver`}
@@ -159,21 +135,12 @@ function SideNavbar() {
                     <React.Fragment></React.Fragment>
                   )}
 
-                  {/* {((roleBasedShowTab?.approver === true) || (roleBasedShowTab?.verifier === true)) ?
-                    <li className="ant-menu-item" role="menuitem" >
-                      <Link to={`${url}/onboard-merchant`} className='txt-white sidenavFonts'><i class="fa fa-user" aria-hidden="true"></i><span>&nbsp;Onboard Merchant</span>
-                      </Link>
-                    </li>
-                    : 
-                    <React.Fragment></React.Fragment>
-                    } */}
-
                   <li
                     className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open"
                     role="menuitem"
                   >
                     {roleBasedShowTab?.merchant === true ||
-                    roleBasedShowTab?.bank === true ? (
+                      roleBasedShowTab?.bank === true ? (
                       <div
                         className="ant-menu-submenu-title"
                         aria-expanded="true"
@@ -196,7 +163,7 @@ function SideNavbar() {
                       role="menu"
                     >
                       {roleBasedShowTab?.merchant === true ||
-                      roleBasedShowTab?.bank === true ? (
+                        roleBasedShowTab?.bank === true ? (
                         <li
                           className="ant-menu-item"
                           role="menuitem"
@@ -220,7 +187,7 @@ function SideNavbar() {
                       )}
 
                       {roleBasedShowTab?.merchant === true ||
-                      roleBasedShowTab?.bank === true ? (
+                        roleBasedShowTab?.bank === true ? (
                         <React.Fragment>
                           <li
                             className="ant-menu-item"
@@ -301,7 +268,6 @@ function SideNavbar() {
                             >
                               <i className="fa fa-bars" aria-hidden="true" />
                               &nbsp;<span>Settlement Report</span>
-                              {/* <span class="new-tab">new</span> */}
                             </Link>
                           </li>
                           <li
@@ -315,7 +281,6 @@ function SideNavbar() {
                             >
                               <i className="fa fa-bars" aria-hidden="true" />
                               &nbsp;<span>Refund Txn History</span>
-                              {/* <span class="new-tab">new</span> */}
                             </Link>
                           </li>
                           <li
@@ -329,7 +294,6 @@ function SideNavbar() {
                             >
                               <i className="fa fa-bars" aria-hidden="true" />
                               &nbsp;<span>Chargeback Txn History</span>
-                              {/* <span class="new-tab">new</span> */}
                             </Link>
                           </li>
 
@@ -351,9 +315,7 @@ function SideNavbar() {
                         <React.Fragment></React.Fragment>
                       )}
 
-                      {payLinkPermission.length > 0 &&
-                      payLinkPermission[0].clientId === 1 &&
-                      roleBasedShowTab?.merchant === true ? (
+                      {(payLinkPermission.length > 0 && payLinkPermission[0].clientId === 1) && roleBasedShowTab?.merchant === true ? (
                         <li
                           className="ant-menu-item"
                           role="menuitem"
@@ -372,13 +334,6 @@ function SideNavbar() {
                       )}
                     </ul>
                   </li>
-
-                  {/* <li className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-selected" role="menuitem">
-                    <div className="ant-menu-submenu-title" aria-expanded="true" aria-haspopup="true" style={{ paddingLeft: '24px' }} aria-owns="payment-tool$Menu"><span className="sidebar-menu-divider">Payment
-                      Tools</span><i className="ant-menu-submenu-arrow" /></div>
-                    <ul id="payment-tool$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu" style={{}}>
-                    </ul>
-                  </li> */}
                 </ul>
               </div>
               <div
@@ -424,7 +379,7 @@ function SideNavbar() {
               </div>
             </div>
           </div>
-          {/* <div className="sidebar-menu-query"> <a href="https://sabpaisa.in/support-contact-us/" target="_blank" rel="noreferrer"><span className="sidebar-help-button"> <i className="fa fa-user" />Support</span></a></div> */}
+        
         </div>
       </div>
     </aside>
