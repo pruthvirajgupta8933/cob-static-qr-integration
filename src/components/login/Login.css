@@ -289,7 +289,7 @@
 }
 
 
-@media (max-width: 686px) {
+@media (max-width: 685px) {
   .m_none{
     display: none;
   }
@@ -301,6 +301,9 @@
 @media (max-width: 768px) {
   .toppad {
     padding: 82px 20px;
+  }
+  .m_none{
+    display: none;
   }
   .onboarding-illustration-top img{
     display: none;
