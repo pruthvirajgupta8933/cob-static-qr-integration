@@ -7,34 +7,60 @@ import MainParentComponent from '../Components/MainParentComponent';
 import ParentComponent from '../Components/ParentComponent';
 import SubparentComponent  from './../Components/SubparentComponent';
 import ResponseComponent from '../Components/ResponseComponent';
+import StepComponent from '../Components/StepComponent';
 const Id = localStorage.getItem('categoryId')
-const returnIntialStep = ()=>{
-  if(Id=='1'){
-    return({
-      id: '2',
-      options: [
-        { value: '1', label: "I have bussiness account with sabpaisa", trigger: '3' },
-        { value: '2', label: "I don`t have bussiness acccount with Sabpaisa", trigger: '3' },
-        { value: '7', label: "My Question is not listed", trigger: '3'}
-      ]
-    })
-  }
-  else{
-    return({
-      id: '2',
-      options: [
-        { value: '7', label: "Technical Related", trigger: '3' },
-        { value: '7', label: "My Question is not listed", trigger: '3'}     
-      ]
-    })
-  }
-}
-export const steps = [
+console.log("categoryId",Id)
+
+
+// const returnIntialStep = ()=>{
+//   // console.log(typeof(Id))
+//   if(Id==="1"){
+//     // console.log("user 1")
+//     return({
+//       id: '2',
+//       options: [
+//         { value: '1', label: "I have bussiness account with sabpaisa", trigger: '3' },
+//         { value: '2', label: "I don`t have bussiness acccount with Sabpaisa", trigger: '3' },
+//         { value: '8', label: "My Question is not listed", trigger: '3'}
+//       ]
+//     })
+//   }
+//   else{
+//     return({
+//       id: '2',
+//       options: [
+//         { value: '7', label: "Technical Related", trigger: '3' },
+//         { value: '8', label: "My Question is not listed", trigger: '3'}     
+//       ]
+//     })
+//   }
+// }
+export const Step = [
   {
       id: '1',
       message: "Want to chat about SabPaisa's software & services? If you have a question, don't be shy.",
       trigger: '2',
   },
+  {
+    id: '2',
+    component: <StepComponent />
+  },
+  {
+    id: '12',
+    options: [
+      { value: '7', label: "Technical Related", trigger: '3' },
+      { value: '8', label: "My Question is not listed", trigger: '3'}     
+    ]
+  },
+    {
+      id: '13',
+      options: [
+        { value: '1', label: "I have bussiness account with sabpaisa", trigger: '3' },
+        { value: '2', label: "I don`t have bussiness acccount with Sabpaisa", trigger: '3' },
+        { value: '8', label: "My Question is not listed", trigger: '3'}
+      ]
+    },
+  
   // {
   //   id: '2',
   //   options: [
@@ -43,7 +69,7 @@ export const steps = [
   //     { value: null, label: "My Question is not listed", trigger: '3'}
   //   ]
   // },
-  returnIntialStep(),
+  // returnIntialStep(),
   {
     id: '3',
     component: <MainParentComponent/>,
@@ -87,6 +113,12 @@ export const steps = [
     message: 'We are facing some technical issue',
     end: true
   }
+  ,
+  // {
+  //   id: '15',
+  //   message: 'Please login to get the instant answers to your most important questions.',
+  //   trigger: '7'
+  // }
   // {
   //   id: '3',
   //   message: "Try to write word or phrase",

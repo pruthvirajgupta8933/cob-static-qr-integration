@@ -8,6 +8,8 @@ const ParentComponent = (props)=>{
     const getAnswer = (Question)=>{
         props.triggerNextStep({value: Question, trigger: 5 })
     }
+    // const triggerAnswer = (Answer)=>{
+    // }
     
     return(
         <>

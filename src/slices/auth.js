@@ -232,6 +232,8 @@ export const createClientProfile = createAsyncThunk(
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
       // console.log("user",allData)
       localStorage.setItem("user", JSON.stringify(allData))
+      localStorage.setItem("categoryId",1)
+
 
 
       return allData;
@@ -300,6 +302,7 @@ export const updateClientProfile = createAsyncThunk(
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
       // console.log("after update user",allData);
       localStorage.setItem("user", JSON.stringify(allData))
+      localStorage.setItem("categoryId",1)
 
       return allData;
     } catch (error) {
@@ -507,6 +510,7 @@ const authSlice = createSlice({
 
       // console.log("user",user)
       localStorage.setItem("user", JSON.stringify(state.user))
+      localStorage.setItem("categoryId",1)
       state.isValidUser = isValidData;
     },
     [login.pending]: (state) => {

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components';
 import ChatBot from 'react-simple-chatbot';
-import {steps} from './Chatbot/Step'
+import {Step} from './Chatbot/Step'
 import botFace from './media/botFace.png'
 import { useDispatch, useSelector } from 'react-redux';
 import { productSubscribeState } from '../../slices/dashboardSlice';
 import HeaderChatBot from './Components/HeaderChatBot';
 import "./styles/chatbot.css"
+import { uniqueId } from 'lodash';
+
 
 
 // Creating our own theme
@@ -27,7 +29,7 @@ const theme = {
 
 function ChatBotApp(props) {
   // Set some properties of the bot
-  // console.log(props)
+  console.log(props)
   const dispatch = useDispatch()
   const {dashboard} = useSelector((state)=>state);
   // console.log("state changed",dashboard)
@@ -67,11 +69,15 @@ const config = {
   opened:opened,
   // headerIcon:<HeaderChatBot />
 };
+
+uniqueId = new Date();
+console.log("Step",Step)
   return (  
     <ThemeProvider theme={theme}>
     <ChatBot
+      key={uniqueId}
       botAvatar = {botFace}
-      steps={steps}
+      steps={Step}
       {...config}
       toggleFloating={()=>toggleFloating(opened)}
   />

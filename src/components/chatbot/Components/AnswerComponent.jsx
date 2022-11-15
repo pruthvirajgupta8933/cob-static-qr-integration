@@ -7,6 +7,8 @@ const AnswerComponent = (props)=>{
 setTimeout(() => {
     props?.props?.triggerNextStep({trigger: 7})
 }, 2000);
+
+console.log("AnswerComponent render")
     return(
         <>
         <div className="outerDiv">

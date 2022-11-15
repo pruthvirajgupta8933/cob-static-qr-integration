@@ -5,8 +5,9 @@ import axios from 'axios'
 const MainParentComponent = (props)=>{
 
     const FindAnswer = () =>{
+        console.log(">>>>>In Main parent component", props.previousStep.value)
             const Detail = {
-                qestionId: props.steps[2].value
+                qestionId: props.previousStep.value
             }
             axios.post("https://chatbotadmin.sabpaisa.in/chatbot/AnswerApi", Detail, {
             headers: {

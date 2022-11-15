@@ -30,11 +30,11 @@ const APIComponent = (props)=>{
                     return(
                         <>
                         <label for="fname">{InputItem.label}</label>
-                        <input type="text" onChange={setValue} label={InputItem.label} id="fname" name={InputItem.name} placeholder={InputItem.label}/>
+                        <input type="text" className="input-text" onChange={setValue} label={InputItem.label} id="fname" name={InputItem.name} placeholder={InputItem.label}/>
                         </>
                     )
                 })}
-                <input type="submit" value="Submit" onClick={()=>{showResponse(props?.props?.previousStep?.value?.data?.ApiUrl[0]?.Api)}}/>
+                <input type="submit" value="Submit" className="input-submit" onClick={()=>{showResponse(props?.props?.previousStep?.value?.data?.ApiUrl[0]?.Api)}}/>
             
         </div>
     </> 

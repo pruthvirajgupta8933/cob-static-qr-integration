@@ -49,12 +49,13 @@ const logOutUser =(isLoggedIn)=>{
   setLoggin(isLoggedIn)
 }
 
+console.log("loggin",loggin)
   return (
       <>
       { loggin 
       ? <IdleTimerContainer fnLogout={logOutUser} / > : <React.Fragment></React.Fragment>}
         <AllRoutes/>
-        <ChatBotApp />
+        <ChatBotApp key={loggin} />
          </>
   );
 };

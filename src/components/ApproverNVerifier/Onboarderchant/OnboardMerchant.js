@@ -210,7 +210,7 @@ const OnboardMerchant = () => {
                         <div className="show logmod__tab lgm-1">
                           <div className="logmod__heading">
                             <span className="fontfigma">
-                            On board merchant{" "}
+                            Onboard merchant
                             </span>
                             {/* <div className="flex">
                               <span className="Signupfigma mt-2">
