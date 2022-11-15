@@ -561,9 +561,10 @@ table.tables tr:nth-child(odd) {
 
 .fs-6{font-size: 12px !important; margin: 22px 0;}
 .title2{
-    font-size: 11px;
+    font-size: 12px;
     display: block;
 }
+.fontn{font-size: 16px; margin-top:8px}
 .fnt-sz{
     line-height: 21px;
     font-size: 14px;
