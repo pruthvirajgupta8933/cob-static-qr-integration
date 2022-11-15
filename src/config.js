@@ -1,4 +1,4 @@
-const env = "staging";
+const env = "prod";
 let url,
   kyc_url = "";
 
