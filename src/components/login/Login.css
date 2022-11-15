@@ -279,19 +279,31 @@
   }
 }
 
-
-
-
-@media (max-width: 368px) {
+@media (max-width: 480px) {
   .m_none{
+    display: none;
+  }
+  .onboarding-illustration-top img{
     display: none;
   }
 }
 
+
+@media (max-width: 686px) {
+  .m_none{
+    display: none;
+  }
+  .onboarding-illustration-top img{
+    display: none;
+  }
+}
 /* 48em = 768px */
 @media (max-width: 768px) {
   .toppad {
     padding: 82px 20px;
+  }
+  .onboarding-illustration-top img{
+    display: none;
   }
 }
 @media (min-width: 48em) {
@@ -310,6 +322,7 @@
   .header .menu-icon {
     display: none;
   }
+  
   
 }
 
