@@ -559,4 +559,22 @@ table.tables tr:nth-child(odd) {
   background: #fcfcfc;
 }
 
-
+.fs-6{font-size: 12px !important; margin: 22px 0;}
+.title2{
+    font-size: 11px;
+    display: block;
+}
+.fnt-sz{
+    line-height: 21px;
+    font-size: 14px;
+    padding: 0 !important;
+}
+.list-group-flush>.list-group-item{
+    border-width: 0 !important;
+}
+.rightbrd{
+    border-right: 1px solid #ccc;
+}
+.card{
+    margin-top: 20px;
+}

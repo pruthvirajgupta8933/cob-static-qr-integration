@@ -255,9 +255,11 @@ table.tables tr:nth-child(odd) {
     padding: 28px 0 0 0;
     font-weight: bold;
     margin: 21px 0;
-    display: inline-block;
-    line-height: 21px;
+    display: block;
+    line-height: 19px;
     padding: 0;
+    max-height: 62px;
+    min-height: 38px;
 }
 
 .kycbtns {
@@ -431,8 +433,8 @@ button[disabled1] {
   /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 700;
-  font-size: 41px;
-  line-height: 48px;
+  font-size: 29px;
+  line-height: 29px;
   text-align: center;
   color: #000000;
 }

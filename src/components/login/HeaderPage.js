@@ -328,10 +328,10 @@ function HeaderPage() {
           <li>
             <a
               target="_blank"
-              href="https://sabpaisa.in/"
+              href="https://sabpaisa.in/referral-partner/"
               rel="noreferrer noopener"
             >
-              Pricing
+              Become Partner
             </a>
           </li>
           {/* </ul>

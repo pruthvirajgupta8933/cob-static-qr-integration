@@ -60,11 +60,11 @@ const Products = () => {
                 className="text-centre prodHeader"
                 style={{ fontSize: "xx-large" }}
               >
-                Explore wide range of our Products
+                Product Catalogue
               </h1>
               <p className="prodpara">
                 We offer a very competitive pricing to match your business
-                needs. Sign up now to get started{" "}
+                needs. Sign up now to get started.
               </p>
             </div>
           </div>

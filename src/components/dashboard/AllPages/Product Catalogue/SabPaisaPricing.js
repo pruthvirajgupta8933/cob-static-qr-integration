@@ -38,11 +38,7 @@ const SabPaisaPricing = () => {
         setSpinner(false);
 
         setProductDetails(data);
-        // productDetails.map((product)=>const arr = product.plan_description.split(","))
-        // console.log(">>>>>>>>>>>>", productDetails[0].plan_description)
-        // console.log('array>>>>>>>>>', resp.data.ProductDetail[0].plan_description.split(','))
-        //  productArr =  productDetails[0].plan_description.split(',');
-        //  console.log("><<<<<<<<<<<", productArr)
+       
       })
       .catch((err) =>{
         //  console.log(err)
@@ -87,28 +83,143 @@ const SabPaisaPricing = () => {
         {/* <button type="button" onClick={clickHandler}>check</button> */}
         <div class="container mb-10">
           <div class="row">
+
           {spinner && <span className="spinner-border" role="status"></span>}
           {productDetails.map((Products, i) => (
-            
+            // if user business catagory is gamming
             business_cat_code==="37" && Products.plan_code ==="005"?<></>:
-            
-            <div className={Products?.plan_id===45? "col-lg-12 px-1" : "col-lg-3 px-1"}  >
-              
-              <div
-                class="card heightcards"
-              >
+
+            param?.id==='14' ? <div class="card col-lg-8">
+            <div class="card-body">
+              <div className="col-lg-12">
+                <h2 className="pull-left- text-center mb-20">
+                  {Products.plan_price==="Connect" && Products.plan_name === "Enterprise" ? <></> :  <>{Products?.plan_price?.split("*")[0]} <span className="title2"> {Products?.plan_price?.split("*")[1]}</span></>}
+                </h2>
+                <span class="blockquote mb-0 pull-left- text-center">
+                  <span class="w-50 pxsolid text-center">&nbsp;</span>
+                  <h4 className="mb-20 featurespricing">FEATURES INCLUDING</h4>
+                  <ul className="list-group list-group-flush">
+                  {Products?.plan_description
+                      .split(",")
+                      .map((details, i) => (
+                        <li className="list-group-item fnt-sz"><p className="firstli1 mb-1">{details}</p></li>
+                      ))}
+                   
+                  </ul>
+                </span>
+                <span className=" text-center">
+                  {/* <p className="mt-20">Per year</p> */}
                   
+                  <p className="mt-20"><button
+                        type="button"
+                        className=" font-weight-bold btn choosePlan-1 btn-lg w-50"
+                        data-toggle="modal"
+                        data-target="#subscription"
+                        onClick={() =>
+                          handleClick(
+                            Products.plan_id,
+                            Products.plan_name
+                          )
+                        }
+                      >
+                        Choose Plan
+                      </button>
+                  </p>
+                  
+                  
+                  <div
+                    class="modal fade"
+                    id="subscription"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="subscriptionModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div
+                      class="modal-dialog"
+                      style={{ maxWidth: "50%" }}
+                      role="document"
+                    >
+                      <div class="modal-content">
+                        <div class="modal-header modal-header-fignma">
+                    
+                          <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                            // onClick={() => clickHandler(false)}
+                          >
+                           
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                          
+                        </div>
+                        <div class="modal-body">
+                          <h2 className="subscribingproduct mb-0">
+                            Thank You For Subscribing
+                          </h2>
+
+                          <div class="text-center">
+                            <h2 className="manshacss">
+                            Our team will contact you and help you integrate your platform.
+                            Till then, please familiarize yourself with our Dashboard
+
+                            </h2>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-12 text-center">
+                              <img
+                                src={rafiki}
+                                className="modalsimageclass-1"
+                                alt="SabPaisa"
+                                title="SabPaisa"
+                                style={{ width: 250 }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer m-0 p-2">
+                          <div className="col-lg-12 text-center">
+                          
+                            <button
+                              type="button"
+                              class="ColrsforredirectProdct text-white m-0"
+                               onClick={() => clickHandler(true)}
+                               data-dismiss="modal"
+                            >
+                              Return to Dashboard
+                            </button>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  
+                  
+
+                </span>
+              </div>
+            </div>
+            </div> : 
+            <div className={`px-1 ${Products?.plan_id===45? "col-lg-12":""} 
+            ${productDetails.length === 4 ? "col-lg-3":"col-lg-4"}  `}
+            >
+              <div class="card heightcards">
                 <div class="card-body">
                   <div class="row mb-5-">
                     <div className="col-lg-12 text-center">
-                    
                       <h1 class="card-title- cardoneheadingcss pb-3-">
                         {Products.plan_name}
                       </h1>
-                      <span className="text-center bold-font mb-1- price">
-                    
-                        {Products.plan_price==="Connect" && Products.plan_name === "Enterprise" ?null :Products?.plan_price }
-                        
+                      {console.log(Products?.plan_price?.split("*").length)}
+                      <span className={`text-center bold-font mb-1- price ${Products?.plan_price?.split("*")?.length==2 ? 'fs-6':'' }`}>
+                        {Products.plan_price==="Connect" && Products.plan_name === "Enterprise" ? <></> :  
+                        <>{Products?.plan_price?.split("*")[0]} <span className="title2"> {Products?.plan_price?.split("*")[1]}</span></>
+                          }
                       </span>
                       <h3 className="paragraphcsss text-center">
                       
@@ -203,6 +314,9 @@ const SabPaisaPricing = () => {
                       </div>
                     </div>
                   </div>
+
+
+                 
 
                   <span class="w-50 pxsolid text-center">&nbsp;</span>
                   <h2 className="featurespricing">FEATURES INCLUDING</h2>
