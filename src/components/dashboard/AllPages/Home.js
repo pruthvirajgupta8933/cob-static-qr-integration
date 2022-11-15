@@ -614,7 +614,7 @@ function Home() {
         role="dialog"
       >
         <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content" style={{width:"709px",marginTop:"1px"}}>
+          <div class="modal-content" style={{width:"709px",marginTop:"70px"}}>
             <div class="modal-body Satoshi-Medium">
               <button
                 type="button"
@@ -653,7 +653,7 @@ function Home() {
                             Your KYC is currently under review. 
                             <br/>
                             <br/>
-                            <p className="modalscolrsfortextapprv m-0 text-center">The KYC review process ususally takes 3-4 working days.</p>
+                            <p className="modalscolrsfortextapprv m-0 text-center">The KYC review process usually takes 3-4 working days.</p>
                             <p className="modalscolrsfortextapprv m-0 text-center">We will notify you in case we want any clarification on your KYC.</p>
 
                             </p>
