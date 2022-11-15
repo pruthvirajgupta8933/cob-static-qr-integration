@@ -160,7 +160,7 @@ function KycForm() {
                                   tab === 1 ? (
                                     " nav-link activepaylink-kyc text-font"
                                   ) : "inactive text-font" ? (
-                                    contactInfo === true || KycTabStatusStore?.general_info_status!=="Not-Filled" ? (
+                                    contactInfo === true || (KycTabStatusStore?.general_info_status!=="Not-Filled" && KycTabStatusStore?.general_info_status!=="undefined")   ? (
                                       "inactive text-font-ForStatusChange text-success p-3"
                                     ) : (
                                       "nav-link inactive text-font"
@@ -185,7 +185,7 @@ function KycForm() {
                                   tab === 2 ? (
                                     " nav-link activepaylink-kyc text-font"
                                   ) : "inactive text-font" ? (
-                                    BusinessOverviewStatus === true || KycTabStatusStore?.business_info_status!=="Not-Filled"? (
+                                    BusinessOverviewStatus === true || (KycTabStatusStore?.business_info_status!=="Not-Filled" && KycTabStatusStore?.business_info_status!=="undefined" )? (
                                       "inactive text-font-ForStatusChange text-success p-3"
                                     ) : (
                                       "nav-link inactive text-font"
@@ -210,7 +210,7 @@ function KycForm() {
                                   tab === 3 ? (
                                     " nav-link activepaylink-kyc text-font"
                                   ) : "inactive text-font" ? (
-                                    BusinessDetailsStatus === true || KycTabStatusStore?.merchant_info_status!=="Not-Filled"? (
+                                    BusinessDetailsStatus === true || (KycTabStatusStore?.merchant_info_status!=="Not-Filled" && KycTabStatusStore?.merchant_info_status!=="undefined")? (
                                       "inactive text-font-ForStatusChange text-success p-3"
                                     ) : (
                                       "nav-link inactive text-font"
@@ -253,7 +253,7 @@ function KycForm() {
                                   tab === 4 ? (
                                     " nav-link activepaylink-kyc text-font"
                                   ) : "inactive text-font" ? (
-                                    bankDetails === true || KycTabStatusStore?.settlement_info_status!=="Not-Filled" ? (
+                                    bankDetails === true || (KycTabStatusStore?.settlement_info_status!=="Not-Filled" && KycTabStatusStore?.settlement_info_status!=="undefined") ? (
                                       "inactive text-font-ForStatusChange text-success p-3"
                                     ) : (
                                       "nav-link inactive text-font"
@@ -278,7 +278,7 @@ function KycForm() {
                                   tab === 5 ? (
                                     " nav-link activepaylink-kyc text-font"
                                   ) : "inactive text-font" ? (
-                                    uploadDocuments === true || KycTabStatusStore?.document_status!=="Not-Submitted"? (
+                                    uploadDocuments === true || (KycTabStatusStore?.document_status!=="Not-Submitted" && KycTabStatusStore?.document_status!=="undefined")? (
                                       "inactive text-font-ForStatusChange text-success p-3"
                                     ) : (
                                       "nav-link inactive text-font"

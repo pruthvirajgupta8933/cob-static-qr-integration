@@ -6,8 +6,9 @@ if (env === "staging") {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
 } else {
-  url = "https://cobapi.sabpaisa.in";
-  kyc_url = "https://kycprocess.sabpaisa.in";
+  // url = "https://cobapi.sabpaisa.in";
+  url = "https://cobawsapi.sabpaisa.in";
+  kyc_url = "https://cobkyc.sabpaisa.in";
 }
 
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";

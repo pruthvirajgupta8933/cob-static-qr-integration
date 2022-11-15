@@ -37,7 +37,7 @@ const validationschema = Yup.object().shape({
   ['last_name', 'age']
 ])
 const handleSubmit = () => {
-  console.log('Form Submitted')
+  // console.log('Form Submitted')
 }
 
 const HarrisTest = () => (
@@ -48,7 +48,7 @@ const HarrisTest = () => (
       onSubmit={handleSubmit}
       render={({ errors }) => (
         <Form>
-          {console.log(errors,"Eroro =>")}
+          {/* {console.log(errors,"Eroro =>")} */}
             <div class="form-group row">
               <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
                 <h4 class="text-kyc-label text-nowrap">

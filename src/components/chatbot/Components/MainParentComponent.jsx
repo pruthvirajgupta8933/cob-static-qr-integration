@@ -5,7 +5,7 @@ import axios from 'axios'
 const MainParentComponent = (props)=>{
 
     const FindAnswer = () =>{
-        console.log(">>>>>In Main parent component", props.previousStep.value)
+        // console.log(">>>>>In Main parent component", props.previousStep.value)
             const Detail = {
                 qestionId: props.previousStep.value
             }
