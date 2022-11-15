@@ -279,6 +279,15 @@
   }
 }
 
+
+
+
+@media (max-width: 368px) {
+  .m_none{
+    display: none;
+  }
+}
+
 /* 48em = 768px */
 @media (max-width: 768px) {
   .toppad {
@@ -301,6 +310,7 @@
   .header .menu-icon {
     display: none;
   }
+  
 }
 
 /*Registration page css*/

@@ -175,7 +175,7 @@ function Home() {
     <section className="ant-layout Satoshi-Medium">
       {/* {kyc?.KycTabStatusStore?.is_verified === false ? <KycModal /> : <></>} */}
 
-      <div>
+      <div className="m_none">
         <NavBar />
       </div>
 
