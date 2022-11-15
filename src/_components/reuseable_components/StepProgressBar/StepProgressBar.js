@@ -113,7 +113,7 @@ function StepProgressBar(props) {
             </div>
             <div
               className="steps-text"
-              style={{ width: 60, marginTop: 60, marginLeft: 0,fontSize:"12px" }}
+              style={{ width: 60, marginTop: 60, marginLeft: 0,fontSize:"14px" }}
             >
               {s.title}
             </div>
@@ -130,7 +130,7 @@ function StepProgressBar(props) {
       <div>
         <div style={{ textAlign: "center" }}>
           <div>
-            <h1 className="Satoshi-Medium text-bold">KYC Status</h1>
+            <h1 className="Satoshi-Bold">KYC Status</h1>
           </div>
         </div>
         <hr />

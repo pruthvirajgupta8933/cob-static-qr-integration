@@ -222,7 +222,7 @@ function Home() {
               </div>
               <h2 className="font-weight-bold">Built for developers</h2>
               <p className="text-muted mb-6 mb-md-0">
-                Landkit is built to make your life easier. Variables, build
+                Our kit is built to make your life easier. Variables, build
                 tooling, documentation, and reusable components.
               </p>
             </div>
@@ -254,7 +254,7 @@ function Home() {
               </div>
               <h2 className="font-weight-bold">Designed to be modern</h2>
               <p className="text-muted mb-6 mb-md-0">
-                Designed with the latest design trends in mind. Landkit feels
+                Designed with the latest design trends in mind. Our kit feels
                 modern, minimal, and beautiful.
               </p>
             </div>
@@ -299,12 +299,12 @@ function Home() {
          
 
 
-            {roles?.merchant === true && modalState!=="Approved" ? (
-              <div className="col-12 col-md-12">
+            {roles?.merchant === true && modalState !=="Approved" ? (
+                <div className="col-12 col-md-12">
                 <div class="card col-lg-12- cardkyc pull-left">
                   <div class="font-weight-bold card-body Satoshi-Medium">
                     <span>
-                      You can accept payments upto ₹15,000 for now.To extend the
+                      You can accept payments upto ₹15,000 for now. To extend the
                       limit complete your KYC and get it approved.
                     </span>
                     <Link
@@ -326,7 +326,26 @@ function Home() {
                 </div>
               </div>
             ) : (
-              <React.Fragment></React.Fragment>
+              <div className="col-12 col-md-12">
+              <div class="card col-lg-12- cardkyc pull-left">
+                <div class="font-weight-bold card-body Satoshi-Medium">
+                  <span>
+                  Congratulations! Your KYC documents have been approved.
+                  </span>
+                      <button
+                        class="text-white pull-right kycbtns"
+                        style={{
+                          backgroundColor: "#0156B3",
+                          paddingLeft: "10px",
+                        }}
+                        disabled
+                      >
+                        KYC Done
+                      </button>
+                </div>
+              </div>
+            </div>
+           
             )}
           </div>
         </div>
