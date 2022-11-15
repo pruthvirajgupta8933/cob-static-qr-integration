@@ -99,7 +99,7 @@ const ChargeBackTxnHistory= () => {
     // extraDataObj,
     // isExtraDataRequired
   );
-  console.log(clientMerchantDetailsList, "hereeeeeeeeeeee");
+ 
 
   useEffect(() => {
     
@@ -139,7 +139,7 @@ const ChargeBackTxnHistory= () => {
   useEffect(() => {
     // Remove initiated from transaction history response
     const TxnListArrUpdated = dashboard.settlementReport;
-    // console.log(dashboard.settlementReport)
+  
 
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
@@ -168,7 +168,6 @@ const ChargeBackTxnHistory= () => {
   }, [pageSize, showData]);
 
   useEffect(() => {
-    //  console.log("page chagne no")
     const startIndex = (currentPage - 1) * pageSize;
     const paginatedPost = _(showData)
       .slice(startIndex)
@@ -252,7 +251,7 @@ const ChargeBackTxnHistory= () => {
 
       excelArr.push(Object.values(allowDataToShow));
     });
-    // console.log("excelArr",excelArr)
+    
     const fileName = "Settlement-Report";
     exportToSpreadsheet(excelArr, fileName);
   };
