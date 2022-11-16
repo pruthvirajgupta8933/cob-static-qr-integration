@@ -20,7 +20,7 @@ const StudentRecipets = () => {
   const [show, setIsShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   // const [errMessage, setErrMessage] = useState('');
-  const [data, setData] = useState(initialState);
+  const [data, setData] = useState([initialState]);
 
   const onSubmit = async (e, transactionId, studentId) => {
     e.preventDefault();
@@ -29,16 +29,31 @@ const StudentRecipets = () => {
     } else {
       setStudentId(0);
     }
-    setIsLoading(true);
+     setIsLoading(true);
     setIsShow(false);
     await axios
       .get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
       .then((response) => {
-        // console.warn(response);
+        if (response?.data.length > 0) {
         setData(response.data);
         setIsShow(true);
-        // setErrMessage('');
-        setIsLoading(false);
+        //  console.log("In If============")
+        setIsLoading(true);
+      } else {
+        axios.get(API_URL.SP2_VIEW_TXN + `/${transactionId}`).then((r) => {
+          if (r?.data.length > 0) {
+            //  console.log("In else============")
+            
+            setIsShow(true);
+            setData(r?.data);
+            setIsLoading(false);
+            // setErrMessage(false);
+          } else {
+            setIsShow(false);
+            // setErrMessage(true);
+          }
+        });
+      }
       })
 
       .catch((error) => {

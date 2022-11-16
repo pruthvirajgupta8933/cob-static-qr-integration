@@ -141,7 +141,7 @@ function TransactionSummery() {
                     {/* <label>Search</label> */}
                     <input
                       type="text"
-                      className="ant-input "
+                      className="ant-input  "
                       onChange={(e) => {
                         handleChange(e.currentTarget.value);
                       }}
