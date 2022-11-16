@@ -40,6 +40,7 @@ const RefundTransactionHistory = () => {
   const [pageCount, setPageCount] = useState(0);
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
+  
 
   var clientMerchantDetailsList = [];
   if (
@@ -56,10 +57,26 @@ const RefundTransactionHistory = () => {
   const tempClientList = convertToFormikSelectJson("clientCode", "clientName", clientMerchantDetailsList);
 
 
+  
+  let now = moment().format("YYYY-M-D");
+  let splitDate = now.split("-");
+  if (splitDate[1].length === 1) {
+    splitDate[1] = "0" + splitDate[1];
+  }
+  if (splitDate[2].length === 1) {
+    splitDate[2] = "0" + splitDate[2];
+  }
+  splitDate = splitDate.join("-");
+
+
+  const [todayDate, setTodayDate] = useState(splitDate);
+
+
+
   const initialValues = {
     clientCode: "",
-    fromDate: "",
-    endDate: "",
+    fromDate: todayDate,
+    endDate: todayDate,
     noOfClient: "1",
     rpttype: "0"
   }
