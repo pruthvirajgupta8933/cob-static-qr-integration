@@ -60,10 +60,13 @@ const SettlementReportNew= () => {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
-  const tempClientList = convertToFormikSelectJson(
+  const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
     "clientName",
-    clientMerchantDetailsList
+    clientMerchantDetailsList,
+    {},
+    false,
+    true
   );
 
   const [todayDate, setTodayDate] = useState(splitDate);
@@ -348,7 +351,7 @@ const SettlementReportNew= () => {
                           label="Client Code"
                           name="clientCode"
                           className="form-control rounded-0 mt-0"
-                          options={tempClientList}
+                          options={clientCodeOption}
                         />
                       </div>
 
