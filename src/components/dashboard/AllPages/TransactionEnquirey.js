@@ -107,7 +107,7 @@ function TransactionEnquirey() {
       <main className="gx-layout-content ant-layout-content Satoshi-Medium">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Transaction Enquiry</h1>
+            <h1 className="m-b-sm gx-float-left">Transaction Enquiry sdf</h1>
           </div>
           <section
             className="features8 cid-sg6XYTl25a flleft col-lg-12"
@@ -121,7 +121,7 @@ function TransactionEnquirey() {
                   onSubmit={onSubmit}
                 >
                   {(formik) => (
-                    <Form className="col-lg-12 ">
+                    <Form className="col-lg-12 bgcolor">
                       <div className="form-row">
                         <div className="form-group col-md-6 col-sm-12 col-lg-6">
                           <FormikController
