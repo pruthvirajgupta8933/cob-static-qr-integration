@@ -74,8 +74,8 @@ const Products = () => {
 
           {product.map((Products, i) => (
             <div class="col-sm-12 col-md-12 col-lg-6">
-              <div class="card">
-                <div class="card-body">
+              <div class="card mt-0">
+                <div class="card-body-">
                   <h5 class="card-title prod-header">
                     <img
                       class="card-img-left"
@@ -86,7 +86,7 @@ const Products = () => {
                     &nbsp;
                     {Products.application_name}
                   </h5>
-                  <p class="card-text prod-content">
+                  <p class="card-text prod-content truncate">
                     {" "}
                     {Products.application_description}
                   </p>

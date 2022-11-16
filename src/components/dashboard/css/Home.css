@@ -982,3 +982,9 @@ border-radius: 0px 0px 5px 5px;
 .no-pad{
   padding: 0;
 }
+.truncate{
+  overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
