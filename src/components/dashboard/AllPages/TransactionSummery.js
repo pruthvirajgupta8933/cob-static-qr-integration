@@ -120,6 +120,7 @@ function TransactionSummery() {
               <div className="row bgcolor">
                 <div className="form-group col-md-4 mx-4 mrg-btm- bgcolor-">
                   {/* <label>Successful Transaction Summary</label> */}
+                  {/* <label>&nbsp;</label> */}
                   <select
                     className="ant-input"
                     value={clientCode}
@@ -137,7 +138,7 @@ function TransactionSummery() {
 
                 {txnList.length > 0 ? (
                   <div className="col-lg-4 mrg-btm-">
-                    <label>Search</label>
+                    {/* <label>Search</label> */}
                     <input
                       type="text"
                       className="ant-input "
