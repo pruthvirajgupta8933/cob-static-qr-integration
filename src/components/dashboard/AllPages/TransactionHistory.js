@@ -1,5 +1,6 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -19,17 +20,17 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 import NavBar from "../../dashboard/NavBar/NavBar";
 import { axiosInstance } from "../../../utilities/axiosInstance";
 import moment from "moment";
-const TransactionHistory = () =>{
+const TransactionHistory = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const roles = roleBasedAccess();
- 
+
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
 
 
   const { isLoadingTxnHistory } = dashboard;
- 
+
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
   // const [clientCode,SetClientCode] = useState(user.roleId===3 || user.roleId===13 ? "All" : "");
@@ -75,12 +76,12 @@ const TransactionHistory = () =>{
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   const [clientCode, SetClientCode] = useState(clientcode_rolebased);
   const [todayDate, setTodayDate] = useState(splitDate);
-  
+
 
   const initialValues = {
     // clientCode:"",
@@ -124,11 +125,11 @@ const TransactionHistory = () =>{
     await axiosInstance
       .get(API_URL.GET_PAYMENT_STATUS_LIST)
       .then((res) => {
-       
+
         SetPaymentStatusList(res.data);
       })
       .catch((err) => {
-        
+
       });
   };
 
@@ -136,11 +137,11 @@ const TransactionHistory = () =>{
     await axiosInstance
       .get(API_URL.PAY_MODE_LIST)
       .then((res) => {
-        
+
         SetPaymentModeList(res.data);
       })
       .catch((err) => {
-        
+
       });
   };
 
@@ -151,18 +152,21 @@ const TransactionHistory = () =>{
     extraDataObj = { key: "All", value: "All" };
   }
 
+  const forClientCode=true;
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
     "clientName",
     clientMerchantDetailsList,
     extraDataObj,
-    isExtraDataRequired
+    isExtraDataRequired,
+    forClientCode
   );
 
+
   const tempPayStatus = [{ key: "All", value: "All" }];
- 
+
   paymentStatusList.map((item) => {
-   if (item !== "CHALLAN_ENQUIRED" && item !=="INITIATED") {
+    if (item !== "CHALLAN_ENQUIRED" && item !== "INITIATED") {
       tempPayStatus.push({ key: item, value: item });
     }
   });
@@ -177,7 +181,7 @@ const TransactionHistory = () =>{
   };
 
   const submitHandler = (values) => {
-   
+
 
     isButtonClicked(true);
 
@@ -185,7 +189,7 @@ const TransactionHistory = () =>{
     const dateRangeValid = checkValidation(fromDate, endDate);
 
     if (dateRangeValid) {
-      
+
       let strClientCode,
         clientCodeArrLength = "";
 
@@ -211,7 +215,7 @@ const TransactionHistory = () =>{
         page: "0",
         NoOfClient: clientCodeArrLength,
       };
-      
+
       dispatch(fetchTransactionHistorySlice(paramData));
     }
   };
@@ -248,10 +252,9 @@ const TransactionHistory = () =>{
         .take(pageSize)
         .value()
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard]);
 
- 
+
 
   useEffect(() => {
     setPaginatedData(
@@ -266,7 +269,7 @@ const TransactionHistory = () =>{
   }, [pageSize, showData]);
 
   useEffect(() => {
-   
+
     const startIndex = (currentPage - 1) * pageSize;
     const paginatedPost = _(showData)
       .slice(startIndex)
@@ -349,7 +352,7 @@ const TransactionHistory = () =>{
     let excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     txnList.map((item, index) => {
-      
+
       const allowDataToShow = {
         srNo: item.srNo === null ? "" : index + 1,
         txn_id: item.txn_id === null ? "" : item.txn_id,
@@ -369,7 +372,7 @@ const TransactionHistory = () =>{
         client_code: item.client_code === null ? "" : item.client_code,
         payment_mode: item.payment_mode === null ? "" : item.payment_mode,
         payee_address: item.payee_address === null ? "" : item.payee_address,
-        encrypted_pan:item.encrypted_pan === null? "" : item.encrypted_pan,
+        encrypted_pan: item.encrypted_pan === null ? "" : item.encrypted_pan,
         udf1: item.udf1 === null ? "" : item.udf1,
         udf2: item.udf2 === null ? "" : item.udf2,
         udf3: item.udf3 === null ? "" : item.udf3,
@@ -405,7 +408,9 @@ const TransactionHistory = () =>{
   let year = lastThreeMonth.getUTCFullYear();
   const finalDate = year + "-" + month + "-" + day;
 
- 
+  console.log("clientCodeOption",clientCodeOption)
+
+
   return (
     <section className="ant-layout Satoshi-Medium">
       <div>
@@ -447,8 +452,8 @@ const TransactionHistory = () =>{
                           label="From Date"
                           name="fromDate"
                           className="form-control rounded-0"
-                          // value={startDate}
-                          // onChange={(e)=>setStartDate(e.target.value)}
+                        // value={startDate}
+                        // onChange={(e)=>setStartDate(e.target.value)}
                         />
                       </div>
 
@@ -744,7 +749,7 @@ const TransactionHistory = () =>{
               </div>
 
               <div>
-                
+
                 {txnList.length > 0 ? (
                   <nav aria-label="Page navigation example">
                     <ul className="pagination">
@@ -770,7 +775,7 @@ const TransactionHistory = () =>{
                                 : "page-item"
                             }
                           >
-                            
+
                             <a
                               className={`page-link data_${i}`}
                               href={() => false}
