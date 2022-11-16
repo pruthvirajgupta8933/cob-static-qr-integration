@@ -121,7 +121,7 @@ function TransactionEnquirey() {
                   onSubmit={onSubmit}
                 >
                   {(formik) => (
-                    <Form className="col-lg-12 ">
+                    <Form className="col-lg-12 bgcolor">
                       <div className="form-row">
                         <div className="form-group col-md-6 col-sm-12 col-lg-6">
                           <FormikController

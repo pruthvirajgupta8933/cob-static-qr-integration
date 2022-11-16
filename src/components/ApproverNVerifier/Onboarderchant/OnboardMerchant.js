@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
-import HeaderPage from "../../login/HeaderPage";
 import "../../login/css/home.css"
 import "../../login/css/homestyle.css"
 import "../../login/css/style-style.css"
 import "../../login/css/style.css"
-
-// import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png'
-import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png"
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { register, udpateRegistrationStatus } from "../../../slices/auth";
 import { useHistory } from "react-router-dom";
 import { toast, Zoom } from "react-toastify";
-import { Link } from "react-router-dom";
 import API_URL from "../../../config";
 import { axiosInstanceAuth } from "../../../utilities/axiosInstance";
 import NavBar from "../../dashboard/NavBar/NavBar";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+
 
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -44,9 +41,7 @@ const FORM_VALIDATION = Yup.object().shape({
   confirmpasswordd: Yup.string()
     .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
     .required("Confirm Password Required"),
-  // terms_and_condition: Yup.boolean().oneOf([true], "You must accept the terms and conditions"),
   business_cat_code: Yup.string().required("Required"),
-  // termsAndConditions: Yup.boolean().oneOf([true], "Required"),
 });
 
 const OnboardMerchant = () => {
@@ -55,15 +50,12 @@ const OnboardMerchant = () => {
   const reduxState = useSelector((state) => state);
   const { message, auth } = reduxState;
   const datar = auth;
-
-  const { isUserRegistered } = datar;
-  // const [loading, setLoading] = useState(false);
+  const { isUserRegistered, user } = datar;
   const [checkboxStatus, setCheckboxStatus] = useState(Array(3).fill(false));
   const [isActive, setActive] = useState(true);
   const [acceptTc, setAcceptTc] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const [btnDisable, setBtnDisable] = useState(true);
-  const [trmCond, setTrmCond] = useState(false);
 
   const [businessCode, setBusinessCode] = useState([]);
 
@@ -83,8 +75,6 @@ const OnboardMerchant = () => {
       .get(API_URL.Business_Category_CODE)
       .then((resp) => {
         const data = resp.data;
-        // console.log(data,"my all dattaaa")
-
         setBusinessCode(data);
       })
       .catch((err) => console.log(err));
@@ -92,42 +82,27 @@ const OnboardMerchant = () => {
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   return () => {
-  //     dispatch(udpateRegistrationStatus());
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   const handleRegistration = (formData) => {
-    // console.log(formData, "here is form dataaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
-    // setBtnDisable(true)
-
-    var businessType = 1;
-    var {
+    let businessType = 1;
+    let {
       fullname,
       mobilenumber,
       emaill,
       passwordd,
       business_cat_code,
     } = formData;
-    var fullname = fullname;
-    var mobileNumber = mobilenumber;
-    var email = emaill;
-    var business_cat_code = business_cat_code;
-    var password = passwordd;
 
-    // setLoading(true);
-    // console.log(formValue);
     dispatch(
       register({
-        fullname,
-        mobileNumber,
-        email,
-        business_cat_code,
-        password,
-        businessType,
+        fullname: fullname,
+        mobileNumber: mobilenumber,
+        email: emaill,
+        business_cat_code: business_cat_code,
+        password: passwordd,
+        businessType: businessType,
+        isDirect: false,
+        requestId: user?.loginId
       })
     )
       .unwrap()
@@ -136,7 +111,6 @@ const OnboardMerchant = () => {
       })
       .catch((err) => {
         setBtnDisable(false);
-        // setLoading(false);
       });
   };
 
@@ -149,24 +123,21 @@ const OnboardMerchant = () => {
   };
 
   useEffect(() => {
-    // console.log("isUserRegistered",isUserRegistered);
     if (isUserRegistered === true) {
       toast.success(message.message, {
         position: "top-right",
-        autoClose: 2000,
+        autoClose: 5000,
         limit: 1,
         transition: Zoom,
       });
-      // setTimeout(() => {
-      //   // alert("aa4");
-         history.push("/dashboard/approver");
-      // }, 2000);
+
+      history.push("/dashboard/approver");
     }
 
     if (isUserRegistered === false) {
       toast.error(message.message, {
         position: "top-right",
-        autoClose: 1500,
+        autoClose: 5000,
         limit: 5,
         transition: Zoom,
       });
@@ -192,15 +163,9 @@ const OnboardMerchant = () => {
         < NavBar />
         <div className="row">
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-8 col-sm-offset-1- col-md-offset-2- col-lg-offset-3- mx-auto">
-            {/* <div className="col-sm-4 authfy-panel-left">
-            <div className="brand-col">
-              
-            </div>
-          </div> */}
+
             <div className="col-sm-12- authfy-panel-right-">
-              {/* authfy-login start */}
               <div className="authfy-login">
-                {/* panel-login start */}
                 <div className="authfy-panel panel-login text-center active">
                   <div className="logmod__wrapper">
                     <span className="logmod__close">Close</span>
@@ -210,22 +175,9 @@ const OnboardMerchant = () => {
                         <div className="show logmod__tab lgm-1">
                           <div className="logmod__heading">
                             <span className="fontfigma">
-                            Onboard merchant
+                              Onboard merchant
                             </span>
-                            {/* <div className="flex">
-                              <span className="Signupfigma mt-2">
-                                <span
-                                  style={{
-                                    color: "#4BB543",
-                                    fontWeight: "700",
-                                    fontSize: "18px",
-                                  }}
-                                >
-                                  Signup
-                                </span>{" "}
-                                to Create New Account
-                              </span>
-                            </div> */}
+
                           </div>
                           <div className="logmod__form">
                             <Formik
@@ -408,39 +360,7 @@ const OnboardMerchant = () => {
                                       </div>
                                     </div>
 
-                                    {/* <div className="input full- optional">
-                                <label
-                                  className="string optional"
-                                  htmlFor="last-name"
-                                >
-                                  Last Name
-                                </label>
-                                <Field
-                                  className="string optional"
-                                  maxLength={255}
-                                  id="last-name"
-                                  placeholder="Last Name"
-                                  name="lastname"
-                                  type="text"
-                                  size={50}
-                                />
-                                {
-                                  <ErrorMessage name="lastname">
-                                    {(msg) => (
-                                      <p
-                                        className="abhitest"
-                                        style={{
-                                          color: "red",
-                                          position: "absolute",
-                                          zIndex: " 999",
-                                        }}
-                                      >
-                                        {msg}
-                                      </p>
-                                    )}
-                                  </ErrorMessage>
-                                }
-                              </div> */}
+
                                   </div>
 
                                   <div className="sminputs">
@@ -528,16 +448,16 @@ const OnboardMerchant = () => {
                                       <span
                                         className="hide-password"
                                         onClick={handleClickShowPassword}
-                                        style={{marginTop:"49px",marginRight:"-20px"}}
+                                        style={{ marginTop: "49px", marginRight: "-20px" }}
                                       >
                                         {valuesIn.showPassword ? (
-                                  <i class="fa fa-eye" aria-hidden="true"></i>
-                                ) : (
-                                  <i
-                                    class="fa fa-eye-slash"
-                                    aria-hidden="true"
-                                  ></i>
-                                )}
+                                          <i class="fa fa-eye" aria-hidden="true"></i>
+                                        ) : (
+                                          <i
+                                            class="fa fa-eye-slash"
+                                            aria-hidden="true"
+                                          ></i>
+                                        )}
                                       </span>
                                     </div>
                                   </div>
@@ -556,7 +476,7 @@ const OnboardMerchant = () => {
                                       </button>
 
                                       <span className="simform__actions-sidetext">
-                                      
+
                                       </span>
                                       {
                                         <ErrorMessage name="terms_and_condition">
@@ -575,16 +495,7 @@ const OnboardMerchant = () => {
                                       }
                                     </div>
                                   </div>
-                                  {/* <p className="foraccount">
-                                    Already have an account?
-                                    <Link
-                                      to={`/login`}
-                                      style={{ color: "#0156B3" }}
-                                    >
-                                      {" "}
-                                      Sign in
-                                    </Link>
-                                  </p> */}
+
                                 </Form>
                               )}
                             </Formik>
@@ -596,15 +507,11 @@ const OnboardMerchant = () => {
                 </div>
               </div>
 
-              {/* ./authfy-login */}
             </div>
           </div>
-          {/* <p className="footerforcopyright">
-          Copyright  © 2022 SabPaisa, all rights reserve version 0.1
-        </p> */}
+
         </div>
 
-        {/* ./row */}
       </div>
     </>
   )

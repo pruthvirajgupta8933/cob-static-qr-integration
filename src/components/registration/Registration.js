@@ -40,7 +40,6 @@ const FORM_VALIDATION = Yup.object().shape({
     .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
     .required("Confirm Password Required"),
   business_cat_code: Yup.string().required("Required"),
-  
 });
 
 function Registration() {
@@ -50,13 +49,14 @@ function Registration() {
   const { message, auth } = reduxState;
   const datar = auth;
 
+
   const { isUserRegistered } = datar;
   const [acceptTc, setAcceptTc] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const [btnDisable, setBtnDisable] = useState(true);
 
   const [businessCode, setBusinessCode] = useState([]);
-  const [passwordType, setPasswordType] =useState({
+  const [passwordType, setPasswordType] = useState({
     confirmpassword: "",
     showPasswords: false,
   });
@@ -66,8 +66,10 @@ function Registration() {
     showPassword: false,
   });
   const togglePassword = () => {
-   setPasswordType({ ...passwordType, showPasswords: !passwordType.showPasswords });
-
+    setPasswordType({
+      ...passwordType,
+      showPasswords: !passwordType.showPasswords,
+    });
   };
 
   // function buttonHandler(index) {
@@ -81,7 +83,11 @@ function Registration() {
       .get(API_URL.Business_Category_CODE)
       .then((resp) => {
         const data = resp?.data;
-        const sortAlpha = data?.sort((a, b) => a.category_name.toLowerCase().localeCompare(b.category_name.toLowerCase()))
+        const sortAlpha = data?.sort((a, b) =>
+          a.category_name
+            .toLowerCase()
+            .localeCompare(b.category_name.toLowerCase())
+        );
         setBusinessCode(sortAlpha);
       })
       .catch((err) => console.log(err));
@@ -93,33 +99,28 @@ function Registration() {
     return () => {
       dispatch(udpateRegistrationStatus());
     };
-    
   }, []);
 
   const handleRegistration = (formData) => {
-
-    var businessType = 1;
-    var {
+    let businessType = 1;
+    let {
       fullname,
       mobilenumber,
       emaill,
       passwordd,
       business_cat_code,
     } = formData;
-    var fullname = fullname;
-    var mobileNumber = mobilenumber;
-    var email = emaill;
-    var business_cat_code = business_cat_code;
-    var password = passwordd;
-
+ 
     dispatch(
       register({
-        fullname,
-        mobileNumber,
-        email,
-        business_cat_code,
-        password,
+        fullname:fullname,
+        mobileNumber:mobilenumber,
+        email:emaill,
+        business_cat_code:business_cat_code,
+        password:passwordd,
         businessType,
+        isDirect:true,
+        requestId:null
       })
     )
       .unwrap()
@@ -128,7 +129,6 @@ function Registration() {
       })
       .catch((err) => {
         setBtnDisable(false);
-
       });
   };
 
@@ -144,12 +144,11 @@ function Registration() {
     if (isUserRegistered === true) {
       toast.success(message.message, {
         position: "top-right",
-        autoClose: 2000,
+        autoClose: 5000,
         limit: 1,
         transition: Zoom,
       });
       setTimeout(() => {
-        
         history.push("/login-page");
       }, 2000);
     }
@@ -157,8 +156,8 @@ function Registration() {
     if (isUserRegistered === false) {
       toast.error(message.message, {
         position: "top-right",
-        autoClose: 1500,
-        limit: 5,
+        autoClose: 5000,
+        limit: 2,
         transition: Zoom,
       });
     }
@@ -172,10 +171,6 @@ function Registration() {
     setIsCheck(isChecked);
   };
 
-  // const handlerTermCond = (isChecked) => {
-  //   setBtnDisable(isChecked);
-  // };
-  
   return (
     <>
       <HeaderPage />
@@ -202,16 +197,14 @@ function Registration() {
                       fontStyle: "Satoshi",
                       color: "#0143A1",
                       lineHeight: "30px",
-
                     }}
                     class="text-center mt-40"
                   >
-                    Empower your <br/>business,&nbsp;boost <br/> your&nbsp;finance
+                    Empower your <br />
+                    business,&nbsp;boost <br /> your&nbsp;finance
                   </h1>
-                 
 
                   <div className="brand-logo">
-                   
                     <div
                       id="carouselExampleIndicators"
                       class="carousel slide"
@@ -236,7 +229,6 @@ function Registration() {
                         <div class="carousel-item active">
                           <img
                             src={onlineshopinglogo}
-                           
                             alt="SabPaisa"
                             title="SabPaisa"
                             class="loginscreenimagereg"
@@ -245,7 +237,6 @@ function Registration() {
                         <div class="carousel-item">
                           <img
                             src={onlineshopinglogo}
-                            
                             alt="SabPaisa"
                             title="SabPaisa"
                             class="loginscreenimagereg"
@@ -254,17 +245,14 @@ function Registration() {
                         <div class="carousel-item">
                           <img
                             src={onlineshopinglogo}
-                           
                             alt="SabPaisa"
                             title="SabPaisa"
                             class="loginscreenimagereg"
                           />
                         </div>
                       </div>
-                     
                     </div>
                   </div>
-                
                 </div>
               </div>
             </div>
@@ -276,7 +264,6 @@ function Registration() {
                   <div className="logmod__wrapper">
                     <span className="logmod__close">Close</span>
                     <div className="logmod__container">
-                    
                       <div className="logmod__tab-wrapper">
                         <div className="show logmod__tab lgm-1">
                           <div className="logmod__heading Satoshi-Medium">
@@ -318,7 +305,6 @@ function Registration() {
                                   action="#"
                                   className="simform"
                                 >
-                                  
                                   <div className="sminputs">
                                     <div className="input full- optional">
                                       <label
@@ -474,8 +460,6 @@ function Registration() {
                                         }
                                       </div>
                                     </div>
-
-                                   
                                   </div>
 
                                   <div className="sminputs">
@@ -557,7 +541,6 @@ function Registration() {
                                       />
 
                                       <div class="input-group-addon viewfor">
-                                      
                                         <a onClick={togglePassword}>
                                           {" "}
                                           {passwordType.showPasswords ? (
@@ -594,8 +577,6 @@ function Registration() {
                                           )}
                                         </ErrorMessage>
                                       }
-
-                                     
                                     </div>
                                   </div>
                                   <div className="sminputs">
@@ -605,7 +586,6 @@ function Registration() {
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
-                                        
                                         disabled={
                                           !(formik.isValid && formik.dirty)
                                             ? true
@@ -616,11 +596,7 @@ function Registration() {
                                         Signup
                                       </button>
 
-                                      <span className="simform__actions-sidetext">
-                                       
-                                       
-                                       
-                                      </span>
+                                      <span className="simform__actions-sidetext"></span>
                                       {
                                         <ErrorMessage name="terms_and_condition">
                                           {(msg) => (
@@ -662,7 +638,7 @@ function Registration() {
               {/* ./authfy-login */}
             </div>
           </div>
-          
+
           <p className="footerforcopyright text-center NunitoSans-Regular">
             Copyright © 2022 SabPaisa, all rights reserve version 0.1
           </p>

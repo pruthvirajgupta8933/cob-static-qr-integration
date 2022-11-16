@@ -257,12 +257,11 @@ function HeaderPage() {
 
       <header className="header">
        
-        <Link
-          to="/login-page"
+        <a href="https://sabpaisa.in/" target={"_blank"}
           className="logo"
         >
           <img src={sabpaisalogo} alt="SabPaisa" title="SabPaisa" />
-        </Link>
+        </a>
         <input className="menu-btn" type="checkbox" id="menu-btn" />
         <label className="menu-icon" htmlFor="menu-btn">
           <span className="navicon"></span>

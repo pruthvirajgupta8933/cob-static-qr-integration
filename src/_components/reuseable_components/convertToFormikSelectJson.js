@@ -1,10 +1,14 @@
-export const convertToFormikSelectJson = (key, value, dataObject, extraDataObj = {}, isExtraDataRequired=false) =>{
-    const tempArr = [{key:'',value:'Select'}];
-    if(isExtraDataRequired){tempArr.push(extraDataObj)} 
+export const convertToFormikSelectJson = (key, value, dataObject, extraDataObj = {}, isExtraDataRequired = false, forClientCode = false) => {
+    const tempArr = [{ key: '', value: 'Select' }];
+    if (isExtraDataRequired) { tempArr.push(extraDataObj) }
 
-    dataObject.map(item=>{
-        // console.log(item[key])
-    tempArr.push({key:item[key],value:item[value].toUpperCase()})
+    dataObject.map(item => {
+        if (forClientCode) {
+            let valShow = item[key] + ` - ` + item[value]
+            tempArr.push({ key: item[key], value: `${valShow.toUpperCase()}` })
+        } else {
+            tempArr.push({ key: item[key], value: item[value].toUpperCase() })
+        }
     })
     return tempArr
 }
