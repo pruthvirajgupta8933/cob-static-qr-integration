@@ -96,7 +96,7 @@ const SabPaisaPricing = () => {
                   {Products.plan_price==="Connect" && Products.plan_name === "Enterprise" ? <></> :  <>{Products?.plan_price?.split("*")[0]} <span className={`title2 ${param?.id==="14" ? 'fontn' : 'fontna'}`}> {Products?.plan_price?.split("*")[1]}</span></>}
                 </h2>
                 <span class="blockquote mb-0 pull-left- text-center">
-                  <span class="w-50 pxsolid text-center">&nbsp;</span>
+                  <span class="w-50 pxsolid text-center mt-40">&nbsp;</span>
                   <h4 className="mb-20 featurespricing">FEATURES INCLUDING</h4>
                   <ul className="list-group list-group-flush">
                   {Products?.plan_description
