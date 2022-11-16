@@ -129,6 +129,13 @@ table.tables tr:nth-child(odd) {
   z-index: 999;
 }
 
+.eye__Icon {
+position: absolute;
+right: 27px;
+top: 55px;
+z-index: 999;
+}
+
 
 .viewicons {
   position: absolute;
