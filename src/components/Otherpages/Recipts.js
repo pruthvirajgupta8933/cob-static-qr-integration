@@ -27,36 +27,66 @@ export const Recipts = () => {
  
 
 
-  const onSubmit =  (value) => {
+//   const onSubmit =  (value) => {
 
-    const transaction_id = value.transaction_id;
-      setIsLoading(true);
-      axiosInstance.get(`${API_URL.VIEW_TXN}/${transaction_id}`)
-      .then((response) => {
+//     const transaction_id = value.transaction_id;
+//       setIsLoading(true);
+//       axiosInstance.get(`${API_URL.VIEW_TXN}/${transaction_id}`)
+//       .then((response) => {
         
-        if(response.data?.length> 0){
-          setData(response.data[0]);
-          setIsShow(true);
-          // setErrMessage('');
-          setIsLoading(false);
-        }else{
-          setIsShow(false)
-          setIsLoading(false);
-          alert('No Data Found')
-        }
+//         if(response.data?.length> 0){
+//           setData(response.data[0]);
+//           setIsShow(true);
+//           // setErrMessage('');
+//           setIsLoading(false);
+//         }else{
+//           setIsShow(false)
+//           setIsLoading(false);
+//           alert('No Data Found')
+//         }
        
-      })
-      .catch((e) => {
-        alert('No Data Found')
-        setIsLoading(false);
-        // console.log(e);
-        setIsShow(false);
-        // setErrMessage('No Data Found');
+//       })
+//       .catch((e) => {
+//         alert('No Data Found')
+//         setIsLoading(false);
+//         // console.log(e);
+//         setIsShow(false);
+//         // setErrMessage('No Data Found');
 
-      })
+//       })
 
   
-}
+// }
+const onSubmit = (input) => {
+  setData({});
+  const transaction_id = input.transaction_id;
+  axios
+    .get(API_URL.VIEW_TXN + `/${transaction_id}`)
+    .then((response) => {
+      if (response?.data.length > 0) {
+       
+        setIsShow(true);
+        setData(response?.data[0]);
+        //  setErrMessage(false);
+      } else {
+        axios.get(API_URL.SP2_VIEW_TXN + `/${transaction_id}`).then((r) => {
+          if (r?.data.length > 0) {
+           
+            setIsShow(true);
+            setData(r?.data[0]);
+            // setErrMessage(false);
+          } else {
+            setIsShow(false);
+            // setErrMessage(true);
+          }
+        });
+      }
+    })
+    .catch((e) => {
+      setIsShow(false);
+      // setErrMessage(true);
+    });
+};
 
   const onClick = () => {
 

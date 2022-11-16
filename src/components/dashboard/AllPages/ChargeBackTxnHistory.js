@@ -92,13 +92,17 @@ const ChargeBackTxnHistory= () => {
       .required("Required"),
   });
 
+
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
     "clientName",
-    clientMerchantDetailsList
-    // extraDataObj,
-    // isExtraDataRequired
+    clientMerchantDetailsList,
+    {},
+    false,
+    true
   );
+
+  
  
 
   useEffect(() => {
@@ -252,7 +256,7 @@ const ChargeBackTxnHistory= () => {
       excelArr.push(Object.values(allowDataToShow));
     });
     
-    const fileName = "Settlement-Report";
+    const fileName = "ChargeBackTxn-Report";
     exportToSpreadsheet(excelArr, fileName);
   };
 

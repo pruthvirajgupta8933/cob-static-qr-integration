@@ -45,7 +45,7 @@ export const successTxnSummary = createAsyncThunk(
     async (object = {}, thunkAPI) => {
       try {
         const response = await Dashboardservice.subscriptionplan();
-        // console.log("subscribe data", response );
+        
         return response;
       } catch (error) {
         const message =

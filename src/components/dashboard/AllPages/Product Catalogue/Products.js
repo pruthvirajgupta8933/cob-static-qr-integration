@@ -69,13 +69,13 @@ const Products = () => {
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="container-fluid row">
           {spinner && <span className="spinner-border" role="status"></span>}
 
           {product.map((Products, i) => (
-            <div class="col-sm-6 col-md-6 col-lg-6">
-              <div class="card" style={{ width: "31rem", height: "17rem" }}>
-                <div class="card-body">
+            <div class="col-sm-12 col-md-12 col-lg-6">
+              <div class="card mt-0">
+                <div class="card-body-">
                   <h5 class="card-title prod-header">
                     <img
                       class="card-img-left"
@@ -86,7 +86,7 @@ const Products = () => {
                     &nbsp;
                     {Products.application_name}
                   </h5>
-                  <p class="card-text prod-content">
+                  <p class="card-text prod-content truncate">
                     {" "}
                     {Products.application_description}
                   </p>
