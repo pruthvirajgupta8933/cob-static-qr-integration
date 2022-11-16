@@ -69,12 +69,12 @@ const Products = () => {
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="container-fluid row">
           {spinner && <span className="spinner-border" role="status"></span>}
 
           {product.map((Products, i) => (
-            <div class="col-sm-6 col-md-6 col-lg-6">
-              <div class="card" style={{ width: "31rem", height: "17rem" }}>
+            <div class="col-sm-12 col-md-12 col-lg-6">
+              <div class="card">
                 <div class="card-body">
                   <h5 class="card-title prod-header">
                     <img

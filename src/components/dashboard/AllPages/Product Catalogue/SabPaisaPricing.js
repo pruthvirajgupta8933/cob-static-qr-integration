@@ -137,7 +137,7 @@ const SabPaisaPricing = () => {
                   >
                     <div
                       class="modal-dialog"
-                      style={{ maxWidth: "50%" }}
+                      
                       role="document"
                     >
                       <div class="modal-content">
@@ -255,7 +255,7 @@ const SabPaisaPricing = () => {
                   >
                     <div
                       class="modal-dialog"
-                      style={{ maxWidth: "50%" }}
+                      
                       role="document"
                     >
                       <div class="modal-content">

@@ -37,22 +37,23 @@ const handleChange= (e)=>{
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Client List</h1>
+            <h1 className="m-b-sm gx-float-left">Client List sdf</h1>
           </div>
           <section className="features8 cid-sg6XYTl25a" id="features08-3-">
-            <div className="container-fluid">
+            <div className="container">
               <div className="row">
                 {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
                   lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
               
-                <div className="col-lg-6 mrg-btm- bgcolor">
-                  <label>Search</label>
-                  <input type="text" className="ant-input" onChange={(e)=>{handleChange(e.currentTarget.value)}} placeholder="Search from here" />
-                  <div className='noOfRecord'>Number of Record: {clientListData.length}</div>
-                </div>
+                <div className="mrg-btm- bgcolor col-sm-12 col-md-12 col-lg-12">
+                  <div><label>Search</label></div>
+                  <input type="text" className="ant-input col-lg-4 col-sm-12 col-md-12 " onChange={(e)=>{handleChange(e.currentTarget.value)}} placeholder="Search from here" />
+                   
+                  <div className='noOfRecord mt-20 mb-20 col-lg-12 col-sm-12 col-md-12 no-pad'>Number of Record: {clientListData.length}</div>
+                  </div>
                 
                 <div style={{overflow:"scroll"}}>
-                <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables">
+                <table cellspaccing={0} cellPadding={10} border={0} width="100%" className="tables border">
                   <tbody><tr>
                       <th>Client Code</th>
                       <th>Client Name</th>
@@ -64,12 +65,12 @@ const handleChange= (e)=>{
                    {clientListData && clientListData.map((item,i)=>{
                         return(
                           <tr>
-                            <td>{item.clientCode}</td>
-                            <td>{item.clientName}</td>
-                            <td>{item.clientContact}</td>
-                            <td>{item.clientEmail}</td>
-                            <td>{item.configuration_status}</td>
-                            <td>{item.subscribedTym}</td>
+                            <td className='border'>{item.clientCode}</td>
+                            <td className='border'>{item.clientName}</td>
+                            <td className='border'>{item.clientContact}</td>
+                            <td className='border'>{item.clientEmail}</td>
+                            <td className='border'>{item.configuration_status}</td>
+                            <td className='border'>{item.subscribedTym}</td>
                           </tr>
 
                         )
