@@ -989,3 +989,6 @@ border-radius: 0px 0px 5px 5px;
     -webkit-box-orient: vertical;
     min-height: 112px;
 }
+.min-heit{
+  max-height: 5px !important;
+}
