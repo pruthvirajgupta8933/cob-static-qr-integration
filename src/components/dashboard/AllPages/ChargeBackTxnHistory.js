@@ -252,7 +252,7 @@ const ChargeBackTxnHistory= () => {
       excelArr.push(Object.values(allowDataToShow));
     });
     
-    const fileName = "Settlement-Report";
+    const fileName = "ChargeBackTxn-Report";
     exportToSpreadsheet(excelArr, fileName);
   };
 
