@@ -348,7 +348,7 @@ function ContactInfo(props) {
                         );
                       }}
                     >
-                      Send Otp
+                      Send OTP
                     </a>
                   </div>
                 ) : (
@@ -409,7 +409,7 @@ function ContactInfo(props) {
                         );
                       }}
                     >
-                      Send Otp
+                      Send OTP
                     </a>{" "}
                   </div>
                 ) : (
