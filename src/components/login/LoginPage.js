@@ -106,8 +106,8 @@ function LoginPage() {
       <div className="container-fluid toppad">
         <div className="row">
           <div className="col-lg-1"></div>
-          <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
-            <div className="col-sm-6 authfy-panel-right login-float-right nopad login-float-none">
+          <div className="authfy-container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
+            <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right login-float-right nopad login-float-none">
               <div className="authfy-login">
                 <div className="authfy-panel panel-login text-center active">
                   <div className="logmod__wrapper">
@@ -366,7 +366,7 @@ function LoginPage() {
               </div>{" "}
               {/* ./authfy-login */}
             </div>
-            <div className="col-sm-6 authfy-panel-left">
+            <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-left">
               <div className="brand-col">
                 <div
                   id="carouselExampleIndicators"
