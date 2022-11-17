@@ -54,7 +54,7 @@ const RefundTransactionHistory = () => {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
-  const tempClientList = convertToFormikSelectJson("clientCode", "clientName", clientMerchantDetailsList);
+  // const tempClientList = convertToFormikSelectJson("clientCode", "clientName", clientMerchantDetailsList);
 
 
   
@@ -97,9 +97,10 @@ const RefundTransactionHistory = () => {
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
     "clientName",
-    clientMerchantDetailsList
-    // extraDataObj,
-    // isExtraDataRequired
+    clientMerchantDetailsList,
+    {},
+    false,
+    true
   );
   
 
@@ -277,7 +278,7 @@ const RefundTransactionHistory = () => {
                           label="Client Code"
                           name="clientCode"
                           className="form-control rounded-0 mt-0"
-                          options={tempClientList}
+                          options={clientCodeOption}
                         />
                       </div>
 
