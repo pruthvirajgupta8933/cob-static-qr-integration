@@ -244,7 +244,7 @@ function SideNavbar() {
                               className="fa fa-university"
                               aria-hidden="true"
                             />
-                            Client List
+                            &nbsp;Client List
                           </Link>
                         </li>
                       ) : (
@@ -264,7 +264,7 @@ function SideNavbar() {
                               className="txt-white sidenavFonts"
                             >
                               <i className="fa fa-bars" aria-hidden="true" />
-                              &nbsp;<span>Settlement Report</span>
+                              <span>&nbsp;Settlement Report</span>
                             </Link>
                           </li>
                           <li
@@ -276,8 +276,8 @@ function SideNavbar() {
                               to={`${url}/refund-transaction-history`}
                               className="txt-white sidenavFonts"
                             >
-                              <i className="fa fa-bars" aria-hidden="true" />
-                              &nbsp;<span>Refund Txn History</span>
+                              <i className="fa fa-list-alt"  aria-hidden="true" />
+                              <span>&nbsp;Refund Txn History</span>
                             </Link>
                           </li>
                           <li
@@ -289,8 +289,8 @@ function SideNavbar() {
                               to={`${url}/chargeback-transaction-history`}
                               className="txt-white sidenavFonts"
                             >
-                              <i className="fa fa-bars" aria-hidden="true" />
-                              &nbsp;<span>Chargeback Txn History</span>
+                              <i className="fa fa-list" aria-hidden="true" />
+                              <span>&nbsp;Chargeback Txn History</span>
                             </Link>
                           </li>
 

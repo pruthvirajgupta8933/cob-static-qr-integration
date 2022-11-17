@@ -2,7 +2,7 @@ import React from "react";
 
 import '../styles/SubQuestion.css'
 const SubQuestionComponent = (props)=>{
-    
+    // console.log("In subquestion")
     return( 
           
             <>

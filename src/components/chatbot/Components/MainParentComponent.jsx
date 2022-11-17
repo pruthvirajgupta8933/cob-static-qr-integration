@@ -15,6 +15,8 @@ const MainParentComponent = (props)=>{
             }
         }
         ).then((res)=>{
+            // console.log("Helloooooooooo")
+
             props.triggerNextStep({value: res, trigger: 4 })
         }).catch((err)=>{
             props.triggerNextStep({value: Detail, trigger: 500 })

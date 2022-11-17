@@ -8,6 +8,7 @@ const SubparentComponent = (props)=>{
             const Detail = {
                 qestionId: props.steps[4].value
             }
+            // console.log("In last")
             axios.post("https://chatbotadmin.sabpaisa.in/chatbot/AnswerApi", Detail, {
             headers: {
                 'authorization': 'ddbf42c6-078a-404f-b4ed-d47faaa52bbf'
