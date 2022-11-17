@@ -16,7 +16,8 @@ const ReceiptWalchand = () => {
       .get(`${API_URL.FETCH_DATA_FOR_WACOE}?PRNNum=${pnrId}`)
       .then((response) => {
        
-        var resData = response.data;
+        let resData = response.data;
+        // console.log(resData,"=================data")
         
         resData.map((dt, i) =>
           transactionStatus(dt.cid, dt.transId).then((response) => {
@@ -165,7 +166,7 @@ const ReceiptWalchand = () => {
 
                           <tr>
                             <th scope="row">Base Amount</th>
-                            <td>{user.paid_amount}</td>
+                            <td>{user.transAmount}</td>
                           </tr>
                           <tr>
                             <th scope="row">Payment Mode</th>

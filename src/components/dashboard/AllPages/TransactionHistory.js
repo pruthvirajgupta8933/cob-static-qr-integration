@@ -84,7 +84,7 @@ const TransactionHistory = () => {
 
 
   const initialValues = {
-    // clientCode:"",
+    clientCode:clientCode,
     fromDate: todayDate,
     endDate: todayDate,
     transaction_status: "All",
@@ -93,6 +93,7 @@ const TransactionHistory = () => {
 
   const validationSchema = Yup.object({
     fromDate: Yup.date().required("Required"),
+    clientCode: Yup.string().required("Required"),
     endDate: Yup.date()
       .min(Yup.ref("fromDate"), "End date can't be before Start date")
       .required("Required"),
@@ -181,6 +182,7 @@ const TransactionHistory = () => {
   };
 
   const submitHandler = (values) => {
+    // console.log("values",values)
 
 
     isButtonClicked(true);
@@ -192,8 +194,9 @@ const TransactionHistory = () => {
 
       let strClientCode,
         clientCodeArrLength = "";
+// console.log("clientCode",clientCode);
+      if (values.clientCode === "All") {
 
-      if (clientCode === "All") {
         const allClientCode = [];
         clientMerchantDetailsList?.map((item) => {
           allClientCode.push(item.clientCode);
@@ -201,7 +204,7 @@ const TransactionHistory = () => {
         clientCodeArrLength = allClientCode.length.toString();
         strClientCode = allClientCode.join().toString();
       } else {
-        strClientCode = clientCode;
+        strClientCode = values.clientCode;
         clientCodeArrLength = "1";
       }
 
@@ -408,7 +411,7 @@ const TransactionHistory = () => {
   let year = lastThreeMonth.getUTCFullYear();
   const finalDate = year + "-" + month + "-" + day;
 
-  console.log("clientCodeOption",clientCodeOption)
+  // console.log("clientCodeOption",clientCodeOption)
 
 
   return (

@@ -173,9 +173,9 @@ const API_LIVE = {
   Kyc_Consent: `${kyc_url}/kyc/kyc-submit/`,
   /* Product catalogue */
 
- PRODUCT_DETAILS:`https://stgcobapi.sabpaisa.in/product/product-details`,
- PRODUCT_SUB_DETAILS:`https://stgcobapi.sabpaisa.in/product/product-sub-details`,
- SUBSCRIBE_FETCHAPPAND_PLAN:`https://stgcobapi.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan`,
+ PRODUCT_DETAILS:`${url}/product/product-details`,
+ PRODUCT_SUB_DETAILS:`${url}/product/product-sub-details`,
+ SUBSCRIBE_FETCHAPPAND_PLAN:`${url}/client-subscription-service/subscribeFetchAppAndPlan`,
 
 
 /* get bank Id */
