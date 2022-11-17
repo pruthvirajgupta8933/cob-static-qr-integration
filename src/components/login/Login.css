@@ -525,4 +525,13 @@ a.nav-link{
 .navbar-expand-md .navbar-nav {
     margin: 0;
 }
+.mdn{
+  display: none;
+}
+}
+
+@media (max-width: 990px){
+  .mdn{
+    display: none;
+  }
 }
