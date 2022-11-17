@@ -198,37 +198,39 @@ export const Profile = () => {
   <ul class="list-group">
     <li class="list-group-item">
       <div class="col-lg-6">
-          <label><strong>User Name :</strong></label>
-          <span>
-            <input className={` border-0  text-uppercase ${errors.clientName ? "is-invalid" : ""}`} {...register("clientName" )} type="text" id="clientName " name="clientName"  onChange={(e) => e.target.value} readonly />
+          <label><strong>User Name : </strong></label>
+            <span className= "border-0 text-uppercase"  disabled="true" readonly>
+            {clientContactPersonName}
           </span>
-          <p className="invalid-feedback">
+          {/* <p className="invalid-feedback">
             {errors.clientName?.message}
-          </p>
+          </p> */}
       </div>
       <div class="col-lg-6"> 
-        <label><strong>Email id :</strong></label>
-        <span>
-          <input type="text" id="email" className="form-control- border-0" name="email" {...register("email")} readonly />
+        <label><strong>Email id : </strong></label>
+        <span className="form-control- border-0" readonly disabled="true">
+         {clientEmail}
         </span>
-        <p>{errors.email?.message}</p>
+        {/* <p>{errors.email?.message}</p> */}
       </div>
       
       <div class="col-lg-6">
-        <label><strong>Account Type :</strong></label>
-        <input className={` text-uppercase border-0 ${errors.phone ? "is-invalid" : ""}`} {...register("accountType")} type="text" id="accountType" name="accountType" onChange={(e) => e.target.value} readonly />
-        <p className="invalid-feedback">
+        <label><strong>Account Type : </strong></label>
+        <span className="border-0 text-uppercase" readonly disabled="true">
+         {LoggedUser}
+        </span>
+        {/* <p className="invalid-feedback">
           {errors.phone?.message}
-        </p>
+        </p> */}
       </div>
       <div class="col-lg-6">
-        <label><strong>Phone No. :</strong></label>
-        <span>
-          <input className={`form-control- border-0 ${errors.phone ? "is-invalid" : ""}`} {...register("phone")} type="text" id="phone" name="phone" onChange={(e) => e.target.value} readonly />
+        <label><strong>Phone No. : </strong></label>
+        <span className="form-control- border-0" readonly disabled="true">
+         {clientMobileNo}
         </span>
-        <p className="invalid-feedback">
+        {/* <p className="invalid-feedback">
           {errors.phone?.message}
-        </p>
+        </p> */}
       </div>
       
     </li>
