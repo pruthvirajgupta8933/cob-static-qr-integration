@@ -181,6 +181,7 @@ const TransactionHistory = () => {
   };
 
   const submitHandler = (values) => {
+    // console.log("values",values)
 
 
     isButtonClicked(true);
@@ -192,8 +193,9 @@ const TransactionHistory = () => {
 
       let strClientCode,
         clientCodeArrLength = "";
+// console.log("clientCode",clientCode);
+      if (values.clientCode === "All") {
 
-      if (clientCode === "All") {
         const allClientCode = [];
         clientMerchantDetailsList?.map((item) => {
           allClientCode.push(item.clientCode);
@@ -201,7 +203,7 @@ const TransactionHistory = () => {
         clientCodeArrLength = allClientCode.length.toString();
         strClientCode = allClientCode.join().toString();
       } else {
-        strClientCode = clientCode;
+        strClientCode = values.clientCode;
         clientCodeArrLength = "1";
       }
 
@@ -408,7 +410,7 @@ const TransactionHistory = () => {
   let year = lastThreeMonth.getUTCFullYear();
   const finalDate = year + "-" + month + "-" + day;
 
-  console.log("clientCodeOption",clientCodeOption)
+  // console.log("clientCodeOption",clientCodeOption)
 
 
   return (

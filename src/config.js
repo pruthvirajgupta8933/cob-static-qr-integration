@@ -192,6 +192,10 @@ GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
   APPROVE_KYC: `${kyc_url}/kyc/verify-kyc/approve/`,
 
   // VERIFY_EACH_TAB : `${kyc_url}kyc/verify-kyc/update/`,
+
+
+  // Client Detail SandBox //
+  CLIENT_DETAIL:`${url}/clientDetail`
 };
 
  

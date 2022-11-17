@@ -122,7 +122,7 @@ function DocumentsUpload(props) {
             const message =
               response?.payload?.message ||
               response?.payload?.aadhar_back[0] ||
-                response?.payload?.aadhar_front[0] ||
+              response?.payload?.aadhar_front[0] ||
               response?.payload?.message?.toString() ||
               response?.payload?.aadhar_front[0]?.toString() ||
               response?.payload?.aadhar_back[0]?.toString();
@@ -294,7 +294,6 @@ function DocumentsUpload(props) {
 
   return (
     <>
-      {/* <UploadDocTest /> */}
       <div className="col-md-12">
         <Formik
           initialValues={initialValues}
@@ -308,26 +307,26 @@ function DocumentsUpload(props) {
             <Form>
               <div className="form-row">
                 <div class="col-sm-12 col-md-12 col-lg-12">
-                  <label class=" col-form-label mt-0 p-2">Select Document Type<span style={{ color: "red" }}>*</span></label>
-                  
-                   
-                      <FormikController
-                        control="select"
-                        name="docType"
-                        className="form-control"
-                        options={docTypeList}
-                        readOnly={readOnly}
-                        disabled={
-                          kyc_status === "Verified" || kyc_status === "Approved"
-                            ? true
-                            : false
-                        }
-                      />
-                      {formik.handleChange(
-                        "docType",
-                        setDocTypeIdDropdown(formik?.values?.docType)
-                      )}
-                    
+                  <label class=" col-form-label mt-0 p-2">
+                    Select Document Type<span style={{ color: "red" }}>*</span>
+                  </label>
+
+                  <FormikController
+                    control="select"
+                    name="docType"
+                    className="form-control"
+                    options={docTypeList}
+                    readOnly={readOnly}
+                    disabled={
+                      kyc_status === "Verified" || kyc_status === "Approved"
+                        ? true
+                        : false
+                    }
+                  />
+                  {formik.handleChange(
+                    "docType",
+                    setDocTypeIdDropdown(formik?.values?.docType)
+                  )}
                 </div>
 
                 {role?.merchant ? (
@@ -380,8 +379,6 @@ function DocumentsUpload(props) {
                                 className="file-upload-input"
                                 id="2"
                                 onChange={(e) => handleChange(e, 2)}
-                                // disabled={VerifyKycStatus === "Verified" ? true : false}
-                                // readOnly={readOnly}
                               />
                               <div className="drag-text">
                                 <h3 class="p-2 font-16">
@@ -568,15 +565,12 @@ function DocumentsUpload(props) {
                       <div class="col-12">
                         <button
                           className="btn float-lg-right btnbackground text-white"
-                          
                           type="button"
                           onClick={() => {
                             formik.handleSubmit();
                           }}
                         >
-                          
-                            {buttonText}
-                          
+                          {buttonText}
                         </button>
                       </div>
                     ) : (

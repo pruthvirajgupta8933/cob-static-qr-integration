@@ -92,13 +92,17 @@ const ChargeBackTxnHistory= () => {
       .required("Required"),
   });
 
+
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
     "clientName",
-    clientMerchantDetailsList
-    // extraDataObj,
-    // isExtraDataRequired
+    clientMerchantDetailsList,
+    {},
+    false,
+    true
   );
+
+  
  
 
   useEffect(() => {
