@@ -84,7 +84,7 @@ const TransactionHistory = () => {
 
 
   const initialValues = {
-    // clientCode:"",
+    clientCode:clientCode,
     fromDate: todayDate,
     endDate: todayDate,
     transaction_status: "All",
@@ -93,6 +93,7 @@ const TransactionHistory = () => {
 
   const validationSchema = Yup.object({
     fromDate: Yup.date().required("Required"),
+    clientCode: Yup.string().required("Required"),
     endDate: Yup.date()
       .min(Yup.ref("fromDate"), "End date can't be before Start date")
       .required("Required"),
