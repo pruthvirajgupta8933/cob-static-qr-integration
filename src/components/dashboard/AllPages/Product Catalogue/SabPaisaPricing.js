@@ -96,7 +96,7 @@ const SabPaisaPricing = () => {
                   {Products.plan_price==="Connect" && Products.plan_name === "Enterprise" ? <></> :  <>{Products?.plan_price?.split("*")[0]} <span className={`title2 ${param?.id==="14" ? 'fontn' : 'fontna'}`}> {Products?.plan_price?.split("*")[1]}</span></>}
                 </h2>
                 <span class="blockquote mb-0 pull-left- text-center">
-                  <span class="w-50 pxsolid text-center mt-40">&nbsp;</span>
+                  <span class="w-50 pxsolid text-center mt-40 min-heit">&nbsp;</span>
                   <h4 className="mb-20 featurespricing">FEATURES INCLUDING</h4>
                   <ul className="list-group list-group-flush">
                   {Products?.plan_description
@@ -215,7 +215,7 @@ const SabPaisaPricing = () => {
                       <h1 class="card-title- cardoneheadingcss pb-3-">
                         {Products.plan_name}
                       </h1>
-                      {console.log(Products?.plan_price?.split("*").length)}
+                      {/* {console.log(Products?.plan_price?.split("*").length)} */}
                       <span className={`text-center bold-font mb-1- price ${Products?.plan_price?.split("*")?.length==2 ? 'fs-6':'' }`}>
                         {Products.plan_price==="Connect" && Products.plan_name === "Enterprise" ? <></> :  
                         <>{Products?.plan_price?.split("*")[0]} <span className="title2"> {Products?.plan_price?.split("*")[1]}</span></>

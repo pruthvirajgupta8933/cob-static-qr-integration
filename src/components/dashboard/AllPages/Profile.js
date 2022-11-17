@@ -45,7 +45,7 @@ export const Profile = () => {
   }
   // const clientMerchantDetailsList = user?.clientMerchantDetailsList;
   const clientId = user?.clientMerchantDetailsList[0]?.clientId;
-  
+
 
   // const clientId = user?.clientMerchantDetailsList[0]?.clientId;
 
@@ -169,10 +169,10 @@ export const Profile = () => {
       delete data.clientCode;
       dispatch(updateClientProfile({ data }));
     }
-    
+
   }
 
- 
+
 
 
 
@@ -192,62 +192,64 @@ export const Profile = () => {
 
 
 
-<div class="panel panel-default">
-<form className="form-horizontal form_cmplt" onSubmit={handleSubmit(onSubmit)}>
-  <div class="panel-heading text-uppercase">User Details </div>
-  <ul class="list-group">
-    <li class="list-group-item">
-      <div class="col-lg-6">
-          <label><strong>User Name :</strong></label>
-          <span>
-            <input className={` border-0  text-uppercase ${errors.clientName ? "is-invalid" : ""}`} {...register("clientName" )} type="text" id="clientName " name="clientName"  onChange={(e) => e.target.value} readonly />
-          </span>
-          <p className="invalid-feedback">
+            <div class="panel panel-default">
+              <form className="form-horizontal form_cmplt" onSubmit={handleSubmit(onSubmit)}>
+                <div class="panel-heading text-uppercase">User Details </div>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div class="col-lg-6">
+                      <label><strong>User Name : </strong></label>
+                      <span className="border-0 text-uppercase" disabled="true" readonly>
+                        {clientContactPersonName}
+                      </span>
+                      {/* <p className="invalid-feedback">
             {errors.clientName?.message}
-          </p>
-      </div>
-      <div class="col-lg-6"> 
-        <label><strong>Email id :</strong></label>
-        <span>
-          <input type="text" id="email" className="form-control- border-0" name="email" {...register("email")} readonly />
-        </span>
-        <p>{errors.email?.message}</p>
-      </div>
-      
-      <div class="col-lg-6">
-        <label><strong>Account Type :</strong></label>
-        <input className={` text-uppercase border-0 ${errors.phone ? "is-invalid" : ""}`} {...register("accountType")} type="text" id="accountType" name="accountType" onChange={(e) => e.target.value} readonly />
-        <p className="invalid-feedback">
-          {errors.phone?.message}
-        </p>
-      </div>
-      <div class="col-lg-6">
-        <label><strong>Phone No. :</strong></label>
-        <span>
-          <input className={`form-control- border-0 ${errors.phone ? "is-invalid" : ""}`} {...register("phone")} type="text" id="phone" name="phone" onChange={(e) => e.target.value} readonly />
-        </span>
-        <p className="invalid-feedback">
-          {errors.phone?.message}
-        </p>
-      </div>
-      
-    </li>
-    {roleBasedShowTab.merchant ?  <li class="list-group-item">
-    <div class="col-lg-12 text-center"> 
-        {/* <label><strong>Change Password</strong></label> -<br/> */}
-        <Link to={`/dashboard/change-password`}>
-          <button type="button" class="form-control btn btn-primary for_passwrd w-50" >
-            Change Password
-          </button>
-        </Link>
-        <p className="invalid-feedback">{errors.clientName?.message}</p>
-      </div>
-      </li> : <></>}
-   
-  </ul>
-</form>
+          </p> */}
+                    </div>
+                    <div class="col-lg-6">
+                      <label><strong>Email id : </strong></label>
+                      <span className="form-control- border-0" readonly disabled="true">
+                        {clientEmail}
+                      </span>
+                      {/* <p>{errors.email?.message}</p> */}
+                    </div>
 
-</div>
+                    <div class="col-lg-6">
+                      <label><strong>Account Type : </strong></label>
+                      <span className="border-0 text-uppercase" readonly disabled="true">
+                        {LoggedUser}
+                      </span>
+                      {/* <p className="invalid-feedback">
+          {errors.phone?.message}
+        </p> */}
+                    </div>
+                    <div class="col-lg-6">
+                      <label><strong>Phone No. : </strong></label>
+                      <span className="form-control- border-0" readonly disabled="true">
+                        {clientMobileNo}
+                      </span>
+                      {/* <p className="invalid-feedback">
+          {errors.phone?.message}
+        </p> */}
+                    </div>
+
+                  </li>
+                  {roleBasedShowTab.merchant ? <li class="list-group-item">
+                    <div class="col-lg-12 text-center">
+                      {/* <label><strong>Change Password</strong></label> -<br/> */}
+                      <Link to={`/dashboard/change-password`}>
+                        <button type="button" class="form-control btn btn-primary for_passwrd w-50" >
+                          Change Password
+                        </button>
+                      </Link>
+                      <p className="invalid-feedback">{errors.clientName?.message}</p>
+                    </div>
+                  </li> : <></>}
+
+                </ul>
+              </form>
+
+            </div>
 
             <div className="ant-tabs ant-tabs-top ant-tabs-line">
               <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
@@ -290,7 +292,7 @@ export const Profile = () => {
                           <div className="card mt-0">
                             <div className="card-header">Basic Details</div>
                             <div className="card-body-"> */}
-                        
+
 
                       </div>
                       {/* end form area */}

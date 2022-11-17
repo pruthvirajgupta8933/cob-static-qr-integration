@@ -1,5 +1,6 @@
 import React from 'react'
 import sabpaisalogo from "../../assets/images/sabpaisa-white-logo1.png"
+import dropdownimg from "../../assets/images/dropdown.png"
 import {Link} from 'react-router-dom';
 import agent from "../../assets/images/supportagent.png"
 
@@ -255,105 +256,72 @@ function HeaderPage() {
         </svg>
       </div>
 
-      <header className="header">
-       
-        <a href="https://sabpaisa.in/" target={"_blank"}
-          className="logo"
-        >
+
+      <header className="container-fluid px-0">
+    <nav className="navbar navbar-expand-md navbar-light bg-white- header p-0">
+        <a href="https://sabpaisa.in/" target={"_blank"} className="logo">
           <img src={sabpaisalogo} alt="SabPaisa" title="SabPaisa" />
         </a>
-        <input className="menu-btn" type="checkbox" id="menu-btn" />
-        <label className="menu-icon" htmlFor="menu-btn">
-          <span className="navicon"></span>
-        </label>
 
-        
-        <ul className="menu">
-          <li className="dropdown">
-            {/* <a
-              href="https://sabpaisa.in/"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {" "}
-              Products
-            </a> */}
-            
-            <button class="dropbtn">Products</button>
-            <div class="dropdown-content">
-              <a href="https://sabpaisa.in/payment-gateway/" target={"_blank"}>Payment Gateway</a>
-              <a href="https://sabpaisa.in/payouts/"  target={"_blank"}>Payouts</a>
-              <a href="https://sabpaisa.in/epos-app/"  target={"_blank"}>E-POS App</a>
-              <a href="https://sabpaisa.in/linkpaisa/"  target={"_blank"}>LinkPaisa</a>
-              <a href="https://sabpaisa.in/payment-links/"  target={"_blank"}>Payment Links</a>
-              <a href="https://sabpaisa.in/subscriptions/"  target={"_blank"}>Subscriptions</a>
-              <a href="https://sabpaisa.in/qwikform/"  target={"_blank"}>QwikForm</a>
-              <a href="https://sabpaisa.in/sabpaisa-e-challan-sabpaisa/"  target={"_blank"}>E-Challan</a>
-            </div>
-          
-           
-            
-          </li>
-          <li className="dropdown">
-            {/* <a
-              href= "https://sabpaisa.in/sabpaisa-apis/"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              APIs
-            </a> */}
-            <button class="dropbtn">APIs</button>
-            <div class="dropdown-content">
-              <a href="https://sabpaisa.in/subscriptions/" target={"_blank"}>Subscriptions APP</a>
-              <a href="https://sabpaisa.in/payouts-api/"  target={"_blank"}>Payouts API</a>
-              <a href="https://sabpaisa.in/payment-links/"  target={"_blank"}>Payment Links API</a>
-            </div>
-          </li>
-          <li className="dropdown">
-            {/* <a
-              target="_blank"
-              href="https://sabpaisa.in/"
-              rel="noreferrer noopener"
-            >
-              Developers
-            </a> */}
-            <button class="dropbtn">Developers</button>
-            <div class="dropdown-content">
-              <a href="https://sabpaisa.in/integration-kits/" target={"_blank"}>Integration Kits</a>
-              <a href="https://sabpaisa.in/uat-checklist/"  target={"_blank"}>UAT Checklist</a>
-              <a href="https://sabpaisa.in/api-reference/"  target={"_blank"}>API Reference</a>
-            </div>
-          </li>
-          <li>
-            <a
-              target="_blank"
-              href="https://sabpaisa.in/referral-partner/"
-              rel="noreferrer noopener"
-            >
-              Become Partner
-            </a>
-          </li>
-          {/* </ul>
-        <ul className="header_second_list hidden-xs"> */}
-          <li>
-            <Link to="/login-page">Login</Link>
-          </li>
-          <li>
-            <Link to="/Registration">Sign up</Link>
-          </li>
-          {/* <li>
-            <h5 className="btnlink contactHeader blueColr">
-            <img  src={agent} alt="slide" className="agentImage"/>  &nbsp;
-              Call 011 4173 3223
-            </h5>
-            <p className="loginContacthelp">Need Help ?</p>
-          </li> */}
-        </ul>
+        <button className="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav marginauto">
+                <li class="nav-item">
+                    <a className="nav-link" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products<span className="fa fa-angle-down"></span></a>
+                    <div className="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu1" aria-labelledby="navbarDropdown1">
+                        
+                      <ul>
+                         
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/payment-gateway/" target={"_blank"}>Payment Gateway</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/payouts/"  target={"_blank"}>Payouts</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/epos-app/"  target={"_blank"}>E-POS App</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/linkpaisa/"  target={"_blank"}>LinkPaisa</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/payment-links/"  target={"_blank"}>Payment Links</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/subscriptions/"  target={"_blank"}>Subscriptions</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/qwikform/"  target={"_blank"}>QwikForm</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/sabpaisa-e-challan-sabpaisa/"  target={"_blank"}>E-Challan</a> </li>
+                      </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Resources<span class="fa fa-angle-down"></span></a>
+                    <div class="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu2" aria-labelledby="navbarDropdown2">
+                      <ul>
+                          <li><a href="https://sabpaisa.in/subscriptions/" target={"_blank"}>Subscriptions APP</a></li>
+                          <li><a href="https://sabpaisa.in/payouts-api/"  target={"_blank"}>Payouts API</a></li>
+                          <li><a href="https://sabpaisa.in/payment-links/"  target={"_blank"}>Payment Links API</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Customers<span class="fa fa-angle-down"></span></a>
+                    <div class="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu3" aria-labelledby="navbarDropdown3">
+                    <ul> 
+                        <li><a href="https://sabpaisa.in/integration-kits/" target={"_blank"}>Integration Kits</a></li>
+                        <li><a href="https://sabpaisa.in/uat-checklist/"  target={"_blank"}>UAT Checklist</a></li>
+                        <li><a href="https://sabpaisa.in/api-reference/"  target={"_blank"}>API Reference</a></li>
+                    </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a className="nav-link" href="https://sabpaisa.in/referral-partner/" target={"_blank"} >Become Partner</a>
+                </li>
+                <li class="nav-item">
+                    {/* <a className="nav-link" href="" target={"_blank"} >Login</a> */}
+                    <Link to="/login-page" className="nav-link">Login</Link>
+                </li>
+                <li class="nav-item">
+                    {/* <a className="nav-link" href="" target={"_blank"} >Signup</a> */}
+                    <Link to="/Registration" className="nav-link">Sign up</Link>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
-          
-
-
-      </header>
+      
     </div>
   );
 }
