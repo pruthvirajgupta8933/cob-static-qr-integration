@@ -177,8 +177,8 @@ function Registration() {
       <div className="container-fluid toppad">
         <div className="row">
           <div className="col-lg-1"></div>
-          <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
-            <div className="col-sm-4 authfy-panel-left">
+          <div className="authfy-container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
+            <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-left mdn">
               <div className="brand-col Satoshi-Medium">
                 <div className="headline pt-1">
                   {/* brand-logo start */}
@@ -256,7 +256,7 @@ function Registration() {
                 </div>
               </div>
             </div>
-            <div className="col-sm-8 authfy-panel-right">
+            <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right">
               {/* authfy-login start */}
               <div className="authfy-login">
                 {/* panel-login start */}

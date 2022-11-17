@@ -60,6 +60,14 @@ export const Step = [
         { value: '8', label: "My Question is not listed", trigger: '3'}
       ]
     },
+    // {
+    //   id: '14',
+    //   options: [
+    //     { value: '1', label: "I have bussiness account with sabpaisa", trigger: '5' },
+    //     { value: '2', label: "I don`t have bussiness acccount with Sabpaisa", trigger: '5' },
+    //     { value: '8', label: "My Question is not listed", trigger: '5'}
+    //   ]
+    // },
   
   // {
   //   id: '2',
@@ -99,7 +107,16 @@ export const Step = [
   {
     id: '8',
     options: [
-          { value: "Yes", label: 'Yes', trigger: '2' },
+          { value: "Yes", label: 'Yes', trigger:  (input) => {
+            if(localStorage.getItem('categoryId')){
+              // console.log("check2")
+              return '12'
+            }else{
+              // console.log("check1")
+              return '13'
+              // console.log("hi")
+            }
+            } },
           { value: "No", label: 'No', trigger: '9' },
         ]
   },
