@@ -161,7 +161,7 @@ function BusinessDetails(props) {
 
   const validationSchema = Yup.object({
     company_name: Yup.string()
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
     gst_number: Yup.string()
@@ -192,7 +192,7 @@ function BusinessDetails(props) {
       .required("You need to verify Your Authorized Signatory PAN Number")
       .nullable(),
     name_on_pancard: Yup.string()
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
     city_id: Yup.string()
