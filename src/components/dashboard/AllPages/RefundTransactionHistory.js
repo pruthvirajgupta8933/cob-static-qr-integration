@@ -304,7 +304,7 @@ const RefundTransactionHistory = () => {
                     </div>
                     <div className="form-row" >
                       <div className="form-group col-md-1">
-                        <button className="btn btn-sm btn-primary" type="submit"> {loading ? "Loading..." : "Search"} </button>
+                        <button className="btn btn-sm bttnbackgroundkyc text-white" type="submit"> {loading ? "Loading..." : "Search"} </button>
                       </div>
                       {txnList?.length > 0 ?
                         <div className="form-group col-md-1">
