@@ -788,6 +788,9 @@ border-radius: 0px;
   font-size: 14px;
   font-weight: 400;
 }
+a.sidenavFonts{
+  color:#fff !important;
+}
 
 
 
@@ -863,16 +866,27 @@ border-radius: 0px;
     .container {
       max-width: 100% !important;
     }
+    
+  }
+
+  @media (max-width: 760px){
+    .announcement-banner-container{
+      padding-top:20%;
+    }
+  }
+  @media (max-width: 480px){
+    .announcement-banner-container{
+      padding-top:20%;
+    }
   }
   
   .foraccount{
     font-family: 'Satoshi';
-font-style: normal;
-font-weight: 400;
-font-size: 16px;
-line-height: 92.5%;
-color: #696969;
-
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 92.5%;
+    color: #696969;
   }
   /* Profile CSS HERE START*/
   .profile-header{
@@ -998,4 +1012,7 @@ border-radius: 0px 0px 5px 5px;
 }
 .min-heit{
   max-height: 5px !important;
+}
+.minh{
+  padding: 0 1rem !important;
 }

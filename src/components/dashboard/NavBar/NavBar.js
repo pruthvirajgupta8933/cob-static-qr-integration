@@ -20,7 +20,7 @@ const NavBar = () => {
   return (
     <div>
       <nav
-        class="navbar navbar-light Satoshi-Medium"
+        class="navbar navbar-light Satoshi-Medium minh"
         style={{ background: "#140633" }}
       >
         <ul class="navbar-brand mb-0 h1">
@@ -60,12 +60,8 @@ const NavBar = () => {
               <span class="caret text-white text-uppercase">{username}</span>
             </a>
             <div
-              class="dropdown-menu text-white"
-              style={{
-                backgroundColor: "rgb(20, 6, 51)",
-                height: "5rem",
-                width: "10rem",
-              }}
+              class="dropdown-menu text-white navpro"
+              
             >
               <div class="row px-md-3 p-2">
                 <Link to="/dashboard/profile" class="dropdown-item text-white">
