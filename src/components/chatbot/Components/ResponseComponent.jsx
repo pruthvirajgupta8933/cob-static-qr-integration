@@ -3,7 +3,7 @@ import React from "react";
 // import close from '../media/close.png'
 // import chatbotIcon from '../media/chatbotIcon.png'
 const ResponseComponent  = (props)=>{
-    {console.log("check3")}
+    // {console.log("check3")}
     return(
         <>
             <p>{props.previousStep.value.data.response}</p>
