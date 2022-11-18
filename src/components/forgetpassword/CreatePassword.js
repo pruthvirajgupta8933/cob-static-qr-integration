@@ -124,7 +124,7 @@ const CreatePassword = (props) => {
                         {/* <label htmlFor="exampleInputPassword2">
                           New Password
                         </label> */}
-                        <div className="form-group mt-4">
+                        <div className="form-group mt-40">
                           <Field
                             name="confirmpassword"
                             className="form-control"
