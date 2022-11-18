@@ -45,7 +45,6 @@ function Sandbox() {
         setData(response.data.ClientData)
 
     } catch (error) {
-    //    toast.error("Something Went Wrong ! Please try again after some time.")
 
     }
   }
@@ -253,6 +252,7 @@ function Sandbox() {
                           className="form-control"
                           id="inputPassword3"
                           name="passwordd"
+                          readOnly="true"
                           value={data?.clientPassword ? data?.clientPassword : "" }
                         />
                           <div class="input-group-addon eye__Icon">

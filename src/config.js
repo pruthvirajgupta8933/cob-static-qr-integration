@@ -195,7 +195,11 @@ GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
 
 
   // Client Detail SandBox //
-  CLIENT_DETAIL:`${url}/clientDetail`
+  CLIENT_DETAIL:`${url}/clientDetail`,
+
+
+  // KYC VALIDATE URL
+   VALIDATE_KYC: "https://stage-kycvalidator.sabpaisa.in/validator"
 };
 
  

@@ -1,4 +1,4 @@
-import API_URL, { AUTH_TOKEN } from "../config";
+import API_URL from "../config";
 import { axiosInstance, axiosInstanceAuth } from "../utilities/axiosInstance";
 
 // axiosInstanceAuth.defaults.headers.common['Authorization'] = AUTH_TOKEN;
@@ -73,35 +73,34 @@ const sendEmail = (toEmail, toCc, subject, msg) => {
 
 
 // profile service
-const BASE_URL = "https://cobapi.sabpaisa.in/auth-service/client";
-const BASE_URL_FOR_PROFILE = "https://stgcobapi.sabpaisa.in/auth-service"
-const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
+// const BASE_URL_FOR_PROFILE = "https://stgcobapi.sabpaisa.in/auth-service"
+// const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
 const createClintCode = (object) => {
   return axiosInstanceAuth.post(API_URL.AUTH_CLIENT_CREATE, object)
 };
 
 
-const updateClientProfile = (object, clientId) => {
-  return axiosInstanceAuth.put(BASE_URL_FOR_PROFILE + "/updateProfile", object);
-}
+// const updateClientProfile = (object, clientId) => {
+//   return axiosInstanceAuth.put(BASE_URL_FOR_PROFILE + "/updateProfile", object);
+// }
 
 
-const verifyClientCode = (clientCode) => {
-  return axiosInstanceAuth.get(BASE_URL + "//verifyClientCode/" + clientCode);
-}
+// const verifyClientCode = (clientCode) => {
+//   return axiosInstanceAuth.get(BASE_URL + "/verifyClientCode/" + clientCode);
+// }
 
 
 const verifyIfcsCode = (ifsc_code) => {
   return axiosInstance.get("https://ifsc.razorpay.com/" + ifsc_code);
 }
 
-const fetchNbBankList = () => {
-  return axiosInstance.get(BANK_LIST_URL + "nb");
-}
+// const fetchNbBankList = () => {
+//   return axiosInstance.get(BANK_LIST_URL + "nb");
+// }
 
-const fetchDcBankList = () => {
-  return axiosInstance.get(BANK_LIST_URL + "dc");
-}
+// const fetchDcBankList = () => {
+//   return axiosInstance.get(BANK_LIST_URL + "dc");
+// }
 
 
 const changePassword = (object) => {
@@ -141,10 +140,10 @@ const authService = {
   logout,
   sendEmail,
   createClintCode,
-  updateClientProfile,
-  verifyClientCode,
-  fetchNbBankList,
-  fetchDcBankList,
+  // updateClientProfile,
+  // verifyClientCode,
+  // fetchNbBankList,
+  // fetchDcBankList,
   verifyIfcsCode,
   changePassword,
   getEmailToSendOTP,

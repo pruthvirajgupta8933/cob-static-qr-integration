@@ -532,27 +532,27 @@ const authSlice = createSlice({
       state.userAlreadyLoggedIn = false;
       state.isValidUser = '';
       state.user = null;
-      state = undefined;
+      state = {};
     },
-    [OTPVerificationApi.pending]: (state, action) => {
-      state.status = "pending";
-    },
-    [OTPVerificationApi.fulfilled]: (state, action) => {
-      state.OtpVerificationResponse.fulfilled = action.payload;
+    // [OTPVerificationApi.pending]: (state, action) => {
+    //   state.status = "pending";
+    // },
+    // [OTPVerificationApi.fulfilled]: (state, action) => {
+    //   state.OtpVerificationResponse.fulfilled = action.payload;
 
-      sessionStorage.setItem(
-        "authToken",
-        action.payload.auth_token ? action.payload.auth_token : ""
-      );
-      sessionStorage.setItem(
-        "userName",
-        action.payload.username ? action.payload.username : ""
-      );
-    },
-    [OTPVerificationApi.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
+    //   sessionStorage.setItem(
+    //     "authToken",
+    //     action.payload.auth_token ? action.payload.auth_token : ""
+    //   );
+    //   sessionStorage.setItem(
+    //     "userName",
+    //     action.payload.username ? action.payload.username : ""
+    //   );
+    // },
+    // [OTPVerificationApi.rejected]: (state, action) => {
+    //   state.status = "failed";
+    //   state.error = action.error.message;
+    // },
     [createClientProfile.pending]: (state) => {
       // console.log("pending...create profile of client")
     },
