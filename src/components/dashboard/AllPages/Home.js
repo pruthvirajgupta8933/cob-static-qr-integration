@@ -327,8 +327,8 @@ function Home() {
               </div>
             ) : (
               <div className="col-12 col-md-12">
-              <div class="card col-lg-12- cardkyc pull-left">
-              {roles?.bank === true ? <></> :  <div class="font-weight-bold card-body Satoshi-Medium">
+             {roles?.bank === true ? <></> :  <div class="card col-lg-12- cardkyc pull-left">
+               <div class="font-weight-bold card-body Satoshi-Medium">
                   <span>
                   Congratulations! Your KYC documents have been approved.
                   </span>
@@ -343,8 +343,9 @@ function Home() {
                         KYC Done
                       </button>
                 </div>
-}
+
               </div>
+}
             </div>
            
             )}
