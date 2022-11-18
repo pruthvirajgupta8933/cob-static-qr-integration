@@ -292,6 +292,7 @@ function BusinessOverview(props) {
       >
         {(formik) => (
           <Form>
+            <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6">
               <label class="col-form-label mt-0 p-2">
                 Business Type<span style={{ color: "red" }}>*</span>
@@ -320,7 +321,8 @@ function BusinessOverview(props) {
                 readOnly={readOnly}
               />
             </div>
-
+            </div>
+            <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
               <label class="col-form-label p-2 mt-0">
                 Business Label <span style={{ color: "red" }}>*</span>
@@ -351,7 +353,8 @@ function BusinessOverview(props) {
                 />
               </div>
             </div>
-
+            </div>
+            <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12">
               <label class="col-form-label p-2 mt-0">
                 How do you wish to accept payments?
@@ -387,7 +390,8 @@ function BusinessOverview(props) {
                 </div>
               )}
             </div>
-
+            </div>
+            <div class="row">
             <div class="col-sm-4 col-md-4 col-lg-4">
               <label class="col-form-label p-2 mt-0">
                 Company Website<span style={{ color: "red" }}>*</span>
@@ -432,7 +436,7 @@ function BusinessOverview(props) {
                 readOnly={readOnly}
               />
             </div>
-
+            </div>
             <div class="my-5- p-2- w-100 pull-left">
               <hr
                 style={{
