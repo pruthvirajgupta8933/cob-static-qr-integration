@@ -31,13 +31,13 @@ const handleChange= (e)=>{
     return (
       <section className="ant-layout">
         <NavBar/>
-      <div className="profileBarStatus">
+      {/* <div className="profileBarStatus"> */}
         {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
-      </div>
+      {/* </div> */}
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Client List sdf</h1>
+            <h1 className="m-b-sm gx-float-left">Client List</h1>
           </div>
           <section className="features8 cid-sg6XYTl25a" id="features08-3-">
             <div className="container">
