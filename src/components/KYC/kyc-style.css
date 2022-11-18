@@ -5,6 +5,9 @@
   /* justify-content: center; */
 }
 
+a.activepaylink-kyc{
+  color:#fff !important;
+}
 .activepaylink-kyc {
   background-color: #4bb543;
   color: white !important ;
@@ -330,4 +333,7 @@
   position: absolute;
     top: 43px;
     right: 24px;
+}
+a.inactive{
+  color:#000;
 }

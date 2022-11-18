@@ -413,8 +413,8 @@
 }
 
 .nav-item {
-  padding: 0 8px;
-  margin: 0px 3px;
+  padding: 0 8px !important;
+  margin: 0px !important;
   text-align: center;
   border-radius: 5px;
   font-size: 16px;
@@ -516,6 +516,12 @@ a {
 a.nav-link{
   color:#fff !important;
   font-size: 16px !important;
+} 
+a.inactive{
+  color:#000 !important;
+}
+a.inactive:hover{
+  color: green !important;
 }
 .navbar-expand-md .navbar-nav {
   margin: 0 14%;
@@ -546,4 +552,7 @@ a.nav-link{
 .navpro a:hover{
   background: #fff;
   color: #000;
+}
+.activepaylink-kyc{
+  padding-left:40px;
 }
