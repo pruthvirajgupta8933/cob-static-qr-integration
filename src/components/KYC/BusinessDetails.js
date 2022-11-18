@@ -161,7 +161,7 @@ function BusinessDetails(props) {
 
   const validationSchema = Yup.object({
     company_name: Yup.string()
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
     gst_number: Yup.string()
@@ -192,7 +192,7 @@ function BusinessDetails(props) {
       .required("You need to verify Your Authorized Signatory PAN Number")
       .nullable(),
     name_on_pancard: Yup.string()
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
     city_id: Yup.string()
@@ -338,6 +338,8 @@ function BusinessDetails(props) {
           handleChange,
         }) => (
           <Form>
+            
+            <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-12 marg-b">
               <label class="col-form-label mt-0 p-2">
                 GSTIN<span style={{ color: "red" }}>*</span>
@@ -381,6 +383,8 @@ function BusinessDetails(props) {
                 </span>
               )}
             </div>
+            </div>
+            <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-6">
               <label class="col-form-label mt-0 p-2">
                 Business PAN<span style={{ color: "red" }}>*</span>
@@ -439,7 +443,8 @@ function BusinessDetails(props) {
                 </span>
               )}
             </div>
-
+            </div>
+            <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-6">
               <label class="col-form-label mt-0 p-2">
                 {" "}
@@ -466,7 +471,8 @@ function BusinessDetails(props) {
                 readOnly={readOnly === false ? true : readOnly}
               />
             </div>
-
+            </div>
+            <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-6">
               <label class="col-form-label mt-0 p-2">
                 Address<span style={{ color: "red" }}>*</span>
@@ -493,7 +499,8 @@ function BusinessDetails(props) {
                 readOnly={readOnly}
               />
             </div>
-
+            </div>
+            <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-6">
               <label class="col-form-label mt-0 p-2">
                 State<span style={{ color: "red" }}>*</span>
@@ -521,7 +528,7 @@ function BusinessDetails(props) {
                 readOnly={readOnly}
               />
             </div>
-
+            </div>
             <div class="my-5- w-100 pull-left p-2">
               <hr
                 style={{

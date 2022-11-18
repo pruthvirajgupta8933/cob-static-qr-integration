@@ -413,8 +413,8 @@
 }
 
 .nav-item {
-  padding: 0 8px;
-  margin: 0px 3px;
+  padding: 0 8px !important;
+  margin: 0px !important;
   text-align: center;
   border-radius: 5px;
   font-size: 16px;
@@ -435,7 +435,7 @@ a {
 }
 
 .nav-link {
-  padding: 5px;
+  /* padding: 5px; */
 }
 
 .navbar-collapse.collapse.in {
@@ -460,22 +460,22 @@ a {
   margin-top: 0px;
   border: none;
   background-color: #fff;
-  padding: 50px 50px 30px 50px;
+  /* padding: 50px 50px 30px 50px; */
 }
 
 #dropdown-menu1 {
   position: absolute;
-  left: 165px;
+  left: 25%;
 }
 
 #dropdown-menu2 {
   position: absolute;
-  left: 285px;
+  left: 34%;
 }
 
 #dropdown-menu3 {
   position: absolute;
-  left: 415px;
+  left: 46%;
 }
 
 .tab {
@@ -516,6 +516,12 @@ a {
 a.nav-link{
   color:#fff !important;
   font-size: 16px !important;
+} 
+a.inactive{
+  color:#000 !important;
+}
+a.inactive:hover{
+  color: green !important;
 }
 .navbar-expand-md .navbar-nav {
   margin: 0 14%;
@@ -534,4 +540,19 @@ a.nav-link{
   .mdn{
     display: none;
   }
+}
+.navpro {
+  background: rgb(20, 6, 51);
+}
+.navpro a{
+  color: #fff !important; 
+  padding: 10px;
+  margin: 0;
+}
+.navpro a:hover{
+  background: #fff;
+  color: #000;
+}
+.activepaylink-kyc{
+  padding-left:40px;
 }

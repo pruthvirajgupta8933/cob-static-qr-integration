@@ -278,6 +278,7 @@ function BankDetails(props) {
           handleChange,
         }) => (
           <Form>
+            <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-6 ">
               <label class="col-form-label mt-0 p-2">
                 IFSC Code<span style={{ color: "red" }}>*</span>
@@ -375,7 +376,8 @@ function BankDetails(props) {
                 </span>
               )}
             </div>
-
+            </div>
+            <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-6">
               <label class="col-form-label mt-0 p-2">
                 Account Holder Name<span style={{ color: "red" }}>*</span>
@@ -403,7 +405,8 @@ function BankDetails(props) {
                 disabled={VerifyKycStatus === "Verified" ? true : false}
               />
             </div>
-
+            </div>
+            <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-6">
               <label class="col-form-label mt-0 p-2">
                 Bank Name<span style={{ color: "red" }}>*</span>
@@ -431,6 +434,8 @@ function BankDetails(props) {
                 disabled={VerifyKycStatus === "Verified" ? true : false}
               />
             </div>
+            </div>
+            
 
             <div class="my-5- p-2 w-100 pull-left">
               <hr

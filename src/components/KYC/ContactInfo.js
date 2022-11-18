@@ -235,6 +235,8 @@ function ContactInfo(props) {
           handleChange,
         }) => (
           <Form>
+
+            <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6 ">
               <label class="col-form-label mt-0 p-2">
                 Contact Name<span style={{ color: "red" }}>*</span>
@@ -249,7 +251,7 @@ function ContactInfo(props) {
                 readOnly={readOnly}
               />
             </div>
-
+            
             <div class="col-sm-6 col-md-6 col-lg-6 ">
               <label class="col-form-label mt-0 p-2">
                 Aadhaar No.<span style={{ color: "red" }}>*</span>
@@ -264,14 +266,14 @@ function ContactInfo(props) {
                 readOnly={readOnly}
               />
             </div>
-
+            </div>
             {/*  Modal Popup for Otp Verification Email*/}
             <MailVerificationModal
               show={showOtpVerifyModalEmail}
               setShow={handlerModal}
             />
             {/*  Modal Popup for Otp Verification Email*/}
-
+            <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6 ">
               <label class="col-form-label mt-0 p-2">
                 Contact Number<span style={{ color: "red" }}>*</span>
@@ -318,7 +320,7 @@ function ContactInfo(props) {
                 <span className="text-danger">{errors?.oldContactNumber}</span>
               )}
             </div>
-
+            
             {/*  Modal Popup for Otp Verification */}
             <PhoneVerficationModal
               show={showOtpVerifyModalPhone}
@@ -372,7 +374,8 @@ function ContactInfo(props) {
                 <span className="text-danger">{errors?.oldEmailId}</span>
               )}
             </div>
-
+            </div>
+            
             <div class="my-5- p-2- w-100 pull-left">
               <hr
                 style={{

@@ -93,7 +93,7 @@ const TransactionHistory = () => {
 
   const validationSchema = Yup.object({
     fromDate: Yup.date().required("Required"),
-    clientCode: Yup.string().required("Required"),
+    clientCode: Yup.string().required("Client code not found").nullable(),
     endDate: Yup.date()
       .min(Yup.ref("fromDate"), "End date can't be before Start date")
       .required("Required"),
@@ -445,6 +445,7 @@ const TransactionHistory = () => {
                             className="form-control rounded-0"
                             options={clientCodeOption}
                           />
+                          
                         </div>
                       )}
 
@@ -499,6 +500,7 @@ const TransactionHistory = () => {
                         >
                           Search
                         </button>
+                        <p className="text-danger">{formik?.errors?.clientCode}</p>
                       </div>
                       {txnList?.length > 0 ? (
                         <>

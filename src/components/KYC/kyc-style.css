@@ -5,6 +5,9 @@
   /* justify-content: center; */
 }
 
+a.activepaylink-kyc{
+  color:#fff !important;
+}
 .activepaylink-kyc {
   background-color: #4bb543;
   color: white !important ;
@@ -248,7 +251,7 @@
   /* font-family: Satoshi; */
   font-size: 15px;
   font-weight: 700;
-  line-height: 36px;
+  line-height: 26px;
   letter-spacing: 0em;
   color: green;
 }
@@ -330,4 +333,7 @@
   position: absolute;
     top: 43px;
     right: 24px;
+}
+a.inactive{
+  color:#000;
 }

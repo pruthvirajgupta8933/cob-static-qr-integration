@@ -153,17 +153,19 @@ function KycForm() {
                               color: "black",
                             }}
                           >
+                          {/* {console.log("contactInfo",contactInfo)}
+                          {console.log("KycTabStatusStore?.general_info_status",KycTabStatusStore?.general_info_status)} */}
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}
                                 className={
                                   tab === 1 ? (
-                                    " nav-link activepaylink-kyc text-font"
-                                  ) : "inactive text-font" ? (
-                                    contactInfo === true || (KycTabStatusStore?.general_info_status!=="Not-Filled" && KycTabStatusStore?.general_info_status!=="undefined")   ? (
-                                      "inactive text-font-ForStatusChange text-success p-3"
+                                    " nav-link activepaylink-kyc text-font d-flex"
+                                  ) : "inactive text-font d-flex" ? (
+                                    contactInfo === true || (KycTabStatusStore?.general_info_status!=="Not-Filled" && KycTabStatusStore?.general_info_status!==undefined) ? (
+                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
-                                      "nav-link inactive text-font"
+                                      "nav-link inactive text-font d-flex"
                                     )
                                   ) : (
                                     <></>
@@ -183,12 +185,12 @@ function KycForm() {
                                 href={() => false}
                                 className={
                                   tab === 2 ? (
-                                    " nav-link activepaylink-kyc text-font"
-                                  ) : "inactive text-font" ? (
-                                    BusinessOverviewStatus === true || (KycTabStatusStore?.business_info_status!=="Not-Filled" && KycTabStatusStore?.business_info_status!=="undefined" )? (
-                                      "inactive text-font-ForStatusChange text-success p-3"
+                                    " nav-link activepaylink-kyc text-font d-flex"
+                                  ) : "inactive text-font d-flex" ? (
+                                    BusinessOverviewStatus === true || (KycTabStatusStore?.business_info_status!=="Not-Filled" && KycTabStatusStore?.business_info_status!==undefined )? (
+                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
-                                      "nav-link inactive text-font"
+                                      "nav-link inactive text-font d-flex"
                                     )
                                   ) : (
                                     <></>
@@ -208,12 +210,12 @@ function KycForm() {
                                 href={() => false}
                                 className={
                                   tab === 3 ? (
-                                    " nav-link activepaylink-kyc text-font"
-                                  ) : "inactive text-font" ? (
-                                    BusinessDetailsStatus === true || (KycTabStatusStore?.merchant_info_status!=="Not-Filled" && KycTabStatusStore?.merchant_info_status!=="undefined")? (
-                                      "inactive text-font-ForStatusChange text-success p-3"
+                                    " nav-link activepaylink-kyc text-font d-flex"
+                                  ) : "inactive text-font d-flex" ? (
+                                    BusinessDetailsStatus === true || (KycTabStatusStore?.merchant_info_status!=="Not-Filled" && KycTabStatusStore?.merchant_info_status!==undefined)? (
+                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
-                                      "nav-link inactive text-font"
+                                      "nav-link inactive text-font d-flex"
                                     )
                                   ) : (
                                     <></>
@@ -251,12 +253,12 @@ function KycForm() {
                                 href={() => false}
                                 className={
                                   tab === 4 ? (
-                                    " nav-link activepaylink-kyc text-font"
-                                  ) : "inactive text-font" ? (
-                                    bankDetails === true || (KycTabStatusStore?.settlement_info_status!=="Not-Filled" && KycTabStatusStore?.settlement_info_status!=="undefined") ? (
-                                      "inactive text-font-ForStatusChange text-success p-3"
+                                    " nav-link activepaylink-kyc text-font d-flex"
+                                  ) : "inactive text-font d-flex" ? (
+                                    bankDetails === true || (KycTabStatusStore?.settlement_info_status!=="Not-Filled" && KycTabStatusStore?.settlement_info_status!==undefined) ? (
+                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
-                                      "nav-link inactive text-font"
+                                      "nav-link inactive text-font d-flex"
                                     )
                                   ) : (
                                     <></>
@@ -276,12 +278,12 @@ function KycForm() {
                                 href={() => false}
                                 className={
                                   tab === 5 ? (
-                                    " nav-link activepaylink-kyc text-font"
-                                  ) : "inactive text-font" ? (
-                                    uploadDocuments === true || (KycTabStatusStore?.document_status!=="Not-Submitted" && KycTabStatusStore?.document_status!=="undefined")? (
-                                      "inactive text-font-ForStatusChange text-success p-3"
+                                    " nav-link activepaylink-kyc text-font d-flex"
+                                  ) : "inactive text-font d-flex" ? (
+                                    uploadDocuments === true || (KycTabStatusStore?.document_status!=="Not-Submitted" && KycTabStatusStore?.document_status!==undefined)? (
+                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
-                                      "nav-link inactive text-font"
+                                      "nav-link inactive text-font d-flex"
                                     )
                                   ) : (
                                     <></>
@@ -302,12 +304,12 @@ function KycForm() {
                              
                                 className={
                                   tab === 6 ? (
-                                    " nav-link activepaylink-kyc text-font"
-                                  ) : "inactive text-font" ? (
+                                    " nav-link activepaylink-kyc text-font d-flex"
+                                  ) : "inactive text-font d-flex" ? (
                                     uploadDocuments === true || merchant_consent?.term_condition ===true ? (
-                                      "inactive text-font-ForStatusChange text-success p-3"
+                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
-                                      "nav-link inactive text-font"
+                                      "nav-link inactive text-font d-flex"
                                     )
                                   ) : (
                                     <></>
