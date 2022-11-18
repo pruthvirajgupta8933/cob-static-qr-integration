@@ -145,7 +145,7 @@ const initialState = {
   }
 };
 
-const validatorUrl = "https://stage-kycvalidator.sabpaisa.in/validator";
+
 
 //--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
 export const updateContactInfo = createAsyncThunk(
@@ -697,7 +697,7 @@ export const panValidation = createAsyncThunk(
   "kyc/panValidation",
   async (requestParam) => {
     const response = await kycValidatorAuth
-      .post(`${validatorUrl}/validate-pan/`, requestParam)
+      .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -710,7 +710,7 @@ export const authPanValidation = createAsyncThunk(
   "kyc/authPanValidation",
   async (requestParam) => {
     const response = await kycValidatorAuth
-      .post(`${validatorUrl}/validate-pan/`, requestParam)
+      .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -723,7 +723,7 @@ export const gstValidation = createAsyncThunk(
   "kyc/gstValidation",
   async (requestParam) => {
     const response = await kycValidatorAuth
-      .post(`${validatorUrl}/validate-gst/`, requestParam)
+      .post(`${API_URL.VALIDATE_KYC}/validate-gst/`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -736,7 +736,7 @@ export const ifscValidation = createAsyncThunk(
   "kyc/ifscValidation",
   async (requestParam) => {
     const response = await kycValidatorAuth
-      .post(`${validatorUrl}/validate-ifsc/`, requestParam)
+      .post(`${API_URL.VALIDATE_KYC}/validate-ifsc/`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -749,7 +749,7 @@ export const bankAccountVerification = createAsyncThunk(
   "kyc/bankAccountVerification",
   async (requestParam) => {
     const response = await kycValidatorAuth
-      .post(`${validatorUrl}/validate-account/`, requestParam)
+      .post(`${API_URL.VALIDATE_KYC}/validate-account/`, requestParam)
       .catch((error) => {
         return error.response;
       });

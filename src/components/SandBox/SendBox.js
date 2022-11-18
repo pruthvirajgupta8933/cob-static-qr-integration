@@ -45,7 +45,6 @@ function Sandbox() {
         setData(response.data.ClientData)
 
     } catch (error) {
-    //    toast.error("Something Went Wrong ! Please try again after some time.")
 
     }
   }
