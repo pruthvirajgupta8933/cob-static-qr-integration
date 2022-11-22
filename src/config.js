@@ -199,9 +199,13 @@ GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
 
 
   // KYC VALIDATE URL
-   VALIDATE_KYC: "https://stage-kycvalidator.sabpaisa.in/validator"
-};
+   VALIDATE_KYC: "https://stage-kycvalidator.sabpaisa.in/validator",
 
+   
+
+   // OnBoard Merchant Role URL 
+   Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`
+};
  
 const API_URL = API_LIVE;
 export default API_URL;
