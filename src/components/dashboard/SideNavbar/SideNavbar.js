@@ -318,7 +318,7 @@ function SideNavbar() {
                           role="menuitem"
                           style={{ paddingLeft: "48px" }}
                         >
-                          <Link to={`${url}/paylink`} className="txt-white">
+                          <Link to={`${url}/paylink`} className="txt-white sidenavFonts">
                             <i
                               className="fa fa-address-book"
                               aria-hidden="true"

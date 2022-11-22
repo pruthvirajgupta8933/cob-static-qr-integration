@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { checkPermissionSlice, logout } from "../../../slices/auth";
+import transHis from "../../../assets/images/transImage.png";
+import enquire from "../../../assets/images/enquiry.png";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
 function MobileNavbar() {
@@ -88,7 +90,7 @@ function MobileNavbar() {
                                         }}
                                         className="nav-link"
                                     >
-                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;Dashboard
+                                        <i className="fa fa-home" aria-hidden="true" /> &nbsp;Dashboard
                                     </Link>
                                 </li>) : <></>}
 
@@ -102,7 +104,8 @@ function MobileNavbar() {
                                         }}
                                         className="nav-link"
                                     >
-                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;Complete KYC
+
+                                        <i className="fa fa-file-o" aria-hidden="true" /> &nbsp;Complete KYC
                                     </Link>
                                 </li>
                                 <li className="nav-item">
@@ -113,7 +116,7 @@ function MobileNavbar() {
                                         }}
                                         className="nav-link"
                                     >
-                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;SandBox
+                                        <i className="fa fa-key" aria-hidden="true" /> &nbsp;SandBox
                                     </Link>
                                 </li>
 
@@ -125,7 +128,7 @@ function MobileNavbar() {
                                         }}
                                         className="nav-link"
                                     >
-                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;Settlement Report
+                                        <i className="fa fa-bars" aria-hidden="true" /> &nbsp;Settlement Report
                                     </Link>
                                 </li>
 
@@ -137,7 +140,7 @@ function MobileNavbar() {
                                         }}
                                         className="nav-link"
                                     >
-                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;Refund Txn History
+                                        <i className="fa fa-list-alt" aria-hidden="true" /> &nbsp;Refund Txn History
                                     </Link>
                                 </li>
 
@@ -161,7 +164,7 @@ function MobileNavbar() {
                                         }}
                                         className="nav-link"
                                     >
-                                        <i className="fa fa-list" aria-hidden="true" /> &nbsp;Product Catalogue
+                                        <i className="fa fa-book" aria-hidden="true" /> &nbsp;Product Catalogue
                                     </Link>
                                 </li>
 
@@ -195,7 +198,7 @@ function MobileNavbar() {
                                     }}
                                     className="nav-link"
                                 >
-                                    <i className="fa fa-list" aria-hidden="true" /> &nbsp;Transaction Summary
+                                    <i className="fa fa-home" aria-hidden="true" /> &nbsp;Transaction Summary
                                 </Link>
                             </li>
 
@@ -207,7 +210,12 @@ function MobileNavbar() {
                                     }}
                                     className="nav-link"
                                 >
-                                    <i className="fa fa-list" aria-hidden="true" /> &nbsp;Transaction History
+                                     <img
+                                src={transHis}
+                                width={17}
+                                alt="sabpaisa"
+                                title="sabpaisa"
+                              /> &nbsp;Transaction History
                                 </Link>
                             </li>
 
@@ -219,7 +227,12 @@ function MobileNavbar() {
                                     }}
                                     className="nav-link"
                                 >
-                                    <i className="fa fa-list" aria-hidden="true" /> &nbsp;Transaction Enquiry
+                                      <img
+                                src={enquire}
+                                width={17}
+                                alt="sabpaisa"
+                                title="sabpaisa"
+                              /> &nbsp;Transaction Enquiry
                                 </Link>
                             </li>
                                 </>

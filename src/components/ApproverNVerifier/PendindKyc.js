@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { kycForPendingMerchants } from "../../slices/kycSlice";
+import { kycForPendingMerchants,GetKycTabsStatus } from "../../slices/kycSlice";
 import API_URL from "../../config";
 import { Link, useRouteMatch } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import ViewStatusModal from "./ViewStatusModal";
+import { useSelector } from "react-redux";
+
 // import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
 
 const PendindKyc = () => {
   const { url } = useRouteMatch();
   const roles = roleBasedAccess();
+ 
 
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -20,8 +24,18 @@ const PendindKyc = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [statusData, setStatusData] = useState([])
   let page_size = pageSize;
   let page = currentPage;
+  const { auth ,kyc } = useSelector((state) => state);
+  const { user } = auth;
+
+  const { loginId } = user;
+  
+
+
+  let merchantloginMasterId = loginId;
+ 
 
   const dispatch = useDispatch();
   const kycSearch = (e) => {
@@ -33,6 +47,9 @@ const PendindKyc = () => {
       .get(`${API_URL.KYC_FOR_PENDING_MERCHANTS}`)
       .then((res) => {
         const data = res.data.results;
+       
+      // const myapp=  data[0].isDirect===true 
+      // console.log( myapp,"0000000000000000")
         // console.log("<======== Pending Merchants =======>", data)
         const dataCoun = res?.data?.count;
         setDataCount(dataCoun);
@@ -40,7 +57,20 @@ const PendindKyc = () => {
       });
   };
 
-  //--------------PENDING Merchants API -----------------//
+
+  const handleClick=(loginMasterId)=>{
+    dispatch(
+      GetKycTabsStatus({
+        login_id: loginMasterId,
+      })
+    ).then((res) => {
+     setStatusData(res.payload)
+    
+    });
+    
+  }
+//--------------PENDING Merchants API -----------------//
+
   useEffect(() => {
     pendingMerchants();
     dispatch(kycForPendingMerchants({ page: currentPage, page_size: pageSize }))
@@ -57,17 +87,28 @@ const PendindKyc = () => {
         toastConfig.errorToast("Data not loaded");
       });
   }, [currentPage, pageSize]);
+  const dataArray = ["online", "offline"];
+
+
 
   useEffect(() => {
+   
     if (searchText.length > 0) {
+      
+
       setData(
-        data.filter((item) =>
+        data.filter((item)  => 
+        
+        
           Object.values(item)
             .join(" ")
             .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
+           .includes(searchText.toLocaleLowerCase())
+           
         )
+        
       );
+     
     } else {
       dispatch(kycForPendingMerchants({ page, page_size })).then((resp) => {
         const data = resp?.payload.results;
@@ -76,6 +117,7 @@ const PendindKyc = () => {
       });
     }
   }, [searchText]);
+
 
   const indexOfLastRecord = currentPage * pageSize;
   const nPages = Math.ceil(pendingKycData.length / pageSize);
@@ -114,6 +156,7 @@ const PendindKyc = () => {
             placeholder="Search Here"
           />
         </div>
+<div> <ViewStatusModal tabData={statusData}/></div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Count Per Page</label>
@@ -131,6 +174,21 @@ const PendindKyc = () => {
             <option value="500">500</option>
           </select>
         </div>
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <label>Onboard Type</label>
+          <select
+            // value={pageSize}
+            // rel={pageSize}
+            // onChange={(e) => setPageSize(parseInt(e.target.value))}
+            className="ant-input"
+          >
+             <option value="Select Role Type">Select Onboard Type</option>
+            <option value="all">All</option>
+            <option value="Online">Online</option>
+            <option value="Offline">Offline</option>
+           
+          </select>
+        </div>
       </div>
 
       <div className="col-md-12 col-md-offset-4">
@@ -145,7 +203,10 @@ const PendindKyc = () => {
                 <th>Email</th>
                 <th>Bank</th>
                 <th>PAN No.</th>
-                <th>Status</th>
+                <th>Registered Data</th>
+                <th>Onboard Type</th>
+                <th>View Status</th>
+                {/* <th>View</th> */}
               </tr>
             </thead>
             <tbody>
@@ -167,7 +228,13 @@ const PendindKyc = () => {
                     <td>{user.emailId}</td>
                     <td>{user.bankName}</td>
                     <td>{user.panCard}</td>
-                    <td>{user.status}</td>
+                    <td>{user.signUpDate}</td>
+                    <td>{user?.isDirect ===  true ? "Online" : "Offline"}</td>
+                    {/* <td>{user.status}</td> */}
+                   
+                    <td> <button type="button" onClick={()=>handleClick(user.loginMasterId)} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  View Status
+</button></td>
                   </tr>
                 ))
               )}

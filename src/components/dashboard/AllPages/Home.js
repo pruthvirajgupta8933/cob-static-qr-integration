@@ -181,7 +181,7 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
-      <StepProgressBar  status={kyc?.kycUserList?.status} />
+      {roles?.bank === true ? <></> : <StepProgressBar  status={kyc?.kycUserList?.status} />}
         <div className="announcement-banner-container_new  announcement-banner">
           <div className="onboarding-illustration-top">
             {" "}
@@ -327,8 +327,8 @@ function Home() {
               </div>
             ) : (
               <div className="col-12 col-md-12">
-              <div class="card col-lg-12- cardkyc pull-left">
-                <div class="font-weight-bold card-body Satoshi-Medium">
+             {roles?.bank === true ? <></> :  <div class="card col-lg-12- cardkyc pull-left">
+               <div class="font-weight-bold card-body Satoshi-Medium">
                   <span>
                   Congratulations! Your KYC documents have been approved.
                   </span>
@@ -343,7 +343,9 @@ function Home() {
                         KYC Done
                       </button>
                 </div>
+
               </div>
+}
             </div>
            
             )}
@@ -357,11 +359,11 @@ function Home() {
                   <h2 class="card-title dashboardEnablecss">
                     <img
                       class="card-img-left"
-                      src={onlineimg}
+                      src={subscriptin}
                       alt="onlinepay"
                       width={40}
                     />{" "}
-                    &nbsp;Payment Links
+                    &nbsp;PayLink
                   </h2>
                   <p className="paragraphcssdashboards">
                     SabPaisa is the World's 1st API Driven Unified Payment
@@ -374,7 +376,7 @@ function Home() {
                     young or old, online or offline, without worrying about
                     consumer payment behaviour.
                   </p>
-                  <Link to={`/dashboard/sabpaisa-pricing/10/Payment%20Links`}>
+                  <Link to={`/dashboard/sabpaisa-pricing/13/PayLink`}>
                     <p className="pricingclasscss">
                       Read More & Pricing &nbsp;{">"}
                       {">"}
@@ -387,7 +389,7 @@ function Home() {
                   <div className="col-6 d-flex flex-wrap my-2">
                     <img
                       className="card-img-left mr-2"
-                      src={paymentlink}
+                      src={onlineimg}
                       alt="payLink"
                       width={"39px"}
                       height={"39px"}
@@ -396,22 +398,7 @@ function Home() {
                       className="foralinkscsshere my-auto "
                       style={{ lineHeight: "25px" }}
                     >
-                      Payment Links
-                    </p>
-                  </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
-                    <img
-                      className="card-img-left mr-2"
-                      src={subscriptin}
-                      alt="payLink"
-                      width={"41px"}
-                      height={"41px"}
-                    />
-                    <p
-                      className="foralinkscsshere my-auto"
-                      style={{ lineHeight: "25px" }}
-                    >
-                      Subscriptions
+                      Payment Gateway
                     </p>
                   </div>
                   <div className="col-6 d-flex flex-wrap my-2">
@@ -426,9 +413,24 @@ function Home() {
                       className="foralinkscsshere my-auto"
                       style={{ lineHeight: "25px" }}
                     >
-                      Payouts
+                      Subscriptions
                     </p>
                   </div>
+                  {/* <div className="col-6 d-flex flex-wrap my-2">
+                    <img
+                      className="card-img-left mr-2"
+                      src={paymentlink}
+                      alt="payLink"
+                      width={"41px"}
+                      height={"41px"}
+                    />
+                    <p
+                      className="foralinkscsshere my-auto"
+                      style={{ lineHeight: "25px" }}
+                    >
+                      Payouts
+                    </p>
+                  </div> */}
                   <div className="col-6 d-flex flex-wrap my-2">
                     <img
                       className="card-img-left mr-2"
@@ -449,14 +451,14 @@ function Home() {
                       className="card-img-left mr-2"
                       width={"41px"}
                       height={"41px"}
-                      src={eposs}
+                      src={subscriptin}
                       alt="payLink"
                     />
                     <p
                       className="foralinkscsshere my-auto"
                       style={{ lineHeight: "25px" }}
                     >
-                      E-POS App
+                      PayLink
                     </p>
                   </div>
                   <div className="col-6 d-flex flex-wrap my-2">
@@ -523,7 +525,7 @@ function Home() {
 
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
-
+      {roles?.bank === true ? <></> :
       <div
         className={
           "modal fade mymodals" +
@@ -601,6 +603,7 @@ function Home() {
           </div>
         </div>
       </div>
+}
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
       {/* Dashboard open pop up start here {IF KYC IS APPROVED}*/}

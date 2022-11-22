@@ -19,6 +19,7 @@ import { convertToFormikSelectJson } from "../../../_components/reuseable_compon
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../../dashboard/NavBar/NavBar";
 import { axiosInstance } from "../../../utilities/axiosInstance";
+import Notification from "../../../_components/reuseable_components/Notification";
 import moment from "moment";
 const TransactionHistory = () => {
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ const TransactionHistory = () => {
 
   const validationSchema = Yup.object({
     fromDate: Yup.date().required("Required"),
-    clientCode: Yup.string().required("Required"),
+    clientCode: Yup.string().required("Client code not found").nullable(),
     endDate: Yup.date()
       .min(Yup.ref("fromDate"), "End date can't be before Start date")
       .required("Required"),
@@ -416,8 +417,12 @@ const TransactionHistory = () => {
 
   return (
     <section className="ant-layout Satoshi-Medium">
+
       <div>
         <NavBar />
+      </div>
+      <div className="profileBarStatus">
+      <Notification/>
       </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
@@ -445,6 +450,7 @@ const TransactionHistory = () => {
                             className="form-control rounded-0"
                             options={clientCodeOption}
                           />
+                          
                         </div>
                       )}
 
@@ -499,6 +505,7 @@ const TransactionHistory = () => {
                         >
                           Search
                         </button>
+                        <p className="text-danger">{formik?.errors?.clientCode}</p>
                       </div>
                       {txnList?.length > 0 ? (
                         <>
