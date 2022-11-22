@@ -1,14 +1,13 @@
-const env = "staging";
+const ENV_PROD = false; // don't change in the local environment
 let url,
   kyc_url = "";
 
-if (env === "staging") {
-  url = "https://stgcobapi.sabpaisa.in";
-  kyc_url = "https://stgcobkyc.sabpaisa.in";
-} else {
-
+if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
+} else {
+  url = "https://stgcobapi.sabpaisa.in";
+  kyc_url = "https://stgcobkyc.sabpaisa.in";
 }
 
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
@@ -18,8 +17,6 @@ const API_LIVE = {
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
   AUTH_LOGIN: `${url}/auth-service/auth/login`,
-
-
   ////////////////////////////////////---------------------------business_cat_code api
 
   Business_Category_CODE: `${kyc_url}/kyc/get-all-business-category/`,
@@ -53,9 +50,9 @@ const API_LIVE = {
   BANK_LIST_DC:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
   SEND_EMAIL: adminAPIURL + "/Email/sendEmail",
-  SUBSCRIBE_FETCH_APP_AND_PLAN:    "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
-  FETCH_APP_AND_PLAN:    "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
-  SUBSCRIBE_SERVICE:    "https://spl.sabpaisa.in/client-subscription-service/subscribe",
+  SUBSCRIBE_FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
+  FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
+  SUBSCRIBE_SERVICE: "https://spl.sabpaisa.in/client-subscription-service/subscribe",
 
   /* transaction history  */
   //old api of txn history
@@ -117,7 +114,7 @@ const API_LIVE = {
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
   upload_Single_Doc: `${kyc_url}/kyc/upload-merchant-document/single-file/`, //post APi
   UPLOAD_MERCHANT_AADHAAR: `${kyc_url}/kyc/upload-merchant-document/aadhar-upload/`, //post APi
-  
+
   Business_type: `${kyc_url}/kyc/get-all-business-type/`,
   Platform_type: `${kyc_url}/kyc/get-all-platform-type/`,
   Collection_frequency: `${kyc_url}/kyc/get-all-collection-frequency/`,
@@ -173,14 +170,14 @@ const API_LIVE = {
   Kyc_Consent: `${kyc_url}/kyc/kyc-submit/`,
   /* Product catalogue */
 
- PRODUCT_DETAILS:`${url}/product/product-details`,
- PRODUCT_SUB_DETAILS:`${url}/product/product-sub-details`,
- SUBSCRIBE_FETCHAPPAND_PLAN:`${url}/client-subscription-service/subscribeFetchAppAndPlan`,
+  PRODUCT_DETAILS: `${url}/product/product-details`,
+  PRODUCT_SUB_DETAILS: `${url}/product/product-sub-details`,
+  SUBSCRIBE_FETCHAPPAND_PLAN: `${url}/client-subscription-service/subscribeFetchAppAndPlan`,
 
 
-/* get bank Id */
-GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
-/* get bank Id */
+  /* get bank Id */
+  GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
+  /* get bank Id */
 
   /* verify each tab of the kyc , URL FOR VERIFER*/
   VERIFY_EACH_TAB: `${kyc_url}/kyc/verify-kyc/update/`,
@@ -195,14 +192,14 @@ GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
 
 
   // Client Detail SandBox //
-  CLIENT_DETAIL:`${url}/clientDetail`,
+  CLIENT_DETAIL: `${url}/clientDetail`,
 
 
   // KYC VALIDATE URL
-   VALIDATE_KYC: "https://stage-kycvalidator.sabpaisa.in/validator"
+  VALIDATE_KYC: "https://stage-kycvalidator.sabpaisa.in/validator"
 };
 
- 
+
 const API_URL = API_LIVE;
 export default API_URL;
 
