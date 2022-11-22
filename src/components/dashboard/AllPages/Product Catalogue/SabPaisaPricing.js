@@ -196,11 +196,6 @@ const SabPaisaPricing = () => {
                       </div>
                     </div>
                   </div>
-
-
-                  
-                  
-
                 </span>
               </div>
             </div>

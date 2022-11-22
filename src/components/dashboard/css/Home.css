@@ -980,7 +980,9 @@ border-radius: 0px 0px 5px 5px;
  .mycss{
    align-items: center;
  }
-
+.bolding{
+  font-size: 20px;
+}
  
 
 .card-main{
