@@ -115,8 +115,8 @@ function KycForm() {
         role="dialog"
         style={{overflow:"scroll"}}
       >
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content kyc-modal_form">
+        <div class="modal-dialog modal-dialog-centered container" role="document">
+          <div class="modal-content kyc-modal_form ">
             <button
               type="button"
               class="close"
@@ -128,13 +128,13 @@ function KycForm() {
             <div class="modal-body" style={{ display: "contents" }}>
               <div class="card-group Satoshi-Medium">
                 <div class="row">
-                  <div class="col-lg-3">
+                  <div class="col-lg-3 col-xsm-12 col-sm-12 col-md-12">
                     <div
                       class="card"
                       style={{
                         width: "67rem",
                         height: "711px",
-                        marginTop: "0rem",
+                        marginTop: "0rem"
                       }}
                     >
                       <h1 className="m-b-sm gx-float-left paymentHeader">
@@ -329,7 +329,7 @@ function KycForm() {
                     </div>
                   </div>
 
-                  <div class="col-lg-9">
+                  <div class="col-lg-9 col-xsm-12 col-sm-12 col-md-12">
                     <div
                       className="card cardsection"
                      
