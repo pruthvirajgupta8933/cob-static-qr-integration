@@ -66,18 +66,20 @@ const ViewStatusModal = (props) => {
                                         <td>{props.tabData.merchant_info_status}</td>
                                         <td>{props.tabData.settlement_info_status}</td>
                                         <td>
+                                       
                                             <button type="button" class="btn btn-primary" onClick={() => handleClick()}>View Details</button>
-                                            <p>
-
-                                                {/* <button class="btn btn-primary" onClick={() => handleClick()} type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                                    View Details
-                                                </button> */}
-                                            </p>
+                                           
+                                            
+                                            
 
 
 
 
                                         </td>
+                                       
+                                                
+
+                                        
 
                                     </tr>
 
@@ -88,8 +90,8 @@ const ViewStatusModal = (props) => {
                                 <table class="table" width={"100%"}>
                                     <thead>
                                         <tr>
-                                            <th >name</th>
-                                            <th>status</th>
+                                            <th>Document Name</th>
+                                            <th>Document Status</th>
 
 
                                         </tr>
@@ -98,10 +100,7 @@ const ViewStatusModal = (props) => {
                                         <tr>
                                             <td>Not Found</td>
                                             <td>Not Found</td>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary text-white" onClick={() => setShow(false)} data-dismiss="modal">Close</button>
-
-                                            </div>
+                                            
                                         </tr>
                                         : uploadData?.map((merchantData) => {
 
