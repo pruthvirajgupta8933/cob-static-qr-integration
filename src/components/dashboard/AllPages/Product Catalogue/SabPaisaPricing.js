@@ -87,9 +87,8 @@ const SabPaisaPricing = () => {
           {spinner && <span className="spinner-border" role="status"></span>}
           {productDetails.map((Products, i) => (
             // if user business catagory is gamming
-            business_cat_code==="37" && Products.plan_code ==="005"?<></>:
-
-            param?.id==='14' ? <div class="card col-lg-8">
+            (business_cat_code==="37" && Products.plan_code ==="005") ?<></>:
+            (param?.id==='14') ? <div class="card col-lg-8">
             <div class="card-body">
               <div className="col-lg-12">
                 <h2 className="pull-left- bold-font text-center mb-20 price d_block">
