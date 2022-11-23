@@ -1,13 +1,14 @@
 const ENV_PROD = true; // don't change in the local environment
-let url,
-  kyc_url = "";
+let url, kyc_url, kyc_validate = "";
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
+  kyc_validate = "https://stage-kycvalidator.sabpaisa.in"
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
+  kyc_validate = "https://stage-kycvalidator.sabpaisa.in"
 }
 
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
@@ -173,8 +174,8 @@ const API_LIVE = {
   PRODUCT_DETAILS: `${url}/product/product-details`,
   PRODUCT_SUB_DETAILS: `${url}/product/product-sub-details`,
   SUBSCRIBE_FETCHAPPAND_PLAN: `${url}/client-subscription-service/subscribeFetchAppAndPlan`,
-
-
+  Get_Subscribed_Plan_Detail_By_ClientId :`${url}/client-subscription-service/GetSubscribedPlanDetailByClientId`,
+  
   /* get bank Id */
   GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
   /* get bank Id */
@@ -196,10 +197,14 @@ const API_LIVE = {
 
 
   // KYC VALIDATE URL
-  VALIDATE_KYC: "https://stage-kycvalidator.sabpaisa.in/validator"
+   VALIDATE_KYC: `${kyc_validate}/validator`,
+
+   
+
+   // OnBoard Merchant Role URL 
+   Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`
 };
-
-
+ 
 const API_URL = API_LIVE;
 export default API_URL;
 

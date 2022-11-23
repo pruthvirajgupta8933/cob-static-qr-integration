@@ -43,8 +43,11 @@ function DocumentsUpload(props) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFileAadhaar, setSelectedFileAadhaar] = useState(null);
   const [savedData, setSavedData] = useState([]);
+  const [requiredDocList, setRequiredDocList] = useState([1,2,5,6,11]);
   const [readOnly, setReadOnly] = useState(false);
-  const [buttonText, setButtonText] = useState("Save and Next");
+  const [buttonText, setButtonText] = useState("Upload Document");
+  const [typeOfDoc, setTypeOfDoc] = useState("")
+
 
   const { auth, kyc } = useSelector((state) => state);
   const KycList = kyc?.kycUserList;
@@ -59,7 +62,7 @@ function DocumentsUpload(props) {
   }, [KycDocUpload]);
 
   const initialValues = {
-    docType: savedData[0]?.type ?? "",
+    docType: savedData[0]?.type ? savedData[0]?.type : "",
     aadhaar_front: "",
     aadhaar_back: "",
     pan_card: "",
@@ -67,7 +70,7 @@ function DocumentsUpload(props) {
 
   const validationSchema = Yup.object({
     docType: Yup.string()
-      .required("Required")
+      .required("Document Required")
       .nullable(),
     aadhaar_front: Yup.mixed().nullable(),
     aadhaar_back: Yup.mixed().nullable(),
@@ -96,6 +99,10 @@ function DocumentsUpload(props) {
     readURL(e.target, id);
   };
 
+  const typeOfDocs = savedData.map((data) => data.type)
+
+  
+
   const onSubmit = (values, action) => {
     if (role.merchant) {
       const bodyFormData = new FormData();
@@ -116,8 +123,12 @@ function DocumentsUpload(props) {
         .then(function(response) {
           if (response?.payload?.status) {
             setTitle("SUBMIT KYC");
-            setTab(6);
             toast.success(response?.payload?.message);
+
+            // if (typeOfDocs === '1' && typeOfDocs === '2' && typeOfDocs ==='5' && typeOfDocs ==='6') {
+              
+            // setTab(6);
+            // }
           } else {
             const message =
               response?.payload?.message ||
@@ -133,6 +144,10 @@ function DocumentsUpload(props) {
           console.error("Error:", error);
           toast.error("Something went wrong while saving the document");
         });
+
+
+    
+
     } else if (role.verifier) {
       const veriferDetails = {
         login_id: kycid,
@@ -155,7 +170,7 @@ function DocumentsUpload(props) {
           login_id: role?.verifier || role?.approver ? kycid : loginId,
         })
       );
-    }, 1300);
+    }, 2000);
   };
   useEffect(() => {
     dispatch(
@@ -292,6 +307,38 @@ function DocumentsUpload(props) {
     return enableBtn;
   };
 
+
+
+
+// console.log("<=== Type Id of Saved Images ====>",typeOfDocs)
+let btn = false
+requiredDocList?.map(i=>{
+  if(typeOfDocs?.includes(i.toString())){
+    // console.log("Enable Save & Next")
+    btn = true
+  }else{
+    // console.log("Disable Save & Next")
+    btn = false
+  }
+})
+
+
+const getDocTypeName = (id)=>{
+    // console.log("id",id);
+    let data = docTypeList.filter(obj => {
+      if(obj?.key?.toString() === id?.toString()){
+        return obj 
+      }
+    })
+
+
+    // console.log("data",data)
+    return data[0]?.value
+}
+
+
+
+
   return (
     <>
       <div className="col-md-12">
@@ -306,7 +353,7 @@ function DocumentsUpload(props) {
           {(formik) => (
             <Form>
               <div className="form-row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
                   <label class=" col-form-label mt-0 p-2">
                     Select Document Type<span style={{ color: "red" }}>*</span>
                   </label>
@@ -327,6 +374,7 @@ function DocumentsUpload(props) {
                     "docType",
                     setDocTypeIdDropdown(formik?.values?.docType)
                   )}
+                  <span className="text-danger mb-4">* 5 Documents are Mandatory required to upload : Aadhaar, Indviual PAN, Business PAN, Cancelled Bank Cheque, Bank Statement</span>
                 </div>
 
                 {role?.merchant ? (
@@ -469,23 +517,51 @@ function DocumentsUpload(props) {
                 ) : (
                   <></>
                 )}
+    {KycList?.status !== "Approved" &&
+                    KycList?.status !== "Verified" &&
+                    role?.merchant ? (
+                      <div class="col-12">
+                        <button
+                          className="btn btnbackground text-white mt-5"
+                          type="button"
+                          onClick={() => {
+                            formik.handleSubmit();
+                          }}
+                        >
+                          {buttonText}
+                        </button>
 
+                        {/* add function go to the next step */}
+                      { KycList?.status !== "Approved" &&
+                    KycList?.status !== "Verified" &&
+                    role?.merchant && btn ? (<button
+                          className="btn btnbackground text-white mt-5"
+                          type="button"
+                          onClick={() => setTab(6)}
+                        >
+                          Save & Next
+                        </button>) : <></> }
+                        
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                 {true ? (
                   <>
-                    <hr
-                      style={{
-                        borderColor: "#D9D9D9",
-                        textShadow: "2px 2px 5px grey",
-                        width: "100%",
-                        padding: "4px",
-                        marginTop: "102px",
-                      }}
-                    />
-
+                    <hr/>
+                    {savedData?.length > 0 ? (
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-sm"><h3 style={{fontWeight:"500",textDecoration:"underline"}}>Preview Documents</h3></div>
+                      </div>
+                    </div>):<></>}
                     {/* button visible for the verifier */}
                     {savedData?.length > 0 ? (
+                      
                       savedData?.map((img, i) => (
-                        <div className="col-lg-6 mt-4 test">
+                        <div className="col-lg-5 border mt-4 m-2 test">
+                            <p className="m-3">Document Type : {getDocTypeName(img?.type)}</p>
+
                           {/* add image preview link */}
                           {img?.filePath?.includes(".pdf") ? (
                             <p>
@@ -507,9 +583,9 @@ function DocumentsUpload(props) {
                           )}
 
                           <div>
-                            <p className="m-3">
-                              Document Status : {img?.status}
-                            </p>
+                            <p className="m-3">Document Name : {img?.name}</p>
+                            {/* add function for get type of the doc */}
+                            <p className="m-3" >Document Status : {img?.status}</p>
                             {enableBtnByStatus(img?.status, role) ? (
                               <>
                                 <a
@@ -559,23 +635,7 @@ function DocumentsUpload(props) {
                     ) : (
                       <></>
                     )}
-                    {KycList?.status !== "Approved" &&
-                    KycList?.status !== "Verified" &&
-                    role?.merchant ? (
-                      <div class="col-12">
-                        <button
-                          className="btn float-lg-right btnbackground text-white"
-                          type="button"
-                          onClick={() => {
-                            formik.handleSubmit();
-                          }}
-                        >
-                          {buttonText}
-                        </button>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
+                
                   </>
                 ) : (
                   <></>

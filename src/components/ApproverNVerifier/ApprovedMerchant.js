@@ -154,7 +154,24 @@ function ApprovedMerchant() {
           <option value="500">500</option>
         </select>
       </div>
-
+      <div className="form-group col-lg-3 col-md-12 mt-2">
+          <label>Onboard Type</label>
+          <select
+            // value={pageSize}
+            // rel={pageSize}
+            // onChange={(e) => setPageSize(parseInt(e.target.value))}
+            className="ant-input"
+          >
+             <option value="Select Role Type">Select Onboard Type</option>
+            <option value="all">All</option>
+            <option value="Online">Online</option>
+            <option value="Offline">Offline</option>
+           
+          </select>
+        </div>
+        <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+        <div className="scroll overflow-auto">
+         
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -166,6 +183,8 @@ function ApprovedMerchant() {
             <th>Bank</th>
             <th>PAN No.</th>
             <th>Status</th>
+            <th>Registered Date</th>
+                <th>Onboard Type</th>
             <th>View document</th>
           </tr>
         </thead>
@@ -189,6 +208,8 @@ function ApprovedMerchant() {
                 <td>{user.panCard}</td>
 
                 <td>{user.status}</td>
+                <td>{user.signUpDate}</td>
+                    <td>{user?.isDirect ===  true ? "Online" : "Offline"}</td>
                 {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
                 <td>
                   <button
@@ -277,6 +298,7 @@ function ApprovedMerchant() {
           )}
         </tbody>
       </table>
+      </div>
       <nav>
         <ul className="pagination justify-content-center">
           <li className="page-item">
@@ -308,6 +330,7 @@ function ApprovedMerchant() {
           </li>
         </ul>
       </nav>
+    </div>
     </div>
   );
 }

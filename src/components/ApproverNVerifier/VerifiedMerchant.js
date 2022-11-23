@@ -119,7 +119,23 @@ function VerifiedMerchant() {
           <option value="200">200</option>
           <option value="500">500</option>
         </select>
+        
       </div>
+      <div className="form-group col-lg-3 col-md-12 mt-2">
+          <label>Onboard Type</label>
+          <select
+            // value={pageSize}
+            // rel={pageSize}
+            // onChange={(e) => setPageSize(parseInt(e.target.value))}
+            className="ant-input"
+          >
+             <option value="Select Role Type">Select Onboard Type</option>
+            <option value="all">All</option>
+            <option value="Online">Online</option>
+            <option value="Offline">Offline</option>
+           
+          </select>
+        </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
           <table className="table table-bordered">
@@ -133,6 +149,8 @@ function VerifiedMerchant() {
                 <th>Bank</th>
                 <th>PAN No.</th>
                 <th>Status</th>
+                <th>Registered Date</th>
+                <th>Onboard Type</th>
                 {roles.approver === true ? <th>Approve KYC</th> : <></>}
               </tr>
             </thead>
@@ -156,6 +174,8 @@ function VerifiedMerchant() {
                     <td>{user.bankName}</td>
                     <td>{user.panCard}</td>
                     <td>{user.status}</td>
+                    <td>{user.signUpDate}</td>
+                    <td>{user?.isDirect ===  true ? "Online" : "Offline"}</td>
                     {roles.approver === true ? (
                       <td>
                         <Link

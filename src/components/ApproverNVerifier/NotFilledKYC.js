@@ -105,6 +105,7 @@ const NotFilledKYC = () => {
   };
 
   return (
+   
     <div className="container-fluid flleft">
       <div className="form-row">
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -116,6 +117,7 @@ const NotFilledKYC = () => {
             placeholder="Search Here"
           />
         </div>
+        
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Count Per Page</label>
@@ -133,6 +135,21 @@ const NotFilledKYC = () => {
             <option value="500">500</option>
           </select>
         </div>
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <label>Onboard Type</label>
+          <select
+            // value={pageSize}
+            // rel={pageSize}
+            // onChange={(e) => setPageSize(parseInt(e.target.value))}
+            className="ant-input"
+          >
+             <option value="Select Role Type">Select Onboard Type</option>
+            <option value="all">All</option>
+            <option value="Online">Online</option>
+            <option value="Offline">Offline</option>
+           
+          </select>
+        </div>
       </div>
 
       <div className="col-md-12 col-md-offset-4">
@@ -146,6 +163,9 @@ const NotFilledKYC = () => {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Status</th>
+                <th>Registered Date</th>
+                <th>Onboard Type</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -166,6 +186,8 @@ const NotFilledKYC = () => {
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
                     <td>{user.status}</td>
+                    <td>{user.signUpDate}</td>
+                    <td>{user?.isDirect ===  true ? "Online" : "Offline"}</td>
                   </tr>
                 ))
               )}

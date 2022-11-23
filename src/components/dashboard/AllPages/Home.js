@@ -525,7 +525,7 @@ function Home() {
 
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
-
+      {roles?.bank === true ? <></> :
       <div
         className={
           "modal fade mymodals" +
@@ -603,6 +603,7 @@ function Home() {
           </div>
         </div>
       </div>
+}
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
       {/* Dashboard open pop up start here {IF KYC IS APPROVED}*/}

@@ -852,6 +852,10 @@ a.sidenavFonts{
   background: #4285F8;
   color:#fff;
 }
+.btn-bg-color{
+  background: #4285F8 !important;
+  color: white !important;
+}
 
 .choosePlan-2{
   padding: 2em !important;
@@ -980,7 +984,9 @@ border-radius: 0px 0px 5px 5px;
  .mycss{
    align-items: center;
  }
-
+.bolding{
+  font-size: 20px;
+}
  
 
 .card-main{
