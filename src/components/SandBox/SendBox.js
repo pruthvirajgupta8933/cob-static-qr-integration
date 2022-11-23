@@ -67,7 +67,7 @@ function Sandbox() {
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Sandbox</h1>
+            <h1 className="m-b-sm gx-float-left">Integration Kit</h1>
           </div>
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid"></div>

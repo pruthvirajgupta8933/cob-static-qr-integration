@@ -374,7 +374,7 @@ const getDocTypeName = (id)=>{
                     "docType",
                     setDocTypeIdDropdown(formik?.values?.docType)
                   )}
-                  <span className="text-danger mb-4">* 5 Documents are Mandatory required to upload : Aadhaar, Indviual PAN, Business PAN, Cancelled Bank Cheque, Bank Statement</span>
+                  <span className="text-danger mb-4">* 5 Documents are mandatory required to upload : Aadhaar, Indviual PAN, Business PAN, Cancelled Bank Cheque, Bank Statement</span>
                 </div>
 
                 {role?.merchant ? (
