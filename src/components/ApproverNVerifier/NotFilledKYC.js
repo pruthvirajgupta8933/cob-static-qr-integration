@@ -163,7 +163,7 @@ const NotFilledKYC = () => {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Status</th>
-                <th>Registered Data</th>
+                <th>Registered Date</th>
                 <th>Onboard Type</th>
                 
               </tr>
