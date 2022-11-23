@@ -111,7 +111,7 @@ function SideNavbar() {
                           data-target="#exampleModalCenter"
                         >
                           <i className="fa fa-key" aria-hidden="true" />{" "}
-                          <span>&nbsp;SandBox</span>
+                          <span>&nbsp;Integration Kit</span>
                         </Link>
                       </li>
                     </>
