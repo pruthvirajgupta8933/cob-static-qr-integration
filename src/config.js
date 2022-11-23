@@ -1,6 +1,5 @@
 const ENV_PROD = false; // don't change in the local environment
-let url,
-  kyc_url, kyc_validate = "";
+let url, kyc_url, kyc_validate = "";
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
@@ -175,8 +174,8 @@ const API_LIVE = {
   PRODUCT_DETAILS: `${url}/product/product-details`,
   PRODUCT_SUB_DETAILS: `${url}/product/product-sub-details`,
   SUBSCRIBE_FETCHAPPAND_PLAN: `${url}/client-subscription-service/subscribeFetchAppAndPlan`,
-
-
+  Get_Subscribed_Plan_Detail_By_ClientId :`${url}/client-subscription-service/GetSubscribedPlanDetailByClientId`,
+  
   /* get bank Id */
   GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
   /* get bank Id */

@@ -203,7 +203,7 @@ const PendindKyc = () => {
                 <th>Email</th>
                 <th>Bank</th>
                 <th>PAN No.</th>
-                <th>Registered Data</th>
+                <th>Registered Date</th>
                 <th>Onboard Type</th>
                 <th>View Status</th>
                 {/* <th>View</th> */}

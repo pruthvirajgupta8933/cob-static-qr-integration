@@ -149,7 +149,7 @@ function VerifiedMerchant() {
                 <th>Bank</th>
                 <th>PAN No.</th>
                 <th>Status</th>
-                <th>Registered Data</th>
+                <th>Registered Date</th>
                 <th>Onboard Type</th>
                 {roles.approver === true ? <th>Approve KYC</th> : <></>}
               </tr>
