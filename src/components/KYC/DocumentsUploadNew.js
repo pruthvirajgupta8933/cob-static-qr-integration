@@ -353,7 +353,7 @@ const getDocTypeName = (id)=>{
           {(formik) => (
             <Form>
               <div className="form-row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
                   <label class=" col-form-label mt-0 p-2">
                     Select Document Type<span style={{ color: "red" }}>*</span>
                   </label>
