@@ -852,6 +852,10 @@ a.sidenavFonts{
   background: #4285F8;
   color:#fff;
 }
+.btn-bg-color{
+  background: #4285F8 !important;
+  color: white !important;
+}
 
 .choosePlan-2{
   padding: 2em !important;
