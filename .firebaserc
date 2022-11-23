@@ -1,9 +1,10 @@
 {
   "projects": {
-    "default": "cob-nf-dev",
+    "default": "cob-staging",
     "cob-new-flow-dev": "cob-nf-dev",
     "cob-staging-dev": "cob-nf-dev",
-    "cob-dev-nf": "cob-nf-dev"
+    "cob-dev-nf": "cob-nf-dev",
+    "build": "cob-staging"
   },
   "targets": {},
   "etags": {}
