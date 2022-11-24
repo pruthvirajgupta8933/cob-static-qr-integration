@@ -32,7 +32,7 @@ function NewRegistraion() {
 
   const newAllRegistration = async () => {
     await axiosInstanceAuth.get(`${API_URL.KYC_FOR_PROCESSING}`).then((res) => {
-      const data = res.data.results;
+      const data = res?.data?.results;
       const dataCoun = res?.data?.count;
       // console.log(data)
       setNewRegistrationData(data);
@@ -49,7 +49,7 @@ function NewRegistraion() {
         toastConfig.successToast("Pending Data Loaded");
         setSpinner(false);
 
-        const data = resp?.payload.results;
+        const data = resp?.payload?.results;
 
         setData(data);
       })
@@ -67,12 +67,12 @@ function NewRegistraion() {
           Object.values(item)
             .join(" ")
             .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
+            .includes(searchText?.toLocaleLowerCase())
         )
       );
     } else {
       dispatch(kycForPending({ page, page_size })).then((resp) => {
-        const data = resp?.payload.results;
+        const data = resp?.payload?.results;
 
         setData(data);
       });
@@ -80,7 +80,7 @@ function NewRegistraion() {
   }, [searchText]);
 
   const indexOfLastRecord = currentPage * pageSize;
-  const nPages = Math.ceil(newRegistrationData.length / pageSize);
+  const nPages = Math.ceil(newRegistrationData?.length / pageSize);
   const totalPages = Math.ceil(dataCount / pageSize);
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
@@ -90,7 +90,7 @@ function NewRegistraion() {
   // );
 
   const nextPage = () => {
-    if (currentPage < pageNumbers.length) {
+    if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -162,7 +162,7 @@ function NewRegistraion() {
                 <th>Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
-                {roles.verifier === true ? <th>Verify KYC</th> : <></>}
+                {roles?.verifier === true ? <th>Verify KYC</th> : <></>}
               </tr>
             </thead>
             <tbody>
@@ -214,7 +214,7 @@ function NewRegistraion() {
                 Previous
               </a>
             </li>
-            {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
+            {pageNumbers && pageNumbers?.slice(currentPage - 1, currentPage + 6)?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
@@ -233,7 +233,7 @@ function NewRegistraion() {
               <button
                 class="page-link"
                 onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
+                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
                 Next
               </button>
