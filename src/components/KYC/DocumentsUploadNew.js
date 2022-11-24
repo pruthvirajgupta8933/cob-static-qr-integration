@@ -575,11 +575,13 @@ const getDocTypeName = (id)=>{
                               </a>
                             </p>
                           ) : (
+                            <a href = {img?.filePath}  target="_blank" >
                             <img
                               className="file-upload"
                               src={img?.filePath}
                               alt="kyc docuement"
                             />
+                            </a>
                           )}
 
                           <div>

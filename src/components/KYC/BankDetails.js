@@ -76,11 +76,11 @@ function BankDetails(props) {
   };
 
   const validationSchema = Yup.object({
-    account_holder_name: Yup.string()
+    account_holder_name: Yup.string().trim()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
-    ifsc_code: Yup.string()
+    ifsc_code: Yup.string().trim()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .matches(IFSCRegex, "Your IFSC Number is Invalid")
       .min(6, "Username must be at least 6 characters")
@@ -88,16 +88,16 @@ function BankDetails(props) {
       .required("Required")
 
       .nullable(),
-    account_number: Yup.string()
+    account_number: Yup.string().trim()
       .matches(AccountNoRgex, "Your Account Number is Invalid")
       .required("Required")
       .nullable(),
 
-    account_type: Yup.string()
+    account_type: Yup.string().trim()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
-    branch: Yup.string()
+    branch: Yup.string().trim()
       .required("Required")
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .nullable(),
