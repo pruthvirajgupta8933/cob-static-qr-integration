@@ -229,7 +229,7 @@ const PendindKyc = () => {
                     <td>{user.bankName}</td>
                     <td>{user.panCard}</td>
                     <td>{user.signUpDate}</td>
-                    <td>{user?.isDirect ===  true ? "Online" : "Offline"}</td>
+                    <td>{user?.isDirect}</td>
                     {/* <td>{user.status}</td> */}
                    
                     <td> <button type="button" onClick={()=>handleClick(user.loginMasterId)} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">

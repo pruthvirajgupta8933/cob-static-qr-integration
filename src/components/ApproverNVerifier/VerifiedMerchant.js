@@ -175,7 +175,7 @@ function VerifiedMerchant() {
                     <td>{user.panCard}</td>
                     <td>{user.status}</td>
                     <td>{user.signUpDate}</td>
-                    <td>{user?.isDirect ===  true ? "Online" : "Offline"}</td>
+                    <td>{user?.isDirect}</td>
                     {roles.approver === true ? (
                       <td>
                         <Link

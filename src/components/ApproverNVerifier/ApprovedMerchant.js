@@ -209,7 +209,7 @@ function ApprovedMerchant() {
 
                 <td>{user.status}</td>
                 <td>{user.signUpDate}</td>
-                    <td>{user?.isDirect ===  true ? "Online" : "Offline"}</td>
+                    <td>{user?.isDirect}</td>
                 {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
                 <td>
                   <button
