@@ -72,12 +72,31 @@ const OnboardMerchant = () => {
     setCheckboxStatus(status);
   }
 
+  
+  // function GetSortOrder(prop) {    
+  //   return function(a, b) {    
+  //       if (a[prop] > b[prop]) {    
+  //           return 1;    
+  //       } else if (a[prop] < b[prop]) {    
+  //           return -1;    
+  //       }    
+  //       return 0;    
+  //   }    
+  // }
   useEffect(() => {
+
     axiosInstanceAuth
       .get(API_URL.Business_Category_CODE)
       .then((resp) => {
-        const data = resp.data;
-        setBusinessCode(data);
+        const data = resp.data; 
+        const sortAlpha = data?.sort((a, b) =>
+        a.category_name
+          .toLowerCase()
+          .localeCompare(b.category_name.toLowerCase())
+      );
+
+      
+        setBusinessCode(sortAlpha);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -343,18 +362,22 @@ const OnboardMerchant = () => {
                                           name="business_cat_code"
                                           className="selct"
                                           component="select"
+                                         
+                                         
                                         >
                                           <option
                                             type="text"
                                             className="form-control"
                                             id="businesscode"
+                                           
                                           >
                                             Select Business Category
                                           </option>
-                                          {businessCode.map((business, i) => (
+                                          {businessCode?.map((business, i) => (
                                             <option
                                               value={business.category_id}
                                               key={i}
+                                             
                                             >
                                               {business.category_name}
                                             </option>

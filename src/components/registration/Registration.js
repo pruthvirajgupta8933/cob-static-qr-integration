@@ -433,7 +433,7 @@ function Registration() {
                                           >
                                             Select Business Category
                                           </option>
-                                          {businessCode.map((business, i) => (
+                                          {businessCode?.map((business, i) => (
                                             <option
                                               value={business.category_id}
                                               key={i}
