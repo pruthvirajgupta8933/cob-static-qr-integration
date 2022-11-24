@@ -27,7 +27,7 @@ function VerifiedMerchant() {
 
   const allVerifiedMerchants = async () => {
     await axiosInstanceAuth.get(`${API_URL.KYC_FOR_VERIFIED}`).then((res) => {
-      const data = res.data.results;
+      const data = res?.data?.results;
       setMerchantData(data);
       const dataCoun = res?.data?.count;
       setDataCount(dataCoun);
@@ -41,7 +41,7 @@ function VerifiedMerchant() {
       .then((resp) => {
         toastConfig.successToast("Approved Data Loaded");
         setSpinner(false);
-        const data = resp.payload.results;
+        const data = resp?.payload?.results;
 
         setVerifiedMerchant(data);
       })
@@ -52,16 +52,16 @@ function VerifiedMerchant() {
   useEffect(() => {
     if (searchText.length > 0) {
       setVerifiedMerchant(
-        verfiedMerchant.filter((item) =>
+        verfiedMerchant?.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
+            .includes(searchText?.toLocaleLowerCase())
         )
       );
     } else {
       dispatch(kycForVerified({ page, page_size })).then((resp) => {
-        const data = resp.payload.results;
+        const data = resp?.payload?.results;
         setVerifiedMerchant(data.slice(indexOfFirstRecord, indexOfLastRecord));
       });
     }
@@ -203,7 +203,7 @@ function VerifiedMerchant() {
                 Previous
               </a>
             </li>
-            {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
+            {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6)?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
@@ -222,7 +222,7 @@ function VerifiedMerchant() {
               <button
                 class="page-link"
                 onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
+                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
                 Next
               </button>

@@ -111,17 +111,17 @@ function BusinessOverview(props) {
       business_category: Yup.string()
         .required("Select Business Category")
         .nullable(),
-      billing_label: Yup.string()
+      billing_label: Yup.string().trim()
         .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
         .required("Required")
         .nullable(),
-      company_website: Yup.string()
+      company_website: Yup.string().trim()
         .matches(urlRegex, "Website Url is not Valid")
         .required("Required")
         .nullable(),
       website_app_url: Yup.string().when(["seletcted_website_app_url"], {
         is: "Yes",
-        then: Yup.string()
+        then: Yup.string().trim()
           .ensure()
           .required("Website App Url is required")
           .nullable(),
@@ -129,11 +129,11 @@ function BusinessOverview(props) {
           .notRequired()
           .nullable(),
       }),
-      expected_transactions: Yup.string()
+      expected_transactions: Yup.string().trim()
         .required("Required")
         .matches(Regex.digit, RegexMsg.digit)
         .nullable(),
-      avg_ticket_size: Yup.string()
+      avg_ticket_size: Yup.string().trim()
         .matches(Regex.digit, RegexMsg.digit)
         .required("Required")
         .nullable(),

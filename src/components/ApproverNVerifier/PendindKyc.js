@@ -46,7 +46,7 @@ const PendindKyc = () => {
     await axiosInstanceAuth
       .get(`${API_URL.KYC_FOR_PENDING_MERCHANTS}`)
       .then((res) => {
-        const data = res.data.results;
+        const data = res?.data?.results;
        
       // const myapp=  data[0].isDirect===true 
       // console.log( myapp,"0000000000000000")
@@ -78,7 +78,7 @@ const PendindKyc = () => {
         toastConfig.successToast("Pending Merchant List Loaded");
         setSpinner(false);
 
-        const data = resp?.payload.results;
+        const data = resp?.payload?.results;
 
         setData(data);
       })
@@ -93,17 +93,17 @@ const PendindKyc = () => {
 
   useEffect(() => {
    
-    if (searchText.length > 0) {
+    if (searchText?.length > 0) {
       
 
       setData(
-        data.filter((item)  => 
+        data?.filter((item)  => 
         
         
           Object.values(item)
             .join(" ")
             .toLowerCase()
-           .includes(searchText.toLocaleLowerCase())
+           .includes(searchText?.toLocaleLowerCase())
            
         )
         
@@ -111,7 +111,7 @@ const PendindKyc = () => {
      
     } else {
       dispatch(kycForPendingMerchants({ page, page_size })).then((resp) => {
-        const data = resp?.payload.results;
+        const data = resp?.payload?.results;
 
         setData(data);
       });
@@ -120,7 +120,7 @@ const PendindKyc = () => {
 
 
   const indexOfLastRecord = currentPage * pageSize;
-  const nPages = Math.ceil(pendingKycData.length / pageSize);
+  const nPages = Math.ceil(pendingKycData?.length / pageSize);
   const totalPages = Math.ceil(dataCount / pageSize);
 
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
@@ -133,7 +133,8 @@ const PendindKyc = () => {
   // );
 
   const nextPage = () => {
-    if (currentPage < pageNumbers.length) {
+    if (currentPage < pageNumbers?.length) {
+      // console.log("hello", currentPage)
       setCurrentPage(currentPage + 1);
     }
   };
@@ -248,7 +249,8 @@ const PendindKyc = () => {
                 Previous
               </a>
             </li>
-            {pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
+            
+            {pageNumbers && pageNumbers?.slice(currentPage - 1, currentPage + 6)?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
@@ -267,7 +269,7 @@ const PendindKyc = () => {
               <button
                 class="page-link"
                 onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
+                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
                 Next
               </button>

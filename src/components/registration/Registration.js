@@ -433,7 +433,7 @@ function Registration() {
                                           >
                                             Select Business Category
                                           </option>
-                                          {businessCode.map((business, i) => (
+                                          {businessCode?.map((business, i) => (
                                             <option
                                               value={business.category_id}
                                               key={i}
@@ -474,7 +474,7 @@ function Registration() {
                                         className="string optional"
                                         maxLength={255}
                                         id="user-pws"
-                                        placeholder="Type your password here"
+                                        placeholder="Type your password"
                                         type={
                                           valuesIn.showPassword
                                             ? "text"
@@ -530,7 +530,7 @@ function Registration() {
                                         className="string optional"
                                         maxLength={255}
                                         id="user-cpw"
-                                        placeholder="Confirm password"
+                                        placeholder="Confirm your password"
                                         type={
                                           passwordType.showPasswords
                                             ? "text"

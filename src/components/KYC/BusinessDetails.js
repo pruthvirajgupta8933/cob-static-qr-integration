@@ -160,11 +160,11 @@ function BusinessDetails(props) {
   };
 
   const validationSchema = Yup.object({
-    company_name: Yup.string()
+    company_name: Yup.string().trim()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
-    gst_number: Yup.string()
+    gst_number: Yup.string().trim()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .matches(regexGSTN, "GSTIN Number is Invalid")
       .required("Required")
@@ -176,11 +176,11 @@ function BusinessDetails(props) {
       )
       .required("You need to verify Your GSTIN Number")
       .nullable(),
-    pan_card: Yup.string()
+    pan_card: Yup.string().trim()
       .matches(reqexPAN, "PAN number is Invalid")
       .required("Required")
       .nullable(),
-    signatory_pan: Yup.string()
+    signatory_pan: Yup.string().trim()
       .matches(reqexPAN, "Authorized PAN number is Invalid")
       .required("Required")
       .nullable(),
@@ -191,22 +191,22 @@ function BusinessDetails(props) {
       )
       .required("You need to verify Your Authorized Signatory PAN Number")
       .nullable(),
-    name_on_pancard: Yup.string()
+    name_on_pancard: Yup.string().trim()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
-    city_id: Yup.string()
+    city_id: Yup.string().trim()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
     state_id: Yup.string()
       .required("Required")
       .nullable(),
-    pin_code: Yup.string()
+    pin_code: Yup.string().trim()
       .matches(Regex.digit, RegexMsg.digit)
       .required("Required")
       .nullable(),
-    operational_address: Yup.string()
+    operational_address: Yup.string().trim()
       .matches(Regex.address, RegexMsg.address)
       .required("Required")
       .nullable(),

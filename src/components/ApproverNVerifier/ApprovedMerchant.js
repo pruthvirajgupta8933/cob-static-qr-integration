@@ -51,7 +51,7 @@ function ApprovedMerchant() {
       .then((resp) => {
         toastConfig.successToast("Approved Data Loaded");
         setSpinner(false);
-        const data = resp.payload.results;
+        const data = resp?.payload?.results;
         setApproveMerchant(data);
       })
       .catch((err) => toastConfig.errorToast("Data not loaded"));
@@ -61,7 +61,7 @@ function ApprovedMerchant() {
   useEffect(() => {
     if (searchText.length > 0) {
       setApproveMerchant(
-        approveMerchant.filter((item) =>
+        approveMerchant?.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
@@ -306,7 +306,7 @@ function ApprovedMerchant() {
               Previous
             </a>
           </li>
-          {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
+          {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6)?.map((pgNumber, i) => (
             <li
               key={i}
               className={
@@ -323,7 +323,7 @@ function ApprovedMerchant() {
             <button
               class="page-link"
               onClick={nextPage}
-              disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
+              disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
             >
               Next
             </button>
