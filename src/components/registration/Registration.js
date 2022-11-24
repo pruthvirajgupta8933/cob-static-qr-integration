@@ -474,7 +474,7 @@ function Registration() {
                                         className="string optional"
                                         maxLength={255}
                                         id="user-pws"
-                                        placeholder="Type your password here"
+                                        placeholder="Type your password"
                                         type={
                                           valuesIn.showPassword
                                             ? "text"
@@ -530,7 +530,7 @@ function Registration() {
                                         className="string optional"
                                         maxLength={255}
                                         id="user-cpw"
-                                        placeholder="Confirm password"
+                                        placeholder="Confirm your password"
                                         type={
                                           passwordType.showPasswords
                                             ? "text"

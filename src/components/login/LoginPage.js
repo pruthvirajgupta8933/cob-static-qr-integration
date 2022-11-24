@@ -18,8 +18,8 @@ const INITIAL_FORM_STATE = {
 };
 
 const FORM_VALIDATION = Yup.object().shape({
-  clientUserId: Yup.string().required("Required"),
-  userPassword: Yup.string().required("Password Required"),
+  clientUserId: Yup.string().required("Please enter username"),
+  userPassword: Yup.string().required("Please enter Password"),
 });
 
 function LoginPage() {
@@ -151,7 +151,7 @@ function LoginPage() {
                                         className="string optional NunitoSans-Regular"
                                         maxLength={255}
                                         id="user-email"
-                                        placeholder="Type your username here"
+                                        placeholder="Type your username"
                                         type="text"
                                         name="clientUserId"
                                         onClick={() => setNamee("clientUserId")}
@@ -197,7 +197,7 @@ function LoginPage() {
                                         className="string optional"
                                         maxLength={255}
                                         id="user-pw"
-                                        placeholder="Type your password here"
+                                        placeholder="Type your password"
                                         type={
                                           values.showPassword
                                             ? "text"
