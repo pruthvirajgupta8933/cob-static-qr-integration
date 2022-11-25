@@ -155,13 +155,11 @@ const RejectedKYC = () => {
             <thead>
               <tr>
                 <th>Serial.No</th>
-                <th>Merchant Id</th>
-                <th>Contact Number</th>
+                <th>Client Code</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Bank</th>
-                <th>PAN No.</th>
-                <th>Status</th>
+                <th>Contact Number</th>
+                <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
               </tr>
@@ -179,12 +177,10 @@ const RejectedKYC = () => {
                 data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.merchantId}</td>
-                    <td>{user.contactNumber}</td>
+                    <td>{user.clientCode}</td>
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
-                    <td>{user.bankName}</td>
-                    <td>{user.panCard}</td>
+                    <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
                     <td>{user.signUpDate}</td>
                     <td>{user?.isDirect}</td>

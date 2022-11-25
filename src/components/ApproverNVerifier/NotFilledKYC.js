@@ -158,11 +158,11 @@ const NotFilledKYC = () => {
             <thead>
               <tr>
                 <th>Serial.No</th>
-                <th>Merchant Id</th>
-                <th>Contact Number</th>
+                <th>Client Code</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Status</th>
+                <th>Contact Number</th>
+                <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
                 
@@ -181,10 +181,10 @@ const NotFilledKYC = () => {
                 data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.merchantId}</td>
-                    <td>{user.contactNumber}</td>
+                    <td>{user.clientCode}</td>
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
+                    <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
                     <td>{user.signUpDate}</td>
                     <td>{user?.isDirect}</td>
