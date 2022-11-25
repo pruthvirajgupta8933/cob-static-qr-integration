@@ -15,9 +15,10 @@ import {
 } from "../../slices/kycSlice";
 import MailVerificationModal from "./OtpVerificationKYC/MailVerificationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
-import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
+import { Regex, RegexMsg ,space} from "../../_components/formik/ValidationRegex";
 import { values } from "lodash";
 import gotVerified from "../../assets/images/verified.png";
+import $ from "jquery"
 
 function ContactInfo(props) {
   const setTab = props.tab;
@@ -55,38 +56,57 @@ function ContactInfo(props) {
   const aadhaarRegex = /(^[0-9]{4}[0-9]{4}[0-9]{4}$)|(^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|(^[0-9]{4}-[0-9]{4}-[0-9]{4}$)/;
 
   const validationSchema = Yup.object({
-    name: Yup.string()
+    name: Yup.string().trim()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
-    contact_number: Yup.string()
+    contact_number: Yup.string().trim()
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .required("Required")
       .matches(phoneRegExp, "Phone number is not valid")
       .min(10, "Phone number is not valid")
       .max(10, "too long")
       .nullable(),
-    oldContactNumber: Yup.string()
+    oldContactNumber: Yup.string().trim()
       .oneOf(
         [Yup.ref("contact_number"), null],
         "You need to verify Your Contact Number"
       )
       .required("You need to verify Your Contact Number")
       .nullable(),
-    email_id: Yup.string()
+    email_id: Yup.string().trim()
       .email("Invalid email")
       .required("Required")
       .nullable(),
-    oldEmailId: Yup.string()
+    oldEmailId: Yup.string().trim()
       .oneOf([Yup.ref("email_id"), null], "You need to verify Your Email Id")
       .required("You need to verify Your Email Id")
       .nullable(),
-    aadhar_number: Yup.string()
+    aadhar_number: Yup.string().trim()
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .matches(aadhaarRegex, "Aadhaar Number is Invalid")
       .required("Required")
       .nullable(),
   });
+
+
+  // const keyDown = (e) => { 
+  //   var e = window.event || e;
+  //   var key = e.keyCode;
+  //   //space pressed
+  //    if (key == 32) { //space
+  //     e.preventDefault();
+  //    }
+           
+  // }
+
+  $(document).ready(function(){ 
+    $("#txtNoSpaces").keydown(function(event) {
+        if (event.keyCode == 32) {
+            event.preventDefault();
+        }
+    });
+    });
 
   const handleSubmitContact = (values) => {
     if (role.merchant) {
@@ -286,6 +306,7 @@ function ContactInfo(props) {
                 className="form-control"
                 readOnly={readOnly}
                 disabled={VerifyKycStatus === "Verified" ? true : false}
+                
               />
 
               {KycList?.contactNumber !== null &&
