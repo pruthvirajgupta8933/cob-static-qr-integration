@@ -35,6 +35,7 @@ import ChargeBackTxnHistory from './AllPages/ChargeBackTxnHistory';
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
 import { createClientProfile } from '../../slices/auth';
 import Sandbox from '../SandBox/SendBox';
+import AssignZone from '../ApproverNVerifier/AssignZone';
 
 
 
@@ -159,6 +160,10 @@ function Dashboard() {
                     <Route exact path={`${path}/approver`} >
                          <Approver />
                     </Route>
+                    <Route exact path={`${path}/assignzone`} >
+                         <AssignZone/>
+                    </Route>
+
                     <Route exact path={`${path}/thanks`} >
                          <ThanksPage />
                     </Route>

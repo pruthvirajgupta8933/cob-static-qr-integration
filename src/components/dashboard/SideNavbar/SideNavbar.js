@@ -133,6 +133,16 @@ function SideNavbar() {
                   ) : (
                     <React.Fragment></React.Fragment>
                   )}
+                   <li className="ant-menu-item" role="menuitem">
+                      <Link
+                        to={`${url}/assignzone`}
+                        className="txt-white sidenavFonts"
+                      >
+                        <i className="fa fa-list" aria-hidden="true" />
+                        <span>&nbsp;Assign Zone</span>
+                        {/* <span class="new-tab">new</span> */}
+                      </Link>
+                    </li>
 
                   <li
                     className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open"
