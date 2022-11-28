@@ -124,6 +124,22 @@ const API_LIVE = {
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
   Business_overview_state_: `${kyc_url}/kyc/get-all-state-details/`,
 
+
+
+
+
+
+
+
+  /////////////////////////////////////////////  AssignZone APi
+  ZONE_DETAILS:`${url}/zone/zones`,
+  ZONE_MASTER : `${url}/zone/zones-master`,
+  RISK_CATEGORY:`${kyc_url}/kyc/get-risk-category-details/`,
+  ZONE_EMPLOYEE:`${url}/zone/employee-detail`,
+
+
+  ////////////////////////////////////////
+
   /////////////////////////Kyc approver
   /* For pending*/
   KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not-Filled&order_by=-merchantId`,

@@ -35,6 +35,9 @@ const PendindKyc = () => {
 
 
   let merchantloginMasterId = loginId;
+
+
+  
  
 
   const dispatch = useDispatch();

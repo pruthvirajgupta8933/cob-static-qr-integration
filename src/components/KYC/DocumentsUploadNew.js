@@ -602,94 +602,9 @@ function DocumentsUpload(props) {
                   <>
                     <hr />
                     {savedData?.length > 0 ? (
-<<<<<<< HEAD
                       <div class="container">
                         <div class="row">
                           <div class="col-sm"><h3 style={{ fontWeight: "500", textDecoration: "underline" }}>Preview Documents</h3></div>
-=======
-                    <div class="container">
-                      <div class="row">
-                        <div class="col-sm"><h3 style={{fontWeight:"500",textDecoration:"underline"}}>Preview Documents</h3></div>
-                      </div>
-                    </div>):<></>}
-                    {/* button visible for the verifier */}
-                    {savedData?.length > 0 ? (
-                      
-                      savedData?.map((img, i) => (
-                        <div className="col-lg-5 border mt-4 m-2 test">
-                            <p className="m-3">Document Type : {getDocTypeName(img?.type)}</p>
-
-                          {/* add image preview link */}
-                          {img?.filePath?.includes(".pdf") ? (
-                            <p>
-                              <a
-                                href={img?.filePath}
-                                alt="preview document"
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                {img?.name}
-                              </a>
-                            </p>
-                          ) : (
-                            <a href = {img?.filePath}  target="_blank" >
-                            <img
-                              className="file-upload"
-                              src={img?.filePath}
-                              alt="kyc docuement"
-                            />
-                            </a>
-                          )}
-
-                          <div>
-                            <p className="m-3">Document Name : {img?.name}</p>
-                            {/* add function for get type of the doc */}
-                            <p className="m-3" >Document Status : {img?.status}</p>
-                            {enableBtnByStatus(img?.status, role) ? (
-                              <>
-                                <a
-                                  href={() => false}
-                                  className="btn btn-sm btn-primary m-3"
-                                  onClick={() => {
-                                    verifyApproveDoc(img?.documentId);
-                                  }}
-                                >
-                                  {" "}
-                                  {buttonText}{" "}
-                                </a>
-                                <a
-                                  href={() => false}
-                                  className="btn btn-sm btn-warning m-3"
-                                  onClick={() => {
-                                    rejectDoc(img?.documentId);
-                                  }}
-                                >
-                                  {" "}
-                                  Reject{" "}
-                                </a>
-                              </>
-                            ) : (
-                              <></>
-                            )}
-
-                            {role?.merchant &&
-                            KycList?.status !== "Approved" &&
-                            KycList?.status !== "Verified" ? (
-                              <a
-                                href={() => false}
-                                className="btn btn-sm btn-warning m-3"
-                                onClick={() => {
-                                  removeDoc(img?.documentId);
-                                }}
-                              >
-                                {" "}
-                                <i className="fa fa-trash"></i>{" "}
-                              </a>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
->>>>>>> 16faa0e281cd30d2b3c0553ee37228722938801f
                         </div>
                       </div>) : <></>}
                     {/* button visible for the verifier */}
