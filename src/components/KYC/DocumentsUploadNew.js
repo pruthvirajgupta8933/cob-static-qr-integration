@@ -48,19 +48,15 @@ function DocumentsUpload(props) {
   const [requiredDocList, setRequiredDocList] = useState([1, 2, 5, 6, 11]);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Upload Document");
-  const [typeOfDoc, setTypeOfDoc] = useState("");
+  
 
   const { auth, kyc } = useSelector((state) => state);
-
   const { allTabsValidate } = kyc;
-  const BusinessOverviewStatus =
-    allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
-
-  // console.log("Busi Status ===>",BusinessOverviewStatus)
-
+  const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const kyc_status = KycList?.status;
   const businessType = KycList.businessType;
+
   const { user } = auth;
   let clientMerchantDetailsList = {};
   if (
@@ -70,10 +66,6 @@ function DocumentsUpload(props) {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
-  const KycTabStatusStore = kyc?.KycTabStatusStore;
-
-  // const { businessType } = clientMerchantDetailsList[0];
-  // console.log(businessType,"myisssssssssssssssssssssssss")
 
   const { loginId } = user;
   const { KycDocUpload } = kyc;
@@ -84,17 +76,11 @@ function DocumentsUpload(props) {
 
   const initialValues = {
     docType: savedData[0]?.type ? savedData[0]?.type : "",
-    aadhaar_front: "",
-    aadhaar_back: "",
     document_img: "",
   };
 
   const validationSchema = Yup.object({
-    docType: Yup.string()
-      .required("Document Required")
-      .nullable(),
-    aadhaar_front: Yup.mixed().nullable(),
-    aadhaar_back: Yup.mixed().nullable(),
+    docType: Yup.string().required("Document Required").nullable(),
     document_img: Yup.mixed().nullable(),
   });
 
@@ -102,7 +88,6 @@ function DocumentsUpload(props) {
     dispatch(documentsUpload({ businessType }))
       .then((resp) => {
         const data = convertToFormikSelectJson("id", "name", resp?.payload);
-        // console.log(data,"complete data here resolved")
         setDocTypeList(data);
       })
       .catch((err) => console.log(err));
@@ -111,63 +96,40 @@ function DocumentsUpload(props) {
   const Array1 = docTypeList.map((a) => a.key);
   const Array2 = savedData.map((r) => r.type);
 
-  // console.log(Array1, "Array 1 -===>")
-  // console.log(Array2, "Saved Data -===>")
-  // console.log(savedData, "Saved Data -===>")
 
   const myFilter = (elm) => {
     return elm != null && elm !== false && elm !== "";
   };
 
-  var array1filtered = Array1.filter(myFilter);
-  // console.log("Filtered Array 1 ===>", array1filtered)
-  // console.log("Array Check ===>", array1filtered.every(elem => Array2.includes(elem)));
-
+  let array1filtered = Array1.filter(myFilter);
   const handleChange = function(e, id) {
-    console.log();
-    // if (id === 2) {
-    //   setSelectedFileAadhaar(e.target.files[0]);
-    // } else {
     setSelectedFile(e.target.files[0]);
-
-    // }
     readURL(e.target, id);
   };
 
   const onSubmit = (values, action) => {
-    if (role.merchant) {
-      const bodyFormData = new FormData();
-      let docType = values.docType;
-      if (docType === "1") {
-        bodyFormData.append("aadhar_front", selectedFile);
-        bodyFormData.append("aadhar_back", selectedFileAadhaar);
-      } else {
-        bodyFormData.append("files", selectedFile);
-      }
 
+    // If merchant logged in
+    if (role.merchant) {
+
+      const bodyFormData = new FormData();
+      let docType = values?.docType;
+      bodyFormData.append("files", selectedFile);
       bodyFormData.append("login_id", loginId);
       bodyFormData.append("modified_by", loginId);
-      bodyFormData.append("type", values.docType);
+      bodyFormData.append("type", values?.docType);
 
       const kycData = { bodyFormData, docType };
+
       dispatch(merchantInfo(kycData))
         .then(function(response) {
           if (response?.payload?.status) {
             setTitle("SUBMIT KYC");
             toast.success(response?.payload?.message);
-
-            // if (typeOfDocs === '1' && typeOfDocs === '2' && typeOfDocs ==='5' && typeOfDocs ==='6') {
-
-            // setTab(6);
-            // }
           } else {
             const message =
               response?.payload?.message ||
-              response?.payload?.aadhar_back[0] ||
-              response?.payload?.aadhar_front[0] ||
-              response?.payload?.message?.toString() ||
-              response?.payload?.aadhar_front[0]?.toString() ||
-              response?.payload?.aadhar_back[0]?.toString();
+              response?.payload?.message?.toString()
             toast.error(message);
           }
         })
@@ -175,37 +137,15 @@ function DocumentsUpload(props) {
           console.error("Error:", error);
           toast.error("Something went wrong while saving the document");
         });
-    } else if (role.verifier) {
-      const veriferDetails = {
-        login_id: kycid,
-        settlement_info_verified_by: loginId,
-      };
-      dispatch(verifyKycEachTab(veriferDetails))
-        .then((resp) => {
-          resp?.payload?.settlement_info_status &&
-            toast.success(resp?.payload?.settlement_info_status);
-          resp?.payload?.detail && toast.error(resp?.payload?.detail);
-        })
-        .catch((e) => {
-          toast.error("Try Again Network Error");
-        });
-    }
-
+    } 
+    // update doc list after the upload the document
     setTimeout(() => {
-      dispatch(
-        kycDocumentUploadList({
-          login_id: role?.verifier || role?.approver ? kycid : loginId,
-        })
-      );
+      getKycDocList(role)
     }, 2000);
   };
-  useEffect(() => {
-    dispatch(
-      kycDocumentUploadList({
-        login_id: role?.verifier || role?.approver ? kycid : loginId,
-      })
-    );
-  }, []);
+
+
+
 
   const verifyApproveDoc = (doc_id) => {
     let postData = {};
@@ -219,15 +159,11 @@ function DocumentsUpload(props) {
         resp?.payload?.status
           ? toast.success(resp?.payload?.message)
           : toast.error(resp?.payload?.message);
+
+
+          getKycDocList(role)
       });
 
-      dispatch(
-        kycDocumentUploadList({
-          login_id: role?.verifier || role?.approver ? kycid : loginId,
-        })
-      ).catch((e) => {
-        toast.error("Try Again Network Error");
-      });
     }
 
     if (role?.approver) {
@@ -237,17 +173,15 @@ function DocumentsUpload(props) {
       };
       dispatch(approveDoc(approverDocDetails)).then((resp) => {
         resp?.payload?.status
-          ? toast.success(resp?.payload?.message)
+          ? toast.success(resp?.payload?.message) 
           : toast.error(resp?.payload?.message);
-      });
-      dispatch(
-        kycDocumentUploadList({
-          login_id: role?.verifier || role?.approver ? kycid : loginId,
-        })
-      ).catch((e) => {
-        toast.error("Try Again Network Error");
+
+
+          getKycDocList(role)
       });
     }
+
+    
   };
 
   const rejectDoc = (doc_id) => {
@@ -258,9 +192,11 @@ function DocumentsUpload(props) {
     };
     dispatch(verifyKycDocumentTab(rejectDetails))
       .then((resp) => {
-        resp?.payload?.status
-          ? toast.success(resp?.payload?.message)
-          : toast.error(resp?.payload?.message);
+        resp?.payload?.status && toast.success(resp?.payload?.message)
+        if(typeof(resp?.payload?.status)==='undefined') {toast.error("Please Try After Sometimes")}
+
+        getKycDocList(role)
+        
       })
       .catch((e) => {
         toast.error("Try Again Network Error");
@@ -275,11 +211,7 @@ function DocumentsUpload(props) {
     dispatch(removeDocument(rejectDetails))
       .then((resp) => {
         setTimeout(() => {
-          dispatch(
-            kycDocumentUploadList({
-              login_id: role?.verifier || role?.approver ? kycid : loginId,
-            })
-          );
+          getKycDocList(role)
         }, 1300);
 
         resp?.payload?.status
@@ -290,6 +222,21 @@ function DocumentsUpload(props) {
         toast.error("Try Again Network Error");
       });
   };
+
+  const getKycDocList = (role) =>{
+    dispatch(
+      kycDocumentUploadList({
+        login_id: role?.verifier || role?.approver ? kycid : loginId
+      })
+    )
+  }
+
+  useEffect(() => {
+    getKycDocList(role)
+  }, []);
+
+
+
 
   useEffect(() => {
     if (role.approver) {
@@ -334,6 +281,8 @@ function DocumentsUpload(props) {
     return enableBtn;
   };
 
+
+  // console.log(enableBtnByStatus());
   // console.log("<=== Type Id of Saved Images ====>",typeOfDocs)
   let btn = false;
   requiredDocList?.map((i) => {
@@ -347,7 +296,6 @@ function DocumentsUpload(props) {
   });
 
   const getDocTypeName = (id) => {
-    // console.log("id",id);
     let data = docTypeList.filter((obj) => {
       if (obj?.key?.toString() === id?.toString()) {
         return obj;
@@ -357,8 +305,6 @@ function DocumentsUpload(props) {
     // console.log("data",data)
     return data[0]?.value;
   };
-
-  console.log("KYC USER LIST ====>", KycList);
 
   return (
     <>
@@ -530,7 +476,7 @@ function DocumentsUpload(props) {
                     <></>
                   )}
 
-                  {savedData?.length > 0 ? (
+                  {/* {savedData?.length > 0 ? (
                     savedData.map((img, i) =>
                       img?.status === "Rejected" ? (
                         <div className="col-lg-6 mt-4 test">
@@ -547,7 +493,7 @@ function DocumentsUpload(props) {
                     )
                   ) : (
                     <></>
-                  )}
+                  )} */}
                   {KycList?.status !== "Approved" &&
                   KycList?.status !== "Verified" &&
                   role?.merchant ? (
@@ -635,8 +581,9 @@ function DocumentsUpload(props) {
                                     rel="noreferrer"
                                     className="text-primary"
                                   >
-                                    {doc.name}
+                                    {doc?.name}
                                   </a>
+                                  <p className="text-danger"> {doc?.comment}</p>
                                 </td>
                                 <td>{doc.status}</td>
                                 {role?.merchant &&
@@ -645,7 +592,6 @@ function DocumentsUpload(props) {
                                   <td>
                                     <button
                                       type="button"
-                                      class="btn btn-sm btn-warning"
                                       onClick={() => {
                                         removeDoc(doc?.documentId);
                                       }}
@@ -657,39 +603,48 @@ function DocumentsUpload(props) {
                                   <></>
                                 )}
 
-                                {roles.verifier === true &&
-                                enableBtnByStatus(doc?.status, role) ? (
+                                {enableBtnByStatus(doc?.status, role) ? (
                                   <td>
+                                  <span>
                                     <a
                                       href={() => false}
-                                      className="btn btn-sm btn-primary m-3"
+                                      className="text-success"
                                       onClick={() => {
                                         verifyApproveDoc(doc?.documentId);
                                       }}
                                     >
-                                      {buttonText}
-                                    </a>
+                                      {buttonText}<i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    </a> | 
                                     <a
                                       href={() => false}
-                                      className="btn btn-sm btn-warning m-3"
+                                      className="text-danger"
                                       onClick={() => {
                                         rejectDoc(doc?.documentId);
                                       }}
                                     >
-                                      Reject
+                                   <i className="fa fa-times" aria-hidden="true"></i> Reject
                                     </a>
+                                    </span>
                                   </td>
-                                ) : roles.verifier === true &&
-                                  roles.approver === true ? (
-                                  <td>No Action Needed</td>
+                                ) :  (roles.verifier === true || roles.approver === true) ? (
+                                  <td>
+                                   <a
+                                      href={() => false}
+                                      className="text-danger"
+                                      onClick={() => {
+                                        rejectDoc(doc?.documentId);
+                                      }}
+                                    >
+                                  Reject<i className="fa fa-times" aria-hidden="true"></i> 
+                                    </a>
+                                    </td>
                                 ) : (
-                                  ""
+                                 <></>
                                 )}
                               </tr>
                             ))}
                           </tbody>
                         </table>
-
                         <div></div>
                       </div>
                     </>

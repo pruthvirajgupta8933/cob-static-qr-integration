@@ -4,12 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ViewStatusModal = (props) => {
   const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state);
-  const { user } = auth;
-
-  const { loginId } = user;
-
-  let merchantloginMasterId = loginId;
 
   const [uploadData, setUploadData] = useState([]);
   const [show, setShow] = useState(false);
@@ -105,21 +99,13 @@ const ViewStatusModal = (props) => {
                             href={merchantData?.filePath}
                             rel="noreferrer"
                             target="_blank"
+                            className="text-primary"
+                            alt="Merchant Document"
+                            title="Merchant Document"
                           >
-                            {" "}
                             <td>{merchantData?.name}</td>
                           </a>
                           <td>{merchantData?.status}</td>
-                          <div class="modal-footer">
-                            <button
-                              type="button"
-                              class="btn btn-secondary text-white"
-                              onClick={() => setShow(false)}
-                              data-dismiss="modal"
-                            >
-                              Close
-                            </button>
-                          </div>
                         </tr>
                       );
                     })
@@ -129,10 +115,6 @@ const ViewStatusModal = (props) => {
                 <></>
               )}
             </div>
-            {/* <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div> */}
           </div>
         </div>
       </div>

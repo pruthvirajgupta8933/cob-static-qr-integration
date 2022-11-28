@@ -287,7 +287,7 @@ function BusinessDetails(props) {
           toast.success(res?.payload?.message);
           setTab(4);
           setTitle("BANK DETAILS");
-          console.log("data trigger");
+          // console.log("data trigger");
           dispatch(kycUserList({ login_id: loginId }));
         } else {
           toast.error(res?.payload?.message);
