@@ -328,7 +328,7 @@ function BankDetails(props) {
 
             <div class="col-sm-12 col-md-12 col-lg-6">
               <label class="col-form-label mt-0 p-2">
-                Account Number <span style={{ color: "red" }}>*</span>
+                Business Account Number <span style={{ color: "red" }}>*</span>
               </label>
 
               <FormikController
