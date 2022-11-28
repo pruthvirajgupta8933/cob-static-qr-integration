@@ -344,9 +344,10 @@ export const saveMerchantInfo = createAsyncThunk(
 
 export const documentsUpload = createAsyncThunk(
   "kyc/documentsUpload",
-  async (requestParam) => {
-    const response = await axiosInstanceAuth
-      .get(`${API_URL.DocumentsUpload}`, {
+  async (data) => {
+     const requestParam = data.businessType;
+   const response = await axiosInstanceAuth
+      .get(`${API_URL.DocumentsUpload}/?business_type_id=${requestParam}`, {
         headers: {},
       })
       .catch((error) => {

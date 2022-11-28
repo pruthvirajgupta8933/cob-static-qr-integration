@@ -35,7 +35,6 @@ import ChargeBackTxnHistory from './AllPages/ChargeBackTxnHistory';
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
 import { createClientProfile } from '../../slices/auth';
 import Sandbox from '../SandBox/SendBox';
-import HarrisTest from "../Otherpages/HarrisTest"
 
 
 
@@ -48,31 +47,28 @@ function Dashboard() {
      const dispatch = useDispatch()
 
 
+     // create new client code
      useEffect(() => {
           if (roles?.merchant) {
                if (user?.clientMerchantDetailsList) {
+                    console.log("user",user)
                     if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
+                         
+                         // console.log("create new client code")
                          const uuidCode = Math.random().toString(36).slice(-6).toUpperCase();
-
                          const data = {
                               "loginId": user?.loginId,
                               "clientName": user?.clientContactPersonName,
                               "clientCode": uuidCode,
                          }
-
                          dispatch(createClientProfile(data))
-                         // .then(res => {
-                         //      console.log(res)
-                         // }).catch(err => {
-                         //      console.log(err)
-                         // })
-                         // console.log("client code is null")
-                    } else {
-                         // console.log("client code is not null")
+                    }else{
+                         // console.log("already created client code")
                     }
                }
           }
      }, [])
+
 
      if (user !== null && user.userAlreadyLoggedIn) {
           history.push("/login-page");
@@ -81,15 +77,9 @@ function Dashboard() {
           return <Redirect to="/login-page" />
      }
 
-
-
-
-
      return (
           <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
                <div>
-                    {/* <a style={{display: "none"}} href="empty" id="ref" >ref</a>
-                <button onClick={(e)=>exportCSV(e)}>Export CSV</button> */}
                </div>
                <SideNavbar />
                <Switch>
@@ -151,35 +141,27 @@ function Dashboard() {
                     <Route exact path={`${path}/test/`}>
                          <Test />
                     </Route>
-                    {/* <Route exact path={`${path}/harris-test/`}>
-                         <HarrisTest />
-                    </Route> */}
                     <Route exact path={`${path}/view-transaction-with-filter`} >
                          <ViewTransactionWithFilter />
                     </Route>
-
                     <Route exact path={`${path}/settlement-report-new`} >
                          <SettlementReportNew />
                     </Route>
-
                     <Route exact path={`${path}/transaction-history-new`} >
                          <TransactionHistoryDownload />
                     </Route>
                     <Route exact path={`${path}/sabpaisa-pricing/:id/:name`} >
                          <SabPaisaPricing />
                     </Route>
-
                     <Route exact path={`${path}/kyc`} >
                          <KycForm />
                     </Route>
-
                     <Route exact path={`${path}/approver`} >
                          <Approver />
                     </Route>
                     <Route exact path={`${path}/thanks`} >
                          <ThanksPage />
                     </Route>
-
                     <Route exact path={`${path}/Sandbox`} >
                          <Sandbox />
                     </Route>

@@ -46,7 +46,7 @@ const PendindKyc = () => {
     await axiosInstanceAuth
       .get(`${API_URL.KYC_FOR_PENDING_MERCHANTS}`)
       .then((res) => {
-        const data = res.data.results;
+        const data = res?.data?.results;
        
       // const myapp=  data[0].isDirect===true 
       // console.log( myapp,"0000000000000000")
@@ -78,7 +78,7 @@ const PendindKyc = () => {
         toastConfig.successToast("Pending Merchant List Loaded");
         setSpinner(false);
 
-        const data = resp?.payload.results;
+        const data = resp?.payload?.results;
 
         setData(data);
       })
@@ -93,17 +93,17 @@ const PendindKyc = () => {
 
   useEffect(() => {
    
-    if (searchText.length > 0) {
+    if (searchText?.length > 0) {
       
 
       setData(
-        data.filter((item)  => 
+        data?.filter((item)  => 
         
         
           Object.values(item)
             .join(" ")
             .toLowerCase()
-           .includes(searchText.toLocaleLowerCase())
+           .includes(searchText?.toLocaleLowerCase())
            
         )
         
@@ -111,7 +111,7 @@ const PendindKyc = () => {
      
     } else {
       dispatch(kycForPendingMerchants({ page, page_size })).then((resp) => {
-        const data = resp?.payload.results;
+        const data = resp?.payload?.results;
 
         setData(data);
       });
@@ -120,7 +120,7 @@ const PendindKyc = () => {
 
 
   const indexOfLastRecord = currentPage * pageSize;
-  const nPages = Math.ceil(pendingKycData.length / pageSize);
+  const nPages = Math.ceil(pendingKycData?.length / pageSize);
   const totalPages = Math.ceil(dataCount / pageSize);
 
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
@@ -133,7 +133,8 @@ const PendindKyc = () => {
   // );
 
   const nextPage = () => {
-    if (currentPage < pageNumbers.length) {
+    if (currentPage < pageNumbers?.length) {
+      // console.log("hello", currentPage)
       setCurrentPage(currentPage + 1);
     }
   };
@@ -197,12 +198,10 @@ const PendindKyc = () => {
             <thead>
               <tr>
                 <th>Serial.No</th>
-                <th>Merchant Id</th>
-                <th>Contact Number</th>
+                <th>Client Code</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Bank</th>
-                <th>PAN No.</th>
+                <th>Contact Number</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
                 <th>View Status</th>
@@ -222,14 +221,12 @@ const PendindKyc = () => {
                 data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.merchantId}</td>
-                    <td>{user.contactNumber}</td>
+                    <td>{user.clientCode}</td>
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
-                    <td>{user.bankName}</td>
-                    <td>{user.panCard}</td>
+                    <td>{user.contactNumber}</td>
                     <td>{user.signUpDate}</td>
-                    <td>{user?.isDirect ===  true ? "Online" : "Offline"}</td>
+                    <td>{user?.isDirect}</td>
                     {/* <td>{user.status}</td> */}
                    
                     <td> <button type="button" onClick={()=>handleClick(user.loginMasterId)} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
@@ -248,7 +245,8 @@ const PendindKyc = () => {
                 Previous
               </a>
             </li>
-            {pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
+            
+            {pageNumbers && pageNumbers?.slice(currentPage - 1, currentPage + 6)?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
@@ -267,7 +265,7 @@ const PendindKyc = () => {
               <button
                 class="page-link"
                 onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
+                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
                 Next
               </button>

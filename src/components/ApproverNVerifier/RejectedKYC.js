@@ -32,7 +32,7 @@ const RejectedKYC = () => {
     await axiosInstanceAuth
       .get(`${API_URL.KYC_FOR_REJECTED_MERCHANTS}`)
       .then((res) => {
-        const data = res.data.results;
+        const data = res?.data?.results;
         // console.log("<====  Rejected Merchants List ======>")
         setRejectedMerchants(data);
         const dataCoun = res?.data?.count;
@@ -49,7 +49,7 @@ const RejectedKYC = () => {
         toastConfig.successToast("Rejected Merchant List Loaded");
         setSpinner(false);
 
-        const data = resp?.payload.results;
+        const data = resp?.payload?.results;
 
         setData(data);
       })
@@ -62,7 +62,7 @@ const RejectedKYC = () => {
   useEffect(() => {
     if (searchText.length > 0) {
       setData(
-        data.filter((item) =>
+        data?.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
@@ -71,7 +71,7 @@ const RejectedKYC = () => {
       );
     } else {
       dispatch(kycForRejectedMerchants({ page, page_size })).then((resp) => {
-        const data = resp?.payload.results;
+        const data = resp?.payload?.results;
 
         setData(data);
       });
@@ -80,7 +80,7 @@ const RejectedKYC = () => {
 
   const indexOfLastRecord = currentPage * pageSize;
   const totalPages = Math.ceil(dataCount / pageSize);
-  const nPages = Math.ceil(rejectedMerchants.length / pageSize);
+  const nPages = Math.ceil(rejectedMerchants?.length / pageSize);
 
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
 
@@ -92,7 +92,7 @@ const RejectedKYC = () => {
   // );
 
   const nextPage = () => {
-    if (currentPage < pageNumbers.length) {
+    if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -155,13 +155,11 @@ const RejectedKYC = () => {
             <thead>
               <tr>
                 <th>Serial.No</th>
-                <th>Merchant Id</th>
-                <th>Contact Number</th>
+                <th>Client Code</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Bank</th>
-                <th>PAN No.</th>
-                <th>Status</th>
+                <th>Contact Number</th>
+                <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
               </tr>
@@ -179,15 +177,13 @@ const RejectedKYC = () => {
                 data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.merchantId}</td>
-                    <td>{user.contactNumber}</td>
+                    <td>{user.clientCode}</td>
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
-                    <td>{user.bankName}</td>
-                    <td>{user.panCard}</td>
+                    <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
                     <td>{user.signUpDate}</td>
-                    <td>{user?.isDirect ===  true ? "Online" : "Offline"}</td>
+                    <td>{user?.isDirect}</td>
                   </tr>
                 ))
               )}
@@ -201,7 +197,7 @@ const RejectedKYC = () => {
                 Previous
               </a>
             </li>
-            {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
+            {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6)?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
@@ -220,7 +216,7 @@ const RejectedKYC = () => {
               <button
                 class="page-link"
                 onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
+                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
                 Next
               </button>

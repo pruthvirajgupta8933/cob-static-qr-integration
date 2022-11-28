@@ -110,7 +110,7 @@ const API_LIVE = {
   ViewTxnEnqMultiParam: adminAPIURL + "/Enquiry/ViewTxnEnqMultiParam",
 
   /**Kyc DocumentsUploads */
-  DocumentsUpload: `${kyc_url}/kyc/document-type/`, //get APi
+  DocumentsUpload: `${kyc_url}/kyc/document-type`, //get APi
 
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
   upload_Single_Doc: `${kyc_url}/kyc/upload-merchant-document/single-file/`, //post APi
