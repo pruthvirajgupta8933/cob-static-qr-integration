@@ -36,6 +36,7 @@ import { roleBasedAccess } from '../../_components/reuseable_components/roleBase
 import { createClientProfile } from '../../slices/auth';
 import Sandbox from '../SandBox/SendBox';
 import AssignZone from '../ApproverNVerifier/AssignZone';
+import AdditionalKYC from '../ApproverNVerifier/AdditionalKYC';
 
 
 
@@ -162,6 +163,9 @@ function Dashboard() {
                     </Route>
                     <Route exact path={`${path}/assignzone`} >
                          <AssignZone/>
+                    </Route>
+                    <Route exact path={`${path}/additionalpage`} >
+                         <AdditionalKYC/>
                     </Route>
 
                     <Route exact path={`${path}/thanks`} >

@@ -311,7 +311,7 @@ export const businessOverviewState = createAsyncThunk(
   "kyc/businessOverviewState",
   async (requestParam) => {
     const response = await axiosInstanceAuth
-      .get(`${API_URL.Business_overview_state_}`, {
+      .post(`${API_URL.Business_overview_state_}`, {
         headers: {},
       })
       .catch((error) => {
