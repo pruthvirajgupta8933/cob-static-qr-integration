@@ -28,13 +28,6 @@ function AssignZone() {
   let page_size = pageSize;
   let page = currentPage;
 
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  // const { clientCode } = clientMerchantDetailsList[0];
-  const { loginId } = user;
-
-  const masterid = useSelector((state) => state.kyc.kycApproved.results);
-  //   const document=useSelector((state)=> state.kyc.documentByloginId)
-  //  const {documentId}=document;
   const approvedSearch = (e) => {
     setSearchText(e.target.value);
   };
@@ -121,32 +114,6 @@ function AssignZone() {
   
 
 
-  // const indexOfLastRecord = currentPage * pageSize;
-  // const totalPages = Math.ceil(dataCount / pageSize);
-  // const nPages = Math.ceil(approvedMerchantData.length / pageSize);
-
-  // const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-
-  
-  // const indexOfFirstRecord = indexOfLastRecord - pageSize;
-  
-
-  // const nextPage = () => {
-  //   if (currentPage < pageNumbers.length) {
-  //     setCurrentPage(currentPage + 1);
-  //   }
-  // };
-
-  // const prevPage = () => {
-  //   if (currentPage > 1) {
-  //     setCurrentPage(currentPage - 1);
-  //   }
-  // };
-  // // const arr = approveMerchant;
-
-  // const zoneData = Object.assign({}, arr);
- 
-
   
 return (
     <section className="ant-layout">
@@ -183,25 +150,8 @@ return (
                 <option value="20">20</option>
                 <option value="50">50</option>
                 <option value="100">100</option>
-                <option value="200">200</option>
-                
               </select>
             </div>
-            {/* <div className="form-group col-lg-3 col-md-12 mt-2">
-              <label>Onboard Type</label>
-              <select
-                // value={pageSize}
-                // rel={pageSize}
-                // onChange={(e) => setPageSize(parseInt(e.target.value))}
-                className="ant-input"
-              >
-                <option value="Select Role Type">Select Onboard Type</option>
-                <option value="all">All</option>
-                <option value="Online">Online</option>
-                <option value="Offline">Offline</option>
-
-              </select>
-            </div> */}
             <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
               <div className="scroll overflow-auto">
 
