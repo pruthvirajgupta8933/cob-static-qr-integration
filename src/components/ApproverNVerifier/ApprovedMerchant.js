@@ -107,9 +107,6 @@ function ApprovedMerchant() {
       });
   };
 
-<<<<<<< HEAD
-  
-=======
 
 
   useEffect(() => {
@@ -133,7 +130,6 @@ function ApprovedMerchant() {
   }, [currentPage, totalPages])
 
 
->>>>>>> 93e8777a61baeae47c370976969c91c384f8a0a0
   return (
     <div className="container-fluid flleft">
       <div className="col-lg-4 mrg-btm- bgcolor">
