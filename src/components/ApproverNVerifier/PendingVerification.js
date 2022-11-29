@@ -10,7 +10,7 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 
-function NewRegistraion() {
+function PendingVerification() {
   const { url } = useRouteMatch();
   const roles = roleBasedAccess();
 
@@ -21,6 +21,7 @@ function NewRegistraion() {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [displayPageNumber, setDisplayPageNumber] = useState([]);
   let page_size = pageSize;
   let page = currentPage;
 
@@ -59,6 +60,8 @@ function NewRegistraion() {
       });
   }, [currentPage, pageSize]);
 
+
+
   ///////////Kyc Search filter
   useEffect(() => {
     if (searchText.length > 0) {
@@ -79,15 +82,10 @@ function NewRegistraion() {
     }
   }, [searchText]);
 
-  const indexOfLastRecord = currentPage * pageSize;
-  const nPages = Math.ceil(newRegistrationData?.length / pageSize);
+
   const totalPages = Math.ceil(dataCount / pageSize);
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-  const indexOfFirstRecord = indexOfLastRecord - pageSize;
-  // const currentRecords = pendingKycData.slice(
-  //   indexOfFirstRecord,
-  //   indexOfLastRecord
-  // );
+
 
   const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
@@ -100,6 +98,28 @@ function NewRegistraion() {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  useEffect(() => {
+    let lastSevenPage = totalPages - 7;
+    if (pageNumbers?.length>0) {
+      let start = 0
+      let end = (currentPage + 6)
+      if (totalPages > 6) {
+        start = (currentPage - 1)
+  
+        if (parseInt(lastSevenPage) <= parseInt(start)) {
+          start = lastSevenPage
+        }
+  
+      }
+      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
+        return pgNumber;
+      })   
+     setDisplayPageNumber(pageNumber) 
+    }
+  }, [currentPage, totalPages])
+
+
 
   return (
     <div className="container-fluid flleft">
@@ -126,8 +146,6 @@ function NewRegistraion() {
             <option value="20">20</option>
             <option value="50">50</option>
             <option value="100">100</option>
-            <option value="200">200</option>
-            <option value="500">500</option>
           </select>
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -152,8 +170,9 @@ function NewRegistraion() {
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th>Serial.No</th>
+                <th>S. No.</th>
                 <th>Client Code</th>
+                <th>Company Name</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Contact Number</th>
@@ -167,7 +186,6 @@ function NewRegistraion() {
               {spinner && <Spinner />}
               {data?.length === 0 ? (
                 <tr>
-                  {" "}
                   <td colSpan={"8"}>
                     <h1 className="nodatafound">No data found</h1>
                   </td>
@@ -176,7 +194,8 @@ function NewRegistraion() {
                 data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.clientCode}</td>
+                    <td>{user.clientCode}</td>  
+                    <td>{user.companyName}</td>
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
@@ -206,11 +225,11 @@ function NewRegistraion() {
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <a className="page-link" onClick={prevPage}>
+              <button className="page-link" onClick={prevPage}>
                 Previous
-              </a>
+              </button>
             </li>
-            {pageNumbers && pageNumbers?.slice(currentPage - 1, currentPage + 6)?.map((pgNumber, i) => (
+            {displayPageNumber?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
@@ -241,4 +260,4 @@ function NewRegistraion() {
   );
 }
 
-export default NewRegistraion;
+export default PendingVerification;

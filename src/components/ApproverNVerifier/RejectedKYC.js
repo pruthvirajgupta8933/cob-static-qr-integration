@@ -19,6 +19,7 @@ const RejectedKYC = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [displayPageNumber, setDisplayPageNumber] = useState([]);
   let page_size = pageSize;
   let page = currentPage;
 
@@ -103,6 +104,28 @@ const RejectedKYC = () => {
     }
   };
 
+
+  useEffect(() => {
+    let lastSevenPage = totalPages - 7;
+    if (pageNumbers?.length>0) {
+      let start = 0
+      let end = (currentPage + 6)
+      if (totalPages > 6) {
+        start = (currentPage - 1)
+  
+        if (parseInt(lastSevenPage) <= parseInt(start)) {
+          start = lastSevenPage
+        }
+  
+      }
+      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
+        return pgNumber;
+      })   
+     setDisplayPageNumber(pageNumber) 
+    }
+  }, [currentPage, totalPages])
+
+
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
@@ -154,8 +177,9 @@ const RejectedKYC = () => {
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th>Serial.No</th>
+                <th>S. No.</th>
                 <th>Client Code</th>
+                <th>Company Name</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Contact Number</th>
@@ -178,6 +202,7 @@ const RejectedKYC = () => {
                   <tr key={i}>
                     <td>{i + 1}</td>
                     <td>{user.clientCode}</td>
+                    <td>{user.companyName}</td>
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
@@ -193,11 +218,13 @@ const RejectedKYC = () => {
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <a className="page-link" onClick={prevPage}>
+              <button 
+              className="page-link" 
+              onClick={prevPage}>
                 Previous
-              </a>
+              </button>
             </li>
-            {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6)?.map((pgNumber, i) => (
+            {displayPageNumber?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
