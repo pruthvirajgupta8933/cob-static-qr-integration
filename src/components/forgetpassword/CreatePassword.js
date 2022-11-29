@@ -147,7 +147,8 @@ const CreatePassword = (props) => {
                               )}
                             </a>
                           </div>
-                          <ErrorMessage name="confirmpassword">
+                                              </div>
+                                              <ErrorMessage name="confirmpassword">
                             {(msg) => (
                               <div
                                 className="abhitest"
@@ -161,12 +162,12 @@ const CreatePassword = (props) => {
                               </div>
                             )}
                           </ErrorMessage>
-                        </div>
+
                       </div>
 
                       <button
                         type="submit"
-                        className="createpasswordBtn text-white"
+                        className="createpasswordBtn mt-3 text-white"
                         // onClick={() => props.props("a4")}
                       >
                         Submit

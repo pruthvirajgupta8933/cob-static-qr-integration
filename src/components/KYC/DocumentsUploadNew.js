@@ -12,8 +12,7 @@ import {
   kycDocumentUploadList,
   merchantInfo,
   removeDocument,
-  verifyKycDocumentTab,
-  verifyKycEachTab,
+  verifyKycDocumentTab
 } from "../../slices/kycSlice";
 import plus from "../../assets/images/plus.png";
 import "../../assets/css/kyc-document.css";
@@ -29,9 +28,9 @@ function DocumentsUpload(props) {
   const dispatch = useDispatch();
 
   function readURL(input, id) {
-    if (input.files && input.files[0]) {
+    if (input?.files && input?.files[0]) {
       let reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         $(".imagepre_sub_" + id).attr("src", e.target.result);
         $(".imagepre_" + id).show();
       };
@@ -48,7 +47,7 @@ function DocumentsUpload(props) {
   const [requiredDocList, setRequiredDocList] = useState([1, 2, 5, 6, 11]);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Upload Document");
-  
+
 
   const { auth, kyc } = useSelector((state) => state);
   const { allTabsValidate } = kyc;
@@ -102,7 +101,7 @@ function DocumentsUpload(props) {
   };
 
   let array1filtered = Array1.filter(myFilter);
-  const handleChange = function(e, id) {
+  const handleChange = function (e, id) {
     setSelectedFile(e.target.files[0]);
     readURL(e.target, id);
   };
@@ -122,7 +121,7 @@ function DocumentsUpload(props) {
       const kycData = { bodyFormData, docType };
 
       dispatch(merchantInfo(kycData))
-        .then(function(response) {
+        .then(function (response) {
           if (response?.payload?.status) {
             setTitle("SUBMIT KYC");
             toast.success(response?.payload?.message);
@@ -133,11 +132,11 @@ function DocumentsUpload(props) {
             toast.error(message);
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.error("Error:", error);
           toast.error("Something went wrong while saving the document");
         });
-    } 
+    }
     // update doc list after the upload the document
     setTimeout(() => {
       getKycDocList(role)
@@ -161,7 +160,7 @@ function DocumentsUpload(props) {
           : toast.error(resp?.payload?.message);
 
 
-          getKycDocList(role)
+        getKycDocList(role)
       });
 
     }
@@ -173,15 +172,15 @@ function DocumentsUpload(props) {
       };
       dispatch(approveDoc(approverDocDetails)).then((resp) => {
         resp?.payload?.status
-          ? toast.success(resp?.payload?.message) 
+          ? toast.success(resp?.payload?.message)
           : toast.error(resp?.payload?.message);
 
 
-          getKycDocList(role)
+        getKycDocList(role)
       });
     }
 
-    
+
   };
 
   const rejectDoc = (doc_id) => {
@@ -193,10 +192,10 @@ function DocumentsUpload(props) {
     dispatch(verifyKycDocumentTab(rejectDetails))
       .then((resp) => {
         resp?.payload?.status && toast.success(resp?.payload?.message)
-        if(typeof(resp?.payload?.status)==='undefined') {toast.error("Please Try After Sometimes")}
+        if (typeof (resp?.payload?.status) === 'undefined') { toast.error("Please Try After Sometimes") }
 
         getKycDocList(role)
-        
+
       })
       .catch((e) => {
         toast.error("Try Again Network Error");
@@ -223,7 +222,7 @@ function DocumentsUpload(props) {
       });
   };
 
-  const getKycDocList = (role) =>{
+  const getKycDocList = (role) => {
     dispatch(
       kycDocumentUploadList({
         login_id: role?.verifier || role?.approver ? kycid : loginId
@@ -306,11 +305,17 @@ function DocumentsUpload(props) {
     return data[0]?.value;
   };
 
+
+  useEffect(() => {
+    readURL({},0);
+  }, [docTypeIdDropdown])
+  
+
   return (
     <>
       {BusinessOverviewStatus === true ||
-      (KycList?.businessType !== null &&
-        KycList?.businessType !== undefined) ? (
+        (KycList?.businessType !== null &&
+          KycList?.businessType !== undefined) ? (
         <div className="col-md-12">
           <Formik
             initialValues={initialValues}
@@ -356,81 +361,7 @@ function DocumentsUpload(props) {
 
                   {role?.merchant ? (
                     KycList?.status !== "Approved" &&
-                    KycList?.status !== "Verified" ? (
-                      // docTypeIdDropdown === "1" ? (
-                      //   <div class="row">
-                      //     <div class="col-lg-6 width">
-                      //       <div className="file-upload border-dotted">
-                      //         <div className="image-upload-wrap ">
-                      //           <FormikController
-                      //             control="file"
-                      //             type="file"
-                      //             name="aadhaar_front"
-                      //             className="file-upload-input"
-                      //             id="1"
-                      //             onChange={(e) => handleChange(e, 1)}
-                      //           />
-
-                      //           <div className="drag-text">
-                      //             <h3 class="p-2 font-16">
-                      //               Add Front Aadhaar Card
-                      //             </h3>
-                      //             <img
-                      //               alt="Doc"
-                      //               src={plus}
-                      //               style={{ width: 30 }}
-                      //               className="mb-4"
-                      //             />
-                      //             <p class="card-text">Upto 2 MB file size</p>
-                      //           </div>
-                      //         </div>
-                      //       </div>
-                      //       {/* uploaded document preview */}
-                      //       <div className="file-upload-content imagepre_1">
-                      //         <img
-                      //           className="file-upload-image imagepre_sub_1"
-                      //           src="#"
-                      //           alt="Document"
-                      //         />
-                      //       </div>
-                      //     </div>
-                      //     <div class="col-lg-6 width">
-                      //       <div className="file-upload  border-dotted">
-                      //         <div className="image-upload-wrap ">
-                      //           <FormikController
-                      //             control="file"
-                      //             type="file"
-                      //             name="aadhaar_back"
-                      //             className="file-upload-input"
-                      //             id="2"
-                      //             onChange={(e) => handleChange(e, 2)}
-                      //           />
-                      //           <div className="drag-text">
-                      //             <h3 class="p-2 font-16">
-                      //               Add Back Aadhaar Card
-                      //             </h3>
-                      //             <img
-                      //               alt="Doc"
-                      //               src={plus}
-                      //               style={{ width: 30 }}
-                      //               className="mb-4"
-                      //             />
-                      //             <p class="card-text">Upto 2 MB file size</p>
-                      //           </div>
-                      //         </div>
-                      //       </div>
-
-                      //       {/* uploaded document preview */}
-                      //       <div className="file-upload-content imagepre_2">
-                      //         <img
-                      //           className="file-upload-image imagepre_sub_2"
-                      //           src="#"
-                      //           alt="Document"
-                      //         />
-                      //       </div>
-                      //     </div>
-                      //   </div>
-                      // ) : docTypeIdDropdown !== "1" &&
+                      KycList?.status !== "Verified" ? (
                       docTypeIdDropdown !== "" ? (
                         <div class="col-lg-6 ">
                           <div className="file-upload  border-dotted">
@@ -445,7 +376,7 @@ function DocumentsUpload(props) {
                               />
                               <div className="drag-text">
                                 <h3 class="p-2 font-16">
-                                  Add the selected docuement
+                                  Add the selected document
                                 </h3>
                                 <img
                                   alt="Doc"
@@ -460,7 +391,7 @@ function DocumentsUpload(props) {
                           {/* uploaded document preview */}
                           <div className="file-upload-content imagepre_3">
                             <img
-                              className="file-upload-image imagepre_sub_3"
+                              className="file-upload-image imagepre_sub_3 hide-mg"
                               src="#"
                               alt="Document"
                             />
@@ -476,27 +407,10 @@ function DocumentsUpload(props) {
                     <></>
                   )}
 
-                  {/* {savedData?.length > 0 ? (
-                    savedData.map((img, i) =>
-                      img?.status === "Rejected" ? (
-                        <div className="col-lg-6 mt-4 test">
-                          <p className="text-danger"> {img?.comment}</p>
-                          <img
-                            className="file-upload"
-                            src={img?.filePath}
-                            alt="kyc docuement"
-                          />
-                        </div>
-                      ) : (
-                        <></>
-                      )
-                    )
-                  ) : (
-                    <></>
-                  )} */}
+
                   {KycList?.status !== "Approved" &&
-                  KycList?.status !== "Verified" &&
-                  role?.merchant ? (
+                    KycList?.status !== "Verified" &&
+                    role?.merchant ? (
                     <div class="col-12">
                       <button
                         className="btn btnbackground text-white mt-5"
@@ -510,9 +424,9 @@ function DocumentsUpload(props) {
 
                       {/* add function go to the next step */}
                       {KycList?.status !== "Approved" &&
-                      KycList?.status !== "Verified" &&
-                      role?.merchant &&
-                      btn ? (
+                        KycList?.status !== "Verified" &&
+                        role?.merchant &&
+                        btn ? (
                         <button
                           className="btn btnbackground text-white mt-5"
                           type="button"
@@ -527,7 +441,7 @@ function DocumentsUpload(props) {
                   ) : (
                     <></>
                   )}
-                  {true ? (
+                  {savedData?.length ? (
                     <>
                       <hr />
                       {savedData?.length > 0 ? (
@@ -554,13 +468,13 @@ function DocumentsUpload(props) {
                         <table className="table table-bordered">
                           <thead>
                             <tr>
-                              <th>S No.</th>
+                              <th>S.No.</th>
                               <th>Document Type</th>
                               <th>Document Name</th>
                               <th>Document Status</th>
                               {role?.merchant &&
-                              KycList?.status !== "Approved" &&
-                              KycList?.status !== "Verified" ? (
+                                KycList?.status !== "Approved" &&
+                                KycList?.status !== "Verified" ? (
                                 <th>Remove Item</th>
                               ) : (
                                 <></>
@@ -587,8 +501,8 @@ function DocumentsUpload(props) {
                                 </td>
                                 <td>{doc.status}</td>
                                 {role?.merchant &&
-                                KycList?.status !== "Approved" &&
-                                KycList?.status !== "Verified" ? (
+                                  KycList?.status !== "Approved" &&
+                                  KycList?.status !== "Verified" ? (
                                   <td>
                                     <button
                                       type="button"
@@ -605,41 +519,41 @@ function DocumentsUpload(props) {
 
                                 {enableBtnByStatus(doc?.status, role) ? (
                                   <td>
-                                  <span>
-                                    <a
-                                      href={() => false}
-                                      className="text-success"
-                                      onClick={() => {
-                                        verifyApproveDoc(doc?.documentId);
-                                      }}
-                                    >
-                                      {buttonText}<i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                    </a> | 
-                                    <a
-                                      href={() => false}
-                                      className="text-danger"
-                                      onClick={() => {
-                                        rejectDoc(doc?.documentId);
-                                      }}
-                                    >
-                                   <i className="fa fa-times" aria-hidden="true"></i> Reject
-                                    </a>
+                                    <span>
+                                      <a
+                                        href={() => false}
+                                        className="text-success"
+                                        onClick={() => {
+                                          verifyApproveDoc(doc?.documentId);
+                                        }}
+                                      >
+                                        {buttonText}
+                                      </a> |
+                                      <a
+                                        href={() => false}
+                                        className="text-danger"
+                                        onClick={() => {
+                                          rejectDoc(doc?.documentId);
+                                        }}
+                                      >
+                                      Reject
+                                      </a>
                                     </span>
                                   </td>
-                                ) :  (roles.verifier === true || roles.approver === true) ? (
+                                ) : (roles.verifier === true || roles.approver === true) ? (
                                   <td>
-                                   <a
+                                    <a
                                       href={() => false}
                                       className="text-danger"
                                       onClick={() => {
                                         rejectDoc(doc?.documentId);
                                       }}
                                     >
-                                  Reject<i className="fa fa-times" aria-hidden="true"></i> 
+                                      Reject
                                     </a>
-                                    </td>
+                                  </td>
                                 ) : (
-                                 <></>
+                                  <></>
                                 )}
                               </tr>
                             ))}
@@ -657,10 +571,10 @@ function DocumentsUpload(props) {
           </Formik>
         </div>
       ) : (
-        <span className="text-danger mb-4">
+        <h4 className="text-danger mb-4">
           * Please fill the Business Overview form for uploading the document,
           before submitting the KYC form.
-        </span>
+        </h4>
       )}
     </>
   );

@@ -25,6 +25,7 @@ const PendindKyc = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [statusData, setStatusData] = useState([])
+  const [displayPageNumber, setDisplayPageNumber] = useState([])
   let page_size = pageSize;
   let page = currentPage;
   const { auth ,kyc } = useSelector((state) => state);
@@ -50,10 +51,6 @@ const PendindKyc = () => {
       .get(`${API_URL.KYC_FOR_PENDING_MERCHANTS}`)
       .then((res) => {
         const data = res?.data?.results;
-       
-      // const myapp=  data[0].isDirect===true 
-      // console.log( myapp,"0000000000000000")
-        // console.log("<======== Pending Merchants =======>", data)
         const dataCoun = res?.data?.count;
         setDataCount(dataCoun);
         setPendingKycData(data);
@@ -67,7 +64,7 @@ const PendindKyc = () => {
         login_id: loginMasterId,
       })
     ).then((res) => {
-     setStatusData(res.payload)
+     setStatusData(res?.payload)
     
     });
     
@@ -78,15 +75,15 @@ const PendindKyc = () => {
     pendingMerchants();
     dispatch(kycForPendingMerchants({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Pending Merchant List Loaded");
+
+        resp?.payload?.status_code && toastConfig.errorToast("Data not loaded")
         setSpinner(false);
-
         const data = resp?.payload?.results;
-
         setData(data);
       })
 
       .catch((err) => {
+        console.log(err)
         toastConfig.errorToast("Data not loaded");
       });
   }, [currentPage, pageSize]);
@@ -97,12 +94,8 @@ const PendindKyc = () => {
   useEffect(() => {
    
     if (searchText?.length > 0) {
-      
-
       setData(
         data?.filter((item)  => 
-        
-        
           Object.values(item)
             .join(" ")
             .toLowerCase()
@@ -125,15 +118,9 @@ const PendindKyc = () => {
   const indexOfLastRecord = currentPage * pageSize;
   const nPages = Math.ceil(pendingKycData?.length / pageSize);
   const totalPages = Math.ceil(dataCount / pageSize);
-
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-
-  // console.log(pageNumbers, "pageNumbers ===>");
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
-  // const currentRecords = pendingKycData.slice(
-  //   indexOfFirstRecord,
-  //   indexOfLastRecord
-  // );
+  
 
   const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
@@ -147,6 +134,31 @@ const PendindKyc = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+
+
+
+  
+
+  useEffect(() => {
+    let lastSevenPage = totalPages - 7;
+    if (pageNumbers?.length>0) {
+      let start = 0
+      let end = (currentPage + 6)
+      if (totalPages > 6) {
+        start = (currentPage - 1)
+  
+        if (parseInt(lastSevenPage) <= parseInt(start)) {
+          start = lastSevenPage
+        }
+  
+      }
+      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
+        return pgNumber;
+      })   
+     setDisplayPageNumber(pageNumber) 
+    }
+  }, [currentPage, totalPages])
+  
 
   return (
     <div className="container-fluid flleft">
@@ -174,8 +186,6 @@ const PendindKyc = () => {
             <option value="20">20</option>
             <option value="50">50</option>
             <option value="100">100</option>
-            <option value="200">200</option>
-            <option value="500">500</option>
           </select>
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -200,8 +210,9 @@ const PendindKyc = () => {
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th>Serial.No</th>
+                <th>S. No.</th>
                 <th>Client Code</th>
+                <th>Company Name</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Contact Number</th>
@@ -215,7 +226,6 @@ const PendindKyc = () => {
               {spinner && <Spinner />}
               {data?.length === 0 ? (
                 <tr>
-                  {" "}
                   <td colSpan={"8"}>
                     <h1 className="nodatafound">No data found</h1>
                   </td>
@@ -225,6 +235,7 @@ const PendindKyc = () => {
                   <tr key={i}>
                     <td>{i + 1}</td>
                     <td>{user.clientCode}</td>
+                    <td>{user.companyName}</td>
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
@@ -232,7 +243,7 @@ const PendindKyc = () => {
                     <td>{user?.isDirect}</td>
                     {/* <td>{user.status}</td> */}
                    
-                    <td> <button type="button" onClick={()=>handleClick(user.loginMasterId)} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    <td> <button type="button" onClick={()=>handleClick(user?.loginMasterId)} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
   View Status
 </button></td>
                   </tr>
@@ -244,12 +255,12 @@ const PendindKyc = () => {
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <a className="page-link" onClick={prevPage}>
+              <button className="page-link" onClick={prevPage}>
                 Previous
-              </a>
+              </button>
             </li>
             
-            {pageNumbers && pageNumbers?.slice(currentPage - 1, currentPage + 6)?.map((pgNumber, i) => (
+            {displayPageNumber?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
