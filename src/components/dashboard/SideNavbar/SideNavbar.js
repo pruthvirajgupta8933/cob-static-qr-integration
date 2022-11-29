@@ -133,6 +133,8 @@ function SideNavbar() {
                   ) : (
                     <React.Fragment></React.Fragment>
                   )}
+
+{(roleBasedShowTab?.approver === true ) ? (
                    <li className="ant-menu-item" role="menuitem">
                       <Link
                         to={`${url}/assignzone`}
@@ -143,16 +145,9 @@ function SideNavbar() {
                         {/* <span class="new-tab">new</span> */}
                       </Link>
                     </li>
-                    <li className="ant-menu-item" role="menuitem">
-                      <Link
-                        to={`${url}/additionalpage`}
-                        className="txt-white sidenavFonts"
-                      >
-                        <i className="fa fa-list" aria-hidden="true" />
-                        <span>&nbsp;Additional KYC</span>
-                        {/* <span class="new-tab">new</span> */}
-                      </Link>
-                    </li>
+                     ) : (
+                      <React.Fragment></React.Fragment>
+                    )}
 
                   <li
                     className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open"

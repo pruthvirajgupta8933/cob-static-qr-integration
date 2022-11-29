@@ -19,6 +19,7 @@ function ApprovedMerchant() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [spinner, setSpinner] = useState(true);
+  const [displayPageNumber, setDisplayPageNumber] = useState([]);
   let page_size = pageSize;
   let page = currentPage;
 
@@ -41,7 +42,7 @@ function ApprovedMerchant() {
     allApprovedMerchants();
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Approved Data Loaded");
+        // toastConfig.successToast("Approved Data Loaded");
         setSpinner(false);
         const data = resp?.payload?.results;
         setApproveMerchant(data);
@@ -74,13 +75,7 @@ function ApprovedMerchant() {
   const nPages = Math.ceil(approvedMerchantData.length / pageSize);
 
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-
-  // console.log(pageNumbers, "pageNumbers ===>");
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
-  // const currentRecords = pendingKycData.slice(
-  //   indexOfFirstRecord,
-  //   indexOfLastRecord
-  // );
 
   const nextPage = () => {
     if (currentPage < pageNumbers.length) {
@@ -112,7 +107,33 @@ function ApprovedMerchant() {
       });
   };
 
+<<<<<<< HEAD
   
+=======
+
+
+  useEffect(() => {
+    let lastSevenPage = totalPages - 7;
+    if (pageNumbers?.length>0) {
+      let start = 0
+      let end = (currentPage + 6)
+      if (totalPages > 6) {
+        start = (currentPage - 1)
+  
+        if (parseInt(lastSevenPage) <= parseInt(start)) {
+          start = lastSevenPage
+        }
+  
+      }
+      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
+        return pgNumber;
+      })   
+     setDisplayPageNumber(pageNumber) 
+    }
+  }, [currentPage, totalPages])
+
+
+>>>>>>> 93e8777a61baeae47c370976969c91c384f8a0a0
   return (
     <div className="container-fluid flleft">
       <div className="col-lg-4 mrg-btm- bgcolor">
@@ -136,7 +157,6 @@ function ApprovedMerchant() {
           <option value="20">20</option>
           <option value="50">50</option>
           <option value="100">100</option>
-          <option value="200">200</option>
         </select>
       </div>
       <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -157,35 +177,36 @@ function ApprovedMerchant() {
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th>Serial No.</th>
+                <th>S. No.</th>
                 <th>Client Code</th>
+                <th>Company Name</th>
                 <th>Name</th>
                 <th> Email</th>
                 <th>Contact Number</th>
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
-            <th>View document</th>
-          </tr>
-        </thead>
-        <tbody>
-          {approveMerchant?.length == 0 ? (
-            <tr>
-              {" "}
-              <td colSpan={"8"}>
-                <h1 className="nodatafound">No data found</h1>
-              </td>
-            </tr>
-          ) : (
-            approveMerchant?.map((user, i) => (
-              <tr key={i}>
-                <td>{i + 1}</td>
-                <td>{user?.clientCode}</td>
-                <td>{user?.name}</td>
-                <td>{user?.emailId}</td>
-                <td>{user?.contactNumber}</td>
-                <td>{user?.status}</td>
-                <td>{user?.signUpDate}</td>
+                <th>View document</th>
+              </tr>
+            </thead>
+            <tbody>
+              {approveMerchant?.length == 0 ? (
+                <tr>
+                  <td colSpan={"8"}>
+                    <h1 className="nodatafound">No data found</h1>
+                  </td>
+                </tr>
+              ) : (
+                approveMerchant?.map((user, i) => (
+                  <tr key={i}>
+                    <td>{i + 1}</td>
+                    <td>{user.clientCode}</td>
+                    <td>{user.companyName}</td>
+                    <td>{user.name}</td>
+                    <td>{user.emailId}</td>
+                    <td>{user.contactNumber}</td>
+                    <td>{user.status}</td>
+                    <td>{user.signUpDate}</td>
                     <td>{user?.isDirect}</td>
                     <td>
                       <button
@@ -274,11 +295,11 @@ function ApprovedMerchant() {
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <a className="page-link" onClick={prevPage}>
+              <button className="page-link" onClick={prevPage}>
                 Previous
-              </a>
+              </button>
             </li>
-            {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6)?.map((pgNumber, i) => (
+            {displayPageNumber?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
