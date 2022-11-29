@@ -165,12 +165,12 @@ function VerifiedMerchant() {
                 verfiedMerchant?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.clientCode}</td>
-                    <td>{user.name}</td>
-                    <td>{user.emailId}</td>
-                    <td>{user.contactNumber}</td>
-                    <td>{user.status}</td>
-                    <td>{user.signUpDate}</td>
+                    <td>{user?.clientCode}</td>
+                    <td>{user?.name}</td>
+                    <td>{user?.emailId}</td>
+                    <td>{user?.contactNumber}</td>
+                    <td>{user?.status}</td>
+                    <td>{user?.signUpDate}</td>
                     <td>{user?.isDirect}</td>
                     {roles.approver === true ? (
                       <td>

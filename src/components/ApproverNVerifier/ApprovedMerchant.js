@@ -127,6 +127,7 @@ function ApprovedMerchant() {
       });
   };
 
+  
   return (
     <div className="container-fluid flleft">
       <div className="col-lg-4 mrg-btm- bgcolor">
@@ -198,12 +199,12 @@ function ApprovedMerchant() {
             approveMerchant?.map((user, i) => (
               <tr key={i}>
                 <td>{i + 1}</td>
-                <td>{user.clientCode}</td>
-                <td>{user.name}</td>
-                <td>{user.emailId}</td>
-                <td>{user.contactNumber}</td>
-                <td>{user.status}</td>
-                <td>{user.signUpDate}</td>
+                <td>{user?.clientCode}</td>
+                <td>{user?.name}</td>
+                <td>{user?.emailId}</td>
+                <td>{user?.contactNumber}</td>
+                <td>{user?.status}</td>
+                <td>{user?.signUpDate}</td>
                     <td>{user?.isDirect}</td>
                 {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
                 <td>

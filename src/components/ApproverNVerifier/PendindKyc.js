@@ -64,7 +64,7 @@ const PendindKyc = () => {
         login_id: loginMasterId,
       })
     ).then((res) => {
-     setStatusData(res.payload)
+     setStatusData(res?.payload)
     
     });
     
@@ -229,7 +229,7 @@ const PendindKyc = () => {
                     <td>{user?.isDirect}</td>
                     {/* <td>{user.status}</td> */}
                    
-                    <td> <button type="button" onClick={()=>handleClick(user.loginMasterId)} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                    <td> <button type="button" onClick={()=>handleClick(user?.loginMasterId)} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
   View Status
 </button></td>
                   </tr>
