@@ -22,6 +22,7 @@ function AssignZone() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [spinner, setSpinner] = useState(true);
+  const [displayPageNumber, setDisplayPageNumber] = useState([]);
  
   const [modalDisplayData, setModalDisplayData] = useState({});
   let page_size = pageSize;
@@ -80,18 +81,12 @@ function AssignZone() {
     }
   }, [searchText]);
 
-  const indexOfLastRecord = currentPage * pageSize;
-  const totalPages = Math.ceil(dataCount / pageSize);
-  const nPages = Math.ceil(approvedMerchantData.length / pageSize);
 
+  const totalPages = Math.ceil(dataCount / pageSize);
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
 
-  
-  const indexOfFirstRecord = indexOfLastRecord - pageSize;
-  
-
   const nextPage = () => {
-    if (currentPage < pageNumbers.length) {
+    if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -101,7 +96,53 @@ function AssignZone() {
       setCurrentPage(currentPage - 1);
     }
   };
-  // const arr = approveMerchant;
+
+
+
+  useEffect(() => {
+    let lastSevenPage = totalPages - 7;
+    if (pageNumbers?.length>0) {
+      let start = 0
+      let end = (currentPage + 6)
+      if (totalPages > 6) {
+        start = (currentPage - 1)
+  
+        if (parseInt(lastSevenPage) <= parseInt(start)) {
+          start = lastSevenPage
+        }
+  
+      }
+      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
+        return pgNumber;
+      })   
+     setDisplayPageNumber(pageNumber) 
+    }
+  }, [currentPage, totalPages])
+  
+
+
+  // const indexOfLastRecord = currentPage * pageSize;
+  // const totalPages = Math.ceil(dataCount / pageSize);
+  // const nPages = Math.ceil(approvedMerchantData.length / pageSize);
+
+  // const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+
+  
+  // const indexOfFirstRecord = indexOfLastRecord - pageSize;
+  
+
+  // const nextPage = () => {
+  //   if (currentPage < pageNumbers.length) {
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
+
+  // const prevPage = () => {
+  //   if (currentPage > 1) {
+  //     setCurrentPage(currentPage - 1);
+  //   }
+  // };
+  // // const arr = approveMerchant;
 
   // const zoneData = Object.assign({}, arr);
  
@@ -143,7 +184,7 @@ return (
                 <option value="50">50</option>
                 <option value="100">100</option>
                 <option value="200">200</option>
-                <option value="500">500</option>
+                
               </select>
             </div>
             {/* <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -211,36 +252,40 @@ return (
                 </table>
               </div>
               <nav>
-                <ul className="pagination justify-content-center">
-                  <li className="page-item">
-                    <a className="page-link" onClick={prevPage}>
-                      Previous
-                    </a>
-                  </li>
-                  {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6)?.map((pgNumber, i) => (
-                    <li
-                      key={i}
-                      className={
-                        pgNumber === currentPage ? " page-item active" : "page-item"
-                      }
-                    >
-                      <a href={() => false} className={`page-link data_${i}`}>
-                        <span onClick={() => setCurrentPage(pgNumber)}>{pgNumber}</span>
-                      </a>
-                    </li>
-                  ))}
+          <ul className="pagination justify-content-center">
+            <li className="page-item">
+              <button 
+              className="page-link" 
+              onClick={prevPage}>
+                Previous
+              </button>
+            </li>
+            {displayPageNumber?.map((pgNumber, i) => (
+              <li
+                key={i}
+                className={
+                  pgNumber === currentPage ? " page-item active" : "page-item"
+                }
+              >
+                <a href={() => false} className={`page-link data_${i}`}>
+                  <span onClick={() => setCurrentPage(pgNumber)}>
+                    {pgNumber}
+                  </span>
+                </a>
+              </li>
+            ))}
 
-                  <li class="page-item">
-                    <button
-                      class="page-link"
-                      onClick={nextPage}
-                      disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
-                    >
-                      Next
-                    </button>
-                  </li>
-                </ul>
-              </nav>
+            <li class="page-item">
+              <button
+                class="page-link"
+                onClick={nextPage}
+                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
+              >
+                Next
+              </button>
+            </li>
+          </ul>
+        </nav>
             </div>
           </div>
         </div>
