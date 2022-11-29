@@ -164,7 +164,7 @@ function Dashboard() {
                     <Route exact path={`${path}/assignzone`} >
                          <AssignZone/>
                     </Route>
-                    <Route exact path={`${path}/additionalpage`} >
+                    <Route exact path={`${path}/additional-kyc`} >
                          <AdditionalKYC/>
                     </Route>
 
