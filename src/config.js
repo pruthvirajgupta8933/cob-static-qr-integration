@@ -136,6 +136,8 @@ const API_LIVE = {
   ZONE_MASTER : `${url}/zone/zones-master`,
   RISK_CATEGORY:`${kyc_url}/kyc/get-risk-category-details/`,
   ZONE_EMPLOYEE:`${url}/zone/employee-detail`,
+  UPDATE_ZONE_DATA:`${url}/zone/update-zone-data`,
+  GET_ZONE_INFO:`${url}/zone/get-zone-info`,
 
 
   ////////////////////////////////////////

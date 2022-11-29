@@ -22,6 +22,7 @@ function AssignZone() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [spinner, setSpinner] = useState(true);
+ 
   const [modalDisplayData, setModalDisplayData] = useState({});
   let page_size = pageSize;
   let page = currentPage;
@@ -105,7 +106,8 @@ function AssignZone() {
   // const zoneData = Object.assign({}, arr);
  
 
-  return (
+  
+return (
     <section className="ant-layout">
       <div>
         <NavBar />
@@ -144,7 +146,7 @@ function AssignZone() {
                 <option value="500">500</option>
               </select>
             </div>
-            <div className="form-group col-lg-3 col-md-12 mt-2">
+            {/* <div className="form-group col-lg-3 col-md-12 mt-2">
               <label>Onboard Type</label>
               <select
                 // value={pageSize}
@@ -158,7 +160,7 @@ function AssignZone() {
                 <option value="Offline">Offline</option>
 
               </select>
-            </div>
+            </div> */}
             <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
               <div className="scroll overflow-auto">
 
@@ -197,7 +199,8 @@ function AssignZone() {
                           <td>{user?.isDirect}</td>
                           {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
                           <td>
-                            <button type="submit" onClick={()=>{setModalDisplayData(user)}} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                            <button type="submit" onClick={()=>{setModalDisplayData(user)
+                            }} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                               Update Zone
                             </button>
                           </td>
