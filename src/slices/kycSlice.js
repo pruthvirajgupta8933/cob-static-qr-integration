@@ -5,6 +5,8 @@ import {
   kycValidatorAuth,
 } from "../utilities/axiosInstance";
 
+import { APP_ENV } from "../config";
+
 const initialState = {
   documentByloginId: {},
   kycApproved: {
@@ -310,15 +312,28 @@ export const saveBusinessInfo = createAsyncThunk(
 export const businessOverviewState = createAsyncThunk(
   "kyc/businessOverviewState",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    let response = {}
+    if(APP_ENV){
+      response = await axiosInstanceAuth
+      .get(`${API_URL.Business_overview_state_}`, {
+        headers: {},
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    }else{
+
+      response = await axiosInstanceAuth
       .post(`${API_URL.Business_overview_state_}`, {
         headers: {},
       })
       .catch((error) => {
         return error.response;
       });
+    }
+   
 
-    return response.data;
+    return response?.data;
   }
 );
 

@@ -1,6 +1,5 @@
 const ENV_PROD = false; // don't change in the local environment
-let url,
-  kyc_url = "",kyc_validate = "";
+let url,kyc_url = "",kyc_validate = "";
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
@@ -227,6 +226,7 @@ const API_LIVE = {
  
 const API_URL = API_LIVE;
 export default API_URL;
+export const APP_ENV  = ENV_PROD;
 
 export const TIMEOUT = 1200; // 1200 seconds = 20 minutes
 export const AUTH_TOKEN = "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69";
