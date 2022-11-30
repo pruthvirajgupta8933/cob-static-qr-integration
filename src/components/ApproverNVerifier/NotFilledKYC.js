@@ -61,7 +61,7 @@ const NotFilledKYC = () => {
 
   //------- KYC NOT FILLED SEARCH FILTER ------------//
   useEffect(() => {
-    console.log("searchText",searchText)
+    // console.log("searchText",searchText)
     if (searchText?.length > 0) {
       setData(
         notFilledData?.filter((item) =>

@@ -15,7 +15,7 @@ export const RegexMsg = {
     acceptAlphaNumeric : "Only alphanumeric are allowed for this field",
     digit : "Only Digit are allowed for this field",
     alphaBetwithhyphon:"Only alphabets and '-' are allowed for this field",
-    addressForSpecific:"Address is not in valid format, Only '-','/','.' special chracters are allowed",
+    addressForSpecific:"Address is not in valid format, Only '-', '/' , '.' special chracters are allowed",
     address : "Address is not in valid format, Special Characters are not allowed (#,$,@ etc)"
 }
 

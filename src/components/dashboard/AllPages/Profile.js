@@ -198,7 +198,7 @@ export const Profile = () => {
                 <ul class="list-group">
                   <li class="list-group-item">
                     <div class="col-lg-6">
-                      <label><strong>User Name : </strong></label>
+                      <label><strong>Username : </strong></label>
                       <span className="border-0 text-uppercase" disabled="true" readonly>
                       &nbsp; {clientContactPersonName}
                       </span>
