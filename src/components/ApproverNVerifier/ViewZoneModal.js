@@ -11,14 +11,14 @@ const initialValues = {
   zoneName: "",
   zoneHeadName: "",
   zoneEmployee: "",
-  risk_category: ""
+  risk_category: "0"
 }
 
 const validationSchema = Yup.object({
   zoneName: Yup.string().required("Required").nullable(),
   zoneHeadName: Yup.string().required("Required").nullable(),
   zoneEmployee: Yup.string().required("Required").nullable(),
-  risk_category: Yup.string().required("Required").nullable()
+  // risk_category: Yup.string().required("Required").nullable()
 })
 
 
@@ -214,7 +214,7 @@ const ViewZoneModal = (props) => {
                       <Form>
 
                         <div class="row">
-                          <div class="col-lg-6">
+                          <div class="col-lg-4">
                             <div className="input full- optional">
                               <label
                                 className="string optional"
@@ -235,7 +235,7 @@ const ViewZoneModal = (props) => {
                             </div>
 
                           </div>
-                          <div class="col-lg-6">
+                          <div class="col-lg-4">
                             <div className="input full- optional">
                               <label
                                 className="string optional"
@@ -257,9 +257,9 @@ const ViewZoneModal = (props) => {
 
                             </div>
                           </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-lg-6">
+                         
+                          
+                            <div class="col-lg-4">
                               <div className="input full- optional">
                                 <label
                                   className="string optional"
@@ -277,7 +277,7 @@ const ViewZoneModal = (props) => {
 
                               </div>
                             </div>
-                            <div class="col-lg-6">
+                            {/* <div class="col-lg-6">
                               <div className="input full- optional">
                                 <label
                                   className="string optional"
@@ -296,7 +296,7 @@ const ViewZoneModal = (props) => {
 
 
                               </div>
-                            </div>
+                            </div> */}
                           </div>
 
                         
@@ -325,7 +325,7 @@ const ViewZoneModal = (props) => {
       <th scope="col">Zone Name</th>
       <th scope="col">Zone Head Name</th>
       <th scope="col">Employee Name</th>
-      <th scope="col">Risk Category</th>
+      {/* <th scope="col">Risk Category</th> */}
       </tr>
   </thead>
   <tbody>
@@ -333,7 +333,7 @@ const ViewZoneModal = (props) => {
       <td>{zoneInfo?.zone_name}</td>
       <td>{zoneInfo?.zone_head_name}</td>
       <td>{zoneInfo?.employee_name}</td>
-      <td>{zoneInfo?.risk_name}</td>
+      {/* <td>{zoneInfo?.risk_name}</td> */}
     </tr>
   </tbody>
 </table>

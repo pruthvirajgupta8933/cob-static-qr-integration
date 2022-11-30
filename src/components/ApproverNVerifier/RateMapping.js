@@ -9,8 +9,9 @@ import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import ViewZoneModal from "./ViewZoneModal";
 
 import NavBar from "../../components/dashboard/NavBar/NavBar"
+import ViewRateMapping from "./ViewRateMapping";
 
-function AssignZone() {
+function RateMapping() {
   const [approveMerchant, setApproveMerchant] = useState([]);
   const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
@@ -159,7 +160,7 @@ return (
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Assign Zone</h1>
+            <h1 className="m-b-sm gx-float-left">Rate Mapping</h1>
 
 
           </div>
@@ -172,7 +173,7 @@ return (
                 type="text"
                 placeholder="Search Here"
               />
-              <div> <ViewZoneModal userData={modalDisplayData} /></div>
+              <div> <ViewRateMapping userData={modalDisplayData} /></div>
             </div>
             <div className="col-lg-4 mrg-btm- bgcolor">
               <label>Count Per Page</label>
@@ -215,7 +216,7 @@ return (
                       <th>KYC Status</th>
                       <th>Registered Date</th>
                       <th>Onboard Type</th>
-                      <th>View Zone</th>
+                      <th>Rate Mapping</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -241,7 +242,7 @@ return (
                           <td>
                             <button type="submit" onClick={()=>{setModalDisplayData(user)
                             }} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                              Update Zone
+                              Rate Map
                             </button>
                           </td>
                         </tr>
@@ -293,4 +294,4 @@ return (
   )
 }
 
-export default AssignZone;
+export default RateMapping;
