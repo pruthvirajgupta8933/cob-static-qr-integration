@@ -1,5 +1,5 @@
-const ENV_PROD = true; // don't change in the local environment
-let url, kyc_url, kyc_validate = "";
+const ENV_PROD = false; // don't change in the local environment
+let url,kyc_url = "",kyc_validate = "";
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
@@ -37,14 +37,12 @@ const API_LIVE = {
   SUCCESS_TXN_SUMMARY: adminAPIURL + "/REST/SuccessTxnSummary/",
 
   // * Rate mapping */
-  RATE_MAPPING_GenerateClientFormForCob:
-    adminAPIURL + "/config/GenerateClientFormForCob",
+  RATE_MAPPING_GenerateClientFormForCob:adminAPIURL+"/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
-  RATE_MAPPING_CLONE: adminAPIURL + "/Ratemapping/cloning",
-  RATE_ENABLE_PAYLINK: adminAPIURL + "/getDataByCommonProc/getCommonData/31",
+  RATE_MAPPING_CLONE: adminAPIURL+"/REST/Ratemapping/cloning",
+  RATE_ENABLE_PAYLINK: adminAPIURL+"/getDataByCommonProc/getCommonData/31",
 
-  CHECK_PERMISSION_PAYLINK:
-    adminAPIURL + "/getDataByCommonProc/getCommonData/29/",
+  CHECK_PERMISSION_PAYLINK:adminAPIURL + "/getDataByCommonProc/getCommonData/29/",
   BANK_IFSC_CODE_VERIFY: "https://ifsc.razorpay.com/",
   BANK_LIST_NB:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
@@ -110,7 +108,7 @@ const API_LIVE = {
   ViewTxnEnqMultiParam: adminAPIURL + "/Enquiry/ViewTxnEnqMultiParam",
 
   /**Kyc DocumentsUploads */
-  DocumentsUpload: `${kyc_url}/kyc/document-type/`, //get APi
+  DocumentsUpload: `${kyc_url}/kyc/document-type`, //get APi
 
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
   upload_Single_Doc: `${kyc_url}/kyc/upload-merchant-document/single-file/`, //post APi
@@ -122,6 +120,27 @@ const API_LIVE = {
   Get_ALL_Collection_Type: `${kyc_url}/kyc/get-all-collection-type`,
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
   Business_overview_state_: `${kyc_url}/kyc/get-all-state-details/`,
+
+
+
+
+
+
+
+
+  /////////////////////////////////////////////  AssignZone APi
+  ZONE_DETAILS:`${url}/zone/zones`,
+  ZONE_MASTER : `${url}/zone/zones-master`,
+  RISK_CATEGORY:`${kyc_url}/kyc/get-risk-category-details/`,
+  ZONE_EMPLOYEE:`${url}/zone/employee-detail`,
+  UPDATE_ZONE_DATA:`${url}/zone/update-zone-data`,
+  GET_ZONE_INFO:`${url}/zone/get-zone-info`,
+
+
+  ////////////////////////////////////////Rate mapping
+  GET_TEMPLATE_DETAILS:`${url}/merchant/get-rate-template-detail`,
+
+
 
   /////////////////////////Kyc approver
   /* For pending*/
@@ -207,6 +226,7 @@ const API_LIVE = {
  
 const API_URL = API_LIVE;
 export default API_URL;
+export const APP_ENV  = ENV_PROD;
 
 export const TIMEOUT = 1200; // 1200 seconds = 20 minutes
 export const AUTH_TOKEN = "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69";

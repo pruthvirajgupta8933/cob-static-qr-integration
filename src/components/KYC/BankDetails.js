@@ -76,11 +76,11 @@ function BankDetails(props) {
   };
 
   const validationSchema = Yup.object({
-    account_holder_name: Yup.string()
+    account_holder_name: Yup.string().trim()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
-    ifsc_code: Yup.string()
+    ifsc_code: Yup.string().trim()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .matches(IFSCRegex, "Your IFSC Number is Invalid")
       .min(6, "Username must be at least 6 characters")
@@ -88,18 +88,18 @@ function BankDetails(props) {
       .required("Required")
 
       .nullable(),
-    account_number: Yup.string()
+    account_number: Yup.string().trim()
       .matches(AccountNoRgex, "Your Account Number is Invalid")
       .required("Required")
       .nullable(),
 
-    account_type: Yup.string()
+    account_type: Yup.string().trim()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
-    branch: Yup.string()
+    branch: Yup.string().trim()
       .required("Required")
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+     .matches(Regex.addressForSpecific, "Branch Name is not in valid format")
       .nullable(),
     bank_id: Yup.string()
       .required("Required")
@@ -328,7 +328,7 @@ function BankDetails(props) {
 
             <div class="col-sm-12 col-md-12 col-lg-6">
               <label class="col-form-label mt-0 p-2">
-                Account Number <span style={{ color: "red" }}>*</span>
+                Business Account Number <span style={{ color: "red" }}>*</span>
               </label>
 
               <FormikController

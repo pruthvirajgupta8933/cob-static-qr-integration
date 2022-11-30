@@ -57,6 +57,7 @@ function KycForm() {
   const bankDetails = allTabsValidate?.BankDetails?.submitStatus?.status
   const contactInfo = allTabsValidate?.merchantContactInfo?.submitStatus?.status
   const uploadDocuments = allTabsValidate?.UploadDoc?.submitStatus?.status
+  // console.log("uploadDocuments",uploadDocuments)
 
   
   let history = useHistory();
@@ -101,6 +102,7 @@ function KycForm() {
   };
 
 
+  // console.log("document_status",KycTabStatusStore?.document_status)
   return (
     <section className="ant-layout">
       <div>
@@ -229,25 +231,6 @@ function KycForm() {
                                 Business Details
                               </a>
                             </li>
-
-                            {/* <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={
-                                  "nav-link " +
-                                  (tab === 4
-                                    ? "activepaylink-kyc text-font"
-                                    : "inactive text-font")
-                                }
-                                onClick={() => {
-                                  SetTab(4);
-                                  setTitle("Registered Address");
-                                }}
-                              >
-                                Registered Address
-                              </a>
-                            </li> */}
-
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}
@@ -280,7 +263,7 @@ function KycForm() {
                                   tab === 5 ? (
                                     " nav-link activepaylink-kyc text-font d-flex"
                                   ) : "inactive text-font d-flex" ? (
-                                    uploadDocuments === true || (KycTabStatusStore?.document_status!=="Not-Submitted" && KycTabStatusStore?.document_status!==undefined)? (
+                                    uploadDocuments === true || (KycTabStatusStore?.document_status!=="Not-Submitted" && KycTabStatusStore?.document_status!=="undefined")? (
                                       "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
                                       "nav-link inactive text-font d-flex"

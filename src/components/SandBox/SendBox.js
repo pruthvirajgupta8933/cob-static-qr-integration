@@ -13,6 +13,7 @@ function Sandbox() {
   const { auth, kyc } = useSelector((state) => state);
   const { user } = auth;
   const [data, setData] = useState([]) 
+  const [selectedPlan, setSelectedPlan] = useState([]) 
   const [values, setValues] = useState({
     password: "",
     showPassword: false,
@@ -20,8 +21,9 @@ function Sandbox() {
 
   const kycStatus = kyc?.kycUserList?.status;
 
-  const clientCodeOfMerchant = user.clientMerchantDetailsList[0].clientCode;
-//   console.log("User Details ===>", clientCodeOfMerchant);
+  const clientCodeOfMerchant = user.clientMerchantDetailsList && user.clientMerchantDetailsList[0]?.clientCode;
+  const clientId = user?.clientMerchantDetailsList && user?.clientMerchantDetailsList[0]?.clientId
+ 
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -51,14 +53,25 @@ function Sandbox() {
 
 
 
+  const getSubscribedPlan = (clientId, id)=>{
+    axiosInstanceAuth
+    .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
+    .then((resp) => {
+  
+      setSelectedPlan({ planId: resp?.data?.data?.planId ===null? "": resp?.data?.data?.planId })
+    })
+  }
 
 
 
   useEffect(() => {
     clientDetailRequest()
+    getSubscribedPlan(clientId,10)
 
-  },[])
+  },[clientId])
 
+
+  // console.log("selected plan",selectedPlan)
   return (
     <section className="ant-layout Satoshi-Medium">
       <div>
@@ -112,7 +125,7 @@ function Sandbox() {
                           htmlFor="inputPassword3"
                           className="col-form-label"
                         >
-                          UserName{" "}
+                          Username{" "}
                         </label>
                         <input
                           type="text"
@@ -174,8 +187,8 @@ function Sandbox() {
                     </div>
                   </form>
                 </div>
-
-                <div className="col-lg-12 border m-1 p-2-">
+                
+                {selectedPlan?.planId!=="" ? <div className="col-lg-12 border m-1 p-2-">
                   <a
                     class="btn"
                     data-toggle="collapse"
@@ -210,7 +223,7 @@ function Sandbox() {
                           htmlFor="inputPassword3"
                           className=" col-form-label"
                         >
-                          UserName{" "}
+                          Username{" "}
                         </label>
                         <input
                           type="text"
@@ -306,7 +319,8 @@ function Sandbox() {
                       </div>
                     </div>
                   </form>
-                </div>
+                </div> : <></>}
+                
               </div>
             </div>
           </section>

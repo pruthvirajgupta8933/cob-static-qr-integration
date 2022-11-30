@@ -10,90 +10,83 @@ import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 
 const NotFilledKYC = () => {
-  const { url } = useRouteMatch();
-  const roles = roleBasedAccess();
 
   const [data, setData] = useState([]);
+  // const [response, setResponse] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [notFilledData, setNotFilledData] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  let page_size = pageSize;
-  let page = currentPage;
+  const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  // let page_size = pageSize;
+  // let page = currentPage;
 
   const dispatch = useDispatch();
   const kycSearch = (e) => {
     setSearchText(e.target.value);
   };
 
-  const notFilledMerchants = async () => {
-    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_NOT_FILLED}`).then((res) => {
-      const data = res?.data?.results;
-      const dataCoun = res?.data?.count;
-      // console.log(res,"Response")
-      setNotFilledData(data);
-      setDataCount(dataCoun);
-    });
-  };
+  // const notFilledMerchants = async () => {
+  //   await axiosInstanceAuth.get(`${API_URL.KYC_FOR_NOT_FILLED}`).then((res) => {
+  //     const data = res?.data?.results;
+  //     const dataCoun = res?.data?.count;
+  //     setNotFilledData(data);
+  //     setDataCount(dataCoun);
+  //   });
+  // };
 
   useEffect(() => {
-    notFilledMerchants();
+    // notFilledMerchants();
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Not Filled Data Loaded");
+        toastConfig.successToast("Data Loaded");
+        
+        const data = resp?.payload?.results;
+        const totalData = resp?.payload?.count;
+
         setSpinner(false);
-        const data = resp?.payload.results;
+        setDataCount(totalData);
+        setNotFilledData(data);
         setData(data);
         // console.log("Paginataion Dta ===> ",notFilledData)
       })
 
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
-        console.log("Error ===>", err);
-        // if(err === undefined ) {
-        //   toastConfig.errorToast(err?.detail)
-
-        // }
       });
   }, [currentPage, pageSize]);
 
+
   //------- KYC NOT FILLED SEARCH FILTER ------------//
   useEffect(() => {
-    if (searchText.length > 0) {
+    console.log("searchText",searchText)
+    if (searchText?.length > 0) {
       setData(
-        data.filter((item) =>
+        notFilledData?.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
+            .includes(searchText?.toLocaleLowerCase())
         )
       );
     } else {
-      dispatch(kycForNotFilled({ page, page_size })).then((resp) => {
-        const data = resp?.payload.results;
-        setData(data);
-      });
+      // dispatch(kycForNotFilled({ page, page_size })).then((resp) => {
+        // const data = resp?.payload?.results;
+        setData(notFilledData);
+      // });
     }
   }, [searchText]);
 
-  const indexOfLastRecord = currentPage * pageSize;
-  const nPages = Math.ceil(notFilledData.length / pageSize);
 
-  // console.log(notFilledData.length, "Data =======>");
+
 
   const totalPages = Math.ceil(dataCount / pageSize);
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-  // console.log(pageNumbers, "pageNumbers ===>");
-  const indexOfFirstRecord = indexOfLastRecord - pageSize;
-  // const currentRecords = pendingKycData.slice(
-  //   indexOfFirstRecord,
-  //   indexOfLastRecord
-  // );
 
   const nextPage = () => {
-    if (currentPage < pageNumbers.length) {
+    if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -104,8 +97,31 @@ const NotFilledKYC = () => {
     }
   };
 
+
+
+  useEffect(() => {
+    let lastSevenPage = totalPages - 7;
+    if (pageNumbers?.length>0) {
+      let start = 0
+      let end = (currentPage + 6)
+      if (totalPages > 6) {
+        start = (currentPage - 1)
+  
+        if (parseInt(lastSevenPage) <= parseInt(start)) {
+          start = lastSevenPage
+        }
+  
+      }
+      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
+        return pgNumber;
+      })   
+     setDisplayPageNumber(pageNumber) 
+    }
+  }, [currentPage, totalPages])
+  
+
   return (
-   
+
     <div className="container-fluid flleft">
       <div className="form-row">
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -117,7 +133,7 @@ const NotFilledKYC = () => {
             placeholder="Search Here"
           />
         </div>
-        
+
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Count Per Page</label>
@@ -131,23 +147,19 @@ const NotFilledKYC = () => {
             <option value="20">20</option>
             <option value="50">50</option>
             <option value="100">100</option>
-            <option value="200">200</option>
-            <option value="500">500</option>
           </select>
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Onboard Type</label>
           <select
-            // value={pageSize}
-            // rel={pageSize}
-            // onChange={(e) => setPageSize(parseInt(e.target.value))}
             className="ant-input"
+            onChange={(e)=>setSearchText(e.target.value)}
           >
-             <option value="Select Role Type">Select Onboard Type</option>
-            <option value="all">All</option>
-            <option value="Online">Online</option>
-            <option value="Offline">Offline</option>
-           
+            <option value="Select Role Type">Select Onboard Type</option>
+            <option value="">All</option>
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
+
           </select>
         </div>
       </div>
@@ -157,22 +169,21 @@ const NotFilledKYC = () => {
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th>Serial.No</th>
-                <th>Merchant Id</th>
-                <th>Contact Number</th>
-                <th>Name</th>
+                <th>S. No.</th>
+                <th>Client Code</th>
+                <th>Merchant Name</th>
                 <th>Email</th>
-                <th>Status</th>
+                <th>Contact Number</th>
+                <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
-                
+
               </tr>
             </thead>
             <tbody>
               {spinner && <Spinner />}
               {data?.length === 0 ? (
                 <tr>
-                  {" "}
                   <td colSpan={"8"}>
                     <h1 className="nodatafound">No data found</h1>
                   </td>
@@ -181,13 +192,13 @@ const NotFilledKYC = () => {
                 data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.merchantId}</td>
-                    <td>{user.contactNumber}</td>
+                    <td>{user.clientCode}</td>
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
+                    <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
                     <td>{user.signUpDate}</td>
-                    <td>{user?.isDirect ===  true ? "Online" : "Offline"}</td>
+                    <td>{user?.isDirect}</td>
                   </tr>
                 ))
               )}
@@ -197,11 +208,13 @@ const NotFilledKYC = () => {
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <a className="page-link" onClick={prevPage}>
+              <button 
+              className="page-link" 
+              onClick={prevPage}>
                 Previous
-              </a>
+              </button>
             </li>
-            {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
+            {displayPageNumber?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
@@ -220,7 +233,7 @@ const NotFilledKYC = () => {
               <button
                 class="page-link"
                 onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
+                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
                 Next
               </button>

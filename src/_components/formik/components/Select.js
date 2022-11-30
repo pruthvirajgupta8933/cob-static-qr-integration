@@ -10,7 +10,7 @@ function Select(props) {
       <Field as="select" id={name} name={name} {...rest}>
         {options.map((option,i) => {
           return (
-            <option key={i} value={option.key}>
+            <option key={i} value={option.key} dataKey={i}>
               {option.value}
             </option>
           )

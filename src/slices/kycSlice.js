@@ -5,6 +5,8 @@ import {
   kycValidatorAuth,
 } from "../utilities/axiosInstance";
 
+import { APP_ENV } from "../config";
+
 const initialState = {
   documentByloginId: {},
   kycApproved: {
@@ -310,15 +312,28 @@ export const saveBusinessInfo = createAsyncThunk(
 export const businessOverviewState = createAsyncThunk(
   "kyc/businessOverviewState",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    let response = {}
+    if(APP_ENV){
+      response = await axiosInstanceAuth
       .get(`${API_URL.Business_overview_state_}`, {
         headers: {},
       })
       .catch((error) => {
         return error.response;
       });
+    }else{
 
-    return response.data;
+      response = await axiosInstanceAuth
+      .post(`${API_URL.Business_overview_state_}`, {
+        headers: {},
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    }
+   
+
+    return response?.data;
   }
 );
 
@@ -344,9 +359,10 @@ export const saveMerchantInfo = createAsyncThunk(
 
 export const documentsUpload = createAsyncThunk(
   "kyc/documentsUpload",
-  async (requestParam) => {
-    const response = await axiosInstanceAuth
-      .get(`${API_URL.DocumentsUpload}`, {
+  async (data) => {
+     const requestParam = data.businessType;
+   const response = await axiosInstanceAuth
+      .get(`${API_URL.DocumentsUpload}/?business_type_id=${requestParam}`, {
         headers: {},
       })
       .catch((error) => {

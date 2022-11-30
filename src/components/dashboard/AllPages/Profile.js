@@ -200,16 +200,16 @@ export const Profile = () => {
                     <div class="col-lg-6">
                       <label><strong>User Name : </strong></label>
                       <span className="border-0 text-uppercase" disabled="true" readonly>
-                        {clientContactPersonName}
+                      &nbsp; {clientContactPersonName}
                       </span>
                       {/* <p className="invalid-feedback">
             {errors.clientName?.message}
           </p> */}
                     </div>
                     <div class="col-lg-6">
-                      <label><strong>Email id : </strong></label>
+                      <label><strong>Email Id : </strong></label>
                       <span className="form-control- border-0" readonly disabled="true">
-                        {clientEmail}
+                       &nbsp; {clientEmail}
                       </span>
                       {/* <p>{errors.email?.message}</p> */}
                     </div>
@@ -217,7 +217,7 @@ export const Profile = () => {
                     <div class="col-lg-6">
                       <label><strong>Account Type : </strong></label>
                       <span className="border-0 text-uppercase" readonly disabled="true">
-                        {LoggedUser}
+                      &nbsp; {LoggedUser}
                       </span>
                       {/* <p className="invalid-feedback">
           {errors.phone?.message}
@@ -226,7 +226,7 @@ export const Profile = () => {
                     <div class="col-lg-6">
                       <label><strong>Phone No. : </strong></label>
                       <span className="form-control- border-0" readonly disabled="true">
-                        {clientMobileNo}
+                      &nbsp; {clientMobileNo}
                       </span>
                       {/* <p className="invalid-feedback">
           {errors.phone?.message}

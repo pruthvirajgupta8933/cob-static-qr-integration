@@ -5,18 +5,20 @@ import rafiki from "../../../../assets/images/rafiki.png";
 import { productSubscribeState } from "../../../../slices/dashboardSlice";
 import { useDispatch, useSelector } from "react-redux";
 import API_URL from "../../../../config";
-import { axiosInstanceAuth } from "../../../../utilities/axiosInstance";
+import { axiosInstanceAuth, axiosInstance } from "../../../../utilities/axiosInstance";
 import "./product.css";
 import toastConfig from "../../../../utilities/toastTypes";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { stringDec } from "../../../../utilities/encodeDecode";
 
 const SabPaisaPricing = () => {
   const history = useHistory();
   const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
+  const [rateCloneStatus, setRateCloneStatus] = useState("")
 
   const dispatch = useDispatch();
   const clickHandler = (value) => {
@@ -28,15 +30,15 @@ const SabPaisaPricing = () => {
 
 
   const param = useParams();
-
-
-  const getSubscribedPlan = (id)=>{
+  const getSubscribedPlan = (id) => {
     axiosInstanceAuth
-    .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
-    .then((resp) => {
-      setSelectedPlan({ planId: resp?.data?.data?.planId ===null? "":resp?.data?.data?.planId })
-    })
+      .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
+      .then((resp) => {
+        setSelectedPlan({ planId: resp?.data?.data?.planId === null ? "" : resp?.data?.data?.planId })
+      })
   }
+
+
   useEffect(() => {
     const id = param?.id;
     let url = API_URL.PRODUCT_SUB_DETAILS + "/" + id;
@@ -47,13 +49,101 @@ const SabPaisaPricing = () => {
         setSpinner(false);
         setProductDetails(data);
       })
-
-
-      getSubscribedPlan(id);
-
+    getSubscribedPlan(id);
 
 
   }, [param]);
+
+
+  // useEffect(() => {
+  //   checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
+  // }, [])
+
+
+
+  // check rate mapping status before rate mapping
+  const checkRateMappingStatus = (clientCodeF, clientCodeT, loginId) => {
+    axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${clientCodeF}/${clientCodeT}/${loginId}`)
+      .then((resp) => {
+        const data = resp.data;
+        setRateCloneStatus(data[0].ID)
+        localStorage.setItem('RATE_MAPPING_CLONE', data[0].ID);
+      })
+      .catch((err) => { console.log(err) })
+  }
+
+
+
+  useEffect(() => {
+    console.log("rateCloneStatus", rateCloneStatus)
+
+    if ((rateCloneStatus === 3 || rateCloneStatus === 0) && param?.id === "10") {
+
+      if (user?.clientMerchantDetailsList !== null) {
+        console.log("33")
+        const clientMerchantDetailsList = user?.clientMerchantDetailsList;
+
+        const clientCode = clientMerchantDetailsList[0]?.clientCode;
+        const clientId = clientMerchantDetailsList[0]?.clientId;
+        const clientContact = user?.clientMobileNo;
+        const clientEmail = user?.userName;
+        const clientName = clientMerchantDetailsList[0]?.clientName;
+        const clientUserName = user?.userName;
+        const passwrod = stringDec(sessionStorage.getItem('prog_id'));
+
+        const inputData = {
+          clientId: clientId,
+          clientCode: clientCode,
+          clientContact: clientContact,
+          clientEmail: clientEmail,
+          address: "Delhi",
+          clientLogoPath: "client/logopath",
+          clientName: clientName,
+          clientLink: "cltLink",
+          stateId: 9,
+          bid: "19", // ask
+          stateName: "DELHI",
+          bankName: "SBI",
+          client_username: clientUserName,
+          client_password: passwrod,
+          appId: "10", // ask
+          status: "Activate", // ask
+          client_type: "normal Client",
+          successUrl: "https://sabpaisa.in/",
+          failedUrl: "https://sabpaisa.in/",
+          subscriptionstatus: "Subscribed",
+          businessType: 2
+        };
+
+        // console.log("inputData",inputData);
+        // 1 - run RATE_MAPPING_GenerateClientFormForCob 
+
+        axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
+
+          console.log("run RATE_MAPPING_GenerateClientFormForCob");
+          localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
+          localStorage.setItem('resp_RATE_MAPPING_GenerateClientFormForCob', res?.toString());
+          //2 - rate map clone   // parent client code / new client code / login id
+          axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/'COBED'/${clientCode}/${user?.loginId}`).then(res => {
+            console.log("run RATE_MAPPING_CLONE");
+            localStorage.setItem('RATE_MAPPING_CLONE', "api trigger");
+            localStorage.setItem('resp_RATE_MAPPING_CLONE', res?.toString());
+            // 3- enable pay link
+            //    axiosInstance.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
+            //       localStorage.setItem('enablePaylink', "api trigger");
+            //       // console.log("3 api run")
+            //       dispatch(checkPermissionSlice(clientCode));
+            //   })
+          }).catch(err => { console.log(err) })
+        }).catch(err => { console.log(err) })
+
+
+      }
+    }
+
+
+  }, [rateCloneStatus])
+
 
   const handleClick = async (plan_id, plan_name) => {
     const postData = {
@@ -69,12 +159,22 @@ const SabPaisaPricing = () => {
       API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
       postData
     );
+    // console.log("res",res)
     if (res.status === 200) {
-      toastConfig.successToast(res.data.message);
+      console.log("1")
+      if (param?.id === "10") {
+        console.log("2")
+        // only for payment gateway we have to check rate mapping status
+        checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
+      }
+
+      getSubscribedPlan(plan_id);
+
+      toastConfig.successToast(res?.data?.message);
     } else {
-      toastConfig.errorToast("something went wrong");
+      toastConfig.errorToast("Something went wrong");
     }
-    getSubscribedPlan(plan_id);
+
   };
 
 
@@ -128,10 +228,10 @@ const SabPaisaPricing = () => {
 
                           <button
                             type="button"
-                            className={`font-weight-bold btn choosePlan-1 btn-lg w-50 ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" :""}`}
+                            className={`font-weight-bold btn choosePlan-1 btn-lg w-50 ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
                             data-toggle="modal"
                             data-target="#subscription"
-                            disabled={selectedPlan?.planId !== ""? true :false}
+                            disabled={selectedPlan?.planId !== "" ? true : false}
                             onClick={() => {
                               if (selectedPlan?.planId !== Products.plan_id) {
                                 handleClick(
@@ -142,7 +242,7 @@ const SabPaisaPricing = () => {
                             }
                             }
                           >
-                            
+
                             {(selectedPlan?.planId === Products.plan_id) ? "Selected Plan" : "Choose Plan"}
                           </button>
                         </p>
@@ -235,10 +335,10 @@ const SabPaisaPricing = () => {
                             </h3>
                             <button
                               type="button"
-                              className={`font-weight-bold btn choosePlan-1 btn-lg ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" :""}`}
+                              className={`font-weight-bold btn choosePlan-1 btn-lg ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
                               data-toggle="modal"
                               data-target="#exampleModal"
-                              disabled={selectedPlan?.planId !== ""? true :false}
+                              disabled={selectedPlan?.planId !== "" ? true : false}
                               onClick={() => {
                                 if (selectedPlan?.planId !== Products.plan_id) {
                                   handleClick(

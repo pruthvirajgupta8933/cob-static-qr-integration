@@ -10,85 +10,65 @@ import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 
 function ApprovedMerchant() {
   const [approveMerchant, setApproveMerchant] = useState([]);
+  const [data, setData] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  // const [documentId, setDocumentId] = useState("")
-  // const [documentIdImg, setDocumentImg] = useState("#")
   const [docImageData, setDocImageData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [spinner, setSpinner] = useState(true);
+  const [displayPageNumber, setDisplayPageNumber] = useState([]);
   let page_size = pageSize;
   let page = currentPage;
 
-  var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  // const { clientCode } = clientMerchantDetailsList[0];
-  const { loginId } = user;
 
-  const masterid = useSelector((state) => state.kyc.kycApproved.results);
-  //   const document=useSelector((state)=> state.kyc.documentByloginId)
-  //  const {documentId}=document;
   const approvedSearch = (e) => {
     setSearchText(e.target.value);
   };
 
-  const allApprovedMerchants = async () => {
-    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_APPROVED}`).then((res) => {
-      const data = res?.data?.results;
-      // console.log(data)
-      setApprovedMerchantData(data);
-      const dataCoun = res?.data?.count;
-      setDataCount(dataCoun);
-    });
-  };
-
   useEffect(() => {
-    allApprovedMerchants();
+   
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Approved Data Loaded");
+        toastConfig.successToast("Data Loaded");
         setSpinner(false);
-        const data = resp.payload.results;
-        setApproveMerchant(data);
+
+        const data = resp?.payload?.results;
+        const dataCoun = resp?.payload?.count;
+        setData(data);
+         setDataCount(dataCoun);
+         setApprovedMerchantData(data);
       })
-      .catch((err) => toastConfig.errorToast("Data not loaded"));
+
+      .catch((err) => {
+        toastConfig.errorToast("Data not loaded");
+      });
   }, [currentPage, pageSize]);
 
   /////////////////////////////////////Search filter
+
   useEffect(() => {
     if (searchText.length > 0) {
-      setApproveMerchant(
-        approveMerchant.filter((item) =>
+      setData(
+        approvedMerchantData.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
+            .includes(searchText?.toLocaleLowerCase())
         )
       );
     } else {
-      dispatch(kycForApproved({ page, page_size })).then((resp) => {
-        const data = resp?.payload?.results;
-
-        setApproveMerchant(data);
-      });
+      setData(approvedMerchantData);
     }
   }, [searchText]);
 
-  const indexOfLastRecord = currentPage * pageSize;
-  const totalPages = Math.ceil(dataCount / pageSize);
-  const nPages = Math.ceil(approvedMerchantData.length / pageSize);
 
-  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-
-  // console.log(pageNumbers, "pageNumbers ===>");
-  const indexOfFirstRecord = indexOfLastRecord - pageSize;
-  // const currentRecords = pendingKycData.slice(
-  //   indexOfFirstRecord,
-  //   indexOfLastRecord
-  // );
+  ////////////////////////////////////////////// pagination code start here
+const totalPages = Math.ceil(dataCount / pageSize);
+ const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
 
   const nextPage = () => {
     if (currentPage < pageNumbers.length) {
@@ -101,7 +81,27 @@ function ApprovedMerchant() {
       setCurrentPage(currentPage - 1);
     }
   };
-  // console.log("Document Id Data", docImageData)
+
+  useEffect(() => {
+    let lastSevenPage = totalPages - 7;
+    if (pageNumbers?.length>0) {
+      let start = 0
+      let end = (currentPage + 6)
+      if (totalPages > 6) {
+        start = (currentPage - 1)
+  
+        if (parseInt(lastSevenPage) <= parseInt(start)) {
+          start = lastSevenPage
+        }
+  
+      }
+      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
+        return pgNumber;
+      })   
+     setDisplayPageNumber(pageNumber) 
+    }
+  }, [currentPage, totalPages])
+  ////////////////////////////////////////////// pagination code end here
 
   const viewDocument = async (loginMaidsterId) => {
     const res = await axiosInstanceAuth
@@ -111,21 +111,20 @@ function ApprovedMerchant() {
       .then((res) => {
         if (res.status === 200) {
           const data = res.data;
-          // console.log("Data ========> ", data)
           setDocImageData(data);
           const docId = data[0].documentId;
-          // console.log(docId,"<===== Document Id =====>")
           const file = data[0].filePath;
-          // console.log("file ====> ",file)
-          // const ImgUrl = `${API_URL.MERCHANT_DOCUMENT}/?document_id=${docId}`;
-
-          // axiosInstanceAuth.get(ImgUrl).then(res=>console.log(res))
         }
       })
       .catch((error) => {
-        console.error("There was an error!", error);
+        console.error("Please try again after sometimes.", error);
       });
   };
+
+
+
+ 
+
 
   return (
     <div className="container-fluid flleft">
@@ -150,187 +149,174 @@ function ApprovedMerchant() {
           <option value="20">20</option>
           <option value="50">50</option>
           <option value="100">100</option>
-          <option value="200">200</option>
-          <option value="500">500</option>
         </select>
       </div>
       <div className="form-group col-lg-3 col-md-12 mt-2">
-          <label>Onboard Type</label>
-          <select
-            // value={pageSize}
-            // rel={pageSize}
-            // onChange={(e) => setPageSize(parseInt(e.target.value))}
-            className="ant-input"
-          >
-             <option value="Select Role Type">Select Onboard Type</option>
-            <option value="all">All</option>
-            <option value="Online">Online</option>
-            <option value="Offline">Offline</option>
-           
-          </select>
-        </div>
-        <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+        <label>Onboard Type</label>
+        <select
+          className="ant-input"
+          onChange={approvedSearch}
+        >
+          <option value="Select Role Type">Select Onboard Type</option>
+          <option value="">All</option>
+          <option value="online">Online</option>
+            <option value="offline">Offline</option>
+
+        </select>
+      </div>
+      <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
-         
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>Serial No.</th>
-            <th>Merchant Id</th>
-            <th>Contact Number</th>
-            <th>Name</th>
-            <th> Email</th>
-            <th>Bank</th>
-            <th>PAN No.</th>
-            <th>Status</th>
-            <th>Registered Date</th>
+
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>S. No.</th>
+                <th>Client Code</th>
+                <th>Company Name</th>
+                <th>Merchant Name</th>
+                <th> Email</th>
+                <th>Contact Number</th>
+                <th>KYC Status</th>
+                <th>Registered Date</th>
                 <th>Onboard Type</th>
-            <th>View document</th>
-          </tr>
-        </thead>
-        <tbody>
-          {approveMerchant?.length == 0 ? (
-            <tr>
-              {" "}
-              <td colSpan={"8"}>
-                <h1 className="nodatafound">No data found</h1>
-              </td>
-            </tr>
-          ) : (
-            approveMerchant?.map((user, i) => (
-              <tr key={i}>
-                <td>{i + 1}</td>
-                <td>{user.merchantId}</td>
-                <td>{user.contactNumber}</td>
-                <td>{user.name}</td>
-                <td>{user.emailId}</td>
-                <td>{user.bankName}</td>
-                <td>{user.panCard}</td>
+                <th>View document</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.length === 0 ? (
+                <tr>
+                  <td colSpan={"8"}>
+                    <h1 className="nodatafound">No data found</h1>
+                  </td>
+                </tr>
+              ) : (
+                data?.map((user, i) => (
+                  <tr key={i}>
+                    <td>{i + 1}</td>
+                    <td>{user.clientCode}</td>
+                    <td>{user.companyName}</td>
+                    <td>{user.name}</td>
+                    <td>{user.emailId}</td>
+                    <td>{user.contactNumber}</td>
+                    <td>{user.status}</td>
+                    <td>{user.signUpDate}</td>
+                    <td>{user?.isDirect}</td>
+                    <td>
+                      <button
+                        type="button"
+                        class="btn approve text-white btn-xs"
+                        data-toggle="modal"
+                        onClick={() => viewDocument(user.loginMasterId)}
+                        data-target="#exampleModal"
+                      >
+                        View Document
+                      </button>
 
-                <td>{user.status}</td>
-                <td>{user.signUpDate}</td>
-                    <td>{user?.isDirect ===  true ? "Online" : "Offline"}</td>
-                {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
-                <td>
-                  <button
-                    type="button"
-                    class="btn approve text-white btn-xs"
-                    data-toggle="modal"
-                    onClick={() => viewDocument(user.loginMasterId)}
-                    data-target="#exampleModal"
-                  >
-                    View Document
-                  </button>
-
-                  <div
-                    class="modal fade"
-                    id="exampleModal"
-                    tabindex="-1"
-                    role="dialog"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content" style={{ width: 787 }}>
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">
-                            Document Details
-                          </h5>
-                          <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          {/* <img src={`${documentIdImg}`}  alt="doc" /> */}
-
-                          {docImageData?.map((merchantData) => {
-                            return (
-                              <div>
-                                <table
-                                  id="dtDynamicVerticalScrollExample"
-                                  class="table table-striped table-bordered table-sm"
-                                >
-                                  <thead>
-                                    <tr>
-                                      <th>Document Id</th>
-                                      <th>Image</th>
-                                      <th>Status</th>
-                                    </tr>
-                                  </thead>
-
-                                  <td>{merchantData?.documentId}</td>
-                                  <td>
-                                    <a
-                                      href={merchantData?.filePath}
-                                      rel="noreferrer"
-                                      target="_blank"
-                                      alt="Document"
+                      <div
+                        class="modal fade"
+                        id="exampleModal"
+                        tabindex="-1"
+                        role="dialog"
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
+                      >
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content" style={{ width: 787 }}>
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">
+                                Document Details
+                              </h5>
+                              <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                              >
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              {docImageData?.map((merchantData) => {
+                                return (
+                                  <div>
+                                    <table
+                                      id="dtDynamicVerticalScrollExample"
+                                      class="table table-striped table-bordered table-sm"
                                     >
-                                      {merchantData?.name}
-                                    </a>
-                                  </td>
-                                  <td>{merchantData?.status}</td>
-                                </table>
-                              </div>
-                            );
-                          })}
-                        </div>
-                        <div class="modal-footer">
-                          <button
-                            type="button"
-                            class="btn approve text-white btn-xs"
-                            data-dismiss="modal"
-                          >
-                            Close
-                          </button>
+                                      <thead>
+                                        <tr>
+                                          <th>Image</th>
+                                          <th>Status</th>
+                                        </tr>
+                                      </thead>
+                                      <td>
+                                        <a
+                                          href={merchantData?.filePath}
+                                          rel="noreferrer"
+                                          target="_blank"
+                                          alt="Document"
+                                          className="text-primary"
+                                        >
+                                          {merchantData?.name}
+                                        </a>
+                                      </td>
+                                      <td>{merchantData?.status}</td>
+                                    </table>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                type="button"
+                                class="btn approve text-white btn-xs"
+                                data-dismiss="modal"
+                              >
+                                Close
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-      </div>
-      <nav>
-        <ul className="pagination justify-content-center">
-          <li className="page-item">
-            <a className="page-link" onClick={prevPage}>
-              Previous
-            </a>
-          </li>
-          {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
-            <li
-              key={i}
-              className={
-                pgNumber === currentPage ? " page-item active" : "page-item"
-              }
-            >
-              <a href={() => false} className={`page-link data_${i}`}>
-                <span onClick={() => setCurrentPage(pgNumber)}>{pgNumber}</span>
-              </a>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        <nav>
+          <ul className="pagination justify-content-center">
+            <li className="page-item">
+              <button className="page-link" onClick={prevPage}>
+                Previous
+              </button>
             </li>
-          ))}
+            {displayPageNumber?.map((pgNumber, i) => (
+              <li
+                key={i}
+                className={
+                  pgNumber === currentPage ? " page-item active" : "page-item"
+                }
+              >
+                <a href={() => false} className={`page-link data_${i}`}>
+                  <span onClick={() => setCurrentPage(pgNumber)}>{pgNumber}</span>
+                </a>
+              </li>
+            ))}
 
-          <li class="page-item">
-            <button
-              class="page-link"
-              onClick={nextPage}
-              disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
-            >
-              Next
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
+            <li class="page-item">
+              <button
+                class="page-link"
+                onClick={nextPage}
+                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
+              >
+                Next
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   );
 }

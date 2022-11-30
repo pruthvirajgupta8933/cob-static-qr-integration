@@ -68,6 +68,7 @@ function BusinessOverview(props) {
   ];
 
   const VerifyKycStatus = KycTabStatusStore?.business_info_status;
+  const limitLabelRegex = /^[a-z | 0-9]{0,500}$/
 
   const urlRegex =
     "((http|https)://)(www.)?" +
@@ -111,17 +112,17 @@ function BusinessOverview(props) {
       business_category: Yup.string()
         .required("Select Business Category")
         .nullable(),
-      billing_label: Yup.string()
-        .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+      billing_label: Yup.string().trim()
+        .matches(limitLabelRegex,"Max limit is 500 characters")
         .required("Required")
         .nullable(),
-      company_website: Yup.string()
+      company_website: Yup.string().trim()
         .matches(urlRegex, "Website Url is not Valid")
         .required("Required")
         .nullable(),
       website_app_url: Yup.string().when(["seletcted_website_app_url"], {
         is: "Yes",
-        then: Yup.string()
+        then: Yup.string().trim()
           .ensure()
           .required("Website App Url is required")
           .nullable(),
@@ -129,11 +130,11 @@ function BusinessOverview(props) {
           .notRequired()
           .nullable(),
       }),
-      expected_transactions: Yup.string()
+      expected_transactions: Yup.string().trim()
         .required("Required")
         .matches(Regex.digit, RegexMsg.digit)
         .nullable(),
-      avg_ticket_size: Yup.string()
+      avg_ticket_size: Yup.string().trim()
         .matches(Regex.digit, RegexMsg.digit)
         .required("Required")
         .nullable(),
@@ -408,8 +409,8 @@ function BusinessOverview(props) {
             </div>
 
             <div class="col-sm-4 col-md-4 col-lg-4">
-              <label class="col-form-label p-2 mt-0">
-                Expected Transactions<span style={{ color: "red" }}>*</span>
+              <label class="col-form-label p-0 exp-tranc">
+                Expected Transactions / Per Year <span style={{ color: "red" }}>*</span>
               </label>
 
               <FormikController
