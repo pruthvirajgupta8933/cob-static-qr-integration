@@ -26,36 +26,57 @@ const PendindKyc = () => {
   const [pageSize, setPageSize] = useState(10);
   const [statusData, setStatusData] = useState([])
   const [displayPageNumber, setDisplayPageNumber] = useState([])
-  let page_size = pageSize;
-  let page = currentPage;
-  const { auth ,kyc } = useSelector((state) => state);
+  
+  const { auth  } = useSelector((state) => state);
   const { user } = auth;
 
   const { loginId } = user;
   
-
-
-  let merchantloginMasterId = loginId;
-
-
-  
- 
-
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
   const kycSearch = (e) => {
     setSearchText(e.target.value);
   };
 
-  const pendingMerchants = async () => {
-    await axiosInstanceAuth
-      .get(`${API_URL.KYC_FOR_PENDING_MERCHANTS}`)
-      .then((res) => {
-        const data = res?.data?.results;
-        const dataCoun = res?.data?.count;
+  
+
+  useEffect(() => {
+   
+    dispatch(kycForPendingMerchants({ page: currentPage, page_size: pageSize }))
+      .then((resp) => {
+        toastConfig.successToast("Data Loaded");
+        resp?.payload?.status_code && toastConfig.errorToast("Data not loaded")
+        
+        const data = resp?.payload?.results;
+        const dataCoun = resp?.payload?.count;
+        setSpinner(false);
+        setData(data);
         setDataCount(dataCoun);
         setPendingKycData(data);
+      })
+
+      .catch((err) => {
+        console.log(err)
+        toastConfig.errorToast("Data not loaded");
       });
-  };
+  }, [currentPage, pageSize]);
+  
+
+  useEffect(() => {
+   
+    if (searchText?.length > 0) {
+      setData(
+        pendingKycData?.filter((item)  => 
+          Object.values(item)
+            .join(" ")
+            .toLowerCase()
+           .includes(searchText?.toLocaleLowerCase())));
+     } else {
+     
+        setData(pendingKycData);
+      
+    }
+  }, [searchText]);
+  
 
 
   const handleClick=(loginMasterId)=>{
@@ -70,52 +91,7 @@ const PendindKyc = () => {
     
   }
 //--------------PENDING Merchants API -----------------//
-
-  useEffect(() => {
-    pendingMerchants();
-    dispatch(kycForPendingMerchants({ page: currentPage, page_size: pageSize }))
-      .then((resp) => {
-
-        resp?.payload?.status_code && toastConfig.errorToast("Data not loaded")
-        setSpinner(false);
-        const data = resp?.payload?.results;
-        setData(data);
-      })
-
-      .catch((err) => {
-        console.log(err)
-        toastConfig.errorToast("Data not loaded");
-      });
-  }, [currentPage, pageSize]);
-  const dataArray = ["online", "offline"];
-
-
-
-  useEffect(() => {
-   
-    if (searchText?.length > 0) {
-      setData(
-        data?.filter((item)  => 
-          Object.values(item)
-            .join(" ")
-            .toLowerCase()
-           .includes(searchText?.toLocaleLowerCase())
-           
-        )
-        
-      );
-     
-    } else {
-      dispatch(kycForPendingMerchants({ page, page_size })).then((resp) => {
-        const data = resp?.payload?.results;
-
-        setData(data);
-      });
-    }
-  }, [searchText]);
-
-
-  const indexOfLastRecord = currentPage * pageSize;
+ const indexOfLastRecord = currentPage * pageSize;
   const nPages = Math.ceil(pendingKycData?.length / pageSize);
   const totalPages = Math.ceil(dataCount / pageSize);
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
@@ -136,10 +112,7 @@ const PendindKyc = () => {
   };
 
 
-
-  
-
-  useEffect(() => {
+ useEffect(() => {
     let lastSevenPage = totalPages - 7;
     if (pageNumbers?.length>0) {
       let start = 0
@@ -191,15 +164,13 @@ const PendindKyc = () => {
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Onboard Type</label>
           <select
-            // value={pageSize}
-            // rel={pageSize}
-            // onChange={(e) => setPageSize(parseInt(e.target.value))}
+            onChange={kycSearch}
             className="ant-input"
           >
              <option value="Select Role Type">Select Onboard Type</option>
-            <option value="all">All</option>
-            <option value="Online">Online</option>
-            <option value="Offline">Offline</option>
+            <option value="">All</option>
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
            
           </select>
         </div>
@@ -213,7 +184,7 @@ const PendindKyc = () => {
                 <th>S. No.</th>
                 <th>Client Code</th>
                 <th>Company Name</th>
-                <th>Name</th>
+                <th>Merchant Name</th>
                 <th>Email</th>
                 <th>Contact Number</th>
                 <th>Registered Date</th>

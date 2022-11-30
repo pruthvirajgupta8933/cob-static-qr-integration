@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { kycForRejectedMerchants } from "../../slices/kycSlice";
-import API_URL from "../../config";
-import { Link, useRouteMatch } from "react-router-dom";
+import {  useRouteMatch } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+
 
 const RejectedKYC = () => {
   const { url } = useRouteMatch();
@@ -23,36 +22,24 @@ const RejectedKYC = () => {
   let page_size = pageSize;
   let page = currentPage;
 
-  // console.log(setPageSize,"wewewewewewewewewewewew")
   const dispatch = useDispatch();
   const kycSearch = (e) => {
     setSearchText(e.target.value);
   };
 
-  const rejectedMerchantsList = async () => {
-    await axiosInstanceAuth
-      .get(`${API_URL.KYC_FOR_REJECTED_MERCHANTS}`)
-      .then((res) => {
-        const data = res?.data?.results;
-        // console.log("<====  Rejected Merchants List ======>")
-        setRejectedMerchants(data);
-        const dataCoun = res?.data?.count;
-        setDataCount(dataCoun);
-      });
-  };
 
   useEffect(() => {
-    rejectedMerchantsList();
-    dispatch(
-      kycForRejectedMerchants({ page: currentPage, page_size: pageSize })
-    )
+   
+    dispatch(kycForRejectedMerchants({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Rejected Merchant List Loaded");
+        toastConfig.successToast("Pending Data Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
-
+        const dataCoun = resp?.payload?.count;
         setData(data);
+         setDataCount(dataCoun);
+         setRejectedMerchants(data);
       })
 
       .catch((err) => {
@@ -60,39 +47,29 @@ const RejectedKYC = () => {
       });
   }, [currentPage, pageSize]);
 
+
+////////////////////////////////////////////////// Search filter start here
+
   useEffect(() => {
     if (searchText.length > 0) {
       setData(
-        data?.filter((item) =>
+        rejectedMerchants.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
+            .includes(searchText?.toLocaleLowerCase())
         )
       );
     } else {
-      dispatch(kycForRejectedMerchants({ page, page_size })).then((resp) => {
-        const data = resp?.payload?.results;
-
-        setData(data);
-      });
+      setData(rejectedMerchants);
     }
   }, [searchText]);
+  ////////////////////////////////////pagination start here
 
-  const indexOfLastRecord = currentPage * pageSize;
+ 
   const totalPages = Math.ceil(dataCount / pageSize);
-  const nPages = Math.ceil(rejectedMerchants?.length / pageSize);
-
-  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-
-  // console.log(pageNumbers, "pageNumbers ===>");
-  const indexOfFirstRecord = indexOfLastRecord - pageSize;
-  // const currentRecords = pendingKycData.slice(
-  //   indexOfFirstRecord,
-  //   indexOfLastRecord
-  // );
-
-  const nextPage = () => {
+ const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);
     }
@@ -158,16 +135,13 @@ const RejectedKYC = () => {
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Onboard Type</label>
           <select
-            // value={pageSize}
-            // rel={pageSize}
-            // onChange={(e) => setPageSize(parseInt(e.target.value))}
+           onChange={kycSearch}
             className="ant-input"
           >
              <option value="Select Role Type">Select Onboard Type</option>
-            <option value="all">All</option>
-            <option value="Online">Online</option>
-            <option value="Offline">Offline</option>
-           
+            <option value="">All</option>
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
           </select>
         </div>
       </div>
@@ -180,7 +154,7 @@ const RejectedKYC = () => {
                 <th>S. No.</th>
                 <th>Client Code</th>
                 <th>Company Name</th>
-                <th>Name</th>
+                <th>Merchant Name</th>
                 <th>Email</th>
                 <th>Contact Number</th>
                 <th>KYC Status</th>
