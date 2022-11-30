@@ -125,7 +125,7 @@ function Sandbox() {
                           htmlFor="inputPassword3"
                           className="col-form-label"
                         >
-                          UserName{" "}
+                          Username{" "}
                         </label>
                         <input
                           type="text"
@@ -223,7 +223,7 @@ function Sandbox() {
                           htmlFor="inputPassword3"
                           className=" col-form-label"
                         >
-                          UserName{" "}
+                          Username{" "}
                         </label>
                         <input
                           type="text"
