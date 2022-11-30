@@ -158,6 +158,16 @@ function SideNavbar() {
                         {/* <span class="new-tab">new</span> */}
                       </Link>
                     </li>
+                    <li className="ant-menu-item" role="menuitem">
+                      <Link
+                        to={`${url}/ratemapping`}
+                        className="txt-white sidenavFonts"
+                      >
+                        <i className="fa fa-list" aria-hidden="true" />
+                        <span>&nbsp;Rate Mapping</span>
+                        {/* <span class="new-tab">new</span> */}
+                      </Link>
+                    </li>
                     </>
                      ) : (
                       <React.Fragment></React.Fragment>

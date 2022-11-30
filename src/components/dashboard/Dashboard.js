@@ -37,6 +37,7 @@ import { createClientProfile } from '../../slices/auth';
 import Sandbox from '../SandBox/SendBox';
 import AssignZone from '../ApproverNVerifier/AssignZone';
 import AdditionalKYC from '../ApproverNVerifier/AdditionalKYC';
+import RateMapping from '../ApproverNVerifier/RateMapping';
 
 
 
@@ -163,6 +164,9 @@ function Dashboard() {
                     </Route>
                     <Route exact path={`${path}/assignzone`} >
                          <AssignZone/>
+                    </Route>
+                    <Route exact path={`${path}/ratemapping`} >
+                         <RateMapping/>
                     </Route>
                     <Route exact path={`${path}/additional-kyc`} >
                          <AdditionalKYC/>
