@@ -38,14 +38,12 @@ const API_LIVE = {
   SUCCESS_TXN_SUMMARY: adminAPIURL + "/REST/SuccessTxnSummary/",
 
   // * Rate mapping */
-  RATE_MAPPING_GenerateClientFormForCob:
-    adminAPIURL + "/config/GenerateClientFormForCob",
+  RATE_MAPPING_GenerateClientFormForCob:adminAPIURL+"/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
-  RATE_MAPPING_CLONE: adminAPIURL + "/Ratemapping/cloning",
-  RATE_ENABLE_PAYLINK: adminAPIURL + "/getDataByCommonProc/getCommonData/31",
+  RATE_MAPPING_CLONE: adminAPIURL+"/REST/Ratemapping/cloning",
+  RATE_ENABLE_PAYLINK: adminAPIURL+"/getDataByCommonProc/getCommonData/31",
 
-  CHECK_PERMISSION_PAYLINK:
-    adminAPIURL + "/getDataByCommonProc/getCommonData/29/",
+  CHECK_PERMISSION_PAYLINK:adminAPIURL + "/getDataByCommonProc/getCommonData/29/",
   BANK_IFSC_CODE_VERIFY: "https://ifsc.razorpay.com/",
   BANK_LIST_NB:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
