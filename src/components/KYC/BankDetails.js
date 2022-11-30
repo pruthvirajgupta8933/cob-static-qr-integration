@@ -99,7 +99,7 @@ function BankDetails(props) {
       .nullable(),
     branch: Yup.string().trim()
       .required("Required")
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+     .matches(Regex.addressForSpecific, "Branch Name is not in valid format")
       .nullable(),
     bank_id: Yup.string()
       .required("Required")

@@ -9,10 +9,10 @@ import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 
 function VerifiedMerchant() {
+  const [data, setData] = useState([]);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [dataCount, setDataCount] = useState("");
-  const [merchantData, setMerchantData] = useState([]);
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,34 +27,31 @@ function VerifiedMerchant() {
     setSearchText(e.target.value);
   };
 
-  const allVerifiedMerchants = async () => {
-    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_VERIFIED}`).then((res) => {
-      const data = res?.data?.results;
-      setMerchantData(data);
-      const dataCoun = res?.data?.count;
-      setDataCount(dataCoun);
-    });
-  };
-
   useEffect(() => {
-    // handleFetchData();
-    allVerifiedMerchants();
+   
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        // toastConfig.successToast("Approved Data Loaded");
+        toastConfig.successToast("Data Loaded");
         setSpinner(false);
-        const data = resp?.payload?.results;
-        setVerifiedMerchant(data);
 
+        const data = resp?.payload?.results;
+        const dataCoun = resp?.payload?.count;
+        setData(data);
+         setDataCount(dataCoun);
+         setVerifiedMerchant(data);
       })
 
-      .catch((err) => toastConfig.errorToast("Data not loaded"));
+      .catch((err) => {
+        toastConfig.errorToast("Data not loaded");
+      });
   }, [currentPage, pageSize]);
+
+  
 
   useEffect(() => {
     if (searchText.length > 0) {
-      setVerifiedMerchant(
-        verfiedMerchant?.filter((item) =>
+      setData(
+        verfiedMerchant.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
@@ -62,10 +59,7 @@ function VerifiedMerchant() {
         )
       );
     } else {
-      dispatch(kycForVerified({ page, page_size })).then((resp) => {
-        const data = resp?.payload?.results;
-        setVerifiedMerchant(data.slice(indexOfFirstRecord, indexOfLastRecord));
-      });
+      setData(verfiedMerchant);
     }
   }, [searchText]);
   const indexOfLastRecord = currentPage * pageSize;
@@ -144,13 +138,14 @@ function VerifiedMerchant() {
       <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Onboard Type</label>
         <select
+         onChange={kycSearch}
          
           className="ant-input"
         >
           <option value="Select Role Type">Select Onboard Type</option>
-          <option value="all">All</option>
-          <option value="Online">Online</option>
-          <option value="Offline">Offline</option>
+          <option value="">All</option>
+          <option value="online">Online</option>
+            <option value="offline">Offline</option>
 
         </select>
       </div>
@@ -162,7 +157,7 @@ function VerifiedMerchant() {
                 <th>S.No</th>
                 <th>Client Code</th>
                 <th>Company Name</th>
-                <th>Name</th>
+                <th>Merchant Name</th>
                 <th>Email</th>
                 <th>Contact Number</th>
                 <th>KYC Status</th>
@@ -173,7 +168,7 @@ function VerifiedMerchant() {
             </thead>
             <tbody>
               {spinner && <Spinner />}
-              {verfiedMerchant?.length === 0 ? (
+              {data?.length === 0 ? (
                 <tr>
                   {" "}
                   <td colSpan={"9"}>
@@ -181,7 +176,7 @@ function VerifiedMerchant() {
                   </td>
                 </tr>
               ) : (
-                verfiedMerchant?.map((user, i) => (
+                data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
                     <td>{user.clientCode}</td>

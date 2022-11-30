@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./css/Home.css";
 import "./css/50.684f163d.chunk.css";
 import "./css/main.e3214ff9.chunk.css";
@@ -37,26 +37,29 @@ import { createClientProfile } from '../../slices/auth';
 import Sandbox from '../SandBox/SendBox';
 import AssignZone from '../ApproverNVerifier/AssignZone';
 import AdditionalKYC from '../ApproverNVerifier/AdditionalKYC';
-
+import RateMapping from '../ApproverNVerifier/RateMapping';
 
 
 function Dashboard() {
      let history = useHistory();
      let { path } = useRouteMatch();
+  
+
      const { user } = useSelector((state) => state.auth);
+     // const clientMerchantDetailsList = user?.clientMerchantDetailsList
      const roles = roleBasedAccess()
 
      const dispatch = useDispatch()
+
+
 
 
      // create new client code
      useEffect(() => {
           if (roles?.merchant) {
                if (user?.clientMerchantDetailsList) {
-                    console.log("user",user)
                     if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
-                         
-                         // console.log("create new client code")
+                         // create new client code
                          const uuidCode = Math.random().toString(36).slice(-6).toUpperCase();
                          const data = {
                               "loginId": user?.loginId,
@@ -67,9 +70,13 @@ function Dashboard() {
                     }else{
                          // console.log("already created client code")
                     }
+
+                    
                }
           }
      }, [])
+
+
 
 
      if (user !== null && user.userAlreadyLoggedIn) {
@@ -163,6 +170,9 @@ function Dashboard() {
                     </Route>
                     <Route exact path={`${path}/assignzone`} >
                          <AssignZone/>
+                    </Route>
+                    <Route exact path={`${path}/ratemapping`} >
+                         <RateMapping/>
                     </Route>
                     <Route exact path={`${path}/additional-kyc`} >
                          <AdditionalKYC/>

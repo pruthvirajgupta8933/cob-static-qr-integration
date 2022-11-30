@@ -31,28 +31,22 @@ function PendingVerification() {
     setSearchText(e.target.value);
   };
 
-  const newAllRegistration = async () => {
-    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_PROCESSING}`).then((res) => {
-      const data = res?.data?.results;
-      const dataCoun = res?.data?.count;
-      // console.log(data)
-      setNewRegistrationData(data);
-      setDataCount(dataCoun);
-    });
-  };
+  
 
   //---------------GET Api for KycPending-------------------
 
   useEffect(() => {
-    newAllRegistration();
+   
     dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Pending Data Loaded");
+        toastConfig.successToast("Data Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
-
+        const dataCoun = resp?.payload?.count;
         setData(data);
+         setDataCount(dataCoun);
+         setNewRegistrationData(data);
       })
 
       .catch((err) => {
@@ -66,7 +60,7 @@ function PendingVerification() {
   useEffect(() => {
     if (searchText.length > 0) {
       setData(
-        data.filter((item) =>
+        newRegistrationData.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
@@ -74,11 +68,7 @@ function PendingVerification() {
         )
       );
     } else {
-      dispatch(kycForPending({ page, page_size })).then((resp) => {
-        const data = resp?.payload?.results;
-
-        setData(data);
-      });
+      setData(newRegistrationData);
     }
   }, [searchText]);
 
@@ -151,15 +141,13 @@ function PendingVerification() {
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Onboard Type</label>
           <select
-            // value={pageSize}
-            // rel={pageSize}
-            // onChange={(e) => setPageSize(parseInt(e.target.value))}
+            onChange={kycSearch}
             className="ant-input"
           >
              <option value="Select Role Type">Select Onboard Type</option>
-            <option value="all">All</option>
-            <option value="Online">Online</option>
-            <option value="Offline">Offline</option>
+            <option value="">All</option>
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
            
           </select>
         </div>
@@ -173,7 +161,7 @@ function PendingVerification() {
                 <th>S. No.</th>
                 <th>Client Code</th>
                 <th>Company Name</th>
-                <th>Name</th>
+                <th>Merchant Name</th>
                 <th>Email</th>
                 <th>Contact Number</th>
                 <th>KYC Status</th>

@@ -100,10 +100,9 @@ function BusinessCategory(props) {
                 // console.log("1 api run")
 
                 localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
-                //2 - rate map clone 
+                //2 - rate map clone   // parent client code / new client code / login id
                  axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${businessType}/${clientCode}/${loginId}`).then(res => {
-                    // console.log("2 api run")
-
+                   
                     localStorage.setItem('enablePaylink', "api trigger");
                     // 3- enable pay link
                      axiosInstance.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {

@@ -5,7 +5,8 @@ export const Regex = {
     acceptAlphaNumeric : /^[a-zA-Z0-9\s]+$/, 
     alphaBetwithhyphon:/[a-zA-Z._^%$#!~@,-]+/,
     digit : /^[0-9]+$/, 
-    address: /^[a-zA-Z0-9\s,.'-]{3,}$/
+    address: /^[a-zA-Z0-9\s,.'-]{3,}$/,
+    addressForSpecific: /^[#.0-9a-zA-Z\s,-/]+$/
 }
 
 export const RegexMsg = {
@@ -14,6 +15,7 @@ export const RegexMsg = {
     acceptAlphaNumeric : "Only alphanumeric are allowed for this field",
     digit : "Only Digit are allowed for this field",
     alphaBetwithhyphon:"Only alphabets and '-' are allowed for this field",
+    addressForSpecific:"Address is not in valid format, Only '-','/','.' special chracters are allowed",
     address : "Address is not in valid format, Special Characters are not allowed (#,$,@ etc)"
 }
 

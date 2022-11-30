@@ -92,8 +92,8 @@ function DocumentsUpload(props) {
       .catch((err) => console.log(err));
   }, []);
 
-  const Array1 = docTypeList.map((a) => a.key);
-  const Array2 = savedData.map((r) => r.type);
+  const Array1 = docTypeList?.map((a) => a.key);
+  const Array2 = savedData?.map((r) => r.type);
 
 
   const myFilter = (elm) => {

@@ -141,7 +141,7 @@ function SideNavbar() {
                         to={`${url}/additional-kyc`}
                         className="txt-white sidenavFonts"
                       >
-                        <i className="fa fa-list" aria-hidden="true" />
+                        <i className="fa fa-user" aria-hidden="true" />
                         <span>&nbsp;Additional KYC</span>
                         {/* <span class="new-tab">new</span> */}
                       </Link>
@@ -153,8 +153,18 @@ function SideNavbar() {
                         to={`${url}/assignzone`}
                         className="txt-white sidenavFonts"
                       >
-                        <i className="fa fa-list" aria-hidden="true" />
+                        <i className="fa fa-list-alt" aria-hidden="true" />
                         <span>&nbsp;Assign Zone</span>
+                        {/* <span class="new-tab">new</span> */}
+                      </Link>
+                    </li>
+                    <li className="ant-menu-item" role="menuitem">
+                      <Link
+                        to={`${url}/ratemapping`}
+                        className="txt-white sidenavFonts"
+                      >
+                        <i className="fa fa-bar-chart" aria-hidden="true" />
+                        <span>&nbsp;Rate Mapping</span>
                         {/* <span class="new-tab">new</span> */}
                       </Link>
                     </li>

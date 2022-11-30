@@ -1,5 +1,6 @@
 import API_URL from "../config";
 import { axiosInstance, axiosInstanceAuth } from "../utilities/axiosInstance";
+import { stringEnc } from "../utilities/encodeDecode";
 
 // axiosInstanceAuth.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
@@ -30,13 +31,19 @@ const login = (username, password) => {
       userPassword: password,
     })
     .then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-        localStorage.setItem("categoryId", 1)
-      } else {
-        localStorage.setItem("user", JSON.stringify(response.data));
-        localStorage.setItem("categoryId", 1)
-      }
+      
+      localStorage.setItem("user", JSON.stringify(response.data));
+      localStorage.setItem("categoryId", 1)
+      sessionStorage.setItem("prog_id", stringEnc(password))
+      // if (response.data.accessToken) {
+      //   localStorage.setItem("user", JSON.stringify(response.data));
+      //   localStorage.setItem("categoryId", 1)
+      //   localStorage.setItem("prog_id", stringEnc(password))
+        
+      // } else {
+      //   localStorage.setItem("user", JSON.stringify(response.data));
+      //   localStorage.setItem("categoryId", 1)
+      // }
 
       // console.log(response.data)
       return response.data;

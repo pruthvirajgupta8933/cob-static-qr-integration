@@ -51,7 +51,7 @@ const EnterUserID = (props) => {
       <div className="row ">
         <div className="col-sm-6 mx-auto">
           <div className="card ">
-            <div className="card-header text-center">Forget Password</div>
+            <div className="card-header text-center">Forgot Password</div>
             <div className="card-body Satoshi-Medium">
               <h5 className="card-title">Please Enter the details. </h5>
               <Formik
