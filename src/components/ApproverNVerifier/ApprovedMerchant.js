@@ -33,7 +33,7 @@ function ApprovedMerchant() {
    
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Pending Data Loaded");
+        toastConfig.successToast("Data Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
