@@ -10,6 +10,7 @@ import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 
 function ApprovedMerchant() {
   const [approveMerchant, setApproveMerchant] = useState([]);
+  const [data, setData] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
@@ -28,54 +29,46 @@ function ApprovedMerchant() {
     setSearchText(e.target.value);
   };
 
-  const allApprovedMerchants = async () => {
-    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_APPROVED}`).then((res) => {
-      const data = res?.data?.results;
-      // console.log(data)
-      setApprovedMerchantData(data);
-      const dataCoun = res?.data?.count;
-      setDataCount(dataCoun);
-    });
-  };
-
   useEffect(() => {
-    allApprovedMerchants();
+   
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        // toastConfig.successToast("Approved Data Loaded");
+        toastConfig.successToast("Pending Data Loaded");
         setSpinner(false);
+
         const data = resp?.payload?.results;
-        setApproveMerchant(data);
+        const dataCoun = resp?.payload?.count;
+        setData(data);
+         setDataCount(dataCoun);
+         setApprovedMerchantData(data);
       })
-      .catch((err) => toastConfig.errorToast("Data not loaded"));
+
+      .catch((err) => {
+        toastConfig.errorToast("Data not loaded");
+      });
   }, [currentPage, pageSize]);
 
   /////////////////////////////////////Search filter
+
   useEffect(() => {
     if (searchText.length > 0) {
-      setApproveMerchant(
-        approveMerchant?.filter((item) =>
+      setData(
+        approvedMerchantData.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
+            .includes(searchText?.toLocaleLowerCase())
         )
       );
     } else {
-      dispatch(kycForApproved({ page, page_size })).then((resp) => {
-        const data = resp?.payload?.results;
-
-        setApproveMerchant(data);
-      });
+      setData(approvedMerchantData);
     }
   }, [searchText]);
 
-  const indexOfLastRecord = currentPage * pageSize;
-  const totalPages = Math.ceil(dataCount / pageSize);
-  const nPages = Math.ceil(approvedMerchantData.length / pageSize);
 
-  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-  const indexOfFirstRecord = indexOfLastRecord - pageSize;
+  ////////////////////////////////////////////// pagination code start here
+const totalPages = Math.ceil(dataCount / pageSize);
+ const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
 
   const nextPage = () => {
     if (currentPage < pageNumbers.length) {
@@ -88,6 +81,27 @@ function ApprovedMerchant() {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  useEffect(() => {
+    let lastSevenPage = totalPages - 7;
+    if (pageNumbers?.length>0) {
+      let start = 0
+      let end = (currentPage + 6)
+      if (totalPages > 6) {
+        start = (currentPage - 1)
+  
+        if (parseInt(lastSevenPage) <= parseInt(start)) {
+          start = lastSevenPage
+        }
+  
+      }
+      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
+        return pgNumber;
+      })   
+     setDisplayPageNumber(pageNumber) 
+    }
+  }, [currentPage, totalPages])
+  ////////////////////////////////////////////// pagination code end here
 
   const viewDocument = async (loginMaidsterId) => {
     const res = await axiosInstanceAuth
@@ -109,25 +123,7 @@ function ApprovedMerchant() {
 
 
 
-  useEffect(() => {
-    let lastSevenPage = totalPages - 7;
-    if (pageNumbers?.length>0) {
-      let start = 0
-      let end = (currentPage + 6)
-      if (totalPages > 6) {
-        start = (currentPage - 1)
-  
-        if (parseInt(lastSevenPage) <= parseInt(start)) {
-          start = lastSevenPage
-        }
-  
-      }
-      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
-        return pgNumber;
-      })   
-     setDisplayPageNumber(pageNumber) 
-    }
-  }, [currentPage, totalPages])
+ 
 
 
   return (
@@ -159,11 +155,12 @@ function ApprovedMerchant() {
         <label>Onboard Type</label>
         <select
           className="ant-input"
+          onChange={approvedSearch}
         >
           <option value="Select Role Type">Select Onboard Type</option>
-          <option value="all">All</option>
-          <option value="Online">Online</option>
-          <option value="Offline">Offline</option>
+          <option value="">All</option>
+          <option value="online">Online</option>
+            <option value="offline">Offline</option>
 
         </select>
       </div>
@@ -176,7 +173,7 @@ function ApprovedMerchant() {
                 <th>S. No.</th>
                 <th>Client Code</th>
                 <th>Company Name</th>
-                <th>Name</th>
+                <th>Merchant Name</th>
                 <th> Email</th>
                 <th>Contact Number</th>
                 <th>KYC Status</th>
@@ -186,14 +183,14 @@ function ApprovedMerchant() {
               </tr>
             </thead>
             <tbody>
-              {approveMerchant?.length == 0 ? (
+              {data?.length === 0 ? (
                 <tr>
                   <td colSpan={"8"}>
                     <h1 className="nodatafound">No data found</h1>
                   </td>
                 </tr>
               ) : (
-                approveMerchant?.map((user, i) => (
+                data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
                     <td>{user.clientCode}</td>

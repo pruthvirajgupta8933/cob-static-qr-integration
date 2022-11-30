@@ -12,6 +12,7 @@ import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 const NotFilledKYC = () => {
 
   const [data, setData] = useState([]);
+  // const [response, setResponse] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [notFilledData, setNotFilledData] = useState([]);
   const [dataCount, setDataCount] = useState("");
@@ -19,30 +20,35 @@ const NotFilledKYC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
-  let page_size = pageSize;
-  let page = currentPage;
+  // let page_size = pageSize;
+  // let page = currentPage;
 
   const dispatch = useDispatch();
   const kycSearch = (e) => {
     setSearchText(e.target.value);
   };
 
-  const notFilledMerchants = async () => {
-    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_NOT_FILLED}`).then((res) => {
-      const data = res?.data?.results;
-      const dataCoun = res?.data?.count;
-      setNotFilledData(data);
-      setDataCount(dataCoun);
-    });
-  };
+  // const notFilledMerchants = async () => {
+  //   await axiosInstanceAuth.get(`${API_URL.KYC_FOR_NOT_FILLED}`).then((res) => {
+  //     const data = res?.data?.results;
+  //     const dataCoun = res?.data?.count;
+  //     setNotFilledData(data);
+  //     setDataCount(dataCoun);
+  //   });
+  // };
 
   useEffect(() => {
-    notFilledMerchants();
+    // notFilledMerchants();
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Not Filled Data Loaded");
-        setSpinner(false);
+        toastConfig.successToast("Data Loaded");
+        
         const data = resp?.payload?.results;
+        const totalData = resp?.payload?.count;
+
+        setSpinner(false);
+        setDataCount(totalData);
+        setNotFilledData(data);
         setData(data);
         // console.log("Paginataion Dta ===> ",notFilledData)
       })
@@ -55,9 +61,10 @@ const NotFilledKYC = () => {
 
   //------- KYC NOT FILLED SEARCH FILTER ------------//
   useEffect(() => {
+    console.log("searchText",searchText)
     if (searchText?.length > 0) {
       setData(
-        data?.filter((item) =>
+        notFilledData?.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
@@ -65,12 +72,13 @@ const NotFilledKYC = () => {
         )
       );
     } else {
-      dispatch(kycForNotFilled({ page, page_size })).then((resp) => {
-        const data = resp?.payload?.results;
-        setData(data);
-      });
+      // dispatch(kycForNotFilled({ page, page_size })).then((resp) => {
+        // const data = resp?.payload?.results;
+        setData(notFilledData);
+      // });
     }
   }, [searchText]);
+
 
 
 
@@ -145,11 +153,12 @@ const NotFilledKYC = () => {
           <label>Onboard Type</label>
           <select
             className="ant-input"
+            onChange={(e)=>setSearchText(e.target.value)}
           >
             <option value="Select Role Type">Select Onboard Type</option>
-            <option value="all">All</option>
-            <option value="Online">Online</option>
-            <option value="Offline">Offline</option>
+            <option value="">All</option>
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
 
           </select>
         </div>
@@ -162,7 +171,7 @@ const NotFilledKYC = () => {
               <tr>
                 <th>S. No.</th>
                 <th>Client Code</th>
-                <th>Name</th>
+                <th>Merchant Name</th>
                 <th>Email</th>
                 <th>Contact Number</th>
                 <th>KYC Status</th>

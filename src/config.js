@@ -138,7 +138,10 @@ const API_LIVE = {
   GET_ZONE_INFO:`${url}/zone/get-zone-info`,
 
 
-  ////////////////////////////////////////
+  ////////////////////////////////////////Rate mapping
+  GET_TEMPLATE_DETAILS:`${url}/merchant/get-rate-template-detail`,
+
+
 
   /////////////////////////Kyc approver
   /* For pending*/
