@@ -35,7 +35,7 @@ function AssignZone() {
    
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Pending Data Loaded");
+        toastConfig.successToast("Data Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
@@ -207,7 +207,7 @@ return (
                 <table className="table table-bordered">
                   <thead>
                     <tr>
-                      <th>Serial No.</th>
+                      <th>S. No.</th>
                       <th>Client Code</th>
                       <th>Merchant Name</th>
                       <th> Email</th>

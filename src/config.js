@@ -139,6 +139,7 @@ const API_LIVE = {
 
   ////////////////////////////////////////Rate mapping
   GET_TEMPLATE_DETAILS:`${url}/merchant/get-rate-template-detail`,
+   GET_RISK_TEMPLSTE:`${url}/merchant/get-risk-category-template`,
 
 
 
@@ -217,6 +218,9 @@ const API_LIVE = {
 
   // KYC VALIDATE URL
    VALIDATE_KYC: `${kyc_validate}/validator`,
+
+   // For comments in approver and merchant (Pending Verification and Pending Approval)
+   COMMENTS_BOX: `${url}/merchant/update-comments`,
 
    
 

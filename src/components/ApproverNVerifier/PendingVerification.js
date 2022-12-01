@@ -9,6 +9,7 @@ import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import CommentModal from "./Onboarderchant/CommentModal";
 
 function PendingVerification() {
   const { url } = useRouteMatch();
@@ -20,8 +21,11 @@ function PendingVerification() {
   const [newRegistrationData, setNewRegistrationData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [commentId, setCommentId] = useState({});
   const [pageSize, setPageSize] = useState(10);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [isCommentUpdate,setIsCommentUpdate] = useState(false)
+
   let page_size = pageSize;
   let page = currentPage;
 
@@ -31,12 +35,32 @@ function PendingVerification() {
     setSearchText(e.target.value);
   };
 
-  
 
+  const pendingVerify = () => {
+    dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
+    .then((resp) => {
+      toastConfig.successToast("Data Loaded");
+      setSpinner(false);
+
+      const data = resp?.payload?.results;
+      const dataCoun = resp?.payload?.count;
+      setData(data);
+      setDataCount(dataCoun);
+      setNewRegistrationData(data);
+    })
+
+    .catch((err) => {
+      toastConfig.errorToast("Data not loaded");
+    });
+
+  }
+ 
+
+  // console.log("isCommentUpdate",isCommentUpdate)
+ 
   //---------------GET Api for KycPending-------------------
 
   useEffect(() => {
-   
     dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
         toastConfig.successToast("Data Loaded");
@@ -45,16 +69,15 @@ function PendingVerification() {
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
-         setDataCount(dataCoun);
-         setNewRegistrationData(data);
+        setDataCount(dataCoun);
+        setNewRegistrationData(data);
       })
 
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
+
   }, [currentPage, pageSize]);
-
-
 
   ///////////Kyc Search filter
   useEffect(() => {
@@ -72,10 +95,8 @@ function PendingVerification() {
     }
   }, [searchText]);
 
-
   const totalPages = Math.ceil(dataCount / pageSize);
   const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
-
 
   const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
@@ -91,26 +112,24 @@ function PendingVerification() {
 
   useEffect(() => {
     let lastSevenPage = totalPages - 7;
-    if (pageNumbers?.length>0) {
-      let start = 0
-      let end = (currentPage + 6)
+    if (pageNumbers?.length > 0) {
+      let start = 0;
+      let end = currentPage + 6;
       if (totalPages > 6) {
-        start = (currentPage - 1)
-  
+        start = currentPage - 1;
+
         if (parseInt(lastSevenPage) <= parseInt(start)) {
-          start = lastSevenPage
+          start = lastSevenPage;
         }
-  
       }
       const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
         return pgNumber;
-      })   
-     setDisplayPageNumber(pageNumber) 
+      });
+      setDisplayPageNumber(pageNumber);
     }
-  }, [currentPage, totalPages])
+  }, [currentPage, totalPages]);
 
-
-
+  // updateFlag={setIsCommentUpdate}
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
@@ -122,6 +141,9 @@ function PendingVerification() {
             type="text"
             placeholder="Search Here"
           />
+        </div>
+        <div>
+          <CommentModal commentData={commentId} handleApi={pendingVerify}/>
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -140,15 +162,11 @@ function PendingVerification() {
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Onboard Type</label>
-          <select
-            onChange={kycSearch}
-            className="ant-input"
-          >
-             <option value="Select Role Type">Select Onboard Type</option>
+          <select onChange={kycSearch} className="ant-input">
+            <option value="Select Role Type">Select Onboard Type</option>
             <option value="">All</option>
             <option value="online">Online</option>
             <option value="offline">Offline</option>
-           
           </select>
         </div>
       </div>
@@ -167,6 +185,8 @@ function PendingVerification() {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
+                <th>Comments</th>
+                <th>Action</th>
                 {roles?.verifier === true ? <th>Verify KYC</th> : <></>}
               </tr>
             </thead>
@@ -182,7 +202,7 @@ function PendingVerification() {
                 data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.clientCode}</td>  
+                    <td>{user.clientCode}</td>
                     <td>{user.companyName}</td>
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
@@ -190,6 +210,23 @@ function PendingVerification() {
                     <td>{user.status}</td>
                     <td>{user.signUpDate}</td>
                     <td>{user?.isDirect}</td>
+                    <td>{user?.comments}</td>
+                    <td>
+                      {roles.verifier === true || roles.approver === true ? (
+                        <button
+                          type="button"
+                          className="btn approve text-white  btn-xs"
+                          data-toggle="modal"
+                          onClick={() => setCommentId(user)}
+                          data-target="#exampleModal"
+                        >
+                          Add Comments
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </td>
+
                     {roles.verifier === true ? (
                       <td>
                         <Link
@@ -204,6 +241,7 @@ function PendingVerification() {
                     ) : (
                       <></>
                     )}
+                    <td></td>
                   </tr>
                 ))
               )}
