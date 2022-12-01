@@ -11,11 +11,11 @@ const ViewStatusModal = (props) => {
   const handleClick = () => {
     dispatch(
       kycDocumentUploadList({
-        login_id: props.tabData.login_id,
+        login_id: props?.tabData?.login_id,
       })
     ).then((res) => {
-      setUploadData(res.payload);
-      setShow(true);
+      setUploadData(res?.payload);
+      setShow(true); 
     });
   };
 
