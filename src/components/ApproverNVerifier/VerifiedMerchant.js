@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import CommentModal from "./Onboarderchant/CommentModal";
 
 function VerifiedMerchant() {
   const [data, setData] = useState([]);
@@ -18,6 +19,7 @@ function VerifiedMerchant() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [commentId, setCommentId] = useState({});
 
   let page_size = pageSize;
   let page = currentPage;
@@ -26,6 +28,27 @@ function VerifiedMerchant() {
   const kycSearch = (e) => {
     setSearchText(e.target.value);
   };
+
+
+  const verifyMerchant = () => {
+    dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
+    .then((resp) => {
+      toastConfig.successToast("Data Loaded");
+      setSpinner(false);
+
+      const data = resp?.payload?.results;
+      const dataCoun = resp?.payload?.count;
+      setData(data);
+       setDataCount(dataCoun);
+       setVerifiedMerchant(data);
+    })
+
+    .catch((err) => {
+      toastConfig.errorToast("Data not loaded");
+    });
+
+  }
+
 
   useEffect(() => {
    
@@ -149,6 +172,7 @@ function VerifiedMerchant() {
 
         </select>
       </div>
+      <div><CommentModal  commentData={commentId} handleForVerified={verifyMerchant}/></div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
           <table className="table table-bordered">
@@ -163,7 +187,10 @@ function VerifiedMerchant() {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
+                <th>Comments</th>
+                <th>Action</th>
                 {roles.approver === true ? <th>Approve KYC</th> : <></>}
+              
               </tr>
             </thead>
             <tbody>
@@ -187,6 +214,14 @@ function VerifiedMerchant() {
                     <td>{user.status}</td>
                     <td>{user.signUpDate}</td>
                     <td>{user?.isDirect}</td>
+                    <td>{user?.comments}</td>
+                    <td>
+                    {roles.verifier === true || roles.approver === true ? 
+                  <button type="button" className ="btn approve text-white  btn-xs" data-toggle="modal" onClick = {() => setCommentId(user)} data-target="#exampleModal" >
+                  Add Comments
+                </button> : <></>
+                    }
+                    </td>
                     {roles.approver === true ? (
                       <td>
                         <Link
@@ -201,6 +236,7 @@ function VerifiedMerchant() {
                     ) : (
                       <></>
                     )}
+                   
                   </tr>
                 ))
               )}
