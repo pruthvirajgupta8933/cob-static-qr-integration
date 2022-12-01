@@ -113,7 +113,7 @@ function BusinessOverview(props) {
         .required("Select Business Category")
         .nullable(),
       billing_label: Yup.string().trim()
-        .matches(limitLabelRegex,"Max limit is 500 characters")
+        .matches(Regex.acceptAlphabet,RegexMsg.acceptAlphabet)
         .required("Required")
         .nullable(),
       company_website: Yup.string().trim()

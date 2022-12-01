@@ -1,12 +1,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import API_URL from "../../config";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
-import ViewZoneModal from "./ViewZoneModal";
+import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 
 import NavBar from "../../components/dashboard/NavBar/NavBar"
 import ViewRateMapping from "./ViewRateMapping";
@@ -36,7 +34,7 @@ function RateMapping() {
    
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Pending Data Loaded");
+        toastConfig.successToast("Data Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
@@ -183,10 +181,7 @@ return (
                 onChange={(e) => setPageSize(parseInt(e.target.value))}
                 className="ant-input"
               >
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
+              <DropDownCountPerPage datalength={data.length} />
               </select>
             </div>
             <div className="form-group col-lg-3 col-md-12 mt-2">

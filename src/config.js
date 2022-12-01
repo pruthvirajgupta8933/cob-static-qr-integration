@@ -139,6 +139,7 @@ const API_LIVE = {
 
   ////////////////////////////////////////Rate mapping
   GET_TEMPLATE_DETAILS:`${url}/merchant/get-rate-template-detail`,
+   GET_RISK_TEMPLSTE:`${url}/merchant/get-risk-category-template`,
 
 
 

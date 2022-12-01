@@ -68,7 +68,7 @@ function ApprovedMerchant() {
 
   ////////////////////////////////////////////// pagination code start here
 const totalPages = Math.ceil(dataCount / pageSize);
- const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
 
   const nextPage = () => {
     if (currentPage < pageNumbers.length) {
