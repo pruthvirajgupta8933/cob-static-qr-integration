@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../dashboard/NavBar/NavBar";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useState } from "react";
@@ -110,8 +110,6 @@ const AdditionalKYC = () => {
 
   let bankAccountHolderName = `${AccfirstName} ${AcclastName}`;
 
-  const bankStatus = bankAccountStatus?.accountValidation?.status;
-
   const accountStatus =
     allTabsValidate?.BankDetails?.accountValidation?.account_status;
 
@@ -155,6 +153,7 @@ const AdditionalKYC = () => {
   const [selectedDocType, setSelectedDocType] = useState("");
   const [panStatus, setPanStatus] = useState(false);
   const [gstStatus, setGstStatus] = useState(false);
+  const [bankStatus, setBankStatus] = useState(false);
 
   const handleChange = (event) => {
     setSelectedDocType(event.target.value);
@@ -164,6 +163,12 @@ const AdditionalKYC = () => {
   // ? accHolderName : "")
 
   // console.log("PAN VALIDITY",panValidity)
+
+  useEffect(() => {
+    setPanStatus(false);
+    setGstStatus(false);
+    setBankStatus(false);
+  }, [selectedDocType]);
 
   const handleSubmitForPAN = (values) => {
     dispatch(
@@ -219,6 +224,7 @@ const AdditionalKYC = () => {
         res?.payload?.valid === true
       ) {
         toast.success(res?.payload?.message);
+        setBankStatus(res?.payload?.status);
       } else {
         toast.error(res?.payload?.message);
       }
@@ -420,7 +426,7 @@ const AdditionalKYC = () => {
           
             </div> */}
                   <div class="col-lg-4 font-weight-bold">
-                    Reistered Date : {registered_date ? registered_date : ""}
+                    Registered Date : {registered_date ? registered_date : ""}
                   </div>
                 </div>
                 <div class="row">
@@ -445,7 +451,7 @@ const AdditionalKYC = () => {
             )}
 
             {bankStatus === true && selectedDocType === "3" ? (
-              <div class="container" style={{ marginTop: "91px" }}>
+              <div class="container" style={{ marginTop: "32px" }}>
                 <h2 className="font-weight-bold">Bank Account Information</h2>
                 <div class="row">
                   <div class="col-lg-4 font-weight-bold">

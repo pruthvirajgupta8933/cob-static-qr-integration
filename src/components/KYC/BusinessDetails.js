@@ -26,6 +26,7 @@ function BusinessDetails(props) {
 
   const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
   const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+  const reqexPinCode = /^[1-9][0-9]{5}$/
 
   const { auth, kyc } = useSelector((state) => state);
 
@@ -203,11 +204,11 @@ function BusinessDetails(props) {
       .required("Required")
       .nullable(),
     pin_code: Yup.string().trim()
-      .matches(Regex.digit, RegexMsg.digit)
+      .matches(reqexPinCode, "Pin Code is Invalid")
       .required("Required")
       .nullable(),
     operational_address: Yup.string().trim()
-      .matches(Regex.address, RegexMsg.address)
+    .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
       .required("Required")
       .nullable(),
   });

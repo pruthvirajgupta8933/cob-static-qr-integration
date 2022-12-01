@@ -1,6 +1,5 @@
 const ENV_PROD = false; // don't change in the local environment
-let url,
-  kyc_url = "",kyc_validate = "";
+let url,kyc_url = "",kyc_validate = "";
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
@@ -38,14 +37,12 @@ const API_LIVE = {
   SUCCESS_TXN_SUMMARY: adminAPIURL + "/REST/SuccessTxnSummary/",
 
   // * Rate mapping */
-  RATE_MAPPING_GenerateClientFormForCob:
-    adminAPIURL + "/config/GenerateClientFormForCob",
+  RATE_MAPPING_GenerateClientFormForCob:adminAPIURL+"/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
-  RATE_MAPPING_CLONE: adminAPIURL + "/Ratemapping/cloning",
-  RATE_ENABLE_PAYLINK: adminAPIURL + "/getDataByCommonProc/getCommonData/31",
+  RATE_MAPPING_CLONE: adminAPIURL+"/REST/Ratemapping/cloning",
+  RATE_ENABLE_PAYLINK: adminAPIURL+"/getDataByCommonProc/getCommonData/31",
 
-  CHECK_PERMISSION_PAYLINK:
-    adminAPIURL + "/getDataByCommonProc/getCommonData/29/",
+  CHECK_PERMISSION_PAYLINK:adminAPIURL + "/getDataByCommonProc/getCommonData/29/",
   BANK_IFSC_CODE_VERIFY: "https://ifsc.razorpay.com/",
   BANK_LIST_NB:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
@@ -230,6 +227,7 @@ const API_LIVE = {
  
 const API_URL = API_LIVE;
 export default API_URL;
+export const APP_ENV  = ENV_PROD;
 
 export const TIMEOUT = 1200; // 1200 seconds = 20 minutes
 export const AUTH_TOKEN = "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69";

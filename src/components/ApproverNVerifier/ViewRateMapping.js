@@ -254,6 +254,7 @@ const ViewRateMapping = (props) => {
                                                     ) : (
                                                         <></>
                                                     )}
+                                                    {/* <button type="subbmit" onClick={resetForm} class="btn btn-primary">Submit</button> */}
                                                 </div>
 
                                             </Form>

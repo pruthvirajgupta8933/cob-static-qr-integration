@@ -32,7 +32,7 @@ const RejectedKYC = () => {
    
     dispatch(kycForRejectedMerchants({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Pending Data Loaded");
+        toastConfig.successToast("Data Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
@@ -68,7 +68,8 @@ const RejectedKYC = () => {
 
  
   const totalPages = Math.ceil(dataCount / pageSize);
- const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+  const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
+
 const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);

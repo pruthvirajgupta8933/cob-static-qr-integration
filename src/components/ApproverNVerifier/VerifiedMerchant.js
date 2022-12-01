@@ -31,7 +31,7 @@ function VerifiedMerchant() {
    
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Pending Data Loaded");
+        toastConfig.successToast("Data Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
@@ -65,8 +65,9 @@ function VerifiedMerchant() {
   const indexOfLastRecord = currentPage * pageSize;
 
 
-  const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+  const totalPages = Math.ceil(dataCount / pageSize);  
+  const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
+
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
 
   const nextPage = () => {

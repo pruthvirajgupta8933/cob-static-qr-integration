@@ -68,6 +68,7 @@ function BusinessOverview(props) {
   ];
 
   const VerifyKycStatus = KycTabStatusStore?.business_info_status;
+  const limitLabelRegex = /^[a-z | 0-9]{0,500}$/
 
   const urlRegex =
     "((http|https)://)(www.)?" +
@@ -112,7 +113,7 @@ function BusinessOverview(props) {
         .required("Select Business Category")
         .nullable(),
       billing_label: Yup.string().trim()
-        .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
+        .matches(Regex.acceptAlphabet,RegexMsg.acceptAlphabet)
         .required("Required")
         .nullable(),
       company_website: Yup.string().trim()
@@ -408,8 +409,8 @@ function BusinessOverview(props) {
             </div>
 
             <div class="col-sm-4 col-md-4 col-lg-4">
-              <label class="col-form-label p-2 mt-0">
-                Expected Transactions<span style={{ color: "red" }}>*</span>
+              <label class="col-form-label p-0 exp-tranc">
+                Expected Transactions / Per Year <span style={{ color: "red" }}>*</span>
               </label>
 
               <FormikController

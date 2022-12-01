@@ -61,7 +61,7 @@ const NotFilledKYC = () => {
 
   //------- KYC NOT FILLED SEARCH FILTER ------------//
   useEffect(() => {
-    console.log("searchText",searchText)
+    // console.log("searchText",searchText)
     if (searchText?.length > 0) {
       setData(
         notFilledData?.filter((item) =>
@@ -82,8 +82,9 @@ const NotFilledKYC = () => {
 
 
 
-  const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+  const totalPages = Math.ceil(dataCount / pageSize);  
+  const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
+
 
   const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
