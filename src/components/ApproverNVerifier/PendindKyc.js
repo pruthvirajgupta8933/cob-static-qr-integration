@@ -94,7 +94,7 @@ const dispatch = useDispatch();
  const indexOfLastRecord = currentPage * pageSize;
   const nPages = Math.ceil(pendingKycData?.length / pageSize);
   const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+  const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
   
 

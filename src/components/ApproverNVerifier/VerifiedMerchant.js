@@ -65,8 +65,9 @@ function VerifiedMerchant() {
   const indexOfLastRecord = currentPage * pageSize;
 
 
-  const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+  const totalPages = Math.ceil(dataCount / pageSize);  
+  const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
+
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
 
   const nextPage = () => {
