@@ -10,6 +10,7 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
+import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 
 function PendingVerification() {
   const { url } = useRouteMatch();
@@ -23,8 +24,11 @@ function PendingVerification() {
   const [currentPage, setCurrentPage] = useState(1);
   const [commentId, setCommentId] = useState({});
   const [pageSize, setPageSize] = useState(10);
+  const [kycIdClick, setKycIdClick] = useState(null)
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
-  const [isCommentUpdate,setIsCommentUpdate] = useState(false)
+  const [isCommentUpdate, setIsCommentUpdate] = useState(false);
+
+
 
   let page_size = pageSize;
   let page = currentPage;
@@ -35,29 +39,26 @@ function PendingVerification() {
     setSearchText(e.target.value);
   };
 
-
   const pendingVerify = () => {
     dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
-    .then((resp) => {
-      toastConfig.successToast("Data Loaded");
-      setSpinner(false);
+      .then((resp) => {
+        toastConfig.successToast("Data Loaded");
+        setSpinner(false);
 
-      const data = resp?.payload?.results;
-      const dataCoun = resp?.payload?.count;
-      setData(data);
-      setDataCount(dataCoun);
-      setNewRegistrationData(data);
-    })
+        const data = resp?.payload?.results;
+        const dataCoun = resp?.payload?.count;
+        setData(data);
+        setDataCount(dataCoun);
+        setNewRegistrationData(data);
+      })
 
-    .catch((err) => {
-      toastConfig.errorToast("Data not loaded");
-    });
+      .catch((err) => {
+        toastConfig.errorToast("Data not loaded");
+      });
+  };
 
-  }
- 
+  // console.log("Viewer",roles)
 
-  // console.log("isCommentUpdate",isCommentUpdate)
- 
   //---------------GET Api for KycPending-------------------
 
   useEffect(() => {
@@ -76,7 +77,6 @@ function PendingVerification() {
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
-
   }, [currentPage, pageSize]);
 
   ///////////Kyc Search filter
@@ -96,7 +96,7 @@ function PendingVerification() {
   }, [searchText]);
 
   const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
+  const pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
 
   const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
@@ -143,7 +143,8 @@ function PendingVerification() {
           />
         </div>
         <div>
-          <CommentModal commentData={commentId} handleApi={pendingVerify}/>
+          <CommentModal commentData={commentId} handleApi={pendingVerify} />
+          <KycDetailsModal  kycId={kycIdClick}/>
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -225,6 +226,19 @@ function PendingVerification() {
                       ) : (
                         <></>
                       )}
+                        {roles.viewer === true ? (
+                        <button
+                          type="button"
+                          className="btn approve text-white  btn-xs"
+                          onClick={() => setKycIdClick(user?.loginMasterId)}
+                          data-toggle="modal"
+                          data-target="#kycmodaldetail"
+                        >
+                          View
+                        </button>
+                      ) : (
+                        <></>
+                      )}
                     </td>
 
                     {roles.verifier === true ? (
@@ -241,7 +255,9 @@ function PendingVerification() {
                     ) : (
                       <></>
                     )}
-                    <td></td>
+                  
+                    
+                
                   </tr>
                 ))
               )}

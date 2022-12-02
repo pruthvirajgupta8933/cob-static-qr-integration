@@ -119,7 +119,7 @@ function SideNavbar() {
                     <React.Fragment></React.Fragment>
                   )}
 
-                  {(roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true) ? (
+                  {(roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true || roleBasedShowTab?.viewer === true) ? (
                     <li className="ant-menu-item" role="menuitem">
                       <Link
                         to={`${url}/approver`}

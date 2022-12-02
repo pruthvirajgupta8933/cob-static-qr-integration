@@ -7,6 +7,7 @@ export const roleBasedAccess = (pageNo) => {
         verifier: false,
         bank: false,
         merchant: false,
+        viewer:false,
     };
 
     let roleAccessObj = roleBasedTab;
@@ -16,8 +17,10 @@ export const roleBasedAccess = (pageNo) => {
         roleAccessObj = { ...roleAccessObj, approver: true };
     }else if (roleId === 3 || roleId === 13) {
         roleAccessObj = { ...roleAccessObj, bank: true };
-    } else if (roleId !== 3 || roleId !== 13) {
+    } else if (roleId === 4 ) {
         roleAccessObj = { ...roleAccessObj, merchant: true };
+    } else if (roleId === 16 ) {
+        roleAccessObj = { ...roleAccessObj, viewer: true };
     } else {
         // console.log("Permission not match with these roles");
     }

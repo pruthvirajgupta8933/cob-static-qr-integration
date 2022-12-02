@@ -24,7 +24,7 @@ function Approver() {
 
 
   useEffect(() => {
-    if (loggedUser?.approver || loggedUser?.verifier) {
+    if (loggedUser?.approver || loggedUser?.verifier || loggedUser?.viewer ) {
       // console.log(" valid")
     } else {
       // console.log("not valid")

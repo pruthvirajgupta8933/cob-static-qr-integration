@@ -30,7 +30,7 @@ const CommentModal = (props) => {
       .nullable(),
   });
 
-  console.log(props.handleForVerified, "============>");
+  // console.log(props.handleForVerified, "============>");
 
   const handleSubmit = (values) => {
     const postData = {
@@ -40,8 +40,7 @@ const CommentModal = (props) => {
     axiosInstanceAuth
       .post(API_URL.COMMENTS_BOX, postData)
       .then((resp) => {
-        props.handleApi()
-        props.handleForVerified()
+        props.handleApi() !== undefined ?  props.handleApi() : props.handleForVerified()
         toast.success(resp?.data?.Message);
       })
       .catch(() => {});
