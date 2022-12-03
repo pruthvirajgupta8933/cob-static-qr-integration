@@ -26,11 +26,12 @@ const CommentModal = (props) => {
 
   const validationSchema = Yup.object({
     comments: Yup.string()
+    .min(1, "Please enter , more than 1 character")
+    .max(100, "Please enter not  more than 100 characters")
       .required("Required")
       .nullable(),
   });
 
-  // console.log(props.handleForVerified, "============>");
 
   const handleSubmit = (values) => {
     const postData = {
@@ -40,17 +41,15 @@ const CommentModal = (props) => {
     axiosInstanceAuth
       .post(API_URL.COMMENTS_BOX, postData)
       .then((resp) => {
-        props.handleApi() !== undefined ?  props.handleApi() : props.handleForVerified()
+        // props.handleApi() !== undefined ?  props.handleApi() : props.handleForVerified()
+        props.handleApi()
+        props.handleForVerified() 
         toast.success(resp?.data?.Message);
       })
       .catch(() => {});
   };
 
-  // useEffect(() => {
-  //   return () => {
-  //     updateFlag(true)
-  //   }
-  // }, [])
+
   
 
   return (

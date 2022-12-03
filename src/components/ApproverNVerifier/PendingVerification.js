@@ -44,7 +44,6 @@ function PendingVerification() {
       .then((resp) => {
         toastConfig.successToast("Data Loaded");
         setSpinner(false);
-
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
@@ -57,7 +56,6 @@ function PendingVerification() {
       });
   };
 
-  // console.log("Viewer",roles)
 
   //---------------GET Api for KycPending-------------------
 
@@ -69,6 +67,7 @@ function PendingVerification() {
 
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
+        setKycIdClick(data)
         setData(data);
         setDataCount(dataCoun);
         setNewRegistrationData(data);
@@ -230,7 +229,7 @@ function PendingVerification() {
                         <button
                           type="button"
                           className="btn approve text-white  btn-xs"
-                          onClick={() => setKycIdClick(user?.loginMasterId)}
+                          onClick={() => setKycIdClick(user)}
                           data-toggle="modal"
                           data-target="#kycmodaldetail"
                         >

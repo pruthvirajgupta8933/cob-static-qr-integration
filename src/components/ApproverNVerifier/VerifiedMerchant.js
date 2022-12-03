@@ -8,6 +8,7 @@ import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
+import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 
 function VerifiedMerchant() {
   const [data, setData] = useState([]);
@@ -18,6 +19,7 @@ function VerifiedMerchant() {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [kycIdClick, setKycIdClick] = useState(null)
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [commentId, setCommentId] = useState({});
 
@@ -60,6 +62,7 @@ function VerifiedMerchant() {
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
+        setKycIdClick(data)
          setDataCount(dataCoun);
          setVerifiedMerchant(data);
       })
@@ -159,6 +162,7 @@ function VerifiedMerchant() {
         </select>
 
       </div>
+      <KycDetailsModal  kycId={kycIdClick}/>
       <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Onboard Type</label>
         <select
@@ -222,6 +226,19 @@ function VerifiedMerchant() {
                   Add Comments
                 </button> : <></>
                     }
+                      {roles.viewer === true ? (
+                        <button
+                          type="button"
+                          className="btn approve text-white  btn-xs"
+                          onClick={() => setKycIdClick(user)}
+                          data-toggle="modal"
+                          data-target="#kycmodaldetail"
+                        >
+                          View
+                        </button>
+                      ) : (
+                        <></>
+                      )}
                     </td>
                     {roles.approver === true ? (
                       <td>
@@ -237,6 +254,7 @@ function VerifiedMerchant() {
                     ) : (
                       <></>
                     )}
+                  
                    
                   </tr>
                 ))

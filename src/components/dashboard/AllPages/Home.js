@@ -327,7 +327,9 @@ function Home() {
               </div>
             ) : (
               <div className="col-12 col-md-12">
-             {roles?.bank === true ? <></> :  <div class="card col-lg-12- cardkyc pull-left">
+             {roles?.bank === true || roles.viewer === true ? <></> :  
+             <div class="card col-lg-12- cardkyc pull-left">
+
                <div class="font-weight-bold card-body Satoshi-Medium">
                   <span>
                   Congratulations! Your KYC documents have been approved.
