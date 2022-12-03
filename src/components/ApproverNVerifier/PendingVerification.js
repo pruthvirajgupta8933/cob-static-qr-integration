@@ -24,16 +24,9 @@ function PendingVerification() {
   const [currentPage, setCurrentPage] = useState(1);
   const [commentId, setCommentId] = useState({});
   const [pageSize, setPageSize] = useState(10);
-  const [kycIdClick, setKycIdClick] = useState(null)
+  const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
-  const [isCommentUpdate, setIsCommentUpdate] = useState(false);
 
-
-
-  let page_size = pageSize;
-  let page = currentPage;
-
-  // console.log(setPageSize,"wewewewewewewewewewewew")
   const dispatch = useDispatch();
   const kycSearch = (e) => {
     setSearchText(e.target.value);
@@ -42,7 +35,7 @@ function PendingVerification() {
   const pendingVerify = () => {
     dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
+        // toastConfig.successToast("Data Loaded");
         setSpinner(false);
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
@@ -56,7 +49,6 @@ function PendingVerification() {
       });
   };
 
-
   //---------------GET Api for KycPending-------------------
 
   useEffect(() => {
@@ -67,7 +59,7 @@ function PendingVerification() {
 
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
-        setKycIdClick(data)
+        setKycIdClick(data);
         setData(data);
         setDataCount(dataCoun);
         setNewRegistrationData(data);
@@ -143,7 +135,7 @@ function PendingVerification() {
         </div>
         <div>
           <CommentModal commentData={commentId} handleApi={pendingVerify} />
-          <KycDetailsModal  kycId={kycIdClick}/>
+          <KycDetailsModal kycId={kycIdClick} />
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -225,7 +217,7 @@ function PendingVerification() {
                       ) : (
                         <></>
                       )}
-                        {roles.viewer === true ? (
+                      {roles.viewer === true ? (
                         <button
                           type="button"
                           className="btn approve text-white  btn-xs"
@@ -254,9 +246,6 @@ function PendingVerification() {
                     ) : (
                       <></>
                     )}
-                  
-                    
-                
                   </tr>
                 ))
               )}
