@@ -141,7 +141,8 @@ const API_LIVE = {
   GET_TEMPLATE_DETAILS:`${url}/merchant/get-rate-template-detail`,
    GET_RISK_TEMPLSTE:`${url}/merchant/get-risk-category-template`,
 
-
+////////////////////////////////////////SIGNUP DATA API
+GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
 
   /////////////////////////Kyc approver
   /* For pending*/
