@@ -38,6 +38,7 @@ import Sandbox from '../SandBox/SendBox';
 import AssignZone from '../ApproverNVerifier/AssignZone';
 import AdditionalKYC from '../ApproverNVerifier/AdditionalKYC';
 import RateMapping from '../ApproverNVerifier/RateMapping';
+import SignupData from '../ApproverNVerifier/SignupData';
 
 
 function Dashboard() {
@@ -170,6 +171,9 @@ function Dashboard() {
                     </Route>
                     <Route exact path={`${path}/assignzone`} >
                          <AssignZone/>
+                    </Route>
+                    <Route exact path={`${path}/signup-data`} >
+                         <SignupData/>
                     </Route>
                     <Route exact path={`${path}/ratemapping`} >
                          <RateMapping/>

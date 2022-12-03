@@ -791,6 +791,36 @@ export const getBankId = createAsyncThunk(
 );
 //--Get Bank Id ------------//
 
+//--get-business-type-by-id ------------//
+export const businessTypeById = createAsyncThunk(
+  "kyc/getBusinessTypeById",
+  async (requestParam) => {
+    const response = await axiosInstanceAuth
+      .post(`${API_URL.GET_BUSINESS_TYPE_ID}`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+//-- get-business-type-by-id  ------------//
+
+//-- get-business-category-by-id ------------//
+export const businessCategoryById = createAsyncThunk(
+  "kyc/businessCategoryById",
+  async (requestParam) => {
+    const response = await axiosInstanceAuth
+      .post(`${API_URL.GET_BUSINESS_CATEGORY_ID}`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+//---- get-business-category-by-id ------------//
+
 export const approvekyc = createAsyncThunk(
   "kyc/approvekyc",
   async (requestParam) => {
