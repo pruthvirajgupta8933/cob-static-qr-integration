@@ -10,47 +10,35 @@ import { kycForPending } from "../../../slices/kycSlice";
 import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 
 const CommentModal = (props) => {
-  const {updateFlag} = props
-
-  // console.log("updateFlag",updateFlag)
-  const dispatch = useDispatch();
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-
   const initialValues = {
     comments: "",
   };
 
-
-
   const validationSchema = Yup.object({
     comments: Yup.string()
-    .min(1, "Please enter , more than 1 character")
-    .max(100, "Please enter not  more than 100 characters")
+      .min(1, "Please enter , more than 1 character")
+      .max(100, "Please enter not  more than 100 characters")
       .required("Required")
       .nullable(),
   });
 
-
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     const postData = {
       client_code: props.commentData.clientCode,
       comments: values.comments,
     };
-    axiosInstanceAuth
+    await axiosInstanceAuth
       .post(API_URL.COMMENTS_BOX, postData)
       .then((resp) => {
-        // props.handleApi() !== undefined ?  props.handleApi() : props.handleForVerified()
-        props.handleApi()
-        props.handleForVerified() 
         toast.success(resp?.data?.Message);
+        return props && props.handleApi
+          ? props.handleApi()
+          : props.handleForVerified();
+        // props.handleApi();
+        // props.handleForVerified();
       })
       .catch(() => {});
   };
-
-
-  
 
   return (
     <div>
@@ -69,7 +57,7 @@ const CommentModal = (props) => {
                 class="modal-title bolding text-black"
                 id="exampleModalLongTitle"
               >
-               Add your comments
+                Add your comments
               </h5>
 
               <button
@@ -77,7 +65,6 @@ const CommentModal = (props) => {
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                
               >
                 <span aria-hidden="true">&times;</span>
               </button>

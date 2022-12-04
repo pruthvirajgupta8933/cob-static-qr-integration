@@ -10,7 +10,11 @@ import { Link } from "react-router-dom";
 import "../css/Home.css";
 
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import {  GetKycTabsStatus, kycUserList, UpdateModalStatus } from "../../../slices/kycSlice";
+import {
+  GetKycTabsStatus,
+  kycUserList,
+  UpdateModalStatus,
+} from "../../../slices/kycSlice";
 import NavBar from "../NavBar/NavBar";
 import bro from "../../../assets/images/bro.png";
 import congratsImg from "../../../assets/images/congImg.png";
@@ -23,8 +27,8 @@ import eposs from "../../../assets/images/epos.png";
 import linkpssa from "../../../assets/images/linkPaisa.png";
 import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
-import congImg from "../../../assets/images/congImg.png"
-import $ from "jquery"
+import congImg from "../../../assets/images/congImg.png";
+import $ from "jquery";
 import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 function Home() {
   const roles = roleBasedAccess();
@@ -38,19 +42,13 @@ function Home() {
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
   // const [roleType, setRoleType] = useState(roles);
-  const { dashboard, auth, kyc ,consentKyc} = useSelector((state) => state);
+  const { dashboard, auth, kyc, consentKyc } = useSelector((state) => state);
 
   const kyc_submit_consent = useSelector(
-    (state) =>
-      state.kyc.consentKyc.status
-
+    (state) => state.kyc.consentKyc.status
   );
 
-  
-
-
-  const { KycTabStatusStore ,OpenModalForKycSubmit  } = kyc;
- 
+  const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
 
   const [modalState, setModalState] = useState("Not-Filled");
   const [kycmodalState, setKycModalState] = useState(false);
@@ -71,7 +69,6 @@ function Home() {
   //   setModalState(!modalState);
   // }
 
-  
   useEffect(() => {
     const objParam = { fromDate, toDate, clientCode };
     var DefaulttxnList = [];
@@ -89,10 +86,6 @@ function Home() {
   useEffect(() => {
     setModalState(KycTabStatusStore?.status);
   }, [KycTabStatusStore]);
-
-
-
-
 
   //make client code array
   if (
@@ -139,8 +132,7 @@ function Home() {
   }, [search]);
 
   useEffect(() => {
-
-    dispatch(kycUserList({ login_id: user?.loginId }))
+    dispatch(kycUserList({ login_id: user?.loginId }));
     return () => {
       dispatch(clearSuccessTxnsummary());
     };
@@ -155,7 +147,11 @@ function Home() {
     if (user.clientMerchantDetailsList === null) {
       return <Redirect to={`${path}/profile`} />;
     }
-  } else if (roles.approver === true || roles.verifier === true) {
+  } else if (
+    roles.approver === true ||
+    roles.verifier === true ||
+    roles.viewer === true
+  ) {
     return <Redirect to={`${path}/approver`} />;
   }
 
@@ -167,9 +163,8 @@ function Home() {
   // console.log("modalState",modalState)
 
   const handleClose = () => {
-    dispatch(UpdateModalStatus(false))
-  }
-
+    dispatch(UpdateModalStatus(false));
+  };
 
   return (
     <section className="ant-layout Satoshi-Medium">
@@ -181,7 +176,11 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
-      {roles?.bank === true ? <></> : <StepProgressBar  status={kyc?.kycUserList?.status} />}
+        {roles?.bank === true ? (
+          <></>
+        ) : (
+          <StepProgressBar status={kyc?.kycUserList?.status} />
+        )}
         <div className="announcement-banner-container_new  announcement-banner">
           <div className="onboarding-illustration-top">
             {" "}
@@ -193,12 +192,10 @@ function Home() {
             />
           </div>
           <div className="row">
-
             <div
               className="col-12 col-md-3 aos-init aos-animate"
               data-aos="fade-up"
             >
-            
               <div className="icon text-primary mb-3">
                 <svg
                   width="24"
@@ -296,16 +293,13 @@ function Home() {
               </p>
             </div>
 
-         
-
-
-            {roles?.merchant === true && modalState !=="Approved" ? (
-                <div className="col-12 col-md-12">
+            {roles?.merchant === true && modalState !== "Approved" ? (
+              <div className="col-12 col-md-12">
                 <div class="card col-lg-12- cardkyc pull-left">
                   <div class="font-weight-bold card-body Satoshi-Medium">
                     <span>
-                      You can accept payments upto ₹15,000 for now. To extend the
-                      limit complete your KYC and get it approved.
+                      You can accept payments upto ₹15,000 for now. To extend
+                      the limit complete your KYC and get it approved.
                     </span>
                     <Link
                       to={`/dashboard/kyc`}
@@ -327,13 +321,14 @@ function Home() {
               </div>
             ) : (
               <div className="col-12 col-md-12">
-             {roles?.bank === true || roles.viewer === true ? <></> :  
-             <div class="card col-lg-12- cardkyc pull-left">
-
-               <div class="font-weight-bold card-body Satoshi-Medium">
-                  <span>
-                  Congratulations! Your KYC documents have been approved.
-                  </span>
+                {roles?.bank === true || roles.viewer === true ? (
+                  <></>
+                ) : (
+                  <div class="card col-lg-12- cardkyc pull-left">
+                    <div class="font-weight-bold card-body Satoshi-Medium">
+                      <span>
+                        Congratulations! Your KYC documents have been approved.
+                      </span>
                       <button
                         class="text-white pull-right kycbtns"
                         style={{
@@ -344,12 +339,10 @@ function Home() {
                       >
                         KYC Done
                       </button>
-                </div>
-
+                    </div>
+                  </div>
+                )}
               </div>
-}
-            </div>
-           
             )}
           </div>
         </div>
@@ -500,17 +493,12 @@ function Home() {
         ) : (
           <React.Fragment></React.Fragment>
         )}
-
-       
       </div>
-     
-      {/* KYC container end here */}
 
-    
+      {/* KYC container end here */}
 
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
-        
           <section
             className="features8 cid-sg6XYTl25a flleft"
             id="features08-3"
@@ -525,87 +513,86 @@ function Home() {
         </div>
       </main>
 
-
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
-      {roles?.bank === true ? <></> :
-      <div
-        className={
-          "modal fade mymodals" +
-          (modalState === "Not-Filled" ? " show d-block" : " d-none")
-        }
-        tabIndex="-1"
-        role="dialog"
-      >
-        <div class="modal-dialog modal-dialog-centered " role="document">
-          <div class="modal-content">
-            <div class="modal-body Satoshi-Medium">
-              <button
-                type="button"
-                onClick={() => {
-                  setModalState(!modalState);
-                }}
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <div class="row">
-                <div class="col-sm">
-                  <h1 className="homeModalHeading">Welcome to SabPaisa!</h1>
-                  <h2 className="modalscolrsfortext">
-                    Complete the KYC to activate your account and start
-                    accepting payments. Fill in all the information to start
-                    your SabPaisa Payment services.
-                  </h2>
+      {roles?.bank === true ? (
+        <></>
+      ) : (
+        <div
+          className={
+            "modal fade mymodals" +
+            (modalState === "Not-Filled" ? " show d-block" : " d-none")
+          }
+          tabIndex="-1"
+          role="dialog"
+        >
+          <div class="modal-dialog modal-dialog-centered " role="document">
+            <div class="modal-content">
+              <div class="modal-body Satoshi-Medium">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setModalState(!modalState);
+                  }}
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="row">
+                  <div class="col-sm">
+                    <h1 className="homeModalHeading">Welcome to SabPaisa!</h1>
+                    <h2 className="modalscolrsfortext">
+                      Complete the KYC to activate your account and start
+                      accepting payments. Fill in all the information to start
+                      your SabPaisa Payment services.
+                    </h2>
+                  </div>
+
+                  <div class="col-sm">
+                    <img
+                      src={bro}
+                      className="modalsimageclass"
+                      alt="SabPaisa"
+                      title="SabPaisa"
+                    />
+                  </div>
                 </div>
 
-                <div class="col-sm">
-                  <img
-                    src={bro}
-                    className="modalsimageclass"
-                    alt="SabPaisa"
-                    title="SabPaisa"
-                  />
-                </div>
-              </div>
-
-              <div class="row Satoshi-Medium">
-                <div class="col-lg-4">
-                  <Link
-                    to={`/dashboard/kyc`}
-                    data-toggle="modal"
-                    data-target="#exampleModalCenter"
-                  >
-                    <button className="ModalButtonClr text-white mt-2">
-                      <h5 className="m-0">
-                        Complete KYC to activate account
-                      </h5>
-                    </button>
-                  </Link>
-                </div>
-                <div class="col-lg-7">
-                  <Link to={`/dashboard`}>
-                    <button
-                      className="ColrsforredirectProdct  text-white"
-                      style={{ marginTop: "9px" }}
-                      onClick={() => {
-                        setModalState(!modalState);
-                      }}
-                      aria-label="Close"
+                <div class="row Satoshi-Medium">
+                  <div class="col-lg-4">
+                    <Link
+                      to={`/dashboard/kyc`}
+                      data-toggle="modal"
+                      data-target="#exampleModalCenter"
                     >
-                      <h5 className="m-0">
-                        Try out our dashboard
-                      </h5>
-                    </button>
-                  </Link>
+                      <button className="ModalButtonClr text-white mt-2">
+                        <h5 className="m-0">
+                          Complete KYC to activate account
+                        </h5>
+                      </button>
+                    </Link>
+                  </div>
+                  <div class="col-lg-7">
+                    <Link to={`/dashboard`}>
+                      <button
+                        className="ColrsforredirectProdct  text-white"
+                        style={{ marginTop: "9px" }}
+                        onClick={() => {
+                          setModalState(!modalState);
+                        }}
+                        aria-label="Close"
+                      >
+                        <h5 className="m-0">Try out our dashboard</h5>
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-}
+      )}
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
       {/* Dashboard open pop up start here {IF KYC IS APPROVED}*/}
@@ -619,12 +606,15 @@ function Home() {
         role="dialog"
       >
         <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content" style={{width:"709px",marginTop:"70px"}}>
+          <div
+            class="modal-content"
+            style={{ width: "709px", marginTop: "70px" }}
+          >
             <div class="modal-body Satoshi-Medium">
               <button
                 type="button"
                 onClick={() => {
-                  handleClose()
+                  handleClose();
                 }}
                 class="close"
                 data-dismiss="modal"
@@ -652,16 +642,20 @@ function Home() {
                       </h1>
 
                       <p className="modalscolrsfortextapprv m-0 text-center">
-                            You can accept payments upto INR 15,000
-                            </p>
-                            <p className="modalscolrsfortextapprv m-0 text-center">
-                            Your KYC is currently under review. 
-                            <br/>
-                            <br/>
-                            <p className="modalscolrsfortextapprv m-0 text-center">The KYC review process usually takes 3-4 working days.</p>
-                            <p className="modalscolrsfortextapprv m-0 text-center">We will notify you in case we want any clarification on your KYC.</p>
-
-                            </p>
+                        You can accept payments upto INR 15,000
+                      </p>
+                      <p className="modalscolrsfortextapprv m-0 text-center">
+                        Your KYC is currently under review.
+                        <br />
+                        <br />
+                        <p className="modalscolrsfortextapprv m-0 text-center">
+                          The KYC review process usually takes 3-4 working days.
+                        </p>
+                        <p className="modalscolrsfortextapprv m-0 text-center">
+                          We will notify you in case we want any clarification
+                          on your KYC.
+                        </p>
+                      </p>
                       <span
                         className="modalscolrsfortextapprv text-center"
                         style={{
@@ -669,10 +663,7 @@ function Home() {
                           justifyContent: "center",
                           whiteSpace: "nowrap",
                         }}
-                      >
-                       
-                      </span>
-                      
+                      ></span>
                     </ul>
                   </div>
 
@@ -687,7 +678,7 @@ function Home() {
                   </div>
                 </div>
               </div>
- <div className="hrForCard"></div>
+              <div className="hrForCard"></div>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <button
                   className="modalbtnsuccess text-white mt-3 ml-5"
@@ -701,8 +692,8 @@ function Home() {
         </div>
       </div>
 
-       {/* KYC SUBMIT MODAL AFTER SUBMITTING THE KYC FORM */}
-       {/* <section>
+      {/* KYC SUBMIT MODAL AFTER SUBMITTING THE KYC FORM */}
+      {/* <section>
        <div
         className={
           "modal hide fade mymodals" +
@@ -783,9 +774,9 @@ function Home() {
                             </button>
                         </div> */}
 
-                        {/* </Link> */}
-                      
-            {/* </div>
+      {/* </Link> */}
+
+      {/* </div>
           </div>
         </div>
       </div>
@@ -793,7 +784,7 @@ function Home() {
        
    
        */}
-            {/* KYC SUBMIT MODAL AFTER SUBMITTING THE KYC FORM */}
+      {/* KYC SUBMIT MODAL AFTER SUBMITTING THE KYC FORM */}
 
       {/* Dashboard open pop up start here {IF KYC IS APPROVED}*/}
     </section>
