@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import NavBar from '../dashboard/NavBar/NavBar'
 import { Formik, Form } from "formik";
 import API_URL from '../../config';
+import moment from "moment";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 
@@ -9,11 +10,7 @@ import FormikController from "../../_components/formik/FormikController";
 import { axiosInstanceAuth } from '../../utilities/axiosInstance';
 import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
 
-const initialValues = {
-    from_date: "",
-    to_date: ""
 
-}
 const validationSchema = Yup.object({
     from_date: Yup.string().required("Required").nullable(),
     to_date: Yup.string().required("Required").nullable(),
@@ -23,25 +20,49 @@ const validationSchema = Yup.object({
 
 const SignupData = () => {
     const[signupData,setSignupData]= useState([]);
-    const [spinner, setSpinner] = useState(false);
+    const [spinner, setSpinner] = useState(true);
+    
+
+    let now = moment().format("YYYY-M-D");
+  let splitDate = now.split("-");
+  if (splitDate[1].length === 1) {
+    splitDate[1] = "0" + splitDate[1];
+  }
+  if (splitDate[2].length === 1) {
+    splitDate[2] = "0" + splitDate[2];
+  }
+  splitDate = splitDate.join("-");
+
+  const [todayDate, setTodayDate] = useState(splitDate);
     const[show,setShow]= useState(false)
+    const initialValues = {
+      from_date: todayDate,
+      to_date: todayDate,
+  
+  }
+
+  
 
     const handleSubmit = (values) => {
-       
-
+      
+      setShow(true)
+      setSpinner(true)
         const postData = {
             "from_date": values.from_date,
             "to_date": values.to_date
 
         };
-        axiosInstanceAuth
+        
+               let apiRes= axiosInstanceAuth
             .post(API_URL.GET_SIGNUP_DATA_INFO, postData).then((resp) => {
-                // toast.success(resp?.data?.message);
+                 toast.success("Data Loaded");
                 setSignupData(resp?.data?.Merchant_Info)
-                setShow(true)
+                
+                setSpinner(false)
 
-            }).catch((resp) => {
-                toast.error(resp?.data?.message)
+           }).catch((error) => {
+              apiRes = error.response;
+             toast.error(apiRes?.data?.message)
 
 
             })
@@ -93,7 +114,7 @@ const SignupData = () => {
                         // onSubmit={(values)=>handleSubmit(values)}
                         onSubmit={(values, { resetForm }) => {
                             handleSubmit(values)
-                            resetForm()
+                           
                         }}
                         enableReinitialize={true}
                     >
@@ -172,7 +193,9 @@ const SignupData = () => {
             
             </thead>
             <tbody>
-            {console.log(signupData?.length)}
+            {spinner && <div class="spinner-border" role="status">
+  <span class="sr-only">Loading...</span>
+</div>}
               {signupData?.length === 0 || signupData?.length === undefined ? (
                 
                 <tr>
