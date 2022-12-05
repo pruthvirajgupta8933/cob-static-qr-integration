@@ -42,6 +42,7 @@ const FORM_VALIDATION = Yup.object().shape({
     .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
     .required("Confirm Password Required"),
   business_cat_code: Yup.string().required("Required"),
+  roleId: Yup.string().required("Required")
 });
 
 const OnboardMerchant = () => {
@@ -58,6 +59,7 @@ const OnboardMerchant = () => {
   const [btnDisable, setBtnDisable] = useState(true);
 
   const [businessCode, setBusinessCode] = useState([]);
+  const [roles,setRoles] = useState([]);
 
   const [valuesIn, setValuesIn] = useState({
     password: "",
@@ -70,15 +72,48 @@ const OnboardMerchant = () => {
     setCheckboxStatus(status);
   }
 
+  
+  // function GetSortOrder(prop) {    
+  //   return function(a, b) {    
+  //       if (a[prop] > b[prop]) {    
+  //           return 1;    
+  //       } else if (a[prop] < b[prop]) {    
+  //           return -1;    
+  //       }    
+  //       return 0;    
+  //   }    
+  // }
   useEffect(() => {
+
     axiosInstanceAuth
       .get(API_URL.Business_Category_CODE)
       .then((resp) => {
-        const data = resp.data;
-        setBusinessCode(data);
+        const data = resp.data; 
+        const sortAlpha = data?.sort((a, b) =>
+        a.category_name
+          .toLowerCase()
+          .localeCompare(b.category_name.toLowerCase())
+      );
+
+      
+        setBusinessCode(sortAlpha);
       })
       .catch((err) => console.log(err));
   }, []);
+
+
+  
+  useEffect(() => {
+    axiosInstanceAuth
+      .get(API_URL.Roles_DropDown)
+      .then((resp) => {
+        const data = resp.data;
+        // console.log("Roles DropDown",data)
+        setRoles(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
 
   const dispatch = useDispatch();
 
@@ -91,6 +126,7 @@ const OnboardMerchant = () => {
       emaill,
       passwordd,
       business_cat_code,
+      roleId
     } = formData;
 
     dispatch(
@@ -102,7 +138,8 @@ const OnboardMerchant = () => {
         password: passwordd,
         businessType: businessType,
         isDirect: false,
-        requestId: user?.loginId
+        requestId: user?.loginId,
+        roleId: roleId
       })
     )
       .unwrap()
@@ -165,7 +202,7 @@ const OnboardMerchant = () => {
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-8 col-sm-offset-1- col-md-offset-2- col-lg-offset-3- mx-auto">
 
             <div className="col-sm-12- authfy-panel-right-">
-              <div className="authfy-login">
+              <div className="authfy-login" style={{overflow:"scroll"}}>
                 <div className="authfy-panel panel-login text-center active">
                   <div className="logmod__wrapper">
                     <span className="logmod__close">Close</span>
@@ -175,7 +212,7 @@ const OnboardMerchant = () => {
                         <div className="show logmod__tab lgm-1">
                           <div className="logmod__heading">
                             <span className="fontfigma">
-                              Onboard merchant
+                              OnBoard Merchant
                             </span>
 
                           </div>
@@ -188,6 +225,7 @@ const OnboardMerchant = () => {
                                 passwordd: "",
                                 business_cat_code: "",
                                 confirmpasswordd: "",
+                                roleId:"",
                                 // termsAndConditions: false,
                                 terms_and_condition: false,
                               }}
@@ -324,18 +362,22 @@ const OnboardMerchant = () => {
                                           name="business_cat_code"
                                           className="selct"
                                           component="select"
+                                         
+                                         
                                         >
                                           <option
                                             type="text"
                                             className="form-control"
                                             id="businesscode"
+                                           
                                           >
                                             Select Business Category
                                           </option>
-                                          {businessCode.map((business, i) => (
+                                          {businessCode?.map((business, i) => (
                                             <option
                                               value={business.category_id}
                                               key={i}
+                                             
                                             >
                                               {business.category_name}
                                             </option>
@@ -359,12 +401,51 @@ const OnboardMerchant = () => {
                                         }
                                       </div>
                                     </div>
-
-
-                                  </div>
-
-                                  <div className="sminputs">
                                     <div className="input full- optional">
+                                        <label
+                                          className="string optional"
+                                          htmlFor="business_category"
+                                        >
+                                          Roles
+                                        </label>
+                                        <Field
+                                          name="roleId"
+                                          className="selct"
+                                          component="select"
+                                        >
+                                          <option
+                                            type="text"
+                                            className="form-control"
+                                          >
+                                            Select Roles
+                                          </option>
+                                          {roles.map((role, i) => (
+                                            <option
+                                              value={role.roleId}
+                                              key={i}
+                                            >
+                                              {role.roleName.toUpperCase()}
+                                            </option>
+                                          ))}
+                                        </Field>
+                                        {
+                                          <ErrorMessage name="roleId">
+                                            {(msg) => (
+                                              <p
+                                                className="abhitest"
+                                                style={{
+                                                  color: "red",
+                                                  position: "absolute",
+                                                  zIndex: " 999",
+                                                }}
+                                              >
+                                                {msg}
+                                              </p>
+                                            )}
+                                          </ErrorMessage>
+                                        }
+                                      </div>
+                                      <div className="input full- optional">
                                       <label
                                         className="string optional"
                                         htmlFor="user-pw"
@@ -403,6 +484,13 @@ const OnboardMerchant = () => {
                                         </ErrorMessage>
                                       }
                                     </div>
+
+
+                                  </div>
+                                  
+
+                                  <div className="sminputs">
+                                  
                                     <div className="input full- optional">
                                       <label
                                         className="string optional"

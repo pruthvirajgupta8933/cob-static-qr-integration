@@ -5,6 +5,8 @@ import {
   kycValidatorAuth,
 } from "../utilities/axiosInstance";
 
+import { APP_ENV } from "../config";
+
 const initialState = {
   documentByloginId: {},
   kycApproved: {
@@ -310,15 +312,28 @@ export const saveBusinessInfo = createAsyncThunk(
 export const businessOverviewState = createAsyncThunk(
   "kyc/businessOverviewState",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    let response = {}
+    if(APP_ENV){
+      response = await axiosInstanceAuth
       .get(`${API_URL.Business_overview_state_}`, {
         headers: {},
       })
       .catch((error) => {
         return error.response;
       });
+    }else{
 
-    return response.data;
+      response = await axiosInstanceAuth
+      .post(`${API_URL.Business_overview_state_}`, {
+        headers: {},
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    }
+   
+
+    return response?.data;
   }
 );
 
@@ -344,9 +359,10 @@ export const saveMerchantInfo = createAsyncThunk(
 
 export const documentsUpload = createAsyncThunk(
   "kyc/documentsUpload",
-  async (requestParam) => {
-    const response = await axiosInstanceAuth
-      .get(`${API_URL.DocumentsUpload}`, {
+  async (data) => {
+     const requestParam = data.businessType;
+   const response = await axiosInstanceAuth
+      .get(`${API_URL.DocumentsUpload}/?business_type_id=${requestParam}`, {
         headers: {},
       })
       .catch((error) => {
@@ -774,6 +790,36 @@ export const getBankId = createAsyncThunk(
   }
 );
 //--Get Bank Id ------------//
+
+//--get-business-type-by-id ------------//
+export const businessTypeById = createAsyncThunk(
+  "kyc/getBusinessTypeById",
+  async (requestParam) => {
+    const response = await axiosInstanceAuth
+      .post(`${API_URL.GET_BUSINESS_TYPE_ID}`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+//-- get-business-type-by-id  ------------//
+
+//-- get-business-category-by-id ------------//
+export const businessCategoryById = createAsyncThunk(
+  "kyc/businessCategoryById",
+  async (requestParam) => {
+    const response = await axiosInstanceAuth
+      .post(`${API_URL.GET_BUSINESS_CATEGORY_ID}`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+//---- get-business-category-by-id ------------//
 
 export const approvekyc = createAsyncThunk(
   "kyc/approvekyc",

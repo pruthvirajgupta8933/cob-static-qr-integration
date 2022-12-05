@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./css/Home.css";
 import "./css/50.684f163d.chunk.css";
 import "./css/main.e3214ff9.chunk.css";
@@ -35,44 +35,50 @@ import ChargeBackTxnHistory from './AllPages/ChargeBackTxnHistory';
 import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
 import { createClientProfile } from '../../slices/auth';
 import Sandbox from '../SandBox/SendBox';
-import HarrisTest from "../Otherpages/HarrisTest"
-
+import AssignZone from '../ApproverNVerifier/AssignZone';
+import AdditionalKYC from '../ApproverNVerifier/AdditionalKYC';
+import RateMapping from '../ApproverNVerifier/RateMapping';
+import SignupData from '../ApproverNVerifier/SignupData';
 
 
 function Dashboard() {
      let history = useHistory();
      let { path } = useRouteMatch();
+  
+
      const { user } = useSelector((state) => state.auth);
+     // const clientMerchantDetailsList = user?.clientMerchantDetailsList
      const roles = roleBasedAccess()
 
      const dispatch = useDispatch()
 
 
+
+
+     // create new client code
      useEffect(() => {
           if (roles?.merchant) {
                if (user?.clientMerchantDetailsList) {
                     if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
+                         // create new client code
                          const uuidCode = Math.random().toString(36).slice(-6).toUpperCase();
-
                          const data = {
                               "loginId": user?.loginId,
                               "clientName": user?.clientContactPersonName,
                               "clientCode": uuidCode,
                          }
-
                          dispatch(createClientProfile(data))
-                         // .then(res => {
-                         //      console.log(res)
-                         // }).catch(err => {
-                         //      console.log(err)
-                         // })
-                         // console.log("client code is null")
-                    } else {
-                         // console.log("client code is not null")
+                    }else{
+                         // console.log("already created client code")
                     }
+
+                    
                }
           }
      }, [])
+
+
+
 
      if (user !== null && user.userAlreadyLoggedIn) {
           history.push("/login-page");
@@ -81,15 +87,9 @@ function Dashboard() {
           return <Redirect to="/login-page" />
      }
 
-
-
-
-
      return (
           <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
                <div>
-                    {/* <a style={{display: "none"}} href="empty" id="ref" >ref</a>
-                <button onClick={(e)=>exportCSV(e)}>Export CSV</button> */}
                </div>
                <SideNavbar />
                <Switch>
@@ -151,35 +151,40 @@ function Dashboard() {
                     <Route exact path={`${path}/test/`}>
                          <Test />
                     </Route>
-                    {/* <Route exact path={`${path}/harris-test/`}>
-                         <HarrisTest />
-                    </Route> */}
                     <Route exact path={`${path}/view-transaction-with-filter`} >
                          <ViewTransactionWithFilter />
                     </Route>
-
                     <Route exact path={`${path}/settlement-report-new`} >
                          <SettlementReportNew />
                     </Route>
-
                     <Route exact path={`${path}/transaction-history-new`} >
                          <TransactionHistoryDownload />
                     </Route>
                     <Route exact path={`${path}/sabpaisa-pricing/:id/:name`} >
                          <SabPaisaPricing />
                     </Route>
-
                     <Route exact path={`${path}/kyc`} >
                          <KycForm />
                     </Route>
-
                     <Route exact path={`${path}/approver`} >
                          <Approver />
                     </Route>
+                    <Route exact path={`${path}/assignzone`} >
+                         <AssignZone/>
+                    </Route>
+                    <Route exact path={`${path}/signup-data`} >
+                         <SignupData/>
+                    </Route>
+                    <Route exact path={`${path}/ratemapping`} >
+                         <RateMapping/>
+                    </Route>
+                    <Route exact path={`${path}/additional-kyc`} >
+                         <AdditionalKYC/>
+                    </Route>
+
                     <Route exact path={`${path}/thanks`} >
                          <ThanksPage />
                     </Route>
-
                     <Route exact path={`${path}/Sandbox`} >
                          <Sandbox />
                     </Route>

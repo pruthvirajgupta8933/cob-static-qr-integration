@@ -19,6 +19,7 @@ import { convertToFormikSelectJson } from "../../../_components/reuseable_compon
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../../dashboard/NavBar/NavBar";
 import { axiosInstance } from "../../../utilities/axiosInstance";
+import Notification from "../../../_components/reuseable_components/Notification";
 import moment from "moment";
 const TransactionHistory = () => {
   const dispatch = useDispatch();
@@ -416,8 +417,12 @@ const TransactionHistory = () => {
 
   return (
     <section className="ant-layout Satoshi-Medium">
+
       <div>
         <NavBar />
+      </div>
+      <div className="profileBarStatus">
+      <Notification/>
       </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">

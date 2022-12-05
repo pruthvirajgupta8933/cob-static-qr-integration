@@ -18,23 +18,17 @@ const INITIAL_FORM_STATE = {
 };
 
 const FORM_VALIDATION = Yup.object().shape({
-  clientUserId: Yup.string().required("Required"),
-  userPassword: Yup.string().required("Password Required"),
+  clientUserId: Yup.string().required("Please enter username"),
+  userPassword: Yup.string().required("Please enter Password"),
 });
 
 function LoginPage() {
-  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
   const authentication = useSelector((state) => state.auth);
-
-  // const {auth} = useSelector(state => state);
-
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [auth, setAuthData] = useState(authentication);
   const [namee, setNamee] = useState("");
 
-  // const [otp, setOtp] = useState({ otp: "" });
   const [values, setValues] = useState({
     password: "",
     showPassword: false,
@@ -75,8 +69,6 @@ function LoginPage() {
 
     setLoading(true);
     dispatch(login({ username, password })).then((res) => {
-      // console.log(res?.payload?.user)
-      // console.log('asdfghjkl', res, res.payload)
       if (res?.payload?.user) {
         const activeStatus = res?.payload?.user?.loginStatus;
         const loginMessage = res?.payload?.user?.loginMessage;
@@ -113,7 +105,6 @@ function LoginPage() {
                   <div className="logmod__wrapper">
                     <span className="logmod__close">Close</span>
                     <div className="logmod__container">
-                    
                       <div className="logmod__tab-wrapper">
                         <div className="logmod__tab lgm-2 show">
                           <div className="logmod__heading">
@@ -151,7 +142,7 @@ function LoginPage() {
                                         className="string optional NunitoSans-Regular"
                                         maxLength={255}
                                         id="user-email"
-                                        placeholder="Type your username here"
+                                        placeholder="Type your username"
                                         type="text"
                                         name="clientUserId"
                                         onClick={() => setNamee("clientUserId")}
@@ -197,7 +188,7 @@ function LoginPage() {
                                         className="string optional"
                                         maxLength={255}
                                         id="user-pw"
-                                        placeholder="Type your password here"
+                                        placeholder="Type your password"
                                         type={
                                           values.showPassword
                                             ? "text"
@@ -242,47 +233,26 @@ function LoginPage() {
                                         )}
                                       </ErrorMessage>
 
-                                      <span
-                                        class="input-group-addon eyeicon2"
-                                        onClick={handleClickShowPassword}
-                                      >
+                                      <span class="input-group-addon eyeicon2" onClick={handleClickShowPassword} >
                                         {values.showPassword ? (
-                                          <i
-                                            class="fa fa-eye"
-                                            aria-hidden="true"
-                                          ></i>
+                                          <i class="fa fa-eye" aria-hidden="true"></i>
                                         ) : (
-                                          <i
-                                            class="fa fa-eye-slash"
-                                            aria-hidden="true"
-                                          ></i>
+                                          <i class="fa fa-eye-slash" aria-hidden="true"></i>
                                         )}
                                       </span>
                                     </div>
                                   </div>
 
                                   <div className="simform__actions mt-4">
-                                    {/*<input className="sumbit" name="commit" type="sumbit" value="Log In" />*/}
                                     <button
                                       className="sumbit btn-0156B3"
                                       type="sumbit"
-                                      style={{
-                                        boxShadow:
-                                          "0px 14px 10px rgba(66, 133, 248, 0.5)",
-                                        borderRadius: "6px",
-                                      }}
+                                      style={{ boxShadow:"0px 14px 10px rgba(66, 133, 248, 0.5)", borderRadius: "6px",}}
                                       disabled={
                                         !(formik.isValid && formik.dirty)
                                           ? true
                                           : false
                                       }
-                                      // disabled={
-                                      //   (
-                                      //     INITIAL_FORM_STATE.clientUserId == ""
-                                      //     &&
-                                      //     INITIAL_FORM_STATE.userPassword == ""
-                                      //   )
-                                      //     ? true : false}
                                     >
                                       {loading && (
                                         <span
@@ -300,7 +270,7 @@ function LoginPage() {
                             </Formik>
                           </div>
                           <div className="logmod__form- m-r-l-100 mt-3 termsconditionss NunitoSans-Regular">
-                            <p><a href="https://sabpaisa.in/term-conditions/" target={"_blank"} alt="SabPaisa Terms & Conditions" title="SabPaisa Terms & Conditions">Terms & Conditions</a> | <a href="https://sabpaisa.in/privacy-policy/" target={"_blank"} alt="SabPaisa Privacy Policy" title="SabPaisa Privacy Policy">Privacy Policy</a></p>
+                            <p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target={"_blank"} alt="SabPaisa Terms & Conditions" title="SabPaisa Terms & Conditions">Terms & Conditions</a> | <a href="https://sabpaisa.in/privacy-policy/" target={"_blank"} alt="SabPaisa Privacy Policy" title="SabPaisa Privacy Policy">Privacy Policy</a></p>
                           </div>
                         </div>
                       </div>

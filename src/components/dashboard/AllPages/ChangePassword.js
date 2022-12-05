@@ -7,6 +7,7 @@ import "yup-phone";
 import { changePasswordSlice } from "../../../slices/auth";
 import { toast} from "react-toastify";
 import NavBar from "../NavBar/NavBar";
+import { logout } from "../../../slices/auth";
 
 function ChangePassword() {
   const dispatch = useDispatch();
@@ -54,6 +55,9 @@ function ChangePassword() {
     confirm_password: "",
     showPassword: false,
   });
+  // const exitback = () => {
+    
+  // };
 
 
   const FORM_VALIDATION = Yup.object().shape({
@@ -90,7 +94,7 @@ function ChangePassword() {
       if (res.meta.requestStatus === "fulfilled") {
         if (res.payload.status === true) {
           toast.success(res.payload.message);
-          history.push("/dashboard/profile");
+          dispatch(logout());
         } else if (res.payload.status === false) {
           toast.error(res.payload.message);
         }
@@ -263,13 +267,8 @@ function ChangePassword() {
                               )}
                             </ErrorMessage>
                           </div>
-                        
-                        
                         </div>
-
-                        
-
-                        <div className="form-group  ">
+                          <div className="form-group  ">
                           <div className="col-sm-12">
                             <button
                               type="sumbit"
@@ -279,6 +278,7 @@ function ChangePassword() {
                                 width: "25%",
                               }}
                               className=" btn bttn font-weight-bold bttnbackgroundkyc"
+                              
                             >
                               {" "}
                               Update Password

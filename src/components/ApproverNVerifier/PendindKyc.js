@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { kycForPendingMerchants } from "../../slices/kycSlice";
+import { kycForPendingMerchants,GetKycTabsStatus } from "../../slices/kycSlice";
 import API_URL from "../../config";
 import { Link, useRouteMatch } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import ViewStatusModal from "./ViewStatusModal";
+import { useSelector } from "react-redux";
+
 // import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
 
 const PendindKyc = () => {
   const { url } = useRouteMatch();
   const roles = roleBasedAccess();
+ 
 
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -20,78 +24,83 @@ const PendindKyc = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  let page_size = pageSize;
-  let page = currentPage;
+  const [statusData, setStatusData] = useState([])
+  const [displayPageNumber, setDisplayPageNumber] = useState([])
+  
+  const { auth  } = useSelector((state) => state);
+  const { user } = auth;
 
-  const dispatch = useDispatch();
+  const { loginId } = user;
+  
+const dispatch = useDispatch();
   const kycSearch = (e) => {
     setSearchText(e.target.value);
   };
 
-  const pendingMerchants = async () => {
-    await axiosInstanceAuth
-      .get(`${API_URL.KYC_FOR_PENDING_MERCHANTS}`)
-      .then((res) => {
-        const data = res.data.results;
-        // console.log("<======== Pending Merchants =======>", data)
-        const dataCoun = res?.data?.count;
-        setDataCount(dataCoun);
-        setPendingKycData(data);
-      });
-  };
+  
 
-  //--------------PENDING Merchants API -----------------//
   useEffect(() => {
-    pendingMerchants();
+   
     dispatch(kycForPendingMerchants({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Pending Merchant List Loaded");
+        toastConfig.successToast("Data Loaded");
+        resp?.payload?.status_code && toastConfig.errorToast("Data not loaded")
+        
+        const data = resp?.payload?.results;
+        const dataCoun = resp?.payload?.count;
         setSpinner(false);
-
-        const data = resp?.payload.results;
-
         setData(data);
+        setDataCount(dataCoun);
+        setPendingKycData(data);
       })
 
       .catch((err) => {
+        console.log(err)
         toastConfig.errorToast("Data not loaded");
       });
   }, [currentPage, pageSize]);
+  
 
   useEffect(() => {
-    if (searchText.length > 0) {
+   
+    if (searchText?.length > 0) {
       setData(
-        data.filter((item) =>
+        pendingKycData?.filter((item)  => 
           Object.values(item)
             .join(" ")
             .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
-        )
-      );
-    } else {
-      dispatch(kycForPendingMerchants({ page, page_size })).then((resp) => {
-        const data = resp?.payload.results;
-
-        setData(data);
-      });
+           .includes(searchText?.toLocaleLowerCase())));
+     } else {
+     
+        setData(pendingKycData);
+      
     }
   }, [searchText]);
+  
 
-  const indexOfLastRecord = currentPage * pageSize;
-  const nPages = Math.ceil(pendingKycData.length / pageSize);
+
+  const handleClick=(loginMasterId)=>{
+    dispatch(
+      GetKycTabsStatus({
+        login_id: loginMasterId,
+      })
+    ).then((res) => {
+     setStatusData(res?.payload)
+    
+    });
+    
+  }
+//--------------PENDING Merchants API -----------------//
+ const indexOfLastRecord = currentPage * pageSize;
+  const nPages = Math.ceil(pendingKycData?.length / pageSize);
   const totalPages = Math.ceil(dataCount / pageSize);
-
-  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-
-  // console.log(pageNumbers, "pageNumbers ===>");
+  const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
-  // const currentRecords = pendingKycData.slice(
-  //   indexOfFirstRecord,
-  //   indexOfLastRecord
-  // );
+  
 
   const nextPage = () => {
-    if (currentPage < pageNumbers.length) {
+    if (currentPage < pageNumbers?.length) {
+      // console.log("hello", currentPage)
       setCurrentPage(currentPage + 1);
     }
   };
@@ -101,6 +110,28 @@ const PendindKyc = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+
+
+ useEffect(() => {
+    let lastSevenPage = totalPages - 7;
+    if (pageNumbers?.length>0) {
+      let start = 0
+      let end = (currentPage + 6)
+      if (totalPages > 6) {
+        start = (currentPage - 1)
+  
+        if (parseInt(lastSevenPage) <= parseInt(start)) {
+          start = lastSevenPage
+        }
+  
+      }
+      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
+        return pgNumber;
+      })   
+     setDisplayPageNumber(pageNumber) 
+    }
+  }, [currentPage, totalPages])
+  
 
   return (
     <div className="container-fluid flleft">
@@ -114,6 +145,7 @@ const PendindKyc = () => {
             placeholder="Search Here"
           />
         </div>
+<div> <ViewStatusModal tabData={statusData}/></div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Count Per Page</label>
@@ -127,8 +159,19 @@ const PendindKyc = () => {
             <option value="20">20</option>
             <option value="50">50</option>
             <option value="100">100</option>
-            <option value="200">200</option>
-            <option value="500">500</option>
+          </select>
+        </div>
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <label>Onboard Type</label>
+          <select
+            onChange={kycSearch}
+            className="ant-input"
+          >
+             <option value="Select Role Type">Select Onboard Type</option>
+            <option value="">All</option>
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
+           
           </select>
         </div>
       </div>
@@ -138,21 +181,22 @@ const PendindKyc = () => {
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th>Serial.No</th>
-                <th>Merchant Id</th>
-                <th>Contact Number</th>
-                <th>Name</th>
+                <th>S. No.</th>
+                <th>Client Code</th>
+                <th>Company Name</th>
+                <th>Merchant Name</th>
                 <th>Email</th>
-                <th>Bank</th>
-                <th>PAN No.</th>
-                <th>Status</th>
+                <th>Contact Number</th>
+                <th>Registered Date</th>
+                <th>Onboard Type</th>
+                <th>View Status</th>
+                {/* <th>View</th> */}
               </tr>
             </thead>
             <tbody>
               {spinner && <Spinner />}
               {data?.length === 0 ? (
                 <tr>
-                  {" "}
                   <td colSpan={"8"}>
                     <h1 className="nodatafound">No data found</h1>
                   </td>
@@ -161,13 +205,18 @@ const PendindKyc = () => {
                 data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.merchantId}</td>
-                    <td>{user.contactNumber}</td>
+                    <td>{user.clientCode}</td>
+                    <td>{user.companyName}</td>
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
-                    <td>{user.bankName}</td>
-                    <td>{user.panCard}</td>
-                    <td>{user.status}</td>
+                    <td>{user.contactNumber}</td>
+                    <td>{user.signUpDate}</td>
+                    <td>{user?.isDirect}</td>
+                    {/* <td>{user.status}</td> */}
+                   
+                    <td> <button type="button" onClick={()=>handleClick(user?.loginMasterId)} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  View Status
+</button></td>
                   </tr>
                 ))
               )}
@@ -177,11 +226,12 @@ const PendindKyc = () => {
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <a className="page-link" onClick={prevPage}>
+              <button className="page-link" onClick={prevPage}>
                 Previous
-              </a>
+              </button>
             </li>
-            {pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
+            
+            {displayPageNumber?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
@@ -200,7 +250,7 @@ const PendindKyc = () => {
               <button
                 class="page-link"
                 onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
+                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
                 Next
               </button>

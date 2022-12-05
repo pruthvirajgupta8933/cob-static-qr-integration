@@ -7,16 +7,22 @@ import { Link } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import CommentModal from "./Onboarderchant/CommentModal";
+import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 
 function VerifiedMerchant() {
+  const [data, setData] = useState([]);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [dataCount, setDataCount] = useState("");
-  const [merchantData, setMerchantData] = useState([]);
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [kycIdClick, setKycIdClick] = useState(null);
+  const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [commentId, setCommentId] = useState({});
+
   let page_size = pageSize;
   let page = currentPage;
   const roles = roleBasedAccess();
@@ -25,60 +31,63 @@ function VerifiedMerchant() {
     setSearchText(e.target.value);
   };
 
-  const allVerifiedMerchants = async () => {
-    await axiosInstanceAuth.get(`${API_URL.KYC_FOR_VERIFIED}`).then((res) => {
-      const data = res.data.results;
-      setMerchantData(data);
-      const dataCoun = res?.data?.count;
-      setDataCount(dataCoun);
-    });
-  };
-
-  useEffect(() => {
-    // handleFetchData();
-    allVerifiedMerchants();
+  const verifyMerchant = () => {
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Approved Data Loaded");
+        // toastConfig.successToast("Data Loaded");
         setSpinner(false);
-        const data = resp.payload.results;
 
+        const data = resp?.payload?.results;
+        const dataCoun = resp?.payload?.count;
+        setData(data);
+        setDataCount(dataCoun);
         setVerifiedMerchant(data);
       })
 
-      .catch((err) => toastConfig.errorToast("Data not loaded"));
+      .catch((err) => {
+        toastConfig.errorToast("Data not loaded");
+      });
+  };
+
+  useEffect(() => {
+    dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
+      .then((resp) => {
+        toastConfig.successToast("Data Loaded");
+        setSpinner(false);
+
+        const data = resp?.payload?.results;
+        const dataCoun = resp?.payload?.count;
+        setData(data);
+        setKycIdClick(data);
+        setDataCount(dataCoun);
+        setVerifiedMerchant(data);
+      })
+
+      .catch((err) => {
+        toastConfig.errorToast("Data not loaded");
+      });
   }, [currentPage, pageSize]);
 
   useEffect(() => {
     if (searchText.length > 0) {
-      setVerifiedMerchant(
+      setData(
         verfiedMerchant.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
-            .includes(searchText.toLocaleLowerCase())
+            .includes(searchText?.toLocaleLowerCase())
         )
       );
     } else {
-      dispatch(kycForVerified({ page, page_size })).then((resp) => {
-        const data = resp.payload.results;
-        setVerifiedMerchant(data.slice(indexOfFirstRecord, indexOfLastRecord));
-      });
+      setData(verfiedMerchant);
     }
   }, [searchText]);
   const indexOfLastRecord = currentPage * pageSize;
-  // const nPages = Math.ceil(notFilledData.length / pageSize);
-
-  // console.log(notFilledData.length, "Data =======>");
 
   const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-  // console.log(pageNumbers, "pageNumbers ===>");
+  const pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
-  // const currentRecords = pendingKycData.slice(
-  //   indexOfFirstRecord,
-  //   indexOfLastRecord
-  // );
 
   const nextPage = () => {
     if (currentPage < pageNumbers.length) {
@@ -91,6 +100,25 @@ function VerifiedMerchant() {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  useEffect(() => {
+    let lastSevenPage = totalPages - 7;
+    if (pageNumbers?.length > 0) {
+      let start = 0;
+      let end = currentPage + 6;
+      if (totalPages > 6) {
+        start = currentPage - 1;
+
+        if (parseInt(lastSevenPage) <= parseInt(start)) {
+          start = lastSevenPage;
+        }
+      }
+      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
+        return pgNumber;
+      });
+      setDisplayPageNumber(pageNumber);
+    }
+  }, [currentPage, totalPages]);
 
   return (
     <div className="container-fluid flleft">
@@ -116,9 +144,23 @@ function VerifiedMerchant() {
           <option value="20">20</option>
           <option value="50">50</option>
           <option value="100">100</option>
-          <option value="200">200</option>
-          <option value="500">500</option>
         </select>
+      </div>
+      <KycDetailsModal kycId={kycIdClick} />
+      <div className="form-group col-lg-3 col-md-12 mt-2">
+        <label>Onboard Type</label>
+        <select onChange={kycSearch} className="ant-input">
+          <option value="Select Role Type">Select Onboard Type</option>
+          <option value="">All</option>
+          <option value="online">Online</option>
+          <option value="offline">Offline</option>
+        </select>
+      </div>
+      <div>
+        <CommentModal
+          commentData={commentId}
+          handleForVerified={verifyMerchant}
+        />
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
@@ -126,19 +168,22 @@ function VerifiedMerchant() {
             <thead>
               <tr>
                 <th>S.No</th>
-                <th>Merchant Id</th>
+                <th>Client Code</th>
+                <th>Company Name</th>
+                <th>Merchant Name</th>
+                <th>Email</th>
                 <th>Contact Number</th>
-                <th>Name</th>
-                <th> Email</th>
-                <th>Bank</th>
-                <th>PAN No.</th>
-                <th>Status</th>
+                <th>KYC Status</th>
+                <th>Registered Date</th>
+                <th>Onboard Type</th>
+                <th>Comments</th>
+                <th>Action</th>
                 {roles.approver === true ? <th>Approve KYC</th> : <></>}
               </tr>
             </thead>
             <tbody>
               {spinner && <Spinner />}
-              {verfiedMerchant?.length === 0 ? (
+              {data?.length === 0 ? (
                 <tr>
                   {" "}
                   <td colSpan={"9"}>
@@ -146,16 +191,46 @@ function VerifiedMerchant() {
                   </td>
                 </tr>
               ) : (
-                verfiedMerchant?.map((user, i) => (
+                data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.merchantId}</td>
-                    <td>{user.contactNumber}</td>
+                    <td>{user.clientCode}</td>
+                    <td>{user.companyName}</td>
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
-                    <td>{user.bankName}</td>
-                    <td>{user.panCard}</td>
+                    <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
+                    <td>{user.signUpDate}</td>
+                    <td>{user?.isDirect}</td>
+                    <td>{user?.comments}</td>
+                    <td>
+                      {roles.verifier === true || roles.approver === true ? (
+                        <button
+                          type="button"
+                          className="btn approve text-white  btn-xs"
+                          data-toggle="modal"
+                          onClick={() => setCommentId(user)}
+                          data-target="#exampleModal"
+                        >
+                          Add Comments
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                      {roles.viewer === true ? (
+                        <button
+                          type="button"
+                          className="btn approve text-white  btn-xs"
+                          onClick={() => setKycIdClick(user)}
+                          data-toggle="modal"
+                          data-target="#kycmodaldetail"
+                        >
+                          View
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </td>
                     {roles.approver === true ? (
                       <td>
                         <Link
@@ -179,11 +254,11 @@ function VerifiedMerchant() {
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <a className="page-link" onClick={prevPage}>
+              <button className="page-link" onClick={prevPage}>
                 Previous
-              </a>
+              </button>
             </li>
-            {pageNumbers && pageNumbers.slice(currentPage - 1, currentPage + 6).map((pgNumber, i) => (
+            {displayPageNumber?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
@@ -202,7 +277,7 @@ function VerifiedMerchant() {
               <button
                 class="page-link"
                 onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers.length - 1]}
+                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
                 Next
               </button>

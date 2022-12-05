@@ -26,6 +26,7 @@ function BusinessDetails(props) {
 
   const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
   const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+  const reqexPinCode = /^[1-9][0-9]{5}$/
 
   const { auth, kyc } = useSelector((state) => state);
 
@@ -160,11 +161,11 @@ function BusinessDetails(props) {
   };
 
   const validationSchema = Yup.object({
-    company_name: Yup.string()
+    company_name: Yup.string().trim()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
-    gst_number: Yup.string()
+    gst_number: Yup.string().trim()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .matches(regexGSTN, "GSTIN Number is Invalid")
       .required("Required")
@@ -176,11 +177,11 @@ function BusinessDetails(props) {
       )
       .required("You need to verify Your GSTIN Number")
       .nullable(),
-    pan_card: Yup.string()
+    pan_card: Yup.string().trim()
       .matches(reqexPAN, "PAN number is Invalid")
       .required("Required")
       .nullable(),
-    signatory_pan: Yup.string()
+    signatory_pan: Yup.string().trim()
       .matches(reqexPAN, "Authorized PAN number is Invalid")
       .required("Required")
       .nullable(),
@@ -191,23 +192,23 @@ function BusinessDetails(props) {
       )
       .required("You need to verify Your Authorized Signatory PAN Number")
       .nullable(),
-    name_on_pancard: Yup.string()
+    name_on_pancard: Yup.string().trim()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
-    city_id: Yup.string()
+    city_id: Yup.string().trim()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
     state_id: Yup.string()
       .required("Required")
       .nullable(),
-    pin_code: Yup.string()
-      .matches(Regex.digit, RegexMsg.digit)
+    pin_code: Yup.string().trim()
+      .matches(reqexPinCode, "Pin Code is Invalid")
       .required("Required")
       .nullable(),
-    operational_address: Yup.string()
-      .matches(Regex.address, RegexMsg.address)
+    operational_address: Yup.string().trim()
+    .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
       .required("Required")
       .nullable(),
   });
@@ -287,7 +288,7 @@ function BusinessDetails(props) {
           toast.success(res?.payload?.message);
           setTab(4);
           setTitle("BANK DETAILS");
-          console.log("data trigger");
+          // console.log("data trigger");
           dispatch(kycUserList({ login_id: loginId }));
         } else {
           toast.error(res?.payload?.message);

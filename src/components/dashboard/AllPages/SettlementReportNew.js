@@ -12,6 +12,7 @@ import {
   clearSettlementReport,
   fetchSettlementReportSlice,
 } from "../../../slices/dashboardSlice";
+import Notification from "../../../_components/reuseable_components/Notification";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
@@ -326,9 +327,12 @@ const SettlementReportNew= () => {
  
 
   return (
-    <section className="ant-layout">
+    <section className="ant-layout Satoshi-Medium">
       <div>
         <NavBar />
+      </div>
+      <div className="profileBarStatus">
+      <Notification/>
       </div>
       <main className="gx-layout-content ant-layout-content Satoshi-Medium">
         <div className="gx-main-content-wrapper">

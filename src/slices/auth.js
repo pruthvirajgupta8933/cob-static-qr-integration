@@ -1,11 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
-import Axios from "axios";
-import API_URL from "../config";
 import { axiosInstance } from "../utilities/axiosInstance";
-
-
-
 import AuthService from "../services/auth.service";
 
 const user = JSON.parse(localStorage.getItem("user"));
@@ -135,16 +130,11 @@ export const OTPVerificationApi = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-  // console.log("comes to logout");
   await AuthService.logout();
-
 });
 
 export const udpateRegistrationStatus = createAsyncThunk("auth/udpateRegistrationStatus", async () => {
-  // console.log("comes to");
-  // update status
   await AuthService.logout();
-
 });
 
 // check and remove fn
@@ -152,7 +142,6 @@ export const successTxnSummary = createAsyncThunk(
   "auth/successTxnSummary",
   async (object, thunkAPI) => {
     try {
-      // console.log(object);
       const { fromDate, toDate, clientCode } = object;
       const response = await AuthService.successTxnSummary(fromDate, toDate, clientCode);
       thunkAPI.dispatch(setMessage(response.data.message));
@@ -171,14 +160,11 @@ export const successTxnSummary = createAsyncThunk(
 );
 
 
-
-
 /* ======Start Profile Function ======= */
 export const createClientProfile = createAsyncThunk(
   "auth/createClientProfile",
   async (data, thunkAPI) => {
     try {
-      // console.log('a-senddata',data);
       const response = await AuthService.createClintCode(data);
       thunkAPI.dispatch(setMessage(response.data.message));
 
@@ -227,10 +213,8 @@ export const createClientProfile = createAsyncThunk(
       };
 
       const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
-      // console.log("mergeclientMerchantDetailsList",mergeclientMerchantDetailsList)
       const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
-      // console.log("user",allData)
       localStorage.setItem("user", JSON.stringify(allData))
       localStorage.setItem("categoryId",1)
 
@@ -254,20 +238,11 @@ export const updateClientProfile = createAsyncThunk(
   "auth/updateClientProfile",
   async ({ data }, thunkAPI) => {
     try {
-      // console.log("update functon",data);
-      // console.log("update functon",clientId);
-      // console.log({ fromdate, todate, clientcode });===update fn call
       const response = await AuthService.updateClientProfile(data);
       thunkAPI.dispatch(setMessage(response.data.message));
       const userLocalData = JSON.parse(localStorage?.getItem("user"));
       const allData = Object.assign(userLocalData, data);
-      // console.log("userLocalData",userLocalData);
-      // console.log("data",data);
-      // console.log("response.data",response.data);
-      // console.log("all data",allData);
-
       const clientMerchantDetailsListObj = {
-        // "clientId": clientId,
         "lookupState": null,
         "address": null,
         "clientAuthenticationType": null,
@@ -297,10 +272,8 @@ export const updateClientProfile = createAsyncThunk(
       };
 
       const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
-      // console.log("mergeclientMerchantDetailsList",mergeclientMerchantDetailsList)
       const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
-      // console.log("after update user",allData);
       localStorage.setItem("user", JSON.stringify(allData))
       localStorage.setItem("categoryId",1)
 

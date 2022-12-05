@@ -116,7 +116,7 @@ function MobileNavbar() {
                                         }}
                                         className="nav-link"
                                     >
-                                        <i className="fa fa-key" aria-hidden="true" /> &nbsp;SandBox
+                                        <i className="fa fa-key" aria-hidden="true" /> &nbsp;Integration Kit
                                     </Link>
                                 </li>
 

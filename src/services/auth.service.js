@@ -1,5 +1,6 @@
 import API_URL from "../config";
 import { axiosInstance, axiosInstanceAuth } from "../utilities/axiosInstance";
+import { stringEnc } from "../utilities/encodeDecode";
 
 // axiosInstanceAuth.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 
@@ -8,7 +9,7 @@ import { axiosInstance, axiosInstanceAuth } from "../utilities/axiosInstance";
 // login new url : https://cobtest.sabpaisa.in/auth-service/auth/login
 // https://cobapi.sabpaisa.in/auth-service/auth/login
 
-const register = ({fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, requestId}) => {
+const register = ({fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, requestId,roleId}) => {
   return axiosInstanceAuth.post(API_URL.AUTH_SIGNUP, {
     name: fullname,
     mobileNumber: mobileNumber,
@@ -17,7 +18,8 @@ const register = ({fullname, mobileNumber, email, business_cat_code, password, b
     password: password,
     requestedClientType: businessType,
     isDirect:isDirect,
-    requestId:requestId
+    requestId:requestId,
+    roleId: roleId
   })
 };
 
@@ -29,13 +31,19 @@ const login = (username, password) => {
       userPassword: password,
     })
     .then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-        localStorage.setItem("categoryId", 1)
-      } else {
-        localStorage.setItem("user", JSON.stringify(response.data));
-        localStorage.setItem("categoryId", 1)
-      }
+      
+      localStorage.setItem("user", JSON.stringify(response.data));
+      localStorage.setItem("categoryId", 1)
+      sessionStorage.setItem("prog_id", stringEnc(password))
+      // if (response.data.accessToken) {
+      //   localStorage.setItem("user", JSON.stringify(response.data));
+      //   localStorage.setItem("categoryId", 1)
+      //   localStorage.setItem("prog_id", stringEnc(password))
+        
+      // } else {
+      //   localStorage.setItem("user", JSON.stringify(response.data));
+      //   localStorage.setItem("categoryId", 1)
+      // }
 
       // console.log(response.data)
       return response.data;
