@@ -20,7 +20,7 @@ const validationSchema = Yup.object({
 
 const SignupData = () => {
     const[signupData,setSignupData]= useState([]);
-    const [spinner, setSpinner] = useState(true);
+    const [spinner, setSpinner] = useState(false);
     
 
     let now = moment().format("YYYY-M-D");
@@ -44,21 +44,16 @@ const SignupData = () => {
   
 
     const handleSubmit = (values) => {
-      
-      setShow(true)
-      setSpinner(true)
         const postData = {
             "from_date": values.from_date,
             "to_date": values.to_date
 
         };
-        
                let apiRes= axiosInstanceAuth
             .post(API_URL.GET_SIGNUP_DATA_INFO, postData).then((resp) => {
                  toast.success("Data Loaded");
                 setSignupData(resp?.data?.Merchant_Info)
-                
-                setSpinner(false)
+                setShow(true)
 
            }).catch((error) => {
               apiRes = error.response;
@@ -114,7 +109,7 @@ const SignupData = () => {
                         // onSubmit={(values)=>handleSubmit(values)}
                         onSubmit={(values, { resetForm }) => {
                             handleSubmit(values)
-                           
+                            
                         }}
                         enableReinitialize={true}
                     >
@@ -193,9 +188,7 @@ const SignupData = () => {
             
             </thead>
             <tbody>
-            {spinner && <div class="spinner-border" role="status">
-  <span class="sr-only">Loading...</span>
-</div>}
+            
               {signupData?.length === 0 || signupData?.length === undefined ? (
                 
                 <tr>
