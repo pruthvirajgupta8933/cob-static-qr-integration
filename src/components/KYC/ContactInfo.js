@@ -257,7 +257,7 @@ function ContactInfo(props) {
           <Form>
 
             <div class="row">
-            <div class="col-sm-6 col-md-6 col-lg-6 ">
+            <div class="col-sm-12 col-md-12 col-lg-6 ">
               <label class="col-form-label mt-0 p-2">
                 Contact Name<span style={{ color: "red" }}>*</span>
               </label>

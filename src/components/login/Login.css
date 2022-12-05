@@ -413,13 +413,17 @@
 }
 
 .nav-item {
-  padding: 0 8px !important;
+  /* padding: 0 8px !important; */
+  padding: 0 !important;
   margin: 0px !important;
   text-align: center;
   border-radius: 5px;
   font-size: 16px;
   color: grey;
   position: static;
+
+
+
 }
 
 .nav-item.active {
@@ -494,6 +498,16 @@ a {
 .dropdown-item:hover {
   background-color: inherit;
 }
+@media (max-width: 1024px)  {
+  .nav-item {
+    /* display: inline-block;
+    overflow-x: unset; 
+    text-align: left; */
+    /* width: 25%; */
+  }
+
+}
+
 
 @media (max-width: 767px) {
   .nav-item {
@@ -515,7 +529,7 @@ a {
 
 a.nav-link{
   color:#fff !important;
-  font-size: 16px !important;
+  font-size: 0.8rem !important;
 } 
 a.inactive{
   color:#000 !important;
@@ -554,5 +568,5 @@ a.inactive:hover{
   color: #000;
 }
 .activepaylink-kyc{
-  padding-left:40px;
+  /* padding-left:40px; */
 }

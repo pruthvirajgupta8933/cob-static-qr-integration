@@ -119,27 +119,20 @@ function KycForm() {
       >
         <div class="modal-dialog modal-dialog-centered container" role="document">
           <div class="modal-content kyc-modal_form ">
-            <button
+            {/* <button
               type="button"
               class="close"
               data-dismiss="modal"
               aria-label="Close"
             >
               <span aria-hidden="true">&times;</span>
-            </button>
+            </button> */}
             <div class="modal-body" style={{ display: "contents" }}>
               <div class="card-group Satoshi-Medium">
-                <div class="row">
-                  <div class="col-lg-3 col-xsm-12 col-sm-12 col-md-12">
-                    <div
-                      class="card"
-                      style={{
-                        width: "67rem",
-                        height: "711px",
-                        marginTop: "0rem"
-                      }}
-                    >
-                      <h1 className="m-b-sm gx-float-left paymentHeader">
+                <div class="row kycnomar kycnopad">
+                  <div class="col-lg-3 col-xsm-12 col-sm-12 col-md-12 kycnomar kycnopad">
+                    <div class="card kycnomar kycnopad toppad noborder">
+                      <h1 className="m-b-sm gx-float-left paymentHeader text-left">
                         KYC Form
                         <span>
                           <h6 class="paymentSubHeader">
@@ -150,11 +143,7 @@ function KycForm() {
 
                       <div class="card-body">
                         <div>
-                          <ul
-                            style={{
-                              color: "black",
-                            }}
-                          >
+                          <ul>
                           {/* {console.log("contactInfo",contactInfo)}
                           {console.log("KycTabStatusStore?.general_info_status",KycTabStatusStore?.general_info_status)} */}
                             <li className="nav-item p-2">
@@ -312,11 +301,8 @@ function KycForm() {
                     </div>
                   </div>
 
-                  <div class="col-lg-9 col-xsm-12 col-sm-12 col-md-12">
-                    <div
-                      className="card cardsection"
-                     
-                    >
+                  <div class="col-lg-9 col-xsm-12 col-sm-12 col-md-12 kycnopad">
+                    <div className="card cardsection">
                       <div class="card-body">
                         <h1 class="card-title text-kyc-header mb-5">
                           {title}
@@ -329,7 +315,7 @@ function KycForm() {
                           >
                             <span
                               aria-hidden="true"
-                              style={{ fontSize: "38px" }}
+                              // style={{ fontSize: "38px" }}
                             >
                               &times;
                             </span>
