@@ -119,7 +119,7 @@ function SideNavbar() {
                     <React.Fragment></React.Fragment>
                   )}
 
-                  {(roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true) ? (
+                  {(roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true || roleBasedShowTab?.viewer === true) ? (
                     <li className="ant-menu-item" role="menuitem">
                       <Link
                         to={`${url}/approver`}
@@ -169,6 +169,21 @@ function SideNavbar() {
                       </Link>
                     </li>
                     </>
+                     ) : (
+                      <React.Fragment></React.Fragment>
+                    )}
+
+{roleBasedShowTab?.approver === true  ||  roleBasedShowTab?.verifier === true ? (
+<li className="ant-menu-item" role="menuitem">
+                      <Link
+                        to={`${url}/signup-data`}
+                        className="txt-white sidenavFonts"
+                      >
+                        <i className="fa fa-user" aria-hidden="true" />
+                        <span>&nbsp;Signup Data</span>
+                        {/* <span class="new-tab">new</span> */}
+                      </Link>
+                    </li>
                      ) : (
                       <React.Fragment></React.Fragment>
                     )}

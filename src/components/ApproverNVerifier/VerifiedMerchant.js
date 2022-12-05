@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import CommentModal from "./Onboarderchant/CommentModal";
+import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 
 function VerifiedMerchant() {
   const [data, setData] = useState([]);
@@ -17,7 +19,9 @@ function VerifiedMerchant() {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [commentId, setCommentId] = useState({});
 
   let page_size = pageSize;
   let page = currentPage;
@@ -27,8 +31,25 @@ function VerifiedMerchant() {
     setSearchText(e.target.value);
   };
 
+  const verifyMerchant = () => {
+    dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
+      .then((resp) => {
+        // toastConfig.successToast("Data Loaded");
+        setSpinner(false);
+
+        const data = resp?.payload?.results;
+        const dataCoun = resp?.payload?.count;
+        setData(data);
+        setDataCount(dataCoun);
+        setVerifiedMerchant(data);
+      })
+
+      .catch((err) => {
+        toastConfig.errorToast("Data not loaded");
+      });
+  };
+
   useEffect(() => {
-   
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
         toastConfig.successToast("Data Loaded");
@@ -37,16 +58,15 @@ function VerifiedMerchant() {
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
-         setDataCount(dataCoun);
-         setVerifiedMerchant(data);
+        setKycIdClick(data);
+        setDataCount(dataCoun);
+        setVerifiedMerchant(data);
       })
 
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
   }, [currentPage, pageSize]);
-
-  
 
   useEffect(() => {
     if (searchText.length > 0) {
@@ -64,9 +84,8 @@ function VerifiedMerchant() {
   }, [searchText]);
   const indexOfLastRecord = currentPage * pageSize;
 
-
-  const totalPages = Math.ceil(dataCount / pageSize);  
-  const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
+  const totalPages = Math.ceil(dataCount / pageSize);
+  const pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
 
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
 
@@ -82,36 +101,28 @@ function VerifiedMerchant() {
     }
   };
 
-
-  
   useEffect(() => {
     let lastSevenPage = totalPages - 7;
-    if (pageNumbers?.length>0) {
-      let start = 0
-      let end = (currentPage + 6)
+    if (pageNumbers?.length > 0) {
+      let start = 0;
+      let end = currentPage + 6;
       if (totalPages > 6) {
-        start = (currentPage - 1)
-  
+        start = currentPage - 1;
+
         if (parseInt(lastSevenPage) <= parseInt(start)) {
-          start = lastSevenPage
+          start = lastSevenPage;
         }
-  
       }
       const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
         return pgNumber;
-      })   
-     setDisplayPageNumber(pageNumber) 
+      });
+      setDisplayPageNumber(pageNumber);
     }
-  }, [currentPage, totalPages])
-
-
-
+  }, [currentPage, totalPages]);
 
   return (
     <div className="container-fluid flleft">
-    
       <div className="col-lg-4 mrg-btm- bgcolor">
-
         <label>Search</label>
         <input
           className="form-control"
@@ -134,21 +145,22 @@ function VerifiedMerchant() {
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-
       </div>
+      <KycDetailsModal kycId={kycIdClick} />
       <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Onboard Type</label>
-        <select
-         onChange={kycSearch}
-         
-          className="ant-input"
-        >
+        <select onChange={kycSearch} className="ant-input">
           <option value="Select Role Type">Select Onboard Type</option>
           <option value="">All</option>
           <option value="online">Online</option>
-            <option value="offline">Offline</option>
-
+          <option value="offline">Offline</option>
         </select>
+      </div>
+      <div>
+        <CommentModal
+          commentData={commentId}
+          handleForVerified={verifyMerchant}
+        />
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
@@ -164,6 +176,8 @@ function VerifiedMerchant() {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
+                <th>Comments</th>
+                <th>Action</th>
                 {roles.approver === true ? <th>Approve KYC</th> : <></>}
               </tr>
             </thead>
@@ -188,6 +202,35 @@ function VerifiedMerchant() {
                     <td>{user.status}</td>
                     <td>{user.signUpDate}</td>
                     <td>{user?.isDirect}</td>
+                    <td>{user?.comments}</td>
+                    <td>
+                      {roles.verifier === true || roles.approver === true ? (
+                        <button
+                          type="button"
+                          className="btn approve text-white  btn-xs"
+                          data-toggle="modal"
+                          onClick={() => setCommentId(user)}
+                          data-target="#exampleModal"
+                        >
+                          Add Comments
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                      {roles.viewer === true ? (
+                        <button
+                          type="button"
+                          className="btn approve text-white  btn-xs"
+                          onClick={() => setKycIdClick(user)}
+                          data-toggle="modal"
+                          data-target="#kycmodaldetail"
+                        >
+                          View
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </td>
                     {roles.approver === true ? (
                       <td>
                         <Link
