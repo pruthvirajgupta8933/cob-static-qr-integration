@@ -304,7 +304,7 @@ function KycForm() {
                   <div class="col-lg-9 col-xsm-12 col-sm-12 col-md-12 kycnopad">
                     <div className="card cardsection">
                       <div class="card-body">
-                        <h1 class="card-title text-kyc-header mb-5">
+                        <h1 class="card-title text-kyc-header mb-2">
                           {title}
                           <button
                             onClick={() => redirect()}

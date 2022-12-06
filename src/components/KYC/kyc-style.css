@@ -310,32 +310,35 @@ a.activepaylink-kyc{
   border-radius: 0 6px 6px 0;
 }
 .otpbtngst{
-  /* right: 3px;
-  
-  top: -51px;
-  border-radius: 0 6px 6px 0; */
-    right: 107px;
+    right: 0;
     position: absolute !important;
-    top: 38px;}
+    top: -34px;
+    border-radius: 0 4px 4px 0 !important;
+    max-height: 33px;
+  }
 .otpbtngst a{
-    border-radius: 0 6px 6px 0;
+    /* border-radius: 0 6px 6px 0; */
 }
-
+/* 
 .otpbtndetail{
-    top: 39px;
+    
+} */
+.otpbtndetail{
+    top: -47px;
     position: absolute !important;
     right: 0;
-}
-.otpbtndetail a{
-    border-radius: 0 6px 6px 0;
-}
+    border-radius: 0 4px 4px 0;
+    max-height: 33px;
+  }
 .otpbtnaccnt{
-  top: 39px;
+    top: -47px;
     position: absolute !important;
-    right: 105px;
+    border-radius: 0 4px 4px 0;
+    right: 0;
+    max-height: 33px;
 }
 .otpbtnaccnt a{
-    border-radius: 0 6px 6px 0;
+    /* border-radius: 0 6px 6px 0; */
 }
 .marg-b p.text-danger{
   margin-bottom:0;
