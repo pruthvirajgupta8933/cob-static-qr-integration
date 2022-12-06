@@ -10,6 +10,7 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
+import moment from "moment";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 
 function PendingVerification() {
@@ -120,6 +121,11 @@ function PendingVerification() {
     }
   }, [currentPage, totalPages]);
 
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
+
   // updateFlag={setIsCommentUpdate}
   return (
     <div className="container-fluid flleft">
@@ -200,7 +206,7 @@ function PendingVerification() {
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
-                    <td>{user.signUpDate}</td>
+                    <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>{user?.comments}</td>
                     <td>

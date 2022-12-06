@@ -6,6 +6,7 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import { Link } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
+import moment from "moment";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
@@ -120,6 +121,11 @@ function VerifiedMerchant() {
     }
   }, [currentPage, totalPages]);
 
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
+
   return (
     <div className="container-fluid flleft">
       <div className="col-lg-4 mrg-btm- bgcolor">
@@ -200,7 +206,7 @@ function VerifiedMerchant() {
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
-                    <td>{user.signUpDate}</td>
+                    <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>{user?.comments}</td>
                     <td>

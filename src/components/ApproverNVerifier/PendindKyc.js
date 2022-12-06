@@ -9,6 +9,8 @@ import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import ViewStatusModal from "./ViewStatusModal";
 import { useSelector } from "react-redux";
+import moment from "moment";
+
 
 // import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
 
@@ -132,6 +134,11 @@ const dispatch = useDispatch();
     }
   }, [currentPage, totalPages])
   
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
+  
 
   return (
     <div className="container-fluid flleft">
@@ -210,7 +217,7 @@ const dispatch = useDispatch();
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
-                    <td>{user.signUpDate}</td>
+                    <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     {/* <td>{user.status}</td> */}
                    

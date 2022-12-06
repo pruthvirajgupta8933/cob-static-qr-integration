@@ -6,6 +6,7 @@ import DropDownCountPerPage from "../../_components/reuseable_components/DropDow
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
+import moment from "moment";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 
 function ApprovedMerchant() {
@@ -121,6 +122,10 @@ const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
       });
   };
 
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
 
 
  
@@ -199,7 +204,7 @@ const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
-                    <td>{user.signUpDate}</td>
+                    <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>
                       <button
