@@ -17,7 +17,7 @@ export const roleBasedAccess = (pageNo) => {
         roleAccessObj = { ...roleAccessObj, approver: true };
     }else if (roleId === 3 || roleId === 13) {
         roleAccessObj = { ...roleAccessObj, bank: true };
-    } else if (roleId === 4 ) {
+    } else if (roleId === 4 || roleId === 5) {
         roleAccessObj = { ...roleAccessObj, merchant: true };
     } else if (roleId === 16 ) {
         roleAccessObj = { ...roleAccessObj, viewer: true };

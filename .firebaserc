@@ -4,7 +4,8 @@
     "cob-new-flow-dev": "cob-nf-dev",
     "cob-staging-dev": "cob-nf-dev",
     "cob-dev-nf": "cob-nf-dev",
-    "build": "cob-staging"
+    "build": "cob-staging",
+    "cob-prod": "cob-staging"
   },
   "targets": {},
   "etags": {}

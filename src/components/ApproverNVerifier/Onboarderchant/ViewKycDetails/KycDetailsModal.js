@@ -99,7 +99,7 @@ const KycDetailsModal = (props) => {
       aria-hidden="true"
       style={{ overflow: "scroll" }}
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog" role="document" style={{maxWidth:'80%'}}>
         <div class="modal-content">
           <div class="modal-header">
             <h3 class="modal-title font-weight-bold" id="kycmodaldetail">
