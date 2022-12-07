@@ -5,6 +5,7 @@ import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
+import moment from "moment";
 
 import NavBar from "../../components/dashboard/NavBar/NavBar"
 import ViewRateMapping from "./ViewRateMapping";
@@ -148,6 +149,11 @@ function RateMapping() {
   }, [currentPage, totalPages])
   
 
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
+
 
   
 return (
@@ -224,14 +230,16 @@ return (
                       </tr>
                     ) : (
                       data?.map((user, i) => (
+                        
                         <tr key={i}>
+               
                           <td>{i + 1}</td>
                           <td>{user.clientCode}</td>
                           <td>{user.name}</td>
                           <td>{user.emailId}</td>
                           <td>{user.contactNumber}</td>
                           <td>{user.status}</td>
-                          <td>{user.signUpDate}</td>
+                          <td>{covertDate(user.signUpDate)}</td>
                           <td>{user?.isDirect}</td>
                           {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
                           <td>

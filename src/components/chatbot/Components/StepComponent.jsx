@@ -6,12 +6,10 @@ const StepComponent = (props) => {
     const FindAnswer = () => {
 
         const Id = localStorage.getItem('categoryId')
-        // console.log("id", Id)
+        
         if (Id === "1") {
-            // console.log("render stepcomponent 12")
             props.triggerNextStep({ trigger: 12 })
         } else {
-            // console.log("render stepcomponent 13")
             props.triggerNextStep({ trigger: 13 })
         }
 

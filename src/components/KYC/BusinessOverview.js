@@ -224,7 +224,7 @@ function BusinessOverview(props) {
           business_category: values.business_category,
           business_model: values.business_model,
           billing_label: values.billing_label,
-          company_website: values.company_website,
+          company_website: "NA",
           erp_check: values.erp_check,
           platform_id: values.platform_id,
           collection_type_id: values.collection_type_id,
@@ -380,7 +380,12 @@ function BusinessOverview(props) {
                 readOnly={readOnly}
               />
               {formik.values?.seletcted_website_app_url === "Yes" && (
-                <div className="form-group">
+               <div class="row">
+               <div class="col-lg-10">
+                   <label class="col-form-label p-2 mt-0">
+                   Company Website
+                <span style={{ color: "red" }}>*</span>
+              </label>
                   <FormikController
                     control="input"
                     type="text"
@@ -391,11 +396,12 @@ function BusinessOverview(props) {
                     readOnly={readOnly}
                   />
                 </div>
+                </div>
               )}
             </div>
             </div>
             <div class="row">
-            <div class="col-sm-4 col-md-4 col-lg-4">
+            {/* <div class="col-sm-4 col-md-4 col-lg-4">
               <label class="col-form-label p-2 mt-0">
                 Company Website<span style={{ color: "red" }}>*</span>
               </label>
@@ -408,7 +414,7 @@ function BusinessOverview(props) {
                 disabled={VerifyKycStatus === "Verified" ? true : false}
                 readOnly={readOnly}
               />
-            </div>
+            </div> */}
 
             <div class="col-sm-4 col-md-4 col-lg-4">
               <label class="col-form-label p-0 exp-tranc">

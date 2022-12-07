@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
 import API_URL from "../../config";
+import { forGettingCommentList } from "../../slices/merchantZoneMappingSlice";
 // import axios from "axios";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { Link, useRouteMatch } from "react-router-dom";
@@ -10,11 +11,17 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
+import moment from "moment";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 
 function PendingVerification() {
   const { url } = useRouteMatch();
   const roles = roleBasedAccess();
+   const { user } = useSelector((state) => state.auth);
+
+   const { loginId } = user;
+
+  //  console.log(loginId," <=====  Login Id ====> ")
 
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -101,6 +108,20 @@ function PendingVerification() {
     }
   };
 
+  // useEffect(() => {
+    
+  //     dispatch(
+  //       forGettingCommentList({
+  //         client_code: commentId.clientCode,
+  //       })
+  //     )
+  //       .then((resp) => {
+  //       })
+  
+  //       .catch((err) => {});
+ 
+  // },[commentId])
+
   useEffect(() => {
     let lastSevenPage = totalPages - 7;
     if (pageNumbers?.length > 0) {
@@ -119,6 +140,11 @@ function PendingVerification() {
       setDisplayPageNumber(pageNumber);
     }
   }, [currentPage, totalPages]);
+
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
 
   // updateFlag={setIsCommentUpdate}
   return (
@@ -200,7 +226,7 @@ function PendingVerification() {
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
-                    <td>{user.signUpDate}</td>
+                    <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>{user?.comments}</td>
                     <td>
@@ -212,7 +238,7 @@ function PendingVerification() {
                           onClick={() => setCommentId(user)}
                           data-target="#exampleModal"
                         >
-                          Add Comments
+                          Add/View Comments
                         </button>
                       ) : (
                         <></>

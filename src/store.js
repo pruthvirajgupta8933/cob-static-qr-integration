@@ -6,6 +6,7 @@ import { dashboardReducer } from './slices/dashboardSlice';
 import reducerSubscription from './slices/subscription'
 // import KycOtpSlice from "./slices/kycOtp"
 import { kycReducer } from './slices/kycSlice';
+import {merchantZoneMappingReducer} from './slices/merchantZoneMappingSlice'
 
 
 
@@ -16,6 +17,7 @@ const reducer = {
   dashboard:dashboardReducer,
   subscription:reducerSubscription,
   kyc:kycReducer,
+  zone:merchantZoneMappingReducer,
 }
 
 const store = configureStore({
