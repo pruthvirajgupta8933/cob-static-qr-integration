@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
 import API_URL from "../../config";
+import { forGettingCommentList } from "../../slices/merchantZoneMappingSlice";
 // import axios from "axios";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { Link, useRouteMatch } from "react-router-dom";
@@ -16,6 +17,11 @@ import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 function PendingVerification() {
   const { url } = useRouteMatch();
   const roles = roleBasedAccess();
+   const { user } = useSelector((state) => state.auth);
+
+   const { loginId } = user;
+
+  //  console.log(loginId," <=====  Login Id ====> ")
 
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -101,6 +107,20 @@ function PendingVerification() {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  // useEffect(() => {
+    
+  //     dispatch(
+  //       forGettingCommentList({
+  //         client_code: commentId.clientCode,
+  //       })
+  //     )
+  //       .then((resp) => {
+  //       })
+  
+  //       .catch((err) => {});
+ 
+  // },[commentId])
 
   useEffect(() => {
     let lastSevenPage = totalPages - 7;
@@ -218,7 +238,7 @@ function PendingVerification() {
                           onClick={() => setCommentId(user)}
                           data-target="#exampleModal"
                         >
-                          Add Comments
+                          Add/View Comments
                         </button>
                       ) : (
                         <></>

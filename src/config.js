@@ -228,7 +228,26 @@ GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
    
 
    // OnBoard Merchant Role URL 
-   Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`
+   Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`,
+
+
+  // ---------------------------   NEW API FOR COMMENTS (2)
+
+
+  // For Saving Comments
+  SAVE_COMMENTS:`${url}/merchant/save-comments`,
+
+
+  // GET API FOR VIEWING COMMENTS
+
+  VIEW_COMMENTS_LIST: `https://stgcobapi.sabpaisa.in/merchant/get-comments-by-clientcode`
+
+  
+  // ---------------------------   NEW API FOR COMMENTS (2)
+
+  
+
+
 };
  
 const API_URL = API_LIVE;

@@ -218,7 +218,7 @@ function VerifiedMerchant() {
                           onClick={() => setCommentId(user)}
                           data-target="#exampleModal"
                         >
-                          Add Comments
+                          Add/View Comments
                         </button>
                       ) : (
                         <></>

@@ -6,7 +6,8 @@ import {
 } from "../utilities/axiosInstance";
 
 const initialState = { 
-    postdata:{}
+    postdata:{},
+   
 };
   
 
@@ -119,6 +120,70 @@ export const riskCategory = createAsyncThunk(
       return response.data;
     }
   );
+
+
+  export const forSavingComments = createAsyncThunk(
+    "merchnatzone/forSavingComments",
+    async (requestParam) => {
+        
+      const response = await axiosInstanceAuth
+        .post(`${API_URL.SAVE_COMMENTS}`, requestParam, {
+            headers: {
+                // Authorization: ""
+              },
+
+         
+        })
+        .catch((error) => {
+          return error.response;
+        });
+      // console.log(response)
+      return response.data;
+    }
+  );
+
+
+  export const forGettingCommentList = createAsyncThunk(
+    "merchnatzone/forGettingCommentList",
+    async (requestParam) => {
+        
+      const response = await axiosInstanceAuth
+        .post(`${API_URL.VIEW_COMMENTS_LIST}`, requestParam, {
+            headers: {
+                // Authorization: ""
+              },
+
+         
+        })
+        .catch((error) => {
+          return error.response;
+        });
+      // console.log(response)
+      return response.data;
+    }
+  );
+
+
+
+  export const updatedCommentList = createAsyncThunk(
+    "merchnatzone/updatedCommentList",
+    async (requestParam) => {
+        
+      const response = await axiosInstanceAuth
+        .post(`${API_URL.COMMENTS_BOX}`, requestParam, {
+            headers: {
+                // Authorization: ""
+              },
+
+         
+        })
+        .catch((error) => {
+          return error.response;
+        });
+      // console.log(response)
+      return response.data;
+    }
+  );
   ////////////////////////////////////////////////// Rate mapping api start here
 
   export const merchantZoneMappingSlice = createSlice({
@@ -139,6 +204,24 @@ export const riskCategory = createAsyncThunk(
         state.status = "failed";
         state.error = action.error.message;
       },
+      // ------------------------------------ For Comments ---------------------
+
+
+      [forSavingComments.pending]: (state, action) => {
+        state.status = "pending";
+        
+      },
+      [forSavingComments.fulfilled]: (state, action) => {
+        // state.comments = action.payload
+
+       
+
+      },
+      [riskCategory.rejected]: (state, action) => {
+        forSavingComments = "failed";
+        state.error = action.error.message;
+      }, 
+      
     
     }
   });
