@@ -138,8 +138,9 @@ const API_LIVE = {
 
 
   ////////////////////////////////////////Rate mapping
-  GET_TEMPLATE_DETAILS:`${url}/merchant/get-rate-template-detail`,
+  GET_RISK_BUISENSS_BYID:`${url}/merchant/get-risk-business-by-id`,
    GET_RISK_TEMPLSTE:`${url}/merchant/get-risk-category-template`,
+   TEMPLATE_DETAILS_BYRISKCODE:`${url}/merchant/get-template-detail-by-business-code`,
 
 ////////////////////////////////////////SIGNUP DATA API
 GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
