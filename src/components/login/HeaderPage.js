@@ -281,7 +281,7 @@ function HeaderPage() {
                           <li><a className="dropdown-item" href="https://sabpaisa.in/payment-links/"  target={"_blank"}>Payment Links</a></li>
                           <li><a className="dropdown-item" href="https://sabpaisa.in/subscriptions/"  target={"_blank"}>Subscriptions</a></li>
                           <li><a className="dropdown-item" href="https://sabpaisa.in/qwikform/"  target={"_blank"}>QwikForm</a></li>
-                          <li><a className="dropdown-item" href="https://sabpaisa.in/sabpaisa-e-challan-sabpaisa/"  target={"_blank"}>E-Challan</a> </li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/offline-payments/"  target={"_blank"}>Offline Payments</a> </li>
                       </ul>
                     </div>
                 </li>

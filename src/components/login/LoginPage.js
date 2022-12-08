@@ -379,11 +379,11 @@ function LoginPage() {
                           style={{ color: "#012167" }}
                         >
                           {" "}
-                          Transaction Dashboard
+                          Dashboard
                         </p>
                         <p className="mt-4 loginBanSubHeader OpenSans-Regular">
                           {" "}
-                          Power of real-time payment analysis
+                          Trusted by over 3000 Mega Clients
                         </p>
                         <img
                           class="loginscreenimage"
@@ -405,11 +405,11 @@ function LoginPage() {
                           style={{ color: "#012167" }}
                         >
                           {" "}
-                          Transaction Dashboard
+                          Dashboard
                         </p>
                         <p className="mt-4 loginBanSubHeader OpenSans-Regular">
                           {" "}
-                          Power of real-time payment analysis
+                          Trusted by over 3000 Mega Clients
                         </p>
                         <img
                           class="loginscreenimage"
@@ -431,11 +431,11 @@ function LoginPage() {
                           style={{ color: "#012167" }}
                         >
                           {" "}
-                          Transaction Dashboard
+                          Dashboard
                         </p>
                         <p className="mt-4 loginBanSubHeader OpenSans-Regular ">
                           {" "}
-                          Power of real-time payment analysis
+                          Trusted by over 3000 Mega Clients
                         </p>
                         <img
                           class="loginscreenimage"
