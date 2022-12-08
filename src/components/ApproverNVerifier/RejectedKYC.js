@@ -5,6 +5,7 @@ import {  useRouteMatch } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
+import moment from "moment";
 
 
 const RejectedKYC = () => {
@@ -103,6 +104,14 @@ const nextPage = () => {
     }
   }, [currentPage, totalPages])
 
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
+
+
+
+
 
   return (
     <div className="container-fluid flleft">
@@ -182,7 +191,7 @@ const nextPage = () => {
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
-                    <td>{user.signUpDate}</td>
+                    <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                   </tr>
                 ))

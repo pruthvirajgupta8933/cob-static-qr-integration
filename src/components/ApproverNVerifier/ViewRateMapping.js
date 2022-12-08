@@ -23,6 +23,8 @@ const validationSchema = Yup.object({
 const ViewRateMapping = (props) => {
 
     const [template, setTemplate] = useState([])
+    const[businessTemplate,setBusinessTemplate]=useState("")
+    const[businessTemplates,setBusinessTemplates]=useState([])
     const [show, setShow] = useState(false)
     const [riskTemplate, setRisktemplate] = useState([])
     const [risk, setRisk] = useState([])
@@ -48,14 +50,14 @@ const ViewRateMapping = (props) => {
     }, []);
 
     useEffect(() => {
-
         if (riskCode !== "") {
             const postData = {
-                risk_cat_code: riskCode
+                risk_category_code: riskCode
             };
             axiosInstanceAuth
-                .post(API_URL.GET_TEMPLATE_DETAILS, postData).then((resp) => {
-                    const data = convertToFormikSelectJson("rate_template_code", "rate_template_name", resp?.data);
+                .post(API_URL.GET_RISK_BUISENSS_BYID, postData).then((resp) => {
+                    console.log(resp,)
+                    const data = convertToFormikSelectJson("business_category_id", "category_name", resp?.data?.Data);
 
                     setTemplate(data)
                 }).catch((err) => {
@@ -63,16 +65,27 @@ const ViewRateMapping = (props) => {
                 })
         }
     }, [riskCode]);
-    function GetSortOrder(prop) {    
-        return function(a, b) {    
-            if (a[prop] > b[prop]) {    
-                return 1;    
-            } else if (a[prop] < b[prop]) {    
-                return -1;    
-            }    
-            return 0;    
-        }    
-    }    
+
+    ///////////////////////////////////////////////////////////new Work
+    useEffect(() => {
+        if (businessTemplate !== "") {
+            const postData = {
+                business_cat_code: businessTemplate
+            };
+            axiosInstanceAuth
+                .post(API_URL.TEMPLATE_DETAILS_BYRISKCODE, postData).then((resp) => {
+                    const data = convertToFormikSelectJson("rate_template_code", "rate_template_name", resp?.data);
+
+                    setBusinessTemplates(data)
+                }).catch((err) => {
+
+                })
+        }
+    }, [businessTemplate]);
+    //////////////////////////////////////////////////////////////////
+
+
+   
 
     useEffect(() => {
         axiosInstanceAuth
@@ -94,19 +107,25 @@ const ViewRateMapping = (props) => {
 
 
 
+
+
+
+
+
     const handleSubmit = (values) => {
 
+
         const postData = {
-            "rate_template_code": values.rate_template_name,
-            "business_cat_code": values.risk_category_name,
-            "risk_cat_code": values.category_name
+            "rate_template_code": values.category_name,
+            "business_cat_code": values.risk_category_name ,
+            "risk_cat_code": values.rate_template_name
+
         };
         axiosInstanceAuth
             .post(API_URL.GET_RISK_TEMPLSTE, postData).then((resp) => {
                 setRisktemplate(resp?.data)
                 // toast.success(resp?.data?.message);
-                console.log(resp, "the response is here")
-
+            
                 setShow(true)
             }).catch(() => {
 
@@ -159,14 +178,14 @@ const ViewRateMapping = (props) => {
                                                             </label>
                                                             <FormikController
                                                                 control="select"
-                                                                name="risk_category_name"
+                                                                name="category_name"
                                                                 options={risk}
                                                                 className="form-control"
 
                                                             />
                                                             {formik.handleChange(
-                                                                "risk_category_name",
-                                                                setRiskCode(formik?.values?.risk_category_name)
+                                                                "category_name",
+                                                                setRiskCode(formik?.values?.category_name)
                                                             )}
 
                                                         </div>
@@ -177,7 +196,7 @@ const ViewRateMapping = (props) => {
                                                                 className="string optional"
                                                                 htmlFor="rate_template_name"
                                                             >
-                                                                Template Rate
+                                                                Business category
                                                             </label>
                                                             <FormikController
                                                                 control="select"
@@ -186,6 +205,10 @@ const ViewRateMapping = (props) => {
                                                                 className="form-control"
 
                                                             />
+                                                              {formik.handleChange(
+                                                                "rate_template_name",
+                                                                setBusinessTemplate(formik?.values?.rate_template_name)
+                                                            )}
 
 
                                                         </div>
@@ -194,14 +217,14 @@ const ViewRateMapping = (props) => {
                                                         <div className="input full- optional">
                                                             <label
                                                                 className="string optional"
-                                                                htmlFor="category_name"
+                                                                htmlFor="Template_rate"
                                                             >
-                                                                Business category
+                                                                Template Rate
                                                             </label>
                                                             <FormikController
                                                                 control="select"
-                                                                name="category_name"
-                                                                options={businessCode}
+                                                                name= "risk_category_name"
+                                                                options={businessTemplates}
                                                                 className="form-control"
 
                                                             />
@@ -209,6 +232,7 @@ const ViewRateMapping = (props) => {
 
                                                         </div>
                                                     </div>
+                                                 
                                                 </div>
 
 
@@ -237,7 +261,7 @@ const ViewRateMapping = (props) => {
                                                                             </label>
                                                                             <FormikController
                                                                                 control="radio"
-                                                                                name="risk_category_name"
+                                                                                name="risk_category"
                                                                                 options={radiobutton}
                                                                                 className="form-control"
 

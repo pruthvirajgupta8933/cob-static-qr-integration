@@ -6,6 +6,8 @@ import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { axiosInstanceAuth } from '../../utilities/axiosInstance';
+import { useDispatch, useSelector } from "react-redux";
+import { zoneDetails,zoneMaster,zoneEmployee,updateZoneData,getZoneInfo} from '../../slices/merchantZoneMappingSlice';
 
 const initialValues = {
   zoneName: "",
@@ -31,6 +33,7 @@ const ViewZoneModal = (props) => {
   const [zoneCode, setZoneCode] = useState("")
   const [empCode, setEmpcode] = useState("")
   const[zoneInfo,setZoneinfo]=useState([])
+  const dispatch = useDispatch();
 
 
   useEffect(() => {
@@ -47,14 +50,26 @@ const ViewZoneModal = (props) => {
   }, []);
 
 
+  // useEffect(() => {
+  //   axiosInstanceAuth
+  //     .get(API_URL.ZONE_DETAILS)
+  //     .then((resp) => {
+  //       const data = convertToFormikSelectJson("zoneCode", "zoneName", resp?.data?.zones);
+  //       setZone(data);
+  //     })
+  //   // .catch((err) => console.log(err));
+  // }, []);
+
   useEffect(() => {
-    axiosInstanceAuth
-      .get(API_URL.ZONE_DETAILS)
-      .then((resp) => {
-        const data = convertToFormikSelectJson("zoneCode", "zoneName", resp?.data?.zones);
+    dispatch(
+      zoneDetails(
+        ) ).then((res) => {
+      
+      const data = convertToFormikSelectJson("zoneCode", "zoneName", res?.payload?.zones);
         setZone(data);
-      })
-    // .catch((err) => console.log(err));
+      
+      setShow(true); 
+    });
   }, []);
 
 
@@ -64,9 +79,8 @@ const ViewZoneModal = (props) => {
       const postData = {
         zoneCode: zoneCode
       };
-      axiosInstanceAuth
-        .post(API_URL.ZONE_MASTER, postData).then((resp) => {
-          const data = convertToFormikSelectJson("empCode", "zoneHeadName", resp?.data?.zone_master);
+     dispatch(zoneMaster(postData)).then((resp) => {
+          const data = convertToFormikSelectJson("empCode", "zoneHeadName", resp?.payload?.zone_master);
           setZoneHead(data)
         }).catch(() => {
 
@@ -81,9 +95,8 @@ const ViewZoneModal = (props) => {
       const postData = {
         ManagerId: empCode
       };
-      axiosInstanceAuth
-        .post(API_URL.ZONE_EMPLOYEE, postData).then((resp) => {
-          const data = convertToFormikSelectJson("empCode", "empName", resp?.data?.zone_master);
+      dispatch(zoneEmployee(postData)).then((resp) => {
+          const data = convertToFormikSelectJson("empCode", "empName", resp?.payload?.zone_master);
 
           setEmployee(data)
         }).catch((err) => {
@@ -103,8 +116,7 @@ const ViewZoneModal = (props) => {
       "emp_code": values?.zoneEmployee,
 
     };
-    axiosInstanceAuth
-      .put(API_URL.UPDATE_ZONE_DATA, postData).then((resp) => {
+    dispatch(updateZoneData(postData)).then((resp) => {
         toast.success(resp?.data?.message);
         getZoneInfobyClientCode(props?.userData?.clientCode)
         setShow(true)
@@ -126,10 +138,10 @@ const ViewZoneModal = (props) => {
     const postData = {
       client_code: clientCode
     };
-    axiosInstanceAuth
-      .post(API_URL.GET_ZONE_INFO, postData).then((resp) => {
+    
+      dispatch(getZoneInfo(postData)).then((resp) => {
        
-        setZoneinfo(resp?.data)
+        setZoneinfo(resp?.payload)
 
        
       }).catch(() => {

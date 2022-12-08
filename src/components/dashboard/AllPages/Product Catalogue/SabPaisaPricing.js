@@ -75,7 +75,7 @@ const SabPaisaPricing = () => {
 
 
   useEffect(() => {
-    console.log("rateCloneStatus", rateCloneStatus)
+    // console.log("rateCloneStatus", rateCloneStatus)
 
     if ((rateCloneStatus === 3 || rateCloneStatus === 0) && param?.id === "10") {
 
@@ -161,9 +161,9 @@ const SabPaisaPricing = () => {
     );
     // console.log("res",res)
     if (res.status === 200) {
-      console.log("1")
+      // console.log("1")
       if (param?.id === "10") {
-        console.log("2")
+        // console.log("2")
         // only for payment gateway we have to check rate mapping status
         checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
       }

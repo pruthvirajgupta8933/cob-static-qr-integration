@@ -7,6 +7,7 @@ import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import ViewZoneModal from "./ViewZoneModal";
+import moment from "moment";
 
 import NavBar from "../../components/dashboard/NavBar/NavBar"
 
@@ -147,6 +148,16 @@ function AssignZone() {
      setDisplayPageNumber(pageNumber) 
     }
   }, [currentPage, totalPages])
+
+
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
+
+
+
+  
   
 
 
@@ -235,7 +246,7 @@ return (
                           <td>{user.emailId}</td>
                           <td>{user.contactNumber}</td>
                           <td>{user.status}</td>
-                          <td>{user.signUpDate}</td>
+                          <td> {covertDate(user.signUpDate)}</td>
                           <td>{user?.isDirect}</td>
                           {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
                           <td>
