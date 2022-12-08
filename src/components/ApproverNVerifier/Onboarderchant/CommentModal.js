@@ -22,6 +22,7 @@ const CommentModal = (props) => {
   const dispatch = useDispatch();
 
   const commentUpdate = () => {
+    
     dispatch(
       forGettingCommentList({
         client_code: props.commentData.clientCode,
@@ -43,14 +44,14 @@ const CommentModal = (props) => {
       })
     )
       .then((resp) => {
-        // console.log("Comment List Response After Saving", resp.payload.Data);
-        setCommentsList(resp?.payload?.Data);
       })
 
   };
 
+  
+
   useEffect(() => {
-    if (commentResp !== false) {
+    if (commentResp !== true) {
       dispatch(
         forGettingCommentList({
           client_code: props.commentData.clientCode,
@@ -77,6 +78,10 @@ const CommentModal = (props) => {
 
   const { loginId } = user;
 
+
+  // console.log(props.handleApi ? "True" : "False")
+  // console.log(commentsList?.length,"bHUBVAN ===>")
+
   const handleSubmit = async (values) => {
     dispatch(
       forSavingComments({
@@ -90,10 +95,7 @@ const CommentModal = (props) => {
         setCommentResp(resp.payload.status);
         commentUpdate();
         updateCommentinMerchantLlist(values)
-
-        return props && props.handleApi
-          ? props.handleApi()
-          : props.handleForVerified();
+        return props && props.handleApi ? props.handleApi() : props.handleForVerified();
       })
 
       .catch((err) => {
@@ -210,7 +212,7 @@ const CommentModal = (props) => {
                               <tr>
                                
                                 <td colSpan={"3"}>
-                                {commentsList?.length === 0 ? (
+                                {commentsList?.length === undefined || commentsList?.length === 0 ? (
                                     <h3 className="font-weight-bold text-center">
                                       No Data found
                                     </h3>
