@@ -8,6 +8,8 @@ import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import moment from "moment";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
+
 
 function ApprovedMerchant() {
   const [approveMerchant, setApproveMerchant] = useState([]);
@@ -21,6 +23,7 @@ function ApprovedMerchant() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [spinner, setSpinner] = useState(true);
+  const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   let page_size = pageSize;
   let page = currentPage;
@@ -142,6 +145,10 @@ const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
           placeholder="Search Here"
         />
       </div>
+      <div>
+          
+          <KycDetailsModal kycId={kycIdClick} />
+        </div>
       <div className="col-lg-4 mrg-btm- bgcolor">
         <label>Count Per Page</label>
         <select
@@ -207,7 +214,7 @@ const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
                     <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>
-                      <button
+                      {/* <button
                         type="button"
                         class="btn approve text-white btn-xs"
                         data-toggle="modal"
@@ -215,7 +222,17 @@ const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
                         data-target="#exampleModal"
                       >
                         View Document
-                      </button>
+                      </button> */}
+                      
+                      <button
+                          type="button"
+                          className="btn approve text-white  btn-xs"
+                          onClick={() => setKycIdClick(user)}
+                          data-toggle="modal"
+                          data-target="#kycmodaldetail"
+                        >
+                          View Document
+                        </button>
 
                       <div
                         class="modal fade"

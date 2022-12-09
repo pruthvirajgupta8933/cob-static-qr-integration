@@ -10,6 +10,7 @@ import moment from "moment";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
+import { Toast } from "react-toastify";
 
 function VerifiedMerchant() {
   const [data, setData] = useState([]);
@@ -23,6 +24,7 @@ function VerifiedMerchant() {
   const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [commentId, setCommentId] = useState({});
+  const [openCommentModal, setOpenCommentModal] = useState(false);
 
   let page_size = pageSize;
   let page = currentPage;
@@ -102,6 +104,8 @@ function VerifiedMerchant() {
     }
   };
 
+
+
   useEffect(() => {
     let lastSevenPage = totalPages - 7;
     if (pageNumbers?.length > 0) {
@@ -125,6 +129,7 @@ function VerifiedMerchant() {
     let date = moment(yourDate).format("MM/DD/YYYY");
       return date
     }
+
 
   return (
     <div className="container-fluid flleft">
@@ -163,10 +168,8 @@ function VerifiedMerchant() {
         </select>
       </div>
       <div>
-        <CommentModal
-          commentData={commentId}
-          handleForVerified={verifyMerchant}
-        />
+        
+      {openCommentModal === true ?  <CommentModal commentData={commentId} handleForVerified={verifyMerchant}/> : <></>}
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
@@ -215,8 +218,12 @@ function VerifiedMerchant() {
                           type="button"
                           className="btn approve text-white  btn-xs"
                           data-toggle="modal"
-                          onClick={() => setCommentId(user)}
+                          onClick={() =>  {                           
+                            setCommentId(user)
+                            setOpenCommentModal(true)
+                          }}
                           data-target="#exampleModal"
+                        disabled={user?.clientCode === null ? true : false}
                         >
                           Add/View Comments
                         </button>

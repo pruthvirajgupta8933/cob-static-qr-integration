@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { kycForPendingMerchants,GetKycTabsStatus } from "../../slices/kycSlice";
 import API_URL from "../../config";
 import { Link, useRouteMatch } from "react-router-dom";
+import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
@@ -28,6 +29,7 @@ const PendindKyc = () => {
   const [pageSize, setPageSize] = useState(10);
   const [statusData, setStatusData] = useState([])
   const [displayPageNumber, setDisplayPageNumber] = useState([])
+  const [kycIdClick, setKycIdClick] = useState(null);
   
   const { auth  } = useSelector((state) => state);
   const { user } = auth;
@@ -152,7 +154,7 @@ const dispatch = useDispatch();
             placeholder="Search Here"
           />
         </div>
-<div> <ViewStatusModal tabData={statusData}/></div>
+<div> <KycDetailsModal kycId={kycIdClick} /></div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Count Per Page</label>
@@ -221,9 +223,20 @@ const dispatch = useDispatch();
                     <td>{user?.isDirect}</td>
                     {/* <td>{user.status}</td> */}
                    
-                    <td> <button type="button" onClick={()=>handleClick(user?.loginMasterId)} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  View Status
-</button></td>
+                    <td>
+                   
+                      
+                        <button
+                          type="button"
+                          className="btn approve text-white  btn-xs"
+                          onClick={() => setKycIdClick(user)}
+                          data-toggle="modal"
+                          data-target="#kycmodaldetail"
+                        >
+                          View Status
+                        </button>
+                    
+                    </td>
                   </tr>
                 ))
               )}

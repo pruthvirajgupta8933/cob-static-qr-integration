@@ -93,6 +93,25 @@ function DocumentsUpload(props) {
       .catch((err) => console.log(err));
   }, []);
 
+  const required = []
+  docTypeList?.filter((a)=>{
+    if(a.optional1){
+      let val = a.key
+      required.push(val)
+    }
+    
+  })
+
+
+ 
+  const isrequired = savedData?.map((r) => r.type);
+  
+  // console.log(required.every((elem) => isrequired.includes(elem.toString())),"=================>compare value")
+ 
+
+ 
+ 
+
   const Array1 = docTypeList?.map((a) => a.key);
   const Array2 = savedData?.map((r) => r.type);
 
@@ -105,9 +124,11 @@ function DocumentsUpload(props) {
     setSelectedFile(e.target.files[0]);
     readURL(e.target, id);
   };
-
+  const [disable, setDisable] = useState(false)
   const onSubmit = (values, action) => {
     // If merchant logged in
+    
+    setDisable(true)
     if (role.merchant) {
       const bodyFormData = new FormData();
       let docType = values?.docType;
@@ -129,12 +150,15 @@ function DocumentsUpload(props) {
               response?.payload?.message?.toString();
             toast.error(message);
           }
+          setDisable(false)
         })
         .catch(function(error) {
           console.error("Error:", error);
           toast.error("Something went wrong while saving the document");
+          setDisable(false)
         });
     }
+    
     // update doc list after the upload the document
     setTimeout(() => {
       getKycDocList(role);
@@ -272,7 +296,8 @@ function DocumentsUpload(props) {
   // console.log("<=== Type Id of Saved Images ====>",typeOfDocs)
   let btn = false;
   requiredDocList?.map((i) => {
-    if (array1filtered.every((elem) => Array2.includes(elem.toString()))) {
+    console.log("bhuvan", i)
+    if (required.every((elem) => isrequired.includes(elem.toString()))) {
       // console.log("Enable Save & Next")
       btn = true;
     } else {
@@ -280,7 +305,7 @@ function DocumentsUpload(props) {
       btn = false;
     }
   });
-
+  
   const getDocTypeName = (id) => {
     let data = docTypeList.filter((obj) => {
       if (obj?.key?.toString() === id?.toString()) {
@@ -344,8 +369,8 @@ function DocumentsUpload(props) {
                       setDocTypeIdDropdown(formik?.values?.docType)
                     )}
                     <span className="text-danger mb-4">
-                      {array1filtered.every((elem) =>
-                        Array2.includes(elem.toString())
+                      {required.every((elem) =>
+                        isrequired.includes(elem.toString())
                       ) === true
                         ? ""
                         : "* All Documents are mandatory"}
@@ -407,6 +432,7 @@ function DocumentsUpload(props) {
                       <button
                         className="btn btnbackground text-white mt-5"
                         type="button"
+                        disabled = {disable}
                         onClick={() => {
                           formik.handleSubmit();
                         }}
