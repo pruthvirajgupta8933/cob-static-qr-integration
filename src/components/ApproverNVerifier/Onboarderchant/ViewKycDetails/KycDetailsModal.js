@@ -89,6 +89,13 @@ const KycDetailsModal = (props) => {
     return data[0]?.value;
   };
 
+  const stringManulate = (str) => {
+    let str1 = str.substring(0,15)
+    return `${str1}...`
+    
+  }
+
+
   return (
     <div
       class="modal fade"
@@ -99,7 +106,7 @@ const KycDetailsModal = (props) => {
       aria-hidden="true"
       style={{ overflow: "scroll" }}
     >
-      <div class="modal-dialog" role="document" style = {{maxWidth: "80%"}}>
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h3 class="modal-title font-weight-bold" id="kycmodaldetail">
@@ -659,7 +666,7 @@ const KycDetailsModal = (props) => {
                             rel="noreferrer"
                             className="text-primary"
                           >
-                            {doc?.name}
+                            {stringManulate(doc?.name)}
                           </a>
                           <p className="text-danger"> {doc?.comment}</p>
                         </td>
