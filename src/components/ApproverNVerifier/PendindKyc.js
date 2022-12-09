@@ -225,7 +225,7 @@ const dispatch = useDispatch();
                    
                     <td>
                    
-                      {roles.viewer === true ? (
+                      
                         <button
                           type="button"
                           className="btn approve text-white  btn-xs"
@@ -235,9 +235,7 @@ const dispatch = useDispatch();
                         >
                           View Status
                         </button>
-                      ) : (
-                        <></>
-                      )}
+                    
                     </td>
                   </tr>
                 ))

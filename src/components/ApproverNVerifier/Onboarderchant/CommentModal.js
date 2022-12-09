@@ -86,7 +86,9 @@ const CommentModal = (props) => {
         toast.success(resp?.payload?.message);
         commentUpdate();
         updateCommentinMerchantLlist(values);
-        return props && props?.handleApi ? props?.handleApi() : props?.handleForVerified();
+      
+        return setTimeout(props && props?.handleApi ? props?.handleApi() : props?.handleForVerified(),2000);
+        
       })
 
       .catch((err) => {
