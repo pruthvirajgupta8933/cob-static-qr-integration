@@ -18,26 +18,17 @@ import plus from "../../assets/images/plus.png";
 import "../../assets/css/kyc-document.css";
 import $ from "jquery";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 
 function DocumentsUpload(props) {
   const setTab = props.tab;
   const setTitle = props.title;
   const { role, kycid } = props;
+
+
   const roles = roleBasedAccess();
 
   const dispatch = useDispatch();
-
-  function readURL(input, id) {
-    if (input?.files && input?.files[0]) {
-      let reader = new FileReader();
-      reader.onload = function(e) {
-        $(".imagepre_sub_" + id).attr("src", e.target.result);
-        $(".imagepre_" + id).show();
-      };
-
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
 
   const [docTypeList, setDocTypeList] = useState([]);
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
@@ -47,14 +38,16 @@ function DocumentsUpload(props) {
   const [requiredDocList, setRequiredDocList] = useState([1, 2, 5, 6, 11]);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Upload Document");
+  const [imgAttr, setImgAttr] = useState("#");
 
   const { auth, kyc } = useSelector((state) => state);
   const { allTabsValidate } = kyc;
-  const BusinessOverviewStatus =
-    allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
+  const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const kyc_status = KycList?.status;
   const businessType = KycList.businessType;
+
+
 
   const { user } = auth;
   let clientMerchantDetailsList = {};
@@ -67,6 +60,20 @@ function DocumentsUpload(props) {
 
   const { loginId } = user;
   const { KycDocUpload } = kyc;
+
+
+  
+  function readURL(input, id) {
+    if (input?.files && input?.files[0]) {
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        setImgAttr(e.target.result)
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
 
   useEffect(() => {
     setSavedData(KycDocUpload);
@@ -105,13 +112,6 @@ function DocumentsUpload(props) {
 
  
   const isrequired = savedData?.map((r) => r.type);
-  
-  // console.log(required.every((elem) => isrequired.includes(elem.toString())),"=================>compare value")
- 
-
- 
- 
-
   const Array1 = docTypeList?.map((a) => a.key);
   const Array2 = savedData?.map((r) => r.type);
 
@@ -119,10 +119,14 @@ function DocumentsUpload(props) {
     return elm != null && elm !== false && elm !== "";
   };
 
-  let array1filtered = Array1.filter(myFilter);
+  // let array1filtered = Array1.filter(myFilter);
   const handleChange = function(e, id) {
+    // console.log("handle change")
     setSelectedFile(e.target.files[0]);
+    // console.log(e.target)
+    
     readURL(e.target, id);
+
   };
   const [disable, setDisable] = useState(false)
   const onSubmit = (values, action) => {
@@ -318,8 +322,7 @@ function DocumentsUpload(props) {
   };
 
   useEffect(() => {
-    readURL({}, 0);
-    console.log("document dropdown change")
+    setImgAttr("#")
   }, [docTypeIdDropdown]);
 
 
@@ -374,7 +377,8 @@ function DocumentsUpload(props) {
                         isrequired.includes(elem.toString())
                       ) === true
                         ? ""
-                        : "* All Documents are mandatory"}
+                        : "* All Documents are mandatory and "}
+                          document name should be unique."
                     </span>
                   </div>
 
@@ -382,6 +386,7 @@ function DocumentsUpload(props) {
                     KycList?.status !== "Approved" &&
                     KycList?.status !== "Verified" ? (
                       docTypeIdDropdown !== "" ? (
+                       <>
                         <div class="col-lg-6 ">
                           <div className="file-upload  border-dotted">
                             <div className="image-upload-wrap ">
@@ -392,6 +397,7 @@ function DocumentsUpload(props) {
                                 className="file-upload-input"
                                 id="3"
                                 onChange={(e) => handleChange(e, 3)}
+                                // onChange={(e) => console.log(e, 3)}
                               />
                               <div className="drag-text">
                                 <h3 class="p-2 font-16">
@@ -407,15 +413,21 @@ function DocumentsUpload(props) {
                               </div>
                             </div>
                           </div>
+                        </div>
+
+                        <div class="col-lg-6 ">
                           {/* uploaded document preview */}
+                          {/* {console.log("imgAttr",imgAttr)} */}
+                          {imgAttr==="#" ?  <></> :
                           <div className="file-upload-content imagepre_3">
                             <img
-                              className="file-upload-image imagepre_sub_3 hide-mg"
-                              src="#"
+                              className="file-upload-image imagepre_sub_3"
+                              src={imgAttr}
                               alt="Document"
                             />
-                          </div>
+                          </div>}
                         </div>
+                        </>
                       ) : (
                         <></>
                       )
