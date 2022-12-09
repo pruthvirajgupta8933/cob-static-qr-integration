@@ -241,6 +241,7 @@ function PendingVerification() {
                   
                           }}
                           data-target="#exampleModal"
+                          disabled={user?.clientCode === null ? true : false}
                         >
                           Add/View Comments
                         </button>

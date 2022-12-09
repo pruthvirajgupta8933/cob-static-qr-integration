@@ -12,12 +12,14 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { stringDec } from "../../../../utilities/encodeDecode";
+import { isCompositeComponent } from "react-dom/test-utils";
 
 const SabPaisaPricing = () => {
   const history = useHistory();
   const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
+  const [tempPlanId, setTempPlanId] = useState("");
   const [rateCloneStatus, setRateCloneStatus] = useState("")
 
   const dispatch = useDispatch();
@@ -55,10 +57,6 @@ const SabPaisaPricing = () => {
   }, [param]);
 
 
-  // useEffect(() => {
-  //   checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
-  // }, [])
-
 
 
   // check rate mapping status before rate mapping
@@ -73,16 +71,17 @@ const SabPaisaPricing = () => {
   }
 
 
-
   useEffect(() => {
-    // console.log("rateCloneStatus", rateCloneStatus)
 
-    if ((rateCloneStatus === 3 || rateCloneStatus === 0) && param?.id === "10") {
+    console.log("rateCloneStatus",rateCloneStatus)
+    console.log("tempPlanId",tempPlanId)
+    console.log("param?.id",param?.id)
 
+    if ((rateCloneStatus === 3 || rateCloneStatus === 0) && (param?.id === "10" && tempPlanId!==1 && tempPlanId!=="") ) {
+      console.log("cond true")
       if (user?.clientMerchantDetailsList !== null) {
         console.log("33")
         const clientMerchantDetailsList = user?.clientMerchantDetailsList;
-
         const clientCode = clientMerchantDetailsList[0]?.clientCode;
         const clientId = clientMerchantDetailsList[0]?.clientId;
         const clientContact = user?.clientMobileNo;
@@ -115,7 +114,7 @@ const SabPaisaPricing = () => {
           businessType: 2
         };
 
-        // console.log("inputData",inputData);
+        console.log("inputData",inputData);
         // 1 - run RATE_MAPPING_GenerateClientFormForCob 
 
         axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
@@ -142,7 +141,7 @@ const SabPaisaPricing = () => {
     }
 
 
-  }, [rateCloneStatus])
+  }, [rateCloneStatus,tempPlanId])
 
 
   const handleClick = async (plan_id, plan_name) => {
@@ -154,22 +153,24 @@ const SabPaisaPricing = () => {
       applicationId: param?.id,
     };
 
+    setTempPlanId(plan_id)
+
 
     const res = await axiosInstanceAuth.post(
       API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
       postData
     );
-    // console.log("res",res)
-    if (res.status === 200) {
-      // console.log("1")
-      if (param?.id === "10") {
-        // console.log("2")
+   
+    if (res?.status === 200) {
+      console.log("1")
+      // only PG product without subscription plan check rate mapping status
+      if (param?.id === "10" && plan_id!==1) {
+        console.log("2")
         // only for payment gateway we have to check rate mapping status
         checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
       }
 
       getSubscribedPlan(plan_id);
-
       toastConfig.successToast(res?.data?.message);
     } else {
       toastConfig.errorToast("Something went wrong");
@@ -228,12 +229,12 @@ const SabPaisaPricing = () => {
 
                           <button
                             type="button"
-                            className={`font-weight-bold btn choosePlan-1 btn-lg w-50 ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
+                            className={`font-weight-bold btn choosePlan-1 btn-lg w-50 ${selectedPlan?.planId === Products?.plan_id ? "btn-bg-color" : ""}`}
                             data-toggle="modal"
                             data-target="#subscription"
                             disabled={selectedPlan?.planId !== "" ? true : false}
                             onClick={() => {
-                              if (selectedPlan?.planId !== Products.plan_id) {
+                              if (selectedPlan?.planId !== Products?.plan_id) {
                                 handleClick(
                                   Products.plan_id,
                                   Products.plan_name
@@ -315,8 +316,7 @@ const SabPaisaPricing = () => {
                   </div>
                 </div> :
                   <div className={`px-1 ${Products?.plan_id === 45 ? "col-lg-12" : ""} 
-            ${productDetails.length === 4 ? "col-lg-3" : "col-lg-4"}  `}
-                  >
+                    ${productDetails.length === 4 ? "col-lg-3" : "col-lg-4"}  `} >
                     <div className="card heightcards">
                       <div className="card-body">
                         <div className="row mb-5-">
