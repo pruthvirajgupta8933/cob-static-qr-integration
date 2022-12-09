@@ -418,7 +418,7 @@ function BusinessOverview(props) {
 
             <div class="col-sm-4 col-md-4 col-lg-4">
               <label class="col-form-label p-0 exp-tranc">
-                Expected Transactions / Per Year <span style={{ color: "red" }}>*</span>
+                Expected Transactions/Year <span style={{ color: "red" }}>*</span>
               </label>
 
               <FormikController

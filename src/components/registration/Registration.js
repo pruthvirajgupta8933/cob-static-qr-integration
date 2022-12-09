@@ -200,8 +200,8 @@ function Registration() {
                     }}
                     class="text-center mt-40"
                   >
-                    Empower your <br />
-                    business,&nbsp;boost <br /> your&nbsp;finance
+                    Power Your <br />
+                    Payments,&nbsp;Boost <br /> Your&nbsp;Business!
                   </h1>
 
                   <div className="brand-logo">

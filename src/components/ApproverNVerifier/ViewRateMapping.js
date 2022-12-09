@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { axiosInstanceAuth } from '../../utilities/axiosInstance';
+import RateRadioMapping from './RateRadioMapping';
 
 const initialValues = {
     rate_template_name: "",
@@ -31,9 +32,7 @@ const ViewRateMapping = (props) => {
     const [riskCode, setRiskCode] = useState("")
     const [businessCode, setBusinessCode] = useState([]);
 
-    const radiobutton = [
-        { key: "", value: "true" },
-    ];
+   
 
 
     useEffect(() => {
@@ -144,7 +143,7 @@ const ViewRateMapping = (props) => {
                             // onSubmit={(values)=>handleSubmit(values)}
                             onSubmit={(values, { resetForm }) => {
                                 handleSubmit(values)
-                                resetForm()
+                                
                             }}
                             enableReinitialize={true}
                         >
@@ -238,47 +237,18 @@ const ViewRateMapping = (props) => {
 
                                                 <div class="modal-footer">
                                                     {/* <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> */}
-                                                    <button type="subbmit" onClick={resetForm} class="btn btn-primary">View</button>
+                                                    <button type="submit"  class="btn btn-primary">View</button>
                                                     {show === true ? (
-                                                        <table class="table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col">Check</th>
-                                                                    <th scope="col">ClientCode</th>
-                                                                    <th scope="col">Template Name</th>
 
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            {riskTemplate?.map((riskTemplate, i) => (
-                                                                <tr>
-
-
-                                                                    <td>
-                                                                        <div class="form-check">
-                                                                        <label class="form-check-label" for="flexRadioDefault1">
-                                                                                Default radio
-                                                                            </label>
-                                                                            <FormikController
-                                                                                control="radio"
-                                                                                name="risk_category"
-                                                                                options={radiobutton}
-                                                                                className="form-control"
-
-                                                                            />
-                                                                           
-                                                                        </div></td>
-                                                                    <td>{riskTemplate?.client_code}</td>
-                                                                    <td>{riskTemplate?.rate_template_name}</td>
-                                                                </tr>
-                                                            ))}
-                                                            </tbody>
-                                                        </table>
+                                                        <div className='col-lg-12'>
+                                                        <RateRadioMapping riskTemplate={riskTemplate}/>
+                                                        </div>
+                                                       
 
                                                     ) : (
                                                         <></>
                                                     )}
-                                                    {/* <button type="subbmit" onClick={resetForm} class="btn btn-primary">Submit</button> */}
+                                                    
                                                 </div>
 
                                             </Form>

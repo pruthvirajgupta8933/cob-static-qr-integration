@@ -33,6 +33,7 @@ function PendingVerification() {
   const [pageSize, setPageSize] = useState(10);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [openCommentModal, setOpenCommentModal] = useState(false);
 
   const dispatch = useDispatch();
   const kycSearch = (e) => {
@@ -145,8 +146,7 @@ function PendingVerification() {
     let date = moment(yourDate).format("MM/DD/YYYY");
       return date
     }
-
-  // updateFlag={setIsCommentUpdate}
+    
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
@@ -160,7 +160,7 @@ function PendingVerification() {
           />
         </div>
         <div>
-          <CommentModal commentData={commentId} handleApi={pendingVerify} />
+          {openCommentModal === true ? <CommentModal commentData={commentId} handleApi={pendingVerify} /> : <></>}
           <KycDetailsModal kycId={kycIdClick} />
         </div>
 
@@ -235,8 +235,13 @@ function PendingVerification() {
                           type="button"
                           className="btn approve text-white  btn-xs"
                           data-toggle="modal"
-                          onClick={() => setCommentId(user)}
+                          onClick={() => {
+                            setCommentId(user)
+                            setOpenCommentModal(true)
+                  
+                          }}
                           data-target="#exampleModal"
+                          disabled={user?.clientCode === null ? true : false}
                         >
                           Add/View Comments
                         </button>

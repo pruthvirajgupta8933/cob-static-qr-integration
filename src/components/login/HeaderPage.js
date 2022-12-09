@@ -281,7 +281,7 @@ function HeaderPage() {
                           <li><a className="dropdown-item" href="https://sabpaisa.in/payment-links/"  target={"_blank"}>Payment Links</a></li>
                           <li><a className="dropdown-item" href="https://sabpaisa.in/subscriptions/"  target={"_blank"}>Subscriptions</a></li>
                           <li><a className="dropdown-item" href="https://sabpaisa.in/qwikform/"  target={"_blank"}>QwikForm</a></li>
-                          <li><a className="dropdown-item" href="https://sabpaisa.in/sabpaisa-e-challan-sabpaisa/"  target={"_blank"}>E-Challan</a> </li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/offline-payments/"  target={"_blank"}>Offline Payments</a> </li>
                       </ul>
                     </div>
                 </li>
@@ -289,7 +289,7 @@ function HeaderPage() {
                     <a class="nav-link" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Resources<span class="fa fa-angle-down"></span></a>
                     <div class="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu2" aria-labelledby="navbarDropdown2">
                       <ul>
-                          <li><a href="https://sabpaisa.in/subscriptions/" target={"_blank"}>Subscriptions APP</a></li>
+                          <li><a href="https://sabpaisa.in/subscriptions/" target={"_blank"}>Subscriptions API</a></li>
                           <li><a href="https://sabpaisa.in/payouts-api/"  target={"_blank"}>Payouts API</a></li>
                           <li><a href="https://sabpaisa.in/payment-links/"  target={"_blank"}>Payment Links API</a></li>
                         </ul>
