@@ -296,7 +296,7 @@ function DocumentsUpload(props) {
   // console.log("<=== Type Id of Saved Images ====>",typeOfDocs)
   let btn = false;
   requiredDocList?.map((i) => {
-    console.log("bhuvan", i)
+    // console.log("bhuvan", i)
     if (required.every((elem) => isrequired.includes(elem.toString()))) {
       // console.log("Enable Save & Next")
       btn = true;
@@ -319,6 +319,7 @@ function DocumentsUpload(props) {
 
   useEffect(() => {
     readURL({}, 0);
+    console.log("document dropdown change")
   }, [docTypeIdDropdown]);
 
 
