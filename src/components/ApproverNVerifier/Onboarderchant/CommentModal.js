@@ -7,7 +7,7 @@ import FormikController from "../../../_components/formik/FormikController";
 import {
   forSavingComments,
   forGettingCommentList,
-  updatedCommentList
+  updatedCommentList,
 } from "../../../slices/merchantZoneMappingSlice";
 import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
@@ -22,10 +22,9 @@ const CommentModal = (props) => {
   const dispatch = useDispatch();
 
   const commentUpdate = () => {
-    
     dispatch(
       forGettingCommentList({
-        client_code: props.commentData.clientCode,
+        client_code: props?.commentData?.clientCode,
       })
     )
       .then((resp) => {
@@ -39,32 +38,28 @@ const CommentModal = (props) => {
   const updateCommentinMerchantLlist = (values) => {
     dispatch(
       updatedCommentList({
-        client_code: props.commentData.clientCode,
-        comments:values.comments
+        client_code: props?.commentData?.clientCode,
+        comments: values?.comments,
       })
-    )
-      .then((resp) => {
-      })
-
+    ).then((resp) => {});
   };
 
-  
-
   useEffect(() => {
-    if (commentResp !== true) {
+    if (props && props?.commentData?.clientCode !== "") {
       dispatch(
         forGettingCommentList({
-          client_code: props.commentData.clientCode,
+          client_code: props?.commentData?.clientCode,
         })
       )
         .then((resp) => {
-          // console.log("Comment List Response After Saving", resp.payload.Data);
           setCommentsList(resp?.payload?.Data);
         })
 
-        .catch((err) => {});
+        .catch((err) => {
+          
+        });
     }
-  }, [commentResp,props]);
+  }, [props]);
 
   const validationSchema = Yup.object({
     comments: Yup.string()
@@ -74,28 +69,26 @@ const CommentModal = (props) => {
       .nullable(),
   });
 
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state?.auth);
 
   const { loginId } = user;
 
-
-  // console.log(props.handleApi ? "True" : "False")
-  // console.log(commentsList?.length,"bHUBVAN ===>")
 
   const handleSubmit = async (values) => {
     dispatch(
       forSavingComments({
         login_id: loginId,
-        client_code: props.commentData.clientCode,
+        client_code: props?.commentData?.clientCode,
         comments: values.comments,
       })
     )
       .then((resp) => {
         toast.success(resp?.payload?.message);
-        setCommentResp(resp.payload.status);
         commentUpdate();
-        updateCommentinMerchantLlist(values)
-        return props && props.handleApi ? props.handleApi() : props.handleForVerified();
+        updateCommentinMerchantLlist(values);
+      
+        return setTimeout(props && props?.handleApi ? props?.handleApi() : props?.handleForVerified(),2000);
+        
       })
 
       .catch((err) => {
@@ -107,6 +100,10 @@ const CommentModal = (props) => {
     let date = moment(yourDate).format("MM/DD/YYYY");
     return date;
   };
+
+
+
+
   return (
     <div>
       <div
@@ -188,7 +185,7 @@ const CommentModal = (props) => {
                       <div class="container">
                         <div class="row">
                           <div
-                            class="col-lg-5-"
+                            class="col-lg-5"
                             style={{
                               marginTop: "28px",
                               textDecoration: "underline",
@@ -209,26 +206,33 @@ const CommentModal = (props) => {
                                   <th>Date of Comments</th>
                                 </tr>
                               </thead>
-                              <tr>
+                              <tbody>
+                                {(commentsList?.length=== undefined ||
+                                  commentsList?.length === 0) && (
+                                  <tr>
+                                    <td colSpan="3">
+                                      <h3 className="font-weight-bold text-center">
+                                        No Data found
+                                      </h3>
+                                    </td>
+                                  </tr>
+                                )}
+
+                                {(commentsList?.length !== undefined ||
+                                  commentsList?.length > 0) &&
+                                  Array.isArray(commentsList) ? commentsList?.map((remark, i) => (
+                                    <tr key={i}>
+                                      <td>{remark?.comment_by_user_name.toUpperCase()}</td>
+                                      <td>{remark?.comments}</td>
+                                      <td>
+                                        {dateManipulate(remark?.comment_on)}
+                                      </td>
+                                    </tr>
+                                  )) : []
+                                }
+
                                
-                                <td colSpan={"3"}>
-                                {commentsList?.length === undefined || commentsList?.length === 0 ? (
-                                    <h3 className="font-weight-bold text-center">
-                                      No Data found
-                                    </h3>
-                                  ) : (
-                                    commentsList?.map((remark, i) => (
-                                      <tr key={i}>
-                                        <td>{remark?.comment_by_user_name}</td>
-                                        <td>{remark?.comments}</td>
-                                        <td>
-                                          {dateManipulate(remark?.comment_on)}
-                                        </td>
-                                      </tr>
-                                    ))
-                                  )}
-                                </td>
-                              </tr>
+                              </tbody>
                             </table>
                           </div>
                         </div>
