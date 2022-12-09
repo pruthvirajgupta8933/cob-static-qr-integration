@@ -93,7 +93,6 @@ function BusinessOverview(props) {
     billing_label: KycList.billingLabel,
     erp_check: KycList.erpCheck === true ? "True" : "False",
     platform_id: "1234567",
-    company_website: KycList.companyWebsite,
     seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
     website_app_url: KycList?.website_app_url,
     avg_ticket_size: KycList?.avg_ticket_size,
@@ -116,10 +115,6 @@ function BusinessOverview(props) {
       .min(1, "Please enter more than 1 character")
       .max(250, "Please enter not more than 250 characters")
         .matches(Regex.acceptAlphabet,RegexMsg.acceptAlphabet)
-        .required("Required")
-        .nullable(),
-      company_website: Yup.string().trim()
-        .matches(urlRegex, "Website Url is not Valid")
         .required("Required")
         .nullable(),
       website_app_url: Yup.string().when(["seletcted_website_app_url"], {
@@ -295,6 +290,7 @@ function BusinessOverview(props) {
       >
         {(formik) => (
           <Form>
+          {console.log(formik)}
             <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6">
               <label class="col-form-label mt-0 p-2">
