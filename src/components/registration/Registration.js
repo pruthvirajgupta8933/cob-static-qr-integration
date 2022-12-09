@@ -256,7 +256,7 @@ function Registration() {
                 </div>
               </div>
             </div>
-            <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right">
+            <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right p-0">
               {/* authfy-login start */}
               <div className="authfy-login">
                 {/* panel-login start */}
