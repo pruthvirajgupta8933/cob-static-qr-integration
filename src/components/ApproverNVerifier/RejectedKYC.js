@@ -209,14 +209,15 @@ const nextPage = () => {
               </button>
             </li>
             {displayPageNumber?.map((pgNumber, i) => (
-              <li
+              <li 
                 key={i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }
+                onClick={() => setCurrentPage(pgNumber)}
               >
                 <a href={() => false} className={`page-link data_${i}`}>
-                  <span onClick={() => setCurrentPage(pgNumber)}>
+                  <span >
                     {pgNumber}
                   </span>
                 </a>
