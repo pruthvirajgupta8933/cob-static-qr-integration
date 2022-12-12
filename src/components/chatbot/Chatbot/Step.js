@@ -2,7 +2,7 @@
 // import GetAnswer from '../Components/GetAnswer'
 // import TransactionEnq from '../Components/TransactionEnq';
 // import SetOfQuestion from '../Components/SetOfQuestion'
-// import TempQuestion from '../Components/TempQuestion';
+import TempQuestion from '../Components/TempQuestion';
 import MainParentComponent from '../Components/MainParentComponent';
 import ParentComponent from '../Components/ParentComponent';
 import SubparentComponent  from './../Components/SubparentComponent';
@@ -49,7 +49,7 @@ export const Step = [
     id: '12',
     options: [
       { value: '7', label: "Technical Related", trigger: '3' },
-      { value: '8', label: "My Question is not listed", trigger: '3'}     
+      { value: '8', label: "My Question is not listed", trigger: '15'}     
     ]
   },
     {
@@ -57,7 +57,7 @@ export const Step = [
       options: [
         { value: '1', label: "I have bussiness account with sabpaisa", trigger: '3' },
         { value: '2', label: "I don`t have bussiness acccount with Sabpaisa", trigger: '3' },
-        { value: '8', label: "My Question is not listed", trigger: '3'}
+        { value: '8', label: "My Question is not listed", trigger: '15'}
       ]
     },
     // {
@@ -109,12 +109,12 @@ export const Step = [
     options: [
           { value: "Yes", label: 'Yes', trigger:  (input) => {
             if(localStorage.getItem('categoryId')){
-              // console.log("check2")
+              
               return '12'
             }else{
-              // console.log("check1")
+              
               return '13'
-              // console.log("hi")
+              
             }
             } },
           { value: "No", label: 'No', trigger: '9' },
@@ -129,8 +129,70 @@ export const Step = [
     id: '500',
     message: 'We are facing some technical issue',
     end: true
-  }
-  ,
+  },
+  {
+    id: '15',
+    message: 'Enter your name',
+    trigger: '16'
+  },
+  {
+    id: '16',
+    user: true,
+    validator: (value) => {
+      if (value=="") {
+        return 'please enter your name';
+      }
+      return true;
+    },
+    trigger: '17'
+  },
+  {
+      id: '17',
+      message: 'Enter your Mobile Number',
+     
+      trigger: '18'
+  },
+  {
+    id: '18',
+    user: true,
+    validator: (value) => {
+      if (isNaN(value)) {
+        return 'value should be a number';
+      }
+      if(value.length!==10){
+        return 'mobile number should be greater than 10'
+      }
+      return true;
+    },
+    trigger: '19'
+  },
+  {
+    id: '19',
+    message: 'Enter your Email',
+    trigger: '20'
+  },
+  {
+    id: '20',
+    user: true,
+    trigger: '21'
+  },
+  {
+    id: '21',
+    message: 'Enter your Query',
+    trigger: '22'
+  },
+  {
+    id: '22',
+    user: true,
+    trigger: '23'
+  },
+  {
+    id: '23',
+    component: <TempQuestion/>,
+    asMessage: true
+    
+  },
+  
   // {
   //   id: '15',
   //   message: 'Please login to get the instant answers to your most important questions.',

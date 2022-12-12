@@ -6,9 +6,12 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import { Link } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
+import moment from "moment";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
+import { Toast } from "react-toastify";
+import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 
 function VerifiedMerchant() {
   const [data, setData] = useState([]);
@@ -18,10 +21,11 @@ function VerifiedMerchant() {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [commentId, setCommentId] = useState({});
+  const [openCommentModal, setOpenCommentModal] = useState(false);
 
   let page_size = pageSize;
   let page = currentPage;
@@ -52,7 +56,7 @@ function VerifiedMerchant() {
   useEffect(() => {
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
@@ -85,7 +89,10 @@ function VerifiedMerchant() {
   const indexOfLastRecord = currentPage * pageSize;
 
   const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+  let pageNumbers = []
+  if(!Number.isNaN(totalPages)){
+    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+  }
 
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
 
@@ -100,6 +107,8 @@ function VerifiedMerchant() {
       setCurrentPage(currentPage - 1);
     }
   };
+
+
 
   useEffect(() => {
     let lastSevenPage = totalPages - 7;
@@ -119,6 +128,16 @@ function VerifiedMerchant() {
       setDisplayPageNumber(pageNumber);
     }
   }, [currentPage, totalPages]);
+
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
+
+
+    // const handleModalState = (val)=>{
+    //   setOpenCommentModal(val)
+    // }
 
   return (
     <div className="container-fluid flleft">
@@ -140,10 +159,7 @@ function VerifiedMerchant() {
           onChange={(e) => setPageSize(parseInt(e.target.value))}
           className="ant-input"
         >
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
+          <DropDownCountPerPage datalength={dataCount} />
         </select>
       </div>
       <KycDetailsModal kycId={kycIdClick} />
@@ -157,10 +173,10 @@ function VerifiedMerchant() {
         </select>
       </div>
       <div>
-        <CommentModal
-          commentData={commentId}
-          handleForVerified={verifyMerchant}
-        />
+        
+      {openCommentModal === true ?  
+      <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> 
+      : <></>}
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
@@ -176,20 +192,21 @@ function VerifiedMerchant() {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
-                <th>Comments</th>
+                {/* <th>Comments</th> */}
                 <th>Action</th>
                 {roles.approver === true ? <th>Approve KYC</th> : <></>}
               </tr>
             </thead>
             <tbody>
-              {spinner && <Spinner />}
+              {/* {spinner && <Spinner />} */}
               {data?.length === 0 ? (
                 <tr>
-                  {" "}
-                  <td colSpan={"9"}>
-                    <h1 className="nodatafound">No data found</h1>
-                  </td>
-                </tr>
+                <td colSpan={"11"}>
+                  <div className="nodatafound text-center">No data found </div>
+                  <br/><br/><br/><br/>
+                  <p className="text-center">{spinner && <Spinner />}</p>
+                </td>
+            </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>
@@ -200,19 +217,23 @@ function VerifiedMerchant() {
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
-                    <td>{user.signUpDate}</td>
+                    <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
-                    <td>{user?.comments}</td>
+                    {/* <td>{user?.comments}</td> */}
                     <td>
                       {roles.verifier === true || roles.approver === true ? (
                         <button
                           type="button"
                           className="btn approve text-white  btn-xs"
                           data-toggle="modal"
-                          onClick={() => setCommentId(user)}
+                          onClick={() =>  {                           
+                            setCommentId(user)
+                            setOpenCommentModal(true)
+                          }}
                           data-target="#exampleModal"
+                        disabled={user?.clientCode === null ? true : false}
                         >
-                          Add Comments
+                          Add/View Comments
                         </button>
                       ) : (
                         <></>
@@ -254,19 +275,22 @@ function VerifiedMerchant() {
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <button className="page-link" onClick={prevPage}>
+              <button 
+              className="page-link" 
+              onClick={prevPage}>
                 Previous
               </button>
             </li>
             {displayPageNumber?.map((pgNumber, i) => (
-              <li
+              <li 
                 key={i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }
+                onClick={() => setCurrentPage(pgNumber)}
               >
                 <a href={() => false} className={`page-link data_${i}`}>
-                  <span onClick={() => setCurrentPage(pgNumber)}>
+                  <span >
                     {pgNumber}
                   </span>
                 </a>

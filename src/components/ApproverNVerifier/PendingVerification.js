@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
 import API_URL from "../../config";
+import { forGettingCommentList } from "../../slices/merchantZoneMappingSlice";
 // import axios from "axios";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { Link, useRouteMatch } from "react-router-dom";
@@ -10,11 +11,20 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
+import {ALLOW_ROLE_AS_VERIFIER} from "./../../utilities/permisson"
+import moment from "moment";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 
 function PendingVerification() {
   const { url } = useRouteMatch();
   const roles = roleBasedAccess();
+   const { user } = useSelector((state) => state.auth);
+
+   const { loginId } = user;
+   const id =loginId
+   
+
+  //  console.log(loginId," <=====  Login Id ====> ")
 
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -23,10 +33,13 @@ function PendingVerification() {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [commentId, setCommentId] = useState({});
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [openCommentModal, setOpenCommentModal] = useState(false);
 
+
+ 
   const dispatch = useDispatch();
   const kycSearch = (e) => {
     setSearchText(e.target.value);
@@ -35,9 +48,7 @@ function PendingVerification() {
   const pendingVerify = () => {
     dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        // toastConfig.successToast("Data Loaded");
-        setSpinner(false);
-        const data = resp?.payload?.results;
+       const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
         setDataCount(dataCoun);
@@ -54,7 +65,8 @@ function PendingVerification() {
   useEffect(() => {
     dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+        setSpinner(false);
         setSpinner(false);
 
         const data = resp?.payload?.results;
@@ -101,6 +113,20 @@ function PendingVerification() {
     }
   };
 
+  // useEffect(() => {
+    
+  //     dispatch(
+  //       forGettingCommentList({
+  //         client_code: commentId.clientCode,
+  //       })
+  //     )
+  //       .then((resp) => {
+  //       })
+  
+  //       .catch((err) => {});
+ 
+  // },[commentId])
+
   useEffect(() => {
     let lastSevenPage = totalPages - 7;
     if (pageNumbers?.length > 0) {
@@ -120,7 +146,21 @@ function PendingVerification() {
     }
   }, [currentPage, totalPages]);
 
-  // updateFlag={setIsCommentUpdate}
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
+
+    let btn = false;
+    ALLOW_ROLE_AS_VERIFIER?.map((i) => {
+    if (ALLOW_ROLE_AS_VERIFIER.includes(id)) {
+      btn = true;
+    } else {
+       
+      btn = false;
+    } 
+  });
+    
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
@@ -134,7 +174,7 @@ function PendingVerification() {
           />
         </div>
         <div>
-          <CommentModal commentData={commentId} handleApi={pendingVerify} />
+          {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> : <></>}
           <KycDetailsModal kycId={kycIdClick} />
         </div>
 
@@ -146,10 +186,7 @@ function PendingVerification() {
             onChange={(e) => setPageSize(parseInt(e.target.value))}
             className="ant-input"
           >
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
+            <DropDownCountPerPage datalength={data?.length} />
           </select>
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -177,19 +214,21 @@ function PendingVerification() {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
-                <th>Comments</th>
+                {/* <th>Comments</th> */}
                 <th>Action</th>
                 {roles?.verifier === true ? <th>Verify KYC</th> : <></>}
               </tr>
             </thead>
             <tbody>
-              {spinner && <Spinner />}
+              {/* {spinner && <Spinner />} */}
               {data?.length === 0 ? (
-                <tr>
-                  <td colSpan={"8"}>
-                    <h1 className="nodatafound">No data found</h1>
-                  </td>
-                </tr>
+                 <tr>
+                 <td colSpan={"11"}>
+                   <div className="nodatafound text-center">No data found </div>
+                   <br/><br/>
+                   <p className="text-center">{spinner && <Spinner />}</p>
+                 </td>
+             </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>
@@ -200,19 +239,24 @@ function PendingVerification() {
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
-                    <td>{user.signUpDate}</td>
+                    <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
-                    <td>{user?.comments}</td>
+                    {/* <td>{user?.comments}</td> */}
                     <td>
                       {roles.verifier === true || roles.approver === true ? (
                         <button
                           type="button"
                           className="btn approve text-white  btn-xs"
                           data-toggle="modal"
-                          onClick={() => setCommentId(user)}
+                          onClick={() => {
+                            setCommentId(user)
+                            setOpenCommentModal(true)
+                  
+                          }}
                           data-target="#exampleModal"
+                          disabled={user?.clientCode === null ? true : false}
                         >
-                          Add Comments
+                          Add/View Comments
                         </button>
                       ) : (
                         <></>
@@ -233,7 +277,7 @@ function PendingVerification() {
                     </td>
 
                     {roles.verifier === true ? (
-                      <td>
+                       <td>
                         <Link
                           to={`/dashboard/kyc/?kycid=${user?.loginMasterId}`}
                           className="btn approve text-white  btn-xs"
@@ -255,19 +299,22 @@ function PendingVerification() {
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <button className="page-link" onClick={prevPage}>
+              <button 
+              className="page-link" 
+              onClick={prevPage}>
                 Previous
               </button>
             </li>
             {displayPageNumber?.map((pgNumber, i) => (
-              <li
+              <li 
                 key={i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }
+                onClick={() => setCurrentPage(pgNumber)}
               >
                 <a href={() => false} className={`page-link data_${i}`}>
-                  <span onClick={() => setCurrentPage(pgNumber)}>
+                  <span >
                     {pgNumber}
                   </span>
                 </a>

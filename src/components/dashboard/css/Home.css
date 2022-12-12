@@ -124,8 +124,8 @@ table.tables tr:nth-child(odd) {
 }
 .viewfor {
   position: absolute;
-  right: 39px;
-    top: 61px;
+  right: 13px;
+    top: 58px;
   z-index: 999;
 }
 
@@ -362,6 +362,7 @@ border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: auto !important;
 }
 
 /* Css for Dashboard  IF KYC IS APPROVED*/
@@ -768,7 +769,7 @@ button[disabled1] {
 
 /* Harris CSS For Login Image Dynamic and Side Nav Font*/
 .loginscreenimage {
-height: 259px;
+height: 300px;
 /* width: 459px; */
 left: 1485px;
 top: 4347px;
@@ -776,7 +777,7 @@ border-radius: 0px;
 }
 /* Harris CSS For Login Image Dynamic and Side Nav Font*/
 .loginscreenimagereg {
-  height: 349px;
+  height: 300px;
   /* width: 459px; */
   left: 1485px;
   top: 4347px;
@@ -822,8 +823,8 @@ a.sidenavFonts{
   /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 700;
-  font-size: 20px;
-  line-height: 25px;
+  font-size: 19px;
+  line-height: 22px;
   color: #44525f;
 }
 
@@ -949,8 +950,8 @@ color: #4285F8;
 }
 .spinner-border{
 	position: absolute; 
-	top: 48%; 
-	left: 50%; 
+	top: 82%; 
+	left: 58%; 
 	transform: translate (-50%); 
 
 }

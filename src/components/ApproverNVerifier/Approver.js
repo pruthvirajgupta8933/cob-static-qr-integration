@@ -72,8 +72,8 @@ function Approver() {
             <div className="container-fluid">
               <div className="row bgcolor">
                 <div className="col-lg-12 mb-4 bgcolor-">
-                  <ul className="nav nav-tabs">
-                    <li className="nav-item">
+                  <ul className="nav nav-tabs approv">
+                    <li className="nav-item ">
                       <a
                         href={() => false}
                         className={

@@ -138,8 +138,9 @@ const API_LIVE = {
 
 
   ////////////////////////////////////////Rate mapping
-  GET_TEMPLATE_DETAILS:`${url}/merchant/get-rate-template-detail`,
+  GET_RISK_BUISENSS_BYID:`${url}/merchant/get-risk-business-by-id`,
    GET_RISK_TEMPLSTE:`${url}/merchant/get-risk-category-template`,
+   TEMPLATE_DETAILS_BYRISKCODE:`${url}/merchant/get-template-detail-by-business-code`,
 
 ////////////////////////////////////////SIGNUP DATA API
 GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
@@ -228,14 +229,33 @@ GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
    
 
    // OnBoard Merchant Role URL 
-   Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`
+   Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`,
+
+
+  // ---------------------------   NEW API FOR COMMENTS (2)
+
+
+  // For Saving Comments
+  SAVE_COMMENTS:`${url}/merchant/save-comments`,
+
+
+  // GET API FOR VIEWING COMMENTS
+
+  VIEW_COMMENTS_LIST: `https://stgcobapi.sabpaisa.in/merchant/get-comments-by-clientcode`
+
+  
+  // ---------------------------   NEW API FOR COMMENTS (2)
+
+  
+
+
 };
  
 const API_URL = API_LIVE;
 export default API_URL;
 export const APP_ENV  = ENV_PROD;
 
-export const TIMEOUT = 1200; // 1200 seconds = 20 minutes
+export const TIMEOUT = 1500; // time in seconds 1500 = 25 minutes
 export const AUTH_TOKEN = "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69";
 
 // COB PG credential

@@ -5,6 +5,8 @@ import {  useRouteMatch } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
+import moment from "moment";
+import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 
 
 const RejectedKYC = () => {
@@ -17,7 +19,7 @@ const RejectedKYC = () => {
   const [rejectedMerchants, setRejectedMerchants] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   let page_size = pageSize;
   let page = currentPage;
@@ -32,7 +34,7 @@ const RejectedKYC = () => {
    
     dispatch(kycForRejectedMerchants({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
@@ -68,8 +70,10 @@ const RejectedKYC = () => {
 
  
   const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
-
+  let pageNumbers = []
+  if(!Number.isNaN(totalPages)){
+    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+  }
 const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);
@@ -103,6 +107,14 @@ const nextPage = () => {
     }
   }, [currentPage, totalPages])
 
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
+
+
+
+
 
   return (
     <div className="container-fluid flleft">
@@ -125,12 +137,7 @@ const nextPage = () => {
             onChange={(e) => setPageSize(parseInt(e.target.value))}
             className="ant-input"
           >
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="200">200</option>
-            <option value="500">500</option>
+            <DropDownCountPerPage datalength={dataCount} />
           </select>
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -164,14 +171,15 @@ const nextPage = () => {
               </tr>
             </thead>
             <tbody>
-              {spinner && <Spinner />}
+              {/* {spinner && <Spinner />} */}
               {data?.length === 0 ? (
                 <tr>
-                  {" "}
-                  <td colSpan={"8"}>
-                    <h1 className="nodatafound">No data found</h1>
-                  </td>
-                </tr>
+                <td colSpan={"11"}>
+                  <div className="nodatafound text-center">No data found </div>
+                  <br/><br/><br/><br/>
+                  <p className="text-center">{spinner && <Spinner />}</p>
+                </td>
+            </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>
@@ -182,7 +190,7 @@ const nextPage = () => {
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
                     <td>{user.status}</td>
-                    <td>{user.signUpDate}</td>
+                    <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                   </tr>
                 ))
@@ -200,14 +208,15 @@ const nextPage = () => {
               </button>
             </li>
             {displayPageNumber?.map((pgNumber, i) => (
-              <li
+              <li 
                 key={i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }
+                onClick={() => setCurrentPage(pgNumber)}
               >
                 <a href={() => false} className={`page-link data_${i}`}>
-                  <span onClick={() => setCurrentPage(pgNumber)}>
+                  <span >
                     {pgNumber}
                   </span>
                 </a>

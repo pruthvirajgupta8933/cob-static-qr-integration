@@ -138,8 +138,8 @@ function BusinessDetails(props) {
 
   const initialValues = {
     company_name:
-      gstinData?.legalName?.length > 2
-        ? gstinData?.legalName
+      gstinData?.trade_name?.length > 2
+        ? gstinData?.trade_name
         : KycList?.companyName,
     company_logo: "",
     registerd_with_gst: "True",
@@ -288,7 +288,6 @@ function BusinessDetails(props) {
           toast.success(res?.payload?.message);
           setTab(4);
           setTitle("BANK DETAILS");
-          // console.log("data trigger");
           dispatch(kycUserList({ login_id: loginId }));
         } else {
           toast.error(res?.payload?.message);
@@ -360,10 +359,10 @@ function BusinessDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right- otpbtngst">
+                <div class="position-sticky pull-right- ">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn "
+                    className="btn btnbackground text-white btn-sm panbtn otpbtngst"
                     onClick={() => {
                       checkInputIsValid(
                         errors,
@@ -419,10 +418,10 @@ function BusinessDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right- otpbtndetail">
+                <div class="position-sticky pull-right">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn"
+                    className="btn btnbackground text-white btn-sm panbtn otpbtndetail"
                     onClick={() => {
                       checkInputIsValid(
                         errors,

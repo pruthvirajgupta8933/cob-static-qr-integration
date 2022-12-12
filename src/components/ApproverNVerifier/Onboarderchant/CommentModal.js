@@ -1,54 +1,104 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
-import API_URL from "../../../config";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
-import { axiosInstanceAuth } from "../../../utilities/axiosInstance";
-import { kycForPending } from "../../../slices/kycSlice";
-import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+import {
+  forSavingComments,
+  forGettingCommentList,
+} from "../../../slices/merchantZoneMappingSlice";
+import toastConfig from "../../../utilities/toastTypes";
+import moment from "moment";
 
 const CommentModal = (props) => {
+
+  const [commentsList, setCommentsList] = useState([]);
+
   const initialValues = {
     comments: "",
   };
 
+  const { user } = useSelector((state) => state?.auth);
+  const { loginId } = user;
+
+  const dispatch = useDispatch();
+  const commentUpdate = () => {
+    dispatch(
+      forGettingCommentList({
+        client_code: props?.commentData?.clientCode,
+      })
+    ).then((resp) => {
+        setCommentsList(resp?.payload?.Data);
+      }).catch((err) => {console.error(err) });
+  };
+
+
+  useEffect(() => {
+    // if (props && props?.commentData?.clientCode !== "") {
+    //   dispatch(
+    //     forGettingCommentList({
+    //       client_code: props?.commentData?.clientCode,
+    //     })
+    //   ).then((resp) => {
+    //       setCommentsList(resp?.payload?.Data);
+    //     }).catch((err) => { });
+    // }
+
+    commentUpdate()
+
+  }, [props]);
+
+
   const validationSchema = Yup.object({
     comments: Yup.string()
       .min(1, "Please enter , more than 1 character")
-      .max(100, "Please enter not  more than 100 characters")
+      .max(100, "Please do not  enter more than 100 characters")
       .required("Required")
       .nullable(),
   });
 
+
+
   const handleSubmit = async (values) => {
-    const postData = {
-      client_code: props.commentData.clientCode,
-      comments: values.comments,
-    };
-    await axiosInstanceAuth
-      .post(API_URL.COMMENTS_BOX, postData)
-      .then((resp) => {
-        toast.success(resp?.data?.Message);
-        return props && props.handleApi
-          ? props.handleApi()
-          : props.handleForVerified();
-        // props.handleApi();
-        // props.handleForVerified();
+    dispatch(
+      forSavingComments({
+        login_id: loginId,
+        client_code: props?.commentData?.clientCode,
+        comments: values.comments,
       })
-      .catch(() => {});
+    )
+      .then((resp) => {
+        toast.success(resp?.payload?.message);
+        commentUpdate();
+        // return setTimeout(
+        //   props && props?.handleApi
+        //     ? props?.handleApi()
+        //     : props?.handleForVerified(),
+        //   2000
+        // );
+      })
+
+      .catch((err) => {
+        toastConfig.errorToast("Data not loaded");
+      });
+  };
+
+  const dateManipulate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY HH:mm:ss");
+    return date;
   };
 
   return (
     <div>
       <div
-        class="modal fade"
-        id="exampleModal"
         tabindex="-1"
         role="dialog"
-        aria-labelledby="exampleModalLabel"
         aria-hidden="true"
+        className={
+          "modal fade mymodals" +
+          (props?.isModalOpen ? " show d-block" : " d-none")
+        }
       >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -65,6 +115,10 @@ const CommentModal = (props) => {
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
+                onClick={() => {
+                  setCommentsList([]);
+                  props?.setModalState(false)
+                }}
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -81,7 +135,6 @@ const CommentModal = (props) => {
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                // onSubmit={(values)=>handleSubmit(values)}
                 onSubmit={(values, { resetForm }) => {
                   handleSubmit(values);
                   resetForm();
@@ -89,35 +142,102 @@ const CommentModal = (props) => {
                 enableReinitialize={true}
               >
                 <Form>
-                  <div className="input full- optional">
-                    <label
-                      className="string optional text-bold"
-                      htmlFor="comments"
-                    >
-                      Comments
-                    </label>
-                    <FormikController
-                      control="textArea"
-                      name="comments"
-                      className="form-control"
-                    />
-                  </div>
-                  <div class="modal-footer">
-                    '
-                    <button
-                      type="submit"
-                      class="btn approve text-white  btn-xs"
-                    >
-                      Submit
-                    </button>
-                    '
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-dismiss="modal"
-                    >
-                      Close
-                    </button>
+                  <div class="container">
+                    <div class="row">
+                      <div>
+                        <div className="col-lg-12-" style={{ width: "315px" }}>
+                          <label
+                            className="string optional text-bold"
+                            htmlFor="comments"
+                          >
+                            Comments
+                          </label>
+                          <FormikController
+                            control="textArea"
+                            name="comments"
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-sm" style={{ marginTop: "60px" }}>
+                        <button
+                          type="submit"
+                          class="btn approve text-white  btn-xs"
+                        >
+                          Submit
+                        </button>
+                      </div>
+
+                      <div class="container">
+                        <div class="row">
+                          <div
+                            class="col-lg-5"
+                            style={{
+                              marginTop: "28px",
+                              textDecoration: "underline",
+                            }}
+                          >
+                            <h2 className="font-weight-bold">
+                              Previous Comments
+                            </h2>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col">
+                            <table className="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th>Commented By</th>
+                                  <th>Comments</th>
+                                  <th>Date of Comments</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {(commentsList?.length === undefined ||
+                                  commentsList?.length === 0) && (
+                                    <tr>
+                                      <td colSpan="3">
+                                        <h3 className="font-weight-bold text-center">
+                                          No Data found
+                                        </h3>
+                                      </td>
+                                    </tr>
+                                  )}
+
+                                {(commentsList?.length !== undefined ||
+                                  commentsList?.length > 0) &&
+                                  Array.isArray(commentsList)
+                                  ? commentsList?.map((remark, i) => (
+                                    <tr key={i}>
+                                      <td>
+                                        {remark?.comment_by_user_name.toUpperCase()}
+                                      </td>
+                                      <td>{remark?.comments}</td>
+                                      <td>
+                                        {dateManipulate(remark?.comment_on)}
+                                      </td>
+                                    </tr>
+                                  ))
+                                  : []}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary text-white"
+                            data-dismiss="modal"
+                            onClick={() => {
+                              setCommentsList([]);
+                              props?.setModalState(false)
+                            }}
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </Form>
               </Formik>

@@ -89,6 +89,13 @@ const KycDetailsModal = (props) => {
     return data[0]?.value;
   };
 
+  const stringManulate = (str) => {
+    let str1 = str.substring(0,15)
+    return `${str1}...`
+    
+  }
+
+
   return (
     <div
       class="modal fade"
@@ -205,7 +212,7 @@ const KycDetailsModal = (props) => {
                   </span>
                 </div>
               </div>
-              <div class="row">
+              <div class="row mt-5">
                 <div class="col-sm">
                   <h2
                     className="font-weight-bold"
@@ -215,6 +222,8 @@ const KycDetailsModal = (props) => {
                   </h2>
                 </div>
               </div>
+
+              
               <div class="row">
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <label class="col-form-label mt-0 p-2">
@@ -331,9 +340,9 @@ const KycDetailsModal = (props) => {
                 <div class="col-sm-4 col-md-4 col-lg-4">
                   <label
                     class="col-form-label p-0"
-                    style={{ marginTop: "-4px" }}
+                    style={{ marginTop: "15px" }}
                   >
-                    Expected Transactions / Per Year{" "}
+                    Expected Transactions/Year{" "}
                     <span style={{ color: "red" }}>*</span>
                   </label>
 
@@ -369,7 +378,7 @@ const KycDetailsModal = (props) => {
                 </div>
               </div>
             </div>
-            <div class="row p-3">
+            <div class="row mt-5">
               <div class="col-sm">
                 <h2
                   className="font-weight-bold"
@@ -520,7 +529,7 @@ const KycDetailsModal = (props) => {
                 />
               </div>
             </div>
-            <div class="row p-4">
+            <div class="row  mt-5">
               <div class="col-sm">
                 <h2
                   className="font-weight-bold"
@@ -624,7 +633,7 @@ const KycDetailsModal = (props) => {
                 />
               </div>
             </div>
-            <div class="row p-4">
+            <div class="row mt-5">
               <div class="col-sm">
                 <h2
                   className="font-weight-bold"
@@ -657,7 +666,7 @@ const KycDetailsModal = (props) => {
                             rel="noreferrer"
                             className="text-primary"
                           >
-                            {doc?.name}
+                            {stringManulate(doc?.name)}
                           </a>
                           <p className="text-danger"> {doc?.comment}</p>
                         </td>

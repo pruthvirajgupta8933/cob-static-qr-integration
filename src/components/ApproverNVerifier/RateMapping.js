@@ -5,6 +5,7 @@ import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
+import moment from "moment";
 
 import NavBar from "../../components/dashboard/NavBar/NavBar"
 import ViewRateMapping from "./ViewRateMapping";
@@ -20,6 +21,7 @@ function RateMapping() {
   const [pageSize, setPageSize] = useState(10);
   const [spinner, setSpinner] = useState(true);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [openZoneModal, setOpenModal] = useState(false)
  
   const [modalDisplayData, setModalDisplayData] = useState({});
   let page_size = pageSize;
@@ -148,6 +150,11 @@ function RateMapping() {
   }, [currentPage, totalPages])
   
 
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("MM/DD/YYYY");
+      return date
+    }
+
 
   
 return (
@@ -171,7 +178,7 @@ return (
                 type="text"
                 placeholder="Search Here"
               />
-              <div> <ViewRateMapping userData={modalDisplayData} /></div>
+              <div>{ openZoneModal === true ? <ViewRateMapping userData={modalDisplayData} /> : <></> }</div>
             </div>
             <div className="col-lg-4 mrg-btm- bgcolor">
               <label>Count Per Page</label>
@@ -224,19 +231,21 @@ return (
                       </tr>
                     ) : (
                       data?.map((user, i) => (
+                        
                         <tr key={i}>
+               
                           <td>{i + 1}</td>
                           <td>{user.clientCode}</td>
                           <td>{user.name}</td>
                           <td>{user.emailId}</td>
                           <td>{user.contactNumber}</td>
                           <td>{user.status}</td>
-                          <td>{user.signUpDate}</td>
+                          <td>{covertDate(user.signUpDate)}</td>
                           <td>{user?.isDirect}</td>
                           {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
                           <td>
                             <button type="submit" onClick={()=>{setModalDisplayData(user)
-                            }} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                             setOpenModal((true))}} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                               Rate Map
                             </button>
                           </td>

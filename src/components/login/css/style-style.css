@@ -190,7 +190,7 @@ a:focus {
 
 .authfy-login, 
 .authfy-panel-left .brand-col {
-  height: 490px;
+  height: 492px;
 
 }
 .authfy-panel-left .brand-col {
@@ -461,7 +461,7 @@ a:focus {
         background-size: cover;
   }
     .authfy-login .authfy-panel {
-      padding: 20px;
+      padding: 0px;
     }
     
     .panel-login .remember-row {
@@ -546,4 +546,10 @@ a:focus {
 
 .slide{
   height: 100%;
+}
+.approv li a{
+  color:#000 !important;
+  padding:7px 10px;
+  line-height: 22px;
+  vertical-align:middle;
 }
