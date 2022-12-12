@@ -198,14 +198,15 @@ function VerifiedMerchant() {
               </tr>
             </thead>
             <tbody>
-              {spinner && <Spinner />}
+              {/* {spinner && <Spinner />} */}
               {data?.length === 0 ? (
                 <tr>
-                  {" "}
-                  <td colSpan={"9"}>
-                    <h1 className="nodatafound">No data found</h1>
-                  </td>
-                </tr>
+                <td colSpan={"11"}>
+                  <div className="nodatafound text-center">No data found </div>
+                  <br/><br/><br/><br/>
+                  <p className="text-center">{spinner && <Spinner />}</p>
+                </td>
+            </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>

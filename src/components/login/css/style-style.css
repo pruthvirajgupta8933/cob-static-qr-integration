@@ -547,3 +547,9 @@ a:focus {
 .slide{
   height: 100%;
 }
+.approv li a{
+  color:#000 !important;
+  padding:7px 10px;
+  line-height: 22px;
+  vertical-align:middle;
+}

@@ -190,13 +190,15 @@ const NotFilledKYC = () => {
               </tr>
             </thead>
             <tbody>
-              {spinner && <Spinner />}
+              
               {data?.length === 0 ? (
-                <tr>
-                  <td colSpan={"8"}>
-                    <h1 className="nodatafound">No data found</h1>
-                  </td>
-                </tr>
+                 <tr>
+                 <td colSpan={"11"}>
+                   <div className="nodatafound text-center">No data found </div>
+                   <br/><br/>
+                   <p className="text-center">{spinner && <Spinner />}</p>
+                 </td>
+             </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>

@@ -195,11 +195,13 @@ let pageNumbers = []
             </thead>
             <tbody>
               {data?.length === 0 ? (
-                <tr>
-                  <td colSpan={"8"}>
-                    <h1 className="nodatafound">No data found</h1>
+                  <tr>
+                  <td colSpan={"11"}>
+                    <div className="nodatafound text-center">No data found </div>
+                    <br/><br/>
+                    <p className="text-center">{spinner && <Spinner />}</p>
                   </td>
-                </tr>
+              </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>
