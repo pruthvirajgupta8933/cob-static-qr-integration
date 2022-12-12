@@ -127,7 +127,7 @@ function DocumentsUpload(props) {
   const [disable, setDisable] = useState(false)
   const onSubmit = (values, action) => {
     // If merchant logged in
-    
+   
     setDisable(true)
     if (role.merchant) {
       const bodyFormData = new FormData();
@@ -296,7 +296,7 @@ function DocumentsUpload(props) {
   // console.log("<=== Type Id of Saved Images ====>",typeOfDocs)
   let btn = false;
   requiredDocList?.map((i) => {
-    console.log("bhuvan", i)
+    // console.log("bhuvan", i)
     if (required.every((elem) => isrequired.includes(elem.toString()))) {
       // console.log("Enable Save & Next")
       btn = true;
