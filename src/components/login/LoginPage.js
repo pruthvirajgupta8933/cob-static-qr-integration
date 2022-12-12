@@ -9,7 +9,7 @@ import { isUserAlreadyLogin, login } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
 import { toast } from "react-toastify";
 import "./Login.css";
-import imageSlide1 from "../../assets/images/rafiki.png";
+import imageSlide1 from "../../assets/images/COB.png";
 import { Link } from "react-router-dom";
 
 const INITIAL_FORM_STATE = {
@@ -99,7 +99,9 @@ function LoginPage() {
         <div className="row">
           <div className="col-lg-1"></div>
           <div className="authfy-container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
-            <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right login-float-right nopad login-float-none">
+            <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right pt-0 login-float-right nopad login-float-none">
+
+            {/* col-sm-12 col-md-12 col-lg-6 authfy-panel-right  */}
               <div className="authfy-login">
                 <div className="authfy-panel panel-login text-center active">
                   <div className="logmod__wrapper">
@@ -120,7 +122,7 @@ function LoginPage() {
                               transaction in real time.
                             </p>
                           </div>
-                          <div className="logmod__form- m-r-l-100 m0">
+                          <div className="logmod__form- m-r-l-100 m0 col-lg-8 col-md-12 col-sm-12 ">
                             <Formik
                               initialValues={{
                                 ...INITIAL_FORM_STATE,
@@ -269,7 +271,7 @@ function LoginPage() {
                               )}
                             </Formik>
                           </div>
-                          <div className="logmod__form- m-r-l-100 mt-3 termsconditionss NunitoSans-Regular">
+                          <div className="logmod__form- m-r-l-100- mt-3 termsconditionss NunitoSans-Regular text-center">
                             <p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target={"_blank"} alt="SabPaisa Terms & Conditions" title="SabPaisa Terms & Conditions">Terms & Conditions</a> | <a href="https://sabpaisa.in/privacy-policy/" target={"_blank"} alt="SabPaisa Privacy Policy" title="SabPaisa Privacy Policy">Privacy Policy</a></p>
                           </div>
                         </div>

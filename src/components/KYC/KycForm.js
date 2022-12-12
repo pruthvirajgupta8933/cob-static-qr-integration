@@ -117,7 +117,7 @@ function KycForm() {
         role="dialog"
         style={{overflow:"scroll"}}
       >
-        <div class="modal-dialog modal-dialog-centered container" role="document">
+        <div class="modal-dialog modal-dialog-centered container ml-220" role="document">
           <div class="modal-content kyc-modal_form ">
             {/* <button
               type="button"
