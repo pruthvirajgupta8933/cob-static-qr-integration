@@ -11,6 +11,7 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
+import {ALLOW_ROLE_AS_VERIFIER} from "./../../utilities/permisson"
 import moment from "moment";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 
@@ -20,6 +21,8 @@ function PendingVerification() {
    const { user } = useSelector((state) => state.auth);
 
    const { loginId } = user;
+   const id =loginId
+   
 
   //  console.log(loginId," <=====  Login Id ====> ")
 
@@ -35,6 +38,8 @@ function PendingVerification() {
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [openCommentModal, setOpenCommentModal] = useState(false);
 
+
+ 
   const dispatch = useDispatch();
   const kycSearch = (e) => {
     setSearchText(e.target.value);
@@ -146,6 +151,17 @@ function PendingVerification() {
     let date = moment(yourDate).format("MM/DD/YYYY");
       return date
     }
+
+    let btn = false;
+    ALLOW_ROLE_AS_VERIFIER?.map((i) => {
+    if (ALLOW_ROLE_AS_VERIFIER.includes(id)) {
+       console.log(btn,"Enable Verify Kyc")
+      btn = true;
+    } else {
+       
+      btn = false;
+    } 
+  });
     
   return (
     <div className="container-fluid flleft">
@@ -205,7 +221,7 @@ function PendingVerification() {
                 <th>Onboard Type</th>
                 <th>Comments</th>
                 <th>Action</th>
-                {roles?.verifier === true ? <th>Verify KYC</th> : <></>}
+                {roles?.verifier === true || roles?.approver === true  && ALLOW_ROLE_AS_VERIFIER.includes(id) ? <th>Verify KYC</th> : <></>}
               </tr>
             </thead>
             <tbody>
@@ -263,7 +279,9 @@ function PendingVerification() {
                       )}
                     </td>
 
-                    {roles.verifier === true ? (
+                    {roles.verifier === true || roles.approver === true  && ALLOW_ROLE_AS_VERIFIER.includes(id)
+                     ? (
+                       
                       <td>
                         <Link
                           to={`/dashboard/kyc/?kycid=${user?.loginMasterId}`}

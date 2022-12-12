@@ -340,9 +340,9 @@ const KycDetailsModal = (props) => {
                 <div class="col-sm-4 col-md-4 col-lg-4">
                   <label
                     class="col-form-label p-0"
-                    style={{ marginTop: "-4px" }}
+                    style={{ marginTop: "15px" }}
                   >
-                    Expected Transactions / Per Year{" "}
+                    Expected Transactions/Year{" "}
                     <span style={{ color: "red" }}>*</span>
                   </label>
 

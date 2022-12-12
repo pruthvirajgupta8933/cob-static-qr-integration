@@ -24,6 +24,7 @@ function AssignZone() {
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
  
   const [modalDisplayData, setModalDisplayData] = useState({});
+  const [openZoneModal, setOpenModal] = useState(false)
   let page_size = pageSize;
   let page = currentPage;
 
@@ -156,13 +157,7 @@ function AssignZone() {
     }
 
 
-
-  
-  
-
-
-  
-return (
+    return (
     <section className="ant-layout">
       <div>
         <NavBar />
@@ -183,7 +178,7 @@ return (
                 type="text"
                 placeholder="Search Here"
               />
-              <div> <ViewZoneModal userData={modalDisplayData} /></div>
+              <div> { openZoneModal === true ? <ViewZoneModal userData={modalDisplayData} /> : <></> }</div> 
             </div>
             <div className="col-lg-4 mrg-btm- bgcolor">
               <label>Count Per Page</label>
@@ -251,6 +246,7 @@ return (
                           {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
                           <td>
                             <button type="submit" onClick={()=>{setModalDisplayData(user)
+                            setOpenModal((true))
                             }} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                               Update Zone
                             </button>
