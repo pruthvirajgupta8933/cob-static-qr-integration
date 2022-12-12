@@ -362,6 +362,7 @@ border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: auto !important;
 }
 
 /* Css for Dashboard  IF KYC IS APPROVED*/

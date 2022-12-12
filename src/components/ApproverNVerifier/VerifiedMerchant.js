@@ -11,6 +11,7 @@ import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { Toast } from "react-toastify";
+import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 
 function VerifiedMerchant() {
   const [data, setData] = useState([]);
@@ -88,7 +89,10 @@ function VerifiedMerchant() {
   const indexOfLastRecord = currentPage * pageSize;
 
   const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+  let pageNumbers = []
+  if(!Number.isNaN(totalPages)){
+    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+  }
 
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
 
@@ -131,6 +135,10 @@ function VerifiedMerchant() {
     }
 
 
+    // const handleModalState = (val)=>{
+    //   setOpenCommentModal(val)
+    // }
+
   return (
     <div className="container-fluid flleft">
       <div className="col-lg-4 mrg-btm- bgcolor">
@@ -151,10 +159,7 @@ function VerifiedMerchant() {
           onChange={(e) => setPageSize(parseInt(e.target.value))}
           className="ant-input"
         >
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
+          <DropDownCountPerPage datalength={dataCount} />
         </select>
       </div>
       <KycDetailsModal kycId={kycIdClick} />
@@ -169,7 +174,9 @@ function VerifiedMerchant() {
       </div>
       <div>
         
-      {openCommentModal === true ?  <CommentModal commentData={commentId} handleForVerified={verifyMerchant}  isModalOpen={openCommentModal}/> : <></>}
+      {openCommentModal === true ?  
+      <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> 
+      : <></>}
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">

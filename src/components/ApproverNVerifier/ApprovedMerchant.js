@@ -72,8 +72,10 @@ function ApprovedMerchant() {
 
   ////////////////////////////////////////////// pagination code start here
 const totalPages = Math.ceil(dataCount / pageSize);
-const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
-
+let pageNumbers = []
+  if(!Number.isNaN(totalPages)){
+    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+  }
   const nextPage = () => {
     if (currentPage < pageNumbers.length) {
       setCurrentPage(currentPage + 1);
@@ -157,10 +159,7 @@ const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
           onChange={(e) => setPageSize(parseInt(e.target.value))}
           className="ant-input"
         >
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
+          <DropDownCountPerPage datalength={dataCount} />
         </select>
       </div>
       <div className="form-group col-lg-3 col-md-12 mt-2">
