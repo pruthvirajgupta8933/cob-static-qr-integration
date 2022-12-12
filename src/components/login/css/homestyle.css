@@ -1675,8 +1675,8 @@ footer{float: left; width:100%; padding:70px 0px 0px; background:#fff;z-index:-1
   }
 
   @media(min-width:1024px){
-  .ml-220{
-    margin-left:220px;
+  .ml-280{
+    margin-left:280px;
   }
 }
 .loaders{
