@@ -218,7 +218,7 @@ function PendingVerification() {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
-                <th>Comments</th>
+                {/* <th>Comments</th> */}
                 <th>Action</th>
                 {roles?.verifier === true || roles?.approver === true  && ALLOW_ROLE_AS_VERIFIER.includes(id) ? <th>Verify KYC</th> : <></>}
               </tr>
@@ -243,7 +243,7 @@ function PendingVerification() {
                     <td>{user.status}</td>
                     <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
-                    <td>{user?.comments}</td>
+                    {/* <td>{user?.comments}</td> */}
                     <td>
                       {roles.verifier === true || roles.approver === true ? (
                         <button
