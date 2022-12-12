@@ -23,7 +23,7 @@ function IdleTimerContainer (props) {
   const onIdle = () => {
     // console.log('User is idle')
     setModalIsOpen(true)
-    sessionTimeoutRef.current = setTimeout(logOut, 5000)
+    sessionTimeoutRef.current = setTimeout(logOut, 10000)
   }
 
 
