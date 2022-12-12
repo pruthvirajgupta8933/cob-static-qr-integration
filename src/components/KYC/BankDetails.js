@@ -300,10 +300,10 @@ function BankDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right- otpbtndetail">
+                <div class="position-sticky pull-right-">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn "
+                    className="btn btnbackground text-white btn-sm panbtn otpbtndetail"
                     onClick={() => {
                       checkInputIsValid(
                         errors,
@@ -349,10 +349,10 @@ function BankDetails(props) {
                 </span>
               ) : !errors.hasOwnProperty("oldIfscCode") &&
                 !errors.hasOwnProperty("ifsc_code") ? (
-                <div class="position-sticky pull-right- otpbtnaccnt">
+                <div class="position-sticky pull-right-">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn "
+                    className="btn btnbackground text-white btn-sm panbtn otpbtnaccnt"
                     onClick={() => {
                       checkInputIsValid(
                         errors,

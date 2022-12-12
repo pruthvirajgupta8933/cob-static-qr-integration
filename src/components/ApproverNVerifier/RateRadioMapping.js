@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
 
 const initialStateForRadio = {
@@ -14,6 +15,10 @@ const NewvalidationSchemaforRadio = Yup.object({
 
 
 const RateRadioMapping = (props) => {
+   
+    const { user } = useSelector((state) => state.auth);
+    const loginId = user.loginId;
+    const username = user.clientContactPersonName;
 
     const radiobutton = [
         { key: "", value: "true" },
@@ -21,7 +26,11 @@ const RateRadioMapping = (props) => {
 
 
     const handleSubmitForRadio = (values) => {
-       console.log(values)
+
+        // console.log(values)
+    }
+    const onClick=(client_code)=>{
+        alert(`Parent ClientCode : ${client_code} \n Chield ClientCode: ${props.chiledCode.clientCode} \n UserName: ${username}`)
     }
     return (
         <div>
@@ -46,28 +55,25 @@ const RateRadioMapping = (props) => {
                                     <Formik
                                         initialValues={initialStateForRadio}
                                         validationSchema={NewvalidationSchemaforRadio}
-                                        
-                                        onSubmit={(values) => {
-                                            
-                                            handleSubmitForRadio(values);
-
-                                        }}
+                                        // onSubmit={(values) => {
+                                        //     handleSubmitForRadio(values);
+                                        // }}
                                         enableReinitialize={true}>
-                                        <Form>
+                                        {(formik) => (
+                                            <Form>
+                                                {/* {console.log("formik", formik)} */}
+                                                <FormikController
+                                                    control="radio"
+                                                    name="isChecked"
+                                                    options={radiobutton}
+                                                    className="form-control"
 
+                                                />
+                                                <button type="button" onClick={()=>onClick(riskTemplate?.client_code)} class="btn btn-primary">Submit</button>
 
-
-                                            <FormikController
-                                                control="radio"
-                                                name="isChecked"
-                                                options={radiobutton}
-                                                className="form-control"
-
-                                            />
-                                            <button type="submit"  class="btn btn-primary">Submit</button>
-
-                                        </Form>
-                                        </Formik>
+                                            </Form>
+                                        )}
+                                    </Formik>
                                 </div></td>
                             <td>{riskTemplate?.client_code}</td>
                             <td>{riskTemplate?.rate_template_name}</td>
@@ -82,7 +88,7 @@ const RateRadioMapping = (props) => {
 
 
             </table>
-      
+
 
 
         </div >

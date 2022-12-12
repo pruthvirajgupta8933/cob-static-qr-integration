@@ -73,9 +73,9 @@ const SabPaisaPricing = () => {
 
   useEffect(() => {
 
-    console.log("rateCloneStatus",rateCloneStatus)
-    console.log("tempPlanId",tempPlanId)
-    console.log("param?.id",param?.id)
+    // console.log("rateCloneStatus",rateCloneStatus)
+    // console.log("tempPlanId",tempPlanId)
+    // console.log("param?.id",param?.id)
 
     if ((rateCloneStatus === 3 || rateCloneStatus === 0) && (param?.id === "10" && tempPlanId!==1 && tempPlanId!=="") ) {
       console.log("cond true")
@@ -114,7 +114,7 @@ const SabPaisaPricing = () => {
           businessType: 2
         };
 
-        console.log("inputData",inputData);
+        // console.log("inputData",inputData);
         // 1 - run RATE_MAPPING_GenerateClientFormForCob 
 
         axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {

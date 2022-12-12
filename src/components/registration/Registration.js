@@ -4,7 +4,7 @@ import "../login/css/home.css";
 import "../login/css/homestyle.css";
 import "../login/css/style-style.css";
 import "../login/css/style.css";
-import onlineshopinglogo from "../../assets/images/onlineshopinglogo.png";
+import onlineshopinglogo from "../../assets/images/COB.png";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -200,8 +200,8 @@ function Registration() {
                     }}
                     class="text-center mt-40"
                   >
-                    Power Your <br />
-                    Payments,&nbsp;Boost <br /> Your&nbsp;Business!
+                    Empower your <br />
+                    business,&nbsp;boost <br /> your&nbsp;finance
                   </h1>
 
                   <div className="brand-logo">
@@ -256,7 +256,7 @@ function Registration() {
                 </div>
               </div>
             </div>
-            <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right">
+            <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right pt-0">
               {/* authfy-login start */}
               <div className="authfy-login">
                 {/* panel-login start */}

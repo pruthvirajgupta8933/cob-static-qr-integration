@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { kycForPendingMerchants,GetKycTabsStatus } from "../../slices/kycSlice";
+import {
+  kycForPendingMerchants,
+  GetKycTabsStatus,
+} from "../../slices/kycSlice";
 import API_URL from "../../config";
 import { Link, useRouteMatch } from "react-router-dom";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
@@ -11,14 +14,13 @@ import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import ViewStatusModal from "./ViewStatusModal";
 import { useSelector } from "react-redux";
 import moment from "moment";
-
+import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 
 // import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
 
 const PendindKyc = () => {
   const { url } = useRouteMatch();
   const roles = roleBasedAccess();
- 
 
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -26,30 +28,27 @@ const PendindKyc = () => {
   const [pendingKycData, setPendingKycData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [statusData, setStatusData] = useState([])
-  const [displayPageNumber, setDisplayPageNumber] = useState([])
+  const [pageSize, setPageSize] = useState(20);
+  const [statusData, setStatusData] = useState([]);
+  const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [kycIdClick, setKycIdClick] = useState(null);
-  
-  const { auth  } = useSelector((state) => state);
+
+  const { auth } = useSelector((state) => state);
   const { user } = auth;
 
   const { loginId } = user;
-  
-const dispatch = useDispatch();
+
+  const dispatch = useDispatch();
   const kycSearch = (e) => {
     setSearchText(e.target.value);
   };
 
-  
-
   useEffect(() => {
-   
     dispatch(kycForPendingMerchants({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
-        resp?.payload?.status_code && toastConfig.errorToast("Data not loaded")
-        
+
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setSpinner(false);
@@ -59,48 +58,45 @@ const dispatch = useDispatch();
       })
 
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         toastConfig.errorToast("Data not loaded");
       });
   }, [currentPage, pageSize]);
-  
 
   useEffect(() => {
-   
     if (searchText?.length > 0) {
       setData(
-        pendingKycData?.filter((item)  => 
+        pendingKycData?.filter((item) =>
           Object.values(item)
             .join(" ")
             .toLowerCase()
-           .includes(searchText?.toLocaleLowerCase())));
-     } else {
-     
-        setData(pendingKycData);
-      
+            .includes(searchText?.toLocaleLowerCase())
+        )
+      );
+    } else {
+      setData(pendingKycData);
     }
   }, [searchText]);
-  
 
-
-  const handleClick=(loginMasterId)=>{
+  const handleClick = (loginMasterId) => {
     dispatch(
       GetKycTabsStatus({
         login_id: loginMasterId,
       })
     ).then((res) => {
-     setStatusData(res?.payload)
-    
+      setStatusData(res?.payload);
     });
-    
-  }
-//--------------PENDING Merchants API -----------------//
- const indexOfLastRecord = currentPage * pageSize;
+  };
+  //--------------PENDING Merchants API -----------------//
+  const indexOfLastRecord = currentPage * pageSize;
   const nPages = Math.ceil(pendingKycData?.length / pageSize);
   const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
+  let pageNumbers = []
+  if(!Number.isNaN(totalPages)){
+    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+  }
+
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
-  
 
   const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
@@ -115,32 +111,29 @@ const dispatch = useDispatch();
     }
   };
 
-
- useEffect(() => {
+  useEffect(() => {
     let lastSevenPage = totalPages - 7;
-    if (pageNumbers?.length>0) {
-      let start = 0
-      let end = (currentPage + 6)
+    if (pageNumbers?.length > 0) {
+      let start = 0;
+      let end = currentPage + 6;
       if (totalPages > 6) {
-        start = (currentPage - 1)
-  
+        start = currentPage - 1;
+
         if (parseInt(lastSevenPage) <= parseInt(start)) {
-          start = lastSevenPage
+          start = lastSevenPage;
         }
-  
       }
       const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
         return pgNumber;
-      })   
-     setDisplayPageNumber(pageNumber) 
+      });
+      setDisplayPageNumber(pageNumber);
     }
-  }, [currentPage, totalPages])
-  
+  }, [currentPage, totalPages]);
+
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("MM/DD/YYYY");
-      return date
-    }
-  
+    return date;
+  };
 
   return (
     <div className="container-fluid flleft">
@@ -154,7 +147,10 @@ const dispatch = useDispatch();
             placeholder="Search Here"
           />
         </div>
-<div> <KycDetailsModal kycId={kycIdClick} /></div>
+        <div>
+          {" "}
+          <KycDetailsModal kycId={kycIdClick} />
+        </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Count Per Page</label>
@@ -164,23 +160,16 @@ const dispatch = useDispatch();
             onChange={(e) => setPageSize(parseInt(e.target.value))}
             className="ant-input"
           >
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
+            <DropDownCountPerPage datalength={dataCount} />
           </select>
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Onboard Type</label>
-          <select
-            onChange={kycSearch}
-            className="ant-input"
-          >
-             <option value="Select Role Type">Select Onboard Type</option>
+          <select onChange={kycSearch} className="ant-input">
+            <option value="Select Role Type">Select Onboard Type</option>
             <option value="">All</option>
             <option value="online">Online</option>
             <option value="offline">Offline</option>
-           
           </select>
         </div>
       </div>
@@ -203,13 +192,15 @@ const dispatch = useDispatch();
               </tr>
             </thead>
             <tbody>
-              {spinner && <Spinner />}
+              {/* {spinner && <Spinner />} */}
               {data?.length === 0 ? (
-                <tr>
-                  <td colSpan={"8"}>
-                    <h1 className="nodatafound">No data found</h1>
-                  </td>
-                </tr>
+                 <tr>
+                      <td colSpan={"11"}>
+                        <div className="nodatafound text-center">No data found </div>
+                        <br/><br/>
+                        <p className="text-center">{spinner && <Spinner />}</p>
+                      </td>
+                  </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>
@@ -222,20 +213,17 @@ const dispatch = useDispatch();
                     <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     {/* <td>{user.status}</td> */}
-                   
+
                     <td>
-                   
-                      
-                        <button
-                          type="button"
-                          className="btn approve text-white  btn-xs"
-                          onClick={() => setKycIdClick(user)}
-                          data-toggle="modal"
-                          data-target="#kycmodaldetail"
-                        >
-                          View Status
-                        </button>
-                    
+                      <button
+                        type="button"
+                        className="btn approve text-white  btn-xs"
+                        onClick={() => setKycIdClick(user)}
+                        data-toggle="modal"
+                        data-target="#kycmodaldetail"
+                      >
+                        View Status
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -250,18 +238,16 @@ const dispatch = useDispatch();
                 Previous
               </button>
             </li>
-            
             {displayPageNumber?.map((pgNumber, i) => (
               <li
                 key={i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }
+                onClick={() => setCurrentPage(pgNumber)}
               >
                 <a href={() => false} className={`page-link data_${i}`}>
-                  <span onClick={() => setCurrentPage(pgNumber)}>
-                    {pgNumber}
-                  </span>
+                  <span>{pgNumber}</span>
                 </a>
               </li>
             ))}

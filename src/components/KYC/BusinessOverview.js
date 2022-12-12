@@ -429,7 +429,7 @@ function BusinessOverview(props) {
 
             <div class="col-sm-4 col-md-4 col-lg-4">
               <label class="col-form-label p-2 mt-0">
-                Avg Ticket Size<span style={{ color: "red" }}>*</span>
+                Avg Ticket Amount<span style={{ color: "red" }}>*</span>
               </label>
 
               <FormikController

@@ -81,7 +81,7 @@ const EnterUserID = (props) => {
                           <ErrorMessage name="email">
                             {(msg) => (
                               <div
-                                className="abhitest"
+                                className="abhitest "
                                 style={{
                                   color: "red",
                                   position: "absolute",

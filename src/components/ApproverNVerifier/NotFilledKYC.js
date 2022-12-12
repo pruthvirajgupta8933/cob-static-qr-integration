@@ -8,6 +8,7 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import Spinner from "./Spinner";
 import moment from "moment";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 
 const NotFilledKYC = () => {
@@ -19,7 +20,7 @@ const NotFilledKYC = () => {
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   // let page_size = pageSize;
   // let page = currentPage;
@@ -42,7 +43,7 @@ const NotFilledKYC = () => {
     // notFilledMerchants();
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         
         const data = resp?.payload?.results;
         const totalData = resp?.payload?.count;
@@ -84,8 +85,10 @@ const NotFilledKYC = () => {
 
 
   const totalPages = Math.ceil(dataCount / pageSize);  
-  const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
-
+  let pageNumbers = []
+  if(!Number.isNaN(totalPages)){
+    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+  }
 
   const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
@@ -152,10 +155,7 @@ const NotFilledKYC = () => {
             onChange={(e) => setPageSize(parseInt(e.target.value))}
             className="ant-input"
           >
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
+            <DropDownCountPerPage datalength={dataCount} />
           </select>
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -190,13 +190,15 @@ const NotFilledKYC = () => {
               </tr>
             </thead>
             <tbody>
-              {spinner && <Spinner />}
+              
               {data?.length === 0 ? (
-                <tr>
-                  <td colSpan={"8"}>
-                    <h1 className="nodatafound">No data found</h1>
-                  </td>
-                </tr>
+                 <tr>
+                 <td colSpan={"11"}>
+                   <div className="nodatafound text-center">No data found </div>
+                   <br/><br/>
+                   <p className="text-center">{spinner && <Spinner />}</p>
+                 </td>
+             </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>
@@ -224,14 +226,15 @@ const NotFilledKYC = () => {
               </button>
             </li>
             {displayPageNumber?.map((pgNumber, i) => (
-              <li
+              <li 
                 key={i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }
+                onClick={() => setCurrentPage(pgNumber)}
               >
                 <a href={() => false} className={`page-link data_${i}`}>
-                  <span onClick={() => setCurrentPage(pgNumber)}>
+                  <span >
                     {pgNumber}
                   </span>
                 </a>

@@ -21,7 +21,7 @@ function ApprovedMerchant() {
   const { user } = useSelector((state) => state.auth);
   const [docImageData, setDocImageData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const [spinner, setSpinner] = useState(true);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
@@ -37,7 +37,7 @@ function ApprovedMerchant() {
    
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
@@ -72,8 +72,10 @@ function ApprovedMerchant() {
 
   ////////////////////////////////////////////// pagination code start here
 const totalPages = Math.ceil(dataCount / pageSize);
-const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
-
+let pageNumbers = []
+  if(!Number.isNaN(totalPages)){
+    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+  }
   const nextPage = () => {
     if (currentPage < pageNumbers.length) {
       setCurrentPage(currentPage + 1);
@@ -157,10 +159,7 @@ const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
           onChange={(e) => setPageSize(parseInt(e.target.value))}
           className="ant-input"
         >
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
+          <DropDownCountPerPage datalength={dataCount} />
         </select>
       </div>
       <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -196,11 +195,13 @@ const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
             </thead>
             <tbody>
               {data?.length === 0 ? (
-                <tr>
-                  <td colSpan={"8"}>
-                    <h1 className="nodatafound">No data found</h1>
+                  <tr>
+                  <td colSpan={"11"}>
+                    <div className="nodatafound text-center">No data found </div>
+                    <br/><br/><br/><br/>
+                    <p className="text-center">{spinner && <Spinner />}</p>
                   </td>
-                </tr>
+              </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>
@@ -310,19 +311,24 @@ const pageNumbers = [...Array(Math.max(0,totalPages + 1)).keys()].slice(1);
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <button className="page-link" onClick={prevPage}>
+              <button 
+              className="page-link" 
+              onClick={prevPage}>
                 Previous
               </button>
             </li>
             {displayPageNumber?.map((pgNumber, i) => (
-              <li
+              <li 
                 key={i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }
+                onClick={() => setCurrentPage(pgNumber)}
               >
                 <a href={() => false} className={`page-link data_${i}`}>
-                  <span onClick={() => setCurrentPage(pgNumber)}>{pgNumber}</span>
+                  <span >
+                    {pgNumber}
+                  </span>
                 </a>
               </li>
             ))}
