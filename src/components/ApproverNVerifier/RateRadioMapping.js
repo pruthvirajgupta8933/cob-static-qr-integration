@@ -27,7 +27,7 @@ const RateRadioMapping = (props) => {
 
     const handleSubmitForRadio = (values) => {
 
-        console.log(values)
+        // console.log(values)
     }
     const onClick=(client_code)=>{
         alert(`Parent ClientCode : ${client_code} \n Chield ClientCode: ${props.chiledCode.clientCode} \n UserName: ${username}`)
@@ -61,7 +61,7 @@ const RateRadioMapping = (props) => {
                                         enableReinitialize={true}>
                                         {(formik) => (
                                             <Form>
-                                                {console.log("formik", formik)}
+                                                {/* {console.log("formik", formik)} */}
                                                 <FormikController
                                                     control="radio"
                                                     name="isChecked"
