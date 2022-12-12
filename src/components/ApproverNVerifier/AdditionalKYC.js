@@ -77,10 +77,10 @@ const AdditionalKYC = () => {
       ? ""
       : BusinessDetailsStatus?.GSTINValidation?.pan;
 
-  const legalName =
-    BusinessDetailsStatus?.GSTINValidation?.legalName === null
+  const gst_trade_name =
+    BusinessDetailsStatus?.GSTINValidation?.trade_name === null
       ? ""
-      : BusinessDetailsStatus?.GSTINValidation?.legalName;
+      : BusinessDetailsStatus?.GSTINValidation?.trade_name;
 
   const state =
     BusinessDetailsStatus?.GSTINValidation?.state === null
@@ -411,7 +411,7 @@ const AdditionalKYC = () => {
                 <h2 className="font-weight-bold">GSTIN Information</h2>
                 <div class="row">
                   <div class="col-lg-4 font-weight-bold">
-                    Legal Name : {legalName ? legalName : ""}
+                    Trade Name : {gst_trade_name ? gst_trade_name : ""}
                   </div>
                   {/* <div class="col-lg-5">
           

@@ -138,8 +138,8 @@ function BusinessDetails(props) {
 
   const initialValues = {
     company_name:
-      gstinData?.legalName?.length > 2
-        ? gstinData?.legalName
+      gstinData?.trade_name?.length > 2
+        ? gstinData?.trade_name
         : KycList?.companyName,
     company_logo: "",
     registerd_with_gst: "True",

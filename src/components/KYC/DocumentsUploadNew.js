@@ -16,9 +16,11 @@ import {
 } from "../../slices/kycSlice";
 import plus from "../../assets/images/plus.png";
 import "../../assets/css/kyc-document.css";
-import $ from "jquery";
+// import $ from "jquery";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
-import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+// import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+import { isNull } from "lodash";
+import { isUndefined } from "lodash";
 
 function DocumentsUpload(props) {
   const setTab = props.tab;
@@ -33,7 +35,7 @@ function DocumentsUpload(props) {
   const [docTypeList, setDocTypeList] = useState([]);
   const [docTypeIdDropdown, setDocTypeIdDropdown] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
-  const [selectedFileAadhaar, setSelectedFileAadhaar] = useState(null);
+  // const [selectedFileAadhaar, setSelectedFileAadhaar] = useState(null);
   const [savedData, setSavedData] = useState([]);
   const [requiredDocList, setRequiredDocList] = useState([1, 2, 5, 6, 11]);
   const [readOnly, setReadOnly] = useState(false);
@@ -112,19 +114,18 @@ function DocumentsUpload(props) {
 
  
   const isrequired = savedData?.map((r) => r.type);
-  const Array1 = docTypeList?.map((a) => a.key);
-  const Array2 = savedData?.map((r) => r.type);
+  // const Array1 = docTypeList?.map((a) => a.key);
+  // const Array2 = savedData?.map((r) => r.type);
 
-  const myFilter = (elm) => {
-    return elm != null && elm !== false && elm !== "";
-  };
+  // const myFilter = (elm) => {
+  //   return elm != null && elm !== false && elm !== "";
+  // };
 
   // let array1filtered = Array1.filter(myFilter);
   const handleChange = function(e, id) {
     // console.log("handle change")
     setSelectedFile(e.target.files[0]);
     // console.log(e.target)
-    
     readURL(e.target, id);
 
   };
@@ -134,33 +135,40 @@ function DocumentsUpload(props) {
    
     setDisable(true)
     if (role.merchant) {
-      const bodyFormData = new FormData();
-      let docType = values?.docType;
-      bodyFormData.append("files", selectedFile);
-      bodyFormData.append("login_id", loginId);
-      bodyFormData.append("modified_by", loginId);
-      bodyFormData.append("type", values?.docType);
-
-      const kycData = { bodyFormData, docType };
-
-      dispatch(merchantInfo(kycData))
-        .then(function(response) {
-          if (response?.payload?.status) {
-            setTitle("SUBMIT KYC");
-            toast.success(response?.payload?.message);
-          } else {
-            const message =
-              response?.payload?.message ||
-              response?.payload?.message?.toString();
-            toast.error(message);
-          }
-          setDisable(false)
-        })
-        .catch(function(error) {
-          console.error("Error:", error);
-          toast.error("Something went wrong while saving the document");
-          setDisable(false)
-        });
+      // console.log("selectedFile",selectedFile)
+      if(!isNull(selectedFile) && !isUndefined(selectedFile)){
+        const bodyFormData = new FormData();
+        let docType = values?.docType;
+        bodyFormData.append("files", selectedFile);
+        bodyFormData.append("login_id", loginId);
+        bodyFormData.append("modified_by", loginId);
+        bodyFormData.append("type", values?.docType);
+  
+        const kycData = { bodyFormData, docType };
+       
+        dispatch(merchantInfo(kycData))
+          .then(function(response) {
+            if (response?.payload?.status) {
+              setTitle("SUBMIT KYC");
+              toast.success(response?.payload?.message);
+            } else {
+              const message =
+                response?.payload?.message ||
+                response?.payload?.message?.toString();
+              toast.error(message);
+            }
+            setDisable(false)
+          })
+          .catch(function(error) {
+            console.error("Error:", error);
+            toast.error("Something went wrong while saving the document");
+            setDisable(false)
+          });
+      }else{
+        toast.error("Please select a document to upload");
+        setDisable(false)
+      }
+     
     }
     
     // update doc list after the upload the document
@@ -323,6 +331,8 @@ function DocumentsUpload(props) {
 
   useEffect(() => {
     setImgAttr("#")
+    setSelectedFile(null)
+
   }, [docTypeIdDropdown]);
 
 
