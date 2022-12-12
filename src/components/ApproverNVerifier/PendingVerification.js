@@ -48,9 +48,7 @@ function PendingVerification() {
   const pendingVerify = () => {
     dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        // toastConfig.successToast("Data Loaded");
-        setSpinner(false);
-        const data = resp?.payload?.results;
+       const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
         setDataCount(dataCoun);
@@ -67,7 +65,8 @@ function PendingVerification() {
   useEffect(() => {
     dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+        setSpinner(false);
         setSpinner(false);
 
         const data = resp?.payload?.results;
@@ -217,7 +216,7 @@ function PendingVerification() {
                 <th>Onboard Type</th>
                 {/* <th>Comments</th> */}
                 <th>Action</th>
-                {roles?.verifier === true || roles?.approver === true  && ALLOW_ROLE_AS_VERIFIER.includes(id) ? <th>Verify KYC</th> : <></>}
+                {roles?.verifier === true ? <th>Verify KYC</th> : <></>}
               </tr>
             </thead>
             <tbody>
@@ -275,10 +274,8 @@ function PendingVerification() {
                       )}
                     </td>
 
-                    {roles.verifier === true || roles.approver === true  && ALLOW_ROLE_AS_VERIFIER.includes(id)
-                     ? (
-                       
-                      <td>
+                    {roles.verifier === true ? (
+                       <td>
                         <Link
                           to={`/dashboard/kyc/?kycid=${user?.loginMasterId}`}
                           className="btn approve text-white  btn-xs"

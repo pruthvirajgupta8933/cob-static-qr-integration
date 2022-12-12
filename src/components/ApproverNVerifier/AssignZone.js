@@ -8,6 +8,7 @@ import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import ViewZoneModal from "./ViewZoneModal";
 import moment from "moment";
+import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 
 import NavBar from "../../components/dashboard/NavBar/NavBar"
 
@@ -114,7 +115,11 @@ function AssignZone() {
 
 
   const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+  
+  let pageNumbers = []
+  if(!Number.isNaN(totalPages)){
+    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+  }
 
   const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
@@ -188,10 +193,7 @@ function AssignZone() {
                 onChange={(e) => setPageSize(parseInt(e.target.value))}
                 className="ant-input"
               >
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
+             <DropDownCountPerPage datalength={data?.length} />
               </select>
             </div>
             <div className="form-group col-lg-3 col-md-12 mt-2">

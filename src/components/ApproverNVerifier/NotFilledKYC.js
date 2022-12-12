@@ -43,7 +43,7 @@ const NotFilledKYC = () => {
     // notFilledMerchants();
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         
         const data = resp?.payload?.results;
         const totalData = resp?.payload?.count;
