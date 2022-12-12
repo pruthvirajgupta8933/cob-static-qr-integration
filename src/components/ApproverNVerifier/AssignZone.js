@@ -8,6 +8,7 @@ import Spinner from "./Spinner";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import ViewZoneModal from "./ViewZoneModal";
 import moment from "moment";
+import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 
 import NavBar from "../../components/dashboard/NavBar/NavBar"
 
@@ -24,6 +25,7 @@ function AssignZone() {
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
  
   const [modalDisplayData, setModalDisplayData] = useState({});
+  const [openZoneModal, setOpenModal] = useState(false)
   let page_size = pageSize;
   let page = currentPage;
 
@@ -113,7 +115,11 @@ function AssignZone() {
 
 
   const totalPages = Math.ceil(dataCount / pageSize);
-  const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+  
+  let pageNumbers = []
+  if(!Number.isNaN(totalPages)){
+    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+  }
 
   const nextPage = () => {
     if (currentPage < pageNumbers?.length) {
@@ -156,13 +162,7 @@ function AssignZone() {
     }
 
 
-
-  
-  
-
-
-  
-return (
+    return (
     <section className="ant-layout">
       <div>
         <NavBar />
@@ -183,7 +183,7 @@ return (
                 type="text"
                 placeholder="Search Here"
               />
-              <div> <ViewZoneModal userData={modalDisplayData} /></div>
+              <div> { openZoneModal === true ? <ViewZoneModal userData={modalDisplayData} /> : <></> }</div> 
             </div>
             <div className="col-lg-4 mrg-btm- bgcolor">
               <label>Count Per Page</label>
@@ -193,10 +193,7 @@ return (
                 onChange={(e) => setPageSize(parseInt(e.target.value))}
                 className="ant-input"
               >
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
+             <DropDownCountPerPage datalength={data?.length} />
               </select>
             </div>
             <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -251,6 +248,7 @@ return (
                           {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
                           <td>
                             <button type="submit" onClick={()=>{setModalDisplayData(user)
+                            setOpenModal((true))
                             }} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                               Update Zone
                             </button>

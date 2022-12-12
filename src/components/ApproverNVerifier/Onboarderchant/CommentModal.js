@@ -7,61 +7,48 @@ import FormikController from "../../../_components/formik/FormikController";
 import {
   forSavingComments,
   forGettingCommentList,
-  updatedCommentList,
 } from "../../../slices/merchantZoneMappingSlice";
 import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
 
 const CommentModal = (props) => {
-  console.log("props",props?.isModalOpen)
 
   const [commentsList, setCommentsList] = useState([]);
-  const [commentResp, setCommentResp] = useState(false);
+
   const initialValues = {
     comments: "",
   };
 
-  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state?.auth);
+  const { loginId } = user;
 
+  const dispatch = useDispatch();
   const commentUpdate = () => {
     dispatch(
       forGettingCommentList({
         client_code: props?.commentData?.clientCode,
       })
-    )
-      .then((resp) => {
-        // console.log("Comment List Response After Saving", resp.payload.Data);
+    ).then((resp) => {
         setCommentsList(resp?.payload?.Data);
-      })
-
-      .catch((err) => {});
+      }).catch((err) => {console.error(err) });
   };
 
-  // const updateCommentinMerchantLlist = (values) => {
-  //   dispatch(
-  //     updatedCommentList({
-  //       client_code: props?.commentData?.clientCode,
-  //       comments: values?.comments,
-  //     })
-  //   ).then((resp) => {});
-  // };
 
   useEffect(() => {
-    if (props && props?.commentData?.clientCode !== "") {
-      dispatch(
-        forGettingCommentList({
-          client_code: props?.commentData?.clientCode,
-        })
-      )
-        .then((resp) => {
-          setCommentsList(resp?.payload?.Data);
-        })
+    // if (props && props?.commentData?.clientCode !== "") {
+    //   dispatch(
+    //     forGettingCommentList({
+    //       client_code: props?.commentData?.clientCode,
+    //     })
+    //   ).then((resp) => {
+    //       setCommentsList(resp?.payload?.Data);
+    //     }).catch((err) => { });
+    // }
 
-        .catch((err) => {
-          
-        });
-    }
+    commentUpdate()
+
   }, [props]);
+
 
   const validationSchema = Yup.object({
     comments: Yup.string()
@@ -71,9 +58,6 @@ const CommentModal = (props) => {
       .nullable(),
   });
 
-  const { user } = useSelector((state) => state?.auth);
-
-  const { loginId } = user;
 
 
   const handleSubmit = async (values) => {
@@ -87,9 +71,12 @@ const CommentModal = (props) => {
       .then((resp) => {
         toast.success(resp?.payload?.message);
         commentUpdate();
-        // updateCommentinMerchantLlist(values);
-        return setTimeout(props && props?.handleApi ? props?.handleApi() : props?.handleForVerified(),2000);
-        
+        // return setTimeout(
+        //   props && props?.handleApi
+        //     ? props?.handleApi()
+        //     : props?.handleForVerified(),
+        //   2000
+        // );
       })
 
       .catch((err) => {
@@ -98,22 +85,20 @@ const CommentModal = (props) => {
   };
 
   const dateManipulate = (yourDate) => {
-    let date = moment(yourDate).format("MM/DD/YYYY");
+    let date = moment(yourDate).format("MM/DD/YYYY HH:mm:ss");
     return date;
   };
-
-
-
 
   return (
     <div>
       <div
-        class="modal fade"
-        id="exampleModal"
         tabindex="-1"
         role="dialog"
-        aria-labelledby="exampleModalLabel"
         aria-hidden="true"
+        className={
+          "modal fade mymodals" +
+          (props?.isModalOpen ? " show d-block" : " d-none")
+        }
       >
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -132,6 +117,7 @@ const CommentModal = (props) => {
                 aria-label="Close"
                 onClick={() => {
                   setCommentsList([]);
+                  props?.setModalState(false)
                 }}
               >
                 <span aria-hidden="true">&times;</span>
@@ -149,7 +135,6 @@ const CommentModal = (props) => {
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
-                // onSubmit={(values)=>handleSubmit(values)}
                 onSubmit={(values, { resetForm }) => {
                   handleSubmit(values);
                   resetForm();
@@ -208,31 +193,32 @@ const CommentModal = (props) => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {(commentsList?.length=== undefined ||
+                                {(commentsList?.length === undefined ||
                                   commentsList?.length === 0) && (
-                                  <tr>
-                                    <td colSpan="3">
-                                      <h3 className="font-weight-bold text-center">
-                                        No Data found
-                                      </h3>
-                                    </td>
-                                  </tr>
-                                )}
+                                    <tr>
+                                      <td colSpan="3">
+                                        <h3 className="font-weight-bold text-center">
+                                          No Data found
+                                        </h3>
+                                      </td>
+                                    </tr>
+                                  )}
 
                                 {(commentsList?.length !== undefined ||
                                   commentsList?.length > 0) &&
-                                  Array.isArray(commentsList) ? commentsList?.map((remark, i) => (
+                                  Array.isArray(commentsList)
+                                  ? commentsList?.map((remark, i) => (
                                     <tr key={i}>
-                                      <td>{remark?.comment_by_user_name.toUpperCase()}</td>
+                                      <td>
+                                        {remark?.comment_by_user_name.toUpperCase()}
+                                      </td>
                                       <td>{remark?.comments}</td>
                                       <td>
                                         {dateManipulate(remark?.comment_on)}
                                       </td>
                                     </tr>
-                                  )) : []
-                                }
-
-                               
+                                  ))
+                                  : []}
                               </tbody>
                             </table>
                           </div>
@@ -244,6 +230,7 @@ const CommentModal = (props) => {
                             data-dismiss="modal"
                             onClick={() => {
                               setCommentsList([]);
+                              props?.setModalState(false)
                             }}
                           >
                             Close

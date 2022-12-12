@@ -7,7 +7,7 @@ import { convertToFormikSelectJson } from "../../_components/reuseable_component
 import FormikController from "../../_components/formik/FormikController";
 import { axiosInstanceAuth } from '../../utilities/axiosInstance';
 import { useDispatch, useSelector } from "react-redux";
-import { zoneDetails,zoneMaster,zoneEmployee,updateZoneData,getZoneInfo} from '../../slices/merchantZoneMappingSlice';
+import { zoneDetail,zoneMaster,zoneEmployee,updateZoneData,getZoneInfo} from '../../slices/merchantZoneMappingSlice';
 
 const initialValues = {
   zoneName: "",
@@ -36,18 +36,18 @@ const ViewZoneModal = (props) => {
   const dispatch = useDispatch();
 
 
-  useEffect(() => {
-    axiosInstanceAuth
-      .get(API_URL.RISK_CATEGORY)
-      .then((resp) => {
-        const data =
-          convertToFormikSelectJson("risk_category_code", "risk_category_name", resp?.data);
+  // useEffect(() => {
+  //   axiosInstanceAuth
+  //     .get(API_URL.RISK_CATEGORY)
+  //     .then((resp) => {
+  //       const data =
+  //         convertToFormikSelectJson("risk_category_code", "risk_category_name", resp?.data);
 
-        setRisk(data);
+  //       setRisk(data);
         
-      })
-    // .catch((err) => console.log(err));
-  }, []);
+  //     })
+  //   // .catch((err) => console.log(err));
+  // }, []);
 
 
   // useEffect(() => {
@@ -61,15 +61,11 @@ const ViewZoneModal = (props) => {
   // }, []);
 
   useEffect(() => {
-    dispatch(
-      zoneDetails(
-        ) ).then((res) => {
-      
-      const data = convertToFormikSelectJson("zoneCode", "zoneName", res?.payload?.zones);
-        setZone(data);
-      
-      setShow(true); 
-    });
+    dispatch(zoneDetail()).then((resp) => {
+            const data = convertToFormikSelectJson("zoneCode", "zoneName", resp?.payload?.zones);
+             setZone(data)
+            })
+            .catch((err) => console.log(err));
   }, []);
 
 
@@ -125,6 +121,9 @@ const ViewZoneModal = (props) => {
 
       })
   }
+
+
+
   useEffect(()=>{
     if(props?.userData?.clientCode){
       getZoneInfobyClientCode(props?.userData?.clientCode);
@@ -133,6 +132,8 @@ const ViewZoneModal = (props) => {
     
   
    },[props])
+
+
 
   const getZoneInfobyClientCode=(clientCode)=>{
     const postData = {

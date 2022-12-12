@@ -1,16 +1,81 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { setMessage } from "./message";
 import API_URL from "../config";
+import zoneService from "../services/merchantZoneMapping.service";
+
 import {
   axiosInstanceAuth,
  
 } from "../utilities/axiosInstance";
 
+
 const initialState = { 
     postdata:{},
    
 };
-  
 
+
+export const zoneDetail = createAsyncThunk(
+  "merchantzone/zoneDetail",
+  async ( thunkAPI) => {
+    try {
+      const response = await zoneService.zoneDetails();
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const zoneMaster = createAsyncThunk(
+  "zoneMaster/zoneMaster",
+  async ( requestParam) => {
+    try {
+      const response = await zoneService.zoneMasters(requestParam)
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const zoneEmployee= createAsyncThunk(
+  "zoneEmployee/zoneEmployee",
+  async ( requestParam) => {
+    try {
+      const response = await zoneService.zoneEmployee(requestParam)
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const updateZoneData= createAsyncThunk(
+  "zoneEmployee/zoneEmployee",
+  async ( requestParam) => {
+    
+    try {
+      const response = await zoneService.updateZoneData(requestParam)
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getZoneInfo= createAsyncThunk(
+  "zoneEmployee/zoneEmployee",
+  async ( requestParam) => {
+    
+    try {
+      const response = await zoneService.getZoneInfo(requestParam)
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
 export const riskCategory = createAsyncThunk(
     "riskCategory/riskCategory",
     async (requestParam) => {
@@ -29,100 +94,8 @@ export const riskCategory = createAsyncThunk(
     }
   );
 
-  export const zoneDetails = createAsyncThunk(
-    "zoneDetails/zoneDetails",
-    async (requestParam) => {
-      const response = await axiosInstanceAuth
-        .get(`${API_URL.ZONE_DETAILS}`,  {
-          headers: {
-            // Authorization: ""
-          },
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      
-      return response.data;
-    }
-  );
-  export const zoneMaster = createAsyncThunk(
-    "zoneMaster/zoneMaster",
-    async (requestParam) => {
-        
-      const response = await axiosInstanceAuth
-        .post(`${API_URL.ZONE_MASTER}`, requestParam, {
-            headers: {
-                // Authorization: ""
-              },
 
-         
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
-    }
-  );
-  export const zoneEmployee = createAsyncThunk(
-    "zoneEmployee/zoneEmployee",
-    async (requestParam) => {
-      const response = await axiosInstanceAuth
-        .post(`${API_URL.ZONE_EMPLOYEE}`, requestParam, {
-            headers: {
-                // Authorization: ""
-              },
-
-         
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
-    }
-  );
-  export const updateZoneData = createAsyncThunk(
-    "updateZoneData/updateZoneData",
-    async (requestParam) => {
-        console.log(requestParam)
-      const response = await axiosInstanceAuth
-        .put(`${API_URL.UPDATE_ZONE_DATA}`, requestParam, {
-            headers: {
-                // Authorization: ""
-              },
-
-         
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
-    }
-  );
-  export const getZoneInfo = createAsyncThunk(
-    "getZoneInfo/getZoneInfo",
-    async (requestParam) => {
-        
-      const response = await axiosInstanceAuth
-        .post(`${API_URL.GET_ZONE_INFO}`, requestParam, {
-            headers: {
-                // Authorization: ""
-              },
-
-         
-        })
-        .catch((error) => {
-          return error.response;
-        });
-      // console.log(response)
-      return response.data;
-    }
-  );
-
-
-  export const forSavingComments = createAsyncThunk(
+export const forSavingComments = createAsyncThunk(
     "merchnatzone/forSavingComments",
     async (requestParam) => {
         

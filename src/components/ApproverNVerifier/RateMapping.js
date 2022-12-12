@@ -21,6 +21,7 @@ function RateMapping() {
   const [pageSize, setPageSize] = useState(10);
   const [spinner, setSpinner] = useState(true);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [openZoneModal, setOpenModal] = useState(false)
  
   const [modalDisplayData, setModalDisplayData] = useState({});
   let page_size = pageSize;
@@ -177,7 +178,7 @@ return (
                 type="text"
                 placeholder="Search Here"
               />
-              <div> <ViewRateMapping userData={modalDisplayData} /></div>
+              <div>{ openZoneModal === true ? <ViewRateMapping userData={modalDisplayData} /> : <></> }</div>
             </div>
             <div className="col-lg-4 mrg-btm- bgcolor">
               <label>Count Per Page</label>
@@ -244,7 +245,7 @@ return (
                           {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
                           <td>
                             <button type="submit" onClick={()=>{setModalDisplayData(user)
-                            }} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                             setOpenModal((true))}} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                               Rate Map
                             </button>
                           </td>

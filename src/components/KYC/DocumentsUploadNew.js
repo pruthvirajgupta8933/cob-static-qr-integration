@@ -131,7 +131,7 @@ function DocumentsUpload(props) {
   const [disable, setDisable] = useState(false)
   const onSubmit = (values, action) => {
     // If merchant logged in
-    
+   
     setDisable(true)
     if (role.merchant) {
       const bodyFormData = new FormData();
