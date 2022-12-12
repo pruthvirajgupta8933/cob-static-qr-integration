@@ -56,7 +56,7 @@ function VerifiedMerchant() {
   useEffect(() => {
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
@@ -192,7 +192,7 @@ function VerifiedMerchant() {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
-                <th>Comments</th>
+                {/* <th>Comments</th> */}
                 <th>Action</th>
                 {roles.approver === true ? <th>Approve KYC</th> : <></>}
               </tr>
@@ -218,7 +218,7 @@ function VerifiedMerchant() {
                     <td>{user.status}</td>
                     <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
-                    <td>{user?.comments}</td>
+                    {/* <td>{user?.comments}</td> */}
                     <td>
                       {roles.verifier === true || roles.approver === true ? (
                         <button

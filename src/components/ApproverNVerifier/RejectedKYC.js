@@ -34,7 +34,7 @@ const RejectedKYC = () => {
    
     dispatch(kycForRejectedMerchants({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         setSpinner(false);
 
         const data = resp?.payload?.results;
