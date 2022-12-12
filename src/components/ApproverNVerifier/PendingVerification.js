@@ -187,10 +187,7 @@ function PendingVerification() {
             onChange={(e) => setPageSize(parseInt(e.target.value))}
             className="ant-input"
           >
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
+            <DropDownCountPerPage datalength={data?.length} />
           </select>
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
