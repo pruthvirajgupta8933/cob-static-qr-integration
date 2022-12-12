@@ -7,6 +7,8 @@ import { convertToFormikSelectJson } from "../../_components/reuseable_component
 import FormikController from "../../_components/formik/FormikController";
 import { axiosInstanceAuth } from '../../utilities/axiosInstance';
 import RateRadioMapping from './RateRadioMapping';
+import { useDispatch, useSelector } from "react-redux";
+import { riskCategory, businessCategory,templateRate,viewRateMap} from '../../slices/rateMappingSlice';
 
 const initialValues = {
     rate_template_name: "",
@@ -31,16 +33,17 @@ const ViewRateMapping = (props) => {
     const [risk, setRisk] = useState([])
     const [riskCode, setRiskCode] = useState("")
     const [businessCode, setBusinessCode] = useState([]);
+    
+    const dispatch = useDispatch();
 
    
 
 
     useEffect(() => {
-        axiosInstanceAuth
-            .get(API_URL.RISK_CATEGORY)
+       dispatch(riskCategory())
             .then((resp) => {
                 const data =
-                    convertToFormikSelectJson("risk_category_code", "risk_category_name", resp?.data);
+                    convertToFormikSelectJson("risk_category_code", "risk_category_name", resp?.payload);
 
                 setRisk(data);
 
@@ -53,10 +56,9 @@ const ViewRateMapping = (props) => {
             const postData = {
                 risk_category_code: riskCode
             };
-            axiosInstanceAuth
-                .post(API_URL.GET_RISK_BUISENSS_BYID, postData).then((resp) => {
-                    console.log(resp,)
-                    const data = convertToFormikSelectJson("business_category_id", "category_name", resp?.data?.Data);
+           dispatch( businessCategory(postData)).then((resp) => {
+                    
+                    const data = convertToFormikSelectJson("business_category_id", "category_name", resp?.payload?.Data);
 
                     setTemplate(data)
                 }).catch((err) => {
@@ -71,9 +73,8 @@ const ViewRateMapping = (props) => {
             const postData = {
                 business_cat_code: businessTemplate
             };
-            axiosInstanceAuth
-                .post(API_URL.TEMPLATE_DETAILS_BYRISKCODE, postData).then((resp) => {
-                    const data = convertToFormikSelectJson("rate_template_code", "rate_template_name", resp?.data);
+           dispatch(templateRate(postData)).then((resp) => {
+                    const data = convertToFormikSelectJson("rate_template_code", "rate_template_name", resp?.payload);
 
                     setBusinessTemplates(data)
                 }).catch((err) => {
@@ -86,23 +87,23 @@ const ViewRateMapping = (props) => {
 
    
 
-    useEffect(() => {
-        axiosInstanceAuth
-            .get(API_URL.Business_Category_CODE)
-            .then((resp) => {
-                const data =
-                    convertToFormikSelectJson("category_id", "category_name", resp?.data);
+    // useEffect(() => {
+    //     axiosInstanceAuth
+    //         .get(API_URL.Business_Category_CODE)
+    //         .then((resp) => {
+    //             const data =
+    //                 convertToFormikSelectJson("category_id", "category_name", resp?.data);
 
-                // const sortAlpha = data?.sort((a, b) =>
-                //   a.category_name
-                //     .toLowerCase()
-                //     .localeCompare(b.category_name.toLowerCase())
-                // );
+    //             // const sortAlpha = data?.sort((a, b) =>
+    //             //   a.category_name
+    //             //     .toLowerCase()
+    //             //     .localeCompare(b.category_name.toLowerCase())
+    //             // );
 
-                setBusinessCode(data);
-            })
-            .catch((err) => console.log(err));
-    }, []);
+    //             setBusinessCode(data);
+    //         })
+    //         .catch((err) => console.log(err));
+    // }, []);
 
 
 
@@ -120,9 +121,8 @@ const ViewRateMapping = (props) => {
             "risk_cat_code": values.rate_template_name
 
         };
-        axiosInstanceAuth
-            .post(API_URL.GET_RISK_TEMPLSTE, postData).then((resp) => {
-                setRisktemplate(resp?.data)
+       dispatch(viewRateMap(postData)).then((resp) => {
+                setRisktemplate(resp?.payload)
                 // toast.success(resp?.data?.message);
             
                 setShow(true)
@@ -239,9 +239,8 @@ const ViewRateMapping = (props) => {
                                                     {/* <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> */}
                                                     <button type="submit"  class="btn btn-primary">View</button>
                                                     {show === true ? (
-
                                                         <div className='col-lg-12'>
-                                                        <RateRadioMapping riskTemplate={riskTemplate}/>
+                                                        <RateRadioMapping riskTemplate={riskTemplate} chiledCode={props?.userData}/>
                                                         </div>
                                                        
 
