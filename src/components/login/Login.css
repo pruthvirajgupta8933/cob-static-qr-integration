@@ -474,12 +474,12 @@ a {
 
 #dropdown-menu2 {
   position: absolute;
-  left: 34%;
+  left: 32%;
 }
 
 #dropdown-menu3 {
   position: absolute;
-  left: 46%;
+  left: 41%;
 }
 
 .tab {
@@ -529,7 +529,7 @@ a {
 
 a.nav-link{
   color:#fff !important;
-  font-size: 0.8rem !important;
+  font-size: 1rem !important;
 } 
 a.inactive{
   color:#000 !important;

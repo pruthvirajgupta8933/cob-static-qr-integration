@@ -949,8 +949,8 @@ color: #4285F8;
 }
 .spinner-border{
 	position: absolute; 
-	top: 48%; 
-	left: 50%; 
+	top: 82%; 
+	left: 58%; 
 	transform: translate (-50%); 
 
 }

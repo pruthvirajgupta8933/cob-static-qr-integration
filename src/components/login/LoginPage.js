@@ -256,11 +256,13 @@ function LoginPage() {
                                           : false
                                       }
                                     >
-                                      {loading && (
-                                        <span
-                                          className="spinner-border forSpinner NunitoSans-Regular"
-                                          role="status"
-                                        ></span>
+                                      {loading &&(
+                                        // <span
+                                        //   className="spinner-border forSpinner NunitoSans-Regular"
+                                        //   role="status"
+                                        // ></span>
+                                        <div class="spinner-border text-secondary- NunitoSans-Regular" role="status"></div>
+                                        // <div class="spinner-grow" role="status"></div>
                                       )}
                                       LogIn
                                     </button>
