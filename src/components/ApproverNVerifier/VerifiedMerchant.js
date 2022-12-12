@@ -131,6 +131,10 @@ function VerifiedMerchant() {
     }
 
 
+    // const handleModalState = (val)=>{
+    //   setOpenCommentModal(val)
+    // }
+
   return (
     <div className="container-fluid flleft">
       <div className="col-lg-4 mrg-btm- bgcolor">
@@ -169,7 +173,9 @@ function VerifiedMerchant() {
       </div>
       <div>
         
-      {openCommentModal === true ?  <CommentModal commentData={commentId} handleForVerified={verifyMerchant}  isModalOpen={openCommentModal}/> : <></>}
+      {openCommentModal === true ?  
+      <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> 
+      : <></>}
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">

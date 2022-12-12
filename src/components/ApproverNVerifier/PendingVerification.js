@@ -176,7 +176,7 @@ function PendingVerification() {
           />
         </div>
         <div>
-          {openCommentModal === true ? <CommentModal commentData={commentId} handleApi={pendingVerify} /> : <></>}
+          {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> : <></>}
           <KycDetailsModal kycId={kycIdClick} />
         </div>
 
