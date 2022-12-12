@@ -169,7 +169,7 @@ function VerifiedMerchant() {
       </div>
       <div>
         
-      {openCommentModal === true ?  <CommentModal commentData={commentId} handleForVerified={verifyMerchant}/> : <></>}
+      {openCommentModal === true ?  <CommentModal commentData={commentId} handleForVerified={verifyMerchant}  isModalOpen={openCommentModal}/> : <></>}
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">

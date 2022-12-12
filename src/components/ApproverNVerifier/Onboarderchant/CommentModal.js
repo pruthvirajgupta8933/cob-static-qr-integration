@@ -13,6 +13,8 @@ import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
 
 const CommentModal = (props) => {
+  console.log("props",props?.isModalOpen)
+
   const [commentsList, setCommentsList] = useState([]);
   const [commentResp, setCommentResp] = useState(false);
   const initialValues = {
@@ -35,14 +37,14 @@ const CommentModal = (props) => {
       .catch((err) => {});
   };
 
-  const updateCommentinMerchantLlist = (values) => {
-    dispatch(
-      updatedCommentList({
-        client_code: props?.commentData?.clientCode,
-        comments: values?.comments,
-      })
-    ).then((resp) => {});
-  };
+  // const updateCommentinMerchantLlist = (values) => {
+  //   dispatch(
+  //     updatedCommentList({
+  //       client_code: props?.commentData?.clientCode,
+  //       comments: values?.comments,
+  //     })
+  //   ).then((resp) => {});
+  // };
 
   useEffect(() => {
     if (props && props?.commentData?.clientCode !== "") {
@@ -64,7 +66,7 @@ const CommentModal = (props) => {
   const validationSchema = Yup.object({
     comments: Yup.string()
       .min(1, "Please enter , more than 1 character")
-      .max(100, "Please enter not  more than 100 characters")
+      .max(100, "Please do not  enter more than 100 characters")
       .required("Required")
       .nullable(),
   });
@@ -85,8 +87,7 @@ const CommentModal = (props) => {
       .then((resp) => {
         toast.success(resp?.payload?.message);
         commentUpdate();
-        updateCommentinMerchantLlist(values);
-      
+        // updateCommentinMerchantLlist(values);
         return setTimeout(props && props?.handleApi ? props?.handleApi() : props?.handleForVerified(),2000);
         
       })
