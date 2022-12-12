@@ -155,7 +155,6 @@ function PendingVerification() {
     let btn = false;
     ALLOW_ROLE_AS_VERIFIER?.map((i) => {
     if (ALLOW_ROLE_AS_VERIFIER.includes(id)) {
-       console.log(btn,"Enable Verify Kyc")
       btn = true;
     } else {
        
@@ -304,19 +303,22 @@ function PendingVerification() {
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <button className="page-link" onClick={prevPage}>
+              <button 
+              className="page-link" 
+              onClick={prevPage}>
                 Previous
               </button>
             </li>
             {displayPageNumber?.map((pgNumber, i) => (
-              <li
+              <li 
                 key={i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
                 }
+                onClick={() => setCurrentPage(pgNumber)}
               >
                 <a href={() => false} className={`page-link data_${i}`}>
-                  <span onClick={() => setCurrentPage(pgNumber)}>
+                  <span >
                     {pgNumber}
                   </span>
                 </a>
