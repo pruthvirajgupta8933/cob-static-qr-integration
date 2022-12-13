@@ -7930,7 +7930,7 @@ footer {
 .mt-31{
     margin-top: 31px;
 }
-@media (max-width: 428px) {
+@media (max-width: 760px) {
     #dropdownMenuLink{
         display: none;
     }
@@ -7941,7 +7941,7 @@ footer {
         padding-top: 30%;
     }
     .foralinkscsshere{
-        font-size: 11px;
+        font-size: 10px;
         margin: 8px 0px !important;
     vertical-align: top;
 }
