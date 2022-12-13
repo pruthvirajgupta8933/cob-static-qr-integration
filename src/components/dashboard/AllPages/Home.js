@@ -331,10 +331,7 @@ function Home() {
                       </span>
                       <button
                         class="text-white pull-right kycbtns"
-                        style={{
-                          backgroundColor: "#0156B3",
-                          paddingLeft: "10px",
-                        }}
+                        
                         disabled
                       >
                         KYC Done
@@ -349,14 +346,13 @@ function Home() {
         {roles?.merchant === true ? (
           <div class="container">
             <div class="row">
-              <div class="col-sm  m-0">
-                <div class="card" style={{ height: "236px", width: "462px" }}>
+              <div class="col-sm  m-0 no-pad">
+                <div class="card">
                   <h2 class="card-title dashboardEnablecss">
                     <img
                       class="card-img-left"
                       src={subscriptin}
                       alt="onlinepay"
-                      width={40}
                     />{" "}
                     &nbsp;PayLink
                   </h2>
@@ -379,9 +375,9 @@ function Home() {
                   </Link>
                 </div>
               </div>
-              <div class="col-sm" style={{ margin: "31px 0" }}>
+              <div class="col-sm mt-31">
                 <div className="row pt-2 m-0">
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       src={onlineimg}
@@ -396,7 +392,7 @@ function Home() {
                       Payment Gateway
                     </p>
                   </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad pr-2">
                     <img
                       className="card-img-left mr-2"
                       src={Rupees}
@@ -411,7 +407,7 @@ function Home() {
                       Subscriptions
                     </p>
                   </div>
-                  {/* <div className="col-6 d-flex flex-wrap my-2">
+                  {/* <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       src={paymentlink}
@@ -426,7 +422,7 @@ function Home() {
                       Payouts
                     </p>
                   </div> */}
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       width={"41px"}
@@ -441,7 +437,7 @@ function Home() {
                       QwikForm
                     </p>
                   </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       width={"41px"}
@@ -456,7 +452,7 @@ function Home() {
                       PayLink
                     </p>
                   </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       width={"41px"}
@@ -471,7 +467,7 @@ function Home() {
                       LinkPaisa
                     </p>
                   </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       width={"41px"}
