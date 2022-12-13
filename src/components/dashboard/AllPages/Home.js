@@ -354,7 +354,8 @@ function Home() {
                       src={subscriptin}
                       alt="onlinepay"
                     />{" "}
-                    &nbsp;PayLink
+                    &nbsp;Payment Links
+
                   </h2>
                   <p className="paragraphcssdashboards">
                     SabPaisa is the World's 1st API Driven Unified Payment

@@ -11,13 +11,14 @@ import { convertToFormikSelectJson } from "../../../../_components/reuseable_com
 
 
 const KycDetailsModal = (props) => {
-  let merchantKycId = props.kycId;
+  let merchantKycId = props?.kycId;
+  console.log(merchantKycId)
   const [docList, setDocList] = useState([]);
   const [docTypeList, setDocTypeList] = useState([]);
   const [businessTypeResponse, setBusinessTypeResponse] = useState([]);
   const [businessCategoryResponse, setBusinessCategoryResponse] = useState([]);
 
-//   console.log(props?.kycId, "Props =======>");
+  //   console.log(props?.kycId, "Props =======>");
 
   const dispatch = useDispatch();
 
@@ -25,7 +26,7 @@ const KycDetailsModal = (props) => {
 
   //------------- Kyc  Document List ------------//
 
-  
+
 
   useEffect(() => {
     if (merchantKycId !== null) {
@@ -41,15 +42,15 @@ const KycDetailsModal = (props) => {
 
   useEffect(() => {
     if (merchantKycId !== null) {
-    
-    const businessType = merchantKycId?.businessType
 
-    // console.log(busiType,"Business TYPE==========>")
-    dispatch(documentsUpload({ businessType }))
-      .then((resp) => {
-        const data = convertToFormikSelectJson("id", "name", resp?.payload);
-        setDocTypeList(data);
-      })
+      const businessType = merchantKycId?.businessType
+
+      // console.log(busiType,"Business TYPE==========>")
+      dispatch(documentsUpload({ businessType }))
+        .then((resp) => {
+          const data = convertToFormikSelectJson("id", "name", resp?.payload);
+          setDocTypeList(data);
+        })
     }
   }, [merchantKycId?.businessType]);
 
@@ -60,24 +61,25 @@ const KycDetailsModal = (props) => {
       dispatch(
         businessTypeById({ business_type_id: merchantKycId?.businessType })
       ).then((resp) => {
+
         setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
       });
     }
   }, [merchantKycId?.businessType]);
 
   useEffect(() => {
-    if(merchantKycId !== null) {
-    dispatch(
-      businessCategoryById({ category_id: merchantKycId?.businessCategory })
-    ).then((resp) => {
-      // console.log(resp,"response")
-      setBusinessCategoryResponse(resp?.payload[0]?.category_name);
-    });
-       }
+    if (merchantKycId !== null) {
+      dispatch(
+        businessCategoryById({ category_id: merchantKycId?.businessCategory })
+      ).then((resp) => {
+        // console.log(resp,"response")
+        setBusinessCategoryResponse(resp?.payload[0]?.category_name);
+      });
+    }
   }, [merchantKycId?.businessCategory]);
 
 
-  
+
   const getDocTypeName = (id) => {
     let data = docTypeList.filter((obj) => {
       if (obj?.key?.toString() === id?.toString()) {
@@ -90,9 +92,9 @@ const KycDetailsModal = (props) => {
   };
 
   const stringManulate = (str) => {
-    let str1 = str.substring(0,15)
+    let str1 = str.substring(0, 15)
     return `${str1}...`
-    
+
   }
 
 
@@ -120,31 +122,27 @@ const KycDetailsModal = (props) => {
             >
               <span aria-hidden="true">&times;</span>
             </button>
+
           </div>
-          <div class="modal-body">
-            <div class="container">
-              <div class="row">
-                <div class="col-sm">
-                  <h2
-                    className="font-weight-bold"
-                    style={{ textDecoration: "underline" }}
-                  >
-                    Merchant Contact Info
-                  </h2>
+
+          <div className="modal-body">
+            <div className="container">
+              {/* contact info section */}
+              <div className="row mb-4 border">
+                <div className="col-lg-12">
+                  <h3 className="font-weight-bold">Merchant Contact Info</h3>
                 </div>
-              </div>
-              <div class="row">
+
                 <div class="col-sm-6 col-md-6 col-lg-6 ">
                   <label class="col-form-label mt-0 p-2">
                     Contact Name<span style={{ color: "red" }}>*</span>
                   </label>
-
                   <input
                     type="text"
                     className="form-control"
                     id="inputPassword3"
                     disabled="true"
-                    value={merchantKycId?.name ? merchantKycId?.name : ""}
+                    value={merchantKycId?.name}
                   />
                 </div>
 
@@ -152,21 +150,16 @@ const KycDetailsModal = (props) => {
                   <label class="col-form-label mt-0 p-2">
                     Aadhaar Number <span style={{ color: "red" }}>*</span>
                   </label>
-
                   <input
                     type="text"
                     className="form-control"
                     id="inputPassword3"
                     disabled="true"
-                    value={
-                      merchantKycId?.aadharNumber
-                        ? merchantKycId?.aadharNumber
-                        : ""
-                    }
+                    value={merchantKycId?.aadharNumber}
                   />
                 </div>
-              </div>
-              <div class="row">
+
+
                 <div class="col-sm-6 col-md-6 col-lg-6 ">
                   <label class="col-form-label mt-0 p-2">
                     Contact Number<span style={{ color: "red" }}>*</span>
@@ -176,11 +169,7 @@ const KycDetailsModal = (props) => {
                     className="form-control"
                     id="inputPassword3"
                     disabled="true"
-                    value={
-                      merchantKycId?.contactNumber
-                        ? merchantKycId?.contactNumber
-                        : ""
-                    }
+                    value={merchantKycId?.contactNumber}
                   />
 
                   <span>
@@ -201,7 +190,7 @@ const KycDetailsModal = (props) => {
                     className="form-control"
                     id="inputPassword3"
                     disabled="true"
-                    value={merchantKycId?.emailId ? merchantKycId?.emailId : ""}
+                    value={merchantKycId?.emailId}
                   />
                   <span>
                     {merchantKycId?.isEmailVerified === 1 ? (
@@ -211,53 +200,40 @@ const KycDetailsModal = (props) => {
                     )}
                   </span>
                 </div>
-              </div>
-              <div class="row mt-5">
-                <div class="col-sm">
-                  <h2
-                    className="font-weight-bold"
-                    style={{ textDecoration: "underline" }}
-                  >
-                    Business Overview
-                  </h2>
-                </div>
+
               </div>
 
-              
-              <div class="row">
+              {/* business overview section */}
+              <div className="row mb-4 border">
+                <div class="col-lg-12">
+                  <h3 className="font-weight-bold">Business Overview</h3>
+                </div>
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <label class="col-form-label mt-0 p-2">
                     Business Type<span style={{ color: "red" }}>*</span>
                   </label>
-
-                  <select
+                  <input
+                    type="text"
                     className="form-control"
-                    id="inputPassword3"
                     disabled="true"
-                  >
-                    <option selected>
-                      {businessTypeResponse ? businessTypeResponse : ""}
-                    </option>
-                  </select>
+                    value={businessTypeResponse}
+                  />
                 </div>
+
                 <div class="col-sm-6 col-md-6 col-lg-6">
                   <label class="p-2 mt-0">
                     Business Category<span style={{ color: "red" }}>*</span>
                   </label>
-
-                  <select
+                  <input
+                    type="text"
                     className="form-control"
-                    id="inputPassword3"
                     disabled="true"
-                  >
-                    <option selected>
-                      {businessCategoryResponse ? businessCategoryResponse : ""}
-                    </option>
-                  </select>
+                    value={businessCategoryResponse}
+                  />
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
+
+
+                <div class="col-sm-6 col-md-6 col-lg-6">
                   <label class="col-form-label p-2 mt-0">
                     Business Label <span style={{ color: "red" }}>*</span>
                   </label>
@@ -269,56 +245,19 @@ const KycDetailsModal = (props) => {
                     disabled="true"
                     value={
                       merchantKycId?.billingLabel
-                        ? merchantKycId?.billingLabel
-                        : ""
                     }
                   />
-                  <div class="my-5- p-2- w-100 pull-left">
-                    <hr
-                      style={{
-                        borderColor: "#D9D9D9",
-                        textShadow: "2px 2px 5px grey",
-                        width: "100%",
-                      }}
-                    />
-                  </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                  <label class="col-form-label p-2 mt-0">
-                    How do you wish to accept payments?{" "}
-                    <span style={{ color: "red" }}>*</span>
-                  </label>
 
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.website_app_url !== null || undefined
-                        ? merchantKycId?.website_app_url
-                        : "Not Selected"
-                    }
-                  />
-                  <span>
-                    {merchantKycId?.is_website_url === true
-                      ? "On my website/app"
-                      : "Without Website/app"}
-                  </span>
-                  <div class="my-5- p-2- w-100 pull-left">
-                    <hr
-                      style={{
-                        borderColor: "#D9D9D9",
-                        textShadow: "2px 2px 5px grey",
-                        width: "100%",
-                      }}
-                    />
-                  </div>
+                <div class="col-sm-6 col-md-6 col-lg-6">
+                  <label class="col-form-label p-2 mt-0">
+                    {merchantKycId?.is_website_url === true ?
+                      <p className="font-weight-bold"> Merchant wish to accept payments on (Web/App URL) {merchantKycId?.website_app_url}</p> :
+                      `Merchant has accepted payments without any web/app `}
+                  </label>
                 </div>
-              </div>
-              <div class="row">
+
+
                 <div class="col-sm-4 col-md-4 col-lg-4">
                   <label class="col-form-label p-2 mt-0">
                     Company Website<span style={{ color: "red" }}>*</span>
@@ -331,8 +270,6 @@ const KycDetailsModal = (props) => {
                     disabled="true"
                     value={
                       merchantKycId?.companyWebsite
-                        ? merchantKycId?.companyWebsite
-                        : ""
                     }
                   />
                 </div>
@@ -353,15 +290,13 @@ const KycDetailsModal = (props) => {
                     disabled="true"
                     value={
                       merchantKycId?.expectedTransactions
-                        ? merchantKycId?.expectedTransactions
-                        : ""
                     }
                   />
                 </div>
 
                 <div class="col-sm-4 col-md-4 col-lg-4">
                   <label class="col-form-label p-2 mt-0">
-                    Avg Ticket Size<span style={{ color: "red" }}>*</span>
+                    Avg Ticket Amount<span style={{ color: "red" }}>*</span>
                   </label>
 
                   <input
@@ -371,314 +306,286 @@ const KycDetailsModal = (props) => {
                     disabled="true"
                     value={
                       merchantKycId?.avg_ticket_size
-                        ? merchantKycId?.avg_ticket_size
-                        : ""
                     }
                   />
                 </div>
               </div>
-            </div>
-            <div class="row mt-5">
-              <div class="col-sm">
-                <h2
-                  className="font-weight-bold"
-                  style={{ textDecoration: "underline" }}
-                >
-                  Business Details
-                </h2>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-12 marg-b">
-                <label class="col-form-label mt-0 p-2">
-                  GSTIN<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={
-                    merchantKycId?.gstNumber ? merchantKycId?.gstNumber : ""
-                  }
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  Business PAN<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={merchantKycId?.panCard ? merchantKycId?.panCard : ""}
-                />
+
+              {/* business details */}
+              <div className="row mb-4 border">
+                <div class="col-lg-12">
+                  <h3 className="font-weight-bold">Business Details</h3>
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-12 marg-b">
+                  <label class="col-form-label mt-0 p-2">
+                    GSTIN<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={
+                      merchantKycId?.gstNumber
+                    }
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    Business PAN<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={merchantKycId?.panCard}
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    Authorized Signatory PAN{" "}
+                    <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={
+                      merchantKycId?.signatoryPAN
+                    }
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    Business Name<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={
+                      merchantKycId?.companyName ? merchantKycId?.companyName : ""
+                    }
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    PAN Owner's Name<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={
+                      merchantKycId?.nameOnPanCard
+                    }
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    Address<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={
+                      merchantKycId?.operationalAddress
+                    }
+                  />
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    City<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={merchantKycId?.cityId}
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    State<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={
+                      merchantKycId?.state_name
+                    }
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-6 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    Pincode<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={merchantKycId?.pinCode}
+                  />
+                </div>
+
               </div>
 
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  Authorized Signatory PAN{" "}
-                  <span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={
-                    merchantKycId?.signatoryPAN
-                      ? merchantKycId?.signatoryPAN
-                      : ""
-                  }
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  {" "}
-                  Business Name<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={
-                    merchantKycId?.companyName ? merchantKycId?.companyName : ""
-                  }
-                />
+              {/* Bank details */}
+              <div className="row mb-4 border">
+                <div class="col-lg-12">
+                  <h3 className="font-weight-bold">Bank Details</h3>
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-6 ">
+                  <label class="col-form-label mt-0 p-2">
+                    IFSC Code<span style={{ color: "red" }}>*</span>
+                  </label>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={merchantKycId?.ifscCode}
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    Business Account Number
+                    <span style={{ color: "red" }}>*</span>
+                  </label>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={
+                      merchantKycId?.accountNumber
+                    }
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    Account Holder Name<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={
+                      merchantKycId?.accountHolderName
+                    }
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    Account Type<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={
+                      merchantKycId?.accountType
+                    }
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    Bank Name<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={merchantKycId?.bankName}
+                  />
+                </div>
+
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                  <label class="col-form-label mt-0 p-2">
+                    Branch<span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword3"
+                    disabled="true"
+                    value={merchantKycId?.branch}
+                  />
+                </div>
               </div>
 
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  PAN Owner's Name<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={
-                    merchantKycId?.nameOnPanCard
-                      ? merchantKycId?.nameOnPanCard
-                      : ""
-                  }
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  Address<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={
-                    merchantKycId?.operationalAddress
-                      ? merchantKycId?.operationalAddress
-                      : ""
-                  }
-                />
-              </div>
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  City<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={merchantKycId?.cityId ? merchantKycId?.cityId : ""}
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  State<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={
-                    merchantKycId?.state_name ? merchantKycId?.state_name : ""
-                  }
-                />
-              </div>
+              {/* Merchant Documents */}
+              <div className="row mb-4 border">
+                <div class="col-lg-12">
+                  <h3 className="font-weight-bold">Merchant Docuemnts</h3>
+                </div>
 
-              <div class="col-sm-12 col-md-6 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  Pincode<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={merchantKycId?.pinCode ? merchantKycId?.pinCode : ""}
-                />
-              </div>
-            </div>
-            <div class="row  mt-5">
-              <div class="col-sm">
-                <h2
-                  className="font-weight-bold"
-                  style={{ textDecoration: "underline" }}
-                >
-                  Bank Details
-                </h2>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-6 ">
-                <label class="col-form-label mt-0 p-2">
-                  IFSC Code<span style={{ color: "red" }}>*</span>
-                </label>
-
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={merchantKycId?.ifscCode ? merchantKycId?.ifscCode : ""}
-                />
-              </div>
-
-              <div class="col-sm-12 col-md-12 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  Business Account Number
-                  <span style={{ color: "red" }}>*</span>
-                </label>
-
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={
-                    merchantKycId?.accountNumber
-                      ? merchantKycId?.accountNumber
-                      : ""
-                  }
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  Account Holder Name<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={
-                    merchantKycId?.accountHolderName
-                      ? merchantKycId?.accountHolderName
-                      : ""
-                  }
-                />
-              </div>
-
-              <div class="col-sm-12 col-md-12 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  Account Type<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={
-                    merchantKycId?.accountType ? merchantKycId?.accountType : ""
-                  }
-                />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  Bank Name<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={merchantKycId?.bankName ? merchantKycId?.bankName : ""}
-                />
-              </div>
-
-              <div class="col-sm-12 col-md-12 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
-                  Branch<span style={{ color: "red" }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword3"
-                  disabled="true"
-                  value={merchantKycId?.branch ? merchantKycId?.branch : ""}
-                />
-              </div>
-            </div>
-            <div class="row mt-5">
-              <div class="col-sm">
-                <h2
-                  className="font-weight-bold"
-                  style={{ textDecoration: "underline" }}
-                >
-                  Merchant Documents
-                </h2>
-              </div>
-            </div>
-            <div className="col-lg-12 border mt-4 m-2 test">
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>S.No.</th>
-                    <th>Document Type</th>
-                    <th>Document Name</th>
-                    <th>Document Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {docList?.length > 0 ? (
-                    docList?.map((doc, i) => (
-                      <tr key={i}>
-                        <td>{i + 1}</td>
-                        <td>{getDocTypeName(doc?.type)}</td>
-                        <td>
-                          <a
-                            href={doc?.filePath}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-primary"
-                          >
-                            {stringManulate(doc?.name)}
-                          </a>
-                          <p className="text-danger"> {doc?.comment}</p>
-                        </td>
-                        <td>{doc?.status}</td>
+                <div className="col-lg-12 mt-4 m-2">
+                  <table className="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>S.No.</th>
+                        <th>Document Type</th>
+                        <th>Document Name</th>
+                        <th>Document Status</th>
                       </tr>
-                    ))
-                  ) : (
-                    <></>
-                  )}
-                </tbody>
-              </table>
-              <div></div>
+                    </thead>
+                    <tbody>
+                      {docList?.length > 0 ? (
+                        docList?.map((doc, i) => (
+                          <tr key={i}>
+                            <td>{i + 1}</td>
+                            <td>{getDocTypeName(doc?.type)}</td>
+                            <td>
+                              <a
+                                href={doc?.filePath}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-primary"
+                              >
+                                {stringManulate(doc?.name)}
+                              </a>
+                              <p className="text-danger"> {doc?.comment}</p>
+                            </td>
+                            <td>{doc?.status}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <></>
+                      )}
+                    </tbody>
+                  </table>
+                  <div></div>
+                </div>
+              </div>
             </div>
           </div>
 

@@ -148,7 +148,6 @@ const PendindKyc = () => {
           />
         </div>
         <div>
-          {" "}
           <KycDetailsModal kycId={kycIdClick} />
         </div>
 

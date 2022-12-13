@@ -14,10 +14,11 @@ import RejectedKYC from "./RejectedKYC";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import { logout } from "../../slices/auth";
 import { useEffect } from "react";
+import {merchantTab} from "../../slices/approverVerifierTabSlice"
 
 function Approver() {
-  const [tab, SetTab] = useState(1);
-  const dispatch = useDispatch();
+const currenTab=  useSelector((state) => state.verifierApproverTab.currenTab)
+const dispatch = useDispatch();
 
   let history = useHistory();
 
@@ -37,6 +38,12 @@ function Approver() {
   const redirect = () => {
     history.push("/dashboard/onboard-merchant");
   };
+ 
+
+
+ const handleTabClick= (currenTab)=>{
+  dispatch(merchantTab(currenTab))
+ }
 
   return (
     <section className="ant-layout">
@@ -78,9 +85,9 @@ function Approver() {
                         href={() => false}
                         className={
                           "nav-link " +
-                          (tab === 1 ? "activepaylink" : "inactive")
+                          (currenTab === 1 ? "activepaylink" : "inactive")
                         }
-                        onClick={() => SetTab(1)}
+                        onClick={() => handleTabClick(1)}
                       >
                         Not Filled KYC
                       </a>
@@ -90,9 +97,9 @@ function Approver() {
                         href={() => false}
                         className={
                           "nav-link " +
-                          (tab === 2 ? "activepaylink" : "inactive")
+                          (currenTab === 2 ? "activepaylink" : "inactive")
                         }
-                        onClick={() => SetTab(2)}
+                        onClick={() => handleTabClick(2)}
                       >
                         Pending KYC
                       </a>
@@ -102,9 +109,9 @@ function Approver() {
                         href={() => false}
                         className={
                           "nav-link " +
-                          (tab === 3 ? "activepaylink" : "inactive")
+                          (currenTab === 3 ? "activepaylink" : "inactive")
                         }
-                        onClick={() => SetTab(3)}
+                        onClick={() => handleTabClick(3)}
                       >
                         Pending Verification
                       </a>
@@ -114,9 +121,9 @@ function Approver() {
                         href={() => false}
                         className={
                           "nav-link " +
-                          (tab === 4 ? "activepaylink" : "inactive")
+                          (currenTab === 4 ? "activepaylink" : "inactive")
                         }
-                        onClick={() => SetTab(4)}
+                        onClick={() => handleTabClick(4)}
                       >
                         Pending Approval
                       </a>
@@ -126,9 +133,9 @@ function Approver() {
                         href={() => false}
                         className={
                           "nav-link " +
-                          (tab === 5 ? "activepaylink" : "inactive")
+                          (currenTab === 5 ? "activepaylink" : "inactive")
                         }
-                        onClick={() => SetTab(5)}
+                        onClick={() => handleTabClick(5)}
                       >
                         Approved
                       </a>
@@ -138,9 +145,9 @@ function Approver() {
                         href={() => false}
                         className={
                           "nav-link " +
-                          (tab === 6 ? "activepaylink" : "inactive")
+                          (currenTab === 6 ? "activepaylink" : "inactive")
                         }
-                        onClick={() => SetTab(6)}
+                        onClick={() => handleTabClick(6)}
                       >
                         Rejected
                       </a>
@@ -157,12 +164,12 @@ function Approver() {
                       {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
                 lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
 
-                      {(tab === 1 && <NotFilledKYC />) ||
-                        (tab === 2 && <PendindKyc />) ||
-                        (tab === 3 && <PendingVerification />) ||
-                        (tab === 4 && <VerifiedMerchant />) ||
-                        (tab === 5 && <ApprovedMerchant />) ||
-                        (tab === 6 && <RejectedKYC />) || <NotFilledKYC />}
+                      {(currenTab === 1 && <NotFilledKYC />) ||
+                        (currenTab === 2 && <PendindKyc />) ||
+                        (currenTab === 3 && <PendingVerification />) ||
+                        (currenTab === 4 && <VerifiedMerchant />) ||
+                        (currenTab === 5 && <ApprovedMerchant />) ||
+                        (currenTab === 6 && <RejectedKYC />) || <NotFilledKYC />}
                     </div>
                   </div>
                 </section>
