@@ -85,7 +85,6 @@ const CreatePassword = (props) => {
                         <div class="input-group" id="show_hide_password">
                           <Field
                             name="password"
-                            type="password"
                             className="form-control"
                             id="exampleInputPassword1"
                             aria-describedby="PasswordHelp"
