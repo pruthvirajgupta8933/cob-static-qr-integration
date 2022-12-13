@@ -34,7 +34,7 @@
   text-decoration: none;
   color: #fff;
   font-weight: 700;
-  font-size: 15px !important;
+  font-size: 18px !important;
   
 }
 
@@ -480,7 +480,7 @@ a {
 
 #dropdown-menu3 {
   position: absolute;
-  left: 41%;
+  left: 43%;
 }
 
 .tab {
