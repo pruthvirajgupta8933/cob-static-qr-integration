@@ -2,6 +2,7 @@ import React from 'react'
 
 const BankDetails = (props) => {
     const {merchantKycId}=props;
+   
   return (
     <div className="row mb-4 border">
     <div class="col-lg-12">
@@ -93,7 +94,15 @@ const BankDetails = (props) => {
         disabled="true"
         value={merchantKycId?.branch}
       />
+      
     </div>
+    <div class="col-lg-6 "></div>
+        <div class="col-lg-6 mt-3">
+          <button type="button" class="btn btn-primary">Verify</button>
+          <button type="button" class="btn btn-primary">Reject</button>
+      
+        </div>
+    
   </div>
      )
 }

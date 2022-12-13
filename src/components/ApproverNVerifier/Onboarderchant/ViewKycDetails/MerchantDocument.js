@@ -1,10 +1,19 @@
 import React from 'react'
 
 const MerchantDocument = (props) => {
-    const{docList}=props
-    const getDocTypeName =()=>{
-
-    }
+    const{docList,docTypeList}=props;
+    
+    const getDocTypeName = (id) => {
+      let data = docTypeList.filter((obj) => {
+        if (obj?.key?.toString() === id?.toString()) {
+          return obj;
+        }
+      });
+  
+      // console.log("data",data)
+      return data[0]?.value;
+    };
+  
     const stringManulate = (str) => {
         let str1 = str.substring(0, 15)
         return `${str1}...`
@@ -52,7 +61,7 @@ const MerchantDocument = (props) => {
           )}
         </tbody>
       </table>
-      <div></div>
+     
     </div>
   </div>
   )

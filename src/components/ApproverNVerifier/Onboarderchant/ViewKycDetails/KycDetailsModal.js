@@ -7,12 +7,17 @@ import {
 } from "../../../../slices/kycSlice";
 import { useDispatch } from "react-redux";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
+import MerchantContactInfo from "./MerchantContactInfo";
+import BusinessOverview from "./BusinessOverview";
+import BusinessDetails from "./BusinessDetails";
+import BankDetails from "./BankDetails";
+import MerchantDocument from "./MerchantDocument";
 
 
 
 const KycDetailsModal = (props) => {
   let merchantKycId = props?.kycId;
-  console.log(merchantKycId)
+  
   const [docList, setDocList] = useState([]);
   const [docTypeList, setDocTypeList] = useState([]);
   const [businessTypeResponse, setBusinessTypeResponse] = useState([]);
@@ -128,422 +133,28 @@ const KycDetailsModal = (props) => {
           <div className="modal-body">
             <div className="container">
               {/* contact info section */}
-              <div className="row mb-4 border">
-                <div className="col-lg-12">
-                  <h3 className="font-weight-bold">Merchant Contact Info</h3>
-                </div>
+              
+              <MerchantContactInfo merchantKycId={merchantKycId}/>
 
-                <div class="col-sm-6 col-md-6 col-lg-6 ">
-                  <label class="col-form-label mt-0 p-2">
-                    Contact Name<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={merchantKycId?.name}
-                  />
-                </div>
-
-                <div class="col-sm-6 col-md-6 col-lg-6 ">
-                  <label class="col-form-label mt-0 p-2">
-                    Aadhaar Number <span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={merchantKycId?.aadharNumber}
-                  />
-                </div>
-
-
-                <div class="col-sm-6 col-md-6 col-lg-6 ">
-                  <label class="col-form-label mt-0 p-2">
-                    Contact Number<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={merchantKycId?.contactNumber}
-                  />
-
-                  <span>
-                    {merchantKycId?.isContactNumberVerified === 1 ? (
-                      <p className="text-success">Verified</p>
-                    ) : (
-                      <p className="text-danger"> Not Verified</p>
-                    )}
-                  </span>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-6 ">
-                  <label class="col-form-label mt-0 p-2">
-                    Email Id<span style={{ color: "red" }}>*</span>
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={merchantKycId?.emailId}
-                  />
-                  <span>
-                    {merchantKycId?.isEmailVerified === 1 ? (
-                      <p className="text-success">Verified</p>
-                    ) : (
-                      <p className="text-danger"> Not Verified</p>
-                    )}
-                  </span>
-                </div>
-
-              </div>
-
-              {/* business overview section */}
-              <div className="row mb-4 border">
-                <div class="col-lg-12">
-                  <h3 className="font-weight-bold">Business Overview</h3>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    Business Type<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    disabled="true"
-                    value={businessTypeResponse}
-                  />
-                </div>
-
-                <div class="col-sm-6 col-md-6 col-lg-6">
-                  <label class="p-2 mt-0">
-                    Business Category<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    disabled="true"
-                    value={businessCategoryResponse}
-                  />
-                </div>
-
-
-                <div class="col-sm-6 col-md-6 col-lg-6">
-                  <label class="col-form-label p-2 mt-0">
-                    Business Label <span style={{ color: "red" }}>*</span>
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.billingLabel
-                    }
-                  />
-                </div>
-
-                <div class="col-sm-6 col-md-6 col-lg-6">
-                  <label class="col-form-label p-2 mt-0">
-                    {merchantKycId?.is_website_url === true ?
-                      <p className="font-weight-bold"> Merchant wish to accept payments on (Web/App URL) {merchantKycId?.website_app_url}</p> :
-                      `Merchant has accepted payments without any web/app `}
-                  </label>
-                </div>
-
-
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <label class="col-form-label p-2 mt-0">
-                    Company Website<span style={{ color: "red" }}>*</span>
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.companyWebsite
-                    }
-                  />
-                </div>
-
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <label
-                    class="col-form-label p-0"
-                    style={{ marginTop: "15px" }}
-                  >
-                    Expected Transactions/Year{" "}
-                    <span style={{ color: "red" }}>*</span>
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.expectedTransactions
-                    }
-                  />
-                </div>
-
-                <div class="col-sm-4 col-md-4 col-lg-4">
-                  <label class="col-form-label p-2 mt-0">
-                    Avg Ticket Amount<span style={{ color: "red" }}>*</span>
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.avg_ticket_size
-                    }
-                  />
-                </div>
-              </div>
+             {/* business overview */}
+              <BusinessOverview 
+              businessTypeResponse={businessTypeResponse} 
+              businessCategoryResponse={businessCategoryResponse}  
+              merchantKycId={ merchantKycId} />
+            
 
               {/* business details */}
-              <div className="row mb-4 border">
-                <div class="col-lg-12">
-                  <h3 className="font-weight-bold">Business Details</h3>
-                </div>
-
-                <div class="col-sm-12 col-md-12 col-lg-12 marg-b">
-                  <label class="col-form-label mt-0 p-2">
-                    GSTIN<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.gstNumber
-                    }
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    Business PAN<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={merchantKycId?.panCard}
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    Authorized Signatory PAN{" "}
-                    <span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.signatoryPAN
-                    }
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    Business Name<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.companyName ? merchantKycId?.companyName : ""
-                    }
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    PAN Owner's Name<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.nameOnPanCard
-                    }
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    Address<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.operationalAddress
-                    }
-                  />
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    City<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={merchantKycId?.cityId}
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    State<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.state_name
-                    }
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    Pincode<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={merchantKycId?.pinCode}
-                  />
-                </div>
-
-              </div>
+              <BusinessDetails merchantKycId={merchantKycId} />
+            
 
               {/* Bank details */}
-              <div className="row mb-4 border">
-                <div class="col-lg-12">
-                  <h3 className="font-weight-bold">Bank Details</h3>
-                </div>
-
-                <div class="col-sm-12 col-md-12 col-lg-6 ">
-                  <label class="col-form-label mt-0 p-2">
-                    IFSC Code<span style={{ color: "red" }}>*</span>
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={merchantKycId?.ifscCode}
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-12 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    Business Account Number
-                    <span style={{ color: "red" }}>*</span>
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.accountNumber
-                    }
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-12 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    Account Holder Name<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.accountHolderName
-                    }
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-12 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    Account Type<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={
-                      merchantKycId?.accountType
-                    }
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-12 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    Bank Name<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={merchantKycId?.bankName}
-                  />
-                </div>
-
-                <div class="col-sm-12 col-md-12 col-lg-6">
-                  <label class="col-form-label mt-0 p-2">
-                    Branch<span style={{ color: "red" }}>*</span>
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inputPassword3"
-                    disabled="true"
-                    value={merchantKycId?.branch}
-                  />
-                </div>
-              </div>
+              <BankDetails merchantKycId={merchantKycId}/>
+            
 
               {/* Merchant Documents */}
-              <div className="row mb-4 border">
+              <MerchantDocument docList={docList} docTypeList={docTypeList} />
+
+              {/* <div className="row mb-4 border">
                 <div class="col-lg-12">
                   <h3 className="font-weight-bold">Merchant Docuemnts</h3>
                 </div>
@@ -585,7 +196,7 @@ const KycDetailsModal = (props) => {
                   </table>
                   <div></div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 

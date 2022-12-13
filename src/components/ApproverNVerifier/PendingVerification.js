@@ -214,6 +214,7 @@ function PendingVerification() {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
+                <th>View Status</th>
                 {/* <th>Comments</th> */}
                 <th>Action</th>
                 {roles?.verifier === true ? <th>Verify KYC</th> : <></>}
@@ -242,6 +243,17 @@ function PendingVerification() {
                     <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     {/* <td>{user?.comments}</td> */}
+                    <td>
+                      <button
+                        type="button"
+                        className="btn approve text-white  btn-xs"
+                        onClick={() => setKycIdClick(user)}
+                        data-toggle="modal"
+                        data-target="#kycmodaldetail"
+                      >
+                        View Status
+                      </button>
+                    </td>
                     <td>
                       {roles.verifier === true || roles.approver === true ? (
                         <button

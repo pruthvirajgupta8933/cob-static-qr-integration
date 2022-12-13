@@ -2,6 +2,7 @@ import React from 'react'
 
 const BusinessOverview = (props) => {
     const {businessTypeResponse,businessCategoryResponse,merchantKycId} =props;
+   
   return (
     <div className="row mb-4 border">
     <div class="col-lg-12">
@@ -107,8 +108,20 @@ const BusinessOverview = (props) => {
           merchantKycId?.avg_ticket_size
         }
       />
+     
     </div>
+    <div class="col-lg-6 "></div>
+        <div class="col-lg-6 mt-3">
+          <button type="button" class="btn btn-primary">Verify</button>
+          <button type="button" class="btn btn-primary">Reject</button>
+      
+        </div>
+    <div>
+   
+    </div>
+    
   </div>
+
   )
 }
 
