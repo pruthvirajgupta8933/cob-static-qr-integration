@@ -4,7 +4,7 @@ let url,kyc_url = "",kyc_validate = "";
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
-  kyc_validate = "https://stage-kycvalidator.sabpaisa.in"
+  kyc_validate = " https://kycvalidator.sabpaisa.in"
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
