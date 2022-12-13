@@ -15,13 +15,9 @@ function SideNavbar() {
 
   const { user, payLinkPermission } = auth;
 
-  var { clientContactPersonName } = user;
   let { url } = useRouteMatch();
   const dispatch = useDispatch();
-  const handle = () => {
-    dispatch(logout());
 
-  };
 
   useEffect(() => {
     if (user.clientMerchantDetailsList?.length > 0) {
