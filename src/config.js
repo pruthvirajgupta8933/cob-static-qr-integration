@@ -215,6 +215,14 @@ GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
 
   // VERIFY_EACH_TAB : `${kyc_url}kyc/verify-kyc/update/`,
 
+  // Reject each tab of the kyc , URL FOR VERIFER
+
+  REJECT_KYC_TAB:`${kyc_url}/kyc/verify-kyc/tab-reject/`,
+  COMPLETE_VERIFICATION:`${kyc_url}/kyc/verify-kyc/verify/`,
+  COMPLETE_VERIFICATION_REJECT_KYC:`${kyc_url}/kyc/verify-kyc/reject/`,
+
+
+
 
   // Client Detail SandBox //
   CLIENT_DETAIL: `${url}/clientDetail`,

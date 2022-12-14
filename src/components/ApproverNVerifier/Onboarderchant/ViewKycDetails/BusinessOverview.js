@@ -1,7 +1,62 @@
 import React from 'react'
+import { useDispatch, useSelector } from "react-redux";
+// import {verifyKycEachTab} from "../../slices/kycSlice";
+import { verifyKycEachTab } from '../../../../slices/kycSlice';
+import { toast } from "react-toastify";
+import {rejectKycOperation} from "../../../../slices/kycOperationSlice"
 
 const BusinessOverview = (props) => {
     const {businessTypeResponse,businessCategoryResponse,merchantKycId} =props;
+    console.log("merchantKycId",merchantKycId)
+    const dispatch = useDispatch();
+    const { auth, kyc } = useSelector((state) => state);
+ 
+    const { user } = auth;
+    const { loginId } = user;
+    const KycList = kyc.kycUserList;
+  
+    const VerifyKycStatus = kyc?.KycTabStatusStore?.general_info_status;
+
+
+
+const handleVerify = ()=>{
+  const veriferDetails = {
+    login_id:merchantKycId.loginMasterId,
+    business_info_verified_by: loginId,
+  };
+  dispatch(verifyKycEachTab(veriferDetails))
+    .then((resp) => {
+      resp?.payload?.business_info_status &&
+        toast.success(resp?.payload?.business_info_status);
+      resp?.payload?.detail && toast.error(resp?.payload?.detail);
+    })
+    .catch((e) => {
+      toast.error("Try Again Network Error");
+    });
+
+
+}
+
+
+const handleRejectClick =()=>{
+  const rejectDetails = {
+    login_id: merchantKycId.loginMasterId,
+    business_info_rejected_by: loginId,
+  };
+  dispatch(rejectKycOperation(rejectDetails))
+    .then((resp) => {
+      resp?.payload?.merchant_info_status &&
+        toast.success(resp?.payload?.merchant_info_status);
+      resp?.payload?.detail && toast.error(resp?.payload?.detail);
+    })
+    .catch((e) => {
+      toast.error("Try Again Network Error");
+    });
+
+}
+
+
+
    
   return (
     <div className="row mb-4 border">
@@ -112,8 +167,8 @@ const BusinessOverview = (props) => {
     </div>
     <div class="col-lg-6 "></div>
         <div class="col-lg-6 mt-3">
-          <button type="button" class="btn btn-primary">Verify</button>
-          <button type="button" class="btn btn-primary">Reject</button>
+          <button type="button" onClick={()=>handleVerify()} class="btn btn-primary">Verify</button>
+          <button type="button" onClick={()=>handleRejectClick()} class="btn btn-primary">Reject</button>
       
         </div>
     <div>
