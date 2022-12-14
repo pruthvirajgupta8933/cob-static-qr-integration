@@ -1,6 +1,9 @@
-export const roleBasedAccess = (pageNo) => {
+import { ALLOW_ROLE_AS_VERIFIER } from "../../utilities/permisson";
+
+export const roleBasedAccess = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const roleId = user?.roleId;
+    const loginId = user?.loginId;
 
     const roleBasedTab = {
         approver: false,
@@ -11,19 +14,61 @@ export const roleBasedAccess = (pageNo) => {
     };
 
     let roleAccessObj = roleBasedTab;
+    let permission = {
+        Allow_To_Do_Verify_Kyc_details : ALLOW_ROLE_AS_VERIFIER.includes(loginId),
+        EnalbeTabs: {
+            MerchantList:false,
+            AdditionalKyc:false,
+            AssignZone:false,
+            RateMapping:false,
+            SignupData:false,
+            OnBoardMerchant:false
+        }
+    }
+
     if (roleId === 14 ) {
+        // user is verifier 
         roleAccessObj = { ...roleAccessObj, verifier: true };
+        permission = {...permission.EnalbeTabs, 
+            MerchantList:true,
+            SignupData : true,
+            OnBoardMerchant : true,
+        }
     } else if (roleId === 15){
+        // user is approver
         roleAccessObj = { ...roleAccessObj, approver: true };
+        permission = {...permission.EnalbeTabs, 
+                        MerchantList:true,
+                        AdditionalKyc : true,
+                        AssignZone : true,
+                        RateMapping : true,
+                        SignupData : true,
+                        OnBoardMerchant : true,
+                    }
+
     }else if (roleId === 3 || roleId === 13) {
         roleAccessObj = { ...roleAccessObj, bank: true };
     } else if (roleId === 4 || roleId === 5) {
         roleAccessObj = { ...roleAccessObj, merchant: true };
     } else if (roleId === 16 ) {
+        // user is viewer
         roleAccessObj = { ...roleAccessObj, viewer: true };
+        permission = {...permission.EnalbeTabs, 
+            MerchantList:true,
+            SignupData : true
+        }
     } else {
         // console.log("Permission not match with these roles");
     }
 
+    roleAccessObj.permission = permission
+
+
+
+
+
     return roleAccessObj;
 };
+
+
+
