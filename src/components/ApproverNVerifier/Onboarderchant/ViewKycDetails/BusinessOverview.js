@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { verifyKycEachTab } from '../../../../slices/kycSlice';
 import { toast } from "react-toastify";
 import {rejectKycOperation} from "../../../../slices/kycOperationSlice"
+import VerifyRejectBtn from './VerifyRejectBtn';
 
 const BusinessOverview = (props) => {
     const {businessTypeResponse,businessCategoryResponse,merchantKycId} =props;
-    console.log("merchantKycId",merchantKycId)
     const dispatch = useDispatch();
     const { auth, kyc } = useSelector((state) => state);
  
@@ -19,7 +19,7 @@ const BusinessOverview = (props) => {
 
 
 
-const handleVerify = ()=>{
+const handleVerifyClick = ()=>{
   const veriferDetails = {
     login_id:merchantKycId.loginMasterId,
     business_info_verified_by: loginId,
@@ -167,9 +167,9 @@ const handleRejectClick =()=>{
     </div>
     <div class="col-lg-6 "></div>
         <div class="col-lg-6 mt-3">
-          <button type="button" onClick={()=>handleVerify()} class="btn btn-primary">Verify</button>
-          <button type="button" onClick={()=>handleRejectClick()} class="btn btn-primary">Reject</button>
-      
+        <VerifyRejectBtn handleVerifyClick={handleVerifyClick} handleRejectClick={handleRejectClick} 
+           btnText={{verify:"Verify",Reject:"Reject"}}
+        />
         </div>
     <div>
    

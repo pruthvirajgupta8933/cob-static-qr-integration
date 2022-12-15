@@ -3,6 +3,7 @@ import {verifyKycEachTab} from "../../../../slices/kycSlice"
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { rejectKycOperation } from '../../../../slices/kycOperationSlice';
+import VerifyRejectBtn from './VerifyRejectBtn';
 
 const BankDetails = (props) => {
   const dispatch=useDispatch();
@@ -12,7 +13,7 @@ const BankDetails = (props) => {
     const { user } = auth;
     const { loginId } = user;
 
-    const handleClick=()=>{
+    const handleVerifyClick=()=>{
       const veriferDetails = {
         login_id: merchantKycId.loginMasterId,
         settlement_info_verified_by: loginId,
@@ -142,9 +143,9 @@ const BankDetails = (props) => {
     </div>
     <div class="col-lg-6 "></div>
         <div class="col-lg-6 mt-3">
-          <button type="button" onClick={()=>handleClick()} class="btn btn-primary">Verify</button>
-          <button type="button" onClick={()=>handleRejectClick()} class="btn btn-primary">Reject</button>
-      
+        <VerifyRejectBtn handleVerifyClick={handleVerifyClick} handleRejectClick={handleRejectClick}
+        btnText={{verify:"Verify",Reject:"Reject"}}
+         />
         </div>
     
   </div>

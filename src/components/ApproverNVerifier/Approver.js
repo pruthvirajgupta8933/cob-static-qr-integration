@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Redirect,
@@ -13,11 +13,14 @@ import NotFilledKYC from "./NotFilledKYC";
 import RejectedKYC from "./RejectedKYC";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import { logout } from "../../slices/auth";
-import { useEffect } from "react";
 import {merchantTab} from "../../slices/approverVerifierTabSlice"
 
 function Approver() {
-const currenTab=  useSelector((state) => state.verifierApproverTab.currenTab)
+const verifierApproverTab =  useSelector((state) => state.verifierApproverTab)
+const currenTab =  parseInt(verifierApproverTab?.currenTab)
+
+
+// console.log("currenTab",currenTab)
 const dispatch = useDispatch();
 
   let history = useHistory();

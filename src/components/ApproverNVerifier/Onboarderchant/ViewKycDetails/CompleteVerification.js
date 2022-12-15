@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {completeVerification,completeVerificationRejectKyc} from "../../../../slices/kycOperationSlice"
+import VerifyRejectBtn from './VerifyRejectBtn';
 
 
 const CompleteVerification = (props) => {
@@ -47,10 +48,11 @@ const handleRejectClick = ()=>{
 }
   return (
     <div class="row">
-       
+       <div class="col-lg-6"></div>
         <div class="col-lg-6">
-          <button type="button" onClick={()=>handleVerifyClick()}  class="btn btn-primary">Complete Verification</button>
-          <button type="button"  onClick={()=>handleRejectClick()} class="btn btn-primary">Reject</button>
+          <VerifyRejectBtn handleVerifyClick={handleVerifyClick} handleRejectClick={handleRejectClick} 
+          btnText={{verify:"Complete Verification",Reject:"Reject"}}
+           />
       
         </div>
     </div>

@@ -5,7 +5,7 @@ import {
   businessTypeById,
   documentsUpload
 } from "../../../../slices/kycSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import MerchantContactInfo from "./MerchantContactInfo";
 import BusinessOverview from "./BusinessOverview";
@@ -30,6 +30,9 @@ const KycDetailsModal = (props) => {
 
   const dispatch = useDispatch();
 
+  const state = useSelector((state) => state)
+
+  console.log(state)
   //------------------------------------------------------------------
 
   //------------- Kyc  Document List ------------//
@@ -157,49 +160,6 @@ const KycDetailsModal = (props) => {
               {/* Merchant Documents */}
               <MerchantDocument docList={docList} docTypeList={docTypeList} role={roles}  merchantKycId={merchantKycId} />
 
-              {/* <div className="row mb-4 border">
-                <div class="col-lg-12">
-                  <h3 className="font-weight-bold">Merchant Docuemnts</h3>
-                </div>
-
-                <div className="col-lg-12 mt-4 m-2">
-                  <table className="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>S.No.</th>
-                        <th>Document Type</th>
-                        <th>Document Name</th>
-                        <th>Document Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {docList?.length > 0 ? (
-                        docList?.map((doc, i) => (
-                          <tr key={i}>
-                            <td>{i + 1}</td>
-                            <td>{getDocTypeName(doc?.type)}</td>
-                            <td>
-                              <a
-                                href={doc?.filePath}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="text-primary"
-                              >
-                                {stringManulate(doc?.name)}
-                              </a>
-                              <p className="text-danger"> {doc?.comment}</p>
-                            </td>
-                            <td>{doc?.status}</td>
-                          </tr>
-                        ))
-                      ) : (
-                        <></>
-                      )}
-                    </tbody>
-                  </table>
-                  <div></div>
-                </div>
-              </div> */}
             </div>
             <CompleteVerification merchantKycId={merchantKycId}/>
           </div>

@@ -249,7 +249,7 @@ GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
 
   // GET API FOR VIEWING COMMENTS
 
-  VIEW_COMMENTS_LIST: `https://stgcobapi.sabpaisa.in/merchant/get-comments-by-clientcode`
+  VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`
 
   
   // ---------------------------   NEW API FOR COMMENTS (2)

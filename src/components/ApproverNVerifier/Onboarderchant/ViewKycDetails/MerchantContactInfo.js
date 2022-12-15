@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react'
-import {verifyKycEachTab} from "../../../../slices/kycSlice"
+import React, { useState, useEffect } from 'react'
+import { verifyKycEachTab } from "../../../../slices/kycSlice"
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {rejectKycOperation} from "../../../../slices/kycOperationSlice"
+import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
+import VerifyRejectBtn from './VerifyRejectBtn';
 
 
 function MerchantContactInfo(props) {
@@ -11,33 +12,29 @@ function MerchantContactInfo(props) {
 
   const dispatch = useDispatch();
   const { role, kycid } = props;
-  
+
   const { auth, kyc } = useSelector((state) => state);
- 
+
   const { user } = auth;
   const { loginId } = user;
-  const KycList = kyc.kycUserList;
 
-  const VerifyKycStatus = kyc?.KycTabStatusStore?.general_info_status;
   useEffect(() => {
     if (role.approver) {
       // setReadOnly(true);
-      setButtonText("Approve and Next");
+      setButtonText("Approve");
     } else if (role.verifier) {
       // setReadOnly(true);
-      setButtonText("Verify and Next");
+      setButtonText("Verify");
     }
   }, [role]);
-  
+
   const handleVerifyClick = () => {
-   
-
-
 
     const veriferDetails = {
       login_id: merchantKycId.loginMasterId,
       general_info_verified_by: loginId,
     };
+
     dispatch(verifyKycEachTab(veriferDetails))
       .then((resp) => {
         resp?.payload?.general_info_status &&
@@ -49,7 +46,7 @@ function MerchantContactInfo(props) {
       });
   }
 
-  const handleRejectClick =()=>{
+  const handleRejectClick = () => {
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       merchant_info_rejected_by: loginId,
@@ -145,15 +142,11 @@ function MerchantContactInfo(props) {
       </div>
 
       <div class="col-lg-6"></div>
-        <div class="col-lg-6">
-          <button type="button" onClick={()=>handleVerifyClick()} class="btn btn-primary">Verify</button>
-          <button type="button" onClick={()=>handleRejectClick()} class="btn btn-primary">Reject</button>
-      
-        </div>
-      
-
-      
-
+      <div class="col-lg-6">
+        <VerifyRejectBtn handleVerifyClick={handleVerifyClick} handleRejectClick={handleRejectClick}
+        btnText={{verify:"Verify",Reject:"Reject"}}
+         />
+      </div>
     </div>
 
   )
