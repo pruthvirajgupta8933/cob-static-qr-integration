@@ -8,6 +8,7 @@ import reducerSubscription from './slices/subscription'
 import { kycReducer } from './slices/kycSlice';
 import {merchantZoneMappingReducer} from './slices/merchantZoneMappingSlice'
 import { merchantListReducer } from './slices/approverVerifierTabSlice';
+import { kycOperationReducer } from './slices/kycOperationSlice';
 
 
 
@@ -19,7 +20,8 @@ const reducer = {
   subscription:reducerSubscription,
   kyc:kycReducer,
   zone:merchantZoneMappingReducer,
-  verifierApproverTab:merchantListReducer
+  verifierApproverTab:merchantListReducer,
+  kycOperationReducer:kycOperationReducer
 }
 
 const store = configureStore({

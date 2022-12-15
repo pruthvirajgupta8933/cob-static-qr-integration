@@ -27,6 +27,7 @@ function ContactInfo(props) {
   const dispatch = useDispatch();
 
   const { role, kycid } = props;
+  console.log("this is the merchnat id here",props)
   const { auth, kyc } = useSelector((state) => state);
 
   const { user } = auth;
@@ -135,6 +136,7 @@ function ContactInfo(props) {
         }
       });
     } else if (role.verifier) {
+
       const veriferDetails = {
         login_id: kycid,
         general_info_verified_by: loginId,

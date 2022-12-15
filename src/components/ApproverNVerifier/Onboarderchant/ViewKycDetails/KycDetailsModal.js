@@ -12,6 +12,8 @@ import BusinessOverview from "./BusinessOverview";
 import BusinessDetails from "./BusinessDetails";
 import BankDetails from "./BankDetails";
 import MerchantDocument from "./MerchantDocument";
+import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
+import CompleteVerification from "./CompleteVerification";
 
 
 
@@ -22,6 +24,7 @@ const KycDetailsModal = (props) => {
   const [docTypeList, setDocTypeList] = useState([]);
   const [businessTypeResponse, setBusinessTypeResponse] = useState([]);
   const [businessCategoryResponse, setBusinessCategoryResponse] = useState([]);
+  const roles = roleBasedAccess();
 
   //   console.log(props?.kycId, "Props =======>");
 
@@ -134,7 +137,7 @@ const KycDetailsModal = (props) => {
             <div className="container">
               {/* contact info section */}
               
-              <MerchantContactInfo merchantKycId={merchantKycId}/>
+              <MerchantContactInfo merchantKycId={merchantKycId} role={roles}/>
 
              {/* business overview */}
               <BusinessOverview 
@@ -152,7 +155,7 @@ const KycDetailsModal = (props) => {
             
 
               {/* Merchant Documents */}
-              <MerchantDocument docList={docList} docTypeList={docTypeList} />
+              <MerchantDocument docList={docList} docTypeList={docTypeList} role={roles}  merchantKycId={merchantKycId} />
 
               {/* <div className="row mb-4 border">
                 <div class="col-lg-12">
@@ -198,6 +201,7 @@ const KycDetailsModal = (props) => {
                 </div>
               </div> */}
             </div>
+            <CompleteVerification merchantKycId={merchantKycId}/>
           </div>
 
           <div class="modal-footer">
