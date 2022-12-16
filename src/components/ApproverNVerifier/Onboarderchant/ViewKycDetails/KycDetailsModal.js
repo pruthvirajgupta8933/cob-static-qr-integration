@@ -23,20 +23,20 @@ const KycDetailsModal = (props) => {
   // console.log(props)
 
   let merchantKycId = props?.kycId;
-  
+
   const [docList, setDocList] = useState([]);
   const [docTypeList, setDocTypeList] = useState([]);
   const [businessTypeResponse, setBusinessTypeResponse] = useState([]);
   const [businessCategoryResponse, setBusinessCategoryResponse] = useState([]);
   const roles = roleBasedAccess();
-  console.log("roles",roles)
+
 
   //   console.log(props?.kycId, "Props =======>");
 
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state)
-  const {kyc} = state;
+  const { kyc } = state;
 
   const { KycTabStatusStore } = kyc
   // console.log(KycTabStatusStore)
@@ -92,7 +92,7 @@ const KycDetailsModal = (props) => {
   }, [merchantKycId?.businessType]);
 
   useEffect(() => {
-    
+
     if (isNumber(merchantKycId)) {
       dispatch(
         businessCategoryById({ category_id: merchantKycId?.businessCategory })
@@ -122,14 +122,15 @@ const KycDetailsModal = (props) => {
 
   }
 
-
+  
   return (
     <div
-      class="modal fade"
-      id="kycmodaldetail"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="exampleModalLabel"
+      className={
+        "modal fade mymodals" +
+        (props?.isOpenModal ? " show d-block" : " d-none")
+      }
       aria-hidden="true"
       style={{ overflow: "scroll" }}
     >
@@ -144,6 +145,9 @@ const KycDetailsModal = (props) => {
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              onClick={() => {
+                props?.handleModal(false)
+              }}
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -155,32 +159,32 @@ const KycDetailsModal = (props) => {
               {/* contact info section */}
               <MerchantContactInfo merchantKycId={merchantKycId} role={roles} KycTabStatus={KycTabStatusStore} />
 
-             {/* business overview */}
-              <BusinessOverview 
-              businessTypeResponse={businessTypeResponse} 
-              businessCategoryResponse={businessCategoryResponse}  
-              merchantKycId={ merchantKycId} 
-              KycTabStatus={KycTabStatusStore}
+              {/* business overview */}
+              <BusinessOverview
+                businessTypeResponse={businessTypeResponse}
+                businessCategoryResponse={businessCategoryResponse}
+                merchantKycId={merchantKycId}
+                KycTabStatus={KycTabStatusStore}
               />
-            
+
 
               {/* business details */}
               <BusinessDetails merchantKycId={merchantKycId}
-              KycTabStatus={KycTabStatusStore}
-               />
-            
-
-              {/* Bank details */}
-              <BankDetails merchantKycId={merchantKycId} 
                 KycTabStatus={KycTabStatusStore}
               />
-            
+
+
+              {/* Bank details */}
+              <BankDetails merchantKycId={merchantKycId}
+                KycTabStatus={KycTabStatusStore}
+              />
+
 
               {/* Merchant Documents */}
-              <MerchantDocument docList={docList} docTypeList={docTypeList} role={roles}  merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore} />
+              <MerchantDocument docList={docList} docTypeList={docTypeList} role={roles} merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore} />
 
             </div>
-            <CompleteVerification merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore}/>
+            <CompleteVerification merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore} />
           </div>
 
           <div class="modal-footer">
@@ -188,6 +192,9 @@ const KycDetailsModal = (props) => {
               type="button"
               class="btn btn-secondary text-white"
               data-dismiss="modal"
+              onClick={() => {
+                props?.handleModal(false)
+              }}
             >
               Close
             </button>

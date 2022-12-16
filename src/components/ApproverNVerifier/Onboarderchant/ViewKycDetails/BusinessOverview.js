@@ -174,11 +174,12 @@ const BusinessOverview = (props) => {
       </div>
 
       <div className="col-lg-6 ">
-        Status : <span>{general_info_status}</span>
+        Status : <span>{KycTabStatus?.business_info_status}</span>
       </div>
 
       <div className="col-lg-6 mt-3">
         <VerifyRejectBtn
+         KycTabStatus={KycTabStatus?.business_info_status}
           KycVerifyStatus={{ handleVerifyClick, isVerified }}
           KycRejectStatus={{ handleRejectClick, isRejected }}
           btnText={{ verify: "Verify", Reject: "Reject" }}

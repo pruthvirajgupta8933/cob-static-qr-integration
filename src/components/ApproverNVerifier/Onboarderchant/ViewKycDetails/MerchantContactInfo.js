@@ -153,6 +153,7 @@ function MerchantContactInfo(props) {
       </div>
       <div class="col-lg-6">
         <VerifyRejectBtn
+         KycTabStatus={KycTabStatus?.general_info_status}
           KycVerifyStatus={{ handleVerifyClick, isVerified }}
           KycRejectStatus={{ handleRejectClick, isRejected }}
           btnText={{ verify: "Verify", Reject: "Reject" }}

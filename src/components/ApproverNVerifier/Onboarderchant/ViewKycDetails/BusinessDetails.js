@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { rejectKycOperation } from '../../../../slices/kycOperationSlice';
 import VerifyRejectBtn from './VerifyRejectBtn';
 const BusinessDetails = (props) => {
-  const { merchantKycId } = props;
+  const { merchantKycId,KycTabStatus } = props;
   const dispatch = useDispatch();
 
 
@@ -185,9 +185,13 @@ const BusinessDetails = (props) => {
 
 
       </div>
-      <div class="col-lg-6 "></div>
+      <div class="col-lg-6 ">
+      Status : <span>{KycTabStatus?.merchant_info_status}</span>
+      </div>
       <div class="col-lg-6 mt-3">
-        <VerifyRejectBtn handleVerifyClick={handleVerifyClick} handleRejectClick={handleRejectClick} 
+        <VerifyRejectBtn 
+        KycTabStatus={KycTabStatus?.merchant_info_status}
+        handleVerifyClick={handleVerifyClick} handleRejectClick={handleRejectClick} 
            btnText={{verify:"Verify",Reject:"Reject"}}
         />
       </div>

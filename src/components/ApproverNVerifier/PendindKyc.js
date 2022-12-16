@@ -32,6 +32,8 @@ const PendindKyc = () => {
   const [statusData, setStatusData] = useState([]);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [kycIdClick, setKycIdClick] = useState(null);
+  const [isOpenModal, setIsModalOpen] = useState(false)
+
 
   const { auth } = useSelector((state) => state);
   const { user } = auth;
@@ -148,7 +150,8 @@ const PendindKyc = () => {
           />
         </div>
         <div>
-          <KycDetailsModal kycId={kycIdClick} />
+         
+        <KycDetailsModal handleModal={setIsModalOpen} kycId={kycIdClick} isOpenModal={isOpenModal} />
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -217,7 +220,7 @@ const PendindKyc = () => {
                       <button
                         type="button"
                         className="btn approve text-white  btn-xs"
-                        onClick={() => setKycIdClick(user)}
+                        onClick={() => {setKycIdClick(user); setIsModalOpen(!isOpenModal) }}
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >

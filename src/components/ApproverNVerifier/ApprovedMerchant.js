@@ -25,6 +25,7 @@ function ApprovedMerchant() {
   const [spinner, setSpinner] = useState(true);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [isOpenModal, setIsModalOpen] = useState(false)
   let page_size = pageSize;
   let page = currentPage;
 
@@ -149,7 +150,7 @@ let pageNumbers = []
       </div>
       <div>
           
-          <KycDetailsModal kycId={kycIdClick} />
+          <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
         </div>
       <div className="col-lg-4 mrg-btm- bgcolor">
         <label>Count Per Page</label>
@@ -190,7 +191,7 @@ let pageNumbers = []
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
-                <th>View document</th>
+                <th>View Status</th>
               </tr>
             </thead>
             <tbody>
@@ -228,11 +229,11 @@ let pageNumbers = []
                       <button
                           type="button"
                           className="btn approve text-white  btn-xs"
-                          onClick={() => setKycIdClick(user)}
+                          onClick={() =>  {setKycIdClick(user); setIsModalOpen(true) }}
                           data-toggle="modal"
                           data-target="#kycmodaldetail"
                         >
-                          View Document
+                          View Status
                         </button>
 
                       <div
