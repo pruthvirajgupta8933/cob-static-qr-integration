@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { stringDec } from "../../../../utilities/encodeDecode";
 import { isCompositeComponent } from "react-dom/test-utils";
+import SabpaisaPaymentGateway from "../../../sabpaisa-pg/SabpaisaPaymentGateway";
 
 const SabPaisaPricing = () => {
   const history = useHistory();
@@ -183,7 +184,7 @@ const SabPaisaPricing = () => {
     <section className="ant-layout">
       <div>
         <NavBar />
-
+        {/* <SabpaisaPaymentGateway /> */}
       </div>
       <main className="gx-layout-content ant-layout-content Satoshi-Medium">
         <div>

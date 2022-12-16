@@ -35,6 +35,7 @@ function PendingVerification() {
   const [commentId, setCommentId] = useState({});
   const [pageSize, setPageSize] = useState(20);
   const [kycIdClick, setKycIdClick] = useState(null);
+  const [isOpenModal, setIsModalOpen] = useState(false)
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [openCommentModal, setOpenCommentModal] = useState(false);
 
@@ -175,7 +176,10 @@ function PendingVerification() {
         </div>
         <div>
           {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> : <></>}
-          <KycDetailsModal kycId={kycIdClick} />
+          
+          {/* KYC Details Modal */}
+          {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></> }
+          
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -247,7 +251,7 @@ function PendingVerification() {
                       <button
                         type="button"
                         className="btn approve text-white  btn-xs"
-                        onClick={() => setKycIdClick(user)}
+                        onClick={() => {setKycIdClick(user); setIsModalOpen(!isOpenModal) }}
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >

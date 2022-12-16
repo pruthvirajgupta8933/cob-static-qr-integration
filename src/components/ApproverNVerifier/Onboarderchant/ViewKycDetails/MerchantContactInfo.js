@@ -7,8 +7,15 @@ import VerifyRejectBtn from './VerifyRejectBtn';
 
 
 function MerchantContactInfo(props) {
-  const { merchantKycId } = props
+  
+  const { merchantKycId, KycTabStatus } = props
   const [buttonText, setButtonText] = useState("Save and Next");
+
+  const [isVerified, setIsVerified] = useState(KycTabStatus?.general_info_status === "Verified" ? true : false);
+  const [isRejected, setIsRejected] = useState(KycTabStatus?.general_info_status === "Verified" ? true : false);
+
+
+
 
   const dispatch = useDispatch();
   const { role, kycid } = props;
@@ -141,11 +148,15 @@ function MerchantContactInfo(props) {
 
       </div>
 
-      <div class="col-lg-6"></div>
       <div class="col-lg-6">
-        <VerifyRejectBtn handleVerifyClick={handleVerifyClick} handleRejectClick={handleRejectClick}
-        btnText={{verify:"Verify",Reject:"Reject"}}
-         />
+        Status : <span>{KycTabStatus?.general_info_status}</span>
+      </div>
+      <div class="col-lg-6">
+        <VerifyRejectBtn
+          KycVerifyStatus={{ handleVerifyClick, isVerified }}
+          KycRejectStatus={{ handleRejectClick, isRejected }}
+          btnText={{ verify: "Verify", Reject: "Reject" }}
+        />
       </div>
     </div>
 

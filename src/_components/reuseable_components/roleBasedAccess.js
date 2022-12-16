@@ -1,5 +1,5 @@
 import { ALLOW_ROLE_AS_VERIFIER } from "../../utilities/permisson";
-
+console.log(ALLOW_ROLE_AS_VERIFIER)
 export const roleBasedAccess = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const roleId = user?.roleId;
@@ -14,8 +14,9 @@ export const roleBasedAccess = () => {
     };
 
     let roleAccessObj = roleBasedTab;
+    
     let permission = {
-        Allow_To_Do_Verify_Kyc_details : ALLOW_ROLE_AS_VERIFIER.includes(loginId),
+        Allow_To_Do_Verify_Kyc_details : false,
         EnalbeTabs: {
             MerchantList:false,
             AdditionalKyc:false,
@@ -25,6 +26,7 @@ export const roleBasedAccess = () => {
             OnBoardMerchant:false
         }
     }
+
 
     if (roleId === 14 ) {
         // user is verifier 
@@ -60,7 +62,7 @@ export const roleBasedAccess = () => {
     } else {
         // console.log("Permission not match with these roles");
     }
-
+    permission.Allow_To_Do_Verify_Kyc_details = ALLOW_ROLE_AS_VERIFIER.includes(loginId)
     roleAccessObj.permission = permission
 
 

@@ -3,7 +3,8 @@ import {
   kycDocumentUploadList,
   businessCategoryById,
   businessTypeById,
-  documentsUpload
+  documentsUpload,
+  GetKycTabsStatus
 } from "../../../../slices/kycSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
@@ -14,10 +15,13 @@ import BankDetails from "./BankDetails";
 import MerchantDocument from "./MerchantDocument";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import CompleteVerification from "./CompleteVerification";
+import { isNumber } from "lodash";
 
 
 
 const KycDetailsModal = (props) => {
+  // console.log(props)
+
   let merchantKycId = props?.kycId;
   
   const [docList, setDocList] = useState([]);
@@ -25,14 +29,17 @@ const KycDetailsModal = (props) => {
   const [businessTypeResponse, setBusinessTypeResponse] = useState([]);
   const [businessCategoryResponse, setBusinessCategoryResponse] = useState([]);
   const roles = roleBasedAccess();
+  console.log("roles",roles)
 
   //   console.log(props?.kycId, "Props =======>");
 
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state)
+  const {kyc} = state;
 
-  console.log(state)
+  const { KycTabStatusStore } = kyc
+  // console.log(KycTabStatusStore)
   //------------------------------------------------------------------
 
   //------------- Kyc  Document List ------------//
@@ -44,11 +51,17 @@ const KycDetailsModal = (props) => {
       dispatch(
         kycDocumentUploadList({ login_id: merchantKycId?.loginMasterId })
       ).then((resp) => {
-        //    console.log(resp?.payload,"Responseee")
         setDocList(resp?.payload);
       });
+
+      // console.log(merchantKycId?.loginMasterId)
+      dispatch(
+        GetKycTabsStatus({
+          login_id: merchantKycId?.loginMasterId,
+        })
+      );
     }
-  }, [merchantKycId?.loginMasterId]);
+  }, [merchantKycId]);
 
 
   useEffect(() => {
@@ -79,7 +92,8 @@ const KycDetailsModal = (props) => {
   }, [merchantKycId?.businessType]);
 
   useEffect(() => {
-    if (merchantKycId !== null) {
+    
+    if (isNumber(merchantKycId)) {
       dispatch(
         businessCategoryById({ category_id: merchantKycId?.businessCategory })
       ).then((resp) => {
@@ -139,29 +153,34 @@ const KycDetailsModal = (props) => {
           <div className="modal-body">
             <div className="container">
               {/* contact info section */}
-              
-              <MerchantContactInfo merchantKycId={merchantKycId} role={roles}/>
+              <MerchantContactInfo merchantKycId={merchantKycId} role={roles} KycTabStatus={KycTabStatusStore} />
 
              {/* business overview */}
               <BusinessOverview 
               businessTypeResponse={businessTypeResponse} 
               businessCategoryResponse={businessCategoryResponse}  
-              merchantKycId={ merchantKycId} />
+              merchantKycId={ merchantKycId} 
+              KycTabStatus={KycTabStatusStore}
+              />
             
 
               {/* business details */}
-              <BusinessDetails merchantKycId={merchantKycId} />
+              <BusinessDetails merchantKycId={merchantKycId}
+              KycTabStatus={KycTabStatusStore}
+               />
             
 
               {/* Bank details */}
-              <BankDetails merchantKycId={merchantKycId}/>
+              <BankDetails merchantKycId={merchantKycId} 
+                KycTabStatus={KycTabStatusStore}
+              />
             
 
               {/* Merchant Documents */}
-              <MerchantDocument docList={docList} docTypeList={docTypeList} role={roles}  merchantKycId={merchantKycId} />
+              <MerchantDocument docList={docList} docTypeList={docTypeList} role={roles}  merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore} />
 
             </div>
-            <CompleteVerification merchantKycId={merchantKycId}/>
+            <CompleteVerification merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore}/>
           </div>
 
           <div class="modal-footer">

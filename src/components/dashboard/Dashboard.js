@@ -39,6 +39,7 @@ import AssignZone from '../ApproverNVerifier/AssignZone';
 import AdditionalKYC from '../ApproverNVerifier/AdditionalKYC';
 import RateMapping from '../ApproverNVerifier/RateMapping';
 import SignupData from '../ApproverNVerifier/SignupData';
+import PgResponse from '../sabpaisa-pg/PgResponse';
 
 
 function Dashboard() {
@@ -188,6 +189,9 @@ function Dashboard() {
                     <Route exact path={`${path}/Sandbox`} >
                          <Sandbox />
                     </Route>
+                    {/* <Route exact path={`${path}/pg-response`} >
+                         <PgResponse />
+                    </Route> */}
                </Switch>
           </section>
      )
