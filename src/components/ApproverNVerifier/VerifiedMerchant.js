@@ -26,6 +26,7 @@ function VerifiedMerchant() {
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
+  const [isOpenModal, setIsModalOpen] = useState(false)
 
   let page_size = pageSize;
   let page = currentPage;
@@ -177,6 +178,7 @@ function VerifiedMerchant() {
       {openCommentModal === true ?  
       <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> 
       : <></>}
+      <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
@@ -192,6 +194,7 @@ function VerifiedMerchant() {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
+                <th>View Status</th>
                 {/* <th>Comments</th> */}
                 <th>Action</th>
                 {roles.approver === true ? <th>Approve KYC</th> : <></>}
@@ -219,6 +222,17 @@ function VerifiedMerchant() {
                     <td>{user.status}</td>
                     <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn approve text-white  btn-xs"
+                        onClick={() => {setKycIdClick(user); setIsModalOpen(true) }}
+                        data-toggle="modal"
+                        data-target="#kycmodaldetail"
+                      >
+                        View Status
+                      </button>
+                    </td>
                     {/* <td>{user?.comments}</td> */}
                     <td>
                       {roles.verifier === true || roles.approver === true ? (

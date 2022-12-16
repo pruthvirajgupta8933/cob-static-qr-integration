@@ -6,9 +6,14 @@ import { toast } from "react-toastify";
 
 const MerchantDocument = (props) => {
     const{docList,docTypeList,role,merchantKycId}=props;
-    const roles = roleBasedAccess();
+    // const roles = roleBasedAccess();
+    const roleBasePermissions = roleBasedAccess()
+  const roles = roleBasedAccess();
     const dispatch = useDispatch();
     const { auth,kyc } = useSelector((state) => state);
+    const verifierApproverTab =  useSelector((state) => state.verifierApproverTab)
+  const currenTab =  parseInt(verifierApproverTab?.currenTab)
+  const Allow_To_Do_Verify_Kyc_details= roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_detailsppe
     
     const { allTabsValidate } = kyc;
     const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
@@ -19,6 +24,14 @@ const MerchantDocument = (props) => {
     const { user } = auth;
     const { loginId } = user;
     const { KycDocUpload } = kyc;
+    console.log("now the current result",kyc)
+   
+    
+  const status=KycDocUpload?.status;
+  // console.log("now the current result",status)
+    
+   
+
    
 
     const [buttonText, setButtonText] = useState("Upload Document");
@@ -148,6 +161,34 @@ const MerchantDocument = (props) => {
           setButtonText("Verify");
         }
       }, [role]);
+
+      const enableBtn = () => {
+        let enableBtn = false;
+         if (currenTab===3 || currenTab===4) {
+           if ((roles.verifier===true || Allow_To_Do_Verify_Kyc_details===true) || (roles.approver=true)) {
+            enableBtn = true;
+            
+          }
+        }
+    return enableBtn;
+      };
+    let enableDisable=enableBtn();
+
+    const btnByStatus = (status) => {
+      let enableBtn = false;
+    
+      if (roles?.verifier===true ) {
+        if ( status === "pending") {
+          enableBtn = true;
+          console.log("i am in if")
+        }
+    }
+    return enableBtn;
+    }
+    let enableBtnStatus=enableBtnByStatus()
+    console.log(enableBtnStatus,"this is status")
+
+
     
   return (
     <div className="row mb-4 border">
@@ -163,7 +204,7 @@ const MerchantDocument = (props) => {
             <th>Document Type</th>
             <th>Document Name</th>
             <th>Document Status</th>
-            <th>Action</th>
+            { enableDisable  ? <th>Action</th> : <></>}
           </tr>
         </thead>
         <tbody>
@@ -187,8 +228,10 @@ const MerchantDocument = (props) => {
                 {/* {enableBtnByStatus(doc?.status, role) ? ( */}
                                   <td>
                                     <div style={{ display: "flex" }}>
+                                    {enableDisable && btnByStatus(doc?.status) ?
                                       <a 
                                         className = "text-success"
+                                        href="false"
                                         // onClick={()=>alert("yes this is working")}
                                         onClick={() => {
                                             verifyApproveDoc(doc?.documentId);
@@ -196,14 +239,19 @@ const MerchantDocument = (props) => {
                                       >
                                         <h4>Verify</h4>
                                       </a>
+                                        : <></> 
+                                      }
+                                    
                                       &nbsp;
                                       &nbsp;
                                       &nbsp;
                                       &nbsp;
+                                      
    
                                     
                                       <a
                                         className="text-danger"
+                                        href="false"
                                         onClick={() => {
                                           // rejectDoc(doc?.documentId);
                                         }}
@@ -214,7 +262,9 @@ const MerchantDocument = (props) => {
                                   </td>
                                 {/* ) : roles.verifier === true ||
                                   roles.approver === true ? ( */}
+                                   { enableDisable && btnByStatus(doc?.status) ? 
                                   <td>
+                                    
                                     <a
                                       href={() => false}
                                       className="text-danger"
@@ -224,7 +274,11 @@ const MerchantDocument = (props) => {
                                     >
                                       Reject
                                     </a>
+                                   
                                   </td>
+                                   : <></> 
+                                  }
+                                  
                                 {/* ) : (
                                   <></>
                                 )} */}

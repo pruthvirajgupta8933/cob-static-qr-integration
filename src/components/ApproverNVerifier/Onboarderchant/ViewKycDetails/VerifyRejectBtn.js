@@ -1,26 +1,62 @@
 import React from 'react'
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
+import { useDispatch, useSelector } from "react-redux";
 
 
 function VerifyRejectBtn(props) {
-  // console.log(props?)
+  
+  const status=props.KycTabStatus;
+  
   const roleBasePermissions = roleBasedAccess()
-  console.log(roleBasePermissions)
+  const roles = roleBasedAccess();
+  const verifierApproverTab =  useSelector((state) => state.verifierApproverTab)
+  const currenTab =  parseInt(verifierApproverTab?.currenTab)
+
+ 
+  const Allow_To_Do_Verify_Kyc_details= roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_detailsppe
+  
+
   const isVerified = props?.KycVerifyStatus?.isVerified
   const isRejected = props?.KycVerifyStatus?.isRejected
 
 
   // function 
 
-  return (
+  const enableBtn = () => {
+    let enableBtn = false;
+     if (currenTab===3 || currenTab===4) {
+       if (roles.verifier===true || Allow_To_Do_Verify_Kyc_details===true) {
+        enableBtn = true;
+        
+      }
+    }
+return enableBtn;
+  };
+let enableDisable=enableBtn();
+ 
+
+const enableBtnByStatus = () => {
+  let enableBtn = false;
+
+  if (roles?.verifier===true) {
+    if ( status === "pending") {
+      enableBtn = true;
+    }
+}
+return enableBtn;
+}
+let enableBtnStatus=enableBtnByStatus()
+ 
+
+return (
 
    <React.Fragment>
-          {!props?.KycVerifyStatus?.isVerified ? 
+          { enableDisable && enableBtnStatus  ? 
             <button type="button" onClick={()=>props?.KycVerifyStatus?.handleVerifyClick()} class="btn btn-info btn-sm text-white">{props?.btnText?.verify}</button>
           : <></> 
           }
 
-          {!props?.KycRejectStatus?.isRejected ? 
+          { enableDisable && enableBtnStatus ? 
             <button type="button" onClick={()=>props?.KycRejectStatus?.handleRejectClick()} class="btn btn-danger btn-sm text-white">{props?.btnText?.Reject}</button>
           : <></> 
           }

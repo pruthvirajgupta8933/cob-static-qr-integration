@@ -5815,19 +5815,20 @@ button.close {
 
 }
 .modal-backdrop {
-    position: fixed;
+    display:none !important
+    /* position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     z-index: 1040;
-    background-color: #000;
+    background-color: #000; */
 }
 .modal-backdrop.fade {
-    opacity: 0;
+    /* opacity: 0; */
 }
 .modal-backdrop.show {
-    opacity: 0.5;
+    /* opacity: 0.5; */
 }
 .modal-header {
     display: flex;

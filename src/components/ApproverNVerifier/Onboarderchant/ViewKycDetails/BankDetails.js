@@ -7,7 +7,7 @@ import VerifyRejectBtn from './VerifyRejectBtn';
 
 const BankDetails = (props) => {
   const dispatch=useDispatch();
-    const {merchantKycId}=props;
+    const {merchantKycId,KycTabStatus}=props;
     const { auth } = useSelector((state) => state);
    
     const { user } = auth;
@@ -141,9 +141,13 @@ const BankDetails = (props) => {
       />
       
     </div>
-    <div class="col-lg-6 "></div>
+    <div class="col-lg-6 ">
+    Status : <span>{KycTabStatus?.merchant_info_status}</span>
+    </div>
         <div class="col-lg-6 mt-3">
-        <VerifyRejectBtn handleVerifyClick={handleVerifyClick} handleRejectClick={handleRejectClick}
+        <VerifyRejectBtn 
+        KycTabStatus={KycTabStatus?.merchant_info_status}
+        handleVerifyClick={handleVerifyClick} handleRejectClick={handleRejectClick}
         btnText={{verify:"Verify",Reject:"Reject"}}
          />
         </div>
