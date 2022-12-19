@@ -385,7 +385,7 @@ function Registration() {
                                           className="string optional"
                                           htmlFor="user-email"
                                         >
-                                          Enter Email id
+                                          Email id
                                         </label>
                                         <Field
                                           className="string optional"
@@ -468,13 +468,13 @@ function Registration() {
                                         className="string optional"
                                         htmlFor="user-pw"
                                       >
-                                        Enter Password
+                                        Create Password
                                       </label>
                                       <Field
                                         className="string optional"
                                         maxLength={255}
                                         id="user-pws"
-                                        placeholder="Type your password"
+                                        placeholder="Password"
                                         type={
                                           valuesIn.showPassword
                                             ? "text"
@@ -530,7 +530,7 @@ function Registration() {
                                         className="string optional"
                                         maxLength={255}
                                         id="user-cpw"
-                                        placeholder="Confirm your password"
+                                        placeholder="Re-enter"
                                         type={
                                           passwordType.showPasswords
                                             ? "text"
