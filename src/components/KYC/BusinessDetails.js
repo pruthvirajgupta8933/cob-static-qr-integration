@@ -293,32 +293,33 @@ function BusinessDetails(props) {
           toast.error(res?.payload?.message);
         }
       });
-    } else if (role.verifier) {
-      const veriferDetails = {
-        login_id: kycid,
-        merchant_info_verified_by: loginId,
-      };
-      dispatch(verifyKycEachTab(veriferDetails))
-        .then((resp) => {
-          resp?.payload?.merchant_info_status &&
-            toast.success(resp?.payload?.merchant_info_status);
-          resp?.payload?.detail && toast.error(resp?.payload?.detail);
-        })
-        .catch((e) => {
-          toast.error("Try Again Network Error");
-        });
-    }
+    } 
+    // else if (role.verifier) {
+    //   const veriferDetails = {
+    //     login_id: kycid,
+    //     merchant_info_verified_by: loginId,
+    //   };
+    //   dispatch(verifyKycEachTab(veriferDetails))
+    //     .then((resp) => {
+    //       resp?.payload?.merchant_info_status &&
+    //         toast.success(resp?.payload?.merchant_info_status);
+    //       resp?.payload?.detail && toast.error(resp?.payload?.detail);
+    //     })
+    //     .catch((e) => {
+    //       toast.error("Try Again Network Error");
+    //     });
+    // }
   };
 
-  useEffect(() => {
-    if (role.approver) {
-      setReadOnly(true);
-      setButtonText("Approve and Next");
-    } else if (role.verifier) {
-      setReadOnly(true);
-      setButtonText("Verify and Next");
-    }
-  }, [role]);
+  // useEffect(() => {
+  //   if (role.approver) {
+  //     setReadOnly(true);
+  //     setButtonText("Approve and Next");
+  //   } else if (role.verifier) {
+  //     setReadOnly(true);
+  //     setButtonText("Verify and Next");
+  //   }
+  // }, [role]);
 
   return (
     <div className="col-sm-12 col-md-6 col-lg-12 col-md-offset-4">

@@ -163,7 +163,7 @@ function VerifiedMerchant() {
           <DropDownCountPerPage datalength={dataCount} />
         </select>
       </div>
-      <KycDetailsModal kycId={kycIdClick} />
+      {/* <KycDetailsModal kycId={kycIdClick} /> */}
       <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Onboard Type</label>
         <select onChange={kycSearch} className="ant-input">
@@ -178,7 +178,9 @@ function VerifiedMerchant() {
       {openCommentModal === true ?  
       <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> 
       : <></>}
-      <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
+      {/* {console.log("KycDetailsModal isOpenModal",isOpenModal)} */}
+      {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>}
+      {/* {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>} */}
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">

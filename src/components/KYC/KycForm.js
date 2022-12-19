@@ -347,13 +347,6 @@ function KycForm() {
                               title={setTitle}
                             />
                           )) ||
-                          /* (tab === 4 && (
-                            <RegisteredAddress
-                              role={roles}
-                              kycid={kycid}
-                              tab={SetTab}
-                            />
-                          )) || */
                           (tab === 4 && (
                             <BankDetails
                               role={roles}
