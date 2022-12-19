@@ -25,5 +25,8 @@ export const roleBasedAccess = (pageNo) => {
         // console.log("Permission not match with these roles");
     }
 
+    const Enable_Settlement_Report_Excel = ["MSBP1", "MSB10", "MSB12"]; // client Code based 
+    
+    roleAccessObj.Enable_settlement_excel_report = Enable_Settlement_Report_Excel
     return roleAccessObj;
 };

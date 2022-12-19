@@ -70,7 +70,7 @@ const API_LIVE = {
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */
-  GET_FILE_NAME: adminAPIURL + "/settlementReport/getFileName/",
+  GET_FILE_NAME: adminAPIURL + "/REST/settlementReport/getFileName/",
 
   /* PAYLINK */
   GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
