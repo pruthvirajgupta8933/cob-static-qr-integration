@@ -6,6 +6,7 @@ import API_URL from "../../../config";
 import { isClientCodeCreated } from "../../../utilities/isClientCodeCreated";
 import { isKycCompleted } from "../../../utilities/isKycCompleted";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
+import NavBar from "../NavBar/NavBar";
 
 const SettlementReport = () => {
   const [searchArea, setSearchArea] = useState("");
@@ -30,7 +31,6 @@ const SettlementReport = () => {
   }
 
 
-  console.log(user?.clientMerchantDetailsList)
   if (user && user?.clientMerchantDetailsList) {
     // history.push("/dashboard/profile");
     clientCode = user?.clientMerchantDetailsList[0].clientCode;
@@ -102,6 +102,9 @@ const SettlementReport = () => {
   return (
     <>
       <section className="ant-layout">
+      <div>
+        <NavBar />
+      </div>
         <div className="profileBarStatus"></div>
         <main className="gx-layout-content ant-layout-content">
           <div className="gx-main-content-wrapper">

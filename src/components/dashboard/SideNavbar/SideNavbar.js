@@ -17,7 +17,7 @@ function SideNavbar() {
 
   var { clientContactPersonName } = user;
   let { url } = useRouteMatch();
-  const clientCode = user?.clientMerchantDetailsList[0]?.clientCode
+  const [clientCode, SetClientCode] = useState("")
   const dispatch = useDispatch();
   const handle = () => {
     dispatch(logout());
@@ -26,6 +26,7 @@ function SideNavbar() {
 
   useEffect(() => {
     if (user.clientMerchantDetailsList?.length > 0) {
+      SetClientCode(user?.clientMerchantDetailsList[0]?.clientCode)
       dispatch(
         checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode)
       );
@@ -34,7 +35,7 @@ function SideNavbar() {
 
   const roleBasedShowTab = roleBasedAccess();
 
-  console.log("roleBasedShowTab",roleBasedShowTab)
+
   return (
     <aside
       className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark"
@@ -309,8 +310,8 @@ function SideNavbar() {
 
                       {roleBasedShowTab?.merchant === true ? (
                         <React.Fragment>
-                        { }
-                        <li
+                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(clientCode) ?   
+                          <li
                             className="ant-menu-item"
                             role="menuitem"
                             style={{ paddingLeft: "48px" }}
@@ -322,7 +323,8 @@ function SideNavbar() {
                               <i className="fa fa-bars" aria-hidden="true" />
                               <span>&nbsp;Settlement Report (Excel)</span>
                             </Link>
-                          </li>
+                          </li> : <></>}
+                    
 
                           <li
                             className="ant-menu-item"
