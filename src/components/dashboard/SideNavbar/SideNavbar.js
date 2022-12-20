@@ -30,6 +30,7 @@ function SideNavbar() {
   const roleBasedShowTab = roleBasedAccess();
 
 
+
   return (
     <aside
       className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark"
@@ -302,7 +303,8 @@ function SideNavbar() {
                       )}
 
 
-                      {roleBasedShowTab?.merchant === true ? (
+                      {roleBasedShowTab?.merchant === true  || roleBasedShowTab?.bank === true ? (
+                        
                         <React.Fragment>
                           <li
                             className="ant-menu-item"
@@ -343,6 +345,7 @@ function SideNavbar() {
                               <span>&nbsp;Chargeback Txn History</span>
                             </Link>
                           </li>
+                       {roleBasedShowTab?.bank === true ? <></> :
 
                           <li
                             className="ant-menu-item"
@@ -357,6 +360,7 @@ function SideNavbar() {
                               &nbsp;Product Catalogue
                             </Link>
                           </li>
+                      }
                         </React.Fragment>
                       ) : (
                         <React.Fragment></React.Fragment>
