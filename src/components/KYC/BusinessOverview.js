@@ -118,10 +118,10 @@ function BusinessOverview(props) {
         .matches(Regex.acceptAlphabet,RegexMsg.acceptAlphabet)
         .required("Required")
         .nullable(),
-      company_website: Yup.string().trim()
-        .matches(urlRegex, "Website Url is not Valid")
-        .required("Required")
-        .nullable(),
+      // company_website: Yup.string().trim()
+      //   .matches(urlRegex, "Website Url is not Valid")
+      //   .required("Required")
+      //   .nullable(),
       website_app_url: Yup.string().when(["seletcted_website_app_url"], {
         is: "Yes",
         then: Yup.string().trim()

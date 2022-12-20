@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess';
-import { verifyKycDocumentTab,kycDocumentUploadList} from '../../../../slices/kycSlice';
+import { verifyKycDocumentTab,kycDocumentUploadList,approveDoc} from '../../../../slices/kycSlice';
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -13,7 +13,7 @@ const MerchantDocument = (props) => {
     const { auth,kyc } = useSelector((state) => state);
     const verifierApproverTab =  useSelector((state) => state.verifierApproverTab)
   const currenTab =  parseInt(verifierApproverTab?.currenTab)
-  const Allow_To_Do_Verify_Kyc_details= roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_detailsppe
+  const Allow_To_Do_Verify_Kyc_details= roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
     
     const { allTabsValidate } = kyc;
     const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
@@ -24,17 +24,12 @@ const MerchantDocument = (props) => {
     const { user } = auth;
     const { loginId } = user;
     const { KycDocUpload } = kyc;
-    console.log("now the current result",kyc)
    
-    
+   
   const status=KycDocUpload?.status;
   // console.log("now the current result",status)
     
-   
-
-   
-
-    const [buttonText, setButtonText] = useState("Upload Document");
+   const [buttonText, setButtonText] = useState("");
     const [savedData, setSavedData] = useState([]);
     
     const getDocTypeName = (id) => {
@@ -65,12 +60,17 @@ const MerchantDocument = (props) => {
         );
       };
 
-      const verifyApproveDoc = (doc_id) => {
+      const verifyApproveDoc = (doc_id,status) => {
+       
+    
        const postData = {
             document_id: doc_id,
             verified_by: loginId,
           };
     
+          if ((role.approver===true && Allow_To_Do_Verify_Kyc_details===true) || role?.verifier)
+          if(currenTab===3 && status==="Pending")
+          {
           dispatch(verifyKycDocumentTab(postData)).then((resp) => {
            if(resp?.payload?.status){
             getKycDocList(role);
@@ -80,24 +80,30 @@ const MerchantDocument = (props) => {
            }
     
             });
+          }
+          
+          if (role?.approver && status==="Verified") {
+            const approverDocDetails = {
+              approved_by: loginId,
+              document_id: doc_id,
+            };
+
+            if ((role.approver===true && Allow_To_Do_Verify_Kyc_details===true))
+            if(currenTab===4 )
+            {
+           
+            dispatch(approveDoc(approverDocDetails)).then((resp) => {
+              resp?.payload?.status
+                ? toast.success(resp?.payload?.message)
+                : toast.error(resp?.payload?.message);
+      
+              getKycDocList(role);
+            });
+          }
+        }
 
             
-        
-    
-        // if (role?.approver) {
-        //   const approverDocDetails = {
-        //     approved_by: loginId,
-        //     document_id: doc_id,
-        //   };
-        //   dispatch(approveDoc(approverDocDetails)).then((resp) => {
-        //     resp?.payload?.status
-        //       ? toast.success(resp?.payload?.message)
-        //       : toast.error(resp?.payload?.message);
-    
-        //     getKycDocList(role);
-        //   });
-        // }
-      };
+        };
 
       const rejectDoc = (doc_id) => {
         const rejectDetails = {
@@ -120,77 +126,70 @@ const MerchantDocument = (props) => {
       };
 
       
-      const enableBtnByStatus = (imgStatus, role) => {
-       
-        const imageStatus = imgStatus?.toString()?.toLowerCase();
-        const loggedInRole = role;
-        let enableBtn = false;
     
-        if (loggedInRole?.verifier) {
-          if (imageStatus === "verified") {
-            enableBtn = false;
-          }
-    
-          if (imageStatus !== "verified") {
-            enableBtn = true;
-          }
-    
-          if (imageStatus === "approved") {
-            enableBtn = false;
-          }
-        }
-    
-        if (loggedInRole?.approver) {
-          if (imageStatus === "verified") {
-            enableBtn = true;
-          }
-          if (imageStatus === "approved") {
-            enableBtn = false;
-          }
-        }
-    
-        return enableBtn;
-      };
 
       useEffect(() => {
-        if (role.approver) {
-          // setReadOnly(true);
-          setButtonText("Approve");
-        } else if (role.verifier) {
-          // setReadOnly(true);
-          setButtonText("Verify");
-        }
-      }, [role]);
 
-      const enableBtn = () => {
+         role?.approver===true  &&  Allow_To_Do_Verify_Kyc_details===true && currenTab===3 ? 
+          setButtonText("Verify") 
+
+          :  role?.approver===true  &&  Allow_To_Do_Verify_Kyc_details===true && currenTab===4 ? 
+          setButtonText("Approved")
+          : role?.verifier  === true ?
+          setButtonText("Verify")
+          : <></>
+
+      });
+
+      /////////////////////////////////////////////// button enable condition for verifier
+
+      const enableBtnVerifier = (status) => {
         let enableBtn = false;
          if (currenTab===3 || currenTab===4) {
-           if ((roles.verifier===true || Allow_To_Do_Verify_Kyc_details===true) || (roles.approver=true)) {
+           if ((roles.verifier===true || Allow_To_Do_Verify_Kyc_details===true) || (roles.approver=true))
+           if ( status === "Pending")
+            {
             enableBtn = true;
             
           }
         }
     return enableBtn;
       };
-    let enableDisable=enableBtn();
+   
 
-    const btnByStatus = (status) => {
+    /////////////////////////////////////////////// button enable condition  for approver
+
+    const enableBtnApprover = (status) => {
       let enableBtn = false;
-    
-      if (roles?.verifier===true ) {
-        if ( status === "pending") {
-          enableBtn = true;
-          console.log("i am in if")
+         if (currenTab===3 || currenTab===4) {
+           if (roles.approver===true)
+           if ( status === "Verified")
+            {
+            enableBtn = true;
+            
+          }
         }
-    }
     return enableBtn;
+
     }
-    let enableBtnStatus=enableBtnByStatus()
-    console.log(enableBtnStatus,"this is status")
 
 
+    const enableApproverTabwise = (status) => {
+      let enableBtn = false;
+         if (currenTab===4) {
+           if (roles.approver===true)
+           if ( status === "Verified")
+            {
+            enableBtn = true;
+            
+          }
+        }
+    return enableBtn;
+
+    }
     
-  return (
+      
+    return (
     <div className="row mb-4 border">
     <div class="col-lg-12">
       <h3 className="font-weight-bold">Merchant Docuemnts</h3>
@@ -204,7 +203,7 @@ const MerchantDocument = (props) => {
             <th>Document Type</th>
             <th>Document Name</th>
             <th>Document Status</th>
-            { enableDisable  ? <th>Action</th> : <></>}
+              <th>Action</th> 
           </tr>
         </thead>
         <tbody>
@@ -228,16 +227,16 @@ const MerchantDocument = (props) => {
                 {/* {enableBtnByStatus(doc?.status, role) ? ( */}
                                   <td>
                                     <div style={{ display: "flex" }}>
-                                    {enableDisable && btnByStatus(doc?.status) ?
+                                    {enableBtnVerifier(doc?.status) || (enableBtnApprover(doc?.status) && enableApproverTabwise) ?
                                       <a 
                                         className = "text-success"
-                                        href="false"
-                                        // onClick={()=>alert("yes this is working")}
+                                        href={() => false}
+                                        
                                         onClick={() => {
-                                            verifyApproveDoc(doc?.documentId);
+                                            verifyApproveDoc(doc?.documentId,doc?.status);
                                         }}
                                       >
-                                        <h4>Verify</h4>
+                                        <h4>{buttonText}</h4>
                                       </a>
                                         : <></> 
                                       }
@@ -251,7 +250,7 @@ const MerchantDocument = (props) => {
                                     
                                       <a
                                         className="text-danger"
-                                        href="false"
+                                        href={() => false}
                                         onClick={() => {
                                           // rejectDoc(doc?.documentId);
                                         }}
@@ -262,7 +261,7 @@ const MerchantDocument = (props) => {
                                   </td>
                                 {/* ) : roles.verifier === true ||
                                   roles.approver === true ? ( */}
-                                   { enableDisable && btnByStatus(doc?.status) ? 
+                                   { enableBtnVerifier(doc?.status) || (enableBtnApprover(doc?.status) && enableApproverTabwise) ? 
                                   <td>
                                     
                                     <a

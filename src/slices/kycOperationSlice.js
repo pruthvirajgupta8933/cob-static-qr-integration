@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // import {kycOperationService} from "../services/kycOperation.service"
 import kycOperationService from "../services/kycOperation.service";
+import { setMessage } from "./message";
 
 
 
@@ -23,12 +24,22 @@ export const rejectKycOperation = createAsyncThunk(
 
   export const completeVerification = createAsyncThunk(
     "completeVerification/completeVerification",
-    async ( requestParam) => {
+    async ( requestParam,thunkAPI) => {
       try {
         const response = await kycOperationService.completeVerification(requestParam)
+        thunkAPI.dispatch(setMessage(response.data.message));
         return response.data;
       } catch (error) {
-        return error;
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message); 
+        
+        
       }
     }
   );
