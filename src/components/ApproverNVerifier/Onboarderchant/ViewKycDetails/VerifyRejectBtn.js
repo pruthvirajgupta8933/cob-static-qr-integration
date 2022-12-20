@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 function VerifyRejectBtn(props) {
   
+  
   const status=props.KycTabStatus;
+  
+
+  
   
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
@@ -13,7 +17,9 @@ function VerifyRejectBtn(props) {
   const currenTab =  parseInt(verifierApproverTab?.currenTab)
 
  
-  const Allow_To_Do_Verify_Kyc_details= roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_detailsppe
+  const Allow_To_Do_Verify_Kyc_details= roleBasePermissions?.permission?.Allow_To_Do_Verify_Kyc_details
+
+  
   
 
   const isVerified = props?.KycVerifyStatus?.isVerified
@@ -25,7 +31,9 @@ function VerifyRejectBtn(props) {
   const enableBtn = () => {
     let enableBtn = false;
      if (currenTab===3 || currenTab===4) {
+
        if (roles.verifier===true || Allow_To_Do_Verify_Kyc_details===true) {
+
         enableBtn = true;
         
       }
@@ -33,20 +41,20 @@ function VerifyRejectBtn(props) {
 return enableBtn;
   };
 let enableDisable=enableBtn();
+
+
  
 
 const enableBtnByStatus = () => {
   let enableBtn = false;
-
-  if (roles?.verifier===true) {
-    if ( status === "pending") {
-      enableBtn = true;
-    }
+  if ( status === "Pending") {
+    enableBtn = true;
+    
 }
 return enableBtn;
 }
 let enableBtnStatus=enableBtnByStatus()
- 
+
 
 return (
 
@@ -60,6 +68,11 @@ return (
             <button type="button" onClick={()=>props?.KycRejectStatus?.handleRejectClick()} class="btn btn-danger btn-sm text-white">{props?.btnText?.Reject}</button>
           : <></> 
           }
+
+
+          {/* complete verify/approve  and reject kyc */}
+
+          
           
    </React.Fragment>
   )
