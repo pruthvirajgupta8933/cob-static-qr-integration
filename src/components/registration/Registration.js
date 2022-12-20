@@ -640,7 +640,7 @@ function Registration() {
           </div>
 
           <p className="footerforcopyright text-center NunitoSans-Regular">
-            Copyright © 2022 SabPaisa, all rights reserve version 0.1
+          Copyright @ 2022 SabPaisa All Rights Reserved version 1.0
           </p>
         </div>
 

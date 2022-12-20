@@ -257,6 +257,58 @@ function MobileNavbar() {
             )}
 
             {roleBasedShowTab?.bank === true ? (
+              <>
+               <li className="nav-item">
+               <Link
+                 to={`${url}/transaction-summery`}
+                 onClick={() => {
+                   setToggleNav(!toggleNav);
+                 }}
+                 className="nav-link"
+               >
+                 <i className="fa fa-home" aria-hidden="true" />{" "}
+                 &nbsp;Transaction Summary
+               </Link>
+             </li>
+
+             <li className="nav-item">
+
+               <Link
+                 to={`${url}/transaction-history`}
+                 onClick={() => {
+                   setToggleNav(!toggleNav);
+                 }}
+                 className="nav-link"
+               >
+                 <img
+                   src={transHis}
+                   width={17}
+                   alt="sabpaisa"
+                   title="sabpaisa"
+                 />{" "}
+                 &nbsp;Transaction History
+               </Link>
+             </li>
+
+             <li className="nav-item">
+               <Link
+                 to={`${url}/transaction-enquiry`}
+                 onClick={() => {
+                   setToggleNav(!toggleNav);
+                 }}
+                 className="nav-link"
+               >
+                 <img
+                   src={enquire}
+                   width={17}
+                   alt="sabpaisa"
+                   title="sabpaisa"
+                 />{" "}
+                 &nbsp;Transaction Enquiry
+               </Link>
+             </li>
+          
+
               <li className="nav-item">
                 <Link
                   to={`${url}/client-list`}
@@ -269,6 +321,48 @@ function MobileNavbar() {
                   List
                 </Link>
               </li>
+
+              <li className="nav-item">
+                <Link
+                  to={`${url}/settlement-report-new`}
+                  onClick={() => {
+                    setToggleNav(!toggleNav);
+                  }}
+                  className="nav-link"
+                >
+                  <i className="fa fa-list" aria-hidden="true" /> &nbsp; Settlement
+                  Report
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link
+                  to={`${url}/refund-transaction-history`}
+                  onClick={() => {
+                    setToggleNav(!toggleNav);
+                  }}
+                  className="nav-link"
+                >
+                  <i className="fa fa-list" aria-hidden="true" /> &nbsp;Refund 
+                  Txn History
+                </Link>
+              </li>
+
+              <li className="nav-item">
+                <Link
+                  to={`${url}/chargeback-transaction-history`}
+                  onClick={() => {
+                    setToggleNav(!toggleNav);
+                  }}
+                  className="nav-link"
+                >
+                  <i className="fa fa-list" aria-hidden="true" /> &nbsp;Chargeback
+                  Txn History
+                </Link>
+              </li>
+
+
+              </>
             ) : (
               <></>
             )}
