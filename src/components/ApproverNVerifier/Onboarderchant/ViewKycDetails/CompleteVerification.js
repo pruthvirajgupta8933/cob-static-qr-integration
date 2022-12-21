@@ -198,7 +198,7 @@ const CompleteVerification = (props) => {
           : <></>
         }
 
-        {enableBtnVerifier || enableBtnVerifier ?
+        {enableBtnVerifier || enableBtnApprover ?
           <button type="button" onClick={() => handleRejectClick()} class="btn btn-danger btn-sm text-white">Reject KYC</button>
           : <></>
         }
