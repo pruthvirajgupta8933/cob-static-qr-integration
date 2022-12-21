@@ -180,7 +180,7 @@ function PendingVerification() {
           
           {/* KYC Details Modal */}
           
-          <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
+         {isOpenModal === true ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>}
           
         </div>
 
@@ -261,7 +261,7 @@ function PendingVerification() {
                       </button>
                     </td>
                     <td>
-                      {roles.verifier === true || roles.approver === true ? (
+                      {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
                         <button
                           type="button"
                           className="btn approve text-white  btn-xs"
@@ -279,19 +279,7 @@ function PendingVerification() {
                       ) : (
                         <></>
                       )}
-                      {roles.viewer === true ? (
-                        <button
-                          type="button"
-                          className="btn approve text-white  btn-xs"
-                          onClick={() => setKycIdClick(user)}
-                          data-toggle="modal"
-                          data-target="#kycmodaldetail"
-                        >
-                          View
-                        </button>
-                      ) : (
-                        <></>
-                      )}
+                    
                     </td>
 
                     {roles.verifier === true ? (

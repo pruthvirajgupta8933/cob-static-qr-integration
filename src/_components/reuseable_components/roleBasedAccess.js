@@ -62,11 +62,12 @@ export const roleBasedAccess = () => {
     } else {
         // console.log("Permission not match with these roles");
     }
+
+    const Enable_Settlement_Report_Excel = ["MSBP1", "MSB10", "MSB12"]; // client Code based 
+    
+    roleAccessObj.Enable_Settlement_Report_Excel = Enable_Settlement_Report_Excel
     permission.Allow_To_Do_Verify_Kyc_details = ALLOW_ROLE_AS_VERIFIER.includes(loginId)
     roleAccessObj.permission = permission
-
-
-
 
 
     return roleAccessObj;

@@ -20,7 +20,7 @@ import { isNumber } from "lodash";
 
 
 const KycDetailsModal = (props) => {
-  // console.log(props)
+  console.log("kycDetailsModal Render",props)
 
   let merchantKycId = props?.kycId;
 
@@ -92,8 +92,8 @@ const KycDetailsModal = (props) => {
   }, [merchantKycId?.businessType]);
 
   useEffect(() => {
-
-    if (isNumber(merchantKycId)) {
+    const busnCatId = parseInt(merchantKycId?.businessCategory)
+    if (isNumber(busnCatId)) {
       dispatch(
         businessCategoryById({ category_id: merchantKycId?.businessCategory })
       ).then((resp) => {

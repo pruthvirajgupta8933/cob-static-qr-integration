@@ -142,12 +142,13 @@ const BankDetails = (props) => {
       
     </div>
     <div class="col-lg-6 ">
-    Status : <span>{KycTabStatus?.merchant_info_status}</span>
+    Status : <span>{KycTabStatus?.settlement_info_status}</span>
     </div>
         <div class="col-lg-6 mt-3">
         <VerifyRejectBtn 
-        KycTabStatus={KycTabStatus?.merchant_info_status}
-        handleVerifyClick={handleVerifyClick} handleRejectClick={handleRejectClick}
+        KycTabStatus={KycTabStatus?.settlement_info_status}
+        KycVerifyStatus={{ handleVerifyClick }}
+          KycRejectStatus={{ handleRejectClick }}
         btnText={{verify:"Verify",Reject:"Reject"}}
          />
         </div>

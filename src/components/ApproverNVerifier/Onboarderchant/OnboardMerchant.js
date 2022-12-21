@@ -13,6 +13,7 @@ import API_URL from "../../../config";
 import { axiosInstanceAuth } from "../../../utilities/axiosInstance";
 import NavBar from "../../dashboard/NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import { logout } from "../../../slices/auth";
 
 
 
@@ -47,6 +48,8 @@ const FORM_VALIDATION = Yup.object().shape({
 
 const OnboardMerchant = () => {
   const history = useHistory();
+
+  let roleShow = roleBasedAccess()
 
   const reduxState = useSelector((state) => state);
   const { message, auth } = reduxState;
@@ -193,6 +196,13 @@ const OnboardMerchant = () => {
   const handlerTermCond = (isChecked) => {
     setBtnDisable(isChecked);
   };
+
+
+  useEffect(() => {
+    if(roleShow?.verifier !== true && roleShow?.approver !== true) {
+      dispatch(logout())
+    }
+  })
   return (
     <>
       {/* <HeaderPage /> */}
