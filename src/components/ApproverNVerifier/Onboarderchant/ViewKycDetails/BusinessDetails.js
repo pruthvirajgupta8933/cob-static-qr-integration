@@ -16,6 +16,7 @@ const BusinessDetails = (props) => {
 
 
   const handleVerifyClick = () => {
+  
     const veriferDetails = {
       login_id: merchantKycId.loginMasterId,
       merchant_info_verified_by: loginId,
@@ -191,7 +192,8 @@ const BusinessDetails = (props) => {
       <div class="col-lg-6 mt-3">
         <VerifyRejectBtn 
         KycTabStatus={KycTabStatus?.merchant_info_status}
-        handleVerifyClick={handleVerifyClick} handleRejectClick={handleRejectClick} 
+        KycVerifyStatus={{ handleVerifyClick }}
+          KycRejectStatus={{ handleRejectClick }}
            btnText={{verify:"Verify",Reject:"Reject"}}
         />
       </div>

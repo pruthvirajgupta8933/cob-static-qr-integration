@@ -180,7 +180,7 @@ function PendingVerification() {
           
           {/* KYC Details Modal */}
           
-          <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
+         {isOpenModal === true ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>}
           
         </div>
 
