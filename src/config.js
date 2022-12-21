@@ -4,7 +4,7 @@ let url,kyc_url = "",kyc_validate = "";
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
-  kyc_validate = "https://stage-kycvalidator.sabpaisa.in"
+  kyc_validate = " https://kycvalidator.sabpaisa.in"
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
@@ -215,6 +215,14 @@ GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
 
   // VERIFY_EACH_TAB : `${kyc_url}kyc/verify-kyc/update/`,
 
+  // Reject each tab of the kyc , URL FOR VERIFER
+
+  REJECT_KYC_TAB:`${kyc_url}/kyc/verify-kyc/tab-reject/`,
+  COMPLETE_VERIFICATION:`${kyc_url}/kyc/verify-kyc/verify/`,
+  COMPLETE_VERIFICATION_REJECT_KYC:`${kyc_url}/kyc/verify-kyc/reject/`,
+
+
+
 
   // Client Detail SandBox //
   CLIENT_DETAIL: `${url}/clientDetail`,
@@ -241,7 +249,7 @@ GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
 
   // GET API FOR VIEWING COMMENTS
 
-  VIEW_COMMENTS_LIST: `https://stgcobapi.sabpaisa.in/merchant/get-comments-by-clientcode`
+  VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`
 
   
   // ---------------------------   NEW API FOR COMMENTS (2)

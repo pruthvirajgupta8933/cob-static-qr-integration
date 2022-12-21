@@ -198,7 +198,7 @@ function Registration() {
                       color: "#0143A1",
                       lineHeight: "30px",
                     }}
-                    class="text-center mt-40"
+                    className="text-center mt-40"
                   >
                     Empower your <br />
                     business,&nbsp;boost <br /> your&nbsp;finance
@@ -207,14 +207,14 @@ function Registration() {
                   <div className="brand-logo">
                     <div
                       id="carouselExampleIndicators"
-                      class="carousel slide"
+                      className="carousel slide"
                       data-ride="carousel"
                     >
-                      <ol class="carousel-indicators">
+                      <ol className="carousel-indicators">
                         <li
                           data-target="#carouselExampleIndicators"
                           data-slide-to="0"
-                          class="active"
+                          className="active"
                         ></li>
                         <li
                           data-target="#carouselExampleIndicators"
@@ -225,29 +225,29 @@ function Registration() {
                           data-slide-to="2"
                         ></li>
                       </ol>
-                      <div class="carousel-inner">
-                        <div class="carousel-item active">
+                      <div className="carousel-inner">
+                        <div className="carousel-item active">
                           <img
                             src={onlineshopinglogo}
                             alt="SabPaisa"
                             title="SabPaisa"
-                            class="loginscreenimagereg"
+                            className="loginscreenimagereg"
                           />
                         </div>
-                        <div class="carousel-item">
+                        <div className="carousel-item">
                           <img
                             src={onlineshopinglogo}
                             alt="SabPaisa"
                             title="SabPaisa"
-                            class="loginscreenimagereg"
+                            className="loginscreenimagereg"
                           />
                         </div>
-                        <div class="carousel-item">
+                        <div className="carousel-item">
                           <img
                             src={onlineshopinglogo}
                             alt="SabPaisa"
                             title="SabPaisa"
-                            class="loginscreenimagereg"
+                            className="loginscreenimagereg"
                           />
                         </div>
                       </div>
@@ -385,7 +385,7 @@ function Registration() {
                                           className="string optional"
                                           htmlFor="user-email"
                                         >
-                                          Enter Email id
+                                          Email id
                                         </label>
                                         <Field
                                           className="string optional"
@@ -468,13 +468,13 @@ function Registration() {
                                         className="string optional"
                                         htmlFor="user-pw"
                                       >
-                                        Enter Password
+                                        Create Password
                                       </label>
                                       <Field
                                         className="string optional"
                                         maxLength={255}
                                         id="user-pws"
-                                        placeholder="Type your password"
+                                        placeholder="Password"
                                         type={
                                           valuesIn.showPassword
                                             ? "text"
@@ -484,17 +484,16 @@ function Registration() {
                                         size={50}
                                         autoComplete="off"
                                       />
-                                      <div class="input-group-addon viewfor">
-                                        <a onClick={handleClickShowPassword}>
-                                          {" "}
+                                      <div className="input-group-addon viewfor">
+                                        <a href={()=>false} onClick={handleClickShowPassword}>
                                           {valuesIn.showPassword ? (
                                             <i
-                                              class="fa fa-eye"
+                                              className="fa fa-eye"
                                               aria-hidden="true"
                                             ></i>
                                           ) : (
                                             <i
-                                              class="fa fa-eye-slash"
+                                              className="fa fa-eye-slash"
                                               aria-hidden="true"
                                             ></i>
                                           )}
@@ -530,7 +529,7 @@ function Registration() {
                                         className="string optional"
                                         maxLength={255}
                                         id="user-cpw"
-                                        placeholder="Confirm your password"
+                                        placeholder="Re-enter"
                                         type={
                                           passwordType.showPasswords
                                             ? "text"
@@ -540,17 +539,16 @@ function Registration() {
                                         size={50}
                                       />
 
-                                      <div class="input-group-addon viewfor">
-                                        <a onClick={togglePassword}>
-                                          {" "}
+                                      <div className="input-group-addon viewfor">
+                                        <a href={()=>false} onClick={togglePassword}>
                                           {passwordType.showPasswords ? (
                                             <i
-                                              class="fa fa-eye"
+                                              className="fa fa-eye"
                                               aria-hidden="true"
                                             ></i>
                                           ) : (
                                             <i
-                                              class="fa fa-eye-slash"
+                                              className="fa fa-eye-slash"
                                               aria-hidden="true"
                                             ></i>
                                           )}
@@ -620,7 +618,6 @@ function Registration() {
                                       to={`/login`}
                                       style={{ color: "#0156B3" }}
                                     >
-                                      {" "}
                                       Sign in
                                     </Link>
                                   </p>
@@ -640,7 +637,7 @@ function Registration() {
           </div>
 
           <p className="footerforcopyright text-center NunitoSans-Regular">
-            Copyright © 2022 SabPaisa, all rights reserve version 0.1
+          Copyright @ 2022 SabPaisa All Rights Reserved version 1.0
           </p>
         </div>
 

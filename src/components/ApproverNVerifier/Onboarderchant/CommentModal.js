@@ -159,7 +159,7 @@ const CommentModal = (props) => {
                           />
                         </div>
                       </div>
-                      <div class="col-sm" style={{ marginTop: "60px" }}>
+                      <div class="col-sm" style={{ marginTop: "52px" }}>
                         <button
                           type="submit"
                           class="btn approve text-white  btn-xs"

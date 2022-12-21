@@ -35,8 +35,10 @@ function PendingVerification() {
   const [commentId, setCommentId] = useState({});
   const [pageSize, setPageSize] = useState(20);
   const [kycIdClick, setKycIdClick] = useState(null);
+  const [isOpenModal, setIsModalOpen] = useState(false)
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [openCommentModal, setOpenCommentModal] = useState(false);
+  
 
 
  
@@ -175,7 +177,11 @@ function PendingVerification() {
         </div>
         <div>
           {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> : <></>}
-          <KycDetailsModal kycId={kycIdClick} />
+          
+          {/* KYC Details Modal */}
+          
+         {isOpenModal === true ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>}
+          
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -214,6 +220,7 @@ function PendingVerification() {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
+                <th>View Status</th>
                 {/* <th>Comments</th> */}
                 <th>Action</th>
                 {roles?.verifier === true ? <th>Verify KYC</th> : <></>}
@@ -243,7 +250,18 @@ function PendingVerification() {
                     <td>{user?.isDirect}</td>
                     {/* <td>{user?.comments}</td> */}
                     <td>
-                      {roles.verifier === true || roles.approver === true ? (
+                      <button
+                        type="button"
+                        className="btn approve text-white  btn-xs"
+                        onClick={() => {setKycIdClick(user); setIsModalOpen(true) }}
+                        data-toggle="modal"
+                        data-target="#kycmodaldetail"
+                      >
+                        View Status
+                      </button>
+                    </td>
+                    <td>
+                      {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
                         <button
                           type="button"
                           className="btn approve text-white  btn-xs"
@@ -261,19 +279,7 @@ function PendingVerification() {
                       ) : (
                         <></>
                       )}
-                      {roles.viewer === true ? (
-                        <button
-                          type="button"
-                          className="btn approve text-white  btn-xs"
-                          onClick={() => setKycIdClick(user)}
-                          data-toggle="modal"
-                          data-target="#kycmodaldetail"
-                        >
-                          View
-                        </button>
-                      ) : (
-                        <></>
-                      )}
+                    
                     </td>
 
                     {roles.verifier === true ? (

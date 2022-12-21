@@ -223,7 +223,7 @@ function SubmitKyc(props) {
         </Formik>
       )}
 
-      {role.verifier && (
+      {/* {role.verifier && (
         <div className="row">
           <div className="col-lg-12">
             <p>
@@ -268,7 +268,7 @@ function SubmitKyc(props) {
             </button>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

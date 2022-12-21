@@ -14,14 +14,11 @@ function SideNavbar() {
   const { auth, kyc } = useSelector((state) => state);
 
   const { user, payLinkPermission } = auth;
+   const [clientCode, SetClientCode] = useState("")
 
-  var { clientContactPersonName } = user;
   let { url } = useRouteMatch();
   const dispatch = useDispatch();
-  const handle = () => {
-    dispatch(logout());
 
-  };
 
   useEffect(() => {
     if (user.clientMerchantDetailsList?.length > 0) {
@@ -32,6 +29,7 @@ function SideNavbar() {
   }, []);
 
   const roleBasedShowTab = roleBasedAccess();
+
 
 
   return (
@@ -306,7 +304,8 @@ function SideNavbar() {
                       )}
 
 
-                      {roleBasedShowTab?.merchant === true ? (
+                      {roleBasedShowTab?.merchant === true  || roleBasedShowTab?.bank === true ? (
+                        
                         <React.Fragment>
                           <li
                             className="ant-menu-item"
@@ -347,6 +346,7 @@ function SideNavbar() {
                               <span>&nbsp;Chargeback Txn History</span>
                             </Link>
                           </li>
+                       {roleBasedShowTab?.bank === true ? <></> :
 
                           <li
                             className="ant-menu-item"
@@ -361,6 +361,7 @@ function SideNavbar() {
                               &nbsp;Product Catalogue
                             </Link>
                           </li>
+                      }
                         </React.Fragment>
                       ) : (
                         <React.Fragment></React.Fragment>
@@ -380,6 +381,27 @@ function SideNavbar() {
                             &nbsp; Create Payment Link
                           </Link>
                         </li>
+                      ) : (
+                        <React.Fragment></React.Fragment>
+                      )}
+
+                       {roleBasedShowTab?.merchant === true ? (
+                        <React.Fragment>
+                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(clientCode) ?   
+                          <li
+                            className="ant-menu-item"
+                            role="menuitem"
+                            style={{ paddingLeft: "48px" }}
+                          >
+                            <Link
+                              to={`${url}/settlement-report`}
+                              className="txt-white sidenavFonts"
+                            >
+                              <i className="fa fa-bars" aria-hidden="true" />
+                              <span>&nbsp;Settlement Report (Excel)</span>
+                            </Link>
+                          </li> : <></>}
+                          </React.Fragment>
                       ) : (
                         <React.Fragment></React.Fragment>
                       )}

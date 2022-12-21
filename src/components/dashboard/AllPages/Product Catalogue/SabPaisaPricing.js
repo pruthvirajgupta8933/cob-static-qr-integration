@@ -13,9 +13,14 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { stringDec } from "../../../../utilities/encodeDecode";
 import { isCompositeComponent } from "react-dom/test-utils";
+import SabpaisaPaymentGateway from "../../../sabpaisa-pg/SabpaisaPaymentGateway";
+import { logout } from "../../../../slices/auth";
+import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 
 const SabPaisaPricing = () => {
   const history = useHistory();
+  let roles = roleBasedAccess();
+
   const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
@@ -29,6 +34,12 @@ const SabPaisaPricing = () => {
   };
   const { user } = useSelector((state) => state.auth);
   const { clientId, business_cat_code } = user.clientMerchantDetailsList[0];
+
+  useEffect(() => {
+    if(roles?.merchant !== true) {
+      dispatch(logout())
+    }
+  })
 
 
   const param = useParams();
@@ -180,10 +191,11 @@ const SabPaisaPricing = () => {
 
 
   return (
+
     <section className="ant-layout">
       <div>
         <NavBar />
-
+        {/* <SabpaisaPaymentGateway /> */}
       </div>
       <main className="gx-layout-content ant-layout-content Satoshi-Medium">
         <div>
