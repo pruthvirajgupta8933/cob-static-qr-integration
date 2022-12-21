@@ -341,7 +341,7 @@ html {
   font-weight: 400;
   box-shadow: none;
   min-width: 90px;
-  padding: 10px 14px;
+  padding: 6px 14px;
 }
 .btn.full,
 .simform__actions .full.sumbit {
