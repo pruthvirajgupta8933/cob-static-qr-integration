@@ -93,7 +93,7 @@ function BusinessOverview(props) {
     billing_label: KycList.billingLabel,
     erp_check: KycList.erpCheck === true ? "True" : "False",
     platform_id: "1234567",
-    company_website: KycList.companyWebsite,
+    // company_website: KycList.companyWebsite,
     seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
     website_app_url: KycList?.website_app_url,
     avg_ticket_size: KycList?.avg_ticket_size,
@@ -253,21 +253,22 @@ function BusinessOverview(props) {
           );
         }
       });
-    } else if (role.verifier) {
-      const veriferDetails = {
-        login_id: kycid,
-        business_info_verified_by: loginId,
-      };
-      dispatch(verifyKycEachTab(veriferDetails))
-        .then((resp) => {
-          resp?.payload?.business_info_status &&
-            toast.success(resp?.payload?.business_info_status);
-          resp?.payload?.detail && toast.error(resp?.payload?.detail);
-        })
-        .catch((e) => {
-          toast.error("Try Again Network Error");
-        });
-    }
+    } 
+    // else if (role.verifier) {
+    //   const veriferDetails = {
+    //     login_id: kycid,
+    //     business_info_verified_by: loginId,
+    //   };
+    //   dispatch(verifyKycEachTab(veriferDetails))
+    //     .then((resp) => {
+    //       resp?.payload?.business_info_status &&
+    //         toast.success(resp?.payload?.business_info_status);
+    //       resp?.payload?.detail && toast.error(resp?.payload?.detail);
+    //     })
+    //     .catch((e) => {
+    //       toast.error("Try Again Network Error");
+    //     });
+    // }
   };
 
   const handleShowHide = (event) => {
@@ -275,15 +276,15 @@ function BusinessOverview(props) {
     setAppUrl(getuser);
   };
 
-  useEffect(() => {
-    if (role.approver) {
-      setReadOnly(true);
-      setButtonText("Approve and Next");
-    } else if (role.verifier) {
-      setReadOnly(true);
-      setButtonText("Verify and Next");
-    }
-  }, [role]);
+  // useEffect(() => {
+  //   if (role.approver) {
+  //     setReadOnly(true);
+  //     setButtonText("Approve and Next");
+  //   } else if (role.verifier) {
+  //     setReadOnly(true);
+  //     setButtonText("Verify and Next");
+  //   }
+  // }, [role]);
 
   return (
     <div className="col-md-12 p-3">
@@ -295,6 +296,7 @@ function BusinessOverview(props) {
       >
         {(formik) => (
           <Form>
+          {console.log(formik)}
             <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6">
               <label class="col-form-label mt-0 p-2">
@@ -457,7 +459,7 @@ function BusinessOverview(props) {
               <div class="mt-2">
                 <div class="row">
                   <div class="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                    {VerifyKycStatus === "Verified" ? null : (
+                    {VerifyKycStatus === "Verified" ? <></> : (
                       <button
                         className="btn float-lg-right btnbackground text-white"
                         type="submit"

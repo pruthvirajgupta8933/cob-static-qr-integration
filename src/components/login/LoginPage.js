@@ -101,7 +101,7 @@ function LoginPage() {
           <div className="authfy-container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
             <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right pt-0 login-float-right nopad login-float-none">
 
-            {/* col-sm-12 col-md-12 col-lg-6 authfy-panel-right  */}
+              {/* col-sm-12 col-md-12 col-lg-6 authfy-panel-right  */}
               <div className="authfy-login">
                 <div className="authfy-panel panel-login text-center active">
                   <div className="logmod__wrapper">
@@ -235,11 +235,11 @@ function LoginPage() {
                                         )}
                                       </ErrorMessage>
 
-                                      <span class="input-group-addon eyeicon2" onClick={handleClickShowPassword} >
+                                      <span className="input-group-addon eyeicon2" onClick={handleClickShowPassword} >
                                         {values.showPassword ? (
-                                          <i class="fa fa-eye" aria-hidden="true"></i>
+                                          <i className="fa fa-eye" aria-hidden="true"></i>
                                         ) : (
-                                          <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                          <i className="fa fa-eye-slash" aria-hidden="true"></i>
                                         )}
                                       </span>
                                     </div>
@@ -249,25 +249,25 @@ function LoginPage() {
                                     <button
                                       className="sumbit btn-0156B3"
                                       type="sumbit"
-                                      style={{ boxShadow:"0px 14px 10px rgba(66, 133, 248, 0.5)", borderRadius: "6px",}}
+                                      style={{ boxShadow: "0px 14px 10px rgba(66, 133, 248, 0.5)", borderRadius: "6px", }}
                                       disabled={
                                         !(formik.isValid && formik.dirty)
                                           ? true
                                           : false
                                       }
                                     >
-                                      {loading &&(
+                                      {loading && (
                                         // <span
                                         //   className="spinner-border forSpinner NunitoSans-Regular"
                                         //   role="status"
                                         // ></span>
-                                        <div class="spinner-border text-secondary- NunitoSans-Regular" role="status"></div>
-                                        // <div class="spinner-grow" role="status"></div>
+                                        <div className="spinner-border text-secondary- NunitoSans-Regular" role="status"></div>
+                                        // <div className="spinner-grow" role="status"></div>
                                       )}
                                       LogIn
                                     </button>
 
-                                 
+
                                   </div>
                                 </Form>
                               )}
@@ -280,8 +280,8 @@ function LoginPage() {
                       </div>
                     </div>
                   </div>
-                </div>{" "}
-                
+                </div>
+
                 <div className="authfy-panel panel-forgot">
                   <div className="row">
                     <div className="col-xs-12 col-sm-12">
@@ -344,11 +344,11 @@ function LoginPage() {
               <div className="brand-col">
                 <div
                   id="carouselExampleIndicators"
-                  class="carousel slide"
+                  className="carousel slide"
                   data-ride="carousel"
                 >
                   <ol
-                    class="carousel-indicators"
+                    className="carousel-indicators"
                     style={{
                       position: "absolute",
                       zIndex: "999",
@@ -358,7 +358,7 @@ function LoginPage() {
                     <li
                       data-target="#carouselExampleIndicators"
                       data-slide-to="0"
-                      class="active"
+                      className="active"
                     ></li>
                     <li
                       data-target="#carouselExampleIndicators"
@@ -369,9 +369,9 @@ function LoginPage() {
                       data-slide-to="2"
                     ></li>
                   </ol>
-                  <div class="carousel-inner OpenSans-Regular">
-                    <div class="carousel-item active">
-                      <div class="heading1 pt-2">
+                  <div className="carousel-inner OpenSans-Regular">
+                    <div className="carousel-item active">
+                      <div className="heading1 pt-2">
                         <p
                           className="font-text-large mb-0 OpenSans-Regular"
                           style={{ color: "#012167", fontWeight: "700" }}
@@ -390,14 +390,14 @@ function LoginPage() {
                           Trusted by over 3000 Mega Clients
                         </p>
                         <img
-                          class="loginscreenimage"
+                          className="loginscreenimage"
                           src={imageSlide1}
                           alt="slide"
                         />
                       </div>
                     </div>
-                    <div class="carousel-item">
-                      <div class="heading1 pt-2">
+                    <div className="carousel-item">
+                      <div className="heading1 pt-2">
                         <p
                           className="font-text-large mb-0 OpenSans-Regular"
                           style={{ color: "#012167", fontWeight: "700" }}
@@ -416,14 +416,14 @@ function LoginPage() {
                           Trusted by over 3000 Mega Clients
                         </p>
                         <img
-                          class="loginscreenimage"
+                          className="loginscreenimage"
                           src={imageSlide1}
                           alt="slide"
                         />
                       </div>
                     </div>
-                    <div class="carousel-item">
-                      <div class="heading1 pt-2">
+                    <div className="carousel-item">
+                      <div className="heading1 pt-2">
                         <p
                           className="font-text-large mb-0 OpenSans-Regular "
                           style={{ color: "#012167", fontWeight: "700" }}
@@ -442,7 +442,7 @@ function LoginPage() {
                           Trusted by over 3000 Mega Clients
                         </p>
                         <img
-                          class="loginscreenimage"
+                          className="loginscreenimage"
                           src={imageSlide1}
                           alt="slide"
                         />
@@ -453,10 +453,10 @@ function LoginPage() {
               </div>
             </div>
           </div>
-          
+
           <p className="footerforcopyright NunitoSans-Regular text-center">
-            Copyright @ 2022 SabPaisa All Rights Reserved version 1.0 
-            
+            Copyright @ 2022 SabPaisa All Rights Reserved version 1.0
+
           </p>
         </div>
         {/* ./row */}
