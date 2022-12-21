@@ -235,7 +235,7 @@ function VerifiedMerchant() {
                     </td>
                     {/* <td>{user?.comments}</td> */}
                     <td>
-                      {roles.verifier === true || roles.approver === true ? (
+                      {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
                         <button
                           type="button"
                           className="btn approve text-white  btn-xs"
@@ -252,19 +252,7 @@ function VerifiedMerchant() {
                       ) : (
                         <></>
                       )}
-                      {roles.viewer === true ? (
-                        <button
-                          type="button"
-                          className="btn approve text-white  btn-xs"
-                          onClick={() => setKycIdClick(user)}
-                          data-toggle="modal"
-                          data-target="#kycmodaldetail"
-                        >
-                          View
-                        </button>
-                      ) : (
-                        <></>
-                      )}
+                      
                     </td>
                     {roles.approver === true ? (
                       <td>

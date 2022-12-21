@@ -14,6 +14,7 @@ function SideNavbar() {
   const { auth, kyc } = useSelector((state) => state);
 
   const { user, payLinkPermission } = auth;
+   const [clientCode, SetClientCode] = useState("")
 
   let { url } = useRouteMatch();
   const dispatch = useDispatch();
@@ -380,6 +381,27 @@ function SideNavbar() {
                             &nbsp; Create Payment Link
                           </Link>
                         </li>
+                      ) : (
+                        <React.Fragment></React.Fragment>
+                      )}
+
+                       {roleBasedShowTab?.merchant === true ? (
+                        <React.Fragment>
+                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(clientCode) ?   
+                          <li
+                            className="ant-menu-item"
+                            role="menuitem"
+                            style={{ paddingLeft: "48px" }}
+                          >
+                            <Link
+                              to={`${url}/settlement-report`}
+                              className="txt-white sidenavFonts"
+                            >
+                              <i className="fa fa-bars" aria-hidden="true" />
+                              <span>&nbsp;Settlement Report (Excel)</span>
+                            </Link>
+                          </li> : <></>}
+                          </React.Fragment>
                       ) : (
                         <React.Fragment></React.Fragment>
                       )}

@@ -47,7 +47,7 @@ function DocumentsUpload(props) {
   const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const kyc_status = KycList?.status;
-  const businessType = KycList.businessType;
+  const businessType = KycList?.businessType;
 
 
 
@@ -262,10 +262,10 @@ function DocumentsUpload(props) {
   }, []);
 
   useEffect(() => {
-    if (role.approver) {
+    if (role?.approver) {
       setReadOnly(true);
       setButtonText("Approve");
-    } else if (role.verifier) {
+    } else if (role?.verifier) {
       setReadOnly(true);
       setButtonText("Verify");
     }
