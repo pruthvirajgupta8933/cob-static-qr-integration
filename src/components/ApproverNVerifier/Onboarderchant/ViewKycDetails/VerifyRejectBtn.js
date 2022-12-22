@@ -35,11 +35,11 @@ return enableBtn;
 }
 
 let enableBtnStatus = enableBtnByStatus()
-console.log("============start=verify btn each tab-----")
-console.log("KycTabStatus",status)
-console.log("enableDisable",enableDisable)
-console.log("enableBtnStatus",enableBtnStatus)
-console.log("---------end verify btn each tab-----")
+// console.log("============start=verify btn each tab-----")
+// console.log("KycTabStatus",status)
+// console.log("enableDisable",enableDisable)
+// console.log("enableBtnStatus",enableBtnStatus)
+// console.log("---------end verify btn each tab-----")
   
 return (
    <React.Fragment>

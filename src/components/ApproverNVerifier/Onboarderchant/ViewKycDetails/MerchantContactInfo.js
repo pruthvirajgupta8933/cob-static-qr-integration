@@ -56,7 +56,7 @@ function MerchantContactInfo(props) {
   const handleRejectClick = () => {
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
-      merchant_info_rejected_by: loginId,
+      general_info_rejected_by: loginId,
     };
     dispatch(rejectKycOperation(rejectDetails))
       .then((resp) => {
