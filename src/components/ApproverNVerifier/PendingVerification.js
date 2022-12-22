@@ -19,6 +19,9 @@ function PendingVerification() {
   const { url } = useRouteMatch();
   const roles = roleBasedAccess();
    const { user } = useSelector((state) => state.auth);
+   const roleBasePermissions = roleBasedAccess()
+
+   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
    const { loginId } = user;
    const id =loginId
@@ -33,11 +36,15 @@ function PendingVerification() {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [commentId, setCommentId] = useState({});
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(100);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [openCommentModal, setOpenCommentModal] = useState(false);
+
+  const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
+  const currenTab = parseInt(verifierApproverTab?.currenTab)
+
   
 
 
@@ -223,7 +230,6 @@ function PendingVerification() {
                 <th>View Status</th>
                 {/* <th>Comments</th> */}
                 <th>Action</th>
-                {roles?.verifier === true ? <th>Verify KYC</th> : <></>}
               </tr>
             </thead>
             <tbody>
@@ -257,7 +263,8 @@ function PendingVerification() {
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >
-                        View Status
+                        {roles?.verifier === true && currenTab === 3 || Allow_To_Do_Verify_Kyc_details === true ? "Verify KYC / View Status" : "View Status" }
+                      
                       </button>
                     </td>
                     <td>
@@ -281,21 +288,6 @@ function PendingVerification() {
                       )}
                     
                     </td>
-
-                    {roles.verifier === true ? (
-                       <td>
-                        <Link
-                          to={`/dashboard/kyc/?kycid=${user?.loginMasterId}`}
-                          className="btn approve text-white  btn-xs"
-                          data-toggle="modal"
-                          data-target="#exampleModalCenter"
-                        >
-                          Verify KYC
-                        </Link>
-                      </td>
-                    ) : (
-                      <></>
-                    )}
                   </tr>
                 ))
               )}

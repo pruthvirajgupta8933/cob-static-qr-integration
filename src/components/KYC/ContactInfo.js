@@ -12,6 +12,7 @@ import {
   verifyKycEachTab,
   updateContactInfo,
   kycUserList,
+  GetKycTabsStatus,
 } from "../../slices/kycSlice";
 import MailVerificationModal from "./OtpVerificationKYC/MailVerificationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
@@ -27,7 +28,7 @@ function ContactInfo(props) {
   const dispatch = useDispatch();
 
   const { role, kycid } = props;
-  console.log("this is the merchnat id here", props)
+  // console.log("this is the merchnat id here", props)
   const { auth, kyc } = useSelector((state) => state);
 
   const { user } = auth;
@@ -119,6 +120,7 @@ function ContactInfo(props) {
           setTitle("BUSINESS OVERVIEW");
           toast.success(res.payload?.message);
           dispatch(kycUserList({ login_id: loginId }));
+          dispatch(GetKycTabsStatus({login_id: loginId}));
         } else {
           toast.error(res.payload?.message);
           toast.error(res.payload?.detail);

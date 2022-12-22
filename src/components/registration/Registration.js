@@ -38,7 +38,7 @@ const FORM_VALIDATION = Yup.object().shape({
     ),
   confirmpasswordd: Yup.string()
     .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
-    .required("Confirm Password Required"),
+    .required("Confirm Password"),
   business_cat_code: Yup.string().required("Required"),
 });
 
@@ -48,7 +48,6 @@ function Registration() {
   const reduxState = useSelector((state) => state);
   const { message, auth } = reduxState;
   const datar = auth;
-
 
   const { isUserRegistered } = datar;
   const [acceptTc, setAcceptTc] = useState(false);
@@ -110,17 +109,17 @@ function Registration() {
       passwordd,
       business_cat_code,
     } = formData;
- 
+
     dispatch(
       register({
-        fullname:fullname,
-        mobileNumber:mobilenumber,
-        email:emaill,
-        business_cat_code:business_cat_code,
-        password:passwordd,
+        fullname: fullname,
+        mobileNumber: mobilenumber,
+        email: emaill,
+        business_cat_code: business_cat_code,
+        password: passwordd,
         businessType,
-        isDirect:true,
-        requestId:null
+        isDirect: true,
+        requestId: null,
       })
     )
       .unwrap()
@@ -431,7 +430,7 @@ function Registration() {
                                             className="form-control"
                                             id="businesscode"
                                           >
-                                            Select Business Category
+                                            Select Business
                                           </option>
                                           {businessCode?.map((business, i) => (
                                             <option
@@ -485,7 +484,10 @@ function Registration() {
                                         autoComplete="off"
                                       />
                                       <div className="input-group-addon viewfor">
-                                        <a href={()=>false} onClick={handleClickShowPassword}>
+                                        <a
+                                          href={() => false}
+                                          onClick={handleClickShowPassword}
+                                        >
                                           {valuesIn.showPassword ? (
                                             <i
                                               className="fa fa-eye"
@@ -540,7 +542,10 @@ function Registration() {
                                       />
 
                                       <div className="input-group-addon viewfor">
-                                        <a href={()=>false} onClick={togglePassword}>
+                                        <a
+                                          href={() => false}
+                                          onClick={togglePassword}
+                                        >
                                           {passwordType.showPasswords ? (
                                             <i
                                               className="fa fa-eye"
@@ -612,15 +617,17 @@ function Registration() {
                                       }
                                     </div>
                                   </div>
-                                  <p className="foraccount Satoshi-Medium">
-                                    Already have an account?
-                                    <Link
+                                  <div className="container">
+                                  <div class="row">
+                                    <div class="col">Already have an account? <Link
                                       to={`/login`}
                                       style={{ color: "#0156B3" }}
                                     >
                                       Sign in
-                                    </Link>
-                                  </p>
+                                    </Link></div>
+                                    
+                                  </div>
+                                  </div>
                                 </Form>
                               )}
                             </Formik>
@@ -637,7 +644,7 @@ function Registration() {
           </div>
 
           <p className="footerforcopyright text-center NunitoSans-Regular">
-          Copyright @ 2022 SabPaisa All Rights Reserved version 1.0
+            Copyright @ 2022 SabPaisa All Rights Reserved version 1.0
           </p>
         </div>
 

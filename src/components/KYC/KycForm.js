@@ -17,73 +17,58 @@ import {
 } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../dashboard/NavBar/NavBar";
+import { isUndefined } from "lodash";
 
 function KycForm() {
   const dispatch = useDispatch();
 
   const search = useLocation().search;
+
   // kycid as login id
   const kycid = new URLSearchParams(search).get("kycid");
-
   const [tab, SetTab] = useState(1);
   const [title, setTitle] = useState("CONTACT INFO");
-  const [status, setStatus] = useState(false);
-  const [kycPopUp,setKycPopUp] = useState(true)
 
-  const { auth ,kyc } = useSelector((state) => state);
+  const [kycPopUp, setKycPopUp] = useState(true);
+
+  const { auth, kyc } = useSelector((state) => state);
   const { user } = auth;
-
   const { loginId } = user;
-
   const roles = roleBasedAccess();
 
   let merchantloginMasterId = loginId;
-
   if (roles.approver || roles.verifier || roles.bank) {
     merchantloginMasterId = kycid;
   } else if (roles.merchant) {
     merchantloginMasterId = loginId;
   }
 
-  // const BusinessOverviewStatus = useSelector(
-  //   (state) => state.kyc.BusiOverviewwStatus.submitStatus.status
-  // );
+  const { allTabsValidate, KycTabStatusStore } = kyc;
+  const merchant_consent = kyc?.kycUserList?.merchant_consent;
+  const BusinessOverviewStatus =
+    allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
+  const BusinessDetailsStatus =
+    allTabsValidate?.BusinessDetailsStatus?.submitStatus?.status;
+  const bankDetails = allTabsValidate?.BankDetails?.submitStatus?.status;
+  const contactInfo =
+    allTabsValidate?.merchantContactInfo?.submitStatus?.status;
+  const uploadDocuments = allTabsValidate?.UploadDoc?.submitStatus?.status;
 
-  const {allTabsValidate, KycTabStatusStore} = kyc;
-  const merchant_consent = kyc?.kycUserList?.merchant_consent
+  console.log("allTabsValidate", allTabsValidate);
+  console.log("KycTabStatusStore", KycTabStatusStore);
+  console.log("uploadDocuments", uploadDocuments);
 
-  const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status  
-  const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus?.submitStatus?.status
-  const bankDetails = allTabsValidate?.BankDetails?.submitStatus?.status
-  const contactInfo = allTabsValidate?.merchantContactInfo?.submitStatus?.status
-  const uploadDocuments = allTabsValidate?.UploadDoc?.submitStatus?.status
-  // console.log("uploadDocuments",uploadDocuments)
-
-  
   let history = useHistory();
 
-  // const merchantList = user.clientMerchantDetailsList;
-
-
-  // if (user.roleId !== 3 && user.roleId !== 13) {
-  //   if (user.clientMerchantDetailsList === null) {
-  //     history.push("/dashboard/profile");
-  //   }
-  // }
-
-  //------------------------------------------------------------------
-
   //------------- Kyc  User List ------------//
-  useEffect(() => {dispatch(kycUserList({ login_id: merchantloginMasterId }));
-  }, [ merchantloginMasterId]);
-
-  //-----------------------------------------//
+  useEffect(() => {
+    dispatch(kycUserList({ login_id: merchantloginMasterId }));
+  }, [merchantloginMasterId]);
 
   //-----------Kyc Document Upload List ------//
-
   useEffect(() => {
-    dispatch(kycDocumentUploadList({ login_id: merchantloginMasterId }))
-  }, [ merchantloginMasterId]);
+    dispatch(kycDocumentUploadList({ login_id: merchantloginMasterId }));
+  }, [merchantloginMasterId]);
 
   //--------------------------------------//
 
@@ -95,14 +80,67 @@ function KycForm() {
         login_id: merchantloginMasterId,
       })
     );
-  }, [ merchantloginMasterId]);
+  }, [merchantloginMasterId]);
 
   const redirect = () => {
     history.push("/dashboard");
   };
 
+  let IsGeneralInfoTabFilled,
+    isBusinessInfoStatus,
+    IsDocumentTabFilled,
+    IsMerchantInfoFilled,
+    IsSettlementInfoFilled = false;
+  // let IsDocumentTabFilled = false
 
-  // console.log("document_status",KycTabStatusStore?.document_status)
+  // Now Check the tab status / accordingly change the UI
+
+  if (
+    contactInfo === true ||
+    (KycTabStatusStore?.general_info_status !== "Not-Filled" &&
+      !isUndefined(KycTabStatusStore?.general_info_status))
+  ) {
+    IsGeneralInfoTabFilled = true;
+  }
+
+  if (
+    BusinessOverviewStatus === true ||
+    (KycTabStatusStore?.business_info_status !== "Not-Filled" &&
+      !isUndefined(KycTabStatusStore?.business_info_status))
+  ) {
+    isBusinessInfoStatus = true;
+  }
+
+  if (
+    BusinessDetailsStatus === true ||
+    (KycTabStatusStore?.merchant_info_status !== "Not-Filled" &&
+      !isUndefined(KycTabStatusStore?.merchant_info_status))
+  ) {
+    IsMerchantInfoFilled = true;
+  }
+
+
+  if(
+    bankDetails === true ||
+    (KycTabStatusStore?.settlement_info_status!=="Not-Filled" &&
+    !isUndefined(KycTabStatusStore?.settlement_info_status))){
+      IsSettlementInfoFilled = true
+        }
+
+  if (
+    uploadDocuments === true ||
+    (KycTabStatusStore?.document_status !== "Not-Submitted" &&
+      !isUndefined(KycTabStatusStore?.document_status))
+  ) {
+    IsDocumentTabFilled = true;
+  }
+
+  console.log({IsGeneralInfoTabFilled,
+    isBusinessInfoStatus,
+    IsDocumentTabFilled,
+    IsMerchantInfoFilled,
+    IsSettlementInfoFilled})
+
   return (
     <section className="ant-layout">
       <div>
@@ -115,18 +153,13 @@ function KycForm() {
         }
         tabIndex="-1"
         role="dialog"
-        style={{overflow:"scroll"}}
+        style={{ overflow: "scroll" }}
       >
-        <div class="modal-dialog modal-dialog-centered container- ml-280" role="document">
+        <div
+          class="modal-dialog modal-dialog-centered container- ml-280"
+          role="document"
+        >
           <div class="modal-content kyc-modal_form ">
-            {/* <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button> */}
             <div class="modal-body" style={{ display: "contents" }}>
               <div class="card-group Satoshi-Medium">
                 <div class="row kycnomar kycnopad">
@@ -144,8 +177,6 @@ function KycForm() {
                       <div class="card-body">
                         <div>
                           <ul>
-                          {/* {console.log("contactInfo",contactInfo)}
-                          {console.log("KycTabStatusStore?.general_info_status",KycTabStatusStore?.general_info_status)} */}
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}
@@ -153,7 +184,7 @@ function KycForm() {
                                   tab === 1 ? (
                                     " nav-link activepaylink-kyc text-font d-flex"
                                   ) : "inactive text-font d-flex" ? (
-                                    contactInfo === true || (KycTabStatusStore?.general_info_status!=="Not-Filled" && KycTabStatusStore?.general_info_status!==undefined) ? (
+                                    IsGeneralInfoTabFilled ? (
                                       "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
                                       "nav-link inactive text-font d-flex"
@@ -178,7 +209,7 @@ function KycForm() {
                                   tab === 2 ? (
                                     " nav-link activepaylink-kyc text-font d-flex"
                                   ) : "inactive text-font d-flex" ? (
-                                    BusinessOverviewStatus === true || (KycTabStatusStore?.business_info_status!=="Not-Filled" && KycTabStatusStore?.business_info_status!==undefined )? (
+                                    isBusinessInfoStatus ? (
                                       "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
                                       "nav-link inactive text-font d-flex"
@@ -203,7 +234,7 @@ function KycForm() {
                                   tab === 3 ? (
                                     " nav-link activepaylink-kyc text-font d-flex"
                                   ) : "inactive text-font d-flex" ? (
-                                    BusinessDetailsStatus === true || (KycTabStatusStore?.merchant_info_status!=="Not-Filled" && KycTabStatusStore?.merchant_info_status!==undefined)? (
+                                    IsMerchantInfoFilled ? (
                                       "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
                                       "nav-link inactive text-font d-flex"
@@ -227,7 +258,7 @@ function KycForm() {
                                   tab === 4 ? (
                                     " nav-link activepaylink-kyc text-font d-flex"
                                   ) : "inactive text-font d-flex" ? (
-                                    bankDetails === true || (KycTabStatusStore?.settlement_info_status!=="Not-Filled" && KycTabStatusStore?.settlement_info_status!==undefined) ? (
+                                    IsSettlementInfoFilled ? (
                                       "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
                                       "nav-link inactive text-font d-flex"
@@ -252,7 +283,7 @@ function KycForm() {
                                   tab === 5 ? (
                                     " nav-link activepaylink-kyc text-font d-flex"
                                   ) : "inactive text-font d-flex" ? (
-                                    uploadDocuments === true || (KycTabStatusStore?.document_status!=="Not-Submitted" && KycTabStatusStore?.document_status!=="undefined")? (
+                                    IsDocumentTabFilled ? (
                                       "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
                                       "nav-link inactive text-font d-flex"
@@ -273,12 +304,13 @@ function KycForm() {
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}
-                             
                                 className={
                                   tab === 6 ? (
                                     " nav-link activepaylink-kyc text-font d-flex"
                                   ) : "inactive text-font d-flex" ? (
-                                    uploadDocuments === true || merchant_consent?.term_condition ===true ? (
+                                    uploadDocuments === true ||
+                                    merchant_consent?.term_condition ===
+                                      true ? (
                                       "inactive text-font-ForStatusChange text-success p-2 d-flex"
                                     ) : (
                                       "nav-link inactive text-font d-flex"
