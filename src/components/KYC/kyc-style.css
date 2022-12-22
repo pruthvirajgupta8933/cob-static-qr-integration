@@ -262,6 +262,7 @@ a.activepaylink-kyc{
   line-height: 26px;
   letter-spacing: 0em;
   color: green;
+  white-space: nowrap;
 }
 
 .text-kyc-header {
@@ -303,12 +304,13 @@ a.activepaylink-kyc{
     overflow-Y: scroll !important;
 }
 .otpbtn{
-  position: absolute !important;
+    position: absolute !important;
     right: 16px;
-    top: 38px;
+    top: 37px;
 }
 .otpbtn a{
-  border-radius: 0 6px 6px 0;
+    border-radius: 0 6px 6px 0;
+    max-height: 33px;
 }
 .otpbtngst{
     right: 0;
