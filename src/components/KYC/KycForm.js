@@ -135,6 +135,12 @@ function KycForm() {
     IsDocumentTabFilled = true;
   }
 
+  console.log({IsGeneralInfoTabFilled,
+    isBusinessInfoStatus,
+    IsDocumentTabFilled,
+    IsMerchantInfoFilled,
+    IsSettlementInfoFilled})
+
   return (
     <section className="ant-layout">
       <div>
