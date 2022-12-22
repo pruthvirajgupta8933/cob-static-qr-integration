@@ -276,15 +276,6 @@ function BusinessOverview(props) {
     setAppUrl(getuser);
   };
 
-  // useEffect(() => {
-  //   if (role.approver) {
-  //     setReadOnly(true);
-  //     setButtonText("Approve and Next");
-  //   } else if (role.verifier) {
-  //     setReadOnly(true);
-  //     setButtonText("Verify and Next");
-  //   }
-  // }, [role]);
 
   return (
     <div className="col-md-12 p-3">
@@ -296,7 +287,6 @@ function BusinessOverview(props) {
       >
         {(formik) => (
           <Form>
-          {console.log(formik)}
             <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-6">
               <label class="col-form-label mt-0 p-2">
