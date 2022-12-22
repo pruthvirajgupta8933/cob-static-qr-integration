@@ -20,7 +20,7 @@ const NotFilledKYC = () => {
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(100);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   // let page_size = pageSize;
   // let page = currentPage;

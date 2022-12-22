@@ -21,7 +21,7 @@ const RejectedKYC = () => {
   const [rejectedMerchants, setRejectedMerchants] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(100);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [isOpenModal, setIsModalOpen] = useState(false)
   let page_size = pageSize;

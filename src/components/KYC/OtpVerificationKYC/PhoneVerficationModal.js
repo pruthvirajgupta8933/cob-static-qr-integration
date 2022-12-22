@@ -64,7 +64,7 @@ const PhoneVerficationModal = ({ show, setShow }) => {
        
       >
         <div className="modal-dialog" role="document">
-          <div className="modal-content">
+          <div className="modal-content" style={{width:"615px", height:"303px"}}>
 
             <>
               <div className="modal-header">

@@ -21,7 +21,7 @@ function ApprovedMerchant() {
   const { user } = useSelector((state) => state.auth);
   const [docImageData, setDocImageData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(100);
   const [spinner, setSpinner] = useState(true);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
