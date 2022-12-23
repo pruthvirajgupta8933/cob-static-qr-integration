@@ -173,9 +173,11 @@ console.log("roles",roles)
 
     if(currenTab === 3){
       setButtonText("Verify KYC")
+      console.log(buttonText,"The Button Name is verify kyc")
     }
     if(currenTab === 4){
       setButtonText("Approve KYC")
+      console.log(buttonText,"The Button Name is Approve kyc")
 
     }
 
@@ -184,14 +186,15 @@ console.log("roles",roles)
 
   }, [roles, isverified, Allow_To_Do_Verify_Kyc_details]);
 
-  // console.log("---------start final btn-----")
-  //    console.log("currenTab",currenTab)
-  //    console.log("roles",roles)
-  //    console.log("isverified",isverified)
-  //    console.log("isapproved",isapproved)
-  //    console.log("enableBtnVerifier",enableBtnVerifier)
-  //    console.log("enableBtnApprover",enableBtnApprover)
-  // console.log("---------end final btn-----")
+  console.log("---------start final btn-----")
+     console.log("currenTab",currenTab)
+     console.log("roles",roles)
+     console.log("isverified",isverified)
+     console.log("isapproved",isapproved)
+     console.log("enableBtnVerifier",enableBtnVerifier)
+     console.log("enableBtnApprover",enableBtnApprover)
+     console.log("The button name show is here",buttonText)
+  console.log("---------end final btn-----")
     
 
   return (
