@@ -294,12 +294,7 @@ export const saveBusinessInfo = createAsyncThunk(
   "kyc/saveBusinessInfo",
   async (requestParam) => {
     const response = await axiosInstanceAuth
-      .put(`${API_URL.save_Business_Info}`, requestParam, {
-        headers: {
-          // Authorization: ""
-        },
-      })
-
+      .put(`${API_URL.save_Business_Info}`, requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -913,7 +908,6 @@ export const kycSlice = createSlice({
   extraReducers: {
     [kycUserList.pending]: (state, action) => {
       state.status = "pending";
-      state.KycTabStatusStore = {}
     },
     [kycUserList.fulfilled]: (state, action) => {
       state.kycUserList = action.payload;

@@ -44,16 +44,20 @@ let enableBtnStatus = enableBtnByStatus()
 return (
    <React.Fragment>
           { enableDisable && enableBtnStatus  ? 
-            <button type="button" 
+            <><button type="button" 
             onClick={()=>props?.KycVerifyStatus?.handleVerifyClick()} 
             class="btn btn-info btn-sm text-white">{props?.btnText?.verify}</button>
+
+            <button type="button" 
+            onClick={()=>props?.KycRejectStatus?.handleRejectClick()} 
+            class="btn btn-danger btn-sm text-white">{props?.btnText?.Reject}</button></>
           : <></> 
           }
 
-          { enableDisable && enableBtnStatus ? 
+          {/* { enableDisable && enableBtnStatus ? 
             <button type="button" onClick={()=>props?.KycRejectStatus?.handleRejectClick()} class="btn btn-danger btn-sm text-white">{props?.btnText?.Reject}</button>
           : <></> 
-          }
+          } */}
           
    </React.Fragment>
   )

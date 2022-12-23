@@ -8,9 +8,15 @@ import VerifyRejectBtn from './VerifyRejectBtn';
 
 
 const CompleteVerification = (props) => {
+  console.log("My Props",props)
+
+  let pendingApporvalTable = props?.renderApprovalTable
+  let pendingVerfyTable = props?.renderPendingVerificationData
+
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
   let isverified = KycTabStatus.is_verified
+  console.log("=========================>issdghdsgy",pendingVerfyTable)
   const { merchantKycId } = props;
   const status = merchantKycId?.status
 
@@ -49,6 +55,8 @@ const CompleteVerification = (props) => {
               resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload)
               if(resp?.payload?.status_code === 200){
                 dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+                pendingVerfyTable()
+
               }
               setDisable(false)
               
@@ -77,6 +85,7 @@ const CompleteVerification = (props) => {
             .then((resp) => {
               resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
               dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+              pendingApporvalTable()
             })
             .catch((e) => {
               toast.error("Something went wrong, Please Try Again later")
@@ -98,12 +107,14 @@ const CompleteVerification = (props) => {
       .then((resp) => {
         resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : resp?.payload?.detail && toast.error(resp?.payload?.detail)
         dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+        return currenTab === 4 ? pendingApporvalTable() : currenTab === 3 ? pendingVerfyTable() : <></>
       })
       .catch((e) => {
         toast.error("Something went wrong, Please Try Again later")
       });
 
-
+     
+  
     // .then((resp) => {
     //   resp?.payload?.message &&
     //     toast.success(resp?.payload?.message);
@@ -121,7 +132,7 @@ const CompleteVerification = (props) => {
 
     
   ////////////////////////////////////////////////////// Button enable for approver
-  const a = () => {
+  const approver = () => {
     let enableBtn = false;
     if (currenTab === 4) {
       if (roles.approver === true)
@@ -137,7 +148,7 @@ const CompleteVerification = (props) => {
 
   //////////////////////////////////////////////////// for verifier
 
-  const v = () => {
+  const verifier = () => {
     let enableBtn = false;
     if (currenTab === 3) {
       if (isverified === false){
@@ -149,36 +160,15 @@ const CompleteVerification = (props) => {
 
     setEnableBtnVerifier(enableBtn);
   };
-  a();
-  v();
+  approver();
+  verifier();
 
-    // let enableApprover = enableBtnApprover();
-    // let enableVerifier = enableBtnVerifier();
-
-
-    // if (roles.approver)
-    //  {
-    //   setButtonText("Approve Kyc");
-    // } else if (roles.verifier) {
-    //    setButtonText("Verify Kyc");
-    // }
-
-    // if(isverified === false) {
-    //   if((roles.approver === true && Allow_To_Do_Verify_Kyc_details === true) || roles?.verifier === true) {
-    //     setButtonText("Verify Kyc")
-
-    //   }
-    //   else if (currenTab ===  4) {
-    //     if (roles?.approver === true && isverified === true && isapproved === false)
-    //      {
-    //       setButtonText("Approve KYC")
-    //     }
-
-    //   }
-    // }
-
-    // }
-
+    
+console.log("currenTab",currenTab)
+console.log("isverified",isverified)
+console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
+console.log("roles",roles)
+    
 
 
     if(currenTab === 3){

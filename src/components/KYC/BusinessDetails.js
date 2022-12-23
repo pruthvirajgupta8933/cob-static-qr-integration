@@ -374,7 +374,7 @@ function BusinessDetails(props) {
                       );
                     }}
                   >
-                    Verify
+                    Verify GST
                   </a>
                 </div>
               )}

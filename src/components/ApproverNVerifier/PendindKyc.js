@@ -28,7 +28,7 @@ const PendindKyc = () => {
   const [pendingKycData, setPendingKycData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(100);
   const [statusData, setStatusData] = useState([]);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [kycIdClick, setKycIdClick] = useState(null);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import { kycForVerified } from "../../slices/kycSlice";
 import API_URL from "../../config";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
@@ -21,13 +21,20 @@ function VerifiedMerchant() {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(100);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isOpenModal, setIsModalOpen] = useState(false)
 
+
+  const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
+  const currenTab = parseInt(verifierApproverTab?.currenTab)
+
+
+
+  // console.log(currenTab," Current Tab")
   let page_size = pageSize;
   let page = currentPage;
   const roles = roleBasedAccess();
@@ -53,6 +60,8 @@ function VerifiedMerchant() {
         toastConfig.errorToast("Data not loaded");
       });
   };
+
+
 
   useEffect(() => {
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
@@ -179,7 +188,7 @@ function VerifiedMerchant() {
       <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> 
       : <></>}
       {/* {console.log("KycDetailsModal isOpenModal",isOpenModal)} */}
-      {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>}
+      {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderPendingApproval={verifyMerchant}   /> : <></>}
       {/* {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>} */}
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
@@ -199,7 +208,6 @@ function VerifiedMerchant() {
                 <th>View Status</th>
                 {/* <th>Comments</th> */}
                 <th>Action</th>
-                {roles.approver === true ? <th>Approve KYC</th> : <></>}
               </tr>
             </thead>
             <tbody>
@@ -225,6 +233,7 @@ function VerifiedMerchant() {
                     <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>
+                    
                       <button
                         type="button"
                         className="btn approve text-white  btn-xs"
@@ -232,7 +241,7 @@ function VerifiedMerchant() {
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >
-                        View Status
+                       { roles?.approver === true && currenTab === 4 ?  "Approve KYC / View Status" : "View Status" } 
                       </button>
                     </td>
                     {/* <td>{user?.comments}</td> */}
@@ -256,20 +265,7 @@ function VerifiedMerchant() {
                       )}
                       
                     </td>
-                    {roles.approver === true ? (
-                      <td>
-                        <Link
-                          to={`/dashboard/kyc/?kycid=${user.loginMasterId}`}
-                          className="btn approve text-white btn-xs"
-                          data-toggle="modal"
-                          data-target="#exampleModalCenter"
-                        >
-                          Approve KYC
-                        </Link>
-                      </td>
-                    ) : (
-                      <></>
-                    )}
+                
                   </tr>
                 ))
               )}

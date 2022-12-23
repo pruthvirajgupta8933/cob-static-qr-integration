@@ -20,7 +20,11 @@ import { isNumber } from "lodash";
 
 
 const KycDetailsModal = (props) => {
-  console.log("kycDetailsModal Render",props)
+
+  let renderPendingApprovel=props.renderPendingApproval
+  let renderPendingVerificationTable= props?.renderPendingVerification
+
+  console.log("Modal ==============>",props?.renderPendingVerification)
 
   let merchantKycId = props?.kycId;
 
@@ -184,7 +188,7 @@ const KycDetailsModal = (props) => {
               <MerchantDocument docList={docList} docTypeList={docTypeList} role={roles} merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore} />
 
             </div>
-            <CompleteVerification merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore} />
+            <CompleteVerification merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore} renderApprovalTable={renderPendingApprovel} renderPendingVerificationData={renderPendingVerificationTable} />
           </div>
 
           <div class="modal-footer">
