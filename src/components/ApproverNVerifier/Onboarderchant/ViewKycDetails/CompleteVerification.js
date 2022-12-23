@@ -16,7 +16,7 @@ const CompleteVerification = (props) => {
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
   let isverified = KycTabStatus.is_verified
-  console.log("=========================>issdghdsgy",pendingVerfyTable)
+  // console.log("",pendingVerfyTable)
   const { merchantKycId } = props;
   const status = merchantKycId?.status
 
@@ -36,7 +36,7 @@ const CompleteVerification = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
   const [buttonText, setButtonText] = useState("Complete Verification");
-
+  console.log("buttonText",buttonText)
   const handleVerifyClick = () => {
 
     const veriferDetails = {
@@ -173,11 +173,11 @@ console.log("roles",roles)
 
     if(currenTab === 3){
       setButtonText("Verify KYC")
-      console.log(buttonText,"The Button Name is verify kyc")
+      console.log("The Button Name is verify kyc",buttonText)
     }
     if(currenTab === 4){
       setButtonText("Approve KYC")
-      console.log(buttonText,"The Button Name is Approve kyc")
+      console.log("The Button Name is Approve kyc",buttonText)
 
     }
 
