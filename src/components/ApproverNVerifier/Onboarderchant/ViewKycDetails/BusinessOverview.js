@@ -120,7 +120,7 @@ console.log("businessCategoryResponse",businessCategoryResponse)
       </div>
 
 
-      <div class="col-sm-4 col-md-4 col-lg-4">
+      {/* <div class="col-sm-4 col-md-4 col-lg-4">
         <label class="col-form-label p-2 mt-0">
           Company Website<span style={{ color: "red" }}>*</span>
         </label>
@@ -134,7 +134,7 @@ console.log("businessCategoryResponse",businessCategoryResponse)
             merchantKycId?.companyWebsite
           }
         />
-      </div>
+      </div> */}
 
       <div class="col-sm-4 col-md-4 col-lg-4">
         <label

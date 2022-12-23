@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { completeVerification, completeVerificationRejectKyc } from "../../../../slices/kycOperationSlice"
-import { approvekyc } from "../../../../slices/kycSlice"
+import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
 import VerifyRejectBtn from './VerifyRejectBtn';
 
@@ -17,6 +17,7 @@ const CompleteVerification = (props) => {
   const dispatch = useDispatch()
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
+  const [disable, setDisable] = useState(false)
 
   const { auth } = useSelector((state) => state);
 
@@ -33,20 +34,27 @@ const CompleteVerification = (props) => {
   const handleVerifyClick = () => {
 
     const veriferDetails = {
-      login_id: merchantKycId.loginMasterId,
+      login_id: merchantKycId?.loginMasterId,
       verified_by: loginId,
 
     };
+    setDisable(true)
 
     if (currenTab === 3) {
       if (isverified === false) {
         if ((roles?.approver === true && Allow_To_Do_Verify_Kyc_details === true) || roles?.verifier === true) {
           dispatch(completeVerification(veriferDetails))
             .then((resp) => {
-              console.log("this one", resp)
+              
               resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload)
+              if(resp?.payload?.status_code === 200){
+                dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+              }
+              setDisable(false)
+              
             })
             .catch((e) => {
+              setDisable(false)
               toast.error("Something went wrong, Please Try Again later")
             });
 
@@ -68,6 +76,7 @@ const CompleteVerification = (props) => {
           dispatch(approvekyc(dataAppr))
             .then((resp) => {
               resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
+              dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
             })
             .catch((e) => {
               toast.error("Something went wrong, Please Try Again later")
@@ -88,6 +97,7 @@ const CompleteVerification = (props) => {
     dispatch(completeVerificationRejectKyc(rejectDetails))
       .then((resp) => {
         resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : resp?.payload?.detail && toast.error(resp?.payload?.detail)
+        dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
       })
       .catch((e) => {
         toast.error("Something went wrong, Please Try Again later")
@@ -171,22 +181,27 @@ const CompleteVerification = (props) => {
 
 
 
-    // (currenTab === 3 && isverified === false && roles?.approver === true && Allow_To_Do_Verify_Kyc_details === true) || (roles?.verifier === true) ? setButtonText("Verify KYC")
-    //   : currenTab === 4 && isverified === true && isapproved === false && roles?.approver === true ? setButtonText("Approve KYC") : <></>
+    if(currenTab === 3){
+      setButtonText("Verify KYC")
+    }
+    if(currenTab === 4){
+      setButtonText("Approve KYC")
+
+    }
 
     //  console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
     //  console.log("isverified",isverified)
 
   }, [roles, isverified, Allow_To_Do_Verify_Kyc_details]);
 
-  console.log("---------start final btn-----")
-     console.log("currenTab",currenTab)
-     console.log("roles",roles)
-     console.log("isverified",isverified)
-     console.log("isapproved",isapproved)
-     console.log("enableBtnVerifier",enableBtnVerifier)
-     console.log("enableBtnApprover",enableBtnApprover)
-  console.log("---------end final btn-----")
+  // console.log("---------start final btn-----")
+  //    console.log("currenTab",currenTab)
+  //    console.log("roles",roles)
+  //    console.log("isverified",isverified)
+  //    console.log("isapproved",isapproved)
+  //    console.log("enableBtnVerifier",enableBtnVerifier)
+  //    console.log("enableBtnApprover",enableBtnApprover)
+  // console.log("---------end final btn-----")
     
 
   return (
@@ -194,14 +209,13 @@ const CompleteVerification = (props) => {
       <div class="col-lg-6"></div>
       <div class="col-lg-6">
         {enableBtnVerifier || enableBtnApprover ?
-          <button type="button" onClick={() => handleVerifyClick()} class="btn btn-info btn-sm text-white">{buttonText}</button>
+          <><button type="button"  disabled={disable} onClick={() => handleVerifyClick()} class="btn btn-info btn-sm text-white">{buttonText}</button>
+
+
+          <button type="button" onClick={() => handleRejectClick()} class="btn btn-danger btn-sm text-white">Reject KYC</button></>
           : <></>
         }
 
-        {enableBtnVerifier || enableBtnVerifier ?
-          <button type="button" onClick={() => handleRejectClick()} class="btn btn-danger btn-sm text-white">Reject KYC</button>
-          : <></>
-        }
 
       </div>
     </div>
