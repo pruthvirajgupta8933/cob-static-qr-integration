@@ -61,6 +61,8 @@ function VerifiedMerchant() {
       });
   };
 
+
+
   useEffect(() => {
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
@@ -186,7 +188,7 @@ function VerifiedMerchant() {
       <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> 
       : <></>}
       {/* {console.log("KycDetailsModal isOpenModal",isOpenModal)} */}
-      {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>}
+      {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderPendingApproval={verifyMerchant}   /> : <></>}
       {/* {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>} */}
       </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">

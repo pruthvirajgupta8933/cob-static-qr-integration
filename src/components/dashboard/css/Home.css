@@ -1023,3 +1023,7 @@ border-radius: 0px 0px 5px 5px;
 .minh{
   padding: 0 1rem !important;
 }
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}

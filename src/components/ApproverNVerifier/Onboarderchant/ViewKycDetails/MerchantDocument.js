@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess';
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
 import { useSelector, useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
+import Loader from './Loader';
 
 const MerchantDocument = (props) => {
   const { docList, docTypeList, role, merchantKycId } = props;
@@ -33,6 +34,7 @@ const MerchantDocument = (props) => {
   const [savedData, setSavedData] = useState([]);
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
+  const [loader, setLoader] = useState(false)
 
   const getDocTypeName = (id) => {
     let data = docTypeList.filter((obj) => {
@@ -57,7 +59,7 @@ const MerchantDocument = (props) => {
 
   const getKycDocList = (role) => {
     dispatch(
-      kycDocumentUploadList({ login_id: merchantKycId.loginMasterId })
+      kycDocumentUploadList({ login_id: merchantKycId?.loginMasterId })
 
     );
   };
@@ -67,6 +69,8 @@ const MerchantDocument = (props) => {
       document_id: doc_id,
       verified_by: loginId,
     };
+    setLoader(true)
+   
 
     if (Allow_To_Do_Verify_Kyc_details === true || role?.verifier)
       if (currenTab === 3 && status === "Pending") {
@@ -74,11 +78,15 @@ const MerchantDocument = (props) => {
           if (resp?.payload?.status) {
             getKycDocList(role);
             toast.success(resp?.payload?.message)
+            setLoader(false)
+          
           } else {
             toast.error(resp?.payload?.message)
+            setLoader(false)
           }
 
         });
+       
       }
 
     if (role?.approver && status === "Verified") {
@@ -194,9 +202,9 @@ const MerchantDocument = (props) => {
 
 
 
-  console.log("=========merchant doc start==========")
-  console.log("enableBtnVerifier", enableBtnVerifier)
-  console.log("=========merchant doc end==========")
+  // console.log("=========merchant doc start==========")
+  // console.log("enableBtnVerifier", enableBtnVerifier)
+  // console.log("=========merchant doc end==========")
 
   return (
     <div className="row mb-4 border">
@@ -239,14 +247,18 @@ const MerchantDocument = (props) => {
                       {/*  || (enableBtnApprover(doc?.status) && enableApproverTabwise) */}
                       {(enableBtnVerifier && doc?.status === "Pending") || (enableBtnApprover && doc?.status === "Verified") ?
                         <>
-                          <a className="text-success"
+                      
+                          <a className= "text-success"
                             href={() => false}
                             onClick={() => {
                               verifyApproveDoc(doc?.documentId, doc?.status);
                             }}
+                        
+                            
                           >
                             <h4>{buttonText}</h4>
                           </a>
+                        
 
                           &nbsp;
                           &nbsp;
