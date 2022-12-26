@@ -360,10 +360,10 @@ function BusinessDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right- ">
+                <div class="position-sticky pull-right- otpbtngst">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtngst"
+                    className="btn btnbackground text-white btn-sm panbtn "
                     onClick={() => {
                       checkInputIsValid(
                         errors,
@@ -419,10 +419,10 @@ function BusinessDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right">
+                <div class="position-sticky pull-right- otpbtndetail">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtndetail"
+                    className="btn btnbackground text-white btn-sm panbtn "
                     onClick={() => {
                       checkInputIsValid(
                         errors,
