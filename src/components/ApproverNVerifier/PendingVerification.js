@@ -14,11 +14,15 @@ import CommentModal from "./Onboarderchant/CommentModal";
 import {ALLOW_ROLE_AS_VERIFIER} from "./../../utilities/permisson"
 import moment from "moment";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
+import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 function PendingVerification() {
   const { url } = useRouteMatch();
   const roles = roleBasedAccess();
    const { user } = useSelector((state) => state.auth);
+   const roleBasePermissions = roleBasedAccess()
+
+   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
    const { loginId } = user;
    const id =loginId
@@ -33,10 +37,16 @@ function PendingVerification() {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [commentId, setCommentId] = useState({});
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(100);
   const [kycIdClick, setKycIdClick] = useState(null);
+  const [isOpenModal, setIsModalOpen] = useState(false)
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [openCommentModal, setOpenCommentModal] = useState(false);
+
+  const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
+  const currenTab = parseInt(verifierApproverTab?.currenTab)
+
+  
 
 
  
@@ -175,7 +185,11 @@ function PendingVerification() {
         </div>
         <div>
           {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> : <></>}
-          <KycDetailsModal kycId={kycIdClick} />
+          
+          {/* KYC Details Modal */}
+          
+         {isOpenModal === true ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderPendingVerification={pendingVerify} /> : <></>}
+          
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -198,6 +212,7 @@ function PendingVerification() {
             <option value="offline">Offline</option>
           </select>
         </div>
+        <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=processing'} filename={"Pending-Verification"}/>
       </div>
 
       <div className="col-md-12 col-md-offset-4">
@@ -214,9 +229,9 @@ function PendingVerification() {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
+                <th>View Status</th>
                 {/* <th>Comments</th> */}
                 <th>Action</th>
-                {roles?.verifier === true ? <th>Verify KYC</th> : <></>}
               </tr>
             </thead>
             <tbody>
@@ -243,7 +258,19 @@ function PendingVerification() {
                     <td>{user?.isDirect}</td>
                     {/* <td>{user?.comments}</td> */}
                     <td>
-                      {roles.verifier === true || roles.approver === true ? (
+                      <button
+                        type="button"
+                        className="btn approve text-white  btn-xs"
+                        onClick={() => {setKycIdClick(user); setIsModalOpen(true) }}
+                        data-toggle="modal"
+                        data-target="#kycmodaldetail"
+                      >
+                        {roles?.verifier === true && currenTab === 3 || Allow_To_Do_Verify_Kyc_details === true ? "Verify KYC / View Status" : "View Status" }
+                      
+                      </button>
+                    </td>
+                    <td>
+                      {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
                         <button
                           type="button"
                           className="btn approve text-white  btn-xs"
@@ -261,35 +288,8 @@ function PendingVerification() {
                       ) : (
                         <></>
                       )}
-                      {roles.viewer === true ? (
-                        <button
-                          type="button"
-                          className="btn approve text-white  btn-xs"
-                          onClick={() => setKycIdClick(user)}
-                          data-toggle="modal"
-                          data-target="#kycmodaldetail"
-                        >
-                          View
-                        </button>
-                      ) : (
-                        <></>
-                      )}
+                    
                     </td>
-
-                    {roles.verifier === true ? (
-                       <td>
-                        <Link
-                          to={`/dashboard/kyc/?kycid=${user?.loginMasterId}`}
-                          className="btn approve text-white  btn-xs"
-                          data-toggle="modal"
-                          data-target="#exampleModalCenter"
-                        >
-                          Verify KYC
-                        </Link>
-                      </td>
-                    ) : (
-                      <></>
-                    )}
                   </tr>
                 ))
               )}

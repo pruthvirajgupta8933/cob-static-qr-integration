@@ -13,14 +13,20 @@ import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { stringDec } from "../../../../utilities/encodeDecode";
 import { isCompositeComponent } from "react-dom/test-utils";
+import SabpaisaPaymentGateway from "../../../sabpaisa-pg/SabpaisaPaymentGateway";
+import { logout } from "../../../../slices/auth";
+import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 
 const SabPaisaPricing = () => {
   const history = useHistory();
+  let roles = roleBasedAccess();
+
   const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
   const [tempPlanId, setTempPlanId] = useState("");
   const [rateCloneStatus, setRateCloneStatus] = useState("")
+  const [TempSelectedData, setTempSelectedData] = useState({})
 
   const dispatch = useDispatch();
   const clickHandler = (value) => {
@@ -29,6 +35,12 @@ const SabPaisaPricing = () => {
   };
   const { user } = useSelector((state) => state.auth);
   const { clientId, business_cat_code } = user.clientMerchantDetailsList[0];
+
+  useEffect(() => {
+    if(roles?.merchant !== true) {
+      dispatch(logout())
+    }
+  })
 
 
   const param = useParams();
@@ -145,6 +157,7 @@ const SabPaisaPricing = () => {
 
 
   const handleClick = async (plan_id, plan_name) => {
+    
     const postData = {
       clientId: clientId,
       applicationName: param?.name,
@@ -153,9 +166,13 @@ const SabPaisaPricing = () => {
       applicationId: param?.id,
     };
 
+    
+console.log("postdata",postData)
+    sessionStorage.setItem("tempProductPlanData",JSON.stringify(postData))
+    // history.push("/dashboard/sabpaisa-pg");
+    // setTempSelectedData(postData)
+
     setTempPlanId(plan_id)
-
-
     const res = await axiosInstanceAuth.post(
       API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
       postData
@@ -180,10 +197,11 @@ const SabPaisaPricing = () => {
 
 
   return (
+
     <section className="ant-layout">
       <div>
         <NavBar />
-
+        {/* <SabpaisaPaymentGateway /> */}
       </div>
       <main className="gx-layout-content ant-layout-content Satoshi-Medium">
         <div>
@@ -264,7 +282,7 @@ const SabPaisaPricing = () => {
                                   className="close"
                                   data-dismiss="modal"
                                   aria-label="Close"
-                                // onClick={() => clickHandler(false)}
+                                onClick={() => clickHandler(false)}
                                 >
                                   <span aria-hidden="true">&times;</span>
                                 </button>
@@ -378,7 +396,7 @@ const SabPaisaPricing = () => {
                                   class="close"
                                   data-dismiss="modal"
                                   aria-label="Close"
-                                // onClick={() => clickHandler(false)}
+                                onClick={() => clickHandler(false)}
                                 >
 
                                   <span aria-hidden="true">&times;</span>

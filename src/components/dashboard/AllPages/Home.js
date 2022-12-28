@@ -30,6 +30,10 @@ import StepProgressBar from "../../../_components/reuseable_components/StepProgr
 import congImg from "../../../assets/images/congImg.png";
 import $ from "jquery";
 import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+import API_URL from "../../../config";
+import { toast } from "react-toastify";
+import RejectNotification from "../../../_components/reuseable_components/RejectNotification";
+
 function Home() {
   const roles = roleBasedAccess();
 
@@ -41,6 +45,7 @@ function Home() {
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
+  const [kycStatus, setKycStatus] = useState("");
   // const [roleType, setRoleType] = useState(roles);
   const { dashboard, auth, kyc, consentKyc } = useSelector((state) => state);
 
@@ -56,6 +61,7 @@ function Home() {
   // console.log("dashboard",dashboard)
   const { isLoading, successTxnsumry } = dashboard;
   const { user } = auth;
+  const loginId = user.loginId;
 
   const currentDate = new Date().toJSON().slice(0, 10);
   const fromDate = currentDate;
@@ -80,7 +86,9 @@ function Home() {
       GetKycTabsStatus({
         login_id: user?.loginId,
       })
-    );
+    ).then((resp) => {
+      setKycStatus(resp?.payload);
+    });
   }, [clientCode]);
 
   useEffect(() => {
@@ -139,6 +147,8 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // console.log("Kyc Status",kycStatus)
+
   const handleChange = (e) => {
     SetSearch(e);
   };
@@ -180,6 +190,13 @@ function Home() {
           <></>
         ) : (
           <StepProgressBar status={kyc?.kycUserList?.status} />
+        )}
+
+        {kycStatus?.status === "Rejected" ? (
+          <RejectNotification />
+          
+        ) : (
+          ""
         )}
         <div className="announcement-banner-container_new  announcement-banner">
           <div className="onboarding-illustration-top">
@@ -329,14 +346,7 @@ function Home() {
                       <span>
                         Congratulations! Your KYC documents have been approved.
                       </span>
-                      <button
-                        class="text-white pull-right kycbtns"
-                        style={{
-                          backgroundColor: "#0156B3",
-                          paddingLeft: "10px",
-                        }}
-                        disabled
-                      >
+                      <button class="text-white pull-right kycbtns" disabled>
                         KYC Done
                       </button>
                     </div>
@@ -349,16 +359,15 @@ function Home() {
         {roles?.merchant === true ? (
           <div class="container">
             <div class="row">
-              <div class="col-sm  m-0">
-                <div class="card" style={{ height: "236px", width: "462px" }}>
+              <div class="col-sm  m-0 no-pad">
+                <div class="card">
                   <h2 class="card-title dashboardEnablecss">
                     <img
                       class="card-img-left"
                       src={subscriptin}
                       alt="onlinepay"
-                      width={40}
                     />{" "}
-                    &nbsp;PayLink
+                    &nbsp;Payment Links
                   </h2>
                   <p className="paragraphcssdashboards">
                     SabPaisa is the World's 1st API Driven Unified Payment
@@ -379,9 +388,9 @@ function Home() {
                   </Link>
                 </div>
               </div>
-              <div class="col-sm" style={{ margin: "31px 0" }}>
+              <div class="col-sm mt-31">
                 <div className="row pt-2 m-0">
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       src={onlineimg}
@@ -396,7 +405,7 @@ function Home() {
                       Payment Gateway
                     </p>
                   </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad pr-2">
                     <img
                       className="card-img-left mr-2"
                       src={Rupees}
@@ -411,7 +420,7 @@ function Home() {
                       Subscriptions
                     </p>
                   </div>
-                  {/* <div className="col-6 d-flex flex-wrap my-2">
+                  {/* <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       src={paymentlink}
@@ -426,7 +435,7 @@ function Home() {
                       Payouts
                     </p>
                   </div> */}
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       width={"41px"}
@@ -441,7 +450,7 @@ function Home() {
                       QwikForm
                     </p>
                   </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       width={"41px"}
@@ -456,7 +465,7 @@ function Home() {
                       PayLink
                     </p>
                   </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       width={"41px"}
@@ -471,7 +480,7 @@ function Home() {
                       LinkPaisa
                     </p>
                   </div>
-                  <div className="col-6 d-flex flex-wrap my-2">
+                  <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
                       width={"41px"}

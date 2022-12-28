@@ -9,6 +9,7 @@ import Spinner from "./Spinner";
 import moment from "moment";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
+import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 
 function ApprovedMerchant() {
@@ -21,10 +22,11 @@ function ApprovedMerchant() {
   const { user } = useSelector((state) => state.auth);
   const [docImageData, setDocImageData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(100);
   const [spinner, setSpinner] = useState(true);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [isOpenModal, setIsModalOpen] = useState(false)
   let page_size = pageSize;
   let page = currentPage;
 
@@ -138,7 +140,7 @@ let pageNumbers = []
 
   return (
     <div className="container-fluid flleft">
-      <div className="col-lg-4 mrg-btm- bgcolor">
+      <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Search</label>
         <input
           className="form-control"
@@ -149,9 +151,9 @@ let pageNumbers = []
       </div>
       <div>
           
-          <KycDetailsModal kycId={kycIdClick} />
+          <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
         </div>
-      <div className="col-lg-4 mrg-btm- bgcolor">
+      <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Count Per Page</label>
         <select
           value={pageSize}
@@ -175,6 +177,7 @@ let pageNumbers = []
 
         </select>
       </div>
+      <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=approved'} filename={"Approved"} />
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
 
@@ -190,7 +193,7 @@ let pageNumbers = []
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
-                <th>View document</th>
+                <th>View Status</th>
               </tr>
             </thead>
             <tbody>
@@ -228,11 +231,11 @@ let pageNumbers = []
                       <button
                           type="button"
                           className="btn approve text-white  btn-xs"
-                          onClick={() => setKycIdClick(user)}
+                          onClick={() =>  {setKycIdClick(user); setIsModalOpen(true) }}
                           data-toggle="modal"
                           data-target="#kycmodaldetail"
                         >
-                          View Document
+                          View Status
                         </button>
 
                       <div

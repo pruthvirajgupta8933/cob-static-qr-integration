@@ -4,7 +4,7 @@ let url,kyc_url = "",kyc_validate = "";
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
-  kyc_validate = "https://stage-kycvalidator.sabpaisa.in"
+  kyc_validate = " https://kycvalidator.sabpaisa.in"
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
@@ -145,6 +145,9 @@ const API_LIVE = {
 ////////////////////////////////////////SIGNUP DATA API
 GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
 
+//////////////////////// For merchnat list export to csv
+Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
+
   /////////////////////////Kyc approver
   /* For pending*/
   KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not-Filled&order_by=-merchantId`,
@@ -156,6 +159,7 @@ GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
+  
 
   /** Contact Information */
   Save_General_Info: `${kyc_url}/kyc/save-general-info/`,
@@ -214,6 +218,14 @@ GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
   APPROVE_KYC: `${kyc_url}/kyc/verify-kyc/approve/`,
 
   // VERIFY_EACH_TAB : `${kyc_url}kyc/verify-kyc/update/`,
+
+  // Reject each tab of the kyc , URL FOR VERIFER
+
+  REJECT_KYC_TAB:`${kyc_url}/kyc/verify-kyc/tab-reject/`,
+  COMPLETE_VERIFICATION:`${kyc_url}/kyc/verify-kyc/verify/`,
+  COMPLETE_VERIFICATION_REJECT_KYC:`${kyc_url}/kyc/verify-kyc/reject/`,
+
+
 
 
   // Client Detail SandBox //

@@ -207,32 +207,33 @@ function BankDetails(props) {
           toast.error(res?.payload?.message);
         }
       });
-    } else if (role.verifier) {
-      const veriferDetails = {
-        login_id: kycid,
-        settlement_info_verified_by: loginId,
-      };
-      dispatch(verifyKycEachTab(veriferDetails))
-        .then((resp) => {
-          resp?.payload?.settlement_info_status &&
-            toast.success(resp?.payload?.settlement_info_status);
-          resp?.payload?.detail && toast.error(resp?.payload?.detail);
-        })
-        .catch((e) => {
-          toast.error("Try Again Network Error");
-        });
-    }
+    } 
+    // else if (role.verifier) {
+    //   const veriferDetails = {
+    //     login_id: kycid,
+    //     settlement_info_verified_by: loginId,
+    //   };
+    //   dispatch(verifyKycEachTab(veriferDetails))
+    //     .then((resp) => {
+    //       resp?.payload?.settlement_info_status &&
+    //         toast.success(resp?.payload?.settlement_info_status);
+    //       resp?.payload?.detail && toast.error(resp?.payload?.detail);
+    //     })
+    //     .catch((e) => {
+    //       toast.error("Try Again Network Error");
+    //     });
+    // }
   };
 
-  useEffect(() => {
-    if (role.approver) {
-      setReadOnly(true);
-      setButtonText("Approve and Next");
-    } else if (role.verifier) {
-      setReadOnly(true);
-      setButtonText("Verify and Next");
-    }
-  }, [role]);
+  // useEffect(() => {
+  //   if (role.approver) {
+  //     setReadOnly(true);
+  //     setButtonText("Approve and Next");
+  //   } else if (role.verifier) {
+  //     setReadOnly(true);
+  //     setButtonText("Verify and Next");
+  //   }
+  // }, [role]);
 
   const checkInputIsValid = (err, val, setErr, setFieldTouched, key) => {
     const hasErr = err.hasOwnProperty(key);
@@ -300,10 +301,10 @@ function BankDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right-">
+                <div class="position-sticky pull-right- otpbtndetails">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtndetail"
+                    className="btn btnbackground text-white btn-sm panbtn otpbtndetail-"
                     onClick={() => {
                       checkInputIsValid(
                         errors,
@@ -320,7 +321,7 @@ function BankDetails(props) {
               )}
 
               {errors?.oldIfscCode && (
-                <span className="notVerifiedtext- text-danger">
+                <span className="notVerifiedtext- text-danger imp_css">
                   {errors?.oldIfscCode}
                 </span>
               )}
@@ -349,10 +350,10 @@ function BankDetails(props) {
                 </span>
               ) : !errors.hasOwnProperty("oldIfscCode") &&
                 !errors.hasOwnProperty("ifsc_code") ? (
-                <div class="position-sticky pull-right-">
+                <span class="position-sticky pull-right- otpbtnaccnt">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtnaccnt"
+                    className="btn btnbackground text-white btn-sm panbtn otpbtnaccnt-"
                     onClick={() => {
                       checkInputIsValid(
                         errors,
@@ -365,7 +366,7 @@ function BankDetails(props) {
                   >
                     Verify
                   </a>
-                </div>
+                </span>
               ) : (
                 <> </>
               )}

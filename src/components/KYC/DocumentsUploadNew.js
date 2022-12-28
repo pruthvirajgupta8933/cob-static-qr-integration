@@ -47,28 +47,28 @@ function DocumentsUpload(props) {
   const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const kyc_status = KycList?.status;
-  const businessType = KycList.businessType;
+  const businessType = KycList?.businessType;
 
 
 
   const { user } = auth;
-  let clientMerchantDetailsList = {};
-  if (
-    user?.clientMerchantDetailsList &&
-    user?.clientMerchantDetailsList?.length > 0
-  ) {
-    clientMerchantDetailsList = user?.clientMerchantDetailsList;
-  }
+  // let clientMerchantDetailsList = {};
+  // if (
+  //   user?.clientMerchantDetailsList &&
+  //   user?.clientMerchantDetailsList?.length > 0
+  // ) {
+  //   clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  // }
 
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
 
-  
+
   function readURL(input, id) {
     if (input?.files && input?.files[0]) {
       let reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         setImgAttr(e.target.result)
       };
 
@@ -103,16 +103,16 @@ function DocumentsUpload(props) {
   }, []);
 
   const required = []
-  docTypeList?.filter((a)=>{
-    if(a.optional1){
+  docTypeList?.filter((a) => {
+    if (a.optional1) {
       let val = a.key
       required.push(val)
     }
-    
+
   })
 
 
- 
+
   const isrequired = savedData?.map((r) => r.type);
   // const Array1 = docTypeList?.map((a) => a.key);
   // const Array2 = savedData?.map((r) => r.type);
@@ -122,7 +122,7 @@ function DocumentsUpload(props) {
   // };
 
   // let array1filtered = Array1.filter(myFilter);
-  const handleChange = function(e, id) {
+  const handleChange = function (e, id) {
     // console.log("handle change")
     setSelectedFile(e.target.files[0]);
     // console.log(e.target)
@@ -132,22 +132,22 @@ function DocumentsUpload(props) {
   const [disable, setDisable] = useState(false)
   const onSubmit = (values, action) => {
     // If merchant logged in
-   
+
     setDisable(true)
     if (role.merchant) {
       // console.log("selectedFile",selectedFile)
-      if(!isNull(selectedFile) && !isUndefined(selectedFile)){
+      if (!isNull(selectedFile) && !isUndefined(selectedFile)) {
         const bodyFormData = new FormData();
         let docType = values?.docType;
         bodyFormData.append("files", selectedFile);
         bodyFormData.append("login_id", loginId);
         bodyFormData.append("modified_by", loginId);
         bodyFormData.append("type", values?.docType);
-  
+
         const kycData = { bodyFormData, docType };
-       
+
         dispatch(merchantInfo(kycData))
-          .then(function(response) {
+          .then(function (response) {
             if (response?.payload?.status) {
               setTitle("SUBMIT KYC");
               toast.success(response?.payload?.message);
@@ -159,18 +159,18 @@ function DocumentsUpload(props) {
             }
             setDisable(false)
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.error("Error:", error);
             toast.error("Something went wrong while saving the document");
             setDisable(false)
           });
-      }else{
+      } else {
         toast.error("Please select a document to upload");
         setDisable(false)
       }
-     
+
     }
-    
+
     // update doc list after the upload the document
     setTimeout(() => {
       getKycDocList(role);
@@ -178,55 +178,55 @@ function DocumentsUpload(props) {
   };
 
   const verifyApproveDoc = (doc_id) => {
-    let postData = {};
-    if (role?.verifier) {
-      postData = {
-        document_id: doc_id,
-        verified_by: loginId,
-      };
+    // let postData = {};
+    // if (role?.verifier) {
+    //   postData = {
+    //     document_id: doc_id,
+    //     verified_by: loginId,
+    //   };
 
-      dispatch(verifyKycDocumentTab(postData)).then((resp) => {
-        resp?.payload?.status
-          ? toast.success(resp?.payload?.message)
-          : toast.error(resp?.payload?.message);
+    //   dispatch(verifyKycDocumentTab(postData)).then((resp) => {
+    //     resp?.payload?.status
+    //       ? toast.success(resp?.payload?.message)
+    //       : toast.error(resp?.payload?.message);
 
-        getKycDocList(role);
-      });
-    }
+    //     getKycDocList(role);
+    //   });
+    // }
 
-    if (role?.approver) {
-      const approverDocDetails = {
-        approved_by: loginId,
-        document_id: doc_id,
-      };
-      dispatch(approveDoc(approverDocDetails)).then((resp) => {
-        resp?.payload?.status
-          ? toast.success(resp?.payload?.message)
-          : toast.error(resp?.payload?.message);
+    // if (role?.approver) {
+    //   const approverDocDetails = {
+    //     approved_by: loginId,
+    //     document_id: doc_id,
+    //   };
+    //   dispatch(approveDoc(approverDocDetails)).then((resp) => {
+    //     resp?.payload?.status
+    //       ? toast.success(resp?.payload?.message)
+    //       : toast.error(resp?.payload?.message);
 
-        getKycDocList(role);
-      });
-    }
+    //     getKycDocList(role);
+    //   });
+    // }
   };
 
   const rejectDoc = (doc_id) => {
-    const rejectDetails = {
-      document_id: doc_id,
-      rejected_by: loginId,
-      comment: "Document Rejected",
-    };
-    dispatch(verifyKycDocumentTab(rejectDetails))
-      .then((resp) => {
-        resp?.payload?.status && toast.success(resp?.payload?.message);
-        if (typeof resp?.payload?.status === "undefined") {
-          toast.error("Please Try After Sometimes");
-        }
+    // const rejectDetails = {
+    //   document_id: doc_id,
+    //   rejected_by: loginId,
+    //   comment: "Document Rejected",
+    // };
+    // dispatch(verifyKycDocumentTab(rejectDetails))
+    //   .then((resp) => {
+    //     resp?.payload?.status && toast.success(resp?.payload?.message);
+    //     if (typeof resp?.payload?.status === "undefined") {
+    //       toast.error("Please Try After Sometimes");
+    //     }
 
-        getKycDocList(role);
-      })
-      .catch((e) => {
-        toast.error("Try Again Network Error");
-      });
+    //     getKycDocList(role);
+    //   })
+    //   .catch((e) => {
+    //     toast.error("Try Again Network Error");
+    //   });
   };
 
   const removeDoc = (doc_id) => {
@@ -261,48 +261,48 @@ function DocumentsUpload(props) {
     getKycDocList(role);
   }, []);
 
-  useEffect(() => {
-    if (role.approver) {
-      setReadOnly(true);
-      setButtonText("Approve");
-    } else if (role.verifier) {
-      setReadOnly(true);
-      setButtonText("Verify");
-    }
-  }, [role]);
+  // useEffect(() => {
+  //   if (role.approver) {
+  //     setReadOnly(true);
+  //     setButtonText("Approve");
+  //   } else if (role.verifier) {
+  //     setReadOnly(true);
+  //     setButtonText("Verify");
+  //   }
+  // }, [role]);
 
   let submitAction = undefined;
 
-  const enableBtnByStatus = (imgStatus, role) => {
-    const imageStatus = imgStatus?.toString()?.toLowerCase();
-    const loggedInRole = role;
-    let enableBtn = false;
+  // const enableBtnByStatus = (imgStatus, role) => {
+  //   const imageStatus = imgStatus?.toString()?.toLowerCase();
+  //   const loggedInRole = role;
+  //   let enableBtn = false;
 
-    if (loggedInRole?.verifier) {
-      if (imageStatus === "verified") {
-        enableBtn = false;
-      }
+  //   if (loggedInRole?.verifier) {
+  //     if (imageStatus === "verified") {
+  //       enableBtn = false;
+  //     }
 
-      if (imageStatus !== "verified") {
-        enableBtn = true;
-      }
+  //     if (imageStatus !== "verified") {
+  //       enableBtn = true;
+  //     }
 
-      if (imageStatus === "approved") {
-        enableBtn = false;
-      }
-    }
+  //     if (imageStatus === "approved") {
+  //       enableBtn = false;
+  //     }
+  //   }
 
-    if (loggedInRole?.approver) {
-      if (imageStatus === "verified") {
-        enableBtn = true;
-      }
-      if (imageStatus === "approved") {
-        enableBtn = false;
-      }
-    }
+  //   if (loggedInRole?.approver) {
+  //     if (imageStatus === "verified") {
+  //       enableBtn = true;
+  //     }
+  //     if (imageStatus === "approved") {
+  //       enableBtn = false;
+  //     }
+  //   }
 
-    return enableBtn;
-  };
+  //   return enableBtn;
+  // };
 
   // console.log(enableBtnByStatus());
   // console.log("<=== Type Id of Saved Images ====>",typeOfDocs)
@@ -317,7 +317,7 @@ function DocumentsUpload(props) {
       btn = false;
     }
   });
-  
+
   const getDocTypeName = (id) => {
     let data = docTypeList.filter((obj) => {
       if (obj?.key?.toString() === id?.toString()) {
@@ -337,17 +337,17 @@ function DocumentsUpload(props) {
 
 
   const stringManulate = (str) => {
-    let str1 = str.substring(0,15)
+    let str1 = str.substring(0, 15)
     return `${str1}...`
-    
+
   }
 
 
   return (
     <>
       {BusinessOverviewStatus === true ||
-      (KycList?.businessType !== null &&
-        KycList?.businessType !== undefined) ? (
+        (KycList?.businessType !== null &&
+          KycList?.businessType !== undefined) ? (
         <div className="col-md-12">
           <Formik
             initialValues={initialValues}
@@ -388,55 +388,55 @@ function DocumentsUpload(props) {
                       ) === true
                         ? ""
                         : "* All Documents are mandatory and "}
-                          document name should be unique."
+                      document name should be unique."
                     </span>
                   </div>
 
                   {role?.merchant ? (
                     KycList?.status !== "Approved" &&
-                    KycList?.status !== "Verified" ? (
+                      KycList?.status !== "Verified" ? (
                       docTypeIdDropdown !== "" ? (
-                       <>
-                        <div class="col-lg-6 ">
-                          <div className="file-upload  border-dotted">
-                            <div className="image-upload-wrap ">
-                              <FormikController
-                                control="file"
-                                type="file"
-                                name="document_img"
-                                className="file-upload-input"
-                                id="3"
-                                onChange={(e) => handleChange(e, 3)}
+                        <>
+                          <div class="col-lg-6 ">
+                            <div className="file-upload  border-dotted">
+                              <div className="image-upload-wrap ">
+                                <FormikController
+                                  control="file"
+                                  type="file"
+                                  name="document_img"
+                                  className="file-upload-input"
+                                  id="3"
+                                  onChange={(e) => handleChange(e, 3)}
                                 // onChange={(e) => console.log(e, 3)}
-                              />
-                              <div className="drag-text">
-                                <h3 class="p-2 font-16">
-                                  Add the selected document
-                                </h3>
-                                <img
-                                  alt="Doc"
-                                  src={plus}
-                                  style={{ width: 30 }}
-                                  className="mb-4"
                                 />
-                                <p class="card-text">Upto 2 MB file size</p>
+                                <div className="drag-text">
+                                  <h3 class="p-2 font-16">
+                                    Add the selected document
+                                  </h3>
+                                  <img
+                                    alt="Doc"
+                                    src={plus}
+                                    style={{ width: 30 }}
+                                    className="mb-4"
+                                  />
+                                  <p class="card-text">Upto 2 MB file size</p>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div class="col-lg-6 ">
-                          {/* uploaded document preview */}
-                          {/* {console.log("imgAttr",imgAttr)} */}
-                          {imgAttr==="#" ?  <></> :
-                          <div className="file-upload-content imagepre_3">
-                            <img
-                              className="file-upload-image imagepre_sub_3"
-                              src={imgAttr}
-                              alt="Document"
-                            />
-                          </div>}
-                        </div>
+                          <div class="col-lg-6 ">
+                            {/* uploaded document preview */}
+                            {/* {console.log("imgAttr",imgAttr)} */}
+                            {imgAttr === "#" ? <></> :
+                              <div className="file-upload-content imagepre_3">
+                                <img
+                                  className="file-upload-image imagepre_sub_3"
+                                  src={imgAttr}
+                                  alt="Document"
+                                />
+                              </div>}
+                          </div>
                         </>
                       ) : (
                         <></>
@@ -449,13 +449,13 @@ function DocumentsUpload(props) {
                   )}
 
                   {KycList?.status !== "Approved" &&
-                  KycList?.status !== "Verified" &&
-                  role?.merchant ? (
+                    KycList?.status !== "Verified" &&
+                    role?.merchant ? (
                     <div class="col-12">
                       <button
                         className="btn btnbackground text-white mt-5"
                         type="button"
-                        disabled = {disable}
+                        disabled={disable}
                         onClick={() => {
                           formik.handleSubmit();
                         }}
@@ -465,9 +465,9 @@ function DocumentsUpload(props) {
 
                       {/* add function go to the next step */}
                       {KycList?.status !== "Approved" &&
-                      KycList?.status !== "Verified" &&
-                      role?.merchant &&
-                      btn ? (
+                        KycList?.status !== "Verified" &&
+                        role?.merchant &&
+                        btn ? (
                         <button
                           className="btn btnbackground text-white mt-5"
                           type="button"
@@ -514,14 +514,14 @@ function DocumentsUpload(props) {
                               <th>Document Name</th>
                               <th>Document Status</th>
                               {role?.merchant &&
-                              KycList?.status !== "Approved" &&
-                              KycList?.status !== "Verified" ? (
+                                KycList?.status !== "Approved" &&
+                                KycList?.status !== "Verified" ? (
                                 <th>Remove Item</th>
                               ) : (
                                 <></>
                               )}
 
-                              {!role?.merchant ? <th>Action</th> : <></>}
+                              {/* {!role?.merchant ? <th>Action</th> : <></>} */}
                             </tr>
                           </thead>
                           <tbody>
@@ -542,8 +542,8 @@ function DocumentsUpload(props) {
                                 </td>
                                 <td>{doc.status}</td>
                                 {role?.merchant &&
-                                KycList?.status !== "Approved" &&
-                                KycList?.status !== "Verified" ? (
+                                  KycList?.status !== "Approved" &&
+                                  KycList?.status !== "Verified" ? (
                                   <td>
                                     <button
                                       type="button"
@@ -558,7 +558,7 @@ function DocumentsUpload(props) {
                                   <></>
                                 )}
 
-                                {enableBtnByStatus(doc?.status, role) ? (
+                                {/* {enableBtnByStatus(doc?.status, role) ? (
                                   <td>
                                     <div style={{ display: "flex" }}>
                                       <a
@@ -600,7 +600,7 @@ function DocumentsUpload(props) {
                                   </td>
                                 ) : (
                                   <></>
-                                )}
+                                )} */}
                               </tr>
                             ))}
                           </tbody>

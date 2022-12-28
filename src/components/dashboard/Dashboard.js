@@ -1,196 +1,393 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import "./css/Home.css";
 import "./css/50.684f163d.chunk.css";
 import "./css/main.e3214ff9.chunk.css";
 import "./css/loader.css";
 
-import SideNavbar from './SideNavbar/SideNavbar'
-import Home from './AllPages/Home'
-import Transaction from './AllPages/Transaction'
-import TransactionEnquirey from './AllPages/TransactionEnquirey';
-import SettlementReport from './AllPages/SettlementReport';
-import TransactionHistory from './AllPages/TransactionHistory';
-import { useRouteMatch, Switch, Route, Redirect, useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux';
-import ClientList from './AllPages/ClientList';
-import PaymentLinkDetail from './AllPages/createpaymentlink/PaymentLinkDetail';
-import Paylink from './AllPages/Paylink';
-import { Profile } from './AllPages/Profile';
-import Emandate from './AllPages/Emandate';
-import PaymentResponse from './AllPages/PaymentResponse';
-import KycForm from '../KYC/KycForm';
-import Test from '../Otherpages/Test';
-import ViewTransactionWithFilter from './AllPages/ViewTransactionWithFilter';
-import SettlementReportNew from './AllPages/SettlementReportNew';
-import TransactionHistoryDownload from './AllPages/TransactionHistoryDownload';
-import Approver from '../ApproverNVerifier/Approver';
-import ThanksPage from '../Otherpages/ThanksPage';
-import ChangePassword from './AllPages/ChangePassword';
-import Products from './AllPages/Product Catalogue/Products';
-import SabPaisaPricing from './AllPages/Product Catalogue/SabPaisaPricing';
-import TransactionSummery from './AllPages/TransactionSummery';
-import OnboardMerchant from '../ApproverNVerifier/Onboarderchant/OnboardMerchant';
-import RefundTransactionHistory from './AllPages/RefundTransactionHistory';
-import ChargeBackTxnHistory from './AllPages/ChargeBackTxnHistory';
-import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
-import { createClientProfile } from '../../slices/auth';
-import Sandbox from '../SandBox/SendBox';
-import AssignZone from '../ApproverNVerifier/AssignZone';
-import AdditionalKYC from '../ApproverNVerifier/AdditionalKYC';
-import RateMapping from '../ApproverNVerifier/RateMapping';
-import SignupData from '../ApproverNVerifier/SignupData';
-
+import SideNavbar from "./SideNavbar/SideNavbar";
+import Home from "./AllPages/Home";
+import Transaction from "./AllPages/Transaction";
+import TransactionEnquirey from "./AllPages/TransactionEnquirey";
+import SettlementReport from "./AllPages/SettlementReport";
+import TransactionHistory from "./AllPages/TransactionHistory";
+import {
+  useRouteMatch,
+  Switch,
+  Route,
+  Redirect,
+  useHistory,
+} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import ClientList from "./AllPages/ClientList";
+import PaymentLinkDetail from "./AllPages/createpaymentlink/PaymentLinkDetail";
+import Paylink from "./AllPages/Paylink";
+import { Profile } from "./AllPages/Profile";
+import Emandate from "./AllPages/Emandate";
+import PaymentResponse from "./AllPages/PaymentResponse";
+import KycForm from "../KYC/KycForm";
+import Test from "../Otherpages/Test";
+import ViewTransactionWithFilter from "./AllPages/ViewTransactionWithFilter";
+import SettlementReportNew from "./AllPages/SettlementReportNew";
+import TransactionHistoryDownload from "./AllPages/TransactionHistoryDownload";
+import Approver from "../ApproverNVerifier/Approver";
+import ThanksPage from "../Otherpages/ThanksPage";
+import ChangePassword from "./AllPages/ChangePassword";
+import Products from "./AllPages/Product Catalogue/Products";
+import SabPaisaPricing from "./AllPages/Product Catalogue/SabPaisaPricing";
+import TransactionSummery from "./AllPages/TransactionSummery";
+import OnboardMerchant from "../ApproverNVerifier/Onboarderchant/OnboardMerchant";
+import RefundTransactionHistory from "./AllPages/RefundTransactionHistory";
+import ChargeBackTxnHistory from "./AllPages/ChargeBackTxnHistory";
+import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
+import { createClientProfile } from "../../slices/auth";
+import Sandbox from "../SandBox/SendBox";
+import AssignZone from "../ApproverNVerifier/AssignZone";
+import AdditionalKYC from "../ApproverNVerifier/AdditionalKYC";
+import RateMapping from "../ApproverNVerifier/RateMapping";
+import SignupData from "../ApproverNVerifier/SignupData";
+import MerchantRoute from "../../ProtectedRoutes/MerchantRoute";
+import BankRoute from "../../ProtectedRoutes/BankRoute";
+import VerifierRoute from "../../ProtectedRoutes/VerifierRoute";
+import ApproverRoute from "../../ProtectedRoutes/ApproverRoute";
+import ViewerRoute from "../../ProtectedRoutes/ViewerRoute";
+import { AppsSharp } from "@mui/icons-material";
+import { logout } from "../../slices/auth";
+import SpPg from "../sabpaisa-pg/SpPg";
 
 function Dashboard() {
-     let history = useHistory();
-     let { path } = useRouteMatch();
-  
+  let history = useHistory();
+  let { path } = useRouteMatch();
 
-     const { user } = useSelector((state) => state.auth);
-     // const clientMerchantDetailsList = user?.clientMerchantDetailsList
-     const roles = roleBasedAccess()
+  const { user } = useSelector((state) => state.auth);
+  // const clientMerchantDetailsList = user?.clientMerchantDetailsList
+  const roles = roleBasedAccess();
 
-     const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
+  // create new client code
+  useEffect(() => {
+    if (roles?.merchant) {
+      if (user?.clientMerchantDetailsList) {
+        if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
+          // create new client code
+          const uuidCode = Math.random()
+            .toString(36)
+            .slice(-6)
+            .toUpperCase();
+          const data = {
+            loginId: user?.loginId,
+            clientName: user?.clientContactPersonName,
+            clientCode: uuidCode,
+          };
+          dispatch(createClientProfile(data));
+        } else {
+          // console.log("already created client code")
+        }
+      }
+    }
+  }, []);
 
+  if (user !== null && user.userAlreadyLoggedIn) {
+    history.push("/login-page");
+    return <Redirect to="/login-page" />;
+  } else if (user === null) {
+    return <Redirect to="/login-page" />;
+  }
 
+  return (
+    <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
+      <div></div>
+      <SideNavbar />
+      <Switch>
+        <Route exact path={path}>
+          <Home />
+        </Route>
+        <Route exact path={`${path}/profile`}>
+          <Profile />
+        </Route>
+        <MerchantRoute
+          exact
+          path={`${path}/change-password`}
+          Component={ChangePassword}
+        >
+          <ChangePassword />
+        </MerchantRoute>
+        {/* <Route exact path={`${path}/transaction`}>
+          <Transaction />
+        </Route> */}
 
-     // create new client code
-     useEffect(() => {
-          if (roles?.merchant) {
-               if (user?.clientMerchantDetailsList) {
-                    if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
-                         // create new client code
-                         const uuidCode = Math.random().toString(36).slice(-6).toUpperCase();
-                         const data = {
-                              "loginId": user?.loginId,
-                              "clientName": user?.clientContactPersonName,
-                              "clientCode": uuidCode,
-                         }
-                         dispatch(createClientProfile(data))
-                    }else{
-                         // console.log("already created client code")
-                    }
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exact
+            path={`${path}/transaction-summery`}
+            Component={TransactionSummery}
+          >
+            <TransactionSummery />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exact
+            path={`${path}/transaction-summery`}
+            Component={TransactionSummery}
+          >
+            <TransactionSummery />
+          </BankRoute>
+        )}
 
-                    
-               }
-          }
-     }, [])
+        <Route exact path={`${path}/onboard-merchant`}>
+          <OnboardMerchant />
+        </Route>
 
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exact
+            path={`${path}/transaction-enquiry`}
+            Component={TransactionEnquirey}
+          >
+            <TransactionEnquirey />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exact
+            path={`${path}/transaction-enquiry`}
+            Component={TransactionEnquirey}
+          >
+            <TransactionEnquirey />
+          </BankRoute>
+        )}
 
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exact
+            path={`${path}/transaction-history`}
+            Component={TransactionHistory}
+          >
+            <TransactionHistory />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exact
+            path={`${path}/transaction-history`}
+            Component={TransactionHistory}
+          >
+            <TransactionHistory />
+          </BankRoute>
+        )}
 
+        <BankRoute exact path={`${path}/client-list`} Component={ClientList}>
+          <ClientList />
+        </BankRoute>
 
-     if (user !== null && user.userAlreadyLoggedIn) {
-          history.push("/login-page");
-          return <Redirect to="/login-page" />
-     } else if (user === null) {
-          return <Redirect to="/login-page" />
-     }
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exaxt
+            path={`${path}/settlement-report`}
+            Component={SettlementReport}
+          >
+            <SettlementReport />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exaxt
+            path={`${path}/settlement-report`}
+            Component={SettlementReport}
+          >
+            <SettlementReport />
+          </BankRoute>
+        )}
 
-     return (
-          <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
-               <div>
-               </div>
-               <SideNavbar />
-               <Switch>
-                    <Route exact path={path}>
-                         <Home />
-                    </Route>
-                    <Route exact path={`${path}/profile`}>
-                         <Profile />
-                    </Route>
-                    <Route exact path={`${path}/change-password`}>
-                         <ChangePassword />
-                    </Route>
-                    <Route exact path={`${path}/transaction`}>
-                         <Transaction />
-                    </Route>
-                    <Route exact path={`${path}/transaction-summery`}>
-                         <TransactionSummery />
-                    </Route>
-                    <Route exact path={`${path}/onboard-merchant`}>
-                         <OnboardMerchant />
-                    </Route>
-                    <Route exact path={`${path}/transaction-enquiry`}>
-                         <TransactionEnquirey />
-                    </Route>
-                    <Route exact path={`${path}/transaction-history`}>
-                         <TransactionHistory />
-                    </Route>
-                    <Route exact path={`${path}/client-list`}>
-                         <ClientList />
-                    </Route>
-                    <Route exaxt path={`${path}/settlement-report`}>
-                         <SettlementReport />
-                    </Route>
-                    <Route exaxt path={`${path}/refund-transaction-history`}>
-                         <RefundTransactionHistory />
-                    </Route>
-                    <Route exaxt path={`${path}/chargeback-transaction-history`}>
-                         <ChargeBackTxnHistory />
-                    </Route>
-                    <Route exaxt path={`${path}/product-catalogue`}>
-                         {/* <Subsciption /> */}
-                         <Products />
-                    </Route>
-                    <Route exaxt path={`${path}/paylink`}>
-                         <Paylink />
-                    </Route>
-                    <Route exaxt path={`${path}/paylinkdetail`}>
-                         <PaymentLinkDetail />
-                    </Route>
-                    <Route exaxt path={`${path}/emandate/`}>
-                         <Emandate />
-                    </Route>
-                    <Route exaxt path={`${path}/payment-response/`}>
-                         <PaymentResponse />
-                    </Route>
-                    <Route exact path={`${path}/kyc/`}>
-                         <KycForm />
-                    </Route>
-                    <Route exact path={`${path}/test/`}>
-                         <Test />
-                    </Route>
-                    <Route exact path={`${path}/view-transaction-with-filter`} >
-                         <ViewTransactionWithFilter />
-                    </Route>
-                    <Route exact path={`${path}/settlement-report-new`} >
-                         <SettlementReportNew />
-                    </Route>
-                    <Route exact path={`${path}/transaction-history-new`} >
-                         <TransactionHistoryDownload />
-                    </Route>
-                    <Route exact path={`${path}/sabpaisa-pricing/:id/:name`} >
-                         <SabPaisaPricing />
-                    </Route>
-                    <Route exact path={`${path}/kyc`} >
-                         <KycForm />
-                    </Route>
-                    <Route exact path={`${path}/approver`} >
-                         <Approver />
-                    </Route>
-                    <Route exact path={`${path}/assignzone`} >
-                         <AssignZone/>
-                    </Route>
-                    <Route exact path={`${path}/signup-data`} >
-                         <SignupData/>
-                    </Route>
-                    <Route exact path={`${path}/ratemapping`} >
-                         <RateMapping/>
-                    </Route>
-                    <Route exact path={`${path}/additional-kyc`} >
-                         <AdditionalKYC/>
-                    </Route>
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exaxt
+            path={`${path}/refund-transaction-history`}
+            Component={RefundTransactionHistory}
+          >
+            <RefundTransactionHistory />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exaxt
+            path={`${path}/refund-transaction-history`}
+            Component={RefundTransactionHistory}
+          >
+            <RefundTransactionHistory />
+          </BankRoute>
+        )}
 
-                    <Route exact path={`${path}/thanks`} >
-                         <ThanksPage />
-                    </Route>
-                    <Route exact path={`${path}/Sandbox`} >
-                         <Sandbox />
-                    </Route>
-               </Switch>
-          </section>
-     )
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exaxt
+            path={`${path}/chargeback-transaction-history`}
+            Component={ChargeBackTxnHistory}
+          >
+            <ChargeBackTxnHistory />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exaxt
+            path={`${path}/chargeback-transaction-history`}
+            Component={ChargeBackTxnHistory}
+          >
+            <ChargeBackTxnHistory />
+          </BankRoute>
+        )}
+
+        <MerchantRoute
+          exaxt
+          path={`${path}/product-catalogue`}
+          Component={Products}
+        >
+          {/* <Subsciption /> */}
+          <Products />
+        </MerchantRoute>
+        <MerchantRoute exaxt path={`${path}/paylink`} Component={Paylink}>
+          <Paylink />
+        </MerchantRoute>
+
+        <MerchantRoute
+          exaxt
+          path={`${path}/paylinkdetail`}
+          Component={PaymentLinkDetail}
+        >
+          <PaymentLinkDetail />
+        </MerchantRoute>
+
+        <MerchantRoute exaxt path={`${path}/emandate/`}>
+          <Emandate />
+        </MerchantRoute>
+        <MerchantRoute exaxt path={`${path}/payment-response/`}>
+          <PaymentResponse />
+        </MerchantRoute>
+        <MerchantRoute exact path={`${path}/test/`}>
+          <Test />
+        </MerchantRoute>
+
+        {/* <Route exact path={`${path}/view-transaction-with-filter`}>
+          <ViewTransactionWithFilter />
+        </Route> */}
+
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exact
+            path={`${path}/settlement-report-new`}
+            Component={SettlementReportNew}
+          >
+            <SettlementReportNew />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exact
+            path={`${path}/settlement-report-new`}
+            Component={SettlementReportNew}
+          >
+            <SettlementReportNew />
+          </BankRoute>
+        )}
+
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exact
+            path={`${path}/transaction-history-new`}
+            Component={TransactionHistoryDownload}
+          >
+            <TransactionHistoryDownload />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exact
+            path={`${path}/transaction-history-new`}
+            Component={TransactionHistoryDownload}
+          >
+            <TransactionHistoryDownload />
+          </BankRoute>
+        )}
+
+        <Route exact path={`${path}/sabpaisa-pricing/:id/:name`}>
+          {/* getting issue to get query param in protected route */}
+          <SabPaisaPricing />
+        </Route>
+
+        <MerchantRoute exact path={`${path}/kyc`} Component={KycForm}>
+          <KycForm />
+        </MerchantRoute>
+
+        {roles?.verifier === true ? (
+          <VerifierRoute exact path={`${path}/approver`} Component={Approver}>
+            <Approver />
+          </VerifierRoute>
+        ) : roles?.approver === true ? (
+          <ApproverRoute exact path={`${path}/approver`} Component={Approver}>
+            <Approver />
+          </ApproverRoute>
+        ) : (
+          <ViewerRoute exact path={`${path}/approver`} Component={Approver}>
+            <Approver />
+          </ViewerRoute>
+        )}
+
+        <ApproverRoute exact path={`${path}/assignzone`} Component={AssignZone}>
+          <AssignZone />
+        </ApproverRoute>
+
+        {roles?.verifier === true ? (
+          <VerifierRoute
+            exact
+            path={`${path}/signup-data`}
+            Component={SignupData}
+          >
+            <SignupData />
+          </VerifierRoute>
+        ) : roles?.approver === true ? (
+          <ApproverRoute
+            exact
+            path={`${path}/signup-data`}
+            Component={SignupData}
+          >
+            <SignupData />
+          </ApproverRoute>
+        ) : (
+          <ViewerRoute
+            exact
+            path={`${path}/signup-data`}
+            Component={SignupData}
+          >
+            <SignupData />
+          </ViewerRoute>
+        )}
+
+        <ApproverRoute
+          exact
+          path={`${path}/ratemapping`}
+          Component={RateMapping}
+        >
+          <RateMapping />
+        </ApproverRoute>
+
+        <ApproverRoute
+          exact
+          path={`${path}/additional-kyc`}
+          Component={AdditionalKYC}
+        >
+          <AdditionalKYC />
+        </ApproverRoute>
+
+        <Route exact path={`${path}/thanks`}>
+          <ThanksPage />
+        </Route>
+        <MerchantRoute exact path={`${path}/Sandbox`} Component={Sandbox}>
+          <Sandbox />
+        </MerchantRoute>
+        {/* <Route exact path={`${path}/pg-response`} >
+                         <PgResponse />
+                    </Route> */}
+
+        <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
+          <SpPg />
+        </MerchantRoute>
+
+      </Switch>
+    </section>
+  );
 }
 
-export default Dashboard
+export default Dashboard;

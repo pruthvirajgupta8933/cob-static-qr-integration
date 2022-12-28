@@ -341,7 +341,7 @@ html {
   font-weight: 400;
   box-shadow: none;
   min-width: 90px;
-  padding: 10px 14px;
+  padding: 6px 14px;
 }
 .btn.full,
 .simform__actions .full.sumbit {
@@ -837,4 +837,8 @@ table.list {
 
 .btn-0156B3 {
   background-color: #0156b3;
+}
+.fnt-lab{
+  min-height: 37px !important;
+  font-size: 12px !important;
 }

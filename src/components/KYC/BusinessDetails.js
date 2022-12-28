@@ -293,32 +293,33 @@ function BusinessDetails(props) {
           toast.error(res?.payload?.message);
         }
       });
-    } else if (role.verifier) {
-      const veriferDetails = {
-        login_id: kycid,
-        merchant_info_verified_by: loginId,
-      };
-      dispatch(verifyKycEachTab(veriferDetails))
-        .then((resp) => {
-          resp?.payload?.merchant_info_status &&
-            toast.success(resp?.payload?.merchant_info_status);
-          resp?.payload?.detail && toast.error(resp?.payload?.detail);
-        })
-        .catch((e) => {
-          toast.error("Try Again Network Error");
-        });
-    }
+    } 
+    // else if (role.verifier) {
+    //   const veriferDetails = {
+    //     login_id: kycid,
+    //     merchant_info_verified_by: loginId,
+    //   };
+    //   dispatch(verifyKycEachTab(veriferDetails))
+    //     .then((resp) => {
+    //       resp?.payload?.merchant_info_status &&
+    //         toast.success(resp?.payload?.merchant_info_status);
+    //       resp?.payload?.detail && toast.error(resp?.payload?.detail);
+    //     })
+    //     .catch((e) => {
+    //       toast.error("Try Again Network Error");
+    //     });
+    // }
   };
 
-  useEffect(() => {
-    if (role.approver) {
-      setReadOnly(true);
-      setButtonText("Approve and Next");
-    } else if (role.verifier) {
-      setReadOnly(true);
-      setButtonText("Verify and Next");
-    }
-  }, [role]);
+  // useEffect(() => {
+  //   if (role.approver) {
+  //     setReadOnly(true);
+  //     setButtonText("Approve and Next");
+  //   } else if (role.verifier) {
+  //     setReadOnly(true);
+  //     setButtonText("Verify and Next");
+  //   }
+  // }, [role]);
 
   return (
     <div className="col-sm-12 col-md-6 col-lg-12 col-md-offset-4">
@@ -359,10 +360,10 @@ function BusinessDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right- ">
+                <div class="position-sticky pull-right- otpbtngst">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtngst"
+                    className="btn btnbackground text-white btn-sm panbtn "
                     onClick={() => {
                       checkInputIsValid(
                         errors,
@@ -373,7 +374,7 @@ function BusinessDetails(props) {
                       );
                     }}
                   >
-                    Verify
+                    Verify GST
                   </a>
                 </div>
               )}
@@ -418,10 +419,10 @@ function BusinessDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right">
+                <div class="position-sticky pull-right- otpbtndetail">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtndetail"
+                    className="btn btnbackground text-white btn-sm panbtn- "
                     onClick={() => {
                       checkInputIsValid(
                         errors,
@@ -517,7 +518,7 @@ function BusinessDetails(props) {
 
             <div class="col-sm-12 col-md-6 col-lg-6">
               <label class="col-form-label mt-0 p-2">
-                Pincode<span style={{ color: "red" }}>*</span>
+                Pin code<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
                 control="input"

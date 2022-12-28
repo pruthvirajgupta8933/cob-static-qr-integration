@@ -7,6 +7,8 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import Spinner from "./Spinner";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
+import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
+import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 
 const RejectedKYC = () => {
@@ -16,11 +18,13 @@ const RejectedKYC = () => {
   const [data, setData] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [spinner, setSpinner] = useState(true);
+  const [kycIdClick, setKycIdClick] = useState(null);
   const [rejectedMerchants, setRejectedMerchants] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(100);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [isOpenModal, setIsModalOpen] = useState(false)
   let page_size = pageSize;
   let page = currentPage;
 
@@ -40,6 +44,7 @@ const RejectedKYC = () => {
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
+        setKycIdClick(data);
          setDataCount(dataCoun);
          setRejectedMerchants(data);
       })
@@ -128,6 +133,9 @@ const nextPage = () => {
             placeholder="Search Here"
           />
         </div>
+        <div>
+        <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
+        </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Count Per Page</label>
@@ -152,6 +160,7 @@ const nextPage = () => {
             <option value="offline">Offline</option>
           </select>
         </div>
+        <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=Rejected'} filename={"Rejected"}/>
       </div>
 
       <div className="col-md-12 col-md-offset-4">
@@ -168,6 +177,7 @@ const nextPage = () => {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
+                <th>View Status</th>
               </tr>
             </thead>
             <tbody>
@@ -192,6 +202,17 @@ const nextPage = () => {
                     <td>{user.status}</td>
                     <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn approve text-white  btn-xs"
+                        onClick={() => {setKycIdClick(user); setIsModalOpen(true) }}
+                        data-toggle="modal"
+                        data-target="#kycmodaldetail"
+                      >
+                        View Status
+                      </button>
+                    </td>
                   </tr>
                 ))
               )}

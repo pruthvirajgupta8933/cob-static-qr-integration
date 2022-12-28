@@ -15,6 +15,7 @@ import ViewStatusModal from "./ViewStatusModal";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
+import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 // import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
 
@@ -28,10 +29,12 @@ const PendindKyc = () => {
   const [pendingKycData, setPendingKycData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(100);
   const [statusData, setStatusData] = useState([]);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [kycIdClick, setKycIdClick] = useState(null);
+  const [isOpenModal, setIsModalOpen] = useState(false)
+
 
   const { auth } = useSelector((state) => state);
   const { user } = auth;
@@ -148,8 +151,8 @@ const PendindKyc = () => {
           />
         </div>
         <div>
-          {" "}
-          <KycDetailsModal kycId={kycIdClick} />
+         
+        <KycDetailsModal handleModal={setIsModalOpen} kycId={kycIdClick} isOpenModal={isOpenModal} />
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -172,6 +175,7 @@ const PendindKyc = () => {
             <option value="offline">Offline</option>
           </select>
         </div>
+        <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=Pending'} filename={"Pending-KYC"}/>
       </div>
 
       <div className="col-md-12 col-md-offset-4">
@@ -218,7 +222,7 @@ const PendindKyc = () => {
                       <button
                         type="button"
                         className="btn approve text-white  btn-xs"
-                        onClick={() => setKycIdClick(user)}
+                        onClick={() => {setKycIdClick(user); setIsModalOpen(!isOpenModal) }}
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >
