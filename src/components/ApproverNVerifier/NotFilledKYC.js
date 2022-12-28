@@ -9,6 +9,8 @@ import Spinner from "./Spinner";
 import moment from "moment";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
+import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
+import MerchnatListExportToxl from "./MerchnatListExportToxl";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 
 const NotFilledKYC = () => {
@@ -29,22 +31,15 @@ const NotFilledKYC = () => {
   const kycSearch = (e) => {
     setSearchText(e.target.value);
   };
+ 
 
-  // const notFilledMerchants = async () => {
-  //   await axiosInstanceAuth.get(`${API_URL.KYC_FOR_NOT_FILLED}`).then((res) => {
-  //     const data = res?.data?.results;
-  //     const dataCoun = res?.data?.count;
-  //     setNotFilledData(data);
-  //     setDataCount(dataCoun);
-  //   });
-  // };
 
   useEffect(() => {
-    // notFilledMerchants();
+    
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-        
+
         const data = resp?.payload?.results;
         const totalData = resp?.payload?.count;
 
@@ -75,8 +70,8 @@ const NotFilledKYC = () => {
       );
     } else {
       // dispatch(kycForNotFilled({ page, page_size })).then((resp) => {
-        // const data = resp?.payload?.results;
-        setData(notFilledData);
+      // const data = resp?.payload?.results;
+      setData(notFilledData);
       // });
     }
   }, [searchText]);
@@ -84,9 +79,9 @@ const NotFilledKYC = () => {
 
 
 
-  const totalPages = Math.ceil(dataCount / pageSize);  
+  const totalPages = Math.ceil(dataCount / pageSize);
   let pageNumbers = []
-  if(!Number.isNaN(totalPages)){
+  if (!Number.isNaN(totalPages)) {
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
 
@@ -106,31 +101,31 @@ const NotFilledKYC = () => {
 
   useEffect(() => {
     let lastSevenPage = totalPages - 7;
-    if (pageNumbers?.length>0) {
+    if (pageNumbers?.length > 0) {
       let start = 0
       let end = (currentPage + 6)
       if (totalPages > 6) {
         start = (currentPage - 1)
-  
+
         if (parseInt(lastSevenPage) <= parseInt(start)) {
           start = lastSevenPage
         }
-  
+
       }
       const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
         return pgNumber;
-      })   
-     setDisplayPageNumber(pageNumber) 
+      })
+      setDisplayPageNumber(pageNumber)
     }
   }, [currentPage, totalPages])
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("MM/DD/YYYY");
-      return date
-    }
+    return date
+  }
 
-  
-  
+
+
 
   return (
 
@@ -162,7 +157,7 @@ const NotFilledKYC = () => {
           <label>Onboard Type</label>
           <select
             className="ant-input"
-            onChange={(e)=>setSearchText(e.target.value)}
+            onChange={(e) => setSearchText(e.target.value)}
           >
             <option value="Select Role Type">Select Onboard Type</option>
             <option value="">All</option>
@@ -171,6 +166,7 @@ const NotFilledKYC = () => {
 
           </select>
         </div>
+        <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=Not-Filled'} filename={"Not-Filled-KYC"}/>
       </div>
 
       <div className="col-md-12 col-md-offset-4">
@@ -190,15 +186,15 @@ const NotFilledKYC = () => {
               </tr>
             </thead>
             <tbody>
-              
+
               {data?.length === 0 ? (
-                 <tr>
-                 <td colSpan={"11"}>
-                   <div className="nodatafound text-center">No data found </div>
-                   <br/><br/>
-                   <p className="text-center">{spinner && <Spinner />}</p>
-                 </td>
-             </tr>
+                <tr>
+                  <td colSpan={"11"}>
+                    <div className="nodatafound text-center">No data found </div>
+                    <br /><br />
+                    <p className="text-center">{spinner && <Spinner />}</p>
+                  </td>
+                </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>
@@ -219,14 +215,14 @@ const NotFilledKYC = () => {
         <nav>
           <ul className="pagination justify-content-center">
             <li className="page-item">
-              <button 
-              className="page-link" 
-              onClick={prevPage}>
+              <button
+                className="page-link"
+                onClick={prevPage}>
                 Previous
               </button>
             </li>
             {displayPageNumber?.map((pgNumber, i) => (
-              <li 
+              <li
                 key={i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
