@@ -301,7 +301,7 @@ function BankDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right- otpbtndetail">
+                <div class="position-sticky pull-right- otpbtndetails">
                   <a
                     href={() => false}
                     className="btn btnbackground text-white btn-sm panbtn otpbtndetail-"

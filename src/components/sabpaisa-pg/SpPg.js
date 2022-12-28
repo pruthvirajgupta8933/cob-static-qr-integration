@@ -87,7 +87,7 @@ function SpPg() {
 
             <SabpaisaPaymentGateway planData={selectedPlan} planPrice={planPrice} openPg={isOpenPg} />
 
-            <div>{JSON.stringify(responseData)}</div>
+            <div style={{overflowWrap:"anywhere"}}>{JSON.stringify(responseData)}</div>
 
 
         </React.Fragment>

@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 function SabpaisaPaymentGateway(props) {
-
+  console.log("props",props?.planData)
   const [isOpen, setIsOpen] = useState(props?.openPg);
   const [clientCode, setClientCode] = useState("TM001");
   const [transUserName, setTransUserName] = useState("rajiv.moti_336");
@@ -29,11 +29,11 @@ function SabpaisaPaymentGateway(props) {
   const [udf7, setudf7] = useState("");
   const [udf8, setudf8] = useState("");
   const [udf9, setudf9] = useState("");
-  const [udf10, setudf10] = useState(props?.planData?.applicationId);
-  const [udf11, setudf11] = useState(props?.planData?.applicationName);
-  const [udf12, setudf12] = useState(props?.planData?.clientId);
-  const [udf13, setudf13] = useState(props?.planData?.planId);
-  const [udf14, setudf14] = useState(props?.planData?.planName);
+  const [udf10, setudf10] = useState("");
+  const [udf11, setudf11] = useState("");
+  const [udf12, setudf12] = useState("");
+  const [udf13, setudf13] = useState("");
+  const [udf14, setudf14] = useState("");
   const [udf15, setudf15] = useState("");
   const [udf16, setudf16] = useState("");
   const [udf17, setudf17] = useState("");
@@ -46,11 +46,15 @@ function SabpaisaPaymentGateway(props) {
 
   useEffect(() => {
     // window.location.search
+   
+    setudf12(props?.planData?.clientId)
+    setudf13(props?.planData?.planId)
+    setudf14(props?.planData?.planName)
+    setudf15(props?.planData?.applicationId)
+    setudf16(props?.planData?.applicationName)
 
-  }, [])
+  }, [props])
   
-
-
 
   return (
     <div> {
@@ -69,12 +73,13 @@ function SabpaisaPaymentGateway(props) {
       amount={amount} 
       amountType={amountType}
       
-      udf10={udf10}
-      udf11={udf11} 
       udf12={udf12} 
       udf13={udf13} 
       udf14={udf14} 
       udf15={udf15}
+      udf16={udf16}
+      
+      
       label={"Sabpaisa PG"} 
       onToggle={() => setIsOpen(false)} />
     }</div>

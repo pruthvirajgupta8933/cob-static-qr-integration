@@ -55,14 +55,14 @@ a.activepaylink-kyc{
 }
 
 .subHeaderForModal {
-  /* font-family: "Satoshi"; */
+  font-family: "Satoshi"; 
   font-style: normal;
   font-weight: 500;
   font-size: 24px;
 }
 
 .paymentHeader {
-  /* font-family: "Satoshi"; */
+  font-family: "Satoshi-Regular";
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
@@ -240,7 +240,7 @@ a.activepaylink-kyc{
 }
 
 .text-font {
-  /* font-family: Satoshi; */
+  font-family: Satoshi-bold;
   font-size: 15px;
   font-weight: 700;
   line-height: 26px;
@@ -266,7 +266,7 @@ a.activepaylink-kyc{
 }
 
 .text-kyc-header {
-  /* font-family: "Satoshi"; */
+  /* font-family: "Satoshi-Medium"; */
   font-style: normal;
   font-weight: 700;
   font-size: 20px;
@@ -306,7 +306,7 @@ a.activepaylink-kyc{
 .otpbtn{
     position: absolute !important;
     right: 16px;
-    top: 38px;
+    top: 46px;
 }
 .otpbtn a{
     border-radius: 0 6px 6px 0;
@@ -315,7 +315,7 @@ a.activepaylink-kyc{
 .otpbtngst{
   right: 102px;
   position: absolute !important;
-  top: 38px;
+  top: 46px;
   border-radius: 0 4px 4px 0 !important;
   min-height: 32px !important;
   }
@@ -328,17 +328,29 @@ a.activepaylink-kyc{
     
 } */
 .otpbtndetail{
-  top: 38px;
+  top: 46px;
   position: absolute !important;
-  right: 106px;
+  right: 14px;
   min-height: 31px !important;
   }
   .otpbtndetail a{
     border-radius: 0 6px 6px 0;
     height: 32px;
   }
+
+  .otpbtndetails{
+    top: 46px;
+    position: absolute !important;
+    right: 104px;
+    min-height: 31px !important;
+    }
+    .otpbtndetails a{
+      border-radius: 0 6px 6px 0;
+      height: 32px;
+    }
+
 .otpbtnaccnt{
-  top: 38px;
+  top: 46px;
   position: absolute !important;
   right: 106px;
   min-height: 31px !important;
@@ -352,7 +364,7 @@ a.activepaylink-kyc{
 }
 .success img{
   position: absolute;
-    top: 43px;
+    top: 48px;
     right: 24px;
 }
 a.inactive{

@@ -422,7 +422,7 @@ function BusinessDetails(props) {
                 <div class="position-sticky pull-right- otpbtndetail">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn "
+                    className="btn btnbackground text-white btn-sm panbtn- "
                     onClick={() => {
                       checkInputIsValid(
                         errors,

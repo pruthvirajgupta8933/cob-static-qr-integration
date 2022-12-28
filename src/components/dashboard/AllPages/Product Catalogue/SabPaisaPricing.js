@@ -169,29 +169,29 @@ const SabPaisaPricing = () => {
     
 console.log("postdata",postData)
     sessionStorage.setItem("tempProductPlanData",JSON.stringify(postData))
-    history.push("/dashboard/sabpaisa-pg");
+    // history.push("/dashboard/sabpaisa-pg");
     // setTempSelectedData(postData)
 
-    // setTempPlanId(plan_id)
-    // const res = await axiosInstanceAuth.post(
-    //   API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-    //   postData
-    // );
+    setTempPlanId(plan_id)
+    const res = await axiosInstanceAuth.post(
+      API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+      postData
+    );
    
-    // if (res?.status === 200) {
-    //   console.log("1")
-    //   // only PG product without subscription plan check rate mapping status
-    //   if (param?.id === "10" && plan_id!==1) {
-    //     console.log("2")
-    //     // only for payment gateway we have to check rate mapping status
-    //     checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
-    //   }
+    if (res?.status === 200) {
+      console.log("1")
+      // only PG product without subscription plan check rate mapping status
+      if (param?.id === "10" && plan_id!==1) {
+        console.log("2")
+        // only for payment gateway we have to check rate mapping status
+        checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
+      }
 
-    //   getSubscribedPlan(plan_id);
-    //   toastConfig.successToast(res?.data?.message);
-    // } else {
-    //   toastConfig.errorToast("Something went wrong");
-    // }
+      getSubscribedPlan(plan_id);
+      toastConfig.successToast(res?.data?.message);
+    } else {
+      toastConfig.errorToast("Something went wrong");
+    }
 
   };
 
@@ -250,7 +250,7 @@ console.log("postdata",postData)
                             className={`font-weight-bold btn choosePlan-1 btn-lg w-50 ${selectedPlan?.planId === Products?.plan_id ? "btn-bg-color" : ""}`}
                             data-toggle="modal"
                             data-target="#subscription"
-                            // disabled={selectedPlan?.planId !== "" ? true : false}
+                            disabled={selectedPlan?.planId !== "" ? true : false}
                             onClick={() => {
                               if (selectedPlan?.planId !== Products?.plan_id) {
                                 handleClick(
@@ -282,7 +282,7 @@ console.log("postdata",postData)
                                   className="close"
                                   data-dismiss="modal"
                                   aria-label="Close"
-                                // onClick={() => clickHandler(false)}
+                                onClick={() => clickHandler(false)}
                                 >
                                   <span aria-hidden="true">&times;</span>
                                 </button>
@@ -356,7 +356,7 @@ console.log("postdata",postData)
                               className={`font-weight-bold btn choosePlan-1 btn-lg ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
                               data-toggle="modal"
                               data-target="#exampleModal"
-                              // disabled={selectedPlan?.planId !== "" ? true : false}
+                              disabled={selectedPlan?.planId !== "" ? true : false}
                               onClick={() => {
                                 if (selectedPlan?.planId !== Products.plan_id) {
                                   handleClick(
@@ -396,7 +396,7 @@ console.log("postdata",postData)
                                   class="close"
                                   data-dismiss="modal"
                                   aria-label="Close"
-                                // onClick={() => clickHandler(false)}
+                                onClick={() => clickHandler(false)}
                                 >
 
                                   <span aria-hidden="true">&times;</span>
