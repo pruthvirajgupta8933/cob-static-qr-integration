@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PaymentInitModal } from "pg-test-project";
 import { v4 as uuidv4 } from 'uuid';
-import { useEffect } from 'react';
+
+
 
 function SabpaisaPaymentGateway(props) {
-//  console.log("props?.openPg",props?.openPg)
-  const [isOpen, setIsOpen] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(props?.openPg);
   const [clientCode, setClientCode] = useState("TM001");
   const [transUserName, setTransUserName] = useState("rajiv.moti_336");
   const [transUserPassword, setTransUserPassword] = useState("RIADA_SP336");
@@ -18,7 +19,7 @@ function SabpaisaPaymentGateway(props) {
   const [clientTxnId, setclientTxnId] = useState(uuidv4());
   const [payerAddress, setpayerAddress] = useState("");
   const [amount, setamount] = useState("9999");
-  const [amountType, setamountType] = useState("");
+  const [amountType, setamountType] = useState("INR");
   const [udf1, setudf1] = useState("");
   const [udf2, setudf2] = useState("");
   const [udf3, setudf3] = useState("");
@@ -28,11 +29,11 @@ function SabpaisaPaymentGateway(props) {
   const [udf7, setudf7] = useState("");
   const [udf8, setudf8] = useState("");
   const [udf9, setudf9] = useState("");
-  const [udf10, setudf10] = useState("");
-  const [udf11, setudf11] = useState("");
-  const [udf12, setudf12] = useState("");
-  const [udf13, setudf13] = useState("");
-  const [udf14, setudf14] = useState("");
+  const [udf10, setudf10] = useState(props?.planData?.applicationId);
+  const [udf11, setudf11] = useState(props?.planData?.applicationName);
+  const [udf12, setudf12] = useState(props?.planData?.clientId);
+  const [udf13, setudf13] = useState(props?.planData?.planId);
+  const [udf14, setudf14] = useState(props?.planData?.planName);
   const [udf15, setudf15] = useState("");
   const [udf16, setudf16] = useState("");
   const [udf17, setudf17] = useState("");
@@ -43,29 +44,22 @@ function SabpaisaPaymentGateway(props) {
   const [programId, setprogramId] = useState("x");
   const [mcc, setmcc] = useState("");
 
-  // useEffect(() => {
-  //   setIsOpen(props?.openPg)
-  //   if(props?.openPg){
-  //     alert("value is "+ isOpen)
-  //   }
-  //   return () => {
-  //     setIsOpen(false)
-  //   }
-  // }, [])
+  useEffect(() => {
+    // window.location.search
 
-
-  console.log("isOpen",isOpen)
-
+  }, [])
   
+
+
 
   return (
     <div> {
-      (clientCode && transUserPassword && transUserName && authkey && authiv) && isOpen && 
+      (clientCode && transUserPassword && transUserName && authkey && authiv)  && 
       <PaymentInitModal 
       clientCode={clientCode}
       transUserPassword={transUserPassword} 
       transUserName={transUserName} 
-      isOpen={isOpen} 
+      isOpen={props?.openPg} 
       authkey={authkey} 
       authiv={authiv} 
       payerName={payerName} 
@@ -73,8 +67,15 @@ function SabpaisaPaymentGateway(props) {
       payerMobile={payerMobile} 
       payerAddress={payerAddress} 
       amount={amount} 
-      // amountType={amountType}
-      label={"testing"} 
+      amountType={amountType}
+      
+      udf10={udf10}
+      udf11={udf11} 
+      udf12={udf12} 
+      udf13={udf13} 
+      udf14={udf14} 
+      udf15={udf15}
+      label={"Sabpaisa PG"} 
       onToggle={() => setIsOpen(false)} />
     }</div>
   )
