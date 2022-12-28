@@ -52,6 +52,7 @@ import ApproverRoute from "../../ProtectedRoutes/ApproverRoute";
 import ViewerRoute from "../../ProtectedRoutes/ViewerRoute";
 import { AppsSharp } from "@mui/icons-material";
 import { logout } from "../../slices/auth";
+import SpPg from "../sabpaisa-pg/SpPg";
 
 function Dashboard() {
   let history = useHistory();
@@ -302,6 +303,7 @@ function Dashboard() {
         )}
 
         <Route exact path={`${path}/sabpaisa-pricing/:id/:name`}>
+          {/* getting issue to get query param in protected route */}
           <SabPaisaPricing />
         </Route>
 
@@ -378,6 +380,11 @@ function Dashboard() {
         {/* <Route exact path={`${path}/pg-response`} >
                          <PgResponse />
                     </Route> */}
+
+        <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
+          <SpPg />
+        </MerchantRoute>
+
       </Switch>
     </section>
   );

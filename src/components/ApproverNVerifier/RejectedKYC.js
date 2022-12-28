@@ -8,6 +8,7 @@ import Spinner from "./Spinner";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
+import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 
 const RejectedKYC = () => {
@@ -159,6 +160,7 @@ const nextPage = () => {
             <option value="offline">Offline</option>
           </select>
         </div>
+        <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=Rejected'} filename={"Rejected"}/>
       </div>
 
       <div className="col-md-12 col-md-offset-4">

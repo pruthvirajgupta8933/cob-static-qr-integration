@@ -15,6 +15,7 @@ import ViewStatusModal from "./ViewStatusModal";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
+import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 // import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
 
@@ -174,6 +175,7 @@ const PendindKyc = () => {
             <option value="offline">Offline</option>
           </select>
         </div>
+        <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=Pending'} filename={"Pending-KYC"}/>
       </div>
 
       <div className="col-md-12 col-md-offset-4">

@@ -130,16 +130,13 @@ const MerchantDocument = (props) => {
       });
   };
 
-
-
-
-  useEffect(() => {
+   useEffect(() => {
 
     role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3 ?
       setButtonText("Verify")
 
       : role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 4 ?
-        setButtonText("Approved")
+        setButtonText("Approve")
         : role?.verifier === true ?
           setButtonText("Verify")
           : <></>
@@ -168,7 +165,7 @@ const MerchantDocument = (props) => {
 
     /////////////////////////////////////////////// button enable condition for verifier
 
-    const v = () => {
+    const verifier = () => {
       let enableBtn = false;
       if (currenTab === 3) {
         if (roles.verifier === true || Allow_To_Do_Verify_Kyc_details === true)
@@ -176,14 +173,14 @@ const MerchantDocument = (props) => {
       }
       setEnableBtnVerifier(enableBtn);
     };
-    v()
+    verifier()
 
 
 
 
     /////////////////////////////////////////////// button enable condition  for approver
 
-    const a = () => {
+    const approver = () => {
       let enableBtn = false;
       if (currenTab === 4) {
         if (roles.approver === true)
@@ -192,7 +189,7 @@ const MerchantDocument = (props) => {
       }
       setEnableBtnApprover(enableBtn);
     }
-    a()
+    approver()
 
 
 
@@ -209,7 +206,7 @@ const MerchantDocument = (props) => {
   return (
     <div className="row mb-4 border">
       <div class="col-lg-12">
-        <h3 className="font-weight-bold">Merchant Docuemnts</h3>
+        <h3 className="font-weight-bold">Merchant Documents</h3>
       </div>
 
       <div className="col-lg-12 mt-4 m-2">

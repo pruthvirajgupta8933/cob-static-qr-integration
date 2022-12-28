@@ -26,6 +26,7 @@ const SabPaisaPricing = () => {
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
   const [tempPlanId, setTempPlanId] = useState("");
   const [rateCloneStatus, setRateCloneStatus] = useState("")
+  const [TempSelectedData, setTempSelectedData] = useState({})
 
   const dispatch = useDispatch();
   const clickHandler = (value) => {
@@ -156,6 +157,7 @@ const SabPaisaPricing = () => {
 
 
   const handleClick = async (plan_id, plan_name) => {
+    
     const postData = {
       clientId: clientId,
       applicationName: param?.name,
@@ -164,9 +166,13 @@ const SabPaisaPricing = () => {
       applicationId: param?.id,
     };
 
+    
+console.log("postdata",postData)
+    sessionStorage.setItem("tempProductPlanData",JSON.stringify(postData))
+    // history.push("/dashboard/sabpaisa-pg");
+    // setTempSelectedData(postData)
+
     setTempPlanId(plan_id)
-
-
     const res = await axiosInstanceAuth.post(
       API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
       postData
@@ -276,7 +282,7 @@ const SabPaisaPricing = () => {
                                   className="close"
                                   data-dismiss="modal"
                                   aria-label="Close"
-                                // onClick={() => clickHandler(false)}
+                                onClick={() => clickHandler(false)}
                                 >
                                   <span aria-hidden="true">&times;</span>
                                 </button>
@@ -390,7 +396,7 @@ const SabPaisaPricing = () => {
                                   class="close"
                                   data-dismiss="modal"
                                   aria-label="Close"
-                                // onClick={() => clickHandler(false)}
+                                onClick={() => clickHandler(false)}
                                 >
 
                                   <span aria-hidden="true">&times;</span>

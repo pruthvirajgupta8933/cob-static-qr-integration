@@ -145,6 +145,9 @@ const API_LIVE = {
 ////////////////////////////////////////SIGNUP DATA API
 GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
 
+//////////////////////// For merchnat list export to csv
+Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
+
   /////////////////////////Kyc approver
   /* For pending*/
   KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not-Filled&order_by=-merchantId`,
@@ -156,6 +159,7 @@ GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
+  
 
   /** Contact Information */
   Save_General_Info: `${kyc_url}/kyc/save-general-info/`,
