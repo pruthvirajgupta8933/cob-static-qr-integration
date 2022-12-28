@@ -17,7 +17,7 @@ function SideNavbar() {
    const [clientCode, SetClientCode] = useState("")
 
   let { url } = useRouteMatch();
-  const [clientCode, SetClientCode] = useState("")
+  // const [clientCode, SetClientCode] = useState("")
   const dispatch = useDispatch();
 
 
