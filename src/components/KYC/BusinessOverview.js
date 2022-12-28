@@ -63,7 +63,7 @@ function BusinessOverview(props) {
     { key: "False", value: "No" },
   ];
   const WebsiteAppUrl = [
-    { key: "Without Website/app", value: "No" },
+    { key: "Without website/app", value: "No" },
     { key: "On my website/app", value: "Yes" },
   ];
 
@@ -107,7 +107,7 @@ function BusinessOverview(props) {
   const validationSchema = Yup.object(
     {
       business_type: Yup.string()
-        .required("Select BusinessType")
+        .required("Select Business Type")
         .nullable(),
       business_category: Yup.string()
         .required("Select Business Category")

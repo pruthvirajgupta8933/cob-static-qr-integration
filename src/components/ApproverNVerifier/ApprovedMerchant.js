@@ -9,6 +9,7 @@ import Spinner from "./Spinner";
 import moment from "moment";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
+import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 
 function ApprovedMerchant() {
@@ -139,7 +140,7 @@ let pageNumbers = []
 
   return (
     <div className="container-fluid flleft">
-      <div className="col-lg-4 mrg-btm- bgcolor">
+      <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Search</label>
         <input
           className="form-control"
@@ -152,7 +153,7 @@ let pageNumbers = []
           
           <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
         </div>
-      <div className="col-lg-4 mrg-btm- bgcolor">
+      <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Count Per Page</label>
         <select
           value={pageSize}
@@ -176,6 +177,7 @@ let pageNumbers = []
 
         </select>
       </div>
+      <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=approved'} filename={"Approved"} />
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
 
