@@ -8,9 +8,7 @@ import VerifyRejectBtn from './VerifyRejectBtn';
 
 const BusinessOverview = (props) => {
   const { businessTypeResponse, businessCategoryResponse, merchantKycId, KycTabStatus } = props;
-
-console.log("businessCategoryResponse",businessCategoryResponse)
-  const dispatch = useDispatch();
+   const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
   
   const [isVerified, setIsVerified] = useState(KycTabStatus?.business_info_status === "Verified" ? true : false);

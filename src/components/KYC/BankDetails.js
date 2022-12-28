@@ -301,10 +301,10 @@ function BankDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right-">
+                <div class="position-sticky pull-right- otpbtndetail">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtndetail"
+                    className="btn btnbackground text-white btn-sm panbtn otpbtndetail-"
                     onClick={() => {
                       checkInputIsValid(
                         errors,
@@ -321,7 +321,7 @@ function BankDetails(props) {
               )}
 
               {errors?.oldIfscCode && (
-                <span className="notVerifiedtext- text-danger">
+                <span className="notVerifiedtext- text-danger imp_css">
                   {errors?.oldIfscCode}
                 </span>
               )}
@@ -350,10 +350,10 @@ function BankDetails(props) {
                 </span>
               ) : !errors.hasOwnProperty("oldIfscCode") &&
                 !errors.hasOwnProperty("ifsc_code") ? (
-                <div class="position-sticky pull-right-">
+                <span class="position-sticky pull-right- otpbtnaccnt">
                   <a
                     href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn otpbtnaccnt"
+                    className="btn btnbackground text-white btn-sm panbtn otpbtnaccnt-"
                     onClick={() => {
                       checkInputIsValid(
                         errors,
@@ -366,7 +366,7 @@ function BankDetails(props) {
                   >
                     Verify
                   </a>
-                </div>
+                </span>
               ) : (
                 <> </>
               )}

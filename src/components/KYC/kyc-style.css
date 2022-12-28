@@ -306,42 +306,46 @@ a.activepaylink-kyc{
 .otpbtn{
     position: absolute !important;
     right: 16px;
-    top: 37px;
+    top: 38px;
 }
 .otpbtn a{
     border-radius: 0 6px 6px 0;
-    max-height: 33px;
+    max-height: 32px;
 }
 .otpbtngst{
-    right: 0;
-    position: absolute !important;
-    top: -34px;
-    border-radius: 0 4px 4px 0 !important;
-    max-height: 33px;
+  right: 102px;
+  position: absolute !important;
+  top: 38px;
+  border-radius: 0 4px 4px 0 !important;
+  min-height: 32px !important;
   }
 .otpbtngst a{
-    /* border-radius: 0 6px 6px 0; */
+    border-radius: 0 6px 6px 0;
+    height: 32px;
 }
 /* 
 .otpbtndetail{
     
 } */
 .otpbtndetail{
-    top: -47px;
-    position: absolute !important;
-    right: 0;
-    border-radius: 0 4px 4px 0;
-    max-height: 33px;
+  top: 38px;
+  position: absolute !important;
+  right: 106px;
+  min-height: 31px !important;
+  }
+  .otpbtndetail a{
+    border-radius: 0 6px 6px 0;
+    height: 32px;
   }
 .otpbtnaccnt{
-    top: -47px;
-    position: absolute !important;
-    border-radius: 0 4px 4px 0;
-    right: 0;
-    max-height: 33px;
+  top: 38px;
+  position: absolute !important;
+  right: 106px;
+  min-height: 31px !important;
 }
 .otpbtnaccnt a{
-    /* border-radius: 0 6px 6px 0; */
+    border-radius: 0 6px 6px 0;
+    height:32px;
 }
 .marg-b p.text-danger{
   margin-bottom:0;
@@ -353,4 +357,10 @@ a.activepaylink-kyc{
 }
 a.inactive{
   color:#000;
+}
+.imp_css{
+  white-space: nowrap;
+    display: flex;
+    line-height: 9px;
+    margin-top: 5px;
 }

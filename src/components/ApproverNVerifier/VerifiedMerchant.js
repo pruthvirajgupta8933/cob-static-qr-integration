@@ -12,6 +12,7 @@ import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import { Toast } from "react-toastify";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
+import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 function VerifiedMerchant() {
   const [data, setData] = useState([]);
@@ -151,7 +152,7 @@ function VerifiedMerchant() {
 
   return (
     <div className="container-fluid flleft">
-      <div className="col-lg-4 mrg-btm- bgcolor">
+      <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Search</label>
         <input
           className="form-control"
@@ -161,7 +162,7 @@ function VerifiedMerchant() {
         />
       </div>
 
-      <div className="col-lg-4 mrg-btm- bgcolor">
+      <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Count Per Page</label>
         <select
           value={pageSize}
@@ -182,6 +183,7 @@ function VerifiedMerchant() {
           <option value="offline">Offline</option>
         </select>
       </div>
+      <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=verified'} filename= {"Pending-Approval"}/>
       <div>
         
       {openCommentModal === true ?  

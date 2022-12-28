@@ -8,7 +8,9 @@ import VerifyRejectBtn from './VerifyRejectBtn';
 
 
 const CompleteVerification = (props) => {
-  console.log("My Props",props)
+  
+let closeVerificationModal=props?.closeVerification;
+  
 
   let pendingApporvalTable = props?.renderApprovalTable
   let pendingVerfyTable = props?.renderPendingVerificationData
@@ -36,7 +38,6 @@ const CompleteVerification = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
   const [buttonText, setButtonText] = useState("Complete Verification");
-  console.log("buttonText",buttonText)
   const handleVerifyClick = () => {
 
     const veriferDetails = {
@@ -56,6 +57,7 @@ const CompleteVerification = (props) => {
               if(resp?.payload?.status_code === 200){
                 dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
                 pendingVerfyTable()
+                closeVerificationModal(false)
 
               }
               setDisable(false)
@@ -86,6 +88,7 @@ const CompleteVerification = (props) => {
               resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
               dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
               pendingApporvalTable()
+              closeVerificationModal(false)
             })
             .catch((e) => {
               toast.error("Something went wrong, Please Try Again later")
@@ -164,20 +167,20 @@ const CompleteVerification = (props) => {
   verifier();
 
     
-console.log("currenTab",currenTab)
-console.log("isverified",isverified)
-console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
-console.log("roles",roles)
+// console.log("currenTab",currenTab)
+// console.log("isverified",isverified)
+// console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
+// console.log("roles",roles)
     
 
 
     if(currenTab === 3){
       setButtonText("Verify KYC")
-      console.log("The Button Name is verify kyc",buttonText)
+      // console.log("The Button Name is verify kyc",buttonText)
     }
     if(currenTab === 4){
       setButtonText("Approve KYC")
-      console.log("The Button Name is Approve kyc",buttonText)
+      // console.log("The Button Name is Approve kyc",buttonText)
 
     }
 
@@ -186,15 +189,15 @@ console.log("roles",roles)
 
   }, [roles, isverified, Allow_To_Do_Verify_Kyc_details]);
 
-  console.log("---------start final btn-----")
-     console.log("currenTab",currenTab)
-     console.log("roles",roles)
-     console.log("isverified",isverified)
-     console.log("isapproved",isapproved)
-     console.log("enableBtnVerifier",enableBtnVerifier)
-     console.log("enableBtnApprover",enableBtnApprover)
-     console.log("The button name show is here",buttonText)
-  console.log("---------end final btn-----")
+  // console.log("---------start final btn-----")
+  //    console.log("currenTab",currenTab)
+  //    console.log("roles",roles)
+  //    console.log("isverified",isverified)
+  //    console.log("isapproved",isapproved)
+  //    console.log("enableBtnVerifier",enableBtnVerifier)
+  //    console.log("enableBtnApprover",enableBtnApprover)
+  //    console.log("The button name show is here",buttonText)
+  // console.log("---------end final btn-----")
     
 
   return (
@@ -202,7 +205,8 @@ console.log("roles",roles)
       <div class="col-lg-6"></div>
       <div class="col-lg-6">
         {enableBtnVerifier || enableBtnApprover ?
-          <><button type="button"  disabled={disable} onClick={() => handleVerifyClick()} class="btn btn-info btn-sm text-white">{buttonText}</button>
+          <><button type="button"  disabled={disable} onClick={() => {handleVerifyClick()
+          }} class="btn btn-info btn-sm text-white">{buttonText}</button>
 
 
           <button type="button" onClick={() => handleRejectClick()} class="btn btn-danger btn-sm text-white">Reject KYC</button></>

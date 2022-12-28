@@ -14,6 +14,7 @@ import CommentModal from "./Onboarderchant/CommentModal";
 import {ALLOW_ROLE_AS_VERIFIER} from "./../../utilities/permisson"
 import moment from "moment";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
+import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 function PendingVerification() {
   const { url } = useRouteMatch();
@@ -211,6 +212,7 @@ function PendingVerification() {
             <option value="offline">Offline</option>
           </select>
         </div>
+        <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=processing'} filename={"Pending-Verification"}/>
       </div>
 
       <div className="col-md-12 col-md-offset-4">
