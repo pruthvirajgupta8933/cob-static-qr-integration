@@ -54,9 +54,6 @@ function KycForm() {
     allTabsValidate?.merchantContactInfo?.submitStatus?.status;
   const uploadDocuments = allTabsValidate?.UploadDoc?.submitStatus?.status;
 
-  console.log("allTabsValidate", allTabsValidate);
-  console.log("KycTabStatusStore", KycTabStatusStore);
-  console.log("uploadDocuments", uploadDocuments);
 
   let history = useHistory();
 
@@ -135,11 +132,11 @@ function KycForm() {
     IsDocumentTabFilled = true;
   }
 
-  console.log({IsGeneralInfoTabFilled,
-    isBusinessInfoStatus,
-    IsDocumentTabFilled,
-    IsMerchantInfoFilled,
-    IsSettlementInfoFilled})
+  // console.log({IsGeneralInfoTabFilled,
+  //   isBusinessInfoStatus,
+  //   IsDocumentTabFilled,
+  //   IsMerchantInfoFilled,
+  //   IsSettlementInfoFilled})
 
   return (
     <section className="ant-layout">

@@ -518,7 +518,7 @@ function BusinessDetails(props) {
 
             <div class="col-sm-12 col-md-6 col-lg-6">
               <label class="col-form-label mt-0 p-2">
-                Pincode<span style={{ color: "red" }}>*</span>
+                Pin code<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
                 control="input"
