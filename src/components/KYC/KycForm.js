@@ -139,7 +139,7 @@ function KycForm() {
   //   IsSettlementInfoFilled})
 
   return (
-    <section className="ant-layout">
+    <section className="ant-layout Satoshi-Medium">
       <div>
         <NavBar />
       </div>
@@ -153,7 +153,7 @@ function KycForm() {
         style={{ overflow: "scroll" }}
       >
         <div
-          class="modal-dialog modal-dialog-centered container- ml-280"
+          class="modal-dialog modal-dialog-center container- ml-280-"
           role="document"
         >
           <div class="modal-content kyc-modal_form ">
@@ -333,7 +333,7 @@ function KycForm() {
                   <div class="col-lg-9 col-xsm-12 col-sm-12 col-md-12 kycnopad">
                     <div className="card cardsection">
                       <div class="card-body">
-                        <h1 class="card-title text-kyc-header mb-2">
+                        <h1 class="card-title text-kyc-header mb-2 NunitoSans-Regular">
                           {title}
                           <button
                             onClick={() => redirect()}
@@ -350,7 +350,7 @@ function KycForm() {
                             </span>
                           </button>
                         </h1>
-
+                        
                         {/* role={roles} kycid={kycid} */}
                         {(tab === 1 && (
                           <ContactInfo
