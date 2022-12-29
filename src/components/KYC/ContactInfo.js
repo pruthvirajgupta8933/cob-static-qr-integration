@@ -236,7 +236,7 @@ function ContactInfo(props) {
 
 
   return (
-    <div className="col-md-12 col-md-offset-4" style={{ width: "100%" }}>
+    <div className="col-md-12 col-md-offset-4 Satoshi-Medium" style={{ width: "100%" }}>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

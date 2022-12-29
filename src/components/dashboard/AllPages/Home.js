@@ -177,7 +177,7 @@ function Home() {
   };
 
   return (
-    <section className="ant-layout Satoshi-Medium">
+    <section className="ant-layout Satoshi-Medium NunitoSans-Regular">
       {/* {kyc?.KycTabStatusStore?.is_verified === false ? <KycModal /> : <></>} */}
 
       <div className="m_none">
