@@ -36,7 +36,7 @@ function SabpaisaPaymentGateway(props) {
   const [udf14, setudf14] = useState("");
   const [udf15, setudf15] = useState("");
   const [udf16, setudf16] = useState("");
-  const [udf17, setudf17] = useState("");
+  const [udf17, setudf17] = useState("COB");
   const [udf18, setudf18] = useState("");
   const [udf19, setudf19] = useState("");
   const [udf20, setudf20] = useState("");
@@ -46,6 +46,7 @@ function SabpaisaPaymentGateway(props) {
 
   useEffect(() => {
     // window.location.search
+    console.log("props",props)
    
     setudf12(props?.planData?.clientId)
     setudf13(props?.planData?.planId)
@@ -78,6 +79,7 @@ function SabpaisaPaymentGateway(props) {
       udf14={udf14} 
       udf15={udf15}
       udf16={udf16}
+      udf17={udf17}
       
       
       label={"Sabpaisa PG"} 
