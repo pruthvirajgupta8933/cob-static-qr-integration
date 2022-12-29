@@ -167,11 +167,10 @@ const SabPaisaPricing = () => {
     };
 
     
-    // console.log("postdata",postData)
+console.log("postdata",postData)
     sessionStorage.setItem("tempProductPlanData",JSON.stringify(postData))
-    setTempSelectedData(postData)
-    history.push("/dashboard/sabpaisa-pg");
-
+    // history.push("/dashboard/sabpaisa-pg");
+    // setTempSelectedData(postData)
 
     setTempPlanId(plan_id)
     const res = await axiosInstanceAuth.post(
@@ -357,7 +356,7 @@ const SabPaisaPricing = () => {
                               className={`font-weight-bold btn choosePlan-1 btn-lg ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
                               data-toggle="modal"
                               data-target="#exampleModal"
-                              // disabled={selectedPlan?.planId !== "" ? true : false}
+                              disabled={selectedPlan?.planId !== "" ? true : false}
                               onClick={() => {
                                 if (selectedPlan?.planId !== Products.plan_id) {
                                   handleClick(

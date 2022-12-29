@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { isArray, isNull, map } from 'lodash'
+import { isNull, map } from 'lodash'
 import SabpaisaPaymentGateway from './SabpaisaPaymentGateway'
 import API_URL from '../../config'
 import { axiosInstanceAuth } from '../../utilities/axiosInstance'
@@ -10,9 +10,10 @@ import { LocalConvenienceStoreOutlined } from '@mui/icons-material'
 function SpPg() {
 
     const history = useHistory()
+    const params = useParams()
     const [selectedPlan, setSelectedPlan] = useState({})
     const [planPrice, setPlanPrice] = useState(9999)
-    const [clientData, setClientData] = useState([])
+    const [clientData, setClientData] = useState({})
     const [responseData, setResponseData] = useState({})
     const [isOpenPg, setIsOpenPg] = useState(false)
 
@@ -22,10 +23,9 @@ function SpPg() {
 
         const sessionData = JSON.parse(sessionStorage.getItem("tempProductPlanData"))
         const user = JSON.parse(localStorage.getItem("user"))
-        if(isArray(user?.clientMerchantDetailsList) ){
-            setClientData(user?.clientMerchantDetailsList)
-        }
-       
+
+
+        setClientData(user?.clientMerchantDetailsList[0]?.clientName)
 
         if (isNull(sessionData) || isNull(user)) {
             history.push("/dashboard")
@@ -63,22 +63,29 @@ function SpPg() {
 
         const searchParam = window.location.search.slice(1)
         const params = new URLSearchParams(searchParam?.toString());
+        
         const paramsData = Object.fromEntries(params.entries());
         if(paramsData!==""){
             setResponseData(paramsData)
 
         }
+
         
     }, [])
+    
+    // const Response  = Object.keys(responseData)?.map(d=>{
+    //     console.log(d)
+    //     // <span>{Object.keys(d)} : {responseData?.d}</span>
+    // })
+
+    // console.log(Response)
 
 
     return (
         <React.Fragment>
             <button onClick={() => { setIsOpenPg(true) }} className="btn btn-primary">Pay Now</button>
-            {clientData?.length>0 && planPrice && 
-            
-                <SabpaisaPaymentGateway planData={selectedPlan} planPrice={planPrice} openPg={isOpenPg}  clientData={clientData} />
-            }
+
+            <SabpaisaPaymentGateway planData={selectedPlan} planPrice={planPrice} openPg={isOpenPg} />
 
             <div style={{overflowWrap:"anywhere"}}>{JSON.stringify(responseData)}</div>
 
