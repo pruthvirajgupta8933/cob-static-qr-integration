@@ -102,7 +102,7 @@ function LoginPage() {
             <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right pt-0 login-float-right nopad login-float-none">
 
               {/* col-sm-12 col-md-12 col-lg-6 authfy-panel-right  */}
-              <div className="authfy-login">
+              <div className="authfy-login ">
                 <div className="authfy-panel panel-login text-center active">
                   <div className="logmod__wrapper">
                     <span className="logmod__close">Close</span>
@@ -111,18 +111,18 @@ function LoginPage() {
                         <div className="logmod__tab lgm-2 show">
                           <div className="logmod__heading">
                             <span className="logmod__heading-subtitle"></span>
-                            <h1 className="loginHeaderr OpenSans-Regular">
+                            <h1 className="loginHeaderr NunitoSans-Regular">
                               Welcome to your Dashboard
                             </h1>
                             <p
                               style={{ color: "#0A2FB6" }}
-                              className="loginpara1 OpenSans-Regular"
+                              className="loginpara1 NunitoSans-Regular"
                             >
                               You can login to track and record every
                               transaction in real time.
                             </p>
                           </div>
-                          <div className="logmod__form- m-r-l-100 m0 col-lg-8 col-md-12 col-sm-12 ">
+                          <div className="logmod__form- m-r-l-200 m-10 col-lg-8 col-md-12 col-sm-12">
                             <Formik
                               initialValues={{
                                 ...INITIAL_FORM_STATE,
@@ -273,10 +273,12 @@ function LoginPage() {
                               )}
                             </Formik>
                           </div>
-                          <div className="logmod__form- m-r-l-100- mt-3 termsconditionss NunitoSans-Regular text-center">
-                            <p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target={"_blank"} alt="SabPaisa Terms & Conditions" title="SabPaisa Terms & Conditions">Terms & Conditions</a> | <a href="https://sabpaisa.in/privacy-policy/" target={"_blank"} alt="SabPaisa Privacy Policy" title="SabPaisa Privacy Policy">Privacy Policy</a></p>
-                          </div>
+                          
                         </div>
+                        <div className="logmod__form- m-r-l-100- mt-3 termsconditionss NunitoSans-Regular text-center">
+                          <p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target={"_blank"} alt="SabPaisa Terms & Conditions" title="SabPaisa Terms & Conditions">Terms & Conditions</a> | <a href="https://sabpaisa.in/privacy-policy/" target={"_blank"} alt="SabPaisa Privacy Policy" title="SabPaisa Privacy Policy">Privacy Policy</a></p>
+                         
+                          </div>
                       </div>
                     </div>
                   </div>
@@ -341,7 +343,7 @@ function LoginPage() {
               {/* ./authfy-login */}
             </div>
             <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-left">
-              <div className="brand-col">
+              <div className="brand-col" style={{height:'100%'}}>
                 <div
                   id="carouselExampleIndicators"
                   className="carousel slide"
@@ -369,23 +371,23 @@ function LoginPage() {
                       data-slide-to="2"
                     ></li>
                   </ol>
-                  <div className="carousel-inner OpenSans-Regular">
+                  <div className="carousel-inner NunitoSans-Regular">
                     <div className="carousel-item active">
                       <div className="heading1 pt-2">
                         <p
-                          className="font-text-large mb-0 OpenSans-Regular"
+                          className="font-text-large mb-0 NunitoSans-Regular"
                           style={{ color: "#012167", fontWeight: "700" }}
                         >
                           An all-in-one
                         </p>
                         <p
-                          className="font-size-32 mb-2 OpenSans-Regular"
+                          className="font-size-32 mb-2 NunitoSans-Regular"
                           style={{ color: "#012167" }}
                         >
                           {" "}
                           Dashboard
                         </p>
-                        <p className="mt-4 loginBanSubHeader OpenSans-Regular">
+                        <p className="mt-4 loginBanSubHeader NunitoSans-Regular">
                           {" "}
                           Trusted by over 3000 Mega Clients
                         </p>
@@ -399,19 +401,19 @@ function LoginPage() {
                     <div className="carousel-item">
                       <div className="heading1 pt-2">
                         <p
-                          className="font-text-large mb-0 OpenSans-Regular"
+                          className="font-text-large mb-0 NunitoSans-Regular"
                           style={{ color: "#012167", fontWeight: "700" }}
                         >
                           An all-in-one
                         </p>
                         <p
-                          className="font-size-32 mb-2 OpenSans-Regular"
+                          className="font-size-32 mb-2 NunitoSans-Regular"
                           style={{ color: "#012167" }}
                         >
                           {" "}
                           Dashboard
                         </p>
-                        <p className="mt-4 loginBanSubHeader OpenSans-Regular">
+                        <p className="mt-4 loginBanSubHeader NunitoSans-Regular">
                           {" "}
                           Trusted by over 3000 Mega Clients
                         </p>
@@ -425,19 +427,19 @@ function LoginPage() {
                     <div className="carousel-item">
                       <div className="heading1 pt-2">
                         <p
-                          className="font-text-large mb-0 OpenSans-Regular "
+                          className="font-text-large mb-0 NunitoSans-Regular "
                           style={{ color: "#012167", fontWeight: "700" }}
                         >
                           An all-in-one
                         </p>
                         <p
-                          className="font-size-32 mb-2 OpenSans-Regular "
+                          className="font-size-32 mb-2 NunitoSans-Regular "
                           style={{ color: "#012167" }}
                         >
                           {" "}
                           Dashboard
                         </p>
-                        <p className="mt-4 loginBanSubHeader OpenSans-Regular ">
+                        <p className="mt-4 loginBanSubHeader NunitoSans-Regular ">
                           {" "}
                           Trusted by over 3000 Mega Clients
                         </p>
