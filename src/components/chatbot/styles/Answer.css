@@ -1,4 +1,4 @@
-.answer{
+/* .answer{
     background-color: white;
     padding: 8px;
     background: #FFFFFF;
@@ -15,14 +15,10 @@
 
 }
 
-.outerDiv{
-    /* align-items: baseline; */
-    /* display: flex; */
-}
+
 
 .innerDiv {
-    /* margin: 2px;
-    margin-right: 4px; */
+
     display: contents;
     border-radius: 50% 50% 0 50%;
     box-shadow: rgb(0 0 0 / 15%) 0px 1px 2px 0px;
@@ -33,7 +29,6 @@
 }
 .imgStyle {
     align-items: flex-end;
-    /* border: 1px solid black; */
     border-radius: 50% 50% 0 50%;
     background: #f2f4f9;
     margin-right: 6px;
@@ -45,4 +40,4 @@
 
 .web_url{
     color:blue !important;
-}
+} */
