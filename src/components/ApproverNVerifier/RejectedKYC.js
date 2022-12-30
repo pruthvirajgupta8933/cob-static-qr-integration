@@ -25,6 +25,9 @@ const RejectedKYC = () => {
   const [pageSize, setPageSize] = useState(100);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [isOpenModal, setIsModalOpen] = useState(false)
+  const [isLoaded,setIsLoaded] = useState(false)
+
+
   let page_size = pageSize;
   let page = currentPage;
 
@@ -47,6 +50,7 @@ const RejectedKYC = () => {
         setKycIdClick(data);
          setDataCount(dataCoun);
          setRejectedMerchants(data);
+         setIsLoaded(false)   
       })
 
       .catch((err) => {
@@ -80,12 +84,16 @@ const RejectedKYC = () => {
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
 const nextPage = () => {
+  setIsLoaded(true) 
+  setData([])
     if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
+    setIsLoaded(true) 
+    setData([])
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
@@ -221,6 +229,7 @@ const nextPage = () => {
         </div>
         <nav>
           <ul className="pagination justify-content-center">
+          {isLoaded === true ? <Spinner /> : (
             <li className="page-item">
               <button 
               className="page-link" 
@@ -228,6 +237,7 @@ const nextPage = () => {
                 Previous
               </button>
             </li>
+          )}
             {displayPageNumber?.map((pgNumber, i) => (
               <li 
                 key={i}
@@ -244,6 +254,7 @@ const nextPage = () => {
               </li>
             ))}
 
+          {isLoaded === true ? <Spinner /> : (
             <li class="page-item">
               <button
                 class="page-link"
@@ -253,6 +264,7 @@ const nextPage = () => {
                 Next
               </button>
             </li>
+            )}
           </ul>
         </nav>
       </div>

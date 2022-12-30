@@ -175,10 +175,7 @@ const CreatePassword = (props) => {
                   </>
                 )}
               </Formik>
-              <p className="card-text" style={{ display: "none" }}>
-                With supporting text below as a natural lead-in to additional
-                content.
-              </p>
+            
             </div>
             <div className="card-footer text-muted text-center">
               Sabpaisa.in

@@ -17,6 +17,7 @@ import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
+
 // import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
 
 const PendindKyc = () => {
@@ -34,6 +35,8 @@ const PendindKyc = () => {
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false)
+  const [isLoaded,setIsLoaded] = useState(false)
+
 
 
   const { auth } = useSelector((state) => state);
@@ -47,6 +50,7 @@ const PendindKyc = () => {
   };
 
   useEffect(() => {
+
     dispatch(kycForPendingMerchants({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
 
@@ -58,6 +62,7 @@ const PendindKyc = () => {
         setData(data);
         setDataCount(dataCoun);
         setPendingKycData(data);
+        setIsLoaded(false)   
       })
 
       .catch((err) => {
@@ -102,19 +107,29 @@ const PendindKyc = () => {
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
 
   const nextPage = () => {
+    setIsLoaded(true)
+    setData([])
     if (currentPage < pageNumbers?.length) {
       // console.log("hello", currentPage)
+      
       setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
+    setIsLoaded(true)
+    setData([])
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
+ 
   useEffect(() => {
+   
+ 
+
+    //  setTimeout(() => {
     let lastSevenPage = totalPages - 7;
     if (pageNumbers?.length > 0) {
       let start = 0;
@@ -129,14 +144,23 @@ const PendindKyc = () => {
       const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
         return pgNumber;
       });
+      
       setDisplayPageNumber(pageNumber);
     }
+  // }, 5000);
+
   }, [currentPage, totalPages]);
+
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("MM/DD/YYYY");
     return date;
   };
+
+
+
+  // console.log("Data Loading",isLoaded)
+
 
   return (
     <div className="container-fluid flleft">
@@ -237,12 +261,18 @@ const PendindKyc = () => {
         </div>
         <nav>
           <ul className="pagination justify-content-center">
+
+          {isLoaded === true ? <Spinner /> : (
             <li className="page-item">
               <button className="page-link" onClick={prevPage}>
                 Previous
               </button>
             </li>
+
+          )}
+            
             {displayPageNumber?.map((pgNumber, i) => (
+            
               <li
                 key={i}
                 className={
@@ -253,8 +283,10 @@ const PendindKyc = () => {
                 <a href={() => false} className={`page-link data_${i}`}>
                   <span>{pgNumber}</span>
                 </a>
-              </li>
+              </li>  
             ))}
+           
+           {isLoaded === true ? <Spinner /> : (
 
             <li class="page-item">
               <button
@@ -264,7 +296,10 @@ const PendindKyc = () => {
               >
                 Next
               </button>
-            </li>
+            </li> 
+          
+           
+           )}
           </ul>
         </nav>
       </div>

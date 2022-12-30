@@ -27,6 +27,9 @@ function ApprovedMerchant() {
   const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [isOpenModal, setIsModalOpen] = useState(false)
+  const [isLoaded,setIsLoaded] = useState(false)
+
+
   let page_size = pageSize;
   let page = currentPage;
 
@@ -47,6 +50,7 @@ function ApprovedMerchant() {
         setData(data);
          setDataCount(dataCoun);
          setApprovedMerchantData(data);
+         setIsLoaded(false)   
       })
 
       .catch((err) => {
@@ -79,12 +83,16 @@ let pageNumbers = []
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
   const nextPage = () => {
+    setIsLoaded(true) 
+    setData([])  
     if (currentPage < pageNumbers.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
+    setIsLoaded(true)   
+    setData([])
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
@@ -300,6 +308,7 @@ let pageNumbers = []
                               >
                                 Close
                               </button>
+
                             </div>
                           </div>
                         </div>
@@ -313,6 +322,7 @@ let pageNumbers = []
         </div>
         <nav>
           <ul className="pagination justify-content-center">
+          {isLoaded === true ? <Spinner /> : (
             <li className="page-item">
               <button 
               className="page-link" 
@@ -320,6 +330,7 @@ let pageNumbers = []
                 Previous
               </button>
             </li>
+          )}
             {displayPageNumber?.map((pgNumber, i) => (
               <li 
                 key={i}
@@ -335,7 +346,8 @@ let pageNumbers = []
                 </a>
               </li>
             ))}
-
+          
+          {isLoaded === true ? <Spinner /> : (
             <li class="page-item">
               <button
                 class="page-link"
@@ -345,6 +357,7 @@ let pageNumbers = []
                 Next
               </button>
             </li>
+          )}
           </ul>
         </nav>
       </div>

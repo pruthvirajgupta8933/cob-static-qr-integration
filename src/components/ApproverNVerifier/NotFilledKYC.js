@@ -24,6 +24,8 @@ const NotFilledKYC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
+  const [isLoaded,setIsLoaded] = useState(false)
+
   // let page_size = pageSize;
   // let page = currentPage;
 
@@ -47,6 +49,7 @@ const NotFilledKYC = () => {
         setDataCount(totalData);
         setNotFilledData(data);
         setData(data);
+        setIsLoaded(false)   
         // console.log("Paginataion Dta ===> ",notFilledData)
       })
 
@@ -86,12 +89,16 @@ const NotFilledKYC = () => {
   }
 
   const nextPage = () => {
+    setIsLoaded(true)
+    setData([])
     if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
+    setIsLoaded(true)
+    setData([])
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
@@ -214,13 +221,16 @@ const NotFilledKYC = () => {
         </div>
         <nav>
           <ul className="pagination justify-content-center">
+
+          {isLoaded === true ? <Spinner /> : (
             <li className="page-item">
               <button
                 className="page-link"
                 onClick={prevPage}>
                 Previous
               </button>
-            </li>
+            </li>)}
+            
             {displayPageNumber?.map((pgNumber, i) => (
               <li
                 key={i}
@@ -237,6 +247,7 @@ const NotFilledKYC = () => {
               </li>
             ))}
 
+           {isLoaded === true ? <Spinner /> : (
             <li class="page-item">
               <button
                 class="page-link"
@@ -246,6 +257,7 @@ const NotFilledKYC = () => {
                 Next
               </button>
             </li>
+           )}
           </ul>
         </nav>
       </div>
