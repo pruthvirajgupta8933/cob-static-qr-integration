@@ -198,6 +198,9 @@ a:focus {
   width: 100%;
   text-align: center;
 }
+.selct{
+  -webkit-appearance: none;
+}
 
 .authfy-panel-left .brand-col .headline {
   display: table-cell;
