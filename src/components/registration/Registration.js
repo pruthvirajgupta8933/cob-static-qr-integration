@@ -178,8 +178,8 @@ function Registration() {
           <div className="col-lg-1"></div>
           <div className="authfy-container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
             <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-left mdn">
-              <div className="brand-col Satoshi-Medium">
-                <div className="headline pt-1">
+              <div className="brand-col ">
+                <div className="headline pt-1 NunitoSans-Regular">
                   {/* brand-logo start */}
                   {/* <div className="brand-logo">
                   <img
@@ -265,7 +265,7 @@ function Registration() {
                     <div className="logmod__container">
                       <div className="logmod__tab-wrapper">
                         <div className="show logmod__tab lgm-1">
-                          <div className="logmod__heading Satoshi-Medium">
+                          <div className="logmod__heading NunitoSans-Regular">
                             <span className="fontfigma">
                               Welcome to SabPaisa{" "}
                             </span>
@@ -284,7 +284,7 @@ function Registration() {
                               </span>
                             </div>
                           </div>
-                          <div className="logmod__form- Satoshi-Medium">
+                          <div className="logmod__form- NunitoSans-Regular">
                             <Formik
                               initialValues={{
                                 fullname: "",

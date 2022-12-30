@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import '../styles/Answer.css'
+// import '../styles/Answer.css'
 import botFace from '../media/botFace.png'
 
 const AnswerComponent = (props)=>{

@@ -210,7 +210,10 @@
 }
 
 .m-r-l-100 {
-  margin: 0 100px 0 100px;
+  margin: 0 10% 0 10%;
+}
+.m-r-l-200 {
+  margin: 0 20% 0 20%;
 }
 
 .list-items li {
