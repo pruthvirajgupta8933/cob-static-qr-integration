@@ -215,6 +215,9 @@ console.log("postdata",postData)
         {/* <button type="button" onClick={clickHandler}>check</button> */}
         <div class="container mb-10">
           <div class="row">
+          
+          <button type="button" onClick={()=> handleClick()}>Test Button Abhishek</button>
+
 
             {spinner && <span className="spinner-border" role="status"></span>}
             {productDetails.map((Products) => (
