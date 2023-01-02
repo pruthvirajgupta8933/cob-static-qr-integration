@@ -22,6 +22,7 @@ function TransactionEnquirey() {
   const [errMessage, setErrMessage] = useState("");
   const [data, setData] = useState({});
   const [printData, setPrintData] = useState([]);
+  const [disable,setIsDisable] = useState(false)
   const { auth } = useSelector((state) => state);
   const { user } = auth;
 
@@ -29,6 +30,7 @@ function TransactionEnquirey() {
 
   const onSubmit = (input) => {
     setData({});
+    setIsDisable(true)
     const transaction_id = input.transaction_id;
     axios
       .get(API_URL.VIEW_TXN + `/${transaction_id}`)
@@ -38,16 +40,20 @@ function TransactionEnquirey() {
           setIsShow(true);
           setData(response?.data[0]);
           setErrMessage(false);
+          setIsDisable(false)
         } else {
           axios.get(API_URL.SP2_VIEW_TXN + `/${transaction_id}`).then((r) => {
             if (r?.data.length > 0) {
              
               setIsShow(true);
+              setIsDisable(false)
               setData(r?.data[0]);
               setErrMessage(false);
             } else {
               setIsShow(false);
               setErrMessage(true);
+              setIsDisable(false)
+              
             }
           });
         }
@@ -55,6 +61,7 @@ function TransactionEnquirey() {
       .catch((e) => {
         setIsShow(false);
         setErrMessage(true);
+        setIsDisable(false)
       });
   };
 
@@ -134,6 +141,7 @@ function TransactionEnquirey() {
                           />
 
                           <button
+                          disabled={disable}
                             className=" btn bttn bttnbackgroundkyc mt-2"
                             type="submit"
                           >

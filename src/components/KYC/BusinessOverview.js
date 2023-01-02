@@ -29,6 +29,7 @@ function BusinessOverview(props) {
   const [collection, setCollection] = useState([]);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
+  const [disabled, setIsDisabled] = useState(false)
 
   const { auth, kyc } = useSelector((state) => state);
 
@@ -222,6 +223,7 @@ function BusinessOverview(props) {
 
   const onSubmit = (values) => {
     if (role.merchant) {
+      setIsDisabled(true)
       dispatch(
         saveBusinessInfo({
           business_type: values.business_type,
@@ -249,12 +251,14 @@ function BusinessOverview(props) {
           setTab(3);
           setTitle("BUSINESS DETAILS");
           dispatch(kycUserList({ login_id: loginId }));
+          setIsDisabled(false)
         } else {
           toast.error(
             res?.payload?.message
               ? res?.payload?.message
               : "Something Went Wrong! Please try again after some time."
           );
+          setIsDisabled(false)
         }
       });
     }
@@ -459,6 +463,7 @@ function BusinessOverview(props) {
                       <button
                         className="btn float-lg-right btnbackground text-white"
                         type="submit"
+                        disabled={disabled}
                       >
                         {buttonText}
                       </button>

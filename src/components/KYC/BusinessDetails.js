@@ -44,6 +44,7 @@ function BusinessDetails(props) {
   const [checked, setChecked] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
+  const [disable,setIsDisable] = useState(false)
 
   const [operationvalue, setOperationvalue] = useState(
     KycList.registeredBusinessAdress
@@ -254,6 +255,7 @@ function BusinessDetails(props) {
 
   const onSubmit = (values) => {
     if (role.merchant) {
+      setIsDisable(true)
       const bodyFormData = new FormData();
       bodyFormData.append("company_name", values.company_name);
       bodyFormData.append("registerd_with_gst", values.registerd_with_gst);
@@ -289,8 +291,10 @@ function BusinessDetails(props) {
           setTab(4);
           setTitle("BANK DETAILS");
           dispatch(kycUserList({ login_id: loginId }));
+          setIsDisable(false)
         } else {
           toast.error(res?.payload?.message);
+          setIsDisable(false)
         }
       });
     } 
@@ -544,6 +548,7 @@ function BusinessDetails(props) {
                     {VerifyKycStatus === "Verified" ? null : (
                       <button
                         type="submit"
+                        disabled={disable}
                         className="btn float-lg-right btnbackground text-white"
                       >
                         {buttonText}
