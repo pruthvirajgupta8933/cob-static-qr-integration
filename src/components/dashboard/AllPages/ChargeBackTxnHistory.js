@@ -136,6 +136,9 @@ const ChargeBackTxnHistory= () => {
         toast.error("Request Rejected");
         setIsDisable(false)
       }
+      if (ApiStatus === "fulfilled") {
+         setIsDisable(false)
+      }
       if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
         toast.error("No Data Found");
       setIsDisable(false)
