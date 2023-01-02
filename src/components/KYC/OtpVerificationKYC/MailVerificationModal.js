@@ -78,7 +78,7 @@ const MailVerificationModal = ({ show, setShow }) => {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="mx-auto py-3">
+              <div className="mx-auto py-3">
                 <h1 className="subHeaderForModal">
                   Please enter the verification code sent to your
                   email !
@@ -108,7 +108,7 @@ const MailVerificationModal = ({ show, setShow }) => {
                     numInputs={6}
                   />
                 </div>
-                <div class="col-md-11 text-center">
+                <div className="col-md-11 text-center">
                 <button className="btn" type="button" style={{backgroundColor:"#0156B3"}}
                     onClick={handleVerificationOfEmail}
                   >

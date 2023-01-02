@@ -46,16 +46,16 @@ return (
           { enableDisable && enableBtnStatus  ? 
             <><button type="button" 
             onClick={()=>props?.KycVerifyStatus?.handleVerifyClick()} 
-            class="btn btn-info btn-sm text-white">{props?.btnText?.verify}</button>
+            className="btn btn-info btn-sm text-white">{props?.btnText?.verify}</button>
 
             <button type="button" 
             onClick={()=>props?.KycRejectStatus?.handleRejectClick()} 
-            class="btn btn-danger btn-sm text-white">{props?.btnText?.Reject}</button></>
+            className="btn btn-danger btn-sm text-white">{props?.btnText?.Reject}</button></>
           : <></> 
           }
 
           {/* { enableDisable && enableBtnStatus ? 
-            <button type="button" onClick={()=>props?.KycRejectStatus?.handleRejectClick()} class="btn btn-danger btn-sm text-white">{props?.btnText?.Reject}</button>
+            <button type="button" onClick={()=>props?.KycRejectStatus?.handleRejectClick()} className="btn btn-danger btn-sm text-white">{props?.btnText?.Reject}</button>
           : <></> 
           } */}
           

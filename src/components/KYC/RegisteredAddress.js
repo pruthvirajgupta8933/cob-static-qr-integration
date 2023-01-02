@@ -102,13 +102,13 @@ const RegisteredAddress = (props) => {
         <Form>
           {/* {console.log(formik)} */}
 
-          <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
-                <h4 class="text-kyc-label text-nowrap">
+          <div className="form-group row">
+              <label className="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+                <h4 className="text-kyc-label text-nowrap">
                   Address<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              <div className="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -122,13 +122,13 @@ const RegisteredAddress = (props) => {
             </div>
 
        
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
-                <h4 class="text-kyc-label text-nowrap">
+            <div className="form-group row">
+              <label className="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+                <h4 className="text-kyc-label text-nowrap">
                   City<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              <div className="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -141,13 +141,13 @@ const RegisteredAddress = (props) => {
               </div>
             </div>
 
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
-                <h4 class="text-kyc-label text-nowrap">
+            <div className="form-group row">
+              <label className="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+                <h4 className="text-kyc-label text-nowrap">
                   State<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              <div className="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -159,13 +159,13 @@ const RegisteredAddress = (props) => {
               </div>
             </div>
           
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
-                <h4 class="text-kyc-label text-nowrap">
+            <div className="form-group row">
+              <label className="col-sm-4 col-md-4 col-lg-4 col-form-label p-2">
+                <h4 className="text-kyc-label text-nowrap">
                   Pincode<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              <div className="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -175,7 +175,7 @@ const RegisteredAddress = (props) => {
                   readOnly={readOnly}
                 />
             <p style={{marginLeft:"23px"}}>
-            <input class="form-check-input" type="checkbox" value={check} id="flexCheckDefault" />
+            <input className="form-check-input" type="checkbox" value={check} id="flexCheckDefault" />
             Operational address is same as the business address
             </p>
               </div>
@@ -183,7 +183,7 @@ const RegisteredAddress = (props) => {
           
 
          
-            <div class="my-5 p-2">
+            <div className="my-5 p-2">
               <hr
                 style={{
                   borderColor: "#D9D9D9",
@@ -191,9 +191,9 @@ const RegisteredAddress = (props) => {
                   width: "100%",
                 }}
               />
-              <div class="mt-3">
-              <div class="row">
-              <div class="col-sm-11 col-md-11 col-lg-11 col-form-label">
+              <div className="mt-3">
+              <div className="row">
+              <div className="col-sm-11 col-md-11 col-lg-11 col-form-label">
                 
                   <button
                     type="submit"

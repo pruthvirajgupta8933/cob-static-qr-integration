@@ -290,9 +290,9 @@ function BusinessOverview(props) {
       >
         {(formik) => (
           <Form>
-            <div class="row">
-              <div class="col-sm-6 col-md-6 col-lg-6">
-                <label class="col-form-label mt-0 p-2">
+            <div className="row">
+              <div className="col-sm-6 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
                   Business Type<span style={{ color: "red" }}>*</span>
                 </label>
 
@@ -305,8 +305,8 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
               </div>
-              <div class="col-sm-6 col-md-6 col-lg-6">
-                <label class="p-2 mt-0">
+              <div className="col-sm-6 col-md-6 col-lg-6">
+                <label className="p-2 mt-0">
                   Business Category<span style={{ color: "red" }}>*</span>
                 </label>
 
@@ -320,9 +320,9 @@ function BusinessOverview(props) {
                 />
               </div>
             </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <label class="col-form-label p-2 mt-0">
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-12">
+                <label className="col-form-label p-2 mt-0">
                   Business Label <span style={{ color: "red" }}>*</span>
                 </label>
 
@@ -341,7 +341,7 @@ function BusinessOverview(props) {
                   which you operate (website, offline retail).
                 </span>
 
-                <div class="my-5- p-2- w-100 pull-left">
+                <div className="my-5- p-2- w-100 pull-left">
                   <hr
                     style={{
                       borderColor: "#D9D9D9",
@@ -352,9 +352,9 @@ function BusinessOverview(props) {
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-12">
-                <label class="col-form-label p-2 mt-0">
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-12">
+                <label className="col-form-label p-2 mt-0">
                   How do you wish to accept payments?
                   <span style={{ color: "red" }}>*</span>
                 </label>
@@ -375,9 +375,9 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
                 {formik.values?.seletcted_website_app_url === "Yes" && (
-                  <div class="row">
-                    <div class="col-lg-10">
-                      <label class="col-form-label p-2 mt-0">
+                  <div className="row">
+                    <div className="col-lg-10">
+                      <label className="col-form-label p-2 mt-0">
                         Company Website
                         <span style={{ color: "red" }}>*</span>
                       </label>
@@ -395,9 +395,9 @@ function BusinessOverview(props) {
                 )}
               </div>
             </div>
-            <div class="row">
-              {/* <div class="col-sm-4 col-md-4 col-lg-4">
-              <label class="col-form-label p-2 mt-0">
+            <div className="row">
+              {/* <div className="col-sm-4 col-md-4 col-lg-4">
+              <label className="col-form-label p-2 mt-0">
                 Company Website<span style={{ color: "red" }}>*</span>
               </label>
 
@@ -411,8 +411,8 @@ function BusinessOverview(props) {
               />
             </div> */}
 
-              <div class="col-sm-4 col-md-4 col-lg-4">
-                <label class="col-form-label p-0 exp-tranc">
+              <div className="col-sm-4 col-md-4 col-lg-4">
+                <label className="col-form-label p-0 exp-tranc">
                   Expected Transactions/Year{" "}
                   <span style={{ color: "red" }}>*</span>
                 </label>
@@ -427,8 +427,8 @@ function BusinessOverview(props) {
                 />
               </div>
 
-              <div class="col-sm-4 col-md-4 col-lg-4">
-                <label class="col-form-label p-2 mt-0">
+              <div className="col-sm-4 col-md-4 col-lg-4">
+                <label className="col-form-label p-2 mt-0">
                   Avg Ticket Amount<span style={{ color: "red" }}>*</span>
                 </label>
 
@@ -442,7 +442,7 @@ function BusinessOverview(props) {
                 />
               </div>
             </div>
-            <div class="my-5- p-2- w-100 pull-left">
+            <div className="my-5- p-2- w-100 pull-left">
               <hr
                 style={{
                   borderColor: "#D9D9D9",
@@ -450,9 +450,9 @@ function BusinessOverview(props) {
                   width: "100%",
                 }}
               />
-              <div class="mt-2">
-                <div class="row">
-                  <div class="col-sm-12 col-md-12 col-lg-12 col-form-label">
+              <div className="mt-2">
+                <div className="row">
+                  <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
                     {VerifyKycStatus === "Verified" ? (
                       <></>
                     ) : (

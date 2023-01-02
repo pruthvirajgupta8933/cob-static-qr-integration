@@ -219,8 +219,8 @@ const SabPaisaPricing = () => {
           </h3>
         </div>
         {/* <button type="button" onClick={clickHandler}>check</button> */}
-        <div class="container mb-10">
-          <div class="row">
+        <div className="container mb-10">
+          <div className="row">
           
           {/* <button type="button" onClick={()=> handleClick(1, "Subscription Plan", "005")}>Test Button Abhishek</button> */}
 
@@ -230,8 +230,8 @@ const SabPaisaPricing = () => {
               // if user business catagory is gamming
               (business_cat_code === "37" && Products.plan_code === "005") ? <></> :
                 (param?.id === '14') ? 
-                <div class="card col-lg-8">
-                  <div class="card-body">
+                <div className="card col-lg-8">
+                  <div className="card-body">
                     <div className="col-lg-12">
                       <h2 className="pull-left- bold-font text-center mb-20 price d_block">
                         {(Products.plan_price === "Connect" && Products.plan_name === "Enterprise") ?
@@ -241,8 +241,8 @@ const SabPaisaPricing = () => {
                           </>
                         }
                       </h2>
-                      <span class="blockquote mb-0 pull-left- text-center">
-                        <span class="w-50 pxsolid text-center mt-40 min-heit">&nbsp;</span>
+                      <span className="blockquote mb-0 pull-left- text-center">
+                        <span className="w-50 pxsolid text-center mt-40 min-heit">&nbsp;</span>
                         <h4 className="mb-20 featurespricing">FEATURES INCLUDING</h4>
                         <ul className="list-group list-group-flush">
                           {Products?.plan_description
@@ -401,12 +401,12 @@ const SabPaisaPricing = () => {
 
                             role="document"
                           >
-                            <div class="modal-content">
-                              <div class="modal-header modal-header-fignma">
+                            <div className="modal-content">
+                              <div className="modal-header modal-header-fignma">
 
                                 <button
                                   type="button"
-                                  class="close"
+                                  className="close"
                                   data-dismiss="modal"
                                   aria-label="Close"
                                 onClick={() => clickHandler(false)}
@@ -416,20 +416,20 @@ const SabPaisaPricing = () => {
                                 </button>
 
                               </div>
-                              <div class="modal-body">
+                              <div className="modal-body">
                                 <h2 className="subscribingproduct mb-0">
                                   Thank You For Subscribing
                                 </h2>
 
-                                <div class="text-center">
+                                <div className="text-center">
                                   <h2 className="manshacss">
                                     Our team will contact you and help you integrate your platform.
                                     Till then, please familiarize yourself with our Dashboard
 
                                   </h2>
                                 </div>
-                                <div class="row">
-                                  <div class="col-lg-12 text-center">
+                                <div className="row">
+                                  <div className="col-lg-12 text-center">
                                     <img
                                       src={rafiki}
                                       className="modalsimageclass-1"
@@ -440,12 +440,12 @@ const SabPaisaPricing = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div class="modal-footer m-0 p-2">
+                              <div className="modal-footer m-0 p-2">
                                 <div className="col-lg-12 text-center">
 
                                   <button
                                     type="button"
-                                    class="ColrsforredirectProdct text-white m-0"
+                                    className="ColrsforredirectProdct text-white m-0"
                                     onClick={() => clickHandler(true)}
                                     data-dismiss="modal"
                                   >
@@ -461,7 +461,7 @@ const SabPaisaPricing = () => {
 
 
 
-                        <span class="w-50 pxsolid text-center">&nbsp;</span>
+                        <span className="w-50 pxsolid text-center">&nbsp;</span>
                         <h2 className="featurespricing">FEATURES INCLUDING</h2>
 
 

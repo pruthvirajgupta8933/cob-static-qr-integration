@@ -255,9 +255,9 @@ const nextPage = () => {
             ))}
 
           {isLoaded === true ? <Spinner /> : (
-            <li class="page-item">
+            <li className="page-item">
               <button
-                class="page-link"
+                className="page-link"
                 onClick={nextPage}
                 disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >

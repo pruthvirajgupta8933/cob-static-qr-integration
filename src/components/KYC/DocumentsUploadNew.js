@@ -360,8 +360,8 @@ function DocumentsUpload(props) {
             {(formik) => (
               <Form>
                 <div className="form-row">
-                  <div class="col-sm-12 col-md-12 col-lg-12 mb-2">
-                    <label class=" col-form-label mt-0 p-2">
+                  <div className="col-sm-12 col-md-12 col-lg-12 mb-2">
+                    <label className=" col-form-label mt-0 p-2">
                       Select Document Type
                       <span style={{ color: "red" }}>*</span>
                     </label>
@@ -397,7 +397,7 @@ function DocumentsUpload(props) {
                       KycList?.status !== "Verified" ? (
                       docTypeIdDropdown !== "" ? (
                         <>
-                          <div class="col-lg-6 ">
+                          <div className="col-lg-6 ">
                             <div className="file-upload  border-dotted">
                               <div className="image-upload-wrap ">
                                 <FormikController
@@ -410,7 +410,7 @@ function DocumentsUpload(props) {
                                 // onChange={(e) => console.log(e, 3)}
                                 />
                                 <div className="drag-text">
-                                  <h3 class="p-2 font-16">
+                                  <h3 className="p-2 font-16">
                                     Add the selected document
                                   </h3>
                                   <img
@@ -419,13 +419,13 @@ function DocumentsUpload(props) {
                                     style={{ width: 30 }}
                                     className="mb-4"
                                   />
-                                  <p class="card-text">Upto 2 MB file size</p>
+                                  <p className="card-text">Upto 2 MB file size</p>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div class="col-lg-6 ">
+                          <div className="col-lg-6 ">
                             {/* uploaded document preview */}
                             {/* {console.log("imgAttr",imgAttr)} */}
                             {imgAttr === "#" ? <></> :
@@ -451,7 +451,7 @@ function DocumentsUpload(props) {
                   {KycList?.status !== "Approved" &&
                     KycList?.status !== "Verified" &&
                     role?.merchant ? (
-                    <div class="col-12">
+                    <div className="col-12">
                       <button
                         className="btn btnbackground text-white mt-5"
                         type="button"
@@ -486,9 +486,9 @@ function DocumentsUpload(props) {
                     <>
                       <hr />
                       {savedData?.length > 0 ? (
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-sm">
+                        <div className="container">
+                          <div className="row">
+                            <div className="col-sm">
                               <h3
                                 style={{
                                   fontWeight: "500",

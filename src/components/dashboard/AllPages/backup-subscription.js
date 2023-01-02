@@ -299,11 +299,11 @@ const Subsciption = () => {
           <section className="features8 cid-sg6XYTl25a flleft" id="features08-3-">
             <div className="container-fluid">
 
-            <div class="row">
-    <div class="col">
+            <div className="row">
+    <div className="col">
       1 of 2
     </div>
-    <div class="col">
+    <div className="col">
       2 of 2
     </div>
   </div>

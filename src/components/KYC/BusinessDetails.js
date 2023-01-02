@@ -340,9 +340,9 @@ function BusinessDetails(props) {
         }) => (
           <Form>
             
-            <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12 marg-b">
-              <label class="col-form-label mt-0 p-2">
+            <div className="row">
+            <div className="col-sm-12 col-md-12 col-lg-12 marg-b">
+              <label className="col-form-label mt-0 p-2">
                 GSTIN<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -360,7 +360,7 @@ function BusinessDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right- otpbtngst">
+                <div className="position-sticky pull-right- otpbtngst">
                   <a
                     href={() => false}
                     className="btn btnbackground text-white btn-sm panbtn "
@@ -385,9 +385,9 @@ function BusinessDetails(props) {
               )}
             </div>
             </div>
-            <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="row">
+            <div className="col-sm-12 col-md-6 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 Business PAN<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -399,8 +399,8 @@ function BusinessDetails(props) {
               />
             </div>
 
-            <div class="col-sm-12 col-md-6 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="col-sm-12 col-md-6 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 Authorized Signatory PAN <span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -419,7 +419,7 @@ function BusinessDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right- otpbtndetail">
+                <div className="position-sticky pull-right- otpbtndetail">
                   <a
                     href={() => false}
                     className="btn btnbackground text-white btn-sm panbtn- "
@@ -445,9 +445,9 @@ function BusinessDetails(props) {
               )}
             </div>
             </div>
-            <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="row">
+            <div className="col-sm-12 col-md-6 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 {" "}
                 Business Name<span style={{ color: "red" }}>*</span>
               </label>
@@ -460,8 +460,8 @@ function BusinessDetails(props) {
               />
             </div>
 
-            <div class="col-sm-12 col-md-6 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="col-sm-12 col-md-6 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 PAN Owner's Name<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -473,9 +473,9 @@ function BusinessDetails(props) {
               />
             </div>
             </div>
-            <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="row">
+            <div className="col-sm-12 col-md-6 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 Address<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -487,8 +487,8 @@ function BusinessDetails(props) {
                 readOnly={readOnly}
               />
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="col-sm-12 col-md-6 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 City<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -501,9 +501,9 @@ function BusinessDetails(props) {
               />
             </div>
             </div>
-            <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="row">
+            <div className="col-sm-12 col-md-6 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 State<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -516,8 +516,8 @@ function BusinessDetails(props) {
               />
             </div>
 
-            <div class="col-sm-12 col-md-6 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="col-sm-12 col-md-6 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 Pin code<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -530,7 +530,7 @@ function BusinessDetails(props) {
               />
             </div>
             </div>
-            <div class="my-5- w-100 pull-left p-2">
+            <div className="my-5- w-100 pull-left p-2">
               <hr
                 style={{
                   borderColor: "#D9D9D9",
@@ -538,9 +538,9 @@ function BusinessDetails(props) {
                   width: "100%",
                 }}
               />
-              <div class="mt-3">
-                <div class="row">
-                  <div class="col-sm-12 col-md-12 col-lg-12 col-form-label">
+              <div className="mt-3">
+                <div className="row">
+                  <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
                     {VerifyKycStatus === "Verified" ? null : (
                       <button
                         type="submit"

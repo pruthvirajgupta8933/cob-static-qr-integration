@@ -549,10 +549,10 @@ const OnboardMerchant = () => {
                                         style={{ marginTop: "49px", marginRight: "-20px" }}
                                       >
                                         {valuesIn.showPassword ? (
-                                          <i class="fa fa-eye" aria-hidden="true"></i>
+                                          <i className="fa fa-eye" aria-hidden="true"></i>
                                         ) : (
                                           <i
-                                            class="fa fa-eye-slash"
+                                            className="fa fa-eye-slash"
                                             aria-hidden="true"
                                           ></i>
                                         )}

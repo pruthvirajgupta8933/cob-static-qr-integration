@@ -576,8 +576,8 @@ function Registration() {
                                     </div>
                                   </div>
                                   <div className="container">
-                                  <div class="row">
-                                    <div class="col">Already have an account? <Link
+                                  <div className="row">
+                                    <div className="col">Already have an account? <Link
                                       to={`/login`}
                                       style={{ color: "#0156B3" }}
                                     >

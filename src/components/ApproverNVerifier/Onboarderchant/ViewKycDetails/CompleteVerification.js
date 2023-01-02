@@ -201,15 +201,15 @@ let closeVerificationModal=props?.closeVerification;
     
 
   return (
-    <div class="row">
-      <div class="col-lg-6"></div>
-      <div class="col-lg-6">
+    <div className="row">
+      <div className="col-lg-6"></div>
+      <div className="col-lg-6">
         {enableBtnVerifier || enableBtnApprover ?
           <><button type="button"  disabled={disable} onClick={() => {handleVerifyClick()
-          }} class="btn btn-info btn-sm text-white">{buttonText}</button>
+          }} className="btn btn-info btn-sm text-white">{buttonText}</button>
 
 
-          <button type="button" onClick={() => handleRejectClick()} class="btn btn-danger btn-sm text-white">Reject KYC</button></>
+          <button type="button" onClick={() => handleRejectClick()} className="btn btn-danger btn-sm text-white">Reject KYC</button></>
           : <></>
         }
 

@@ -31,7 +31,7 @@ const RateRadioMapping = (props) => {
   };
   return (
     <div>
-      <table class="table mt-5-">
+      <table className="table mt-5-">
         <thead>
           <tr>
             <th scope="col">Check</th>
@@ -44,7 +44,7 @@ const RateRadioMapping = (props) => {
             ? props?.riskTemplate?.map((riskTemplate, i) => (
                 <tr>
                   <td>
-                    <div class="form-check">
+                    <div className="form-check">
                       <Formik
                         initialValues={initialStateForRadio}
                         validationSchema={NewvalidationSchemaforRadio}
@@ -65,7 +65,7 @@ const RateRadioMapping = (props) => {
                             <button
                               type="button"
                               onClick={() => onClick(riskTemplate?.client_code)}
-                              class="btn btn-primary"
+                              className="btn btn-primary"
                             >
                               Submit
                             </button>

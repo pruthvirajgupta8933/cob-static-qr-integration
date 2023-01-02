@@ -52,12 +52,12 @@ const BusinessDetails = (props) => {
 
   return (
     <div className="row mb-4 border">
-      <div class="col-lg-12">
+      <div className="col-lg-12">
         <h3 className="font-weight-bold">Business Details</h3>
       </div>
 
-      <div class="col-sm-12 col-md-12 col-lg-12 marg-b">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-12 col-md-12 col-lg-12 marg-b">
+        <label className="col-form-label mt-0 p-2">
           GSTIN<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -71,8 +71,8 @@ const BusinessDetails = (props) => {
         />
       </div>
 
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-12 col-md-6 col-lg-6">
+        <label className="col-form-label mt-0 p-2">
           Business PAN<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -84,8 +84,8 @@ const BusinessDetails = (props) => {
         />
       </div>
 
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-12 col-md-6 col-lg-6">
+        <label className="col-form-label mt-0 p-2">
           Authorized Signatory PAN{" "}
           <span style={{ color: "red" }}>*</span>
         </label>
@@ -100,8 +100,8 @@ const BusinessDetails = (props) => {
         />
       </div>
 
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-12 col-md-6 col-lg-6">
+        <label className="col-form-label mt-0 p-2">
           Business Name<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -115,8 +115,8 @@ const BusinessDetails = (props) => {
         />
       </div>
 
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-12 col-md-6 col-lg-6">
+        <label className="col-form-label mt-0 p-2">
           PAN Owner's Name<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -130,8 +130,8 @@ const BusinessDetails = (props) => {
         />
       </div>
 
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-12 col-md-6 col-lg-6">
+        <label className="col-form-label mt-0 p-2">
           Address<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -144,8 +144,8 @@ const BusinessDetails = (props) => {
           }
         />
       </div>
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-12 col-md-6 col-lg-6">
+        <label className="col-form-label mt-0 p-2">
           City<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -157,8 +157,8 @@ const BusinessDetails = (props) => {
         />
       </div>
 
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-12 col-md-6 col-lg-6">
+        <label className="col-form-label mt-0 p-2">
           State<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -172,8 +172,8 @@ const BusinessDetails = (props) => {
         />
       </div>
 
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-12 col-md-6 col-lg-6">
+        <label className="col-form-label mt-0 p-2">
           Pincode<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -186,10 +186,10 @@ const BusinessDetails = (props) => {
 
 
       </div>
-      <div class="col-lg-6 ">
+      <div className="col-lg-6 ">
       Status : <span>{KycTabStatus?.merchant_info_status}</span>
       </div>
-      <div class="col-lg-6 mt-3">
+      <div className="col-lg-6 mt-3">
         <VerifyRejectBtn 
         KycTabStatus={KycTabStatus?.merchant_info_status}
         KycVerifyStatus={{ handleVerifyClick }}

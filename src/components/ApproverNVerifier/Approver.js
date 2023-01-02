@@ -57,15 +57,15 @@ const dispatch = useDispatch();
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Merchant List</h1>
-            <div class="container">
-              <div class="row">
-                <div class="mr-5"></div>
+            <div className="container">
+              <div className="row">
+                <div className="mr-5"></div>
                 {roles?.viewer === true ? (
                   <></>
                 ) : (
                   <button
                     type="button"
-                    class="btn"
+                    className="btn"
                     style={{ background: "#012167", color: "white" }}
                     onClick={() => redirect()}
                   >

@@ -128,9 +128,9 @@ function SubmitKyc(props) {
         >
           {(formik) => (
             <Form>
-              <div class="form-group row">
-                <div class="row">
-                  <div class="col-lg- checkboxstyle">
+              <div className="form-group row">
+                <div className="row">
+                  <div className="col-lg- checkboxstyle">
                     <Field
                       type="checkbox"
                       name="term_condition"
@@ -139,11 +139,11 @@ function SubmitKyc(props) {
                       className="mr-0"
                     />
                   </div>
-                  <div class="col-lg-11 para-style text-nowrap">
+                  <div className="col-lg-11 para-style text-nowrap">
 
                   I have read and understood the <a href="https://sabpaisa.in/term-conditions/"  rel="noreferrer"  alt="Term & Conditions" target="_blank" title="Term & Conditions">Terms & Conditions</a>, <a  href="https://sabpaisa.in/privacy-policy/" alt="Privacy Policy" target="_blank" title="Privacy Policy"  rel="noreferrer" >Privacy Policy</a>, <a href="https://sabpaisa.in/service-agreement" alt="Service Agreement" target="_blank" title="Service Agreement"  rel="noreferrer" >Service Agreement</a>
                   </div>
-                  <div class="col-lg-11 para-style2 text-nowrap">
+                  <div className="col-lg-11 para-style2 text-nowrap">
                     By submitting the form, I agree to abide by the rules at all times.
                     </div>
                 </div>
@@ -165,7 +165,7 @@ function SubmitKyc(props) {
                 </ErrorMessage>
               }
               {/* {formik.setFieldValue("termAndCondition",setChecked(true))} */}
-              {/* <div class="form-check form-check-inline">
+              {/* <div className="form-check form-check-inline">
                 <FormikController
                   control="checkbox"
                   name="termAndCondition"
@@ -176,7 +176,7 @@ function SubmitKyc(props) {
                   className="mr-3"
                 />
               </div> */}
-              {/* <div class="form-check form-check-inline">
+              {/* <div className="form-check form-check-inline">
                 <FormikController
                   control="checkbox"
                   name="serviceAgreement"
@@ -188,7 +188,7 @@ function SubmitKyc(props) {
                 />
               </div> */}
 
-              <div class="my-5 p-2">
+              <div className="my-5 p-2">
                 <hr
                   style={{
                     borderColor: "#D9D9D9",
@@ -196,7 +196,7 @@ function SubmitKyc(props) {
                     width: "100%",
                   }}
                 />
-                <div class="mt-3">
+                <div className="mt-3">
                   {(kyc_status === "Verified" || kyc_status === "Approved" ) ? null : (
                     <>
                   

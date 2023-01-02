@@ -205,7 +205,7 @@ const MerchantDocument = (props) => {
 
   return (
     <div className="row mb-4 border">
-      <div class="col-lg-12">
+      <div className="col-lg-12">
         <h3 className="font-weight-bold">Merchant Documents</h3>
       </div>
 

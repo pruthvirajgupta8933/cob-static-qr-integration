@@ -228,7 +228,7 @@ let pageNumbers = []
                     <td>
                       {/* <button
                         type="button"
-                        class="btn approve text-white btn-xs"
+                        className="btn approve text-white btn-xs"
                         data-toggle="modal"
                         onClick={() => viewDocument(user.loginMasterId)}
                         data-target="#exampleModal"
@@ -247,35 +247,35 @@ let pageNumbers = []
                         </button>
 
                       <div
-                        class="modal fade"
+                        className="modal fade"
                         id="exampleModal"
                         tabindex="-1"
                         role="dialog"
                         aria-labelledby="exampleModalLabel"
                         aria-hidden="true"
                       >
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content" style={{ width: 787 }}>
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">
+                        <div className="modal-dialog" role="document">
+                          <div className="modal-content" style={{ width: 787 }}>
+                            <div className="modal-header">
+                              <h5 className="modal-title" id="exampleModalLabel">
                                 Document Details
                               </h5>
                               <button
                                 type="button"
-                                class="close"
+                               className="close"
                                 data-dismiss="modal"
                                 aria-label="Close"
                               >
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
-                            <div class="modal-body">
+                            <div className="modal-body">
                               {docImageData?.map((merchantData) => {
                                 return (
                                   <div>
                                     <table
                                       id="dtDynamicVerticalScrollExample"
-                                      class="table table-striped table-bordered table-sm"
+                                     className="table table-striped table-bordered table-sm"
                                     >
                                       <thead>
                                         <tr>
@@ -300,10 +300,10 @@ let pageNumbers = []
                                 );
                               })}
                             </div>
-                            <div class="modal-footer">
+                            <div className="modal-footer">
                               <button
                                 type="button"
-                                class="btn approve text-white btn-xs"
+                                className="btn approve text-white btn-xs"
                                 data-dismiss="modal"
                               >
                                 Close
@@ -348,9 +348,9 @@ let pageNumbers = []
             ))}
           
           {isLoaded === true ? <Spinner /> : (
-            <li class="page-item">
+            <li className="page-item">
               <button
-                class="page-link"
+                className="page-link"
                 onClick={nextPage}
                 disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
