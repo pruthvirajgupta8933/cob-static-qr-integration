@@ -343,7 +343,7 @@ function LoginPage() {
               {/* ./authfy-login */}
             </div>
             <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-left">
-              <div className="brand-col" style={{height:'100%'}}>
+              <div className="brand-col">
                 <div
                   id="carouselExampleIndicators"
                   className="carousel slide"

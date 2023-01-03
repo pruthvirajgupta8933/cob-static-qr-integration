@@ -305,11 +305,12 @@ function ContactInfo(props) {
             />
             {/*  Modal Popup for Otp Verification Email*/}
             <div className="row">
-              <div className="col-sm-6 col-md-6 col-lg-6 ">
-                <label className="col-form-label mt-0 p-2">
+
+              <div className="col-sm-6 col-md-6 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                   Contact Number<span style={{ color: "red" }}>*</span>
                 </label>
-
+              <div className="input-group">
                 <Field
                   type="text"
                   name="contact_number"
@@ -322,14 +323,14 @@ function ContactInfo(props) {
                 KycList?.isContactNumberVerified === 1 &&
                 !errors.hasOwnProperty("contact_number") &&
                 !errors.hasOwnProperty("oldContactNumber") ? (
-                  <span className="success">
-                    <img src={gotVerified} alt="" title="" width="26" />
+                  <span className="success input-group-append">
+                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                   </span>
                 ) : role.merchant ? (
-                  <div className="position-sticky pull-right- otpbtn">
+                  <div className="position-sticky pull-right- otpbtn input-group-append">
                     <a
                       href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn-"
+                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
                       onClick={() => {
                         checkInputIsValid(
                           errors,
@@ -345,11 +346,12 @@ function ContactInfo(props) {
                 ) : (
                   <></>
                 )}
+                </div>
                 {
                      <ErrorMessage name="contact_number">
-                     {(msg) => <p className="abhitest errortxt">{msg}</p>}
+                     {(msg) => <span className="abhitest- errortxt- text-danger">{msg}</span>}
                    </ErrorMessage>
-                }
+                }<br/>
              
               
              
@@ -359,8 +361,8 @@ function ContactInfo(props) {
                     {errors?.oldContactNumber}
                   </span>
                 )}
+              
               </div>
-
               {/*  Modal Popup for Otp Verification */}
               <PhoneVerficationModal
                 show={showOtpVerifyModalPhone}
