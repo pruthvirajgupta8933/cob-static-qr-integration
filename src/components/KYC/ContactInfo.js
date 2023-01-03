@@ -305,63 +305,70 @@ function ContactInfo(props) {
             />
             {/*  Modal Popup for Otp Verification Email*/}
             <div className="row">
-
               <div className="col-sm-6 col-md-6 col-lg-6">
-              <label className="col-form-label mt-0 p-2">
+                <label className="col-form-label mt-0 p-2">
                   Contact Number<span style={{ color: "red" }}>*</span>
                 </label>
-              <div className="input-group">
-                <Field
-                  type="text"
-                  name="contact_number"
-                  className="form-control"
-                  readOnly={readOnly}
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                />
+                <div className="input-group">
+                  <Field
+                    type="text"
+                    name="contact_number"
+                    className="form-control"
+                    readOnly={readOnly}
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                  />
 
-                {KycList?.contactNumber !== null &&
-                KycList?.isContactNumberVerified === 1 &&
-                !errors.hasOwnProperty("contact_number") &&
-                !errors.hasOwnProperty("oldContactNumber") ? (
-                  <span className="success input-group-append">
-                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
-                  </span>
-                ) : role.merchant ? (
-                  <div className="position-sticky pull-right- otpbtn input-group-append">
-                    <a
-                      href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
-                      onClick={() => {
-                        checkInputIsValid(
-                          errors,
-                          values,
-                          setFieldError,
-                          "contact_number"
-                        );
-                      }}
-                    >
-                      Send OTP
-                    </a>
-                  </div>
-                ) : (
-                  <></>
-                )}
+                  {KycList?.contactNumber !== null &&
+                  KycList?.isContactNumberVerified === 1 &&
+                  !errors.hasOwnProperty("contact_number") &&
+                  !errors.hasOwnProperty("oldContactNumber") ? (
+                    <span className="success input-group-append">
+                      <img
+                        src={gotVerified}
+                        alt=""
+                        title=""
+                        width={"20px"}
+                        height={"20px"}
+                        className="btn-outline-secondary"
+                      />
+                    </span>
+                  ) : role.merchant ? (
+                    <div className="position-sticky pull-right- otpbtn input-group-append">
+                      <a
+                        href={() => false}
+                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
+                        onClick={() => {
+                          checkInputIsValid(
+                            errors,
+                            values,
+                            setFieldError,
+                            "contact_number"
+                          );
+                        }}
+                      >
+                        Send OTP
+                      </a>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
                 {
-                     <ErrorMessage name="contact_number">
-                     {(msg) => <span className="abhitest- errortxt- text-danger">{msg}</span>}
-                   </ErrorMessage>
-                }<br/>
-             
-              
-             
+                  <ErrorMessage name="contact_number">
+                    {(msg) => (
+                      <span className="abhitest- errortxt- text-danger">
+                        {msg}
+                      </span>
+                    )}
+                  </ErrorMessage>
+                }
+                <br />
 
                 {errors?.oldContactNumber && (
                   <span className="text-danger">
                     {errors?.oldContactNumber}
                   </span>
                 )}
-              
               </div>
               {/*  Modal Popup for Otp Verification */}
               <PhoneVerficationModal
@@ -375,8 +382,7 @@ function ContactInfo(props) {
                   Email Id<span style={{ color: "red" }}>*</span>
                 </label>
 
-                <FormikController
-                  control="input"
+                <Field
                   type="text"
                   name="email_id"
                   className="form-control"
@@ -412,6 +418,16 @@ function ContactInfo(props) {
                 ) : (
                   <></>
                 )}
+                {
+                  <ErrorMessage name="email_id">
+                    {(msg) => (
+                      <span className="abhitest- errortxt- text-danger">
+                        {msg}
+                      </span>
+                    )}
+                  </ErrorMessage>
+                }
+
                 {errors?.oldEmailId && (
                   <span className="text-danger">{errors?.oldEmailId}</span>
                 )}
