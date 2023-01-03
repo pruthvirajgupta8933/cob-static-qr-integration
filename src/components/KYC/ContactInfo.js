@@ -41,6 +41,7 @@ function ContactInfo(props) {
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
+  const [disable,setIsDisable] = useState(false)
 
   const KycVerifyStatusForPhone = kyc.OtpVerificationResponseForPhone.status;
   const KycVerifyStatusForEmail = kyc.OtpVerificationResponseForEmail.status;
@@ -102,6 +103,7 @@ function ContactInfo(props) {
 
   const handleSubmitContact = (values) => {
     if (role.merchant) {
+      setIsDisable(true)
       dispatch(
         updateContactInfo({
           login_id: loginId,
@@ -118,6 +120,7 @@ function ContactInfo(props) {
         ) {
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
+          setIsDisable(false)
           toast.success(res.payload?.message);
           dispatch(kycUserList({ login_id: loginId }));
           dispatch(GetKycTabsStatus({login_id: loginId}));
@@ -125,6 +128,7 @@ function ContactInfo(props) {
           toast.error(res.payload?.message);
           toast.error(res.payload?.detail);
           setShowOtpVerifyModalEmail(false);
+          setIsDisable(false)
         }
       });
     }
@@ -407,6 +411,7 @@ function ContactInfo(props) {
                 <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
                   {VerifyKycStatus === "Verified" ? <></> : (
                     <button
+                      disabled={disable}
                       type="submit"
                       className="btn float-lg-right btnbackground text-white"
                     >

@@ -26,6 +26,7 @@ function SubmitKyc(props) {
 
   const kyc_status = kycUserList?.status
   const [readOnly, setReadOnly] = useState(false);
+  const [disable,setIsDisable] = useState(false)
 
   const initialValues = {
     term_condition: merchant_consent,
@@ -87,6 +88,7 @@ function SubmitKyc(props) {
   };
 
   const onSubmit = () => {
+    setIsDisable(true)
     dispatch(
       saveKycConsent({
         term_condition: true,
@@ -96,11 +98,14 @@ function SubmitKyc(props) {
     ).then((res) => {
       if ( res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === true) {
         toast.success(res?.payload?.message);
+        setIsDisable(false)
         const kyc_consent_status = res?.payload?.status
          dispatch(UpdateModalStatus(true))
           history.push("/dashboard");
+          
       } else {
         toast.error(res?.payload?.detail);
+        setIsDisable(false)
       }
     });
   };
@@ -201,6 +206,7 @@ function SubmitKyc(props) {
                     <>
                   
                     <button
+                     disabled={disable}
                      className="btn float-lg-right btnbackground text-white"
                      type="submit"
                      >
