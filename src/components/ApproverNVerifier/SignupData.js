@@ -114,8 +114,8 @@ const SignupData = () => {
                         enableReinitialize={true}
                     >
                         <Form>
-                            <div class="container">
-                                <div class="row">
+                            <div className="container">
+                                <div className="row">
 
                                     <div className="form-group col-md-4">
                                         <FormikController
@@ -143,7 +143,7 @@ const SignupData = () => {
 
                                     </div>
                                     <div className=" col-md-4 mx-4">
-                                        <button type="subbmit" class="btn btn-primary">Submit</button>
+                                        <button type="subbmit" className="btn btn-primary">Submit</button>
 
                                     </div>
                                     {signupData?.length > 0 ? (

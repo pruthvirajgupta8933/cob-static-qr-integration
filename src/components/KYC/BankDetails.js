@@ -43,6 +43,7 @@ function BankDetails(props) {
   const [readOnly, setReadOnly] = useState(false);
 
   const [ifscVerifed, isIfscVerifed] = useState("");
+  const [disable,setIsDisable] = useState(false)
 
   const [buttonText, setButtonText] = useState("Save and Next");
 
@@ -183,6 +184,7 @@ function BankDetails(props) {
 
   const onSubmit = (values) => {
     if (role.merchant) {
+      setIsDisable(true)
       dispatch(
         saveMerchantBankDetais({
           account_holder_name: values.account_holder_name,
@@ -201,10 +203,12 @@ function BankDetails(props) {
         ) {
           toast.success(res?.payload?.message);
           setTab(5);
+          setIsDisable(false)
           setTitle("DOCUMENTS UPLOAD");
           dispatch(kycUserList({ login_id: loginId }));
         } else {
           toast.error(res?.payload?.message);
+         setIsDisable(false)
         }
       });
     } 
@@ -279,9 +283,9 @@ function BankDetails(props) {
           handleChange,
         }) => (
           <Form>
-            <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6 ">
-              <label class="col-form-label mt-0 p-2">
+            <div className="row">
+            <div className="col-sm-12 col-md-12 col-lg-6 ">
+              <label className="col-form-label mt-0 p-2">
                 IFSC Code<span style={{ color: "red" }}>*</span>
               </label>
 
@@ -301,7 +305,7 @@ function BankDetails(props) {
                   <img src={gotVerified} alt="" title="" width="26" />
                 </span>
               ) : (
-                <div class="position-sticky pull-right- otpbtndetails">
+                <div className="position-sticky pull-right- otpbtndetails">
                   <a
                     href={() => false}
                     className="btn btnbackground text-white btn-sm panbtn otpbtndetail-"
@@ -327,8 +331,8 @@ function BankDetails(props) {
               )}
             </div>
 
-            <div class="col-sm-12 col-md-12 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="col-sm-12 col-md-12 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 Business Account Number <span style={{ color: "red" }}>*</span>
               </label>
 
@@ -350,7 +354,7 @@ function BankDetails(props) {
                 </span>
               ) : !errors.hasOwnProperty("oldIfscCode") &&
                 !errors.hasOwnProperty("ifsc_code") ? (
-                <span class="position-sticky pull-right- otpbtnaccnt">
+                <span className="position-sticky pull-right- otpbtnaccnt">
                   <a
                     href={() => false}
                     className="btn btnbackground text-white btn-sm panbtn otpbtnaccnt-"
@@ -378,9 +382,9 @@ function BankDetails(props) {
               )}
             </div>
             </div>
-            <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="row">
+            <div className="col-sm-12 col-md-12 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 Account Holder Name<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -393,8 +397,8 @@ function BankDetails(props) {
               />
             </div>
 
-            <div class="col-sm-12 col-md-12 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="col-sm-12 col-md-12 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 Account Type<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -407,9 +411,9 @@ function BankDetails(props) {
               />
             </div>
             </div>
-            <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="row">
+            <div className="col-sm-12 col-md-12 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 Bank Name<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -422,8 +426,8 @@ function BankDetails(props) {
               />
             </div>
 
-            <div class="col-sm-12 col-md-12 col-lg-6">
-              <label class="col-form-label mt-0 p-2">
+            <div className="col-sm-12 col-md-12 col-lg-6">
+              <label className="col-form-label mt-0 p-2">
                 Branch<span style={{ color: "red" }}>*</span>
               </label>
               <FormikController
@@ -438,7 +442,7 @@ function BankDetails(props) {
             </div>
             
 
-            <div class="my-5- p-2 w-100 pull-left">
+            <div className="my-5- p-2 w-100 pull-left">
               <hr
                 style={{
                   borderColor: "#D9D9D9",
@@ -447,10 +451,11 @@ function BankDetails(props) {
                 }}
               />
 
-              <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12 col-form-label">
+              <div className="row">
+                <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
                   {VerifyKycStatus === "Verified" ? null : (
                     <button
+                    disabled={disable}
                       className="btn float-lg-right btnbackground text-white"
                       type="submit"
                     >

@@ -29,8 +29,8 @@ function DemoReg() {
             </p>
           </div>
           <div className="d-flex">
-            <div className="login-type"> <button type="button" class="btn btn-secondary btn-lg sign-up-type-btn text-white selected-btn"><span className="fa fa-user mr-2"></span>INDIVIDUAL</button></div>
-            <div className="login-type"> <button type="button" class="btn btn-secondary btn-lg sign-up-type-btn text-white"><span className="fa fa-users mr-2"></span>BUSINESS</button> </div>
+            <div className="login-type"> <button type="button" className="btn btn-secondary btn-lg sign-up-type-btn text-white selected-btn"><span className="fa fa-user mr-2"></span>INDIVIDUAL</button></div>
+            <div className="login-type"> <button type="button" className="btn btn-secondary btn-lg sign-up-type-btn text-white"><span className="fa fa-users mr-2"></span>BUSINESS</button> </div>
            
           </div>
           <div className="border ">
@@ -71,10 +71,10 @@ function DemoReg() {
                     </div>
                 </div>
              
-                <div class="form-group">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" />
-      <label class="form-check-label mt-1">
+                <div className="form-group">
+    <div className="form-check">
+      <input className="form-check-input" type="checkbox" />
+      <label className="form-check-label mt-1">
         Show Password
       </label>
     </div>

@@ -312,8 +312,8 @@ function Home() {
 
             {roles?.merchant === true && modalState !== "Approved" ? (
               <div className="col-12 col-md-12">
-                <div class="card col-lg-12- cardkyc pull-left">
-                  <div class="font-weight-bold card-body Satoshi-Medium">
+                <div className="card col-lg-12- cardkyc pull-left">
+                  <div className="font-weight-bold card-body Satoshi-Medium">
                     <span>
                       You can accept payments upto ₹15,000 for now. To extend
                       the limit complete your KYC and get it approved.
@@ -324,7 +324,7 @@ function Home() {
                       data-target="#exampleModalCenter"
                     >
                       <button
-                        class="text-white pull-right kycbtns"
+                        className="text-white pull-right kycbtns"
                         style={{
                           backgroundColor: "#0156B3",
                           paddingLeft: "10px",
@@ -341,12 +341,12 @@ function Home() {
                 {roles?.bank === true || roles.viewer === true ? (
                   <></>
                 ) : (
-                  <div class="card col-lg-12- cardkyc pull-left">
-                    <div class="font-weight-bold card-body Satoshi-Medium">
+                  <div className="card col-lg-12- cardkyc pull-left">
+                    <div className="font-weight-bold card-body Satoshi-Medium">
                       <span>
                         Congratulations! Your KYC documents have been approved.
                       </span>
-                      <button class="text-white pull-right kycbtns" disabled>
+                      <button className="text-white pull-right kycbtns" disabled>
                         KYC Done
                       </button>
                     </div>
@@ -357,13 +357,13 @@ function Home() {
           </div>
         </div>
         {roles?.merchant === true ? (
-          <div class="container">
-            <div class="row">
-              <div class="col-sm  m-0 no-pad">
-                <div class="card">
-                  <h2 class="card-title dashboardEnablecss">
+          <div className="container">
+            <div className="row">
+              <div className="col-sm  m-0 no-pad">
+                <div className="card">
+                  <h2 className="card-title dashboardEnablecss">
                     <img
-                      class="card-img-left"
+                      className="card-img-left"
                       src={subscriptin}
                       alt="onlinepay"
                     />{" "}
@@ -388,7 +388,7 @@ function Home() {
                   </Link>
                 </div>
               </div>
-              <div class="col-sm mt-31">
+              <div className="col-sm mt-31">
                 <div className="row pt-2 m-0">
                   <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
@@ -534,22 +534,22 @@ function Home() {
           tabIndex="-1"
           role="dialog"
         >
-          <div class="modal-dialog modal-dialog-centered " role="document">
-            <div class="modal-content">
-              <div class="modal-body Satoshi-Medium">
+          <div className="modal-dialog modal-dialog-centered " role="document">
+            <div className="modal-content">
+              <div className="modal-body Satoshi-Medium">
                 <button
                   type="button"
                   onClick={() => {
                     setModalState(!modalState);
                   }}
-                  class="close"
+                  className="close"
                   data-dismiss="modal"
                   aria-label="Close"
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
-                <div class="row">
-                  <div class="col-sm">
+                <div className="row">
+                  <div className="col-sm">
                     <h1 className="homeModalHeading">Welcome to SabPaisa!</h1>
                     <h2 className="modalscolrsfortext">
                       Complete the KYC to activate your account and start
@@ -558,7 +558,7 @@ function Home() {
                     </h2>
                   </div>
 
-                  <div class="col-sm">
+                  <div className="col-sm">
                     <img
                       src={bro}
                       className="modalsimageclass"
@@ -568,8 +568,8 @@ function Home() {
                   </div>
                 </div>
 
-                <div class="row Satoshi-Medium">
-                  <div class="col-lg-4">
+                <div className="row Satoshi-Medium">
+                  <div className="col-lg-4">
                     <Link
                       to={`/dashboard/kyc`}
                       data-toggle="modal"
@@ -582,7 +582,7 @@ function Home() {
                       </button>
                     </Link>
                   </div>
-                  <div class="col-lg-7">
+                  <div className="col-lg-7">
                     <Link to={`/dashboard`}>
                       <button
                         className="ColrsforredirectProdct  text-white"
@@ -614,27 +614,27 @@ function Home() {
         tabIndex="-1"
         role="dialog"
       >
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal-dialog modal-dialog-centered" role="document">
           <div
-            class="modal-content"
+            className="modal-content"
             style={{ width: "709px", marginTop: "70px" }}
           >
-            <div class="modal-body Satoshi-Medium">
+            <div className="modal-body Satoshi-Medium">
               <button
                 type="button"
                 onClick={() => {
                   handleClose();
                 }}
-                class="close"
+                className="close"
                 data-dismiss="modal"
                 aria-label="Close"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
 
-              <div class="container Satoshi-Medium">
-                <div class="row justify-content-md-center">
-                  <div class="col-md-auto">
+              <div className="container Satoshi-Medium">
+                <div className="row justify-content-md-center">
+                  <div className="col-md-auto">
                     <ul>
                       <h1
                         className="text-centre"
@@ -676,7 +676,7 @@ function Home() {
                     </ul>
                   </div>
 
-                  <div class="rounded mx-auto d-block">
+                  <div className="rounded mx-auto d-block">
                     <img
                       src={congratsImg}
                       width={250}
@@ -715,13 +715,13 @@ function Home() {
         data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="submitKycLabel"
       >
-        <div class="modal-dialog modal-dialog-centered " role="document" style={{ maxWidth: 480 }}>
-          <div class="modal-content modalsubmitmodal">
-            <div class="modal-body Satoshi-Medium">
+        <div className="modal-dialog modal-dialog-centered " role="document" style={{ maxWidth: 480 }}>
+          <div className="modal-content modalsubmitmodal">
+            <div className="modal-body Satoshi-Medium">
               <button
                 type="button"
                 data-bs-dismiss="modal"
-                class="close"
+                className="close"
                 aria-label="Close"
                 onClick={() => {
                   handleClose()
@@ -730,8 +730,8 @@ function Home() {
               >
                 <span aria-hidden="true">&times;</span>
               </button>
-              <div class="row">
-                          <div class="col-lg-12">
+              <div className="row">
+                          <div className="col-lg-12">
                             <h1
                               className="text-center"
                               style={{
@@ -756,9 +756,9 @@ function Home() {
                             </p>
                           </div>
                         </div>
-                        <div class="row">
+                        <div className="row">
                         
-                          <div class="col-lg-12 text-center">
+                          <div className="col-lg-12 text-center">
                             <img
                               src={congImg}
                               className="modalsimageclass-1"
@@ -768,11 +768,11 @@ function Home() {
                           </div>
                         </div>
                       </div>
-                      <div class="modal-footer p-2">
+                      <div className="modal-footer p-2">
                         <div className="col-lg-12 p-0 m-0 text-center">
                         <button
                               type="button"
-                              class="ColrsforredirectProdct text-white m-0"
+                              className="ColrsforredirectProdct text-white m-0"
                               data-bs-dismiss="modal"
                               onClick={() => {
                                 handleClose()

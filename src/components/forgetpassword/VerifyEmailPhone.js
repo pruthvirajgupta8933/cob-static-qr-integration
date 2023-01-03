@@ -98,7 +98,7 @@ const VerifyEmailPhone = (props) => {
           <div className="col-sm-6 mx-auto">
             <div className="card ">
               <div className="card-header text-center Satoshi-Medium">
-                Forget Password
+                Forgot Password
               </div>
               <div className="card-body Satoshi-Medium">
                 <h5 className="card-title">
@@ -151,7 +151,7 @@ const VerifyEmailPhone = (props) => {
                   <div className="form-inline" style={{ display: "none" }}>
                     <div className="form-group mb-2">
                       <label htmlFor="staticPhone2" className="sr-only">
-                        SMS OPT
+                        SMS OTP
                       </label>
                       <input
                         type="text"

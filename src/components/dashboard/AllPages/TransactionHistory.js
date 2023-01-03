@@ -641,7 +641,7 @@ const TransactionHistory = () => {
             <div className="container-fluid  p-3 my-3 ">
               {txnList.length > 0 ? (
                 <>
-                  <div class="row">
+                  <div className="row">
                     <div className="form-group col-md-3 mt-2">
                       <label>Search Transaction ID</label>
                       <input
@@ -826,7 +826,7 @@ const TransactionHistory = () => {
                   </div>
                 ) : buttonClicked === true && txnList.length === 0 ? (
                   <div className="showMsg">
-                    <h1 class="float-centre mr-5">Data Not Found</h1>
+                    <h1 className="float-centre mr-5">Data Not Found</h1>
                   </div>
                 ) : (
                   <div></div>

@@ -31,12 +31,12 @@ function SabpaisaPaymentGateway(props) {
   const [udf9, setudf9] = useState("");
   const [udf10, setudf10] = useState("");
   const [udf11, setudf11] = useState("");
-  const [udf12, setudf12] = useState("");
-  const [udf13, setudf13] = useState("");
-  const [udf14, setudf14] = useState("");
-  const [udf15, setudf15] = useState("");
-  const [udf16, setudf16] = useState("");
-  const [udf17, setudf17] = useState("");
+  const [udf12, setudf12] = useState(""); // client id
+  const [udf13, setudf13] = useState(""); // plan id
+  const [udf14, setudf14] = useState(""); // plan name
+  const [udf15, setudf15] = useState(""); // application id (product id)
+  const [udf16, setudf16] = useState(""); // application name
+  const [udf17, setudf17] = useState("COB"); // payment from the COB portal
   const [udf18, setudf18] = useState("");
   const [udf19, setudf19] = useState("");
   const [udf20, setudf20] = useState("");
@@ -47,7 +47,7 @@ function SabpaisaPaymentGateway(props) {
   useEffect(() => {
     // window.location.search
    
-    setudf12(props?.planData?.clientId)
+    setudf12(props?.planData?.clientId) 
     setudf13(props?.planData?.planId)
     setudf14(props?.planData?.planName)
     setudf15(props?.planData?.applicationId)
@@ -78,7 +78,7 @@ function SabpaisaPaymentGateway(props) {
       udf14={udf14} 
       udf15={udf15}
       udf16={udf16}
-      
+      udf17={udf17}
       
       label={"Sabpaisa PG"} 
       onToggle={() => setIsOpen(false)} />

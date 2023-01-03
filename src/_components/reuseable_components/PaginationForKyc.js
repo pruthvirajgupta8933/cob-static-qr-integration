@@ -30,14 +30,14 @@ const Pagination = ({ nPages, currentPage, setCurrentPage }) => {
           </li>
         ))}
         {pageNumbers !== 0 ? (
-          <li class="page-item">
-            <button class="page-link" onClick={nextPage}>
+          <li className="page-item">
+            <button className="page-link" onClick={nextPage}>
               Next
             </button>
           </li>
         ) : (
-          <li class="page-item">
-            <button class="page-link" disabled>
+          <li className="page-item">
+            <button className="page-link" disabled>
               Next
             </button>
           </li>

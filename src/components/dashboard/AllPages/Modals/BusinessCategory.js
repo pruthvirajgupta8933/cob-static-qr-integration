@@ -158,7 +158,7 @@ function BusinessCategory(props) {
                     </div>
                     <div className="modal-body">
                         <p>Business Type</p>
-                        <div class="input-group mb-3">
+                        <div className="input-group mb-3">
 {/* //onChange={(e) => changeHandler(e)} */}
 
                             <select className="custom-select" id="inputGroupSelect01" onChange={(e) => {setTitle(e.target.options[e.target.options.selectedIndex].title)}} >
@@ -169,14 +169,14 @@ function BusinessCategory(props) {
                                 <option value="COBEN" title="School, College, Test Prep centre">COB Education</option>
                             </select>
                         </div>
-                        <div class="input-group mb-3">
+                        <div className="input-group mb-3">
                             <p>{title}</p>
                         </div>
 
                     </div>
                     <div className="modal-footer">
 
-                        <Link to={`/dashboard/thanks/?planid=${subscribePlanData.applicationId}`} type="button" onClick={() => modalHandler(false)} class="btn btn-success text-white" >Subscribe</Link>
+                        <Link to={`/dashboard/thanks/?planid=${subscribePlanData.applicationId}`} type="button" onClick={() => modalHandler(false)} className="btn btn-success text-white" >Subscribe</Link>
 
                     </div>
                 </div>

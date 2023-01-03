@@ -28,6 +28,7 @@ function VerifiedMerchant() {
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isOpenModal, setIsModalOpen] = useState(false)
+  const [isLoaded,setIsLoaded] = useState(false)
 
 
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
@@ -76,6 +77,7 @@ function VerifiedMerchant() {
         setKycIdClick(data);
         setDataCount(dataCoun);
         setVerifiedMerchant(data);
+        setIsLoaded(false)   
       })
 
       .catch((err) => {
@@ -108,12 +110,16 @@ function VerifiedMerchant() {
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
 
   const nextPage = () => {
+    setIsLoaded(true)
+    setData([])
     if (currentPage < pageNumbers.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
+    setIsLoaded(true)
+    setData([])
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
@@ -276,13 +282,14 @@ function VerifiedMerchant() {
         </div>
         <nav>
           <ul className="pagination justify-content-center">
+          {isLoaded === true ? <Spinner /> : (
             <li className="page-item">
               <button 
               className="page-link" 
               onClick={prevPage}>
                 Previous
               </button>
-            </li>
+            </li> )}
             {displayPageNumber?.map((pgNumber, i) => (
               <li 
                 key={i}
@@ -299,15 +306,16 @@ function VerifiedMerchant() {
               </li>
             ))}
 
-            <li class="page-item">
+         {isLoaded === true ? <Spinner /> : (
+            <li className="page-item">
               <button
-                class="page-link"
+                className="page-link"
                 onClick={nextPage}
                 disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
                 Next
               </button>
-            </li>
+            </li> )}
           </ul>
         </nav>
       </div>

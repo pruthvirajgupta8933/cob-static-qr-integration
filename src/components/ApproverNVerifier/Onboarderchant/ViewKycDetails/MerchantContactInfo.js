@@ -79,8 +79,8 @@ function MerchantContactInfo(props) {
         <h3 className="font-weight-bold">Merchant Contact Info</h3>
       </div>
 
-      <div class="col-sm-6 col-md-6 col-lg-6 ">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-6 col-md-6 col-lg-6 ">
+        <label className="col-form-label mt-0 p-2">
           Contact Name<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -92,8 +92,8 @@ function MerchantContactInfo(props) {
         />
       </div>
 
-      <div class="col-sm-6 col-md-6 col-lg-6 ">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-6 col-md-6 col-lg-6 ">
+        <label className="col-form-label mt-0 p-2">
           Aadhaar Number <span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -106,8 +106,8 @@ function MerchantContactInfo(props) {
       </div>
 
 
-      <div class="col-sm-6 col-md-6 col-lg-6 ">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-6 col-md-6 col-lg-6 ">
+        <label className="col-form-label mt-0 p-2">
           Contact Number<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -126,8 +126,8 @@ function MerchantContactInfo(props) {
           )}
         </span>
       </div>
-      <div class="col-sm-6 col-md-6 col-lg-6 ">
-        <label class="col-form-label mt-0 p-2">
+      <div className="col-sm-6 col-md-6 col-lg-6 ">
+        <label className="col-form-label mt-0 p-2">
           Email Id<span style={{ color: "red" }}>*</span>
         </label>
 
@@ -148,10 +148,10 @@ function MerchantContactInfo(props) {
 
       </div>
 
-      <div class="col-lg-6">
+      <div className="col-lg-6">
         Status : <span>{KycTabStatus?.general_info_status}</span>
       </div>
-      <div class="col-lg-6">
+      <div className="col-lg-6">
         <VerifyRejectBtn
          KycTabStatus={KycTabStatus?.general_info_status}
           KycVerifyStatus={{ handleVerifyClick, isVerified }}

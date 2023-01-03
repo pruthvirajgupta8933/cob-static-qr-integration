@@ -41,6 +41,7 @@ function ContactInfo(props) {
   const [showOtpVerifyModalPhone, setShowOtpVerifyModalPhone] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
+  const [disable,setIsDisable] = useState(false)
 
   const KycVerifyStatusForPhone = kyc.OtpVerificationResponseForPhone.status;
   const KycVerifyStatusForEmail = kyc.OtpVerificationResponseForEmail.status;
@@ -102,6 +103,7 @@ function ContactInfo(props) {
 
   const handleSubmitContact = (values) => {
     if (role.merchant) {
+      setIsDisable(true)
       dispatch(
         updateContactInfo({
           login_id: loginId,
@@ -118,6 +120,7 @@ function ContactInfo(props) {
         ) {
           setTab(2);
           setTitle("BUSINESS OVERVIEW");
+          setIsDisable(false)
           toast.success(res.payload?.message);
           dispatch(kycUserList({ login_id: loginId }));
           dispatch(GetKycTabsStatus({login_id: loginId}));
@@ -125,6 +128,7 @@ function ContactInfo(props) {
           toast.error(res.payload?.message);
           toast.error(res.payload?.detail);
           setShowOtpVerifyModalEmail(false);
+          setIsDisable(false)
         }
       });
     }
@@ -254,9 +258,9 @@ function ContactInfo(props) {
         }) => (
           <Form>
 
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-6 ">
-                <label class="col-form-label mt-0 p-2">
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-6 ">
+                <label className="col-form-label mt-0 p-2">
                   Contact Name<span style={{ color: "red" }}>*</span>
                 </label>
 
@@ -270,8 +274,8 @@ function ContactInfo(props) {
                 />
               </div>
 
-              <div class="col-sm-6 col-md-6 col-lg-6 ">
-                <label class="col-form-label mt-0 p-2">
+              <div className="col-sm-6 col-md-6 col-lg-6 ">
+                <label className="col-form-label mt-0 p-2">
                   Aadhaar No.<span style={{ color: "red" }}>*</span>
                 </label>
 
@@ -291,9 +295,9 @@ function ContactInfo(props) {
               setShow={handlerModal}
             />
             {/*  Modal Popup for Otp Verification Email*/}
-            <div class="row">
-              <div class="col-sm-6 col-md-6 col-lg-6 ">
-                <label class="col-form-label mt-0 p-2">
+            <div className="row">
+              <div className="col-sm-6 col-md-6 col-lg-6 ">
+                <label className="col-form-label mt-0 p-2">
                   Contact Number<span style={{ color: "red" }}>*</span>
                 </label>
 
@@ -315,7 +319,7 @@ function ContactInfo(props) {
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>
                 ) : role.merchant ? (
-                  <div class="position-sticky pull-right- otpbtn">
+                  <div className="position-sticky pull-right- otpbtn">
                     <a
                       href={() => false}
                       className="btn btnbackground text-white btn-sm optbtn-"
@@ -347,8 +351,8 @@ function ContactInfo(props) {
               />
               {/*  Modal Popup for Otp Verification Mobile */}
 
-              <div class="col-sm-6 col-md-6 col-lg-6 ">
-                <label class="col-form-label mt-0 p-2">
+              <div className="col-sm-6 col-md-6 col-lg-6 ">
+                <label className="col-form-label mt-0 p-2">
                   Email Id<span style={{ color: "red" }}>*</span>
                 </label>
 
@@ -369,7 +373,7 @@ function ContactInfo(props) {
                     <img src={gotVerified} alt="" title="" width="26" />
                   </span>
                 ) : role.merchant ? (
-                  <div class="position-sticky pull-right- otpbtn">
+                  <div className="position-sticky pull-right- otpbtn">
                     {/* optbtn */}
                     <a
                       href={() => false}
@@ -395,7 +399,7 @@ function ContactInfo(props) {
               </div>
             </div>
 
-            <div class="my-5- p-2- w-100 pull-left">
+            <div className="my-5- p-2- w-100 pull-left">
               <hr
                 style={{
                   borderColor: "#D9D9D9",
@@ -403,10 +407,11 @@ function ContactInfo(props) {
                   width: "100%",
                 }}
               />
-              <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12 col-form-label">
+              <div className="row">
+                <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
                   {VerifyKycStatus === "Verified" ? <></> : (
                     <button
+                      disabled={disable}
                       type="submit"
                       className="btn float-lg-right btnbackground text-white"
                     >

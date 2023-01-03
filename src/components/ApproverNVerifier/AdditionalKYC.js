@@ -337,9 +337,9 @@ const AdditionalKYC = () => {
                 enableReinitialize={true}
               >
                 <Form className="form">
-                  <div class="row">
-                    <div class="col-lg-4">
-                      <label class="col-form-label mt-0 p-2">
+                  <div className="row">
+                    <div className="col-lg-4">
+                      <label className="col-form-label mt-0 p-2">
                         IFSC Code<span style={{ color: "red" }}>*</span>
                       </label>
 
@@ -352,8 +352,8 @@ const AdditionalKYC = () => {
                       />
                     </div>
 
-                    <div class="col-lg-4">
-                      <label class="col-form-label mt-0 p-2">
+                    <div className="col-lg-4">
+                      <label className="col-form-label mt-0 p-2">
                         Business Account Number{" "}
                         <span style={{ color: "red" }}>*</span>
                       </label>
@@ -382,16 +382,16 @@ const AdditionalKYC = () => {
             )}
 
             {panStatus === true && selectedDocType === "1" ? (
-              <div class="container" style={{ marginTop: "91px" }}>
+              <div className="container" style={{ marginTop: "91px" }}>
                 <h2 className="font-weight-bold">PAN Information</h2>
-                <div class="row">
-                  <div class="col-lg-4 font-weight-bold">
+                <div className="row">
+                  <div className="col-lg-4 font-weight-bold">
                     Name : {accHolderName.length > 2 ? accHolderName : ""}
                   </div>
-                  {/* <div class="col-lg-5">
+                  {/* <div className="col-lg-5">
           
             </div> */}
-                  <div class="col-lg-4 font-weight-bold">
+                  <div className="col-lg-4 font-weight-bold">
                     Valid :{" "}
                     {panValidity === true
                       ? "True"
@@ -399,7 +399,7 @@ const AdditionalKYC = () => {
                       ? "false"
                       : "Not Found"}
                   </div>
-                  <div class="col-lg-5"></div>
+                  <div className="col-lg-5"></div>
                 </div>
               </div>
             ) : (
@@ -407,36 +407,36 @@ const AdditionalKYC = () => {
             )}
 
             {gstStatus === true && selectedDocType === "2" ? (
-              <div class="container" style={{ marginTop: "91px" }}>
+              <div className="container" style={{ marginTop: "91px" }}>
                 <h2 className="font-weight-bold">GSTIN Information</h2>
-                <div class="row">
-                  <div class="col-lg-4 font-weight-bold">
+                <div className="row">
+                  <div className="col-lg-4 font-weight-bold">
                     Trade Name : {gst_trade_name ? gst_trade_name : ""}
                   </div>
-                  {/* <div class="col-lg-5">
+                  {/* <div className="col-lg-5">
           
             </div> */}
-                  <div class="col-lg-4 font-weight-bold">PAN : {panNumber}</div>
+                  <div className="col-lg-4 font-weight-bold">PAN : {panNumber}</div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-4 font-weight-bold">
+                <div className="row">
+                  <div className="col-lg-4 font-weight-bold">
                     State : {state ? state : ""}
                   </div>
-                  {/* <div class="col-lg-5">
+                  {/* <div className="col-lg-5">
           
             </div> */}
-                  <div class="col-lg-4 font-weight-bold">
+                  <div className="col-lg-4 font-weight-bold">
                     Registered Date : {registered_date ? registered_date : ""}
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-4 font-weight-bold">
+                <div className="row">
+                  <div className="col-lg-4 font-weight-bold">
                     Updated Date : {updated_date ? updated_date : ""}
                   </div>
-                  {/* <div class="col-lg-5">
+                  {/* <div className="col-lg-5">
           
             </div> */}
-                  <div class="col-lg-4 font-weight-bold">
+                  <div className="col-lg-4 font-weight-bold">
                     Valid :{" "}
                     {gstinValidity === true
                       ? "True"
@@ -451,24 +451,24 @@ const AdditionalKYC = () => {
             )}
 
             {bankStatus === true && selectedDocType === "3" ? (
-              <div class="container" style={{ marginTop: "32px" }}>
+              <div className="container" style={{ marginTop: "32px" }}>
                 <h2 className="font-weight-bold">Bank Account Information</h2>
-                <div class="row">
-                  <div class="col-lg-4 font-weight-bold">
+                <div className="row">
+                  <div className="col-lg-4 font-weight-bold">
                     Full Name :{" "}
                     {bankAccountHolderName.length > 2
                       ? bankAccountHolderName
                       : ""}
                   </div>
-                  {/* <div class="col-lg-5">
+                  {/* <div className="col-lg-5">
           
             </div> */}
-                  <div class="col-lg-4 font-weight-bold">
+                  <div className="col-lg-4 font-weight-bold">
                     Account Status : {accountStatus}
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-4 font-weight-bold">
+                <div className="row">
+                  <div className="col-lg-4 font-weight-bold">
                     Valid :{" "}
                     {accountValidity === true
                       ? "True"
@@ -476,7 +476,7 @@ const AdditionalKYC = () => {
                       ? "false"
                       : "Not Found"}
                   </div>
-                  {/* <div class="col-lg-5">
+                  {/* <div className="col-lg-5">
           
             </div> */}
                 </div>

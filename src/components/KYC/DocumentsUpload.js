@@ -328,8 +328,8 @@ function DocumentsUpload(props) {
       ) : documentId === null ? (
         <></>
       ) : typeof documentId !== "undefined" ? (
-        <div class="mt-md-4">
-          <h4 class="font-weight-bold mt-xl-4">ImagePreview</h4>
+        <div className="mt-md-4">
+          <h4 className="font-weight-bold mt-xl-4">ImagePreview</h4>
           <a href={ImgUrl} target="_blank" rel="noreferrer">
             <img src={ImgUrl} alt="" width="150px" height="150px" />
           </a>

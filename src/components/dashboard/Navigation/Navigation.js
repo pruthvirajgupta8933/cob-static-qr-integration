@@ -116,8 +116,8 @@ function SideNavbarNav() {
             onClick={() => handle()}
           >
             <a href="">
-              <i class="fa fa-log-out"></i>
-              &nbsp; Logout
+              <i className="fa fa-log-out"></i>
+              &nbsp; Logout   
             </a>
           </li>
         </ul>

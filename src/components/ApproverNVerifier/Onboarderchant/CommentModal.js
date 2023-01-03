@@ -100,11 +100,11 @@ const CommentModal = (props) => {
           (props?.isModalOpen ? " show d-block" : " d-none")
         }
       >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
               <h5
-                class="modal-title bolding text-black"
+                className="modal-title bolding text-black"
                 id="exampleModalLongTitle"
               >
                 Add your comments
@@ -112,7 +112,7 @@ const CommentModal = (props) => {
 
               <button
                 type="button"
-                class="close"
+                className="close"
                 data-dismiss="modal"
                 aria-label="Close"
                 onClick={() => {
@@ -123,7 +123,7 @@ const CommentModal = (props) => {
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
               <h5 className="font-weight-bold">
                 Merchant Name: {props?.commentData?.clientName}
               </h5>
@@ -131,7 +131,7 @@ const CommentModal = (props) => {
                 Client Code: {props?.commentData?.clientCode}
               </h5>
             </div>
-            <div class="container">
+            <div className="container">
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -142,8 +142,8 @@ const CommentModal = (props) => {
                 enableReinitialize={true}
               >
                 <Form>
-                  <div class="container">
-                    <div class="row">
+                  <div className="container">
+                    <div className="row">
                       <div>
                         <div className="col-lg-12-" style={{ width: "315px" }}>
                           <label
@@ -159,19 +159,19 @@ const CommentModal = (props) => {
                           />
                         </div>
                       </div>
-                      <div class="col-sm" style={{ marginTop: "52px" }}>
+                      <div className="col-sm" style={{ marginTop: "52px" }}>
                         <button
                           type="submit"
-                          class="btn approve text-white  btn-xs"
+                          className="btn approve text-white  btn-xs"
                         >
                           Submit
                         </button>
                       </div>
 
-                      <div class="container">
-                        <div class="row">
+                      <div className="container">
+                        <div className="row">
                           <div
-                            class="col-lg-5"
+                            className="col-lg-5"
                             style={{
                               marginTop: "28px",
                               textDecoration: "underline",
@@ -182,8 +182,8 @@ const CommentModal = (props) => {
                             </h2>
                           </div>
                         </div>
-                        <div class="row">
-                          <div class="col">
+                        <div className="row">
+                          <div className="col">
                             <table className="table table-bordered">
                               <thead>
                                 <tr>
@@ -226,7 +226,7 @@ const CommentModal = (props) => {
                         <div className="modal-footer">
                           <button
                             type="button"
-                            class="btn btn-secondary text-white"
+                            className="btn btn-secondary text-white"
                             data-dismiss="modal"
                             onClick={() => {
                               setCommentsList([]);

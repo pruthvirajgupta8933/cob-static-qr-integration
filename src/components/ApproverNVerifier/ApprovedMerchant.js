@@ -27,6 +27,9 @@ function ApprovedMerchant() {
   const [kycIdClick, setKycIdClick] = useState(null);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [isOpenModal, setIsModalOpen] = useState(false)
+  const [isLoaded,setIsLoaded] = useState(false)
+
+
   let page_size = pageSize;
   let page = currentPage;
 
@@ -47,6 +50,7 @@ function ApprovedMerchant() {
         setData(data);
          setDataCount(dataCoun);
          setApprovedMerchantData(data);
+         setIsLoaded(false)   
       })
 
       .catch((err) => {
@@ -79,12 +83,16 @@ let pageNumbers = []
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
   const nextPage = () => {
+    setIsLoaded(true) 
+    setData([])  
     if (currentPage < pageNumbers.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
+    setIsLoaded(true)   
+    setData([])
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
@@ -220,7 +228,7 @@ let pageNumbers = []
                     <td>
                       {/* <button
                         type="button"
-                        class="btn approve text-white btn-xs"
+                        className="btn approve text-white btn-xs"
                         data-toggle="modal"
                         onClick={() => viewDocument(user.loginMasterId)}
                         data-target="#exampleModal"
@@ -239,35 +247,35 @@ let pageNumbers = []
                         </button>
 
                       <div
-                        class="modal fade"
+                        className="modal fade"
                         id="exampleModal"
                         tabindex="-1"
                         role="dialog"
                         aria-labelledby="exampleModalLabel"
                         aria-hidden="true"
                       >
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content" style={{ width: 787 }}>
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">
+                        <div className="modal-dialog" role="document">
+                          <div className="modal-content" style={{ width: 787 }}>
+                            <div className="modal-header">
+                              <h5 className="modal-title" id="exampleModalLabel">
                                 Document Details
                               </h5>
                               <button
                                 type="button"
-                                class="close"
+                               className="close"
                                 data-dismiss="modal"
                                 aria-label="Close"
                               >
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
-                            <div class="modal-body">
+                            <div className="modal-body">
                               {docImageData?.map((merchantData) => {
                                 return (
                                   <div>
                                     <table
                                       id="dtDynamicVerticalScrollExample"
-                                      class="table table-striped table-bordered table-sm"
+                                     className="table table-striped table-bordered table-sm"
                                     >
                                       <thead>
                                         <tr>
@@ -292,14 +300,15 @@ let pageNumbers = []
                                 );
                               })}
                             </div>
-                            <div class="modal-footer">
+                            <div className="modal-footer">
                               <button
                                 type="button"
-                                class="btn approve text-white btn-xs"
+                                className="btn approve text-white btn-xs"
                                 data-dismiss="modal"
                               >
                                 Close
                               </button>
+
                             </div>
                           </div>
                         </div>
@@ -313,6 +322,7 @@ let pageNumbers = []
         </div>
         <nav>
           <ul className="pagination justify-content-center">
+          {isLoaded === true ? <Spinner /> : (
             <li className="page-item">
               <button 
               className="page-link" 
@@ -320,6 +330,7 @@ let pageNumbers = []
                 Previous
               </button>
             </li>
+          )}
             {displayPageNumber?.map((pgNumber, i) => (
               <li 
                 key={i}
@@ -335,16 +346,18 @@ let pageNumbers = []
                 </a>
               </li>
             ))}
-
-            <li class="page-item">
+          
+          {isLoaded === true ? <Spinner /> : (
+            <li className="page-item">
               <button
-                class="page-link"
+                className="page-link"
                 onClick={nextPage}
                 disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
                 Next
               </button>
             </li>
+          )}
           </ul>
         </nav>
       </div>

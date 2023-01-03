@@ -53,9 +53,9 @@ const Products = () => {
 
       </div>
       <main className="gx-layout-content ant-layout-content Satoshi-Medium">
-        <div class="container">
-          <div class="row justify-content-md-center">
-            <div class="col-md-auto">
+        <div className="container">
+          <div className="row justify-content-md-center">
+            <div className="col-md-auto">
               <h1
                 className="text-centre prodHeader"
                 style={{ fontSize: "xx-large" }}
@@ -69,16 +69,16 @@ const Products = () => {
             </div>
           </div>
         </div>
-        <div class="container-fluid row">
+        <div className="container-fluid row">
           {spinner && <span className="spinner-border" role="status"></span>}
 
           {product.map((Products, i) => (
-            <div class="col-sm-12 col-md-12 col-lg-6" key={i}>
-              <div class="card mt-0">
-                <div class="card-body-">
-                  <h5 class="card-title prod-header">
+            <div className="col-sm-12 col-md-12 col-lg-6" key={i}>
+              <div className="card mt-0">
+                <div className="card-body-">
+                  <h5 className="card-title prod-header">
                     <img
-                      class="card-img-left"
+                      className="card-img-left"
                       src={iconImg[i]}
                       alt="onlinepay"
                       width={40}
@@ -86,12 +86,12 @@ const Products = () => {
                     &nbsp;
                     {Products.application_name}
                   </h5>
-                  <p class="card-text prod-content truncate">
+                  <p className="card-text prod-content truncate">
                     {" "}
                     {Products.application_description}
                   </p>
                   <div>
-                    <p class="prod-read">
+                    <p className="prod-read">
                       {" "}
                       <Link
                         to={`/dashboard/sabpaisa-pricing/${Products.application_id}/${Products.application_name}`}

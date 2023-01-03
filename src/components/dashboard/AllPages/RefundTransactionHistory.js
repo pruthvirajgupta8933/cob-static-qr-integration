@@ -40,6 +40,7 @@ const RefundTransactionHistory = () => {
   const [pageCount, setPageCount] = useState(0);
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
+  const [disable,setIsDisable] = useState(false)
   
 
   var clientMerchantDetailsList = [];
@@ -129,6 +130,7 @@ const RefundTransactionHistory = () => {
 
   const onSubmitHandler = (values) => {
     setLoading(true)
+    setIsDisable(true)
     dispatch(fetchRefundTransactionHistory(values))
       .then(res => {
         setLoading(false)
@@ -136,9 +138,14 @@ const RefundTransactionHistory = () => {
         const ApiPayload = res?.payload;
         if (ApiStatus === "rejected") {
           toast.error("Request Rejected");
+          setIsDisable(false)
+        }
+        if (ApiStatus === "fulfilled") {
+          setIsDisable(false)
         }
         if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
           toast.error("No Data Found");
+          setIsDisable(false)
         }
       })
   }
@@ -304,7 +311,7 @@ const RefundTransactionHistory = () => {
                     </div>
                     <div className="form-row" >
                       <div className="form-group col-md-1">
-                        <button className="btn btn-sm bttnbackgroundkyc text-white" type="submit"> {loading ? "Loading..." : "Search"} </button>
+                        <button disabled={disable} className="btn btn-sm bttnbackgroundkyc text-white" type="submit"> {loading ? "Loading..." : "Search"} </button>
                       </div>
                       {txnList?.length > 0 ?
                         <div className="form-group col-md-1">

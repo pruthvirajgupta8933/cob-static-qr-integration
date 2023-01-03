@@ -153,25 +153,25 @@ function KycForm() {
         style={{ overflow: "scroll" }}
       >
         <div
-          class="modal-dialog modal-dialog-center container- ml-280-"
+          className="modal-dialog modal-dialog-center container- ml-280-"
           role="document"
         >
-          <div class="modal-content kyc-modal_form ">
-            <div class="modal-body" style={{ display: "contents" }}>
-              <div class="card-group Satoshi-Medium">
-                <div class="row kycnomar kycnopad">
-                  <div class="col-lg-3 col-xsm-12 col-sm-12 col-md-12 kycnomar kycnopad">
-                    <div class="card kycnomar kycnopad toppad noborder">
+          <div className="modal-content kyc-modal_form ">
+            <div className="modal-body" style={{ display: "contents" }}>
+              <div className="card-group Satoshi-Medium">
+                <div className="row kycnomar kycnopad">
+                  <div className="col-lg-3 col-xsm-12 col-sm-12 col-md-12 kycnomar kycnopad">
+                    <div className="card kycnomar kycnopad toppad noborder">
                       <h1 className="m-b-sm gx-float-left paymentHeader text-left">
                         KYC Form
                         <span>
-                          <h6 class="paymentSubHeader">
+                          <h6 className="paymentSubHeader">
                             Complete KYC to start accepting payments
                           </h6>
                         </span>
                       </h1>
 
-                      <div class="card-body">
+                      <div className="card-body">
                         <div>
                           <ul>
                             <li className="nav-item p-2">
@@ -330,15 +330,15 @@ function KycForm() {
                     </div>
                   </div>
 
-                  <div class="col-lg-9 col-xsm-12 col-sm-12 col-md-12 kycnopad">
+                  <div className="col-lg-9 col-xsm-12 col-sm-12 col-md-12 kycnopad">
                     <div className="card cardsection">
-                      <div class="card-body">
-                        <h1 class="card-title text-kyc-header mb-2 NunitoSans-Regular">
+                      <div className="card-body">
+                        <h1 className="card-title text-kyc-header mb-2 NunitoSans-Regular">
                           {title}
                           <button
                             onClick={() => redirect()}
                             type="button"
-                            class="close"
+                            className="close"
                             data-dismiss="modal"
                             aria-label="Close"
                           >
