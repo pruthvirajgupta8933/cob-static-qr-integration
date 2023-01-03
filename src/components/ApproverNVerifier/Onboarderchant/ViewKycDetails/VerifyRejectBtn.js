@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 
 function VerifyRejectBtn(props) {
+  console.log(props,"check my props")
   const status=props.KycTabStatus;
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();

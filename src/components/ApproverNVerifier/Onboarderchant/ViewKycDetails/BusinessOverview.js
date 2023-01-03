@@ -5,6 +5,7 @@ import { verifyKycEachTab } from '../../../../slices/kycSlice';
 import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
+import { GetKycTabsStatus } from '../../../../slices/kycSlice';
 
 const BusinessOverview = (props) => {
   const { businessTypeResponse, businessCategoryResponse, merchantKycId, KycTabStatus } = props;
@@ -48,15 +49,18 @@ const BusinessOverview = (props) => {
       login_id: merchantKycId.loginMasterId,
       business_info_rejected_by: loginId,
     };
+    if (window.confirm("Reject Business Overview?")) {
     dispatch(rejectKycOperation(rejectDetails))
       .then((resp) => {
         resp?.payload?.merchant_info_status &&
-          toast.success(resp?.payload?.merchant_info_status);
+          toast.success(resp?.payload?.business_info_status);
         resp?.payload?.detail && toast.error(resp?.payload?.detail);
+        dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId})) // used to remove kyc button beacuse updated in redux store
       })
       .catch((e) => {
         toast.error("Try Again Network Error");
       });
+    }
 
   }
 
