@@ -67,7 +67,7 @@ const EnterUserID = (props) => {
                     <Form>
                       <div className="form-group">
                         <label htmlFor="exampleInputEmail1">
-                          Email address / Username
+                          Email address / User name
                         </label>
                         <Field
                           name="email"

@@ -339,7 +339,7 @@ function Registration() {
                                           className="string optional"
                                           htmlFor="mobile"
                                         >
-                                          Enter Mobile
+                                          Enter Mobile Number
                                         </label>
                                         <Field
                                           className="string optional"
@@ -372,7 +372,7 @@ function Registration() {
                                           className="string optional"
                                           htmlFor="user-email"
                                         >
-                                          Email id
+                                          Email Id
                                         </label>
                                         <Field
                                           className="string optional"
