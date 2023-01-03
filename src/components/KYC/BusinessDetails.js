@@ -356,6 +356,7 @@ function BusinessDetails(props) {
                 <label className="col-form-label mt-0 p-2">
                   GSTIN<span style={{ color: "red" }}>*</span>
                 </label>
+                <div className="input-group">
                 <Field
                   type="text"
                   name="gst_number"
@@ -366,14 +367,14 @@ function BusinessDetails(props) {
                 {KycList?.gstNumber !== null &&
                 !errors.hasOwnProperty("gst_number") &&
                 !errors.hasOwnProperty("oldGstNumber") ? (
-                  <span className="success">
-                    <img src={gotVerified} alt="" title="" width="26" />
+                  <span className="success input-group-append">
+                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                   </span>
                 ) : (
-                  <div className="position-sticky pull-right- otpbtngst">
+                  <div className="position-sticky pull-right- otpbtn input-group-append">
                     <a
                       href={() => false}
-                      className="btn btnbackground text-white btn-sm panbtn "
+                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
                       onClick={() => {
                         checkInputIsValid(
                           errors,
@@ -388,7 +389,7 @@ function BusinessDetails(props) {
                     </a>
                   </div>
                 )}
-
+                </div>
                 {
                   <ErrorMessage name="gst_number">
                     {(msg) => (
@@ -410,6 +411,7 @@ function BusinessDetails(props) {
                 <label className="col-form-label mt-0 p-2">
                   Business PAN<span style={{ color: "red" }}>*</span>
                 </label>
+                
                 <FormikController
                   control="input"
                   type="text"
@@ -424,6 +426,7 @@ function BusinessDetails(props) {
                   Authorized Signatory PAN{" "}
                   <span style={{ color: "red" }}>*</span>
                 </label>
+                <div className="input-group">
                 <Field
                   type="text"
                   name="signatory_pan"
@@ -435,14 +438,14 @@ function BusinessDetails(props) {
                 {KycList?.signatoryPAN !== null &&
                 !errors.hasOwnProperty("signatory_pan") &&
                 !errors.hasOwnProperty("oldSignatoryPan") ? (
-                  <span className="success">
-                    <img src={gotVerified} alt="" title="" width="26" />
+                  <span className="success input-group-append">
+                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary"/>
                   </span>
                 ) : (
-                  <div className="position-sticky pull-right- otpbtndetail">
+                  <div className="position-sticky pull-right- otpbtn input-group-append">
                     <a
                       href={() => false}
-                      className="btn btnbackground text-white btn-sm panbtn- "
+                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
                       onClick={() => {
                         checkInputIsValid(
                           errors,
@@ -457,6 +460,7 @@ function BusinessDetails(props) {
                     </a>
                   </div>
                 )}
+                </div>
                  {
                   <ErrorMessage name="signatory_pan">
                     {(msg) => (

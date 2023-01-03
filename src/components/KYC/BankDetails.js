@@ -293,7 +293,7 @@ function BankDetails(props) {
                 <label className="col-form-label mt-0 p-2">
                   IFSC Code<span style={{ color: "red" }}>*</span>
                 </label>
-
+                <div className="input-group">
                 <Field
                   type="text"
                   name="ifsc_code"
@@ -305,14 +305,14 @@ function BankDetails(props) {
                 {KycList?.ifscCode !== null &&
                 !errors.hasOwnProperty("ifsc_code") &&
                 !errors.hasOwnProperty("oldIfscCode") ? (
-                  <span className="success">
-                    <img src={gotVerified} alt="" title="" width="26" />
+                  <span className="success input-group-append">
+                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary"/>
                   </span>
                 ) : (
-                  <div className="position-sticky pull-right- otpbtndetails">
+                  <div className="position-sticky pull-right- otpbtn input-group-append">
                     <a
                       href={() => false}
-                      className="btn btnbackground text-white btn-sm panbtn otpbtndetail-"
+                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
                       onClick={() => {
                         checkInputIsValid(
                           errors,
@@ -327,7 +327,7 @@ function BankDetails(props) {
                     </a>
                   </div>
                 )}
-
+                </div>
                 {
                   <ErrorMessage name="ifsc_code">
                     {(msg) => (
@@ -350,7 +350,7 @@ function BankDetails(props) {
                   Business Account Number{" "}
                   <span style={{ color: "red" }}>*</span>
                 </label>
-
+                <div className="input-group">
                 <Field
                   type="text"
                   name="account_number"
@@ -363,15 +363,15 @@ function BankDetails(props) {
                 values?.account_number === KycList?.accountNumber &&
                 !errors.hasOwnProperty("account_number") &&
                 !errors.hasOwnProperty("oldAccountNumber") ? (
-                  <span className="success">
-                    <img src={gotVerified} alt="" title="" width="26" />
+                  <span className="success input-group-append">
+                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary"/>
                   </span>
                 ) : !errors.hasOwnProperty("oldIfscCode") &&
                   !errors.hasOwnProperty("ifsc_code") ? (
-                  <span className="position-sticky pull-right- otpbtnaccnt">
+                  <span className="position-sticky pull-right- otpbtn input-group-append">
                     <a
                       href={() => false}
-                      className="btn btnbackground text-white btn-sm panbtn otpbtnaccnt-"
+                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
                       onClick={() => {
                         checkInputIsValid(
                           errors,
@@ -388,7 +388,7 @@ function BankDetails(props) {
                 ) : (
                   <> </>
                 )}
-
+                </div>
                 {
                   <ErrorMessage name="account_number">
                     {(msg) => (

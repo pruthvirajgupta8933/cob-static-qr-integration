@@ -381,7 +381,7 @@ function ContactInfo(props) {
                 <label className="col-form-label mt-0 p-2">
                   Email Id<span style={{ color: "red" }}>*</span>
                 </label>
-
+                <div className="input-group">
                 <Field
                   type="text"
                   name="email_id"
@@ -394,15 +394,15 @@ function ContactInfo(props) {
                 KycList?.isEmailVerified === 1 &&
                 !errors.hasOwnProperty("email_id") &&
                 !errors.hasOwnProperty("oldEmailId") ? (
-                  <span className="success">
-                    <img src={gotVerified} alt="" title="" width="26" />
+                 <span className="success input-group-append">
+                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary"/>
                   </span>
                 ) : role.merchant ? (
-                  <div className="position-sticky pull-right- otpbtn">
+                  <div className="position-sticky pull-right- otpbtn input-group-append">
                     {/* optbtn */}
                     <a
                       href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn-"
+                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
                       onClick={() => {
                         checkInputIsValid(
                           errors,
@@ -418,6 +418,7 @@ function ContactInfo(props) {
                 ) : (
                   <></>
                 )}
+                </div>
                 {
                   <ErrorMessage name="email_id">
                     {(msg) => (
