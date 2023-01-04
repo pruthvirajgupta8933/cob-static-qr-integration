@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const UrlNotFound = () => {
   return (
     <div>
-    <img alt="" src={Nodatafound} className="mw-100 h-100" />
+    <img src={Nodatafound} className="mw-100" />
             <p style={{textAlign:"center"}}>
               {/* <Link to="/">Go to Home </Link> */}
             </p>

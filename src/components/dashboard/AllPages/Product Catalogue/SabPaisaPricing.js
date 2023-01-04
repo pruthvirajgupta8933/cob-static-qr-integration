@@ -25,7 +25,7 @@ const SabPaisaPricing = () => {
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
   const [tempPlanId, setTempPlanId] = useState("");
-  const [rateCloneStatus, setRateCloneStatus] = useState("")
+  // const [rateCloneStatus, setRateCloneStatus] = useState("")
   const [TempSelectedData, setTempSelectedData] = useState({})
 
   const dispatch = useDispatch();
