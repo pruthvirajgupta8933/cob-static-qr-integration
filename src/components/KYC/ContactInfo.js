@@ -353,6 +353,7 @@ function ContactInfo(props) {
                     <></>
                   )}
                 </div>
+
                 {
                   <ErrorMessage name="contact_number">
                     {(msg) => (
@@ -382,42 +383,49 @@ function ContactInfo(props) {
                   Email Id<span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
-                <Field
-                  type="text"
-                  name="email_id"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly="true"
-                />
+                  <Field
+                    type="text"
+                    name="email_id"
+                    className="form-control"
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    readOnly="true"
+                  />
 
-                {KycList?.emailId !== null &&
-                KycList?.isEmailVerified === 1 &&
-                !errors.hasOwnProperty("email_id") &&
-                !errors.hasOwnProperty("oldEmailId") ? (
-                 <span className="success input-group-append">
-                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary"/>
-                  </span>
-                ) : role.merchant ? (
-                  <div className="position-sticky pull-right- otpbtn input-group-append">
-                    {/* optbtn */}
-                    <a
-                      href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
-                      onClick={() => {
-                        checkInputIsValid(
-                          errors,
-                          values,
-                          setFieldError,
-                          "email_id"
-                        );
-                      }}
-                    >
-                      Send OTP
-                    </a>{" "}
-                  </div>
-                ) : (
-                  <></>
-                )}
+                  {KycList?.emailId !== null &&
+                  KycList?.isEmailVerified === 1 &&
+                  !errors.hasOwnProperty("email_id") &&
+                  !errors.hasOwnProperty("oldEmailId") ? (
+                    <span className="success input-group-append">
+                      <img
+                        src={gotVerified}
+                        alt=""
+                        title=""
+                        width={"20px"}
+                        height={"20px"}
+                        className="btn-outline-secondary"
+                      />
+                    </span>
+                  ) : role.merchant ? (
+                    <div className="position-sticky pull-right- otpbtn input-group-append">
+                      {/* optbtn */}
+                      <a
+                        href={() => false}
+                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
+                        onClick={() => {
+                          checkInputIsValid(
+                            errors,
+                            values,
+                            setFieldError,
+                            "email_id"
+                          );
+                        }}
+                      >
+                        Send OTP
+                      </a>{" "}
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
                 {
                   <ErrorMessage name="email_id">

@@ -399,6 +399,7 @@ function BusinessDetails(props) {
                     )}
                   </ErrorMessage>
                 }
+                <br/>
                 {errors?.oldGstNumber && (
                   <span className="notVerifiedtext- text-danger mb-0">
                     {errors?.oldGstNumber}
@@ -470,7 +471,7 @@ function BusinessDetails(props) {
                     )}
                   </ErrorMessage>
                 }
-
+                <br/>
                 {errors?.oldSignatoryPan && (
                   <span className="notVerifiedtext- text-danger mb-0">
                     {errors?.oldSignatoryPan}

@@ -398,7 +398,7 @@ function BankDetails(props) {
                     )}
                   </ErrorMessage>
                 }
-
+              <br/>
                 {errors?.oldAccountNumber && (
                   <span className="notVerifiedtext- text-danger">
                     {errors?.oldAccountNumber}
