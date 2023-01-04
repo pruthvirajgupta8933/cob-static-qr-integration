@@ -98,18 +98,18 @@ const SettlementReport = () => {
 
   return (
     <>
-      <section className="ant-layout">
+      <section className="ant-layout ">
         <div className="profileBarStatus"></div>
         <main className="gx-layout-content ant-layout-content">
-          <div className="gx-main-content-wrapper">
-            <div className="right_layout my_account_wrapper right_side_heading">
-              <h1 className="m-b-sm gx-float-left">Settlement Report</h1>
+          <div className="gx-main-content-wrapper ">
+            <div className="right_layout my_account_wrapper right_side_heading  ">
+              <h1 className="m-b-sm gx-float-left ">Settlement Report</h1>
             </div>
             <section
               className="features8 cid-sg6XYTl25a flleft col-lg-12"
               id="features08-3-"
             >
-              <div className="container-fluid">
+              <div className="container-fluid ">
                 <div className="row">
                   <div className="col-lg-6 mrg-btm">
                     <label>Select Folder</label>

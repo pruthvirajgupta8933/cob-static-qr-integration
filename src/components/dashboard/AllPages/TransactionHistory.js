@@ -416,7 +416,7 @@ const TransactionHistory = () => {
 
 
   return (
-    <section className="ant-layout Satoshi-Medium">
+    <section className="ant-layout NunitoSans-Regular">
 
       <div>
         <NavBar />

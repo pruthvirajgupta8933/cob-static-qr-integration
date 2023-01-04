@@ -182,7 +182,7 @@ export const Profile = () => {
       <div>
         <NavBar />
       </div>
-      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper">
 
