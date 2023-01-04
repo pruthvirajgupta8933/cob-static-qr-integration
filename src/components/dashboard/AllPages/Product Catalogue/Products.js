@@ -52,7 +52,7 @@ const Products = () => {
         <NavBar />
 
       </div>
-      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="container">
           <div className="row justify-content-md-center">
             <div className="col-md-auto">

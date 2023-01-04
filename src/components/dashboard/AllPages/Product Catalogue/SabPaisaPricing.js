@@ -209,7 +209,7 @@ const SabPaisaPricing = () => {
         <NavBar />
         {/* <SabpaisaPaymentGateway /> */}
       </div>
-      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div>
           <h1 className="text-center headingpricing text-md-start">SabPaisa Pricing</h1>
           <h2 className="text-center headingpricing prdhead">{param?.name}</h2>
