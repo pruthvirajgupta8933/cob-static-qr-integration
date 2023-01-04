@@ -1,16 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-
-firebase.json
-.firebaserc
-/.firebase
-
 # dependencies
 /node_modules
 /.pnp
 .pnp.js
-
-
 
 # testing
 /coverage
@@ -32,10 +25,26 @@ yarn-error.log*
 yarn.lock
 
 *.cache
-.firebaserc
-.firebaserc
-package-lock.json
-package-lock.json
-.firebaserc
 buildspecs.yml
-package-lock.json
+firebase.json
+
+
+.idea
+**/node_modules/*
+**/.firebase
+**/.firebaserc
+**/.runtimeconfig.json
+*/npm-debug.log
+lerna-debug.log
+*~
+service-account-credentials.json
+**/package-lock.json
+# keep the root package-lock so that tools are consistent
+!/package-lock.json
+**/ui-debug.log
+**/database-debug.log
+**/firebase-debug.log
+**/pubsub-debug.log
+**/tsconfig-compile.json
+yarn.lock
+.gitignore

@@ -129,7 +129,7 @@ const CreatePassword = (props) => {
                             className="form-control"
                             id="exampleInputPassword2"
                             aria-describedby="PasswordHelp"
-                            placeholder="Enter Confirm Password"
+                            placeholder="Re-type New Password"
                             type={passwordType ? "password" : "text"}
                             // onChange={handlePasswordChange}
                             // value={passwordInput}
