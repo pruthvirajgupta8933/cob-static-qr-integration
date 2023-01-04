@@ -1,5 +1,4 @@
 import React from 'react'
-import Nodatafound from "../../assets/images/Nodatafound.png"
 import { Link } from 'react-router-dom'
 import NavBar from './NavBar/NavBar'
 

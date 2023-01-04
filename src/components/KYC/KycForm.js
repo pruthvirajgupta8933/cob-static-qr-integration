@@ -165,7 +165,7 @@ function KycForm() {
                       <h1 className="m-b-sm gx-float-left paymentHeader text-left">
                         KYC Form
                         <span>
-                          <h6 className="paymentSubHeader">
+                          <h6 className="paymentSubHeader mr-2 mt-2">
                             Complete KYC to start accepting payments
                           </h6>
                         </span>
