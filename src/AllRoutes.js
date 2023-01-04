@@ -18,6 +18,7 @@ import MobileNavbar from './components/dashboard/SideNavbar/MobileNavbar';
 import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetails';
 import DemoReg from './components/login/DemoReg';
 import DemoLogin from './components/login/DemoLogin';
+import UrlNotFound from './components/dashboard/UrlNotFound';
 
 
 function AllRoutes(){
@@ -81,6 +82,7 @@ function AllRoutes(){
               <Route exact path="/demo-reg">
                 <DemoReg/>
               </Route>
+              <Route path="*" component={UrlNotFound}/>
 
             </Switch>
           </div>
