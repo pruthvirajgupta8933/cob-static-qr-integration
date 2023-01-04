@@ -848,6 +848,11 @@ table.list {
   z-Index: 999;
   font-size: 12px;
 }
+.bgblue{
+  background: #fff;
+}
+.bgblue h1, h4, p , a{color:#000}
+.bgblue h1{font-size: 60px !important; font-weight: bold !important;}
 @media (max-width: 768px) {		
   .errortxt{
     font-size: 9px;
