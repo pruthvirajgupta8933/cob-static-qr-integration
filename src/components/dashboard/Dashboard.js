@@ -392,7 +392,7 @@ function Dashboard() {
         <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
           <SpPg />
         </MerchantRoute>
-        <Route path={`${path}/*`} component={UrlNotFound}/>
+         <Route path={`${path}/*`} component={UrlNotFound}/>
 
       </Switch>
     </section>

@@ -123,7 +123,7 @@ function SubmitKyc(props) {
 
 
   return (
-    <div className="col-md-12 p-3">
+    <div className="col-md-12 p-3 NunitoSans-Regular">
       {role.merchant && (
         <Formik
           initialValues={initialValues}

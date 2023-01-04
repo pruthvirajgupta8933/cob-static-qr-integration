@@ -344,19 +344,20 @@ function LoginPage() {
             </div>
             <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-left">
               <div className="brand-col">
+              <div className="headline pt-1 NunitoSans-Regular">
+              <div className="brand-logo">
                 <div
                   id="carouselExampleIndicators"
                   className="carousel slide"
                   data-ride="carousel"
                 >
-                  <ol
-                    className="carousel-indicators"
-                    style={{
-                      position: "absolute",
-                      zIndex: "999",
-                      top: "450px",
-                    }}
-                  >
+                  <ol className="carousel-indicators"
+                    // style={{
+                    //   position: "absolute",
+                    //   zIndex: "999",
+                      
+                    // }} 
+                    >
                     <li
                       data-target="#carouselExampleIndicators"
                       data-slide-to="0"
@@ -387,12 +388,12 @@ function LoginPage() {
                           {" "}
                           Dashboard
                         </p>
-                        <p className="mt-4 loginBanSubHeader NunitoSans-Regular">
+                        <p className="mt-2 loginBanSubHeader NunitoSans-Regular">
                           {" "}
                           Trusted by over 3000 Mega Clients
                         </p>
                         <img
-                          className="loginscreenimage"
+                          className="loginscreenimage w-50 h-50"
                           src={imageSlide1}
                           alt="slide"
                         />
@@ -413,12 +414,12 @@ function LoginPage() {
                           {" "}
                           Dashboard
                         </p>
-                        <p className="mt-4 loginBanSubHeader NunitoSans-Regular">
+                        <p className="mt-2 loginBanSubHeader NunitoSans-Regular">
                           {" "}
                           Trusted by over 3000 Mega Clients
                         </p>
                         <img
-                          className="loginscreenimage"
+                          className="loginscreenimage w-50 h-50"
                           src={imageSlide1}
                           alt="slide"
                         />
@@ -439,12 +440,12 @@ function LoginPage() {
                           {" "}
                           Dashboard
                         </p>
-                        <p className="mt-4 loginBanSubHeader NunitoSans-Regular ">
+                        <p className="mt-2 loginBanSubHeader NunitoSans-Regular ">
                           {" "}
                           Trusted by over 3000 Mega Clients
                         </p>
                         <img
-                          className="loginscreenimage"
+                          className="loginscreenimage w-50 h-50"
                           src={imageSlide1}
                           alt="slide"
                         />
@@ -452,6 +453,8 @@ function LoginPage() {
                     </div>
                   </div>
                 </div>
+              </div>
+              </div>
               </div>
             </div>
           </div>

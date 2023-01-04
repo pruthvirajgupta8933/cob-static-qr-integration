@@ -264,7 +264,7 @@ const RefundTransactionHistory = () => {
       <div>
         <NavBar />
       </div>
-      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Refund Transaction History</h1>
