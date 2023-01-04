@@ -48,3 +48,4 @@ service-account-credentials.json
 **/tsconfig-compile.json
 yarn.lock
 .gitignore
+package-lock.json
