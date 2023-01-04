@@ -53,6 +53,7 @@ import ViewerRoute from "../../ProtectedRoutes/ViewerRoute";
 import { AppsSharp } from "@mui/icons-material";
 import { logout } from "../../slices/auth";
 import SpPg from "../sabpaisa-pg/SpPg";
+import UrlNotFound from "./UrlNotFound";
 
 function Dashboard() {
   let history = useHistory();
@@ -99,12 +100,18 @@ function Dashboard() {
       <div></div>
       <SideNavbar />
       <Switch>
-        <Route exact path={path}>
+       
+
+       
+      
+        <Route exact path={path} >
+
           <Home />
         </Route>
         <Route exact path={`${path}/profile`}>
           <Profile />
         </Route>
+       
         <MerchantRoute
           exact
           path={`${path}/change-password`}
@@ -336,6 +343,7 @@ function Dashboard() {
             Component={SignupData}
           >
             <SignupData />
+            
           </VerifierRoute>
         ) : roles?.approver === true ? (
           <ApproverRoute
@@ -384,6 +392,7 @@ function Dashboard() {
         <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
           <SpPg />
         </MerchantRoute>
+        <Route path={`${path}/*`} component={UrlNotFound}/>
 
       </Switch>
     </section>
