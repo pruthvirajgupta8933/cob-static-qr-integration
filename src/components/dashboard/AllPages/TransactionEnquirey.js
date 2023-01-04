@@ -111,7 +111,7 @@ function TransactionEnquirey() {
                     <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span
                                 className="btn">Upload Here</span></span></div>*/}
       </div>
-      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Transaction Enquiry</h1>

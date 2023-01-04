@@ -20,7 +20,7 @@ const NavBar = () => {
   return (
     <div>
       <nav
-        className="navbar navbar-light Satoshi-Medium minh"
+        className="navbar navbar-light NunitoSans-Regular minh"
         style={{ background: "#140633" }}
       >
         <ul className="navbar-brand mb-0 h1">
