@@ -19,7 +19,7 @@ const INITIAL_FORM_STATE = {
 
 const FORM_VALIDATION = Yup.object().shape({
   clientUserId: Yup.string().required("Please enter username"),
-  userPassword: Yup.string().required("Please enter Password")
+  userPassword: Yup.string().required("Please enter Password"),
 });
 
 function LoginPage() {
@@ -138,7 +138,7 @@ function LoginPage() {
                                         className="string optional loginFontForLabel NunitoSans-Regular"
                                         htmlFor="user-name"
                                       >
-                                        User Name
+                                        User name
                                       </label>
                                       <Field
                                         className="string optional NunitoSans-Regular"

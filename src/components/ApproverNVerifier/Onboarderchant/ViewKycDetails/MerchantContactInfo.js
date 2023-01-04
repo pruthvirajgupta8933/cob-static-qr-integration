@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
+import { GetKycTabsStatus } from '../../../../slices/kycSlice';
 
 
 function MerchantContactInfo(props) {
@@ -58,15 +59,19 @@ function MerchantContactInfo(props) {
       login_id: merchantKycId.loginMasterId,
       general_info_rejected_by: loginId,
     };
+    if (window.confirm("Reject Merchant Contact Info?")) {
     dispatch(rejectKycOperation(rejectDetails))
       .then((resp) => {
         resp?.payload?.merchant_info_status &&
-          toast.success(resp?.payload?.merchant_info_status);
+          toast.success(resp?.payload?.general_info_status);
         resp?.payload?.detail && toast.error(resp?.payload?.detail);
+        dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId})) // used to remove kyc button beacuse updated in redux store
       })
+    
       .catch((e) => {
         toast.error("Try Again Network Error");
       });
+    }
 
   }
 
