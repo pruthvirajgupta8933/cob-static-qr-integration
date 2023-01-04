@@ -175,7 +175,6 @@ z-index: 999;
   padding: 8px 20px;
 }
 
-
 .announcement-banner-container {
   padding: 20px;
   padding-bottom: 0;
@@ -769,7 +768,7 @@ button[disabled1] {
 
 /* Harris CSS For Login Image Dynamic and Side Nav Font*/
 .loginscreenimage {
-height: 300px;
+/* height: 100vh !important; */
 /* width: 459px; */
 left: 1485px;
 top: 4347px;
@@ -777,7 +776,7 @@ border-radius: 0px;
 }
 /* Harris CSS For Login Image Dynamic and Side Nav Font*/
 .loginscreenimagereg {
-  height: 300px;
+  /* height: 300px; */
   /* width: 459px; */
   left: 1485px;
   top: 4347px;

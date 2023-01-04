@@ -190,7 +190,10 @@ a:focus {
 
 .authfy-login, 
 .authfy-panel-left .brand-col {
-  height: 492px;
+  /* height: 492px; */
+   height: 100vh !important;
+
+  
 
 }
 .authfy-panel-left .brand-col {
@@ -449,7 +452,7 @@ a:focus {
     }
     
     .authfy-panel-left .brand-col {
-      height: 300px;
+      height: 70vh;
       text-align: center;
     }
     
