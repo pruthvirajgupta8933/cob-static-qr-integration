@@ -215,7 +215,7 @@ function Sandbox() {
                           className="form-control"
                           id="inputEmail3"
                           disabled="true"
-                          value={data?.clientCode ? data?.clientCode : ""}
+                          value={data && data?.clientCode}
                         />
                       </div>
                       <div className="col-lg-4">
@@ -230,7 +230,7 @@ function Sandbox() {
                           className="form-control"
                           id="inputPassword3"
                           disabled="true"
-                          value={data?.clientName ? data?.clientName : "" }
+                          value={data && data?.clientUserName }
                         />
                       </div>
 
@@ -239,14 +239,14 @@ function Sandbox() {
                           htmlFor="inputPassword3"
                           className="col-form-label"
                         >
-                          Authentication Key{" "}
+                          Authentication Key
                         </label>
                         <input
                           type="text"
                           className="form-control"
                           id="inputPassword3"
                           disabled="true"
-                          value={data?.authKey ? data?.authKey : "" }
+                          value={data &&  data?.authKey}
                         />
                       </div>
                       <div className="col-lg-4">
@@ -266,7 +266,7 @@ function Sandbox() {
                           id="inputPassword3"
                           name="passwordd"
                           readOnly="true"
-                          value={data?.clientPassword ? data?.clientPassword : "" }
+                          value={data && data?.clientPassword}
                         />
                           <div class="input-group-addon eye__Icon">
                                         <a onClick={handleClickShowPassword}>
@@ -297,7 +297,7 @@ function Sandbox() {
                           className="form-control"
                           id="inputPassword3"
                           disabled="true"
-                          value={data?.authIV ? data?.authIV : "" }
+                          value={data && data?.authIV}
                         />
                       </div>
                       
@@ -306,7 +306,7 @@ function Sandbox() {
                           htmlFor="inputPassword3"
                           className="col-form-label"
                         >
-                          Environment Base URL{" "}
+                          Environment Base URL
                         </label>
 
                         <input
