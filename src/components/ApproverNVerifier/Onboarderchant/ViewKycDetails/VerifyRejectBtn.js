@@ -61,7 +61,7 @@ return (
           { enableDisable && enableBtnStatus  ? 
             <><button type="button" 
             onClick={()=>props?.KycVerifyStatus?.handleVerifyClick()} 
-            className="btn btn-info btn-sm text-white">{props?.btnText?.verify}</button>
+            className="btn btn-info btn-sm text-white ">{props?.btnText?.verify}</button>
 
             <button type="button" 
              onClick={()=>setButtonClick(true)} 
