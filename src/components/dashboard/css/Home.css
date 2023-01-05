@@ -1003,7 +1003,7 @@ border-radius: 0px 0px 5px 5px;
 }
 .pxsolid{
   border-top:1px solid #ccc;
-  display: block;
+  display: flex;
   margin: auto;
 }
 .no-pad{

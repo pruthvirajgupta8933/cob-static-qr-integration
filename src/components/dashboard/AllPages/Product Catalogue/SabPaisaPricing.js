@@ -220,7 +220,7 @@ const SabPaisaPricing = () => {
         </div>
         {/* <button type="button" onClick={clickHandler}>check</button> */}
         <div className="container mb-10">
-          <div className="row">
+          <div className="row flx">
           
           {/* <button type="button" onClick={()=> handleClick(1, "Subscription Plan", "005")}>Test Button Abhishek</button> */}
 
@@ -230,7 +230,7 @@ const SabPaisaPricing = () => {
               // if user business catagory is gamming
               (business_cat_code === "37" && Products.plan_code === "005") ? <></> :
                 (param?.id === '14') ? 
-                <div className="card col-lg-8">
+                <div className="card col-lg-4">
                   <div className="card-body">
                     <div className="col-lg-12">
                       <h2 className="pull-left- bold-font text-center mb-20 price d_block">
@@ -349,7 +349,7 @@ const SabPaisaPricing = () => {
                     ${productDetails.length === 4 ? "col-lg-3" : "col-lg-4"}  `} >
                     <div className="card heightcards">
                       <div className="card-body">
-                        <div className="row mb-5-">
+                        <div className="row- mb-5-">
                           <div className="col-lg-12 text-center">
                             <h1 className="card-title- cardoneheadingcss pb-3-">
                               {Products.plan_name}
