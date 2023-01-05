@@ -44,6 +44,7 @@ function KycForm() {
   }
 
   const { allTabsValidate, KycTabStatusStore } = kyc;
+
   const merchant_consent = kyc?.kycUserList?.merchant_consent;
   const BusinessOverviewStatus =
     allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
@@ -148,7 +149,6 @@ function KycForm() {
           "modal fade mymodals" +
           (kycPopUp === true ? " show d-block" : " d-none")
         }
-        tabIndex="-1"
         role="dialog"
         style={{ overflow: "scroll" }}
       >
@@ -342,16 +342,12 @@ function KycForm() {
                             data-dismiss="modal"
                             aria-label="Close"
                           >
-                            <span
-                              aria-hidden="true"
-                              // style={{ fontSize: "38px" }}
-                            >
+                            <span aria-hidden="true">
                               &times;
                             </span>
                           </button>
                         </h1>
                         
-                        {/* role={roles} kycid={kycid} */}
                         {(tab === 1 && (
                           <ContactInfo
                             role={roles}

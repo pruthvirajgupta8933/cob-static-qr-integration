@@ -129,7 +129,6 @@ let history = useHistory();
     <div
       className="modal fade"
       id="bhuvi"
-      tabIndex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
