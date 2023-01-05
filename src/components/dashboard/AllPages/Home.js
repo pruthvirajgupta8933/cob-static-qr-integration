@@ -33,6 +33,7 @@ import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 import API_URL from "../../../config";
 import { toast } from "react-toastify";
 import RejectNotification from "../../../_components/reuseable_components/RejectNotification";
+import KycAlert from "../../KYC/KycAlert";
 
 function Home() {
   const roles = roleBasedAccess();
@@ -191,10 +192,12 @@ function Home() {
         ) : (
           <StepProgressBar status={kyc?.kycUserList?.status} />
         )}
+        {/* KYC ALETT */}
+        {<KycAlert/>}
+          
 
         {kycStatus?.status === "Rejected" ? (
           <RejectNotification />
-          
         ) : (
           ""
         )}
