@@ -180,10 +180,10 @@ const SabPaisaPricing = () => {
       );
      
       if (res?.status === 200) {
-        console.log("1")
+        // console.log("1")
         // only PG product without subscription plan check rate mapping status
         if (param?.id === "10" && plan_id!==1) {
-          console.log("2")
+          // console.log("2")
           // only for payment gateway we have to check rate mapping status
           // checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
         }
