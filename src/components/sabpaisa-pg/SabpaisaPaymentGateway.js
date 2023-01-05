@@ -5,20 +5,20 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 function SabpaisaPaymentGateway(props) {
-  console.log("props",props?.planData)
-  const [isOpen, setIsOpen] = useState(props?.openPg);
+  const clientDetails = props?.clientData[0]
+  const [isOpen, setIsOpen] = useState(false);
   const [clientCode, setClientCode] = useState("TM001");
   const [transUserName, setTransUserName] = useState("rajiv.moti_336");
   const [transUserPassword, setTransUserPassword] = useState("RIADA_SP336");
   const [authkey, setAuthkey] = useState("kaY9AIhuJZNvKGp2");
   const [authiv, setAuthiv] = useState("YN2v8qQcU3rGfA1y");
-  const [callbackUrl, setCallbackUrl] = useState("http://localhost:3000/#/dashboard/pg-response");
-  const [payerName, setpayerName] = useState("Abhishek");
-  const [payerEmail, setpayerEmail] = useState("abhishek.verma@sabpaisa.in");
-  const [payerMobile, setpayerMobile] = useState("8383912770");
+  const [callbackUrl, setCallbackUrl] = useState("");
+  const [payerName, setpayerName] = useState("");
+  const [payerEmail, setpayerEmail] = useState("");
+  const [payerMobile, setpayerMobile] = useState("");
   const [clientTxnId, setclientTxnId] = useState(uuidv4());
   const [payerAddress, setpayerAddress] = useState("");
-  const [amount, setamount] = useState("9999");
+  const [amount, setamount] = useState(9999);
   const [amountType, setamountType] = useState("INR");
   const [udf1, setudf1] = useState("");
   const [udf2, setudf2] = useState("");
@@ -45,43 +45,49 @@ function SabpaisaPaymentGateway(props) {
   const [mcc, setmcc] = useState("");
 
   useEffect(() => {
-    // window.location.search
-   
-    setudf12(props?.planData?.clientId) 
+
+    setIsOpen(props?.openPg)
+    setpayerName(clientDetails?.clientName);
+    setpayerEmail(clientDetails?.clientEmail);
+    setpayerMobile(clientDetails?.clientContact);
+    setamount(props?.planPrice);
+
+    setudf12(props?.planData?.clientId)
     setudf13(props?.planData?.planId)
     setudf14(props?.planData?.planName)
     setudf15(props?.planData?.applicationId)
     setudf16(props?.planData?.applicationName)
 
-  }, [props])
-  
+
+  }, [props, clientDetails])
+
 
   return (
     <div> {
-      (clientCode && transUserPassword && transUserName && authkey && authiv)  && 
-      <PaymentInitModal 
-      clientCode={clientCode}
-      transUserPassword={transUserPassword} 
-      transUserName={transUserName} 
-      isOpen={props?.openPg} 
-      authkey={authkey} 
-      authiv={authiv} 
-      payerName={payerName} 
-      payerEmail={payerEmail} 
-      payerMobile={payerMobile} 
-      payerAddress={payerAddress} 
-      amount={amount} 
-      amountType={amountType}
-      
-      udf12={udf12} 
-      udf13={udf13} 
-      udf14={udf14} 
-      udf15={udf15}
-      udf16={udf16}
-      udf17={udf17}
-      
-      label={"Sabpaisa PG"} 
-      onToggle={() => setIsOpen(false)} />
+      (clientCode && transUserPassword && transUserName && authkey && authiv) && 
+      <PaymentInitModal
+        clientCode={clientCode}
+        transUserPassword={transUserPassword}
+        transUserName={transUserName}
+        isOpen={isOpen}
+        authkey={authkey}
+        authiv={authiv}
+        payerName={payerName}
+        payerEmail={payerEmail}
+        payerMobile={payerMobile}
+        payerAddress={payerAddress}
+        amount={amount}
+        amountType={amountType}
+
+        udf12={udf12}
+        udf13={udf13}
+        udf14={udf14}
+        udf15={udf15}
+        udf16={udf16}
+        udf17={udf17}
+
+        label={"Sabpaisa PG"}
+        onToggle={() => setIsOpen(!isOpen)} />
     }</div>
   )
 }

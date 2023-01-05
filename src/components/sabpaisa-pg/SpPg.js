@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useHistory, useParams } from 'react-router-dom'
-import { isArray, isNull, map } from 'lodash'
+import { Link, useHistory } from 'react-router-dom'
+import { isArray, isNull } from 'lodash'
 import SabpaisaPaymentGateway from './SabpaisaPaymentGateway'
 import API_URL from '../../config'
 import { axiosInstance, axiosInstanceAuth } from '../../utilities/axiosInstance'
-import { LocalConvenienceStoreOutlined } from '@mui/icons-material'
 import NavBar from '../dashboard/NavBar/NavBar'
 import toastConfig from '../../utilities/toastTypes'
 import { stringDec } from '../../utilities/encodeDecode'
@@ -13,12 +12,11 @@ import { stringDec } from '../../utilities/encodeDecode'
 function SpPg() {
 
     const history = useHistory()
-    const params = useParams()
     const [selectedPlan, setSelectedPlan] = useState({})
     const [planPrice, setPlanPrice] = useState(9999)
     const [clientData, setClientData] = useState({})
     const [responseData, setResponseData] = useState({})
-    const [reponseFromServerFlag, setRespFromServerFlag] = useState(false)
+    const [reponseFromServerFlag, setRespFromServerFlag] = useState(true)
     const [isOpenPg, setIsOpenPg] = useState(false)
 
     const [rateCloneStatus, setRateCloneStatus] = useState("")
@@ -28,29 +26,23 @@ function SpPg() {
 
 
     useEffect(() => {
-
-        const sessionData = JSON.parse(sessionStorage.getItem("tempProductPlanData") && sessionStorage.getItem("tempProductPlanData"))
-
+        const sessionData = JSON.parse(sessionStorage.getItem("tempProductPlanData"))
         const user = JSON.parse(localStorage.getItem("user"))
+      
+        if (isNull(sessionData) || isNull(user)) {
+            history.push("/dashboard")
+            // console.log("redirect to dashboard")
+        } else {
+            // console.log("session storage", sessionData)
+            fetchDataByProductId(sessionData?.applicationId, sessionData?.planId)
+            setSelectedPlan(sessionData)
+        }
+
         if (isArray(user?.clientMerchantDetailsList)) {
             setClientData(user?.clientMerchantDetailsList)
         }
-
-
-        // setClientData(user?.clientMerchantDetailsList[0]?.clientName)
-
-        if (isNull(sessionData) || isNull(user)) {
-            // history.push("/dashboard")
-            console.log("redirect to dashboard")
-        } else {
-            console.log("session storage", sessionData)
-            fetchDataByProductId(sessionData?.applicationId, sessionData?.planId)
-            setSelectedPlan(sessionData)
-
-        }
-
         return () => {
-            setIsOpenPg(false)
+            // setIsOpenPg(false)
             setSelectedPlan({})
         }
     }, [])
@@ -65,9 +57,7 @@ function SpPg() {
             .then((resp) => {
                 const data = resp.data.ProductDetail;
                 const plan = data?.filter(p => p.plan_id === planid)
-                // setPlanPrice(plan?.actual_price)
-                // console.log("take price from it", plan)
-
+                plan && setPlanPrice(plan[0]?.actual_price)
             })
     }
 
@@ -84,11 +74,6 @@ function SpPg() {
 
 
     useEffect(() => {
-
-        // console.log("rateCloneStatus",rateCloneStatus)
-        // console.log("tempPlanId",tempPlanId)
-        // console.log("param?.id",param?.id)
-
         if ((rateCloneStatus === 3 || rateCloneStatus === 0) && (selectedPlan?.applicationId === "10" && selectedPlan?.planId !== 1 && selectedPlan?.planId !== "")) {
             console.log("cond true")
             if (clientData?.clientMerchantDetailsList !== null) {
@@ -159,7 +144,6 @@ function SpPg() {
         const searchParam = window.location.search.slice(1)
         const params = new URLSearchParams(searchParam?.toString());
         const paramsData = Object.fromEntries(params.entries());
-        console.log("paramsData", paramsData)
         if (Object.values(paramsData)?.length > 0) {
             setRespFromServerFlag(true)
             setResponseData(paramsData)
@@ -180,7 +164,6 @@ function SpPg() {
                         checkRateMappingStatus("COBED", clientData?.clientMerchantDetailsList[0]?.clientCode, clientData?.loginId)
                     }
 
-                    // getSubscribedPlan(plan_id);
                     toastConfig.successToast(res?.data?.message);
                 } else {
                     toastConfig.errorToast("Something went wrong");
@@ -188,6 +171,9 @@ function SpPg() {
 
             }
             // sessionStorage.removeItem("tempProductPlanData")
+        } else {
+            setRespFromServerFlag(false)
+
         }
 
         return () => {
@@ -197,14 +183,14 @@ function SpPg() {
     }, [])
 
 
-    console.log("clientData", clientData)
+    // console.log("clientData", clientData)
 
     return (
         <React.Fragment>
             <section className="ant-layout">
                 <NavBar />
 
-                <SabpaisaPaymentGateway planData={selectedPlan} planPrice={planPrice} openPg={isOpenPg} />
+                <SabpaisaPaymentGateway planData={selectedPlan} planPrice={planPrice} openPg={isOpenPg} clientData={clientData} />
 
                 <main className="gx-layout-content ant-layout-content">
                     <div className="gx-main-content-wrapper">
@@ -232,7 +218,8 @@ function SpPg() {
                                             </div>
                                             :
                                             <div className="card-body">
-                                                <h5 className="card-title">Make payment for subscribe the selected plan.</h5>
+                                                <h5 className="card-title">Make payment for activate the selected plan.</h5>
+                                                <h5 className="card-title">Amount : {planPrice} INR</h5>
                                                 {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
                                                 <button onClick={() => { setIsOpenPg(true) }} className="btn btn-primary">Pay Now</button>
                                             </div>
