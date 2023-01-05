@@ -30,10 +30,12 @@ const BankDetails = (props) => {
         });
     }
 
-    const handleRejectClick =()=>{
+    const handleRejectClick =(settlement_info_reject_comments="")=>{
       const rejectDetails = {
         login_id: merchantKycId.loginMasterId,
         settlement_info_rejected_by: loginId,
+        settlement_info_reject_comments:settlement_info_reject_comments
+
       };
       if (window.confirm("Reject Bank Details?")) {
       dispatch(rejectKycOperation(rejectDetails))
@@ -71,6 +73,13 @@ const BankDetails = (props) => {
         disabled="true"
         value={merchantKycId?.ifscCode}
       />
+       <span>
+          {merchantKycId?.ifscCode && merchantKycId?.ifscCode !== null || merchantKycId?.ifscCode !== "" ? (
+            <p className="text-success">Verified</p>
+          ) : (
+            <p className="text-danger"> Not Verified</p>
+          )}
+        </span>
     </div>
 
     <div className="col-sm-12 col-md-12 col-lg-6">
@@ -88,6 +97,14 @@ const BankDetails = (props) => {
           merchantKycId?.accountNumber
         }
       />
+       <span>
+          {merchantKycId?.accountNumber && merchantKycId?.accountNumber !== null || merchantKycId?.accountNumber !== "" ? (
+            <p className="text-success">Verified</p>
+          ) : (
+            <p className="text-danger"> Not Verified</p>
+          )}
+        </span>
+      
     </div>
 
     <div className="col-sm-12 col-md-12 col-lg-6">
@@ -146,9 +163,12 @@ const BankDetails = (props) => {
       />
       
     </div>
-    <div className="col-lg-6 ">
+    <div className="col-lg-6 font-weight-bold mt-1 ">
     Status : <span>{KycTabStatus?.settlement_info_status}</span>
     </div>
+    <div className="col-lg-7 font-weight-bold mt-1 ">
+     Comments : <span>{KycTabStatus?.settlement_info_reject_comments}</span>
+      </div>
         <div className="col-lg-6 mt-3">
         <VerifyRejectBtn 
         KycTabStatus={KycTabStatus?.settlement_info_status}

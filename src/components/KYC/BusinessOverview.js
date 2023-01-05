@@ -35,7 +35,6 @@ function BusinessOverview(props) {
   const [disabled, setIsDisabled] = useState(false)
   const [numberChnaged, setNumberChanged] = useState('');
   const [textWord, setTextWord] = useState('');
-  console.log("textWord", textWord)
   const { auth, kyc } = useSelector((state) => state);
 
   const { user } = auth;
@@ -459,10 +458,10 @@ function BusinessOverview(props) {
             </div> */}
 
               <div className="col-sm-4 col-md-4 col-lg-4">
-                <label className="col-form-label p-2 mt-0">
+                {/* <label className="col-form-label p-2 mt-0">
                   Expected Transaction/Year<span style={{ color: "red" }}>*</span>
                  
-                </label>
+                </label> */}
 
               <FormikController
                   control="input"
