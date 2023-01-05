@@ -242,10 +242,10 @@ return (
                           <td>{user.status}</td>
                           <td>{covertDate(user.signUpDate)}</td>
                           <td>{user?.isDirect}</td>
-                          {/* <td>  <button type="button" class="btn btn-primary" onClick={onClick}>View Document</button></td> */}
+                          {/* <td>  <button type="button" className="btn btn-primary" onClick={onClick}>View Document</button></td> */}
                           <td>
                             <button type="submit" onClick={()=>{setModalDisplayData(user)
-                             setOpenModal((true))}} class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                             setOpenModal((true))}} className="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
                               Rate Map
                             </button>
                           </td>
@@ -279,9 +279,9 @@ return (
               </li>
             ))}
 
-            <li class="page-item">
+            <li className="page-item">
               <button
-                class="page-link"
+                className="page-link"
                 onClick={nextPage}
                 disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >

@@ -194,9 +194,9 @@ const ViewZoneModal = (props) => {
   return (
     <div>
 
-      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
+      <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -211,23 +211,23 @@ const ViewZoneModal = (props) => {
 
                 <>
 
-                  <div class="modal-header">
-                    <h5 class="modal-title bolding text-black" id="exampleModalLongTitle">Zone</h5>
+                  <div className="modal-header">
+                    <h5 className="modal-title bolding text-black" id="exampleModalLongTitle">Zone</h5>
 
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"  >
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close"  >
                       <span aria-hidden="true">&times;
                       </span>
                     </button>
                   </div>
-                  <div class="modal-body">
+                  <div className="modal-body">
                     <h5 className="font-weight-bold">Name: {props?.userData?.clientName}</h5>
                     <h5 className="font-weight-bold">ClientCode: {props?.userData?.clientCode}</h5>
-                    <div class="container">
+                    <div className="container">
 
                       <Form>
 
-                        <div class="row">
-                          <div class="col-lg-4">
+                        <div className="row">
+                          <div className="col-lg-4">
                             <div className="input full- optional">
                               <label
                                 className="string optional"
@@ -248,7 +248,7 @@ const ViewZoneModal = (props) => {
                             </div>
 
                           </div>
-                          <div class="col-lg-4">
+                          <div className="col-lg-4">
                             <div className="input full- optional">
                               <label
                                 className="string optional"
@@ -272,7 +272,7 @@ const ViewZoneModal = (props) => {
                           </div>
                          
                           
-                            <div class="col-lg-4">
+                            <div className="col-lg-4">
                               <div className="input full- optional">
                                 <label
                                   className="string optional"
@@ -290,7 +290,7 @@ const ViewZoneModal = (props) => {
 
                               </div>
                             </div>
-                            {/* <div class="col-lg-6">
+                            {/* <div className="col-lg-6">
                               <div className="input full- optional">
                                 <label
                                   className="string optional"
@@ -313,9 +313,9 @@ const ViewZoneModal = (props) => {
                           </div>
 
                         
-                        <div class="modal-footer">
-                          {/* <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> */}
-                          <button type="subbmit" onClick={resetForm} class="btn btn-primary">Update Zone</button>
+                        <div className="modal-footer">
+                          {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
+                          <button type="subbmit" onClick={resetForm} className="btn btn-primary">Update Zone</button>
                         </div>
                       </Form>
 
@@ -330,7 +330,7 @@ const ViewZoneModal = (props) => {
 
             </Formik>
             {show === true ? (
-            <table class="table">
+            <table className="table">
             
   <thead>
     <tr>

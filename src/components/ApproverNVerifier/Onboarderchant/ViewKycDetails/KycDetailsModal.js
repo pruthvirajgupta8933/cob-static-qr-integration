@@ -139,15 +139,15 @@ const KycDetailsModal = (props) => {
       aria-hidden="true"
       style={{ overflow: "scroll" }}
     >
-      <div class="modal-dialog" role="document" style={{maxWidth:'80%'}}>
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title font-weight-bold" id="kycmodaldetail">
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h3 className="modal-title font-weight-bold" id="kycmodaldetail">
               Merchant KYC Details
             </h3>
             <button
               type="button"
-              class="close"
+              className="close"
               data-dismiss="modal"
               aria-label="Close"
               onClick={() => {
@@ -192,10 +192,10 @@ const KycDetailsModal = (props) => {
             <CompleteVerification merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore} renderApprovalTable={renderPendingApprovel} renderPendingVerificationData={renderPendingVerificationTable} closeVerification={closeVerification} />
           </div>
 
-          <div class="modal-footer">
+          <div className="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary text-white"
+              className="btn btn-secondary text-white"
               data-dismiss="modal"
               onClick={() => {
                 props?.handleModal(false)

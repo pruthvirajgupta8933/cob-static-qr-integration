@@ -82,7 +82,7 @@ const CreatePassword = (props) => {
                         <label htmlFor="exampleInputPassword1">
                           New Password
                         </label>
-                        <div class="input-group" id="show_hide_password">
+                        <div className="input-group" id="show_hide_password">
                           <Field
                             name="password"
                             className="form-control"
@@ -92,16 +92,16 @@ const CreatePassword = (props) => {
                             type={values.showPassword ? "text" : "password"}
                           />
 
-                          <div class="input-group-addon viewicon">
+                          <div className="input-group-addon viewicon">
                             <a onClick={handleClickShowPassword}>
                               {" "}
                               {values.showPassword ? (
                                 <i
-                                  class="fa fa-eye-slash"
+                                  className="fa fa-eye-slash"
                                   aria-hidden="true"
                                 ></i>
                               ) : (
-                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                <i className="fa fa-eye" aria-hidden="true"></i>
                               )}
                             </a>
                           </div>
@@ -129,20 +129,20 @@ const CreatePassword = (props) => {
                             className="form-control"
                             id="exampleInputPassword2"
                             aria-describedby="PasswordHelp"
-                            placeholder="Enter Confirm Password"
+                            placeholder="Re-type New Password"
                             type={passwordType ? "password" : "text"}
                             // onChange={handlePasswordChange}
                             // value={passwordInput}
                           />
-                          <div class="input-group-addon viewicon">
+                          <div className="input-group-addon viewicon">
                             <a onClick={togglePassword}>
                               {passwordType === "confirmpassword" ? (
                                 <i
-                                  class="fa fa-eye-slash"
+                                  className="fa fa-eye-slash"
                                   aria-hidden="true"
                                 ></i>
                               ) : (
-                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                <i className="fa fa-eye" aria-hidden="true"></i>
                               )}
                             </a>
                           </div>
@@ -175,10 +175,7 @@ const CreatePassword = (props) => {
                   </>
                 )}
               </Formik>
-              <p className="card-text" style={{ display: "none" }}>
-                With supporting text below as a natural lead-in to additional
-                content.
-              </p>
+            
             </div>
             <div className="card-footer text-muted text-center">
               Sabpaisa.in

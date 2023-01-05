@@ -107,7 +107,7 @@ function ChangePassword() {
       <div>
         <NavBar />
       </div>
-      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper">
             <h1 className="right_side_heading">Change Password</h1>
@@ -115,7 +115,6 @@ function ChangePassword() {
               <div
                 role="tablist"
                 className="ant-tabs-bar ant-tabs-top-bar"
-                tabIndex={0}
               >
                 <div className="ant-tabs-nav-container">
                   <div className="ant-tabs-nav-wrap">
@@ -138,7 +137,7 @@ function ChangePassword() {
                 </div>
               </div>
               <div
-                tabIndex={0}
+                
                 role="presentation"
                 style={{
                   width: "0px",
@@ -157,7 +156,7 @@ function ChangePassword() {
                   className="ant-tabs-tabpane ant-tabs-tabpane-active"
                 >
                   <div
-                    tabIndex={0}
+                
                     role="presentation"
                     style={{
                       width: "0px",
@@ -248,14 +247,14 @@ function ChangePassword() {
                               placeholder="Re-type New Password"
                               className="form-control"
                             />
-                            <span class="input-group-addon eyeicon">
+                            <span className="input-group-addon eyeicon">
                               <a onClick={handleClickShowPassword}>
                                 {" "}
                                 {values.showPassword ? (
-                                  <i class="fa fa-eye" aria-hidden="true"></i>
+                                  <i className="fa fa-eye" aria-hidden="true"></i>
                                 ) : (
                                   <i
-                                    class="fa fa-eye-slash"
+                                    className="fa fa-eye-slash"
                                     aria-hidden="true"
                                   ></i>
                                 )}
@@ -291,7 +290,7 @@ function ChangePassword() {
                   </div>
                 </div>
                 <div
-                  tabIndex={0}
+               
                   role="presentation"
                   style={{
                     width: "0px",
@@ -303,7 +302,6 @@ function ChangePassword() {
               </div>
             </div>
             <div
-              tabIndex={0}
               role="presentation"
               style={{
                 width: "0px",

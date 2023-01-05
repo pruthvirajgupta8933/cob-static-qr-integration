@@ -267,8 +267,8 @@ function HeaderPage() {
             <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav marginauto">
-                <li class="nav-item">
+            <ul className="navbar-nav marginauto">
+                <li className="nav-item">
                     <a className="nav-link" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products<span className="fa fa-angle-down"></span></a>
                     <div className="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu1" aria-labelledby="navbarDropdown1">
                         
@@ -285,9 +285,9 @@ function HeaderPage() {
                       </ul>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">API<span class="fa fa-angle-down"></span></a>
-                    <div class="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu2" aria-labelledby="navbarDropdown2">
+                <li className="nav-item">
+                    <a className="nav-link" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">API<span className="fa fa-angle-down"></span></a>
+                    <div className="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu2" aria-labelledby="navbarDropdown2">
                       <ul>
                           <li><a href="https://sabpaisa.in/subscriptions/" target={"_blank"}>Subscriptions API</a></li>
                           <li><a href="https://sabpaisa.in/payouts-api/"  target={"_blank"}>Payouts API</a></li>
@@ -295,9 +295,9 @@ function HeaderPage() {
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Developers<span class="fa fa-angle-down"></span></a>
-                    <div class="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu3" aria-labelledby="navbarDropdown3">
+                <li className="nav-item">
+                    <a className="nav-link" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Developers<span className="fa fa-angle-down"></span></a>
+                    <div className="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu3" aria-labelledby="navbarDropdown3">
                     <ul> 
                         <li><a href="https://sabpaisa.in/integration-kits/" target={"_blank"}>Integration Kits</a></li>
                         <li><a href="https://sabpaisa.in/uat-checklist/"  target={"_blank"}>UAT Checklist</a></li>
@@ -305,14 +305,14 @@ function HeaderPage() {
                     </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li className="nav-item">
                     <a className="nav-link" href="https://sabpaisa.in/referral-partner/" target={"_blank"} >Become Partner</a>
                 </li>
-                <li class="nav-item">
+                <li className="nav-item">
                     {/* <a className="nav-link" href="" target={"_blank"} >Login</a> */}
                     <Link to="/login-page" className="nav-link">Login</Link>
                 </li>
-                <li class="nav-item">
+                <li className="nav-item">
                     {/* <a className="nav-link" href="" target={"_blank"} >Signup</a> */}
                     <Link to="/Registration" className="nav-link">Sign up</Link>
                 </li>

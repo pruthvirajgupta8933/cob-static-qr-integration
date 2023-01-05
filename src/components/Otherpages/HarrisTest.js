@@ -49,13 +49,13 @@ const HarrisTest = () => (
       render={({ errors }) => (
         <Form>
           {/* {console.log(errors,"Eroro =>")} */}
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
-                <h4 class="text-kyc-label text-nowrap">
+            <div className="form-group row">
+              <label className="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
+                <h4 className="text-kyc-label text-nowrap">
                   First Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              <div className="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -64,13 +64,13 @@ const HarrisTest = () => (
                 />
                 </div>
             </div>
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
-               <h4 class="text-kyc-label text-nowrap">
+            <div className="form-group row">
+              <label className="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
+               <h4 className="text-kyc-label text-nowrap">
                   Last Name<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              <div className="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"
@@ -79,13 +79,13 @@ const HarrisTest = () => (
                 />
                 </div>
             </div>
-            <div class="form-group row">
-              <label class="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
-               <h4 class="text-kyc-label text-nowrap">
+            <div className="form-group row">
+              <label className="col-sm-4 col-md-4 col-lg-4 col-form-label p-2 mt-0">
+               <h4 className="text-kyc-label text-nowrap">
                   Age<span style={{ color: "red" }}>*</span>
                 </h4>
               </label>
-              <div class="col-sm-7 col-md-7 col-lg-7">
+              <div className="col-sm-7 col-md-7 col-lg-7">
                 <FormikController
                   control="input"
                   type="text"

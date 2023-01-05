@@ -304,13 +304,13 @@ a.activepaylink-kyc{
     overflow-Y: scroll !important;
 }
 .otpbtn{
-    position: absolute !important;
+    /* position: absolute !important;
     right: 16px;
-    top: 46px;
+    top: 46px; */
 }
 .otpbtn a{
     border-radius: 0 6px 6px 0;
-    max-height: 32px;
+    max-height: 33px;
 }
 .otpbtngst{
   right: 102px;
@@ -364,8 +364,8 @@ a.activepaylink-kyc{
 }
 .success img{
   position: absolute;
-    top: 48px;
-    right: 24px;
+    top: 7px;
+    right: 7px;
 }
 a.inactive{
   color:#000;
@@ -375,4 +375,10 @@ a.inactive{
     display: flex;
     line-height: 9px;
     margin-top: 5px;
+}
+.notfound p{
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  
 }

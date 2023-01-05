@@ -134,9 +134,9 @@ const ViewRateMapping = (props) => {
     return (
         <div>
 
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
+            <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div className="modal-content">
                         <Formik
                             initialValues={initialValues}
                             validationSchema={validationSchema}
@@ -151,23 +151,23 @@ const ViewRateMapping = (props) => {
 
                                 <>
 
-                                    <div class="modal-header">
-                                        <h5 class="modal-title bolding text-black" id="exampleModalLongTitle">Rate Mapping</h5>
+                                    <div className="modal-header">
+                                        <h5 className="modal-title bolding text-black" id="exampleModalLongTitle">Rate Mapping</h5>
 
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"  onClick={() => setShow(false)}>
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close"  onClick={() => setShow(false)}>
                                             <span aria-hidden="true">&times;
                                             </span>
                                         </button>
                                     </div>
-                                    <div class="modal-body">
+                                    <div className="modal-body">
                                         <h5 className="font-weight-bold">Name: {props?.userData?.clientName}</h5>
                                         <h5 className="font-weight-bold">ClientCode: {props?.userData?.clientCode}</h5>
-                                        <div class="container">
+                                        <div className="container">
 
                                             <Form>
 
-                                                <div class="row">
-                                                    <div class="col-lg-4">
+                                                <div className="row">
+                                                    <div className="col-lg-4">
                                                         <div className="input full- optional">
                                                             <label
                                                                 className="string optional"
@@ -189,7 +189,7 @@ const ViewRateMapping = (props) => {
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
+                                                    <div className="col-lg-4">
                                                         <div className="input full- optional">
                                                             <label
                                                                 className="string optional"
@@ -212,7 +212,7 @@ const ViewRateMapping = (props) => {
 
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-4">
+                                                    <div className="col-lg-4">
                                                         <div className="input full- optional">
                                                             <label
                                                                 className="string optional"
@@ -235,9 +235,9 @@ const ViewRateMapping = (props) => {
                                                 </div>
 
 
-                                                <div class="modal-footer">
-                                                    {/* <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> */}
-                                                    <button type="submit"  class="btn btn-primary">View</button>
+                                                <div className="modal-footer">
+                                                    {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
+                                                    <button type="submit"  className="btn btn-primary">View</button>
                                                     {show === true ? (
                                                         <div className='col-lg-12'>
                                                         <RateRadioMapping riskTemplate={riskTemplate} chiledCode={props?.userData}/>

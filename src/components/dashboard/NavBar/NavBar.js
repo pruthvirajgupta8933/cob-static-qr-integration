@@ -20,15 +20,15 @@ const NavBar = () => {
   return (
     <div>
       <nav
-        class="navbar navbar-light Satoshi-Medium minh"
+        className="navbar navbar-light NunitoSans-Regular minh"
         style={{ background: "#140633" }}
       >
-        <ul class="navbar-brand mb-0 h1">
+        <ul className="navbar-brand mb-0 h1">
           <img src={profile} alt="profile" title="profile" />
           <h3 className="text-white float-right mt-0">Welcome back</h3>
           <div style={{ fontSize: "13px" }}>
             <span
-              class="text-white text-sm text-uppercase"
+              className="text-white text-sm text-uppercase"
               style={{ paddingLeft: "40px" }}
             >
               {loggedUser} Id &nbsp;: {loginId}
@@ -38,9 +38,9 @@ const NavBar = () => {
 
         <div>
           {/* Dropdown in the Nav Bar */}
-          <div class="dropdown show" style={{ marginRight: "35px" }}>
+          <div className="dropdown show" style={{ marginRight: "35px" }}>
             <a
-              class="btn dropdown-toggle"
+              className="btn dropdown-toggle"
               href="#"
               role="button"
               id="dropdownMenuLink"
@@ -49,31 +49,31 @@ const NavBar = () => {
               aria-expanded="false"
             >
               <i
-                class="fa fa-user fa-2xl"
+                className="fa fa-user fa-2xl"
                 aria-hidden="true"
                 style={{ fontSize: "24px", color: "white" }}
               ></i>
               <span
-                class="glyphicon glyphicon-cog text-white"
+                className="glyphicon glyphicon-cog text-white"
                 style={{ color: "white" }}
               ></span>
-              <span class="caret text-white text-uppercase">{username}</span>
+              <span className="caret text-white text-uppercase">{username}</span>
             </a>
             <div
-              class="dropdown-menu text-white navpro"
+              className="dropdown-menu text-white navpro"
               
             >
-              <div class="row px-md-3 p-2">
-                <Link to="/dashboard/profile" class="dropdown-item text-white">
+              <div className="row px-md-3 p-2">
+                <Link to="/dashboard/profile" className="dropdown-item text-white">
                   Profile
                 </Link>
                 {/* <Link
                   to="/dashboard/change-password"
-                  class="dropdown-item text-white"
+                  className="dropdown-item text-white"
                 >
                   Change Password
                 </Link> */}
-                <Link onClick={exitback} class="dropdown-item text-white ">
+                <Link onClick={exitback} className="dropdown-item text-white ">
                   Log out
                 </Link>
               </div>

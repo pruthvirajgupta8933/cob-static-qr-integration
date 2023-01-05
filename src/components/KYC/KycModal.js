@@ -19,7 +19,6 @@ export const KycModal=()=>{
     return (<div><div
         className="modal fade show"
         id="exampleModal"
-        tabIndex={-1}
         role="dialog"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -49,11 +48,11 @@ export const KycModal=()=>{
             </div>
             <div className="modal-footer">
             
-            <Link type="button" class="btn btn-success text-white"
+            <Link type="button" className="btn btn-success text-white"
             //  onClick={()=>enableKycButton("yes")}
                >Yes</Link>
 
-            <Link type="button" class="btn btn-primary"
+            <Link type="button" className="btn btn-primary"
               // onClick={()=>enableKycButton("later")}
                >Later</Link>
             </div>

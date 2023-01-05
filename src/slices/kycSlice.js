@@ -607,7 +607,7 @@ export const kycForCompleted = createAsyncThunk(
   async (requestParam) => {
     const response = await axiosInstanceAuth
       .get(`${API_URL.KYC_FOR_COMPLETED}`, {
-        headers: {},
+        headers: {},  
       })
       .catch((error) => {
         return error.response;

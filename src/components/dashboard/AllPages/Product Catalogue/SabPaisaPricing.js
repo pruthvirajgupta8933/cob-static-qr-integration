@@ -25,7 +25,7 @@ const SabPaisaPricing = () => {
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
   const [tempPlanId, setTempPlanId] = useState("");
-  const [rateCloneStatus, setRateCloneStatus] = useState("")
+  // const [rateCloneStatus, setRateCloneStatus] = useState("")
   const [TempSelectedData, setTempSelectedData] = useState({})
 
   const dispatch = useDispatch();
@@ -44,6 +44,7 @@ const SabPaisaPricing = () => {
 
 
   const param = useParams();
+
   const getSubscribedPlan = (id) => {
     axiosInstanceAuth
       .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
@@ -71,92 +72,92 @@ const SabPaisaPricing = () => {
 
 
 
-  // check rate mapping status before rate mapping
-  const checkRateMappingStatus = (clientCodeF, clientCodeT, loginId) => {
-    axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${clientCodeF}/${clientCodeT}/${loginId}`)
-      .then((resp) => {
-        const data = resp.data;
-        setRateCloneStatus(data[0].ID)
-        localStorage.setItem('RATE_MAPPING_CLONE', data[0].ID);
-      })
-      .catch((err) => { console.log(err) })
-  }
+  // // check rate mapping status before rate mapping
+  // const checkRateMappingStatus = (clientCodeF, clientCodeT, loginId) => {
+  //   axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${clientCodeF}/${clientCodeT}/${loginId}`)
+  //     .then((resp) => {
+  //       const data = resp.data;
+  //       setRateCloneStatus(data[0].ID)
+  //       localStorage.setItem('RATE_MAPPING_CLONE', data[0].ID);
+  //     })
+  //     .catch((err) => { console.log(err) })
+  // }
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    // console.log("rateCloneStatus",rateCloneStatus)
-    // console.log("tempPlanId",tempPlanId)
-    // console.log("param?.id",param?.id)
+  //   // console.log("rateCloneStatus",rateCloneStatus)
+  //   // console.log("tempPlanId",tempPlanId)
+  //   // console.log("param?.id",param?.id)
 
-    if ((rateCloneStatus === 3 || rateCloneStatus === 0) && (param?.id === "10" && tempPlanId!==1 && tempPlanId!=="") ) {
-      console.log("cond true")
-      if (user?.clientMerchantDetailsList !== null) {
-        console.log("33")
-        const clientMerchantDetailsList = user?.clientMerchantDetailsList;
-        const clientCode = clientMerchantDetailsList[0]?.clientCode;
-        const clientId = clientMerchantDetailsList[0]?.clientId;
-        const clientContact = user?.clientMobileNo;
-        const clientEmail = user?.userName;
-        const clientName = clientMerchantDetailsList[0]?.clientName;
-        const clientUserName = user?.userName;
-        const passwrod = stringDec(sessionStorage.getItem('prog_id'));
+  //   if ((rateCloneStatus === 3 || rateCloneStatus === 0) && (param?.id === "10" && tempPlanId!==1 && tempPlanId!=="") ) {
+  //     console.log("cond true")
+  //     if (user?.clientMerchantDetailsList !== null) {
+  //       console.log("33")
+  //       const clientMerchantDetailsList = user?.clientMerchantDetailsList;
+  //       const clientCode = clientMerchantDetailsList[0]?.clientCode;
+  //       const clientId = clientMerchantDetailsList[0]?.clientId;
+  //       const clientContact = user?.clientMobileNo;
+  //       const clientEmail = user?.userName;
+  //       const clientName = clientMerchantDetailsList[0]?.clientName;
+  //       const clientUserName = user?.userName;
+  //       const passwrod = stringDec(sessionStorage.getItem('prog_id'));
 
-        const inputData = {
-          clientId: clientId,
-          clientCode: clientCode,
-          clientContact: clientContact,
-          clientEmail: clientEmail,
-          address: "Delhi",
-          clientLogoPath: "client/logopath",
-          clientName: clientName,
-          clientLink: "cltLink",
-          stateId: 9,
-          bid: "19", // ask
-          stateName: "DELHI",
-          bankName: "SBI",
-          client_username: clientUserName,
-          client_password: passwrod,
-          appId: "10", // ask
-          status: "Activate", // ask
-          client_type: "normal Client",
-          successUrl: "https://sabpaisa.in/",
-          failedUrl: "https://sabpaisa.in/",
-          subscriptionstatus: "Subscribed",
-          businessType: 2
-        };
+  //       const inputData = {
+  //         clientId: clientId,
+  //         clientCode: clientCode,
+  //         clientContact: clientContact,
+  //         clientEmail: clientEmail,
+  //         address: "Delhi",
+  //         clientLogoPath: "client/logopath",
+  //         clientName: clientName,
+  //         clientLink: "cltLink",
+  //         stateId: 9,
+  //         bid: "19", // ask
+  //         stateName: "DELHI",
+  //         bankName: "SBI",
+  //         client_username: clientUserName,
+  //         client_password: passwrod,
+  //         appId: "10", // ask
+  //         status: "Activate", // ask
+  //         client_type: "normal Client",
+  //         successUrl: "https://sabpaisa.in/",
+  //         failedUrl: "https://sabpaisa.in/",
+  //         subscriptionstatus: "Subscribed",
+  //         businessType: 2
+  //       };
 
-        // console.log("inputData",inputData);
-        // 1 - run RATE_MAPPING_GenerateClientFormForCob 
+  //       // console.log("inputData",inputData);
+  //       // 1 - run RATE_MAPPING_GenerateClientFormForCob 
 
-        axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
+  //       axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
 
-          console.log("run RATE_MAPPING_GenerateClientFormForCob");
-          localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
-          localStorage.setItem('resp_RATE_MAPPING_GenerateClientFormForCob', res?.toString());
-          //2 - rate map clone   // parent client code / new client code / login id
-          axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/'COBED'/${clientCode}/${user?.loginId}`).then(res => {
-            console.log("run RATE_MAPPING_CLONE");
-            localStorage.setItem('RATE_MAPPING_CLONE', "api trigger");
-            localStorage.setItem('resp_RATE_MAPPING_CLONE', res?.toString());
-            // 3- enable pay link
-            //    axiosInstance.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
-            //       localStorage.setItem('enablePaylink', "api trigger");
-            //       // console.log("3 api run")
-            //       dispatch(checkPermissionSlice(clientCode));
-            //   })
-          }).catch(err => { console.log(err) })
-        }).catch(err => { console.log(err) })
-
-
-      }
-    }
+  //         console.log("run RATE_MAPPING_GenerateClientFormForCob");
+  //         localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
+  //         localStorage.setItem('resp_RATE_MAPPING_GenerateClientFormForCob', res?.toString());
+  //         //2 - rate map clone   // parent client code / new client code / login id
+  //         axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/'COBED'/${clientCode}/${user?.loginId}`).then(res => {
+  //           console.log("run RATE_MAPPING_CLONE");
+  //           localStorage.setItem('RATE_MAPPING_CLONE', "api trigger");
+  //           localStorage.setItem('resp_RATE_MAPPING_CLONE', res?.toString());
+  //           // 3- enable pay link
+  //           //    axiosInstance.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
+  //           //       localStorage.setItem('enablePaylink', "api trigger");
+  //           //       // console.log("3 api run")
+  //           //       dispatch(checkPermissionSlice(clientCode));
+  //           //   })
+  //         }).catch(err => { console.log(err) })
+  //       }).catch(err => { console.log(err) })
 
 
-  }, [rateCloneStatus,tempPlanId])
+  //     }
+  //   }
 
 
-  const handleClick = async (plan_id, plan_name) => {
+  // }, [rateCloneStatus,tempPlanId])
+
+
+  const handleClick = async (plan_id, plan_name, plan_code) => {
     
     const postData = {
       clientId: clientId,
@@ -166,32 +167,37 @@ const SabPaisaPricing = () => {
       applicationId: param?.id,
     };
 
-    
-console.log("postdata",postData)
-    sessionStorage.setItem("tempProductPlanData",JSON.stringify(postData))
-    // history.push("/dashboard/sabpaisa-pg");
-    // setTempSelectedData(postData)
-
-    setTempPlanId(plan_id)
-    const res = await axiosInstanceAuth.post(
-      API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-      postData
-    );
-   
-    if (res?.status === 200) {
-      console.log("1")
-      // only PG product without subscription plan check rate mapping status
-      if (param?.id === "10" && plan_id!==1) {
-        console.log("2")
-        // only for payment gateway we have to check rate mapping status
-        checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
+    if(plan_code==="005"){
+      // only for subscription plan , we route to payment gateway
+      sessionStorage.setItem("tempProductPlanData",JSON.stringify(postData))
+      setTempSelectedData(postData)
+      history.push("/dashboard/sabpaisa-pg");
+    }else{
+      setTempPlanId(plan_id)
+      const res = await axiosInstanceAuth.post(
+        API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+        postData
+      );
+     
+      if (res?.status === 200) {
+        // console.log("1")
+        // only PG product without subscription plan check rate mapping status
+        if (param?.id === "10" && plan_id!==1) {
+          // console.log("2")
+          // only for payment gateway we have to check rate mapping status
+          // checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
+        }
+  
+        getSubscribedPlan(plan_id);
+        toastConfig.successToast(res?.data?.message);
+      } else {
+        toastConfig.errorToast("Something went wrong");
       }
-
-      getSubscribedPlan(plan_id);
-      toastConfig.successToast(res?.data?.message);
-    } else {
-      toastConfig.errorToast("Something went wrong");
     }
+   
+   
+
+   
 
   };
 
@@ -203,7 +209,7 @@ console.log("postdata",postData)
         <NavBar />
         {/* <SabpaisaPaymentGateway /> */}
       </div>
-      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div>
           <h1 className="text-center headingpricing text-md-start">SabPaisa Pricing</h1>
           <h2 className="text-center headingpricing prdhead">{param?.name}</h2>
@@ -213,15 +219,19 @@ console.log("postdata",postData)
           </h3>
         </div>
         {/* <button type="button" onClick={clickHandler}>check</button> */}
-        <div class="container mb-10">
-          <div class="row">
+        <div className="container mb-10">
+          <div className="row flx">
+          
+          {/* <button type="button" onClick={()=> handleClick(1, "Subscription Plan", "005")}>Test Button Abhishek</button> */}
+
 
             {spinner && <span className="spinner-border" role="status"></span>}
             {productDetails.map((Products) => (
               // if user business catagory is gamming
               (business_cat_code === "37" && Products.plan_code === "005") ? <></> :
-                (param?.id === '14') ? <div class="card col-lg-8">
-                  <div class="card-body">
+                (param?.id === '14') ? 
+                <div className="card col-lg-4">
+                  <div className="card-body">
                     <div className="col-lg-12">
                       <h2 className="pull-left- bold-font text-center mb-20 price d_block">
                         {(Products.plan_price === "Connect" && Products.plan_name === "Enterprise") ?
@@ -231,8 +241,8 @@ console.log("postdata",postData)
                           </>
                         }
                       </h2>
-                      <span class="blockquote mb-0 pull-left- text-center">
-                        <span class="w-50 pxsolid text-center mt-40 min-heit">&nbsp;</span>
+                      <span className="blockquote mb-0 pull-left- text-center">
+                        <span className="w-50 pxsolid text-center mt-40 min-heit">&nbsp;</span>
                         <h4 className="mb-20 featurespricing">FEATURES INCLUDING</h4>
                         <ul className="list-group list-group-flush">
                           {Products?.plan_description
@@ -255,7 +265,8 @@ console.log("postdata",postData)
                               if (selectedPlan?.planId !== Products?.plan_id) {
                                 handleClick(
                                   Products.plan_id,
-                                  Products.plan_name
+                                  Products.plan_name,
+                                  Products?.plan_code
                                 )
                               }
                             }
@@ -332,12 +343,13 @@ console.log("postdata",postData)
                       </span>
                     </div>
                   </div>
-                </div> :
+                </div>
+                :
                   <div className={`px-1 ${Products?.plan_id === 45 ? "col-lg-12" : ""} 
                     ${productDetails.length === 4 ? "col-lg-3" : "col-lg-4"}  `} >
                     <div className="card heightcards">
                       <div className="card-body">
-                        <div className="row mb-5-">
+                        <div className="row- mb-5-">
                           <div className="col-lg-12 text-center">
                             <h1 className="card-title- cardoneheadingcss pb-3-">
                               {Products.plan_name}
@@ -361,7 +373,8 @@ console.log("postdata",postData)
                                 if (selectedPlan?.planId !== Products.plan_id) {
                                   handleClick(
                                     Products.plan_id,
-                                    Products.plan_name
+                                    Products.plan_name,
+                                    Products?.plan_code
                                   )
                                 }
                               }
@@ -388,12 +401,12 @@ console.log("postdata",postData)
 
                             role="document"
                           >
-                            <div class="modal-content">
-                              <div class="modal-header modal-header-fignma">
+                            <div className="modal-content">
+                              <div className="modal-header modal-header-fignma">
 
                                 <button
                                   type="button"
-                                  class="close"
+                                  className="close"
                                   data-dismiss="modal"
                                   aria-label="Close"
                                 onClick={() => clickHandler(false)}
@@ -403,20 +416,20 @@ console.log("postdata",postData)
                                 </button>
 
                               </div>
-                              <div class="modal-body">
+                              <div className="modal-body">
                                 <h2 className="subscribingproduct mb-0">
                                   Thank You For Subscribing
                                 </h2>
 
-                                <div class="text-center">
+                                <div className="text-center">
                                   <h2 className="manshacss">
                                     Our team will contact you and help you integrate your platform.
                                     Till then, please familiarize yourself with our Dashboard
 
                                   </h2>
                                 </div>
-                                <div class="row">
-                                  <div class="col-lg-12 text-center">
+                                <div className="row">
+                                  <div className="col-lg-12 text-center">
                                     <img
                                       src={rafiki}
                                       className="modalsimageclass-1"
@@ -427,12 +440,12 @@ console.log("postdata",postData)
                                   </div>
                                 </div>
                               </div>
-                              <div class="modal-footer m-0 p-2">
+                              <div className="modal-footer m-0 p-2">
                                 <div className="col-lg-12 text-center">
 
                                   <button
                                     type="button"
-                                    class="ColrsforredirectProdct text-white m-0"
+                                    className="ColrsforredirectProdct text-white m-0"
                                     onClick={() => clickHandler(true)}
                                     data-dismiss="modal"
                                   >
@@ -448,7 +461,7 @@ console.log("postdata",postData)
 
 
 
-                        <span class="w-50 pxsolid text-center">&nbsp;</span>
+                        <span className="w-50 pxsolid text-center">&nbsp;</span>
                         <h2 className="featurespricing">FEATURES INCLUDING</h2>
 
 

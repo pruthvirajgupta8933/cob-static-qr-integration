@@ -42,6 +42,7 @@ function PendingVerification() {
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [openCommentModal, setOpenCommentModal] = useState(false);
+  const [isLoaded,setIsLoaded] = useState(false)
 
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab)
@@ -85,6 +86,7 @@ function PendingVerification() {
         setData(data);
         setDataCount(dataCoun);
         setNewRegistrationData(data);
+        setIsLoaded(false)   
       })
 
       .catch((err) => {
@@ -112,12 +114,17 @@ function PendingVerification() {
   const pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
 
   const nextPage = () => {
+    setIsLoaded(true)
+    setData([])
     if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);
+      
     }
   };
 
   const prevPage = () => {
+    setIsLoaded(true)
+    setData([])
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
@@ -298,6 +305,7 @@ function PendingVerification() {
         </div>
         <nav>
           <ul className="pagination justify-content-center">
+          {isLoaded === true ? <Spinner /> : (
             <li className="page-item">
               <button 
               className="page-link" 
@@ -305,6 +313,7 @@ function PendingVerification() {
                 Previous
               </button>
             </li>
+          )}
             {displayPageNumber?.map((pgNumber, i) => (
               <li 
                 key={i}
@@ -321,15 +330,16 @@ function PendingVerification() {
               </li>
             ))}
 
-            <li class="page-item">
+        {isLoaded === true ? <Spinner /> : (
+            <li className="page-item">
               <button
-                class="page-link"
+                className="page-link"
                 onClick={nextPage}
                 disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
               >
                 Next
               </button>
-            </li>
+            </li> )}
           </ul>
         </nav>
       </div>

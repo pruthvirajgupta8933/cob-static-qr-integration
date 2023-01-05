@@ -38,6 +38,7 @@ const SettlementReportNew= () => {
   const [pageCount, setPageCount] = useState(0);
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
+  const [disable,setIsDisable] = useState(false)
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -107,15 +108,21 @@ const SettlementReportNew= () => {
   };
 
   const onSubmitHandler = (values) => {
+    setIsDisable(true)
     dispatch(fetchSettlementReportSlice(values)).then((res) => {
      
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {
         toast.error("Request Rejected");
+        setIsDisable(false)
+      }
+      if (ApiStatus === "fulfilled") {
+        setIsDisable(false)
       }
       if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
         toast.error("No Data Found");
+        setIsDisable(false)
       }
     });
   };
@@ -327,14 +334,14 @@ const SettlementReportNew= () => {
  
 
   return (
-    <section className="ant-layout Satoshi-Medium">
+    <section className="ant-layout NunitoSans-Regular">
       <div>
         <NavBar />
       </div>
       <div className="profileBarStatus">
       <Notification/>
       </div>
-      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Settlement Report</h1>
@@ -382,6 +389,7 @@ const SettlementReportNew= () => {
                     <div className="form-row">
                       <div className="form-group col-md-1">
                         <button
+                        disabled={disable}
                           className=" btn bttn bttnbackgroundkyc"
                           type="submit"
                         >

@@ -53,11 +53,10 @@ const MailVerificationModal = ({ show, setShow }) => {
       <div
         className="modal fade show"
         id="forEmail"
-        tabIndex="-1"
         role="dialog"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
-        style={{ display: show ? "block" : "none",marginLeft:"233px",marginTop:"107px" }}
+        style={{ display: show ? "block" : "none",marginLeft:"233px",marginTop:"42px" }}
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content">
@@ -78,7 +77,7 @@ const MailVerificationModal = ({ show, setShow }) => {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="mx-auto py-3">
+              <div className="mx-auto py-3">
                 <h1 className="subHeaderForModal">
                   Please enter the verification code sent to your
                   email !
@@ -108,7 +107,7 @@ const MailVerificationModal = ({ show, setShow }) => {
                     numInputs={6}
                   />
                 </div>
-                <div class="col-md-11 text-center">
+                <div className="col-md-11 text-center">
                 <button className="btn" type="button" style={{backgroundColor:"#0156B3"}}
                     onClick={handleVerificationOfEmail}
                   >

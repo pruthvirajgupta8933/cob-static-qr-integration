@@ -16,7 +16,6 @@ function TermCondition({acceptTnC,callbackHandler, setFieldValues}) {
     <div><div
     className="modal fade show"
     id="exampleModal"
-    tabIndex={-1}
     role="dialog"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"

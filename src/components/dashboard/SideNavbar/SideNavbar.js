@@ -49,7 +49,7 @@ function SideNavbar() {
       <div className="ant-layout-sider-children">
         <div className="gx-sidebar-content">
           <div className="brand-logo d-flex-item-right">
-            <div class="float-centre p-4">
+            <div className="float-centre p-4">
               <img
                 src={Sabpaisalogo3}
                 width={150}
@@ -127,7 +127,7 @@ function SideNavbar() {
                       >
                         <i className="fa fa-list" aria-hidden="true" />
                         <span>&nbsp;Merchant List</span>
-                        {/* <span class="new-tab">new</span> */}
+                        {/* <span className="new-tab">new</span> */}
                       </Link>
                     </li>
                   ) : (
@@ -143,7 +143,7 @@ function SideNavbar() {
                       >
                         <i className="fa fa-user" aria-hidden="true" />
                         <span>&nbsp;Additional KYC</span>
-                        {/* <span class="new-tab">new</span> */}
+                        {/* <span className="new-tab">new</span> */}
                       </Link>
                     </li>
 
@@ -155,7 +155,7 @@ function SideNavbar() {
                       >
                         <i className="fa fa-list-alt" aria-hidden="true" />
                         <span>&nbsp;Assign Zone</span>
-                        {/* <span class="new-tab">new</span> */}
+                        {/* <span className="new-tab">new</span> */}
                       </Link>
                     </li>
                     <li className="ant-menu-item" role="menuitem">
@@ -165,7 +165,7 @@ function SideNavbar() {
                       >
                         <i className="fa fa-bar-chart" aria-hidden="true" />
                         <span>&nbsp;Rate Mapping</span>
-                        {/* <span class="new-tab">new</span> */}
+                        {/* <span className="new-tab">new</span> */}
                       </Link>
                     </li>
                     </>
@@ -181,7 +181,7 @@ function SideNavbar() {
                       >
                         <i className="fa fa-user" aria-hidden="true" />
                         <span>&nbsp;Signup Data</span>
-                        {/* <span class="new-tab">new</span> */}
+                        {/* <span className="new-tab">new</span> */}
                       </Link>
                     </li>
                      ) : (

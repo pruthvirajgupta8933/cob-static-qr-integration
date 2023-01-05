@@ -182,7 +182,7 @@ export const Profile = () => {
       <div>
         <NavBar />
       </div>
-      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper">
 
@@ -192,12 +192,12 @@ export const Profile = () => {
 
 
 
-            <div class="panel panel-default">
+            <div className="panel panel-default">
               <form className="form-horizontal form_cmplt" onSubmit={handleSubmit(onSubmit)}>
-                <div class="panel-heading text-uppercase">User Details </div>
-                <ul class="list-group">
-                  <li class="list-group-item">
-                    <div class="col-lg-6">
+                <div className="panel-heading text-uppercase">User Details </div>
+                <ul className="list-group">
+                  <li className="list-group-item">
+                    <div className="col-lg-6">
                       <label><strong>Username : </strong></label>
                       <span className="border-0 text-uppercase" disabled="true" readonly>
                       &nbsp; {clientContactPersonName}
@@ -206,7 +206,7 @@ export const Profile = () => {
             {errors.clientName?.message}
           </p> */}
                     </div>
-                    <div class="col-lg-6">
+                    <div className="col-lg-6">
                       <label><strong>Email Id : </strong></label>
                       <span className="form-control- border-0" readonly disabled="true">
                        &nbsp; {clientEmail}
@@ -214,7 +214,7 @@ export const Profile = () => {
                       {/* <p>{errors.email?.message}</p> */}
                     </div>
 
-                    <div class="col-lg-6">
+                    <div className="col-lg-6">
                       <label><strong>Account Type : </strong></label>
                       <span className="border-0 text-uppercase" readonly disabled="true">
                       &nbsp; {LoggedUser}
@@ -223,7 +223,7 @@ export const Profile = () => {
           {errors.phone?.message}
         </p> */}
                     </div>
-                    <div class="col-lg-6">
+                    <div className="col-lg-6">
                       <label><strong>Phone No. : </strong></label>
                       <span className="form-control- border-0" readonly disabled="true">
                       &nbsp; {clientMobileNo}
@@ -234,11 +234,11 @@ export const Profile = () => {
                     </div>
 
                   </li>
-                  {roleBasedShowTab.merchant ? <li class="list-group-item">
-                    <div class="col-lg-12 text-center">
+                  {roleBasedShowTab.merchant ? <li className="list-group-item">
+                    <div className="col-lg-12 text-center">
                       {/* <label><strong>Change Password</strong></label> -<br/> */}
                       <Link to={`/dashboard/change-password`}>
-                        <button type="button" class="form-control btn btn-primary for_passwrd w-50" >
+                        <button type="button" className="form-control btn btn-primary for_passwrd w-50" >
                           Change Password
                         </button>
                       </Link>
@@ -276,10 +276,10 @@ export const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div tabIndex={0} role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }} />
+              <div  role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }} />
               <div className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content" style={{ marginLeft: '0%' }}>
                 <div role="tabpanel" aria-hidden="false" className="ant-tabs-tabpane ant-tabs-tabpane-active">
-                  <div tabIndex={0} role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }}>
+                  <div role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }}>
                   </div>
                   <div className="container col-sm-12 d-flex">
 
@@ -301,7 +301,7 @@ export const Profile = () => {
                 </div>
               </div>
               <div
-                tabIndex={0}
+              
                 role="presentation"
                 style={{
                   width: "0px",
@@ -313,7 +313,7 @@ export const Profile = () => {
             </div>
           </div>
           <div
-            tabIndex={0}
+          
             role="presentation"
             style={{
               width: "0px",

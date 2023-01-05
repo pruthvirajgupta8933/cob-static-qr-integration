@@ -45,11 +45,12 @@ let closeVerificationModal=props?.closeVerification;
       verified_by: loginId,
 
     };
-    setDisable(true)
+   
 
     if (currenTab === 3) {
       if (isverified === false) {
         if ((roles?.approver === true && Allow_To_Do_Verify_Kyc_details === true) || roles?.verifier === true) {
+          if (window.confirm("Verify kyc")) {
           dispatch(completeVerification(veriferDetails))
             .then((resp) => {
               
@@ -67,6 +68,7 @@ let closeVerificationModal=props?.closeVerification;
               setDisable(false)
               toast.error("Something went wrong, Please Try Again later")
             });
+          }
 
         }
       }
@@ -83,6 +85,7 @@ let closeVerificationModal=props?.closeVerification;
     if (currenTab === 4) {
       if (isverified === true && isapproved === false) {
         if (roles?.approver === true) {
+          if (window.confirm("Approve kyc")) {
           dispatch(approvekyc(dataAppr))
             .then((resp) => {
               resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
@@ -94,6 +97,7 @@ let closeVerificationModal=props?.closeVerification;
               toast.error("Something went wrong, Please Try Again later")
 
             });
+          }
 
         }
       }
@@ -106,6 +110,7 @@ let closeVerificationModal=props?.closeVerification;
       login_id: merchantKycId.loginMasterId,
       rejected_by: loginId,
     };
+    if (window.confirm("Reject kyc")) {
     dispatch(completeVerificationRejectKyc(rejectDetails))
       .then((resp) => {
         resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : resp?.payload?.detail && toast.error(resp?.payload?.detail)
@@ -115,6 +120,7 @@ let closeVerificationModal=props?.closeVerification;
       .catch((e) => {
         toast.error("Something went wrong, Please Try Again later")
       });
+    }
 
      
   
@@ -201,15 +207,15 @@ let closeVerificationModal=props?.closeVerification;
     
 
   return (
-    <div class="row">
-      <div class="col-lg-6"></div>
-      <div class="col-lg-6">
+    <div className="row">
+      <div className="col-lg-6"></div>
+      <div className="col-lg-6">
         {enableBtnVerifier || enableBtnApprover ?
           <><button type="button"  disabled={disable} onClick={() => {handleVerifyClick()
-          }} class="btn btn-info btn-sm text-white">{buttonText}</button>
+          }} className="btn btn-info btn-sm text-white">{buttonText}</button>
 
 
-          <button type="button" onClick={() => handleRejectClick()} class="btn btn-danger btn-sm text-white">Reject KYC</button></>
+          <button type="button" onClick={() => handleRejectClick()} className="btn btn-danger btn-sm text-white">Reject KYC</button></>
           : <></>
         }
 

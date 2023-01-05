@@ -135,7 +135,7 @@ const MerchantDocument = (props) => {
     role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3 ?
       setButtonText("Verify")
 
-      : role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 4 ?
+      : role?.approver === true && currenTab === 4 ?
         setButtonText("Approve")
         : role?.verifier === true ?
           setButtonText("Verify")
@@ -205,7 +205,7 @@ const MerchantDocument = (props) => {
 
   return (
     <div className="row mb-4 border">
-      <div class="col-lg-12">
+      <div className="col-lg-12">
         <h3 className="font-weight-bold">Merchant Documents</h3>
       </div>
 

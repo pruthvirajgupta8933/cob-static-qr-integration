@@ -93,7 +93,7 @@ function Sandbox() {
               <div className="container">
                 <div className="col-lg-12 border m-1 p-2-">
                   <a
-                    class="btn"
+                    className="btn"
                     data-toggle="collapse"
                     href="#multiCollapseExample1"
                     role="button"
@@ -104,7 +104,7 @@ function Sandbox() {
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
-                    class="collapse multi-collapse show"
+                    className="collapse multi-collapse show"
                     id="multiCollapseExample1"
                   >
                     <div className="form-group row">
@@ -190,7 +190,7 @@ function Sandbox() {
                 
                 {selectedPlan?.planId!=="" ? <div className="col-lg-12 border m-1 p-2-">
                   <a
-                    class="btn"
+                    className="btn"
                     data-toggle="collapse"
                     href="#multiCollapseExample2"
                     role="button"
@@ -201,7 +201,7 @@ function Sandbox() {
                   </a>
 
                   <form
-                    class="collapse multi-collapse show"
+                    className="collapse multi-collapse show"
                     id="multiCollapseExample2"
                   >
                     <div className="form-group row">
@@ -268,17 +268,17 @@ function Sandbox() {
                           readOnly="true"
                           value={data && data?.clientPassword}
                         />
-                          <div class="input-group-addon eye__Icon">
+                          <div className="input-group-addon eye__Icon">
                                         <a onClick={handleClickShowPassword}>
                                           {" "}
                                           {values.showPassword ? (
                                             <i
-                                              class="fa fa-eye"
+                                              className="fa fa-eye"
                                               aria-hidden="true"
                                             ></i>
                                           ) : (
                                             <i
-                                              class="fa fa-eye-slash"
+                                              className="fa fa-eye-slash"
                                               aria-hidden="true"
                                             ></i>
                                           )}
