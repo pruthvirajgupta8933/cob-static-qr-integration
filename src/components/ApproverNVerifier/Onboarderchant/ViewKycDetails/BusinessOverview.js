@@ -6,16 +6,18 @@ import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
 import { GetKycTabsStatus } from '../../../../slices/kycSlice';
+import CommentModalForReject from './CommentModalForReject';
 
 const BusinessOverview = (props) => {
   const { businessTypeResponse, businessCategoryResponse, merchantKycId, KycTabStatus } = props;
+  console.log("this is KycTabStatus",KycTabStatus)
    const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
   
   const [isVerified, setIsVerified] = useState(KycTabStatus?.business_info_status === "Verified" ? true : false);
   const [isRejected, setIsRejected] = useState(KycTabStatus?.business_info_status === "Verified" ? true : false);
 
-  
+  let commentsStatus=KycTabStatus.business_info_reject_comments;
 
 
   const { user } = auth;
@@ -44,10 +46,11 @@ const BusinessOverview = (props) => {
   }
 
 
-  const handleRejectClick = () => {
+  const handleRejectClick = (business_info_reject_comments="") => {
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       business_info_rejected_by: loginId,
+      business_info_reject_comments:business_info_reject_comments
     };
     if (window.confirm("Reject Business Overview?")) {
     dispatch(rejectKycOperation(rejectDetails))
@@ -72,6 +75,7 @@ const BusinessOverview = (props) => {
       <div className="col-lg-12">
         <h3 className="font-weight-bold">Business Overview</h3>
       </div>
+      <CommentModalForReject/>
       <div className="col-sm-6 col-md-6 col-lg-6">
         <label className="col-form-label mt-0 p-2">
           Business Type<span style={{ color: "red" }}>*</span>
@@ -175,13 +179,17 @@ const BusinessOverview = (props) => {
 
       </div>
 
-      <div className="col-lg-6 ">
+      <div className="col-lg-6 font-weight-bold mt-2 ">
         Status : <span>{KycTabStatus?.business_info_status}</span>
+      </div>
+      <div className="col-lg-7 font-weight-bold mt-2 ">
+        Comments : <span>{KycTabStatus?.business_info_reject_comments}</span>
       </div>
 
       <div className="col-lg-6 mt-3">
         <VerifyRejectBtn
          KycTabStatus={KycTabStatus?.business_info_status}
+         ContactComments={commentsStatus}
           KycVerifyStatus={{ handleVerifyClick, isVerified }}
           KycRejectStatus={{ handleRejectClick, isRejected }}
           btnText={{ verify: "Verify", Reject: "Reject" }}

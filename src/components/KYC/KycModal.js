@@ -19,7 +19,6 @@ export const KycModal=()=>{
     return (<div><div
         className="modal fade show"
         id="exampleModal"
-        tabIndex={-1}
         role="dialog"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"

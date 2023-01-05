@@ -534,7 +534,6 @@ function Home() {
             "modal fade mymodals" +
             (modalState === "Not-Filled" ? " show d-block" : " d-none")
           }
-          tabIndex="-1"
           role="dialog"
         >
           <div className="modal-dialog modal-dialog-centered " role="document">
@@ -614,7 +613,6 @@ function Home() {
           "modal fade mymodals" +
           (OpenModalForKycSubmit?.isOpen === true ? " show d-block" : " d-none")
         }
-        tabIndex="-1"
         role="dialog"
       >
         <div className="modal-dialog modal-dialog-centered" role="document">

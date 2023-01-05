@@ -276,10 +276,10 @@ export const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div tabIndex={0} role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }} />
+              <div  role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }} />
               <div className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content" style={{ marginLeft: '0%' }}>
                 <div role="tabpanel" aria-hidden="false" className="ant-tabs-tabpane ant-tabs-tabpane-active">
-                  <div tabIndex={0} role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }}>
+                  <div role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }}>
                   </div>
                   <div className="container col-sm-12 d-flex">
 
@@ -301,7 +301,7 @@ export const Profile = () => {
                 </div>
               </div>
               <div
-                tabIndex={0}
+              
                 role="presentation"
                 style={{
                   width: "0px",
@@ -313,7 +313,7 @@ export const Profile = () => {
             </div>
           </div>
           <div
-            tabIndex={0}
+          
             role="presentation"
             style={{
               width: "0px",

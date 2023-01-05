@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
 import { GetKycTabsStatus } from '../../../../slices/kycSlice';
+import CommentModalForReject from './CommentModalForReject';
 
 
 function MerchantContactInfo(props) {
@@ -16,7 +17,7 @@ function MerchantContactInfo(props) {
   const [isRejected, setIsRejected] = useState(KycTabStatus?.general_info_status === "Verified" ? true : false);
 
 
-
+let commentsStatus=KycTabStatus.general_info_reject_comments;
 
   const dispatch = useDispatch();
   const { role, kycid } = props;
@@ -54,10 +55,15 @@ function MerchantContactInfo(props) {
       });
   }
 
-  const handleRejectClick = () => {
+  const handleRejectClick = (general_info_reject_comments="") => {
+   
+    
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       general_info_rejected_by: loginId,
+      general_info_reject_comments:general_info_reject_comments
+
+
     };
     if (window.confirm("Reject Merchant Contact Info?")) {
     dispatch(rejectKycOperation(rejectDetails))
@@ -75,14 +81,19 @@ function MerchantContactInfo(props) {
 
   }
 
+ 
 
 
+const callBackFn = (id) =>{
+  console.log("id",id);
+}
 
   return (
     <div className="row mb-4 border">
       <div className="col-lg-12">
         <h3 className="font-weight-bold">Merchant Contact Info</h3>
       </div>
+      
 
       <div className="col-sm-6 col-md-6 col-lg-6 ">
         <label className="col-form-label mt-0 p-2">
@@ -153,13 +164,18 @@ function MerchantContactInfo(props) {
 
       </div>
 
-      <div className="col-lg-6">
+      <div className="col-lg-6 font-weight-bold">
         Status : <span>{KycTabStatus?.general_info_status}</span>
+      </div>
+      <div className="col-lg-7 font-weight-bold mt-1">
+        Comments : <span>{KycTabStatus?.general_info_reject_comments}</span>
       </div>
       <div className="col-lg-6">
         <VerifyRejectBtn
          KycTabStatus={KycTabStatus?.general_info_status}
           KycVerifyStatus={{ handleVerifyClick, isVerified }}
+          ContactComments={commentsStatus}
+          check={callBackFn}
           KycRejectStatus={{ handleRejectClick, isRejected }}
           btnText={{ verify: "Verify", Reject: "Reject" }}
         />
