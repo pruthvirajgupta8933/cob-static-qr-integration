@@ -105,7 +105,7 @@ useEffect(() => {
     <div
     className="modal fade"
     id="exampleModal"
-    tabIndex="-1"
+   
     role="dialog"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"

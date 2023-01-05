@@ -192,7 +192,6 @@ const  printFn = async ()=>{
       <div
         className="modal"
         id="exampleModalCenter"
-        tabIndex={-1}
         role="dialog"
         aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true"
