@@ -7950,3 +7950,7 @@ footer {
 #navpad{
     padding:5px 8px !important;
 }
+.flx{
+    display: flex;
+    justify-content: center;
+}

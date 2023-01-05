@@ -25,7 +25,7 @@ const SabPaisaPricing = () => {
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
   const [tempPlanId, setTempPlanId] = useState("");
-  const [rateCloneStatus, setRateCloneStatus] = useState("")
+  // const [rateCloneStatus, setRateCloneStatus] = useState("")
   const [TempSelectedData, setTempSelectedData] = useState({})
 
   const dispatch = useDispatch();
@@ -180,10 +180,10 @@ const SabPaisaPricing = () => {
       );
      
       if (res?.status === 200) {
-        console.log("1")
+        // console.log("1")
         // only PG product without subscription plan check rate mapping status
         if (param?.id === "10" && plan_id!==1) {
-          console.log("2")
+          // console.log("2")
           // only for payment gateway we have to check rate mapping status
           // checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
         }
@@ -209,7 +209,7 @@ const SabPaisaPricing = () => {
         <NavBar />
         {/* <SabpaisaPaymentGateway /> */}
       </div>
-      <main className="gx-layout-content ant-layout-content Satoshi-Medium">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div>
           <h1 className="text-center headingpricing text-md-start">SabPaisa Pricing</h1>
           <h2 className="text-center headingpricing prdhead">{param?.name}</h2>
@@ -220,7 +220,7 @@ const SabPaisaPricing = () => {
         </div>
         {/* <button type="button" onClick={clickHandler}>check</button> */}
         <div className="container mb-10">
-          <div className="row">
+          <div className="row flx">
           
           {/* <button type="button" onClick={()=> handleClick(1, "Subscription Plan", "005")}>Test Button Abhishek</button> */}
 
@@ -230,7 +230,7 @@ const SabPaisaPricing = () => {
               // if user business catagory is gamming
               (business_cat_code === "37" && Products.plan_code === "005") ? <></> :
                 (param?.id === '14') ? 
-                <div className="card col-lg-8">
+                <div className="card col-lg-4">
                   <div className="card-body">
                     <div className="col-lg-12">
                       <h2 className="pull-left- bold-font text-center mb-20 price d_block">
@@ -349,7 +349,7 @@ const SabPaisaPricing = () => {
                     ${productDetails.length === 4 ? "col-lg-3" : "col-lg-4"}  `} >
                     <div className="card heightcards">
                       <div className="card-body">
-                        <div className="row mb-5-">
+                        <div className="row- mb-5-">
                           <div className="col-lg-12 text-center">
                             <h1 className="card-title- cardoneheadingcss pb-3-">
                               {Products.plan_name}

@@ -190,18 +190,7 @@ function Registration() {
                   />
                 </div> */}
                   {/* ./brand-logo */}
-                  <h1
-                    style={{
-                      fontSize: "30px",
-                      fontStyle: "Satoshi",
-                      color: "#0143A1",
-                      lineHeight: "30px",
-                    }}
-                    className="text-center mt-40"
-                  >
-                    Empower your <br />
-                    business,&nbsp;boost <br /> your&nbsp;finance
-                  </h1>
+                  
 
                   <div className="brand-logo">
                     <div
@@ -226,28 +215,92 @@ function Registration() {
                       </ol>
                       <div className="carousel-inner">
                         <div className="carousel-item active">
-                          <img
-                            src={onlineshopinglogo}
-                            alt="SabPaisa"
-                            title="SabPaisa"
-                            className="loginscreenimagereg"
-                          />
+                          <div className="heading1 pt-2">
+                            <p
+                              className="font-text-large mb-0 NunitoSans-Regular"
+                              style={{ color: "#012167", fontWeight: "700" }}
+                            >
+                              Empower your
+                            </p>
+                            <p
+                              className="font-size-32 mb-2 NunitoSans-Regular"
+                              style={{ color: "#012167" }}
+                            >
+                              {" "}
+                              business
+                            </p>
+                            <p className="mt-2 loginBanSubHeader NunitoSans-Regular">
+                              {" "}
+                              boost  your&nbsp;finance
+                            </p>
+                            {/* <h1
+                           
+                            className="text-center mt-40"
+                          >
+                            Empower your <br />
+                            business,&nbsp;boost <br /> your&nbsp;finance
+                          </h1> */}
+                            <img
+                              src={onlineshopinglogo}
+                              alt="SabPaisa"
+                              title="SabPaisa"
+                              className="loginscreenimagereg w-50 h-50"
+                            />
+                          </div>
+                        </div>
+                        <div className="carousel-item ">
+                          <div className="heading1 pt-2">
+                            <p
+                              className="font-text-large mb-0 NunitoSans-Regular"
+                              style={{ color: "#012167", fontWeight: "700" }}
+                            >
+                              Empower your
+                            </p>
+                            <p
+                              className="font-size-32 mb-2 NunitoSans-Regular"
+                              style={{ color: "#012167" }}
+                            >
+                              {" "}
+                              business
+                            </p>
+                            <p className="mt-2 loginBanSubHeader NunitoSans-Regular">
+                              {" "}
+                              boost  your&nbsp;finance
+                            </p>
+                            <img
+                              src={onlineshopinglogo}
+                              alt="SabPaisa"
+                              title="SabPaisa"
+                              className="loginscreenimagereg w-50 h-50"
+                            />
+                          </div>
                         </div>
                         <div className="carousel-item">
-                          <img
-                            src={onlineshopinglogo}
-                            alt="SabPaisa"
-                            title="SabPaisa"
-                            className="loginscreenimagereg"
-                          />
-                        </div>
-                        <div className="carousel-item">
-                          <img
-                            src={onlineshopinglogo}
-                            alt="SabPaisa"
-                            title="SabPaisa"
-                            className="loginscreenimagereg"
-                          />
+                          <div className="heading1 pt-2">
+                            <p
+                              className="font-text-large mb-0 NunitoSans-Regular"
+                              style={{ color: "#012167", fontWeight: "700" }}
+                            >
+                              Empower your
+                            </p>
+                            <p
+                              className="font-size-32 mb-2 NunitoSans-Regular"
+                              style={{ color: "#012167" }}
+                            >
+                              {" "}
+                              business
+                            </p>
+                            <p className="mt-2 loginBanSubHeader NunitoSans-Regular">
+                              {" "}
+                              boost  your&nbsp;finance
+                            </p>
+                            <img
+                              src={onlineshopinglogo}
+                              alt="SabPaisa"
+                              title="SabPaisa"
+                              className="loginscreenimagereg w-50 h-50"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -339,7 +392,7 @@ function Registration() {
                                           className="string optional"
                                           htmlFor="mobile"
                                         >
-                                          Enter Mobile
+                                          Enter Mobile Number
                                         </label>
                                         <Field
                                           className="string optional"
@@ -372,7 +425,7 @@ function Registration() {
                                           className="string optional"
                                           htmlFor="user-email"
                                         >
-                                          Email id
+                                          Email Id
                                         </label>
                                         <Field
                                           className="string optional"
@@ -546,7 +599,7 @@ function Registration() {
                                     </div>
                                   </div>
                                   <div className="sminputs">
-                                    <div className="simform__actions">
+                                    <div className="simform__actions-">
                                       <button
                                         className="figmabtn Satoshi-Medium text-white mt-4- disabled1 w-50"
                                         name="commit"

@@ -6,6 +6,8 @@ import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
+import { converter } from "number-to-words";
+
 import {
   businessType,
   busiCategory,
@@ -16,6 +18,7 @@ import {
   verifyKycEachTab,
   kycUserList,
 } from "../../slices/kycSlice";
+import { isNull } from "lodash";
 
 function BusinessOverview(props) {
   const setTab = props.tab;
@@ -30,7 +33,8 @@ function BusinessOverview(props) {
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
   const [disabled, setIsDisabled] = useState(false)
-
+  const [numberChnaged, setNumberChanged] = useState('');
+  const [textWord, setTextWord] = useState('');
   const { auth, kyc } = useSelector((state) => state);
 
   const { user } = auth;
@@ -279,10 +283,48 @@ function BusinessOverview(props) {
     // }
   };
 
+  let converter = require('number-to-words');
+
+
+
+
+  // function div(x) {
+  //   if(!isNaN(x) && !isNull(x)){
+  //     const xx = parseFloat(x)
+  //     if (isFinite(1000 / xx)) {
+  //       console.log( "this is chnages value",converter.toWords(xx))
+  //     }else{
+  //       console.log( "this is chnages value----"+ xx)
+
+  //     }
+  //   }
+
+
+  // }
+
   const handleShowHide = (event) => {
     const getuser = event.target.value;
     setAppUrl(getuser);
   };
+//////////////////////////////////// Check for finite number
+  useEffect(() => {
+    const number = numberChnaged;
+    if (number?.length > 1) {
+      if (!isNaN(number) && !isNull(number)) {
+        const xx = parseFloat(number)
+        if (isFinite(1000 / xx)) {
+          setTextWord(converter.toWords(xx))
+        } else {
+          setTextWord("")
+
+
+        }
+      }
+    }
+
+  }, [numberChnaged])
+
+  ////////////////////////////////
 
   return (
     <div className="col-md-12 p-3">
@@ -416,12 +458,12 @@ function BusinessOverview(props) {
             </div> */}
 
               <div className="col-sm-4 col-md-4 col-lg-4">
-                <label className="col-form-label p-0 exp-tranc">
-                  Expected Transactions/Year{" "}
-                  <span style={{ color: "red" }}>*</span>
-                </label>
+                {/* <label className="col-form-label p-2 mt-0">
+                  Expected Transaction/Year<span style={{ color: "red" }}>*</span>
+                 
+                </label> */}
 
-                <FormikController
+              <FormikController
                   control="input"
                   type="text"
                   name="expected_transactions"
@@ -429,6 +471,11 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
+                 <span className="font-weight-bold m-0">{textWord}</span>
+                {formik.handleChange(
+                  "expected_transactions",
+                  setNumberChanged(formik?.values?.expected_transactions)
+                )}
               </div>
 
               <div className="col-sm-4 col-md-4 col-lg-4">

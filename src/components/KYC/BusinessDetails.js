@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
@@ -26,7 +26,7 @@ function BusinessDetails(props) {
 
   const regexGSTN = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
   const reqexPAN = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
-  const reqexPinCode = /^[1-9][0-9]{5}$/
+  const reqexPinCode = /^[1-9][0-9]{5}$/;
 
   const { auth, kyc } = useSelector((state) => state);
 
@@ -44,7 +44,7 @@ function BusinessDetails(props) {
   const [checked, setChecked] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
-  const [disable,setIsDisable] = useState(false)
+  const [disable, setIsDisable] = useState(false);
 
   const [operationvalue, setOperationvalue] = useState(
     KycList.registeredBusinessAdress
@@ -162,11 +162,13 @@ function BusinessDetails(props) {
   };
 
   const validationSchema = Yup.object({
-    company_name: Yup.string().trim()
+    company_name: Yup.string()
+      .trim()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
-    gst_number: Yup.string().trim()
+    gst_number: Yup.string()
+      .trim()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
       .matches(regexGSTN, "GSTIN Number is Invalid")
       .required("Required")
@@ -178,11 +180,13 @@ function BusinessDetails(props) {
       )
       .required("You need to verify Your GSTIN Number")
       .nullable(),
-    pan_card: Yup.string().trim()
+    pan_card: Yup.string()
+      .trim()
       .matches(reqexPAN, "PAN number is Invalid")
       .required("Required")
       .nullable(),
-    signatory_pan: Yup.string().trim()
+    signatory_pan: Yup.string()
+      .trim()
       .matches(reqexPAN, "Authorized PAN number is Invalid")
       .required("Required")
       .nullable(),
@@ -193,23 +197,27 @@ function BusinessDetails(props) {
       )
       .required("You need to verify Your Authorized Signatory PAN Number")
       .nullable(),
-    name_on_pancard: Yup.string().trim()
+    name_on_pancard: Yup.string()
+      .trim()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
-    city_id: Yup.string().trim()
+    city_id: Yup.string()
+      .trim()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
     state_id: Yup.string()
       .required("Required")
       .nullable(),
-    pin_code: Yup.string().trim()
+    pin_code: Yup.string()
+      .trim()
       .matches(reqexPinCode, "Pin Code is Invalid")
       .required("Required")
       .nullable(),
-    operational_address: Yup.string().trim()
-    .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
+    operational_address: Yup.string()
+      .trim()
+      .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
       .required("Required")
       .nullable(),
   });
@@ -255,7 +263,7 @@ function BusinessDetails(props) {
 
   const onSubmit = (values) => {
     if (role.merchant) {
-      setIsDisable(true)
+      setIsDisable(true);
       const bodyFormData = new FormData();
       bodyFormData.append("company_name", values.company_name);
       bodyFormData.append("registerd_with_gst", values.registerd_with_gst);
@@ -291,13 +299,13 @@ function BusinessDetails(props) {
           setTab(4);
           setTitle("BANK DETAILS");
           dispatch(kycUserList({ login_id: loginId }));
-          setIsDisable(false)
+          setIsDisable(false);
         } else {
           toast.error(res?.payload?.message);
-          setIsDisable(false)
+          setIsDisable(false);
         }
       });
-    } 
+    }
     // else if (role.verifier) {
     //   const veriferDetails = {
     //     login_id: kycid,
@@ -343,196 +351,218 @@ function BusinessDetails(props) {
           handleChange,
         }) => (
           <Form>
-            
             <div className="row">
-            <div className="col-sm-12 col-md-12 col-lg-12 marg-b">
-              <label className="col-form-label mt-0 p-2">
-                GSTIN<span style={{ color: "red" }}>*</span>
-              </label>
-              <FormikController
-                control="input"
-                type="text"
-                name="gst_number"
-                className="form-control"
-                disabled={VerifyKycStatus === "Verified" ? true : false}
-                readOnly={readOnly}
-              />
-              {KycList?.gstNumber !== null &&
-              !errors.hasOwnProperty("gst_number") &&
-              !errors.hasOwnProperty("oldGstNumber") ? (
-                <span className="success">
-                  <img src={gotVerified} alt="" title="" width="26" />
-                </span>
-              ) : (
-                <div className="position-sticky pull-right- otpbtngst">
-                  <a
-                    href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn "
-                    onClick={() => {
-                      checkInputIsValid(
-                        errors,
-                        values,
-                        setFieldError,
-                        setFieldTouched,
-                        "gst_number"
-                      );
-                    }}
-                  >
-                    Verify GST
-                  </a>
+              <div className="col-sm-12 col-md-12 col-lg-12 marg-b">
+                <label className="col-form-label mt-0 p-2">
+                  GSTIN<span style={{ color: "red" }}>*</span>
+                </label>
+                <div className="input-group">
+                <Field
+                  type="text"
+                  name="gst_number"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+                {KycList?.gstNumber !== null &&
+                !errors.hasOwnProperty("gst_number") &&
+                !errors.hasOwnProperty("oldGstNumber") ? (
+                  <span className="success input-group-append">
+                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
+                  </span>
+                ) : (
+                  <div className="position-sticky pull-right- otpbtn input-group-append">
+                    <a
+                      href={() => false}
+                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
+                      onClick={() => {
+                        checkInputIsValid(
+                          errors,
+                          values,
+                          setFieldError,
+                          setFieldTouched,
+                          "gst_number"
+                        );
+                      }}
+                    >
+                      Verify GST
+                    </a>
+                  </div>
+                )}
                 </div>
-              )}
-              {errors?.oldGstNumber && (
-                <span className="notVerifiedtext- text-danger mb-0">
-                  {errors?.oldGstNumber}
-                </span>
-              )}
-            </div>
+                {
+                  <ErrorMessage name="gst_number">
+                    {(msg) => (
+                      <span className="abhitest- errortxt- text-danger">
+                        {msg}
+                      </span>
+                    )}
+                  </ErrorMessage>
+                }
+                <br/>
+                {errors?.oldGstNumber && (
+                  <span className="notVerifiedtext- text-danger mb-0">
+                    {errors?.oldGstNumber}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="row">
-            <div className="col-sm-12 col-md-6 col-lg-6">
-              <label className="col-form-label mt-0 p-2">
-                Business PAN<span style={{ color: "red" }}>*</span>
-              </label>
-              <FormikController
-                control="input"
-                type="text"
-                name="pan_card"
-                className="form-control"
-                readOnly={readOnly === false ? true : readOnly}
-              />
-            </div>
+              <div className="col-sm-12 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  Business PAN<span style={{ color: "red" }}>*</span>
+                </label>
+                
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="pan_card"
+                  className="form-control"
+                  readOnly={readOnly === false ? true : readOnly}
+                />
+              </div>
 
-            <div className="col-sm-12 col-md-6 col-lg-6">
-              <label className="col-form-label mt-0 p-2">
-                Authorized Signatory PAN <span style={{ color: "red" }}>*</span>
-              </label>
-              <FormikController
-                control="input"
-                type="text"
-                name="signatory_pan"
-                className="form-control"
-                disabled={VerifyKycStatus === "Verified" ? true : false}
-                readOnly={readOnly}
-              />
+              <div className="col-sm-12 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  Authorized Signatory PAN{" "}
+                  <span style={{ color: "red" }}>*</span>
+                </label>
+                <div className="input-group">
+                <Field
+                  type="text"
+                  name="signatory_pan"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
 
-              {KycList?.signatoryPAN !== null &&
-              !errors.hasOwnProperty("signatory_pan") &&
-              !errors.hasOwnProperty("oldSignatoryPan") ? (
-                <span className="success">
-                  <img src={gotVerified} alt="" title="" width="26" />
-                </span>
-              ) : (
-                <div className="position-sticky pull-right- otpbtndetail">
-                  <a
-                    href={() => false}
-                    className="btn btnbackground text-white btn-sm panbtn- "
-                    onClick={() => {
-                      checkInputIsValid(
-                        errors,
-                        values,
-                        setFieldError,
-                        setFieldTouched,
-                        "signatory_pan"
-                      );
-                    }}
-                  >
-                    Verify
-                  </a>
+                {KycList?.signatoryPAN !== null &&
+                !errors.hasOwnProperty("signatory_pan") &&
+                !errors.hasOwnProperty("oldSignatoryPan") ? (
+                  <span className="success input-group-append">
+                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary"/>
+                  </span>
+                ) : (
+                  <div className="position-sticky pull-right- otpbtn input-group-append">
+                    <a
+                      href={() => false}
+                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
+                      onClick={() => {
+                        checkInputIsValid(
+                          errors,
+                          values,
+                          setFieldError,
+                          setFieldTouched,
+                          "signatory_pan"
+                        );
+                      }}
+                    >
+                      Verify
+                    </a>
+                  </div>
+                )}
                 </div>
-              )}
-
-              {errors?.oldSignatoryPan && (
-                <span className="notVerifiedtext- text-danger mb-0">
-                  {errors?.oldSignatoryPan}
-                </span>
-              )}
-            </div>
-            </div>
-            <div className="row">
-            <div className="col-sm-12 col-md-6 col-lg-6">
-              <label className="col-form-label mt-0 p-2">
-                {" "}
-                Business Name<span style={{ color: "red" }}>*</span>
-              </label>
-              <FormikController
-                control="input"
-                type="text"
-                name="company_name"
-                className="form-control"
-                readOnly={readOnly === false ? true : readOnly}
-              />
-            </div>
-
-            <div className="col-sm-12 col-md-6 col-lg-6">
-              <label className="col-form-label mt-0 p-2">
-                PAN Owner's Name<span style={{ color: "red" }}>*</span>
-              </label>
-              <FormikController
-                control="input"
-                type="text"
-                name="name_on_pancard"
-                className="form-control"
-                readOnly={readOnly === false ? true : readOnly}
-              />
-            </div>
+                 {
+                  <ErrorMessage name="signatory_pan">
+                    {(msg) => (
+                      <span className="abhitest- errortxt- text-danger">
+                        {msg}
+                      </span>
+                    )}
+                  </ErrorMessage>
+                }
+                <br/>
+                {errors?.oldSignatoryPan && (
+                  <span className="notVerifiedtext- text-danger mb-0">
+                    {errors?.oldSignatoryPan}
+                  </span>
+                )}
+              </div>
             </div>
             <div className="row">
-            <div className="col-sm-12 col-md-6 col-lg-6">
-              <label className="col-form-label mt-0 p-2">
-                Address<span style={{ color: "red" }}>*</span>
-              </label>
-              <FormikController
-                control="input"
-                type="text"
-                name="operational_address"
-                className="form-control"
-                disabled={VerifyKycStatus === "Verified" ? true : false}
-                readOnly={readOnly}
-              />
-            </div>
-            <div className="col-sm-12 col-md-6 col-lg-6">
-              <label className="col-form-label mt-0 p-2">
-                City<span style={{ color: "red" }}>*</span>
-              </label>
-              <FormikController
-                control="input"
-                type="text"
-                name="city_id"
-                className="form-control"
-                disabled={VerifyKycStatus === "Verified" ? true : false}
-                readOnly={readOnly}
-              />
-            </div>
+              <div className="col-sm-12 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  {" "}
+                  Business Name<span style={{ color: "red" }}>*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="company_name"
+                  className="form-control"
+                  readOnly={readOnly === false ? true : readOnly}
+                />
+              </div>
+
+              <div className="col-sm-12 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  PAN Owner's Name<span style={{ color: "red" }}>*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="name_on_pancard"
+                  className="form-control"
+                  readOnly={readOnly === false ? true : readOnly}
+                />
+              </div>
             </div>
             <div className="row">
-            <div className="col-sm-12 col-md-6 col-lg-6">
-              <label className="col-form-label mt-0 p-2">
-                State<span style={{ color: "red" }}>*</span>
-              </label>
-              <FormikController
-                control="select"
-                name="state_id"
-                options={BusinessOverview}
-                className="form-control"
-                disabled={VerifyKycStatus === "Verified" ? true : false}
-                readOnly={readOnly}
-              />
+              <div className="col-sm-12 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  Address<span style={{ color: "red" }}>*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="operational_address"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+              </div>
+              <div className="col-sm-12 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  City<span style={{ color: "red" }}>*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="city_id"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+              </div>
             </div>
+            <div className="row">
+              <div className="col-sm-12 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  State<span style={{ color: "red" }}>*</span>
+                </label>
+                <FormikController
+                  control="select"
+                  name="state_id"
+                  options={BusinessOverview}
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+              </div>
 
-            <div className="col-sm-12 col-md-6 col-lg-6">
-              <label className="col-form-label mt-0 p-2">
-                Pin code<span style={{ color: "red" }}>*</span>
-              </label>
-              <FormikController
-                control="input"
-                type="text"
-                name="pin_code"
-                className="form-control"
-                disabled={VerifyKycStatus === "Verified" ? true : false}
-                readOnly={readOnly}
-              />
-            </div>
+              <div className="col-sm-12 col-md-6 col-lg-6">
+                <label className="col-form-label mt-0 p-2">
+                  Pin code<span style={{ color: "red" }}>*</span>
+                </label>
+                <FormikController
+                  control="input"
+                  type="text"
+                  name="pin_code"
+                  className="form-control"
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                />
+              </div>
             </div>
             <div className="my-5- w-100 pull-left p-2">
               <hr

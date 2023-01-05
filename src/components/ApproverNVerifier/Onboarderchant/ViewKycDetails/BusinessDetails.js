@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { rejectKycOperation } from '../../../../slices/kycOperationSlice';
 import VerifyRejectBtn from './VerifyRejectBtn';
+import { GetKycTabsStatus } from '../../../../slices/kycSlice';
 const BusinessDetails = (props) => {
   const { merchantKycId,KycTabStatus } = props;
   const dispatch = useDispatch();
@@ -33,20 +34,26 @@ const BusinessDetails = (props) => {
 
   }
 
-  const handleRejectClick = () => {
+  const handleRejectClick = (merchant_info_reject_comments="") => {
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       merchant_info_rejected_by: loginId,
+      merchant_info_reject_comments:merchant_info_reject_comments
+
+
     };
+    if (window.confirm("Reject Business Details")) {
     dispatch(rejectKycOperation(rejectDetails))
       .then((resp) => {
         resp?.payload?.merchant_info_status &&
           toast.success(resp?.payload?.merchant_info_status);
         resp?.payload?.detail && toast.error(resp?.payload?.detail);
+        dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId})) // used to remove kyc button beacuse updated in redux store
       })
       .catch((e) => {
         toast.error("Try Again Network Error");
       });
+    }
 
   }
 
@@ -69,6 +76,13 @@ const BusinessDetails = (props) => {
             merchantKycId?.gstNumber
           }
         />
+        <span>
+          {merchantKycId?.gstNumber && merchantKycId?.gstNumber !== null || merchantKycId?.gstNumber !== "" ? (
+            <p className="text-success">Verified</p>
+          ) : (
+            <p className="text-danger"> Not Verified</p>
+          )}
+        </span>
       </div>
 
       <div className="col-sm-12 col-md-6 col-lg-6">
@@ -98,6 +112,13 @@ const BusinessDetails = (props) => {
             merchantKycId?.signatoryPAN
           }
         />
+         <span>
+          {merchantKycId?.signatoryPAN && merchantKycId?.signatoryPAN !== null || merchantKycId?.signatoryPAN !== "" ? (
+            <p className="text-success">Verified</p>
+          ) : (
+            <p className="text-danger"> Not Verified</p>
+          )}
+        </span>
       </div>
 
       <div className="col-sm-12 col-md-6 col-lg-6">
@@ -186,8 +207,11 @@ const BusinessDetails = (props) => {
 
 
       </div>
-      <div className="col-lg-6 ">
+      <div className="col-lg-6 font-weight-bold mt-1 ">
       Status : <span>{KycTabStatus?.merchant_info_status}</span>
+      </div>
+      <div className="col-lg-7 font-weight-bold mt-1 ">
+     Comments : <span>{KycTabStatus?.merchant_info_reject_comments}</span>
       </div>
       <div className="col-lg-6 mt-3">
         <VerifyRejectBtn 

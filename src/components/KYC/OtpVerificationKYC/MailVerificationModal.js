@@ -53,11 +53,10 @@ const MailVerificationModal = ({ show, setShow }) => {
       <div
         className="modal fade show"
         id="forEmail"
-        tabIndex="-1"
         role="dialog"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
-        style={{ display: show ? "block" : "none",marginLeft:"233px",marginTop:"107px" }}
+        style={{ display: show ? "block" : "none",marginLeft:"233px",marginTop:"42px" }}
       >
         <div className="modal-dialog" role="document">
           <div className="modal-content">

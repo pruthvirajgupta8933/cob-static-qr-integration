@@ -12,7 +12,7 @@ function Transaction() {
               <div className="ant-tabs ant-tabs-top ant-tabs-line">
                 <div className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content" style={{marginLeft: '0%'}}>
                   <div role="tabpanel" aria-hidden="false" className="ant-tabs-tabpane ant-tabs-tabpane-active">
-                    <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
+                    <div role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
                     <div className="table_panel clearfix">
                       <div className="table-wrapper">
                         <div className="pageSelect ant-col ant-col-24 no-padding">
@@ -275,7 +275,7 @@ function Transaction() {
                     </div>
                   </div>
                 </div>
-                <div tabIndex={0} role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
+                <div role="presentation" style={{width: '0px', height: '0px', overflow: 'hidden', position: 'absolute'}} />
               </div>
             </div>
           </div>
