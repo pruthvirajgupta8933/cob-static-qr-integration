@@ -140,7 +140,7 @@ function KycForm() {
   //   IsSettlementInfoFilled})
 
   return (
-    <section className="ant-layout Satoshi-Medium">
+    <section className="ant-layout NunitoSans-Regular">
       <div>
         <NavBar />
       </div>
@@ -158,7 +158,7 @@ function KycForm() {
         >
           <div className="modal-content kyc-modal_form ">
             <div className="modal-body" style={{ display: "contents" }}>
-              <div className="card-group Satoshi-Medium">
+              <div className="card-group NunitoSans-Regular">
                 <div className="row kycnomar kycnopad">
                   <div className="col-lg-3 col-xsm-12 col-sm-12 col-md-12 kycnomar kycnopad">
                     <div className="card kycnomar kycnopad toppad noborder">

@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
-import { converter } from "number-to-words";
+// import { converter } from "number-to-words";
 
 import {
   businessType,
@@ -283,7 +283,7 @@ function BusinessOverview(props) {
     // }
   };
 
-  let converter = require('number-to-words');
+  // let converter = require('number-to-words');
 
 
 
@@ -307,22 +307,22 @@ function BusinessOverview(props) {
     setAppUrl(getuser);
   };
 //////////////////////////////////// Check for finite number
-  useEffect(() => {
-    const number = numberChnaged;
-    if (number?.length > 1) {
-      if (!isNaN(number) && !isNull(number)) {
-        const xx = parseFloat(number)
-        if (isFinite(1000 / xx)) {
-          setTextWord(converter.toWords(xx))
-        } else {
-          setTextWord("")
+  // useEffect(() => {
+  //   const number = numberChnaged;
+  //   if (number?.length > 1) {
+  //     if (!isNaN(number) && !isNull(number)) {
+  //       const xx = parseFloat(number)
+  //       if (isFinite(1000 / xx)) {
+  //         setTextWord(converter.toWords(xx))
+  //       } else {
+  //         setTextWord("")
 
 
-        }
-      }
-    }
+  //       }
+  //     }
+  //   }
 
-  }, [numberChnaged])
+  // }, [numberChnaged])
 
   ////////////////////////////////
 
@@ -380,12 +380,6 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-                <span style={{ fontSize: "13px" }}>
-                  Please give a brief description of the nature of your
-                  business. Please give examples of products you sell, business
-                  categories you operate in, your customers and channels through
-                  which you operate (website, offline retail).
-                </span>
 
                 <div className="my-5- p-2- w-100 pull-left">
                   <hr
@@ -458,10 +452,10 @@ function BusinessOverview(props) {
             </div> */}
 
               <div className="col-sm-4 col-md-4 col-lg-4">
-                {/* <label className="col-form-label p-2 mt-0">
+                <label className="col-form-label p-2 mt-0">
                   Expected Transaction/Year<span style={{ color: "red" }}>*</span>
                  
-                </label> */}
+                </label>
 
               <FormikController
                   control="input"
@@ -471,7 +465,7 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-                 <span className="font-weight-bold m-0">{textWord}</span>
+                 {/* <span className="font-weight-bold m-0">{textWord}</span> */}
                 {formik.handleChange(
                   "expected_transactions",
                   setNumberChanged(formik?.values?.expected_transactions)
