@@ -115,7 +115,6 @@ function ChangePassword() {
               <div
                 role="tablist"
                 className="ant-tabs-bar ant-tabs-top-bar"
-                tabIndex={0}
               >
                 <div className="ant-tabs-nav-container">
                   <div className="ant-tabs-nav-wrap">
@@ -138,7 +137,7 @@ function ChangePassword() {
                 </div>
               </div>
               <div
-                tabIndex={0}
+                
                 role="presentation"
                 style={{
                   width: "0px",
@@ -157,7 +156,7 @@ function ChangePassword() {
                   className="ant-tabs-tabpane ant-tabs-tabpane-active"
                 >
                   <div
-                    tabIndex={0}
+                
                     role="presentation"
                     style={{
                       width: "0px",
@@ -291,7 +290,7 @@ function ChangePassword() {
                   </div>
                 </div>
                 <div
-                  tabIndex={0}
+               
                   role="presentation"
                   style={{
                     width: "0px",
@@ -303,7 +302,6 @@ function ChangePassword() {
               </div>
             </div>
             <div
-              tabIndex={0}
               role="presentation"
               style={{
                 width: "0px",

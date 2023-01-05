@@ -148,7 +148,6 @@ function KycForm() {
           "modal fade mymodals" +
           (kycPopUp === true ? " show d-block" : " d-none")
         }
-        tabIndex="-1"
         role="dialog"
         style={{ overflow: "scroll" }}
       >
