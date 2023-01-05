@@ -10,7 +10,6 @@ import CommentModalForReject from './CommentModalForReject';
 
 const BusinessOverview = (props) => {
   const { businessTypeResponse, businessCategoryResponse, merchantKycId, KycTabStatus } = props;
-  console.log("this is KycTabStatus",KycTabStatus)
    const dispatch = useDispatch();
   const { auth, kyc } = useSelector((state) => state);
   
