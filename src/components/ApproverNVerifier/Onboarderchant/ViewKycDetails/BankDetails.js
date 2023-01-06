@@ -164,11 +164,10 @@ const BankDetails = (props) => {
       
     </div>
     <div className="col-lg-6 font-weight-bold mt-1 ">
-    Status : <span>{KycTabStatus?.settlement_info_status}</span>
+    <p>Status : <span>{KycTabStatus?.settlement_info_status}</span></p>
+        <p>Comments : <span>{KycTabStatus?.settlement_info_reject_comments}</span></p>
     </div>
-    <div className="col-lg-7 font-weight-bold mt-1 ">
-     Comments : <span>{KycTabStatus?.settlement_info_reject_comments}</span>
-      </div>
+   
         <div className="col-lg-6 mt-3">
         <VerifyRejectBtn 
         KycTabStatus={KycTabStatus?.settlement_info_status}

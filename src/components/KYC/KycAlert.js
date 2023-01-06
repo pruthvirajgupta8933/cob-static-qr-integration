@@ -53,6 +53,7 @@ function KycAlert() {
   }, [KycTabStatusStore])
   
   return (
+    kycTabRejectionStatus?.length>0 && 
     <div className="alert alert-danger" role="alert">
       <h4 className="alert-heading">KYC Alert!</h4>
       {kycTabRejectionStatus && kycTabRejectionStatus?.map((kycTabStatus,i)=>(

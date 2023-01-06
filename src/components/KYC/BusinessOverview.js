@@ -380,12 +380,6 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-                <span style={{ fontSize: "13px" }}>
-                  Please give a brief description of the nature of your
-                  business. Please give examples of products you sell, business
-                  categories you operate in, your customers and channels through
-                  which you operate (website, offline retail).
-                </span>
 
                 <div className="my-5- p-2- w-100 pull-left">
                   <hr

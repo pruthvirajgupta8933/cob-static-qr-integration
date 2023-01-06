@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
 import { GetKycTabsStatus } from '../../../../slices/kycSlice';
-import CommentModalForReject from './CommentModalForReject';
 
 
 function MerchantContactInfo(props) {
@@ -81,19 +80,13 @@ let commentsStatus=KycTabStatus.general_info_reject_comments;
 
   }
 
- 
-
-
-const callBackFn = (id) =>{
-  console.log("id",id);
-}
 
   return (
     <div className="row mb-4 border">
       <div className="col-lg-12">
         <h3 className="font-weight-bold">Merchant Contact Info</h3>
       </div>
-      
+
 
       <div className="col-sm-6 col-md-6 col-lg-6 ">
         <label className="col-form-label mt-0 p-2">
@@ -164,22 +157,28 @@ const callBackFn = (id) =>{
 
       </div>
 
-      <div className="col-lg-6 font-weight-bold">
-        Status : <span>{KycTabStatus?.general_info_status}</span>
+      
+      
+    
+    <div className="row container">
+    <div className="col-lg-6 font-weight-bold">
+        <p>Status : <span>{KycTabStatus?.general_info_status}</span></p>
+        <p>Comments : <span>{KycTabStatus?.general_info_reject_comments}</span></p>
       </div>
-      <div className="col-lg-7 font-weight-bold mt-1">
-        Comments : <span>{KycTabStatus?.general_info_reject_comments}</span>
-      </div>
+      
       <div className="col-lg-6">
         <VerifyRejectBtn
          KycTabStatus={KycTabStatus?.general_info_status}
           KycVerifyStatus={{ handleVerifyClick, isVerified }}
           ContactComments={commentsStatus}
-          check={callBackFn}
           KycRejectStatus={{ handleRejectClick, isRejected }}
           btnText={{ verify: "Verify", Reject: "Reject" }}
         />
       </div>
+      {/* <div className="col-lg-6 font-weight-bold mt-1 mb-2">
+        
+      </div> */}
+    </div>
     </div>
 
   )

@@ -5,7 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 function SabpaisaPaymentGateway(props) {
-  const clientDetails = props?.clientData[0]
+  const clientDetails = props?.clientData
+
   const [isOpen, setIsOpen] = useState(false);
   const [clientCode, setClientCode] = useState("TM001");
   const [transUserName, setTransUserName] = useState("rajiv.moti_336");
@@ -47,9 +48,9 @@ function SabpaisaPaymentGateway(props) {
   useEffect(() => {
 
     setIsOpen(props?.openPg)
-    setpayerName(clientDetails?.clientName);
+    setpayerName(clientDetails?.clientContactPersonName);
     setpayerEmail(clientDetails?.clientEmail);
-    setpayerMobile(clientDetails?.clientContact);
+    setpayerMobile(clientDetails?.clientMobileNo);
     setamount(props?.planPrice);
 
     setudf12(props?.planData?.clientId)

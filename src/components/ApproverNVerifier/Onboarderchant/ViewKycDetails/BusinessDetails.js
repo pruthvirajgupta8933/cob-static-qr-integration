@@ -208,11 +208,10 @@ const BusinessDetails = (props) => {
 
       </div>
       <div className="col-lg-6 font-weight-bold mt-1 ">
-      Status : <span>{KycTabStatus?.merchant_info_status}</span>
+        <p>Status : <span>{KycTabStatus?.merchant_info_status}</span></p>
+        <p>Comments : <span>{KycTabStatus?.merchant_info_reject_comments}</span></p>
       </div>
-      <div className="col-lg-7 font-weight-bold mt-1 ">
-     Comments : <span>{KycTabStatus?.merchant_info_reject_comments}</span>
-      </div>
+      
       <div className="col-lg-6 mt-3">
         <VerifyRejectBtn 
         KycTabStatus={KycTabStatus?.merchant_info_status}
