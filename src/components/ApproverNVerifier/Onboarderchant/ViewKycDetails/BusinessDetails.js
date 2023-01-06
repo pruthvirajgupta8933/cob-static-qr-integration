@@ -77,7 +77,7 @@ const BusinessDetails = (props) => {
           }
         />
         <span>
-          {merchantKycId?.gstNumber && merchantKycId?.gstNumber !== null || merchantKycId?.gstNumber !== "" ? (
+          {(merchantKycId?.gstNumber && merchantKycId?.gstNumber !== null) || (merchantKycId?.gstNumber !== "") ? (
             <p className="text-success">Verified</p>
           ) : (
             <p className="text-danger"> Not Verified</p>

@@ -20,14 +20,7 @@ const SettlementReport = () => {
 
   const { user } = useSelector((state) => state.auth);
   let clientCode = "";
-  if (isKycCompleted) {
 
-    if (isClientCodeCreated) {
-    } else {
-      
-    }
-  } else {
-  }
 
   if (user && user?.clientMerchantDetailsList) {
     history.push("/dashboard/profile");
