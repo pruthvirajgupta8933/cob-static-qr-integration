@@ -47,7 +47,7 @@ const BusinessDetails = (props) => {
       .then((resp) => {
         resp?.payload?.merchant_info_status &&
           toast.success(resp?.payload?.merchant_info_status);
-        resp?.payload?.detail && toast.error(resp?.payload?.detail);
+        resp?.payload && toast.error(resp?.payload);
         dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId})) // used to remove kyc button beacuse updated in redux store
       })
       .catch((e) => {
