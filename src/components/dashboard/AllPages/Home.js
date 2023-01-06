@@ -193,7 +193,9 @@ function Home() {
           <StepProgressBar status={kyc?.kycUserList?.status} />
         )}
         {/* KYC ALETT */}
-        {<KycAlert/>}
+        {roles?.merchant === true ?
+        <KycAlert/>
+        : <></>}
           
 
         {kycStatus?.status === "Rejected" ? (
