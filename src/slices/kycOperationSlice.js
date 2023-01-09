@@ -12,12 +12,21 @@ const initialState = {
 
 export const rejectKycOperation = createAsyncThunk(
     "rejectKycOperation/rejectKycOperation",
-    async ( requestParam) => {
+    async ( requestParam,thunkAPI) => {
       try {
         const response = await kycOperationService.rejectKycOperation(requestParam)
         return response.data;
       } catch (error) {
-        return error;
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      
+      return thunkAPI.rejectWithValue(message); 
+      
       }
     }
   );

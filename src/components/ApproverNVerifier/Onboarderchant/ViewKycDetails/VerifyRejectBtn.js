@@ -51,10 +51,15 @@ let enableBtnStatus = enableBtnByStatus()
 // console.log("---------end verify btn each tab-----")
   
 
-const handleTest = ()=>{
+const handleForReject = ()=>{
+ props?.KycRejectStatus?.handleRejectClick(commetText)
+  setButtonClick(false)
+//  if(commetText !==""  || undefined){
+//   setButtonClick(false)
+// }else{
+//   setButtonClick(true)
 
-
-  props?.KycRejectStatus?.handleRejectClick(commetText)
+// }
 }
 return (
    <React.Fragment>
@@ -75,7 +80,7 @@ return (
     <textarea id="comments" name="reject_commet" rows="4" cols="40" onChange={(e)=>setCommetText(e.target.value)}>
     </textarea>
         <button type="button" 
-            onClick={()=>handleTest()}
+            onClick={()=>handleForReject()}
             className="btn btn-danger btn-sm text-white">Submit</button></> : <></>}
    </React.Fragment>
   )
