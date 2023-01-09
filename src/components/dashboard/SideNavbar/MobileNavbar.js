@@ -127,6 +127,19 @@ function MobileNavbar() {
                   </Link>
                 </li>
 
+                <li className="nav-item">
+                  <Link
+                    to={`${url}/product-catalogue`}
+                    onClick={() => {
+                      setToggleNav(!toggleNav);
+                    }}
+                    className="nav-link"
+                  >
+                    <i className="fa fa-book" aria-hidden="true" />{" "}
+                    &nbsp;Product Catalogue
+                  </Link>
+                </li>
+
                 {roleBasedShowTab?.merchant === true ||
                 roleBasedShowTab?.bank === true ? (
                   <>
@@ -219,19 +232,6 @@ function MobileNavbar() {
                   >
                     <i className="fa fa-list" aria-hidden="true" />{" "}
                     &nbsp;Chargeback Txn History
-                  </Link>
-                </li>
-
-                <li className="nav-item">
-                  <Link
-                    to={`${url}/product-catalogue`}
-                    onClick={() => {
-                      setToggleNav(!toggleNav);
-                    }}
-                    className="nav-link"
-                  >
-                    <i className="fa fa-book" aria-hidden="true" />{" "}
-                    &nbsp;Product Catalogue
                   </Link>
                 </li>
               </>

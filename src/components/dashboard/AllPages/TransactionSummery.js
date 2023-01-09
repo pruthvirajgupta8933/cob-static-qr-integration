@@ -113,12 +113,12 @@ function TransactionSummery() {
             <h1 className="m-b-sm gx-float-left">Transaction Summary</h1>
           </div>
           <section
-            className="features8 cid-sg6XYTl25a flleft"
+            className="features8 cid-sg6XYTl25a flleft w-100"
             id="features08-3-"
           >
             <div className="container-fluid">
               <div className="row bgcolor">
-                <div className="form-group col-md-4 mx-4 mrg-btm- bgcolor-">
+                <div className="form-group col-md-3 mx-4 mrg-btm- bgcolor-">
                   {/* <label>Successful Transaction Summary</label> */}
                   {/* <label>&nbsp;</label> */}
                   <select
@@ -137,7 +137,7 @@ function TransactionSummery() {
                 </div>
 
                 {txnList.length > 0 ? (
-                  <div className="col-lg-4 mrg-btm-">
+                  <div className="col-lg-3 mrg-btm-">
                     {/* <label>Search</label> */}
                     <input
                       type="text"
@@ -187,7 +187,7 @@ function TransactionSummery() {
                 </table>
 
                 {showData.length <= 0 && isLoading === false ? (
-                  <div className="showMsg ml-4"> No Record Found</div>
+                  <div className="mx-auto showMsg mt-5"> No Record Found</div>
                 ) : (
                   <></>
                 )}

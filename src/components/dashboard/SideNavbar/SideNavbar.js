@@ -112,6 +112,20 @@ function SideNavbar() {
                           <span>&nbsp;Integration Kit</span>
                         </Link>
                       </li>
+
+                      <li
+                            className="ant-menu-item"
+                            role="menuitem"
+                            style={{ paddingLeft: "48px" }}
+                          >
+                            <Link
+                              to={`${url}/product-catalogue`}
+                              className="txt-white sidenavFonts"
+                            >
+                              <i className="fa fa-book" aria-hidden="true" />
+                              &nbsp;Product Catalogue
+                            </Link>
+                          </li>
                     </>
                   ) : (
                     <React.Fragment></React.Fragment>
@@ -346,7 +360,7 @@ function SideNavbar() {
                               <span>&nbsp;Chargeback Txn History</span>
                             </Link>
                           </li>
-                       {roleBasedShowTab?.bank === true ? <></> :
+                       {/* {roleBasedShowTab?.bank === true ? <></> :
 
                           <li
                             className="ant-menu-item"
@@ -361,7 +375,7 @@ function SideNavbar() {
                               &nbsp;Product Catalogue
                             </Link>
                           </li>
-                      }
+                      } */}
                         </React.Fragment>
                       ) : (
                         <React.Fragment></React.Fragment>
