@@ -20,21 +20,31 @@ const MerchantDocument = (props) => {
   const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const kyc_status = KycList?.status;
-  const businessType = KycList.businessType;
+  const businessType = KycList?.businessType;
 
   const { user } = auth;
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
 
+  const dropDownDocList = docTypeList?.map((r) => r.key); // Array for documents that is got by business catory type
+  console.log("Array 1 ====>",dropDownDocList)
+
+  const uploadedDocList = docList?.map((r) => r.type);
+  console.log("Array 2 ====>",uploadedDocList)
+
+
   const status = KycDocUpload?.status;
-  // console.log("now the current result",status)
 
   const [buttonText, setButtonText] = useState("");
   const [savedData, setSavedData] = useState([]);
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
+  const [closeModal,setCloseModal] = useState(false)
+  const[commetText,setCommetText]=useState()
+
   const [loader, setLoader] = useState(false)
+  const[buttonClick,setButtonClick]=useState(null)
 
   const getDocTypeName = (id) => {
     let data = docTypeList.filter((obj) => {
@@ -70,7 +80,7 @@ const MerchantDocument = (props) => {
       verified_by: loginId,
     };
     setLoader(true)
-   
+
 
     if (Allow_To_Do_Verify_Kyc_details === true || role?.verifier)
       if (currenTab === 3 && status === "Pending") {
@@ -79,14 +89,14 @@ const MerchantDocument = (props) => {
             getKycDocList(role);
             toast.success(resp?.payload?.message)
             setLoader(false)
-          
+
           } else {
             toast.error(resp?.payload?.message)
             setLoader(false)
           }
 
         });
-       
+
       }
 
     if (role?.approver && status === "Verified") {
@@ -110,15 +120,21 @@ const MerchantDocument = (props) => {
 
   };
 
+
+ 
+
   const rejectDoc = (doc_id) => {
     const rejectDetails = {
       document_id: doc_id,
       rejected_by: loginId,
-      comment: "Document Rejected",
+      comment:  commetText === undefined || commetText === "" ? "Document Rejected" : commetText,
     };
     dispatch(verifyKycDocumentTab(rejectDetails))
       .then((resp) => {
         resp?.payload?.status && toast.success(resp?.payload?.message);
+        setButtonClick(null)
+        setCloseModal(false)
+        setCommetText("")
         if (typeof resp?.payload?.status === "undefined") {
           toast.error("Please Try After Sometimes");
         }
@@ -130,7 +146,7 @@ const MerchantDocument = (props) => {
       });
   };
 
-   useEffect(() => {
+  useEffect(() => {
 
     role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3 ?
       setButtonText("Verify")
@@ -194,6 +210,8 @@ const MerchantDocument = (props) => {
 
 
   }, [currenTab, roles])
+  
+
 
 
 
@@ -244,18 +262,18 @@ const MerchantDocument = (props) => {
                       {/*  || (enableBtnApprover(doc?.status) && enableApproverTabwise) */}
                       {(enableBtnVerifier && doc?.status === "Pending") || (enableBtnApprover && doc?.status === "Verified") ?
                         <>
-                      
-                          <a className= "text-success"
+
+                          <a className="text-success"
                             href={() => false}
                             onClick={() => {
                               verifyApproveDoc(doc?.documentId, doc?.status);
                             }}
-                        
-                            
+
+
                           >
                             <h4>{buttonText}</h4>
                           </a>
-                        
+
 
                           &nbsp;
                           &nbsp;
@@ -264,9 +282,11 @@ const MerchantDocument = (props) => {
                           <a
                             href={() => false}
                             className="text-danger"
-                            onClick={() => {
-                              rejectDoc(doc?.documentId);
-                            }}
+                            onClick={()=>{setButtonClick(doc?.documentId)
+                              setCloseModal(true)}} 
+                          // onClick={() => {
+                          //   rejectDoc(doc?.documentId);
+                          // }}
                           >
                             Reject
                           </a>
@@ -276,6 +296,17 @@ const MerchantDocument = (props) => {
 
 
                     </div>
+                    {buttonClick===doc?.documentId && closeModal === true ?
+          
+                    <div>
+                      <label for="comments">Reject Comments</label>
+
+                      <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e)=>setCommetText(e.target.value)}>
+                      </textarea>
+                      <button type="button" onClick={() => { rejectDoc(doc?.documentId,commetText); }} className="btn btn-danger btn-sm text-white">Submit</button>
+                    </div>
+                    : <></>}
+
                   </td>
 
                   {/* {enableBtnVerifier(doc?.status) || (enableBtnApprover(doc?.status) && enableApproverTabwise) ?
