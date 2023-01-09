@@ -74,7 +74,7 @@ const BankDetails = (props) => {
         value={merchantKycId?.ifscCode}
       />
        <span>
-          {merchantKycId?.ifscCode && merchantKycId?.ifscCode !== null || merchantKycId?.ifscCode !== "" ? (
+          {(merchantKycId?.ifscCode && merchantKycId?.ifscCode !== null) || (merchantKycId?.ifscCode !== "") ? (
             <p className="text-success">Verified</p>
           ) : (
             <p className="text-danger"> Not Verified</p>
@@ -98,7 +98,7 @@ const BankDetails = (props) => {
         }
       />
        <span>
-          {merchantKycId?.accountNumber && merchantKycId?.accountNumber !== null || merchantKycId?.accountNumber !== "" ? (
+          {(merchantKycId?.accountNumber && merchantKycId?.accountNumber !== null) || (merchantKycId?.accountNumber !== "") ? (
             <p className="text-success">Verified</p>
           ) : (
             <p className="text-danger"> Not Verified</p>

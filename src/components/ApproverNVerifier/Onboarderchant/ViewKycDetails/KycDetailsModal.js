@@ -90,7 +90,7 @@ const KycDetailsModal = (props) => {
       dispatch(
         businessTypeById({ business_type_id: merchantKycId?.businessType })
       ).then((resp) => {
-
+    
         setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
       });
     }

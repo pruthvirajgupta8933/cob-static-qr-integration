@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
-import { checkPermissionSlice, logout } from "../../../slices/auth";
+import { checkPermissionSlice } from "../../../slices/auth";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
 import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png";
@@ -11,10 +11,10 @@ import transHis from "../../../assets/images/transImage.png";
 import enquire from "../../../assets/images/enquiry.png";
 
 function SideNavbar() {
-  const { auth, kyc } = useSelector((state) => state);
+  const { auth } = useSelector((state) => state);
 
   const { user, payLinkPermission } = auth;
-   const [clientCode, SetClientCode] = useState("")
+  //  const [clientCode, SetClientCode] = useState("")
 
   let { url } = useRouteMatch();
   const dispatch = useDispatch();
@@ -401,7 +401,7 @@ function SideNavbar() {
 
                        {roleBasedShowTab?.merchant === true ? (
                         <React.Fragment>
-                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(clientCode) ?   
+                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(user?.clientMerchantDetailsList[0]?.clientCode) ?   
                           <li
                             className="ant-menu-item"
                             role="menuitem"

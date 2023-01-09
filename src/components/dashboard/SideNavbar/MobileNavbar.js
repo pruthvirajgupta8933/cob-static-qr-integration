@@ -9,9 +9,9 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 function MobileNavbar() {
   const [toggleNav, setToggleNav] = useState(false);
   const { user, payLinkPermission } = useSelector((state) => state.auth);
-  const [clientCode, SetClientCode] = useState("")
+  // const [clientCode, SetClientCode] = useState("")
 
-  const roleId = user?.roleId;
+  // const roleId = user?.roleId;
   const clientContactPersonName = user?.clientContactPersonName;
 
   let { url } = useRouteMatch();
@@ -30,7 +30,7 @@ function MobileNavbar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const contactUs = "https://sabpaisa.in/support-contact-us/";
+  // const contactUs = "https://sabpaisa.in/support-contact-us/";
   const roleBasedShowTab = roleBasedAccess();
 
   return (
@@ -241,7 +241,7 @@ function MobileNavbar() {
 
                    {roleBasedShowTab?.merchant === true ? (
                         <React.Fragment>
-                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(clientCode) ?   
+                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(user?.clientMerchantDetailsList[0]?.clientCode) ?   
                          <li className="nav-item">
                          <Link
                               to={`${url}/settlement-report`}
