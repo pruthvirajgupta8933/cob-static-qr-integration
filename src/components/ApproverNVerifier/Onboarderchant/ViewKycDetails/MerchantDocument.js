@@ -27,13 +27,73 @@ const MerchantDocument = (props) => {
   const { KycDocUpload } = kyc;
 
 
-  const dropDownDocList = docTypeList?.map((r) => r.key); // Array for documents that is got by business catory type
-  console.log("Array 1 ====>",dropDownDocList)
+  const dropDownDocList = docTypeList?.map((r) => r.key.toString()); // Array for documents that is got by business catory type
+  const newDropDownDocList = dropDownDocList.filter(element => element !== '');
+  // var dropDownList = arr.map(function(e){return e.toString()});
+  console.log("Array 1 ====>",newDropDownDocList)
 
   const uploadedDocList = docList?.map((r) => r.type);
-  console.log("Array 2 ====>",uploadedDocList)
+  console.log("Array 2",uploadedDocList)
+ 
+  
+  const removeCommon = (newDropDownDocList, uploadedDocList) => {
+   const spreaded = [...newDropDownDocList, ...uploadedDocList];
+   return spreaded.filter(el => {
+      return !(newDropDownDocList.includes(el) && uploadedDocList.includes(el));
+   })
+};
+
+let unmatchedArray = removeCommon(newDropDownDocList, uploadedDocList)
+console.log("UnmatchedArray ===>",unmatchedArray)
 
 
+
+
+
+const getDocTypeNamee = (id) => {
+
+  let data = docTypeList.filter((obj) => {
+    if (obj?.key?.toString() === id?.toString()) {
+      return obj;
+    }
+  });
+
+  // console.log("data",data)
+  return data[0]?.value;
+};
+
+
+console.log(getDocTypeNamee(unmatchedArray))
+
+
+
+
+
+
+  // const leftElements =dropDownDocList.filter(element => !uploadedDocList.includes(element));
+  // const differentElements = dropDownDocList.filter(element => !uploadedDocList.includes(element));
+
+  
+  // const [array1, setArray1] = useState(newDropDownDocList);
+  // const [array2, setArray2] = useState(uploadedDocList);
+  // const [mismatch, setMismatch] = useState([]);
+  
+
+
+
+  // const compareArrays = () => {
+  //   const mismatchedValues = [];
+  //   for (let i = 0; i < array2.length; i++) {
+  //     if (array2[i] !== array1[i]) {
+  //       mismatchedValues.push(array2[i]);
+  //     }
+  //   }
+  //   console.log(mismatchedValues,"Mismatched Values")
+  //   return mismatchedValues;
+  // }
+
+
+  // console.log("Mismatched values: ",compareArrays().join(', '))
   const status = KycDocUpload?.status;
 
   const [buttonText, setButtonText] = useState("");
@@ -119,6 +179,10 @@ const MerchantDocument = (props) => {
 
 
   };
+
+  ////////////////////////////////////////////////////
+
+ 
 
 
  
