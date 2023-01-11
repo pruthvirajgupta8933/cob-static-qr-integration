@@ -219,6 +219,9 @@
 .m-r-l-200 {
     margin: 0;
 }
+.font-text-large {
+  font-size: 2em;
+}
 }
 
 .list-items li {

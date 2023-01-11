@@ -193,7 +193,9 @@ function Home() {
           <StepProgressBar status={kyc?.kycUserList?.status} />
         )}
         {/* KYC ALETT */}
-        {<KycAlert/>}
+        {roles?.merchant === true ?
+        <KycAlert/>
+        : <></>}
           
 
         {kycStatus?.status === "Rejected" ? (
@@ -398,8 +400,8 @@ function Home() {
                       className="card-img-left mr-2"
                       src={onlineimg}
                       alt="payLink"
-                      width={"39px"}
-                      height={"39px"}
+                      width={"41px"}
+                      height={"41px"}
                     />
                     <p
                       className="foralinkscsshere my-auto "

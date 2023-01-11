@@ -49301,7 +49301,7 @@ body {
     text-align: right;
 }
 select {
-    -moz-appearance: none;
+    -moz-appearance: auto;
 }
 .total_wiht {
     width: 90%;
