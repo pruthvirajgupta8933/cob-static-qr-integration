@@ -20,21 +20,102 @@ const MerchantDocument = (props) => {
   const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const kyc_status = KycList?.status;
-  const businessType = KycList.businessType;
+  const businessType = KycList?.businessType;
 
   const { user } = auth;
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
 
+  const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
+  const newDropDownDocList = dropDownDocList.filter(element => element !== ''); // remove blank string in array
+  // var dropDownList = arr.map(function(e){return e.toString()});
+   console.log("Array 1 ====>",newDropDownDocList)
+
+  const uploadedDocList = docList?.map((r) => r?.type);
+
+   console.log("Array 2",uploadedDocList)
+ 
+  
+  const removeCommon = (newDropDownDocList, uploadedDocList) => {
+   const spreaded = [...newDropDownDocList, ...uploadedDocList];
+   return spreaded.filter(el => {
+      return !(newDropDownDocList?.includes(el) && uploadedDocList?.includes(el));
+   })
+};
+
+let unmatchedArray = removeCommon(newDropDownDocList, uploadedDocList)
+console.log(unmatchedArray)
+
+
+
+//////////////////////////////////////////////////////////// function For rejeected document show
+const missMatchedId = (id)=>{
+  let data = docTypeList.filter((obj) => {
+    if (obj?.key?.toString() === id?.toString()) {
+      return obj;
+    }
+  });
+  return data[0]
+  
+
+}
+
+const getDocTypeNamee = (id) => {
+let data= id.map((item)=>{
+  return missMatchedId(item);
+
+})
+
+return data;
+  };
+
+
+let pendingDocument=getDocTypeNamee(unmatchedArray)
+
+///////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+  // const leftElements =dropDownDocList.filter(element => !uploadedDocList.includes(element));
+  // const differentElements = dropDownDocList.filter(element => !uploadedDocList.includes(element));
+
+  
+  // const [array1, setArray1] = useState(newDropDownDocList);
+  // const [array2, setArray2] = useState(uploadedDocList);
+  // const [mismatch, setMismatch] = useState([]);
+  
+
+
+
+  // const compareArrays = () => {
+  //   const mismatchedValues = [];
+  //   for (let i = 0; i < array2.length; i++) {
+  //     if (array2[i] !== array1[i]) {
+  //       mismatchedValues.push(array2[i]);
+  //     }
+  //   }
+  //   console.log(mismatchedValues,"Mismatched Values")
+  //   return mismatchedValues;
+  // }
+
+
+  // console.log("Mismatched values: ",compareArrays().join(', '))
   const status = KycDocUpload?.status;
-  // console.log("now the current result",status)
 
   const [buttonText, setButtonText] = useState("");
   const [savedData, setSavedData] = useState([]);
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
+  const [closeModal,setCloseModal] = useState(false)
+  const[commetText,setCommetText]=useState()
+
   const [loader, setLoader] = useState(false)
+  const[buttonClick,setButtonClick]=useState(null)
 
   const getDocTypeName = (id) => {
     let data = docTypeList.filter((obj) => {
@@ -70,7 +151,7 @@ const MerchantDocument = (props) => {
       verified_by: loginId,
     };
     setLoader(true)
-   
+
 
     if (Allow_To_Do_Verify_Kyc_details === true || role?.verifier)
       if (currenTab === 3 && status === "Pending") {
@@ -79,14 +160,14 @@ const MerchantDocument = (props) => {
             getKycDocList(role);
             toast.success(resp?.payload?.message)
             setLoader(false)
-          
+
           } else {
             toast.error(resp?.payload?.message)
             setLoader(false)
           }
 
         });
-       
+
       }
 
     if (role?.approver && status === "Verified") {
@@ -110,15 +191,25 @@ const MerchantDocument = (props) => {
 
   };
 
+  ////////////////////////////////////////////////////
+
+ 
+
+
+ 
+
   const rejectDoc = (doc_id) => {
     const rejectDetails = {
       document_id: doc_id,
       rejected_by: loginId,
-      comment: "Document Rejected",
+      comment:  commetText === undefined || commetText === "" ? "Document Rejected" : commetText,
     };
     dispatch(verifyKycDocumentTab(rejectDetails))
       .then((resp) => {
         resp?.payload?.status && toast.success(resp?.payload?.message);
+        setButtonClick(null)
+        setCloseModal(false)
+        setCommetText("")
         if (typeof resp?.payload?.status === "undefined") {
           toast.error("Please Try After Sometimes");
         }
@@ -130,7 +221,7 @@ const MerchantDocument = (props) => {
       });
   };
 
-   useEffect(() => {
+  useEffect(() => {
 
     role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3 ?
       setButtonText("Verify")
@@ -194,6 +285,8 @@ const MerchantDocument = (props) => {
 
 
   }, [currenTab, roles])
+  
+
 
 
 
@@ -207,6 +300,11 @@ const MerchantDocument = (props) => {
     <div className="row mb-4 border">
       <div className="col-lg-12">
         <h3 className="font-weight-bold">Merchant Documents</h3>
+       {pendingDocument?.length === 0 ? null : <p className="font-weight-bold">Not Submitted:</p>}
+        {pendingDocument?.map((item)=>{
+          return(<> <span className="text-danger"> {item?.value}</span><br/></> )
+        })}
+       
       </div>
 
       <div className="col-lg-12 mt-4 m-2">
@@ -244,18 +342,18 @@ const MerchantDocument = (props) => {
                       {/*  || (enableBtnApprover(doc?.status) && enableApproverTabwise) */}
                       {(enableBtnVerifier && doc?.status === "Pending") || (enableBtnApprover && doc?.status === "Verified") ?
                         <>
-                      
-                          <a className= "text-success"
+
+                          <a className="text-success"
                             href={() => false}
                             onClick={() => {
                               verifyApproveDoc(doc?.documentId, doc?.status);
                             }}
-                        
-                            
+
+
                           >
                             <h4>{buttonText}</h4>
                           </a>
-                        
+
 
                           &nbsp;
                           &nbsp;
@@ -264,9 +362,11 @@ const MerchantDocument = (props) => {
                           <a
                             href={() => false}
                             className="text-danger"
-                            onClick={() => {
-                              rejectDoc(doc?.documentId);
-                            }}
+                            onClick={()=>{setButtonClick(doc?.documentId)
+                              setCloseModal(true)}} 
+                          // onClick={() => {
+                          //   rejectDoc(doc?.documentId);
+                          // }}
                           >
                             Reject
                           </a>
@@ -276,6 +376,17 @@ const MerchantDocument = (props) => {
 
 
                     </div>
+                    {buttonClick===doc?.documentId && closeModal === true ?
+          
+                    <div>
+                      <label for="comments">Reject Comments</label>
+
+                      <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e)=>setCommetText(e.target.value)}>
+                      </textarea>
+                      <button type="button" onClick={() => { rejectDoc(doc?.documentId,commetText); }} className="btn btn-danger btn-sm text-white">Submit</button>
+                    </div>
+                    : <></>}
+
                   </td>
 
                   {/* {enableBtnVerifier(doc?.status) || (enableBtnApprover(doc?.status) && enableApproverTabwise) ?

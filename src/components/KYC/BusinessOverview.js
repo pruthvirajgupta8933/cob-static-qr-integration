@@ -352,7 +352,7 @@ function BusinessOverview(props) {
                 />
               </div>
               <div className="col-sm-6 col-md-6 col-lg-6">
-                <label className="p-2 mt-0">
+                <label className="col-form-label p-2 mt-0">
                   Business Category<span style={{ color: "red" }}>*</span>
                 </label>
 
