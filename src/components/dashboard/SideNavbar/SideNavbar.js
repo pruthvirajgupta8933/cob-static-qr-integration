@@ -48,12 +48,14 @@ function SideNavbar() {
         <div className="gx-sidebar-content">
           <div className="brand-logo d-flex-item-right">
             <div className="float-centre p-4">
+            <Link to={`${url}`} className="txt-white sidenavFonts">
               <img
                 src={Sabpaisalogo3}
                 width={150}
                 alt="sabpaisa"
                 title="sabpaisa"
               />
+              </Link>
             </div>
           </div>
           <div className="sidebar_menu_list">
