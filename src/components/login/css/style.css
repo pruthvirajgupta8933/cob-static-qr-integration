@@ -842,6 +842,10 @@ table.list {
   min-height: 37.3px !important;
   font-size: 12px !important;
   line-height:22px;
+  
+}
+.selct{
+  padding:0.6rem 0.75rem !important ;
 }
 .errortxt{
   color: red;
