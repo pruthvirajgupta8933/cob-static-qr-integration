@@ -30,11 +30,11 @@ const MerchantDocument = (props) => {
   const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
   const newDropDownDocList = dropDownDocList.filter(element => element !== ''); // remove blank string in array
   // var dropDownList = arr.map(function(e){return e.toString()});
-   console.log("Array 1 ====>",newDropDownDocList)
+  //  console.log("Array 1 ====>",newDropDownDocList)
 
   const uploadedDocList = docList?.map((r) => r?.type);
 
-   console.log("Array 2",uploadedDocList)
+  //  console.log("Array 2",uploadedDocList)
  
   
   const removeCommon = (newDropDownDocList, uploadedDocList) => {
@@ -45,7 +45,7 @@ const MerchantDocument = (props) => {
 };
 
 let unmatchedArray = removeCommon(newDropDownDocList, uploadedDocList)
-console.log(unmatchedArray)
+// console.log(unmatchedArray)
 
 
 
@@ -391,7 +391,6 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
                   {/* {enableBtnVerifier(doc?.status) || (enableBtnApprover(doc?.status) && enableApproverTabwise) ?
                     <td>
-
                       <a
                         href={() => false}
                         className="text-danger"
@@ -401,7 +400,6 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
                       >
                         Reject
                       </a>
-
                     </td>
                     : <></>
                   } */}
