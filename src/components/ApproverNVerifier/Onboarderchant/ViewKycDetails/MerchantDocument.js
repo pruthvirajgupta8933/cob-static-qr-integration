@@ -27,43 +27,54 @@ const MerchantDocument = (props) => {
   const { KycDocUpload } = kyc;
 
 
-  const dropDownDocList = docTypeList?.map((r) => r.key.toString()); // Array for documents that is got by business catory type
-  const newDropDownDocList = dropDownDocList.filter(element => element !== '');
+  const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
+  const newDropDownDocList = dropDownDocList.filter(element => element !== ''); // remove blank string in array
   // var dropDownList = arr.map(function(e){return e.toString()});
-  console.log("Array 1 ====>",newDropDownDocList)
+   console.log("Array 1 ====>",newDropDownDocList)
 
-  const uploadedDocList = docList?.map((r) => r.type);
-  console.log("Array 2",uploadedDocList)
+  const uploadedDocList = docList?.map((r) => r?.type);
+
+   console.log("Array 2",uploadedDocList)
  
   
   const removeCommon = (newDropDownDocList, uploadedDocList) => {
    const spreaded = [...newDropDownDocList, ...uploadedDocList];
    return spreaded.filter(el => {
-      return !(newDropDownDocList.includes(el) && uploadedDocList.includes(el));
+      return !(newDropDownDocList?.includes(el) && uploadedDocList?.includes(el));
    })
 };
 
 let unmatchedArray = removeCommon(newDropDownDocList, uploadedDocList)
-console.log("UnmatchedArray ===>",unmatchedArray)
+console.log(unmatchedArray)
 
 
 
-
-
-const getDocTypeNamee = (id) => {
-
+//////////////////////////////////////////////////////////// function For rejeected document show
+const missMatchedId = (id)=>{
   let data = docTypeList.filter((obj) => {
     if (obj?.key?.toString() === id?.toString()) {
       return obj;
     }
   });
+  return data[0]
+  
 
-  // console.log("data",data)
-  return data[0]?.value;
-};
+}
+
+const getDocTypeNamee = (id) => {
+let data= id.map((item)=>{
+  return missMatchedId(item);
+
+})
+
+return data;
+  };
 
 
-console.log(getDocTypeNamee(unmatchedArray))
+let pendingDocument=getDocTypeNamee(unmatchedArray)
+
+///////////////////////////////////////////////////////////////////////
+
 
 
 
@@ -289,6 +300,11 @@ console.log(getDocTypeNamee(unmatchedArray))
     <div className="row mb-4 border">
       <div className="col-lg-12">
         <h3 className="font-weight-bold">Merchant Documents</h3>
+       {pendingDocument?.length === 0 ? null : <p className="font-weight-bold">Not Submitted:</p>}
+        {pendingDocument?.map((item)=>{
+          return(<> <span className="text-danger"> {item?.value}</span><br/></> )
+        })}
+       
       </div>
 
       <div className="col-lg-12 mt-4 m-2">
