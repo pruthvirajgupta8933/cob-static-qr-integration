@@ -100,7 +100,7 @@ function Registration() {
     };
   }, []);
 
-  const handleRegistration = (formData) => {
+  const handleRegistration = (formData,{resetForm}) => {
     let businessType = 1;
     let {
       fullname,
@@ -127,6 +127,7 @@ function Registration() {
       .unwrap()
       .then((res) => {
         setBtnDisable(false);
+        resetForm();
       })
       .catch((err) => {
         setBtnDisable(false);
@@ -352,8 +353,8 @@ function Registration() {
                               }}
                               validationSchema={FORM_VALIDATION}
                               onSubmit={(values, { resetForm }) => {
-                                handleRegistration(values)
-                                resetForm()
+                                handleRegistration(values,{resetForm})
+                                
                               }}
 
                               // onSubmit={handleRegistration}

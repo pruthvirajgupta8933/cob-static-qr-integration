@@ -279,7 +279,7 @@ const SabPaisaPricing = () => {
                         <div
                           className="modal fade"
                           id="subscription"
-                          tabindex="-1"
+                          tabIndex="-1"
                           role="dialog"
                           aria-labelledby="subscriptionModalLabel"
                           aria-hidden="true"
@@ -391,7 +391,7 @@ const SabPaisaPricing = () => {
                         <div
                           className="modal fade"
                           id="exampleModal"
-                          tabindex="-1"
+                          tabIndex="-1"
                           role="dialog"
                           aria-labelledby="exampleModalLabel"
                           aria-hidden="true"

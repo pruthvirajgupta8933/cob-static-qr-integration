@@ -102,7 +102,7 @@ const KycDetailsModal = (props) => {
 
   return (
     <div
-      tabindex="-1"
+      tabIndex="-1"
       role="dialog"
       className={
         "modal fade mymodals" +

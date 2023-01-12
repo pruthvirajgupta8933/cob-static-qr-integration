@@ -10338,7 +10338,7 @@ body {
     background-color: #fff;
     font-feature-settings: "tnum", "tnum";
 }
-[tabindex="-1"]:focus {
+[tabIndex="-1"]:focus {
     outline: none !important;
 }
 hr {
@@ -10639,7 +10639,7 @@ mark {
 .anticon .anticon-icon {
     display: block;
 }
-.anticon[tabindex] {
+.anticon[tabIndex] {
     cursor: pointer;
 }
 .anticon-spin,
