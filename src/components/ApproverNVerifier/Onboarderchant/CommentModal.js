@@ -92,7 +92,7 @@ const CommentModal = (props) => {
   return (
     <div>
       <div
-        tabindex="-1"
+        tabIndex="-1"
         role="dialog"
         aria-hidden="true"
         className={

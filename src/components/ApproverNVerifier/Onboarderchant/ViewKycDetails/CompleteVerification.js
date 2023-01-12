@@ -217,6 +217,7 @@ let closeVerificationModal=props?.closeVerification;
 
           <button type="button" onClick={() => handleRejectClick()} className="btn btn-danger btn-sm text-white">Reject KYC</button></>
           : <></>
+          
         }
 
 
