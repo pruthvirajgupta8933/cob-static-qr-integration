@@ -193,7 +193,7 @@ function VerifiedMerchant() {
       <div>
         
       {openCommentModal === true ?  
-      <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> 
+      <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Pending Approval"} /> 
       : <></>}
       {/* {console.log("KycDetailsModal isOpenModal",isOpenModal)} */}
       {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderPendingApproval={verifyMerchant}   /> : <></>}
