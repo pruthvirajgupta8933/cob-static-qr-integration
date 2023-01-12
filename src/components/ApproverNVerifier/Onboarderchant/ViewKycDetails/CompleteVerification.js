@@ -26,6 +26,8 @@ let closeVerificationModal=props?.closeVerification;
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
   const [disable, setDisable] = useState(false)
+  const[buttonClick,setButtonClick]=useState(false)
+  const[commetText,setCommetText]=useState()
 
   const { auth } = useSelector((state) => state);
 
@@ -105,16 +107,19 @@ let closeVerificationModal=props?.closeVerification;
 
   }
 
-  const handleRejectClick = () => {
+  const handleRejectClick = (commetText) => {
+    console.log("This is comments",commetText)
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       rejected_by: loginId,
+      comments:commetText
     };
     if (window.confirm("Reject kyc")) {
     dispatch(completeVerificationRejectKyc(rejectDetails))
       .then((resp) => {
         resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : resp?.payload?.detail && toast.error(resp?.payload?.detail)
         dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+        setButtonClick(false)
         return currenTab === 4 ? pendingApporvalTable() : currenTab === 3 ? pendingVerfyTable() : <></>
       })
       .catch((e) => {
@@ -215,10 +220,20 @@ let closeVerificationModal=props?.closeVerification;
           }} className="btn btn-info btn-sm text-white">{buttonText}</button>
 
 
-          <button type="button" onClick={() => handleRejectClick()} className="btn btn-danger btn-sm text-white">Reject KYC</button></>
+          <button type="button"   onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button></>
           : <></>
-          
+
         }
+
+{buttonClick===true ?
+          <>
+          <label for="comments">Reject Comments</label>
+
+    <textarea id="comments" name="reject_commet" rows="4" cols="40" onChange={(e)=>setCommetText(e.target.value)}>
+    </textarea>
+        <button type="button" 
+            onClick={() => handleRejectClick(commetText)}
+            className="btn btn-danger btn-sm text-white">Submit</button></> : <></>}
 
 
       </div>

@@ -191,7 +191,7 @@ function PendingVerification() {
           />
         </div>
         <div>
-          {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} /> : <></>}
+          {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal}/> : <></>}
           
           {/* KYC Details Modal */}
           
