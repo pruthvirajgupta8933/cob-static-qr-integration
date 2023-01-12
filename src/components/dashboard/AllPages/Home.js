@@ -46,7 +46,7 @@ function Home() {
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
-  const [kycStatus, setKycStatus] = useState("");
+  // const [kycStatus, setKycStatus] = useState("");
   // const [roleType, setRoleType] = useState(roles);
   const { dashboard, auth, kyc, consentKyc } = useSelector((state) => state);
 
@@ -88,7 +88,7 @@ function Home() {
         login_id: user?.loginId,
       })
     ).then((resp) => {
-      setKycStatus(resp?.payload);
+      // setKycStatus(resp?.payload);
     });
   }, [clientCode]);
 
@@ -198,11 +198,11 @@ function Home() {
         : <></>}
           
 
-        {kycStatus?.status === "Rejected" ? (
+        {/* {kycStatus?.status === "Rejected" ? (
           <RejectNotification />
         ) : (
           ""
-        )}
+        )} */}
         <div className="announcement-banner-container_new  announcement-banner">
           <div className="onboarding-illustration-top">
             {" "}
