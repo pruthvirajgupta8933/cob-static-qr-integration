@@ -58,7 +58,7 @@ const KycDetailsModal = (props) => {
         })
       );
     }
-  }, [merchantKycId?.loginMasterId]);
+  }, [dispatch,merchantKycId?.loginMasterId]);
 
   useEffect(() => {
     if (merchantKycId !== null) {
@@ -70,7 +70,7 @@ const KycDetailsModal = (props) => {
         setDocTypeList(data);
       });
     }
-  }, [merchantKycId?.businessType]);
+  }, [dispatch,merchantKycId?.businessType]);
 
   //--------------------------------------//
 
@@ -82,7 +82,7 @@ const KycDetailsModal = (props) => {
         setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
       });
     }
-  }, [merchantKycId?.businessType]);
+  }, [dispatch,merchantKycId?.businessType]);
 
   useEffect(() => {
     if (merchantKycId !== null) {
@@ -96,7 +96,7 @@ const KycDetailsModal = (props) => {
         });
       }
     }
-  }, [merchantKycId?.businessCategory]);
+  }, [dispatch,merchantKycId?.businessCategory]);
 
 
 

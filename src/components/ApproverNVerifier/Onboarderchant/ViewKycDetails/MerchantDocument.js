@@ -3,7 +3,7 @@ import { roleBasedAccess } from '../../../../_components/reuseable_components/ro
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify"
-import Loader from './Loader';
+
 
 const MerchantDocument = (props) => {
   const { docList, docTypeList, role, merchantKycId } = props;
@@ -16,11 +16,11 @@ const MerchantDocument = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
-  const { allTabsValidate } = kyc;
-  const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
-  const KycList = kyc?.kycUserList;
-  const kyc_status = KycList?.status;
-  const businessType = KycList?.businessType;
+  // const { allTabsValidate } = kyc;
+  // const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
+  // const KycList = kyc?.kycUserList;
+  // const kyc_status = KycList?.status;
+  // const businessType = KycList?.businessType;
 
   const { user } = auth;
   const { loginId } = user;
@@ -105,7 +105,7 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
 
   // console.log("Mismatched values: ",compareArrays().join(', '))
-  const status = KycDocUpload?.status;
+  // const status = KycDocUpload?.status;
 
   const [buttonText, setButtonText] = useState("");
   const [savedData, setSavedData] = useState([]);
