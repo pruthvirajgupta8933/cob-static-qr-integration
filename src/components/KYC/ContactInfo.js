@@ -388,7 +388,7 @@ function ContactInfo(props) {
                     name="email_id"
                     className="form-control"
                     disabled={VerifyKycStatus === "Verified" ? true : false}
-                    readOnly="true"
+                    readOnly={true}
                   />
 
                   {KycList?.emailId !== null &&
