@@ -118,10 +118,11 @@ let closeVerificationModal=props?.closeVerification;
     if (window.confirm("Reject kyc")) {
     dispatch(completeVerificationRejectKyc(rejectDetails))
       .then((resp) => {
-        console.log("This sis",resp)
+        // console.log("This sis",resp)
         resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
         dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
         setButtonClick(false)
+        setCommetText("");
         return currenTab === 4 ? pendingApporvalTable() : currenTab === 3 ? pendingVerfyTable() : <></>
       })
       .catch((e) => {
