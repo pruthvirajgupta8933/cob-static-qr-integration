@@ -6,7 +6,7 @@ import { toast } from "react-toastify"
 
 
 const MerchantDocument = (props) => {
-  const { docList, docTypeList, role, merchantKycId } = props;
+  const { docList,setDocList, docTypeList, role, merchantKycId } = props;
   // const roles = roleBasedAccess();
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
@@ -116,6 +116,7 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
   const [loader, setLoader] = useState(false)
   const[buttonClick,setButtonClick]=useState(null)
+  const [selectAll, setSelectAll] = useState(false);
 
   const getDocTypeName = (id) => {
     let data = docTypeList.filter((obj) => {
@@ -285,6 +286,26 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
 
   }, [currenTab, roles])
+
+  const handleCheckboxClick = (event) => {
+    const newData = [...docList];
+    newData.forEach((item) => {
+      if (item.id === parseInt(event.target.value)) {
+        item.checked = event.target.checked;
+      }
+    });
+    setDocList(newData);
+  }
+
+  const handleSelectAll = (event) => {
+    const newData = [...docList];
+    newData.forEach((item) => {
+      console.log("This is the item",item)
+      item.checked = event.target.checked;
+    });
+    setDocList(newData);
+    setSelectAll(event.target.checked);
+  }
   
 
 
@@ -304,6 +325,13 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
         {pendingDocument?.map((item)=>{
           return(<> <span className="text-danger"> {item?.value}</span><br/></> )
         })}
+
+              {/* <input
+                type="checkbox"
+                 checked={selectAll}
+                 onClick={handleSelectAll}
+              /> */}
+
        
       </div>
 
@@ -312,10 +340,12 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
           <thead>
             <tr>
               <th>S.No.</th>
+              <th>Check</th>
               <th>Document Type</th>
               <th>Document Name</th>
               <th>Document Status</th>
               <th>Action</th>
+              
             </tr>
           </thead>
           <tbody>
@@ -323,6 +353,14 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
               KycDocUpload?.map((doc, i) => (
                 <tr key={i}>
                   <td>{i + 1}</td>
+                  {/* <td>
+                <input
+                  type="checkbox"
+                  value={doc?.documentId}
+                  checked={doc?.checked}
+                  onClick={handleCheckboxClick}
+                />
+              </td> */}
                   <td>{getDocTypeName(doc?.type)}</td>
                   <td>
                     <a

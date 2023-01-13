@@ -227,8 +227,9 @@ function BusinessOverview(props) {
 
   const onSubmit = (values) => {
     if (role.merchant) {
-      setIsDisabled(true)
-      if (window.confirm(`Are you sure for the Expected Transaction : Rs ${values.expected_transactions}`)) {
+      // setIsDisabled(true)
+      if (window.confirm(`Are you sure for the Expected Transaction : ${values.expected_transactions}`)) {
+        
       dispatch(
         saveBusinessInfo({
           business_type: values.business_type,

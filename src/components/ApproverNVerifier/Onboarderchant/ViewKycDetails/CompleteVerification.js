@@ -117,7 +117,8 @@ let closeVerificationModal=props?.closeVerification;
     if (window.confirm("Reject kyc")) {
     dispatch(completeVerificationRejectKyc(rejectDetails))
       .then((resp) => {
-        resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : resp?.payload?.detail && toast.error(resp?.payload?.detail)
+        console.log("This sis",resp)
+        resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
         dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
         setButtonClick(false)
         return currenTab === 4 ? pendingApporvalTable() : currenTab === 3 ? pendingVerfyTable() : <></>
@@ -213,7 +214,9 @@ let closeVerificationModal=props?.closeVerification;
 
   return (
     <div className="row">
-      <div className="col-lg-6"></div>
+      <div className="col-lg-6">
+      <p className="font-weight-bold">Comments : <span>{KycTabStatus?.comments}</span></p>
+      </div>
       <div className="col-lg-6">
         {enableBtnVerifier || enableBtnApprover ?
           <><button type="button"  disabled={disable} onClick={() => {handleVerifyClick()

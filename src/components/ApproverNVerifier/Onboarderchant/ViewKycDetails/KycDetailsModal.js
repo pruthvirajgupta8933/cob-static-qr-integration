@@ -162,6 +162,7 @@ const KycDetailsModal = (props) => {
               {/* Merchant Documents */}
               <MerchantDocument
                 docList={docList}
+                setDocList={setDocList}
                 docTypeList={docTypeList}
                 role={roles}
                 merchantKycId={merchantKycId}
