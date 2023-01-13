@@ -193,7 +193,7 @@ const CommentModal = (props) => {
                                   <th>Commented By</th>
                                   <th>Comments</th>
                                   <th>Date of Comments</th>
-                                  <th>Merchant list tab</th>
+                                  <th>Comments from tab</th>
                                 </tr>
                               </thead>
                               <tbody>
