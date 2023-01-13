@@ -264,7 +264,7 @@ function Sandbox() {
                           className="form-control"
                           id="inputPassword3"
                           name="passwordd"
-                          readOnly="true"
+                          readOnly={true}
                           value={data?.clientPassword ? data?.clientPassword : "" }
                         />
                           <div className="input-group-addon eye__Icon">

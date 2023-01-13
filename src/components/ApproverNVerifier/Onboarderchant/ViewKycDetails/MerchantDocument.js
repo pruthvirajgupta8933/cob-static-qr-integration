@@ -3,10 +3,10 @@ import { roleBasedAccess } from '../../../../_components/reuseable_components/ro
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify"
-import Loader from './Loader';
+
 
 const MerchantDocument = (props) => {
-  const { docList, docTypeList, role, merchantKycId } = props;
+  const { docList,setDocList, docTypeList, role, merchantKycId } = props;
   // const roles = roleBasedAccess();
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
@@ -16,11 +16,11 @@ const MerchantDocument = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
-  const { allTabsValidate } = kyc;
-  const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
-  const KycList = kyc?.kycUserList;
-  const kyc_status = KycList?.status;
-  const businessType = KycList?.businessType;
+  // const { allTabsValidate } = kyc;
+  // const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
+  // const KycList = kyc?.kycUserList;
+  // const kyc_status = KycList?.status;
+  // const businessType = KycList?.businessType;
 
   const { user } = auth;
   const { loginId } = user;
@@ -30,11 +30,11 @@ const MerchantDocument = (props) => {
   const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
   const newDropDownDocList = dropDownDocList.filter(element => element !== ''); // remove blank string in array
   // var dropDownList = arr.map(function(e){return e.toString()});
-   console.log("Array 1 ====>",newDropDownDocList)
+  //  console.log("Array 1 ====>",newDropDownDocList)
 
   const uploadedDocList = docList?.map((r) => r?.type);
 
-   console.log("Array 2",uploadedDocList)
+  //  console.log("Array 2",uploadedDocList)
  
   
   const removeCommon = (newDropDownDocList, uploadedDocList) => {
@@ -45,7 +45,7 @@ const MerchantDocument = (props) => {
 };
 
 let unmatchedArray = removeCommon(newDropDownDocList, uploadedDocList)
-console.log(unmatchedArray)
+// console.log(unmatchedArray)
 
 
 
@@ -105,7 +105,7 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
 
   // console.log("Mismatched values: ",compareArrays().join(', '))
-  const status = KycDocUpload?.status;
+  // const status = KycDocUpload?.status;
 
   const [buttonText, setButtonText] = useState("");
   const [savedData, setSavedData] = useState([]);
@@ -116,6 +116,7 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
   const [loader, setLoader] = useState(false)
   const[buttonClick,setButtonClick]=useState(null)
+  const [selectAll, setSelectAll] = useState(false);
 
   const getDocTypeName = (id) => {
     let data = docTypeList.filter((obj) => {
@@ -285,6 +286,26 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
 
   }, [currenTab, roles])
+
+  const handleCheckboxClick = (event) => {
+    const newData = [...docList];
+    newData.forEach((item) => {
+      if (item.id === parseInt(event.target.value)) {
+        item.checked = event.target.checked;
+      }
+    });
+    setDocList(newData);
+  }
+
+  const handleSelectAll = (event) => {
+    const newData = [...docList];
+    newData.forEach((item) => {
+      console.log("This is the item",item)
+      item.checked = event.target.checked;
+    });
+    setDocList(newData);
+    setSelectAll(event.target.checked);
+  }
   
 
 
@@ -304,6 +325,13 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
         {pendingDocument?.map((item)=>{
           return(<> <span className="text-danger"> {item?.value}</span><br/></> )
         })}
+
+              {/* <input
+                type="checkbox"
+                 checked={selectAll}
+                 onClick={handleSelectAll}
+              /> */}
+
        
       </div>
 
@@ -312,10 +340,12 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
           <thead>
             <tr>
               <th>S.No.</th>
+              <th>Check</th>
               <th>Document Type</th>
               <th>Document Name</th>
               <th>Document Status</th>
               <th>Action</th>
+              
             </tr>
           </thead>
           <tbody>
@@ -323,6 +353,14 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
               KycDocUpload?.map((doc, i) => (
                 <tr key={i}>
                   <td>{i + 1}</td>
+                  {/* <td>
+                <input
+                  type="checkbox"
+                  value={doc?.documentId}
+                  checked={doc?.checked}
+                  onClick={handleCheckboxClick}
+                />
+              </td> */}
                   <td>{getDocTypeName(doc?.type)}</td>
                   <td>
                     <a
@@ -391,7 +429,6 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
                   {/* {enableBtnVerifier(doc?.status) || (enableBtnApprover(doc?.status) && enableApproverTabwise) ?
                     <td>
-
                       <a
                         href={() => false}
                         className="text-danger"
@@ -401,7 +438,6 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
                       >
                         Reject
                       </a>
-
                     </td>
                     : <></>
                   } */}

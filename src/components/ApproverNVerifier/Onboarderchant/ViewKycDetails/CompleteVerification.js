@@ -25,7 +25,10 @@ let closeVerificationModal=props?.closeVerification;
   const dispatch = useDispatch()
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
+  const [enableBtnApprovedTab,setEnableBtnApprovedTab] = useState(false)
   const [disable, setDisable] = useState(false)
+  const[buttonClick,setButtonClick]=useState(false)
+  const[commetText,setCommetText]=useState()
 
   const { auth } = useSelector((state) => state);
 
@@ -105,16 +108,20 @@ let closeVerificationModal=props?.closeVerification;
 
   }
 
-  const handleRejectClick = () => {
+  const handleRejectClick = (commetText) => {
+    console.log("This is comments",commetText)
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       rejected_by: loginId,
+      comments:commetText
     };
     if (window.confirm("Reject kyc")) {
     dispatch(completeVerificationRejectKyc(rejectDetails))
       .then((resp) => {
-        resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : resp?.payload?.detail && toast.error(resp?.payload?.detail)
+        console.log("This sis",resp)
+        resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
         dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+        setButtonClick(false)
         return currenTab === 4 ? pendingApporvalTable() : currenTab === 3 ? pendingVerfyTable() : <></>
       })
       .catch((e) => {
@@ -143,7 +150,7 @@ let closeVerificationModal=props?.closeVerification;
   ////////////////////////////////////////////////////// Button enable for approver
   const approver = () => {
     let enableBtn = false;
-    if (currenTab === 4) {
+    if (currenTab === 4 ) {
       if (roles.approver === true)
         //  if ( status === "Verified")
         if (isverified === true && isapproved === false) {
@@ -152,6 +159,21 @@ let closeVerificationModal=props?.closeVerification;
         }
     }
      setEnableBtnApprover(enableBtn);
+  };
+
+// For current tab 5
+  const approvedtab = () => {
+    let enableBtn = false;
+    if (currenTab === 5) {
+      if (roles.approver === true)
+        //  if ( status === "Verified")
+        // if (isverified === true && isapproved === false) {
+          if (Allow_To_Do_Verify_Kyc_details ===  true) {
+          enableBtn = true;
+
+        }
+    }
+    setEnableBtnApprovedTab(enableBtn);
   };
 
 
@@ -171,6 +193,7 @@ let closeVerificationModal=props?.closeVerification;
   };
   approver();
   verifier();
+  approvedtab();
 
     
 // console.log("currenTab",currenTab)
@@ -208,16 +231,33 @@ let closeVerificationModal=props?.closeVerification;
 
   return (
     <div className="row">
-      <div className="col-lg-6"></div>
+      <div className="col-lg-6">
+      <p className="font-weight-bold">Comments : <span>{KycTabStatus?.comments}</span></p>
+      </div>
       <div className="col-lg-6">
         {enableBtnVerifier || enableBtnApprover ?
           <><button type="button"  disabled={disable} onClick={() => {handleVerifyClick()
           }} className="btn btn-info btn-sm text-white">{buttonText}</button>
 
+          
+          
+          <button type="button"   onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button></>
+          : enableBtnApprovedTab === true ?   <button type="button"   onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button> : <> </> 
 
-          <button type="button" onClick={() => handleRejectClick()} className="btn btn-danger btn-sm text-white">Reject KYC</button></>
-          : <></>
         }
+
+         
+
+{buttonClick===true ?
+ 
+          <>
+          <label for="comments">Reject Comments</label>
+
+    <textarea id="comments" name="reject_commet" rows="4" cols="40" onChange={(e)=>setCommetText(e.target.value)}>
+    </textarea>
+        <button type="button" 
+            onClick={() => handleRejectClick(commetText)}
+            className="btn btn-danger btn-sm text-white">Submit</button></> : <></>}
 
 
       </div>
