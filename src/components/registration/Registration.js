@@ -52,7 +52,7 @@ function Registration() {
   const { isUserRegistered } = datar;
   const [acceptTc, setAcceptTc] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
-  const [btnDisable, setBtnDisable] = useState(true);
+  const [btnDisable, setBtnDisable] = useState(false);
 
   const [businessCode, setBusinessCode] = useState([]);
   const [passwordType, setPasswordType] = useState({
@@ -100,7 +100,7 @@ function Registration() {
     };
   }, []);
 
-  const handleRegistration = (formData) => {
+  const handleRegistration = (formData,{resetForm}) => {
     let businessType = 1;
     let {
       fullname,
@@ -109,6 +109,7 @@ function Registration() {
       passwordd,
       business_cat_code,
     } = formData;
+    setBtnDisable(true)
 
     dispatch(
       register({
@@ -121,10 +122,12 @@ function Registration() {
         isDirect: true,
         requestId: null,
       })
+      
     )
       .unwrap()
       .then((res) => {
         setBtnDisable(false);
+        resetForm();
       })
       .catch((err) => {
         setBtnDisable(false);
@@ -349,9 +352,14 @@ function Registration() {
                                 terms_and_condition: false,
                               }}
                               validationSchema={FORM_VALIDATION}
-                              onSubmit={handleRegistration}
+                              onSubmit={(values, { resetForm }) => {
+                                handleRegistration(values,{resetForm})
+                                
+                              }}
+
+                              // onSubmit={handleRegistration}
                             >
-                              {(formik) => (
+                              {(formik,resetForm ) => (
                                 <Form
                                   acceptCharset="utf-8"
                                   action="#"
@@ -605,8 +613,8 @@ function Registration() {
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
-                                        disabled={
-                                          !(formik.isValid && formik.dirty)
+                                        disabled={btnDisable ||
+                                          !(formik.isValid && formik.dirty) 
                                             ? true
                                             : false
                                         }

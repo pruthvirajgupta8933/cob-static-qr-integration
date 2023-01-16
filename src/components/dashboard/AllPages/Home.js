@@ -19,19 +19,19 @@ import NavBar from "../NavBar/NavBar";
 import bro from "../../../assets/images/bro.png";
 import congratsImg from "../../../assets/images/congImg.png";
 import onlineimg from "../../../assets/images/onlinePayment.png";
-import paymentlink from "../../../assets/images/paymentLink.png";
+// import paymentlink from "../../../assets/images/paymentLink.png";
 import subscriptin from "../../../assets/images/subscribe.png";
 import Rupees from "../../../assets/images/payout.png";
 import Quick from "../../../assets/images/qwikform.png";
-import eposs from "../../../assets/images/epos.png";
+// import eposs from "../../../assets/images/epos.png";
 import linkpssa from "../../../assets/images/linkPaisa.png";
 import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
-import congImg from "../../../assets/images/congImg.png";
-import $ from "jquery";
-import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
-import API_URL from "../../../config";
-import { toast } from "react-toastify";
+// import congImg from "../../../assets/images/congImg.png";
+// import $ from "jquery";
+// import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+// import API_URL from "../../../config";
+// import { toast } from "react-toastify";
 import RejectNotification from "../../../_components/reuseable_components/RejectNotification";
 import KycAlert from "../../KYC/KycAlert";
 
@@ -46,18 +46,18 @@ function Home() {
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
-  const [kycStatus, setKycStatus] = useState("");
+  // const [kycStatus, setKycStatus] = useState("");
   // const [roleType, setRoleType] = useState(roles);
   const { dashboard, auth, kyc, consentKyc } = useSelector((state) => state);
 
-  const kyc_submit_consent = useSelector(
-    (state) => state.kyc.consentKyc.status
-  );
+  // const kyc_submit_consent = useSelector(
+  //   (state) => state.kyc.consentKyc.status
+  // );
 
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
 
   const [modalState, setModalState] = useState("Not-Filled");
-  const [kycmodalState, setKycModalState] = useState(false);
+  // const [kycmodalState, setKycModalState] = useState(false);
 
   // console.log("dashboard",dashboard)
   const { isLoading, successTxnsumry } = dashboard;
@@ -88,7 +88,7 @@ function Home() {
         login_id: user?.loginId,
       })
     ).then((resp) => {
-      setKycStatus(resp?.payload);
+      // setKycStatus(resp?.payload);
     });
   }, [clientCode]);
 
@@ -150,9 +150,9 @@ function Home() {
 
   // console.log("Kyc Status",kycStatus)
 
-  const handleChange = (e) => {
-    SetSearch(e);
-  };
+  // const handleChange = (e) => {
+  //   SetSearch(e);
+  // };
 
   if (roles.merchant === true) {
     if (user.clientMerchantDetailsList === null) {
@@ -193,14 +193,16 @@ function Home() {
           <StepProgressBar status={kyc?.kycUserList?.status} />
         )}
         {/* KYC ALETT */}
-        {<KycAlert/>}
+        {roles?.merchant === true ?
+        <KycAlert/>
+        : <></>}
           
 
-        {kycStatus?.status === "Rejected" ? (
+        {/* {kycStatus?.status === "Rejected" ? (
           <RejectNotification />
         ) : (
           ""
-        )}
+        )} */}
         <div className="announcement-banner-container_new  announcement-banner">
           <div className="onboarding-illustration-top">
             {" "}
@@ -398,8 +400,8 @@ function Home() {
                       className="card-img-left mr-2"
                       src={onlineimg}
                       alt="payLink"
-                      width={"39px"}
-                      height={"39px"}
+                      width={"41px"}
+                      height={"41px"}
                     />
                     <p
                       className="foralinkscsshere my-auto "

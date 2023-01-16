@@ -4,14 +4,12 @@ import {
   kycForPendingMerchants,
   GetKycTabsStatus,
 } from "../../slices/kycSlice";
-import API_URL from "../../config";
-import { Link, useRouteMatch } from "react-router-dom";
+import {  useRouteMatch } from "react-router-dom";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
-import ViewStatusModal from "./ViewStatusModal";
+import CommentModal from "./Onboarderchant/CommentModal";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
@@ -28,6 +26,8 @@ const PendindKyc = () => {
   const [spinner, setSpinner] = useState(true);
   const [dataCount, setDataCount] = useState("");
   const [pendingKycData, setPendingKycData] = useState([]);
+  const [commentId, setCommentId] = useState({});
+  const [openCommentModal, setOpenCommentModal] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
@@ -175,6 +175,7 @@ const PendindKyc = () => {
           />
         </div>
         <div>
+        {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Pending KYC"} /> : <></>}
          
         <KycDetailsModal handleModal={setIsModalOpen} kycId={kycIdClick} isOpenModal={isOpenModal} />
         </div>
@@ -217,6 +218,7 @@ const PendindKyc = () => {
                 <th>Onboard Type</th>
                 <th>View Status</th>
                 {/* <th>View</th> */}
+                {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? ( <th>Action</th>) : <></>}
               </tr>
             </thead>
             <tbody>
@@ -252,6 +254,24 @@ const PendindKyc = () => {
                       >
                         View Status
                       </button>
+                    </td>
+                    <td>
+                    {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
+                        <button
+                        type="button"
+                        className="btn approve text-white  btn-xs"
+                        data-toggle="modal"
+                        onClick={() => {
+                          setCommentId(user)
+                          setOpenCommentModal(true)
+                
+                        }}
+                        data-target="#exampleModal"
+                        disabled={user?.clientCode === null ? true : false}
+                      >
+                        Add/View Comments
+                      </button>
+                    ) : <></> }
                     </td>
                   </tr>
                 ))

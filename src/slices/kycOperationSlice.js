@@ -12,12 +12,21 @@ const initialState = {
 
 export const rejectKycOperation = createAsyncThunk(
     "rejectKycOperation/rejectKycOperation",
-    async ( requestParam) => {
+    async ( requestParam,thunkAPI) => {
       try {
         const response = await kycOperationService.rejectKycOperation(requestParam)
         return response.data;
       } catch (error) {
-        return error;
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.detail) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      
+      return thunkAPI.rejectWithValue(message); 
+      
       }
     }
   );
@@ -46,12 +55,21 @@ export const rejectKycOperation = createAsyncThunk(
 
   export const completeVerificationRejectKyc = createAsyncThunk(
     "completeVerificationRejectKyc/completeVerificationRejectKyc",
-    async ( requestParam) => {
+    async ( requestParam, thunkAPI) => {
       try {
         const response = await kycOperationService.completeVerificationRejectKyc(requestParam)
         return response.data;
       } catch (error) {
-        return error;
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.detail) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message); 
+        
+        
       }
     }
   );

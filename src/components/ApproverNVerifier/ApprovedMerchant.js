@@ -10,17 +10,21 @@ import moment from "moment";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
+import CommentModal from "./Onboarderchant/CommentModal";
+import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 
 
 function ApprovedMerchant() {
-  const [approveMerchant, setApproveMerchant] = useState([]);
+  // const [approveMerchant, setApproveMerchant] = useState([]);
   const [data, setData] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
+  const [commentId, setCommentId] = useState({});
+  const [openCommentModal, setOpenCommentModal] = useState(false);
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  const [docImageData, setDocImageData] = useState([]);
+  // const { user } = useSelector((state) => state.auth);
+  // const [docImageData, setDocImageData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [spinner, setSpinner] = useState(true);
@@ -32,6 +36,7 @@ function ApprovedMerchant() {
 
   let page_size = pageSize;
   let page = currentPage;
+  const roles = roleBasedAccess();
 
 
   const approvedSearch = (e) => {
@@ -127,7 +132,7 @@ let pageNumbers = []
       .then((res) => {
         if (res.status === 200) {
           const data = res.data;
-          setDocImageData(data);
+          // setDocImageData(data);
           const docId = data[0].documentId;
           const file = data[0].filePath;
         }
@@ -158,6 +163,8 @@ let pageNumbers = []
         />
       </div>
       <div>
+
+      {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Approved Tab"} /> : <></>}
           
           <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
         </div>
@@ -202,6 +209,7 @@ let pageNumbers = []
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
                 <th>View Status</th>
+                {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? ( <th>Action</th>) : <></>}
               </tr>
             </thead>
             <tbody>
@@ -245,11 +253,31 @@ let pageNumbers = []
                         >
                           View Status
                         </button>
+                        </td>
+                        <td>
+                    {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
+                        <button
+                        type="button"
+                        className="btn approve text-white  btn-xs"
+                        data-toggle="modal"
+                        onClick={() => {
+                          setCommentId(user)
+                          setOpenCommentModal(true)
+                
+                        }}
+                        data-target="#exampleModal"
+                        disabled={user?.clientCode === null ? true : false}
+                      >
+                        Add/View Comments
+                      </button>
+                    ) : <></> }
+                    </td>
+                     
 
-                      <div
+                      {/* <div
                         className="modal fade"
                         id="exampleModal"
-                        tabindex="-1"
+                        tabIndex="-1"
                         role="dialog"
                         aria-labelledby="exampleModalLabel"
                         aria-hidden="true"
@@ -312,8 +340,9 @@ let pageNumbers = []
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
+                      </div> */}
+                  
+                    
                   </tr>
                 ))
               )}

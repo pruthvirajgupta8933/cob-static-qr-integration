@@ -4,7 +4,7 @@ import {
   businessCategoryById,
   businessTypeById,
   documentsUpload,
-  GetKycTabsStatus
+  GetKycTabsStatus,
 } from "../../../../slices/kycSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
@@ -17,16 +17,12 @@ import { roleBasedAccess } from "../../../../_components/reuseable_components/ro
 import CompleteVerification from "./CompleteVerification";
 import { isNumber } from "lodash";
 
-
-
 const KycDetailsModal = (props) => {
-  let closeVerification=props?.handleModal
-  
+  let closeVerification = props?.handleModal;
 
-  let renderPendingApprovel=props.renderPendingApproval
-  let renderPendingVerificationTable= props?.renderPendingVerification
+  let renderPendingApprovel = props.renderPendingApproval;
+  let renderPendingVerificationTable = props?.renderPendingVerification;
 
-  
   let merchantKycId = props?.kycId;
 
   const [docList, setDocList] = useState([]);
@@ -35,21 +31,18 @@ const KycDetailsModal = (props) => {
   const [businessCategoryResponse, setBusinessCategoryResponse] = useState([]);
   const roles = roleBasedAccess();
 
-
   //   console.log(props?.kycId, "Props =======>");
 
   const dispatch = useDispatch();
 
-  const state = useSelector((state) => state)
+  const state = useSelector((state) => state);
   const { kyc } = state;
 
-  const { KycTabStatusStore } = kyc
+  const { KycTabStatusStore } = kyc;
   // console.log(KycTabStatusStore)
   //------------------------------------------------------------------
 
   //------------- Kyc  Document List ------------//
-
-
 
   useEffect(() => {
     if (merchantKycId !== null) {
@@ -57,8 +50,7 @@ const KycDetailsModal = (props) => {
         kycDocumentUploadList({ login_id: merchantKycId?.loginMasterId })
       ).then((resp) => {
         setDocList(resp?.payload);
-      });
-
+      })
       // console.log(merchantKycId?.loginMasterId)
       dispatch(
         GetKycTabsStatus({
@@ -66,22 +58,19 @@ const KycDetailsModal = (props) => {
         })
       );
     }
-  }, [merchantKycId]);
-
+  }, [dispatch,merchantKycId?.loginMasterId]);
 
   useEffect(() => {
     if (merchantKycId !== null) {
-
-      const businessType = merchantKycId?.businessType
+      const businessType = merchantKycId?.businessType;
 
       // console.log(busiType,"Business TYPE==========>")
-      dispatch(documentsUpload({ businessType }))
-        .then((resp) => {
-          const data = convertToFormikSelectJson("id", "name", resp?.payload);
-          setDocTypeList(data);
-        })
+      dispatch(documentsUpload({ businessType })).then((resp) => {
+        const data = convertToFormikSelectJson("id", "name", resp?.payload);
+        setDocTypeList(data);
+      });
     }
-  }, [merchantKycId?.businessType]);
+  }, [dispatch,merchantKycId?.businessType]);
 
   //--------------------------------------//
 
@@ -90,47 +79,30 @@ const KycDetailsModal = (props) => {
       dispatch(
         businessTypeById({ business_type_id: merchantKycId?.businessType })
       ).then((resp) => {
-
         setBusinessTypeResponse(resp?.payload[0]?.businessTypeText);
       });
     }
-  }, [merchantKycId?.businessType]);
+  }, [dispatch,merchantKycId?.businessType]);
 
   useEffect(() => {
-    const busnCatId = parseInt(merchantKycId?.businessCategory)
-    if (isNumber(busnCatId)) {
-      dispatch(
-        businessCategoryById({ category_id: merchantKycId?.businessCategory })
-      ).then((resp) => {
-        // console.log(resp,"response")
-        setBusinessCategoryResponse(resp?.payload[0]?.category_name);
-      });
-    }
-  }, [merchantKycId?.businessCategory]);
-
-
-
-  const getDocTypeName = (id) => {
-    let data = docTypeList.filter((obj) => {
-      if (obj?.key?.toString() === id?.toString()) {
-        return obj;
+    if (merchantKycId !== null) {
+      const busnCatId = parseInt(merchantKycId?.businessCategory);
+      if (isNumber(busnCatId)) {
+        dispatch(
+          businessCategoryById({ category_id: merchantKycId?.businessCategory })
+        ).then((resp) => {
+          // console.log(resp,"response")
+          setBusinessCategoryResponse(resp?.payload[0]?.category_name);
+        });
       }
-    });
+    }
+  }, [dispatch,merchantKycId?.businessCategory]);
 
-    // console.log("data",data)
-    return data[0]?.value;
-  };
 
-  const stringManulate = (str) => {
-    let str1 = str.substring(0, 15)
-    return `${str1}...`
 
-  }
-
-  
   return (
     <div
-      tabindex="-1"
+      tabIndex="-1"
       role="dialog"
       className={
         "modal fade mymodals" +
@@ -151,18 +123,21 @@ const KycDetailsModal = (props) => {
               data-dismiss="modal"
               aria-label="Close"
               onClick={() => {
-                props?.handleModal(false)
+                props?.handleModal(false);
               }}
             >
               <span aria-hidden="true">&times;</span>
             </button>
-
           </div>
 
           <div className="modal-body">
             <div className="container">
               {/* contact info section */}
-              <MerchantContactInfo merchantKycId={merchantKycId} role={roles} KycTabStatus={KycTabStatusStore} />
+              <MerchantContactInfo
+                merchantKycId={merchantKycId}
+                role={roles}
+                KycTabStatus={KycTabStatusStore}
+              />
 
               {/* business overview */}
               <BusinessOverview
@@ -172,24 +147,35 @@ const KycDetailsModal = (props) => {
                 KycTabStatus={KycTabStatusStore}
               />
 
-
               {/* business details */}
-              <BusinessDetails merchantKycId={merchantKycId}
+              <BusinessDetails
+                merchantKycId={merchantKycId}
                 KycTabStatus={KycTabStatusStore}
               />
-
 
               {/* Bank details */}
-              <BankDetails merchantKycId={merchantKycId}
+              <BankDetails
+                merchantKycId={merchantKycId}
                 KycTabStatus={KycTabStatusStore}
               />
 
-
               {/* Merchant Documents */}
-              <MerchantDocument docList={docList} docTypeList={docTypeList} role={roles} merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore} />
-
+              <MerchantDocument
+                docList={docList}
+                setDocList={setDocList}
+                docTypeList={docTypeList}
+                role={roles}
+                merchantKycId={merchantKycId}
+                KycTabStatus={KycTabStatusStore}
+              />
             </div>
-            <CompleteVerification merchantKycId={merchantKycId} KycTabStatus={KycTabStatusStore} renderApprovalTable={renderPendingApprovel} renderPendingVerificationData={renderPendingVerificationTable} closeVerification={closeVerification} />
+            <CompleteVerification
+              merchantKycId={merchantKycId}
+              KycTabStatus={KycTabStatusStore}
+              renderApprovalTable={renderPendingApprovel}
+              renderPendingVerificationData={renderPendingVerificationTable}
+              closeVerification={closeVerification}
+            />
           </div>
 
           <div className="modal-footer">
@@ -198,7 +184,7 @@ const KycDetailsModal = (props) => {
               className="btn btn-secondary text-white"
               data-dismiss="modal"
               onClick={() => {
-                props?.handleModal(false)
+                props?.handleModal(false);
               }}
             >
               Close

@@ -227,7 +227,9 @@ function BusinessOverview(props) {
 
   const onSubmit = (values) => {
     if (role.merchant) {
-      setIsDisabled(true)
+      // setIsDisabled(true)
+      if (window.confirm(`Are you sure for the Expected Transaction : ${values.expected_transactions}`)) {
+        
       dispatch(
         saveBusinessInfo({
           business_type: values.business_type,
@@ -265,6 +267,7 @@ function BusinessOverview(props) {
           setIsDisabled(false)
         }
       });
+    }
     }
     // else if (role.verifier) {
     //   const veriferDetails = {
@@ -352,7 +355,7 @@ function BusinessOverview(props) {
                 />
               </div>
               <div className="col-sm-6 col-md-6 col-lg-6">
-                <label className="p-2 mt-0">
+                <label className="col-form-label p-2 mt-0">
                   Business Category<span style={{ color: "red" }}>*</span>
                 </label>
 
@@ -466,10 +469,10 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                 />
                  {/* <span className="font-weight-bold m-0">{textWord}</span> */}
-                {formik.handleChange(
+                {/* {formik.handleChange(
                   "expected_transactions",
                   setNumberChanged(formik?.values?.expected_transactions)
-                )}
+                )} */}
               </div>
 
               <div className="col-sm-4 col-md-4 col-lg-4">

@@ -839,8 +839,12 @@ table.list {
   background-color: #0156b3;
 }
 .fnt-lab{
-  min-height: 37px !important;
+  min-height: 37.3px !important;
   font-size: 12px !important;
+  line-height:22px;  
+}
+.selct{
+  padding:0.5rem 0.75rem !important ;
 }
 .errortxt{
   color: red;

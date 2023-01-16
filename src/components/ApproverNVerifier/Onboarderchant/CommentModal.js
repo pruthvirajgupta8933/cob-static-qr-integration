@@ -15,6 +15,8 @@ const CommentModal = (props) => {
 
   const [commentsList, setCommentsList] = useState([]);
 
+  // console.log(props,"Comment Modal Props")
+
   const initialValues = {
     comments: "",
   };
@@ -66,6 +68,7 @@ const CommentModal = (props) => {
         login_id: loginId,
         client_code: props?.commentData?.clientCode,
         comments: values.comments,
+        merchant_tab:props?.tabName
       })
     )
       .then((resp) => {
@@ -92,7 +95,7 @@ const CommentModal = (props) => {
   return (
     <div>
       <div
-        tabindex="-1"
+        tabIndex="-1"
         role="dialog"
         aria-hidden="true"
         className={
@@ -190,6 +193,7 @@ const CommentModal = (props) => {
                                   <th>Commented By</th>
                                   <th>Comments</th>
                                   <th>Date of Comments</th>
+                                  <th>Comments from tab</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -215,6 +219,9 @@ const CommentModal = (props) => {
                                       <td>{remark?.comments}</td>
                                       <td>
                                         {dateManipulate(remark?.comment_on)}
+                                      </td>
+                                      <td>
+                                        {remark?.merchant_tab}
                                       </td>
                                     </tr>
                                   ))

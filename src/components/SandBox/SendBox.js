@@ -4,10 +4,9 @@ import StepProgressBar from "../../_components/reuseable_components/StepProgress
 import { useDispatch, useSelector } from "react-redux";
 import { kycUserList } from "../../slices/kycSlice";
 import API_URL from "../../config";
-import axios from "axios";
+
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import { useState } from "react";
-import { toast} from "react-toastify";
 
 function Sandbox() {
   const { auth, kyc } = useSelector((state) => state);
