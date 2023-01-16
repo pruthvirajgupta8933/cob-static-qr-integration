@@ -9,9 +9,8 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { register, udpateRegistrationStatus } from "../../slices/auth";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { toast, Zoom } from "react-toastify";
-import { Link } from "react-router-dom";
 import API_URL from "../../config";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 
@@ -51,7 +50,7 @@ function Registration() {
 
   const { isUserRegistered } = datar;
   const [acceptTc, setAcceptTc] = useState(false);
-  const [isCheck, setIsCheck] = useState(false);
+  // const [isCheck, setIsCheck] = useState(false);
   const [btnDisable, setBtnDisable] = useState(false);
 
   const [businessCode, setBusinessCode] = useState([]);
@@ -71,11 +70,6 @@ function Registration() {
     });
   };
 
-  // function buttonHandler(index) {
-  //   let status = [...checkboxStatus];
-  //   status[index] = !status[index];
-  //   setCheckboxStatus(status);
-  // }
 
   useEffect(() => {
     axiosInstanceAuth
@@ -100,7 +94,7 @@ function Registration() {
     };
   }, []);
 
-  const handleRegistration = (formData,{resetForm}) => {
+  const handleRegistration = (formData, { resetForm }) => {
     let businessType = 1;
     let {
       fullname,
@@ -122,7 +116,7 @@ function Registration() {
         isDirect: true,
         requestId: null,
       })
-      
+
     )
       .unwrap()
       .then((res) => {
@@ -134,9 +128,6 @@ function Registration() {
       });
   };
 
-  // const toggleClass = () => {
-  //   setActive(!isActive);
-  // };
 
   const handleClickShowPassword = () => {
     setValuesIn({ ...valuesIn, showPassword: !valuesIn.showPassword });
@@ -166,12 +157,8 @@ function Registration() {
     return () => {
       dispatch(udpateRegistrationStatus());
     };
-  }, [isUserRegistered]);
+  }, [isUserRegistered, dispatch, history, message]);
 
-  const callBackFn = (isClickOnAccept, isChecked) => {
-    setAcceptTc(!acceptTc);
-    setIsCheck(isChecked);
-  };
 
   return (
     <>
@@ -183,18 +170,6 @@ function Registration() {
             <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-left mdn">
               <div className="brand-col ">
                 <div className="headline pt-1 NunitoSans-Regular">
-                  {/* brand-logo start */}
-                  {/* <div className="brand-logo">
-                  <img
-                    src={sabpaisalogo}
-                    width={150}
-                    alt="SabPaisa"
-                    title="SabPaisa"
-                  />
-                </div> */}
-                  {/* ./brand-logo */}
-                  
-
                   <div className="brand-logo">
                     <div
                       id="carouselExampleIndicators"
@@ -229,20 +204,11 @@ function Registration() {
                               className="font-size-32 mb-2 NunitoSans-Regular"
                               style={{ color: "#012167" }}
                             >
-                              {" "}
-                              business
+                            business
                             </p>
                             <p className="mt-2 loginBanSubHeader NunitoSans-Regular">
-                              {" "}
                               boost  your&nbsp;finance
                             </p>
-                            {/* <h1
-                           
-                            className="text-center mt-40"
-                          >
-                            Empower your <br />
-                            business,&nbsp;boost <br /> your&nbsp;finance
-                          </h1> */}
                             <img
                               src={onlineshopinglogo}
                               alt="SabPaisa"
@@ -263,11 +229,10 @@ function Registration() {
                               className="font-size-32 mb-2 NunitoSans-Regular"
                               style={{ color: "#012167" }}
                             >
-                              {" "}
                               business
                             </p>
                             <p className="mt-2 loginBanSubHeader NunitoSans-Regular">
-                              {" "}
+                              
                               boost  your&nbsp;finance
                             </p>
                             <img
@@ -290,11 +255,11 @@ function Registration() {
                               className="font-size-32 mb-2 NunitoSans-Regular"
                               style={{ color: "#012167" }}
                             >
-                              {" "}
+                              
                               business
                             </p>
                             <p className="mt-2 loginBanSubHeader NunitoSans-Regular">
-                              {" "}
+                              
                               boost  your&nbsp;finance
                             </p>
                             <img
@@ -323,7 +288,7 @@ function Registration() {
                         <div className="show logmod__tab lgm-1">
                           <div className="logmod__heading NunitoSans-Regular">
                             <span className="fontfigma">
-                              Welcome to SabPaisa{" "}
+                              Welcome to SabPaisa
                             </span>
                             <div className="flex">
                               <span className="Signupfigma mt-2">
@@ -335,7 +300,7 @@ function Registration() {
                                   }}
                                 >
                                   Signup
-                                </span>{" "}
+                                </span>
                                 to Create New Account
                               </span>
                             </div>
@@ -353,13 +318,10 @@ function Registration() {
                               }}
                               validationSchema={FORM_VALIDATION}
                               onSubmit={(values, { resetForm }) => {
-                                handleRegistration(values,{resetForm})
-                                
+                                handleRegistration(values, { resetForm })
                               }}
-
-                              // onSubmit={handleRegistration}
                             >
-                              {(formik,resetForm ) => (
+                              {(formik, resetForm) => (
                                 <Form
                                   acceptCharset="utf-8"
                                   action="#"
@@ -517,7 +479,7 @@ function Registration() {
                                             : "password"
                                         }
                                         name="passwordd"
-                                        
+
                                         autoComplete="off"
                                       />
                                       <div className="input-group-addon viewfor">
@@ -614,9 +576,9 @@ function Registration() {
                                         type="submit"
                                         defaultValue="Create Account"
                                         disabled={btnDisable ||
-                                          !(formik.isValid && formik.dirty) 
-                                            ? true
-                                            : false
+                                          !(formik.isValid && formik.dirty)
+                                          ? true
+                                          : false
                                         }
                                         data-rel={btnDisable}
                                       >
@@ -624,28 +586,25 @@ function Registration() {
                                       </button>
 
                                       <span className="simform__actions-sidetext"></span>
-                                      {
-                                        <ErrorMessage name="terms_and_condition">
+                                      {<ErrorMessage name="terms_and_condition">
                                           {(msg) => (
                                             <p
                                               className="abhitest errortxt">
                                               {msg}
                                             </p>
                                           )}
-                                        </ErrorMessage>
-                                      }
+                                        </ErrorMessage>}
                                     </div>
                                   </div>
                                   <div className="container">
-                                  <div className="row">
-                                    <div className="col">Already have an account? <Link
-                                      to={`/login`}
-                                      style={{ color: "#0156B3" }}
-                                    >
-                                      Sign in
-                                    </Link></div>
-                                    
-                                  </div>
+                                    <div className="row">
+                                      <div className="col">Already have an account? <Link
+                                        to={`/login`}
+                                        style={{ color: "#0156B3" }}
+                                      >
+                                        Sign in
+                                      </Link></div>
+                                    </div>
                                   </div>
                                 </Form>
                               )}
@@ -657,16 +616,13 @@ function Registration() {
                   </div>
                 </div>
               </div>
-
               {/* ./authfy-login */}
             </div>
           </div>
-
           <p className="footerforcopyright text-center NunitoSans-Regular">
             Copyright @ 2022 SabPaisa All Rights Reserved version 1.0
           </p>
         </div>
-
         {/* ./row */}
       </div>
     </>
