@@ -23,7 +23,7 @@ function SideNavbar() {
 
   useEffect(() => {
     if (user.clientMerchantDetailsList?.length > 0) {
-      SetClientCode(user?.clientMerchantDetailsList[0]?.clientCode)
+      // SetClientCode(user?.clientMerchantDetailsList[0]?.clientCode)
       dispatch(
         checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode)
       );
@@ -325,7 +325,7 @@ function SideNavbar() {
                       {roleBasedShowTab?.merchant === true  || roleBasedShowTab?.bank === true ? (
                         
                         <React.Fragment>
-                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(clientCode) ?   
+                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(user?.clientMerchantDetailsList[0]?.clientCode) ?   
                           <li
                             className="ant-menu-item"
                             role="menuitem"
