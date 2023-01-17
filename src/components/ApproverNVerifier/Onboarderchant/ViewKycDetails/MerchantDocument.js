@@ -3,10 +3,12 @@ import { roleBasedAccess } from '../../../../_components/reuseable_components/ro
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify"
+import CompleteVerifyAndRejectBtn from './CompleteVerifyAndRejectBtn';
 
 
 const MerchantDocument = (props) => {
-  const { docList,setDocList, docTypeList, role, merchantKycId } = props;
+  const { docList, setDocList, docTypeList, role, merchantKycId } = props;
+
   // const roles = roleBasedAccess();
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
@@ -15,6 +17,8 @@ const MerchantDocument = (props) => {
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
+
+
 
   // const { allTabsValidate } = kyc;
   // const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
@@ -35,45 +39,45 @@ const MerchantDocument = (props) => {
   const uploadedDocList = docList?.map((r) => r?.type);
 
   //  console.log("Array 2",uploadedDocList)
- 
-  
+
+
   const removeCommon = (newDropDownDocList, uploadedDocList) => {
-   const spreaded = [...newDropDownDocList, ...uploadedDocList];
-   return spreaded.filter(el => {
+    const spreaded = [...newDropDownDocList, ...uploadedDocList];
+    return spreaded.filter(el => {
       return !(newDropDownDocList?.includes(el) && uploadedDocList?.includes(el));
-   })
-};
+    })
+  };
 
-let unmatchedArray = removeCommon(newDropDownDocList, uploadedDocList)
-// console.log(unmatchedArray)
+  let unmatchedArray = removeCommon(newDropDownDocList, uploadedDocList)
+  // console.log(unmatchedArray)
 
 
 
-//////////////////////////////////////////////////////////// function For rejeected document show
-const missMatchedId = (id)=>{
-  let data = docTypeList.filter((obj) => {
-    if (obj?.key?.toString() === id?.toString()) {
-      return obj;
-    }
-  });
-  return data[0]
-  
+  //////////////////////////////////////////////////////////// function For rejeected document show
+  const missMatchedId = (id) => {
+    let data = docTypeList.filter((obj) => {
+      if (obj?.key?.toString() === id?.toString()) {
+        return obj;
+      }
+    });
+    return data[0]
 
-}
 
-const getDocTypeNamee = (id) => {
-let data= id.map((item)=>{
-  return missMatchedId(item);
+  }
 
-})
+  const getDocTypeNamee = (id) => {
+    let data = id.map((item) => {
+      return missMatchedId(item);
 
-return data;
+    })
+
+    return data;
   };
 
 
-let pendingDocument=getDocTypeNamee(unmatchedArray)
+  let pendingDocument = getDocTypeNamee(unmatchedArray)
 
-///////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////
 
 
 
@@ -84,11 +88,11 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
   // const leftElements =dropDownDocList.filter(element => !uploadedDocList.includes(element));
   // const differentElements = dropDownDocList.filter(element => !uploadedDocList.includes(element));
 
-  
+
   // const [array1, setArray1] = useState(newDropDownDocList);
   // const [array2, setArray2] = useState(uploadedDocList);
   // const [mismatch, setMismatch] = useState([]);
-  
+
 
 
 
@@ -111,11 +115,15 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
   const [savedData, setSavedData] = useState([]);
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
-  const [closeModal,setCloseModal] = useState(false)
-  const[commetText,setCommetText]=useState()
+  const [closeModal, setCloseModal] = useState(false)
+  const [commetText, setCommetText] = useState()
+  const [documentsIdList, setdocumentsIdList] = useState([])
+  const [checkedClicked,setCheckedClicked]=useState(false)
+ 
+  // console.log("this is the real statsus",staus)
 
   const [loader, setLoader] = useState(false)
-  const[buttonClick,setButtonClick]=useState(null)
+  const [buttonClick, setButtonClick] = useState(null)
   const [selectAll, setSelectAll] = useState(false);
 
   const getDocTypeName = (id) => {
@@ -148,7 +156,7 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
   const verifyApproveDoc = (doc_id, status) => {
     const postData = {
-      document_id: doc_id,
+      document_id: [doc_id],
       verified_by: loginId,
     };
     setLoader(true)
@@ -174,7 +182,7 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
     if (role?.approver && status === "Verified") {
       const approverDocDetails = {
         approved_by: loginId,
-        document_id: doc_id,
+        document_id: [doc_id],
       };
 
       if ((role.approver === true && Allow_To_Do_Verify_Kyc_details === true))
@@ -194,16 +202,11 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
   ////////////////////////////////////////////////////
 
- 
-
-
- 
-
-  const rejectDoc = (doc_id) => {
+const rejectDoc = (doc_id) => {
     const rejectDetails = {
       document_id: doc_id,
       rejected_by: loginId,
-      comment:  commetText === undefined || commetText === "" ? "Document Rejected" : commetText,
+      comment: commetText === undefined || commetText === "" ? "Document Rejected" : commetText,
     };
     dispatch(verifyKycDocumentTab(rejectDetails))
       .then((resp) => {
@@ -287,26 +290,62 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
   }, [currenTab, roles])
 
+  console.log("this is single handle ", documentsIdList)////////////////// send it in api payload
+
+   useEffect(()=>{
+
+  },[documentsIdList])
+
   const handleCheckboxClick = (event) => {
-    const newData = [...docList];
-    newData.forEach((item) => {
-      if (item.id === parseInt(event.target.value)) {
-        item.checked = event.target.checked;
-      }
-    });
-    setDocList(newData);
+    if (event.target.checked) {
+      setdocumentsIdList(prev => ([...prev, parseInt(event.target.value)]))
+      setCheckedClicked(true)
+    }
+    else {
+      let data = documentsIdList
+      data.splice(data.indexOf(event.target.value))  // use splice id changed if always exist and add in array if not exist
+      //The Array.splice() method adds array elements
+      setdocumentsIdList(data)
+      setCheckedClicked(false)
+    }
   }
 
-  const handleSelectAll = (event) => {
-    const newData = [...docList];
-    newData.forEach((item) => {
-      console.log("This is the item",item)
-      item.checked = event.target.checked;
-    });
-    setDocList(newData);
-    setSelectAll(event.target.checked);
-  }
+
+
+  // const handleSelectAll = (event) => {
+  //   const newData = [...docList];
+  //   newData.forEach((item) => {
+  //     console.log("This is the item", item)
+  //     item.checked = event.target.checked;
+  //   });
+  //   setDocList(newData);
+  //   setSelectAll(event.target.checked);
+  // }
+
   
+
+
+  const handleCheckChange = (e) => {
+    let dataList = []
+    if (e.target?.checked) {
+      console.log(e.target?.checked)
+      KycDocUpload.map((item) => {
+        dataList.push(item.documentId)
+        setdocumentsIdList(dataList)
+        setCheckedClicked(true)
+      })
+    }
+    else {
+      setdocumentsIdList([])
+      setCheckedClicked(false)
+    }
+  }
+
+  // const myStatus=(status)=>{
+  //   setDocStatus(status)
+  //   }
+
+   
 
 
 
@@ -316,51 +355,82 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
   // console.log("=========merchant doc start==========")
   // console.log("enableBtnVerifier", enableBtnVerifier)
   // console.log("=========merchant doc end==========")
+  // console.log("Check boolean", checkedClicked)
 
   return (
     <div className="row mb-4 border">
-      <div className="col-lg-12">
+      <div className="col-lg-6">
         <h3 className="font-weight-bold">Merchant Documents</h3>
-       {pendingDocument?.length === 0 ? null : <p className="font-weight-bold">Not Submitted:</p>}
-        {pendingDocument?.map((item)=>{
-          return(<> <span className="text-danger"> {item?.value}</span><br/></> )
+        
+      {pendingDocument?.length === 0 ? null : <p className="font-weight-bold">Not Submitted:</p>}
+        {pendingDocument?.map((item) => {
+          return (<> <span className="text-danger"> {item?.value}</span><br /></>)
         })}
+          
 
-              {/* <input
-                type="checkbox"
-                 checked={selectAll}
-                 onClick={handleSelectAll}
-              /> */}
 
-       
+
       </div>
 
       <div className="col-lg-12 mt-4 m-2">
+      
+     
+        
         <table className="table table-bordered">
+
+   
           <thead>
+            {checkedClicked === true ? 
+            <th colSpan={6}  style={{textAlign:"right"}}><CompleteVerifyAndRejectBtn  roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} /></th>
+            : <></>}
+
+           
+          
             <tr>
+              
+              { currenTab === 3 || currenTab === 4 ?
+            <th>Select&nbsp;
+                <input
+                  type="checkbox"
+                  onChange={(e) => handleCheckChange(e)}
+               
+                />
+              </th>
+              : <></> }
               <th>S.No.</th>
-              <th>Check</th>
+             
               <th>Document Type</th>
               <th>Document Name</th>
               <th>Document Status</th>
               <th>Action</th>
-              
+
             </tr>
           </thead>
           <tbody>
+
             {KycDocUpload?.length > 0 ? (
+
               KycDocUpload?.map((doc, i) => (
+                
+                
+               
                 <tr key={i}>
+                 
+
+                 {currenTab === 3 || currenTab === 4 ?
+                   <td>
+                    
+                    <input
+                      type="checkbox"
+                      value={doc?.documentId}
+                      checked={documentsIdList?.indexOf(doc.documentId) !== -1 ? true : false}
+                      // first check the index if greater then -1  then execute further process
+                      onClick={handleCheckboxClick}
+                    />
+                  </td>
+                  : <></> }
                   <td>{i + 1}</td>
-                  {/* <td>
-                <input
-                  type="checkbox"
-                  value={doc?.documentId}
-                  checked={doc?.checked}
-                  onClick={handleCheckboxClick}
-                />
-              </td> */}
+                 
                   <td>{getDocTypeName(doc?.type)}</td>
                   <td>
                     <a
@@ -374,6 +444,7 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
                     <p className="text-danger"> {doc?.comment}</p>
                   </td>
                   <td>{doc?.status}</td>
+             
                   {/* {enableBtnByStatus(doc?.status, role) ? ( */}
                   <td>
                     <div style={{ display: "flex" }}>
@@ -388,8 +459,11 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
                             }}
 
 
-                          >
+                                >
                             <h4>{buttonText}</h4>
+                           
+
+                           
                           </a>
 
 
@@ -400,8 +474,10 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
                           <a
                             href={() => false}
                             className="text-danger"
-                            onClick={()=>{setButtonClick(doc?.documentId)
-                              setCloseModal(true)}} 
+                            onClick={() => {
+                              setButtonClick(doc?.documentId)
+                              setCloseModal(true)
+                            }}
                           // onClick={() => {
                           //   rejectDoc(doc?.documentId);
                           // }}
@@ -414,16 +490,16 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
 
 
                     </div>
-                    {buttonClick===doc?.documentId && closeModal === true ?
-          
-                    <div>
-                      <label for="comments">Reject Comments</label>
+                    {buttonClick === doc?.documentId && closeModal === true ?
 
-                      <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e)=>setCommetText(e.target.value)}>
-                      </textarea>
-                      <button type="button" onClick={() => { rejectDoc(doc?.documentId,commetText); }} className="btn btn-danger btn-sm text-white">Submit</button>
-                    </div>
-                    : <></>}
+                      <div>
+                        <label for="comments">Reject Comments</label>
+
+                        <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e) => setCommetText(e.target.value)}>
+                        </textarea>
+                        <button type="button" onClick={() => { rejectDoc(doc?.documentId, commetText); }} className="btn btn-danger btn-sm text-white">Submit</button>
+                      </div>
+                      : <></>}
 
                   </td>
 

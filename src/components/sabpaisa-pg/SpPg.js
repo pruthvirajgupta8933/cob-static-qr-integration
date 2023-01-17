@@ -107,7 +107,7 @@ function SpPg() {
                 const inputData = {
                     clientId: clientId,
                     clientCode: clientCode,
-                    clientContact: clientContact,
+                    clientContact: clientContact, // need to fix
                     clientEmail: clientEmail,
                     address: "Delhi",
                     clientLogoPath: "client/logopath",

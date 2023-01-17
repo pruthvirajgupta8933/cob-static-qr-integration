@@ -98,7 +98,7 @@ function StepProgressBar(props) {
 
   const steps = kycStatusData[0]?.steps?.map((s) => {
     return (
-      <Step transition="scale">
+      <Step transition="scale" key={s.title}>
         {({ accomplished }) => (
           <div
             style={{
