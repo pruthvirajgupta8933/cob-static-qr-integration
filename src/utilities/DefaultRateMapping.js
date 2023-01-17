@@ -13,7 +13,7 @@ export const DefaultRateMapping = ({setFlag}) => {
         setFlag(false)
         console.log("step 0")
         const userData = JSON.parse(localStorage.getItem("user"))
-        if (userData?.clientMerchantDetailsList !== null && userData?.clientMerchantDetailsList[0]?.clientCode !== undefined) {
+        if ((userData?.clientMerchantDetailsList !== null && userData?.clientMerchantDetailsList[0]?.clientCode !== undefined) && userData?.isDirect) {
 
             console.log("step 1 ", userData?.clientMerchantDetailsList[0]?.clientCode)
             axiosInstance.get(`${API_URL.isClientCodeMapped}/${userData?.clientMerchantDetailsList[0]?.clientCode}`).then(res => {
