@@ -253,11 +253,14 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
 
   // GET API FOR VIEWING COMMENTS
 
-  VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`
+  VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`,
 
   
   // ---------------------------   NEW API FOR COMMENTS (2)
 
+
+  // Check is client code mapped or not (ratemapping case)
+  isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`
   
 
 
