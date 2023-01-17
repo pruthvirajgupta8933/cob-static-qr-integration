@@ -11,14 +11,14 @@ export const DefaultRateMapping = ({setFlag}) => {
 
     useEffect(() => {
         setFlag(false)
-        console.log("step 0")
+        // console.log("step 0")
         const userData = JSON.parse(localStorage.getItem("user"))
         if (userData?.clientMerchantDetailsList !== null && userData?.clientMerchantDetailsList[0]?.clientCode !== undefined) {
 
-            console.log("step 1 ", userData?.clientMerchantDetailsList[0]?.clientCode)
+            // console.log("step 1 ", userData?.clientMerchantDetailsList[0]?.clientCode)
             axiosInstance.get(`${API_URL.isClientCodeMapped}/${userData?.clientMerchantDetailsList[0]?.clientCode}`).then(res => {
                 if (res?.data.length === 0) {
-                    console.log("step 2 - not found rate mapping ",res)
+                    // console.log("step 2 - not found rate mapping ",res)
                     setLoader(true)
                     setFlag(true)
                     const clientMerchantDetailsList = userData?.clientMerchantDetailsList;
@@ -60,13 +60,13 @@ export const DefaultRateMapping = ({setFlag}) => {
                     axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
                         setFlag(true)
     
-                        console.log("step 3 run RATE_MAPPING_GenerateClientFormForCob",API_URL.RATE_MAPPING_GenerateClientFormForCob);
+                        // console.log("step 3 run RATE_MAPPING_GenerateClientFormForCob",API_URL.RATE_MAPPING_GenerateClientFormForCob);
                         
                         localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
                         localStorage.setItem('resp_RATE_MAPPING_GenerateClientFormForCob', JSON.stringify(res));
                         //2 - rate map clone   // parent client code / new client code / login id
-                        axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/'COBED'/${clientCode}/${userData?.loginId}`).then(res => {
-                            console.log("step 4 run RATE_MAPPING_CLONE",`${API_URL.RATE_MAPPING_CLONE}/'COBED'/${clientCode}/${userData?.loginId}`);
+                        axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/COBED/${clientCode}/${userData?.loginId}`).then(res => {
+                            // console.log("step 4 run RATE_MAPPING_CLONE",`${API_URL.RATE_MAPPING_CLONE}/COBED/${clientCode}/${userData?.loginId}`);
                             localStorage.setItem('RATE_MAPPING_CLONE', "api trigger");
                             localStorage.setItem('resp_RATE_MAPPING_CLONE', JSON.stringify(res));
                             // 3- enable pay link
