@@ -66,7 +66,7 @@ export const DefaultRateMapping = ({setFlag}) => {
                         localStorage.setItem('resp_RATE_MAPPING_GenerateClientFormForCob', JSON.stringify(res));
                         //2 - rate map clone   // parent client code / new client code / login id
                         axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/'COBED'/${clientCode}/${userData?.loginId}`).then(res => {
-                            console.log("step 4 run RATE_MAPPING_CLONE",`${API_URL.RATE_MAPPING_CLONE}/'COBED'/${clientCode}/${userData?.loginId}`);
+                            console.log("step 4 run RATE_MAPPING_CLONE",`${API_URL.RATE_MAPPING_CLONE}/COBED/${clientCode}/${userData?.loginId}`);
                             localStorage.setItem('RATE_MAPPING_CLONE', "api trigger");
                             localStorage.setItem('resp_RATE_MAPPING_CLONE', JSON.stringify(res));
                             // 3- enable pay link
