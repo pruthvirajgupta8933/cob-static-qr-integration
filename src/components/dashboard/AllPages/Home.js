@@ -19,126 +19,46 @@ import NavBar from "../NavBar/NavBar";
 import bro from "../../../assets/images/bro.png";
 import congratsImg from "../../../assets/images/congImg.png";
 import onlineimg from "../../../assets/images/onlinePayment.png";
-// import paymentlink from "../../../assets/images/paymentLink.png";
 import subscriptin from "../../../assets/images/subscribe.png";
 import Rupees from "../../../assets/images/payout.png";
 import Quick from "../../../assets/images/qwikform.png";
-// import eposs from "../../../assets/images/epos.png";
+
 import linkpssa from "../../../assets/images/linkPaisa.png";
 import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
-// import congImg from "../../../assets/images/congImg.png";
-// import $ from "jquery";
-// import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
-// import API_URL from "../../../config";
-// import { toast } from "react-toastify";
-import RejectNotification from "../../../_components/reuseable_components/RejectNotification";
 import KycAlert from "../../KYC/KycAlert";
+import { DefaultRateMapping } from "../../../utilities/DefaultRateMapping";
 
 function Home() {
   const roles = roleBasedAccess();
-
   const dispatch = useDispatch();
-  let { path } = useRouteMatch();
-
-  const [clientCode, setClientCode] = useState("1");
-
-  const [search, SetSearch] = useState("");
-  const [txnList, SetTxnList] = useState([]);
-  const [showData, SetShowData] = useState([]);
-  // const [kycStatus, setKycStatus] = useState("");
-  // const [roleType, setRoleType] = useState(roles);
-  const { dashboard, auth, kyc, consentKyc } = useSelector((state) => state);
-
-  // const kyc_submit_consent = useSelector(
-  //   (state) => state.kyc.consentKyc.status
-  // );
-
-  const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
-
+  const { path } = useRouteMatch();
   const [modalState, setModalState] = useState("Not-Filled");
-  // const [kycmodalState, setKycModalState] = useState(false);
+  const [isRateMappingInProcess, setIsRateMappingInProcess] = useState(false);
 
-  // console.log("dashboard",dashboard)
-  const { isLoading, successTxnsumry } = dashboard;
+  const { auth, kyc } = useSelector((state) => state);
+  const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
+  
+  
+
   const { user } = auth;
-  const loginId = user.loginId;
-
-  const currentDate = new Date().toJSON().slice(0, 10);
-  const fromDate = currentDate;
-  const toDate = currentDate;
-
-  var clientCodeArr = [];
-  var totalSuccessTxn = 0;
-  var totalAmt = 0;
-
-  // const handleshow = () => {
-  //   setModalState(!modalState);
-  // }
 
   useEffect(() => {
-    const objParam = { fromDate, toDate, clientCode };
-    var DefaulttxnList = [];
-    SetTxnList(DefaulttxnList);
-    SetShowData(DefaulttxnList);
     dispatch(subscriptionplan);
-    // dispatch(successTxnSummary(objParam));
     dispatch(
       GetKycTabsStatus({
         login_id: user?.loginId,
       })
-    ).then((resp) => {
-      // setKycStatus(resp?.payload);
-    });
-  }, [clientCode]);
+    )
+  }, [user]);
 
   useEffect(() => {
     setModalState(KycTabStatusStore?.status);
   }, [KycTabStatusStore]);
 
-  //make client code array
-  if (
-    user?.clientMerchantDetailsList !== null &&
-    user.clientMerchantDetailsList?.length > 0
-  ) {
-    clientCodeArr = user.clientMerchantDetailsList.map((item) => {
-      return item.clientCode;
-    });
-  } else {
-    clientCodeArr = [];
-  }
 
-  // filter api response data with client code
-  useEffect(() => {
-    if (successTxnsumry?.length > 0) {
-      // eslint-disable-next-line array-callback-return
-      var filterData = successTxnsumry?.filter((txnsummery) => {
-        if (clientCodeArr.includes(txnsummery.clientCode)) {
-          return clientCodeArr.includes(txnsummery.clientCode);
-        }
-      });
-      SetTxnList(filterData);
-      SetShowData(filterData);
-    } else {
-      //successTxnsumry=[];
-    }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successTxnsumry]);
 
-  useEffect(() => {
-    search !== ""
-      ? SetShowData(
-          txnList.filter((txnItme) =>
-            Object.values(txnItme)
-              .join(" ")
-              .toLowerCase()
-              .includes(search.toLocaleLowerCase())
-          )
-        )
-      : SetShowData(txnList);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
 
   useEffect(() => {
     dispatch(kycUserList({ login_id: user?.loginId }));
@@ -148,15 +68,9 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // console.log("Kyc Status",kycStatus)
-
-  // const handleChange = (e) => {
-  //   SetSearch(e);
-  // };
-
   if (roles.merchant === true) {
     if (user.clientMerchantDetailsList === null) {
-      return <Redirect to={`${path}/profile`} />;
+      // return <Redirect to={`${path}/profile`} />;
     }
   } else if (
     roles.approver === true ||
@@ -166,12 +80,6 @@ function Home() {
     return <Redirect to={`${path}/approver`} />;
   }
 
-  showData.map((item) => {
-    totalSuccessTxn += item.noOfTransaction;
-    totalAmt += item.payeeamount;
-  });
-
-  // console.log("modalState",modalState)
 
   const handleClose = () => {
     dispatch(UpdateModalStatus(false));
@@ -179,8 +87,6 @@ function Home() {
 
   return (
     <section className="ant-layout Satoshi-Medium NunitoSans-Regular">
-      {/* {kyc?.KycTabStatusStore?.is_verified === false ? <KycModal /> : <></>} */}
-
       <div className="m_none">
         <NavBar />
       </div>
@@ -194,18 +100,11 @@ function Home() {
         )}
         {/* KYC ALETT */}
         {roles?.merchant === true ?
-        <KycAlert/>
-        : <></>}
-          
+          <KycAlert />
+          : <></>}
 
-        {/* {kycStatus?.status === "Rejected" ? (
-          <RejectNotification />
-        ) : (
-          ""
-        )} */}
         <div className="announcement-banner-container_new  announcement-banner">
           <div className="onboarding-illustration-top">
-            {" "}
             <img
               src={onlineshopinglogo}
               width={400}
@@ -216,8 +115,7 @@ function Home() {
           <div className="row">
             <div
               className="col-12 col-md-3 aos-init aos-animate"
-              data-aos="fade-up"
-            >
+              data-aos="fade-up">
               <div className="icon text-primary mb-3">
                 <svg
                   width="24"
@@ -359,8 +257,10 @@ function Home() {
                 )}
               </div>
             )}
+
           </div>
         </div>
+
         {roles?.merchant === true ? (
           <div className="container">
             <div className="row">
@@ -371,7 +271,7 @@ function Home() {
                       className="card-img-left"
                       src={subscriptin}
                       alt="onlinepay"
-                    />{" "}
+                    />
                     &nbsp;Payment Links
                   </h2>
                   <p className="paragraphcssdashboards">
@@ -425,21 +325,7 @@ function Home() {
                       Subscriptions
                     </p>
                   </div>
-                  {/* <div className="col-6 d-flex flex-wrap my-2 no-pad">
-                    <img
-                      className="card-img-left mr-2"
-                      src={paymentlink}
-                      alt="payLink"
-                      width={"41px"}
-                      height={"41px"}
-                    />
-                    <p
-                      className="foralinkscsshere my-auto"
-                      style={{ lineHeight: "25px" }}
-                    >
-                      Payouts
-                    </p>
-                  </div> */}
+
                   <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
                       className="card-img-left mr-2"
@@ -510,7 +396,6 @@ function Home() {
       </div>
 
       {/* KYC container end here */}
-
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <section
@@ -538,69 +423,85 @@ function Home() {
           }
           role="dialog"
         >
+
           <div className="modal-dialog modal-dialog-centered " role="document">
             <div className="modal-content">
               <div className="modal-body Satoshi-Medium">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setModalState(!modalState);
-                  }}
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <div className="row">
-                  <div className="col-sm">
-                    <h1 className="homeModalHeading">Welcome to SabPaisa!</h1>
-                    <h2 className="modalscolrsfortext">
-                      Complete the KYC to activate your account and start
-                      accepting payments. Fill in all the information to start
-                      your SabPaisa Payment services.
-                    </h2>
+
+              {/* ratemapping loader  */}
+              {/* {console.log("chck1")} */}
+              <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
+              {/* {console.log("chck2")} */}
+
+              {!(isRateMappingInProcess) &&
+                <div className="">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setModalState(!modalState);
+                    }}
+                    className="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+
+                  <div className="row">
+                    <div className="col-sm">
+                      <h1 className="homeModalHeading">Welcome to SabPaisa!</h1>
+                      <h2 className="modalscolrsfortext">
+                        Complete the KYC to activate your account and start
+                        accepting payments. Fill in all the information to start
+                        your SabPaisa Payment services.
+                      </h2>
+                    </div>
+
+                    <div className="col-sm">
+                      <img
+                        src={bro}
+                        className="modalsimageclass"
+                        alt="SabPaisa"
+                        title="SabPaisa"
+                      />
+                    </div>
                   </div>
 
-                  <div className="col-sm">
-                    <img
-                      src={bro}
-                      className="modalsimageclass"
-                      alt="SabPaisa"
-                      title="SabPaisa"
-                    />
-                  </div>
-                </div>
-
-                <div className="row Satoshi-Medium">
-                  <div className="col-lg-4">
-                    <Link
-                      to={`/dashboard/kyc`}
-                      data-toggle="modal"
-                      data-target="#exampleModalCenter"
-                    >
-                      <button className="ModalButtonClr text-white mt-2">
-                        <h5 className="m-0">
-                          Complete KYC to activate account
-                        </h5>
-                      </button>
-                    </Link>
-                  </div>
-                  <div className="col-lg-7">
-                    <Link to={`/dashboard`}>
-                      <button
-                        className="ColrsforredirectProdct  text-white"
-                        style={{ marginTop: "9px" }}
-                        onClick={() => {
-                          setModalState(!modalState);
-                        }}
-                        aria-label="Close"
+                  <div className="row Satoshi-Medium">
+                    <div className="col-lg-4">
+                      <Link
+                        to={`/dashboard/kyc`}
+                        data-toggle="modal"
+                        data-target="#exampleModalCenter"
                       >
-                        <h5 className="m-0">Try out our dashboard</h5>
-                      </button>
-                    </Link>
+                        <button className="ModalButtonClr text-white mt-2">
+                          <h5 className="m-0">
+                            Complete KYC to activate account
+                          </h5>
+                        </button>
+                      </Link>
+                    </div>
+                    <div className="col-lg-7">
+                      <Link to={`/dashboard`}>
+                        <button
+                          className="ColrsforredirectProdct  text-white"
+                          style={{ marginTop: "9px" }}
+                          onClick={() => {
+                            setModalState(!modalState);
+                          }}
+                          aria-label="Close"
+                        >
+                          <h5 className="m-0">Try out our dashboard</h5>
+                        </button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
+              }
+
+               
+
+
               </div>
             </div>
           </div>
@@ -609,7 +510,7 @@ function Home() {
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
       {/* Dashboard open pop up start here {IF KYC IS APPROVED}*/}
-
+      {/* need to fix this modal on condition */}
       <div
         className={
           "modal fade mymodals" +

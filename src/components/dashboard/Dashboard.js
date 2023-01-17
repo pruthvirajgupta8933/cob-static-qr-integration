@@ -54,6 +54,7 @@ import { AppsSharp } from "@mui/icons-material";
 import { logout } from "../../slices/auth";
 import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
+import { defaultRateMapping } from "../../utilities/DefaultRateMapping";
 
 function Dashboard() {
   let history = useHistory();
@@ -71,21 +72,24 @@ function Dashboard() {
       if (user?.clientMerchantDetailsList) {
         if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
           // create new client code
-          const uuidCode = Math.random()
-            .toString(36)
-            .slice(-6)
-            .toUpperCase();
+          const uuidCode = Math.random().toString(36).slice(-6).toUpperCase();
           const data = {
             loginId: user?.loginId,
             clientName: user?.clientContactPersonName,
             clientCode: uuidCode,
           };
-          dispatch(createClientProfile(data));
+          dispatch(createClientProfile(data)).then(res=>{
+            // res?.payload?.clientMerchantDetailsList[0]?.clientCode
+            // defaultRateMapping(res?.payload?.clientMerchantDetailsList[0]?.clientCode); //HU9NCY
+          }).catch(err=>console.log(err));
         } else {
           // console.log("already created client code")
         }
       }
     }
+
+            // defaultRateMapping("HU9NCY"); //HU9NCY
+
   }, []);
 
   if (user !== null && user.userAlreadyLoggedIn) {
@@ -100,18 +104,12 @@ function Dashboard() {
       <div></div>
       <SideNavbar />
       <Switch>
-       
-
-       
-      
         <Route exact path={path} >
-
           <Home />
         </Route>
         <Route exact path={`${path}/profile`}>
           <Profile />
         </Route>
-       
         <MerchantRoute
           exact
           path={`${path}/change-password`}
@@ -119,10 +117,6 @@ function Dashboard() {
         >
           <ChangePassword />
         </MerchantRoute>
-        {/* <Route exact path={`${path}/transaction`}>
-          <Transaction />
-        </Route> */}
-
         {roles?.merchant === true ? (
           <MerchantRoute
             exact
