@@ -666,6 +666,29 @@ export const verifyKycDocumentTab = createAsyncThunk(
   }
 );
 
+export const checkedDocumentReject = createAsyncThunk(
+  "kyc/checkedDocumentReject",
+  async (requestParam) => {
+    let URL_FOR_DOCUMENT_VERIFY = "";
+    if (requestParam?.rejected_by) {
+      URL_FOR_DOCUMENT_VERIFY = API_URL.CHECKED_DOCUMENT_REJECT;
+    } else {
+      URL_FOR_DOCUMENT_VERIFY = API_URL.CHECKED_DOCUMENT_REJECT;
+    }
+
+    const response = await axiosInstanceAuth
+      .put(URL_FOR_DOCUMENT_VERIFY, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+
+
+
+
 export const removeDocument = createAsyncThunk(
   "kyc/removeDocument",
   async (requestParam) => {

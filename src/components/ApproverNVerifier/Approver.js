@@ -69,7 +69,7 @@ const dispatch = useDispatch();
                     style={{ background: "#012167", color: "white" }}
                     onClick={() => redirect()}
                   >
-                    OnBoard Merchant
+                    Onboard Merchant
                   </button>
                 )}
               </div>
