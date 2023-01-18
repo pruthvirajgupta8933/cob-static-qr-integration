@@ -11,7 +11,7 @@ const CompleteVerifyAndRejectBtn = (props) => {
     const dispatch = useDispatch();
 
     const {roles,roleBasePermissions,merchantKycId,documentsIdList,docList,setCheckedClicked} = props;
-    console.log("status is ",merchantKycId)
+    // console.log("status is ",merchantKycId)
     const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
     const currenTab = parseInt(verifierApproverTab?.currenTab)
   const { auth } = useSelector((state) => state);
@@ -20,7 +20,7 @@ const CompleteVerifyAndRejectBtn = (props) => {
 
 const newstatus=merchantKycId
 
-  console.log( newstatus,"Doc ")
+  // console.log( newstatus,"Doc ")
   
 
     const [buttonText, setButtonText] = useState("Complete Verify");
@@ -105,8 +105,7 @@ const newstatus=merchantKycId
           };
 
 
-
-          const verifyApproveDoc = (doc_id, status) => {
+const verifyApproveDoc = (doc_id, status) => {
             const postData = {
             document_id: documentsIdList,
             verified_by: loginId,

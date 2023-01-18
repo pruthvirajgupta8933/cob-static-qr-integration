@@ -119,6 +119,7 @@ const MerchantDocument = (props) => {
   const [commetText, setCommetText] = useState()
   const [documentsIdList, setdocumentsIdList] = useState([])
   const [checkedClicked,setCheckedClicked]=useState(false)
+  const [enableeBtn,setEnableBtn] = useState(false)
  
   // console.log("this is the real statsus",staus)
 
@@ -271,6 +272,19 @@ const rejectDoc = (doc_id) => {
   // }
 
 
+
+  const disablingSelectAll = () => {
+    if(Array1 === Array2) {
+      setEnableBtn(true)
+    } else {
+      setEnableBtn(false)
+    }
+
+  }
+
+
+
+
   useEffect(() => {
 
     /////////////////////////////////////////////// button enable condition for verifier
@@ -305,8 +319,14 @@ const rejectDoc = (doc_id) => {
 
   }, [currenTab, roles])
 
-  console.log("this is single handle ", documentsIdList)////////////////// send it in api payload
+  //  console.log("this is single handle ", documentsIdList)////////////////// send it in api payload
 
+  
+
+  
+   let Array1=docList?.map((item)=>item.documentId)
+   let Array2=documentsIdList
+   console.log(Array2)
    useEffect(()=>{
    
 
@@ -404,7 +424,7 @@ const rejectDoc = (doc_id) => {
           
             <tr>
               
-              { currenTab === 3 || currenTab === 4 ?
+              { currenTab === 3 || currenTab === 4  ?
             <th>Select&nbsp;
                 <input
                   type="checkbox"
