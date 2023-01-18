@@ -10,7 +10,7 @@ import dashboard from "../../../assets/images/dashb.png";
 import transHis from "../../../assets/images/transImage.png";
 import enquire from "../../../assets/images/enquiry.png";
 
-function SideNavbar() {
+const SideNavbar = () => {
   const { auth } = useSelector((state) => state);
 
   const { user, payLinkPermission } = auth;
