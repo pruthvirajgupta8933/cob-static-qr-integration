@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
 import HeaderPage from "../login/HeaderPage";
-import "../login/css/home.css";
-import "../login/css/homestyle.css";
-import "../login/css/style-style.css";
-import "../login/css/style.css";
 import onlineshopinglogo from "../../assets/images/COB.png";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -13,6 +9,12 @@ import { useHistory, Link } from "react-router-dom";
 import { toast, Zoom } from "react-toastify";
 import API_URL from "../../config";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+
+import "../login/css/home.css";
+import "../login/css/homestyle.css";
+import "../login/css/style-style.css";
+import "../login/css/style.css";
+
 
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
@@ -46,14 +48,12 @@ function Registration() {
 
   const reduxState = useSelector((state) => state);
   const { message, auth } = reduxState;
-  const datar = auth;
+  const authData = auth;
+  const { isUserRegistered } = authData;
 
-  const { isUserRegistered } = datar;
-  const [acceptTc, setAcceptTc] = useState(false);
-  // const [isCheck, setIsCheck] = useState(false);
   const [btnDisable, setBtnDisable] = useState(false);
-
   const [businessCode, setBusinessCode] = useState([]);
+  const [queryString, setQueryString] = useState({});
   const [passwordType, setPasswordType] = useState({
     confirmpassword: "",
     showPasswords: false,
@@ -63,6 +63,10 @@ function Registration() {
     password: "",
     showPassword: false,
   });
+
+  
+  const dispatch = useDispatch();
+
   const togglePassword = () => {
     setPasswordType({
       ...passwordType,
@@ -84,14 +88,21 @@ function Registration() {
         setBusinessCode(sortAlpha);
       })
       .catch((err) => console.log(err));
-  }, []);
 
-  const dispatch = useDispatch();
+      const search = window.location.search;
+      const params = new URLSearchParams(search);
+      const appid = params.get('appid'); 
+      const planid = params.get('planid'); 
+      const domain = params.get('domain'); 
+      const page = params.get('page'); 
 
-  useEffect(() => {
-    return () => {
-      dispatch(udpateRegistrationStatus());
-    };
+      const paramObject = {
+        appid,
+        planid,
+        domain,
+        page
+      }
+      setQueryString(paramObject);
   }, []);
 
   const handleRegistration = (formData, { resetForm }) => {
@@ -115,6 +126,7 @@ function Registration() {
         businessType,
         isDirect: true,
         requestId: null,
+        plan_details:queryString
       })
 
     )
@@ -156,6 +168,7 @@ function Registration() {
     }
     return () => {
       dispatch(udpateRegistrationStatus());
+      
     };
   }, [isUserRegistered, dispatch, history, message]);
 
@@ -301,7 +314,7 @@ function Registration() {
                                 >
                                   Signup
                                 </span>
-                                to Create New Account
+                                &nbsp; to Create New Account
                               </span>
                             </div>
                           </div>

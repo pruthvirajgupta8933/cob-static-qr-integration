@@ -167,12 +167,12 @@ const SabPaisaPricing = () => {
       applicationId: param?.id,
     };
 
-    if(plan_code==="005"){
-      // only for subscription plan , we route to payment gateway
-      sessionStorage.setItem("tempProductPlanData",JSON.stringify(postData))
-      setTempSelectedData(postData)
-      history.push("/dashboard/sabpaisa-pg");
-    }else{
+    // if(plan_code==="005"){
+    //   // only for subscription plan , we route to payment gateway
+    //   sessionStorage.setItem("tempProductPlanData",JSON.stringify(postData))
+    //   setTempSelectedData(postData)
+    //   history.push("/dashboard/sabpaisa-pg");
+    // }else{
       setTempPlanId(plan_id)
       const res = await axiosInstanceAuth.post(
         API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
@@ -182,18 +182,18 @@ const SabPaisaPricing = () => {
       if (res?.status === 200) {
         // console.log("1")
         // only PG product without subscription plan check rate mapping status
-        if (param?.id === "10" && plan_id!==1) {
-          // console.log("2")
-          // only for payment gateway we have to check rate mapping status
-          // checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
-        }
+        // if (param?.id === "10" && plan_id!==1) {
+        //   // console.log("2")
+        //   // only for payment gateway we have to check rate mapping status
+        //   // checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
+        // }
   
         getSubscribedPlan(plan_id);
         toastConfig.successToast(res?.data?.message);
       } else {
         toastConfig.errorToast("Something went wrong");
       }
-    }
+    // }
    
    
 
