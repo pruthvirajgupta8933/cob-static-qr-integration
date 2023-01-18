@@ -222,7 +222,7 @@ const OnboardMerchant = () => {
                         <div className="show logmod__tab lgm-1">
                           <div className="logmod__heading">
                             <span className="fontfigma">
-                              OnBoard Merchant
+                              Onboard Merchant
                             </span>
 
                           </div>
