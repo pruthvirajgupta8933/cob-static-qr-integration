@@ -353,7 +353,7 @@ function Home() {
                       className="foralinkscsshere my-auto"
                       style={{ lineHeight: "25px" }}
                     >
-                      PayLink
+                      Payment Links
                     </p>
                   </div>
                   <div className="col-6 d-flex flex-wrap my-2 no-pad">
@@ -383,7 +383,7 @@ function Home() {
                       className="foralinkscsshere my-auto"
                       style={{ lineHeight: "25px" }}
                     >
-                      E-Challan
+                      Offline payments
                     </p>
                   </div>
                 </div>

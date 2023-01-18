@@ -74,6 +74,32 @@ export const rejectKycOperation = createAsyncThunk(
     }
   );
 
+  ////////////////////////////// for reverse to pending
+  export const reverseToPendingVerification = createAsyncThunk(
+    "reverseToPendingVerification/reverseToPendingVerification",
+    async ( requestParam, thunkAPI) => {
+      try {
+        const response = await kycOperationService.reverseToPendingVerification(requestParam)
+        return response.data;
+      } catch (error) {
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.detail) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message); 
+        
+        
+      }
+    }
+  );
+  
+  
+
+ 
+
 
 
   export const kycOperationSlice = createSlice({

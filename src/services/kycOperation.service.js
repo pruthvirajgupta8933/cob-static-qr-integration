@@ -18,10 +18,16 @@ const rejectKycOperation = (veriferDetails) => {
   }
  
 
+  const reverseToPendingVerification = (reverseDetails) => {
+    return axiosInstanceAuth.post(API_URL.Back_To_Pending_Verification,reverseDetails)
+
+  }
+
   const kycOperationService = {
     rejectKycOperation,
     completeVerification,
-    completeVerificationRejectKyc
+    completeVerificationRejectKyc,
+    reverseToPendingVerification
    
   };
   export default kycOperationService;
