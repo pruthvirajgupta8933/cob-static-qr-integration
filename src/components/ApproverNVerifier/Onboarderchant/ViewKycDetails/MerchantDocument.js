@@ -340,7 +340,6 @@ let pendingDocument=getDocTypeNamee(unmatchedArray)
           <thead>
             <tr>
               <th>S.No.</th>
-              <th>Check</th>
               <th>Document Type</th>
               <th>Document Name</th>
               <th>Document Status</th>
