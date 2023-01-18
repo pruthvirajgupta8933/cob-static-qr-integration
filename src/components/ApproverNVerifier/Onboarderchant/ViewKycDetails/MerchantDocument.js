@@ -206,7 +206,7 @@ const rejectDoc = (doc_id) => {
     const rejectDetails = {
       document_id: doc_id,
       rejected_by: loginId,
-      comment: commetText === undefined || commetText === "" ? "Document Rejected" : commetText,
+      comment: commetText === undefined || commetText === "" ? "Document Rejected"  : commetText,
     };
     dispatch(verifyKycDocumentTab(rejectDetails))
       .then((resp) => {
@@ -225,20 +225,35 @@ const rejectDoc = (doc_id) => {
       });
   };
 
+  // useEffect(() => {
+
+  //   role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3 ?
+  //     setButtonText("Verify")
+
+  //     : role?.approver === true && currenTab === 4 ?
+  //       setButtonText("Approve")
+  //       : role?.verifier === true ?
+  //         setButtonText("Verify")
+  //         : <></>
+
+  //  });
+
   useEffect(() => {
 
-    role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3 ?
+    if( role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3){
+    setButtonText("Verify")
+  }
+    if(role?.approver === true && currenTab === 4){
+      setButtonText("Approve")
+
+    }
+    if(role?.verifier === true){
       setButtonText("Verify")
 
-      : role?.approver === true && currenTab === 4 ?
-        setButtonText("Approve")
-        : role?.verifier === true ?
-          setButtonText("Verify")
-          : <></>
-
-  });
-
-
+    }else{
+      <></>
+    }
+   });
 
 
 
@@ -293,6 +308,7 @@ const rejectDoc = (doc_id) => {
   console.log("this is single handle ", documentsIdList)////////////////// send it in api payload
 
    useEffect(()=>{
+   
 
   },[documentsIdList])
 
@@ -328,7 +344,7 @@ const rejectDoc = (doc_id) => {
   const handleCheckChange = (e) => {
     let dataList = []
     if (e.target?.checked) {
-      console.log(e.target?.checked)
+     
       KycDocUpload.map((item) => {
         dataList.push(item.documentId)
         setdocumentsIdList(dataList)
@@ -441,7 +457,7 @@ const rejectDoc = (doc_id) => {
                     >
                       {stringManulate(doc?.name)}
                     </a>
-                    <p className="text-danger"> {doc?.comment}</p>
+                    <p className="text-danger"> {doc?.comment === "Null" ? "" : doc?.comment }</p>
                   </td>
                   <td>{doc?.status}</td>
              
@@ -452,7 +468,7 @@ const rejectDoc = (doc_id) => {
                       {(enableBtnVerifier && doc?.status === "Pending") || (enableBtnApprover && doc?.status === "Verified") ?
                         <>
 
-                          <a className="text-success"
+                          <a 
                             href={() => false}
                             onClick={() => {
                               verifyApproveDoc(doc?.documentId, doc?.status);
@@ -460,7 +476,7 @@ const rejectDoc = (doc_id) => {
 
 
                                 >
-                            <h4>{buttonText}</h4>
+                            <h4 className="text-success">{buttonText}</h4>
                            
 
                            

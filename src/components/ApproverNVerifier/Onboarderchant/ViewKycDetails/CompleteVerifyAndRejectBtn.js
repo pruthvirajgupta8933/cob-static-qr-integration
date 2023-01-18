@@ -113,7 +113,7 @@ const newstatus=merchantKycId
             comment:"Document Verified"
             };
 
-            if (roles?.verifier && currenTab === 3) {
+            if ((roles?.verifier || roles?.approver) && currenTab === 3) {
             dispatch(verifyKycDocumentTab(postData)).then((resp) => {
                   if (resp?.payload?.status) {
                     getKycDocList(roles);
