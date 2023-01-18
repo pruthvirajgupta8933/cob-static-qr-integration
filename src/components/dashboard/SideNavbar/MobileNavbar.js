@@ -6,7 +6,7 @@ import transHis from "../../../assets/images/transImage.png";
 import enquire from "../../../assets/images/enquiry.png";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
-function MobileNavbar() {
+const MobileNavbar = () => {
   const [toggleNav, setToggleNav] = useState(false);
   const { user, payLinkPermission } = useSelector((state) => state.auth);
   // const [clientCode, SetClientCode] = useState("")
@@ -32,6 +32,13 @@ function MobileNavbar() {
 
   // const contactUs = "https://sabpaisa.in/support-contact-us/";
   const roleBasedShowTab = roleBasedAccess();
+
+
+
+  const toggle = () => {
+    setToggleNav(!toggleNav);
+  }
+  
 
   return (
     <nav
@@ -130,9 +137,7 @@ function MobileNavbar() {
                 <li className="nav-item">
                   <Link
                     to={`${url}/product-catalogue`}
-                    onClick={() => {
-                      setToggleNav(!toggleNav);
-                    }}
+                    onClick={toggle}
                     className="nav-link"
                   >
                     <i className="fa fa-book" aria-hidden="true" />{" "}
@@ -146,9 +151,7 @@ function MobileNavbar() {
                     <li className="nav-item">
                       <Link
                         to={`${url}/transaction-summery`}
-                        onClick={() => {
-                          setToggleNav(!toggleNav);
-                        }}
+                        onClick={toggle}
                         className="nav-link"
                       >
                         <i className="fa fa-home" aria-hidden="true" />{" "}
@@ -159,9 +162,7 @@ function MobileNavbar() {
                     <li className="nav-item">
                       <Link
                         to={`${url}/transaction-history`}
-                        onClick={() => {
-                          setToggleNav(!toggleNav);
-                        }}
+                        onClick={toggle}
                         className="nav-link"
                       >
                         <img
@@ -177,9 +178,7 @@ function MobileNavbar() {
                     <li className="nav-item">
                       <Link
                         to={`${url}/transaction-enquiry`}
-                        onClick={() => {
-                          setToggleNav(!toggleNav);
-                        }}
+                        onClick={toggle}
                         className="nav-link"
                       >
                         <img
@@ -199,9 +198,7 @@ function MobileNavbar() {
                 <li className="nav-item">
                   <Link
                     to={`${url}/settlement-report-new`}
-                    onClick={() => {
-                      setToggleNav(!toggleNav);
-                    }}
+                    onClick={toggle}
                     className="nav-link"
                   >
                     <i className="fa fa-bars" aria-hidden="true" />{" "}
@@ -212,9 +209,7 @@ function MobileNavbar() {
                 <li className="nav-item">
                   <Link
                     to={`${url}/refund-transaction-history`}
-                    onClick={() => {
-                      setToggleNav(!toggleNav);
-                    }}
+                    onClick={toggle}
                     className="nav-link"
                   >
                     <i className="fa fa-list-alt" aria-hidden="true" />{" "}
@@ -225,9 +220,7 @@ function MobileNavbar() {
                 <li className="nav-item">
                   <Link
                     to={`${url}/chargeback-transaction-history`}
-                    onClick={() => {
-                      setToggleNav(!toggleNav);
-                    }}
+                    onClick={toggle}
                     className="nav-link"
                   >
                     <i className="fa fa-list" aria-hidden="true" />{" "}
@@ -245,9 +238,7 @@ function MobileNavbar() {
                          <li className="nav-item">
                          <Link
                               to={`${url}/settlement-report`}
-                           onClick={() => {
-                             setToggleNav(!toggleNav);
-                           }}
+                              onClick={toggle}
                            className="nav-link"
                          >
                            
@@ -265,9 +256,7 @@ function MobileNavbar() {
               <li className="nav-item">
                 <Link
                   to={`${url}/approver`}
-                  onClick={() => {
-                    setToggleNav(!toggleNav);
-                  }}
+                  onClick={toggle}
                   className="nav-link"
                 >
                   <i className="fa fa-list" aria-hidden="true" /> &nbsp;Merchant
@@ -283,9 +272,7 @@ function MobileNavbar() {
                <li className="nav-item">
                <Link
                  to={`${url}/transaction-summery`}
-                 onClick={() => {
-                   setToggleNav(!toggleNav);
-                 }}
+                 onClick={toggle}
                  className="nav-link"
                >
                  <i className="fa fa-home" aria-hidden="true" />{" "}
@@ -297,9 +284,7 @@ function MobileNavbar() {
 
                <Link
                  to={`${url}/transaction-history`}
-                 onClick={() => {
-                   setToggleNav(!toggleNav);
-                 }}
+                 onClick={toggle}
                  className="nav-link"
                >
                  <img
@@ -315,9 +300,7 @@ function MobileNavbar() {
              <li className="nav-item">
                <Link
                  to={`${url}/transaction-enquiry`}
-                 onClick={() => {
-                   setToggleNav(!toggleNav);
-                 }}
+                 onClick={toggle}
                  className="nav-link"
                >
                  <img
@@ -334,9 +317,7 @@ function MobileNavbar() {
               <li className="nav-item">
                 <Link
                   to={`${url}/client-list`}
-                  onClick={() => {
-                    setToggleNav(!toggleNav);
-                  }}
+                  onClick={toggle}
                   className="nav-link"
                 >
                   <i className="fa fa-list" aria-hidden="true" /> &nbsp;Client
@@ -347,9 +328,7 @@ function MobileNavbar() {
               <li className="nav-item">
                 <Link
                   to={`${url}/settlement-report-new`}
-                  onClick={() => {
-                    setToggleNav(!toggleNav);
-                  }}
+                  onClick={toggle}
                   className="nav-link"
                 >
                   <i className="fa fa-list" aria-hidden="true" /> &nbsp; Settlement
@@ -360,9 +339,7 @@ function MobileNavbar() {
               <li className="nav-item">
                 <Link
                   to={`${url}/refund-transaction-history`}
-                  onClick={() => {
-                    setToggleNav(!toggleNav);
-                  }}
+                  onClick={toggle}
                   className="nav-link"
                 >
                   <i className="fa fa-list" aria-hidden="true" /> &nbsp;Refund 
@@ -373,9 +350,7 @@ function MobileNavbar() {
               <li className="nav-item">
                 <Link
                   to={`${url}/chargeback-transaction-history`}
-                  onClick={() => {
-                    setToggleNav(!toggleNav);
-                  }}
+                  onClick={toggle}
                   className="nav-link"
                 >
                   <i className="fa fa-list" aria-hidden="true" /> &nbsp;Chargeback
@@ -395,9 +370,7 @@ function MobileNavbar() {
               <li className="nav-item">
                 <Link
                   to={`${url}/paylink`}
-                  onClick={() => {
-                    setToggleNav(!toggleNav);
-                  }}
+                  onClick={toggle}
                   className="nav-link"
                 >
                   <i className="fa fa-address-book" aria-hidden="true" />{" "}
@@ -412,9 +385,7 @@ function MobileNavbar() {
               <li className="nav-item">
                 <Link
                   to={`${url}/profile`}
-                  onClick={() => {
-                    setToggleNav(!toggleNav);
-                  }}
+                  onClick={toggle}
                   className="nav-link"
                 >
                   <i className="fa fa-user" aria-hidden="true" /> &nbsp;Profile

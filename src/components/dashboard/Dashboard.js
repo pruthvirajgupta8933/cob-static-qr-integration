@@ -55,6 +55,8 @@ import { logout } from "../../slices/auth";
 import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
 import { defaultRateMapping } from "../../utilities/DefaultRateMapping";
+import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import API_URL from "../../config";
 
 function Dashboard() {
   let history = useHistory();
@@ -78,9 +80,37 @@ function Dashboard() {
             clientName: user?.clientContactPersonName,
             clientCode: uuidCode,
           };
-          dispatch(createClientProfile(data)).then(res=>{
-            // res?.payload?.clientMerchantDetailsList[0]?.clientCode
-            // defaultRateMapping(res?.payload?.clientMerchantDetailsList[0]?.clientCode); //HU9NCY
+
+          dispatch(createClientProfile(data)).then(clientProfileRes=>{
+            console.log("response of the create client ",clientProfileRes);
+
+            // after create the client update the subscribe product
+            const postData = {
+              login_id: user?.loginId
+            }
+
+            
+          // fetch details of the user registraion
+            axiosInstanceAuth.post(API_URL.website_plan_details, postData).then(
+              res => {
+                console.log("clientProfileRes",clientProfileRes)
+                const webData = res?.data?.data[0]?.plan_details
+                const postData = {
+                  clientId: clientProfileRes?.payload?.clientId,
+                  applicationName: webData?.appName,
+                  planId: webData?.planid,
+                  planName: webData?.planName,
+                  applicationId: webData?.appid,
+                };
+
+                axiosInstanceAuth.post(
+                  API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+                  postData
+                );
+  
+                
+              }
+            )
           }).catch(err=>console.log(err));
         } else {
           // console.log("already created client code")
