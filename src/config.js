@@ -246,7 +246,7 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
    
    // Fetch selected product during registration
 
-   website_plan_details: `${url}/auth-service/auth/login/website-plan-detai`,
+   website_plan_details: `${url}/auth-service/auth/login/website-plan-detail`,
    
 
 

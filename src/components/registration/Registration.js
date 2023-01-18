@@ -95,12 +95,16 @@ function Registration() {
       const planid = params.get('planid'); 
       const domain = params.get('domain'); 
       const page = params.get('page'); 
+      const appName = params.get('appName'); 
+      const planName = params.get('planName'); 
 
       const paramObject = {
         appid,
         planid,
         domain,
-        page
+        page,
+        appName,
+        planName
       }
       setQueryString(paramObject);
   }, []);

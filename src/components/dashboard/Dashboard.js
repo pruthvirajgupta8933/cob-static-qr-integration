@@ -81,24 +81,37 @@ function Dashboard() {
             clientCode: uuidCode,
           };
 
-          // fetch details of the user registraion
+          dispatch(createClientProfile(data)).then(clientProfileRes=>{
+            console.log("response of the create client ",clientProfileRes);
 
-          const postData = {
-            loginId: user?.loginId
-          }
-          axiosInstanceAuth.post(API_URL.website_plan_details, postData).then(
-            res => {
-              console.log("fetch selected plan",res)
-              
+            // after create the client update the subscribe product
+            const postData = {
+              login_id: user?.loginId
             }
-          )
 
-          // dispatch(createClientProfile(data)).then(res=>{
-          //   console.log("response of the create client ",res);
+            
+          // fetch details of the user registraion
+            axiosInstanceAuth.post(API_URL.website_plan_details, postData).then(
+              res => {
+                console.log("clientProfileRes",clientProfileRes)
+                const webData = res?.data?.data[0]?.plan_details
+                const postData = {
+                  clientId: clientProfileRes?.payload?.clientId,
+                  applicationName: webData?.appName,
+                  planId: webData?.planid,
+                  planName: webData?.planName,
+                  applicationId: webData?.appid,
+                };
 
-          //   // subscribe the products first time when client profile is created
-          //     console.log("trigger the product subscribe data")
-          // }).catch(err=>console.log(err));
+                axiosInstanceAuth.post(
+                  API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+                  postData
+                );
+  
+                
+              }
+            )
+          }).catch(err=>console.log(err));
         } else {
           // console.log("already created client code")
         }
