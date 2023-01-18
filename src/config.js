@@ -225,7 +225,8 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
   REJECT_KYC_TAB:`${kyc_url}/kyc/verify-kyc/tab-reject/`,
   COMPLETE_VERIFICATION:`${kyc_url}/kyc/verify-kyc/verify/`,
   COMPLETE_VERIFICATION_REJECT_KYC:`${kyc_url}/kyc/verify-kyc/reject/`,
-
+   //Reversing from pending approval to pending verification
+   Back_To_Pending_Verification:`${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
 
 
 
@@ -262,6 +263,8 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
 
   // Check is client code mapped or not (ratemapping case)
   isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`
+
+  
   
 
 
