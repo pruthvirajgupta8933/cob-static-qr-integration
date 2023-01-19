@@ -413,10 +413,17 @@ const MerchantDocument = (props) => {
 
       </div>
 
+<<<<<<< HEAD
       <div className="col-lg-12 mt-4 m-2">
 
 
 
+=======
+      <div className="col-lg-12 mt-4 m-2- scroll-x">
+      
+     
+        
+>>>>>>> 9046f0cbe28011ed02460c883211141c97b626bb
         <table className="table table-bordered">
 
 

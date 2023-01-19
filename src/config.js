@@ -227,6 +227,7 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
   COMPLETE_VERIFICATION_REJECT_KYC:`${kyc_url}/kyc/verify-kyc/reject/`,
    //Reversing from pending approval to pending verification
    Back_To_Pending_Verification:`${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
+   Back_To_Pending_Approval:`${kyc_url}/kyc/reverse-kyc/re-approval/`,
 
 
 
@@ -244,6 +245,11 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
 
    // OnBoard Merchant Role URL 
    Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`,
+   
+   // Fetch selected product during registration
+
+   website_plan_details: `${url}/auth-service/auth/login/website-plan-detail`,
+   
 
 
   // ---------------------------   NEW API FOR COMMENTS (2)

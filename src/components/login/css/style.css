@@ -862,3 +862,7 @@ table.list {
     font-size: 9px;
   }
 }
+.scroll-x{
+  overflow-x: scroll;
+  overflow-y: auto;
+}

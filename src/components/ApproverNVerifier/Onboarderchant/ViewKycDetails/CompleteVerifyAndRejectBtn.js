@@ -64,7 +64,7 @@ const newstatus=merchantKycId
       
       
           if(currenTab === 3){
-            setButtonText("Verify KYC")
+            setButtonText("Verify Selected")
             // console.log("The Button Name is verify kyc",buttonText)
           }
           if(currenTab === 4){
@@ -184,7 +184,7 @@ const verifyApproveDoc = (doc_id, status) => {
 <div className="container">
   <div className="row">
     
-    <div  className="col-lg-12">
+    <div  className="col-lg-3-">
     <button type="button"
      onClick={() =>  verifyApproveDoc()}
           className="btn btn-info btn-sm text-white">{buttonText}</button>
@@ -196,8 +196,8 @@ const verifyApproveDoc = (doc_id, status) => {
   </div>
   {buttonClick===true ?
  
- <div>
- <textarea id="comments" name="reject_commet" placeholder="Reson for reject" rows="4" cols="40" onChange={(e)=>setCommetText(e.target.value)}>
+ <div style={{float:"left"}}>
+ <textarea id="comments" name="reject_commet" placeholder="Reason for rejection" rows="4" cols="40" onChange={(e)=>setCommetText(e.target.value)}>
 </textarea>
 <div>
 <button type="button" 
