@@ -1,3 +1,80 @@
+// import { useState } from 'react';
+
+// const MyTable = () => {
+//   const [data, setData] = useState([
+//     { id: 1, name: 'item 1', checked: false },
+//     { id: 2, name: 'item 2', checked: false },
+//     { id: 3, name: 'item 3', checked: false },
+//     { id: 4, name: 'item 4', checked: false },
+//     { id: 5, name: 'item 5', checked: false }
+//   ]);
+//   const [selectAll, setSelectAll] = useState(false);
+
+//   const handleCheckboxClick = (event) => {
+//     const newData = [...data];
+//     newData.forEach((item) => {
+//       if (item.id === parseInt(event.target.value)) {
+//         item.checked = event.target.checked;
+//       }
+//     });
+//     setData(newData);
+//   }
+
+//   const handleSelectAll = (event) => {
+//     const newData = [...data];
+//     newData.forEach((item) => {
+//       item.checked = event.target.checked;
+//     });
+//     setData(newData);
+//     setSelectAll(event.target.checked);
+//   }
+
+//   const handleDelete = () => {
+//     const newData = data.filter(item => !item.checked);
+//     setData(newData);
+//   }
+
+//   return (
+//     <div>
+//       <table>
+//         <thead>
+//           <tr>
+//             <th>
+//               <input
+//                 type="checkbox"
+//                 checked={selectAll}
+//                 onClick={handleSelectAll}
+//               />
+//             </th>
+//             <th>Name</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {data.map((item) => (
+//             <tr key={item.id}>
+//               <td>
+//                 <input
+//                   type="checkbox"
+//                   value={item.id}
+//                   checked={item.checked}
+//                   onClick={handleCheckboxClick}
+//                 />
+//               </td>
+//               <td>{item.name}</td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//       <button onClick={handleDelete}>Delete</button>
+//     </div>
+//   );
+// }
+// export default MyTable;
+
+
+
+
+
 import React, { useState, useEffect } from 'react'
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess';
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
@@ -119,6 +196,7 @@ const MerchantDocument = (props) => {
   const [commetText, setCommetText] = useState()
   const [documentsIdList, setdocumentsIdList] = useState([])
   const [checkedClicked,setCheckedClicked]=useState(false)
+  const [enableeBtn,setEnableBtn] = useState(false)
  
   // console.log("this is the real statsus",staus)
 
@@ -271,6 +349,19 @@ const rejectDoc = (doc_id) => {
   // }
 
 
+
+  const disablingSelectAll = () => {
+    if(Array1 === Array2) {
+      setEnableBtn(true)
+    } else {
+      setEnableBtn(false)
+    }
+
+  }
+
+
+
+
   useEffect(() => {
 
     /////////////////////////////////////////////// button enable condition for verifier
@@ -305,37 +396,65 @@ const rejectDoc = (doc_id) => {
 
   }, [currenTab, roles])
 
-  console.log("this is single handle ", documentsIdList)////////////////// send it in api payload
+  //  console.log("this is single handle ", documentsIdList)////////////////// send it in api payload
 
+  
+
+  
+   let Array1=docList?.map((item)=>item.documentId)
+   let Array2=documentsIdList
+   
    useEffect(()=>{
    
 
   },[documentsIdList])
 
   const handleCheckboxClick = (event) => {
+    // console.log("checked",event.target.checked)
+    // console.log("value",event.target.value)
+    let data=[]
     if (event.target.checked) {
       setdocumentsIdList(prev => ([...prev, parseInt(event.target.value)]))
       setCheckedClicked(true)
     }
     else {
-      let data = documentsIdList
-      data.splice(data.indexOf(event.target.value))  // use splice id changed if always exist and add in array if not exist
-      //The Array.splice() method adds array elements
+      data = documentsIdList
+     
+      const index = data.indexOf(parseInt(event.target.value));
+     
+      if (index > -1) { // only splice array when item is found
+        data.splice(index, 1); // 2nd parameter means remove one item only
+        
+      }
+      // data.splice(data.indexOf(event.target.value),1)  // use splice id changed if always exist and add in array if not exist
+      // console.log("data",data)
       setdocumentsIdList(data)
       setCheckedClicked(false)
     }
+   
+    // console.log("data",data)
+    
+    
   }
 
 
 
-  // const handleSelectAll = (event) => {
-  //   const newData = [...docList];
-  //   newData.forEach((item) => {
-  //     console.log("This is the item", item)
-  //     item.checked = event.target.checked;
-  //   });
-  //   setDocList(newData);
-  //   setSelectAll(event.target.checked);
+  // const handleCheckboxClick = (id) => {
+  //   // if (event.target.checked) {
+  //   // setdocumentsIdList(prev => ([...prev, parseInt(event.target.value)]))
+  //   // setCheckedClicked(true)
+  //   // }
+  //   // else {
+  //   let data = documentsIdList
+  //   if (data.indexOf(id) === -1) {
+  //     data.push(id)
+  //   } else {
+  //     data.splice(data.indexOf(id))  // use splice id changed if always exist and add in array if not exist
+  //     // The Array.splice() method adds array elements
+  //   }
+  //   setdocumentsIdList(data)
+  //   setCheckedClicked(false)
+
   // }
 
   
@@ -404,17 +523,17 @@ const rejectDoc = (doc_id) => {
           
             <tr>
               
-              { currenTab === 3 || currenTab === 4 ?
+              {/* { currenTab === 3 || currenTab === 4  ?
             <th>Select&nbsp;
                 <input
                   type="checkbox"
+                   checked={documentsIdList?.length===KycDocUpload?.length ? true :false} 
                   onChange={(e) => handleCheckChange(e)}
                
                 />
               </th>
-              : <></> }
+              : <></> } */}
               <th>S.No.</th>
-             
               <th>Document Type</th>
               <th>Document Name</th>
               <th>Document Status</th>
@@ -433,7 +552,7 @@ const rejectDoc = (doc_id) => {
                 <tr key={i}>
                  
 
-                 {currenTab === 3 || currenTab === 4 ?
+                 {/* {currenTab === 3 || currenTab === 4 ?
                    <td>
                     
                     <input
@@ -444,7 +563,7 @@ const rejectDoc = (doc_id) => {
                       onClick={handleCheckboxClick}
                     />
                   </td>
-                  : <></> }
+                  : <></> } */}
                   <td>{i + 1}</td>
                  
                   <td>{getDocTypeName(doc?.type)}</td>

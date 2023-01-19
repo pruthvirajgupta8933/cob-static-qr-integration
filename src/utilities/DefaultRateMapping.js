@@ -14,7 +14,6 @@ export const DefaultRateMapping = ({setFlag}) => {
         // console.log("step 0")
         const userData = JSON.parse(localStorage.getItem("user"))
         if ((userData?.clientMerchantDetailsList !== null && userData?.clientMerchantDetailsList[0]?.clientCode !== undefined) && userData?.isDirect) {
-
             // console.log("step 1 ", userData?.clientMerchantDetailsList[0]?.clientCode)
             axiosInstance.get(`${API_URL.isClientCodeMapped}/${userData?.clientMerchantDetailsList[0]?.clientCode}`).then(res => {
                 if (res?.data.length === 0) {
@@ -59,6 +58,7 @@ export const DefaultRateMapping = ({setFlag}) => {
     
                     axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
                         setFlag(true)
+    
                         // console.log("step 3 run RATE_MAPPING_GenerateClientFormForCob",API_URL.RATE_MAPPING_GenerateClientFormForCob);
                         
                         // localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
@@ -74,7 +74,6 @@ export const DefaultRateMapping = ({setFlag}) => {
                             //       // console.log("3 api run")
                             //       dispatch(checkPermissionSlice(clientCode));
                             //   })
-                            sessionStorage.removeItem('prog_id')
                             setFlag(false)
                             setLoader(false)
                         }).catch(err => {

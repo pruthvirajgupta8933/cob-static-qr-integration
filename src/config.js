@@ -70,7 +70,7 @@ const API_LIVE = {
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */
-  GET_FILE_NAME: adminAPIURL + "/settlementReport/getFileName/",
+  GET_FILE_NAME: adminAPIURL + "/REST/settlementReport/getFileName/",
 
   /* PAYLINK */
   GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
@@ -227,6 +227,7 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
   COMPLETE_VERIFICATION_REJECT_KYC:`${kyc_url}/kyc/verify-kyc/reject/`,
    //Reversing from pending approval to pending verification
    Back_To_Pending_Verification:`${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
+   Back_To_Pending_Approval:`${kyc_url}/kyc/reverse-kyc/re-approval/`,
 
 
 

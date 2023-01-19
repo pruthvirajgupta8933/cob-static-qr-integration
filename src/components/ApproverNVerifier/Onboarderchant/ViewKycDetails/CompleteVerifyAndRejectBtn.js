@@ -1,26 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { completeVerification, completeVerificationRejectKyc } from "../../../../slices/kycOperationSlice"
-import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
-import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
-import VerifyRejectBtn from './VerifyRejectBtn';
 import { checkedDocumentReject,kycDocumentUploadList,verifyKycDocumentTab,approveDoc} from '../../../../slices/kycSlice';
 
 const CompleteVerifyAndRejectBtn = (props) => {
     const dispatch = useDispatch();
-
-    const {roles,roleBasePermissions,merchantKycId,documentsIdList,docList,setCheckedClicked} = props;
-    console.log("status is ",merchantKycId)
+      const {roles,roleBasePermissions,merchantKycId,documentsIdList,setCheckedClicked} = props;
     const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
     const currenTab = parseInt(verifierApproverTab?.currenTab)
   const { auth } = useSelector((state) => state);
   const { user } = auth;
   const { loginId } = user;
 
-const newstatus=merchantKycId
 
-  console.log( newstatus,"Doc ")
   
 
     const [buttonText, setButtonText] = useState("Complete Verify");
@@ -29,7 +21,7 @@ const newstatus=merchantKycId
     const[disable,setDisable]=useState(false)
     const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
     // console.log(roles)
-    console.log(Allow_To_Do_Verify_Kyc_details)
+   
     const getKycDocList = (role) => {
         dispatch(
           kycDocumentUploadList({ login_id: merchantKycId?.loginMasterId })
@@ -64,7 +56,7 @@ const newstatus=merchantKycId
       
       
           if(currenTab === 3){
-            setButtonText("Verify KYC")
+            setButtonText("Verify Selected")
             // console.log("The Button Name is verify kyc",buttonText)
           }
           if(currenTab === 4){
@@ -105,8 +97,7 @@ const newstatus=merchantKycId
           };
 
 
-
-          const verifyApproveDoc = (doc_id, status) => {
+const verifyApproveDoc = (doc_id, status) => {
             const postData = {
             document_id: documentsIdList,
             verified_by: loginId,
@@ -145,47 +136,15 @@ const newstatus=merchantKycId
                     });
                   }
               }
-
-
-        
-              
-        
-        
-            //   const approverDocDetails = {
-            //     approved_by: loginId,
-            //     document_id: doc_id,
-            //   };
-       
-                
-            //       dispatch(approveDoc(approverDocDetails)).then((resp) => {
-            //         resp?.payload?.status
-            //           ? toast.success(resp?.payload?.message)
-            //           : toast.error(resp?.payload?.message);
-        
-            //         getKycDocList(role);
-            //       });
-             
-            
-        
-        
-          };
+  };
 
         
-          
-
-
-
-
-
-
-
-
-  return (
+           return (
 
 <div className="container">
   <div className="row">
     
-    <div  className="col-lg-12">
+    <div  className="col-lg-3-">
     <button type="button"
      onClick={() =>  verifyApproveDoc()}
           className="btn btn-info btn-sm text-white">{buttonText}</button>
@@ -197,8 +156,8 @@ const newstatus=merchantKycId
   </div>
   {buttonClick===true ?
  
- <div>
- <textarea id="comments" name="reject_commet" placeholder="Reson for reject" rows="4" cols="40" onChange={(e)=>setCommetText(e.target.value)}>
+ <div style={{float:"left"}}>
+ <textarea id="comments" name="reject_commet" placeholder="Reason for rejection" rows="4" cols="40" onChange={(e)=>setCommetText(e.target.value)}>
 </textarea>
 <div>
 <button type="button" 
