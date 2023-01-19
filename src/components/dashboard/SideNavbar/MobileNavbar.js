@@ -253,6 +253,7 @@ const MobileNavbar = () => {
 
             {roleBasedShowTab?.approver === true ||
             roleBasedShowTab?.verifier === true ? (
+              <>
               <li className="nav-item">
                 <Link
                   to={`${url}/approver`}
@@ -263,9 +264,64 @@ const MobileNavbar = () => {
                   List
                 </Link>
               </li>
+                <li className="nav-item">
+                <Link
+                  to={`${url}/additional-kyc`}
+                  onClick={toggle}
+                  className="nav-link"
+                >
+                  <i className="fa fa-user" aria-hidden="true" /> &nbsp;Additional KYC
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  to={`${url}/assignzone`}
+                  onClick={toggle}
+                  className="nav-link"
+                >
+                  <i className="fa fa-list-alt" aria-hidden="true" /> &nbsp;Assign Zone
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  to={`${url}/ratemapping`}
+                  onClick={toggle}
+                  className="nav-link"
+                >
+                  <i className="fa fa-bar-chart" aria-hidden="true" /> &nbsp;Rate Mapping
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  to={`${url}/signup-data`}
+                  onClick={toggle}
+                  className="nav-link"
+                >
+                  <i className="fa fa-bar-chart" aria-hidden="true" /> &nbsp;Signup Data
+                </Link>
+              </li>
+              </>
+              
+
             ) : (
               <></>
             )}
+
+            {roleBasedShowTab?.viewer === true ? 
+            <>
+             <li className="nav-item">
+                <Link
+                  to={`${url}/signup-data`}
+                  onClick={toggle}
+                  className="nav-link"
+                >
+                  <i className="fa fa-bar-chart" aria-hidden="true" /> &nbsp;Signup Data
+                </Link>
+              </li>
+            </> : <></>   
+          }
+
+
 
             {roleBasedShowTab?.bank === true ? (
               <>

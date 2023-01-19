@@ -4,6 +4,9 @@ import {Link} from 'react-router-dom';
 
 
 function HeaderPage() {
+  // console.log(window.location.search)
+  const queryString  = window.location.search
+
   return (
     <div>
       {/* partial:index.partial.html */}
@@ -309,11 +312,11 @@ function HeaderPage() {
                 </li>
                 <li className="nav-item">
                     {/* <a className="nav-link" href="" target={"_blank"} >Login</a> */}
-                    <Link to="/login-page" className="nav-link">Login</Link>
+                    <Link to={`/login-page/${queryString}`} className="nav-link">Login</Link>
                 </li>
                 <li className="nav-item">
                     {/* <a className="nav-link" href="" target={"_blank"} >Signup</a> */}
-                    <Link to="/Registration" className="nav-link">Sign up</Link>
+                    <Link to={`/Registration/${queryString}`} className="nav-link">Sign up</Link>
                 </li>
             </ul>
         </div>
