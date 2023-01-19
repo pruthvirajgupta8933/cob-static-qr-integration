@@ -1,4 +1,4 @@
-const ENV_PROD = true; // don't change in the local environment
+const ENV_PROD = false; // don't change in the local environment
 let url,kyc_url = "",kyc_validate = "";
 
 if (ENV_PROD) {

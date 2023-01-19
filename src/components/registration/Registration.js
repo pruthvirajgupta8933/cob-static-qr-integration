@@ -162,7 +162,7 @@ function Registration() {
       }, 2000);
     }
 
-    if (isUserRegistered === false || isUserRegistered === null) {
+    if (isUserRegistered === false) {
       toast.error(message.message, {
         position: "top-right",
         autoClose: 5000,
