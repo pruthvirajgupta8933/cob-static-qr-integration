@@ -95,6 +95,28 @@ export const rejectKycOperation = createAsyncThunk(
       }
     }
   );
+
+
+  export const reverseToPendingApproval = createAsyncThunk(
+    "reverseToPendingApproval/reverseToPendingApproval",
+    async ( requestParam, thunkAPI) => {
+      try {
+        const response = await kycOperationService.reverseToPendingApproval(requestParam)
+        return response.data;
+      } catch (error) {
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.detail) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message); 
+        
+        
+      }
+    }
+  );
   
   
 

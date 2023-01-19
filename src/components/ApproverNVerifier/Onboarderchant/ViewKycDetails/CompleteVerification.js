@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { completeVerification, completeVerificationRejectKyc,reverseToPendingVerification} from "../../../../slices/kycOperationSlice"
+import { completeVerification, completeVerificationRejectKyc,reverseToPendingVerification,reverseToPendingApproval} from "../../../../slices/kycOperationSlice"
 import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
 import VerifyRejectBtn from './VerifyRejectBtn';
+
 
 
 const CompleteVerification = (props) => {
@@ -14,6 +15,7 @@ let closeVerificationModal=props?.closeVerification;
 
   let pendingApporvalTable = props?.renderApprovalTable
   let pendingVerfyTable = props?.renderPendingVerificationData
+  let approvedTable = props?.renderApprovedTable
 
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
@@ -166,9 +168,12 @@ let closeVerificationModal=props?.closeVerification;
         toast.error("Something went wrong, Please Try Again later")
       });
     }
+  }
 
-     
+
+
   
+    
     // .then((resp) => {
     //   resp?.payload?.message &&
     //     toast.success(resp?.payload?.message);
@@ -178,7 +183,32 @@ let closeVerificationModal=props?.closeVerification;
     //   toast.error("Try Again Network Error");
     // });
 
-  }
+
+    // Function for reversing it from Approved to pending Approval
+
+    const handleReverseToPendingApproval = () => {
+   
+      const reverseToPendingApprovalDetails = {
+        login_id: merchantKycId.loginMasterId,
+        approved_by: loginId,
+      };
+      if (window.confirm("Are you sure to push it to Pending Approval ?")) {
+      dispatch(reverseToPendingApproval(reverseToPendingApprovalDetails))
+        .then((resp) => {
+          // console.log("This sis",resp)
+          resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
+          dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+          closeVerificationModal(false)
+           return currenTab === 5 ? approvedTable() : <></>
+                 
+        })
+        .catch((e) => {
+          toast.error("Something went wrong, Please Try Again later")
+        });
+      }
+    }
+  
+  
 
 
 
@@ -287,6 +317,8 @@ let closeVerificationModal=props?.closeVerification;
 
         {roles?.approver === true && currenTab === 4 ?
         <button button type="button" onClick={()=> handleReverse()} className="btn btn-success btn-sm text-white">Back to Pending Verification</button> : <></> }
+        {roles?.approver === true && currenTab === 5 ? 
+        <button button type="button" onClick={()=> handleReverseToPendingApproval() } className="btn btn-success btn-sm text-white">Back to Pending Approval</button> : <></>}
 
 </div>
 <div className="col-lg-12">

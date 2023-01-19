@@ -65,6 +65,26 @@ function ApprovedMerchant() {
 
   /////////////////////////////////////Search filter
 
+// Only used for refreshing the page by passing it to the props
+  const approvedTable = () => {
+    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
+    .then((resp) => {
+      resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+      setSpinner(false);
+
+      const data = resp?.payload?.results;
+      const dataCoun = resp?.payload?.count;
+      setData(data);
+       setDataCount(dataCoun);
+       setApprovedMerchantData(data);
+       setIsLoaded(false)   
+    })
+
+    .catch((err) => {
+      toastConfig.errorToast("Data not loaded");
+    });
+  }
+
   useEffect(() => {
     if (searchText.length > 0) {
       setData(
@@ -166,7 +186,7 @@ let pageNumbers = []
 
       {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Approved Tab"} /> : <></>}
           
-          <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
+          <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderApprovedTable={approvedTable}/>
         </div>
       <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Count Per Page</label>
