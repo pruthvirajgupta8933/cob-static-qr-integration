@@ -172,7 +172,6 @@ function Registration() {
     }
     return () => {
       dispatch(udpateRegistrationStatus());
-      
     };
   }, [isUserRegistered, dispatch, history, message]);
 
