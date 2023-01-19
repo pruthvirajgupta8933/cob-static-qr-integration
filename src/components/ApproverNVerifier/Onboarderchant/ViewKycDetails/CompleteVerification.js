@@ -270,10 +270,10 @@ let closeVerificationModal=props?.closeVerification;
 
   return (
     <div className="row">
-      <div className="col-lg-6">
-      <p className="font-weight-bold">Comments : <span>{KycTabStatus?.comments}</span></p>
-      </div>
-      <div className="col-lg-6">
+    
+    <label className="font-weight-bold col-lg-12">Comments : <span>{KycTabStatus?.comments}</span></label>
+      <div className="col-lg-12">
+      
         {enableBtnVerifier || enableBtnApprover ?
           <><button type="button"  disabled={disable} onClick={() => {handleVerifyClick()
           }} className="btn btn-info btn-sm text-white">{buttonText}</button>
@@ -288,18 +288,18 @@ let closeVerificationModal=props?.closeVerification;
         {roles?.approver === true && currenTab === 4 ?
         <button button type="button" onClick={()=> handleReverse()} className="btn btn-success btn-sm text-white">Back to Pending Verification</button> : <></> }
 
-         
-
+</div>
+<div className="col-lg-12">
 {buttonClick===true ?
  
           <>
-          <label for="comments">Reject Comments</label>
+          <label for="comments col-lg-12">Reject Comments</label>
 
-    <textarea id="comments" name="reject_commet" rows="4" cols="40" onChange={(e)=>setCommetText(e.target.value)}>
+    <textarea id="comments" className="col-lg-12" name="reject_commet" rows="4" cols="40" onChange={(e)=>setCommetText(e.target.value)}>
     </textarea>
         <button type="button" 
             onClick={() => handleRejectClick(commetText)}
-            className="btn btn-danger btn-sm text-white">Submit</button></> : <></>}
+            className="btn btn-danger btn-sm text-white pull-left mt-20">Submit</button></> : <></>}
 
 
       </div>

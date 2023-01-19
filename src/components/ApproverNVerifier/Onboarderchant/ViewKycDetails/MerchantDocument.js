@@ -388,7 +388,7 @@ const rejectDoc = (doc_id) => {
 
       </div>
 
-      <div className="col-lg-12 mt-4 m-2">
+      <div className="col-lg-12 mt-4 m-2- scroll-x">
       
      
         
