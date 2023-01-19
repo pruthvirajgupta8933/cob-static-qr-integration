@@ -414,7 +414,6 @@ const rejectDoc = (doc_id) => {
               </th>
               : <></> }
               <th>S.No.</th>
-             
               <th>Document Type</th>
               <th>Document Name</th>
               <th>Document Status</th>

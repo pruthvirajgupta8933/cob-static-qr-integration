@@ -6,6 +6,7 @@ import API_URL from "../../../config";
 import { isClientCodeCreated } from "../../../utilities/isClientCodeCreated";
 import { isKycCompleted } from "../../../utilities/isKycCompleted";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
+import NavBar from "../NavBar/NavBar";
 
 const SettlementReport = () => {
   const [searchArea, setSearchArea] = useState("");
@@ -22,8 +23,10 @@ const SettlementReport = () => {
   let clientCode = "";
 
 
+
   if (user && user?.clientMerchantDetailsList) {
-    history.push("/dashboard/profile");
+    // history.push("/dashboard/profile");
+    clientCode = user?.clientMerchantDetailsList[0].clientCode;
   } else {
     let clientMerchantDetailsList = user.clientMerchantDetailsList;
     

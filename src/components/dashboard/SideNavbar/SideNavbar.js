@@ -17,11 +17,13 @@ const SideNavbar = () => {
   //  const [clientCode, SetClientCode] = useState("")
 
   let { url } = useRouteMatch();
+  // const [clientCode, SetClientCode] = useState("")
   const dispatch = useDispatch();
 
 
   useEffect(() => {
     if (user.clientMerchantDetailsList?.length > 0) {
+      // SetClientCode(user?.clientMerchantDetailsList[0]?.clientCode)
       dispatch(
         checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode)
       );
@@ -323,6 +325,22 @@ const SideNavbar = () => {
                       {roleBasedShowTab?.merchant === true  || roleBasedShowTab?.bank === true ? (
                         
                         <React.Fragment>
+                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(user?.clientMerchantDetailsList[0]?.clientCode) ?   
+                          <li
+                            className="ant-menu-item"
+                            role="menuitem"
+                            style={{ paddingLeft: "48px" }}
+                          >
+                            <Link
+                              to={`${url}/settlement-report`}
+                              className="txt-white sidenavFonts"
+                            >
+                              <i className="fa fa-bars" aria-hidden="true" />
+                              <span>&nbsp;Settlement Report (Excel)</span>
+                            </Link>
+                          </li> : <></>}
+                    
+
                           <li
                             className="ant-menu-item"
                             role="menuitem"

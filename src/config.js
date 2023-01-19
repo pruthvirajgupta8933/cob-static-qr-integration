@@ -1,4 +1,4 @@
-const ENV_PROD = false; // don't change in the local environment
+const ENV_PROD = true; // don't change in the local environment
 let url,kyc_url = "",kyc_validate = "";
 
 if (ENV_PROD) {
@@ -70,7 +70,7 @@ const API_LIVE = {
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */
-  GET_FILE_NAME: adminAPIURL + "/settlementReport/getFileName/",
+  GET_FILE_NAME: adminAPIURL + "/REST/settlementReport/getFileName/",
 
   /* PAYLINK */
   GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
