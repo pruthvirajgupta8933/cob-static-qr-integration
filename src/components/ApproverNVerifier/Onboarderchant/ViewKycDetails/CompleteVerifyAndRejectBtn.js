@@ -1,26 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { completeVerification, completeVerificationRejectKyc } from "../../../../slices/kycOperationSlice"
-import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
-import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
-import VerifyRejectBtn from './VerifyRejectBtn';
 import { checkedDocumentReject,kycDocumentUploadList,verifyKycDocumentTab,approveDoc} from '../../../../slices/kycSlice';
 
 const CompleteVerifyAndRejectBtn = (props) => {
     const dispatch = useDispatch();
-
-    const {roles,roleBasePermissions,merchantKycId,documentsIdList,docList,setCheckedClicked} = props;
-    // console.log("status is ",merchantKycId)
+      const {roles,roleBasePermissions,merchantKycId,documentsIdList,setCheckedClicked} = props;
     const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
     const currenTab = parseInt(verifierApproverTab?.currenTab)
   const { auth } = useSelector((state) => state);
   const { user } = auth;
   const { loginId } = user;
 
-const newstatus=merchantKycId
 
-  // console.log( newstatus,"Doc ")
   
 
     const [buttonText, setButtonText] = useState("Complete Verify");
@@ -29,7 +21,7 @@ const newstatus=merchantKycId
     const[disable,setDisable]=useState(false)
     const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
     // console.log(roles)
-    console.log(Allow_To_Do_Verify_Kyc_details)
+   
     const getKycDocList = (role) => {
         dispatch(
           kycDocumentUploadList({ login_id: merchantKycId?.loginMasterId })
@@ -144,42 +136,10 @@ const verifyApproveDoc = (doc_id, status) => {
                     });
                   }
               }
-
-
-        
-              
-        
-        
-            //   const approverDocDetails = {
-            //     approved_by: loginId,
-            //     document_id: doc_id,
-            //   };
-       
-                
-            //       dispatch(approveDoc(approverDocDetails)).then((resp) => {
-            //         resp?.payload?.status
-            //           ? toast.success(resp?.payload?.message)
-            //           : toast.error(resp?.payload?.message);
-        
-            //         getKycDocList(role);
-            //       });
-             
-            
-        
-        
-          };
+  };
 
         
-          
-
-
-
-
-
-
-
-
-  return (
+           return (
 
 <div className="container">
   <div className="row">

@@ -1,3 +1,80 @@
+// import { useState } from 'react';
+
+// const MyTable = () => {
+//   const [data, setData] = useState([
+//     { id: 1, name: 'item 1', checked: false },
+//     { id: 2, name: 'item 2', checked: false },
+//     { id: 3, name: 'item 3', checked: false },
+//     { id: 4, name: 'item 4', checked: false },
+//     { id: 5, name: 'item 5', checked: false }
+//   ]);
+//   const [selectAll, setSelectAll] = useState(false);
+
+//   const handleCheckboxClick = (event) => {
+//     const newData = [...data];
+//     newData.forEach((item) => {
+//       if (item.id === parseInt(event.target.value)) {
+//         item.checked = event.target.checked;
+//       }
+//     });
+//     setData(newData);
+//   }
+
+//   const handleSelectAll = (event) => {
+//     const newData = [...data];
+//     newData.forEach((item) => {
+//       item.checked = event.target.checked;
+//     });
+//     setData(newData);
+//     setSelectAll(event.target.checked);
+//   }
+
+//   const handleDelete = () => {
+//     const newData = data.filter(item => !item.checked);
+//     setData(newData);
+//   }
+
+//   return (
+//     <div>
+//       <table>
+//         <thead>
+//           <tr>
+//             <th>
+//               <input
+//                 type="checkbox"
+//                 checked={selectAll}
+//                 onClick={handleSelectAll}
+//               />
+//             </th>
+//             <th>Name</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {data.map((item) => (
+//             <tr key={item.id}>
+//               <td>
+//                 <input
+//                   type="checkbox"
+//                   value={item.id}
+//                   checked={item.checked}
+//                   onClick={handleCheckboxClick}
+//                 />
+//               </td>
+//               <td>{item.name}</td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//       <button onClick={handleDelete}>Delete</button>
+//     </div>
+//   );
+// }
+// export default MyTable;
+
+
+
+
+
 import React, { useState, useEffect } from 'react'
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess';
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
@@ -7,7 +84,9 @@ import CompleteVerifyAndRejectBtn from './CompleteVerifyAndRejectBtn';
 
 
 const MerchantDocument = (props) => {
-  const { docList, docTypeList, role, merchantKycId } = props;
+  const { docList, setDocList, docTypeList, role, merchantKycId } = props;
+
+  // const roles = roleBasedAccess();
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
@@ -15,17 +94,31 @@ const MerchantDocument = (props) => {
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
-   const { user } = auth;
+
+
+
+  // const { allTabsValidate } = kyc;
+  // const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
+  // const KycList = kyc?.kycUserList;
+  // const kyc_status = KycList?.status;
+  // const businessType = KycList?.businessType;
+
+  const { user } = auth;
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
 
   const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
   const newDropDownDocList = dropDownDocList.filter(element => element !== ''); // remove blank string in array
-  
+  // var dropDownList = arr.map(function(e){return e.toString()});
+  //  console.log("Array 1 ====>",newDropDownDocList)
+
   const uploadedDocList = docList?.map((r) => r?.type);
 
-    const removeCommon = (newDropDownDocList, uploadedDocList) => {
+  //  console.log("Array 2",uploadedDocList)
+
+
+  const removeCommon = (newDropDownDocList, uploadedDocList) => {
     const spreaded = [...newDropDownDocList, ...uploadedDocList];
     return spreaded.filter(el => {
       return !(newDropDownDocList?.includes(el) && uploadedDocList?.includes(el));
@@ -33,7 +126,7 @@ const MerchantDocument = (props) => {
   };
 
   let unmatchedArray = removeCommon(newDropDownDocList, uploadedDocList)
- 
+  // console.log(unmatchedArray)
 
 
 
@@ -102,9 +195,9 @@ const MerchantDocument = (props) => {
   const [closeModal, setCloseModal] = useState(false)
   const [commetText, setCommetText] = useState()
   const [documentsIdList, setdocumentsIdList] = useState([])
-  const [checkedClicked, setCheckedClicked] = useState(false)
-  const [enableeBtn, setEnableBtn] = useState(false)
-
+  const [checkedClicked,setCheckedClicked]=useState(false)
+  const [enableeBtn,setEnableBtn] = useState(false)
+ 
   // console.log("this is the real statsus",staus)
 
   const [loader, setLoader] = useState(false)
@@ -187,11 +280,11 @@ const MerchantDocument = (props) => {
 
   ////////////////////////////////////////////////////
 
-  const rejectDoc = (doc_id) => {
+const rejectDoc = (doc_id) => {
     const rejectDetails = {
       document_id: doc_id,
       rejected_by: loginId,
-      comment: commetText === undefined || commetText === "" ? "Document Rejected" : commetText,
+      comment: commetText === undefined || commetText === "" ? "Document Rejected"  : commetText,
     };
     dispatch(verifyKycDocumentTab(rejectDetails))
       .then((resp) => {
@@ -225,20 +318,20 @@ const MerchantDocument = (props) => {
 
   useEffect(() => {
 
-    if (role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3) {
-      setButtonText("Verify")
-    }
-    if (role?.approver === true && currenTab === 4) {
+    if( role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3){
+    setButtonText("Verify")
+  }
+    if(role?.approver === true && currenTab === 4){
       setButtonText("Approve")
 
     }
-    if (role?.verifier === true) {
+    if(role?.verifier === true){
       setButtonText("Verify")
 
-    } else {
+    }else{
       <></>
     }
-  });
+   });
 
 
 
@@ -258,7 +351,7 @@ const MerchantDocument = (props) => {
 
 
   const disablingSelectAll = () => {
-    if (Array1 === Array2) {
+    if(Array1 === Array2) {
       setEnableBtn(true)
     } else {
       setEnableBtn(false)
@@ -305,45 +398,46 @@ const MerchantDocument = (props) => {
 
   //  console.log("this is single handle ", documentsIdList)////////////////// send it in api payload
 
+  
 
+  
+   let Array1=docList?.map((item)=>item.documentId)
+   let Array2=documentsIdList
+   
+   useEffect(()=>{
+   
 
-
-  let Array1 = docList?.map((item) => item.documentId)
-  let Array2 = documentsIdList
-  console.log(Array2)
-  useEffect(() => {
-
-
-  }, [documentsIdList])
+  },[documentsIdList])
 
   const handleCheckboxClick = (event) => {
     // console.log("checked",event.target.checked)
     // console.log("value",event.target.value)
-    let data = []
+    let data=[]
     if (event.target.checked) {
       setdocumentsIdList(prev => ([...prev, parseInt(event.target.value)]))
       setCheckedClicked(true)
     }
     else {
       data = documentsIdList
-
+     
       const index = data.indexOf(parseInt(event.target.value));
-
+     
       if (index > -1) { // only splice array when item is found
         data.splice(index, 1); // 2nd parameter means remove one item only
+        
       }
       // data.splice(data.indexOf(event.target.value),1)  // use splice id changed if always exist and add in array if not exist
-      console.log("data", data)
+      // console.log("data",data)
       setdocumentsIdList(data)
       setCheckedClicked(false)
     }
-
+   
     // console.log("data",data)
-
-
+    
+    
   }
 
-  console.log("documentsIdList", documentsIdList)
+
 
   // const handleCheckboxClick = (id) => {
   //   // if (event.target.checked) {
@@ -363,13 +457,13 @@ const MerchantDocument = (props) => {
 
   // }
 
-
+  
 
 
   const handleCheckChange = (e) => {
     let dataList = []
     if (e.target?.checked) {
-
+     
       KycDocUpload.map((item) => {
         dataList.push(item.documentId)
         setdocumentsIdList(dataList)
@@ -386,7 +480,7 @@ const MerchantDocument = (props) => {
   //   setDocStatus(status)
   //   }
 
-
+   
 
 
 
@@ -402,52 +496,45 @@ const MerchantDocument = (props) => {
     <div className="row mb-4 border">
       <div className="col-lg-6">
         <h3 className="font-weight-bold">Merchant Documents</h3>
-
-        {pendingDocument?.length === 0 ? null : <p className="font-weight-bold">Not Submitted:</p>}
+        
+      {pendingDocument?.length === 0 ? null : <p className="font-weight-bold">Not Submitted:</p>}
         {pendingDocument?.map((item) => {
           return (<> <span className="text-danger"> {item?.value}</span><br /></>)
         })}
-
+          
 
 
 
       </div>
 
-<<<<<<< HEAD
       <div className="col-lg-12 mt-4 m-2">
-
-
-
-=======
-      <div className="col-lg-12 mt-4 m-2- scroll-x">
       
      
         
->>>>>>> 9046f0cbe28011ed02460c883211141c97b626bb
         <table className="table table-bordered">
 
-
+   
           <thead>
-            {checkedClicked === true ?
-              <th colSpan={6} style={{ textAlign: "right" }}><CompleteVerifyAndRejectBtn roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} /></th>
-              : <></>}
+            {checkedClicked === true ? 
+            <th colSpan={6}  style={{textAlign:"right"}}><CompleteVerifyAndRejectBtn  roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} /></th>
+            : <></>}
 
-
-
+           
+          
             <tr>
-
-              {currenTab === 3 || currenTab === 4 ?
-                <th>Select&nbsp;
-                  <input
-                    type="checkbox"
-                    checked={documentsIdList?.length === KycDocUpload?.length ? true : false}
-                    onChange={(e) => handleCheckChange(e)}
-
-                  />
-                </th>
-                : <></>}
+              
+              {/* { currenTab === 3 || currenTab === 4  ?
+            <th>Select&nbsp;
+                <input
+                  type="checkbox"
+                   checked={documentsIdList?.length===KycDocUpload?.length ? true :false} 
+                  onChange={(e) => handleCheckChange(e)}
+               
+                />
+              </th>
+              : <></> } */}
               <th>S.No.</th>
-
+             
               <th>Document Type</th>
               <th>Document Name</th>
               <th>Document Status</th>
@@ -460,26 +547,26 @@ const MerchantDocument = (props) => {
             {KycDocUpload?.length > 0 ? (
 
               KycDocUpload?.map((doc, i) => (
-
-
-
+                
+                
+               
                 <tr key={i}>
+                 
 
-
-                  {currenTab === 3 || currenTab === 4 ?
-                    <td>
-
-                      <input
-                        type="checkbox"
-                        value={doc?.documentId}
-                        checked={documentsIdList?.indexOf(doc.documentId) !== -1 ? true : false}
-                        // first check the index if greater then -1  then execute further process
-                        onClick={handleCheckboxClick}
-                      />
-                    </td>
-                    : <></>}
+                 {/* {currenTab === 3 || currenTab === 4 ?
+                   <td>
+                    
+                    <input
+                      type="checkbox"
+                      value={doc?.documentId}
+                      checked={documentsIdList?.indexOf(doc.documentId) !== -1 ? true : false}
+                      // first check the index if greater then -1  then execute further process
+                      onClick={handleCheckboxClick}
+                    />
+                  </td>
+                  : <></> } */}
                   <td>{i + 1}</td>
-
+                 
                   <td>{getDocTypeName(doc?.type)}</td>
                   <td>
                     <a
@@ -490,10 +577,10 @@ const MerchantDocument = (props) => {
                     >
                       {stringManulate(doc?.name)}
                     </a>
-                    <p className="text-danger"> {doc?.comment === "Null" ? "" : doc?.comment}</p>
+                    <p className="text-danger"> {doc?.comment === "Null" ? "" : doc?.comment }</p>
                   </td>
                   <td>{doc?.status}</td>
-
+             
                   {/* {enableBtnByStatus(doc?.status, role) ? ( */}
                   <td>
                     <div style={{ display: "flex" }}>
@@ -501,18 +588,18 @@ const MerchantDocument = (props) => {
                       {(enableBtnVerifier && doc?.status === "Pending") || (enableBtnApprover && doc?.status === "Verified") ?
                         <>
 
-                          <a
+                          <a 
                             href={() => false}
                             onClick={() => {
                               verifyApproveDoc(doc?.documentId, doc?.status);
                             }}
 
 
-                          >
+                                >
                             <h4 className="text-success">{buttonText}</h4>
+                           
 
-
-
+                           
                           </a>
 
 
