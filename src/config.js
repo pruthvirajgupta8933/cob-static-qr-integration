@@ -244,6 +244,11 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
 
    // OnBoard Merchant Role URL 
    Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`,
+   
+   // Fetch selected product during registration
+
+   website_plan_details: `${url}/auth-service/auth/login/website-plan-detail`,
+   
 
 
   // ---------------------------   NEW API FOR COMMENTS (2)
