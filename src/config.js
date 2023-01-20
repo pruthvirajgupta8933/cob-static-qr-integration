@@ -59,7 +59,9 @@ const API_LIVE = {
 
   GET_PAYMENT_STATUS_LIST: adminAPIURL + "/REST/admin/getPaymentStatusList",
   PAY_MODE_LIST: adminAPIURL + "/REST/paymode/paymodeList",
-  GetMerchantTxnHistory: adminAPIURL + "/REST/GetMerchantTxnHistory",
+    // GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistory",
+    GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistoryN",
+    
   /* Settlement Report */
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
   RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
