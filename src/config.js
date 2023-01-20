@@ -14,6 +14,8 @@ if (ENV_PROD) {
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
 
+// https://reportapi.sabpaisa.in/SabPaisaReport/REST/GetMerchantTxnHistoryN
+
 const API_LIVE = {
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
@@ -59,7 +61,9 @@ const API_LIVE = {
 
   GET_PAYMENT_STATUS_LIST: adminAPIURL + "/REST/admin/getPaymentStatusList",
   PAY_MODE_LIST: adminAPIURL + "/REST/paymode/paymodeList",
-  GetMerchantTxnHistory: adminAPIURL + "/REST/GetMerchantTxnHistory",
+  // GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistory",
+  GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistoryN",
+  
   /* Settlement Report */
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
   RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
