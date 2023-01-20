@@ -74,13 +74,15 @@ const BankDetails = (props) => {
         value={merchantKycId?.ifscCode}
       />
        <span>
-          {(merchantKycId?.ifscCode && merchantKycId?.ifscCode !== null) || (merchantKycId?.ifscCode !== "") ? (
-            <p className="text-success">Verified</p>
+          {merchantKycId?.ifscCode === null || merchantKycId?.ifscCode === "" ? (
+             <p className="text-danger"> Not Verified</p>
           ) : (
-            <p className="text-danger"> Not Verified</p>
+            <p className="text-success">Verified</p>
           )}
         </span>
     </div>
+
+  
 
     <div className="col-sm-12 col-md-12 col-lg-6">
       <label className="col-form-label mt-0 p-2">
@@ -98,12 +100,15 @@ const BankDetails = (props) => {
         }
       />
        <span>
-          {(merchantKycId?.accountNumber && merchantKycId?.accountNumber !== null) || (merchantKycId?.accountNumber !== "") ? (
-            <p className="text-success">Verified</p>
+          {merchantKycId?.accountNumber === null || merchantKycId?.accountNumber === "" ? (
+              <p className="text-danger"> Not Verified</p>
+          
           ) : (
-            <p className="text-danger"> Not Verified</p>
-          )}
+            <p className="text-success">Verified</p>
+        )}
         </span>
+
+       
       
     </div>
 

@@ -86,15 +86,15 @@ const PendindKyc = () => {
     }
   }, [searchText]);
 
-  const handleClick = (loginMasterId) => {
-    dispatch(
-      GetKycTabsStatus({
-        login_id: loginMasterId,
-      })
-    ).then((res) => {
-      setStatusData(res?.payload);
-    });
-  };
+  // const handleClick = (loginMasterId) => {
+  //   dispatch(
+  //     GetKycTabsStatus({
+  //       login_id: loginMasterId,
+  //     })
+  //   ).then((res) => {
+  //     setStatusData(res?.payload);
+  //   });
+  // };
   //--------------PENDING Merchants API -----------------//
   const indexOfLastRecord = currentPage * pageSize;
   const nPages = Math.ceil(pendingKycData?.length / pageSize);

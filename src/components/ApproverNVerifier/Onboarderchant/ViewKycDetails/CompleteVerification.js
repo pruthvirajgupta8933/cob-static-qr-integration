@@ -148,7 +148,7 @@ let closeVerificationModal=props?.closeVerification;
 
   // Function For Reversing to Pending Verification
 
-  const handleReverse = (commetText) => {
+  const handleReverseToPendingVerification = (commetText) => {
    
     const reverseDetails = {
       login_id: merchantKycId.loginMasterId,
@@ -296,7 +296,7 @@ let closeVerificationModal=props?.closeVerification;
   //    console.log("enableBtnApprover",enableBtnApprover)
   //    console.log("The button name show is here",buttonText)
   // console.log("---------end final btn-----")
-    
+  
 
   return (
     <div className="row">
@@ -316,9 +316,16 @@ let closeVerificationModal=props?.closeVerification;
         }
 
         {roles?.approver === true && currenTab === 4 ?
-        <button button type="button" onClick={()=> handleReverse()} className="btn btn-success btn-sm text-white">Back to Pending Verification</button> : <></> }
+        <button button type="button" onClick={()=> handleReverseToPendingVerification()} className="btn btn-success btn-sm text-white">Back to Pending Verification</button> : <></> }
+
         {roles?.approver === true && currenTab === 5 ? 
         <button button type="button" onClick={()=> handleReverseToPendingApproval() } className="btn btn-success btn-sm text-white">Back to Pending Approval</button> : <></>}
+
+          {/* {roles?.approver === true && currenTab === 3 ? 
+          <button button type="button" onClick={()=> toast.success("Reversed To Pending Kyc")} className="btn btn-success btn-sm text-white">Back to Pending KYC</button> : <></>}
+
+            {roles?.approver === true && currenTab === 6 ? 
+          <button button type="button" onClick={()=> toast.success("Reversed To Pending Kyc")} className="btn btn-success btn-sm text-white">Back to Pending KYC</button> : <></>} */}
 
 </div>
 <div className="col-lg-12">

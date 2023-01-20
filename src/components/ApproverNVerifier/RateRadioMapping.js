@@ -16,14 +16,14 @@ const NewvalidationSchemaforRadio = Yup.object({
 
 const RateRadioMapping = (props) => {
   const { user } = useSelector((state) => state.auth);
-  const loginId = user.loginId;
+  // const loginId = user.loginId;
   const username = user.clientContactPersonName;
 
   const radiobutton = [{ key: "", value: "true" }];
 
-  const handleSubmitForRadio = (values) => {
-    // console.log(values)
-  };
+  // const handleSubmitForRadio = (values) => {
+  //   // console.log(values)
+  // };
   const onClick = (client_code) => {
     alert(
       `Parent ClientCode : ${client_code} \n Chield ClientCode: ${props.chiledCode.clientCode} \n UserName: ${username}`

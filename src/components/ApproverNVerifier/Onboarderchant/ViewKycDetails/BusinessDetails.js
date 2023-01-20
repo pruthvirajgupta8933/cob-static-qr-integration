@@ -16,6 +16,9 @@ const BusinessDetails = (props) => {
   const { loginId } = user;
 
 
+
+
+
   const handleVerifyClick = () => {
   
     const veriferDetails = {
@@ -77,14 +80,17 @@ const BusinessDetails = (props) => {
           }
         />
         <span>
-          {(merchantKycId?.gstNumber && merchantKycId?.gstNumber !== null) || (merchantKycId?.gstNumber !== "") ? (
-            <p className="text-success">Verified</p>
-          ) : (
+          {merchantKycId?.gstNumber === null || merchantKycId?.gstNumber === "" ? (
             <p className="text-danger"> Not Verified</p>
+          ) : (
+            <p className="text-success">Verified</p>
+        
           )}
         </span>
       </div>
 
+
+     
       <div className="col-sm-12 col-md-6 col-lg-6">
         <label className="col-form-label mt-0 p-2">
           Business PAN<span style={{ color: "red" }}>*</span>
@@ -113,13 +119,17 @@ const BusinessDetails = (props) => {
           }
         />
          <span>
-          {merchantKycId?.signatoryPAN && merchantKycId?.signatoryPAN !== null || merchantKycId?.signatoryPAN !== "" ? (
-            <p className="text-success">Verified</p>
+          {merchantKycId?.signatoryPAN === null || merchantKycId?.signatoryPAN === "" ? (
+         <p className="text-danger"> Not Verified</p>
           ) : (
-            <p className="text-danger"> Not Verified</p>
+            <p className="text-success">Verified</p>
           )}
         </span>
       </div>
+
+     
+
+      
 
       <div className="col-sm-12 col-md-6 col-lg-6">
         <label className="col-form-label mt-0 p-2">
