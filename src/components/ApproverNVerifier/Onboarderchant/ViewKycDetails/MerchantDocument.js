@@ -432,7 +432,7 @@ const MerchantDocument = (props) => {
                             //   rejectDoc(doc?.documentId);
                             // }}
                             >
-                              Reject
+                              <h4 className="text-danger">Reject</h4> 
                             </a>
                           </>
                           : <></>
