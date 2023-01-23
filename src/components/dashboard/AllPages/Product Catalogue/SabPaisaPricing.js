@@ -5,7 +5,7 @@ import rafiki from "../../../../assets/images/rafiki.png";
 import { productSubscribeState } from "../../../../slices/dashboardSlice";
 import { useDispatch, useSelector } from "react-redux";
 import API_URL from "../../../../config";
-import { axiosInstanceAuth, axiosInstance } from "../../../../utilities/axiosInstance";
+import { axiosInstanceAuth } from "../../../../utilities/axiosInstance";
 import "./product.css";
 import toastConfig from "../../../../utilities/toastTypes";
 import { useParams } from "react-router-dom";
@@ -20,9 +20,7 @@ const SabPaisaPricing = () => {
   const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
-  const [tempPlanId, setTempPlanId] = useState("");
-  // const [rateCloneStatus, setRateCloneStatus] = useState("")
-  const [TempSelectedData, setTempSelectedData] = useState({})
+
 
   const dispatch = useDispatch();
   const clickHandler = (value) => {
@@ -169,7 +167,7 @@ const SabPaisaPricing = () => {
     //   setTempSelectedData(postData)
     //   history.push("/dashboard/sabpaisa-pg");
     // }else{
-      setTempPlanId(plan_id)
+      // setTempPlanId(plan_id)
       const res = await axiosInstanceAuth.post(
         API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
         postData
