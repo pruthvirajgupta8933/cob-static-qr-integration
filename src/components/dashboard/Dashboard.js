@@ -6,7 +6,6 @@ import "./css/loader.css";
 
 import SideNavbar from "./SideNavbar/SideNavbar";
 import Home from "./AllPages/Home";
-import Transaction from "./AllPages/Transaction";
 import TransactionEnquirey from "./AllPages/TransactionEnquirey";
 import SettlementReport from "./AllPages/SettlementReport";
 import TransactionHistory from "./AllPages/TransactionHistory";
@@ -26,7 +25,6 @@ import Emandate from "./AllPages/Emandate";
 import PaymentResponse from "./AllPages/PaymentResponse";
 import KycForm from "../KYC/KycForm";
 import Test from "../Otherpages/Test";
-import ViewTransactionWithFilter from "./AllPages/ViewTransactionWithFilter";
 import SettlementReportNew from "./AllPages/SettlementReportNew";
 import TransactionHistoryDownload from "./AllPages/TransactionHistoryDownload";
 import Approver from "../ApproverNVerifier/Approver";
@@ -50,11 +48,8 @@ import BankRoute from "../../ProtectedRoutes/BankRoute";
 import VerifierRoute from "../../ProtectedRoutes/VerifierRoute";
 import ApproverRoute from "../../ProtectedRoutes/ApproverRoute";
 import ViewerRoute from "../../ProtectedRoutes/ViewerRoute";
-import { AppsSharp } from "@mui/icons-material";
-import { logout } from "../../slices/auth";
 import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
-import { defaultRateMapping } from "../../utilities/DefaultRateMapping";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
 
