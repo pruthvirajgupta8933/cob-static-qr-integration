@@ -10,10 +10,6 @@ import "./product.css";
 import toastConfig from "../../../../utilities/toastTypes";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { stringDec } from "../../../../utilities/encodeDecode";
-import { isCompositeComponent } from "react-dom/test-utils";
-import SabpaisaPaymentGateway from "../../../sabpaisa-pg/SabpaisaPaymentGateway";
 import { logout } from "../../../../slices/auth";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 

@@ -131,14 +131,14 @@ function BusinessCategory(props) {
 
     }
 
-    const showTooltip = () => {
-        // console.log('showTooltip')
-    }
+    // const showTooltip = () => {
+    //     // console.log('showTooltip')
+    // }
 
 
-    const hideTooltip = () => {
-        // console.log('hideTooltip')
-    }
+    // const hideTooltip = () => {
+    //     // console.log('hideTooltip')
+    // }
 
     return (
         <div className="modal" id="bussiness" style={{ top: "25%", display: `${modalClose ? 'block' : 'none'}` }}  role="dialog" aria-labelledby="bussinessLable" aria-hidden="true" >

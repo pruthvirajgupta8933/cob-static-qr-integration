@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { kycForNotFilled } from "../../slices/kycSlice";
-import API_URL from "../../config";
-import { Link, useRouteMatch } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
-import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
 import moment from "moment";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
-import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 

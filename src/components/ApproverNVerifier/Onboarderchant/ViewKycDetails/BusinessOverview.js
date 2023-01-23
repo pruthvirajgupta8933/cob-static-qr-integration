@@ -21,7 +21,7 @@ const BusinessOverview = (props) => {
   const { user } = auth;
   const { loginId } = user;
 
-  const general_info_status = KycTabStatus?.business_info_status;
+  // const general_info_status = KycTabStatus?.business_info_status;
 
 
 

@@ -1,80 +1,3 @@
-// import { useState } from 'react';
-
-// const MyTable = () => {
-//   const [data, setData] = useState([
-//     { id: 1, name: 'item 1', checked: false },
-//     { id: 2, name: 'item 2', checked: false },
-//     { id: 3, name: 'item 3', checked: false },
-//     { id: 4, name: 'item 4', checked: false },
-//     { id: 5, name: 'item 5', checked: false }
-//   ]);
-//   const [selectAll, setSelectAll] = useState(false);
-
-//   const handleCheckboxClick = (event) => {
-//     const newData = [...data];
-//     newData.forEach((item) => {
-//       if (item.id === parseInt(event.target.value)) {
-//         item.checked = event.target.checked;
-//       }
-//     });
-//     setData(newData);
-//   }
-
-//   const handleSelectAll = (event) => {
-//     const newData = [...data];
-//     newData.forEach((item) => {
-//       item.checked = event.target.checked;
-//     });
-//     setData(newData);
-//     setSelectAll(event.target.checked);
-//   }
-
-//   const handleDelete = () => {
-//     const newData = data.filter(item => !item.checked);
-//     setData(newData);
-//   }
-
-//   return (
-//     <div>
-//       <table>
-//         <thead>
-//           <tr>
-//             <th>
-//               <input
-//                 type="checkbox"
-//                 checked={selectAll}
-//                 onClick={handleSelectAll}
-//               />
-//             </th>
-//             <th>Name</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {data.map((item) => (
-//             <tr key={item.id}>
-//               <td>
-//                 <input
-//                   type="checkbox"
-//                   value={item.id}
-//                   checked={item.checked}
-//                   onClick={handleCheckboxClick}
-//                 />
-//               </td>
-//               <td>{item.name}</td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//       <button onClick={handleDelete}>Delete</button>
-//     </div>
-//   );
-// }
-// export default MyTable;
-
-
-
-
-
 import React, { useState, useEffect } from 'react'
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess';
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
@@ -84,9 +7,7 @@ import CompleteVerifyAndRejectBtn from './CompleteVerifyAndRejectBtn';
 
 
 const MerchantDocument = (props) => {
-  const { docList, setDocList, docTypeList, role, merchantKycId } = props;
-
-  // const roles = roleBasedAccess();
+  const { docList, docTypeList, role, merchantKycId } = props;
   const roleBasePermissions = roleBasedAccess()
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
@@ -95,15 +16,7 @@ const MerchantDocument = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
-
-
-  // const { allTabsValidate } = kyc;
-  // const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
-  // const KycList = kyc?.kycUserList;
-  // const kyc_status = KycList?.status;
-  // const businessType = KycList?.businessType;
-
-  const { user } = auth;
+   const { user } = auth;
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
@@ -155,54 +68,21 @@ const MerchantDocument = (props) => {
   let pendingDocument = getDocTypeNamee(unmatchedArray)
 
   ///////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-  // const leftElements =dropDownDocList.filter(element => !uploadedDocList.includes(element));
-  // const differentElements = dropDownDocList.filter(element => !uploadedDocList.includes(element));
-
-
-  // const [array1, setArray1] = useState(newDropDownDocList);
-  // const [array2, setArray2] = useState(uploadedDocList);
-  // const [mismatch, setMismatch] = useState([]);
-
-
-
-
-  // const compareArrays = () => {
-  //   const mismatchedValues = [];
-  //   for (let i = 0; i < array2.length; i++) {
-  //     if (array2[i] !== array1[i]) {
-  //       mismatchedValues.push(array2[i]);
-  //     }
-  //   }
-  //   console.log(mismatchedValues,"Mismatched Values")
-  //   return mismatchedValues;
-  // }
-
-
-  // console.log("Mismatched values: ",compareArrays().join(', '))
-  // const status = KycDocUpload?.status;
-
-  const [buttonText, setButtonText] = useState("");
+   const [buttonText, setButtonText] = useState("");
   const [savedData, setSavedData] = useState([]);
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
   const [closeModal, setCloseModal] = useState(false)
   const [commetText, setCommetText] = useState()
   const [documentsIdList, setdocumentsIdList] = useState([])
-  const [checkedClicked,setCheckedClicked]=useState(false)
-  const [enableeBtn,setEnableBtn] = useState(false)
- 
+  const [checkedClicked, setCheckedClicked] = useState(false)
+  const [enableeBtn, setEnableBtn] = useState(false)
+
   // console.log("this is the real statsus",staus)
 
   const [loader, setLoader] = useState(false)
   const [buttonClick, setButtonClick] = useState(null)
-  const [selectAll, setSelectAll] = useState(false);
+  
 
   const getDocTypeName = (id) => {
     let data = docTypeList.filter((obj) => {
@@ -280,11 +160,11 @@ const MerchantDocument = (props) => {
 
   ////////////////////////////////////////////////////
 
-const rejectDoc = (doc_id) => {
+  const rejectDoc = (doc_id) => {
     const rejectDetails = {
       document_id: doc_id,
       rejected_by: loginId,
-      comment: commetText === undefined || commetText === "" ? "Document Rejected"  : commetText,
+      comment: commetText === undefined || commetText === "" ? "Document Rejected" : commetText,
     };
     dispatch(verifyKycDocumentTab(rejectDetails))
       .then((resp) => {
@@ -318,51 +198,23 @@ const rejectDoc = (doc_id) => {
 
   useEffect(() => {
 
-    if( role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3){
-    setButtonText("Verify")
-  }
-    if(role?.approver === true && currenTab === 4){
+    if (role?.approver === true && Allow_To_Do_Verify_Kyc_details === true && currenTab === 3) {
+      setButtonText("Verify")
+    }
+    if (role?.approver === true && currenTab === 4) {
       setButtonText("Approve")
 
     }
-    if(role?.verifier === true){
+    if (role?.verifier === true) {
       setButtonText("Verify")
 
-    }else{
+    } else {
       <></>
     }
-   });
+  });
 
 
-
-  // const enableApproverTabwise = (status) => {
-  //   let enableBtn = false;
-  //   if (currenTab === 4) {
-  //     if (roles.approver === true)
-  //       if (status === "Verified") {
-  //         enableBtn = true;
-
-  //       }
-  //   }
-  //   return enableBtn;
-
-  // }
-
-
-
-  const disablingSelectAll = () => {
-    if(Array1 === Array2) {
-      setEnableBtn(true)
-    } else {
-      setEnableBtn(false)
-    }
-
-  }
-
-
-
-
-  useEffect(() => {
+ useEffect(() => {
 
     /////////////////////////////////////////////// button enable condition for verifier
 
@@ -398,43 +250,30 @@ const rejectDoc = (doc_id) => {
 
   //  console.log("this is single handle ", documentsIdList)////////////////// send it in api payload
 
-  
+
+
 
   
-   let Array1=docList?.map((item)=>item.documentId)
-   let Array2=documentsIdList
-   
-   useEffect(()=>{
-   
 
-  },[documentsIdList])
+  useEffect(() => {
+
+
+  }, [documentsIdList])
 
   const handleCheckboxClick = (event) => {
-    // console.log("checked",event.target.checked)
-    // console.log("value",event.target.value)
-    let data=[]
-    if (event.target.checked) {
-      setdocumentsIdList(prev => ([...prev, parseInt(event.target.value)]))
+    let data = documentsIdList
+    // console.log("this is envent id ", event.target.value, data, data.indexOf(parseInt(event.target.value)))
+    if (data.indexOf(parseInt(event.target.value)) === -1) {
+      data.push(parseInt(event.target.value))
+      setdocumentsIdList(prev => [...data])
       setCheckedClicked(true)
     }
     else {
-      data = documentsIdList
-     
-      const index = data.indexOf(parseInt(event.target.value));
-     
-      if (index > -1) { // only splice array when item is found
-        data.splice(index, 1); // 2nd parameter means remove one item only
-        
-      }
-      // data.splice(data.indexOf(event.target.value),1)  // use splice id changed if always exist and add in array if not exist
-      // console.log("data",data)
-      setdocumentsIdList(data)
-      setCheckedClicked(false)
+      data.splice(data.indexOf(parseInt(event.target.value)), 1)
+      setdocumentsIdList(prev => [...data])
+      setCheckedClicked(true)
     }
-   
-    // console.log("data",data)
-    
-    
+    data?.length === 0 &&  setCheckedClicked(false)
   }
 
 
@@ -454,16 +293,11 @@ const rejectDoc = (doc_id) => {
   //   }
   //   setdocumentsIdList(data)
   //   setCheckedClicked(false)
-
   // }
-
-  
-
 
   const handleCheckChange = (e) => {
     let dataList = []
     if (e.target?.checked) {
-     
       KycDocUpload.map((item) => {
         dataList.push(item.documentId)
         setdocumentsIdList(dataList)
@@ -476,16 +310,11 @@ const rejectDoc = (doc_id) => {
     }
   }
 
-  // const myStatus=(status)=>{
-  //   setDocStatus(status)
-  //   }
+  useEffect(() => {
+    return () => {
 
-   
-
-
-
-
-
+    }
+  }, [documentsIdList?.length])
 
   // console.log("=========merchant doc start==========")
   // console.log("enableBtnVerifier", enableBtnVerifier)
@@ -496,43 +325,35 @@ const rejectDoc = (doc_id) => {
     <div className="row mb-4 border">
       <div className="col-lg-6">
         <h3 className="font-weight-bold">Merchant Documents</h3>
-        
-      {pendingDocument?.length === 0 ? null : <p className="font-weight-bold">Not Submitted:</p>}
+        {pendingDocument?.length === 0 ? null : <p className="font-weight-bold">Not Submitted:</p>}
         {pendingDocument?.map((item) => {
           return (<> <span className="text-danger"> {item?.value}</span><br /></>)
         })}
-          
-
-
-
       </div>
 
       <div className="col-lg-12 mt-4 m-2">
-      
-     
-        
         <table className="table table-bordered">
 
-   
-          <thead>
-            {checkedClicked === true ? 
-            <th colSpan={6}  style={{textAlign:"right"}}><CompleteVerifyAndRejectBtn  roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} /></th>
-            : <></>}
 
-           
-          
+          <thead>
+            {checkedClicked === true ?
+              <th colSpan={6} style={{ textAlign: "right" }}><CompleteVerifyAndRejectBtn roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} /></th>
+              : <></>}
+
+
+
             <tr>
-              
-              {/* { currenTab === 3 || currenTab === 4  ?
-            <th>Select&nbsp;
-                <input
-                  type="checkbox"
-                   checked={documentsIdList?.length===KycDocUpload?.length ? true :false} 
-                  onChange={(e) => handleCheckChange(e)}
-               
-                />
-              </th>
-              : <></> } */}
+
+              {currenTab === 3 || currenTab === 4 ?
+                <th>Select&nbsp;
+                  <input
+                    type="checkbox"
+                    checked={documentsIdList?.length === KycDocUpload?.length ? true : false}
+                    onChange={(e) => handleCheckChange(e)}
+
+                  />
+                </th>
+                : <></>}
               <th>S.No.</th>
               <th>Document Type</th>
               <th>Document Name</th>
@@ -542,103 +363,97 @@ const rejectDoc = (doc_id) => {
             </tr>
           </thead>
           <tbody>
-
             {KycDocUpload?.length > 0 ? (
-
-              KycDocUpload?.map((doc, i) => (
-                
-                
-               
-                <tr key={i}>
-                 
-
-                 {/* {currenTab === 3 || currenTab === 4 ?
-                   <td>
-                    
-                    <input
-                      type="checkbox"
-                      value={doc?.documentId}
-                      checked={documentsIdList?.indexOf(doc.documentId) !== -1 ? true : false}
-                      // first check the index if greater then -1  then execute further process
-                      onClick={handleCheckboxClick}
-                    />
-                  </td>
-                  : <></> } */}
-                  <td>{i + 1}</td>
-                 
-                  <td>{getDocTypeName(doc?.type)}</td>
-                  <td>
-                    <a
-                      href={doc?.filePath}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-primary"
-                    >
-                      {stringManulate(doc?.name)}
-                    </a>
-                    <p className="text-danger"> {doc?.comment === "Null" ? "" : doc?.comment }</p>
-                  </td>
-                  <td>{doc?.status}</td>
-             
-                  {/* {enableBtnByStatus(doc?.status, role) ? ( */}
-                  <td>
-                    <div style={{ display: "flex" }}>
-                      {/*  || (enableBtnApprover(doc?.status) && enableApproverTabwise) */}
-                      {(enableBtnVerifier && doc?.status === "Pending") || (enableBtnApprover && doc?.status === "Verified") ?
-                        <>
-
-                          <a 
-                            href={() => false}
-                            onClick={() => {
-                              verifyApproveDoc(doc?.documentId, doc?.status);
-                            }}
-
-
-                                >
-                            <h4 className="text-success">{buttonText}</h4>
-                           
-
-                           
-                          </a>
-
-
-                          &nbsp;
-                          &nbsp;
-                          &nbsp;
-                          &nbsp;
-                          <a
-                            href={() => false}
-                            className="text-danger"
-                            onClick={() => {
-                              setButtonClick(doc?.documentId)
-                              setCloseModal(true)
-                            }}
-                          // onClick={() => {
-                          //   rejectDoc(doc?.documentId);
-                          // }}
-                          >
-                            Reject
-                          </a>
-                        </>
-                        : <></>
-                      }
-
-
-                    </div>
-                    {buttonClick === doc?.documentId && closeModal === true ?
-
-                      <div>
-                        <label for="comments">Reject Comments</label>
-
-                        <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e) => setCommetText(e.target.value)}>
-                        </textarea>
-                        <button type="button" onClick={() => { rejectDoc(doc?.documentId, commetText); }} className="btn btn-danger btn-sm text-white">Submit</button>
-                      </div>
+              KycDocUpload?.map((doc, i) => {
+                return (
+                  <tr key={i} >
+                    {currenTab === 3 || currenTab === 4 ?
+                      <td>
+                        {console.log("\n\nthis is after return ", documentsIdList?.indexOf(parseInt(doc.documentId)), "\n\n")}
+                        <input
+                          type="checkbox"
+                          value={doc?.documentId}
+                          checked={documentsIdList?.indexOf(parseInt(doc.documentId)) !== -1 ? true : false}
+                          // first check the index if greater then -1  then execute further process
+                          onClick={handleCheckboxClick}
+                        />
+                      </td>
                       : <></>}
+                    <td>{i + 1}</td>
 
-                  </td>
+                    <td>{getDocTypeName(doc?.type)}</td>
+                    <td>
+                      <a
+                        href={doc?.filePath}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary"
+                      >
+                        {stringManulate(doc?.name)}
+                      </a>
+                      <p className="text-danger"> {doc?.comment === "Null" ? "" : doc?.comment}</p>
+                    </td>
+                    <td>{doc?.status}</td>
 
-                  {/* {enableBtnVerifier(doc?.status) || (enableBtnApprover(doc?.status) && enableApproverTabwise) ?
+                    {/* {enableBtnByStatus(doc?.status, role) ? ( */}
+                    <td>
+                      <div style={{ display: "flex" }}>
+                        {/*  || (enableBtnApprover(doc?.status) && enableApproverTabwise) */}
+                        {(enableBtnVerifier && doc?.status === "Pending") || (enableBtnApprover && doc?.status === "Verified") ?
+                          <>
+
+                            <a
+                              href={() => false}
+                              onClick={() => {
+                                verifyApproveDoc(doc?.documentId, doc?.status);
+                              }}
+
+
+                            >
+                              <h4 className="text-success">{buttonText}</h4>
+
+
+
+                            </a>
+
+
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
+                            <a
+                              href={() => false}
+                              className="text-danger"
+                              onClick={() => {
+                                setButtonClick(doc?.documentId)
+                                setCloseModal(true)
+                              }}
+                            // onClick={() => {
+                            //   rejectDoc(doc?.documentId);
+                            // }}
+                            >
+                              <h4 className="text-danger">Reject</h4> 
+                            </a>
+                          </>
+                          : <></>
+                        }
+
+
+                      </div>
+                      {buttonClick === doc?.documentId && closeModal === true ?
+
+                        <div>
+                          <label for="comments">Reject Comments</label>
+
+                          <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e) => setCommetText(e.target.value)}>
+                          </textarea>
+                          <button type="button" onClick={() => { rejectDoc(doc?.documentId, commetText); }} className="btn btn-danger btn-sm text-white">Submit</button>
+                        </div>
+                        : <></>}
+
+                    </td>
+
+                    {/* {enableBtnVerifier(doc?.status) || (enableBtnApprover(doc?.status) && enableApproverTabwise) ?
                     <td>
                       <a
                         href={() => false}
@@ -652,8 +467,10 @@ const rejectDoc = (doc_id) => {
                     </td>
                     : <></>
                   } */}
-                </tr>
-              ))
+                  </tr>
+                )
+              }
+              )
             ) : (
               <></>
             )}
@@ -661,7 +478,7 @@ const rejectDoc = (doc_id) => {
         </table>
 
       </div>
-    </div>
+    </div >
   )
 }
 

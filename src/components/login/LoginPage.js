@@ -263,7 +263,7 @@ function LoginPage() {
                                         <div className="spinner-border text-secondary- NunitoSans-Regular" role="status"></div>
                                         // <div className="spinner-grow" role="status"></div>
                                       )}
-                                      LogIn
+                                      Login
                                     </button>
 
 
