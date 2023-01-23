@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
-import { checkPermissionSlice, logout } from "../../../slices/auth";
+import { checkPermissionSlice } from "../../../slices/auth";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
 import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png";
@@ -10,18 +10,20 @@ import dashboard from "../../../assets/images/dashb.png";
 import transHis from "../../../assets/images/transImage.png";
 import enquire from "../../../assets/images/enquiry.png";
 
-function SideNavbar() {
-  const { auth, kyc } = useSelector((state) => state);
+const SideNavbar = () => {
+  const { auth } = useSelector((state) => state);
 
   const { user, payLinkPermission } = auth;
-   const [clientCode, SetClientCode] = useState("")
+  //  const [clientCode, SetClientCode] = useState("")
 
   let { url } = useRouteMatch();
+  // const [clientCode, SetClientCode] = useState("")
   const dispatch = useDispatch();
 
 
   useEffect(() => {
     if (user.clientMerchantDetailsList?.length > 0) {
+      // SetClientCode(user?.clientMerchantDetailsList[0]?.clientCode)
       dispatch(
         checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode)
       );
@@ -48,12 +50,14 @@ function SideNavbar() {
         <div className="gx-sidebar-content">
           <div className="brand-logo d-flex-item-right">
             <div className="float-centre p-4">
+            <Link to={`${url}`} className="txt-white sidenavFonts">
               <img
                 src={Sabpaisalogo3}
                 width={150}
                 alt="sabpaisa"
                 title="sabpaisa"
               />
+              </Link>
             </div>
           </div>
           <div className="sidebar_menu_list">
@@ -112,6 +116,20 @@ function SideNavbar() {
                           <span>&nbsp;Integration Kit</span>
                         </Link>
                       </li>
+
+                      <li
+                            className="ant-menu-item"
+                            role="menuitem"
+                            style={{ paddingLeft: "48px" }}
+                          >
+                            <Link
+                              to={`${url}/product-catalogue`}
+                              className="txt-white sidenavFonts"
+                            >
+                              <i className="fa fa-book" aria-hidden="true" />
+                              &nbsp;Product Catalogue
+                            </Link>
+                          </li>
                     </>
                   ) : (
                     <React.Fragment></React.Fragment>
@@ -307,6 +325,22 @@ function SideNavbar() {
                       {roleBasedShowTab?.merchant === true  || roleBasedShowTab?.bank === true ? (
                         
                         <React.Fragment>
+                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(user?.clientMerchantDetailsList[0]?.clientCode) ?   
+                          <li
+                            className="ant-menu-item"
+                            role="menuitem"
+                            style={{ paddingLeft: "48px" }}
+                          >
+                            <Link
+                              to={`${url}/settlement-report`}
+                              className="txt-white sidenavFonts"
+                            >
+                              <i className="fa fa-bars" aria-hidden="true" />
+                              <span>&nbsp;Settlement Report (Excel)</span>
+                            </Link>
+                          </li> : <></>}
+                    
+
                           <li
                             className="ant-menu-item"
                             role="menuitem"
@@ -346,7 +380,7 @@ function SideNavbar() {
                               <span>&nbsp;Chargeback Txn History</span>
                             </Link>
                           </li>
-                       {roleBasedShowTab?.bank === true ? <></> :
+                       {/* {roleBasedShowTab?.bank === true ? <></> :
 
                           <li
                             className="ant-menu-item"
@@ -361,7 +395,7 @@ function SideNavbar() {
                               &nbsp;Product Catalogue
                             </Link>
                           </li>
-                      }
+                      } */}
                         </React.Fragment>
                       ) : (
                         <React.Fragment></React.Fragment>
@@ -387,7 +421,7 @@ function SideNavbar() {
 
                        {roleBasedShowTab?.merchant === true ? (
                         <React.Fragment>
-                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(clientCode) ?   
+                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(user?.clientMerchantDetailsList[0]?.clientCode) ?   
                           <li
                             className="ant-menu-item"
                             role="menuitem"

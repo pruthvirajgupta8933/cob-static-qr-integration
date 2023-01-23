@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useHistory, useParams } from 'react-router-dom'
-import { isArray, isNull, map } from 'lodash'
+import { isArray, isNull } from 'lodash'
 import SabpaisaPaymentGateway from './SabpaisaPaymentGateway'
 import API_URL from '../../config'
-import { axiosInstance, axiosInstanceAuth } from '../../utilities/axiosInstance'
-import { LocalConvenienceStoreOutlined } from '@mui/icons-material'
+import { axiosInstanceAuth } from '../../utilities/axiosInstance'
 import NavBar from '../dashboard/NavBar/NavBar'
 import toastConfig from '../../utilities/toastTypes'
-import { stringDec } from '../../utilities/encodeDecode'
 
 
 function SpPg() {
 
-    const history = useHistory()
-    const params = useParams()
     const [selectedPlan, setSelectedPlan] = useState({})
     const [planPrice, setPlanPrice] = useState(9999)
     const [clientData, setClientData] = useState({})
     const [responseData, setResponseData] = useState({})
     const [reponseFromServerFlag, setRespFromServerFlag] = useState(false)
     const [isOpenPg, setIsOpenPg] = useState(false)
+    const [userData, setUserData] = useState({})
 
-    const [rateCloneStatus, setRateCloneStatus] = useState("")
 
 
 
@@ -32,6 +28,8 @@ function SpPg() {
         const sessionData = JSON.parse(sessionStorage.getItem("tempProductPlanData") && sessionStorage.getItem("tempProductPlanData"))
 
         const user = JSON.parse(localStorage.getItem("user"))
+        
+        setUserData(user)
         if (isArray(user?.clientMerchantDetailsList)) {
             setClientData(user?.clientMerchantDetailsList)
         }
@@ -72,88 +70,88 @@ function SpPg() {
     }
 
     // check rate mapping status before rate mapping
-    const checkRateMappingStatus = (clientCodeF, clientCodeT, loginId) => {
-        axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${clientCodeF}/${clientCodeT}/${loginId}`)
-            .then((resp) => {
-                const data = resp.data;
-                setRateCloneStatus(data[0].ID)
-                localStorage.setItem('RATE_MAPPING_CLONE', data[0].ID);
-            })
-            .catch((err) => { console.log(err) })
-    }
+    // const checkRateMappingStatus = (clientCodeF, clientCodeT, loginId) => {
+    //     axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${clientCodeF}/${clientCodeT}/${loginId}`)
+    //         .then((resp) => {
+    //             const data = resp.data;
+    //             setRateCloneStatus(data[0].ID)
+    //             localStorage.setItem('RATE_MAPPING_CLONE', data[0].ID);
+    //         })
+    //         .catch((err) => { console.log(err) })
+    // }
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        // console.log("rateCloneStatus",rateCloneStatus)
-        // console.log("tempPlanId",tempPlanId)
-        // console.log("param?.id",param?.id)
+    //     // console.log("rateCloneStatus",rateCloneStatus)
+    //     // console.log("tempPlanId",tempPlanId)
+    //     // console.log("param?.id",param?.id)
 
-        if ((rateCloneStatus === 3 || rateCloneStatus === 0) && (selectedPlan?.applicationId === "10" && selectedPlan?.planId !== 1 && selectedPlan?.planId !== "")) {
-            console.log("cond true")
-            if (clientData?.clientMerchantDetailsList !== null) {
-                console.log("33")
-                const clientMerchantDetailsList = clientData?.clientMerchantDetailsList;
-                const clientCode = clientMerchantDetailsList[0]?.clientCode;
-                const clientId = clientMerchantDetailsList[0]?.clientId;
-                const clientContact = clientData?.clientMobileNo;
-                const clientEmail = clientData?.userName;
-                const clientName = clientMerchantDetailsList[0]?.clientName;
-                const clientUserName = clientData?.userName;
-                const passwrod = stringDec(sessionStorage.getItem('prog_id'));
+    //     if ((rateCloneStatus === 3 || rateCloneStatus === 0) && (selectedPlan?.applicationId === "10" && selectedPlan?.planId !== 1 && selectedPlan?.planId !== "")) {
+    //         console.log("cond true")
+    //         if (clientData?.clientMerchantDetailsList !== null) {
+    //             console.log("33")
+    //             const clientMerchantDetailsList = clientData?.clientMerchantDetailsList;
+    //             const clientCode = clientMerchantDetailsList[0]?.clientCode;
+    //             const clientId = clientMerchantDetailsList[0]?.clientId;
+    //             const clientContact = clientData?.clientMobileNo;
+    //             const clientEmail = clientData?.userName;
+    //             const clientName = clientMerchantDetailsList[0]?.clientName;
+    //             const clientUserName = clientData?.userName;
+    //             const passwrod = stringDec(sessionStorage.getItem('prog_id'));
 
-                const inputData = {
-                    clientId: clientId,
-                    clientCode: clientCode,
-                    clientContact: clientContact,
-                    clientEmail: clientEmail,
-                    address: "Delhi",
-                    clientLogoPath: "client/logopath",
-                    clientName: clientName,
-                    clientLink: "cltLink",
-                    stateId: 9,
-                    bid: "19", // ask
-                    stateName: "DELHI",
-                    bankName: "SBI",
-                    client_username: clientUserName,
-                    client_password: passwrod,
-                    appId: "10", // ask
-                    status: "Activate", // ask
-                    client_type: "normal Client",
-                    successUrl: "https://sabpaisa.in/",
-                    failedUrl: "https://sabpaisa.in/",
-                    subscriptionstatus: "Subscribed",
-                    businessType: 2
-                };
+    //             const inputData = {
+    //                 clientId: clientId,
+    //                 clientCode: clientCode,
+    //                 clientContact: clientContact, // need to fix
+    //                 clientEmail: clientEmail,
+    //                 address: "Delhi",
+    //                 clientLogoPath: "client/logopath",
+    //                 clientName: clientName,
+    //                 clientLink: "cltLink",
+    //                 stateId: 9,
+    //                 bid: "19", // ask
+    //                 stateName: "DELHI",
+    //                 bankName: "SBI",
+    //                 client_username: clientUserName,
+    //                 client_password: passwrod,
+    //                 appId: "10", // ask
+    //                 status: "Activate", // ask
+    //                 client_type: "normal Client",
+    //                 successUrl: "https://sabpaisa.in/",
+    //                 failedUrl: "https://sabpaisa.in/",
+    //                 subscriptionstatus: "Subscribed",
+    //                 businessType: 2
+    //             };
 
-                // console.log("inputData",inputData);
-                // 1 - run RATE_MAPPING_GenerateClientFormForCob 
+    //             // console.log("inputData",inputData);
+    //             // 1 - run RATE_MAPPING_GenerateClientFormForCob 
 
-                axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
+    //             axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
 
-                    console.log("run RATE_MAPPING_GenerateClientFormForCob");
-                    localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
-                    localStorage.setItem('resp_RATE_MAPPING_GenerateClientFormForCob', res?.toString());
-                    //2 - rate map clone   // parent client code / new client code / login id
-                    axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/'COBED'/${clientCode}/${clientData?.loginId}`).then(res => {
-                        console.log("run RATE_MAPPING_CLONE");
-                        localStorage.setItem('RATE_MAPPING_CLONE', "api trigger");
-                        localStorage.setItem('resp_RATE_MAPPING_CLONE', res?.toString());
-                        // 3- enable pay link
-                        //    axiosInstance.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
-                        //       localStorage.setItem('enablePaylink', "api trigger");
-                        //       // console.log("3 api run")
-                        //       dispatch(checkPermissionSlice(clientCode));
-                        //   })
-                    }).catch(err => { console.log(err) })
-                }).catch(err => { console.log(err) })
-
-
-            }
-        }
+    //                 console.log("run RATE_MAPPING_GenerateClientFormForCob");
+    //                 localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
+    //                 localStorage.setItem('resp_RATE_MAPPING_GenerateClientFormForCob', res?.toString());
+    //                 //2 - rate map clone   // parent client code / new client code / login id
+    //                 axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/'COBED'/${clientCode}/${clientData?.loginId}`).then(res => {
+    //                     console.log("run RATE_MAPPING_CLONE");
+    //                     localStorage.setItem('RATE_MAPPING_CLONE', "api trigger");
+    //                     localStorage.setItem('resp_RATE_MAPPING_CLONE', res?.toString());
+    //                     // 3- enable pay link
+    //                     //    axiosInstance.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
+    //                     //       localStorage.setItem('enablePaylink', "api trigger");
+    //                     //       // console.log("3 api run")
+    //                     //       dispatch(checkPermissionSlice(clientCode));
+    //                     //   })
+    //                 }).catch(err => { console.log(err) })
+    //             }).catch(err => { console.log(err) })
 
 
-    }, [rateCloneStatus])
+    //         }
+    //     }
+
+
+    // }, [rateCloneStatus])
 
     useEffect(() => {
         const searchParam = window.location.search.slice(1)
@@ -177,7 +175,7 @@ function SpPg() {
                     if (selectedPlan?.applicationId === "10" && selectedPlan?.planId !== 1) {
                         console.log("2")
                         // only for payment gateway we have to check rate mapping status
-                        checkRateMappingStatus("COBED", clientData?.clientMerchantDetailsList[0]?.clientCode, clientData?.loginId)
+                        // checkRateMappingStatus("COBED", clientData?.clientMerchantDetailsList[0]?.clientCode, clientData?.loginId)
                     }
 
                     // getSubscribedPlan(plan_id);
@@ -197,14 +195,14 @@ function SpPg() {
     }, [])
 
 
-    console.log("clientData", clientData)
+    // console.log("clientData", clientData)
 
     return (
         <React.Fragment>
             <section className="ant-layout">
                 <NavBar />
 
-                <SabpaisaPaymentGateway planData={selectedPlan} planPrice={planPrice} openPg={isOpenPg} />
+                <SabpaisaPaymentGateway planData={selectedPlan} planPrice={planPrice} openPg={isOpenPg} clientData={userData} />
 
                 <main className="gx-layout-content ant-layout-content">
                     <div className="gx-main-content-wrapper">
@@ -232,7 +230,8 @@ function SpPg() {
                                             </div>
                                             :
                                             <div className="card-body">
-                                                <h5 className="card-title">Make payment for subscribe the selected plan.</h5>
+                                                <h5 className="card-title">Make payment to activate the selected plan.</h5>
+                                                <h5 className="card-title">Amount : {parseFloat(planPrice)} INR</h5>
                                                 {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
                                                 <button onClick={() => { setIsOpenPg(true) }} className="btn btn-primary">Pay Now</button>
                                             </div>

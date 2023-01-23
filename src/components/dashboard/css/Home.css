@@ -237,7 +237,7 @@ z-index: 999;
 
 .cardkyc .card-body {
   padding: 0 !important;
-  line-height: 47px;
+  line-height: 22px;
 }
 
 .card .card-body {
@@ -1003,7 +1003,7 @@ border-radius: 0px 0px 5px 5px;
 }
 .pxsolid{
   border-top:1px solid #ccc;
-  display: block;
+  display: flex;
   margin: auto;
 }
 .no-pad{
@@ -1019,6 +1019,7 @@ border-radius: 0px 0px 5px 5px;
 .min-heit{
   max-height: 5px !important;
 }
+
 .minh{
   padding: 0 1rem !important;
 }

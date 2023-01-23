@@ -1,10 +1,12 @@
 import React from 'react'
 import sabpaisalogo from "../../assets/images/sabpaisa-white-logo1.png"
-import dropdownimg from "../../assets/images/dropdown.png"
 import {Link} from 'react-router-dom';
-import agent from "../../assets/images/supportagent.png"
+
 
 function HeaderPage() {
+  // console.log(window.location.search)
+  const queryString  = window.location.search
+
   return (
     <div>
       {/* partial:index.partial.html */}
@@ -259,7 +261,7 @@ function HeaderPage() {
 
       <header className="container-fluid px-0">
     <nav className="navbar navbar-expand-md navbar-light bg-white- header p-0">
-        <a href="https://sabpaisa.in/" target={"_blank"} className="logo">
+        <a href="https://sabpaisa.in/" target={"_blank"} className="logo" rel="noreferrer">
           <img src={sabpaisalogo} alt="SabPaisa" title="SabPaisa" />
         </a>
 
@@ -269,52 +271,52 @@ function HeaderPage() {
         <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav marginauto">
                 <li className="nav-item">
-                    <a className="nav-link" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products<span className="fa fa-angle-down"></span></a>
+                    <a className="nav-link" href={()=>false} id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products<span className="fa fa-angle-down"></span></a>
                     <div className="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu1" aria-labelledby="navbarDropdown1">
                         
                       <ul>
                          
-                          <li><a className="dropdown-item" href="https://sabpaisa.in/payment-gateway/" target={"_blank"}>Payment Gateway</a></li>
-                          <li><a className="dropdown-item" href="https://sabpaisa.in/payouts/"  target={"_blank"}>Payouts</a></li>
-                          <li><a className="dropdown-item" href="https://sabpaisa.in/epos-app/"  target={"_blank"}>E-POS App</a></li>
-                          <li><a className="dropdown-item" href="https://sabpaisa.in/linkpaisa/"  target={"_blank"}>LinkPaisa</a></li>
-                          <li><a className="dropdown-item" href="https://sabpaisa.in/payment-links/"  target={"_blank"}>Payment Links</a></li>
-                          <li><a className="dropdown-item" href="https://sabpaisa.in/subscriptions/"  target={"_blank"}>Subscriptions</a></li>
-                          <li><a className="dropdown-item" href="https://sabpaisa.in/qwikform/"  target={"_blank"}>QwikForm</a></li>
-                          <li><a className="dropdown-item" href="https://sabpaisa.in/offline-payments/"  target={"_blank"}>Offline Payments</a> </li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/payment-gateway/" target={"_blank"} rel="noreferrer">Payment Gateway</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/payouts/"  target={"_blank"} rel="noreferrer">Payouts</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/epos-app/"  target={"_blank"} rel="noreferrer">E-POS App</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/linkpaisa/"  target={"_blank"} rel="noreferrer">LinkPaisa</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/payment-links/"  target={"_blank"} rel="noreferrer">Payment Links</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/subscriptions/"  target={"_blank"} rel="noreferrer">Subscriptions</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/qwikform/"  target={"_blank"} rel="noreferrer">QwikForm</a></li>
+                          <li><a className="dropdown-item" href="https://sabpaisa.in/offline-payments/"  target={"_blank"} rel="noreferrer">Offline Payments</a> </li>
                       </ul>
                     </div>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">API<span className="fa fa-angle-down"></span></a>
+                    <a className="nav-link" href={()=>false} id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">API<span className="fa fa-angle-down"></span></a>
                     <div className="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu2" aria-labelledby="navbarDropdown2">
                       <ul>
-                          <li><a href="https://sabpaisa.in/subscriptions/" target={"_blank"}>Subscriptions API</a></li>
-                          <li><a href="https://sabpaisa.in/payouts-api/"  target={"_blank"}>Payouts API</a></li>
-                          <li><a href="https://sabpaisa.in/payment-links/"  target={"_blank"}>Payment Links API</a></li>
+                          <li><a href="https://sabpaisa.in/subscriptions/" target={"_blank"} rel="noreferrer">Subscriptions API</a></li>
+                          <li><a href="https://sabpaisa.in/payouts-api/"  target={"_blank"} rel="noreferrer">Payouts API</a></li>
+                          <li><a href="https://sabpaisa.in/payment-links/"  target={"_blank"} rel="noreferrer">Payment Links API</a></li>
                         </ul>
                     </div>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Developers<span className="fa fa-angle-down"></span></a>
+                    <a className="nav-link" href={()=>false} id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Developers<span className="fa fa-angle-down"></span></a>
                     <div className="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu3" aria-labelledby="navbarDropdown3">
                     <ul> 
-                        <li><a href="https://sabpaisa.in/integration-kits/" target={"_blank"}>Integration Kits</a></li>
-                        <li><a href="https://sabpaisa.in/uat-checklist/"  target={"_blank"}>UAT Checklist</a></li>
-                        <li><a href="https://sabpaisa.in/api-reference/"  target={"_blank"}>API Reference</a></li>
+                        <li><a href="https://sabpaisa.in/integration-kits/" target={"_blank"}rel="noreferrer">Integration Kits</a></li>
+                        <li><a href="https://sabpaisa.in/uat-checklist/"  target={"_blank"}rel="noreferrer">UAT Checklist</a></li>
+                        <li><a href="https://sabpaisa.in/api-reference/"  target={"_blank"}rel="noreferrer">API Reference</a></li>
                     </ul>
                     </div>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="https://sabpaisa.in/referral-partner/" target={"_blank"} >Become Partner</a>
+                    <a className="nav-link" href="https://sabpaisa.in/referral-partner/" target={"_blank"} rel="noreferrer">Become Partner</a>
                 </li>
                 <li className="nav-item">
                     {/* <a className="nav-link" href="" target={"_blank"} >Login</a> */}
-                    <Link to="/login-page" className="nav-link">Login</Link>
+                    <Link to={`/login-page/${queryString}`} className="nav-link">Login</Link>
                 </li>
                 <li className="nav-item">
                     {/* <a className="nav-link" href="" target={"_blank"} >Signup</a> */}
-                    <Link to="/Registration" className="nav-link">Sign up</Link>
+                    <Link to={`/Registration/${queryString}`} className="nav-link">Sign up</Link>
                 </li>
             </ul>
         </div>

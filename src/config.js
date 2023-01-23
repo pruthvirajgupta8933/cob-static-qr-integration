@@ -70,7 +70,7 @@ const API_LIVE = {
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */
-  GET_FILE_NAME: adminAPIURL + "/settlementReport/getFileName/",
+  GET_FILE_NAME: adminAPIURL + "/REST/settlementReport/getFileName/",
 
   /* PAYLINK */
   GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
@@ -213,6 +213,7 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
   VERIFY_FINAL_ALL: `${kyc_url}/kyc/verify-kyc/verify/`,
   DOCUMENT_VERIFY: `${kyc_url}/kyc/upload-merchant-document/verify/`,
   DOCUMENT_REJECT: `${kyc_url}/kyc/upload-merchant-document/reject/`,
+  CHECKED_DOCUMENT_REJECT:`${kyc_url}/kyc/upload-merchant-document/document-reject/`,
   DOCUMENT_REMOVE: `${kyc_url}/kyc/upload-merchant-document/remove/`,
   APPROVE_DOCUMENT: `${kyc_url}/kyc/upload-merchant-document/approve/`,
   APPROVE_KYC: `${kyc_url}/kyc/verify-kyc/approve/`,
@@ -224,7 +225,9 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
   REJECT_KYC_TAB:`${kyc_url}/kyc/verify-kyc/tab-reject/`,
   COMPLETE_VERIFICATION:`${kyc_url}/kyc/verify-kyc/verify/`,
   COMPLETE_VERIFICATION_REJECT_KYC:`${kyc_url}/kyc/verify-kyc/reject/`,
-
+   //Reversing from pending approval to pending verification
+   Back_To_Pending_Verification:`${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
+   Back_To_Pending_Approval:`${kyc_url}/kyc/reverse-kyc/re-approval/`,
 
 
 
@@ -242,6 +245,11 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
 
    // OnBoard Merchant Role URL 
    Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`,
+   
+   // Fetch selected product during registration
+
+   website_plan_details: `${url}/auth-service/auth/login/website-plan-detail`,
+   
 
 
   // ---------------------------   NEW API FOR COMMENTS (2)
@@ -253,11 +261,16 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
 
   // GET API FOR VIEWING COMMENTS
 
-  VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`
+  VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`,
 
   
   // ---------------------------   NEW API FOR COMMENTS (2)
 
+
+  // Check is client code mapped or not (ratemapping case)
+  isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`
+
+  
   
 
 

@@ -209,7 +209,7 @@ const PayerDetails = () => {
 
             <Edituser items={editform} callBackFn={edit} />
             <Genratelink generatedata={genrateform} />
-            <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <Formik
@@ -355,8 +355,9 @@ const PayerDetails = () => {
                                     <th scope="col">Email ID</th>
                                     <th scope="col">Payer  Category</th>
                                     <th scope="col">Edit</th>
-                                    <th scope="col">Delete</th>
+                                    
                                     <th scope="col">Action</th>
+                                    <th scope="col">Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -370,9 +371,7 @@ const PayerDetails = () => {
                                         <td>
                                             <button type="button"  className="cratepaymentlinkclrsfigma text-white" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)} >Edit</button>
                                         </td>
-                                        <td>
-                                            <button className="ColrsforDeletefigma text-white mt-7" onClick={() => deleteUser(user.id)}  >Delete</button>
-                                        </td>
+                                        
                                         <td>
                                             <button onClick={(e) => generateli(user.id)}
                                                 type="button"
@@ -384,6 +383,9 @@ const PayerDetails = () => {
                                             </button>
                                             <div>
                                             </div>
+                                        </td>
+                                        <td>
+                                            <button className="ColrsforDeletefigma text-white mt-7 btn-danger" onClick={() => deleteUser(user.id)}  >Delete</button>
                                         </td>
                                     </tr>
                                 ))}

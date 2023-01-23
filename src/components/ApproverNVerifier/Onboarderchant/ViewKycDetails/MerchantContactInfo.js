@@ -16,7 +16,7 @@ function MerchantContactInfo(props) {
   const [isRejected, setIsRejected] = useState(KycTabStatus?.general_info_status === "Verified" ? true : false);
 
 
-
+let commentsStatus=KycTabStatus.general_info_reject_comments;
 
   const dispatch = useDispatch();
   const { role, kycid } = props;
@@ -54,17 +54,27 @@ function MerchantContactInfo(props) {
       });
   }
 
-  const handleRejectClick = () => {
+  const handleRejectClick = (general_info_reject_comments="") => {
+   
+    
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       general_info_rejected_by: loginId,
+      general_info_reject_comments:general_info_reject_comments
+
+
     };
     if (window.confirm("Reject Merchant Contact Info?")) {
     dispatch(rejectKycOperation(rejectDetails))
       .then((resp) => {
+        console.log(resp)
+
+        
+
         resp?.payload?.merchant_info_status &&
           toast.success(resp?.payload?.general_info_status);
-        resp?.payload?.detail && toast.error(resp?.payload?.detail);
+        resp?.payload && toast.error(resp?.payload);
+        
         dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId})) // used to remove kyc button beacuse updated in redux store
       })
     
@@ -76,13 +86,12 @@ function MerchantContactInfo(props) {
   }
 
 
-
-
   return (
     <div className="row mb-4 border">
       <div className="col-lg-12">
         <h3 className="font-weight-bold">Merchant Contact Info</h3>
       </div>
+
 
       <div className="col-sm-6 col-md-6 col-lg-6 ">
         <label className="col-form-label mt-0 p-2">
@@ -153,17 +162,28 @@ function MerchantContactInfo(props) {
 
       </div>
 
-      <div className="col-lg-6">
-        Status : <span>{KycTabStatus?.general_info_status}</span>
+      
+      
+    
+    <div className="row container">
+    <div className="col-lg-6 font-weight-bold">
+        <p>Status : <span>{KycTabStatus?.general_info_status}</span></p>
+        <p>Comments : <span>{KycTabStatus?.general_info_reject_comments}</span></p>
       </div>
+      
       <div className="col-lg-6">
         <VerifyRejectBtn
          KycTabStatus={KycTabStatus?.general_info_status}
           KycVerifyStatus={{ handleVerifyClick, isVerified }}
+          ContactComments={commentsStatus}
           KycRejectStatus={{ handleRejectClick, isRejected }}
           btnText={{ verify: "Verify", Reject: "Reject" }}
         />
       </div>
+      {/* <div className="col-lg-6 font-weight-bold mt-1 mb-2">
+        
+      </div> */}
+    </div>
     </div>
 
   )

@@ -30,17 +30,19 @@ const BankDetails = (props) => {
         });
     }
 
-    const handleRejectClick =()=>{
+    const handleRejectClick =(settlement_info_reject_comments="")=>{
       const rejectDetails = {
         login_id: merchantKycId.loginMasterId,
         settlement_info_rejected_by: loginId,
+        settlement_info_reject_comments:settlement_info_reject_comments
+
       };
       if (window.confirm("Reject Bank Details?")) {
       dispatch(rejectKycOperation(rejectDetails))
         .then((resp) => {
           resp?.payload?.merchant_info_status &&
             toast.success(resp?.payload?.merchant_info_status);
-          resp?.payload?.detail && toast.error(resp?.payload?.detail);
+          resp?.payload && toast.error(resp?.payload);
           dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId})) // used to remove kyc button beacuse updated in redux store
 
         })
@@ -71,7 +73,16 @@ const BankDetails = (props) => {
         disabled="true"
         value={merchantKycId?.ifscCode}
       />
+       <span>
+          {merchantKycId?.ifscCode === null || merchantKycId?.ifscCode === "" ? (
+             <p className="text-danger"> Not Verified</p>
+          ) : (
+            <p className="text-success">Verified</p>
+          )}
+        </span>
     </div>
+
+  
 
     <div className="col-sm-12 col-md-12 col-lg-6">
       <label className="col-form-label mt-0 p-2">
@@ -88,6 +99,17 @@ const BankDetails = (props) => {
           merchantKycId?.accountNumber
         }
       />
+       <span>
+          {merchantKycId?.accountNumber === null || merchantKycId?.accountNumber === "" ? (
+              <p className="text-danger"> Not Verified</p>
+          
+          ) : (
+            <p className="text-success">Verified</p>
+        )}
+        </span>
+
+       
+      
     </div>
 
     <div className="col-sm-12 col-md-12 col-lg-6">
@@ -146,9 +168,11 @@ const BankDetails = (props) => {
       />
       
     </div>
-    <div className="col-lg-6 ">
-    Status : <span>{KycTabStatus?.settlement_info_status}</span>
+    <div className="col-lg-6 font-weight-bold mt-1 ">
+    <p>Status : <span>{KycTabStatus?.settlement_info_status}</span></p>
+        <p>Comments : <span>{KycTabStatus?.settlement_info_reject_comments}</span></p>
     </div>
+   
         <div className="col-lg-6 mt-3">
         <VerifyRejectBtn 
         KycTabStatus={KycTabStatus?.settlement_info_status}

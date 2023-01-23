@@ -202,7 +202,7 @@ a:focus {
   text-align: center;
 }
 .selct{
-  -webkit-appearance: none;
+  -webkit-appearance: auto;
 }
 
 .authfy-panel-left .brand-col .headline {

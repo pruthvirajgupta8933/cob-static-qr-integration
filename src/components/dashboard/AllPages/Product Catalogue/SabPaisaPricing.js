@@ -10,10 +10,6 @@ import "./product.css";
 import toastConfig from "../../../../utilities/toastTypes";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { stringDec } from "../../../../utilities/encodeDecode";
-import { isCompositeComponent } from "react-dom/test-utils";
-import SabpaisaPaymentGateway from "../../../sabpaisa-pg/SabpaisaPaymentGateway";
 import { logout } from "../../../../slices/auth";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 
@@ -25,7 +21,7 @@ const SabPaisaPricing = () => {
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
   const [tempPlanId, setTempPlanId] = useState("");
-  const [rateCloneStatus, setRateCloneStatus] = useState("")
+  // const [rateCloneStatus, setRateCloneStatus] = useState("")
   const [TempSelectedData, setTempSelectedData] = useState({})
 
   const dispatch = useDispatch();
@@ -167,12 +163,12 @@ const SabPaisaPricing = () => {
       applicationId: param?.id,
     };
 
-    if(plan_code==="005"){
-      // only for subscription plan , we route to payment gateway
-      sessionStorage.setItem("tempProductPlanData",JSON.stringify(postData))
-      setTempSelectedData(postData)
-      history.push("/dashboard/sabpaisa-pg");
-    }else{
+    // if(plan_code==="005"){
+    //   // only for subscription plan , we route to payment gateway
+    //   sessionStorage.setItem("tempProductPlanData",JSON.stringify(postData))
+    //   setTempSelectedData(postData)
+    //   history.push("/dashboard/sabpaisa-pg");
+    // }else{
       setTempPlanId(plan_id)
       const res = await axiosInstanceAuth.post(
         API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
@@ -180,20 +176,20 @@ const SabPaisaPricing = () => {
       );
      
       if (res?.status === 200) {
-        console.log("1")
+        // console.log("1")
         // only PG product without subscription plan check rate mapping status
-        if (param?.id === "10" && plan_id!==1) {
-          console.log("2")
-          // only for payment gateway we have to check rate mapping status
-          // checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
-        }
+        // if (param?.id === "10" && plan_id!==1) {
+        //   // console.log("2")
+        //   // only for payment gateway we have to check rate mapping status
+        //   // checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
+        // }
   
         getSubscribedPlan(plan_id);
         toastConfig.successToast(res?.data?.message);
       } else {
         toastConfig.errorToast("Something went wrong");
       }
-    }
+    // }
    
    
 
@@ -220,7 +216,7 @@ const SabPaisaPricing = () => {
         </div>
         {/* <button type="button" onClick={clickHandler}>check</button> */}
         <div className="container mb-10">
-          <div className="row">
+          <div className="row flx">
           
           {/* <button type="button" onClick={()=> handleClick(1, "Subscription Plan", "005")}>Test Button Abhishek</button> */}
 
@@ -230,7 +226,7 @@ const SabPaisaPricing = () => {
               // if user business catagory is gamming
               (business_cat_code === "37" && Products.plan_code === "005") ? <></> :
                 (param?.id === '14') ? 
-                <div className="card col-lg-8">
+                <div className="card col-lg-4">
                   <div className="card-body">
                     <div className="col-lg-12">
                       <h2 className="pull-left- bold-font text-center mb-20 price d_block">
@@ -279,7 +275,7 @@ const SabPaisaPricing = () => {
                         <div
                           className="modal fade"
                           id="subscription"
-                          tabindex="-1"
+                          tabIndex="-1"
                           role="dialog"
                           aria-labelledby="subscriptionModalLabel"
                           aria-hidden="true"
@@ -349,7 +345,7 @@ const SabPaisaPricing = () => {
                     ${productDetails.length === 4 ? "col-lg-3" : "col-lg-4"}  `} >
                     <div className="card heightcards">
                       <div className="card-body">
-                        <div className="row mb-5-">
+                        <div className="row- mb-5-">
                           <div className="col-lg-12 text-center">
                             <h1 className="card-title- cardoneheadingcss pb-3-">
                               {Products.plan_name}
@@ -391,7 +387,7 @@ const SabPaisaPricing = () => {
                         <div
                           className="modal fade"
                           id="exampleModal"
-                          tabindex="-1"
+                          tabIndex="-1"
                           role="dialog"
                           aria-labelledby="exampleModalLabel"
                           aria-hidden="true"

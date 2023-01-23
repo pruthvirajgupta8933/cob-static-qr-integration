@@ -6,7 +6,6 @@ import "./css/loader.css";
 
 import SideNavbar from "./SideNavbar/SideNavbar";
 import Home from "./AllPages/Home";
-import Transaction from "./AllPages/Transaction";
 import TransactionEnquirey from "./AllPages/TransactionEnquirey";
 import SettlementReport from "./AllPages/SettlementReport";
 import TransactionHistory from "./AllPages/TransactionHistory";
@@ -26,7 +25,6 @@ import Emandate from "./AllPages/Emandate";
 import PaymentResponse from "./AllPages/PaymentResponse";
 import KycForm from "../KYC/KycForm";
 import Test from "../Otherpages/Test";
-import ViewTransactionWithFilter from "./AllPages/ViewTransactionWithFilter";
 import SettlementReportNew from "./AllPages/SettlementReportNew";
 import TransactionHistoryDownload from "./AllPages/TransactionHistoryDownload";
 import Approver from "../ApproverNVerifier/Approver";
@@ -50,10 +48,10 @@ import BankRoute from "../../ProtectedRoutes/BankRoute";
 import VerifierRoute from "../../ProtectedRoutes/VerifierRoute";
 import ApproverRoute from "../../ProtectedRoutes/ApproverRoute";
 import ViewerRoute from "../../ProtectedRoutes/ViewerRoute";
-import { AppsSharp } from "@mui/icons-material";
-import { logout } from "../../slices/auth";
 import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
+import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import API_URL from "../../config";
 
 function Dashboard() {
   let history = useHistory();
@@ -71,21 +69,52 @@ function Dashboard() {
       if (user?.clientMerchantDetailsList) {
         if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
           // create new client code
-          const uuidCode = Math.random()
-            .toString(36)
-            .slice(-6)
-            .toUpperCase();
+          const uuidCode = Math.random().toString(36).slice(-6).toUpperCase();
           const data = {
             loginId: user?.loginId,
             clientName: user?.clientContactPersonName,
             clientCode: uuidCode,
           };
-          dispatch(createClientProfile(data));
+
+          dispatch(createClientProfile(data)).then(clientProfileRes=>{
+            console.log("response of the create client ",clientProfileRes);
+
+            // after create the client update the subscribe product
+            const postData = {
+              login_id: user?.loginId
+            }
+
+            
+          // fetch details of the user registraion
+            axiosInstanceAuth.post(API_URL.website_plan_details, postData).then(
+              res => {
+                console.log("clientProfileRes",clientProfileRes)
+                const webData = res?.data?.data[0]?.plan_details
+                const postData = {
+                  clientId: clientProfileRes?.payload?.clientId,
+                  applicationName: webData?.appName,
+                  planId: webData?.planid,
+                  planName: webData?.planName,
+                  applicationId: webData?.appid,
+                };
+
+                axiosInstanceAuth.post(
+                  API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+                  postData
+                );
+  
+                
+              }
+            )
+          }).catch(err=>console.log(err));
         } else {
           // console.log("already created client code")
         }
       }
     }
+
+            // defaultRateMapping("HU9NCY"); //HU9NCY
+
   }, []);
 
   if (user !== null && user.userAlreadyLoggedIn) {
@@ -100,18 +129,12 @@ function Dashboard() {
       <div></div>
       <SideNavbar />
       <Switch>
-       
-
-       
-      
         <Route exact path={path} >
-
           <Home />
         </Route>
         <Route exact path={`${path}/profile`}>
           <Profile />
         </Route>
-       
         <MerchantRoute
           exact
           path={`${path}/change-password`}
@@ -119,10 +142,6 @@ function Dashboard() {
         >
           <ChangePassword />
         </MerchantRoute>
-        {/* <Route exact path={`${path}/transaction`}>
-          <Transaction />
-        </Route> */}
-
         {roles?.merchant === true ? (
           <MerchantRoute
             exact
@@ -392,7 +411,7 @@ function Dashboard() {
         <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
           <SpPg />
         </MerchantRoute>
-        <Route path={`${path}/*`} component={UrlNotFound}/>
+         <Route path={`${path}/*`} component={UrlNotFound}/>
 
       </Switch>
     </section>

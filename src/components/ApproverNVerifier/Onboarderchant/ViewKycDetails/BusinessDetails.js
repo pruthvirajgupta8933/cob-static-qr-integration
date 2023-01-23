@@ -16,6 +16,9 @@ const BusinessDetails = (props) => {
   const { loginId } = user;
 
 
+
+
+
   const handleVerifyClick = () => {
   
     const veriferDetails = {
@@ -34,17 +37,20 @@ const BusinessDetails = (props) => {
 
   }
 
-  const handleRejectClick = () => {
+  const handleRejectClick = (merchant_info_reject_comments="") => {
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       merchant_info_rejected_by: loginId,
+      merchant_info_reject_comments:merchant_info_reject_comments
+
+
     };
     if (window.confirm("Reject Business Details")) {
     dispatch(rejectKycOperation(rejectDetails))
       .then((resp) => {
         resp?.payload?.merchant_info_status &&
           toast.success(resp?.payload?.merchant_info_status);
-        resp?.payload?.detail && toast.error(resp?.payload?.detail);
+        resp?.payload && toast.error(resp?.payload);
         dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId})) // used to remove kyc button beacuse updated in redux store
       })
       .catch((e) => {
@@ -73,8 +79,18 @@ const BusinessDetails = (props) => {
             merchantKycId?.gstNumber
           }
         />
+        <span>
+          {merchantKycId?.gstNumber === null || merchantKycId?.gstNumber === "" ? (
+            <p className="text-danger"> Not Verified</p>
+          ) : (
+            <p className="text-success">Verified</p>
+        
+          )}
+        </span>
       </div>
 
+
+     
       <div className="col-sm-12 col-md-6 col-lg-6">
         <label className="col-form-label mt-0 p-2">
           Business PAN<span style={{ color: "red" }}>*</span>
@@ -102,7 +118,18 @@ const BusinessDetails = (props) => {
             merchantKycId?.signatoryPAN
           }
         />
+         <span>
+          {merchantKycId?.signatoryPAN === null || merchantKycId?.signatoryPAN === "" ? (
+         <p className="text-danger"> Not Verified</p>
+          ) : (
+            <p className="text-success">Verified</p>
+          )}
+        </span>
       </div>
+
+     
+
+      
 
       <div className="col-sm-12 col-md-6 col-lg-6">
         <label className="col-form-label mt-0 p-2">
@@ -190,9 +217,11 @@ const BusinessDetails = (props) => {
 
 
       </div>
-      <div className="col-lg-6 ">
-      Status : <span>{KycTabStatus?.merchant_info_status}</span>
+      <div className="col-lg-6 font-weight-bold mt-1 ">
+        <p>Status : <span>{KycTabStatus?.merchant_info_status}</span></p>
+        <p>Comments : <span>{KycTabStatus?.merchant_info_reject_comments}</span></p>
       </div>
+      
       <div className="col-lg-6 mt-3">
         <VerifyRejectBtn 
         KycTabStatus={KycTabStatus?.merchant_info_status}

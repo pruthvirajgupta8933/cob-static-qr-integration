@@ -219,6 +219,9 @@
 .m-r-l-200 {
     margin: 0;
 }
+.font-text-large {
+  font-size: 2em;
+}
 }
 
 .list-items li {
@@ -300,6 +303,10 @@
   .onboarding-illustration-top img{
     display: none;
   }
+
+  .m-r-l-200{
+    margin : 0
+  }
 }
 
 
@@ -325,7 +332,18 @@
   .onboarding-illustration-top img{
     display: none;
   }
+
+  .m-r-l-200{
+    margin:0
+  }
 }
+
+@media (max-width: 912px) {
+  .m-r-l-200{
+    margin:0
+  }
+}
+
 @media (min-width: 48em) {
   
   /* .header li {

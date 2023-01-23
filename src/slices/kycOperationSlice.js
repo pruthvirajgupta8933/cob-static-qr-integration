@@ -12,12 +12,21 @@ const initialState = {
 
 export const rejectKycOperation = createAsyncThunk(
     "rejectKycOperation/rejectKycOperation",
-    async ( requestParam) => {
+    async ( requestParam,thunkAPI) => {
       try {
         const response = await kycOperationService.rejectKycOperation(requestParam)
         return response.data;
       } catch (error) {
-        return error;
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.detail) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      
+      return thunkAPI.rejectWithValue(message); 
+      
       }
     }
   );
@@ -46,15 +55,72 @@ export const rejectKycOperation = createAsyncThunk(
 
   export const completeVerificationRejectKyc = createAsyncThunk(
     "completeVerificationRejectKyc/completeVerificationRejectKyc",
-    async ( requestParam) => {
+    async ( requestParam, thunkAPI) => {
       try {
         const response = await kycOperationService.completeVerificationRejectKyc(requestParam)
         return response.data;
       } catch (error) {
-        return error;
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.detail) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message); 
+        
+        
       }
     }
   );
+
+  ////////////////////////////// for reverse to pending
+  export const reverseToPendingVerification = createAsyncThunk(
+    "reverseToPendingVerification/reverseToPendingVerification",
+    async ( requestParam, thunkAPI) => {
+      try {
+        const response = await kycOperationService.reverseToPendingVerification(requestParam)
+        return response.data;
+      } catch (error) {
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.detail) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message); 
+        
+        
+      }
+    }
+  );
+
+
+  export const reverseToPendingApproval = createAsyncThunk(
+    "reverseToPendingApproval/reverseToPendingApproval",
+    async ( requestParam, thunkAPI) => {
+      try {
+        const response = await kycOperationService.reverseToPendingApproval(requestParam)
+        return response.data;
+      } catch (error) {
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.detail) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message); 
+        
+        
+      }
+    }
+  );
+  
+  
+
+ 
 
 
 

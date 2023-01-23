@@ -3,14 +3,14 @@ import React, { useState, useEffect } from "react";
 import HeaderPage from "./HeaderPage";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import { useHistory } from "react-router-dom";
+import { useHistory ,Link} from "react-router-dom";
 import * as Yup from "yup";
 import { isUserAlreadyLogin, login } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
 import { toast } from "react-toastify";
 import "./Login.css";
 import imageSlide1 from "../../assets/images/COB.png";
-import { Link } from "react-router-dom";
+
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",
@@ -36,7 +36,6 @@ function LoginPage() {
 
   const dispatch = useDispatch();
 
-  // message = message?.length>=0?message=null:message;
   const { user, userAlreadyLoggedIn } = auth;
 
   useEffect(() => {
@@ -51,7 +50,7 @@ function LoginPage() {
     ) {
       history.push("/dashboard");
     }
-  }, [userAlreadyLoggedIn, user]);
+  }, [userAlreadyLoggedIn, user, dispatch, history]);
 
   useEffect(() => {
     setAuthData(authentication);
@@ -198,7 +197,7 @@ function LoginPage() {
                                         }
                                         size={50}
                                         name="userPassword"
-                                        onClick={() => setNamee("userPassword")}
+                                        onClick={()=>setNamee("userPassword")}
                                       />
                                       {namee === "userPassword" ? (
                                         <span>
@@ -264,7 +263,7 @@ function LoginPage() {
                                         <div className="spinner-border text-secondary- NunitoSans-Regular" role="status"></div>
                                         // <div className="spinner-grow" role="status"></div>
                                       )}
-                                      LogIn
+                                      Login
                                     </button>
 
 
@@ -276,7 +275,8 @@ function LoginPage() {
                           
                         </div>
                         <div className="logmod__form- m-r-l-100- mt-3 termsconditionss NunitoSans-Regular text-center">
-                          <p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target={"_blank"} alt="SabPaisa Terms & Conditions" title="SabPaisa Terms & Conditions">Terms & Conditions</a> | <a href="https://sabpaisa.in/privacy-policy/" target={"_blank"} alt="SabPaisa Privacy Policy" title="SabPaisa Privacy Policy">Privacy Policy</a></p>
+                          <p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer" target={"_blank"} alt="SabPaisa Terms & Conditions" title="SabPaisa Terms & Conditions">Terms & Conditions</a> 
+                           &nbsp;| <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer" target={"_blank"} alt="SabPaisa Privacy Policy" title="SabPaisa Privacy Policy">Privacy Policy</a></p>
                          
                           </div>
                       </div>
@@ -351,13 +351,7 @@ function LoginPage() {
                   className="carousel slide"
                   data-ride="carousel"
                 >
-                  <ol className="carousel-indicators"
-                    // style={{
-                    //   position: "absolute",
-                    //   zIndex: "999",
-                      
-                    // }} 
-                    >
+                  <ol className="carousel-indicators">
                     <li
                       data-target="#carouselExampleIndicators"
                       data-slide-to="0"

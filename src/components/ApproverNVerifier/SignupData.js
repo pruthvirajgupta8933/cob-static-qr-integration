@@ -11,9 +11,18 @@ import { axiosInstanceAuth } from '../../utilities/axiosInstance';
 import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
 
 
+// const validationSchema = Yup.object({
+//     from_date: Yup.string().required("Required").nullable(),
+//     to_date: Yup.string().required("Required").nullable(),
+
+// })
+
+
 const validationSchema = Yup.object({
-    from_date: Yup.string().required("Required").nullable(),
-    to_date: Yup.string().required("Required").nullable(),
+  from_date: Yup.date().required("Required").nullable(),
+  to_date: Yup.date()
+    .min(Yup.ref("from_date"), "End date can't be before Start date")
+    .required("Required"),
 
 })
 
@@ -71,8 +80,15 @@ const SignupData = () => {
          " Mobile Number",
           " Created Date",
            "Status",
-          " Business category Name"
-
+          " Business Category Name",
+          "Business Category Code",
+          "Company Name",
+          "Company's Website",
+          "GST Number",
+          "Business Type",
+          "Expected Transactions",
+          "Zone Code",
+          "Address"
         ];
         let excelArr = [excelHeaderRow];
         // eslint-disable-next-line array-callback-return
@@ -86,6 +102,14 @@ const SignupData = () => {
             createdDate: item.createdDate === null ? "" : item.createdDate,
             status: item.status === null ? "" : item.status,
             business_category_name: item.business_category_name === null ? "" : item.business_category_name,
+            business_cat_code: item.business_cat_code === null ? "" : item.business_cat_code,
+            company_name: item.company_name === null ? "" : item.company_name,
+            companyWebsite: item.companyWebsite === null ? "" : item.companyWebsite,
+            gstNumber: item.gstNumber === null ? "" : item.gstNumber,
+            businessType: item.businessType === null ? "" : item.businessType,
+            expectedTransactions: item.businessType === null ? "" : item.expectedTransactions,
+            zone_code: item.zone_code === null ? "" : item.zone_code,
+            address: item.address === null ? "" : item.address
                      };
     
           excelArr.push(Object.values(allowDataToShow));

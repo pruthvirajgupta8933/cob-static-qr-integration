@@ -2,14 +2,7 @@ import API_URL from "../config";
 import { axiosInstance, axiosInstanceAuth } from "../utilities/axiosInstance";
 import { stringEnc } from "../utilities/encodeDecode";
 
-// axiosInstanceAuth.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-
-// const SIGNUP_URL = "https://cobapi.sabpaisa.in/auth-service/auth/";
-// login old url : https://cobapi.sabpaisa.in/clientOnBoarding/fetchMerchantListUsingLogin 
-// login new url : https://cobtest.sabpaisa.in/auth-service/auth/login
-// https://cobapi.sabpaisa.in/auth-service/auth/login
-
-const register = ({fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, requestId,roleId}) => {
+const register = ({fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, requestId, roleId, plan_details}) => {
   return axiosInstanceAuth.post(API_URL.AUTH_SIGNUP, {
     name: fullname,
     mobileNumber: mobileNumber,
@@ -17,9 +10,10 @@ const register = ({fullname, mobileNumber, email, business_cat_code, password, b
     business_cat_code: business_cat_code,
     password: password,
     requestedClientType: businessType,
-    isDirect:isDirect,
-    requestId:requestId,
-    roleId: roleId
+    isDirect: isDirect,
+    requestId: requestId,
+    roleId: roleId,
+    plan_details: plan_details
   })
 };
 
@@ -35,6 +29,7 @@ const login = (username, password) => {
       localStorage.setItem("user", JSON.stringify(response.data));
       localStorage.setItem("categoryId", 1)
       sessionStorage.setItem("prog_id", stringEnc(password))
+      
       // if (response.data.accessToken) {
       //   localStorage.setItem("user", JSON.stringify(response.data));
       //   localStorage.setItem("categoryId", 1)

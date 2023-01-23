@@ -171,15 +171,7 @@ export const createClientProfile = createAsyncThunk(
       const userLocalData = JSON.parse(localStorage?.getItem("user"));
       const allData = Object.assign(userLocalData, response.data);
       // first time need to assign all request data into temp data
-      allData.accountHolderName = data.accountHolderName;
-      allData.accountNumber = data.accountNumber;
-      allData.bankName = data.bankName;
-      allData.clientAuthenticationType = data.clientAuthenticationType;
-      allData.clientContactPersonName = data.clientName;
-      allData.clientEmail = data.email;
-      allData.ifscCode = data.ifscCode;
-      allData.pan = data.pan;
-      allData.clientMobileNo = data.phone;
+
 
       // console.log("allData--s",allData);
       const clientMerchantDetailsListObj = {
@@ -217,9 +209,6 @@ export const createClientProfile = createAsyncThunk(
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
       localStorage.setItem("user", JSON.stringify(allData))
       localStorage.setItem("categoryId",1)
-
-
-
       return allData;
     } catch (error) {
       const message =
@@ -420,10 +409,6 @@ export const checkPermissionSlice = createAsyncThunk(
 
 
 
-// const initialState = user && user.loginStatus
-//   ? { isLoggedIn: true, user,isValidUser:'',successTxnsumry:{} }
-//   : { isLoggedIn: false, user: null,isValidUser:'',successTxnsumry:{}, sendEmail: {} };
-// console.log(register)
 const authSlice = createSlice({
   name: "auth",
   initialState: auth,
@@ -434,6 +419,10 @@ const authSlice = createSlice({
     }
   },
   extraReducers: {
+    [register.pending]: (state, action) => {
+      state.isLoggedIn = null
+      state.isUserRegistered = null;
+    },
     [register.fulfilled]: (state, action) => {
       state.isLoggedIn = null
       state.isUserRegistered = true;
@@ -443,10 +432,6 @@ const authSlice = createSlice({
       state.isUserRegistered = false;
     },
     [udpateRegistrationStatus.fulfilled]: (state, action) => {
-      state.isLoggedIn = null
-      state.isUserRegistered = null;
-    },
-    [udpateRegistrationStatus.pending]: (state, action) => {
       state.isLoggedIn = null
       state.isUserRegistered = null;
     },

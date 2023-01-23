@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
 
 const initialStateForRadio = {
@@ -16,14 +16,14 @@ const NewvalidationSchemaforRadio = Yup.object({
 
 const RateRadioMapping = (props) => {
   const { user } = useSelector((state) => state.auth);
-  const loginId = user.loginId;
+  // const loginId = user.loginId;
   const username = user.clientContactPersonName;
 
   const radiobutton = [{ key: "", value: "true" }];
 
-  const handleSubmitForRadio = (values) => {
-    // console.log(values)
-  };
+  // const handleSubmitForRadio = (values) => {
+  //   // console.log(values)
+  // };
   const onClick = (client_code) => {
     alert(
       `Parent ClientCode : ${client_code} \n Chield ClientCode: ${props.chiledCode.clientCode} \n UserName: ${username}`
