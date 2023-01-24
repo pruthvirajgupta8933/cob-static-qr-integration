@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useHistory ,Link} from "react-router-dom";
 import * as Yup from "yup";
-import { isUserAlreadyLogin, login } from "../../slices/auth";
+import {login, logout } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
 import { toast } from "react-toastify";
 import "./Login.css";
@@ -42,13 +42,13 @@ function LoginPage() {
     const userLocalData = JSON.parse(localStorage.getItem("user"));
     const isLoggedInLc =
       userLocalData && userLocalData.loginId !== null ? true : false;
-
-    dispatch(isUserAlreadyLogin(isLoggedInLc));
-    if (
-      (userAlreadyLoggedIn || isLoggedInLc) &&
-      user?.loginStatus === "Activate"
-    ) {
-      history.push("/dashboard");
+    if(isLoggedInLc){
+      if (userAlreadyLoggedIn  && user?.loginStatus === "Activate") {
+        // console.log("push to dashboard")
+        history.push("/dashboard");
+      }
+    }else{
+      dispatch(logout())
     }
   }, [userAlreadyLoggedIn, user, dispatch, history]);
 
@@ -263,7 +263,7 @@ function LoginPage() {
                                         <div className="spinner-border text-secondary- NunitoSans-Regular" role="status"></div>
                                         // <div className="spinner-grow" role="status"></div>
                                       )}
-                                      LogIn
+                                      Login
                                     </button>
 
 
@@ -454,7 +454,7 @@ function LoginPage() {
           </div>
 
           <p className="footerforcopyright NunitoSans-Regular text-center">
-            Copyright @ 2022 SabPaisa All Rights Reserved version 1.0
+            Copyright @ 2023 SabPaisa All Rights Reserved version 1.0
 
           </p>
         </div>

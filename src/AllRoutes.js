@@ -1,7 +1,6 @@
 import React from 'react'
 import { Switch, Route } from "react-router-dom";
 import Dashboard from './components/dashboard/Dashboard';
-// import Login from './components/login/Login';
 import Registration from './components/registration/Registration';
 import LoginPage from './components/login/LoginPage';
 import ForgetPassword from './components/forgetpassword/ForgetPassword';
@@ -12,22 +11,17 @@ import StudentRecipets from './components/Otherpages/StudentRecipets';
 import ReceiptByEmail from './components/Otherpages/ReceiptByEmail';
 import ReceiptWalchand from './components/Otherpages/ReceiptWalchand';
 import EmandatePage from './components/Otherpages/EmandatePage';
-import Test from './components/Otherpages/Test';
 import InternetConnection from './_components/reuseable_components/InternetConnection';
 import MobileNavbar from './components/dashboard/SideNavbar/MobileNavbar';
 import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetails';
-import DemoReg from './components/login/DemoReg';
-import DemoLogin from './components/login/DemoLogin';
 import UrlNotFound from './components/dashboard/UrlNotFound';
 
 
 function AllRoutes(){
 
   return (
-        // <Router >
           <div>
           <InternetConnection />
-
             <Switch>             
               <Route exact path="/login-page">
                 <LoginPage />
@@ -45,7 +39,6 @@ function AllRoutes(){
               <Route path="/forget">
                 <ForgetPassword />
               </Route>
-
               <Route exact path="/emailverification/:loginId">
                 <EmailVerification />
               </Route>
@@ -70,23 +63,12 @@ function AllRoutes(){
               <Route exact path="/">
                 <LoginPage />
               </Route>
-              <Route exact path="/test">
-                <Test />
-              </Route>
               <Route exact path="/ViewTransactionDetails">
                 <ViewTransactionDetails />
               </Route>
-              <Route exact path="/demo-login">
-                <DemoLogin/>
-              </Route>
-              <Route exact path="/demo-reg">
-                <DemoReg/>
-              </Route>
               <Route path="*" component={UrlNotFound}/>
-
             </Switch>
           </div>
-        // </Router>
       );
 }
 

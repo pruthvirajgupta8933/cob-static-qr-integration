@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import HeaderPage from "../login/HeaderPage";
 import onlineshopinglogo from "../../assets/images/COB.png";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { register, udpateRegistrationStatus } from "../../slices/auth";
+import { logout, register, udpateRegistrationStatus } from "../../slices/auth";
 import { useHistory, Link } from "react-router-dom";
 import { toast, Zoom } from "react-toastify";
 import API_URL from "../../config";
@@ -149,7 +150,22 @@ function Registration() {
     setValuesIn({ ...valuesIn, showPassword: !valuesIn.showPassword });
   };
 
+
   useEffect(() => {
+    const userLocalData = JSON.parse(localStorage.getItem("user"));
+    const isLoggedInLc =
+      userLocalData && userLocalData.loginId !== null ? true : false;
+    if(isLoggedInLc){
+        history.push("/dashboard")
+    }else{
+      dispatch(logout())
+    }
+  }, []);
+
+
+  useEffect(() => {
+    
+
     if (isUserRegistered === true) {
       toast.success(message.message, {
         position: "top-right",
@@ -636,7 +652,7 @@ function Registration() {
             </div>
           </div>
           <p className="footerforcopyright text-center NunitoSans-Regular">
-            Copyright @ 2022 SabPaisa All Rights Reserved version 1.0
+            Copyright @ 2023 SabPaisa All Rights Reserved version 1.0
           </p>
         </div>
         {/* ./row */}
