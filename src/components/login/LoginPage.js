@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useHistory ,Link} from "react-router-dom";
 import * as Yup from "yup";
-import { isUserAlreadyLogin, login } from "../../slices/auth";
+import { isUserAlreadyLogin, login, logout } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
 import { toast } from "react-toastify";
 import "./Login.css";
@@ -42,14 +42,13 @@ function LoginPage() {
     const userLocalData = JSON.parse(localStorage.getItem("user"));
     const isLoggedInLc =
       userLocalData && userLocalData.loginId !== null ? true : false;
-
-    dispatch(isUserAlreadyLogin(isLoggedInLc));
-    if (
-      (userAlreadyLoggedIn || isLoggedInLc) &&
-      user?.loginStatus === "Activate"
-    ) {
-      console.log("push to dashboard")
-      // history.push("/dashboard");
+    if(isLoggedInLc){
+      if (userAlreadyLoggedIn  && user?.loginStatus === "Activate") {
+        // console.log("push to dashboard")
+        history.push("/dashboard");
+      }
+    }else{
+      dispatch(logout())
     }
   }, [userAlreadyLoggedIn, user, dispatch, history]);
 
