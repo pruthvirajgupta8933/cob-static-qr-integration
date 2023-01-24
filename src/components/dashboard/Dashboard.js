@@ -57,6 +57,7 @@ import UrlNotFound from "./UrlNotFound";
 import { defaultRateMapping } from "../../utilities/DefaultRateMapping";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
+import { isNull } from "lodash";
 
 function Dashboard() {
   let history = useHistory();
@@ -103,11 +104,15 @@ function Dashboard() {
                   applicationId: webData?.appid,
                 };
 
-                axiosInstanceAuth.post(
-                  API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-                  postData
-                );
-  
+                if(!isNull(webData?.planid) && !isNull(webData?.appid))
+                {
+                  axiosInstanceAuth.post(
+                    API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+                    postData
+                  );
+    
+                }
+            
                 
               }
             )
