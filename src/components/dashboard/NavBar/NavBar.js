@@ -9,8 +9,8 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 const NavBar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const loginId = user.loginId;
-  const username = user.clientContactPersonName;
+  const loginId = user?.loginId;
+  const username = user?.clientContactPersonName;
   const roles = roleBasedAccess();
   const loggedUser = Object.keys(roles).find((key) => roles[key] === true);
 
@@ -41,7 +41,7 @@ const NavBar = () => {
           <div className="dropdown show" style={{ marginRight: "35px" }}>
             <a
               className="btn dropdown-toggle"
-              href="#"
+              href={()=>false}
               role="button"
               id="dropdownMenuLink"
               data-toggle="dropdown"
