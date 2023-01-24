@@ -69,7 +69,6 @@ function AllRoutes(){
               <Route path="*" component={UrlNotFound}/>
             </Switch>
           </div>
-        // </Router>
       );
 }
 

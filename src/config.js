@@ -68,7 +68,7 @@ const API_LIVE = {
   ChargeBankTxnHistory: reportAPIURL + "/REST/GetChargebackTxnHistory",
 
   /* Transaction Enquiry */
-  VIEW_TXN: adminAPIURL + "/Enquiry/ViewTxn",
+  VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */

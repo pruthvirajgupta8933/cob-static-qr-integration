@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import HeaderPage from "../login/HeaderPage";
 import onlineshopinglogo from "../../assets/images/COB.png";
@@ -651,7 +652,7 @@ function Registration() {
             </div>
           </div>
           <p className="footerforcopyright text-center NunitoSans-Regular">
-            Copyright @ 2022 SabPaisa All Rights Reserved version 1.0
+            Copyright @ 2023 SabPaisa All Rights Reserved version 1.0
           </p>
         </div>
         {/* ./row */}

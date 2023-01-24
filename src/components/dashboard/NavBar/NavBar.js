@@ -41,7 +41,7 @@ const NavBar = () => {
           <div className="dropdown show" style={{ marginRight: "35px" }}>
             <a
               className="btn dropdown-toggle"
-              href="#"
+              href={()=>false}
               role="button"
               id="dropdownMenuLink"
               data-toggle="dropdown"

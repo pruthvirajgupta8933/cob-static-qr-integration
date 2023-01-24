@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import { useHistory ,Link} from "react-router-dom";
 import * as Yup from "yup";
-import { isUserAlreadyLogin, login, logout } from "../../slices/auth";
+import {login, logout } from "../../slices/auth";
 import { clearMessage } from "../../slices/message";
 import { toast } from "react-toastify";
 import "./Login.css";
@@ -454,7 +454,7 @@ function LoginPage() {
           </div>
 
           <p className="footerforcopyright NunitoSans-Regular text-center">
-            Copyright @ 2022 SabPaisa All Rights Reserved version 1.0
+            Copyright @ 2023 SabPaisa All Rights Reserved version 1.0
 
           </p>
         </div>

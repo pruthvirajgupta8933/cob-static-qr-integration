@@ -59,8 +59,7 @@ const SabPaisaPricing = () => {
         setProductDetails(data);
       })
     getSubscribedPlan(id);
-
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
 
 
@@ -201,7 +200,6 @@ const SabPaisaPricing = () => {
     <section className="ant-layout">
       <div>
         <NavBar />
-        {/* <SabpaisaPaymentGateway /> */}
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div>
@@ -212,17 +210,12 @@ const SabPaisaPricing = () => {
             Sign Up now to get started.
           </h3>
         </div>
-        {/* <button type="button" onClick={clickHandler}>check</button> */}
         <div className="container mb-10">
           <div className="row flx">
-          
-          {/* <button type="button" onClick={()=> handleClick(1, "Subscription Plan", "005")}>Test Button Abhishek</button> */}
-
-
             {spinner && <span className="spinner-border" role="status"></span>}
             {productDetails.map((Products) => (
+
               // if user select the business catagory gamming then hide the subscription plan
-              
               (business_cat_code === "37" && Products.plan_code === "005") ? <></> :
                 (param?.id === '14') ? 
                 <div className="card col-lg-4">
@@ -267,7 +260,6 @@ const SabPaisaPricing = () => {
                             }
                             }
                           >
-
                             {(selectedPlan?.planId === Products.plan_id) ? "Selected Plan" : "Choose Plan"}
                           </button>
                         </p>
@@ -329,7 +321,6 @@ const SabPaisaPricing = () => {
                                   >
                                     Return to Dashboard
                                   </button>
-
                                 </div>
                               </div>
                             </div>
@@ -452,14 +443,8 @@ const SabPaisaPricing = () => {
                             </div>
                           </div>
                         </div>
-
-
-
-
                         <span className="w-50 pxsolid text-center">&nbsp;</span>
                         <h2 className="featurespricing">FEATURES INCLUDING</h2>
-
-
                         <div className="text-center">
                           {Products?.plan_description
                             .split(",")
@@ -471,19 +456,6 @@ const SabPaisaPricing = () => {
                     </div>
                   </div>
             ))}
-
-
-
-
-          </div>
-        </div>
-
-
-        <div className="container-fluid">
-          <div className="row">
-
-
-
           </div>
         </div>
       </main>
