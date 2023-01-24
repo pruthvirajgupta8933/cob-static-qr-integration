@@ -34,7 +34,7 @@ const API_LIVE = {
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
-  SUCCESS_TXN_SUMMARY: adminAPIURL + "/REST/SuccessTxnSummary/",
+  SUCCESS_TXN_SUMMARY: reportAPIURL+"/REST/SuccessTxnSummary/",
 
   // * Rate mapping */
   RATE_MAPPING_GenerateClientFormForCob:adminAPIURL+"/REST/config/GenerateClientFormForCob",
