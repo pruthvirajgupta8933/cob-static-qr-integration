@@ -48,7 +48,8 @@ function LoginPage() {
       (userAlreadyLoggedIn || isLoggedInLc) &&
       user?.loginStatus === "Activate"
     ) {
-      history.push("/dashboard");
+      console.log("push to dashboard")
+      // history.push("/dashboard");
     }
   }, [userAlreadyLoggedIn, user, dispatch, history]);
 
