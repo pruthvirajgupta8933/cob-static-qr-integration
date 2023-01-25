@@ -171,9 +171,6 @@ export const createClientProfile = createAsyncThunk(
       const userLocalData = JSON.parse(localStorage?.getItem("user"));
       const allData = Object.assign(userLocalData, response.data);
       // first time need to assign all request data into temp data
-
-
-      // console.log("allData--s",allData);
       const clientMerchantDetailsListObj = {
         "clientId": null,
         "lookupState": null,
@@ -290,34 +287,23 @@ export const updateClientProfile = createAsyncThunk(
 export const changePasswordSlice = createAsyncThunk(
   "auth/changePasswordSlice",
   async (requestParam) => {
-    const response = await AuthService.changePassword(
-      requestParam,
-      {
-        headers: {
-          // Authorization: ""
-        }
-      }
-    )
+    const response = await AuthService.changePassword(requestParam)
       .catch((error) => {
         return error.response;
       });
-    // console.log(response)
     return response.data;
   }
 );
 
 // forgot password
-
 export const getEmailToSendOtpSlice = createAsyncThunk(
   "auth/getEmailToSendOtp",
   async (data, thunkAPI) => {
     try {
-      // console.log("getEmailToSendOtp",data);
       const response = await AuthService.getEmailToSendOTP(data);
       thunkAPI.dispatch(setMessage(response.data.message));
       //save post username
       response.data.username = data.username
-      // console.log("getEmailToSendOtp-response",response.headers)
       return response.data;
     } catch (error) {
       const message =
@@ -340,10 +326,8 @@ export const verifyOtpOnForgotPwdSlice = createAsyncThunk(
   "auth/verifyOtpOnForgotPwd",
   async (data, thunkAPI) => {
     try {
-      // console.log("verifyOtpOnForgotPwd",data);
       const response = await AuthService.verifyOtpOnForgotPwd(data);
       thunkAPI.dispatch(setMessage(response.data.message));
-      // console.log("verifyOtpOnForgotPwd",response)
       return response.data;
     } catch (error) {
       const message =
@@ -365,10 +349,8 @@ export const createNewPasswordSlice = createAsyncThunk(
   "auth/createNewPassword",
   async (data, thunkAPI) => {
     try {
-      // console.log("createNewPassword",data);
       const response = await AuthService.changePassword(data);
       thunkAPI.dispatch(setMessage(response.data.message));
-      // console.log("getEmailToSendOtp-response",response)
       return response.data;
     } catch (error) {
       const message =
@@ -464,9 +446,6 @@ const authSlice = createSlice({
       }
       state.isLoggedIn = loggedInStatus;
       state.user = action.payload.user;
-      // state.user.clientMerchantDetailsList = action.payload.user.clientMerchantDetailsList
-
-      // console.log("user",user)
       localStorage.setItem("user", JSON.stringify(state.user))
       localStorage.setItem("categoryId",1)
       state.isValidUser = isValidData;
@@ -482,8 +461,6 @@ const authSlice = createSlice({
       state.userAlreadyLoggedIn = false;
       state.isValidUser = '';
       state.user = null;
-      // console.log(action)
-      // state.login_error= action.payload
     },
     [logout.fulfilled]: (state, action) => {
       state.isLoggedIn = null;
@@ -492,57 +469,24 @@ const authSlice = createSlice({
       state.user = null;
       state = {};
     },
-    // [OTPVerificationApi.pending]: (state, action) => {
-    //   state.status = "pending";
-    // },
-    // [OTPVerificationApi.fulfilled]: (state, action) => {
-    //   state.OtpVerificationResponse.fulfilled = action.payload;
-
-    //   sessionStorage.setItem(
-    //     "authToken",
-    //     action.payload.auth_token ? action.payload.auth_token : ""
-    //   );
-    //   sessionStorage.setItem(
-    //     "userName",
-    //     action.payload.username ? action.payload.username : ""
-    //   );
-    // },
-    // [OTPVerificationApi.rejected]: (state, action) => {
-    //   state.status = "failed";
-    //   state.error = action.error.message;
-    // },
-    [createClientProfile.pending]: (state) => {
-      // console.log("pending...create profile of client")
-    },
+    
     [createClientProfile.fulfilled]: (state, action) => {
       state.createClientProfile = action.payload
       state.user = action.payload
-      // console.log("client create and update", state.user);
     },
-    [createClientProfile.rejected]: (state) => {
-      // console.log("Client Profile not update!");
-    },
-    [updateClientProfile.pending]: (state) => {
-      // console.log('pending profile');
-    },
+  
     [updateClientProfile.fulfilled]: (state, action) => {
-      // console.log('fulfilled profile');
       state.user = action.payload
-      // console.log(action.payload,"<=== Res ===>")
     },
     [updateClientProfile.rejected]: () => {
-      // console.log('rejected profile');
     },
     [changePasswordSlice.fulfilled]: (state, action) => {
-      // console.log('fullfiled profile');
       state.passwordChange = true;
     },
     [changePasswordSlice.pending]: (state) => {
-      // console.log('rejected profile');
       state.passwordChange = null;
     },
     [changePasswordSlice.rejected]: (state) => {
-      // console.log('rejected profile');
       state.passwordChange = false;
     },
 
@@ -552,44 +496,14 @@ const authSlice = createSlice({
       const status = action.payload.status;
       state.forgotPassword.sendUserName.username = username;
       state.forgotPassword.sendUserName.isValid = status ? true : false;
-      //state.passwordChange = true;
     },
     [getEmailToSendOtpSlice.pending]: (state) => {
-      // console.log('pending profile');
-      //state.passwordChange = null;
     },
     [getEmailToSendOtpSlice.rejected]: (state, action) => {
-      // console.log('rejected ', action);
       state.forgotPassword.sendUserName.isValid = false;
-      //state.passwordChange = false;
     },
 
-    [verifyOtpOnForgotPwdSlice.fulfilled]: (state, action) => {
-      // console.log('fullfiled ', action);
-      // state.passwordChange = true;
-    },
-    [verifyOtpOnForgotPwdSlice.pending]: (state) => {
-      // console.log('pending profile');
-      // state.passwordChange = null;
-    },
-    [verifyOtpOnForgotPwdSlice.rejected]: (state) => {
-      // console.log('rejected profile');
-      // state.passwordChange = false;
-    },
-
-    [createNewPasswordSlice.fulfilled]: (state, action) => {
-      // console.log('fullfiled', action);
-      // state.passwordChange = true;
-    },
-    [createNewPasswordSlice.pending]: (state) => {
-      // console.log('pending profile');
-      // state.passwordChange = null;
-    },
-    [createNewPasswordSlice.rejected]: (state) => {
-      // console.log('rejected profile');
-      // state.passwordChange = false;
-    },
-
+ 
     [checkPermissionSlice.fulfilled]: (state, action) => {
        
       // state.passwordChange = false;

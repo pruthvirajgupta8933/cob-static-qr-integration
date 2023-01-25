@@ -4,8 +4,6 @@ import { toast } from "react-toastify";
 import { completeVerification, completeVerificationRejectKyc,reverseToPendingVerification,reverseToPendingApproval} from "../../../../slices/kycOperationSlice"
 import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
-import VerifyRejectBtn from './VerifyRejectBtn';
-
 
 
 const CompleteVerification = (props) => {
@@ -22,7 +20,7 @@ let closeVerificationModal=props?.closeVerification;
   let isverified = KycTabStatus.is_verified
   // console.log("",pendingVerfyTable)
   const { merchantKycId } = props;
-  const status = merchantKycId?.status
+
 
   const dispatch = useDispatch()
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)

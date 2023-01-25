@@ -217,7 +217,7 @@ const TransactionHistory = () => {
         endDate: endDate,
         length: "0",
         page: "0",
-        NoOfClient: clientCodeArrLength,
+        noOfClient: clientCodeArrLength,
       };
 
       dispatch(fetchTransactionHistorySlice(paramData));
