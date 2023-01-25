@@ -77,7 +77,10 @@ const SignupData = () => {
       "Expected Transactions",
       "Zone Code",
       "Address",
-      "Other data of the registration"
+      "Product Name",
+      "Plan Name",
+      "Landing  Page Name",
+      "Platform",
     ];
     let excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
@@ -99,7 +102,10 @@ const SignupData = () => {
         expectedTransactions: item.businessType === null ? "" : item.expectedTransactions,
         zone_code: item.zone_code === null ? "" : item.zone_code,
         address: item.address === null ? "" : item.address,
-        subsCribedDetail: item.subsCribedDetail === null ? "" : item?.subsCribedDetail?.length > 0 && JSON.stringify(objectToList(item?.subsCribedDetail, true))
+        product_name:item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.appName,
+        plan_name:item?.website_plan_details?.planName === null ? "" : item?.website_plan_details?.planName,
+        landing_page_name:item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.page,
+        platForm:item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.platform,
       };
 
       excelArr.push(Object.values(allowDataToShow));
@@ -109,17 +115,17 @@ const SignupData = () => {
   };
 
 // Return list from the json object
-  const objectToList = (data, forExcel = false) => {
-    // console.log(datas)
-    return forExcel ?
-      JSON?.stringify(data)
-      :
-      data?.map((d, i) => {
-        return Object.keys(d)?.map((k, i) => (
-          <p> <span>{k}</span> : <span>{Object.values(d)[i]}</span></p>
-        ))
-      })
-  }
+  // const objectToList = (data, forExcel = false) => {
+  //   console.log(data)
+  //   return forExcel ?
+  //     JSON?.stringify(data)
+  //     :
+  //     data?.map((d, i) => {
+  //       return Object.keys(d)?.map((k, i) => (
+  //         <p key={k}> <span>{k}</span> : <span>{Object.values(d)[i]}</span></p>
+  //       ))
+  //     })
+  // }
 
 
 
@@ -206,7 +212,10 @@ const SignupData = () => {
                       <th>Created Date</th>
                       <th>Status</th>
                       <th>Business category Name</th>
-                      <th>Other data of the registration </th>
+                      <th>Product Name</th>
+                      <th>Plan Name</th>
+                      <th>Landing Page Name</th>
+                      <th>Platform</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -227,7 +236,10 @@ const SignupData = () => {
                           <td>{SignData?.createdDate}</td>
                           <td>{SignData?.status}</td>
                           <td>{SignData?.business_category_name}</td>
-                          <td>{SignData?.subsCribedDetail?.length > 0 && objectToList(SignData?.subsCribedDetail, false)}</td>
+                          <td>{SignData?.website_plan_details?.appName}</td>
+                          <td>{SignData?.website_plan_details?.planName}</td>
+                          <td>{SignData?.website_plan_details?.page}</td>
+                          <td>{SignData?.website_plan_details?.platform_id}</td>
                         </tr>
                       ))
                     )}
