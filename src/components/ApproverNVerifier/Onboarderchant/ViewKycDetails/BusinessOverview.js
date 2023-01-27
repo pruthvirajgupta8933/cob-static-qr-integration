@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { verifyKycEachTab } from '../../../../slices/kycSlice';
+import { verifyKycEachTab, GetKycTabsStatus } from '../../../../slices/kycSlice';
 import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
-import { GetKycTabsStatus } from '../../../../slices/kycSlice';
+
 
 const BusinessOverview = (props) => {
   const { businessTypeResponse, businessCategoryResponse, merchantKycId, KycTabStatus } = props;

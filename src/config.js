@@ -1,4 +1,5 @@
 const ENV_PROD = false; // don't change in the local environment
+const B2B_ENV_PROD = false;
 let url,kyc_url = "",kyc_validate = "";
 
 if (ENV_PROD) {
@@ -10,6 +11,17 @@ if (ENV_PROD) {
   kyc_url = "https://stgcobkyc.sabpaisa.in";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in"
 }
+
+// if(B2B_ENV_PROD) {
+
+// }
+
+// else {
+
+// }
+
+
+const b2bAPIURL = "https://stage-b2bchallan.sabpaisa.in";
 
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
@@ -34,7 +46,7 @@ const API_LIVE = {
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
-  SUCCESS_TXN_SUMMARY: adminAPIURL + "/REST/SuccessTxnSummary/",
+  SUCCESS_TXN_SUMMARY: reportAPIURL+"/REST/SuccessTxnSummary/",
 
   // * Rate mapping */
   RATE_MAPPING_GenerateClientFormForCob:adminAPIURL+"/REST/config/GenerateClientFormForCob",
@@ -59,14 +71,16 @@ const API_LIVE = {
 
   GET_PAYMENT_STATUS_LIST: adminAPIURL + "/REST/admin/getPaymentStatusList",
   PAY_MODE_LIST: adminAPIURL + "/REST/paymode/paymodeList",
-  GetMerchantTxnHistory: adminAPIURL + "/REST/GetMerchantTxnHistory",
+    // GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistory",
+    GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistoryN",
+    
   /* Settlement Report */
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
   RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
   ChargeBankTxnHistory: reportAPIURL + "/REST/GetChargebackTxnHistory",
 
   /* Transaction Enquiry */
-  VIEW_TXN: adminAPIURL + "/Enquiry/ViewTxn",
+  VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */
@@ -270,15 +284,21 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
 
   // Check is client code mapped or not (ratemapping case)
   isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`
-
-  
-  
-
-
 };
+
+
+const B2B_API_LIVE = {
+
+  challanTransaction:`${b2bAPIURL}/e-collection/challan/get_transactions`
+}
+
  
 const API_URL = API_LIVE;
+
+export const B2B_URL = B2B_API_LIVE;
 export default API_URL;
+
+
 export const APP_ENV  = ENV_PROD;
 
 export const TIMEOUT = 1500; // time in seconds 1500 = 25 minutes

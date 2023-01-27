@@ -23,10 +23,14 @@ const MerchantDocument = (props) => {
 
   const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
   const newDropDownDocList = dropDownDocList.filter(element => element !== ''); // remove blank string in array
+<<<<<<< HEAD
   
 
   const uploadedDocList = Array.docList ? docList?.map((r) => r?.type) : []
 
+=======
+  const uploadedDocList = docList?.map((r) => r?.type);
+>>>>>>> 3fbcb43c829996c7796c0d03c81734faf34f5029
 
   const removeCommon = (newDropDownDocList, uploadedDocList) => {
     const spreaded = [...newDropDownDocList, ...uploadedDocList];
@@ -66,18 +70,18 @@ const MerchantDocument = (props) => {
 
   ///////////////////////////////////////////////////////////////////////
    const [buttonText, setButtonText] = useState("");
-  const [savedData, setSavedData] = useState([]);
+  // const [savedData, setSavedData] = useState([]);
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
   const [closeModal, setCloseModal] = useState(false)
   const [commetText, setCommetText] = useState()
   const [documentsIdList, setdocumentsIdList] = useState([])
   const [checkedClicked, setCheckedClicked] = useState(false)
-  const [enableeBtn, setEnableBtn] = useState(false)
+  // const [enableeBtn, setEnableBtn] = useState(false)
 
   // console.log("this is the real statsus",staus)
 
-  const [loader, setLoader] = useState(false)
+  // const [loader, setLoader] = useState(false)
   const [buttonClick, setButtonClick] = useState(null)
   
 
@@ -92,9 +96,9 @@ const MerchantDocument = (props) => {
     return data[0]?.value;
   };
 
-  useEffect(() => {
-    setSavedData(KycDocUpload);
-  }, [KycDocUpload]);
+  // useEffect(() => {
+  //   setSavedData(KycDocUpload);
+  // }, [KycDocUpload]);
 
   const stringManulate = (str) => {
     let str1 = str.substring(0, 15)
@@ -114,7 +118,7 @@ const MerchantDocument = (props) => {
       document_id: [doc_id],
       verified_by: loginId,
     };
-    setLoader(true)
+    // setLoader(true)
 
 
     if (Allow_To_Do_Verify_Kyc_details === true || role?.verifier)
@@ -123,11 +127,11 @@ const MerchantDocument = (props) => {
           if (resp?.payload?.status) {
             getKycDocList(role);
             toast.success(resp?.payload?.message)
-            setLoader(false)
+            // setLoader(false)
 
           } else {
             toast.error(resp?.payload?.message)
-            setLoader(false)
+            // setLoader(false)
           }
 
         });

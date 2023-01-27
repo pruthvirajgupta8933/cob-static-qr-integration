@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useHistory, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { isArray, isNull } from 'lodash'
 import SabpaisaPaymentGateway from './SabpaisaPaymentGateway'
 import API_URL from '../../config'
@@ -61,8 +61,8 @@ function SpPg() {
         axiosInstanceAuth
             .get(url)
             .then((resp) => {
-                const data = resp.data.ProductDetail;
-                const plan = data?.filter(p => p.plan_id === planid)
+                // const data = resp.data.ProductDetail;
+                // const plan = data?.filter(p => p.plan_id === planid)
                 // setPlanPrice(plan?.actual_price)
                 // console.log("take price from it", plan)
 

@@ -52,7 +52,16 @@ import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
+<<<<<<< HEAD
 import OnboardedReport from "../ApproverNVerifier/OnboardedReport";
+=======
+import B2BRouting from "../../B2B_components/Transactions/Routes/B2BRouting";
+import ChallanTransactionsReport from "../../B2B_components/Transactions/ChallanTransactionsReport"
+
+
+
+
+>>>>>>> 3fbcb43c829996c7796c0d03c81734faf34f5029
 
 function Dashboard() {
   let history = useHistory();
@@ -440,8 +449,10 @@ function Dashboard() {
         <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
           <SpPg />
         </MerchantRoute>
+        <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactionsReport}>
+          <ChallanTransactionsReport/>
+        </B2BRouting>
          <Route path={`${path}/*`} component={UrlNotFound}/>
-
       </Switch>
     </section>
   );

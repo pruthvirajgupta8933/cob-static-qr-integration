@@ -9,7 +9,10 @@ import { completeVerification,
   } from "../../../../slices/kycOperationSlice"
 import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3fbcb43c829996c7796c0d03c81734faf34f5029
 
 
 const CompleteVerification = (props) => {
@@ -27,7 +30,11 @@ let closeVerificationModal=props?.closeVerification;
   let isverified = KycTabStatus.is_verified
   // console.log("",pendingVerfyTable)
   const { merchantKycId } = props;
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 3fbcb43c829996c7796c0d03c81734faf34f5029
 
   const dispatch = useDispatch()
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
