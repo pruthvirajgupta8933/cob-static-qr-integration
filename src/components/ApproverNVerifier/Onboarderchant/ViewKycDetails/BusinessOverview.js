@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-// import {verifyKycEachTab} from "../../slices/kycSlice";
 import { verifyKycEachTab } from '../../../../slices/kycSlice';
 import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
@@ -10,7 +9,7 @@ import { GetKycTabsStatus } from '../../../../slices/kycSlice';
 const BusinessOverview = (props) => {
   const { businessTypeResponse, businessCategoryResponse, merchantKycId, KycTabStatus } = props;
   const dispatch = useDispatch();
-  const { auth, kyc } = useSelector((state) => state);
+  const { auth } = useSelector((state) => state);
 
   const [isVerified, setIsVerified] = useState(KycTabStatus?.business_info_status === "Verified" ? true : false);
   const [isRejected, setIsRejected] = useState(KycTabStatus?.business_info_status === "Verified" ? true : false);
@@ -21,8 +20,7 @@ const BusinessOverview = (props) => {
   const { user } = auth;
   const { loginId } = user;
 
-  // const general_info_status = KycTabStatus?.business_info_status;
-
+  
 
 
   const handleVerifyClick = () => {

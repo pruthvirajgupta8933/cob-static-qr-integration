@@ -52,6 +52,7 @@ import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
+import OnboardedReport from "../ApproverNVerifier/OnboardedReport";
 
 function Dashboard() {
   let history = useHistory();
@@ -381,6 +382,34 @@ function Dashboard() {
             <SignupData />
           </ViewerRoute>
         )}
+
+
+
+{roles?.verifier === true ? (
+          <VerifierRoute
+            exact
+            path={`${path}/onboarded-report`}
+            Component={OnboardedReport}
+          >
+            <SignupData />
+            
+          </VerifierRoute>
+        ) : roles?.approver === true ? (
+          <ApproverRoute
+            exact
+            path={`${path}/onboarded-report`}
+            Component={OnboardedReport}
+          >
+            <SignupData />
+          </ApproverRoute>
+        ) : (
+         <></>
+        )}
+
+
+
+
+        
 
         <ApproverRoute
           exact

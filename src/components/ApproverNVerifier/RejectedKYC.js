@@ -37,8 +37,7 @@ const RejectedKYC = () => {
   };
 
 
-  useEffect(() => {
-   
+  const kycForRejectedMerchnats=()=>{
     dispatch(kycForRejectedMerchants({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
@@ -56,6 +55,14 @@ const RejectedKYC = () => {
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
+
+  }
+
+
+  useEffect(() => {
+   
+    kycForRejectedMerchnats()
+    
   }, [currentPage, pageSize]);
 
 
@@ -142,7 +149,7 @@ const nextPage = () => {
           />
         </div>
         <div>
-        <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
+        <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderToPendingKyc={kycForRejectedMerchnats} />
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">

@@ -204,6 +204,22 @@ const SideNavbar = () => {
                       <React.Fragment></React.Fragment>
                     )}
 
+
+{roleBasedShowTab?.approver === true  ||  roleBasedShowTab?.verifier === true || roleBasedShowTab?.viewer === true ? (
+<li className="ant-menu-item" role="menuitem">
+                      <Link
+                        to={`${url}/onboarded-report`}
+                        className="txt-white sidenavFonts"
+                      >
+                        <i className="fa fa-user" aria-hidden="true" />
+                        <span>&nbsp;Onboarded Report</span>
+                        {/* <span className="new-tab">new</span> */}
+                      </Link>
+                    </li>
+                     ) : (
+                      <React.Fragment></React.Fragment>
+                    )}
+
                   <li
                     className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open"
                     role="menuitem"

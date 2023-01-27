@@ -23,12 +23,9 @@ const MerchantDocument = (props) => {
 
   const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
   const newDropDownDocList = dropDownDocList.filter(element => element !== ''); // remove blank string in array
-  // var dropDownList = arr.map(function(e){return e.toString()});
-  //  console.log("Array 1 ====>",newDropDownDocList)
+  
 
-  const uploadedDocList = docList?.map((r) => r?.type);
-
-  //  console.log("Array 2",uploadedDocList)
+  const uploadedDocList = Array.docList ? docList?.map((r) => r?.type) : []
 
 
   const removeCommon = (newDropDownDocList, uploadedDocList) => {
@@ -332,7 +329,7 @@ const MerchantDocument = (props) => {
       </div>
 
       <div className="col-lg-12 mt-4 m-2">
-        <table className="table table-bordered">
+        <table className="table table-bordered w-100">
 
 
           <thead>
@@ -345,19 +342,16 @@ const MerchantDocument = (props) => {
             <tr>
 
               {currenTab === 3 || currenTab === 4 ?
-                <th>Select&nbsp;
+                <th>
                   <input
                     type="checkbox"
                     checked={documentsIdList?.length === KycDocUpload?.length ? true : false}
-                    onChange={(e) => handleCheckChange(e)}
-
-                  />
-                </th>
+                    onChange={(e) => handleCheckChange(e)} /></th>
                 : <></>}
               <th>S.No.</th>
-              <th>Document Type</th>
-              <th>Document Name</th>
-              <th>Document Status</th>
+              <th>Document&nbsp;Type</th>
+              <th>Document&nbsp;Name</th>
+              <th>Document&nbsp;Status</th>
               <th>Action</th>
 
             </tr>

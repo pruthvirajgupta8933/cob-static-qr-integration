@@ -159,7 +159,7 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
-  
+  KYC_FOR_ONBOARDED: `${kyc_url}/kyc/get-merchant-data/`,
 
   /** Contact Information */
   Save_General_Info: `${kyc_url}/kyc/save-general-info/`,
@@ -228,6 +228,7 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
    //Reversing from pending approval to pending verification
    Back_To_Pending_Verification:`${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
    Back_To_Pending_Approval:`${kyc_url}/kyc/reverse-kyc/re-approval/`,
+   Back_To_Pending_KYC:`${kyc_url}/kyc/reverse-kyc/re-kyc-submit/`,
 
 
 
