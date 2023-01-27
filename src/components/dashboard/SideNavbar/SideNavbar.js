@@ -441,6 +441,45 @@ const SideNavbar = () => {
                       )}
                     </ul>
                   </li>
+                  {( roleBasedShowTab?.merchant === true) ? (
+                      <div
+                        className="ant-menu-submenu-title"
+                        aria-expanded="true"
+                        aria-owns="settlement$Menu"
+                        aria-haspopup="true"
+                        style={{ paddingLeft: "24px" }}
+                      >
+                        <span className="sidebar-menu-divider-business">
+                         Back To Business
+                        </span>
+                        <i class="ant-menu-submenu-arrow"></i>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                     {roleBasedShowTab?.merchant === true ? (
+                       <li
+                       className="ant-menu-item"
+                       role="menuitem"
+                       style={{ paddingLeft: "48px" }}
+                     >
+                       <Link
+                         to={`${url}/emami/challan-transactions`}
+                         className="txt-white sidenavFonts"
+                       >
+                         <img
+                           src={transHis}
+                           width={17}
+                           alt="sabpaisa"
+                           title="sabpaisa"
+                         />
+                         &nbsp;Challan Transactions
+                       </Link>
+                     </li>
+                      ) : (
+                        <React.Fragment></React.Fragment>
+                      )}
+                    
                 </ul>
               </div>
               <div

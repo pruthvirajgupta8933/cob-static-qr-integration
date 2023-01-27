@@ -1,4 +1,5 @@
 const ENV_PROD = false; // don't change in the local environment
+const B2B_ENV_PROD = false;
 let url,kyc_url = "",kyc_validate = "";
 
 if (ENV_PROD) {
@@ -10,6 +11,17 @@ if (ENV_PROD) {
   kyc_url = "https://stgcobkyc.sabpaisa.in";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in"
 }
+
+// if(B2B_ENV_PROD) {
+
+// }
+
+// else {
+
+// }
+
+
+const b2bAPIURL = "https://stage-b2bchallan.sabpaisa.in";
 
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
@@ -269,15 +281,21 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
 
   // Check is client code mapped or not (ratemapping case)
   isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`
-
-  
-  
-
-
 };
+
+
+const B2B_API_LIVE = {
+
+  challanTransaction:`${b2bAPIURL}/e-collection/challan/get_transactions`
+}
+
  
 const API_URL = API_LIVE;
+
+export const B2B_URL = B2B_API_LIVE;
 export default API_URL;
+
+
 export const APP_ENV  = ENV_PROD;
 
 export const TIMEOUT = 1500; // time in seconds 1500 = 25 minutes

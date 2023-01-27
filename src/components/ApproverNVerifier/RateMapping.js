@@ -1,9 +1,7 @@
-
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
-import Spinner from "./Spinner";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import moment from "moment";
 
@@ -11,7 +9,6 @@ import NavBar from "../../components/dashboard/NavBar/NavBar"
 import ViewRateMapping from "./ViewRateMapping";
 
 function RateMapping() {
-  const [approveMerchant, setApproveMerchant] = useState([]);
   const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
   const [dataCount, setDataCount] = useState("");
@@ -19,7 +16,6 @@ function RateMapping() {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [spinner, setSpinner] = useState(true);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [openZoneModal, setOpenModal] = useState(false)
  
@@ -31,6 +27,8 @@ function RateMapping() {
     setSearchText(e.target.value);
   };
 
+
+  let setSpinner = true;
 
   useEffect(() => {
    
