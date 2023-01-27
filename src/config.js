@@ -46,7 +46,7 @@ const API_LIVE = {
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
-  SUCCESS_TXN_SUMMARY: adminAPIURL + "/REST/SuccessTxnSummary/",
+  SUCCESS_TXN_SUMMARY: reportAPIURL+"/REST/SuccessTxnSummary/",
 
   // * Rate mapping */
   RATE_MAPPING_GenerateClientFormForCob:adminAPIURL+"/REST/config/GenerateClientFormForCob",
@@ -71,14 +71,16 @@ const API_LIVE = {
 
   GET_PAYMENT_STATUS_LIST: adminAPIURL + "/REST/admin/getPaymentStatusList",
   PAY_MODE_LIST: adminAPIURL + "/REST/paymode/paymodeList",
-  GetMerchantTxnHistory: adminAPIURL + "/REST/GetMerchantTxnHistory",
+    // GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistory",
+    GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistoryN",
+    
   /* Settlement Report */
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
   RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
   ChargeBankTxnHistory: reportAPIURL + "/REST/GetChargebackTxnHistory",
 
   /* Transaction Enquiry */
-  VIEW_TXN: adminAPIURL + "/Enquiry/ViewTxn",
+  VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
   SP2_VIEW_TXN: "https://sp2-adminapi.sabpaisa.in/Enquiry/ViewTxn",
 
   /* Settlement Report */

@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  kycForPendingMerchants,
-  GetKycTabsStatus,
-} from "../../slices/kycSlice";
-import {  useRouteMatch } from "react-router-dom";
+import {   kycForPendingMerchants } from "../../slices/kycSlice";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
 import CommentModal from "./Onboarderchant/CommentModal";
-import { useSelector } from "react-redux";
+
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
@@ -19,7 +15,7 @@ import MerchnatListExportToxl from "./MerchnatListExportToxl";
 // import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
 
 const PendindKyc = () => {
-  const { url } = useRouteMatch();
+
   const roles = roleBasedAccess();
 
   const [data, setData] = useState([]);
@@ -31,18 +27,12 @@ const PendindKyc = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-  const [statusData, setStatusData] = useState([]);
+
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [isLoaded,setIsLoaded] = useState(false)
 
-
-
-  const { auth } = useSelector((state) => state);
-  const { user } = auth;
-
-  const { loginId } = user;
 
   const dispatch = useDispatch();
   const kycSearch = (e) => {
@@ -69,7 +59,7 @@ const PendindKyc = () => {
         console.log(err);
         toastConfig.errorToast("Data not loaded");
       });
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, dispatch]);
 
   useEffect(() => {
     if (searchText?.length > 0) {
@@ -96,15 +86,15 @@ const PendindKyc = () => {
   //   });
   // };
   //--------------PENDING Merchants API -----------------//
-  const indexOfLastRecord = currentPage * pageSize;
-  const nPages = Math.ceil(pendingKycData?.length / pageSize);
+  // const indexOfLastRecord = currentPage * pageSize;
+  // const nPages = Math.ceil(pendingKycData?.length / pageSize);
   const totalPages = Math.ceil(dataCount / pageSize);
   let pageNumbers = []
   if(!Number.isNaN(totalPages)){
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
 
-  const indexOfFirstRecord = indexOfLastRecord - pageSize;
+  // const indexOfFirstRecord = indexOfLastRecord - pageSize;
 
   const nextPage = () => {
     setIsLoaded(true)
