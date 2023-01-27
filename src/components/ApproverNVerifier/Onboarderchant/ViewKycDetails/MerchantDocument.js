@@ -23,14 +23,7 @@ const MerchantDocument = (props) => {
 
   const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
   const newDropDownDocList = dropDownDocList.filter(element => element !== ''); // remove blank string in array
-<<<<<<< HEAD
-  
-
-  const uploadedDocList = Array.docList ? docList?.map((r) => r?.type) : []
-
-=======
   const uploadedDocList = docList?.map((r) => r?.type);
->>>>>>> 3fbcb43c829996c7796c0d03c81734faf34f5029
 
   const removeCommon = (newDropDownDocList, uploadedDocList) => {
     const spreaded = [...newDropDownDocList, ...uploadedDocList];
