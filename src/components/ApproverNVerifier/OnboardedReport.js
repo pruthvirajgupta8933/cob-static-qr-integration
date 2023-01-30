@@ -37,8 +37,7 @@ const OnboardedReport = () => {
     const [showData, setShowData] = useState(false)
     const [selectedvalue, setSelectedvalue] = useState("")
     const[disabled,setDisabled]=useState(false)
-    console.log("this is value",selectedvalue)
-
+   
     const VerierAndApproverSearch = (e) => {
         setSearchText(e.target.value);
     };
@@ -69,18 +68,18 @@ const OnboardedReport = () => {
 
     let selectedChoice = selectedvalue === "1" ? "Verified" : selectedvalue === "2" ? "Approved" : ""
     
-    console.log("this is selected",selectedChoice)
+   
 
     const handleSubmit = (values) => {
         setOnboradValue(values)
         setDisabled(true)
         dispatch(onboardedReport({ page: currentPage, page_size: pageSize,selectedChoice, "from_date": values.from_date, "to_date": values.to_date }))
             .then((resp) => {
-                const tableData = resp?.payload?.results.length;
-                tableData.length === 0 && tableData === null || [] ? <></> : toastConfig.successToast("Data Loaded")
-
-               
-                setSpinner(false);
+                
+                 resp?.payload?.results.length ? toastConfig.successToast("Data Loaded"):toastConfig.errorToast("No Data Found")
+                // console.log("this is table data",tableData)
+                // tableData.length === 0 && tableData === null || [] ? <></> : toastConfig.successToast("Data Loaded")
+               setSpinner(false);
                 setSpinner(false);
 
                 const data = resp?.payload?.results;

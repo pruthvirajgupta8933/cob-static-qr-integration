@@ -473,28 +473,9 @@ const SideNavbar = () => {
                     ) : (
                       <></>
                     )}
-                     {roleBasedShowTab?.merchant === true ? (
-                       <li
-                       className="ant-menu-item"
-                       role="menuitem"
-                       style={{ paddingLeft: "48px" }}
-                     >
-                       <Link
-                         to={`${url}/emami/challan-transactions`}
-                         className="txt-white sidenavFonts"
-                       >
-                         <img
-                           src={transHis}
-                           width={17}
-                           alt="sabpaisa"
-                           title="sabpaisa"
-                         />
-                         &nbsp;Challan Transactions
-                       </Link>
-                     </li>
-                      ) : (
-                        <React.Fragment></React.Fragment>
-                      )}
+                    
+
+                      
                     
                 </ul>
               </div>

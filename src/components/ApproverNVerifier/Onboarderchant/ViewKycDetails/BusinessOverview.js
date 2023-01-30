@@ -65,8 +65,7 @@ const BusinessOverview = (props) => {
 
 
 
-
-  return (
+ return (
     <div className="row mb-4 border">
       <div className="col-lg-12">
         <h3 className="font-weight-bold">Business Overview</h3>

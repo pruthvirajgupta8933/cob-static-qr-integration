@@ -52,12 +52,7 @@ import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
-import B2BRouting from "../../B2B_components/Transactions/Routes/B2BRouting";
-import ChallanTransactionsReport from "../../B2B_components/Transactions/ChallanTransactionsReport"
 import OnboardedReport from "../ApproverNVerifier/OnboardedReport";
-
-
-
 
 
 function Dashboard() {
@@ -389,34 +384,6 @@ function Dashboard() {
           </ViewerRoute>
         )}
 
-
-
-{roles?.verifier === true ? (
-          <VerifierRoute
-            exact
-            path={`${path}/onboarded-report`}
-            Component={OnboardedReport}
-          >
-            <SignupData />
-            
-          </VerifierRoute>
-        ) : roles?.approver === true ? (
-          <ApproverRoute
-            exact
-            path={`${path}/onboarded-report`}
-            Component={OnboardedReport}
-          >
-            <SignupData />
-          </ApproverRoute>
-        ) : (
-         <></>
-        )}
-
-
-
-
-        
-
         <ApproverRoute
           exact
           path={`${path}/ratemapping`}
@@ -446,10 +413,29 @@ function Dashboard() {
         <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
           <SpPg />
         </MerchantRoute>
-        <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactionsReport}>
-          <ChallanTransactionsReport/>
-        </B2BRouting>
+        {roles?.verifier === true ? (
+          <VerifierRoute
+            exact
+            path={`${path}/onboarded-report`}
+            Component={OnboardedReport}
+          >
+            <SignupData />
+            
+          </VerifierRoute>
+        ) : roles?.approver === true ? (
+          <ApproverRoute
+            exact
+            path={`${path}/onboarded-report`}
+            Component={OnboardedReport}
+          >
+            <SignupData />
+          </ApproverRoute>
+        ) : (
+         <></>
+        )}
+    
          <Route path={`${path}/*`} component={UrlNotFound}/>
+
       </Switch>
     </section>
   );
