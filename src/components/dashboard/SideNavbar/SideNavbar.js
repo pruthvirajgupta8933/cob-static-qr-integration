@@ -537,6 +537,7 @@ const SideNavbar = () => {
 
           </div>
         </div>
+        </div>
       </aside>
 
 
