@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { completeVerification, completeVerificationRejectKyc,reverseToPendingVerification,reverseToPendingApproval} from "../../../../slices/kycOperationSlice"
+import { completeVerification,
+   completeVerificationRejectKyc,
+   reverseToPendingVerification,
+   reverseToPendingApproval,
+   reverseToPendingkyc
+  } from "../../../../slices/kycOperationSlice"
 import { approvekyc, GetKycTabsStatus } from "../../../../slices/kycSlice"
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
 
@@ -14,13 +19,14 @@ let closeVerificationModal=props?.closeVerification;
   let pendingApporvalTable = props?.renderApprovalTable
   let pendingVerfyTable = props?.renderPendingVerificationData
   let approvedTable = props?.renderApprovedTable
+  let renderToPendingKyc=props?.renderToPendingKyc
 
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
   let isverified = KycTabStatus.is_verified
   // console.log("",pendingVerfyTable)
   const { merchantKycId } = props;
-
+  
 
   const dispatch = useDispatch()
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
@@ -205,6 +211,28 @@ let closeVerificationModal=props?.closeVerification;
         });
       }
     }
+
+    const handleReverseToPendingKyc = () => {
+   
+      const reverseToPendingKyc = {
+        login_id: merchantKycId.loginMasterId,
+        approved_by: loginId,
+      };
+      if (window.confirm("Are you sure to push it to Pending Kyc ?")) {
+      dispatch(reverseToPendingkyc(reverseToPendingKyc))
+        .then((resp) => {
+          // console.log("This sis",resp)
+          resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
+          dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+          closeVerificationModal(false)
+           return currenTab === 6 ? renderToPendingKyc() : <></>
+                 
+        })
+        .catch((e) => {
+          // toast.error("Something went wrong, Please Try Again later")
+        });
+      }
+    }
   
   
 
@@ -233,9 +261,7 @@ let closeVerificationModal=props?.closeVerification;
     let enableBtn = false;
     if (currenTab === 5) {
       if (roles.approver === true)
-        //  if ( status === "Verified")
-        // if (isverified === true && isapproved === false) {
-          if (Allow_To_Do_Verify_Kyc_details ===  true) {
+       if (Allow_To_Do_Verify_Kyc_details ===  true) {
           enableBtn = true;
 
         }
@@ -283,6 +309,7 @@ let closeVerificationModal=props?.closeVerification;
     //  console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
     //  console.log("isverified",isverified)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roles, isverified, Allow_To_Do_Verify_Kyc_details]);
 
   // console.log("---------start final btn-----")
@@ -319,13 +346,11 @@ let closeVerificationModal=props?.closeVerification;
         {roles?.approver === true && currenTab === 5 ? 
         <button button type="button" onClick={()=> handleReverseToPendingApproval() } className="btn btn-success btn-sm text-white">Back to Pending Approval</button> : <></>}
 
-          {/* {roles?.approver === true && currenTab === 3 ? 
-          <button button type="button" onClick={()=> toast.success("Reversed To Pending Kyc")} className="btn btn-success btn-sm text-white">Back to Pending KYC</button> : <></>}
+          {roles?.approver === true && currenTab === 6 ? 
+        <button button type="button" onClick={()=> handleReverseToPendingKyc() } className="btn btn-success btn-sm text-white">Back to Pending kyc</button> : <></>}
 
-            {roles?.approver === true && currenTab === 6 ? 
-          <button button type="button" onClick={()=> toast.success("Reversed To Pending Kyc")} className="btn btn-success btn-sm text-white">Back to Pending KYC</button> : <></>} */}
 
-</div>
+  </div>
 <div className="col-lg-12">
 {buttonClick===true ?
  

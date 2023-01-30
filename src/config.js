@@ -1,15 +1,22 @@
 const ENV_PROD = false; // don't change in the local environment
-let url,kyc_url = "",kyc_validate = "";
+
+let url, kyc_url, b2b_url, kyc_validate = "";
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
   kyc_validate = " https://kycvalidator.sabpaisa.in"
+  b2b_url = "https://b2becollect.sabpaisa.in"
+
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in"
+  b2b_url = "https://stage-b2bchallan.sabpaisa.in"
+
 }
+
+
 
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
@@ -148,6 +155,8 @@ const API_LIVE = {
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
+  KYC_FOR_ONBOARDED: `${kyc_url}/kyc/get-merchant-data/`,
+
   /** Contact Information */
   Save_General_Info: `${kyc_url}/kyc/save-general-info/`,
   //==>For Verfifying Contact Info Ist Phase(Send OTP and Verify OTP)
@@ -196,8 +205,12 @@ const API_LIVE = {
   COMPLETE_VERIFICATION:`${kyc_url}/kyc/verify-kyc/verify/`,
   COMPLETE_VERIFICATION_REJECT_KYC:`${kyc_url}/kyc/verify-kyc/reject/`,
    //Reversing from pending approval to pending verification
-  Back_To_Pending_Verification:`${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
-  Back_To_Pending_Approval:`${kyc_url}/kyc/reverse-kyc/re-approval/`,
+   Back_To_Pending_Verification:`${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
+   Back_To_Pending_Approval:`${kyc_url}/kyc/reverse-kyc/re-approval/`,
+   Back_To_Pending_KYC:`${kyc_url}/kyc/reverse-kyc/re-kyc-submit/`,
+
+
+
   // Client Detail SandBox //
   CLIENT_DETAIL: `${url}/clientDetail`,
   // KYC VALIDATE URL
@@ -215,16 +228,21 @@ const API_LIVE = {
   VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`,
   // ---------------------------   NEW API FOR COMMENTS (2)
   // Check is client code mapped or not (ratemapping case)
-  isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`,
-
-  //login wise fetch menu list
-  cobMenuList: `${url}/menu-loginwise`  
+  isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`
 };
 
 
+const B2B_API_LIVE = {
+  challanTransaction:`${b2b_url}/e-collection/challan/get_transactions`
+}
 
+ 
 const API_URL = API_LIVE;
+
+export const B2B_URL = B2B_API_LIVE;
 export default API_URL;
+
+
 export const APP_ENV  = ENV_PROD;
 
 export const TIMEOUT = 1500; // time in seconds 1500 = 25 minutes

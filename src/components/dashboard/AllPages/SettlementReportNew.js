@@ -108,6 +108,7 @@ const SettlementReportNew= () => {
   };
 
   const onSubmitHandler = (values) => {
+    console.log(values)
     setIsDisable(true)
     dispatch(fetchSettlementReportSlice(values)).then((res) => {
      

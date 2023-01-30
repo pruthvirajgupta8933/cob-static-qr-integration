@@ -20,8 +20,7 @@ const BusinessOverview = (props) => {
   const { user } = auth;
   const { loginId } = user;
 
-  // const general_info_status = KycTabStatus?.business_info_status;
-
+  
 
 
   const handleVerifyClick = () => {
@@ -66,8 +65,7 @@ const BusinessOverview = (props) => {
 
 
 
-
-  return (
+ return (
     <div className="row mb-4 border">
       <div className="col-lg-12">
         <h3 className="font-weight-bold">Business Overview</h3>
