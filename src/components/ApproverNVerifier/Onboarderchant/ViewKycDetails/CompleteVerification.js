@@ -26,10 +26,7 @@ let closeVerificationModal=props?.closeVerification;
   let isverified = KycTabStatus.is_verified
   // console.log("",pendingVerfyTable)
   const { merchantKycId } = props;
-<<<<<<< HEAD
   
-=======
->>>>>>> 9dc461ce9d03ee62f0f1f1fe8fae9af1933372cb
 
   const dispatch = useDispatch()
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)

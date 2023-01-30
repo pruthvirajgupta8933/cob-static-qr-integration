@@ -523,20 +523,6 @@ const SideNavbar = () => {
                         to={`${url}/emami/challan-transactions`}
                         className="txt-white sidenavFonts"
                       >
-<<<<<<< HEAD
-                        <span className="sidebar-menu-divider-business">
-                         Back To Business
-                        </span>
-                        <i class="ant-menu-submenu-arrow"></i>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-                    
-
-                      
-                    
-=======
                         <img
                           src={transHis}
                           width={17}
@@ -549,7 +535,6 @@ const SideNavbar = () => {
                   ) : (
                     <React.Fragment></React.Fragment>
                   )}
->>>>>>> 9dc461ce9d03ee62f0f1f1fe8fae9af1933372cb
                 </ul>
               </div>
               <div
