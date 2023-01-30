@@ -11,8 +11,9 @@ import transHis from "../../../assets/images/transImage.png";
 import enquire from "../../../assets/images/enquiry.png";
 
 const SideNavbar = () => {
-  const { auth } = useSelector((state) => state);
+  const { auth, menuListReducer } = useSelector((state) => state);
   const [showB2B, setShowB2B] = useState(true);
+  const [renderMenuList, setRenderMenuList] = useState(<></>);
 
   const { user, payLinkPermission } = auth;
   //  const [clientCode, SetClientCode] = useState("")
@@ -22,13 +23,60 @@ const SideNavbar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user.clientMerchantDetailsList?.length > 0) {
-      // SetClientCode(user?.clientMerchantDetailsList[0]?.clientCode)
-      dispatch(
-        checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode)
-      );
-    }
-  }, []);
+    // if (user.clientMerchantDetailsList?.length > 0) {
+    //   // SetClientCode(user?.clientMerchantDetailsList[0]?.clientCode)
+    //   dispatch(
+    //     checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode)
+    //   );
+    // }
+
+    const displayMenu = menuListReducer?.enableMenu?.map((m, i) => {
+      return (
+        <React.Fragment>
+          <div
+            className="ant-menu-submenu-title"
+            aria-expanded="true"
+            aria-owns="settlement$Menu"
+            aria-haspopup="true"
+            style={{ paddingLeft: "24px" }}
+            key={i}
+          >
+            <span className="sidebar-menu-divider-business">
+              {m?.app_name}
+            </span>
+            <i className="ant-menu-submenu-arrow" />
+          </div>
+
+          <ul id="settlement$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu">
+            {m?.submenu?.map((sm, i) => (
+              sm?.is_active && 
+              <li className="ant-menu-item" role="menuitem" key={i}>
+                <Link
+                  to={`${url}/${sm?.url}`}
+                  className="txt-white sidenavFonts"
+                >
+                  <img
+                    src={transHis}
+                    width={17}
+                    alt="sabpaisa"
+                    title="sabpaisa"
+                  />
+                  &nbsp;{sm?.submenu_name}
+                </Link>
+
+              </li>
+            ))}
+          </ul>
+        </React.Fragment>
+      )
+    })
+
+    setRenderMenuList(displayMenu)
+
+
+  }, [menuListReducer]);
+
+
 
   const roleBasedShowTab = roleBasedAccess();
 
@@ -36,7 +84,7 @@ const SideNavbar = () => {
   return (
     <>
       <div className="headers "></div>
-      <input type="checkbox" className="openSidebarMenu" id="openSidebarMenu" title="ToggleBar" alt="ToggleBar"/>
+      <input type="checkbox" className="openSidebarMenu" id="openSidebarMenu" title="ToggleBar" alt="ToggleBar" />
       <label for="openSidebarMenu" className="sidebarIconToggle ">
         <div className="spinner diagonal part-1"></div>
         <div className="spinner horizontal"></div>
@@ -91,8 +139,10 @@ const SideNavbar = () => {
                     ) : (
                       <React.Fragment></React.Fragment>
                     )}
+                    {renderMenuList}
 
-                    {roleBasedShowTab?.merchant === true && (roleBasedShowTab?.approver === false && roleBasedShowTab?.verifier === false) ? (
+
+                    {/* {roleBasedShowTab?.merchant === true && (roleBasedShowTab?.approver === false && roleBasedShowTab?.verifier === false) ? (
                       <>
                         <li className="ant-menu-item" role="menuitem">
                           <Link
@@ -130,9 +180,9 @@ const SideNavbar = () => {
                       </>
                     ) : (
                       <React.Fragment></React.Fragment>
-                    )}
+                    )} */}
 
-                    {(roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true || roleBasedShowTab?.viewer === true) ? (
+                    {/* {(roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true || roleBasedShowTab?.viewer === true) ? (
                       <li className="ant-menu-item" role="menuitem">
                         <Link
                           to={`${url}/approver`}
@@ -140,14 +190,16 @@ const SideNavbar = () => {
                         >
                           <i className="fa fa-list" aria-hidden="true" />
                           <span>&nbsp;Merchant List</span>
-                          {/* <span className="new-tab">new</span> */}
+                          { 
+                            // <span className="new-tab">new</span> 
+                            }
                         </Link>
                       </li>
                     ) : (
                       <React.Fragment></React.Fragment>
-                    )}
+                    )} */}
 
-                    {(roleBasedShowTab?.approver === true) ? (
+                    {/* {(roleBasedShowTab?.approver === true) ? (
                       <>
                         <li className="ant-menu-item" role="menuitem">
                           <Link
@@ -156,7 +208,6 @@ const SideNavbar = () => {
                           >
                             <i className="fa fa-user" aria-hidden="true" />
                             <span>&nbsp;Additional KYC</span>
-                            {/* <span className="new-tab">new</span> */}
                           </Link>
                         </li>
 
@@ -168,7 +219,6 @@ const SideNavbar = () => {
                           >
                             <i className="fa fa-list-alt" aria-hidden="true" />
                             <span>&nbsp;Assign Zone</span>
-                            {/* <span className="new-tab">new</span> */}
                           </Link>
                         </li>
                         <li className="ant-menu-item" role="menuitem">
@@ -178,15 +228,16 @@ const SideNavbar = () => {
                           >
                             <i className="fa fa-bar-chart" aria-hidden="true" />
                             <span>&nbsp;Rate Mapping</span>
-                            {/* <span className="new-tab">new</span> */}
+                            {//<span className="new-tab">new</span>
+                            }
                           </Link>
                         </li>
                       </>
                     ) : (
                       <React.Fragment></React.Fragment>
-                    )}
+                    )} */}
 
-                    {roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true || roleBasedShowTab?.viewer === true ? (
+                    {/* {roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true || roleBasedShowTab?.viewer === true ? (
                       <li className="ant-menu-item" role="menuitem">
                         <Link
                           to={`${url}/signup-data`}
@@ -194,14 +245,13 @@ const SideNavbar = () => {
                         >
                           <i className="fa fa-user" aria-hidden="true" />
                           <span>&nbsp;Signup Data</span>
-                          {/* <span className="new-tab">new</span> */}
                         </Link>
                       </li>
                     ) : (
                       <React.Fragment></React.Fragment>
-                    )}
+                    )} */}
 
-                    <li
+                    {/* <li
                       className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open"
                       role="menuitem"
                     >
@@ -231,7 +281,6 @@ const SideNavbar = () => {
                           <li
                             className="ant-menu-item"
                             role="menuitem"
-                          // style={{ paddingLeft: "48px" }}
                           >
                             <Link
                               to={`${url}/transaction-summery`}
@@ -255,7 +304,6 @@ const SideNavbar = () => {
                             <li
                               className="ant-menu-item"
                               role="menuitem"
-                            // style={{ paddingLeft: "48px" }}
                             >
                               <Link
                                 to={`${url}/transaction-history`}
@@ -274,7 +322,6 @@ const SideNavbar = () => {
                             <li
                               className="ant-menu-item"
                               role="menuitem"
-                            // style={{ paddingLeft: "48px" }}
                             >
                               <Link
                                 to={`${url}/transaction-enquiry`}
@@ -294,14 +341,10 @@ const SideNavbar = () => {
                           <React.Fragment></React.Fragment>
                         )}
 
-                        {/* <li className="ant-menu-item" role="menuitem" style={{paddingLeft: '48px'}}>
-                        <Link to={`${url}/view-transaction-with-filter`} className='txt-white'><i className="fa fa-filter" aria-hidden="true" />   Transaction Enquiry With Filter </Link> 
-                      </li> */}
                         {roleBasedShowTab?.bank === true ? (
                           <li
                             className="ant-menu-item"
                             role="menuitem"
-                          // style={{ paddingLeft: "48px" }}
                           >
                             <Link
                               to={`${url}/client-list`}
@@ -326,7 +369,6 @@ const SideNavbar = () => {
                               <li
                                 className="ant-menu-item"
                                 role="menuitem"
-                              // style={{ paddingLeft: "48px" }}
                               >
                                 <Link
                                   to={`${url}/settlement-report`}
@@ -341,7 +383,6 @@ const SideNavbar = () => {
                             <li
                               className="ant-menu-item"
                               role="menuitem"
-                            // style={{ paddingLeft: "48px" }}
                             >
                               <Link
                                 to={`${url}/settlement-report-new`}
@@ -354,7 +395,6 @@ const SideNavbar = () => {
                             <li
                               className="ant-menu-item"
                               role="menuitem"
-                            // style={{ paddingLeft: "48px" }}
                             >
                               <Link
                                 to={`${url}/refund-transaction-history`}
@@ -367,7 +407,6 @@ const SideNavbar = () => {
                             <li
                               className="ant-menu-item"
                               role="menuitem"
-                            // style={{ paddingLeft: "48px" }}
                             >
                               <Link
                                 to={`${url}/chargeback-transaction-history`}
@@ -377,22 +416,6 @@ const SideNavbar = () => {
                                 <span>&nbsp;Chargeback Txn History</span>
                               </Link>
                             </li>
-                            {/* {roleBasedShowTab?.bank === true ? <></> :
-
-                          <li
-                            className="ant-menu-item"
-                            role="menuitem"
-                            style={{ paddingLeft: "48px" }}
-                          >
-                            <Link
-                              to={`${url}/product-catalogue`}
-                              className="txt-white sidenavFonts"
-                            >
-                              <i className="fa fa-book" aria-hidden="true" />
-                              &nbsp;Product Catalogue
-                            </Link>
-                          </li>
-                      } */}
                           </React.Fragment>
                         ) : (
                           <React.Fragment></React.Fragment>
@@ -447,8 +470,9 @@ const SideNavbar = () => {
                         <React.Fragment></React.Fragment>
                       )}
                     </ul>
-                  </li>
-                  {roleBasedShowTab?.merchant === true ? (
+                  </li> */}
+
+                    {/* {roleBasedShowTab?.merchant === true ? (
                     <div
                       className="ant-menu-submenu-title"
                       aria-expanded="true"
@@ -478,8 +502,9 @@ const SideNavbar = () => {
                     </div>
                   ) : (
                     <></>
-                  )}
-                  {roleBasedShowTab?.merchant === true && showB2B ? (
+                  )} */}
+
+                    {/* {roleBasedShowTab?.merchant === true && showB2B ? (
                     <li
                       className="ant-menu-item"
                       role="menuitem"
@@ -500,43 +525,45 @@ const SideNavbar = () => {
                     </li>
                   ) : (
                     <React.Fragment></React.Fragment>
-                  )}
-                </ul>
-              </div>
-              <div
-                className="track-horizontal"
-                style={{ display: "none", opacity: 0 }}
-              >
+                  )} */}
+
+
+                  </ul>
+                </div>
                 <div
-                  style={{
-                    position: "absolute",
-                    width: "6px",
-                    transition: "opacity 200ms ease 0s",
-                    opacity: 0,
-                    right: "2px",
-                    bottom: "2px",
-                    top: "2px",
-                    borderRadius: "3px",
-                  }}
+                  className="track-horizontal"
+                  style={{ display: "none", opacity: 0 }}
                 >
                   <div
                     style={{
-                      position: "relative",
-                      display: "block",
-                      width: "100%",
-                      cursor: "pointer",
-                      borderRadius: "inherit",
-                      backgroundColor: "rgba(0, 0, 0, 0.2)",
-                      height: "30px",
-                      transform: "translateY(31.5706px)",
+                      position: "absolute",
+                      width: "6px",
+                      transition: "opacity 200ms ease 0s",
+                      opacity: 0,
+                      right: "2px",
+                      bottom: "2px",
+                      top: "2px",
+                      borderRadius: "3px",
                     }}
-                  ></div>
+                  >
+                    <div
+                      style={{
+                        position: "relative",
+                        display: "block",
+                        width: "100%",
+                        cursor: "pointer",
+                        borderRadius: "inherit",
+                        backgroundColor: "rgba(0, 0, 0, 0.2)",
+                        height: "30px",
+                        transform: "translateY(31.5706px)",
+                      }}
+                    ></div>
+                  </div>
                 </div>
               </div>
-            </div>
 
+            </div>
           </div>
-        </div>
         </div>
       </aside>
 

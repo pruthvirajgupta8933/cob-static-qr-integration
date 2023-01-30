@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./css/Home.css";
 import "./css/50.684f163d.chunk.css";
 import "./css/main.e3214ff9.chunk.css";
@@ -55,6 +55,7 @@ import API_URL from "../../config";
 import OnboardedReport from "../ApproverNVerifier/OnboardedReport";
 import ChallanTransactReport from "../../B2B_components/ChallanTransactReport";
 import B2BRouting from "../../B2B_components/Routes/B2BRouting";
+import { fetchMenuList } from "../../slices/cob-dashboard/menulistSlice";
 
 
 function Dashboard() {
@@ -121,12 +122,25 @@ function Dashboard() {
 
   }, []);
 
+
+  
+  useEffect(() => {
+    const postBody = {
+      LoginId:user?.loginId
+    }
+    dispatch(fetchMenuList(postBody))
+
+  }, [])
+
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
     return <Redirect to="/login-page" />;
   } else if (user === null) {
     return <Redirect to="/login-page" />;
   }
+
+
+  
 
   return (
     <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
@@ -446,7 +460,7 @@ function Dashboard() {
         </B2BRouting>
 
         <Route path={`${path}/*`} component={UrlNotFound} />
-        
+
       </Switch>
     </section>
   );

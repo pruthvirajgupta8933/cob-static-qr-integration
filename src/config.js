@@ -41,15 +41,15 @@ const API_LIVE = {
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
-  SUCCESS_TXN_SUMMARY: reportAPIURL+"/REST/SuccessTxnSummary/",
+  SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummary/",
 
   // * Rate mapping */
-  RATE_MAPPING_GenerateClientFormForCob:adminAPIURL+"/REST/config/GenerateClientFormForCob",
+  RATE_MAPPING_GenerateClientFormForCob: adminAPIURL + "/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
-  RATE_MAPPING_CLONE: adminAPIURL+"/REST/Ratemapping/cloning",
-  RATE_ENABLE_PAYLINK: adminAPIURL+"/getDataByCommonProc/getCommonData/31",
+  RATE_MAPPING_CLONE: adminAPIURL + "/REST/Ratemapping/cloning",
+  RATE_ENABLE_PAYLINK: adminAPIURL + "/getDataByCommonProc/getCommonData/31",
 
-  CHECK_PERMISSION_PAYLINK:adminAPIURL + "/getDataByCommonProc/getCommonData/29/",
+  CHECK_PERMISSION_PAYLINK: adminAPIURL + "/getDataByCommonProc/getCommonData/29/",
   BANK_IFSC_CODE_VERIFY: "https://ifsc.razorpay.com/",
   BANK_LIST_NB:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
@@ -66,9 +66,9 @@ const API_LIVE = {
 
   GET_PAYMENT_STATUS_LIST: adminAPIURL + "/REST/admin/getPaymentStatusList",
   PAY_MODE_LIST: adminAPIURL + "/REST/paymode/paymodeList",
-    // GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistory",
-    GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistoryN",
-    
+  // GetMerchantTxnHistory: reportAPIURL+"/REST/GetMerchantTxnHistory",
+  GetMerchantTxnHistory: reportAPIURL + "/REST/GetMerchantTxnHistoryN",
+
   /* Settlement Report */
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
   RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
@@ -130,18 +130,18 @@ const API_LIVE = {
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
   Business_overview_state_: `${kyc_url}/kyc/get-all-state-details/`,
   /////////////////////////////////////////////  AssignZone APi
-  ZONE_DETAILS:`${url}/zone/zones`,
-  ZONE_MASTER : `${url}/zone/zones-master`,
-  RISK_CATEGORY:`${kyc_url}/kyc/get-risk-category-details/`,
-  ZONE_EMPLOYEE:`${url}/zone/employee-detail`,
-  UPDATE_ZONE_DATA:`${url}/zone/update-zone-data`,
-  GET_ZONE_INFO:`${url}/zone/get-zone-info`,
+  ZONE_DETAILS: `${url}/zone/zones`,
+  ZONE_MASTER: `${url}/zone/zones-master`,
+  RISK_CATEGORY: `${kyc_url}/kyc/get-risk-category-details/`,
+  ZONE_EMPLOYEE: `${url}/zone/employee-detail`,
+  UPDATE_ZONE_DATA: `${url}/zone/update-zone-data`,
+  GET_ZONE_INFO: `${url}/zone/get-zone-info`,
   ////////////////////////////////////////Rate mapping
-  GET_RISK_BUISENSS_BYID:`${url}/merchant/get-risk-business-by-id`,
-  GET_RISK_TEMPLSTE:`${url}/merchant/get-risk-category-template`,
-  TEMPLATE_DETAILS_BYRISKCODE:`${url}/merchant/get-template-detail-by-business-code`,
-////////////////////////////////////////SIGNUP DATA API
-  GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
+  GET_RISK_BUISENSS_BYID: `${url}/merchant/get-risk-business-by-id`,
+  GET_RISK_TEMPLSTE: `${url}/merchant/get-risk-category-template`,
+  TEMPLATE_DETAILS_BYRISKCODE: `${url}/merchant/get-template-detail-by-business-code`,
+  ////////////////////////////////////////SIGNUP DATA API
+  GET_SIGNUP_DATA_INFO: `${url}/merchant/get-signup-info`,
   //////////////////////// For merchnat list export to csv
   Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
   /////////////////////////Kyc approver
@@ -184,7 +184,7 @@ const API_LIVE = {
   PRODUCT_DETAILS: `${url}/product/product-details`,
   PRODUCT_SUB_DETAILS: `${url}/product/product-sub-details`,
   SUBSCRIBE_FETCHAPPAND_PLAN: `${url}/client-subscription-service/subscribeFetchAppAndPlan`,
-  Get_Subscribed_Plan_Detail_By_ClientId :`${url}/client-subscription-service/GetSubscribedPlanDetailByClientId`,
+  Get_Subscribed_Plan_Detail_By_ClientId: `${url}/client-subscription-service/GetSubscribedPlanDetailByClientId`,
   /* get bank , business type, business category by Id */
   GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
   GET_BUSINESS_TYPE_ID: `${kyc_url}/kyc/get-business-type-by-id/`,
@@ -195,19 +195,19 @@ const API_LIVE = {
   VERIFY_FINAL_ALL: `${kyc_url}/kyc/verify-kyc/verify/`,
   DOCUMENT_VERIFY: `${kyc_url}/kyc/upload-merchant-document/verify/`,
   DOCUMENT_REJECT: `${kyc_url}/kyc/upload-merchant-document/reject/`,
-  CHECKED_DOCUMENT_REJECT:`${kyc_url}/kyc/upload-merchant-document/document-reject/`,
+  CHECKED_DOCUMENT_REJECT: `${kyc_url}/kyc/upload-merchant-document/document-reject/`,
   DOCUMENT_REMOVE: `${kyc_url}/kyc/upload-merchant-document/remove/`,
   APPROVE_DOCUMENT: `${kyc_url}/kyc/upload-merchant-document/approve/`,
   APPROVE_KYC: `${kyc_url}/kyc/verify-kyc/approve/`,
   // VERIFY_EACH_TAB : `${kyc_url}kyc/verify-kyc/update/`,
   // Reject each tab of the kyc , URL FOR VERIFER
-  REJECT_KYC_TAB:`${kyc_url}/kyc/verify-kyc/tab-reject/`,
-  COMPLETE_VERIFICATION:`${kyc_url}/kyc/verify-kyc/verify/`,
-  COMPLETE_VERIFICATION_REJECT_KYC:`${kyc_url}/kyc/verify-kyc/reject/`,
-   //Reversing from pending approval to pending verification
-   Back_To_Pending_Verification:`${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
-   Back_To_Pending_Approval:`${kyc_url}/kyc/reverse-kyc/re-approval/`,
-   Back_To_Pending_KYC:`${kyc_url}/kyc/reverse-kyc/re-kyc-submit/`,
+  REJECT_KYC_TAB: `${kyc_url}/kyc/verify-kyc/tab-reject/`,
+  COMPLETE_VERIFICATION: `${kyc_url}/kyc/verify-kyc/verify/`,
+  COMPLETE_VERIFICATION_REJECT_KYC: `${kyc_url}/kyc/verify-kyc/reject/`,
+  //Reversing from pending approval to pending verification
+  Back_To_Pending_Verification: `${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
+  Back_To_Pending_Approval: `${kyc_url}/kyc/reverse-kyc/re-approval/`,
+  Back_To_Pending_KYC: `${kyc_url}/kyc/reverse-kyc/re-kyc-submit/`,
 
 
 
@@ -215,35 +215,39 @@ const API_LIVE = {
   CLIENT_DETAIL: `${url}/clientDetail`,
   // KYC VALIDATE URL
   VALIDATE_KYC: `${kyc_validate}/validator`,
-   // For comments in approver and merchant (Pending Verification and Pending Approval)
+  // For comments in approver and merchant (Pending Verification and Pending Approval)
   COMMENTS_BOX: `${url}/merchant/update-comments`,
-   // OnBoard Merchant Role URL 
-  Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`,
-   // Fetch selected product during registration
+  // OnBoard Merchant Role URL 
+  Roles_DropDown: `${kyc_url}/kyc/get-all-role-details/`,
+  // Fetch selected product during registration
   website_plan_details: `${url}/auth-service/auth/login/website-plan-detail`,
   // ---------------------------   NEW API FOR COMMENTS (2)
   // For Saving Comments
-  SAVE_COMMENTS:`${url}/merchant/save-comments`,
+  SAVE_COMMENTS: `${url}/merchant/save-comments`,
   // GET API FOR VIEWING COMMENTS
   VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`,
   // ---------------------------   NEW API FOR COMMENTS (2)
   // Check is client code mapped or not (ratemapping case)
-  isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`
+  isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`,
+
+  //menu list by login id
+  menuListByLoginId : `${url}/menu-loginwise`,
+  
 };
 
 
 const B2B_API_LIVE = {
-  challanTransaction:`${b2b_url}/e-collection/challan/get_transactions`
+  challanTransaction: `${b2b_url}/e-collection/challan/get_transactions`
 }
 
- 
+
 const API_URL = API_LIVE;
 
 export const B2B_URL = B2B_API_LIVE;
 export default API_URL;
 
 
-export const APP_ENV  = ENV_PROD;
+export const APP_ENV = ENV_PROD;
 
 export const TIMEOUT = 1500; // time in seconds 1500 = 25 minutes
 export const AUTH_TOKEN = "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69";

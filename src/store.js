@@ -7,6 +7,7 @@ import { kycReducer } from './slices/kycSlice';
 import {merchantZoneMappingReducer} from './slices/merchantZoneMappingSlice'
 import { merchantListReducer } from './slices/approverVerifierTabSlice';
 import { kycOperationReducer } from './slices/kycOperationSlice';
+import  menuListReducer from "./slices/cob-dashboard/menulistSlice"
 
 
 
@@ -19,7 +20,8 @@ const reducer = {
   kyc:kycReducer,
   zone:merchantZoneMappingReducer,
   verifierApproverTab:merchantListReducer,
-  kycOperationReducer:kycOperationReducer
+  kycOperationReducer:kycOperationReducer,
+  menuListReducer:menuListReducer
 }
 
 const store = configureStore({
