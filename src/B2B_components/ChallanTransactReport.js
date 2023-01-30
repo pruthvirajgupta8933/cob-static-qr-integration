@@ -1,20 +1,20 @@
 import React, { useState, useEffect} from "react";
-import NavBar from "../../components/dashboard/NavBar/NavBar";
+import NavBar from "../components/dashboard/NavBar/NavBar";
 import { Formik, Form } from "formik";
 import moment from "moment";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import FormikController from "../../_components/formik/FormikController";
-import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
+import FormikController from "../_components/formik/FormikController";
+import { convertToFormikSelectJson } from "../_components/reuseable_components/convertToFormikSelectJson";
 import { useHistory } from "react-router-dom";
-import { challanTransactions } from "../../slices/backTobusinessSlice";
-import toastConfig from "../../utilities/toastTypes";
-import Spinner from "../../components/ApproverNVerifier/Spinner";
-import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
+import { challanTransactions } from "../slices/backTobusinessSlice";
+import toastConfig from "../utilities/toastTypes";
+import Spinner from "../components/ApproverNVerifier/Spinner";
+import DropDownCountPerPage from "../_components/reuseable_components/DropDownCountPerPage";
 
 
 
-const ChallanTransactionsReport = () => {
+const ChallanTransactReport = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { auth} = useSelector((state) => state);
@@ -183,7 +183,7 @@ useEffect(() => {
     const formData = {
       from_date: values.from_date,
       to_date: values.to_date,
-      // client_code: values.clientCode,
+      client_code: values.clientCode,
       client_code: "EMAMI",
       page: currentPage,
       page_size: pageSize,
@@ -433,4 +433,4 @@ useEffect(() => {
   );
 };
 
-export default ChallanTransactionsReport;
+export default ChallanTransactReport;

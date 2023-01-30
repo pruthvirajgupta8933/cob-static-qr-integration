@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import { Route } from 'react-router-dom';
-import { roleBasedAccess } from '../../../_components/reuseable_components/roleBasedAccess';
+import { roleBasedAccess } from '../../_components/reuseable_components/roleBasedAccess';
 import { useHistory } from 'react-router-dom';
 
 
