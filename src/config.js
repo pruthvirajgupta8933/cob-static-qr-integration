@@ -1,6 +1,7 @@
 const ENV_PROD = false; // don't change in the local environment
 const B2B_ENV_PROD = false;
 let url,kyc_url = "",kyc_validate = "";
+let b2b_url = "";
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
@@ -12,16 +13,17 @@ if (ENV_PROD) {
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in"
 }
 
-// if(B2B_ENV_PROD) {
 
-// }
+// For B2B
+if(B2B_ENV_PROD) {
+  b2b_url = "https://b2becollect.sabpaisa.in"
+}
 
-// else {
+else {
+  b2b_url = "https://stage-b2bchallan.sabpaisa.in"
+}
 
-// }
 
-
-const b2bAPIURL = "https://stage-b2bchallan.sabpaisa.in";
 
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
@@ -289,7 +291,7 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
 
 const B2B_API_LIVE = {
 
-  challanTransaction:`${b2bAPIURL}/e-collection/challan/get_transactions`
+  challanTransaction:`${b2b_url}/e-collection/challan/get_transactions`
 }
 
  

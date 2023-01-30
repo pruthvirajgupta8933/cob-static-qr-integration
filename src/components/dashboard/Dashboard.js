@@ -53,6 +53,8 @@ import UrlNotFound from "./UrlNotFound";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
 import OnboardedReport from "../ApproverNVerifier/OnboardedReport";
+import ChallanTransactReport from "../../B2B_components/ChallanTransactReport";
+import B2BRouting from "../../B2B_components/Routes/B2BRouting";
 
 
 function Dashboard() {
@@ -434,6 +436,10 @@ function Dashboard() {
          <></>
         )}
     
+        <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
+          <ChallanTransactReport />
+        </B2BRouting>
+      
          <Route path={`${path}/*`} component={UrlNotFound}/>
 
       </Switch>
