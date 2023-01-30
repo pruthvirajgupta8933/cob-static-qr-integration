@@ -22,7 +22,8 @@ const KycDetailsModal = (props) => {
 
   let renderPendingApprovel = props.renderPendingApproval;
   let renderPendingVerificationTable = props?.renderPendingVerification;
-  let renderApprovedTable = props?.renderApprovedTable
+  let renderApprovedTable = props?.renderApprovedTable;
+  let renderToPendingKyc=props?.renderToPendingKyc;
 
   let merchantKycId = props?.kycId;
 
@@ -177,6 +178,7 @@ const KycDetailsModal = (props) => {
               renderPendingVerificationData={renderPendingVerificationTable}
               renderApprovedTable={renderApprovedTable}
               closeVerification={closeVerification}
+              renderToPendingKyc={renderToPendingKyc}
             />
           </div>
 

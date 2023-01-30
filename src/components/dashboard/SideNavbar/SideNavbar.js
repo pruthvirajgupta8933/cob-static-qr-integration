@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { checkPermissionSlice } from "../../../slices/auth";
@@ -12,6 +12,7 @@ import enquire from "../../../assets/images/enquiry.png";
 
 const SideNavbar = () => {
   const { auth } = useSelector((state) => state);
+  const [showB2B, setShowB2B] = useState(true);
 
   const { user, payLinkPermission } = auth;
   //  const [clientCode, SetClientCode] = useState("")
@@ -19,7 +20,6 @@ const SideNavbar = () => {
   let { url } = useRouteMatch();
   // const [clientCode, SetClientCode] = useState("")
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     if (user.clientMerchantDetailsList?.length > 0) {
@@ -398,64 +398,115 @@ const SideNavbar = () => {
                           <React.Fragment></React.Fragment>
                         )}
 
-                        {(payLinkPermission.length > 0 && payLinkPermission[0].clientId === 1) && roleBasedShowTab?.merchant === true ? (
-                          <li
-                            className="ant-menu-item"
-                            role="menuitem"
-                          // style={{ paddingLeft: "48px" }}
+                      {payLinkPermission.length > 0 &&
+                      payLinkPermission[0].clientId === 1 &&
+                      roleBasedShowTab?.merchant === true ? (
+                        <li
+                          className="ant-menu-item"
+                          role="menuitem"
+                          style={{ paddingLeft: "48px" }}
+                        >
+                          <Link
+                            to={`${url}/paylink`}
+                            className="txt-white sidenavFonts"
                           >
-                            <Link to={`${url}/paylink`} className="txt-white sidenavFonts">
-                              <i
-                                className="fa fa-address-book"
-                                aria-hidden="true"
-                              />
-                              &nbsp; Create Payment Link
-                            </Link>
-                          </li>
-                        ) : (
-                          <React.Fragment></React.Fragment>
-                        )}
+                            <i
+                              className="fa fa-address-book"
+                              aria-hidden="true"
+                            />
+                            &nbsp; Create Payment Link
+                          </Link>
+                        </li>
+                      ) : (
+                        <React.Fragment></React.Fragment>
+                      )}
 
-                        {roleBasedShowTab?.merchant === true ? (
-                          <React.Fragment>
-                            {roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(user?.clientMerchantDetailsList[0]?.clientCode) ?
-                              <li
-                                className="ant-menu-item"
-                                role="menuitem"
-                              // style={{ paddingLeft: "48px" }}
+                      {roleBasedShowTab?.merchant === true ? (
+                        <React.Fragment>
+                          {roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(
+                            user?.clientMerchantDetailsList[0]?.clientCode
+                          ) ? (
+                            <li
+                              className="ant-menu-item"
+                              role="menuitem"
+                              style={{ paddingLeft: "48px" }}
+                            >
+                              <Link
+                                to={`${url}/settlement-report`}
+                                className="txt-white sidenavFonts"
                               >
-                                <Link
-                                  to={`${url}/settlement-report`}
-                                  className="txt-white sidenavFonts"
-                                >
-                                  <i className="fa fa-bars" aria-hidden="true" />
-                                  <span>&nbsp;Settlement Report (Excel)</span>
-                                </Link>
-                              </li> : <></>}
-                          </React.Fragment>
-                        ) : (
-                          <React.Fragment></React.Fragment>
-                        )}
-                      </ul>
+                                <i className="fa fa-bars" aria-hidden="true" />
+                                <span>&nbsp;Settlement Report (Excel)</span>
+                              </Link>
+                            </li>
+                          ) : (
+                            <></>
+                          )}
+                        </React.Fragment>
+                      ) : (
+                        <React.Fragment></React.Fragment>
+                      )}
+                    </ul>
+                  </li>
+                  {roleBasedShowTab?.merchant === true ? (
+                    <div
+                      className="ant-menu-submenu-title"
+                      aria-expanded="true"
+                      aria-owns="settlement$Menu"
+                      aria-haspopup="true"
+                      style={{ paddingLeft: "24px" }}
+                      onClick={() => setShowB2B(!showB2B)}
+                    >
+                      <span className="sidebar-menu-divider-business d-flex justify-content-between">
+                        Back To Business
+                        <div>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-chevron-down"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                            />
+                          </svg>
+                        </div>
+                      </span>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                  {roleBasedShowTab?.merchant === true && showB2B ? (
+                    <li
+                      className="ant-menu-item"
+                      role="menuitem"
+                      style={{ paddingLeft: "48px" }}
+                    >
+                      <Link
+                        to={`${url}/emami/challan-transactions`}
+                        className="txt-white sidenavFonts"
+                      >
+                        <img
+                          src={transHis}
+                          width={17}
+                          alt="sabpaisa"
+                          title="sabpaisa"
+                        />
+                        &nbsp;Challan Transactions
+                      </Link>
                     </li>
-                  </ul>
-                </div>
-                <div
-                  className="track-horizontal"
-                  style={{ display: "none", opacity: 0 }}
-                >
-                  <div
-                    style={{
-                      position: "relative",
-                      display: "block",
-                      height: "100%",
-                      cursor: "pointer",
-                      borderRadius: "inherit",
-                      backgroundColor: "rgba(0, 0, 0, 0.2)",
-                      width: "0px",
-                    }}
-                  ></div>
-                </div>
+                  ) : (
+                    <React.Fragment></React.Fragment>
+                  )}
+                </ul>
+              </div>
+              <div
+                className="track-horizontal"
+                style={{ display: "none", opacity: 0 }}
+              >
                 <div
                   style={{
                     position: "absolute",
@@ -493,6 +544,6 @@ const SideNavbar = () => {
     </>
 
   );
-}
+};
 
 export default SideNavbar;

@@ -326,7 +326,7 @@ const MerchantDocument = (props) => {
       </div>
 
       <div className="col-lg-12 mt-4 m-2">
-        <table className="table table-bordered">
+        <table className="table table-bordered w-100">
 
 
           <thead>
@@ -339,19 +339,16 @@ const MerchantDocument = (props) => {
             <tr>
 
               {currenTab === 3 || currenTab === 4 ?
-                <th>Select&nbsp;
+                <th>
                   <input
                     type="checkbox"
                     checked={documentsIdList?.length === KycDocUpload?.length ? true : false}
-                    onChange={(e) => handleCheckChange(e)}
-
-                  />
-                </th>
+                    onChange={(e) => handleCheckChange(e)} /></th>
                 : <></>}
               <th>S.No.</th>
-              <th>Document Type</th>
-              <th>Document Name</th>
-              <th>Document Status</th>
+              <th>Document&nbsp;Type</th>
+              <th>Document&nbsp;Name</th>
+              <th>Document&nbsp;Status</th>
               <th>Action</th>
 
             </tr>

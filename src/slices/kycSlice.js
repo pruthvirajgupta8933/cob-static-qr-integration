@@ -581,6 +581,32 @@ export const kycForVerified = createAsyncThunk(
     return response.data;
   }
 );
+
+
+export const onboardedReport = createAsyncThunk(
+  "kyc/kycForVerified",
+  async (data) => {
+   const requestParam = data.page;
+    const requestParam1 = data.page_size;
+    const from_date = data.from_date;
+    const to_date=data?.to_date
+    const selectedvalue =data?.selectedChoice;
+    
+    const response = await axiosInstanceAuth
+      .get(
+        
+        `${API_URL.KYC_FOR_ONBOARDED}?search=${selectedvalue}&order_by=-merchantId&page=${requestParam}&page_size=${requestParam1}&from_date=${from_date}&to_date=${to_date}`,
+        {
+          headers: {},
+        }
+      )
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
 ////////////////////////////////////////////////////
 export const kycForApproved = createAsyncThunk(
   "kyc/kycForApproved",

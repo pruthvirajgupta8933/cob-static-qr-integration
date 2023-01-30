@@ -99,6 +99,8 @@ function VerifiedMerchant() {
       setData(verfiedMerchant);
     }
   }, [searchText]);
+
+  
   const indexOfLastRecord = currentPage * pageSize;
 
   const totalPages = Math.ceil(dataCount / pageSize);
