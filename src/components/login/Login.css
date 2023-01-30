@@ -298,7 +298,7 @@
 
 @media (max-width: 480px) {
   .m_none{
-    display: none;
+    /* display: none; */
   }
   .onboarding-illustration-top img{
     display: none;
@@ -312,7 +312,7 @@
 
 @media (max-width: 685px) {
   .m_none{
-    display: none;
+    /* display: none; */
   }
   .onboarding-illustration-top img{
     display: none;
@@ -327,7 +327,7 @@
     padding: 4px 20px;
   }
   .m_none{
-    display: none;
+    /* display: none; */
   }
   .onboarding-illustration-top img{
     display: none;

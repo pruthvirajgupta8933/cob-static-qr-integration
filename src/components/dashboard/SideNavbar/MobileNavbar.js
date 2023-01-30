@@ -40,7 +40,7 @@ const MobileNavbar = () => {
   return (
     <nav
       id="navbar1"
-      className="mobile-nav-show navbar navbar-expand-md navbar-dark bg-dark fixed-top "
+      className="mobile-nav-show navbar navbar-expand-md navbar-dark bg-dark fixed-top d-none "
     >
       <div className="container">
         <span className="navbar-brand text-uppercase">{`${clientContactPersonName?.slice(
