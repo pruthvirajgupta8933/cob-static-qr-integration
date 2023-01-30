@@ -122,14 +122,6 @@ const API_LIVE = {
   Get_ALL_Collection_Type: `${kyc_url}/kyc/get-all-collection-type`,
   save_Business_Info: `${kyc_url}/kyc/save-business-info/`,
   Business_overview_state_: `${kyc_url}/kyc/get-all-state-details/`,
-
-
-
-
-
-
-
-
   /////////////////////////////////////////////  AssignZone APi
   ZONE_DETAILS:`${url}/zone/zones`,
   ZONE_MASTER : `${url}/zone/zones-master`,
@@ -137,19 +129,14 @@ const API_LIVE = {
   ZONE_EMPLOYEE:`${url}/zone/employee-detail`,
   UPDATE_ZONE_DATA:`${url}/zone/update-zone-data`,
   GET_ZONE_INFO:`${url}/zone/get-zone-info`,
-
-
   ////////////////////////////////////////Rate mapping
   GET_RISK_BUISENSS_BYID:`${url}/merchant/get-risk-business-by-id`,
-   GET_RISK_TEMPLSTE:`${url}/merchant/get-risk-category-template`,
-   TEMPLATE_DETAILS_BYRISKCODE:`${url}/merchant/get-template-detail-by-business-code`,
-
+  GET_RISK_TEMPLSTE:`${url}/merchant/get-risk-category-template`,
+  TEMPLATE_DETAILS_BYRISKCODE:`${url}/merchant/get-template-detail-by-business-code`,
 ////////////////////////////////////////SIGNUP DATA API
-GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
-
-//////////////////////// For merchnat list export to csv
-Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
-
+  GET_SIGNUP_DATA_INFO:`${url}/merchant/get-signup-info`,
+  //////////////////////// For merchnat list export to csv
+  Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
   /////////////////////////Kyc approver
   /* For pending*/
   KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not-Filled&order_by=-merchantId`,
@@ -161,56 +148,40 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
-  
-
   /** Contact Information */
   Save_General_Info: `${kyc_url}/kyc/save-general-info/`,
-
   //==>For Verfifying Contact Info Ist Phase(Send OTP and Verify OTP)
   Send_OTP: `${kyc_url}/kyc/send-otp/`,
   //==>2nd Phase
   Verify_OTP: `${kyc_url}/kyc/verify-otp/`,
-
   /** Bank Details One OF KYC TAB  */
-
   Save_Settlement_Info: `${kyc_url}/kyc/save-settlement-info/`,
-
   //Get All Bnak Names in Kyc Bank Details Dropdown Tab
   GET_ALL_BANK_NAMES: `${kyc_url}/kyc/get-all-bank-name/`,
-
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
   Business_Category: `${kyc_url}/kyc/get-all-business-category/`,
   SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,
-
   /*KYC USER LIST */
   Kyc_User_List: `${kyc_url}/kyc/merchant-data-by-login-id/`,
-
-
   /* KYC VERIFICATION FOR ALL TABS */
   KYC_TAB_STATUS_URL: `${kyc_url}/kyc/verify-kyc`,
-
   /*Image Preview API */
   Image_Preview: `${kyc_url}/kyc/get-merchant-document/`,
-
   /* Registered Address */
   Registered_Address: `${kyc_url}/kyc/save-registered-address/`,
-
   /* Registered Address */
   Kyc_Consent: `${kyc_url}/kyc/kyc-submit/`,
   /* Product catalogue */
-
   PRODUCT_DETAILS: `${url}/product/product-details`,
   PRODUCT_SUB_DETAILS: `${url}/product/product-sub-details`,
   SUBSCRIBE_FETCHAPPAND_PLAN: `${url}/client-subscription-service/subscribeFetchAppAndPlan`,
   Get_Subscribed_Plan_Detail_By_ClientId :`${url}/client-subscription-service/GetSubscribedPlanDetailByClientId`,
-  
   /* get bank , business type, business category by Id */
   GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
   GET_BUSINESS_TYPE_ID: `${kyc_url}/kyc/get-business-type-by-id/`,
   GET_BUSINESS_CATEGORY_ID: `${kyc_url}/kyc/get-business-category-by-id/`,
-  /* get bank , business type, business category by Id */
-
-  /* verify each tab of the kyc , URL FOR VERIFER*/
+  /* get bank, business type, business category by Id ====*/
+  /* verify each tab of the kyc, URL FOR VERIFER ====*/
   VERIFY_EACH_TAB: `${kyc_url}/kyc/verify-kyc/update/`,
   VERIFY_FINAL_ALL: `${kyc_url}/kyc/verify-kyc/verify/`,
   DOCUMENT_VERIFY: `${kyc_url}/kyc/upload-merchant-document/verify/`,
@@ -219,65 +190,39 @@ Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
   DOCUMENT_REMOVE: `${kyc_url}/kyc/upload-merchant-document/remove/`,
   APPROVE_DOCUMENT: `${kyc_url}/kyc/upload-merchant-document/approve/`,
   APPROVE_KYC: `${kyc_url}/kyc/verify-kyc/approve/`,
-
   // VERIFY_EACH_TAB : `${kyc_url}kyc/verify-kyc/update/`,
-
   // Reject each tab of the kyc , URL FOR VERIFER
-
   REJECT_KYC_TAB:`${kyc_url}/kyc/verify-kyc/tab-reject/`,
   COMPLETE_VERIFICATION:`${kyc_url}/kyc/verify-kyc/verify/`,
   COMPLETE_VERIFICATION_REJECT_KYC:`${kyc_url}/kyc/verify-kyc/reject/`,
    //Reversing from pending approval to pending verification
-   Back_To_Pending_Verification:`${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
-   Back_To_Pending_Approval:`${kyc_url}/kyc/reverse-kyc/re-approval/`,
-
-
-
+  Back_To_Pending_Verification:`${kyc_url}/kyc/reverse-kyc/approver-to-verifier/`,
+  Back_To_Pending_Approval:`${kyc_url}/kyc/reverse-kyc/re-approval/`,
   // Client Detail SandBox //
   CLIENT_DETAIL: `${url}/clientDetail`,
-
-
   // KYC VALIDATE URL
-   VALIDATE_KYC: `${kyc_validate}/validator`,
-
+  VALIDATE_KYC: `${kyc_validate}/validator`,
    // For comments in approver and merchant (Pending Verification and Pending Approval)
-   COMMENTS_BOX: `${url}/merchant/update-comments`,
-
-   
-
+  COMMENTS_BOX: `${url}/merchant/update-comments`,
    // OnBoard Merchant Role URL 
-   Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`,
-   
+  Roles_DropDown:`${kyc_url}/kyc/get-all-role-details/`,
    // Fetch selected product during registration
-
-   website_plan_details: `${url}/auth-service/auth/login/website-plan-detail`,
-   
-
-
+  website_plan_details: `${url}/auth-service/auth/login/website-plan-detail`,
   // ---------------------------   NEW API FOR COMMENTS (2)
-
-
   // For Saving Comments
   SAVE_COMMENTS:`${url}/merchant/save-comments`,
-
-
   // GET API FOR VIEWING COMMENTS
-
   VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`,
-
-  
   // ---------------------------   NEW API FOR COMMENTS (2)
-
-
   // Check is client code mapped or not (ratemapping case)
-  isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`
+  isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`,
 
-  
-  
-
-
+  //login wise fetch menu list
+  cobMenuList: `${url}/menu-loginwise`  
 };
- 
+
+
+
 const API_URL = API_LIVE;
 export default API_URL;
 export const APP_ENV  = ENV_PROD;
