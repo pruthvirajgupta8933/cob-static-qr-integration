@@ -80,19 +80,19 @@ function Dashboard() {
             clientCode: uuidCode,
           };
 
-          dispatch(createClientProfile(data)).then(clientProfileRes=>{
-            console.log("response of the create client ",clientProfileRes);
+          dispatch(createClientProfile(data)).then(clientProfileRes => {
+            console.log("response of the create client ", clientProfileRes);
 
             // after create the client update the subscribe product
             const postData = {
               login_id: user?.loginId
             }
 
-            
-          // fetch details of the user registraion
+
+            // fetch details of the user registraion
             axiosInstanceAuth.post(API_URL.website_plan_details, postData).then(
               res => {
-                console.log("clientProfileRes",clientProfileRes)
+                console.log("clientProfileRes", clientProfileRes)
                 const webData = res?.data?.data[0]?.plan_details
                 const postData = {
                   clientId: clientProfileRes?.payload?.clientId,
@@ -106,18 +106,18 @@ function Dashboard() {
                   API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
                   postData
                 );
-  
-                
+
+
               }
             )
-          }).catch(err=>console.log(err));
+          }).catch(err => console.log(err));
         } else {
           // console.log("already created client code")
         }
       }
     }
 
-            // defaultRateMapping("HU9NCY"); //HU9NCY
+    // defaultRateMapping("HU9NCY"); //HU9NCY
 
   }, []);
 
@@ -366,7 +366,7 @@ function Dashboard() {
             Component={SignupData}
           >
             <SignupData />
-            
+
           </VerifierRoute>
         ) : roles?.approver === true ? (
           <ApproverRoute
@@ -415,16 +415,22 @@ function Dashboard() {
         <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
           <SpPg />
         </MerchantRoute>
-        {roles?.verifier === true ? (
+
+
+
+        {roles?.verifier && (
           <VerifierRoute
             exact
             path={`${path}/onboarded-report`}
             Component={OnboardedReport}
           >
             <SignupData />
-            
+
           </VerifierRoute>
-        ) : roles?.approver === true ? (
+        ) }
+
+
+        {roles?.approver && (
           <ApproverRoute
             exact
             path={`${path}/onboarded-report`}
@@ -432,16 +438,15 @@ function Dashboard() {
           >
             <SignupData />
           </ApproverRoute>
-        ) : (
-         <></>
         )}
-    
+
+
         <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
           <ChallanTransactReport />
         </B2BRouting>
-      
-         <Route path={`${path}/*`} component={UrlNotFound}/>
 
+        <Route path={`${path}/*`} component={UrlNotFound} />
+        
       </Switch>
     </section>
   );
