@@ -415,7 +415,7 @@ function Dashboard() {
           <SpPg />
         </MerchantRoute>
         <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
-          <SpPg />
+          <ChallanTransactReport />
         </B2BRouting>
       
          <Route path={`${path}/*`} component={UrlNotFound}/>

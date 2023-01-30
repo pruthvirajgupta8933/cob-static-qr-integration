@@ -16,6 +16,7 @@ export const challanTransactions = createAsyncThunk(
     "challan/challanTransactions",
     async (data) => {
       const requestParam = data.page;
+      
       const requestParam1 = data.page_size;
       const from_date = data.from_date
       const to_date = data.to_date
