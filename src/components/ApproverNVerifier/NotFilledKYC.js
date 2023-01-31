@@ -9,7 +9,6 @@ import MerchnatListExportToxl from "./MerchnatListExportToxl";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 
 const NotFilledKYC = () => {
-
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [notFilledData, setNotFilledData] = useState([]);
@@ -18,17 +17,14 @@ const NotFilledKYC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
-  const [isLoaded,setIsLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const dispatch = useDispatch();
   const kycSearch = (e) => {
     setSearchText(e.target.value);
   };
- 
-
 
   useEffect(() => {
-    
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
@@ -40,7 +36,7 @@ const NotFilledKYC = () => {
         setDataCount(totalData);
         setNotFilledData(data);
         setData(data);
-        setIsLoaded(false)   
+        setIsLoaded(false);
         // console.log("Paginataion Dta ===> ",notFilledData)
       })
 
@@ -48,7 +44,6 @@ const NotFilledKYC = () => {
         toastConfig.errorToast("Data not loaded");
       });
   }, [currentPage, pageSize, dispatch]);
-
 
   //------- KYC NOT FILLED SEARCH FILTER ------------//
   useEffect(() => {
@@ -70,63 +65,53 @@ const NotFilledKYC = () => {
     }
   }, [searchText]);
 
-
-
-
   const totalPages = Math.ceil(dataCount / pageSize);
-  let pageNumbers = []
+  let pageNumbers = [];
   if (!Number.isNaN(totalPages)) {
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
 
   const nextPage = () => {
-    setIsLoaded(true)
-    setData([])
+    setIsLoaded(true);
+    setData([]);
     if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
-    setIsLoaded(true)
-    setData([])
+    setIsLoaded(true);
+    setData([]);
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
-
-
   useEffect(() => {
     let lastSevenPage = totalPages - 7;
     if (pageNumbers?.length > 0) {
-      let start = 0
-      let end = (currentPage + 6)
+      let start = 0;
+      let end = currentPage + 6;
       if (totalPages > 6) {
-        start = (currentPage - 1)
+        start = currentPage - 1;
 
         if (parseInt(lastSevenPage) <= parseInt(start)) {
-          start = lastSevenPage
+          start = lastSevenPage;
         }
-
       }
       const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
         return pgNumber;
-      })
-      setDisplayPageNumber(pageNumber)
+      });
+      setDisplayPageNumber(pageNumber);
     }
-  }, [currentPage, totalPages])
+  }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("MM/DD/YYYY");
-    return date
-  }
-
-
-
+    return date;
+  };
 
   return (
-
     <div className="container-fluid flleft">
       <div className="form-row">
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -138,7 +123,6 @@ const NotFilledKYC = () => {
             placeholder="Search Here"
           />
         </div>
-
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Count Per Page</label>
@@ -161,10 +145,12 @@ const NotFilledKYC = () => {
             <option value="">All</option>
             <option value="online">Online</option>
             <option value="offline">Offline</option>
-
           </select>
         </div>
-        <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=Not-Filled'} filename={"Not-Filled-KYC"}/>
+        <MerchnatListExportToxl
+          URL={"?order_by=-merchantId&search=Not-Filled"}
+          filename={"Not-Filled-KYC"}
+        />
       </div>
 
       <div className="col-md-12 col-md-offset-4">
@@ -180,17 +166,27 @@ const NotFilledKYC = () => {
                 <th>KYC Status</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
-
               </tr>
             </thead>
             <tbody>
+              {data === null || data === [] ? (
+                <tr>
+                  <td colSpan={"11"}>
+                    <div className="nodatafound text-center">
+                      No data found{" "}
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                <></>
+              )}
 
               {data?.length === 0 ? (
                 <tr>
                   <td colSpan={"11"}>
-                    <div className="nodatafound text-center">No data found </div>
-                    <br /><br />
-                    <p className="text-center">{spinner && <Spinner />}</p>
+                    <p className="text-center">
+                      {spinner === true && <Spinner />}
+                    </p>
                   </td>
                 </tr>
               ) : (
@@ -212,16 +208,16 @@ const NotFilledKYC = () => {
         </div>
         <nav>
           <ul className="pagination justify-content-center">
+            {isLoaded === true ? (
+              <Spinner />
+            ) : (
+              <li className="page-item">
+                <button className="page-link" onClick={prevPage}>
+                  Previous
+                </button>
+              </li>
+            )}
 
-          {isLoaded === true ? <Spinner /> : (
-            <li className="page-item">
-              <button
-                className="page-link"
-                onClick={prevPage}>
-                Previous
-              </button>
-            </li>)}
-            
             {displayPageNumber?.map((pgNumber, i) => (
               <li
                 key={i}
@@ -231,24 +227,26 @@ const NotFilledKYC = () => {
                 onClick={() => setCurrentPage(pgNumber)}
               >
                 <a href={() => false} className={`page-link data_${i}`}>
-                  <span >
-                    {pgNumber}
-                  </span>
+                  <span>{pgNumber}</span>
                 </a>
               </li>
             ))}
 
-           {isLoaded === true ? <Spinner /> : (
-            <li className="page-item">
-              <button
-                className="page-link"
-                onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
-              >
-                Next
-              </button>
-            </li>
-           )}
+            {isLoaded === true ? (
+              <Spinner />
+            ) : (
+              <li className="page-item">
+                <button
+                  className="page-link"
+                  onClick={nextPage}
+                  disabled={
+                    currentPage === pageNumbers[pageNumbers?.length - 1]
+                  }
+                >
+                  Next
+                </button>
+              </li>
+            )}
           </ul>
         </nav>
       </div>
