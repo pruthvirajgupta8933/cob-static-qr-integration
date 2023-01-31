@@ -37,7 +37,7 @@ const NavBar = () => {
 
         <div>
           {/* Dropdown in the Nav Bar */}
-          <div className="dropdown show">
+          <div className="dropdown p-2 show">
             <a
               className="btn dropdown-toggle"
               href={()=>false}
