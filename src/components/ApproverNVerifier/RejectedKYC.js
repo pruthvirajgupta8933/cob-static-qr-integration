@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { kycForRejectedMerchants } from "../../slices/kycSlice";
-import {  useRouteMatch } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
@@ -13,7 +12,6 @@ import CommentModal from "./Onboarderchant/CommentModal";
 
 
 const RejectedKYC = () => {
-  const { url } = useRouteMatch();
   const roles = roleBasedAccess();
 
   const [data, setData] = useState([]);
@@ -30,9 +28,6 @@ const RejectedKYC = () => {
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
 
-
-  let page_size = pageSize;
-  let page = currentPage;
 
   const dispatch = useDispatch();
   const kycSearch = (e) => {

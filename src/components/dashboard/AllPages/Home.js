@@ -218,7 +218,7 @@ function Home() {
                 <div className="card col-lg-12- cardkyc pull-left">
                   <div className="font-weight-bold card-body Satoshi-Medium">
                     <span>
-                      You can accept payments upto ₹15,000 for now. To extend
+                      You can accept payments upto ₹10,000 for now. To extend
                       the limit complete your KYC and get it approved.
                     </span>
                     <Link
@@ -227,7 +227,7 @@ function Home() {
                       data-target="#exampleModalCenter"
                     >
                       <button
-                        className="text-white pull-right kycbtns"
+                        className="text-white  kycbtns"
                         style={{
                           backgroundColor: "#0156B3",
                           paddingLeft: "10px",
@@ -275,15 +275,8 @@ function Home() {
                     &nbsp;Payment Links
                   </h2>
                   <p className="paragraphcssdashboards">
-                    SabPaisa is the World's 1st API Driven Unified Payment
-                    Experience Platform having the Best Payment Gateway in
-                    India. Collect, transfer & refund your payments online &
-                    offline. Get the best success rates with maximum payment
-                    modes available including Debit cards, Credit Card, Wallets,
-                    UPI, Bharat QR, etc. The Hybrid PG helps businesses collect
-                    payments from all the clients and consumers, urban or rural,
-                    young or old, online or offline, without worrying about
-                    consumer payment behaviour.
+                  Payment Links is the world’s first Unified link-based payment method, for payment collections with the help of links for a wide range of payment modes. Collect payments even without a website through easy payment links.
+                   Payment Links offers password-protected and shortened payment links for seamless payment collection.
                   </p>
                   <Link to={`/dashboard/sabpaisa-pricing/13/PayLink`}>
                     <p className="pricingclasscss">
