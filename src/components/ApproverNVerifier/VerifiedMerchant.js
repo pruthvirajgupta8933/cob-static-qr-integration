@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch , useSelector} from "react-redux";
 import { kycForVerified } from "../../slices/kycSlice";
-import API_URL from "../../config";
+
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
-import { Link } from "react-router-dom";
+
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import moment from "moment";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
-import { Toast } from "react-toastify";
+
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
@@ -37,8 +37,6 @@ function VerifiedMerchant() {
 
 
   // console.log(currenTab," Current Tab")
-  let page_size = pageSize;
-  let page = currentPage;
   const roles = roleBasedAccess();
 
   const kycSearch = (e) => {

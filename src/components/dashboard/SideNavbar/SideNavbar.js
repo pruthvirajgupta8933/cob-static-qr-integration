@@ -85,7 +85,7 @@ const SideNavbar = () => {
     <>
       <div className="headers "></div>
       <input type="checkbox" className="openSidebarMenu" id="openSidebarMenu" title="ToggleBar" alt="ToggleBar" />
-      <label for="openSidebarMenu" className="sidebarIconToggle ">
+      <label htmlfor="openSidebarMenu" className="sidebarIconToggle ">
         <div className="spinner diagonal part-1"></div>
         <div className="spinner horizontal"></div>
         <div className="spinner diagonal part-2"></div>

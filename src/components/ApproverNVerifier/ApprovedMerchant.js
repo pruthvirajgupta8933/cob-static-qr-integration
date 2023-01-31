@@ -1,7 +1,6 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import API_URL, { AUTH_TOKEN } from "../../config";
+import { useDispatch } from "react-redux";
+import API_URL from "../../config";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
@@ -34,8 +33,6 @@ function ApprovedMerchant() {
   const [isLoaded,setIsLoaded] = useState(false)
 
 
-  let page_size = pageSize;
-  let page = currentPage;
   const roles = roleBasedAccess();
 
 

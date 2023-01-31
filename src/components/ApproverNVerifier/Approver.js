@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Redirect,
   useHistory,
 } from "react-router-dom/cjs/react-router-dom.min";
 import PendingVerification from "./PendingVerification";
