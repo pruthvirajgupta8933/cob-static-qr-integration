@@ -11,6 +11,7 @@ import { challanTransactions } from "../slices/backTobusinessSlice";
 import toastConfig from "../utilities/toastTypes";
 import Spinner from "../components/ApproverNVerifier/Spinner";
 import DropDownCountPerPage from "../_components/reuseable_components/DropDownCountPerPage";
+import { exportToSpreadsheet } from "../utilities/exportToSpreadsheet";
 
 
 
@@ -178,14 +179,14 @@ useEffect(() => {
 
   const handleSubmit = (values) => {
 
-    // console.log(values);
+    console.log(values);
     setDisable(true)
     const formData = {
       from_date: values.from_date,
       to_date: values.to_date,
-      client_code: values.clientCode,
+      client_code:values.clientCode,
       page: currentPage,
-      page_size: pageSize,
+      page_size: pageSize
       
     };
 
@@ -221,6 +222,56 @@ useEffect(() => {
   };
 
 
+  const exportToExcelFn = () => {
+    const excelHeaderRow = [
+      "S.No",
+      "Client Code",
+      "Bank Code",
+      "Amount",
+      "Bank Reference No.",
+      "Challan No.",
+      "Enquiry Id",
+      "IFSC Code",
+      "Type",
+      "Created On",
+      "Udf1",
+      "Udf2",
+      "Udf3",
+      "Udf4",
+      "Udf5",
+      "Udf6",
+     
+    ];
+    let excelArr = [excelHeaderRow];
+    // eslint-disable-next-line array-callback-return
+    data?.map((item, index) => {
+
+      const allowDataToShow = {
+        srNo: item.srNo === null ? "" : index + 1,
+        client_code: item.client_code === null ? "" : item.client_code,
+        bank_code: item.bank_code === null ? "" : item.bank_code,
+        amount: item.amount === null ? "" : item.amount,
+        bank_reference_number: item.bank_reference_number === null ? "" : item.bank_reference_number,
+        challan_number: item.challan_number === null ? "" : item.challan_number,
+        enquiry_id: item.enquiry_id === null ? "" : item.enquiry_id,
+        ifsc: item.ifsc === null ? "" : item.ifsc,
+        type: item.type === null ? "" : item.type,
+        created_on: item.created_on === null ? "" : item.created_on,
+        udf1: item.udf1 === null ? "" : item.udf1,
+        udf2: item.udf2 === null ? "" : item.udf2,
+        udf3: item.udf3 === null ? "" : item.udf3,
+        udf4: item.udf4 === null ? "" : item.udf4,
+        udf5: item.udf5 === null ? "" : item.udf5,
+        udf6: item.udf6 === null ? "" : item.udf6,
+        
+      };
+
+      excelArr.push(Object.values(allowDataToShow));
+    });
+    const fileName = "Challan Transactions";
+    exportToSpreadsheet(excelArr, fileName);
+  };
+
   return (
     <section className="ant-layout">
       <div>
@@ -243,7 +294,7 @@ useEffect(() => {
           <Form>
             <div className="container">
               <div className="row">
-                <div className="form-group col-md-3">
+                <div className="form-group col-lg-4">
                   <FormikController
                     control="select"
                     label="Client Code"
@@ -254,7 +305,7 @@ useEffect(() => {
                 </div>
 
 
-                <div className="form-group col-md-4">
+                <div className="form-group col-lg-4">
                   <FormikController
                     control="input"
                     type="date"
@@ -266,7 +317,7 @@ useEffect(() => {
                   />
                 </div>
 
-                <div className="form-group col-md-4 mx-3">
+                <div className="form-group col-lg-4">
                   <FormikController
                     control="input"
                     type="date"
@@ -276,15 +327,15 @@ useEffect(() => {
                   />
                 </div>
 
-                <div className=" col-md-4 mx-3">
+                <div className=" col-lg-4">
                   <button type="subbmit" disabled={disable} className="btn approve text-white  btn-xs">
                     Submit
                   </button>
                 </div>
 
-                {showData === true && data?.length !== 0 ?
+                {showData === true ?
                 <div className="container-fluid flleft">
-                  <div className="form-group col-lg-3 col-md-12 mt-2">
+                  <div className="form-group col-lg-4 col-md-12 mt-2">
                     <label>Search</label>
                     <input
                       className="form-control"
@@ -293,8 +344,8 @@ useEffect(() => {
                       placeholder="Search Here"
                     />
                   </div>
-                  <div></div>
-                  <div className="form-group col-lg-3 col-md-12 mt-2">
+                <div></div>
+                  <div className="form-group col-lg-4 col-md-12 mt-2">
                     <label>Count Per Page</label>
                     <select
                         value={pageSize}
@@ -305,14 +356,29 @@ useEffect(() => {
                       <DropDownCountPerPage datalength={dataCount} />
                     </select>
                   </div>
+
+                  <div className="form-group col-lg-4 col-md-12 mt-5">
+                  <button
+                   className="btn btn-sm text-white  "
+                   type="button"
+                   onClick={() => exportToExcelFn()}
+                   style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                 >
+                   Export
+                 </button>: <></>
+                </div>
                 </div>
                 : <></>}
+
+
               </div>
             </div>
           </Form>
         </Formik>
         {showData === true ?
+       
         <div className="col-md-12 col-md-offset-4">
+           <h5 class="font-weight-bold">Total Records: {data?.length}</h5>
           <div className="scroll overflow-auto">
             <table className="table table-bordered">
               <thead>
@@ -358,12 +424,12 @@ useEffect(() => {
                     { data?.map((user, i) => (
                       <tr key={i}>
                         <td>{i + 1}</td>
-                        <td>{user.client_code}</td>
-                        <td>{user.bank_code}</td>
-                        <td>{user.amount}</td>
-                        <td>{user.bank_reference_number}</td>
-                        <td>{user.challan_number}</td>
-                        <td>{user.enquiry_id}</td>
+                        <td>{user?.client_code}</td>
+                        <td>{user?.bank_code}</td>
+                        <td>{user?.amount}</td>
+                        <td>{user?.bank_reference_number}</td>
+                        <td>{user?.challan_number}</td>
+                        <td>{user?.enquiry_id}</td>
                         <td>{user?.ifsc}</td>
                         <td>{user?.type}</td>
                         <td>{user?.created_on}</td>

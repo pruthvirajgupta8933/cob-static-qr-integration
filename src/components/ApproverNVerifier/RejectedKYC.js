@@ -202,11 +202,21 @@ const nextPage = () => {
             </thead>
             <tbody>
               {/* {spinner && <Spinner />} */}
+              {data === null || data === [] ? (
+                <tr>
+                  <td colSpan={"11"}>
+                    <div className="nodatafound text-center">
+                      No data found{" "}
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                <></>
+              )}
+         
               {data?.length === 0 ? (
                 <tr>
                 <td colSpan={"11"}>
-                  <div className="nodatafound text-center">No data found </div>
-                  <br/><br/><br/><br/>
                   <p className="text-center">{spinner && <Spinner />}</p>
                 </td>
             </tr>

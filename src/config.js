@@ -1,11 +1,12 @@
 const ENV_PROD = false; // don't change in the local environment
 
+
 let url, kyc_url, b2b_url, kyc_validate = "";
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
-  kyc_validate = " https://kycvalidator.sabpaisa.in"
+  kyc_validate = "https://kycvalidator.sabpaisa.in"
   b2b_url = "https://b2becollect.sabpaisa.in"
 
 } else {
