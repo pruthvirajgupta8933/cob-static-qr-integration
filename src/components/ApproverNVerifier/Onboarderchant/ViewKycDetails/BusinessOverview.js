@@ -11,8 +11,9 @@ const BusinessOverview = (props) => {
   const dispatch = useDispatch();
   const { auth } = useSelector((state) => state);
 
-  const [isVerified, setIsVerified] = useState(KycTabStatus?.business_info_status === "Verified" ? true : false);
-  const [isRejected, setIsRejected] = useState(KycTabStatus?.business_info_status === "Verified" ? true : false);
+
+  let isVerified = KycTabStatus?.business_info_status === "Verified" ? true : false;
+  let isRejected = KycTabStatus?.business_info_status === "Verified" ? true : false;
 
   let commentsStatus = KycTabStatus.business_info_reject_comments;
 

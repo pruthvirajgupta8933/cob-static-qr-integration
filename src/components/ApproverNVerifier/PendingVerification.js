@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
-import API_URL from "../../config";
-import { forGettingCommentList } from "../../slices/merchantZoneMappingSlice";
 // import axios from "axios";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
-import { Link, useRouteMatch } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
 import {ALLOW_ROLE_AS_VERIFIER} from "./../../utilities/permisson"
 import moment from "moment";
@@ -17,7 +13,6 @@ import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 function PendingVerification() {
-  const { url } = useRouteMatch();
   const roles = roleBasedAccess();
    const { user } = useSelector((state) => state.auth);
    const roleBasePermissions = roleBasedAccess()
@@ -130,19 +125,7 @@ function PendingVerification() {
     }
   };
 
-  // useEffect(() => {
-    
-  //     dispatch(
-  //       forGettingCommentList({
-  //         client_code: commentId.clientCode,
-  //       })
-  //     )
-  //       .then((resp) => {
-  //       })
-  
-  //       .catch((err) => {});
- 
-  // },[commentId])
+
 
   useEffect(() => {
     let lastSevenPage = totalPages - 7;

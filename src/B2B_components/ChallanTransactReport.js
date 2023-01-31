@@ -179,7 +179,7 @@ useEffect(() => {
 
   const handleSubmit = (values) => {
 
-    console.log(values);
+    // console.log(values);
     setDisable(true)
     const formData = {
       from_date: values.from_date,
@@ -378,7 +378,7 @@ useEffect(() => {
         {showData === true ?
        
         <div className="col-md-12 col-md-offset-4">
-           <h5 class="font-weight-bold">Total Records: {data?.length}</h5>
+           <h5 className="font-weight-bold">Total Records: {data?.length}</h5>
           <div className="scroll overflow-auto">
             <table className="table table-bordered">
               <thead>
