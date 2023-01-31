@@ -1394,16 +1394,20 @@ display: inline-grid;
   .navbar-expand-md .navbar-toggler {
     display: none !important;
   }
-  .navbar-expand-md .navbar-collapse{
-    /* display: flex;  */
-  }
+  /* {
+    display: flex;  
+  } */
   .navbar-expand-md .navbar-nav{
     
     min-width: 100vh;
     max-width: 100%; 
+    display: inline-block;
   }
-  
-  
+}
+@media (min-width:768px) {
+  .authfy-container{
+    margin-top: 72px !important;
+  }  
 }
 @media (min-width:300px) and (max-width:968px) {
   .navbar-expand-md .navbar-toggler {

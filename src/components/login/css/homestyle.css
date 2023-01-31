@@ -7955,9 +7955,9 @@ footer {
     justify-content: center;
 }
 
-@media (max-width: 968px) {
+@media (max-width: 768px) {
 .collapse:not(.show) {
-    /* display: block !important; */
+    display: none !important;
     z-index: 99999;
     overflow: auto;
 }
