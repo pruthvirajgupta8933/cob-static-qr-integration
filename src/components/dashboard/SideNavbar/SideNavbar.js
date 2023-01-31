@@ -39,7 +39,7 @@ const SideNavbar = () => {
         <React.Fragment key={m?.app_name}>
           <div
             className="main-menu-container"
-            onClick={(e) => toggleMenu(e)}
+            // onClick={(e) => toggleMenu(e)}
             isToggle="true"
           >
             <span className="sidebar-menu-divider-business">
