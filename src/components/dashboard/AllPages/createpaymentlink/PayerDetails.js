@@ -369,13 +369,13 @@ const PayerDetails = () => {
                                         <td>{user.email}</td>
                                         <td>{user.customer_type}</td>
                                         <td>
-                                            <button type="button"  className="cratepaymentlinkclrsfigma text-white" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)} >Edit</button>
+                                            <button type="button"  className="cratepaymentlinkclrsfigma text-white btn" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)} >Edit</button>
                                         </td>
                                         
                                         <td>
                                             <button onClick={(e) => generateli(user.id)}
                                                 type="button"
-                                                className="cratepaymentlinkclrsfigma text-white"
+                                                className="cratepaymentlinkclrsfigma text-white btn"
                                                 data-toggle="modal"
                                                 data-target="#bhuvi"
                                                 data-whatever="@getbootstrap"
@@ -385,7 +385,7 @@ const PayerDetails = () => {
                                             </div>
                                         </td>
                                         <td>
-                                            <button className="ColrsforDeletefigma text-white mt-7 btn-danger" onClick={() => deleteUser(user.id)}  >Delete</button>
+                                            <button className="ColrsforDeletefigma text-white mt-7 btn-danger btn" onClick={() => deleteUser(user.id)}  >Delete</button>
                                         </td>
                                     </tr>
                                 ))}
