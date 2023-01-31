@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-
 import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png";
 import dashboard from "../../../assets/images/dashb.png";
 const SideNavbar = () => {

@@ -793,7 +793,14 @@ a.sidenavFonts{
 }
 
 
+/* Harris CSS For Spinner */
+.spinner-roll {
+  margin-top: 125px;
+}
 
+.spinner-rollFr {
+  margin-top: 240px;
+}
 
 
 /* Harris CSS For Login Image Dynamic*/

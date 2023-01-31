@@ -184,7 +184,7 @@ const NotFilledKYC = () => {
               {data?.length === 0 ? (
                 <tr>
                   <td colSpan={"11"}>
-                    <p className="text-center">
+                    <p className="text-center spinner-roll">
                       {spinner === true && <Spinner />}
                     </p>
                   </td>

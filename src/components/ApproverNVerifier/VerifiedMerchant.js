@@ -199,7 +199,7 @@ function VerifiedMerchant() {
       {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderPendingApproval={verifyMerchant}   /> : <></>}
       {/* {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>} */}
       </div>
-      <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+      <div className="container-fluid pull-left p-3- my-3- col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
           <table className="table table-bordered">
             <thead>
@@ -233,9 +233,8 @@ function VerifiedMerchant() {
               )}
               {data?.length === 0 ? (
                 <tr>
-                <td colSpan={"20"}>
-                 
-                  <p className="text-center">{spinner && <Spinner />}</p>
+                <td colSpan={"11"}>
+                  <p className="text-center spinner-rollFr">{spinner && <Spinner />}</p>
                 </td>
             </tr>
               ) : (

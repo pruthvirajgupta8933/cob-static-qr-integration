@@ -212,7 +212,7 @@ const nextPage = () => {
               {data?.length === 0 ? (
                 <tr>
                 <td colSpan={"11"}>
-                  <p className="text-center">{spinner && <Spinner />}</p>
+                  <p className="text-center spinner-roll">{spinner && <Spinner />}</p>
                 </td>
             </tr>
               ) : (
