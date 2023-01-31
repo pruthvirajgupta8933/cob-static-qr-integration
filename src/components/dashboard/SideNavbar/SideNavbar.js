@@ -77,7 +77,8 @@ const SideNavbar = () => {
     <>
       <div className="headers "></div>
       <input type="checkbox" className="openSidebarMenu" id="openSidebarMenu" title="ToggleBar" alt="ToggleBar" />
-      <label htmlfor="openSidebarMenu" className="sidebarIconToggle ">
+      {/* htmlfor="openSidebarMenu" that code writen by abhiverma but htmlfor got error when we used inside label code*/}
+      <label for="openSidebarMenu" className="sidebarIconToggle ">
         <div className="spinner diagonal part-1"></div>
         <div className="spinner horizontal"></div>
         <div className="spinner diagonal part-2"></div>
