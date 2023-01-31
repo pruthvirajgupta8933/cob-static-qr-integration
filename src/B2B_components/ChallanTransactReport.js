@@ -185,7 +185,6 @@ useEffect(() => {
       from_date: values.from_date,
       to_date: values.to_date,
       client_code:values.clientCode,
-      client_code:"EMAMI",
       page: currentPage,
       page_size: pageSize
       
