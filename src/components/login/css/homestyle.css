@@ -7930,9 +7930,10 @@ footer {
 .mt-31{
     margin-top: 31px;
 }
-@media (max-width: 760px) {
+@media (min-width: 300px) and (max-width: 760px) {
+    .caret{display: none;}
     #dropdownMenuLink{
-        display: none;
+        display: block;
     }
     .navbar-nav li a.nav-link{
         padding: 14px 10px;
