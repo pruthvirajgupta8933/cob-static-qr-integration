@@ -72,6 +72,7 @@ const CommentModal = (props) => {
       .nullable(),
   });
 
+
   const handleSubmit = async (values) => {
     let formData = new FormData();
     formData.append("files", attachCommentFile);
@@ -79,33 +80,23 @@ const CommentModal = (props) => {
     formData.append("client_code", props?.commentData?.clientCode);
     formData.append("comments", values.comments);
     formData.append("merchant_tab", props?.tabName);
-    dispatch(
-      // forSavingComments({
-      //   login_id: loginId,
-      //   client_code: props?.commentData?.clientCode,
-      //   comments: values.comments,
-      //   merchant_tab: props?.tabName,
-      // })
-      forSavingComments(formData)
+    dispatch(forSavingComments(formData)
     )
       .then((resp) => {
-        toast.success(resp?.payload?.message);
-        commentUpdate();
-        resetUploadFile();
-
-        // return setTimeout(
-        //   props && props?.handleApi
-        //     ? props?.handleApi()
-        //     : props?.handleForVerified(),
-        //   2000
-        // );
+        if (resp?.payload?.message?.status && resp?.payload?.status) {
+          toast.success(resp?.payload?.message.message);
+          commentUpdate();
+          resetUploadFile();
+        } else {
+          toast.error(resp?.payload?.message.message);
+          resetUploadFile();
+          commentUpdate();
+        }
       })
-
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
   };
-
   const dateManipulate = (yourDate) => {
     let date = moment(yourDate).format("MM/DD/YYYY HH:mm:ss");
     return date;
@@ -225,10 +216,9 @@ const CommentModal = (props) => {
                       </div>
                             
                             <div className="d-flex justify-content-between">
-                              
                               {uploadStatus && (
                                 <>
-                                  <div>{attachCommentFile.name}</div>
+                                  <div>{attachCommentFile?.name}</div>
                                   <button
                                     type="button"
                                     class="close"
