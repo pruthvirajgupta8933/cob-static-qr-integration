@@ -7931,7 +7931,7 @@ footer {
     margin-top: 31px;
 }
 @media (min-width: 300px) and (max-width: 760px) {
-    .caret{display: none;}
+    /* .caret{display: none;} */
     #dropdownMenuLink{
         display: block;
     }
