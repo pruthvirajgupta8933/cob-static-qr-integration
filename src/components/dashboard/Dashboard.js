@@ -56,6 +56,7 @@ import OnboardedReport from "../ApproverNVerifier/OnboardedReport";
 import ChallanTransactReport from "../../B2B_components/ChallanTransactReport";
 import B2BRouting from "../../B2B_components/Routes/B2BRouting";
 import { fetchMenuList } from "../../slices/cob-dashboard/menulistSlice";
+import { isNull } from "lodash";
 
 
 function Dashboard() {
@@ -103,12 +104,16 @@ function Dashboard() {
                   applicationId: webData?.appid,
                 };
 
-                axiosInstanceAuth.post(
-                  API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-                  postData
-                );
-
-
+                if(!isNull(webData?.planid) && !isNull(webData?.appid))
+                {
+                  axiosInstanceAuth.post(
+                    API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+                    postData
+                  );
+    
+                }
+            
+                
               }
             )
           }).catch(err => console.log(err));

@@ -4,6 +4,10 @@ import { Link, useRouteMatch } from "react-router-dom";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png";
 import dashboard from "../../../assets/images/dashb.png";
+import "./sidenavbar.css"
+
+
+
 const SideNavbar = () => {
   const { menuListReducer } = useSelector((state) => state);
   const [renderMenuList, setRenderMenuList] = useState(<></>);
@@ -13,7 +17,18 @@ const SideNavbar = () => {
     items: []
   })
 
+  const toggleMenu = (e) => {
+  
+    const currentToggle = e.currentTarget.attributes?.istoggle?.value.toString()
+    if (currentToggle === "true") {
+      e.currentTarget.attributes.istoggle.value = false
+      e.currentTarget.className ="hide-menu-nav"
+    } else {
+      e.currentTarget.attributes.istoggle.value = true
+      e.currentTarget.className="show-menu-nav"      
+    }
 
+  }
 
   useEffect(() => {
     let tempArrayOfItems = []
@@ -23,33 +38,31 @@ const SideNavbar = () => {
       return (
         <React.Fragment key={m?.app_name}>
           <div
-            className="ant-menu-submenu-title"
-            rel={`${m?.app_code}`}
-            onClick={(e) => toggleMenu(e,m?.app_code)}
+            className="main-menu-container"
+            // onClick={(e) => toggleMenu(e)}
+            isToggle="true"
           >
             <span className="sidebar-menu-divider-business">
-              {m?.app_name}
+              {m?.app_name}  <i class="fa fa-caret-down" aria-hidden="true"></i>
             </span>
-            <i className="ant-menu-submenu-arrow" />
-          </div>
-        
-           <ul id={`menulist_${m?.app_code}`} className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
-            {m?.submenu?.map((sm) => (
-              sm?.is_active &&
-              <li className="ant-menu-item" role="menuitem" key={sm?.id}>
-                <Link
-                  to={`${url}/${sm?.url}`}
-                  className="txt-white sidenavFonts"
-                >
-                <i className={sm?.sub_menu_icon}></i>
-                  &nbsp;{sm?.submenu_name}
-                </Link>
 
-              </li>
-            ))}
-          </ul>
-          
-         
+            <ul id={`menulist_${m?.app_code}`} className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
+              {m?.submenu?.map((sm) => (
+                sm?.is_active &&
+                <li className="ant-menu-item" role="menuitem" key={sm?.id}>
+                  <Link
+                    to={`${url}/${sm?.url}`}
+                    className="txt-white sidenavFonts"
+                  >
+                    <i className={sm?.sub_menu_icon}></i>
+                    &nbsp;{sm?.submenu_name}
+                  </Link>
+
+                </li>
+              ))}
+            </ul>
+          </div>
+
         </React.Fragment>
       )
 
@@ -60,19 +73,8 @@ const SideNavbar = () => {
 
   }, [menuListReducer]);
 
-  const toggleMenu = (e, id) => {
-    //  menuToggleItem?.items?.map(d=> d===id && setMenuToggleItem({...menuToggleItem, checked: d}))
-    e.currentTarget.className="display-menu-list"
-    
-    
-    }
-
-
-  
-  
 
   const roleBasedShowTab = roleBasedAccess();
-
 
   return (
     <>
