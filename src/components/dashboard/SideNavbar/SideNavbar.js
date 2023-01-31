@@ -24,17 +24,15 @@ const SideNavbar = () => {
       return (
         <React.Fragment key={m?.app_name}>
           <div
-            className="ant-menu-submenu-title"
+            className="main-menu-container"
             rel={`${m?.app_code}`}
             onClick={(e) => toggleMenu(e,m?.app_code)}
           >
             <span className="sidebar-menu-divider-business">
-              {m?.app_name}
+              {m?.app_name}  <i className="ant-menu-submenu-arrow" />
             </span>
-            <i className="ant-menu-submenu-arrow" />
-          </div>
-        
-           <ul id={`menulist_${m?.app_code}`} className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
+           
+            <ul id={`menulist_${m?.app_code}`} className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
             {m?.submenu?.map((sm) => (
               sm?.is_active &&
               <li className="ant-menu-item" role="menuitem" key={sm?.id}>
@@ -49,7 +47,7 @@ const SideNavbar = () => {
               </li>
             ))}
           </ul>
-          
+          </div>
          
         </React.Fragment>
       )
@@ -62,8 +60,8 @@ const SideNavbar = () => {
   }, [menuListReducer]);
 
   const toggleMenu = (e, id) => {
-    //  menuToggleItem?.items?.map(d=> d===id && setMenuToggleItem({...menuToggleItem, checked: d}))
-    e.currentTarget.className="display-menu-list"
+    
+    // e.currentTarget.className="display-menu-list"
     
     
     }
