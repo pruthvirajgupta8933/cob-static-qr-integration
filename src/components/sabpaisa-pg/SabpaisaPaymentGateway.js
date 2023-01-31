@@ -52,7 +52,6 @@ function SabpaisaPaymentGateway(props) {
     setpayerEmail(clientDetails?.clientEmail);
     setpayerMobile(clientDetails?.clientMobileNo);
     setamount(props?.planPrice);
-
     setudf12(props?.planData?.clientId)
     setudf13(props?.planData?.planId)
     setudf14(props?.planData?.planName)

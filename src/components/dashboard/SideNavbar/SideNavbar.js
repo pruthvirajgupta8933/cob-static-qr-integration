@@ -1,82 +1,76 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
-import { checkPermissionSlice } from "../../../slices/auth";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
 import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png";
-// import Products from "../AllPages/Product Catalogue/Products";
 import dashboard from "../../../assets/images/dashb.png";
-import transHis from "../../../assets/images/transImage.png";
-import enquire from "../../../assets/images/enquiry.png";
-
 const SideNavbar = () => {
-  const { auth, menuListReducer } = useSelector((state) => state);
-  const [showB2B, setShowB2B] = useState(true);
+  const { menuListReducer } = useSelector((state) => state);
   const [renderMenuList, setRenderMenuList] = useState(<></>);
+  const { url } = useRouteMatch();
+  const [menuToggleItem, setMenuToggleItem] = useState({
+    checked: false,
+    items: []
+  })
 
-  const { user, payLinkPermission } = auth;
-  //  const [clientCode, SetClientCode] = useState("")
 
-  let { url } = useRouteMatch();
-  // const [clientCode, SetClientCode] = useState("")
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    // if (user.clientMerchantDetailsList?.length > 0) {
-    //   // SetClientCode(user?.clientMerchantDetailsList[0]?.clientCode)
-    //   dispatch(
-    //     checkPermissionSlice(user?.clientMerchantDetailsList[0]?.clientCode)
-    //   );
-    // }
-
-    const displayMenu = menuListReducer?.enableMenu?.map((m, i) => {
+    let tempArrayOfItems = []
+    const displayMenu = menuListReducer?.enableMenu?.map((m) => {
+      tempArrayOfItems.push(m?.app_code)
+      setMenuToggleItem({ ...menuToggleItem, items: tempArrayOfItems })
       return (
-        <React.Fragment>
+        <React.Fragment key={m?.app_name}>
           <div
             className="ant-menu-submenu-title"
-            aria-expanded="true"
-            aria-owns="settlement$Menu"
-            aria-haspopup="true"
-            style={{ paddingLeft: "24px" }}
-            key={i}
+            rel={`${m?.app_code}`}
+            onClick={(e) => toggleMenu(e,m?.app_code)}
           >
             <span className="sidebar-menu-divider-business">
               {m?.app_name}
             </span>
             <i className="ant-menu-submenu-arrow" />
           </div>
-
-          <ul id="settlement$Menu" className="ant-menu ant-menu-sub ant-menu-inline" role="menu">
-            {m?.submenu?.map((sm, i) => (
-              sm?.is_active && 
-              <li className="ant-menu-item" role="menuitem" key={i}>
+        
+           <ul id={`menulist_${m?.app_code}`} className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
+            {m?.submenu?.map((sm) => (
+              sm?.is_active &&
+              <li className="ant-menu-item" role="menuitem" key={sm?.id}>
                 <Link
                   to={`${url}/${sm?.url}`}
                   className="txt-white sidenavFonts"
                 >
-                  <img
-                    src={transHis}
-                    width={17}
-                    alt="sabpaisa"
-                    title="sabpaisa"
-                  />
+                <i className={sm?.sub_menu_icon}></i>
                   &nbsp;{sm?.submenu_name}
                 </Link>
 
               </li>
             ))}
           </ul>
+          
+         
         </React.Fragment>
       )
+
+
     })
 
     setRenderMenuList(displayMenu)
 
-
   }, [menuListReducer]);
 
+  const toggleMenu = (e, id) => {
+    //  menuToggleItem?.items?.map(d=> d===id && setMenuToggleItem({...menuToggleItem, checked: d}))
+    e.currentTarget.className="display-menu-list"
+    
+    
+    }
 
+
+  
+  
 
   const roleBasedShowTab = roleBasedAccess();
 

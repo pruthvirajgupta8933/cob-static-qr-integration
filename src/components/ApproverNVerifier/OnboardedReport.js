@@ -9,6 +9,7 @@ import { onboardedReport } from '../../slices/kycSlice';
 import moment from "moment";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
+import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
 
 
 
@@ -17,7 +18,7 @@ const validationSchema = Yup.object({
     to_date: Yup.date()
         .min(Yup.ref("from_date"), "End date can't be before Start date")
         .required("Required"),
-        status:Yup.string().required("Required")
+    status: Yup.string().required("Required")
 
 })
 
@@ -32,12 +33,12 @@ const OnboardedReport = () => {
     const [pageSize, setPageSize] = useState(100);
     const [kycIdClick, setKycIdClick] = useState(null);
     const [displayPageNumber, setDisplayPageNumber] = useState([]);
-     const [isLoaded, setIsLoaded] = useState(false)
+    const [isLoaded, setIsLoaded] = useState(false)
     const [onboardValue, setOnboradValue] = useState("")
     const [showData, setShowData] = useState(false)
     const [selectedvalue, setSelectedvalue] = useState("")
-    const[disabled,setDisabled]=useState(false)
-   
+    const [disabled, setDisabled] = useState(false)
+
     const VerierAndApproverSearch = (e) => {
         setSearchText(e.target.value);
     };
@@ -54,11 +55,11 @@ const OnboardedReport = () => {
     splitDate = splitDate.join("-");
 
     const [todayDate, setTodayDate] = useState(splitDate);
-   
+
     const initialValues = {
         from_date: todayDate,
         to_date: todayDate,
-        status:""
+        status: ""
 
     }
 
@@ -67,19 +68,17 @@ const OnboardedReport = () => {
 
 
     let selectedChoice = selectedvalue === "1" ? "Verified" : selectedvalue === "2" ? "Approved" : ""
-    
-   
+
+
 
     const handleSubmit = (values) => {
         setOnboradValue(values)
         setDisabled(true)
-        dispatch(onboardedReport({ page: currentPage, page_size: pageSize,selectedChoice, "from_date": values.from_date, "to_date": values.to_date }))
+        dispatch(onboardedReport({ page: currentPage, page_size: pageSize, selectedChoice, "from_date": values.from_date, "to_date": values.to_date }))
             .then((resp) => {
-                
-                 resp?.payload?.results.length ? toastConfig.successToast("Data Loaded"):toastConfig.errorToast("No Data Found")
-                // console.log("this is table data",tableData)
-                // tableData.length === 0 && tableData === null || [] ? <></> : toastConfig.successToast("Data Loaded")
-               setSpinner(false);
+                resp?.payload?.results.length ? toastConfig.successToast("Data Loaded") : toastConfig.errorToast("No Data Found")
+
+                setSpinner(false);
                 setSpinner(false);
 
                 const data = resp?.payload?.results;
@@ -116,6 +115,7 @@ const OnboardedReport = () => {
         } else {
             setData(verfiedMerchant);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchText]);
 
 
@@ -124,7 +124,7 @@ const OnboardedReport = () => {
     useEffect(() => {
         dispatch(onboardedReport({ page: currentPage, page_size: pageSize, selectedChoice, "from_date": onboardValue.from_date, "to_date": onboardValue.to_date }))
             .then((resp) => {
-                // resp?.payload?.status_code && toastConfig.errorToast("");
+
                 setSpinner(false);
 
                 const data = resp?.payload?.results;
@@ -137,13 +137,13 @@ const OnboardedReport = () => {
             })
 
             .catch((err) => {
-                
+
             });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage, pageSize]);
 
 
-    // const indexOfLastRecord = currentPage * pageSize;
+
 
     const totalPages = Math.ceil(dataCount / pageSize);
     let pageNumbers = []
@@ -168,7 +168,6 @@ const OnboardedReport = () => {
         }
     };
 
-
     useEffect(() => {
         let lastSevenPage = totalPages - 7;
         if (pageNumbers?.length > 0) {
@@ -186,18 +185,73 @@ const OnboardedReport = () => {
             });
             setDisplayPageNumber(pageNumber);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage, totalPages]);
 
-  
+
 
     const selectStatus = [
-        {key:"0",value:"Select"},
+        { key: "0", value: "Select" },
         { key: "1", value: "Verified" },
         { key: "2", value: "Approved" },
     ]
- 
-   return (
+
+
+    const exportToExcelFn = () => {
+        const excelHeaderRow = [
+            "S.No",
+            "Name",
+            "Email",
+            "Mobile Number",
+            "Created Date",
+            "Status",
+            "Business Category Name",
+            "Business Category Code",
+            "Company Name",
+            "Company's Website",
+            "GST Number",
+            "Business Type",
+            "Expected Transactions",
+            "Zone Code",
+            "Address",
+            "Product Name",
+            "Plan Name",
+            "Landing  Page Name",
+            "Platform",
+        ];
+        let excelArr = [excelHeaderRow];
+        // eslint-disable-next-line array-callback-return
+        data.map((item, index) => {
+
+            const allowDataToShow = {
+                srNo: item.srNo === null ? "" : index + 1,
+                name: item.name === null ? "" : item.name,
+                email: item.email === null ? "" : item.email,
+                mobileNumber: item.mobileNumber === null ? "" : item.mobileNumber,
+                createdDate: item.createdDate === null ? "" : item.createdDate,
+                status: item.status === null ? "" : item.status,
+                business_category_name: item.business_category_name === null ? "" : item.business_category_name,
+                business_cat_code: item.business_cat_code === null ? "" : item.business_cat_code,
+                company_name: item.company_name === null ? "" : item.company_name,
+                companyWebsite: item.companyWebsite === null ? "" : item.companyWebsite,
+                gstNumber: item.gstNumber === null ? "" : item.gstNumber,
+                businessType: item.businessType === null ? "" : item.businessType,
+                expectedTransactions: item.businessType === null ? "" : item.expectedTransactions,
+                zone_code: item.zone_code === null ? "" : item.zone_code,
+                address: item.address === null ? "" : item.address,
+                product_name: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.appName,
+                plan_name: item?.website_plan_details?.planName === null ? "" : item?.website_plan_details?.planName,
+                landing_page_name: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.page,
+                platForm: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.platform,
+            };
+
+            excelArr.push(Object.values(allowDataToShow));
+        });
+        const fileName = "Signup-Data";
+        exportToSpreadsheet(excelArr, fileName);
+    };
+
+    return (
         <section className="ant-layout">
             <div>
                 <NavBar />
@@ -221,7 +275,7 @@ const OnboardedReport = () => {
                             <div className="container">
                                 <div className="row">
 
-                                    <div className="form-group col-md-3">
+                                    <div className="form-group col-md-4">
                                         <FormikController
                                             control="input"
                                             type="date"
@@ -234,7 +288,7 @@ const OnboardedReport = () => {
 
                                     </div>
 
-                                    <div className="form-group col-md-4 mx-3">
+                                    <div className="form-group col-md-4 ">
                                         <FormikController
                                             control="input"
                                             type="date"
@@ -246,7 +300,7 @@ const OnboardedReport = () => {
 
 
                                     </div>
-                                    <div className="form-group col-md-4 mx-3">
+                                    <div className="form-group col-md-4">
 
                                         <FormikController
                                             control="select"
@@ -264,18 +318,21 @@ const OnboardedReport = () => {
 
 
                                     </div>
-                                    <div className=" col-md-4 mx-3">
+                                    <div className=" col-md-3 ">
                                         <button
-                                         type="subbmit"
-                                          className="btn approve text-white btn-xs"
-                                          disabled={disabled}
-                                          >Submit</button>
+                                            type="subbmit"
+                                            className="btn approve text-white btn-xs"
+                                            disabled={disabled}
+
+                                        >Submit</button>
+
 
                                     </div>
-                                    {showData === true  ?
-                                    
+                                    {showData === true ?
+
+
                                         <div className="container-fluid flleft">
-                                            <div className="form-group col-lg-3 col-md-12 mt-2">
+                                            <div className="form-group col-lg-4 col-md-12 mt-2">
                                                 <label>Search</label>
                                                 <input
                                                     className="form-control"
@@ -288,7 +345,7 @@ const OnboardedReport = () => {
 
 
                                             </div>
-                                            <div className="form-group col-lg-3 col-md-12 mt-2">
+                                            <div className="form-group col-lg-4 col-md-12 mt-2">
                                                 <label>Count Per Page</label>
                                                 <select
                                                     value={pageSize}
@@ -300,13 +357,24 @@ const OnboardedReport = () => {
                                                 </select>
                                             </div>
 
+                                            <div className="form-group col-lg-4 col-md-12 mt-5">
+                                                <button
+                                                    className="btn btn-sm text-white"
+                                                    type="button"
+                                                    onClick={() => exportToExcelFn()}
+                                                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                                                >
+                                                    Export
+                                                </button>
+                                            </div>
+
 
                                             {/* <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=approved'} filename={"Approved"} /> */}
 
                                         </div>
 
-                                        : <></> }
-                                   
+                                        : <></>}
+
 
 
 
@@ -319,106 +387,107 @@ const OnboardedReport = () => {
                 </Formik>
 
 
-              
+
                 {showData === true ?
-                <div className="col-md-12 col-md-offset-4">
-                    <div className="scroll overflow-auto">
+                    <div className="col-md-12 col-md-offset-4">
+                        <h5 className="font-weight-bold">Total Records:{data?.length}</h5>
+                        <div className="scroll overflow-auto">
 
 
-                        <table className="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>S.No</th>
-                                    <th>Client Code</th>
-                                    <th>Company Name</th>
-                                    <th>Merchant Name</th>
-                                    <th>Email</th>
-                                    <th>Contact Number</th>
-                                    <th>KYC Status</th>
-                                    <th>Registered Date</th>
-                                    <th>Onboard Type</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {/* {spinner && <Spinner />} */}
-                                {data?.length === 0 ? (
+                            <table className="table table-bordered">
+                                <thead>
                                     <tr>
-                                        <td colSpan={"11"}>
-                                            <div className="nodatafound text-center">No data found </div>
-                                            <br /><br /><br /><br />
-                                            <p className="text-center">{spinner && <Spinner />}</p>
-                                        </td>
+                                        <th>S.No</th>
+                                        <th>Client Code</th>
+                                        <th>Company Name</th>
+                                        <th>Merchant Name</th>
+                                        <th>Email</th>
+                                        <th>Contact Number</th>
+                                        <th>KYC Status</th>
+                                        <th>Registered Date</th>
+                                        <th>Onboard Type</th>
+
                                     </tr>
-                                ) : (
-                                    data?.map((user, i) => (
-                                        <tr key={i}>
-                                            <td>{i + 1}</td>
-                                            <td>{user.clientCode}</td>
-                                            <td>{user.companyName}</td>
-                                            <td>{user.name}</td>
-                                            <td>{user.emailId}</td>
-                                            <td>{user.contactNumber}</td>
-                                            <td>{user.status}</td>
-                                            <td>{user.signUpDate}</td>
-                                            <td>{user?.isDirect}</td>
-                                            <td>
+                                </thead>
+                                <tbody>
 
-
+                                    {data?.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={"11"}>
+                                                <div className="nodatafound text-center">No data found </div>
+                                                <br /><br /><br /><br />
+                                                <p className="text-center">{spinner && <Spinner />}</p>
                                             </td>
-                                            {/* <td>{user?.comments}</td> */}
-
-
                                         </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
+                                    ) : (
+                                        data?.map((user, i) => (
+                                            <tr key={i}>
+                                                <td>{i + 1}</td>
+                                                <td>{user.clientCode}</td>
+                                                <td>{user.companyName}</td>
+                                                <td>{user.name}</td>
+                                                <td>{user.emailId}</td>
+                                                <td>{user.contactNumber}</td>
+                                                <td>{user.status}</td>
+                                                <td>{user.signUpDate}</td>
+                                                <td>{user?.isDirect}</td>
+                                                <td>
+
+
+                                                </td>
+                                                {/* <td>{user?.comments}</td> */}
+
+
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <nav>
+                            <ul className="pagination justify-content-center">
+                                {isLoaded === true ? <Spinner /> : (
+                                    <li className="page-item">
+                                        <button
+                                            className="page-link"
+                                            onClick={prevPage}>
+                                            Previous
+                                        </button>
+                                    </li>)}
+                                {displayPageNumber?.map((pgNumber, i) => (
+                                    <li
+                                        key={i}
+                                        className={
+                                            pgNumber === currentPage ? " page-item active" : "page-item"
+                                        }
+                                        onClick={() => setCurrentPage(pgNumber)}
+                                    >
+                                        <a href={() => false} className={`page-link data_${i}`}>
+                                            <span >
+                                                {pgNumber}
+                                            </span>
+                                        </a>
+                                    </li>
+                                ))}
+
+                                {isLoaded === true ? <Spinner /> : (
+                                    <li className="page-item">
+                                        <button
+                                            className="page-link"
+                                            onClick={nextPage}
+                                            disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
+                                        >
+                                            Next
+                                        </button>
+                                    </li>)}
+                            </ul>
+                        </nav>
 
                     </div>
-                    <nav>
-                        <ul className="pagination justify-content-center">
-                            {isLoaded === true ? <Spinner /> : (
-                                <li className="page-item">
-                                    <button
-                                        className="page-link"
-                                        onClick={prevPage}>
-                                        Previous
-                                    </button>
-                                </li>)}
-                            {displayPageNumber?.map((pgNumber, i) => (
-                                <li
-                                    key={i}
-                                    className={
-                                        pgNumber === currentPage ? " page-item active" : "page-item"
-                                    }
-                                    onClick={() => setCurrentPage(pgNumber)}
-                                >
-                                    <a href={() => false} className={`page-link data_${i}`}>
-                                        <span >
-                                            {pgNumber}
-                                        </span>
-                                    </a>
-                                </li>
-                            ))}
+                    : <></>}
 
-                            {isLoaded === true ? <Spinner /> : (
-                                <li className="page-item">
-                                    <button
-                                        className="page-link"
-                                        onClick={nextPage}
-                                        disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
-                                    >
-                                        Next
-                                    </button>
-                                </li>)}
-                        </ul>
-                    </nav>
 
-                </div>
-                : <></> }
-                
-                     
 
 
             </div>
