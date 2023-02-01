@@ -8,8 +8,7 @@ import API_URL from "../../../../config";
 import { axiosInstanceAuth } from "../../../../utilities/axiosInstance";
 import "./product.css";
 import toastConfig from "../../../../utilities/toastTypes";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { useParams,useHistory } from "react-router-dom";
 import { logout } from "../../../../slices/auth";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 

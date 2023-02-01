@@ -28,18 +28,21 @@ import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import KycAlert from "../../KYC/KycAlert";
 import { DefaultRateMapping } from "../../../utilities/DefaultRateMapping";
+import { isNull } from "lodash";
+import AlertBox from "../../../_components/reuseable_components/AlertBox";
 
 function Home() {
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
   const { path } = useRouteMatch();
   const [modalState, setModalState] = useState("Not-Filled");
+  const [unPaidProductData, setUnPaidProductData] = useState([])
   const [isRateMappingInProcess, setIsRateMappingInProcess] = useState(false);
 
-  const { auth, kyc } = useSelector((state) => state);
+  const { auth, kyc, productCatalogueSlice } = useSelector((state) => state);
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
-  
-  
+  const { SubscribedPlanData } = productCatalogueSlice
+
 
   const { user } = auth;
 
@@ -57,9 +60,6 @@ function Home() {
   }, [KycTabStatusStore]);
 
 
-
-
-
   useEffect(() => {
     dispatch(kycUserList({ login_id: user?.loginId }));
     return () => {
@@ -68,11 +68,15 @@ function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (roles.merchant === true) {
-    if (user.clientMerchantDetailsList === null) {
-      // return <Redirect to={`${path}/profile`} />;
-    }
-  } else if (
+
+  useEffect(() => {
+    // filter the data which is not paid by the user
+    const unPaidProduct = SubscribedPlanData?.length > 0 && SubscribedPlanData?.filter((d) => ( isNull(d?.clientTxnId) && d?.plan_code==="005" ))
+    setUnPaidProductData(unPaidProduct)
+  }, [SubscribedPlanData])
+
+
+  if (
     roles.approver === true ||
     roles.verifier === true ||
     roles.viewer === true
@@ -100,7 +104,20 @@ function Home() {
         )}
         {/* KYC ALETT */}
         {roles?.merchant === true ?
-          <KycAlert />
+          <React.Fragment>
+          {unPaidProductData?.length>0 && unPaidProductData?.map((data)=>(
+            
+            <AlertBox 
+              key={data?.clientSubscribedPlanDetailsId}
+              heading={`Payment Alert`} 
+              message={`Kindly pay the amount of the subscribed product`}
+              linkUrl={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}
+              linkName={'Make Payment'}
+              bgColor={'alert-danger'}
+            />
+            ))}
+            <KycAlert />
+          </React.Fragment>
           : <></>}
 
         <div className="announcement-banner-container_new  announcement-banner">
@@ -275,8 +292,8 @@ function Home() {
                     &nbsp;Payment Links
                   </h2>
                   <p className="paragraphcssdashboards">
-                  Payment Links is the world’s first Unified link-based payment method, for payment collections with the help of links for a wide range of payment modes. Collect payments even without a website through easy payment links.
-                   Payment Links offers password-protected and shortened payment links for seamless payment collection.
+                    Payment Links is the world’s first Unified link-based payment method, for payment collections with the help of links for a wide range of payment modes. Collect payments even without a website through easy payment links.
+                    Payment Links offers password-protected and shortened payment links for seamless payment collection.
                   </p>
                   <Link to={`/dashboard/sabpaisa-pricing/13/PayLink`}>
                     <p className="pricingclasscss">
@@ -421,78 +438,78 @@ function Home() {
             <div className="modal-content">
               <div className="modal-body Satoshi-Medium">
 
-              {/* ratemapping loader  */}
-              {/* {console.log("chck1")} */}
-              <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
-              {/* {console.log("chck2")} */}
+                {/* ratemapping loader  */}
+                {/* {console.log("chck1")} */}
+                <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
+                {/* {console.log("chck2")} */}
 
-              {!(isRateMappingInProcess) &&
-                <div className="">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setModalState(!modalState);
-                    }}
-                    className="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                {!(isRateMappingInProcess) &&
+                  <div className="">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setModalState(!modalState);
+                      }}
+                      className="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
 
-                  <div className="row">
-                    <div className="col-sm">
-                      <h1 className="homeModalHeading">Welcome to SabPaisa!</h1>
-                      <h2 className="modalscolrsfortext">
-                        Complete the KYC to activate your account and start
-                        accepting payments. Fill in all the information to start
-                        your SabPaisa Payment services.
-                      </h2>
+                    <div className="row">
+                      <div className="col-sm">
+                        <h1 className="homeModalHeading">Welcome to SabPaisa!</h1>
+                        <h2 className="modalscolrsfortext">
+                          Complete the KYC to activate your account and start
+                          accepting payments. Fill in all the information to start
+                          your SabPaisa Payment services.
+                        </h2>
+                      </div>
+
+                      <div className="col-sm">
+                        <img
+                          src={bro}
+                          className="modalsimageclass"
+                          alt="SabPaisa"
+                          title="SabPaisa"
+                        />
+                      </div>
                     </div>
 
-                    <div className="col-sm">
-                      <img
-                        src={bro}
-                        className="modalsimageclass"
-                        alt="SabPaisa"
-                        title="SabPaisa"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="row Satoshi-Medium">
-                    <div className="col-lg-4">
-                      <Link
-                        to={`/dashboard/kyc`}
-                        data-toggle="modal"
-                        data-target="#exampleModalCenter"
-                      >
-                        <button className="ModalButtonClr text-white mt-2">
-                          <h5 className="m-0">
-                            Complete KYC to activate account
-                          </h5>
-                        </button>
-                      </Link>
-                    </div>
-                    <div className="col-lg-7">
-                      <Link to={`/dashboard`}>
-                        <button
-                          className="ColrsforredirectProdct  text-white"
-                          style={{ marginTop: "9px" }}
-                          onClick={() => {
-                            setModalState(!modalState);
-                          }}
-                          aria-label="Close"
+                    <div className="row Satoshi-Medium">
+                      <div className="col-lg-4">
+                        <Link
+                          to={`/dashboard/kyc`}
+                          data-toggle="modal"
+                          data-target="#exampleModalCenter"
                         >
-                          <h5 className="m-0">Try out our dashboard</h5>
-                        </button>
-                      </Link>
+                          <button className="ModalButtonClr text-white mt-2">
+                            <h5 className="m-0">
+                              Complete KYC to activate account
+                            </h5>
+                          </button>
+                        </Link>
+                      </div>
+                      <div className="col-lg-7">
+                        <Link to={`/dashboard`}>
+                          <button
+                            className="ColrsforredirectProdct  text-white"
+                            style={{ marginTop: "9px" }}
+                            onClick={() => {
+                              setModalState(!modalState);
+                            }}
+                            aria-label="Close"
+                          >
+                            <h5 className="m-0">Try out our dashboard</h5>
+                          </button>
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              }
+                }
 
-               
+
 
 
               </div>
