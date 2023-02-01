@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
@@ -65,50 +66,7 @@ function RateMapping() {
       setData(assignZone);
     }
   }, [searchText]);
-  ////////////////////////////////////pagination start here
-
-  // const allApprovedMerchants = async () => {
-  //   await axiosInstanceAuth.get(`${API_URL.KYC_FOR_APPROVED}`).then((res) => {
-  //     const data = res?.data?.results;
-  //     // console.log(data)
-  //     setApprovedMerchantData(data);
-  //     const dataCoun = res?.data?.count;
-  //     setDataCount(dataCoun);
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   allApprovedMerchants();
-  //   dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
-  //     .then((resp) => {
-  //       toastConfig.successToast("Approved Data Loaded");
-  //       setSpinner(false);
-  //       const data = resp?.payload?.results;
-  //       setApproveMerchant(data);
-  //     })
-  //     .catch((err) => toastConfig.errorToast("Data not loaded"));
-  // }, [currentPage, pageSize]);
-
-  /////////////////////////////////////Search filter
-  // useEffect(() => {
-  //   if (searchText.length > 0) {
-  //     setApproveMerchant(
-  //       approveMerchant?.filter((item) =>
-  //         Object.values(item)
-  //           .join(" ")
-  //           .toLowerCase()
-  //           .includes(searchText.toLocaleLowerCase())
-  //       )
-  //     );
-  //   } else {
-  //     dispatch(kycForApproved({ page, page_size })).then((resp) => {
-  //       const data = resp?.payload?.results;
-
-  //       setApproveMerchant(data);
-  //     });
-  //   }
-  // }, [searchText]);
-
+  
 
   const totalPages = Math.ceil(dataCount / pageSize);
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
-// import axios from "axios";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
@@ -22,9 +21,6 @@ function PendingVerification() {
    const { loginId } = user;
    const id =loginId
    
-
-  //  console.log(loginId," <=====  Login Id ====> ")
-
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [dataCount, setDataCount] = useState("");
@@ -103,6 +99,7 @@ function PendingVerification() {
     } else {
       setData(newRegistrationData);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchText]);
 
   const totalPages = Math.ceil(dataCount / pageSize);
@@ -144,6 +141,7 @@ function PendingVerification() {
       });
       setDisplayPageNumber(pageNumber);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {
@@ -238,7 +236,7 @@ function PendingVerification() {
               ) : (
                 <></>
               )}
-              {/* {spinner && <Spinner />} */}
+              
               {data?.length === 0 ? (
                  <tr>
                  <td colSpan={"11"}>

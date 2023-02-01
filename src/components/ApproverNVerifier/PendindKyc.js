@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { kycForPendingMerchants } from "../../slices/kycSlice";
@@ -6,12 +7,10 @@ import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
 import CommentModal from "./Onboarderchant/CommentModal";
-
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
-// import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
 
 const PendindKyc = () => {
   const roles = roleBasedAccess();
@@ -88,8 +87,6 @@ const PendindKyc = () => {
   if (!Number.isNaN(totalPages)) {
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
-
-  // const indexOfFirstRecord = indexOfLastRecord - pageSize;
 
   const nextPage = () => {
     setIsLoaded(true);
@@ -232,8 +229,7 @@ const PendindKyc = () => {
                 <></>
               )}
 
-              {/* {spinner && <Spinner />} */}
-              {data?.length === 0 ? (
+             {data?.length === 0 ? (
                 <tr>
                   <td colSpan={"11"}>
                     <p className="text-center spinner-roll">{spinner && <Spinner />}</p>

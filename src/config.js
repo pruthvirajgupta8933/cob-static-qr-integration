@@ -142,7 +142,7 @@ const API_LIVE = {
   GET_RISK_TEMPLSTE: `${url}/merchant/get-risk-category-template`,
   TEMPLATE_DETAILS_BYRISKCODE: `${url}/merchant/get-template-detail-by-business-code`,
   ////////////////////////////////////////SIGNUP DATA API
-  GET_SIGNUP_DATA_INFO: `${url}/merchant/get-signup-info`,
+  GET_SIGNUP_DATA_INFO: `${url}/merchant/get-signup-info/`,
   //////////////////////// For merchnat list export to csv
   Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
   /////////////////////////Kyc approver
