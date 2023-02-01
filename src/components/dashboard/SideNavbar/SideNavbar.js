@@ -17,18 +17,18 @@ const SideNavbar = () => {
     items: []
   })
 
-  const toggleMenu = (e) => {
+  // const toggleMenu = (e) => {
   
-    const currentToggle = e.currentTarget.attributes?.istoggle?.value.toString()
-    if (currentToggle === "true") {
-      e.currentTarget.attributes.istoggle.value = false
-      e.currentTarget.className ="hide-menu-nav"
-    } else {
-      e.currentTarget.attributes.istoggle.value = true
-      e.currentTarget.className="show-menu-nav"      
-    }
+  //   const currentToggle = e.currentTarget.attributes?.istoggle?.value.toString()
+  //   if (currentToggle === "true") {
+  //     e.currentTarget.attributes.istoggle.value = false
+  //     e.currentTarget.className ="hide-menu-nav"
+  //   } else {
+  //     e.currentTarget.attributes.istoggle.value = true
+  //     e.currentTarget.className="show-menu-nav"      
+  //   }
 
-  }
+  // }
 
   useEffect(() => {
     let tempArrayOfItems = []

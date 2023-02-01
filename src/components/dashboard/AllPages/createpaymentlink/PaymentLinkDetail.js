@@ -20,19 +20,22 @@ const PaymentLinkDetail = () => {
   const { clientCode} = clientMerchantDetailsList[0];
   const [pageCount,setPageCount ] = useState(data ? Math.ceil(data.length/pageSize) : 0);
 
+const loaduser=()=>{
+  toastConfig.infoToast("Loading")
+  axiosInstance.get(`${API_URL.GET_LINKS}${clientCode}`)
+   .then((res) => {
+     toastConfig.successToast("Payment Link Data Loaded")
+     setData(res.data);
+     setDisplayList(res.data);
+     setPaginatedData(_(res.data).slice(0).take(pageSize).value())
+   })
+   .catch((err) => {
+     toastConfig.errorToast("Data not loaded")
+   });
 
+}
   useEffect(() => {
-    toastConfig.infoToast("Loading")
-     axiosInstance.get(`${API_URL.GET_LINKS}${clientCode}`)
-      .then((res) => {
-        toastConfig.successToast("Payment Link Data Loaded")
-        setData(res.data);
-        setDisplayList(res.data);
-        setPaginatedData(_(res.data).slice(0).take(pageSize).value())
-      })
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded")
-      });
+    loaduser()
   }, []);
   
 
@@ -89,7 +92,7 @@ return (
 
     <React.Fragment>
        {/* filter area */}
-       <FormPaymentLink />
+       <FormPaymentLink loaduser={loaduser} />
        <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
                 <div className="container-fluid flleft">
                 <div className="row">    

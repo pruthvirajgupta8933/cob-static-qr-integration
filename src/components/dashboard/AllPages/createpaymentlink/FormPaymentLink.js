@@ -8,7 +8,8 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../../../config";
 
-function FormPaymentLink() {
+function FormPaymentLink(props) {
+  const{loaduser}=props;
 
   const [drop, setDrop] = useState([]);
   const [hours, setHours] = useState("");
@@ -79,6 +80,7 @@ function FormPaymentLink() {
             transition: Zoom,
             limit: 2,
           })
+          loaduser();
       })
       .catch((error) => {
         toast.error('Payment Link Creation Failed', {
