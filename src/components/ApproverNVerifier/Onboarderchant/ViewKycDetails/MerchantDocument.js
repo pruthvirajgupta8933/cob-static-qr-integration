@@ -324,8 +324,8 @@ const MerchantDocument = (props) => {
           return (<> <span className="text-danger"> {item?.value}</span><br /></>)
         })}
       </div>
-
-      <div className="col-lg-12 mt-4 m-2">
+      
+      <div className="col-lg-12 mt-4 m-2 hoz-scroll">
         <table className="table table-bordered w-100">
 
 

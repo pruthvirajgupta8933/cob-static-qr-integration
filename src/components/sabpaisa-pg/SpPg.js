@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { isArray, isNull } from 'lodash'
 import SabpaisaPaymentGateway from './SabpaisaPaymentGateway'
 import API_URL from '../../config'
@@ -17,6 +17,8 @@ function SpPg() {
     const [reponseFromServerFlag, setRespFromServerFlag] = useState(false)
     const [isOpenPg, setIsOpenPg] = useState(false)
     const [userData, setUserData] = useState({})
+
+    const param = useParams();
 
 
 
@@ -163,27 +165,26 @@ function SpPg() {
             setResponseData(paramsData)
             if (paramsData?.statusCode === "0000") {
                 // if payment successful
-                const res = axiosInstanceAuth.post(
-                    API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-                    selectedPlan
-                );
+                // const res = axiosInstanceAuth.post(
+                //     API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+                //     selectedPlan
+                // );
 
 
-                if (res?.status === 200) {
-                    console.log("1")
-                    // only PG product without subscription plan check rate mapping status
-                    if (selectedPlan?.applicationId === "10" && selectedPlan?.planId !== 1) {
-                        console.log("2")
-                        // only for payment gateway we have to check rate mapping status
-                        // checkRateMappingStatus("COBED", clientData?.clientMerchantDetailsList[0]?.clientCode, clientData?.loginId)
-                    }
+                // if (res?.status === 200) {
+                //     console.log("1")
+                //     // only PG product without subscription plan check rate mapping status
+                //     if (selectedPlan?.applicationId === "10" && selectedPlan?.planId !== 1) {
+                //         console.log("2")
+                //         // only for payment gateway we have to check rate mapping status
+                //         // checkRateMappingStatus("COBED", clientData?.clientMerchantDetailsList[0]?.clientCode, clientData?.loginId)
+                //     }
 
-                    // getSubscribedPlan(plan_id);
-                    toastConfig.successToast(res?.data?.message);
-                } else {
-                    toastConfig.errorToast("Something went wrong");
-                }
-
+                //     // getSubscribedPlan(plan_id);
+                //     toastConfig.successToast(res?.data?.message);
+                // } else {
+                //     toastConfig.errorToast("Something went wrong");
+                // }
             }
             // sessionStorage.removeItem("tempProductPlanData")
         }
@@ -201,7 +202,6 @@ function SpPg() {
         <React.Fragment>
             <section className="ant-layout">
                 <NavBar />
-
                 <SabpaisaPaymentGateway planData={selectedPlan} planPrice={planPrice} openPg={isOpenPg} clientData={userData} />
 
                 <main className="gx-layout-content ant-layout-content">
