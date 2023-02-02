@@ -1449,3 +1449,9 @@ display: inline-grid;
   
   
 }
+
+.hoz-scroll{
+  overflow-y: hidden;
+    white-space: nowrap;
+  
+}

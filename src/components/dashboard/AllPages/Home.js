@@ -50,7 +50,6 @@ function Home() {
         login_id: user?.loginId,
       })
     )
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./css/Home.css";
 import "./css/50.684f163d.chunk.css";
 import "./css/main.e3214ff9.chunk.css";
@@ -57,17 +57,17 @@ import ChallanTransactReport from "../../B2B_components/ChallanTransactReport";
 import B2BRouting from "../../B2B_components/Routes/B2BRouting";
 import { fetchMenuList } from "../../slices/cob-dashboard/menulistSlice";
 import { isNull } from "lodash";
+import { merchantSubscribedPlanData } from "../../slices/merchant-slice/productCatalogueSlice";
 
 
 function Dashboard() {
   let history = useHistory();
   let { path } = useRouteMatch();
-
   const { user } = useSelector((state) => state.auth);
-  // const clientMerchantDetailsList = user?.clientMerchantDetailsList
   const roles = roleBasedAccess();
-
   const dispatch = useDispatch();
+
+  const [unPaidProductData, setUnPaidProductData] = useState([])
 
   // create new client code
   useEffect(() => {
@@ -83,37 +83,28 @@ function Dashboard() {
           };
 
           dispatch(createClientProfile(data)).then(clientProfileRes => {
-            console.log("response of the create client ", clientProfileRes);
-
+            // console.log("response of the create client ", clientProfileRes);
             // after create the client update the subscribe product
             const postData = {
               login_id: user?.loginId
             }
-
-
             // fetch details of the user registraion
             axiosInstanceAuth.post(API_URL.website_plan_details, postData).then(
               res => {
-                console.log("clientProfileRes", clientProfileRes)
+                // console.log("clientProfileRes", clientProfileRes)
                 const webData = res?.data?.data[0]?.plan_details
                 const postData = {
                   clientId: clientProfileRes?.payload?.clientId,
-                  applicationName: webData?.appName,
-                  planId: webData?.planid,
-                  planName: webData?.planName,
-                  applicationId: webData?.appid,
+                  applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
+                  planId: !isNull(webData?.planid) ? webData?.planid : "1",
+                  planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
+                  applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
                 };
 
-                if(!isNull(webData?.planid) && !isNull(webData?.appid))
-                {
-                  axiosInstanceAuth.post(
-                    API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-                    postData
-                  );
-    
-                }
-            
-                
+                axiosInstanceAuth.post(
+                  API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+                  postData
+                );
               }
             )
           }).catch(err => console.log(err));
@@ -122,20 +113,28 @@ function Dashboard() {
         }
       }
     }
-
-    // defaultRateMapping("HU9NCY"); //HU9NCY
-
   }, []);
 
 
-  
+
+
+  const getSubscribedPlan = (clientId) => {
+    axiosInstanceAuth
+      .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId })
+      .then((resp) => {
+        const data = resp.data.data
+        const unPaidProduct = data?.filter((d) => isNull(d?.clientTxnId))
+        setUnPaidProductData(unPaidProduct)
+      })
+  }
+
   useEffect(() => {
     const postBody = {
-      LoginId:user?.loginId
+      LoginId: user?.loginId
     }
     dispatch(fetchMenuList(postBody))
-
-  }, [])
+    dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
+  }, [user, dispatch])
 
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
@@ -145,7 +144,8 @@ function Dashboard() {
   }
 
 
-  
+  console.log("unPaidProductData",unPaidProductData)
+
 
   return (
     <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
@@ -431,7 +431,7 @@ function Dashboard() {
                          <PgResponse />
                     </Route> */}
 
-        <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
+        <MerchantRoute exact path={`${path}/sabpaisa-pg/:id`} Component={SpPg}>
           <SpPg />
         </MerchantRoute>
 
@@ -446,7 +446,7 @@ function Dashboard() {
             <SignupData />
 
           </VerifierRoute>
-        ) }
+        )}
 
 
         {roles?.approver && (
