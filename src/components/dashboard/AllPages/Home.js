@@ -105,7 +105,7 @@ function Home() {
         {/* KYC ALETT */}
         {roles?.merchant === true ?
           <React.Fragment>
-          {unPaidProductData?.length>0 && unPaidProductData?.map((data)=>(
+          {/* {unPaidProductData?.length>0 && unPaidProductData?.map((data)=>(
             
             <AlertBox 
               key={data?.clientSubscribedPlanDetailsId}
@@ -115,7 +115,7 @@ function Home() {
               linkName={'Make Payment'}
               bgColor={'alert-danger'}
             />
-            ))}
+            ))} */}
             <KycAlert />
           </React.Fragment>
           : <></>}

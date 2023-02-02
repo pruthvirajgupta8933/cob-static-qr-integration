@@ -8,4 +8,8 @@ export const fetchSubscribedPlan = (dataObj) => {
 };
 
 
-
+export const fetchProductPlan = (dataObj) => {
+  const id = dataObj.app_id;
+  let url = API_URL.PRODUCT_SUB_DETAILS + "/" + id;
+  return axiosInstanceAuth.get(url)
+}
