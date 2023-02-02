@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
@@ -6,20 +7,19 @@ import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
 import CommentModal from "./Onboarderchant/CommentModal";
-import {ALLOW_ROLE_AS_VERIFIER} from "./../../utilities/permisson"
 import moment from "moment";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 function PendingVerification() {
   const roles = roleBasedAccess();
-   const { user } = useSelector((state) => state.auth);
+  //  const { user } = useSelector((state) => state.auth);
    const roleBasePermissions = roleBasedAccess()
 
    const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
-   const { loginId } = user;
-   const id =loginId
+  //  const { loginId } = user;
+  //  const id =loginId
    
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -149,15 +149,15 @@ function PendingVerification() {
       return date
     }
 
-    let btn = false;
-    ALLOW_ROLE_AS_VERIFIER?.map((i) => {
-    if (ALLOW_ROLE_AS_VERIFIER.includes(id)) {
-      btn = true;
-    } else {
+  //   let btn = false;
+  //   ALLOW_ROLE_AS_VERIFIER?.map((i) => {
+  //   if (ALLOW_ROLE_AS_VERIFIER.includes(id)) {
+  //     btn = true;
+  //   } else {
        
-      btn = false;
-    } 
-  });
+  //     btn = false;
+  //   } 
+  // });
     
   return (
     <div className="container-fluid flleft">
@@ -264,7 +264,7 @@ function PendingVerification() {
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >
-                        {roles?.verifier === true && currenTab === 3 || Allow_To_Do_Verify_Kyc_details === true ? "Verify KYC / View Status" : "View Status" }
+                        {(roles?.verifier === true && currenTab === 3 ) || Allow_To_Do_Verify_Kyc_details === true ? "Verify KYC / View Status" : "View Status" }
                       
                       </button>
                     </td>

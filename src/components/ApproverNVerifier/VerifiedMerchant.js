@@ -81,6 +81,7 @@ function VerifiedMerchant() {
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, pageSize]);
 
   useEffect(() => {
@@ -96,6 +97,7 @@ function VerifiedMerchant() {
     } else {
       setData(verfiedMerchant);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchText]);
 
   
@@ -107,15 +109,16 @@ function VerifiedMerchant() {
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
 
+  // eslint-disable-next-line no-unused-vars
   const indexOfFirstRecord = indexOfLastRecord - pageSize;
 
-  const nextPage = () => {
-    setIsLoaded(true)
-    setData([])
+  function nextPage() {
+    setIsLoaded(true);
+    setData([]);
     if (currentPage < pageNumbers.length) {
       setCurrentPage(currentPage + 1);
     }
-  };
+  }
 
   const prevPage = () => {
     setIsLoaded(true)
@@ -144,6 +147,7 @@ function VerifiedMerchant() {
       });
       setDisplayPageNumber(pageNumber);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {

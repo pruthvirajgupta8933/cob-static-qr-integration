@@ -21,6 +21,8 @@ function RateMapping() {
   const [openZoneModal, setOpenModal] = useState(false)
  
   const [modalDisplayData, setModalDisplayData] = useState({});
+
+ 
   let page_size = pageSize;
   let page = currentPage;
 
@@ -35,18 +37,21 @@ function RateMapping() {
    
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
+         const data = resp?.payload?.results;
+       resp?.payload?.results ? toastConfig.successToast("data Loaded") : toastConfig.errorToast("No data Found")
+        const dataCoun = resp?.payload?.count;
+        setDataCount(dataCoun);
+        setData(data);
+        
         setSpinner(false);
 
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-         setDataCount(dataCoun);
+        
+         
          setAssignzone(data);
       })
 
       .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
+        
       });
   }, [currentPage, pageSize]);
 
@@ -70,6 +75,7 @@ function RateMapping() {
 
   const totalPages = Math.ceil(dataCount / pageSize);
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+  
 
   const nextPage = () => {
     if (currentPage < pageNumbers?.length) {

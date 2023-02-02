@@ -12,10 +12,7 @@ import { roleBasedAccess } from '../../../../_components/reuseable_components/ro
 
 
 const CompleteVerification = (props) => {
-  
-let closeVerificationModal=props?.closeVerification;
-  
-
+  let closeVerificationModal=props?.closeVerification;
   let pendingApporvalTable = props?.renderApprovalTable
   let pendingVerfyTable = props?.renderPendingVerificationData
   let approvedTable = props?.renderApprovedTable
@@ -24,7 +21,6 @@ let closeVerificationModal=props?.closeVerification;
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
   let isverified = KycTabStatus.is_verified
-  // console.log("",pendingVerfyTable)
   const { merchantKycId } = props;
   
 
@@ -35,6 +31,7 @@ let closeVerificationModal=props?.closeVerification;
   const [disable, setDisable] = useState(false)
   const[buttonClick,setButtonClick]=useState(false)
   const[commetText,setCommetText]=useState()
+  
 
   const { auth } = useSelector((state) => state);
 
@@ -47,6 +44,8 @@ let closeVerificationModal=props?.closeVerification;
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
   const [buttonText, setButtonText] = useState("Complete Verification");
+  const[pushedButton,setPushedButton]=useState("Back to push")
+  const[pushButtonClick,setPushButtonClick]=useState()
   const handleVerifyClick = () => {
 
     const veriferDetails = {
@@ -100,6 +99,7 @@ let closeVerificationModal=props?.closeVerification;
               resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
               dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
               pendingApporvalTable()
+              
               closeVerificationModal(false)
             })
             .catch((e) => {
@@ -152,19 +152,24 @@ let closeVerificationModal=props?.closeVerification;
 
   // Function For Reversing to Pending Verification
 
-  const handleReverseToPendingVerification = (commetText) => {
+  const handlePushBack = (commetText) => {
    
     const reverseDetails = {
       login_id: merchantKycId.loginMasterId,
       approved_by: loginId,
+      comments:commetText
     };
-    if (window.confirm("Are you sure to push it to Pending Verification ?")) {
+    if (window.confirm("Are you sure to push it back ?")) 
+    {
+      if(roles.approver && currenTab===4){
     dispatch(reverseToPendingVerification(reverseDetails))
       .then((resp) => {
         // console.log("This sis",resp)
         resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
         dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
         closeVerificationModal(false)
+        setPushButtonClick(false)
+        setCommetText("")
         return currenTab === 4 ? pendingApporvalTable() : <></>
                
       })
@@ -172,7 +177,58 @@ let closeVerificationModal=props?.closeVerification;
         toast.error("Something went wrong, Please Try Again later")
       });
     }
+  
+//  for reversing it from Approved to pending Approval
+  if(roles?.approver && currenTab===5){
+    const reverseToPendingApprovalDetails = {
+      login_id: merchantKycId.loginMasterId,
+      approved_by: loginId,
+      comments:commetText
+    };
+    
+    dispatch(reverseToPendingApproval(reverseToPendingApprovalDetails))
+      .then((resp) => {
+        // console.log("This sis",resp)
+        resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
+        dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+        closeVerificationModal(false)
+        setPushButtonClick(false)
+        setCommetText("");
+         return currenTab === 5 ? approvedTable() : <></>
+               
+      })
+      .catch((e) => {
+        toast.error("Something went wrong, Please Try Again later")
+      });
+    
+
   }
+  if(roles?.approver && currenTab===6){
+    const reverseToPendingKyc = {
+      login_id: merchantKycId.loginMasterId,
+      approved_by: loginId,
+      comments:commetText
+    };
+   
+    dispatch(reverseToPendingkyc(reverseToPendingKyc))
+      .then((resp) => {
+        // console.log("This sis",resp)
+        resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
+        dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+        closeVerificationModal(false)
+        setPushButtonClick(false)
+        setCommetText("");
+         return currenTab === 6 ? renderToPendingKyc() : <></>
+               
+      })
+      .catch((e) => {
+        // toast.error("Something went wrong, Please Try Again later")
+      });
+    
+
+  }
+}
+}
 
 
 
@@ -190,49 +246,49 @@ let closeVerificationModal=props?.closeVerification;
 
     // Function for reversing it from Approved to pending Approval
 
-    const handleReverseToPendingApproval = () => {
+    // const handleReverseToPendingApproval = () => {
    
-      const reverseToPendingApprovalDetails = {
-        login_id: merchantKycId.loginMasterId,
-        approved_by: loginId,
-      };
-      if (window.confirm("Are you sure to push it to Pending Approval ?")) {
-      dispatch(reverseToPendingApproval(reverseToPendingApprovalDetails))
-        .then((resp) => {
-          // console.log("This sis",resp)
-          resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
-          dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
-          closeVerificationModal(false)
-           return currenTab === 5 ? approvedTable() : <></>
+    //   const reverseToPendingApprovalDetails = {
+    //     login_id: merchantKycId.loginMasterId,
+    //     approved_by: loginId,
+    //   };
+    //   if (window.confirm("Are you sure to push it to Pending Approval ?")) {
+    //   dispatch(reverseToPendingApproval(reverseToPendingApprovalDetails))
+    //     .then((resp) => {
+    //       // console.log("This sis",resp)
+    //       resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
+    //       dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+    //       closeVerificationModal(false)
+    //        return currenTab === 5 ? approvedTable() : <></>
                  
-        })
-        .catch((e) => {
-          toast.error("Something went wrong, Please Try Again later")
-        });
-      }
-    }
+    //     })
+    //     .catch((e) => {
+    //       toast.error("Something went wrong, Please Try Again later")
+    //     });
+    //   }
+    // }
 
-    const handleReverseToPendingKyc = () => {
+    // const handleReverseToPendingKyc = () => {
    
-      const reverseToPendingKyc = {
-        login_id: merchantKycId.loginMasterId,
-        approved_by: loginId,
-      };
-      if (window.confirm("Are you sure to push it to Pending Kyc ?")) {
-      dispatch(reverseToPendingkyc(reverseToPendingKyc))
-        .then((resp) => {
-          // console.log("This sis",resp)
-          resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
-          dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
-          closeVerificationModal(false)
-           return currenTab === 6 ? renderToPendingKyc() : <></>
+    //   const reverseToPendingKyc = {
+    //     login_id: merchantKycId.loginMasterId,
+    //     approved_by: loginId,
+    //   };
+    //   if (window.confirm("Are you sure to push it to Pending Kyc ?")) {
+    //   dispatch(reverseToPendingkyc(reverseToPendingKyc))
+    //     .then((resp) => {
+    //       // console.log("This sis",resp)
+    //       resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
+    //       dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
+    //       closeVerificationModal(false)
+    //        return currenTab === 6 ? renderToPendingKyc() : <></>
                  
-        })
-        .catch((e) => {
-          // toast.error("Something went wrong, Please Try Again later")
-        });
-      }
-    }
+    //     })
+    //     .catch((e) => {
+    //       // toast.error("Something went wrong, Please Try Again later")
+    //     });
+    //   }
+    // }
   
   
 
@@ -306,11 +362,32 @@ let closeVerificationModal=props?.closeVerification;
 
     }
 
+    
+
     //  console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
     //  console.log("isverified",isverified)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roles, isverified, Allow_To_Do_Verify_Kyc_details]);
+
+
+
+  useEffect(()=>{
+    if(currenTab===4 && roles?.approver){
+     
+      setPushedButton("Back to Pending Verification")
+    }
+    if(currenTab===5 && roles?.approver){
+      setPushedButton("Back to Pending Approval")
+      
+    }
+    if(currenTab===6 && roles?.approver)
+    setPushedButton("Back to Pending kyc")
+    
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[roles])
+  
 
   // console.log("---------start final btn-----")
   //    console.log("currenTab",currenTab)
@@ -336,21 +413,31 @@ let closeVerificationModal=props?.closeVerification;
           
           
           <button type="button"   onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button></>
-          : enableBtnApprovedTab === true ?   <button type="button"   onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button> : <> </> 
+          : enableBtnApprovedTab === true ?   <button type="button" 
+            onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button> : <> </> // Reject kyc for currentab 4(Approved) 
 
         }
 
-        {roles?.approver === true && currenTab === 4 ?
-        <button button type="button" onClick={()=> handleReverseToPendingVerification()} className="btn btn-success btn-sm text-white">Back to Pending Verification</button> : <></> }
+       {currenTab===4 || currenTab===5 || currenTab===6 ?
+       
+        <button  type="button" onClick={()=>setPushButtonClick(true)} className="btn btn-success btn-sm text-white ml-2">{pushedButton}</button> : <></>}
 
-        {roles?.approver === true && currenTab === 5 ? 
-        <button button type="button" onClick={()=> handleReverseToPendingApproval() } className="btn btn-success btn-sm text-white">Back to Pending Approval</button> : <></>}
+<div className="col-lg-12">
+{pushButtonClick===true ?
+ 
+          <>
+          <label for="comments col-lg-12">Reject Comments For Pushing Back</label>
 
-          {roles?.approver === true && currenTab === 6 ? 
-        <button button type="button" onClick={()=> handleReverseToPendingKyc() } className="btn btn-success btn-sm text-white">Back to Pending kyc</button> : <></>}
+    <textarea id="comments" className="col-lg-12" name="reject_commet" rows="4" cols="40" onChange={(e)=>setCommetText(e.target.value)}>
+    </textarea>
+        <button type="button" 
+            onClick={()=> handlePushBack(commetText)}
+            className="btn btn-danger btn-sm text-white pull-left mt-20">Submit</button></> : <></>}
 
 
-  </div>
+      </div>
+
+      </div>
 <div className="col-lg-12">
 {buttonClick===true ?
  
