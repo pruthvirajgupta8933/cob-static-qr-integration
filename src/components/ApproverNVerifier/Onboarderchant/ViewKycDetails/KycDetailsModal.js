@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import {
   kycDocumentUploadList,
@@ -60,6 +61,7 @@ const KycDetailsModal = (props) => {
         })
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch,merchantKycId?.loginMasterId]);
 
   useEffect(() => {

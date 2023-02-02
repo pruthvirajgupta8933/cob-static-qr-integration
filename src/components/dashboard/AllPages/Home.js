@@ -50,6 +50,7 @@ function Home() {
         login_id: user?.loginId,
       })
     )
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
@@ -422,9 +423,9 @@ function Home() {
               <div className="modal-body Satoshi-Medium">
 
               {/* ratemapping loader  */}
-              {/* {console.log("chck1")} */}
+             
               <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
-              {/* {console.log("chck2")} */}
+              
 
               {!(isRateMappingInProcess) &&
                 <div className="">

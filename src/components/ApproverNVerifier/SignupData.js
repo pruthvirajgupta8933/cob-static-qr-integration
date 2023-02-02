@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import FormikController from "../../_components/formik/FormikController";
 import { axiosInstanceAuth } from '../../utilities/axiosInstance';
 import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
+import toastConfig from '../../utilities/toastTypes';
 
 
 const validationSchema = Yup.object({
@@ -50,7 +51,9 @@ const SignupData = () => {
     };
     let apiRes = axiosInstanceAuth
       .post(API_URL.GET_SIGNUP_DATA_INFO, postData).then((resp) => {
-        toast.success("Data Loaded");
+
+        resp?.data?.Merchant_Info !== [] ? toastConfig.successToast("Data Loaded") : toastConfig.errorToas("No Data Found")
+        // toast.success("Data Loaded");
         setSignupData(resp?.data?.Merchant_Info)
         setShow(true)
 
