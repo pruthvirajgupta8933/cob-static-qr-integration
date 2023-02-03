@@ -183,7 +183,7 @@ function Sandbox() {
                   </form>
                 </div>
                 
-                {selectedPlan?.planId!=="" ? <div className="col-lg-12 border m-1 p-2-">
+                <div className="col-lg-12 border m-1 p-2-">
                   <a
                     className="btn"
                     data-toggle="collapse"
@@ -314,7 +314,7 @@ function Sandbox() {
                       </div>
                     </div>
                   </form>
-                </div> : <></>}
+                </div>
                 
               </div>
             </div>
