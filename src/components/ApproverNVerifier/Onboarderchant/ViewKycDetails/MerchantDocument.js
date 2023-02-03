@@ -328,9 +328,6 @@ const MerchantDocument = (props) => {
             {checkedClicked === true ?
               <th colSpan={6} style={{ textAlign: "right" }}><CompleteVerifyAndRejectBtn roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} /></th>
               : <></>}
-
-
-
             <tr>
 
               {currenTab === 3 || currenTab === 4 ?
@@ -397,16 +394,9 @@ const MerchantDocument = (props) => {
                               onClick={() => {
                                 verifyApproveDoc(doc?.documentId, doc?.status);
                               }}
-
-
                             >
                               <h4 className="text-success">{buttonText}</h4>
-
-
-
                             </a>
-
-
                             &nbsp;
                             &nbsp;
                             &nbsp;
@@ -427,12 +417,9 @@ const MerchantDocument = (props) => {
                           </>
                           : <></>
                         }
-
-
                       </div>
                       {buttonClick === doc?.documentId && closeModal === true ?
-
-                        <div>
+                        <div style={{"display":"grid"}}>
                           <label for="comments">Reject Comments</label>
 
                           <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e) => setCommetText(e.target.value)}>
@@ -440,10 +427,7 @@ const MerchantDocument = (props) => {
                           <button type="button" onClick={() => { rejectDoc((doc?.documentId, commetText)) }} className="btn btn-danger btn-sm text-white">Submit</button>
                         </div>
                         : <></>}
-
                     </td>
-
-                   
                   </tr>
                 )
               }
