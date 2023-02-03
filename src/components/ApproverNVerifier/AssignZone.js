@@ -1,11 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import API_URL from "../../config";
+import {  useDispatch } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
-import Spinner from "./Spinner";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import ViewZoneModal from "./ViewZoneModal";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
@@ -13,7 +11,6 @@ import DropDownCountPerPage from "../../_components/reuseable_components/DropDow
 import NavBar from "../../components/dashboard/NavBar/NavBar"
 
 function AssignZone() {
-  const [approveMerchant, setApproveMerchant] = useState([]);
   const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
   const [dataCount, setDataCount] = useState("");
@@ -21,13 +18,10 @@ function AssignZone() {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [spinner, setSpinner] = useState(true);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
- 
-  const [modalDisplayData, setModalDisplayData] = useState({});
+ const [modalDisplayData, setModalDisplayData] = useState({});
   const [openZoneModal, setOpenModal] = useState(false)
-  let page_size = pageSize;
-  let page = currentPage;
+  
 
   const approvedSearch = (e) => {
     setSearchText(e.target.value);
@@ -38,10 +32,7 @@ function AssignZone() {
    
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
-        setSpinner(false);
-
-        const data = resp?.payload?.results;
+       const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
          setDataCount(dataCoun);
@@ -51,6 +42,7 @@ function AssignZone() {
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
+  
   }, [currentPage, pageSize]);
 
   ////////////////////////////////////////////////// Search filter start here
@@ -70,49 +62,6 @@ function AssignZone() {
     }
   }, [searchText]);
   ////////////////////////////////////pagination start here
-
-  // const allApprovedMerchants = async () => {
-  //   await axiosInstanceAuth.get(`${API_URL.KYC_FOR_APPROVED}`).then((res) => {
-  //     const data = res?.data?.results;
-  //     // console.log(data)
-  //     setApprovedMerchantData(data);
-  //     const dataCoun = res?.data?.count;
-  //     setDataCount(dataCoun);
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   allApprovedMerchants();
-  //   dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
-  //     .then((resp) => {
-  //       toastConfig.successToast("Approved Data Loaded");
-  //       setSpinner(false);
-  //       const data = resp?.payload?.results;
-  //       setApproveMerchant(data);
-  //     })
-  //     .catch((err) => toastConfig.errorToast("Data not loaded"));
-  // }, [currentPage, pageSize]);
-
-  /////////////////////////////////////Search filter
-  // useEffect(() => {
-  //   if (searchText.length > 0) {
-  //     setApproveMerchant(
-  //       approveMerchant?.filter((item) =>
-  //         Object.values(item)
-  //           .join(" ")
-  //           .toLowerCase()
-  //           .includes(searchText.toLocaleLowerCase())
-  //       )
-  //     );
-  //   } else {
-  //     dispatch(kycForApproved({ page, page_size })).then((resp) => {
-  //       const data = resp?.payload?.results;
-
-  //       setApproveMerchant(data);
-  //     });
-  //   }
-  // }, [searchText]);
-
 
   const totalPages = Math.ceil(dataCount / pageSize);
   
@@ -227,13 +176,23 @@ function AssignZone() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data?.length === 0 ? (
-                      <tr>
-                        {" "}
-                        <td colSpan={"8"}>
-                          <h1 className="nodatafound">No data found</h1>
-                        </td>
-                      </tr>
+                     {data === null || data === [] ? (
+                <tr>
+                  <td colSpan={"11"}>
+                    <div className="nodatafound text-center">
+                      No data found{" "}
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                <></>
+              )}
+              {data?.length === 0 ? (
+                <tr>
+                <td colSpan={"11"}>
+                  {/* <p className="text-center spinner-roll">{spinner && <Spinner />}</p> */}
+                </td>
+            </tr>
                     ) : (
                       data?.map((user, i) => (
                         <tr key={i}>

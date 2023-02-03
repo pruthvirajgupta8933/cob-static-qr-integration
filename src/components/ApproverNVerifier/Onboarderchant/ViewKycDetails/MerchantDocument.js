@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess';
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
@@ -23,7 +25,7 @@ const MerchantDocument = (props) => {
 
   const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
   const newDropDownDocList = dropDownDocList.filter(element => element !== ''); // remove blank string in array
-  const uploadedDocList = Array.docList ? docList?.map((r) => r?.type) : [];
+  const uploadedDocList =  docList?.map((r) => r?.type) 
 
   const removeCommon = (newDropDownDocList, uploadedDocList) => {
     const spreaded = [...newDropDownDocList, ...uploadedDocList];
@@ -60,10 +62,10 @@ const MerchantDocument = (props) => {
 
 
   let pendingDocument = getDocTypeNamee(unmatchedArray)
+  console.log("pendingDocument",pendingDocument)
 
   ///////////////////////////////////////////////////////////////////////
    const [buttonText, setButtonText] = useState("");
-  // const [savedData, setSavedData] = useState([]);
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
   const [closeModal, setCloseModal] = useState(false)
@@ -79,6 +81,7 @@ const MerchantDocument = (props) => {
   
 
   const getDocTypeName = (id) => {
+    // eslint-disable-next-line array-callback-return
     let data = docTypeList.filter((obj) => {
       if (obj?.key?.toString() === id?.toString()) {
         return obj;
@@ -89,15 +92,7 @@ const MerchantDocument = (props) => {
     return data[0]?.value;
   };
 
-  // useEffect(() => {
-  //   setSavedData(KycDocUpload);
-  // }, [KycDocUpload]);
-
-  const stringManulate = (str) => {
-    let str1 = str.substring(0, 15)
-    return `${str1}...`
-
-  }
+  
 
   const getKycDocList = (role) => {
     dispatch(
@@ -205,7 +200,7 @@ const MerchantDocument = (props) => {
     } else {
       <></>
     }
-  });
+  },[ role,Allow_To_Do_Verify_Kyc_details]);
 
 
  useEffect(() => {
@@ -231,7 +226,7 @@ const MerchantDocument = (props) => {
       let enableBtn = false;
       if (currenTab === 4) {
         if (roles.approver === true)
-          // if (status === "Verified") {
+          
           enableBtn = true;
       }
       setEnableBtnApprover(enableBtn);
@@ -325,7 +320,7 @@ const MerchantDocument = (props) => {
         })}
       </div>
       
-      <div className="col-lg-12 mt-4 m-2 hoz-scroll">
+      <div className="col-lg-12 mt-4 m-2 hoz-scroll-">
         <table className="table table-bordered w-100">
 
 
@@ -346,9 +341,9 @@ const MerchantDocument = (props) => {
                     onChange={(e) => handleCheckChange(e)} /></th>
                 : <></>}
               <th>S.No.</th>
-              <th>Document&nbsp;Type</th>
-              <th>Document&nbsp;Name</th>
-              <th>Document&nbsp;Status</th>
+              <th>Merchant&nbsp;Document</th>
+              <th>Document&nbsp;Comment</th>
+              {/* <th>Document&nbsp;Status</th> */}
               <th>Action</th>
 
             </tr>
@@ -360,7 +355,7 @@ const MerchantDocument = (props) => {
                   <tr key={i} >
                     {currenTab === 3 || currenTab === 4 ?
                       <td>
-                        {console.log("\n\nthis is after return ", documentsIdList?.indexOf(parseInt(doc.documentId)), "\n\n")}
+                        
                         <input
                           type="checkbox"
                           value={doc?.documentId}
@@ -372,19 +367,23 @@ const MerchantDocument = (props) => {
                       : <></>}
                     <td>{i + 1}</td>
 
-                    <td>{getDocTypeName(doc?.type)}</td>
-                    <td>
-                      <a
+                    <td><h5 className="font-weight-bold-"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</h5>
+                    <h5 className="font-weight-bold-"><span className='font-weight-bold'>Doc.Status:</span> {doc?.status}</h5>
+                    <a
                         href={doc?.filePath}
                         target="_blank"
                         rel="noreferrer"
                         className="text-primary"
                       >
-                        {stringManulate(doc?.name)}
+                        View Document
                       </a>
+
+                    </td>
+                    <td>
+                     
                       <p className="text-danger"> {doc?.comment === "Null" ? "" : doc?.comment}</p>
                     </td>
-                    <td>{doc?.status}</td>
+                    {/* <td>{doc?.status}</td> */}
 
                     {/* {enableBtnByStatus(doc?.status, role) ? ( */}
                     <td>
@@ -438,26 +437,13 @@ const MerchantDocument = (props) => {
 
                           <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e) => setCommetText(e.target.value)}>
                           </textarea>
-                          <button type="button" onClick={() => { rejectDoc(doc?.documentId, commetText); }} className="btn btn-danger btn-sm text-white">Submit</button>
+                          <button type="button" onClick={() => { rejectDoc((doc?.documentId, commetText)) }} className="btn btn-danger btn-sm text-white">Submit</button>
                         </div>
                         : <></>}
 
                     </td>
 
-                    {/* {enableBtnVerifier(doc?.status) || (enableBtnApprover(doc?.status) && enableApproverTabwise) ?
-                    <td>
-                      <a
-                        href={() => false}
-                        className="text-danger"
-                        onClick={() => {
-                          rejectDoc(doc?.documentId);
-                        }}
-                      >
-                        Reject
-                      </a>
-                    </td>
-                    : <></>
-                  } */}
+                   
                   </tr>
                 )
               }
