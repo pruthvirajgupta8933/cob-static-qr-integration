@@ -43,7 +43,7 @@ const SideNavbar = () => {
             isToggle="true"
           >
             <span className="sidebar-menu-divider-business">
-              {m?.app_name}  <i class="fa fa-caret-down" aria-hidden="true"></i>
+              {m?.app_name}  <i class="fa fa-caret-down d-none" aria-hidden="true"></i>
             </span>
 
             <ul id={`menulist_${m?.app_code}`} className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
