@@ -437,7 +437,7 @@ const [checkedClicked, setCheckedClicked] = useState(false)
 
                           <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e) => setCommetText(e.target.value)}>
                           </textarea>
-                          <button type="button" onClick={() => { rejectDoc((doc?.documentId, commetText)) }} className="btn btn-danger btn-sm text-white">Submit</button>
+                          <button type="button" onClick={() => { rejectDoc(doc?.documentId, commetText) }} className="btn btn-danger btn-sm text-white">Submit</button>
                         </div>
                         : <></>}
 
