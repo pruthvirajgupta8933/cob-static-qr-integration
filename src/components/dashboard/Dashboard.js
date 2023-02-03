@@ -15,6 +15,7 @@ import {
   Route,
   Redirect,
   useHistory,
+  useLocation,
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ClientList from "./AllPages/ClientList";
@@ -66,8 +67,7 @@ function Dashboard() {
   const { user } = useSelector((state) => state.auth);
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
-
-  const [unPaidProductData, setUnPaidProductData] = useState([])
+  const location = useLocation();
 
   // create new client code
   useEffect(() => {
@@ -104,7 +104,10 @@ function Dashboard() {
                 axiosInstanceAuth.post(
                   API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
                   postData
-                );
+                ).then((res) => {
+                  dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
+
+                })
               }
             )
           }).catch(err => console.log(err));
@@ -117,24 +120,21 @@ function Dashboard() {
 
 
 
-
-  const getSubscribedPlan = (clientId) => {
-    axiosInstanceAuth
-      .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId })
-      .then((resp) => {
-        const data = resp.data.data
-        const unPaidProduct = data?.filter((d) => isNull(d?.clientTxnId))
-        setUnPaidProductData(unPaidProduct)
-      })
-  }
-
   useEffect(() => {
     const postBody = {
       LoginId: user?.loginId
     }
     dispatch(fetchMenuList(postBody))
-    dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
+    // console.log(location?.pathname)
   }, [user, dispatch])
+
+
+  useEffect(() => {
+  if (location?.pathname === "/dashboard") {
+      dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
+    }
+    // console.log(location?.pathname)
+  }, [ location])
 
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
@@ -142,10 +142,6 @@ function Dashboard() {
   } else if (user === null) {
     return <Redirect to="/login-page" />;
   }
-
-
-  console.log("unPaidProductData",unPaidProductData)
-
 
   return (
     <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
@@ -431,9 +427,9 @@ function Dashboard() {
                          <PgResponse />
                     </Route> */}
 
-        <MerchantRoute exact path={`${path}/sabpaisa-pg/:id`} Component={SpPg}>
+        <Route exact path={`${path}/sabpaisa-pg/:subscribeId`} Component={SpPg}>
           <SpPg />
-        </MerchantRoute>
+        </Route>
 
 
 

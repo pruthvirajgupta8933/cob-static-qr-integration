@@ -31,6 +31,7 @@ const OnboardedReport = () => {
     const [searchText, setSearchText] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(100);
+    // eslint-disable-next-line no-unused-vars
     const [kycIdClick, setKycIdClick] = useState(null);
     const [displayPageNumber, setDisplayPageNumber] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false)
@@ -54,6 +55,7 @@ const OnboardedReport = () => {
     }
     splitDate = splitDate.join("-");
 
+    // eslint-disable-next-line no-unused-vars
     const [todayDate, setTodayDate] = useState(splitDate);
 
     const initialValues = {

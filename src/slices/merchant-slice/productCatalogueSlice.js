@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchSubscribedPlan } from "../../services/merchant-service/prouduct-catalogue.service";
+import { fetchProductPlan, fetchSubscribedPlan } from "../../services/merchant-service/prouduct-catalogue.service";
 import { setMessage } from "../message";
 
 
-const initialState = { 
-  unPaidSubscribedPlan: [], 
+const initialState = {  
   SubscribedPlanData:[],
+  productPlanData:[],
   isLoading:false  }
 
 export const merchantSubscribedPlanData = createAsyncThunk(
@@ -13,6 +13,26 @@ export const merchantSubscribedPlanData = createAsyncThunk(
     async (object, thunkAPI) => {
       try {
         const data = await fetchSubscribedPlan(object);
+        return { data : data };
+      } catch (error) {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        thunkAPI.dispatch(setMessage(message));
+        return thunkAPI.rejectWithValue();
+      }
+    }
+  );
+
+
+  export const productPlanData = createAsyncThunk(
+    "productCatalogue/productPlanData",
+    async (object, thunkAPI) => {
+      try {
+        const data = await fetchProductPlan(object);
         return { data : data };
       } catch (error) {
         const message =
@@ -44,7 +64,13 @@ const productCatalogueSlice = createSlice({
     [merchantSubscribedPlanData.rejected]: (state) => {
       state.isLoading = false
       state.SubscribedPlanData = [];
+    },
+    [productPlanData.fulfilled]:(state,action)=>{
+      // console.log()
+      state.productPlanData = action.payload?.data?.data?.ProductDetail;
     }
+
+
   },
 });
 

@@ -5,7 +5,7 @@ toast.configure({
 });
 
 
-var toastConfig = {
+let toastConfig = {
   basicToast: (message) =>
     toast(message, {
       autoClose: 2400,
