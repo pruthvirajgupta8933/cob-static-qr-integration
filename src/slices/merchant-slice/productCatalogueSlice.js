@@ -57,6 +57,7 @@ const productCatalogueSlice = createSlice({
       state.SubscribedPlanData = [];
     },
     [merchantSubscribedPlanData.fulfilled]: (state, action) => {
+      // console.log(action.payload)
       state.isLoading = false
       state.SubscribedPlanData = action.payload?.data?.data?.data;
     },

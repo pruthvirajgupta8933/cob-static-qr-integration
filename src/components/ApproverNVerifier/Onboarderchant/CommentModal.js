@@ -250,7 +250,7 @@ const CommentModal = (props) => {
                           </div>
                         </div>
                         <div className="row">
-                          <div className="col hoz-scroll">
+                          <div className="col hoz-scroll-">
                             <table className="table table-bordered">
                               <thead>
                                 <tr>

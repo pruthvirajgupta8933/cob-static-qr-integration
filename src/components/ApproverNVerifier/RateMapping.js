@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
-import toastConfig from "../../utilities/toastTypes";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import moment from "moment";
 
@@ -23,8 +22,7 @@ function RateMapping() {
   const [modalDisplayData, setModalDisplayData] = useState({});
 
  
-  let page_size = pageSize;
-  let page = currentPage;
+  
 
   const approvedSearch = (e) => {
     setSearchText(e.target.value);
@@ -38,16 +36,13 @@ function RateMapping() {
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
          const data = resp?.payload?.results;
-       resp?.payload?.results ? toastConfig.successToast("data Loaded") : toastConfig.errorToast("No data Found")
+      //  resp?.payload?.results!==null ?  toastConfig.errorToast("No data Found") : <></>
         const dataCoun = resp?.payload?.count;
         setDataCount(dataCoun);
         setData(data);
         
         setSpinner(false);
-
-        
-         
-         setAssignzone(data);
+        setAssignzone(data);
       })
 
       .catch((err) => {

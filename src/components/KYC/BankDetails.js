@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import {
   kycBankNames,
   saveMerchantBankDetais,
-  verifyKycEachTab,
   ifscValidation,
   bankAccountVerification,
   getBankId,
@@ -21,7 +20,7 @@ function BankDetails(props) {
   const setTab = props.tab;
   const setTitle = props.title;
 
-  const { role, kycid } = props;
+  const { role } = props;
   const dispatch = useDispatch();
 
   const { kyc, auth } = useSelector((state) => state);
@@ -44,6 +43,7 @@ function BankDetails(props) {
 
   const [ifscVerifed, isIfscVerifed] = useState("");
   const [disable, setIsDisable] = useState(false);
+  const [selectedvalue, setSelectedvalue] = useState("");
 
   const [buttonText, setButtonText] = useState("Save and Next");
 
@@ -52,6 +52,12 @@ function BankDetails(props) {
   const AccountNoRgex = /^[a-zA-Z0-9]{2,25}$/;
 
   const { loginId } = user;
+
+  const bankOptions = [
+    { key: "0", value: "Select" },
+    { key: "1", value: "Saving" },
+    { key: "2", value: "Current" },
+  ];
 
   const initialValues = {
     account_holder_name:
@@ -148,6 +154,8 @@ function BankDetails(props) {
     }
   };
 
+  let selectedType = selectedvalue === "1" ? "Saving" : selectedvalue === "2" ? "Current" : "";
+
   const bankAccountValidate = (values, ifsc) => {
     dispatch(
       bankAccountVerification({
@@ -196,7 +204,7 @@ function BankDetails(props) {
           account_number: values.account_number,
           ifsc_code: values.ifsc_code,
           bank_id: values.bank_id,
-          account_type: values.account_type,
+          account_type: selectedType,
           branch: values.branch,
           login_id: loginId,
           modified_by: loginId,
@@ -270,6 +278,12 @@ function BankDetails(props) {
     }
   };
 
+    {/* {formik.handleChange(
+                  "account_type",
+                  setSelectedvalue(values?.account_type)
+                )} */}
+                
+
   return (
     <div className="col-md-12 col-md-offset-4" style={{ width: "100%" }}>
       <Formik
@@ -279,6 +293,7 @@ function BankDetails(props) {
         enableReinitialize={true}
       >
         {({
+          formik,
           values,
           setFieldValue,
           initialValues,
@@ -288,45 +303,54 @@ function BankDetails(props) {
           handleChange,
         }) => (
           <Form>
+           
+
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6 ">
                 <label className="col-form-label mt-0 p-2">
                   IFSC Code<span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
-                <Field
-                  type="text"
-                  name="ifsc_code"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
+                  <Field
+                    type="text"
+                    name="ifsc_code"
+                    className="form-control"
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    readOnly={readOnly}
+                  />
 
-                {KycList?.ifscCode !== null &&
-                !errors.hasOwnProperty("ifsc_code") &&
-                !errors.hasOwnProperty("oldIfscCode") ? (
-                  <span className="success input-group-append">
-                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary"/>
-                  </span>
-                ) : (
-                  <div className="position-sticky pull-right- otpbtn input-group-append">
-                    <a
-                      href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
-                      onClick={() => {
-                        checkInputIsValid(
-                          errors,
-                          values,
-                          setFieldError,
-                          setFieldTouched,
-                          "ifsc_code"
-                        );
-                      }}
-                    >
-                      Verify
-                    </a>
-                  </div>
-                )}
+                  {KycList?.ifscCode !== null &&
+                  !errors.hasOwnProperty("ifsc_code") &&
+                  !errors.hasOwnProperty("oldIfscCode") ? (
+                    <span className="success input-group-append">
+                      <img
+                        src={gotVerified}
+                        alt=""
+                        title=""
+                        width={"20px"}
+                        height={"20px"}
+                        className="btn-outline-secondary"
+                      />
+                    </span>
+                  ) : (
+                    <div className="position-sticky pull-right- otpbtn input-group-append">
+                      <a
+                        href={() => false}
+                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
+                        onClick={() => {
+                          checkInputIsValid(
+                            errors,
+                            values,
+                            setFieldError,
+                            setFieldTouched,
+                            "ifsc_code"
+                          );
+                        }}
+                      >
+                        Verify
+                      </a>
+                    </div>
+                  )}
                 </div>
                 {
                   <ErrorMessage name="ifsc_code">
@@ -351,43 +375,50 @@ function BankDetails(props) {
                   <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
-                <Field
-                  type="text"
-                  name="account_number"
-                  className="form-control"
-                  readOnly={readOnly}
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                />
+                  <Field
+                    type="text"
+                    name="account_number"
+                    className="form-control"
+                    readOnly={readOnly}
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                  />
 
-                {KycList?.accountNumber !== null &&
-                values?.account_number === KycList?.accountNumber &&
-                !errors.hasOwnProperty("account_number") &&
-                !errors.hasOwnProperty("oldAccountNumber") ? (
-                  <span className="success input-group-append">
-                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary"/>
-                  </span>
-                ) : !errors.hasOwnProperty("oldIfscCode") &&
-                  !errors.hasOwnProperty("ifsc_code") ? (
-                  <span className="position-sticky pull-right- otpbtn input-group-append">
-                    <a
-                      href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
-                      onClick={() => {
-                        checkInputIsValid(
-                          errors,
-                          values,
-                          setFieldError,
-                          setFieldTouched,
-                          "account_number"
-                        );
-                      }}
-                    >
-                      Verify
-                    </a>
-                  </span>
-                ) : (
-                  <> </>
-                )}
+                  {KycList?.accountNumber !== null &&
+                  values?.account_number === KycList?.accountNumber &&
+                  !errors.hasOwnProperty("account_number") &&
+                  !errors.hasOwnProperty("oldAccountNumber") ? (
+                    <span className="success input-group-append">
+                      <img
+                        src={gotVerified}
+                        alt=""
+                        title=""
+                        width={"20px"}
+                        height={"20px"}
+                        className="btn-outline-secondary"
+                      />
+                    </span>
+                  ) : !errors.hasOwnProperty("oldIfscCode") &&
+                    !errors.hasOwnProperty("ifsc_code") ? (
+                    <span className="position-sticky pull-right- otpbtn input-group-append">
+                      <a
+                        href={() => false}
+                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
+                        onClick={() => {
+                          checkInputIsValid(
+                            errors,
+                            values,
+                            setFieldError,
+                            setFieldTouched,
+                            "account_number"
+                          );
+                        }}
+                      >
+                        Verify
+                      </a>
+                    </span>
+                  ) : (
+                    <> </>
+                  )}
                 </div>
                 {
                   <ErrorMessage name="account_number">
@@ -398,7 +429,7 @@ function BankDetails(props) {
                     )}
                   </ErrorMessage>
                 }
-              <br/>
+                <br />
                 {errors?.oldAccountNumber && (
                   <span className="notVerifiedtext- text-danger">
                     {errors?.oldAccountNumber}
@@ -426,13 +457,15 @@ function BankDetails(props) {
                   Account Type<span style={{ color: "red" }}>*</span>
                 </label>
                 <FormikController
-                  control="input"
+                  control="select"
                   type="text"
                   name="account_type"
                   className="form-control"
+                  options={bankOptions}
                   readOnly={readOnly}
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
+              
               </div>
             </div>
             <div className="row">

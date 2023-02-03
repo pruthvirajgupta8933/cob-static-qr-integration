@@ -230,72 +230,7 @@ const CompleteVerification = (props) => {
 }
 }
 
-
-
-  
-    
-    // .then((resp) => {
-    //   resp?.payload?.message &&
-    //     toast.success(resp?.payload?.message);
-    //   resp?.payload?.detail && toast.error(resp?.payload?.detail);
-    // })
-    // .catch((e) => {
-    //   toast.error("Try Again Network Error");
-    // });
-
-
-    // Function for reversing it from Approved to pending Approval
-
-    // const handleReverseToPendingApproval = () => {
-   
-    //   const reverseToPendingApprovalDetails = {
-    //     login_id: merchantKycId.loginMasterId,
-    //     approved_by: loginId,
-    //   };
-    //   if (window.confirm("Are you sure to push it to Pending Approval ?")) {
-    //   dispatch(reverseToPendingApproval(reverseToPendingApprovalDetails))
-    //     .then((resp) => {
-    //       // console.log("This sis",resp)
-    //       resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
-    //       dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
-    //       closeVerificationModal(false)
-    //        return currenTab === 5 ? approvedTable() : <></>
-                 
-    //     })
-    //     .catch((e) => {
-    //       toast.error("Something went wrong, Please Try Again later")
-    //     });
-    //   }
-    // }
-
-    // const handleReverseToPendingKyc = () => {
-   
-    //   const reverseToPendingKyc = {
-    //     login_id: merchantKycId.loginMasterId,
-    //     approved_by: loginId,
-    //   };
-    //   if (window.confirm("Are you sure to push it to Pending Kyc ?")) {
-    //   dispatch(reverseToPendingkyc(reverseToPendingKyc))
-    //     .then((resp) => {
-    //       // console.log("This sis",resp)
-    //       resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) :toast.error(resp?.payload)
-    //       dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId}))
-    //       closeVerificationModal(false)
-    //        return currenTab === 6 ? renderToPendingKyc() : <></>
-                 
-    //     })
-    //     .catch((e) => {
-    //       // toast.error("Something went wrong, Please Try Again later")
-    //     });
-    //   }
-    // }
-  
-  
-
-
-
-
-  useEffect(() => {
+useEffect(() => {
 
     
   ////////////////////////////////////////////////////// Button enable for approver
