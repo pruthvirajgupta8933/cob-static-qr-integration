@@ -364,8 +364,8 @@ const [checkedClicked, setCheckedClicked] = useState(false)
                       : <></>}
                     <td>{i + 1}</td>
 
-                    <td><h5 className="font-weight-bold-"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</h5>
-                    <h5 className="font-weight-bold-"><span className='font-weight-bold'>Doc.Status:</span> {doc?.status}</h5>
+                    <td><h5 className="text-wrap"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</h5>
+                    <h5><span className='font-weight-bold'>Doc.Status:</span> {doc?.status}</h5>
                     <a
                         href={doc?.filePath}
                         target="_blank"
@@ -395,7 +395,7 @@ const [checkedClicked, setCheckedClicked] = useState(false)
                                 verifyApproveDoc(doc?.documentId, doc?.status);
                               }}
                             >
-                              <h4 className="text-success">{buttonText}</h4>
+                              <h5 className="text-success">{buttonText}</h5>
                             </a>
                             &nbsp;
                             &nbsp;
@@ -412,7 +412,7 @@ const [checkedClicked, setCheckedClicked] = useState(false)
                             //   rejectDoc(doc?.documentId);
                             // }}
                             >
-                              <h4 className="text-danger">Reject</h4> 
+                              <h5 className="text-danger">Reject</h5> 
                             </a>
                           </>
                           : <></>
@@ -424,7 +424,7 @@ const [checkedClicked, setCheckedClicked] = useState(false)
 
                           <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e) => setCommetText(e.target.value)}>
                           </textarea>
-                          <button type="button" onClick={() => { rejectDoc(doc?.documentId, commetText) }} className="btn btn-danger btn-sm text-white">Submit</button>
+                          <button type="button" onClick={() => { rejectDoc(doc?.documentId, commetText) }} className="mt-1 btn btn-danger btn-sm text-white">Submit</button>
                         </div>
                         : <></>}
                     </td>
