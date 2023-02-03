@@ -20,6 +20,11 @@ const BusinessOverview = (props) => {
 
   const { user } = auth;
   const { loginId } = user;
+  const stringManulate = (str) => {
+    let str1 = str.substring(0, 15)
+    return `${str1}...`
+
+  }
 
   
 
@@ -112,11 +117,11 @@ const BusinessOverview = (props) => {
           }
         />
       </div>
-
+      
       <div className="col-sm-6 col-md-6 col-lg-6">
         <label className="col-form-label p-2 mt-0">
           {merchantKycId?.is_website_url === true ?
-            <p className="font-weight-bold"> Merchant wish to accept payments on (Web/App URL) {merchantKycId?.website_app_url}</p> :
+            <p className="font-weight-bold"> Merchant wish to accept payments on (Web/App URL) {stringManulate(merchantKycId?.website_app_url)}</p> :
             `Merchant has accepted payments without any web/app `}
         </label>
       </div>
