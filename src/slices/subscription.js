@@ -63,7 +63,5 @@ const subscriptionSlice = createSlice({
     },
   },
 });
-// console.log(subscriptionSlice)
-// const { reducerSubscription } = subscriptionSlice;
-// console.log(reducerSubscription)
+
 export default subscriptionSlice;

@@ -15,6 +15,7 @@ import InternetConnection from './_components/reuseable_components/InternetConne
 import MobileNavbar from './components/dashboard/SideNavbar/MobileNavbar';
 import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetails';
 import UrlNotFound from './components/dashboard/UrlNotFound';
+import NavBar from './components/dashboard/NavBar/NavBar';
 
 
 function AllRoutes(){
@@ -30,7 +31,8 @@ function AllRoutes(){
                 <Registration />
               </Route>
               <Route path="/dashboard">
-                <MobileNavbar/>
+                {/* <MobileNavbar/> */}
+                
                 <Dashboard />
               </Route>
               <Route exact path="/commonpages">

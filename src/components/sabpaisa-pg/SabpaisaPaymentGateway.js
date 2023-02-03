@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 function SabpaisaPaymentGateway(props) {
+  // console.log(props)
   const clientDetails = props?.clientData
 
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ function SabpaisaPaymentGateway(props) {
   const [payerName, setpayerName] = useState("");
   const [payerEmail, setpayerEmail] = useState("");
   const [payerMobile, setpayerMobile] = useState("");
-  const [clientTxnId, setclientTxnId] = useState(uuidv4());
+  const [clientTxnId, setclientTxnId] = useState("84048n23048239048mx1842304842309482342");
   const [payerAddress, setpayerAddress] = useState("");
   const [amount, setamount] = useState(9999);
   const [amountType, setamountType] = useState("INR");
@@ -51,8 +52,7 @@ function SabpaisaPaymentGateway(props) {
     setpayerName(clientDetails?.clientContactPersonName);
     setpayerEmail(clientDetails?.clientEmail);
     setpayerMobile(clientDetails?.clientMobileNo);
-    setamount(props?.planPrice);
-
+    setamount(props?.planData[0]?.actual_price);
     setudf12(props?.planData?.clientId)
     setudf13(props?.planData?.planId)
     setudf14(props?.planData?.planName)
@@ -79,7 +79,7 @@ function SabpaisaPaymentGateway(props) {
         payerAddress={payerAddress}
         amount={amount}
         amountType={amountType}
-
+        clientTxnId={clientTxnId}
         udf12={udf12}
         udf13={udf13}
         udf14={udf14}

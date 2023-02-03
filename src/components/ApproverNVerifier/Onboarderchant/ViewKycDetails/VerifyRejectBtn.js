@@ -1,8 +1,6 @@
 import React,{useState} from 'react'
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess'
-import { useDispatch, useSelector } from "react-redux";
-import FormikController from '../../../../_components/formik/FormikController';
-import { Formik, Form } from "formik";
+import { useSelector } from "react-redux";
 
 
 function VerifyRejectBtn(props) {
@@ -18,9 +16,7 @@ const[commetText,setCommetText]=useState()
   const verifierApproverTab =  useSelector((state) => state.verifierApproverTab)
   const currenTab =  parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details= roleBasePermissions?.permission?.Allow_To_Do_Verify_Kyc_details
-  const isVerified = props?.KycVerifyStatus?.isVerified
-  const isRejected = props?.KycVerifyStatus?.isRejected
-
+ 
   // function 
   const enableBtn = () => {
     let enableBtn = false;
@@ -54,12 +50,7 @@ let enableBtnStatus = enableBtnByStatus()
 const handleForReject = ()=>{
  props?.KycRejectStatus?.handleRejectClick(commetText)
   setButtonClick(false)
-//  if(commetText !==""  || undefined){
-//   setButtonClick(false)
-// }else{
-//   setButtonClick(true)
 
-// }
 }
 return (
    <React.Fragment>

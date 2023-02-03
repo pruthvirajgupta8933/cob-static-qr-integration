@@ -53,20 +53,21 @@ import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
+import OnboardedReport from "../ApproverNVerifier/OnboardedReport";
+import ChallanTransactReport from "../../B2B_components/ChallanTransactReport";
+import B2BRouting from "../../B2B_components/Routes/B2BRouting";
+import { fetchMenuList } from "../../slices/cob-dashboard/menulistSlice";
 import { isNull } from "lodash";
-import { userLoggedInStatus } from "../../utilities/userLoggedInStatus";
+import { merchantSubscribedPlanData } from "../../slices/merchant-slice/productCatalogueSlice";
+
 
 function Dashboard() {
   let history = useHistory();
   let { path } = useRouteMatch();
-
   const { user } = useSelector((state) => state.auth);
-  // const clientMerchantDetailsList = user?.clientMerchantDetailsList
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
-  const locationPath = useLocation()
-
-  const [userLoginStatus, setUserLoginStatus] = useState(false)
+  const location = useLocation();
 
   // create new client code
   useEffect(() => {
@@ -82,37 +83,31 @@ function Dashboard() {
           };
 
           dispatch(createClientProfile(data)).then(clientProfileRes => {
-            console.log("response of the create client ", clientProfileRes);
-
+            // console.log("response of the create client ", clientProfileRes);
             // after create the client update the subscribe product
             const postData = {
               login_id: user?.loginId
             }
-
-
             // fetch details of the user registraion
             axiosInstanceAuth.post(API_URL.website_plan_details, postData).then(
               res => {
-                console.log("clientProfileRes", clientProfileRes)
+                // console.log("clientProfileRes", clientProfileRes)
                 const webData = res?.data?.data[0]?.plan_details
                 const postData = {
                   clientId: clientProfileRes?.payload?.clientId,
-                  applicationName: webData?.appName,
-                  planId: webData?.planid,
-                  planName: webData?.planName,
-                  applicationId: webData?.appid,
+                  applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
+                  planId: !isNull(webData?.planid) ? webData?.planid : "1",
+                  planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
+                  applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
                 };
 
-                if(!isNull(webData?.planid) && !isNull(webData?.appid))
-                {
-                  axiosInstanceAuth.post(
-                    API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-                    postData
-                  );
-    
-                }
-            
-                
+                axiosInstanceAuth.post(
+                  API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+                  postData
+                ).then((res) => {
+                  dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
+
+                })
               }
             )
           }).catch(err => console.log(err));
@@ -124,603 +119,351 @@ function Dashboard() {
   }, []);
 
 
-  // const useStatuss = userLoggedInStatus()
 
   useEffect(() => {
-    const useStatus = userLoggedInStatus()
-    setUserLoginStatus(useStatus)
-    if (!useStatus) {
-      history.push("/login")
+    const postBody = {
+      LoginId: user?.loginId
     }
-  }, [locationPath])
+    dispatch(fetchMenuList(postBody))
+    // console.log(location?.pathname)
+  }, [user, dispatch])
 
+
+  useEffect(() => {
+  if (location?.pathname === "/dashboard") {
+      dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
+    }
+    // console.log(location?.pathname)
+  }, [ location])
 
   if (user !== null && user.userAlreadyLoggedIn) {
-    // history.push("/login-page");
+    history.push("/login-page");
     return <Redirect to="/login-page" />;
   } else if (user === null) {
     return <Redirect to="/login-page" />;
   }
 
   return (
-    // console.log(userLoginStatus) 
-    userLoginStatus ? 
     <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
-    <div></div>
-    <SideNavbar />
-    <Switch>
-      <Route exact path={path} >
-        <Home />
-      </Route>
-      <Route exact path={`${path}/profile`}>
-        <Profile />
-      </Route>
-      <MerchantRoute exact path={`${path}/change-password`} Component={ChangePassword}>
-        <ChangePassword />
-      </MerchantRoute>
-
-      {roles?.merchant === true ? (
+      <div></div>
+      <SideNavbar />
+      <Switch>
+        <Route exact path={path} >
+          <Home />
+        </Route>
+        <Route exact path={`${path}/profile`}>
+          <Profile />
+        </Route>
         <MerchantRoute
           exact
-          path={`${path}/transaction-summery`}
-          Component={TransactionSummery}
+          path={`${path}/change-password`}
+          Component={ChangePassword}
         >
-          <TransactionSummery />
+          <ChangePassword />
         </MerchantRoute>
-      ) : (
-        <BankRoute
-          exact
-          path={`${path}/transaction-summery`}
-          Component={TransactionSummery}
-        >
-          <TransactionSummery />
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exact
+            path={`${path}/transaction-summery`}
+            Component={TransactionSummery}
+          >
+            <TransactionSummery />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exact
+            path={`${path}/transaction-summery`}
+            Component={TransactionSummery}
+          >
+            <TransactionSummery />
+          </BankRoute>
+        )}
+
+        <Route exact path={`${path}/onboard-merchant`}>
+          <OnboardMerchant />
+        </Route>
+
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exact
+            path={`${path}/transaction-enquiry`}
+            Component={TransactionEnquirey}
+          >
+            <TransactionEnquirey />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exact
+            path={`${path}/transaction-enquiry`}
+            Component={TransactionEnquirey}
+          >
+            <TransactionEnquirey />
+          </BankRoute>
+        )}
+
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exact
+            path={`${path}/transaction-history`}
+            Component={TransactionHistory}
+          >
+            <TransactionHistory />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exact
+            path={`${path}/transaction-history`}
+            Component={TransactionHistory}
+          >
+            <TransactionHistory />
+          </BankRoute>
+        )}
+
+        <BankRoute exact path={`${path}/client-list`} Component={ClientList}>
+          <ClientList />
         </BankRoute>
-      )}
 
-      <Route exact path={`${path}/onboard-merchant`}>
-        <OnboardMerchant />
-      </Route>
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exaxt
+            path={`${path}/settlement-report`}
+            Component={SettlementReport}
+          >
+            <SettlementReport />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exaxt
+            path={`${path}/settlement-report`}
+            Component={SettlementReport}
+          >
+            <SettlementReport />
+          </BankRoute>
+        )}
 
-      {roles?.merchant === true ? (
-        <MerchantRoute
-          exact
-          path={`${path}/transaction-enquiry`}
-          Component={TransactionEnquirey}
-        >
-          <TransactionEnquirey />
-        </MerchantRoute>
-      ) : (
-        <BankRoute
-          exact
-          path={`${path}/transaction-enquiry`}
-          Component={TransactionEnquirey}
-        >
-          <TransactionEnquirey />
-        </BankRoute>
-      )}
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exaxt
+            path={`${path}/refund-transaction-history`}
+            Component={RefundTransactionHistory}
+          >
+            <RefundTransactionHistory />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exaxt
+            path={`${path}/refund-transaction-history`}
+            Component={RefundTransactionHistory}
+          >
+            <RefundTransactionHistory />
+          </BankRoute>
+        )}
 
-      {roles?.merchant === true ? (
-        <MerchantRoute
-          exact
-          path={`${path}/transaction-history`}
-          Component={TransactionHistory}
-        >
-          <TransactionHistory />
-        </MerchantRoute>
-      ) : (
-        <BankRoute
-          exact
-          path={`${path}/transaction-history`}
-          Component={TransactionHistory}
-        >
-          <TransactionHistory />
-        </BankRoute>
-      )}
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exaxt
+            path={`${path}/chargeback-transaction-history`}
+            Component={ChargeBackTxnHistory}
+          >
+            <ChargeBackTxnHistory />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exaxt
+            path={`${path}/chargeback-transaction-history`}
+            Component={ChargeBackTxnHistory}
+          >
+            <ChargeBackTxnHistory />
+          </BankRoute>
+        )}
 
-      <BankRoute exact path={`${path}/client-list`} Component={ClientList}>
-        <ClientList />
-      </BankRoute>
-
-      {roles?.merchant === true ? (
         <MerchantRoute
           exaxt
-          path={`${path}/settlement-report`}
-          Component={SettlementReport}
+          path={`${path}/product-catalogue`}
+          Component={Products}
         >
-          <SettlementReport />
+          {/* <Subsciption /> */}
+          <Products />
         </MerchantRoute>
-      ) : (
-        <BankRoute
-          exaxt
-          path={`${path}/settlement-report`}
-          Component={SettlementReport}
-        >
-          <SettlementReport />
-        </BankRoute>
-      )}
+        <MerchantRoute exaxt path={`${path}/paylink`} Component={Paylink}>
+          <Paylink />
+        </MerchantRoute>
 
-      {roles?.merchant === true ? (
         <MerchantRoute
           exaxt
-          path={`${path}/refund-transaction-history`}
-          Component={RefundTransactionHistory}
+          path={`${path}/paylinkdetail`}
+          Component={PaymentLinkDetail}
         >
-          <RefundTransactionHistory />
+          <PaymentLinkDetail />
         </MerchantRoute>
-      ) : (
-        <BankRoute
-          exaxt
-          path={`${path}/refund-transaction-history`}
-          Component={RefundTransactionHistory}
-        >
-          <RefundTransactionHistory />
-        </BankRoute>
-      )}
 
-      {roles?.merchant === true ? (
-        <MerchantRoute
-          exaxt
-          path={`${path}/chargeback-transaction-history`}
-          Component={ChargeBackTxnHistory}
-        >
-          <ChargeBackTxnHistory />
+        <MerchantRoute exaxt path={`${path}/emandate/`}>
+          <Emandate />
         </MerchantRoute>
-      ) : (
-        <BankRoute
-          exaxt
-          path={`${path}/chargeback-transaction-history`}
-          Component={ChargeBackTxnHistory}
-        >
-          <ChargeBackTxnHistory />
-        </BankRoute>
-      )}
-
-      <MerchantRoute
-        exaxt
-        path={`${path}/product-catalogue`}
-        Component={Products}
-      >
-        {/* <Subsciption /> */}
-        <Products />
-      </MerchantRoute>
-      <MerchantRoute exaxt path={`${path}/paylink`} Component={Paylink}>
-        <Paylink />
-      </MerchantRoute>
-
-      <MerchantRoute
-        exaxt
-        path={`${path}/paylinkdetail`}
-        Component={PaymentLinkDetail}
-      >
-        <PaymentLinkDetail />
-      </MerchantRoute>
-
-      <MerchantRoute exaxt path={`${path}/emandate/`}>
-        <Emandate />
-      </MerchantRoute>
-      <MerchantRoute exaxt path={`${path}/payment-response/`}>
-        <PaymentResponse />
-      </MerchantRoute>
-      <MerchantRoute exact path={`${path}/test/`}>
-        <Test />
-      </MerchantRoute>
-
-      {/* <Route exact path={`${path}/view-transaction-with-filter`}>
-      <ViewTransactionWithFilter />
-    </Route> */}
-
-      {roles?.merchant === true ? (
-        <MerchantRoute
-          exact
-          path={`${path}/settlement-report-new`}
-          Component={SettlementReportNew}
-        >
-          <SettlementReportNew />
+        <MerchantRoute exaxt path={`${path}/payment-response/`}>
+          <PaymentResponse />
         </MerchantRoute>
-      ) : (
-        <BankRoute
-          exact
-          path={`${path}/settlement-report-new`}
-          Component={SettlementReportNew}
-        >
-          <SettlementReportNew />
-        </BankRoute>
-      )}
-
-      {roles?.merchant === true ? (
-        <MerchantRoute
-          exact
-          path={`${path}/transaction-history-new`}
-          Component={TransactionHistoryDownload}
-        >
-          <TransactionHistoryDownload />
+        <MerchantRoute exact path={`${path}/test/`}>
+          <Test />
         </MerchantRoute>
-      ) : (
-        <BankRoute
-          exact
-          path={`${path}/transaction-history-new`}
-          Component={TransactionHistoryDownload}
-        >
-          <TransactionHistoryDownload />
-        </BankRoute>
-      )}
 
-      <Route exact path={`${path}/sabpaisa-pricing/:id/:name`}>
-        {/* getting issue to get query param in protected route */}
-        <SabPaisaPricing />
-      </Route>
+        {/* <Route exact path={`${path}/view-transaction-with-filter`}>
+          <ViewTransactionWithFilter />
+        </Route> */}
 
-      <MerchantRoute exact path={`${path}/kyc`} Component={KycForm}>
-        <KycForm />
-      </MerchantRoute>
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exact
+            path={`${path}/settlement-report-new`}
+            Component={SettlementReportNew}
+          >
+            <SettlementReportNew />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exact
+            path={`${path}/settlement-report-new`}
+            Component={SettlementReportNew}
+          >
+            <SettlementReportNew />
+          </BankRoute>
+        )}
 
-      {roles?.verifier === true ? (
-        <VerifierRoute exact path={`${path}/approver`} Component={Approver}>
-          <Approver />
-        </VerifierRoute>
-      ) : roles?.approver === true ? (
-        <ApproverRoute exact path={`${path}/approver`} Component={Approver}>
-          <Approver />
+        {roles?.merchant === true ? (
+          <MerchantRoute
+            exact
+            path={`${path}/transaction-history-new`}
+            Component={TransactionHistoryDownload}
+          >
+            <TransactionHistoryDownload />
+          </MerchantRoute>
+        ) : (
+          <BankRoute
+            exact
+            path={`${path}/transaction-history-new`}
+            Component={TransactionHistoryDownload}
+          >
+            <TransactionHistoryDownload />
+          </BankRoute>
+        )}
+
+        <Route exact path={`${path}/sabpaisa-pricing/:id/:name`}>
+          {/* getting issue to get query param in protected route */}
+          <SabPaisaPricing />
+        </Route>
+
+        <MerchantRoute exact path={`${path}/kyc`} Component={KycForm}>
+          <KycForm />
+        </MerchantRoute>
+
+        {roles?.verifier === true ? (
+          <VerifierRoute exact path={`${path}/approver`} Component={Approver}>
+            <Approver />
+          </VerifierRoute>
+        ) : roles?.approver === true ? (
+          <ApproverRoute exact path={`${path}/approver`} Component={Approver}>
+            <Approver />
+          </ApproverRoute>
+        ) : (
+          <ViewerRoute exact path={`${path}/approver`} Component={Approver}>
+            <Approver />
+          </ViewerRoute>
+        )}
+
+        <ApproverRoute exact path={`${path}/assignzone`} Component={AssignZone}>
+          <AssignZone />
         </ApproverRoute>
-      ) : (
-        <ViewerRoute exact path={`${path}/approver`} Component={Approver}>
-          <Approver />
-        </ViewerRoute>
-      )}
 
-      <ApproverRoute exact path={`${path}/assignzone`} Component={AssignZone}>
-        <AssignZone />
-      </ApproverRoute>
+        {roles?.verifier === true ? (
+          <VerifierRoute
+            exact
+            path={`${path}/signup-data`}
+            Component={SignupData}
+          >
+            <SignupData />
 
-      {roles?.verifier === true ? (
-        <VerifierRoute
-          exact
-          path={`${path}/signup-data`}
-          Component={SignupData}
-        >
-          <SignupData />
+          </VerifierRoute>
+        ) : roles?.approver === true ? (
+          <ApproverRoute
+            exact
+            path={`${path}/signup-data`}
+            Component={SignupData}
+          >
+            <SignupData />
+          </ApproverRoute>
+        ) : (
+          <ViewerRoute
+            exact
+            path={`${path}/signup-data`}
+            Component={SignupData}
+          >
+            <SignupData />
+          </ViewerRoute>
+        )}
 
-        </VerifierRoute>
-      ) : roles?.approver === true ? (
         <ApproverRoute
           exact
-          path={`${path}/signup-data`}
-          Component={SignupData}
+          path={`${path}/ratemapping`}
+          Component={RateMapping}
         >
-          <SignupData />
+          <RateMapping />
         </ApproverRoute>
-      ) : (
-        <ViewerRoute
+
+        <ApproverRoute
           exact
-          path={`${path}/signup-data`}
-          Component={SignupData}
+          path={`${path}/additional-kyc`}
+          Component={AdditionalKYC}
         >
-          <SignupData />
-        </ViewerRoute>
-      )}
+          <AdditionalKYC />
+        </ApproverRoute>
 
-      <ApproverRoute
-        exact
-        path={`${path}/ratemapping`}
-        Component={RateMapping}
-      >
-        <RateMapping />
-      </ApproverRoute>
+        <Route exact path={`${path}/thanks`}>
+          <ThanksPage />
+        </Route>
+        <MerchantRoute exact path={`${path}/Sandbox`} Component={Sandbox}>
+          <Sandbox />
+        </MerchantRoute>
+        {/* <Route exact path={`${path}/pg-response`} >
+                         <PgResponse />
+                    </Route> */}
 
-      <ApproverRoute
-        exact
-        path={`${path}/additional-kyc`}
-        Component={AdditionalKYC}
-      >
-        <AdditionalKYC />
-      </ApproverRoute>
+        <Route exact path={`${path}/sabpaisa-pg/:subscribeId`} Component={SpPg}>
+          <SpPg />
+        </Route>
 
-      <Route exact path={`${path}/thanks`}>
-        <ThanksPage />
-      </Route>
-      <MerchantRoute exact path={`${path}/Sandbox`} Component={Sandbox}>
-        <Sandbox />
-      </MerchantRoute>
-      {/* <Route exact path={`${path}/pg-response`} >
-                     <PgResponse />
-                </Route> */}
 
-      <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
-        <SpPg />
-      </MerchantRoute>
-      <Route path={`${path}/*`} component={UrlNotFound} />
 
-    </Switch>
-  </section>
-  : <div>Dtat</div>
-    // && 
-    // (<section className="Test gx-app-layout ant-layout ant-layout-has-sider">
-    //   <div></div>
-    //   <SideNavbar />
-    //   <Switch>
-    //     <Route exact path={path} >
-    //       <Home />
-    //     </Route>
-    //     <Route exact path={`${path}/profile`}>
-    //       <Profile />
-    //     </Route>
-    //     <MerchantRoute exact path={`${path}/change-password`} Component={ChangePassword}>
-    //       <ChangePassword />
-    //     </MerchantRoute>
+        {roles?.verifier && (
+          <VerifierRoute
+            exact
+            path={`${path}/onboarded-report`}
+            Component={OnboardedReport}
+          >
+            <SignupData />
 
-    //     {roles?.merchant === true ? (
-    //       <MerchantRoute
-    //         exact
-    //         path={`${path}/transaction-summery`}
-    //         Component={TransactionSummery}
-    //       >
-    //         <TransactionSummery />
-    //       </MerchantRoute>
-    //     ) : (
-    //       <BankRoute
-    //         exact
-    //         path={`${path}/transaction-summery`}
-    //         Component={TransactionSummery}
-    //       >
-    //         <TransactionSummery />
-    //       </BankRoute>
-    //     )}
+          </VerifierRoute>
+        )}
 
-    //     <Route exact path={`${path}/onboard-merchant`}>
-    //       <OnboardMerchant />
-    //     </Route>
 
-    //     {roles?.merchant === true ? (
-    //       <MerchantRoute
-    //         exact
-    //         path={`${path}/transaction-enquiry`}
-    //         Component={TransactionEnquirey}
-    //       >
-    //         <TransactionEnquirey />
-    //       </MerchantRoute>
-    //     ) : (
-    //       <BankRoute
-    //         exact
-    //         path={`${path}/transaction-enquiry`}
-    //         Component={TransactionEnquirey}
-    //       >
-    //         <TransactionEnquirey />
-    //       </BankRoute>
-    //     )}
+        {roles?.approver && (
+          <ApproverRoute
+            exact
+            path={`${path}/onboarded-report`}
+            Component={OnboardedReport}
+          >
+            <SignupData />
+          </ApproverRoute>
+        )}
 
-    //     {roles?.merchant === true ? (
-    //       <MerchantRoute
-    //         exact
-    //         path={`${path}/transaction-history`}
-    //         Component={TransactionHistory}
-    //       >
-    //         <TransactionHistory />
-    //       </MerchantRoute>
-    //     ) : (
-    //       <BankRoute
-    //         exact
-    //         path={`${path}/transaction-history`}
-    //         Component={TransactionHistory}
-    //       >
-    //         <TransactionHistory />
-    //       </BankRoute>
-    //     )}
 
-    //     <BankRoute exact path={`${path}/client-list`} Component={ClientList}>
-    //       <ClientList />
-    //     </BankRoute>
+        <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
+          <ChallanTransactReport />
+        </B2BRouting>
 
-    //     {roles?.merchant === true ? (
-    //       <MerchantRoute
-    //         exaxt
-    //         path={`${path}/settlement-report`}
-    //         Component={SettlementReport}
-    //       >
-    //         <SettlementReport />
-    //       </MerchantRoute>
-    //     ) : (
-    //       <BankRoute
-    //         exaxt
-    //         path={`${path}/settlement-report`}
-    //         Component={SettlementReport}
-    //       >
-    //         <SettlementReport />
-    //       </BankRoute>
-    //     )}
+        <Route path={`${path}/*`} component={UrlNotFound} />
 
-    //     {roles?.merchant === true ? (
-    //       <MerchantRoute
-    //         exaxt
-    //         path={`${path}/refund-transaction-history`}
-    //         Component={RefundTransactionHistory}
-    //       >
-    //         <RefundTransactionHistory />
-    //       </MerchantRoute>
-    //     ) : (
-    //       <BankRoute
-    //         exaxt
-    //         path={`${path}/refund-transaction-history`}
-    //         Component={RefundTransactionHistory}
-    //       >
-    //         <RefundTransactionHistory />
-    //       </BankRoute>
-    //     )}
-
-    //     {roles?.merchant === true ? (
-    //       <MerchantRoute
-    //         exaxt
-    //         path={`${path}/chargeback-transaction-history`}
-    //         Component={ChargeBackTxnHistory}
-    //       >
-    //         <ChargeBackTxnHistory />
-    //       </MerchantRoute>
-    //     ) : (
-    //       <BankRoute
-    //         exaxt
-    //         path={`${path}/chargeback-transaction-history`}
-    //         Component={ChargeBackTxnHistory}
-    //       >
-    //         <ChargeBackTxnHistory />
-    //       </BankRoute>
-    //     )}
-
-    //     <MerchantRoute
-    //       exaxt
-    //       path={`${path}/product-catalogue`}
-    //       Component={Products}
-    //     >
-    //       {/* <Subsciption /> */}
-    //       <Products />
-    //     </MerchantRoute>
-    //     <MerchantRoute exaxt path={`${path}/paylink`} Component={Paylink}>
-    //       <Paylink />
-    //     </MerchantRoute>
-
-    //     <MerchantRoute
-    //       exaxt
-    //       path={`${path}/paylinkdetail`}
-    //       Component={PaymentLinkDetail}
-    //     >
-    //       <PaymentLinkDetail />
-    //     </MerchantRoute>
-
-    //     <MerchantRoute exaxt path={`${path}/emandate/`}>
-    //       <Emandate />
-    //     </MerchantRoute>
-    //     <MerchantRoute exaxt path={`${path}/payment-response/`}>
-    //       <PaymentResponse />
-    //     </MerchantRoute>
-    //     <MerchantRoute exact path={`${path}/test/`}>
-    //       <Test />
-    //     </MerchantRoute>
-
-    //     {/* <Route exact path={`${path}/view-transaction-with-filter`}>
-    //     <ViewTransactionWithFilter />
-    //   </Route> */}
-
-    //     {roles?.merchant === true ? (
-    //       <MerchantRoute
-    //         exact
-    //         path={`${path}/settlement-report-new`}
-    //         Component={SettlementReportNew}
-    //       >
-    //         <SettlementReportNew />
-    //       </MerchantRoute>
-    //     ) : (
-    //       <BankRoute
-    //         exact
-    //         path={`${path}/settlement-report-new`}
-    //         Component={SettlementReportNew}
-    //       >
-    //         <SettlementReportNew />
-    //       </BankRoute>
-    //     )}
-
-    //     {roles?.merchant === true ? (
-    //       <MerchantRoute
-    //         exact
-    //         path={`${path}/transaction-history-new`}
-    //         Component={TransactionHistoryDownload}
-    //       >
-    //         <TransactionHistoryDownload />
-    //       </MerchantRoute>
-    //     ) : (
-    //       <BankRoute
-    //         exact
-    //         path={`${path}/transaction-history-new`}
-    //         Component={TransactionHistoryDownload}
-    //       >
-    //         <TransactionHistoryDownload />
-    //       </BankRoute>
-    //     )}
-
-    //     <Route exact path={`${path}/sabpaisa-pricing/:id/:name`}>
-    //       {/* getting issue to get query param in protected route */}
-    //       <SabPaisaPricing />
-    //     </Route>
-
-    //     <MerchantRoute exact path={`${path}/kyc`} Component={KycForm}>
-    //       <KycForm />
-    //     </MerchantRoute>
-
-    //     {roles?.verifier === true ? (
-    //       <VerifierRoute exact path={`${path}/approver`} Component={Approver}>
-    //         <Approver />
-    //       </VerifierRoute>
-    //     ) : roles?.approver === true ? (
-    //       <ApproverRoute exact path={`${path}/approver`} Component={Approver}>
-    //         <Approver />
-    //       </ApproverRoute>
-    //     ) : (
-    //       <ViewerRoute exact path={`${path}/approver`} Component={Approver}>
-    //         <Approver />
-    //       </ViewerRoute>
-    //     )}
-
-    //     <ApproverRoute exact path={`${path}/assignzone`} Component={AssignZone}>
-    //       <AssignZone />
-    //     </ApproverRoute>
-
-    //     {roles?.verifier === true ? (
-    //       <VerifierRoute
-    //         exact
-    //         path={`${path}/signup-data`}
-    //         Component={SignupData}
-    //       >
-    //         <SignupData />
-
-    //       </VerifierRoute>
-    //     ) : roles?.approver === true ? (
-    //       <ApproverRoute
-    //         exact
-    //         path={`${path}/signup-data`}
-    //         Component={SignupData}
-    //       >
-    //         <SignupData />
-    //       </ApproverRoute>
-    //     ) : (
-    //       <ViewerRoute
-    //         exact
-    //         path={`${path}/signup-data`}
-    //         Component={SignupData}
-    //       >
-    //         <SignupData />
-    //       </ViewerRoute>
-    //     )}
-
-    //     <ApproverRoute
-    //       exact
-    //       path={`${path}/ratemapping`}
-    //       Component={RateMapping}
-    //     >
-    //       <RateMapping />
-    //     </ApproverRoute>
-
-    //     <ApproverRoute
-    //       exact
-    //       path={`${path}/additional-kyc`}
-    //       Component={AdditionalKYC}
-    //     >
-    //       <AdditionalKYC />
-    //     </ApproverRoute>
-
-    //     <Route exact path={`${path}/thanks`}>
-    //       <ThanksPage />
-    //     </Route>
-    //     <MerchantRoute exact path={`${path}/Sandbox`} Component={Sandbox}>
-    //       <Sandbox />
-    //     </MerchantRoute>
-    //     {/* <Route exact path={`${path}/pg-response`} >
-    //                    <PgResponse />
-    //               </Route> */}
-
-    //     <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
-    //       <SpPg />
-    //     </MerchantRoute>
-    //     <Route path={`${path}/*`} component={UrlNotFound} />
-
-    //   </Switch>
-    // </section>)
+      </Switch>
+    </section>
   );
 }
 

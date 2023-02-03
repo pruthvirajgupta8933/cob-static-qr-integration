@@ -1,9 +1,7 @@
-
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
-import toastConfig from "../../utilities/toastTypes";
-import Spinner from "./Spinner";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import moment from "moment";
 
@@ -11,7 +9,6 @@ import NavBar from "../../components/dashboard/NavBar/NavBar"
 import ViewRateMapping from "./ViewRateMapping";
 
 function RateMapping() {
-  const [approveMerchant, setApproveMerchant] = useState([]);
   const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
   const [dataCount, setDataCount] = useState("");
@@ -19,35 +16,37 @@ function RateMapping() {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [spinner, setSpinner] = useState(true);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [openZoneModal, setOpenModal] = useState(false)
  
   const [modalDisplayData, setModalDisplayData] = useState({});
-  let page_size = pageSize;
-  let page = currentPage;
+
+ 
+  
 
   const approvedSearch = (e) => {
     setSearchText(e.target.value);
   };
 
 
+  let setSpinner = true;
+
   useEffect(() => {
    
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        toastConfig.successToast("Data Loaded");
-        setSpinner(false);
-
-        const data = resp?.payload?.results;
+         const data = resp?.payload?.results;
+      //  resp?.payload?.results!==null ?  toastConfig.errorToast("No data Found") : <></>
         const dataCoun = resp?.payload?.count;
+        setDataCount(dataCoun);
         setData(data);
-         setDataCount(dataCoun);
-         setAssignzone(data);
+        
+        setSpinner(false);
+        setAssignzone(data);
       })
 
       .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
+        
       });
   }, [currentPage, pageSize]);
 
@@ -67,53 +66,11 @@ function RateMapping() {
       setData(assignZone);
     }
   }, [searchText]);
-  ////////////////////////////////////pagination start here
-
-  // const allApprovedMerchants = async () => {
-  //   await axiosInstanceAuth.get(`${API_URL.KYC_FOR_APPROVED}`).then((res) => {
-  //     const data = res?.data?.results;
-  //     // console.log(data)
-  //     setApprovedMerchantData(data);
-  //     const dataCoun = res?.data?.count;
-  //     setDataCount(dataCoun);
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   allApprovedMerchants();
-  //   dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
-  //     .then((resp) => {
-  //       toastConfig.successToast("Approved Data Loaded");
-  //       setSpinner(false);
-  //       const data = resp?.payload?.results;
-  //       setApproveMerchant(data);
-  //     })
-  //     .catch((err) => toastConfig.errorToast("Data not loaded"));
-  // }, [currentPage, pageSize]);
-
-  /////////////////////////////////////Search filter
-  // useEffect(() => {
-  //   if (searchText.length > 0) {
-  //     setApproveMerchant(
-  //       approveMerchant?.filter((item) =>
-  //         Object.values(item)
-  //           .join(" ")
-  //           .toLowerCase()
-  //           .includes(searchText.toLocaleLowerCase())
-  //       )
-  //     );
-  //   } else {
-  //     dispatch(kycForApproved({ page, page_size })).then((resp) => {
-  //       const data = resp?.payload?.results;
-
-  //       setApproveMerchant(data);
-  //     });
-  //   }
-  // }, [searchText]);
-
+  
 
   const totalPages = Math.ceil(dataCount / pageSize);
   const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
+  
 
   const nextPage = () => {
     if (currentPage < pageNumbers?.length) {

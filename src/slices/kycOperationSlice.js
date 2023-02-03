@@ -117,6 +117,30 @@ export const rejectKycOperation = createAsyncThunk(
       }
     }
   );
+
+  export const reverseToPendingkyc = createAsyncThunk(
+    " reverseToPendingkyc/reverseToPendingkyc",
+    async ( requestParam, thunkAPI) => {
+      try {
+        const response = await kycOperationService.reverseToPendingkyc(requestParam)
+        return response.data;
+      } catch (error) {
+        const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.detail) ||
+        error.message ||
+        error.toString() || error.request.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue(message); 
+        
+        
+      }
+    }
+  );
+
+
+  
   
   
 

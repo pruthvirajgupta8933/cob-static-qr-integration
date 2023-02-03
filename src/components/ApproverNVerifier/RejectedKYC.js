@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { kycForRejectedMerchants } from "../../slices/kycSlice";
-import {  useRouteMatch } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
@@ -9,10 +8,10 @@ import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
+import CommentModal from "./Onboarderchant/CommentModal";
 
 
 const RejectedKYC = () => {
-  const { url } = useRouteMatch();
   const roles = roleBasedAccess();
 
   const [data, setData] = useState([]);
@@ -26,10 +25,9 @@ const RejectedKYC = () => {
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [isLoaded,setIsLoaded] = useState(false)
+  const [commentId, setCommentId] = useState({});
+  const [openCommentModal, setOpenCommentModal] = useState(false);
 
-
-  let page_size = pageSize;
-  let page = currentPage;
 
   const dispatch = useDispatch();
   const kycSearch = (e) => {
@@ -37,8 +35,7 @@ const RejectedKYC = () => {
   };
 
 
-  useEffect(() => {
-   
+  const kycForRejectedMerchnats=()=>{
     dispatch(kycForRejectedMerchants({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
@@ -56,6 +53,14 @@ const RejectedKYC = () => {
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
+
+  }
+
+
+  useEffect(() => {
+   
+    kycForRejectedMerchnats()
+    
   }, [currentPage, pageSize]);
 
 
@@ -141,8 +146,9 @@ const nextPage = () => {
             placeholder="Search Here"
           />
         </div>
+        {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Approved Tab"} /> : <></>}
         <div>
-        <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} />
+        <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderToPendingKyc={kycForRejectedMerchnats} />
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -186,16 +192,27 @@ const nextPage = () => {
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
                 <th>View Status</th>
+                {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? ( <th>Action</th>) : <></>}
               </tr>
             </thead>
             <tbody>
               {/* {spinner && <Spinner />} */}
+              {data === null || data === [] ? (
+                <tr>
+                  <td colSpan={"11"}>
+                    <div className="nodatafound text-center">
+                      No data found{" "}
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                <></>
+              )}
+         
               {data?.length === 0 ? (
                 <tr>
                 <td colSpan={"11"}>
-                  <div className="nodatafound text-center">No data found </div>
-                  <br/><br/><br/><br/>
-                  <p className="text-center">{spinner && <Spinner />}</p>
+                  <p className="text-center spinner-roll">{spinner && <Spinner />}</p>
                 </td>
             </tr>
               ) : (
@@ -220,6 +237,24 @@ const nextPage = () => {
                       >
                         View Status
                       </button>
+                    </td>
+                    <td>
+                    {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
+                        <button
+                        type="button"
+                        className="btn approve text-white  btn-xs"
+                        data-toggle="modal"
+                        onClick={() => {
+                          setCommentId(user)
+                          setOpenCommentModal(true)
+                
+                        }}
+                        data-target="#exampleModal"
+                        disabled={user?.clientCode === null ? true : false}
+                      >
+                        Add/View Comments
+                      </button>
+                    ) : <></> }
                     </td>
                   </tr>
                 ))

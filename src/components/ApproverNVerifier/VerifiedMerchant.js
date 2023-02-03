@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch , useSelector} from "react-redux";
 import { kycForVerified } from "../../slices/kycSlice";
-import API_URL from "../../config";
+
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
-import { Link } from "react-router-dom";
+
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import moment from "moment";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
-import { Toast } from "react-toastify";
+
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
@@ -37,8 +37,6 @@ function VerifiedMerchant() {
 
 
   // console.log(currenTab," Current Tab")
-  let page_size = pageSize;
-  let page = currentPage;
   const roles = roleBasedAccess();
 
   const kycSearch = (e) => {
@@ -48,8 +46,7 @@ function VerifiedMerchant() {
   const verifyMerchant = () => {
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        // toastConfig.successToast("Data Loaded");
-        setSpinner(false);
+         setSpinner(false);
 
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
@@ -83,6 +80,7 @@ function VerifiedMerchant() {
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, pageSize]);
 
   useEffect(() => {
@@ -98,8 +96,11 @@ function VerifiedMerchant() {
     } else {
       setData(verfiedMerchant);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchText]);
-  const indexOfLastRecord = currentPage * pageSize;
+
+  
+ 
 
   const totalPages = Math.ceil(dataCount / pageSize);
   let pageNumbers = []
@@ -107,15 +108,16 @@ function VerifiedMerchant() {
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
 
-  const indexOfFirstRecord = indexOfLastRecord - pageSize;
+  // eslint-disable-next-line no-unused-vars
+ 
 
-  const nextPage = () => {
-    setIsLoaded(true)
-    setData([])
+  function nextPage() {
+    setIsLoaded(true);
+    setData([]);
     if (currentPage < pageNumbers.length) {
       setCurrentPage(currentPage + 1);
     }
-  };
+  }
 
   const prevPage = () => {
     setIsLoaded(true)
@@ -144,6 +146,7 @@ function VerifiedMerchant() {
       });
       setDisplayPageNumber(pageNumber);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {
@@ -152,9 +155,7 @@ function VerifiedMerchant() {
     }
 
 
-    // const handleModalState = (val)=>{
-    //   setOpenCommentModal(val)
-    // }
+    
 
   return (
     <div className="container-fluid flleft">
@@ -195,11 +196,10 @@ function VerifiedMerchant() {
       {openCommentModal === true ?  
       <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Pending Approval"} /> 
       : <></>}
-      {/* {console.log("KycDetailsModal isOpenModal",isOpenModal)} */}
+      
       {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderPendingApproval={verifyMerchant}   /> : <></>}
-      {/* {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>} */}
-      </div>
-      <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+           </div>
+      <div className="container-fluid pull-left p-3- my-3- col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
           <table className="table table-bordered">
             <thead>
@@ -219,13 +219,22 @@ function VerifiedMerchant() {
               </tr>
             </thead>
             <tbody>
-              {/* {spinner && <Spinner />} */}
+              
+              {data === null || data === [] ? (
+                <tr>
+                  <td colSpan={"11"}>
+                    <div className="nodatafound text-center">
+                      No data found{" "}
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                <></>
+              )}
               {data?.length === 0 ? (
                 <tr>
                 <td colSpan={"11"}>
-                  <div className="nodatafound text-center">No data found </div>
-                  <br/><br/><br/><br/>
-                  <p className="text-center">{spinner && <Spinner />}</p>
+                  <p className="text-center spinner-rollFr">{spinner && <Spinner />}</p>
                 </td>
             </tr>
               ) : (

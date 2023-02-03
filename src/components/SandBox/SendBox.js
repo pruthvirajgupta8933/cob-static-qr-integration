@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import NavBar from "../dashboard/NavBar/NavBar";
 import StepProgressBar from "../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import { kycUserList } from "../../slices/kycSlice";
 import API_URL from "../../config";
 
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
-import { useState } from "react";
+
 
 function Sandbox() {
   const { auth, kyc } = useSelector((state) => state);
@@ -27,7 +27,7 @@ function Sandbox() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(kycUserList({ login_id: user?.loginId }));
-  }, [user]);
+  }, [user,dispatch]);
 
 
 
@@ -67,7 +67,7 @@ function Sandbox() {
     clientDetailRequest()
     getSubscribedPlan(clientId,10)
 
-  },[clientId])
+  },[clientId,user])
 
 
   // console.log("selected plan",selectedPlan)
@@ -109,7 +109,7 @@ function Sandbox() {
                     <div className="form-group row">
                       <div className="col-lg-4">
                         <label htmlFor="inputEmail3" className="col-form-label">
-                          Client Code{" "}
+                          Client Code
                         </label>
                         <input
                           type="text"
@@ -134,10 +134,6 @@ function Sandbox() {
                           value="Abh789@sp"
                         />
                       </div>
-                      {/* <div className="col-lg-4">
-                                            <label htmlFor="inputEmail3" className="col-form-label">Password </label>
-                                            <input type="text" className="form-control" id="inputEmail3" disabled="true" value="HUGZT_SP4757" />
-                                        </div> */}
                       <div className="col-lg-4">
                         <label
                           htmlFor="inputPassword3"
@@ -187,7 +183,7 @@ function Sandbox() {
                   </form>
                 </div>
                 
-                {selectedPlan?.planId!=="" ? <div className="col-lg-12 border m-1 p-2-">
+                <div className="col-lg-12 border m-1 p-2-">
                   <a
                     className="btn"
                     data-toggle="collapse"
@@ -206,7 +202,7 @@ function Sandbox() {
                     <div className="form-group row">
                       <div className="col-lg-4">
                         <label htmlFor="inputEmail3" className="col-form-label">
-                          Client Code{" "}
+                          Client Code
                         </label>
 
                         <input
@@ -222,7 +218,7 @@ function Sandbox() {
                           htmlFor="inputPassword3"
                           className=" col-form-label"
                         >
-                          Username{" "}
+                          Username
                         </label>
                         <input
                           type="text"
@@ -268,7 +264,7 @@ function Sandbox() {
                           value={data && data?.clientPassword}
                         />
                           <div className="input-group-addon eye__Icon">
-                                        <a onClick={handleClickShowPassword}>
+                                        <a onClick={handleClickShowPassword} href={()=>false}>
                                           {" "}
                                           {values.showPassword ? (
                                             <i
@@ -318,7 +314,7 @@ function Sandbox() {
                       </div>
                     </div>
                   </form>
-                </div> : <></>}
+                </div>
                 
               </div>
             </div>

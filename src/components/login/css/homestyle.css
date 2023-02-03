@@ -3564,7 +3564,7 @@ footer {
     }
 }
 
-@media (min-width:768px) and (max-width:991px) {
+@media (min-width:968px) and (max-width:991px) {
     .navbar-header {
         float: none;
     }
@@ -7930,15 +7930,16 @@ footer {
 .mt-31{
     margin-top: 31px;
 }
-@media (max-width: 760px) {
+@media (min-width: 300px) and (max-width: 760px) {
+    /* .caret{display: none;} */
     #dropdownMenuLink{
-        display: none;
+        display: block;
     }
     .navbar-nav li a.nav-link{
         padding: 14px 10px;
     } 
     .announcement-banner-container{
-        padding-top: 30%;
+        padding-top: 5%;
     }
     .foralinkscsshere{
         font-size: 10px;
@@ -7954,3 +7955,15 @@ footer {
     display: flex;
     justify-content: center;
 }
+
+@media (max-width: 768px) {
+.collapse:not(.show) {
+    display: none !important;
+    z-index: 99999;
+    overflow: auto;
+}
+}
+.menubg{
+    background-color: rgb(20, 6, 51);
+}
+

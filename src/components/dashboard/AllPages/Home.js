@@ -4,11 +4,9 @@ import {
   subscriptionplan,
   clearSuccessTxnsummary,
 } from "../../../slices/dashboardSlice";
-import { useRouteMatch, Redirect } from "react-router-dom";
+import { useRouteMatch, Redirect, Link } from "react-router-dom";
 import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png";
-import { Link } from "react-router-dom";
 import "../css/Home.css";
-
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import {
   GetKycTabsStatus,
@@ -42,6 +40,11 @@ function Home() {
   
 
   const { user } = auth;
+
+
+  let b2bLoginId = 10670
+
+
 
   useEffect(() => {
     dispatch(subscriptionplan);
@@ -93,14 +96,27 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
-        {roles?.bank === true ? (
+        {roles?.bank === true || user?.loginId === b2bLoginId ? (
           <></>
         ) : (
           <StepProgressBar status={kyc?.kycUserList?.status} />
         )}
         {/* KYC ALETT */}
         {roles?.merchant === true ?
-          <KycAlert />
+          <React.Fragment>
+          {/* {unPaidProductData?.length>0 && unPaidProductData?.map((data)=>(
+            
+            <AlertBox 
+              key={data?.clientSubscribedPlanDetailsId}
+              heading={`Payment Alert`} 
+              message={`Kindly pay the amount of the subscribed product`}
+              linkUrl={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}
+              linkName={'Make Payment'}
+              bgColor={'alert-danger'}
+            />
+            ))} */}
+            <KycAlert />
+          </React.Fragment>
           : <></>}
 
         <div className="announcement-banner-container_new  announcement-banner">
@@ -213,12 +229,12 @@ function Home() {
               </p>
             </div>
 
-            {roles?.merchant === true && modalState !== "Approved" ? (
+            {roles?.merchant === true && modalState !== "Approved" && user?.loginId !== 10670 ? (
               <div className="col-12 col-md-12">
                 <div className="card col-lg-12- cardkyc pull-left">
                   <div className="font-weight-bold card-body Satoshi-Medium">
                     <span>
-                      You can accept payments upto ₹15,000 for now. To extend
+                      You can accept payments upto ₹10,000 for now. To extend
                       the limit complete your KYC and get it approved.
                     </span>
                     <Link
@@ -227,7 +243,7 @@ function Home() {
                       data-target="#exampleModalCenter"
                     >
                       <button
-                        className="text-white pull-right kycbtns"
+                        className="text-white  kycbtns"
                         style={{
                           backgroundColor: "#0156B3",
                           paddingLeft: "10px",
@@ -239,11 +255,9 @@ function Home() {
                   </div>
                 </div>
               </div>
-            ) : (
+            ) : roles?.bank === true || roles.viewer === true || user?.loginId === b2bLoginId ?  <></> :
+           (
               <div className="col-12 col-md-12">
-                {roles?.bank === true || roles.viewer === true ? (
-                  <></>
-                ) : (
                   <div className="card col-lg-12- cardkyc pull-left">
                     <div className="font-weight-bold card-body Satoshi-Medium">
                       <span>
@@ -254,14 +268,14 @@ function Home() {
                       </button>
                     </div>
                   </div>
-                )}
               </div>
-            )}
-
+               )}
+                   
           </div>
+          
         </div>
 
-        {roles?.merchant === true ? (
+        {roles?.merchant === true && user?.loginId !== b2bLoginId  ? (
           <div className="container">
             <div className="row">
               <div className="col-sm  m-0 no-pad">
@@ -275,15 +289,8 @@ function Home() {
                     &nbsp;Payment Links
                   </h2>
                   <p className="paragraphcssdashboards">
-                    SabPaisa is the World's 1st API Driven Unified Payment
-                    Experience Platform having the Best Payment Gateway in
-                    India. Collect, transfer & refund your payments online &
-                    offline. Get the best success rates with maximum payment
-                    modes available including Debit cards, Credit Card, Wallets,
-                    UPI, Bharat QR, etc. The Hybrid PG helps businesses collect
-                    payments from all the clients and consumers, urban or rural,
-                    young or old, online or offline, without worrying about
-                    consumer payment behaviour.
+                  Payment Links is the world’s first Unified link-based payment method, for payment collections with the help of links for a wide range of payment modes. Collect payments even without a website through easy payment links.
+                   Payment Links offers password-protected and shortened payment links for seamless payment collection.
                   </p>
                   <Link to={`/dashboard/sabpaisa-pricing/13/PayLink`}>
                     <p className="pricingclasscss">
@@ -390,9 +397,7 @@ function Home() {
               </div>
             </div>
           </div>
-        ) : (
-          <React.Fragment></React.Fragment>
-        )}
+        ) : <></>}
       </div>
 
       {/* KYC container end here */}
@@ -413,7 +418,7 @@ function Home() {
       </main>
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
-      {roles?.bank === true ? (
+      {roles?.bank === true || user?.loginId === b2bLoginId ? (
         <></>
       ) : (
         <div
@@ -429,9 +434,9 @@ function Home() {
               <div className="modal-body Satoshi-Medium">
 
               {/* ratemapping loader  */}
-              {/* {console.log("chck1")} */}
+             
               <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
-              {/* {console.log("chck2")} */}
+              
 
               {!(isRateMappingInProcess) &&
                 <div className="">

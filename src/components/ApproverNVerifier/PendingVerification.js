@@ -1,35 +1,26 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { kycForPending } from "../../slices/kycSlice";
-import API_URL from "../../config";
-import { forGettingCommentList } from "../../slices/merchantZoneMappingSlice";
-// import axios from "axios";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
-import { Link, useRouteMatch } from "react-router-dom";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import CommentModal from "./Onboarderchant/CommentModal";
-import {ALLOW_ROLE_AS_VERIFIER} from "./../../utilities/permisson"
 import moment from "moment";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 function PendingVerification() {
-  const { url } = useRouteMatch();
   const roles = roleBasedAccess();
-   const { user } = useSelector((state) => state.auth);
+  //  const { user } = useSelector((state) => state.auth);
    const roleBasePermissions = roleBasedAccess()
 
    const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
-   const { loginId } = user;
-   const id =loginId
+  //  const { loginId } = user;
+  //  const id =loginId
    
-
-  //  console.log(loginId," <=====  Login Id ====> ")
-
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [dataCount, setDataCount] = useState("");
@@ -108,6 +99,7 @@ function PendingVerification() {
     } else {
       setData(newRegistrationData);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchText]);
 
   const totalPages = Math.ceil(dataCount / pageSize);
@@ -130,19 +122,7 @@ function PendingVerification() {
     }
   };
 
-  // useEffect(() => {
-    
-  //     dispatch(
-  //       forGettingCommentList({
-  //         client_code: commentId.clientCode,
-  //       })
-  //     )
-  //       .then((resp) => {
-  //       })
-  
-  //       .catch((err) => {});
- 
-  // },[commentId])
+
 
   useEffect(() => {
     let lastSevenPage = totalPages - 7;
@@ -161,6 +141,7 @@ function PendingVerification() {
       });
       setDisplayPageNumber(pageNumber);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {
@@ -168,15 +149,15 @@ function PendingVerification() {
       return date
     }
 
-    let btn = false;
-    ALLOW_ROLE_AS_VERIFIER?.map((i) => {
-    if (ALLOW_ROLE_AS_VERIFIER.includes(id)) {
-      btn = true;
-    } else {
+  //   let btn = false;
+  //   ALLOW_ROLE_AS_VERIFIER?.map((i) => {
+  //   if (ALLOW_ROLE_AS_VERIFIER.includes(id)) {
+  //     btn = true;
+  //   } else {
        
-      btn = false;
-    } 
-  });
+  //     btn = false;
+  //   } 
+  // });
     
   return (
     <div className="container-fluid flleft">
@@ -242,13 +223,24 @@ function PendingVerification() {
               </tr>
             </thead>
             <tbody>
-              {/* {spinner && <Spinner />} */}
+
+
+            {data === null || data === [] ? (
+                <tr>
+                  <td colSpan={"11"}>
+                    <div className="nodatafound text-center">
+                      No data found
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                <></>
+              )}
+              
               {data?.length === 0 ? (
                  <tr>
                  <td colSpan={"11"}>
-                   <div className="nodatafound text-center">No data found </div>
-                   <br/><br/>
-                   <p className="text-center">{spinner && <Spinner />}</p>
+                   <p className="text-center spinner-roll">{spinner && <Spinner />}</p>
                  </td>
              </tr>
               ) : (
@@ -272,7 +264,7 @@ function PendingVerification() {
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >
-                        {roles?.verifier === true && currenTab === 3 || Allow_To_Do_Verify_Kyc_details === true ? "Verify KYC / View Status" : "View Status" }
+                        {(roles?.verifier === true && currenTab === 3 ) || Allow_To_Do_Verify_Kyc_details === true ? "Verify KYC / View Status" : "View Status" }
                       
                       </button>
                     </td>

@@ -8,8 +8,7 @@ import API_URL from "../../../../config";
 import { axiosInstanceAuth } from "../../../../utilities/axiosInstance";
 import "./product.css";
 import toastConfig from "../../../../utilities/toastTypes";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { useParams,useHistory } from "react-router-dom";
 import { logout } from "../../../../slices/auth";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 
@@ -21,7 +20,7 @@ const SabPaisaPricing = () => {
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
 
-
+  console.log("selectedPlan",selectedPlan)
   const dispatch = useDispatch();
   const clickHandler = (value) => {
     history.push("/dashboard");
@@ -43,7 +42,8 @@ const SabPaisaPricing = () => {
     axiosInstanceAuth
       .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
       .then((resp) => {
-        setSelectedPlan({ planId: resp?.data?.data?.planId === null ? "" : resp?.data?.data?.planId })
+        // console.log(resp?.data?.data[0]?.planId)
+        setSelectedPlan({ planId: resp?.data?.data[0]?.planId === null ? "" : resp?.data?.data[0]?.planId })
       })
   }
 

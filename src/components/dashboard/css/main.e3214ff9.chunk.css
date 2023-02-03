@@ -4754,7 +4754,8 @@ tbody.collapse.show {
         padding-left: 0;
     }
 }
-@media (min-width: 768px) {
+@media (min-width: 968px) and (max-width: 1024px) {
+   
     .navbar-expand-md {
         flex-flow: row nowrap;
         justify-content: flex-start;
@@ -38708,7 +38709,7 @@ h6 {
     border-radius: 0;
 }
 .ant-menu-submenu > .ant-menu.ant-menu-sub .ant-menu-item {
-    padding-left: 54px !important;
+    /* padding-left: 54px !important; */
 }
 .ant-drawer .ant-menu-submenu > .ant-menu.ant-menu-sub .ant-menu-item,
 .ant-layout-sider .ant-menu-submenu > .ant-menu.ant-menu-sub .ant-menu-item {

@@ -1,7 +1,6 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import API_URL, { AUTH_TOKEN } from "../../config";
+import { useDispatch } from "react-redux";
+import API_URL from "../../config";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
@@ -34,8 +33,6 @@ function ApprovedMerchant() {
   const [isLoaded,setIsLoaded] = useState(false)
 
 
-  let page_size = pageSize;
-  let page = currentPage;
   const roles = roleBasedAccess();
 
 
@@ -233,12 +230,22 @@ let pageNumbers = []
               </tr>
             </thead>
             <tbody>
+            {data === null || data === [] ? (
+                <tr>
+                  <td colSpan={"11"}>
+                    <div className="nodatafound text-center">
+                      No data found{" "}
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                <></>
+              )}
+              
               {data?.length === 0 ? (
                   <tr>
                   <td colSpan={"11"}>
-                    <div className="nodatafound text-center">No data found </div>
-                    <br/><br/><br/><br/>
-                    <p className="text-center">{spinner && <Spinner />}</p>
+                    <p className="text-center spinner-rollFr">{spinner && <Spinner />}</p>
                   </td>
               </tr>
               ) : (
