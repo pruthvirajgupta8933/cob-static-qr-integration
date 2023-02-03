@@ -62,7 +62,6 @@ const MerchantDocument = (props) => {
 
 
   let pendingDocument = getDocTypeNamee(unmatchedArray)
-  console.log("pendingDocument",pendingDocument)
 
   ///////////////////////////////////////////////////////////////////////
    const [buttonText, setButtonText] = useState("");
@@ -71,7 +70,8 @@ const MerchantDocument = (props) => {
   const [closeModal, setCloseModal] = useState(false)
   const [commetText, setCommetText] = useState()
   const [documentsIdList, setdocumentsIdList] = useState([])
-  const [checkedClicked, setCheckedClicked] = useState(false)
+ 
+const [checkedClicked, setCheckedClicked] = useState(false)
   // const [enableeBtn, setEnableBtn] = useState(false)
 
   // console.log("this is the real statsus",staus)
