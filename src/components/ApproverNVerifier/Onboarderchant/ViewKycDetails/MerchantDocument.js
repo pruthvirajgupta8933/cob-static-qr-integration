@@ -320,7 +320,7 @@ const MerchantDocument = (props) => {
         })}
       </div>
       
-      <div className="col-lg-12 mt-4 m-2 hoz-scroll-">
+      <div className="col-lg-12 mt-4 m-2 hoz-scroll">
         <table className="table table-bordered w-100">
 
 
