@@ -41,6 +41,11 @@ function Home() {
 
   const { user } = auth;
 
+
+  let b2bLoginId = 10670
+
+
+
   useEffect(() => {
     dispatch(subscriptionplan);
     dispatch(
@@ -91,7 +96,7 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
-        {roles?.bank === true ? (
+        {roles?.bank === true || user?.loginId === b2bLoginId ? (
           <></>
         ) : (
           <StepProgressBar status={kyc?.kycUserList?.status} />
@@ -224,7 +229,7 @@ function Home() {
               </p>
             </div>
 
-            {roles?.merchant === true && modalState !== "Approved" ? (
+            {roles?.merchant === true && modalState !== "Approved" && user?.loginId !== 10670 ? (
               <div className="col-12 col-md-12">
                 <div className="card col-lg-12- cardkyc pull-left">
                   <div className="font-weight-bold card-body Satoshi-Medium">
@@ -250,11 +255,9 @@ function Home() {
                   </div>
                 </div>
               </div>
-            ) : (
+            ) : roles?.bank === true || roles.viewer === true || user?.loginId === b2bLoginId ?  <></> :
+           (
               <div className="col-12 col-md-12">
-                {roles?.bank === true || roles.viewer === true ? (
-                  <></>
-                ) : (
                   <div className="card col-lg-12- cardkyc pull-left">
                     <div className="font-weight-bold card-body Satoshi-Medium">
                       <span>
@@ -265,14 +268,14 @@ function Home() {
                       </button>
                     </div>
                   </div>
-                )}
               </div>
-            )}
-
+               )}
+                   
           </div>
+          
         </div>
 
-        {roles?.merchant === true ? (
+        {roles?.merchant === true && user?.loginId !== b2bLoginId  ? (
           <div className="container">
             <div className="row">
               <div className="col-sm  m-0 no-pad">
@@ -394,9 +397,7 @@ function Home() {
               </div>
             </div>
           </div>
-        ) : (
-          <React.Fragment></React.Fragment>
-        )}
+        ) : <></>}
       </div>
 
       {/* KYC container end here */}
@@ -417,7 +418,7 @@ function Home() {
       </main>
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
-      {roles?.bank === true ? (
+      {roles?.bank === true || user?.loginId === b2bLoginId ? (
         <></>
       ) : (
         <div
