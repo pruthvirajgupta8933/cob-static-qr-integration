@@ -46,8 +46,7 @@ function VerifiedMerchant() {
   const verifyMerchant = () => {
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-        // toastConfig.successToast("Data Loaded");
-        setSpinner(false);
+         setSpinner(false);
 
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
@@ -101,7 +100,7 @@ function VerifiedMerchant() {
   }, [searchText]);
 
   
-  const indexOfLastRecord = currentPage * pageSize;
+ 
 
   const totalPages = Math.ceil(dataCount / pageSize);
   let pageNumbers = []
@@ -110,7 +109,7 @@ function VerifiedMerchant() {
   }
 
   // eslint-disable-next-line no-unused-vars
-  const indexOfFirstRecord = indexOfLastRecord - pageSize;
+ 
 
   function nextPage() {
     setIsLoaded(true);
@@ -156,9 +155,7 @@ function VerifiedMerchant() {
     }
 
 
-    // const handleModalState = (val)=>{
-    //   setOpenCommentModal(val)
-    // }
+    
 
   return (
     <div className="container-fluid flleft">
@@ -199,10 +196,9 @@ function VerifiedMerchant() {
       {openCommentModal === true ?  
       <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Pending Approval"} /> 
       : <></>}
-      {/* {console.log("KycDetailsModal isOpenModal",isOpenModal)} */}
+      
       {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderPendingApproval={verifyMerchant}   /> : <></>}
-      {/* {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} /> : <></>} */}
-      </div>
+           </div>
       <div className="container-fluid pull-left p-3- my-3- col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
           <table className="table table-bordered">
@@ -223,7 +219,7 @@ function VerifiedMerchant() {
               </tr>
             </thead>
             <tbody>
-              {/* {spinner && <Spinner />} */}
+              
               {data === null || data === [] ? (
                 <tr>
                   <td colSpan={"11"}>
