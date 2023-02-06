@@ -32,7 +32,9 @@ function SpPg() {
     // console.log("SubscribedPlanData",SubscribedPlanData)
     useEffect(() => {
 
-        const unPaidProduct = SubscribedPlanData?.filter((d) => (isNull(d?.clientTxnId) && d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString()))
+        const unPaidProduct = SubscribedPlanData?.filter((d) => (
+            (isNull(d?.mandateStatus) || d?.mandateStatus==="pending") &&   
+            (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
 
         const searchParam = window.location.search.slice(1)
         const queryString = new URLSearchParams(searchParam?.toString());

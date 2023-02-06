@@ -26,6 +26,8 @@ import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import KycAlert from "../../KYC/KycAlert";
 import { DefaultRateMapping } from "../../../utilities/DefaultRateMapping";
+import { isNull } from "lodash";
+import AlertBox from "../../../_components/reuseable_components/AlertBox";
 
 function Home() {
   const roles = roleBasedAccess();
@@ -34,17 +36,14 @@ function Home() {
   const [modalState, setModalState] = useState("Not-Filled");
   const [isRateMappingInProcess, setIsRateMappingInProcess] = useState(false);
 
-  const { auth, kyc } = useSelector((state) => state);
+  const { auth, kyc, productCatalogueSlice } = useSelector((state) => state);
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
-  
+  const { SubscribedPlanData,   } = productCatalogueSlice
   
 
   const { user } = auth;
-
-
+  // temp login id
   let b2bLoginId = 10670
-
-
 
   useEffect(() => {
     dispatch(subscriptionplan);
@@ -88,6 +87,9 @@ function Home() {
     dispatch(UpdateModalStatus(false));
   };
 
+
+  const unPaidProduct = SubscribedPlanData?.filter((d) => ((isNull(d?.mandateStatus) || d?.mandateStatus==="pending")))
+
   return (
     <section className="ant-layout Satoshi-Medium NunitoSans-Regular">
       <div className="m_none">
@@ -104,9 +106,9 @@ function Home() {
         {/* KYC ALETT */}
         {roles?.merchant === true ?
           <React.Fragment>
-          {/* {unPaidProductData?.length>0 && unPaidProductData?.map((data)=>(
+          {unPaidProduct?.length>0 && unPaidProduct?.map((data)=>(
             
-            <AlertBox 
+            <AlertBox
               key={data?.clientSubscribedPlanDetailsId}
               heading={`Payment Alert`} 
               message={`Kindly pay the amount of the subscribed product`}
@@ -114,7 +116,7 @@ function Home() {
               linkName={'Make Payment'}
               bgColor={'alert-danger'}
             />
-            ))} */}
+            ))}
             <KycAlert />
           </React.Fragment>
           : <></>}
