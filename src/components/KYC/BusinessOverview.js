@@ -187,7 +187,7 @@ function BusinessOverview(props) {
           "platformName",
           resp.payload
         );
-        setPlatform(data);
+        // setPlatform(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -202,7 +202,7 @@ function BusinessOverview(props) {
           resp.payload
         );
 
-        setCollectFreqency(data);
+        // setCollectFreqency(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -215,7 +215,7 @@ function BusinessOverview(props) {
           "collectionTypeName",
           resp.payload
         );
-        setCollection(data);
+        // setCollection(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -302,7 +302,7 @@ function BusinessOverview(props) {
 
   const handleShowHide = (event) => {
     const getuser = event.target.value;
-    setAppUrl(getuser);
+    // setAppUrl(getuser);
   };
 //////////////////////////////////// Check for finite number
   // useEffect(() => {
