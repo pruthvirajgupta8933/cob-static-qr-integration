@@ -26,7 +26,7 @@ const BusinessOverview = (props) => {
 
   }
 
-  
+
 
 
   const handleVerifyClick = () => {
@@ -71,7 +71,7 @@ const BusinessOverview = (props) => {
 
 
 
- return (
+  return (
     <div className="row mb-4 border">
       <div className="col-lg-12">
         <h3 className="font-weight-bold">Business Overview</h3>
@@ -117,15 +117,6 @@ const BusinessOverview = (props) => {
           }
         />
       </div>
-      
-      <div className="col-sm-6 col-md-6 col-lg-6">
-        <label className="col-form-label p-2 mt-0">
-          {merchantKycId?.is_website_url === true ?
-            <p className="font-weight-bold"> Merchant wish to accept payments on (Web/App URL) {stringManulate(merchantKycId?.website_app_url)}</p> :
-            `Merchant has accepted payments without any web/app `}
-        </label>
-      </div>
-
 
       {/* <div className="col-sm-4 col-md-4 col-lg-4">
         <label className="col-form-label p-2 mt-0">
@@ -143,7 +134,7 @@ const BusinessOverview = (props) => {
         />
       </div> */}
 
-      <div className="col-sm-4 col-md-4 col-lg-4">
+      <div className="col-sm-6 col-md-6 col-lg-6">
         <label
           className="col-form-label p-0"
           style={{ marginTop: "15px" }}
@@ -163,7 +154,7 @@ const BusinessOverview = (props) => {
         />
       </div>
 
-      <div className="col-sm-4 col-md-4 col-lg-4">
+      <div className="col-sm-6 col-md-6 col-lg-6">
         <label className="col-form-label p-2 mt-0">
           Avg Ticket Amount<span style={{ color: "red" }}>*</span>
         </label>
@@ -177,6 +168,30 @@ const BusinessOverview = (props) => {
             merchantKycId?.avg_ticket_size
           }
         />
+
+      </div>
+
+      <div className="col-sm-6 col-md-6 col-lg-6">
+        <label className="col-form-label p-2 mt-0">
+          {merchantKycId?.is_website_url === true ?
+            <>
+            Merchant wish to accept payments on :
+              <textarea
+                type="text"
+                className="form-control"
+                id="inputPassword3"
+                disabled="true"
+                cols={4}
+                rows={3}
+                value={
+                  merchantKycId?.website_app_url
+                }
+              ></textarea>
+            </>
+            :
+            <p className="font-weight-bold text-danger">Merchant has accepted payments without any web/app</p>
+          }
+        </label>
 
       </div>
 

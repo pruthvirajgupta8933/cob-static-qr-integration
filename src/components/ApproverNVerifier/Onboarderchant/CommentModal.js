@@ -67,7 +67,7 @@ const CommentModal = (props) => {
   const validationSchema = Yup.object({
     comments: Yup.string()
       .min(1, "Please enter , more than 1 character")
-      .max(100, "Please do not  enter more than 100 characters")
+      .max(500, "Please do not enter more than 500 characters")
       .required("Required")
       .nullable(),
   });

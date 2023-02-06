@@ -42,7 +42,7 @@ function Home() {
   const { user } = auth;
 
 
-  let b2bLoginId = 10670
+  let b2bLoginId = [10670,10991]
 
 
 
@@ -96,7 +96,7 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
-        {roles?.bank === true || user?.loginId === b2bLoginId ? (
+        {roles?.bank === true || b2bLoginId?.includes(user?.loginId) ? (
           <></>
         ) : (
           <StepProgressBar status={kyc?.kycUserList?.status} />
@@ -229,7 +229,7 @@ function Home() {
               </p>
             </div>
 
-            {roles?.merchant === true && modalState !== "Approved" && user?.loginId !== 10670 ? (
+            {(roles?.merchant === true && modalState !== "Approved") && (!b2bLoginId?.includes(user?.loginId)) ? (
               <div className="col-12 col-md-12">
                 <div className="card col-lg-12- cardkyc pull-left">
                   <div className="font-weight-bold card-body Satoshi-Medium">
@@ -255,7 +255,7 @@ function Home() {
                   </div>
                 </div>
               </div>
-            ) : roles?.bank === true || roles.viewer === true || user?.loginId === b2bLoginId ?  <></> :
+            ) : roles?.bank === true || roles.viewer === true || b2bLoginId.includes(user?.loginId) ?  <></> :
            (
               <div className="col-12 col-md-12">
                   <div className="card col-lg-12- cardkyc pull-left">
@@ -275,7 +275,7 @@ function Home() {
           
         </div>
 
-        {roles?.merchant === true && user?.loginId !== b2bLoginId  ? (
+        {(roles?.merchant === true && !b2bLoginId.includes(user?.loginId))  ? (
           <div className="container">
             <div className="row">
               <div className="col-sm  m-0 no-pad">
@@ -418,7 +418,7 @@ function Home() {
       </main>
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
-      {roles?.bank === true || user?.loginId === b2bLoginId ? (
+      {roles?.bank === true || b2bLoginId.includes(user?.loginId) ? (
         <></>
       ) : (
         <div
