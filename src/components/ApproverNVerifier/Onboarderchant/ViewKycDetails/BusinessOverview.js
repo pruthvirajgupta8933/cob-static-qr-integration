@@ -1,28 +1,32 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-// import {verifyKycEachTab} from "../../slices/kycSlice";
-import { verifyKycEachTab } from '../../../../slices/kycSlice';
+import { verifyKycEachTab, GetKycTabsStatus } from '../../../../slices/kycSlice';
 import { toast } from "react-toastify";
 import { rejectKycOperation } from "../../../../slices/kycOperationSlice"
 import VerifyRejectBtn from './VerifyRejectBtn';
-import { GetKycTabsStatus } from '../../../../slices/kycSlice';
+
 
 const BusinessOverview = (props) => {
   const { businessTypeResponse, businessCategoryResponse, merchantKycId, KycTabStatus } = props;
   const dispatch = useDispatch();
-  const { auth, kyc } = useSelector((state) => state);
+  const { auth } = useSelector((state) => state);
 
-  const [isVerified, setIsVerified] = useState(KycTabStatus?.business_info_status === "Verified" ? true : false);
-  const [isRejected, setIsRejected] = useState(KycTabStatus?.business_info_status === "Verified" ? true : false);
+
+  let isVerified = KycTabStatus?.business_info_status === "Verified" ? true : false;
+  let isRejected = KycTabStatus?.business_info_status === "Verified" ? true : false;
 
   let commentsStatus = KycTabStatus.business_info_reject_comments;
 
 
   const { user } = auth;
   const { loginId } = user;
+  const stringManulate = (str) => {
+    let str1 = str.substring(0, 15)
+    return `${str1}...`
 
-  // const general_info_status = KycTabStatus?.business_info_status;
+  }
 
+  
 
 
   const handleVerifyClick = () => {
@@ -67,8 +71,7 @@ const BusinessOverview = (props) => {
 
 
 
-
-  return (
+ return (
     <div className="row mb-4 border">
       <div className="col-lg-12">
         <h3 className="font-weight-bold">Business Overview</h3>
@@ -114,11 +117,11 @@ const BusinessOverview = (props) => {
           }
         />
       </div>
-
+      
       <div className="col-sm-6 col-md-6 col-lg-6">
         <label className="col-form-label p-2 mt-0">
           {merchantKycId?.is_website_url === true ?
-            <p className="font-weight-bold"> Merchant wish to accept payments on (Web/App URL) {merchantKycId?.website_app_url}</p> :
+            <p className="font-weight-bold"> Merchant wish to accept payments on (Web/App URL) {stringManulate(merchantKycId?.website_app_url)}</p> :
             `Merchant has accepted payments without any web/app `}
         </label>
       </div>

@@ -72,6 +72,7 @@ const CommentModal = (props) => {
       .nullable(),
   });
 
+
   const handleSubmit = async (values) => {
     let formData = new FormData();
     formData.append("files", attachCommentFile);
@@ -96,7 +97,6 @@ const CommentModal = (props) => {
         toastConfig.errorToast("Data not loaded");
       });
   };
-
   const dateManipulate = (yourDate) => {
     let date = moment(yourDate).format("MM/DD/YYYY HH:mm:ss");
     return date;
@@ -244,7 +244,7 @@ const CommentModal = (props) => {
                           </div>
                         </div>
                         <div className="row">
-                          <div className="col">
+                          <div className="col hoz-scroll-">
                             <table className="table table-bordered">
                               <thead>
                                 <tr>

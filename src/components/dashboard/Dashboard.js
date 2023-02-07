@@ -15,6 +15,7 @@ import {
   Route,
   Redirect,
   useHistory,
+  useLocation,
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ClientList from "./AllPages/ClientList";
@@ -52,21 +53,29 @@ import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
+<<<<<<< HEAD
 import PayoutTransaction from "../../payout/Ledger";
 import TransactionsPayoutHistory from "../../payout/Transactions";
 import Beneficiary from "../../payout/Beneficiary";
 import MISReport from "../../payout/MISReport";
 import MakePayment from '../../payout/MakePayment';
+=======
+import OnboardedReport from "../ApproverNVerifier/OnboardedReport";
+import ChallanTransactReport from "../../B2B_components/ChallanTransactReport";
+import B2BRouting from "../../B2B_components/Routes/B2BRouting";
+import { fetchMenuList } from "../../slices/cob-dashboard/menulistSlice";
+import { isNull } from "lodash";
+import { merchantSubscribedPlanData } from "../../slices/merchant-slice/productCatalogueSlice";
+
+>>>>>>> 11706d1d23156a1aa4251b44f6197d08b09d77b6
 
 function Dashboard() {
   let history = useHistory();
   let { path } = useRouteMatch();
-
   const { user } = useSelector((state) => state.auth);
-  // const clientMerchantDetailsList = user?.clientMerchantDetailsList
   const roles = roleBasedAccess();
-
   const dispatch = useDispatch();
+  const location = useLocation();
 
   // create new client code
   useEffect(() => {
@@ -81,46 +90,56 @@ function Dashboard() {
             clientCode: uuidCode,
           };
 
-          dispatch(createClientProfile(data)).then(clientProfileRes=>{
-            console.log("response of the create client ",clientProfileRes);
-
+          dispatch(createClientProfile(data)).then(clientProfileRes => {
+            // console.log("response of the create client ", clientProfileRes);
             // after create the client update the subscribe product
             const postData = {
               login_id: user?.loginId
             }
-
-            
-          // fetch details of the user registraion
+            // fetch details of the user registraion
             axiosInstanceAuth.post(API_URL.website_plan_details, postData).then(
               res => {
-                console.log("clientProfileRes",clientProfileRes)
+                // console.log("clientProfileRes", clientProfileRes)
                 const webData = res?.data?.data[0]?.plan_details
                 const postData = {
                   clientId: clientProfileRes?.payload?.clientId,
-                  applicationName: webData?.appName,
-                  planId: webData?.planid,
-                  planName: webData?.planName,
-                  applicationId: webData?.appid,
+                  applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
+                  planId: !isNull(webData?.planid) ? webData?.planid : "1",
+                  planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
+                  applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
                 };
 
                 axiosInstanceAuth.post(
                   API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
                   postData
-                );
-  
-                
+                ).then((res) => {
+                  dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
+
+                })
               }
             )
-          }).catch(err=>console.log(err));
+          }).catch(err => console.log(err));
         } else {
           // console.log("already created client code")
         }
       }
     }
-
-            // defaultRateMapping("HU9NCY"); //HU9NCY
-
   }, []);
+
+
+
+  useEffect(() => {
+    const postBody = {
+      LoginId: user?.loginId
+    }
+    dispatch(fetchMenuList(postBody))
+    // console.log(location?.pathname)
+  }, [user, dispatch])
+
+
+  useEffect(() => {
+      dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
+  }, [])
 
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
@@ -367,7 +386,7 @@ function Dashboard() {
             Component={SignupData}
           >
             <SignupData />
-            
+
           </VerifierRoute>
         ) : roles?.approver === true ? (
           <ApproverRoute
@@ -413,8 +432,9 @@ function Dashboard() {
                          <PgResponse />
                     </Route> */}
 
-        <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
+        <Route exact path={`${path}/sabpaisa-pg/:subscribeId`} Component={SpPg}>
           <SpPg />
+<<<<<<< HEAD
         </MerchantRoute>
         <MerchantRoute exact  path={`${path}/ledger`} Component={PayoutTransaction}>
           <SpPg />
@@ -432,6 +452,40 @@ function Dashboard() {
           <SpPg />
         </MerchantRoute>
          <Route path={`${path}/*`} component={UrlNotFound}/>
+=======
+        </Route>
+
+
+
+        {roles?.verifier && (
+          <VerifierRoute
+            exact
+            path={`${path}/onboarded-report`}
+            Component={OnboardedReport}
+          >
+            <SignupData />
+
+          </VerifierRoute>
+        )}
+
+
+        {roles?.approver && (
+          <ApproverRoute
+            exact
+            path={`${path}/onboarded-report`}
+            Component={OnboardedReport}
+          >
+            <SignupData />
+          </ApproverRoute>
+        )}
+
+
+        <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
+          <ChallanTransactReport />
+        </B2BRouting>
+
+        <Route path={`${path}/*`} component={UrlNotFound} />
+>>>>>>> 11706d1d23156a1aa4251b44f6197d08b09d77b6
 
       </Switch>
     </section>

@@ -21,7 +21,7 @@ const EmailVerification = () => {
       // console.log(e);
     }) 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [loginId]);
   
   return (
   <div className="row d-flex justify-content-center">

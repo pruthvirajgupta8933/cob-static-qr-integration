@@ -4,11 +4,9 @@ import {
   subscriptionplan,
   clearSuccessTxnsummary,
 } from "../../../slices/dashboardSlice";
-import { useRouteMatch, Redirect } from "react-router-dom";
+import { useRouteMatch, Redirect, Link } from "react-router-dom";
 import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png";
-import { Link } from "react-router-dom";
 import "../css/Home.css";
-
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import {
   GetKycTabsStatus,
@@ -28,6 +26,8 @@ import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import KycAlert from "../../KYC/KycAlert";
 import { DefaultRateMapping } from "../../../utilities/DefaultRateMapping";
+import { isNull } from "lodash";
+import AlertBox from "../../../_components/reuseable_components/AlertBox";
 
 function Home() {
   const roles = roleBasedAccess();
@@ -36,12 +36,21 @@ function Home() {
   const [modalState, setModalState] = useState("Not-Filled");
   const [isRateMappingInProcess, setIsRateMappingInProcess] = useState(false);
 
-  const { auth, kyc } = useSelector((state) => state);
+  const { auth, kyc, productCatalogueSlice } = useSelector((state) => state);
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
-  
+  const { SubscribedPlanData,   } = productCatalogueSlice
   
 
   const { user } = auth;
+
+
+  let businessCat = user.clientMerchantDetailsList[0].business_cat_code
+
+
+
+  
+  // temp login id
+  let b2bLoginId = 10670
 
   useEffect(() => {
     dispatch(subscriptionplan);
@@ -85,6 +94,9 @@ function Home() {
     dispatch(UpdateModalStatus(false));
   };
 
+
+  const unPaidProduct = SubscribedPlanData?.filter((d) => ((isNull(d?.mandateStatus) || d?.mandateStatus==="pending")))
+
   return (
     <section className="ant-layout Satoshi-Medium NunitoSans-Regular">
       <div className="m_none">
@@ -93,14 +105,27 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
-        {roles?.bank === true ? (
+        {roles?.bank === true || businessCat === "8" ? (
           <></>
         ) : (
           <StepProgressBar status={kyc?.kycUserList?.status} />
         )}
         {/* KYC ALETT */}
         {roles?.merchant === true ?
-          <KycAlert />
+          <React.Fragment>
+          {unPaidProduct?.length>0 && unPaidProduct?.map((data)=>(
+            
+            <AlertBox
+              key={data?.clientSubscribedPlanDetailsId}
+              heading={`Payment Alert`} 
+              message={`Kindly pay the amount of the subscribed product`}
+              linkUrl={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}
+              linkName={'Make Payment'}
+              bgColor={'alert-danger'}
+            />
+            ))}
+            <KycAlert />
+          </React.Fragment>
           : <></>}
 
         <div className="announcement-banner-container_new  announcement-banner">
@@ -213,12 +238,12 @@ function Home() {
               </p>
             </div>
 
-            {roles?.merchant === true && modalState !== "Approved" ? (
+            {roles?.merchant === true && modalState !== "Approved" && businessCat !== "8" ? (
               <div className="col-12 col-md-12">
                 <div className="card col-lg-12- cardkyc pull-left">
                   <div className="font-weight-bold card-body Satoshi-Medium">
                     <span>
-                      You can accept payments upto ₹15,000 for now. To extend
+                      You can accept payments upto ₹10,000 for now. To extend
                       the limit complete your KYC and get it approved.
                     </span>
                     <Link
@@ -227,7 +252,7 @@ function Home() {
                       data-target="#exampleModalCenter"
                     >
                       <button
-                        className="text-white pull-right kycbtns"
+                        className="text-white  kycbtns"
                         style={{
                           backgroundColor: "#0156B3",
                           paddingLeft: "10px",
@@ -239,11 +264,9 @@ function Home() {
                   </div>
                 </div>
               </div>
-            ) : (
+            ) : roles?.bank === true || roles.viewer === true || businessCat === "8" ?  <></> :
+           (
               <div className="col-12 col-md-12">
-                {roles?.bank === true || roles.viewer === true ? (
-                  <></>
-                ) : (
                   <div className="card col-lg-12- cardkyc pull-left">
                     <div className="font-weight-bold card-body Satoshi-Medium">
                       <span>
@@ -254,14 +277,14 @@ function Home() {
                       </button>
                     </div>
                   </div>
-                )}
               </div>
-            )}
-
+               )}
+                   
           </div>
+          
         </div>
 
-        {roles?.merchant === true ? (
+        {roles?.merchant === true && businessCat !== "8"  ? (
           <div className="container">
             <div className="row">
               <div className="col-sm  m-0 no-pad">
@@ -275,15 +298,8 @@ function Home() {
                     &nbsp;Payment Links
                   </h2>
                   <p className="paragraphcssdashboards">
-                    SabPaisa is the World's 1st API Driven Unified Payment
-                    Experience Platform having the Best Payment Gateway in
-                    India. Collect, transfer & refund your payments online &
-                    offline. Get the best success rates with maximum payment
-                    modes available including Debit cards, Credit Card, Wallets,
-                    UPI, Bharat QR, etc. The Hybrid PG helps businesses collect
-                    payments from all the clients and consumers, urban or rural,
-                    young or old, online or offline, without worrying about
-                    consumer payment behaviour.
+                  Payment Links is the world’s first Unified link-based payment method, for payment collections with the help of links for a wide range of payment modes. Collect payments even without a website through easy payment links.
+                   Payment Links offers password-protected and shortened payment links for seamless payment collection.
                   </p>
                   <Link to={`/dashboard/sabpaisa-pricing/13/PayLink`}>
                     <p className="pricingclasscss">
@@ -390,9 +406,7 @@ function Home() {
               </div>
             </div>
           </div>
-        ) : (
-          <React.Fragment></React.Fragment>
-        )}
+        ) : <></>}
       </div>
 
       {/* KYC container end here */}
@@ -413,7 +427,7 @@ function Home() {
       </main>
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
-      {roles?.bank === true ? (
+      {roles?.bank === true || businessCat === "8" ? (
         <></>
       ) : (
         <div
@@ -429,9 +443,9 @@ function Home() {
               <div className="modal-body Satoshi-Medium">
 
               {/* ratemapping loader  */}
-              {/* {console.log("chck1")} */}
+             
               <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
-              {/* {console.log("chck2")} */}
+              
 
               {!(isRateMappingInProcess) &&
                 <div className="">

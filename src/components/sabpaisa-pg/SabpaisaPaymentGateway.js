@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { PaymentInitModal } from "pg-test-project";
 import { v4 as uuidv4 } from 'uuid';
 
-
+console.log(uuidv4())
 
 function SabpaisaPaymentGateway(props) {
+  // console.log(props)
   const clientDetails = props?.clientData
 
   const [isOpen, setIsOpen] = useState(false);
@@ -51,8 +52,7 @@ function SabpaisaPaymentGateway(props) {
     setpayerName(clientDetails?.clientContactPersonName);
     setpayerEmail(clientDetails?.clientEmail);
     setpayerMobile(clientDetails?.clientMobileNo);
-    setamount(props?.planPrice);
-
+    setamount(props?.planData[0]?.actual_price);
     setudf12(props?.planData?.clientId)
     setudf13(props?.planData?.planId)
     setudf14(props?.planData?.planName)
@@ -79,7 +79,6 @@ function SabpaisaPaymentGateway(props) {
         payerAddress={payerAddress}
         amount={amount}
         amountType={amountType}
-
         udf12={udf12}
         udf13={udf13}
         udf14={udf14}

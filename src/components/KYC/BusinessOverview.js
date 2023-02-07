@@ -6,7 +6,6 @@ import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
-// import { converter } from "number-to-words";
 
 import {
   businessType,
@@ -15,27 +14,22 @@ import {
   collectionFrequency,
   collectionType,
   saveBusinessInfo,
-  verifyKycEachTab,
   kycUserList,
 } from "../../slices/kycSlice";
-import { isNull } from "lodash";
 
 function BusinessOverview(props) {
   const setTab = props.tab;
   const setTitle = props.title;
-  const { role, kycid } = props;
+  const { role } = props;
   const [data, setData] = useState([]);
-  const [appUrl, setAppUrl] = useState("");
   const [businessCategory, setBusinessCategory] = useState([]);
-  const [platform, setPlatform] = useState([]);
-  const [CollectFreqency, setCollectFreqency] = useState([]);
-  const [collection, setCollection] = useState([]);
-  const [readOnly, setReadOnly] = useState(false);
-  const [buttonText, setButtonText] = useState("Save and Next");
   const [disabled, setIsDisabled] = useState(false)
-  const [numberChnaged, setNumberChanged] = useState('');
-  const [textWord, setTextWord] = useState('');
   const { auth, kyc } = useSelector((state) => state);
+
+  let setPlatform,setCollectFreqency,setCollection,setAppUrl=[];
+  let readOnly = false;
+  let buttonText = "Save and Next";
+
 
   const { user } = auth;
   let clientMerchantDetailsList = {};
@@ -55,33 +49,15 @@ function BusinessOverview(props) {
 
   const dispatch = useDispatch();
 
-  const ErpCheck = KycList?.erpCheck;
 
-  const BuildYourForm = [
-    { key: "Select", value: "Select Option" },
-    { key: "yes", value: "Yes" },
-    { key: "No", value: "No" },
-  ];
-  const Erp = [
-    { key: "Select", value: "Select Option" },
-    { key: "True", value: "Yes" },
-    { key: "False", value: "No" },
-  ];
+
   const WebsiteAppUrl = [
     { key: "Without website/app", value: "No" },
     { key: "On my website/app", value: "Yes" },
   ];
 
   const VerifyKycStatus = KycTabStatusStore?.business_info_status;
-  const limitLabelRegex = /^[a-z | 0-9]{0,500}$/;
-
-  const urlRegex =
-    "((http|https)://)(www.)?" +
-    "[a-zA-Z0-9@:%._\\+~#?&//=]" +
-    "{2,256}\\.[a-z]" +
-    "{2,6}\\b([-a-zA-Z0-9@:%" +
-    "._\\+~#?&//=]*)";
-
+  
   // check if data exists
   let business_category_code;
   if (business_cat_code !== null) {
@@ -192,7 +168,7 @@ function BusinessOverview(props) {
           "platformName",
           resp.payload
         );
-        setPlatform(data);
+        // setPlatform(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -207,7 +183,7 @@ function BusinessOverview(props) {
           resp.payload
         );
 
-        setCollectFreqency(data);
+        // setCollectFreqency(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -220,7 +196,7 @@ function BusinessOverview(props) {
           "collectionTypeName",
           resp.payload
         );
-        setCollection(data);
+        // setCollection(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -307,7 +283,7 @@ function BusinessOverview(props) {
 
   const handleShowHide = (event) => {
     const getuser = event.target.value;
-    setAppUrl(getuser);
+    // setAppUrl(getuser);
   };
 //////////////////////////////////// Check for finite number
   // useEffect(() => {
@@ -417,6 +393,7 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
+                {console.log(formik)}
                 {formik.values?.seletcted_website_app_url === "Yes" && (
                   <div className="row">
                     <div className="col-lg-10">

@@ -9,8 +9,8 @@ import { roleBasedAccess } from "../../../_components/reuseable_components/roleB
 const NavBar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const loginId = user.loginId;
-  const username = user.clientContactPersonName;
+  const loginId = user?.loginId;
+  const username = user?.clientContactPersonName;
   const roles = roleBasedAccess();
   const loggedUser = Object.keys(roles).find((key) => roles[key] === true);
 
@@ -18,12 +18,11 @@ const NavBar = () => {
     dispatch(logout());
   };
   return (
-    <div>
       <nav
-        className="navbar navbar-light NunitoSans-Regular minh"
+        className="navbar navbar-light NunitoSans-Regular minh d-none-"
         style={{ background: "#140633" }}
       >
-        <ul className="navbar-brand mb-0 h1">
+        <ul className="navbar-brand mb-0 h1 pl-5- pl-0">
           <img src={profile} alt="profile" title="profile" />
           <h3 className="text-white float-right mt-0">Welcome back</h3>
           <div style={{ fontSize: "13px" }}>
@@ -38,10 +37,10 @@ const NavBar = () => {
 
         <div>
           {/* Dropdown in the Nav Bar */}
-          <div className="dropdown show" style={{ marginRight: "35px" }}>
+          <div className="dropdown show">
             <a
               className="btn dropdown-toggle"
-              href="#"
+              href={()=>false}
               role="button"
               id="dropdownMenuLink"
               data-toggle="dropdown"
@@ -82,7 +81,6 @@ const NavBar = () => {
         </div>
         {/* Dropdown in the Nav Bar */}
       </nav>
-    </div>
   );
 };
 

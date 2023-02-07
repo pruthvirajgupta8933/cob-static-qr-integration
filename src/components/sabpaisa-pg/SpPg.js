@@ -1,73 +1,113 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useHistory, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { isArray, isNull } from 'lodash'
 import SabpaisaPaymentGateway from './SabpaisaPaymentGateway'
 import API_URL from '../../config'
 import { axiosInstanceAuth } from '../../utilities/axiosInstance'
 import NavBar from '../dashboard/NavBar/NavBar'
 import toastConfig from '../../utilities/toastTypes'
+import { useDispatch, useSelector } from 'react-redux'
+import { LocalConvenienceStoreOutlined } from '@mui/icons-material'
+import { merchantSubscribedPlanData, productPlanData } from '../../slices/merchant-slice/productCatalogueSlice'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
 
 function SpPg() {
 
     const [selectedPlan, setSelectedPlan] = useState({})
-    const [planPrice, setPlanPrice] = useState(9999)
-    const [clientData, setClientData] = useState({})
+    const [selectedPlanCode, setSelectedPlanCode] = useState("")
+
     const [responseData, setResponseData] = useState({})
     const [reponseFromServerFlag, setRespFromServerFlag] = useState(false)
     const [isOpenPg, setIsOpenPg] = useState(false)
-    const [userData, setUserData] = useState({})
 
 
+    const dispatch = useDispatch()
+    const history = useHistory()
 
+    const { auth, productCatalogueSlice } = useSelector((state) => state);
+    const { SubscribedPlanData,   } = productCatalogueSlice
+    const { subscribeId } = useParams();
 
-
-
+    // console.log("SubscribedPlanData",SubscribedPlanData)
     useEffect(() => {
 
-        const sessionData = JSON.parse(sessionStorage.getItem("tempProductPlanData") && sessionStorage.getItem("tempProductPlanData"))
+        const unPaidProduct = SubscribedPlanData?.filter((d) => (
+            (isNull(d?.mandateStatus) || d?.mandateStatus==="pending") &&   
+            (d?.clientSubscribedPlanDetailsId.toString() === subscribeId.toString())))
 
-        const user = JSON.parse(localStorage.getItem("user"))
-        
-        setUserData(user)
-        if (isArray(user?.clientMerchantDetailsList)) {
-            setClientData(user?.clientMerchantDetailsList)
-        }
+        const searchParam = window.location.search.slice(1)
+        const queryString = new URLSearchParams(searchParam?.toString());
+        const queryStringData = Object.fromEntries(queryString.entries());
+        // console.log("paramsData", paramsData)
 
+        if (Object.values(queryStringData)?.length > 0) {
+            setRespFromServerFlag(true)
+            setResponseData(queryStringData)
+            console.log("queryStringData",queryStringData)
+            if (queryStringData?.statusCode === "0000") {
+                // if payment successful
+                const updatePostData = {
+                    "bankRef": queryStringData?.bankTxnId,
+                    "clientSubscribedPlanDetailsId": subscribeId,
+                    "mandateBankName": queryStringData?.bankName,
+                    "clientTxnId": queryStringData?.clientTxnId,
+                    "mandateStatus": queryStringData?.status,
+                    "paymentMode": queryStringData?.paymentMode,
+                    "purchaseAmount": queryStringData?.amount,
+                    "umrn": queryStringData?.sabpaisaTxnId
+                }
+                axiosInstanceAuth.post(
+                    API_URL.UPDATE_SUBSCRIBED_PLAN_DETAILS,
+                    updatePostData
+                ).then(res=>{
+                dispatch(merchantSubscribedPlanData({ "clientId": auth?.user?.clientMerchantDetailsList[0]?.clientId }))
 
-        // setClientData(user?.clientMerchantDetailsList[0]?.clientName)
-
-        if (isNull(sessionData) || isNull(user)) {
-            // history.push("/dashboard")
-            console.log("redirect to dashboard")
-        } else {
-            console.log("session storage", sessionData)
-            fetchDataByProductId(sessionData?.applicationId, sessionData?.planId)
-            setSelectedPlan(sessionData)
-
+                    toastConfig.successToast(res?.data?.message);
+                }).catch(err=>{
+                    toastConfig.errorToast("Something went wrong");
+                })
+          
+            }
+            // sessionStorage.removeItem("tempProductPlanData")
+        }else{
+         
+            // console.log("unPaidProduct",unPaidProduct)
+            if(unPaidProduct?.length>0){
+                console.log("continue")
+                setSelectedPlanCode(unPaidProduct[0]?.plan_code)
+                const postBody = {"app_id": unPaidProduct[0]?.applicationId}
+                dispatch(productPlanData(postBody))
+            }else{
+                // history.push("/dashboard")
+                console.log("redirect to dashboard")
+            }
         }
 
         return () => {
-            setIsOpenPg(false)
-            setSelectedPlan({})
+            setRespFromServerFlag(false)
+
         }
+
     }, [])
 
 
 
+    
 
-    const fetchDataByProductId = (applicationId, planid) => {
-        let url = API_URL.PRODUCT_SUB_DETAILS + "/" + applicationId;
-        axiosInstanceAuth
-            .get(url)
-            .then((resp) => {
-                const data = resp.data.ProductDetail;
-                const plan = data?.filter(p => p.plan_id === planid)
-                // setPlanPrice(plan?.actual_price)
-                // console.log("take price from it", plan)
 
-            })
-    }
+// console.log("responseData",responseData)
+    useEffect(() => {
+        // console.log("productCatalogueSlice",productCatalogueSlice)
+        if(productCatalogueSlice?.productPlanData?.length>0){
+            setSelectedPlan(productCatalogueSlice?.productPlanData?.filter((pd)=> (pd?.plan_code === selectedPlanCode)))
+        }
+    }, [productCatalogueSlice])
+
+
+
+
+
 
     // check rate mapping status before rate mapping
     // const checkRateMappingStatus = (clientCodeF, clientCodeT, loginId) => {
@@ -153,56 +193,51 @@ function SpPg() {
 
     // }, [rateCloneStatus])
 
-    useEffect(() => {
-        const searchParam = window.location.search.slice(1)
-        const params = new URLSearchParams(searchParam?.toString());
-        const paramsData = Object.fromEntries(params.entries());
-        console.log("paramsData", paramsData)
-        if (Object.values(paramsData)?.length > 0) {
-            setRespFromServerFlag(true)
-            setResponseData(paramsData)
-            if (paramsData?.statusCode === "0000") {
-                // if payment successful
-                const res = axiosInstanceAuth.post(
-                    API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-                    selectedPlan
-                );
+    // useEffect(() => {
+    //     const searchParam = window.location.search.slice(1)
+    //     const queryString = new URLSearchParams(searchParam?.toString());
+    //     const queryStringData = Object.fromEntries(queryString.entries());
+    //     // console.log("paramsData", paramsData)
+
+    //     if (Object.values(queryStringData)?.length > 0) {
+    //         setRespFromServerFlag(true)
+    //         setResponseData(queryStringData)
+    //         if (queryStringData?.statusCode === "0000") {
+    //             // if payment successful
+    //             // const res = axiosInstanceAuth.post(
+    //             //     API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+    //             //     selectedPlan
+    //             // );
 
 
-                if (res?.status === 200) {
-                    console.log("1")
-                    // only PG product without subscription plan check rate mapping status
-                    if (selectedPlan?.applicationId === "10" && selectedPlan?.planId !== 1) {
-                        console.log("2")
-                        // only for payment gateway we have to check rate mapping status
-                        // checkRateMappingStatus("COBED", clientData?.clientMerchantDetailsList[0]?.clientCode, clientData?.loginId)
-                    }
+    //             // if (res?.status === 200) {
+    //             //     console.log("1")
+    //             //     // only PG product without subscription plan check rate mapping status
+ 
 
-                    // getSubscribedPlan(plan_id);
-                    toastConfig.successToast(res?.data?.message);
-                } else {
-                    toastConfig.errorToast("Something went wrong");
-                }
+    //             //     // getSubscribedPlan(plan_id);
+    //             //     toastConfig.successToast(res?.data?.message);
+    //             // } else {
+    //             //     toastConfig.errorToast("Something went wrong");
+    //             // }
+    //         }
+    //         // sessionStorage.removeItem("tempProductPlanData")
+    //     }
 
-            }
-            // sessionStorage.removeItem("tempProductPlanData")
-        }
+    //     return () => {
+    //         setRespFromServerFlag(false)
 
-        return () => {
-            setRespFromServerFlag(false)
-
-        }
-    }, [])
+    //     }
+    // }, [])
 
 
-    // console.log("clientData", clientData)
+    console.log("selectedPlan", selectedPlan[0]?.actual_price)
 
     return (
         <React.Fragment>
             <section className="ant-layout">
                 <NavBar />
-
-                <SabpaisaPaymentGateway planData={selectedPlan} planPrice={planPrice} openPg={isOpenPg} clientData={userData} />
+                <SabpaisaPaymentGateway planData={selectedPlan}  openPg={isOpenPg} clientData={auth?.user} />
 
                 <main className="gx-layout-content ant-layout-content">
                     <div className="gx-main-content-wrapper">
@@ -214,7 +249,7 @@ function SpPg() {
                                 <div className="row">
                                     <div className="card">
                                         <div className="card-header">
-                                            {`${selectedPlan?.applicationName ?? responseData?.udf16} / ${selectedPlan?.planName ?? responseData?.udf14}`}
+                                            {/* {`${selectedPlan?.applicationName ?? responseData?.udf16} / ${ selectedPlan[0]?.planName ?? responseData?.udf14}`} */}
                                         </div>
                                         {reponseFromServerFlag ?
                                             <div className="card-body">
@@ -231,7 +266,9 @@ function SpPg() {
                                             :
                                             <div className="card-body">
                                                 <h5 className="card-title">Make payment to activate the selected plan.</h5>
-                                                <h5 className="card-title">Amount : {parseFloat(planPrice)} INR</h5>
+                                                <h5 className="card-title">Amount : {selectedPlan[0]?.actual_price} INR</h5>
+                                                <h5 className="card-title">Plan Name : {selectedPlan[0]?.plan_name}</h5>
+                                                {/* <h5 className="card-title">Amount : {selectedPlan[0]?.planPrice}</h5> */}
                                                 {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
                                                 <button onClick={() => { setIsOpenPg(true) }} className="btn btn-primary">Pay Now</button>
                                             </div>

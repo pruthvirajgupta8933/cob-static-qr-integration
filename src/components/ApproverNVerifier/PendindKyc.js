@@ -1,25 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  kycForPendingMerchants,
-  GetKycTabsStatus,
-} from "../../slices/kycSlice";
-import {  useRouteMatch } from "react-router-dom";
+import { kycForPendingMerchants } from "../../slices/kycSlice";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import Spinner from "./Spinner";
 import CommentModal from "./Onboarderchant/CommentModal";
-import { useSelector } from "react-redux";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 
-// import PaginationForKyc from "../../_components/reuseable_components/PaginationForKyc";
-
 const PendindKyc = () => {
-  const { url } = useRouteMatch();
   const roles = roleBasedAccess();
 
   const [data, setData] = useState([]);
@@ -31,18 +24,11 @@ const PendindKyc = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-  const [statusData, setStatusData] = useState([]);
+
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [kycIdClick, setKycIdClick] = useState(null);
-  const [isOpenModal, setIsModalOpen] = useState(false)
-  const [isLoaded,setIsLoaded] = useState(false)
-
-
-
-  const { auth } = useSelector((state) => state);
-  const { user } = auth;
-
-  const { loginId } = user;
+  const [isOpenModal, setIsModalOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const dispatch = useDispatch();
   const kycSearch = (e) => {
@@ -50,10 +36,8 @@ const PendindKyc = () => {
   };
 
   useEffect(() => {
-
     dispatch(kycForPendingMerchants({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
 
         const data = resp?.payload?.results;
@@ -62,14 +46,14 @@ const PendindKyc = () => {
         setData(data);
         setDataCount(dataCoun);
         setPendingKycData(data);
-        setIsLoaded(false)   
+        setIsLoaded(false);
       })
 
       .catch((err) => {
         console.log(err);
         toastConfig.errorToast("Data not loaded");
       });
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, dispatch]);
 
   useEffect(() => {
     if (searchText?.length > 0) {
@@ -96,39 +80,33 @@ const PendindKyc = () => {
   //   });
   // };
   //--------------PENDING Merchants API -----------------//
-  const indexOfLastRecord = currentPage * pageSize;
-  const nPages = Math.ceil(pendingKycData?.length / pageSize);
+  // const indexOfLastRecord = currentPage * pageSize;
+  // const nPages = Math.ceil(pendingKycData?.length / pageSize);
   const totalPages = Math.ceil(dataCount / pageSize);
-  let pageNumbers = []
-  if(!Number.isNaN(totalPages)){
+  let pageNumbers = [];
+  if (!Number.isNaN(totalPages)) {
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
 
-  const indexOfFirstRecord = indexOfLastRecord - pageSize;
-
   const nextPage = () => {
-    setIsLoaded(true)
-    setData([])
+    setIsLoaded(true);
+    setData([]);
     if (currentPage < pageNumbers?.length) {
       // console.log("hello", currentPage)
-      
+
       setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
-    setIsLoaded(true)
-    setData([])
+    setIsLoaded(true);
+    setData([]);
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
- 
   useEffect(() => {
-   
- 
-
     //  setTimeout(() => {
     let lastSevenPage = totalPages - 7;
     if (pageNumbers?.length > 0) {
@@ -144,23 +122,18 @@ const PendindKyc = () => {
       const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
         return pgNumber;
       });
-      
+
       setDisplayPageNumber(pageNumber);
     }
-  // }, 5000);
-
+    // }, 5000);
   }, [currentPage, totalPages]);
-
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("MM/DD/YYYY");
     return date;
   };
 
-
-
   // console.log("Data Loading",isLoaded)
-
 
   return (
     <div className="container-fluid flleft">
@@ -175,9 +148,22 @@ const PendindKyc = () => {
           />
         </div>
         <div>
-        {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Pending KYC"} /> : <></>}
-         
-        <KycDetailsModal handleModal={setIsModalOpen} kycId={kycIdClick} isOpenModal={isOpenModal} />
+          {openCommentModal === true ? (
+            <CommentModal
+              commentData={commentId}
+              isModalOpen={openCommentModal}
+              setModalState={setOpenCommentModal}
+              tabName={"Pending KYC"}
+            />
+          ) : (
+            <></>
+          )}
+
+          <KycDetailsModal
+            handleModal={setIsModalOpen}
+            kycId={kycIdClick}
+            isOpenModal={isOpenModal}
+          />
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -200,7 +186,10 @@ const PendindKyc = () => {
             <option value="offline">Offline</option>
           </select>
         </div>
-        <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=Pending'} filename={"Pending-KYC"}/>
+        <MerchnatListExportToxl
+          URL={"?order_by=-merchantId&search=Pending"}
+          filename={"Pending-KYC"}
+        />
       </div>
 
       <div className="col-md-12 col-md-offset-4">
@@ -218,19 +207,34 @@ const PendindKyc = () => {
                 <th>Onboard Type</th>
                 <th>View Status</th>
                 {/* <th>View</th> */}
-                {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? ( <th>Action</th>) : <></>}
+                {roles?.verifier === true ||
+                roles?.approver === true ||
+                roles?.viewer === true ? (
+                  <th>Action</th>
+                ) : (
+                  <></>
+                )}
               </tr>
             </thead>
             <tbody>
-              {/* {spinner && <Spinner />} */}
-              {data?.length === 0 ? (
-                 <tr>
-                      <td colSpan={"11"}>
-                        <div className="nodatafound text-center">No data found </div>
-                        <br/><br/>
-                        <p className="text-center">{spinner && <Spinner />}</p>
-                      </td>
-                  </tr>
+              {data === null || data === [] ? (
+                <tr>
+                  <td colSpan={"11"}>
+                    <div className="nodatafound text-center">
+                      No data found{" "}
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                <></>
+              )}
+
+             {data?.length === 0 ? (
+                <tr>
+                  <td colSpan={"11"}>
+                    <p className="text-center spinner-roll">{spinner && <Spinner />}</p>
+                  </td>
+                </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>
@@ -248,7 +252,10 @@ const PendindKyc = () => {
                       <button
                         type="button"
                         className="btn approve text-white  btn-xs"
-                        onClick={() => {setKycIdClick(user); setIsModalOpen(!isOpenModal) }}
+                        onClick={() => {
+                          setKycIdClick(user);
+                          setIsModalOpen(!isOpenModal);
+                        }}
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >
@@ -256,22 +263,25 @@ const PendindKyc = () => {
                       </button>
                     </td>
                     <td>
-                    {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
+                      {roles?.verifier === true ||
+                      roles?.approver === true ||
+                      roles?.viewer === true ? (
                         <button
-                        type="button"
-                        className="btn approve text-white  btn-xs"
-                        data-toggle="modal"
-                        onClick={() => {
-                          setCommentId(user)
-                          setOpenCommentModal(true)
-                
-                        }}
-                        data-target="#exampleModal"
-                        disabled={user?.clientCode === null ? true : false}
-                      >
-                        Add/View Comments
-                      </button>
-                    ) : <></> }
+                          type="button"
+                          className="btn approve text-white  btn-xs"
+                          data-toggle="modal"
+                          onClick={() => {
+                            setCommentId(user);
+                            setOpenCommentModal(true);
+                          }}
+                          data-target="#exampleModal"
+                          disabled={user?.clientCode === null ? true : false}
+                        >
+                          Add/View Comments
+                        </button>
+                      ) : (
+                        <></>
+                      )}
                     </td>
                   </tr>
                 ))
@@ -281,18 +291,17 @@ const PendindKyc = () => {
         </div>
         <nav>
           <ul className="pagination justify-content-center">
+            {isLoaded === true ? (
+              <Spinner />
+            ) : (
+              <li className="page-item">
+                <button className="page-link" onClick={prevPage}>
+                  Previous
+                </button>
+              </li>
+            )}
 
-          {isLoaded === true ? <Spinner /> : (
-            <li className="page-item">
-              <button className="page-link" onClick={prevPage}>
-                Previous
-              </button>
-            </li>
-
-          )}
-            
             {displayPageNumber?.map((pgNumber, i) => (
-            
               <li
                 key={i}
                 className={
@@ -303,23 +312,24 @@ const PendindKyc = () => {
                 <a href={() => false} className={`page-link data_${i}`}>
                   <span>{pgNumber}</span>
                 </a>
-              </li>  
+              </li>
             ))}
-           
-           {isLoaded === true ? <Spinner /> : (
 
-            <li className="page-item">
-              <button
-                className="page-link"
-                onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
-              >
-                Next
-              </button>
-            </li> 
-          
-           
-           )}
+            {isLoaded === true ? (
+              <Spinner />
+            ) : (
+              <li className="page-item">
+                <button
+                  className="page-link"
+                  onClick={nextPage}
+                  disabled={
+                    currentPage === pageNumbers[pageNumbers?.length - 1]
+                  }
+                >
+                  Next
+                </button>
+              </li>
+            )}
           </ul>
         </nav>
       </div>

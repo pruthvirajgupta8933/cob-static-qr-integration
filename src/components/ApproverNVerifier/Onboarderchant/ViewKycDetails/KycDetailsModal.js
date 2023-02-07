@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import {
   kycDocumentUploadList,
@@ -22,7 +23,8 @@ const KycDetailsModal = (props) => {
 
   let renderPendingApprovel = props.renderPendingApproval;
   let renderPendingVerificationTable = props?.renderPendingVerification;
-  let renderApprovedTable = props?.renderApprovedTable
+  let renderApprovedTable = props?.renderApprovedTable;
+  let renderToPendingKyc=props?.renderToPendingKyc;
 
   let merchantKycId = props?.kycId;
 
@@ -59,6 +61,7 @@ const KycDetailsModal = (props) => {
         })
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch,merchantKycId?.loginMasterId]);
 
   useEffect(() => {
@@ -177,6 +180,7 @@ const KycDetailsModal = (props) => {
               renderPendingVerificationData={renderPendingVerificationTable}
               renderApprovedTable={renderApprovedTable}
               closeVerification={closeVerification}
+              renderToPendingKyc={renderToPendingKyc}
             />
           </div>
 

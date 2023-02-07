@@ -269,7 +269,7 @@ function HeaderPage() {
             <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav marginauto">
+            <ul className="navbar-nav marginauto p-2 menubg">
                 <li className="nav-item">
                     <a className="nav-link" href={()=>false} id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products<span className="fa fa-angle-down"></span></a>
                     <div className="dropdown-menu pl-0 pr-0 pt-0 pb-0" id="dropdown-menu1" aria-labelledby="navbarDropdown1">

@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { roleBasedAccess } from '../../../../_components/reuseable_components/roleBasedAccess';
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
@@ -23,13 +25,7 @@ const MerchantDocument = (props) => {
 
   const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
   const newDropDownDocList = dropDownDocList.filter(element => element !== ''); // remove blank string in array
-  // var dropDownList = arr.map(function(e){return e.toString()});
-  //  console.log("Array 1 ====>",newDropDownDocList)
-
-  const uploadedDocList = docList?.map((r) => r?.type);
-
-  //  console.log("Array 2",uploadedDocList)
-
+  const uploadedDocList =  docList?.map((r) => r?.type) 
 
   const removeCommon = (newDropDownDocList, uploadedDocList) => {
     const spreaded = [...newDropDownDocList, ...uploadedDocList];
@@ -69,22 +65,23 @@ const MerchantDocument = (props) => {
 
   ///////////////////////////////////////////////////////////////////////
    const [buttonText, setButtonText] = useState("");
-  const [savedData, setSavedData] = useState([]);
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
   const [closeModal, setCloseModal] = useState(false)
   const [commetText, setCommetText] = useState()
   const [documentsIdList, setdocumentsIdList] = useState([])
-  const [checkedClicked, setCheckedClicked] = useState(false)
-  const [enableeBtn, setEnableBtn] = useState(false)
+ 
+const [checkedClicked, setCheckedClicked] = useState(false)
+  // const [enableeBtn, setEnableBtn] = useState(false)
 
   // console.log("this is the real statsus",staus)
 
-  const [loader, setLoader] = useState(false)
+  // const [loader, setLoader] = useState(false)
   const [buttonClick, setButtonClick] = useState(null)
   
 
   const getDocTypeName = (id) => {
+    // eslint-disable-next-line array-callback-return
     let data = docTypeList.filter((obj) => {
       if (obj?.key?.toString() === id?.toString()) {
         return obj;
@@ -95,15 +92,7 @@ const MerchantDocument = (props) => {
     return data[0]?.value;
   };
 
-  useEffect(() => {
-    setSavedData(KycDocUpload);
-  }, [KycDocUpload]);
-
-  const stringManulate = (str) => {
-    let str1 = str.substring(0, 15)
-    return `${str1}...`
-
-  }
+  
 
   const getKycDocList = (role) => {
     dispatch(
@@ -117,7 +106,7 @@ const MerchantDocument = (props) => {
       document_id: [doc_id],
       verified_by: loginId,
     };
-    setLoader(true)
+    // setLoader(true)
 
 
     if (Allow_To_Do_Verify_Kyc_details === true || role?.verifier)
@@ -126,11 +115,11 @@ const MerchantDocument = (props) => {
           if (resp?.payload?.status) {
             getKycDocList(role);
             toast.success(resp?.payload?.message)
-            setLoader(false)
+            // setLoader(false)
 
           } else {
             toast.error(resp?.payload?.message)
-            setLoader(false)
+            // setLoader(false)
           }
 
         });
@@ -211,7 +200,7 @@ const MerchantDocument = (props) => {
     } else {
       <></>
     }
-  });
+  },[ role,Allow_To_Do_Verify_Kyc_details]);
 
 
  useEffect(() => {
@@ -237,7 +226,7 @@ const MerchantDocument = (props) => {
       let enableBtn = false;
       if (currenTab === 4) {
         if (roles.approver === true)
-          // if (status === "Verified") {
+          
           enableBtn = true;
       }
       setEnableBtnApprover(enableBtn);
@@ -330,34 +319,28 @@ const MerchantDocument = (props) => {
           return (<> <span className="text-danger"> {item?.value}</span><br /></>)
         })}
       </div>
-
-      <div className="col-lg-12 mt-4 m-2">
-        <table className="table table-bordered">
+      
+      <div className="col-lg-12 mt-4 m-2 hoz-scroll">
+        <table className="table table-bordered w-100">
 
 
           <thead>
             {checkedClicked === true ?
               <th colSpan={6} style={{ textAlign: "right" }}><CompleteVerifyAndRejectBtn roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} /></th>
               : <></>}
-
-
-
             <tr>
 
               {currenTab === 3 || currenTab === 4 ?
-                <th>Select&nbsp;
+                <th>
                   <input
                     type="checkbox"
                     checked={documentsIdList?.length === KycDocUpload?.length ? true : false}
-                    onChange={(e) => handleCheckChange(e)}
-
-                  />
-                </th>
+                    onChange={(e) => handleCheckChange(e)} /></th>
                 : <></>}
               <th>S.No.</th>
-              <th>Document Type</th>
-              <th>Document Name</th>
-              <th>Document Status</th>
+              <th>Merchant&nbsp;Document</th>
+              <th>Document&nbsp;Comment</th>
+              {/* <th>Document&nbsp;Status</th> */}
               <th>Action</th>
 
             </tr>
@@ -369,7 +352,7 @@ const MerchantDocument = (props) => {
                   <tr key={i} >
                     {currenTab === 3 || currenTab === 4 ?
                       <td>
-                        {console.log("\n\nthis is after return ", documentsIdList?.indexOf(parseInt(doc.documentId)), "\n\n")}
+                        
                         <input
                           type="checkbox"
                           value={doc?.documentId}
@@ -381,19 +364,23 @@ const MerchantDocument = (props) => {
                       : <></>}
                     <td>{i + 1}</td>
 
-                    <td>{getDocTypeName(doc?.type)}</td>
-                    <td>
-                      <a
+                    <td><h5 className="text-wrap"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</h5>
+                    <h5><span className='font-weight-bold'>Doc.Status:</span> {doc?.status}</h5>
+                    <a
                         href={doc?.filePath}
                         target="_blank"
                         rel="noreferrer"
                         className="text-primary"
                       >
-                        {stringManulate(doc?.name)}
+                        View Document
                       </a>
+
+                    </td>
+                    <td>
+                     
                       <p className="text-danger"> {doc?.comment === "Null" ? "" : doc?.comment}</p>
                     </td>
-                    <td>{doc?.status}</td>
+                    {/* <td>{doc?.status}</td> */}
 
                     {/* {enableBtnByStatus(doc?.status, role) ? ( */}
                     <td>
@@ -407,16 +394,9 @@ const MerchantDocument = (props) => {
                               onClick={() => {
                                 verifyApproveDoc(doc?.documentId, doc?.status);
                               }}
-
-
                             >
-                              <h4 className="text-success">{buttonText}</h4>
-
-
-
+                              <h5 className="text-success">{buttonText}</h5>
                             </a>
-
-
                             &nbsp;
                             &nbsp;
                             &nbsp;
@@ -432,41 +412,22 @@ const MerchantDocument = (props) => {
                             //   rejectDoc(doc?.documentId);
                             // }}
                             >
-                              <h4 className="text-danger">Reject</h4> 
+                              <h5 className="text-danger">Reject</h5> 
                             </a>
                           </>
                           : <></>
                         }
-
-
                       </div>
                       {buttonClick === doc?.documentId && closeModal === true ?
-
-                        <div>
+                        <div style={{"display":"grid"}}>
                           <label for="comments">Reject Comments</label>
 
                           <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e) => setCommetText(e.target.value)}>
                           </textarea>
-                          <button type="button" onClick={() => { rejectDoc(doc?.documentId, commetText); }} className="btn btn-danger btn-sm text-white">Submit</button>
+                          <button type="button" onClick={() => { rejectDoc(doc?.documentId, commetText) }} className="mt-1 btn btn-danger btn-sm text-white">Submit</button>
                         </div>
                         : <></>}
-
                     </td>
-
-                    {/* {enableBtnVerifier(doc?.status) || (enableBtnApprover(doc?.status) && enableApproverTabwise) ?
-                    <td>
-                      <a
-                        href={() => false}
-                        className="text-danger"
-                        onClick={() => {
-                          rejectDoc(doc?.documentId);
-                        }}
-                      >
-                        Reject
-                      </a>
-                    </td>
-                    : <></>
-                  } */}
                   </tr>
                 )
               }

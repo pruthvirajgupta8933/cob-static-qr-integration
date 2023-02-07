@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Redirect,
   useHistory,
 } from "react-router-dom/cjs/react-router-dom.min";
 import PendingVerification from "./PendingVerification";
@@ -52,6 +51,7 @@ const dispatch = useDispatch();
     <section className="ant-layout">
       <div>
         <NavBar />
+        
       </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">

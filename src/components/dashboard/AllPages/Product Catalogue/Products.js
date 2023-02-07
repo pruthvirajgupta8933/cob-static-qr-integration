@@ -10,7 +10,7 @@ import qwikform from "../../../../assets/images/qwikform.png";
 import echallan from "../../../../assets/images/echallan.png";
 import epos from "../../../../assets/images/epos.png";
 import linkPaisa from "../../../../assets/images/linkPaisa.png";
-import Spinner from "./Spinner";
+
 import API_URL from "../../../../config";
 import { axiosInstanceAuth } from "../../../../utilities/axiosInstance";
 
@@ -39,12 +39,13 @@ const Products = () => {
       })
       .catch((err) => console.log(err));
   }, []);
-  const map1 = product.map((Singleproduct, i) =>
-    localStorage.setItem(
-      `application_Name ${i}`,
-      Singleproduct.application_name
-    )
-  );
+  
+  // product.map((Singleproduct, i) =>
+  //   localStorage.setItem(
+  //     `application_Name ${i}`,
+  //     Singleproduct.application_name
+  //   )
+  // );
 
   return (
     <section className="ant-layout">
@@ -106,12 +107,6 @@ const Products = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="container-fluid">
-          <div className="row">
-         
-          </div>
         </div>
       </main>
     </section>
