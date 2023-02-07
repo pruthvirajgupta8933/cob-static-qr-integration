@@ -191,6 +191,9 @@ const API_LIVE = {
   SUBSCRIBE_FETCHAPPAND_PLAN: `${url}/client-subscription-service/subscribeFetchAppAndPlan`,
   Get_Subscribed_Plan_Detail_By_ClientId: `${url}/client-subscription-service/GetSubscribedPlanDetailByClientId`,
   UPDATE_SUBSCRIBED_PLAN_DETAILS: `${url}/subscribed/update-detail`,
+  PRE_UPDATE_SUBSCRIBE_DETAILS: `${url}/subscribed/Pre-update-subscribed-detail`,
+
+
 
   /* get bank , business type, business category by Id */
   GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
@@ -238,7 +241,9 @@ const API_LIVE = {
 
   // Check is client code mapped or not (ratemapping case)
   isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`,
-
+  
+  //update version https://adminapi.sabpaisa.in/SabPaisaAdmin/REST/ManageFalg/Flag/LPSD1/apiversion/1/1111 
+  UPDATE_VERSION_RATEMAPPING: `${adminAPIURL}/REST/ManageFalg/Flag`,
 
   // For Payout
   LedgersMerchant:`${payout_url}/api/getLedgersMerchant`,
@@ -250,10 +255,10 @@ const API_LIVE = {
 
   // ---------------------------   NEW API FOR COMMENTS (2)
   // Check is client code mapped or not (ratemapping case)
-  isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`,
 
   //menu list by login id
   menuListByLoginId : `${url}/menu-loginwise`,
+
   
 };
 

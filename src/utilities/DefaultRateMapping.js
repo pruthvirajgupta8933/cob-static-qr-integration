@@ -1,11 +1,9 @@
-import React, { useState } from "react"
-import { useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import API_URL from "../config"
 import { axiosInstance } from "./axiosInstance"
 import { stringDec } from "./encodeDecode"
 
 export const DefaultRateMapping = ({setFlag}) => {
-    // console.log("fn call")
 
     const [loader, setLoader] = useState(false)
 
@@ -60,22 +58,19 @@ export const DefaultRateMapping = ({setFlag}) => {
                         setFlag(true)
     
                         // console.log("step 3 run RATE_MAPPING_GenerateClientFormForCob",API_URL.RATE_MAPPING_GenerateClientFormForCob);
-                        
-                        // localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
-                        // localStorage.setItem('resp_RATE_MAPPING_GenerateClientFormForCob', JSON.stringify(res));
                         //2 - rate map clone   // parent client code / new client code / login id
                         axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/COBED/${clientCode}/${userData?.loginId}`).then(res => {
-                            // console.log("step 4 run RATE_MAPPING_CLONE",`${API_URL.RATE_MAPPING_CLONE}/COBED/${clientCode}/${userData?.loginId}`);
-                            // localStorage.setItem('RATE_MAPPING_CLONE', "api trigger");
-                            // localStorage.setItem('resp_RATE_MAPPING_CLONE', JSON.stringify(res));
-                            // 3- enable pay link
-                            //    axiosInstance.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
-                            //       localStorage.setItem('enablePaylink', "api trigger");
-                            //       // console.log("3 api run")
-                            //       dispatch(checkPermissionSlice(clientCode));
-                            //   })
-                            setFlag(false)
-                            setLoader(false)
+                        //    update api version
+                            axiosInstance.get(`${API_URL}/${clientCode}/apiversion/1/${userData?.loginId}`).then(res=>{
+                                console.log("update api version")
+                                setFlag(false)
+                                setLoader(false)
+                            }).catch(err => {
+                                setFlag(false)
+                                setLoader(false)
+                                console(err)
+                            })
+                            
                         }).catch(err => {
                             setFlag(false)
                             setLoader(false)

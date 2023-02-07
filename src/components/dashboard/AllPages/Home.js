@@ -95,7 +95,7 @@ function Home() {
   };
 
 
-  const unPaidProduct = SubscribedPlanData?.filter((d) => ((isNull(d?.mandateStatus) || d?.mandateStatus==="pending")))
+  const unPaidProduct = SubscribedPlanData?.filter((d) => ((isNull(d?.mandateStatus) || d?.mandateStatus==="pending") && (d?.plan_code==="005")))
 
   return (
     <section className="ant-layout Satoshi-Medium NunitoSans-Regular">
@@ -105,6 +105,7 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
+    {/* hide when login by bank and businees category b2b */}
         {roles?.bank === true || businessCat === "8" ? (
           <></>
         ) : (
