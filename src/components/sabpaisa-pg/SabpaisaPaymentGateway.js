@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { PaymentInitModal } from "pg-test-project";
 import { v4 as uuidv4 } from 'uuid';
 
-
+console.log(uuidv4())
 
 function SabpaisaPaymentGateway(props) {
   // console.log(props)
@@ -18,7 +18,7 @@ function SabpaisaPaymentGateway(props) {
   const [payerName, setpayerName] = useState("");
   const [payerEmail, setpayerEmail] = useState("");
   const [payerMobile, setpayerMobile] = useState("");
-  const [clientTxnId, setclientTxnId] = useState("84048n23048239048mx1842304842309482342");
+  const [clientTxnId, setclientTxnId] = useState(uuidv4());
   const [payerAddress, setpayerAddress] = useState("");
   const [amount, setamount] = useState(9999);
   const [amountType, setamountType] = useState("INR");
@@ -79,7 +79,6 @@ function SabpaisaPaymentGateway(props) {
         payerAddress={payerAddress}
         amount={amount}
         amountType={amountType}
-        clientTxnId={clientTxnId}
         udf12={udf12}
         udf13={udf13}
         udf14={udf14}

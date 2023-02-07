@@ -130,11 +130,8 @@ function Dashboard() {
 
 
   useEffect(() => {
-  if (location?.pathname === "/dashboard") {
       dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
-    }
-    // console.log(location?.pathname)
-  }, [ location])
+  }, [])
 
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
