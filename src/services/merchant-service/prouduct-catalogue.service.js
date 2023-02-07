@@ -13,3 +13,15 @@ export const fetchProductPlan = (dataObj) => {
   let url = API_URL.PRODUCT_SUB_DETAILS + "/" + id;
   return axiosInstanceAuth.get(url)
 }
+
+
+export const  createClientTxnId =  (postBody)=>{
+  let url = API_URL.PRE_UPDATE_SUBSCRIBE_DETAILS
+  return axiosInstanceAuth.post(url,postBody)
+}
+
+
+export const updateClientSubscribedDetails =(postBody)=>{
+  let url = API_URL.UPDATE_SUBSCRIBED_PLAN_DETAILS
+  return axiosInstanceAuth.post(url,postBody)
+}

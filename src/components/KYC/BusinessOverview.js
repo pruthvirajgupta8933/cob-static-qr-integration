@@ -6,7 +6,6 @@ import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
-// import { converter } from "number-to-words";
 
 import {
   businessType,
@@ -52,31 +51,13 @@ function BusinessOverview(props) {
 
 
 
-  // const BuildYourForm = [
-  //   { key: "Select", value: "Select Option" },
-  //   { key: "yes", value: "Yes" },
-  //   { key: "No", value: "No" },
-  // ];
-  // const Erp = [
-  //   { key: "Select", value: "Select Option" },
-  //   { key: "True", value: "Yes" },
-  //   { key: "False", value: "No" },
-  // ];
   const WebsiteAppUrl = [
     { key: "Without website/app", value: "No" },
     { key: "On my website/app", value: "Yes" },
   ];
 
   const VerifyKycStatus = KycTabStatusStore?.business_info_status;
-  // const limitLabelRegex = /^[a-z | 0-9]{0,500}$/;
-
-  // const urlRegex =
-  //   "((http|https)://)(www.)?" +
-  //   "[a-zA-Z0-9@:%._\\+~#?&//=]" +
-  //   "{2,256}\\.[a-z]" +
-  //   "{2,6}\\b([-a-zA-Z0-9@:%" +
-  //   "._\\+~#?&//=]*)";
-
+  
   // check if data exists
   let business_category_code;
   if (business_cat_code !== null) {
@@ -412,6 +393,7 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
+                {console.log(formik)}
                 {formik.values?.seletcted_website_app_url === "Yes" && (
                   <div className="row">
                     <div className="col-lg-10">

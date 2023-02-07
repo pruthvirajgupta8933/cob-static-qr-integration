@@ -80,6 +80,7 @@ function Sandbox() {
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Integration Kit</h1>
+            <a className="btn btn-primary float-right" href="https://sabpaisa.in/integration-kits/" target="_blank" rel="noreferrer">Developer Guide</a>
           </div>
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid"></div>

@@ -1,19 +1,19 @@
 const ENV_PROD = false; // don't change in the local environment
-
-
-let url, kyc_url, b2b_url, kyc_validate = "";
+let url, kyc_url, b2b_url, kyc_validate, payout_url = "";
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
-  kyc_validate = "https://kycvalidator.sabpaisa.in"
+  kyc_validate = " https://kycvalidator.sabpaisa.in";
+  payout_url = "https://payout.sabpaisa.in";
   b2b_url = "https://b2becollect.sabpaisa.in"
-
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
-  kyc_validate = "https://stage-kycvalidator.sabpaisa.in"
+  kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
+  payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in"
+  
 
 }
 
@@ -57,9 +57,12 @@ const API_LIVE = {
   BANK_LIST_DC:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/dc",
   SEND_EMAIL: adminAPIURL + "/Email/sendEmail",
-  SUBSCRIBE_FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
-  FETCH_APP_AND_PLAN: "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
-  SUBSCRIBE_SERVICE: "https://spl.sabpaisa.in/client-subscription-service/subscribe",
+  SUBSCRIBE_FETCH_APP_AND_PLAN:
+    "https://spl.sabpaisa.in/client-subscription-service/subscribeFetchAppAndPlan",
+  FETCH_APP_AND_PLAN:
+    "https://spl.sabpaisa.in/client-subscription-service/fetchAppAndPlan",
+  SUBSCRIBE_SERVICE:
+    "https://spl.sabpaisa.in/client-subscription-service/subscribe",
 
   /* transaction history  */
   //old api of txn history
@@ -86,7 +89,8 @@ const API_LIVE = {
   GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
   SMART_UPLOAD: "https://paybylink.sabpaisa.in/paymentlink/smartupload",
   EDIT_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/editCustomer/",
-  GET_CUSTOMER_TYPE: "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
+  GET_CUSTOMER_TYPE:
+    "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
   ADD_LINK: "https://paybylink.sabpaisa.in/paymentlink/addLink",
   ADD_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/addCustomers",
   DELETE_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/deleteCustomer",
@@ -187,6 +191,9 @@ const API_LIVE = {
   SUBSCRIBE_FETCHAPPAND_PLAN: `${url}/client-subscription-service/subscribeFetchAppAndPlan`,
   Get_Subscribed_Plan_Detail_By_ClientId: `${url}/client-subscription-service/GetSubscribedPlanDetailByClientId`,
   UPDATE_SUBSCRIBED_PLAN_DETAILS: `${url}/subscribed/update-detail`,
+  PRE_UPDATE_SUBSCRIBE_DETAILS: `${url}/subscribed/Pre-update-subscribed-detail`,
+
+
 
   /* get bank , business type, business category by Id */
   GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
@@ -229,12 +236,29 @@ const API_LIVE = {
   SAVE_COMMENTS: `${url}/merchant/save-comments`,
   // GET API FOR VIEWING COMMENTS
   VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`,
+
   // ---------------------------   NEW API FOR COMMENTS (2)
+
   // Check is client code mapped or not (ratemapping case)
   isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`,
+  
+  //update version https://adminapi.sabpaisa.in/SabPaisaAdmin/REST/ManageFalg/Flag/LPSD1/apiversion/1/1111 
+  UPDATE_VERSION_RATEMAPPING: `${adminAPIURL}/REST/ManageFalg/Flag`,
+
+  // For Payout
+  LedgersMerchant:`${payout_url}/api/getLedgersMerchant`,
+  getLedgersMerchantList:`${payout_url}/api/getTransactionHistory`,
+  fetchBeneficiary:`${payout_url}/api/fetchBeneficiaryfor`,
+  transactionMode: `${payout_url}/api/modesByMerchantId`,
+  paymentRequest: `${payout_url}/api/PayoutTransactionRequest`,
+
+
+  // ---------------------------   NEW API FOR COMMENTS (2)
+  // Check is client code mapped or not (ratemapping case)
 
   //menu list by login id
   menuListByLoginId : `${url}/menu-loginwise`,
+
   
 };
 

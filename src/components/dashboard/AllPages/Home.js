@@ -26,6 +26,8 @@ import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import KycAlert from "../../KYC/KycAlert";
 import { DefaultRateMapping } from "../../../utilities/DefaultRateMapping";
+import { isNull } from "lodash";
+import AlertBox from "../../../_components/reuseable_components/AlertBox";
 
 function Home() {
   const roles = roleBasedAccess();
@@ -34,17 +36,21 @@ function Home() {
   const [modalState, setModalState] = useState("Not-Filled");
   const [isRateMappingInProcess, setIsRateMappingInProcess] = useState(false);
 
-  const { auth, kyc } = useSelector((state) => state);
+  const { auth, kyc, productCatalogueSlice } = useSelector((state) => state);
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
-  
+  const { SubscribedPlanData,   } = productCatalogueSlice
   
 
   const { user } = auth;
 
 
+  let businessCat = user.clientMerchantDetailsList[0].business_cat_code
+
+
+
+  
+  // temp login id
   let b2bLoginId = 10670
-
-
 
   useEffect(() => {
     dispatch(subscriptionplan);
@@ -88,6 +94,9 @@ function Home() {
     dispatch(UpdateModalStatus(false));
   };
 
+
+  const unPaidProduct = SubscribedPlanData?.filter((d) => ((isNull(d?.mandateStatus) || d?.mandateStatus==="pending") && (d?.plan_code==="005")))
+
   return (
     <section className="ant-layout Satoshi-Medium NunitoSans-Regular">
       <div className="m_none">
@@ -96,7 +105,8 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
-        {roles?.bank === true || user?.loginId === b2bLoginId ? (
+    {/* hide when login by bank and businees category b2b */}
+        {roles?.bank === true || businessCat === "8" ? (
           <></>
         ) : (
           <StepProgressBar status={kyc?.kycUserList?.status} />
@@ -104,9 +114,9 @@ function Home() {
         {/* KYC ALETT */}
         {roles?.merchant === true ?
           <React.Fragment>
-          {/* {unPaidProductData?.length>0 && unPaidProductData?.map((data)=>(
+          {unPaidProduct?.length>0 && unPaidProduct?.map((data)=>(
             
-            <AlertBox 
+            <AlertBox
               key={data?.clientSubscribedPlanDetailsId}
               heading={`Payment Alert`} 
               message={`Kindly pay the amount of the subscribed product`}
@@ -114,7 +124,7 @@ function Home() {
               linkName={'Make Payment'}
               bgColor={'alert-danger'}
             />
-            ))} */}
+            ))}
             <KycAlert />
           </React.Fragment>
           : <></>}
@@ -229,7 +239,7 @@ function Home() {
               </p>
             </div>
 
-            {roles?.merchant === true && modalState !== "Approved" && user?.loginId !== 10670 ? (
+            {roles?.merchant === true && modalState !== "Approved" && businessCat !== "8" ? (
               <div className="col-12 col-md-12">
                 <div className="card col-lg-12- cardkyc pull-left">
                   <div className="font-weight-bold card-body Satoshi-Medium">
@@ -255,7 +265,7 @@ function Home() {
                   </div>
                 </div>
               </div>
-            ) : roles?.bank === true || roles.viewer === true || user?.loginId === b2bLoginId ?  <></> :
+            ) : roles?.bank === true || roles.viewer === true || businessCat === "8" ?  <></> :
            (
               <div className="col-12 col-md-12">
                   <div className="card col-lg-12- cardkyc pull-left">
@@ -275,7 +285,7 @@ function Home() {
           
         </div>
 
-        {roles?.merchant === true && user?.loginId !== b2bLoginId  ? (
+        {roles?.merchant === true && businessCat !== "8"  ? (
           <div className="container">
             <div className="row">
               <div className="col-sm  m-0 no-pad">
@@ -418,7 +428,7 @@ function Home() {
       </main>
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
-      {roles?.bank === true || user?.loginId === b2bLoginId ? (
+      {roles?.bank === true || businessCat === "8" ? (
         <></>
       ) : (
         <div

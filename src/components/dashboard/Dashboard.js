@@ -53,6 +53,11 @@ import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
+import PayoutTransaction from "../../payout/Ledger";
+import TransactionsPayoutHistory from "../../payout/Transactions";
+import Beneficiary from "../../payout/Beneficiary";
+import MISReport from "../../payout/MISReport";
+import MakePayment from '../../payout/MakePayment';
 import OnboardedReport from "../ApproverNVerifier/OnboardedReport";
 import ChallanTransactReport from "../../B2B_components/ChallanTransactReport";
 import B2BRouting from "../../B2B_components/Routes/B2BRouting";
@@ -71,6 +76,7 @@ function Dashboard() {
 
   // create new client code
   useEffect(() => {
+    
     if (roles?.merchant) {
       if (user?.clientMerchantDetailsList) {
         if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
@@ -125,16 +131,15 @@ function Dashboard() {
       LoginId: user?.loginId
     }
     dispatch(fetchMenuList(postBody))
-    // console.log(location?.pathname)
   }, [user, dispatch])
 
 
   useEffect(() => {
-  if (location?.pathname === "/dashboard") {
+    console.log(location?.pathname)
+    if(location?.pathname==="/dashboard"){
       dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
     }
-    // console.log(location?.pathname)
-  }, [ location])
+  }, [location])
 
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
@@ -430,6 +435,23 @@ function Dashboard() {
         <Route exact path={`${path}/sabpaisa-pg/:subscribeId`} Component={SpPg}>
           <SpPg />
         </Route>
+       
+        <MerchantRoute exact path={`${path}/payout/ledger`} Component={PayoutTransaction}>
+          <SpPg />
+        </MerchantRoute>
+        <MerchantRoute exact path={`${path}/payout/transactions`} Component={TransactionsPayoutHistory}>
+          <SpPg />
+        </MerchantRoute>
+        <MerchantRoute exact path={`${path}/payout/beneficiary`} Component={Beneficiary}>
+          <SpPg />
+        </MerchantRoute>
+        <MerchantRoute exact path={`${path}/payout/mis_report`} Component={MISReport}>
+          <SpPg />
+        </MerchantRoute>
+        <MerchantRoute exact path={`${path}/payout/payment_status`} Component={MakePayment}>
+          <SpPg />
+        </MerchantRoute>
+
 
 
 
@@ -460,8 +482,9 @@ function Dashboard() {
           <ChallanTransactReport />
         </B2BRouting>
 
-        <Route path={`${path}/*`} component={UrlNotFound} />
-
+        <Route path={`${path}/*`} component={UrlNotFound} >
+          <UrlNotFound />
+        </Route>
       </Switch>
     </section>
   );

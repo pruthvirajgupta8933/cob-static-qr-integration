@@ -194,8 +194,7 @@ const CompleteVerification = (props) => {
         closeVerificationModal(false)
         setPushButtonClick(false)
         setCommetText("");
-         return currenTab === 5 ? approvedTable() : <></>
-               
+        return currenTab === 5 ? approvedTable() : <></>
       })
       .catch((e) => {
         toast.error("Something went wrong, Please Try Again later")
@@ -280,11 +279,6 @@ useEffect(() => {
   approvedtab();
 
     
-// console.log("currenTab",currenTab)
-// console.log("isverified",isverified)
-// console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
-// console.log("roles",roles)
-    
 
 
     if(currenTab === 3){
@@ -347,7 +341,7 @@ useEffect(() => {
 
           
           
-          <button type="button"   onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button></>
+          <button type="button" onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button></>
           : enableBtnApprovedTab === true ?   <button type="button" 
             onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button> : <> </> // Reject kyc for currentab 4(Approved) 
 
