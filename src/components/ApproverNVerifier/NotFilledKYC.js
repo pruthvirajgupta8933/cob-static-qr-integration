@@ -24,11 +24,7 @@ const NotFilledKYC = () => {
     setSearchText(e.target.value);
   };
 
-<<<<<<< HEAD
   useEffect(() => { 
-=======
-  useEffect(() => {
->>>>>>> 11706d1d23156a1aa4251b44f6197d08b09d77b6
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
