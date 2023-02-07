@@ -52,6 +52,11 @@ import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
 import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
+import PayoutTransaction from "../../payout/Ledger";
+import TransactionsPayoutHistory from "../../payout/Transactions";
+import Beneficiary from "../../payout/Beneficiary";
+import MISReport from "../../payout/MISReport";
+import MakePayment from '../../payout/MakePayment';
 
 function Dashboard() {
   let history = useHistory();
@@ -409,6 +414,21 @@ function Dashboard() {
                     </Route> */}
 
         <MerchantRoute exact path={`${path}/sabpaisa-pg`} Component={SpPg}>
+          <SpPg />
+        </MerchantRoute>
+        <MerchantRoute exact  path={`${path}/ledger`} Component={PayoutTransaction}>
+          <SpPg />
+        </MerchantRoute>
+        <MerchantRoute exact  path={`${path}/transactions`} Component={TransactionsPayoutHistory}>
+          <SpPg />
+        </MerchantRoute>
+        <MerchantRoute exact  path={`${path}/beneficiary`} Component={Beneficiary}>
+          <SpPg />
+        </MerchantRoute>
+        <MerchantRoute exact  path={`${path}/mis_report`} Component={MISReport}>
+          <SpPg />
+        </MerchantRoute>
+        <MerchantRoute exact  path={`${path}/payment_status`} Component={MakePayment}>
           <SpPg />
         </MerchantRoute>
          <Route path={`${path}/*`} component={UrlNotFound}/>

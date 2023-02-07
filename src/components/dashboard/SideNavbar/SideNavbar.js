@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { checkPermissionSlice } from "../../../slices/auth";
@@ -10,6 +10,7 @@ import dashboard from "../../../assets/images/dashb.png";
 import transHis from "../../../assets/images/transImage.png";
 import enquire from "../../../assets/images/enquiry.png";
 
+
 const SideNavbar = () => {
   const { auth } = useSelector((state) => state);
 
@@ -19,7 +20,6 @@ const SideNavbar = () => {
   let { url } = useRouteMatch();
   // const [clientCode, SetClientCode] = useState("")
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     if (user.clientMerchantDetailsList?.length > 0) {
@@ -32,7 +32,11 @@ const SideNavbar = () => {
 
   const roleBasedShowTab = roleBasedAccess();
 
+  const [payoutMenus, setPayoutMenus] = useState(true);
 
+  const ShowPayoutMenus = useCallback(() => {
+    setPayoutMenus(!payoutMenus);
+  }, [payoutMenus]);
 
   return (
     <aside
@@ -50,13 +54,13 @@ const SideNavbar = () => {
         <div className="gx-sidebar-content">
           <div className="brand-logo d-flex-item-right">
             <div className="float-centre p-4">
-            <Link to={`${url}`} className="txt-white sidenavFonts">
-              <img
-                src={Sabpaisalogo3}
-                width={150}
-                alt="sabpaisa"
-                title="sabpaisa"
-              />
+              <Link to={`${url}`} className="txt-white sidenavFonts">
+                <img
+                  src={Sabpaisalogo3}
+                  width={150}
+                  alt="sabpaisa"
+                  title="sabpaisa"
+                />
               </Link>
             </div>
           </div>
@@ -84,7 +88,8 @@ const SideNavbar = () => {
                   role="menu"
                   style={{ background: "#140633" }}
                 >
-                  {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true) ? (
+                  {roleBasedShowTab?.merchant === true ||
+                  roleBasedShowTab?.bank === true ? (
                     <li className="ant-menu-item" role="menuitem">
                       <Link to={`${url}`} className="txt-white sidenavFonts">
                         <img src={dashboard} width={17} alt="sabpaisa" />
@@ -95,12 +100,15 @@ const SideNavbar = () => {
                     <React.Fragment></React.Fragment>
                   )}
 
-                  {roleBasedShowTab?.merchant === true && (roleBasedShowTab?.approver === false && roleBasedShowTab?.verifier === false) ? (
+                  {roleBasedShowTab?.merchant === true &&
+                  roleBasedShowTab?.approver === false &&
+                  roleBasedShowTab?.verifier === false ? (
                     <>
                       <li className="ant-menu-item" role="menuitem">
                         <Link
                           to={`${url}/kyc`}
-                          className="txt-white sidenavFonts" >
+                          className="txt-white sidenavFonts"
+                        >
                           <i className="fa fa-file-o" aria-hidden="true" />{" "}
                           <span>&nbsp;Complete KYC</span>
                         </Link>
@@ -118,24 +126,26 @@ const SideNavbar = () => {
                       </li>
 
                       <li
-                            className="ant-menu-item"
-                            role="menuitem"
-                            style={{ paddingLeft: "48px" }}
-                          >
-                            <Link
-                              to={`${url}/product-catalogue`}
-                              className="txt-white sidenavFonts"
-                            >
-                              <i className="fa fa-book" aria-hidden="true" />
-                              &nbsp;Product Catalogue
-                            </Link>
-                          </li>
+                        className="ant-menu-item"
+                        role="menuitem"
+                        style={{ paddingLeft: "48px" }}
+                      >
+                        <Link
+                          to={`${url}/product-catalogue`}
+                          className="txt-white sidenavFonts"
+                        >
+                          <i className="fa fa-book" aria-hidden="true" />
+                          &nbsp;Product Catalogue
+                        </Link>
+                      </li>
                     </>
                   ) : (
                     <React.Fragment></React.Fragment>
                   )}
 
-                  {(roleBasedShowTab?.approver === true || roleBasedShowTab?.verifier === true || roleBasedShowTab?.viewer === true) ? (
+                  {roleBasedShowTab?.approver === true ||
+                  roleBasedShowTab?.verifier === true ||
+                  roleBasedShowTab?.viewer === true ? (
                     <li className="ant-menu-item" role="menuitem">
                       <Link
                         to={`${url}/approver`}
@@ -150,47 +160,48 @@ const SideNavbar = () => {
                     <React.Fragment></React.Fragment>
                   )}
 
-{(roleBasedShowTab?.approver === true ) ? (
-  <>
-                   <li className="ant-menu-item" role="menuitem">
-                      <Link
-                        to={`${url}/additional-kyc`}
-                        className="txt-white sidenavFonts"
-                      >
-                        <i className="fa fa-user" aria-hidden="true" />
-                        <span>&nbsp;Additional KYC</span>
-                        {/* <span className="new-tab">new</span> */}
-                      </Link>
-                    </li>
+                  {roleBasedShowTab?.approver === true ? (
+                    <>
+                      <li className="ant-menu-item" role="menuitem">
+                        <Link
+                          to={`${url}/additional-kyc`}
+                          className="txt-white sidenavFonts"
+                        >
+                          <i className="fa fa-user" aria-hidden="true" />
+                          <span>&nbsp;Additional KYC</span>
+                          {/* <span className="new-tab">new</span> */}
+                        </Link>
+                      </li>
 
-                    
-                   <li className="ant-menu-item" role="menuitem">
-                      <Link
-                        to={`${url}/assignzone`}
-                        className="txt-white sidenavFonts"
-                      >
-                        <i className="fa fa-list-alt" aria-hidden="true" />
-                        <span>&nbsp;Assign Zone</span>
-                        {/* <span className="new-tab">new</span> */}
-                      </Link>
-                    </li>
-                    <li className="ant-menu-item" role="menuitem">
-                      <Link
-                        to={`${url}/ratemapping`}
-                        className="txt-white sidenavFonts"
-                      >
-                        <i className="fa fa-bar-chart" aria-hidden="true" />
-                        <span>&nbsp;Rate Mapping</span>
-                        {/* <span className="new-tab">new</span> */}
-                      </Link>
-                    </li>
+                      <li className="ant-menu-item" role="menuitem">
+                        <Link
+                          to={`${url}/assignzone`}
+                          className="txt-white sidenavFonts"
+                        >
+                          <i className="fa fa-list-alt" aria-hidden="true" />
+                          <span>&nbsp;Assign Zone</span>
+                          {/* <span className="new-tab">new</span> */}
+                        </Link>
+                      </li>
+                      <li className="ant-menu-item" role="menuitem">
+                        <Link
+                          to={`${url}/ratemapping`}
+                          className="txt-white sidenavFonts"
+                        >
+                          <i className="fa fa-bar-chart" aria-hidden="true" />
+                          <span>&nbsp;Rate Mapping</span>
+                          {/* <span className="new-tab">new</span> */}
+                        </Link>
+                      </li>
                     </>
-                     ) : (
-                      <React.Fragment></React.Fragment>
-                    )}
+                  ) : (
+                    <React.Fragment></React.Fragment>
+                  )}
 
-{roleBasedShowTab?.approver === true  ||  roleBasedShowTab?.verifier === true || roleBasedShowTab?.viewer === true ? (
-<li className="ant-menu-item" role="menuitem">
+                  {roleBasedShowTab?.approver === true ||
+                  roleBasedShowTab?.verifier === true ||
+                  roleBasedShowTab?.viewer === true ? (
+                    <li className="ant-menu-item" role="menuitem">
                       <Link
                         to={`${url}/signup-data`}
                         className="txt-white sidenavFonts"
@@ -200,15 +211,16 @@ const SideNavbar = () => {
                         {/* <span className="new-tab">new</span> */}
                       </Link>
                     </li>
-                     ) : (
-                      <React.Fragment></React.Fragment>
-                    )}
+                  ) : (
+                    <React.Fragment></React.Fragment>
+                  )}
 
                   <li
                     className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open"
                     role="menuitem"
                   >
-                    {( roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true) ? (
+                    {roleBasedShowTab?.merchant === true ||
+                    roleBasedShowTab?.bank === true ? (
                       <div
                         className="ant-menu-submenu-title"
                         aria-expanded="true"
@@ -230,7 +242,8 @@ const SideNavbar = () => {
                       className="ant-menu ant-menu-sub ant-menu-inline"
                       role="menu"
                     >
-                      {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true) ? (
+                      {roleBasedShowTab?.merchant === true ||
+                      roleBasedShowTab?.bank === true ? (
                         <li
                           className="ant-menu-item"
                           role="menuitem"
@@ -253,7 +266,8 @@ const SideNavbar = () => {
                         <React.Fragment></React.Fragment>
                       )}
 
-                      {roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true ? (
+                      {roleBasedShowTab?.merchant === true ||
+                      roleBasedShowTab?.bank === true ? (
                         <React.Fragment>
                           <li
                             className="ant-menu-item"
@@ -321,25 +335,28 @@ const SideNavbar = () => {
                         <React.Fragment></React.Fragment>
                       )}
 
-
-                      {roleBasedShowTab?.merchant === true  || roleBasedShowTab?.bank === true ? (
-                        
+                      {roleBasedShowTab?.merchant === true ||
+                      roleBasedShowTab?.bank === true ? (
                         <React.Fragment>
-                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(user?.clientMerchantDetailsList[0]?.clientCode) ?   
-                          <li
-                            className="ant-menu-item"
-                            role="menuitem"
-                            style={{ paddingLeft: "48px" }}
-                          >
-                            <Link
-                              to={`${url}/settlement-report`}
-                              className="txt-white sidenavFonts"
+                          {roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(
+                            user?.clientMerchantDetailsList[0]?.clientCode
+                          ) ? (
+                            <li
+                              className="ant-menu-item"
+                              role="menuitem"
+                              style={{ paddingLeft: "48px" }}
                             >
-                              <i className="fa fa-bars" aria-hidden="true" />
-                              <span>&nbsp;Settlement Report (Excel)</span>
-                            </Link>
-                          </li> : <></>}
-                    
+                              <Link
+                                to={`${url}/settlement-report`}
+                                className="txt-white sidenavFonts"
+                              >
+                                <i className="fa fa-bars" aria-hidden="true" />
+                                <span>&nbsp;Settlement Report (Excel)</span>
+                              </Link>
+                            </li>
+                          ) : (
+                            <></>
+                          )}
 
                           <li
                             className="ant-menu-item"
@@ -363,7 +380,10 @@ const SideNavbar = () => {
                               to={`${url}/refund-transaction-history`}
                               className="txt-white sidenavFonts"
                             >
-                              <i className="fa fa-list-alt"  aria-hidden="true" />
+                              <i
+                                className="fa fa-list-alt"
+                                aria-hidden="true"
+                              />
                               <span>&nbsp;Refund Txn History</span>
                             </Link>
                           </li>
@@ -380,7 +400,7 @@ const SideNavbar = () => {
                               <span>&nbsp;Chargeback Txn History</span>
                             </Link>
                           </li>
-                       {/* {roleBasedShowTab?.bank === true ? <></> :
+                          {/* {roleBasedShowTab?.bank === true ? <></> :
 
                           <li
                             className="ant-menu-item"
@@ -401,13 +421,18 @@ const SideNavbar = () => {
                         <React.Fragment></React.Fragment>
                       )}
 
-                      {(payLinkPermission.length > 0 && payLinkPermission[0].clientId === 1) && roleBasedShowTab?.merchant === true ? (
+                      {payLinkPermission.length > 0 &&
+                      payLinkPermission[0].clientId === 1 &&
+                      roleBasedShowTab?.merchant === true ? (
                         <li
                           className="ant-menu-item"
                           role="menuitem"
                           style={{ paddingLeft: "48px" }}
                         >
-                          <Link to={`${url}/paylink`} className="txt-white sidenavFonts">
+                          <Link
+                            to={`${url}/paylink`}
+                            className="txt-white sidenavFonts"
+                          >
                             <i
                               className="fa fa-address-book"
                               aria-hidden="true"
@@ -419,27 +444,204 @@ const SideNavbar = () => {
                         <React.Fragment></React.Fragment>
                       )}
 
-                       {roleBasedShowTab?.merchant === true ? (
+                      {roleBasedShowTab?.merchant === true ? (
                         <React.Fragment>
-                        { roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(user?.clientMerchantDetailsList[0]?.clientCode) ?   
-                          <li
-                            className="ant-menu-item"
-                            role="menuitem"
-                            style={{ paddingLeft: "48px" }}
-                          >
-                            <Link
-                              to={`${url}/settlement-report`}
-                              className="txt-white sidenavFonts"
+                          {roleBasedShowTab?.Enable_Settlement_Report_Excel.includes(
+                            user?.clientMerchantDetailsList[0]?.clientCode
+                          ) ? (
+                            <li
+                              className="ant-menu-item"
+                              role="menuitem"
+                              style={{ paddingLeft: "48px" }}
                             >
-                              <i className="fa fa-bars" aria-hidden="true" />
-                              <span>&nbsp;Settlement Report (Excel)</span>
-                            </Link>
-                          </li> : <></>}
-                          </React.Fragment>
+                              <Link
+                                to={`${url}/settlement-report`}
+                                className="txt-white sidenavFonts"
+                              >
+                                <i className="fa fa-bars" aria-hidden="true" />
+                                <span>&nbsp;Settlement Report (Excel)</span>
+                              </Link>
+                            </li>
+                          ) : (
+                            <></>
+                          )}
+                        </React.Fragment>
                       ) : (
                         <React.Fragment></React.Fragment>
                       )}
                     </ul>
+                  </li>
+                  <li
+                    className="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open"
+                    role="menuitem"
+                  >
+                    {roleBasedShowTab?.merchant === true ||
+                    roleBasedShowTab?.bank === true ? (
+                      <div
+                        className="ant-menu-submenu-title"
+                        aria-expanded="true"
+                        aria-owns="settlement$Menu"
+                        aria-haspopup="true"
+                        style={{ paddingLeft: "24px" }}
+                        onClick={ShowPayoutMenus}
+                      >
+                        <span className="sidebar-menu-divider-business d-flex justify-content-between">
+                          Payout
+                          <div style={{ textAlign: "end" }}>
+                            {payoutMenus ? (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-chevron-down"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+                                />
+                              </svg>
+                            ) : (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-chevron-up"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"
+                                />
+                              </svg>
+                            )}
+                          </div>
+                        </span>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                    {payoutMenus && (
+                      <>
+                        <ul
+                          id="settlement$Menu"
+                          className="ant-menu ant-menu-sub ant-menu-inline"
+                          role="menu"
+                        >
+                          {roleBasedShowTab?.merchant === true ||
+                          roleBasedShowTab?.bank === true ? (
+                            <li
+                              className="ant-menu-item"
+                              role="menuitem"
+                              style={{ paddingLeft: "48px" }}
+                            >
+                              <Link
+                                to={`${url}/ledger`}
+                                className="txt-white sidenavFonts"
+                              >
+                                &nbsp;Ledger
+                              </Link>
+                            </li>
+                          ) : (
+                            <React.Fragment></React.Fragment>
+                          )}
+                        </ul>
+                        <ul
+                          id="settlement$Menu"
+                          className="ant-menu ant-menu-sub ant-menu-inline"
+                          role="menu"
+                        >
+                          {roleBasedShowTab?.merchant === true ||
+                          roleBasedShowTab?.bank === true ? (
+                            <li
+                              className="ant-menu-item"
+                              role="menuitem"
+                              style={{ paddingLeft: "48px" }}
+                            >
+                              <Link
+                                to={`${url}/transactions`}
+                                className="txt-white sidenavFonts"
+                              >
+                                &nbsp;Transactions
+                              </Link>
+                            </li>
+                          ) : (
+                            <React.Fragment></React.Fragment>
+                          )}
+                        </ul>
+                        <ul
+                          id="settlement$Menu"
+                          className="ant-menu ant-menu-sub ant-menu-inline"
+                          role="menu"
+                        >
+                          {roleBasedShowTab?.merchant === true ||
+                          roleBasedShowTab?.bank === true ? (
+                            <li
+                              className="ant-menu-item"
+                              role="menuitem"
+                              style={{ paddingLeft: "48px" }}
+                            >
+                              <Link
+                                to={`${url}/beneficiary`}
+                                className="txt-white sidenavFonts"
+                              >
+                                &nbsp;Beneficiary
+                              </Link>
+                            </li>
+                          ) : (
+                            <React.Fragment></React.Fragment>
+                          )}
+                        </ul>
+                        <ul
+                          id="settlement$Menu"
+                          className="ant-menu ant-menu-sub ant-menu-inline"
+                          role="menu"
+                        >
+                          {roleBasedShowTab?.merchant === true ||
+                          roleBasedShowTab?.bank === true ? (
+                            <li
+                              className="ant-menu-item"
+                              role="menuitem"
+                              style={{ paddingLeft: "48px" }}
+                            >
+                              <Link
+                                to={`${url}/mis_report`}
+                                className="txt-white sidenavFonts"
+                              >
+                                &nbsp;MIS Report
+                              </Link>
+                            </li>
+                          ) : (
+                            <React.Fragment></React.Fragment>
+                          )}
+                        </ul>
+                        <ul
+                          id="settlement$Menu"
+                          className="ant-menu ant-menu-sub ant-menu-inline"
+                          role="menu"
+                        >
+                          {roleBasedShowTab?.merchant === true ||
+                          roleBasedShowTab?.bank === true ? (
+                            <li
+                              className="ant-menu-item"
+                              role="menuitem"
+                              style={{ paddingLeft: "48px" }}
+                            >
+                              <Link
+                                to={`${url}/payment_status`}
+                                className="txt-white sidenavFonts"
+                              >
+                                &nbsp;Make Payment
+                              </Link>
+                            </li>
+                          ) : (
+                            <React.Fragment></React.Fragment>
+                          )}
+                        </ul>
+                      </>
+                    )}
                   </li>
                 </ul>
               </div>
@@ -486,11 +688,10 @@ const SideNavbar = () => {
               </div>
             </div>
           </div>
-        
         </div>
       </div>
     </aside>
   );
-}
+};
 
 export default SideNavbar;

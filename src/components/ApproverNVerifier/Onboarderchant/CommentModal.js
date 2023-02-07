@@ -79,28 +79,19 @@ const CommentModal = (props) => {
     formData.append("client_code", props?.commentData?.clientCode);
     formData.append("comments", values.comments);
     formData.append("merchant_tab", props?.tabName);
-    dispatch(
-      // forSavingComments({
-      //   login_id: loginId,
-      //   client_code: props?.commentData?.clientCode,
-      //   comments: values.comments,
-      //   merchant_tab: props?.tabName,
-      // })
-      forSavingComments(formData)
+    dispatch(forSavingComments(formData)
     )
       .then((resp) => {
-        toast.success(resp?.payload?.message);
-        commentUpdate();
-        resetUploadFile();
-
-        // return setTimeout(
-        //   props && props?.handleApi
-        //     ? props?.handleApi()
-        //     : props?.handleForVerified(),
-        //   2000
-        // );
+        if (resp?.payload?.message?.status && resp?.payload?.status) {
+          toast.success(resp?.payload?.message.message);
+          commentUpdate();
+          resetUploadFile();
+        } else {
+          toast.error(resp?.payload?.message.message);
+          resetUploadFile();
+          commentUpdate();
+        }
       })
-
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
@@ -192,43 +183,37 @@ const CommentModal = (props) => {
                             />
                             <div className="d-flex">
                               <div>
-                              <label for="file">
-                              Upload Files{" "}
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                fill="currentColor"
-                                class="bi bi-paperclip"
-                                viewBox="0 0 16 16"
-                              >
-                                <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
-                              </svg>
-                              <p class="file-name"></p>
-                            </label>
-
+                                <label for="file">
+                                  Upload Files{" "}
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-paperclip"
+                                    viewBox="0 0 16 16"
+                                  >
+                                    <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                  </svg>
+                                  <p class="file-name"></p>
+                                </label>
                               </div>
                               <div className="mt-2 ml-3">
-                              <button
-                          type="submit"
-                          className="btn approve text-white  btn-xs"
-                        >
-                          Submit
-                        </button>
+                                <button
+                                  type="submit"
+                                  className="btn approve text-white  btn-xs"
+                                >
+                                  Submit
+                                </button>
                               </div>
-                        
-                            <div>
-                    
 
+                              <div></div>
                             </div>
-                     
-                      </div>
-                            
+
                             <div className="d-flex justify-content-between">
-                              
                               {uploadStatus && (
                                 <>
-                                  <div>{attachCommentFile.name}</div>
+                                  <div>{attachCommentFile?.name}</div>
                                   <button
                                     type="button"
                                     class="close"
@@ -243,7 +228,6 @@ const CommentModal = (props) => {
                           </div>
                         </div>
                       </div>
-                    
 
                       <div className="container">
                         <div className="row">

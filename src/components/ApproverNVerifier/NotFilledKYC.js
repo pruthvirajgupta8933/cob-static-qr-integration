@@ -31,15 +31,12 @@ const NotFilledKYC = () => {
  
 
 
-  useEffect(() => {
-    
+  useEffect(() => { 
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-
         const data = resp?.payload?.results;
         const totalData = resp?.payload?.count;
-
         setSpinner(false);
         setDataCount(totalData);
         setNotFilledData(data);
