@@ -134,12 +134,12 @@ function Dashboard() {
   }, [user, dispatch])
 
 
-  useEffect(() => {
-    console.log(location?.pathname)
-    if(location?.pathname==="/dashboard"){
-      dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
-    }
-  }, [location])
+  // useEffect(() => {
+  //   // fetch subscribe product data
+  //   if(location?.pathname==="/dashboard"){
+  //     dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
+  //   }
+  // }, [location])
 
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
