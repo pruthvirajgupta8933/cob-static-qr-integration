@@ -2,12 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { PaymentInitModal } from "pg-test-project";
 import { v4 as uuidv4 } from 'uuid';
 
-
-
 function SabpaisaPaymentGateway(props) {
-  // console.log(props)
   const clientDetails = props?.clientData
-
   const [isOpen, setIsOpen] = useState(false);
   const [clientCode, setClientCode] = useState("TM001");
   const [transUserName, setTransUserName] = useState("rajiv.moti_336");
@@ -18,7 +14,7 @@ function SabpaisaPaymentGateway(props) {
   const [payerName, setpayerName] = useState("");
   const [payerEmail, setpayerEmail] = useState("");
   const [payerMobile, setpayerMobile] = useState("");
-  const [clientTxnId, setclientTxnId] = useState("84048n23048239048mx1842304842309482342");
+  const [clientTxnId, setclientTxnId] = useState(props?.clientTxnId);
   const [payerAddress, setpayerAddress] = useState("");
   const [amount, setamount] = useState(9999);
   const [amountType, setamountType] = useState("INR");
@@ -37,7 +33,7 @@ function SabpaisaPaymentGateway(props) {
   const [udf13, setudf13] = useState(""); // plan id
   const [udf14, setudf14] = useState(""); // plan name
   const [udf15, setudf15] = useState(""); // application id (product id)
-  const [udf16, setudf16] = useState(""); // application name
+  const [udf16, setudf16] = useState(""); // // client subscribe plan detail id(refer to DB)
   const [udf17, setudf17] = useState("COB"); // payment from the COB portal
   const [udf18, setudf18] = useState("");
   const [udf19, setudf19] = useState("");
@@ -52,25 +48,26 @@ function SabpaisaPaymentGateway(props) {
     setpayerName(clientDetails?.clientContactPersonName);
     setpayerEmail(clientDetails?.clientEmail);
     setpayerMobile(clientDetails?.clientMobileNo);
+    setclientTxnId(props?.clientTxnId)
     setamount(props?.planData[0]?.actual_price);
-    setudf12(props?.planData?.clientId)
-    setudf13(props?.planData?.planId)
-    setudf14(props?.planData?.planName)
-    setudf15(props?.planData?.applicationId)
-    setudf16(props?.planData?.applicationName)
-
+    setudf12(props?.clientData?.clientMerchantDetailsList[0]?.clientCode)
+    setudf13(props?.planData[0]?.plan_id)
+    setudf14(props?.planData[0]?.plan_name)
+    setudf15(props?.planData[0]?.app_id)
+    setudf16(props?.subscribeId)
 
   }, [props, clientDetails])
 
 
   return (
     <div> {
-      (clientCode && transUserPassword && transUserName && authkey && authiv) && 
+      (clientCode && transUserPassword && transUserName && authkey && authiv) &&
       <PaymentInitModal
         clientCode={clientCode}
         transUserPassword={transUserPassword}
         transUserName={transUserName}
         isOpen={isOpen}
+        clientTxnId={clientTxnId}
         authkey={authkey}
         authiv={authiv}
         payerName={payerName}
@@ -79,14 +76,12 @@ function SabpaisaPaymentGateway(props) {
         payerAddress={payerAddress}
         amount={amount}
         amountType={amountType}
-        clientTxnId={clientTxnId}
         udf12={udf12}
         udf13={udf13}
         udf14={udf14}
         udf15={udf15}
         udf16={udf16}
         udf17={udf17}
-
         label={"Sabpaisa PG"}
         onToggle={() => setIsOpen(!isOpen)} />
     }</div>

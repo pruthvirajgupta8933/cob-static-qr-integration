@@ -139,6 +139,8 @@ const AdditionalKYC = () => {
       .matches(AccountNoRgex, "Your Account Number is Invalid")
       .required("Required")
       .nullable(),
+      
+
   });
 
   const validationSchemaForGSTIN = Yup.object({
