@@ -249,7 +249,7 @@ const OnboardedReport = () => {
 
             excelArr.push(Object.values(allowDataToShow));
         });
-        const fileName = "Signup-Data";
+        const fileName = "Onboarded-Report";
         exportToSpreadsheet(excelArr, fileName);
     };
 

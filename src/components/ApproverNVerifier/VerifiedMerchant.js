@@ -33,7 +33,7 @@ function VerifiedMerchant() {
 
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab)
-
+  
 
 
   // console.log(currenTab," Current Tab")
