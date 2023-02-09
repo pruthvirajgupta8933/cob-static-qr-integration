@@ -3,7 +3,7 @@ import API_URL from "../config"
 import { axiosInstance } from "./axiosInstance"
 import { stringDec } from "./encodeDecode"
 
-export const DefaultRateMapping = ({setFlag}) => {
+export const DefaultRateMapping = ({ setFlag }) => {
 
     const [loader, setLoader] = useState(false)
 
@@ -11,7 +11,7 @@ export const DefaultRateMapping = ({setFlag}) => {
         setFlag(false)
         // console.log("step 0")
         const userData = JSON.parse(localStorage.getItem("user"))
-        if ((userData?.clientMerchantDetailsList !== null && userData?.clientMerchantDetailsList[0]?.clientCode !== undefined) && userData?.isDirect) {
+        if ((userData?.clientMerchantDetailsList !== null && userData?.clientMerchantDetailsList[0]?.clientCode !== undefined && userData?.clientMerchantDetailsList[0]?.clientCode !== "") && userData?.isDirect) {
             // console.log("step 1 ", userData?.clientMerchantDetailsList[0]?.clientCode)
             axiosInstance.get(`${API_URL.isClientCodeMapped}/${userData?.clientMerchantDetailsList[0]?.clientCode}`).then(res => {
                 if (res?.data.length === 0) {
@@ -26,7 +26,7 @@ export const DefaultRateMapping = ({setFlag}) => {
                     const clientName = clientMerchantDetailsList[0]?.clientName;
                     const clientUserName = userData?.userName;
                     const passwrod = stringDec(sessionStorage.getItem('prog_id'));
-    
+
                     const inputData = {
                         clientId: clientId,
                         clientCode: clientCode,
@@ -50,18 +50,18 @@ export const DefaultRateMapping = ({setFlag}) => {
                         subscriptionstatus: "Subscribed",
                         businessType: 2
                     };
-    
+
                     // console.log("inputData",inputData);
                     // 1 - run RATE_MAPPING_GenerateClientFormForCob 
-    
+
                     axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
                         setFlag(true)
-    
+
                         // console.log("step 3 run RATE_MAPPING_GenerateClientFormForCob",API_URL.RATE_MAPPING_GenerateClientFormForCob);
                         //2 - rate map clone   // parent client code / new client code / login id
                         axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/COBED/${clientCode}/${userData?.loginId}`).then(res => {
-                        //    update api version
-                            axiosInstance.get(`${API_URL}/${clientCode}/apiversion/1/${userData?.loginId}`).then(res=>{
+                            //    update api version
+                            axiosInstance.get(`${API_URL.UPDATE_VERSION_RATEMAPPING}/${clientCode}/apiversion/1/${userData?.loginId}`).then(res => {
                                 console.log("update api version")
                                 setFlag(false)
                                 setLoader(false)
@@ -70,7 +70,6 @@ export const DefaultRateMapping = ({setFlag}) => {
                                 setLoader(false)
                                 console(err)
                             })
-                            
                         }).catch(err => {
                             setFlag(false)
                             setLoader(false)
@@ -81,38 +80,38 @@ export const DefaultRateMapping = ({setFlag}) => {
                         setLoader(false)
                         console.log(err)
                     })
-    
-                }else{
+
+                } else {
                     sessionStorage.removeItem('prog_id')
                 }
 
             }).catch(err => {
-                        setFlag(false)
-                        setLoader(false)
-                        console.log(err)
-                    })
+                setFlag(false)
+                setLoader(false)
+                console.log(err)
+            })
         }
 
-    
+
     }, [])
-    
- 
+
+
 
 
     return (
         <React.Fragment>
-            {loader && 
-            <div className="text-center">
-            <div className="h-100">
-                <p>Please Wait ...</p>
-                <p className="spinner-border-loading" role="status">
-                    {/* <span className="sr-only">Loading...</span> */}
-                </p>
-                <p>Creating your dashboard</p>
-            </div>
-        </div>}
+            {loader &&
+                <div className="text-center">
+                    <div className="h-100">
+                        <p>Please Wait ...</p>
+                        <p className="spinner-border-loading" role="status">
+                            {/* <span className="sr-only">Loading...</span> */}
+                        </p>
+                        <p>Creating your dashboard</p>
+                    </div>
+                </div>}
         </React.Fragment>
-       
+
 
     )
 }

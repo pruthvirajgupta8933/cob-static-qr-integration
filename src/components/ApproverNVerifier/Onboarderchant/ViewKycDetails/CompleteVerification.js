@@ -44,7 +44,7 @@ const CompleteVerification = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
   const [buttonText, setButtonText] = useState("Complete Verification");
-  const[pushedButton,setPushedButton]=useState("Back to push")
+  const[pushedButton,setPushedButton]=useState("")
   const[pushButtonClick,setPushButtonClick]=useState()
   const handleVerifyClick = () => {
 
@@ -303,15 +303,17 @@ useEffect(() => {
 
   useEffect(()=>{
     if(currenTab===4 && roles?.approver){
+     setPushedButton("Back to Pending Verification")
      
-      setPushedButton("Back to Pending Verification")
     }
     if(currenTab===5 && roles?.approver){
       setPushedButton("Back to Pending Approval")
       
+      
     }
     if(currenTab===6 && roles?.approver)
     setPushedButton("Back to Pending kyc")
+    
     
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -347,7 +349,7 @@ useEffect(() => {
 
         }
 
-       {currenTab===4 || currenTab===5 || currenTab===6 ?
+       {(currenTab===4 || currenTab===5 || currenTab===6) && (roles?.approver) ?
        
         <button  type="button" onClick={()=>setPushButtonClick(true)} className="btn btn-success btn-sm text-white ml-2">{pushedButton}</button> : <></>}
 
