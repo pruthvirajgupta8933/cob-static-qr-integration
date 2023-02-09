@@ -127,7 +127,7 @@ const Genratelink = (props) => {
 
   return (
     <div
-      className="modal fade"
+      className="mymodals modal fade"
       id="bhuvi"
       role="dialog"
       aria-labelledby="exampleModalLabel"
