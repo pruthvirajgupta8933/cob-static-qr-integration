@@ -109,6 +109,16 @@ const CommentModal = (props) => {
       setUploadStatus(true);
     }
   };
+  const isUrlValid=(userInput)=> {
+    let res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+    let ext =  userInput.split('.').pop();
+    const formats = ["pdf", "jpg", "jpeg","png" ];
+    let test = formats.includes(ext);
+    if(res == null && test===true)
+        return false;
+    else
+        return true;
+}
 
   return (
     <div>
@@ -281,7 +291,7 @@ const CommentModal = (props) => {
                                         </td>
                                         <td>{remark?.merchant_tab}</td>
                                         <td>
-                                          {remark?.file_path !== null && (
+                                          {remark?.file_path !== null  && isUrlValid(remark?.file_path) && (
                                             <a
                                               href={remark?.file_path}
                                               target={"_blank"}
