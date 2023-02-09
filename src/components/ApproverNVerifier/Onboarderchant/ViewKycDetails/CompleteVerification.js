@@ -303,18 +303,17 @@ useEffect(() => {
 
   useEffect(()=>{
     if(currenTab===4 && roles?.approver){
+     setPushedButton("Back to Pending Verification")
      
-      setPushedButton("Back to Pending Verification")
-      console.log("Button 1",pushedButton)
     }
     if(currenTab===5 && roles?.approver){
       setPushedButton("Back to Pending Approval")
-      console.log("Button 2",pushedButton)
+      
       
     }
     if(currenTab===6 && roles?.approver)
     setPushedButton("Back to Pending kyc")
-    console.log("Button 3",pushedButton)
+    
     
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -350,7 +349,7 @@ useEffect(() => {
 
         }
 
-       {currenTab===4 || currenTab===5 || currenTab===6 ?
+       {(currenTab===4 || currenTab===5 || currenTab===6) && (roles?.approver) ?
        
         <button  type="button" onClick={()=>setPushButtonClick(true)} className="btn btn-success btn-sm text-white ml-2">{pushedButton}</button> : <></>}
 
