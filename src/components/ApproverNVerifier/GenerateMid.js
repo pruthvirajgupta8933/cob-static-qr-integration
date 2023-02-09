@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import {  useDispatch } from "react-redux";
+import { midGenerationList } from "../../slices/kycSlice";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
-import ViewZoneModal from "./ViewZoneModal";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
-
 import NavBar from "../../components/dashboard/NavBar/NavBar"
+import ViewGenerateMidModal from "./ViewGenerateMidModal";
 
 function AssignZone() {
   const [data, setData] = useState([]);
@@ -119,7 +119,7 @@ function AssignZone() {
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Assign Zone</h1>
+            <h1 className="m-b-sm gx-float-left">MID Generation</h1>
 
 
           </div>
@@ -132,7 +132,7 @@ function AssignZone() {
                 type="text"
                 placeholder="Search Here"
               />
-              <div> { openZoneModal === true ? <ViewZoneModal userData={modalDisplayData} /> : <></> }</div> 
+              <div> { openZoneModal === true ? <ViewGenerateMidModal userData={modalDisplayData} setOpenModal={setOpenModal} /> : <></> }</div> 
             </div>
             <div className="col-lg-4 mrg-btm- bgcolor">
               <label>Count Per Page</label>
@@ -145,19 +145,7 @@ function AssignZone() {
              <DropDownCountPerPage datalength={data?.length} />
               </select>
             </div>
-            <div className="form-group col-lg-3 col-md-12 mt-2">
-          <label>Onboard Type</label>
-          <select
-           onChange={approvedSearch}
-            className="ant-input"
-          >
-             <option value="Select Role Type">Select Onboard Type</option>
-            <option value="">All</option>
-            <option value="online">Online</option>
-            <option value="offline">Offline</option>
-           
-          </select>
-        </div>
+        
             <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
               <div className="scroll overflow-auto">
 
@@ -172,7 +160,7 @@ function AssignZone() {
                       <th>KYC Status</th>
                       <th>Registered Date</th>
                       <th>Onboard Type</th>
-                      <th>View Zone</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -209,7 +197,7 @@ function AssignZone() {
                             <button type="submit" onClick={()=>{setModalDisplayData(user)
                             setOpenModal((true))
                             }} className="btn btnbackground text-white" data-toggle="modal" data-target="#exampleModalCenter">
-                              Update Zone
+                              Generate MID
                             </button>
                           </td>
                         </tr>
