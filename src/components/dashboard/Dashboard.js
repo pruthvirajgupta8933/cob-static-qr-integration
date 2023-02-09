@@ -78,6 +78,7 @@ function Dashboard() {
 
   // create new client code
   useEffect(() => {
+    
     if (roles?.merchant) {
       if (user?.clientMerchantDetailsList) {
         if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
@@ -132,13 +133,15 @@ function Dashboard() {
       LoginId: user?.loginId
     }
     dispatch(fetchMenuList(postBody))
-    // console.log(location?.pathname)
   }, [user, dispatch])
 
 
   useEffect(() => {
-    dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
-  }, [])
+    // fetch subscribe product data
+    if(location?.pathname==="/dashboard"){
+      dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
+    }
+  }, [location])
 
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");

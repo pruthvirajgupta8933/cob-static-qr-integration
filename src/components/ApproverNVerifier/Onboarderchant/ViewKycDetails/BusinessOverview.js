@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { verifyKycEachTab, GetKycTabsStatus } from '../../../../slices/kycSlice';
 import { toast } from "react-toastify";

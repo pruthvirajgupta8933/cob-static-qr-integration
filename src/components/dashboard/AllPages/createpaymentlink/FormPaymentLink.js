@@ -105,7 +105,7 @@ function FormPaymentLink(props) {
   return (
 
     <div
-      className="modal fade"
+      className="mymodals modal fade"
       id="exampleModal"
       role="dialog"
       aria-labelledby="exampleModalLabel"

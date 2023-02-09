@@ -44,7 +44,7 @@ const CompleteVerification = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
   const [buttonText, setButtonText] = useState("Complete Verification");
-  const[pushedButton,setPushedButton]=useState("Back to push")
+  const[pushedButton,setPushedButton]=useState("")
   const[pushButtonClick,setPushButtonClick]=useState()
   const handleVerifyClick = () => {
 
@@ -194,8 +194,7 @@ const CompleteVerification = (props) => {
         closeVerificationModal(false)
         setPushButtonClick(false)
         setCommetText("");
-         return currenTab === 5 ? approvedTable() : <></>
-               
+        return currenTab === 5 ? approvedTable() : <></>
       })
       .catch((e) => {
         toast.error("Something went wrong, Please Try Again later")
@@ -280,11 +279,6 @@ useEffect(() => {
   approvedtab();
 
     
-// console.log("currenTab",currenTab)
-// console.log("isverified",isverified)
-// console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
-// console.log("roles",roles)
-    
 
 
     if(currenTab === 3){
@@ -309,15 +303,17 @@ useEffect(() => {
 
   useEffect(()=>{
     if(currenTab===4 && roles?.approver){
+     setPushedButton("Back to Pending Verification")
      
-      setPushedButton("Back to Pending Verification")
     }
     if(currenTab===5 && roles?.approver){
       setPushedButton("Back to Pending Approval")
       
+      
     }
     if(currenTab===6 && roles?.approver)
     setPushedButton("Back to Pending kyc")
+    
     
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -347,13 +343,13 @@ useEffect(() => {
 
           
           
-          <button type="button"   onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button></>
+          <button type="button" onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button></>
           : enableBtnApprovedTab === true ?   <button type="button" 
             onClick={()=>setButtonClick(true)}  className="btn btn-danger btn-sm text-white">Reject KYC</button> : <> </> // Reject kyc for currentab 4(Approved) 
 
         }
 
-       {currenTab===4 || currenTab===5 || currenTab===6 ?
+       {(currenTab===4 || currenTab===5 || currenTab===6) && (roles?.approver) ?
        
         <button  type="button" onClick={()=>setPushButtonClick(true)} className="btn btn-success btn-sm text-white ml-2">{pushedButton}</button> : <></>}
 

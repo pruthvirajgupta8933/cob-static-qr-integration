@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import API_URL from "../../config";
@@ -14,16 +15,13 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 
 
 function ApprovedMerchant() {
-  // const [approveMerchant, setApproveMerchant] = useState([]);
+
   const [data, setData] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
-  const dispatch = useDispatch();
-  // const { user } = useSelector((state) => state.auth);
-  // const [docImageData, setDocImageData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [spinner, setSpinner] = useState(true);
@@ -32,7 +30,7 @@ function ApprovedMerchant() {
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [isLoaded,setIsLoaded] = useState(false)
 
-
+  const dispatch = useDispatch();
   const roles = roleBasedAccess();
 
 
@@ -224,6 +222,7 @@ let pageNumbers = []
                 <th>Contact Number</th>
                 <th>KYC Status</th>
                 <th>Registered Date</th>
+                <th>Approved Date</th>
                 <th>Onboard Type</th>
                 <th>View Status</th>
                 {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? ( <th>Action</th>) : <></>}
@@ -252,13 +251,14 @@ let pageNumbers = []
                 data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.clientCode}</td>
-                    <td>{user.companyName}</td>
-                    <td>{user.name}</td>
-                    <td>{user.emailId}</td>
-                    <td>{user.contactNumber}</td>
-                    <td>{user.status}</td>
+                    <td>{user?.clientCode}</td>
+                    <td>{user?.companyName}</td>
+                    <td>{user?.name}</td>
+                    <td>{user?.emailId}</td>
+                    <td>{user?.contactNumber}</td>
+                    <td>{user?.status}</td>
                     <td>{covertDate(user.signUpDate)}</td>
+                    <td>{covertDate(user?.ApprovedDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>
                       {/* <button
