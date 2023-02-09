@@ -5,11 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 function SabpaisaPaymentGateway(props) {
   const clientDetails = props?.clientData
   const [isOpen, setIsOpen] = useState(false);
-  const [clientCode, setClientCode] = useState("TM001");
-  const [transUserName, setTransUserName] = useState("rajiv.moti_336");
-  const [transUserPassword, setTransUserPassword] = useState("RIADA_SP336");
-  const [authkey, setAuthkey] = useState("kaY9AIhuJZNvKGp2");
-  const [authiv, setAuthiv] = useState("YN2v8qQcU3rGfA1y");
+  const [clientCode, setClientCode] = useState("SRSLT");
+  const [transUserName, setTransUserName] = useState("SRS792@sp");
+  const [transUserPassword, setTransUserPassword] = useState("7gBOD3ta9i");
+  const [authkey, setAuthkey] = useState("LAJLpvjNNdohDdc1");
+  const [authiv, setAuthiv] = useState("qukAvLVaOUCQzfif");
   const [callbackUrl, setCallbackUrl] = useState("");
   const [payerName, setpayerName] = useState("");
   const [payerEmail, setpayerEmail] = useState("");
@@ -38,9 +38,10 @@ function SabpaisaPaymentGateway(props) {
   const [udf18, setudf18] = useState("");
   const [udf19, setudf19] = useState("");
   const [udf20, setudf20] = useState("");
-  const [channelId, setchannelId] = useState("W");
+  const [channelId, setchannelId] = useState("npm");
   const [programId, setprogramId] = useState("x");
   const [mcc, setmcc] = useState("");
+
 
   useEffect(() => {
 
@@ -82,8 +83,16 @@ function SabpaisaPaymentGateway(props) {
         udf15={udf15}
         udf16={udf16}
         udf17={udf17}
-        label={"Sabpaisa PG"}
-        onToggle={() => setIsOpen(!isOpen)} />
+        onToggle={() => setIsOpen(!isOpen)} 
+        channelId={channelId}
+        programId={programId}
+        mcc={mcc}
+        label={"Production"}
+        env={'prod'}
+        />
+
+
+
     }</div>
   )
 }
