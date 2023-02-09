@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import {
   kycBankNames,
   saveMerchantBankDetais,
+  verifyKycEachTab,
   ifscValidation,
   bankAccountVerification,
   getBankId,
@@ -20,7 +21,7 @@ function BankDetails(props) {
   const setTab = props.tab;
   const setTitle = props.title;
 
-  const { role } = props;
+  const { role, kycid } = props;
   const dispatch = useDispatch();
 
   const { kyc, auth } = useSelector((state) => state);
@@ -42,8 +43,8 @@ function BankDetails(props) {
   const [readOnly, setReadOnly] = useState(false);
 
   const [ifscVerifed, isIfscVerifed] = useState("");
-  const [disable, setIsDisable] = useState(false);
   const [selectedvalue, setSelectedvalue] = useState("");
+  const [disable, setIsDisable] = useState(false);
 
   const [buttonText, setButtonText] = useState("Save and Next");
 
@@ -53,11 +54,13 @@ function BankDetails(props) {
 
   const { loginId } = user;
 
-  const bankOptions = [
-    { key: "0", value: "Select" },
-    { key: "1", value: "Saving" },
-    { key: "2", value: "Current" },
+  const selectedType = [
+    { key: "", value: "Select"},
+    { key: "1", value: "Current" },
+    { key: "2", value: "Saving" },
   ];
+
+  let selectedChoice = selectedvalue === "1" ? "Current" : selectedvalue === "2" ? "Saving" : "";
 
   const initialValues = {
     account_holder_name:
@@ -75,12 +78,11 @@ function BankDetails(props) {
         ? bankDetailsById[0]?.bankId
         : KycList?.merchant_account_details?.bankId, // change stste
     account_type: KycList?.merchant_account_details?.accountType,
-
-    branch:
-      branch?.length > 2 ? branch : KycList?.merchant_account_details?.branch,
+    branch: branch?.length > 2 ? branch : KycList?.merchant_account_details?.branch,
 
     isAccountNumberVerified: KycList?.accountNumber !== null ? "1" : "",
   };
+
 
   const validationSchema = Yup.object({
     account_holder_name: Yup.string()
@@ -104,8 +106,6 @@ function BankDetails(props) {
       .nullable(),
 
     account_type: Yup.string()
-      .trim()
-      .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
       .nullable(),
     branch: Yup.string()
@@ -153,8 +153,6 @@ function BankDetails(props) {
       });
     }
   };
-
-  let selectedType = selectedvalue === "1" ? "Saving" : selectedvalue === "2" ? "Current" : "";
 
   const bankAccountValidate = (values, ifsc) => {
     dispatch(
@@ -204,7 +202,7 @@ function BankDetails(props) {
           account_number: values.account_number,
           ifsc_code: values.ifsc_code,
           bank_id: values.bank_id,
-          account_type: selectedType,
+          account_type: selectedChoice,
           branch: values.branch,
           login_id: loginId,
           modified_by: loginId,
@@ -278,12 +276,6 @@ function BankDetails(props) {
     }
   };
 
-    {/* {formik.handleChange(
-                  "account_type",
-                  setSelectedvalue(values?.account_type)
-                )} */}
-                
-
   return (
     <div className="col-md-12 col-md-offset-4" style={{ width: "100%" }}>
       <Formik
@@ -293,7 +285,6 @@ function BankDetails(props) {
         enableReinitialize={true}
       >
         {({
-          formik,
           values,
           setFieldValue,
           initialValues,
@@ -303,8 +294,6 @@ function BankDetails(props) {
           handleChange,
         }) => (
           <Form>
-           
-
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6 ">
                 <label className="col-form-label mt-0 p-2">
@@ -458,14 +447,16 @@ function BankDetails(props) {
                 </label>
                 <FormikController
                   control="select"
-                  type="text"
                   name="account_type"
+                  options={selectedType}
                   className="form-control"
-                  options={bankOptions}
                   readOnly={readOnly}
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                 />
-              
+                {handleChange(
+                  "account_type",
+                  setSelectedvalue(values?.account_type)
+                )}
               </div>
             </div>
             <div className="row">
