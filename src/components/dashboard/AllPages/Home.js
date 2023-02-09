@@ -36,7 +36,7 @@ function Home() {
   const [modalState, setModalState] = useState("Not-Filled");
   const [isRateMappingInProcess, setIsRateMappingInProcess] = useState(false);
 
-  const { auth, kyc } = useSelector((state) => state);
+  const { auth, kyc, productCatalogueSlice } = useSelector((state) => state);
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
   const { user } = auth;
   let businessCat = user.clientMerchantDetailsList[0].business_cat_code
@@ -44,9 +44,7 @@ function Home() {
   const {SubscribedPlanData} = productCatalogueSlice
 
   useEffect(() => {
-      GetKycTabsStatus({
-      })
-    )
+      GetKycTabsStatus({login_id: user?.loginId})
   }, [user]);
 
   useEffect(() => {
