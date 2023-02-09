@@ -261,7 +261,7 @@ let pageNumbers = []
                     <td>{user?.contactNumber}</td>
                     <td>{user?.status}</td>
                     <td>{covertDate(user.signUpDate)}</td>
-                    <th>{covertDate(user?.ApprovedDate)}</th>
+                    <td>{covertDate(user?.ApprovedDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>
                       {/* <button

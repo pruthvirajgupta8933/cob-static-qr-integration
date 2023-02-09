@@ -38,11 +38,12 @@ function RateMapping() {
          const data = resp?.payload?.results;
       //  resp?.payload?.results!==null ?  toastConfig.errorToast("No data Found") : <></>
         const dataCoun = resp?.payload?.count;
+        setAssignzone(data);
         setDataCount(dataCoun);
         setData(data);
         
         setSpinner(false);
-        setAssignzone(data);
+        
       })
 
       .catch((err) => {
@@ -52,9 +53,25 @@ function RateMapping() {
 
   ////////////////////////////////////////////////// Search filter start here
 
+  // useEffect(() => {
+  //   if (searchText.length > 0) {
+  //     setData(
+  //       assignZone.filter((item) =>
+  //         Object.values(item)
+  //           .join(" ")
+  //           .toLowerCase()
+  //           .includes(searchText?.toLocaleLowerCase())
+  //       )
+  //     );
+  //   } else {
+  //     setData(assignZone);
+  //   }
+  // }, [searchText]);
+
+
   useEffect(() => {
     if (searchText.length > 0) {
-      setData(
+     setData(
         assignZone.filter((item) =>
           Object.values(item)
             .join(" ")
