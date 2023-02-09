@@ -20,14 +20,11 @@ import onlineimg from "../../../assets/images/onlinePayment.png";
 import subscriptin from "../../../assets/images/subscribe.png";
 import Rupees from "../../../assets/images/payout.png";
 import Quick from "../../../assets/images/qwikform.png";
-
 import linkpssa from "../../../assets/images/linkPaisa.png";
 import echlln from "../../../assets/images/echallan.png";
 import StepProgressBar from "../../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import KycAlert from "../../KYC/KycAlert";
 import { DefaultRateMapping } from "../../../utilities/DefaultRateMapping";
-import { isNull } from "lodash";
-import AlertBox from "../../../_components/reuseable_components/AlertBox";
 
 function Home() {
   const roles = roleBasedAccess();
@@ -36,21 +33,12 @@ function Home() {
   const [modalState, setModalState] = useState("Not-Filled");
   const [isRateMappingInProcess, setIsRateMappingInProcess] = useState(false);
 
-  const { auth, kyc, productCatalogueSlice } = useSelector((state) => state);
+  const { auth, kyc } = useSelector((state) => state);
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
-  const { SubscribedPlanData, } = productCatalogueSlice
-
-
   const { user } = auth;
-
-
   let businessCat = user.clientMerchantDetailsList[0].business_cat_code
 
 
-
-
-  // temp login id
-  let b2bLoginId = 10670
 
   useEffect(() => {
     dispatch(subscriptionplan);
@@ -64,10 +52,6 @@ function Home() {
   useEffect(() => {
     setModalState(KycTabStatusStore?.status);
   }, [KycTabStatusStore]);
-
-
-
-
 
   useEffect(() => {
     dispatch(kycUserList({ login_id: user?.loginId }));

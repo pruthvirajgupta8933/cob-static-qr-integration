@@ -15,16 +15,13 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 
 
 function ApprovedMerchant() {
-  // const [approveMerchant, setApproveMerchant] = useState([]);
+
   const [data, setData] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
-  const dispatch = useDispatch();
-  // const { user } = useSelector((state) => state.auth);
-  // const [docImageData, setDocImageData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [spinner, setSpinner] = useState(true);
@@ -33,7 +30,7 @@ function ApprovedMerchant() {
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [isLoaded,setIsLoaded] = useState(false)
 
-
+  const dispatch = useDispatch();
   const roles = roleBasedAccess();
 
 
