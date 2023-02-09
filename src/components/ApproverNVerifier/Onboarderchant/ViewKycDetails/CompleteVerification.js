@@ -44,7 +44,7 @@ const CompleteVerification = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
   const [buttonText, setButtonText] = useState("Complete Verification");
-  const[pushedButton,setPushedButton]=useState("Back to push")
+  const[pushedButton,setPushedButton]=useState("")
   const[pushButtonClick,setPushButtonClick]=useState()
   const handleVerifyClick = () => {
 
