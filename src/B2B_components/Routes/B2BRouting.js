@@ -13,7 +13,7 @@ const B2BRouting = (props) => {
     const roleBasedShowTab = roleBasedAccess();
 
   useEffect(() => {
-    if(roleBasedShowTab?.merchant === false) {
+    if(roleBasedShowTab?.b2b === false) {
         history.push('/login-page')
     }
   })
@@ -21,7 +21,7 @@ const B2BRouting = (props) => {
 
   return (
     <>
-    {roleBasedShowTab.merchant === true  ? <Route><Component /></Route> : <></>}
+    {roleBasedShowTab.b2b === true  ? <Route><Component /></Route> : <></>}
     </>
   )
 }

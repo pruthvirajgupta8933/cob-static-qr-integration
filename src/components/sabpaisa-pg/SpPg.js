@@ -139,7 +139,7 @@ function SpPg() {
                                                 <p className="card-text">Payment Status : {responseData?.status}</p>
                                                 <p className="card-text">Transaction Date : {responseData?.transDate}</p>
                                                 <p className="card-text">{responseData?.sabpaisaMessage}</p>
-                                                <Link className="btn btn-primary" to="/dashboard">Bank to Dashboard</Link>
+                                                <Link className="btn btn-primary" to="/dashboard">Back to Dashboard</Link>
                                             </div>
                                             :
                                             <div className="card-body">
