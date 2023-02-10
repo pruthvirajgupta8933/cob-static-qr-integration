@@ -10,6 +10,7 @@ import { kycOperationReducer } from "./slices/kycOperationSlice";
 import { payoutReducer } from "./slices/payoutSlice";
 import  menuListReducer from "./slices/cob-dashboard/menulistSlice"
 import productCatalogueSlice  from "./slices/merchant-slice/productCatalogueSlice"
+import { ReferralMidReducer } from "./slices/referralAndMidOperationSlice";
 
 
 
@@ -24,7 +25,9 @@ const reducer = {
   kycOperationReducer: kycOperationReducer,
   payout:payoutReducer,
   menuListReducer:menuListReducer,
-  productCatalogueSlice:productCatalogueSlice
+  productCatalogueSlice:productCatalogueSlice,
+  ReferralMidReducer:ReferralMidReducer
+
 };
 
 

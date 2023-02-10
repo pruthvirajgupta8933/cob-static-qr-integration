@@ -102,11 +102,12 @@ function Home() {
         {roles?.merchant === true ?
           <React.Fragment>
             {unPaidProduct?.length > 0 && unPaidProduct?.map((data) => (
-
               <AlertBox
                 key={data?.clientSubscribedPlanDetailsId}
                 heading={`Payment Alert`}
-                message={`Kindly pay the amount of the subscribed product`}
+                text1={`Kindly pay the amount of the subscribed product` }
+                text2={`Product : ${data?.applicationName}` }
+                text3={`Product Plan : ${data?.planName}` }
                 linkUrl={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}
                 linkName={'Make Payment'}
                 bgColor={'alert-danger'}

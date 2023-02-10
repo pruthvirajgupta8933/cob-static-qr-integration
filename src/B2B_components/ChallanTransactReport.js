@@ -230,17 +230,16 @@ useEffect(() => {
       "Amount",
       "Bank Reference No.",
       "Challan No.",
-      "Enquiry Id",
+      // "Enquiry Id",
       "IFSC Code",
-      "Type",
+      "Status",
       "Created On",
-      "Udf1",
-      "Udf2",
-      "Udf3",
-      "Udf4",
-      "Udf5",
-      "Udf6",
-     
+      // "Udf1",
+      // "Udf2",
+      // "Udf3",
+      // "Udf4",
+      // "Udf5",
+      // "Udf6",
     ];
     let excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
@@ -253,16 +252,16 @@ useEffect(() => {
         amount: item.amount === null ? "" : item.amount,
         bank_reference_number: item.bank_reference_number === null ? "" : item.bank_reference_number,
         challan_number: item.challan_number === null ? "" : item.challan_number,
-        enquiry_id: item.enquiry_id === null ? "" : item.enquiry_id,
+        // enquiry_id: item.enquiry_id === null ? "" : item.enquiry_id,
         ifsc: item.ifsc === null ? "" : item.ifsc,
         type: item.type === null ? "" : item.type,
         created_on: item.created_on === null ? "" : item.created_on,
-        udf1: item.udf1 === null ? "" : item.udf1,
-        udf2: item.udf2 === null ? "" : item.udf2,
-        udf3: item.udf3 === null ? "" : item.udf3,
-        udf4: item.udf4 === null ? "" : item.udf4,
-        udf5: item.udf5 === null ? "" : item.udf5,
-        udf6: item.udf6 === null ? "" : item.udf6,
+        // udf1: item.udf1 === null ? "" : item.udf1,
+        // udf2: item.udf2 === null ? "" : item.udf2,
+        // udf3: item.udf3 === null ? "" : item.udf3,
+        // udf4: item.udf4 === null ? "" : item.udf4,
+        // udf5: item.udf5 === null ? "" : item.udf5,
+        // udf6: item.udf6 === null ? "" : item.udf6,
         
       };
 
@@ -389,16 +388,16 @@ useEffect(() => {
                   <th>Amount</th>
                   <th>Bank Reference No.</th>
                   <th>Challan No.</th>
-                  <th>Enquiry Id</th>
+                  {/* <th>Enquiry Id</th> */}
                   <th>IFSC Code</th>
-                  <th>Type</th>
+                  <th>Status</th>
                   <th>Created On</th>
-                  <th>Udf1</th>
+                  {/* <th>Udf1</th>
                   <th>Udf2</th>
                   <th>Udf3</th>
                   <th>Udf4</th>
                   <th>Udf5</th>
-                  <th>Udf6</th>
+                  <th>Udf6</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -429,23 +428,18 @@ useEffect(() => {
                         <td>{user?.amount}</td>
                         <td>{user?.bank_reference_number}</td>
                         <td>{user?.challan_number}</td>
-                        <td>{user?.enquiry_id}</td>
+                        {/* <td>{user?.enquiry_id}</td> */}
                         <td>{user?.ifsc}</td>
                         <td>{user?.type}</td>
                         <td>{user?.created_on}</td>
-                        <td>{user?.udf1}</td>
+                        {/* <td>{user?.udf1}</td>
                         <td>{user?.udf2}</td>
                         <td>{user?.udf3}</td>
                         <td>{user?.udf4}</td>
                         <td>{user?.udf5}</td>
-                        <td>{user?.udf6}</td>
+                        <td>{user?.udf6}</td> */}
                       </tr>
                     ))}
-                  
-                
-                
-                
-
                 <tr></tr>
               </tbody>
             </table>
