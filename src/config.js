@@ -156,11 +156,15 @@ const API_LIVE = {
   KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Rejected&order_by=-merchantId`,
   KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?search=processing&order_by=-merchantId`,
   KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
-  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=approved&order_by=-merchantId`,
+  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=Approved&order_by=-merchantId`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
   KYC_FOR_ONBOARDED: `${kyc_url}/kyc/get-merchant-data/`,
+  KYC_FOR_SAVING_REFER_MERCHANT:`${kyc_url}/kyc/refer-zone/save-refer-zone/`,
+  FOR_GENERATING_MID:`${kyc_url}/kyc/verify-kyc/send-request-subMerchant-mid/`,
+
+
 
   /** Contact Information */
   Save_General_Info: `${kyc_url}/kyc/save-general-info/`,
