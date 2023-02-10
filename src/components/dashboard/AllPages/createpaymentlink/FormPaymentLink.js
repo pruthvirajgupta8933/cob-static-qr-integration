@@ -197,14 +197,14 @@ function FormPaymentLink(props) {
                       <div className="form-row">
                         <div className="form-group col-md-6">
                           <label >
-                            Purpose of Payement Collection
+                            Purpose of Payment Collection
                           </label>
                           <Field
                             type="text"
                             name="Remarks"
                             autoComplete="off"
                             className="form-control"
-                            placeholder="Enter Purpose of Payement Collection"
+                            placeholder="Enter Purpose of Payment Collection"
                           />
                           {<ErrorMessage name="Remarks">
                             {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}

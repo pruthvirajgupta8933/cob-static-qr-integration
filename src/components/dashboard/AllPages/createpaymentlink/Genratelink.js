@@ -203,14 +203,14 @@ const Genratelink = (props) => {
                       </div>
                       <div className="col">
                         <label htmlFor="exampleInputEmail1">
-                        Purpose of Payement Collection
+                        Purpose of Payment Collection
                         </label>
                         <Field
                           type="text"
                           name="Remarks"
                           autoComplete="off"
                           className="form-control"
-                          placeholder="Enter Purpose of Payement Collection"
+                          placeholder="Enter Purpose of Payment Collection"
                         />
                         <ErrorMessage name="Remarks">
                           {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}

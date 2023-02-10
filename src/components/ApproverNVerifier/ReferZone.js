@@ -4,18 +4,16 @@ import React, { useState, useEffect } from "react";
 import {  useDispatch } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
-import ViewZoneModal from "./ViewZoneModal";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
-
+import ViewReferZoneModal from "../ApproverNVerifier/ViewReferZoneModal"
 import NavBar from "../../components/dashboard/NavBar/NavBar"
 
-function AssignZone() {
+const ReferZone = () => {
   const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
@@ -23,9 +21,29 @@ function AssignZone() {
   const [openZoneModal, setOpenModal] = useState(false)
   
 
+  const dispatch = useDispatch();
+
   const approvedSearch = (e) => {
     setSearchText(e.target.value);
   };
+
+
+  const refreshAfterRefer = () => {
+    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
+      .then((resp) => {
+       const data = resp?.payload?.results;
+        const dataCoun = resp?.payload?.count;
+        setData(data);
+         setDataCount(dataCoun);
+         setAssignzone(data);
+      })
+
+      .catch((err) => {
+      });
+  
+
+  }
+
 
 
   useEffect(() => {
@@ -111,6 +129,8 @@ function AssignZone() {
     }
 
 
+    console.log(data,"referData")
+
     return (
     <section className="ant-layout">
       <div>
@@ -119,7 +139,7 @@ function AssignZone() {
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Assign Zone</h1>
+            <h1 className="m-b-sm gx-float-left">Provision of Sourcing Partner</h1>
 
 
           </div>
@@ -132,7 +152,7 @@ function AssignZone() {
                 type="text"
                 placeholder="Search Here"
               />
-              <div> { openZoneModal === true ? <ViewZoneModal userData={modalDisplayData} /> : <></> }</div> 
+              <div> { openZoneModal === true ? <ViewReferZoneModal userData={modalDisplayData} setOpenModal={setOpenModal}  refreshAfterRefer={refreshAfterRefer} /> : <></> }</div> 
             </div>
             <div className="col-lg-4 mrg-btm- bgcolor">
               <label>Count Per Page</label>
@@ -145,19 +165,7 @@ function AssignZone() {
              <DropDownCountPerPage datalength={data?.length} />
               </select>
             </div>
-            <div className="form-group col-lg-3 col-md-12 mt-2">
-          <label>Onboard Type</label>
-          <select
-           onChange={approvedSearch}
-            className="ant-input"
-          >
-             <option value="Select Role Type">Select Onboard Type</option>
-            <option value="">All</option>
-            <option value="online">Online</option>
-            <option value="offline">Offline</option>
-           
-          </select>
-        </div>
+         
             <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
               <div className="scroll overflow-auto">
 
@@ -169,10 +177,12 @@ function AssignZone() {
                       <th>Merchant Name</th>
                       <th> Email</th>
                       <th>Contact Number</th>
+                      <th>Sourcing Point</th>
+                      <th>Sourcing Code</th>
                       <th>KYC Status</th>
                       <th>Registered Date</th>
                       <th>Onboard Type</th>
-                      <th>View Zone</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -201,6 +211,8 @@ function AssignZone() {
                           <td>{user.name}</td>
                           <td>{user.emailId}</td>
                           <td>{user.contactNumber}</td>
+                          <td>{user.sourcing_point}</td>
+                          <td>{user.sourcing_code}</td>
                           <td>{user.status}</td>
                           <td> {covertDate(user.signUpDate)}</td>
                           <td>{user?.isDirect}</td>
@@ -209,7 +221,7 @@ function AssignZone() {
                             <button type="submit" onClick={()=>{setModalDisplayData(user)
                             setOpenModal((true))
                             }} className="btn btnbackground text-white" data-toggle="modal" data-target="#exampleModalCenter">
-                              Update Zone
+                              Refer Merchant
                             </button>
                           </td>
                         </tr>
@@ -260,5 +272,4 @@ function AssignZone() {
     </section>
   )
 }
-
-export default AssignZone;
+export default ReferZone;

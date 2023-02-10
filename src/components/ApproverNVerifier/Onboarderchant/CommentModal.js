@@ -12,6 +12,7 @@ import toastConfig from "../../../utilities/toastTypes";
 import moment from "moment";
 import "./comment.css";
 import downloadIcon from "../../../assets/images/download-icon.svg";
+import _ from "lodash";
 
 const CommentModal = (props) => {
   const [commentsList, setCommentsList] = useState([]);
@@ -111,14 +112,25 @@ const CommentModal = (props) => {
   };
   const isUrlValid=(userInput)=> {
     let res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-    let ext =  userInput.split('.').pop();
-    const formats = ["pdf", "jpg", "jpeg","png" ];
-    let test = formats.includes(ext);
-    if(res == null && test===true)
+    if(res == null)
         return false;
     else
         return true;
 }
+const fileTypeCheck = (file)=>
+  {
+    let ext =  file.split('.').pop();
+    const formats = ["pdf", "jpg", "jpeg","png" ];
+    let htmlType = _.includes(formats, `${ext}`);
+    if(!htmlType)
+    {
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  }
 
   return (
     <div>
@@ -285,13 +297,13 @@ const CommentModal = (props) => {
                                         <td>
                                           {remark?.comment_by_user_name.toUpperCase()}
                                         </td>
-                                        <td>{remark?.comments}</td>
+                                        <td style={{overflowWrap:"break-word"}}>{remark?.comments}</td>
                                         <td>
                                           {dateManipulate(remark?.comment_on)}
                                         </td>
                                         <td>{remark?.merchant_tab}</td>
                                         <td>
-                                          {remark?.file_path !== null  && isUrlValid(remark?.file_path) && (
+                                          {remark?.file_path !== null  && isUrlValid(remark?.file_path) && fileTypeCheck(remark?.file_path) && (
                                             <a
                                               href={remark?.file_path}
                                               target={"_blank"}
