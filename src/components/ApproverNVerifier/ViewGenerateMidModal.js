@@ -169,12 +169,12 @@ const ViewGenerateMidModal = (props) => {
                               </thead>
                               <tbody>
                                 <tr>
-                                  <td>{data.clientCode}</td>
-                                  <td>{data.subMerchantId}</td>
-                                  <td>{data.bankrequestId}</td>
-                                  <td>{data.onboardStatus}</td>
-                                  <td>{data.clientName}</td>
-                                  <td>{data.clientAddress}</td>
+                                  <td>{data?.clientCode}</td>
+                                  <td>{data?.subMerchantId}</td>
+                                  <td>{data?.bankrequestId}</td>
+                                  <td>{data?.onboardStatus}</td>
+                                  <td>{data?.clientName}</td>
+                                  <td>{data?.clientAddress}</td>
                                   <td>{data?.clientGstNo}</td>
                                 </tr>
                               </tbody>

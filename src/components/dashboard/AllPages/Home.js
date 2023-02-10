@@ -89,7 +89,7 @@ function Home() {
       <div className="announcement-banner-container col-lg-12">
 
         {/* hide when login by bank and businees category b2b */}
-        {roles?.bank === true || businessCat === "8" ? (
+        {(roles?.bank === true || roles?.b2b === true) ? (
           <></>
         ) : (
           <StepProgressBar status={kyc?.kycUserList?.status} />
@@ -224,7 +224,7 @@ function Home() {
               </p>
             </div>
 
-            {roles?.merchant === true && modalState !== "Approved" && businessCat !== "8" ? (
+            {(roles?.merchant === true && modalState !== "Approved") && (
               <div className="col-12 col-md-12">
                 <div className="card col-lg-12- cardkyc pull-left">
                   <div className="font-weight-bold card-body Satoshi-Medium">
@@ -250,7 +250,8 @@ function Home() {
                   </div>
                 </div>
               </div>
-            ) : roles?.bank === true || roles.viewer === true || businessCat === "8" ? <></> :
+            ) }
+            {(roles?.merchant === true && modalState === "Approved") && 
               (
                 <div className="col-12 col-md-12">
                   <div className="card col-lg-12- cardkyc pull-left">
@@ -270,7 +271,7 @@ function Home() {
 
         </div>
 
-        {roles?.merchant === true && businessCat !== "8" ? (
+        {roles?.merchant === true && (
           <div className="container">
             <div className="row">
               <div className="col-sm  m-0 no-pad">
@@ -392,7 +393,7 @@ function Home() {
               </div>
             </div>
           </div>
-        ) : <></>}
+        ) }
       </div>
 
       {/* KYC container end here */}
@@ -413,7 +414,7 @@ function Home() {
       </main>
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
-      {roles?.bank === true || businessCat === "8" ? (
+      {(roles?.bank === true || roles?.b2b === true) ? (
         <></>
       ) : (
         <div
@@ -429,7 +430,6 @@ function Home() {
               <div className="modal-body Satoshi-Medium">
 
                 {/* ratemapping loader  */}
-
                 <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
 
 

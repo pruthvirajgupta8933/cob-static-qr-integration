@@ -10,54 +10,35 @@ export const roleBasedAccess = () => {
         bank: false,
         merchant: false,
         viewer:false,
+        b2b:false
     };
 
     let roleAccessObj = roleBasedTab;
     
     let permission = {
-        Allow_To_Do_Verify_Kyc_details : false,
-        EnalbeTabs: {
-            MerchantList:false,
-            AdditionalKyc:false,
-            AssignZone:false,
-            RateMapping:false,
-            SignupData:false,
-            OnBoardMerchant:false
-        }
+        Allow_To_Do_Verify_Kyc_details : false
     }
 
 
     if (roleId === 14 ) {
         // user is verifier 
         roleAccessObj = { ...roleAccessObj, verifier: true };
-        permission = {...permission.EnalbeTabs, 
-            MerchantList:true,
-            SignupData : true,
-            OnBoardMerchant : true,
-        }
     } else if (roleId === 15){
         // user is approver
         roleAccessObj = { ...roleAccessObj, approver: true };
-        permission = {...permission.EnalbeTabs, 
-                        MerchantList:true,
-                        AdditionalKyc : true,
-                        AssignZone : true,
-                        RateMapping : true,
-                        SignupData : true,
-                        OnBoardMerchant : true,
-                    }
-
     }else if (roleId === 3 || roleId === 13) {
+        // bank and referal
         roleAccessObj = { ...roleAccessObj, bank: true };
     } else if (roleId === 4 || roleId === 5) {
+        // merchant
         roleAccessObj = { ...roleAccessObj, merchant: true };
     } else if (roleId === 16 ) {
         // user is viewer
         roleAccessObj = { ...roleAccessObj, viewer: true };
-        permission = {...permission.EnalbeTabs, 
-            MerchantList:true,
-            SignupData : true
-        }
+    }
+    else if (roleId === 100 ) {
+        // b2b - emammi
+        roleAccessObj = { ...roleAccessObj, b2b: true };
     } else {
         // console.log("Permission not match with these roles");
     }
