@@ -77,11 +77,6 @@ const SideNavbar = () => {
 
   const roleBasedShowTab = roleBasedAccess();
 
-  const [payoutMenus, setPayoutMenus] = useState(true);
-
-  // const ShowPayoutMenus = useCallback(() => {
-  //   setPayoutMenus(!payoutMenus);
-  // }, [payoutMenus]);
 
   return (
     <aside
@@ -132,7 +127,7 @@ const SideNavbar = () => {
                     role="menu"
                     style={{ background: "#140633" }}
                   >
-                    {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true) ? (
+                    {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true || roleBasedShowTab?.b2b === true) ? (
                       <li className="ant-menu-item" role="menuitem">
                         <Link to={`${url}`} className="txt-white sidenavFonts">
                           <img src={dashboard} width={17} alt="sabpaisa" />
@@ -177,7 +172,6 @@ const SideNavbar = () => {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>

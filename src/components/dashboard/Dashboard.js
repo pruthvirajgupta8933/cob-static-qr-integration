@@ -64,6 +64,8 @@ import B2BRouting from "../../B2B_components/Routes/B2BRouting";
 import { fetchMenuList } from "../../slices/cob-dashboard/menulistSlice";
 import { isNull } from "lodash";
 import { merchantSubscribedPlanData } from "../../slices/merchant-slice/productCatalogueSlice";
+import ReferZone from "../ApproverNVerifier/ReferZone";
+import GenerateMid from "../ApproverNVerifier/GenerateMid";
 
 
 function Dashboard() {
@@ -134,12 +136,12 @@ function Dashboard() {
   }, [user, dispatch])
 
 
-  // useEffect(() => {
-  //   // fetch subscribe product data
-  //   if(location?.pathname==="/dashboard"){
-  //     dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
-  //   }
-  // }, [location])
+  useEffect(() => {
+    // fetch subscribe product data
+    if(location?.pathname==="/dashboard"){
+      dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
+    }
+  }, [location])
 
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
@@ -476,6 +478,29 @@ function Dashboard() {
             <SignupData />
           </ApproverRoute>
         )}
+      
+
+          {roles?.approver && (
+          <ApproverRoute
+            exact
+            path={`${path}/referzone`}
+            Component={ReferZone}
+          >
+            <ReferZone />
+          </ApproverRoute>
+        )}
+
+
+         {roles?.approver && (
+          <ApproverRoute
+            exact
+            path={`${path}/generatemid`}
+            Component={GenerateMid}
+          >
+            <ReferZone />
+          </ApproverRoute>
+        )}
+          
 
 
         <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
