@@ -21,6 +21,8 @@ const CompleteVerification = (props) => {
   const KycTabStatus = props.KycTabStatus;
   let isapproved = KycTabStatus.is_approved;
   let isverified = KycTabStatus.is_verified
+  // let is_verified=KycTabStatus.is_verified
+
   const { merchantKycId } = props;
   
 

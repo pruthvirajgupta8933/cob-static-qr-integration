@@ -89,7 +89,7 @@ function FormPaymentLink(props) {
           transition: Zoom,
           limit: 2,
         })
-        // console.log(error);
+        
       });
   };
 

@@ -8,13 +8,6 @@ import { useHistory } from 'react-router-dom';
 import API_URL from '../../../../config';
 
 
-// const initialValues = {
-//   Amount: "",
-//   Remarks: "",
-//   LinkValidToDate: ""
-// }
-
-
 const validationSchema = Yup.object().shape({
   Amount: Yup.string().required("Required"),
   Remarks: Yup.string().required("Required"),
@@ -23,22 +16,12 @@ const validationSchema = Yup.object().shape({
 
 const Genratelink = (props) => {
   let history = useHistory();
-  // console.log(props);
-  // var id=""
   var { customer_id } = props.generatedata;
-
-
-  // const [enteredAmount, setEnteredAmount] = useState("");
-  // const [enteredPurpose, setEnteredPurpose] = useState("");
-  // const [enteredDate, setEnteredDate] = useState("");
-  const [hours, setHours] = useState("");
+const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
   const [passwordcheck, setPasswordCheck] = useState(false);
 
-
-
-
-  const { user } = useSelector((state) => state.auth);
+const { user } = useSelector((state) => state.auth);
 
 
   // const [data, setData] = useState([])
