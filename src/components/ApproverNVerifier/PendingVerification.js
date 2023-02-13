@@ -264,6 +264,7 @@ function PendingVerification() {
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >
+                        
                         {(roles?.verifier === true && currenTab === 3 ) || Allow_To_Do_Verify_Kyc_details === true ? "Verify KYC / View Status" : "View Status" }
                       
                       </button>
