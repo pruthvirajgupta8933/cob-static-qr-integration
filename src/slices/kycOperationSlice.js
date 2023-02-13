@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-pattern */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // import {kycOperationService} from "../services/kycOperation.service"
 import kycOperationService from "../services/kycOperation.service";
@@ -141,13 +142,6 @@ export const rejectKycOperation = createAsyncThunk(
 
 
   
-  
-  
-
- 
-
-
-
   export const kycOperationSlice = createSlice({
     name: "kycrejected",
     initialState,
@@ -189,7 +183,8 @@ export const rejectKycOperation = createAsyncThunk(
   });
   export const {
    
-  } = kycOperationSlice.actions;
+  } =
+   kycOperationSlice.actions;
   export const kycOperationReducer = kycOperationSlice.reducer;
   
 
