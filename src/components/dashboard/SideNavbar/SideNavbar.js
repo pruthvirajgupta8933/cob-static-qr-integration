@@ -79,17 +79,16 @@ const SideNavbar = () => {
 
 
   return (
-    <aside
-      className="gx-app-sidebar  gx-layout-sider-dark false ant-layout-sider ant-layout-sider-dark"
-      style={{
-        background: "#140633",
-        flex: "0 0 200px",
-        maxWidth: "200px",
-        minWidth: "200px",
-        width: "200px",
-        borderRight: "1px solid",
-      }}
-    >
+    <React.Fragment>
+     <div className="headers "></div>
+      <input type="checkbox" className="openSidebarMenu" id="openSidebarMenu" title="ToggleBar" alt="ToggleBar" />
+      {/* htmlfor="openSidebarMenu" that code writen by abhiverma but htmlfor got error when we used inside label code*/}
+      <label for="openSidebarMenu" className="sidebarIconToggle ">
+        <div className="spinner diagonal part-1"></div>
+        <div className="spinner horizontal"></div>
+        <div className="spinner diagonal part-2"></div>
+      </label>
+      <aside className="gx-app-sidebar  gx-layout-sider-dark- false- ant-layout-sider- ant-layout-sider-dark d-none- col-lg-2 p-0 m-0-" id="sidebarMenu">
       <div className="ant-layout-sider-children">
         <div className="gx-sidebar-content">
           <div className="brand-logo d-flex-item-right">
@@ -177,6 +176,8 @@ const SideNavbar = () => {
         </div>
         </div>
       </aside>
+    </React.Fragment>
+   
   );
 };
 
