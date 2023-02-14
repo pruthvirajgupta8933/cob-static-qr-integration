@@ -27,6 +27,22 @@ function AssignZone() {
     setSearchText(e.target.value);
   };
 
+  const afterGeneratingMid = () => {
+    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
+    .then((resp) => {
+     const data = resp?.payload?.results;
+      const dataCoun = resp?.payload?.count;
+      setData(data);
+       setDataCount(dataCoun);
+       setAssignzone(data);
+    })
+
+    .catch((err) => {
+      toastConfig.errorToast("Data not loaded");
+    });
+
+  }
+
 
   useEffect(() => {
    
@@ -106,7 +122,7 @@ function AssignZone() {
 
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("MM/DD/YYYY");
+    let date = moment(yourDate).format("DD/MM/YYYY");
       return date
     }
 
@@ -132,7 +148,7 @@ function AssignZone() {
                 type="text"
                 placeholder="Search Here"
               />
-              <div> { openZoneModal === true ? <ViewGenerateMidModal userData={modalDisplayData} setOpenModal={setOpenModal} /> : <></> }</div> 
+              <div> { openZoneModal === true ? <ViewGenerateMidModal userData={modalDisplayData} setOpenModal={setOpenModal}  afterGeneratingMid={afterGeneratingMid} /> : <></> }</div> 
             </div>
             <div className="col-lg-4 mrg-btm- bgcolor">
               <label>Count Per Page</label>
@@ -155,6 +171,7 @@ function AssignZone() {
                       <th>S. No.</th>
                       <th>Client Code</th>
                       <th>Merchant Name</th>
+                      <th>Sub Merchant Id</th>
                       <th> Email</th>
                       <th>Contact Number</th>
                       <th>KYC Status</th>
@@ -187,6 +204,7 @@ function AssignZone() {
                           <td>{i + 1}</td>
                           <td>{user.clientCode}</td>
                           <td>{user.name}</td>
+                          <td>{user.sub_merchant_id ? user.sub_merchant_id : "null"}</td>
                           <td>{user.emailId}</td>
                           <td>{user.contactNumber}</td>
                           <td>{user.status}</td>
