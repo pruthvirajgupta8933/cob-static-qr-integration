@@ -310,7 +310,7 @@ function Sandbox() {
                           className="form-control"
                           id="inputPassword3"
                           disabled="true"
-                          value="https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1"
+                          value={`https://securepay.sabpaisa.in/SabPaisa/sabPaisaInit${data?.apiVersion===1 ? '?v=1' :''}`}
                         />
                       </div>
                     </div>
