@@ -105,9 +105,9 @@ const NotFilledKYC = () => {
   }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("MM/DD/YYYY");
-    return date;
-  };
+    let date = moment(yourDate).format("DD/MM/YYYY");
+      return date
+    }
 
   return (
     <div className="container-fluid flleft">

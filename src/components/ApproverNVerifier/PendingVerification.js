@@ -145,7 +145,7 @@ function PendingVerification() {
   }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("MM/DD/YYYY");
+    let date = moment(yourDate).format("DD/MM/YYYY");
       return date
     }
 
@@ -264,7 +264,7 @@ function PendingVerification() {
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >
-                        {(roles?.verifier === true && currenTab === 3 ) || Allow_To_Do_Verify_Kyc_details === true ? "Verify KYC / View Status" : "View Status" }
+                        {(roles?.verifier === true && currenTab === 3 ) || Allow_To_Do_Verify_Kyc_details === true ? "Verify KYC " : "View Status" }
                       
                       </button>
                     </td>
