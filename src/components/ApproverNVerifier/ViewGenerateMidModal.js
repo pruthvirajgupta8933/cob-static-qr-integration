@@ -60,9 +60,12 @@ const ViewGenerateMidModal = (props) => {
         setShow(true);
         setLoading(false);
         resetForm();
+        return props.afterGeneratingMid()
       })
 
       .catch((err) => {
+
+        console.log(err,"Error")
         toastConfig.errorToast(err);
         // setDisable(false);
       });
