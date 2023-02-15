@@ -158,7 +158,7 @@ let pageNumbers = []
   };
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("MM/DD/YYYY");
+    let date = moment(yourDate).format("DD/MM/YYYY");
       return date
     }
 
@@ -222,6 +222,7 @@ let pageNumbers = []
                 <th>Contact Number</th>
                 <th>KYC Status</th>
                 <th>Registered Date</th>
+                <th>Verified Date</th>
                 <th>Approved Date</th>
                 <th>Onboard Type</th>
                 <th>View Status</th>
@@ -258,6 +259,7 @@ let pageNumbers = []
                     <td>{user?.contactNumber}</td>
                     <td>{user?.status}</td>
                     <td>{covertDate(user.signUpDate)}</td>
+                    <td>{user?.verified_date === null ? "NA" : covertDate(user?.verified_date)}</td>
                     <td>{covertDate(user?.ApprovedDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>

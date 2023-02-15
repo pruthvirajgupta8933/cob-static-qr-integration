@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { Formik, Form } from "formik";
 import API_URL from '../../config';
@@ -8,7 +9,7 @@ import FormikController from "../../_components/formik/FormikController";
 import { axiosInstanceAuth } from '../../utilities/axiosInstance';
 import RateRadioMapping from './RateRadioMapping';
 import { useDispatch, useSelector } from "react-redux";
-import { riskCategory, businessCategory,templateRate,viewRateMap} from '../../slices/rateMappingSlice';
+import { riskCategory, businessCategory, templateRate, viewRateMap } from '../../slices/rateMappingSlice';
 
 const initialValues = {
     rate_template_name: "",
@@ -26,21 +27,23 @@ const validationSchema = Yup.object({
 const ViewRateMapping = (props) => {
 
     const [template, setTemplate] = useState([])
-    const[businessTemplate,setBusinessTemplate]=useState("")
-    const[businessTemplates,setBusinessTemplates]=useState([])
+    const [businessTemplate, setBusinessTemplate] = useState("")
+    const [businessTemplates, setBusinessTemplates] = useState([])
     const [show, setShow] = useState(false)
     const [riskTemplate, setRisktemplate] = useState([])
     const [risk, setRisk] = useState([])
     const [riskCode, setRiskCode] = useState("")
-    const [businessCode, setBusinessCode] = useState([]);
-    
+
+    const [disable, setDisable] = useState(false)
+
     const dispatch = useDispatch();
 
-   
+
 
 
     useEffect(() => {
-       dispatch(riskCategory())
+        setDisable(false)
+        dispatch(riskCategory())
             .then((resp) => {
                 const data =
                     convertToFormikSelectJson("risk_category_code", "risk_category_name", resp?.payload);
@@ -56,14 +59,15 @@ const ViewRateMapping = (props) => {
             const postData = {
                 risk_category_code: riskCode
             };
-           dispatch( businessCategory(postData)).then((resp) => {
-                    
-                    const data = convertToFormikSelectJson("business_category_id", "category_name", resp?.payload?.Data);
+            setDisable(false)
+            dispatch(businessCategory(postData)).then((resp) => {
 
-                    setTemplate(data)
-                }).catch((err) => {
+                const data = convertToFormikSelectJson("business_category_id", "category_name", resp?.payload?.Data);
 
-                })
+                setTemplate(data)
+            }).catch((err) => {
+
+            })
         }
     }, [riskCode]);
 
@@ -73,19 +77,21 @@ const ViewRateMapping = (props) => {
             const postData = {
                 business_cat_code: businessTemplate
             };
-           dispatch(templateRate(postData)).then((resp) => {
-                    const data = convertToFormikSelectJson("rate_template_code", "rate_template_name", resp?.payload);
+            setDisable(false)
+            dispatch(templateRate(postData)).then((resp) => {
+                const data = convertToFormikSelectJson("rate_template_code", "rate_template_name", resp?.payload);
 
-                    setBusinessTemplates(data)
-                }).catch((err) => {
+                setBusinessTemplates(data)
+            }).catch((err) => {
 
-                })
+            })
         }
+
     }, [businessTemplate]);
     //////////////////////////////////////////////////////////////////
 
 
-   
+
 
     // useEffect(() => {
     //     axiosInstanceAuth
@@ -113,23 +119,25 @@ const ViewRateMapping = (props) => {
 
 
     const handleSubmit = (values) => {
+        setDisable(true)
 
 
         const postData = {
             "rate_template_code": values.category_name,
-            "business_cat_code": values.risk_category_name ,
+            "business_cat_code": values.risk_category_name,
             "risk_cat_code": values.rate_template_name
 
         };
-       dispatch(viewRateMap(postData)).then((resp) => {
-                setRisktemplate(resp?.payload)
-                // toast.success(resp?.data?.message);
-            
-                setShow(true)
-            }).catch(() => {
+        dispatch(viewRateMap(postData)).then((resp) => {
+            setRisktemplate(resp?.payload)
+            setDisable(true)
+            // toast.success(resp?.data?.message);
 
+            setShow(true)
+        }).catch(() => {
+            setDisable(true)
 
-            })
+        })
     }
     return (
         <div>
@@ -143,7 +151,7 @@ const ViewRateMapping = (props) => {
                             // onSubmit={(values)=>handleSubmit(values)}
                             onSubmit={(values, { resetForm }) => {
                                 handleSubmit(values)
-                                
+
                             }}
                             enableReinitialize={true}
                         >
@@ -154,14 +162,14 @@ const ViewRateMapping = (props) => {
                                     <div className="modal-header">
                                         <h5 className="modal-title bolding text-black" id="exampleModalLongTitle">Rate Mapping</h5>
 
-                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close"  onClick={() => setShow(false)}>
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => setShow(false)}>
                                             <span aria-hidden="true">&times;
                                             </span>
                                         </button>
                                     </div>
                                     <div className="modal-body">
-                                        <h5 className="font-weight-bold">Name: {props?.userData?.clientName}</h5>
-                                        <h5 className="font-weight-bold">ClientCode: {props?.userData?.clientCode}</h5>
+                                        <h5 className="font-weight-bold">Client Name: {props?.userData?.clientName}</h5>
+                                        <h5 className="font-weight-bold">Client Code: {props?.userData?.clientCode}</h5>
                                         <div className="container">
 
                                             <Form>
@@ -173,7 +181,7 @@ const ViewRateMapping = (props) => {
                                                                 className="string optional"
                                                                 htmlFor="risk_category"
                                                             >
-                                                                Risk category
+                                                                Risk Category
                                                             </label>
                                                             <FormikController
                                                                 control="select"
@@ -195,7 +203,7 @@ const ViewRateMapping = (props) => {
                                                                 className="string optional"
                                                                 htmlFor="rate_template_name"
                                                             >
-                                                                Business category
+                                                                Business Category
                                                             </label>
                                                             <FormikController
                                                                 control="select"
@@ -204,7 +212,7 @@ const ViewRateMapping = (props) => {
                                                                 className="form-control"
 
                                                             />
-                                                              {formik.handleChange(
+                                                            {formik.handleChange(
                                                                 "rate_template_name",
                                                                 setBusinessTemplate(formik?.values?.rate_template_name)
                                                             )}
@@ -218,11 +226,11 @@ const ViewRateMapping = (props) => {
                                                                 className="string optional"
                                                                 htmlFor="Template_rate"
                                                             >
-                                                                Template Rate
+                                                                Choose Rate Template
                                                             </label>
                                                             <FormikController
                                                                 control="select"
-                                                                name= "risk_category_name"
+                                                                name="risk_category_name"
                                                                 options={businessTemplates}
                                                                 className="form-control"
 
@@ -231,23 +239,23 @@ const ViewRateMapping = (props) => {
 
                                                         </div>
                                                     </div>
-                                                 
+
                                                 </div>
 
 
                                                 <div className="modal-footer">
                                                     {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
-                                                    <button type="submit"  className="btn btn-primary">View</button>
+                                                    <button disabled={disable} type="submit" className="btn btn-primary">View</button>
                                                     {show === true ? (
                                                         <div className='col-lg-12'>
-                                                        <RateRadioMapping riskTemplate={riskTemplate} chiledCode={props?.userData}/>
+                                                            <RateRadioMapping riskTemplate={riskTemplate} chiledCode={props?.userData} />
                                                         </div>
-                                                       
+
 
                                                     ) : (
                                                         <></>
                                                     )}
-                                                    
+
                                                 </div>
 
                                             </Form>

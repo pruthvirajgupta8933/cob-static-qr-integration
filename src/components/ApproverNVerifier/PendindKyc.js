@@ -129,7 +129,7 @@ const PendindKyc = () => {
   }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("MM/DD/YYYY");
+    let date = moment(yourDate).format("DD/MM/YYYY");
     return date;
   };
 

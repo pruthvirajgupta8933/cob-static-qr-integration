@@ -150,7 +150,7 @@ function VerifiedMerchant() {
   }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("MM/DD/YYYY");
+    let date = moment(yourDate).format("DD/MM/YYYY");
       return date
     }
 
@@ -210,7 +210,7 @@ function VerifiedMerchant() {
                 <th>Merchant Name</th>
                 <th>Email</th>
                 <th>Contact Number</th>
-                <th>KYC Status</th>
+                {/* <th>KYC Status</th> */}
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
                 <th>View Status</th>
@@ -246,7 +246,7 @@ function VerifiedMerchant() {
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
-                    <td>{user.status}</td>
+                    {/* <td>{user.status}</td> */}
                     <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>
@@ -258,7 +258,7 @@ function VerifiedMerchant() {
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >
-                       { roles?.approver === true && currenTab === 4 ?  "Approve KYC / View Status" : "View Status" } 
+                       { roles?.approver === true && currenTab === 4 ?  "Approve KYC " : "View Status" } 
                       </button>
                     </td>
                     {/* <td>{user?.comments}</td> */}

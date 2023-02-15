@@ -42,6 +42,9 @@ const MakePayment = (props) => {
   const payoutBeneficiaryState = useSelector((state) => state.payout);
   const payoutTransactionsState = useSelector((state) => state.payout);
   const [selectedBeneficiary, setSelectedBeneficiary] = useState({});
+  const [bankdata, setData] = useState([]);
+  const [bankRespdetails, setBankRespDetails] = useState(false);
+  const [paymentForm, setPaymentForm] = useState(true);
   const beneficiaryData = payoutBeneficiaryState?.beneficiaryList.results;
 
   const transactionsMode = payoutTransactionsState?.transactionsMode?.data;
@@ -76,20 +79,28 @@ const MakePayment = (props) => {
     const data = JSON.stringify(
       Encrypt(
         `orderId=${values.order_id}&beneficiaryName=${values.benficiary_name}&beneficiaryAccount=${values.beneficiary_account}&beneficiaryIFSC=${values.ifsc_code}&amount=${values.amount}.00&purpose=${values.purpose},&remarks_description=${values.remarks},&mcc_code=${values.mcc}`,
-        `Q18WWNrkxplfs6u4`,
-        `q30RPaeE4UaWVv8p`
+        `KIfO3ZTnUGUtkFec`,
+        `rZgL7cYEKLCOWLlv`
+      )
+    );
+    const UpiData = JSON.stringify(
+      Encrypt(
+        `orderId=${values.order_id}&upiId=${values.benficiary_upi}&amount=${values.amount}&purpose=${values.purpose}&remarks_description=${values.remakrs}&mcc_code=${values.mcc}`,
+        `KIfO3ZTnUGUtkFec`,
+        `rZgL7cYEKLCOWLlv`
       )
     );
     dispatch(
       PaymentRequest({
-          query: data,
-          mode: paymentMode,
+        query: values.mode === "UPI" ? UpiData : data,
+        mode: paymentMode,
       })
     ).then((res) => {
       if (res) {
         if (res.meta.requestStatus === "fulfilled") {
+          setBankRespDetails(true);
+          setPaymentForm(false);
           let text = res.payload.resData;
-
           if (typeof text !== "undefined") {
             let planText = Decrypt(
               text,
@@ -99,10 +110,8 @@ const MakePayment = (props) => {
             var str = planText.replace(/'/g, '"');
             var tempArr = [str];
             var resObj = JSON.parse(tempArr);
-            // setData(resObj)
+            setData(resObj);
           }
-        }
-        if (res.meta.requestStatus === "fulfilled") {
         }
       }
     });
@@ -112,7 +121,10 @@ const MakePayment = (props) => {
     let obj = Object.assign({}, data);
     setSelectedBeneficiary(obj);
   };
-  console.log(paymentMode);
+  const showMakePayment = (message) => {
+    setBankRespDetails(false);
+    setPaymentForm(true);
+  };
   return (
     <>
       <section className="ant-layout">
@@ -124,314 +136,327 @@ const MakePayment = (props) => {
             <div className="right_layout my_account_wrapper right_side_heading">
               <h1 className="m-b-sm gx-float-left">Payment Procedure</h1>
             </div>
-            <div className="form-group  container ">
-              <Formik
-                initialValues={{
-                  benficiary_name: "",
-                  beneficiary_account: "",
-                  benficiary_upi: "",
-                  order_id: "",
-                  ifsc_code: "",
-                  amount: "",
-                  purpose: "",
-                  remarks: "",
-                  mcc: "",
-                }}
-                validationSchema={FORM_VALIDATION}
-                onSubmit={handlePaymentRequestSubmit}
-              >
-                {(formik) => (
-                  <Form acceptCharset="utf-8" action="#" className="simform">
-                    <div className="container">
-                      <div className="row">
-                        <div className="col-sm-5">
-                          <label>Select Beneficiary</label>
-                          <select
-                            // onChange={(e) => setbeneficiary(e)}
-                            className="form-control rounded-0"
-                            aria-label=".form-select-sm example"
-                            // value={transStatus}
-                            onChange={(e) => test(e.target.value)}
-                            name="beneficiary"
-                            onClick={(e) => {
-                              formik.setFieldValue(
-                                "beneficiary_account",
-                                selectedBeneficiary[0]?.account_number
-                              );
-                              formik.setFieldValue(
-                                "benficiary_name",
-                                selectedBeneficiary[0]?.full_name
-                              );
-                              formik.setFieldValue(
-                                "ifsc_code",
-                                selectedBeneficiary[0]?.ifsc_code
-                              );
-                              formik.setFieldValue(
-                                "benficiary_upi",
-                                selectedBeneficiary[0]?.upi_id
-                              );
-                            }}
-                          >
-                            <option selected>Select beneficiary</option>
-                            {beneficiaryData?.map((data,key) => {
-                              return (
-                                <>
-                                  <option value={data.id} id={key}>
-                                    {data.full_name}
+            {paymentForm && (
+              <div className="form-group  container ">
+                <Formik
+                  initialValues={{
+                    benficiary_name: "",
+                    beneficiary_account: "",
+                    benficiary_upi: "",
+                    order_id: "",
+                    ifsc_code: "",
+                    amount: "",
+                    purpose: "",
+                    remarks: "",
+                    mcc: "",
+                  }}
+                  validationSchema={FORM_VALIDATION}
+                  onSubmit={handlePaymentRequestSubmit}
+                >
+                  {(formik) => (
+                    <Form acceptCharset="utf-8" action="#" className="simform">
+                      <div className="container">
+                        <div className="row">
+                          <div className="col-sm-5">
+                            <label>Select Beneficiary</label>
+                            <select
+                              // onChange={(e) => setbeneficiary(e)}
+                              className="form-control rounded-0"
+                              aria-label=".form-select-sm example"
+                              // value={transStatus}
+                              onChange={(e) => test(e.target.value)}
+                              name="beneficiary"
+                              onClick={(e) => {
+                                formik.setFieldValue(
+                                  "beneficiary_account",
+                                  selectedBeneficiary[0]?.account_number
+                                );
+                                formik.setFieldValue(
+                                  "benficiary_name",
+                                  selectedBeneficiary[0]?.full_name
+                                );
+                                formik.setFieldValue(
+                                  "ifsc_code",
+                                  selectedBeneficiary[0]?.ifsc_code
+                                );
+                                formik.setFieldValue(
+                                  "benficiary_upi",
+                                  selectedBeneficiary[0]?.upi_id
+                                );
+                              }}
+                            >
+                              <option selected>Select beneficiary</option>
+                              {beneficiaryData?.map((data, key) => {
+                                return (
+                                  <>
+                                    <option value={data.id} id={key}>
+                                      {data.full_name}
+                                    </option>
+                                  </>
+                                );
+                              })}
+                            </select>
+                          </div>
+                          <div className="col-sm-5">
+                            <label>Mode</label>
+                            <select
+                              onClick={(e) => {
+                                fetchBeneficiaryMode();
+                                setPaymentMode(e.target.value);
+                                formik.setFieldValue(
+                                  "benficiary_name",
+                                  selectedBeneficiary[0]?.full_name
+                                );
+                                formik.setFieldValue(
+                                  "benficiary_upi",
+                                  selectedBeneficiary[0]?.upi_id
+                                );
+                              }}
+                              // onChange={(e)=>setPaymentMode(e.target.value)}
+                              className="form-control rounded-0"
+                              aria-label=".form-select-sm example"
+                              // value={transStatus}
+                              onChange={(e) => {
+                                fetchBeneficiaryMode();
+                              }}
+                            >
+                              <option selected>Select mode</option>
+                              {transactionsMode?.map((data) => {
+                                return (
+                                  <option key={data} value={data.mode}>
+                                    {data.mode}
                                   </option>
-                                </>
-                              );
-                            })}
-                          </select>
+                                );
+                              })}
+                            </select>
+                          </div>
                         </div>
-                        <div className="col-sm-5">
-                          <label>Mode</label>
-                          <select
-                            onClick={(e) => {
-                              setPaymentMode(e.target.value);
-                              formik.setFieldValue(
-                                "benficiary_name",
-                                selectedBeneficiary[0]?.full_name
-                              );
-                              formik.setFieldValue(
-                                "benficiary_upi",
-                                selectedBeneficiary[0]?.upi_id
-                              );
-                            }}
-                            // onChange={(e)=>setPaymentMode(e.target.value)}
-                            className="form-control rounded-0"
-                            aria-label=".form-select-sm example"
-                            // value={transStatus}
-                            onChange={(e) => {
-                              fetchBeneficiaryMode()
-                            }}
-                          >
-                            <option selected>Select mode</option>
-                            {transactionsMode?.map((data) => {
-                              return (
-                                <option key={data} value={data.mode}>
-                                  {data.mode}
-                                </option>
-                              );
-                            })}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-sm-5">
-                          {paymentMode == "UPI" ? (
-                            <>
-                              <label>UPI VPA</label>
-                              <FormikController
-                                className="form-control"
-                                type="text"
-                                name="benficiary_upi"
-                                control="input"
-                              />
-                            </>
-                          ) : (
-                            <>
-                              <label>Beneficiary Name</label>
-                              <FormikController
-                                className="form-control"
-                                type="text"
-                                name="benficiary_name"
-                                id="benficiary_name"
-                                control="input"
-                                placeholder="beneficiary name"
-                              />
-                            </>
-                          )}
-                        </div>
-                        <div className="col-sm-5">
-                          <label>Beneficiary A/C No</label>
-                          <FormikController
-                            className="form-control"
-                            type="text"
-                            name="beneficiary_account"
-                            control="input"
-                            placeholder="account number"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="row">
-                        <div className="col-sm-5 ">
-                          <label>Order Id</label>
-                          <Field
-                            className="form-control"
-                            type="text"
-                            name="order_id"
-                            placeholder="order id"
-                          />
-                          {
-                            <ErrorMessage name="order_id">
-                              {(msg) => (
-                                <p
-                                  style={{
-                                    color: "red",
-                                    position: "absolute",
-                                    zIndex: " 999",
-                                    marginTop: "2px",
-                                    fontSize: "13px",
-                                  }}
-                                >
-                                  {msg}
-                                </p>
-                              )}
-                            </ErrorMessage>
-                          }
-                        </div>
-                        <div className="col-sm-5 mt-2">
-                          <label>Beneficiary IFSC</label>
-                          <Field
-                            className="form-control"
-                            type="text"
-                            name="ifsc_code"
-                            placeholder="ifsc code"
-                          />
-                          {
-                            <ErrorMessage name="ifsc_code">
-                              {(msg) => (
-                                <p
-                                  style={{
-                                    color: "red",
-                                    position: "absolute",
-                                    zIndex: " 999",
-                                    marginTop: "2px",
-                                    fontSize: "13px",
-                                  }}
-                                >
-                                  {msg}
-                                </p>
-                              )}
-                            </ErrorMessage>
-                          }
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-sm-5 mt-2">
-                          <label>Amount</label>
-                          <Field
-                            className="form-control"
-                            type="text"
-                            name="amount"
-                            placeholder="amount"
-                          />
-                          {
-                            <ErrorMessage name="amount">
-                              {(msg) => (
-                                <p
-                                  style={{
-                                    color: "red",
-                                    position: "absolute",
-                                    zIndex: " 999",
-                                    marginTop: "2px",
-                                    fontSize: "13px",
-                                  }}
-                                >
-                                  {msg}
-                                </p>
-                              )}
-                            </ErrorMessage>
-                          }
-                        </div>
-                        <div className="col-sm-5 mt-2">
-                          <label>Purpose</label>
-                          <Field
-                            className="form-control"
-                            type="text"
-                            name="purpose"
-                            placeholder="purpose"
-                          />
-                          {
-                            <ErrorMessage name="purpose">
-                              {(msg) => (
-                                <p
-                                  style={{
-                                    color: "red",
-                                    position: "absolute",
-                                    zIndex: " 999",
-                                    marginTop: "2px",
-                                    fontSize: "13px",
-                                  }}
-                                >
-                                  {msg}
-                                </p>
-                              )}
-                            </ErrorMessage>
-                          }
-                        </div>
-                      </div>
-
-                      <div className="row mt-2">
-                        <div className="col-sm-5">
-                          <label>Remarks</label>
-                          <Field
-                            className="form-control"
-                            type="text"
-                            name="remarks"
-                            placeholder="remarks"
-                          />
-                          {
-                            <ErrorMessage name="remarks">
-                              {(msg) => (
-                                <p
-                                  style={{
-                                    color: "red",
-                                    position: "absolute",
-                                    zIndex: "999",
-                                    marginTop: "2px",
-                                    fontSize: "13px",
-                                  }}
-                                >
-                                  {msg}
-                                </p>
-                              )}
-                            </ErrorMessage>
-                          }
+                        <div className="row">
+                          <div className="col-sm-5">
+                            {paymentMode == "UPI" ? (
+                              <>
+                                <label>UPI VPA</label>
+                                <FormikController
+                                  className="form-control"
+                                  type="text"
+                                  name="benficiary_upi"
+                                  control="input"
+                                />
+                              </>
+                            ) : (
+                              <>
+                                <label>Beneficiary Name</label>
+                                <FormikController
+                                  className="form-control"
+                                  type="text"
+                                  name="benficiary_name"
+                                  id="benficiary_name"
+                                  control="input"
+                                  placeholder="beneficiary name"
+                                />
+                              </>
+                            )}
+                          </div>
+                          <div className="col-sm-5">
+                            <label>Beneficiary A/C No</label>
+                            <FormikController
+                              className="form-control"
+                              type="text"
+                              name="beneficiary_account"
+                              control="input"
+                              placeholder="account number"
+                            />
+                          </div>
                         </div>
 
-                        <div className="col-sm-5 ">
-                          <label>MCC</label>
-                          <Field
-                            className="form-control"
-                            type="text"
-                            name="mcc"
-                            placeholder="mcc"
-                          />
-                          {
-                            <ErrorMessage name="mcc">
-                              {(msg) => (
-                                <p
-                                  style={{
-                                    color: "red",
-                                    position: "absolute",
-                                    zIndex: " 999",
-                                  }}
-                                >
-                                  {msg}
-                                </p>
-                              )}
-                            </ErrorMessage>
-                          }
+                        <div className="row">
+                          <div className="col-sm-5 ">
+                            <label>Order Id</label>
+                            <Field
+                              className="form-control"
+                              type="text"
+                              name="order_id"
+                              placeholder="order id"
+                            />
+                            {
+                              <ErrorMessage name="order_id">
+                                {(msg) => (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      position: "absolute",
+                                      zIndex: " 999",
+                                      marginTop: "2px",
+                                      fontSize: "13px",
+                                    }}
+                                  >
+                                    {msg}
+                                  </p>
+                                )}
+                              </ErrorMessage>
+                            }
+                          </div>
+                          <div className="col-sm-5 mt-2">
+                            <label>Beneficiary IFSC</label>
+                            <Field
+                              className="form-control"
+                              type="text"
+                              name="ifsc_code"
+                              placeholder="ifsc code"
+                            />
+                            {
+                              <ErrorMessage name="ifsc_code">
+                                {(msg) => (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      position: "absolute",
+                                      zIndex: " 999",
+                                      marginTop: "2px",
+                                      fontSize: "13px",
+                                    }}
+                                  >
+                                    {msg}
+                                  </p>
+                                )}
+                              </ErrorMessage>
+                            }
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-sm-5 mt-2">
+                            <label>Amount</label>
+                            <Field
+                              className="form-control"
+                              type="text"
+                              name="amount"
+                              placeholder="amount"
+                            />
+                            {
+                              <ErrorMessage name="amount">
+                                {(msg) => (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      position: "absolute",
+                                      zIndex: " 999",
+                                      marginTop: "2px",
+                                      fontSize: "13px",
+                                    }}
+                                  >
+                                    {msg}
+                                  </p>
+                                )}
+                              </ErrorMessage>
+                            }
+                          </div>
+                          <div className="col-sm-5 mt-2">
+                            <label>Purpose</label>
+                            <Field
+                              className="form-control"
+                              type="text"
+                              name="purpose"
+                              placeholder="purpose"
+                            />
+                            {
+                              <ErrorMessage name="purpose">
+                                {(msg) => (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      position: "absolute",
+                                      zIndex: " 999",
+                                      marginTop: "2px",
+                                      fontSize: "13px",
+                                    }}
+                                  >
+                                    {msg}
+                                  </p>
+                                )}
+                              </ErrorMessage>
+                            }
+                          </div>
+                        </div>
+
+                        <div className="row mt-2">
+                          <div className="col-sm-5">
+                            <label>Remarks</label>
+                            <Field
+                              className="form-control"
+                              type="text"
+                              name="remarks"
+                              placeholder="remarks"
+                            />
+                            {
+                              <ErrorMessage name="remarks">
+                                {(msg) => (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      position: "absolute",
+                                      zIndex: "999",
+                                      marginTop: "2px",
+                                      fontSize: "13px",
+                                    }}
+                                  >
+                                    {msg}
+                                  </p>
+                                )}
+                              </ErrorMessage>
+                            }
+                          </div>
+
+                          <div className="col-sm-5 ">
+                            <label>MCC</label>
+                            <Field
+                              className="form-control"
+                              type="text"
+                              name="mcc"
+                              placeholder="mcc"
+                            />
+                            {
+                              <ErrorMessage name="mcc">
+                                {(msg) => (
+                                  <p
+                                    style={{
+                                      color: "red",
+                                      position: "absolute",
+                                      zIndex: " 999",
+                                    }}
+                                  >
+                                    {msg}
+                                  </p>
+                                )}
+                              </ErrorMessage>
+                            }
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-sm mt-4">
-                      <button
-                        type="submit"
-                        className="btn approve text-white  btn-xs"
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
+                      <div className="col-sm mt-4">
+                        <button
+                          type="submit"
+                          className="btn approve text-white  btn-xs"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            )}
+            <div>
+              {bankRespdetails && (
+                <div className="ml-5">
+                  {" "}
+                  <BankResponse
+                    data={bankdata}
+                    showMakePayment={showMakePayment}
+                  />
+                </div>
+              )}
             </div>
           </div>
-          {/* <BankResponse /> */}
         </main>
       </section>
     </>

@@ -466,6 +466,7 @@ function Registration() {
                                             type="text"
                                             className="form-control"
                                             id="businesscode"
+                                            value={""}
                                           >
                                             Select Business
                                           </option>
