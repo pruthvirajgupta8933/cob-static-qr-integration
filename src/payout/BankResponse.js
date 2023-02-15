@@ -1,6 +1,7 @@
 import React from "react";
 
-const BankResponse = () => {
+const BankResponse = (props) => {
+  console.log(props);
   return (
     <div>
       <div class="col-sm-6">
@@ -10,28 +11,28 @@ const BankResponse = () => {
             <p class="card-text">
               <div class="row">
                 <div class="col-md-4">Order Id</div>
-                <div class="col-md-4 col-md-offset-4">123456</div>
+                <div class="col-md-4 col-md-offset-4">{props.data.orderId}</div>
               </div>
               <div class="row">
                 <div class="col-md-4">Amount</div>
-                <div class="col-md-4 col-md-offset-4">Rs 100</div>
+                <div class="col-md-4 col-md-offset-4">₹ {props.data.amount}</div>
               </div>
               <div class="row">
                 <div class="col-md-4">Status</div>
-                <div class="col-md-4 col-md-offset-4">Processing</div>
+                <div class="col-md-4 col-md-offset-4">{props.data.status}</div>
               </div>
               <div class="row">
                 <div class="col-md-4">Request Date Time</div>
-                <div class="col-md-4 col-md-offset-4">2023-10-10</div>
+                <div class="col-md-4 col-md-offset-4">{props.data.requestedDatetime}</div>
               </div>
-              <div class="row">
+              {/* <div class="row">
                 <div class="col-md-4">Message</div>
                 <div class="col-md-4 col-md-offset-4">Payout Done</div>
-              </div>
+              </div> */}
             </p>
-            <a href="#" class="btn btn-primary">
-              Go somewhere
-            </a>
+            <button onClick={()=>props.showMakePayment(true)} class="btn btn-primary">
+              Make Payment
+            </button>
           </div>
         </div>
       </div>
