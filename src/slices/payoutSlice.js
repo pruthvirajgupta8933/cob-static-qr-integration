@@ -41,7 +41,7 @@ export const fetchledgerMerchantData = createAsyncThunk(
           `${API_URL.getLedgersMerchantList}/?page=${data.data.pageNumber}&page_size=${data.data.pageSize}`,data.param,
           {
             headers: {
-              "auth-token": "j0m8DtBgoqSeeV5G7wARyg==",
+              "auth-token": "R2wlqSVvlxiuVEGWgputdg==",
             },
           }
         )
@@ -58,10 +58,10 @@ export const fetchledgerMerchantData = createAsyncThunk(
     async (data) => {
       const response = await axiosInstanceAuth
         .get(
-          `${API_URL.fetchBeneficiary}/5?page=${data.data.pageNumber}&page_size=${data.data.pageSize}`,
+          `${API_URL.fetchBeneficiary}/11?page=${data.data.pageNumber}&page_size=${data.data.pageSize}`,
           {
             headers: {
-              "auth-token": "j0m8DtBgoqSeeV5G7wARyg==",
+              "auth-token": "R2wlqSVvlxiuVEGWgputdg==",
             },
           }
         )
@@ -77,7 +77,7 @@ export const fetchledgerMerchantData = createAsyncThunk(
     async (data) => {
       const param={
         "query" : {
-            "merchant_id":"j0m8DtBgoqSeeV5G7wARyg=="
+            "merchant_id":"R2wlqSVvlxiuVEGWgputdg=="
         }
     }
 
@@ -86,7 +86,7 @@ export const fetchledgerMerchantData = createAsyncThunk(
           `${API_URL.transactionMode}/`,param,
           {
             headers: {
-              "auth-token": "j0m8DtBgoqSeeV5G7wARyg==",
+              "auth-token": "R2wlqSVvlxiuVEGWgputdg==",
             },
           }
         )
@@ -105,7 +105,7 @@ export const fetchledgerMerchantData = createAsyncThunk(
           `${API_URL.paymentRequest}/`,data,
           {
             headers: {
-              "auth-token": "j0m8DtBgoqSeeV5G7wARyg==",
+              "auth-token": "R2wlqSVvlxiuVEGWgputdg==",
             },
           }
         )

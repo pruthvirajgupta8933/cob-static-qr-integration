@@ -146,6 +146,7 @@ const PayoutLedger = (props) => {
                     className="form-control rounded-0"
                     aria-label=".form-select-sm example"
                     value={transStatus}
+                    style={{height:"34px"}}
                   >
                     <option selected value="all">
                       All
@@ -161,6 +162,7 @@ const PayoutLedger = (props) => {
                     className="form-control rounded-0"
                     aria-label=".form-select-sm example"
                     value={transferType}
+                    style={{height:"34px"}}
                   >
                     <option selected value="all">
                       All
@@ -214,9 +216,9 @@ const PayoutLedger = (props) => {
                     <th>Txn Initiated time</th>
                     <th>Charge</th>
                     <th>Payment Mode</th>
-                    <th>Benificiary Acc Name</th>
-                    <th>Benificiary Acc No</th>
-                    <th>Benificiary IFSC</th>
+                    <th>Beneficiary Acc Name</th>
+                    <th>Beneficiary Acc No</th>
+                    <th>Beneficiary IFSC</th>
                     <th>Payout Txn Id</th>
                     <th>Opening Balance</th>
                     <th>Remarks</th>
