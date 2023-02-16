@@ -196,7 +196,7 @@ const nextPage = () => {
               </tr>
             </thead>
             <tbody>
-              {/* {spinner && <Spinner />} */}
+              
               {data === null || data === [] ? (
                 <tr>
                   <td colSpan={"11"}>
@@ -252,7 +252,7 @@ const nextPage = () => {
                         data-target="#exampleModal"
                         disabled={user?.clientCode === null ? true : false}
                       >
-                        Add/View Comments
+                        Comments
                       </button>
                     ) : <></> }
                     </td>

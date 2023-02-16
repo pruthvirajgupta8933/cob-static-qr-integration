@@ -14,6 +14,8 @@ const saveReferingMerchant = (saveRefData) => {
     return axiosInstanceAuth.post(API_URL.FOR_GENERATING_MID,midData)
   }
 
+  
+
 
 
   const referralAndMidService = {
