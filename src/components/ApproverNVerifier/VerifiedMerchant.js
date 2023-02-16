@@ -275,7 +275,7 @@ function VerifiedMerchant() {
                           data-target="#exampleModal"
                         disabled={user?.clientCode === null ? true : false}
                         >
-                          Add/View Comments
+                           Comments
                         </button>
                       ) : (
                         <></>
