@@ -164,7 +164,8 @@ const API_LIVE = {
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
   KYC_FOR_ONBOARDED: `${kyc_url}/kyc/get-merchant-data/`,
   KYC_FOR_SAVING_REFER_MERCHANT:`${kyc_url}/kyc/refer-zone/save-refer-zone/`,
-  FOR_GENERATING_MID:`${kyc_url}/kyc/verify-kyc/send-request-subMerchant-mid/`,
+  FOR_GENERATING_MID:`${kyc_url}/kyc/mid-creation/send-request-subMerchant-mid/`,
+  GET_ALL_GENERATE_MID_DATA:`${kyc_url}//kyc/mid-creation/get-merchant-mid-data/`,
 
 
 
@@ -178,6 +179,7 @@ const API_LIVE = {
   Save_Settlement_Info: `${kyc_url}/kyc/save-settlement-info/`,
   //Get All Bnak Names in Kyc Bank Details Dropdown Tab
   GET_ALL_BANK_NAMES: `${kyc_url}/kyc/get-all-bank-name/`,
+  GET_PAYMENT_MODE:`${kyc_url}/kyc/mid-creation/get-payment-mode-type/`,
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
   Business_Category: `${kyc_url}/kyc/get-all-business-category/`,
   SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,

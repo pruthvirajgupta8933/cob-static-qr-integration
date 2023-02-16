@@ -26,7 +26,7 @@ const RateRadioMapping = (props) => {
   // };
   const onClick = (client_code) => {
     alert(
-      `Parent ClientCode : ${client_code} \n Chield ClientCode: ${props.chiledCode.clientCode} \n UserName: ${username}`
+      `Chield ClientCode: ${props.chiledCode.clientCode} \n UserName: ${username}`
     );
   };
   return (
@@ -42,20 +42,18 @@ const RateRadioMapping = (props) => {
         <tbody>
           {Array.isArray(props?.riskTemplate)
             ? props?.riskTemplate?.map((riskTemplate, i) => (
-                <tr>
-                  <td>
+                <tr key={i}> 
+                  {/* <td>
                     <div className="form-check">
                       <Formik
                         initialValues={initialStateForRadio}
                         validationSchema={NewvalidationSchemaforRadio}
-                        // onSubmit={(values) => {
-                        //     handleSubmitForRadio(values);
-                        // }}
+                       
                         enableReinitialize={true}
                       >
                         {(formik) => (
                           <Form>
-                            {/* {console.log("formik", formik)} */}
+                           
                             <FormikController
                               control="radio"
                               name="isChecked"
@@ -73,12 +71,27 @@ const RateRadioMapping = (props) => {
                         )}
                       </Formik>
                     </div>
+                  </td> */}
+                  <td>
+                  <div class="form-check">
+                 <input class="form-check-input" type="radio"  name="isChecked" id="flexRadioDefault1"/>
+  
+                  </div>
+
                   </td>
+
                   <td>{riskTemplate?.client_code}</td>
                   <td>{riskTemplate?.rate_template_name}</td>
                 </tr>
-              ))
-            : []}
+               ))
+               : []} 
+             
+                    <tr>
+                      <td colSpan={3}>
+                        <button type="button"  onClick={() => onClick()} className="btn btn-primary pull-right" >Submit</button>
+                      </td>
+                    </tr>
+             
         </tbody>
       </table>
     </div>

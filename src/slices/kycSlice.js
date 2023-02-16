@@ -453,6 +453,23 @@ export const kycBankNames = createAsyncThunk(
     return response.data;
   }
 );
+/////////////////////////////////////// Payment Mode
+export const kycpaymentModeType = createAsyncThunk(
+  "kyc/kycBankNames",
+  async (requestParam) => {
+    const response = await axiosInstanceAuth
+      .get(`${API_URL.GET_PAYMENT_MODE}`, {
+        headers: {},
+      })
+      .catch((error) => {
+        return error.response;
+      });
+    // console.log(response)
+    return response.data;
+  }
+);
+
+
 
 //--------------------------------------------------------------
 

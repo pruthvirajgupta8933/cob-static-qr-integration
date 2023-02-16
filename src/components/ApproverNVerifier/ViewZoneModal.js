@@ -220,8 +220,8 @@ const ViewZoneModal = (props) => {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <h5 className="font-weight-bold">Name: {props?.userData?.clientName}</h5>
-                    <h5 className="font-weight-bold">ClientCode: {props?.userData?.clientCode}</h5>
+                    <h5 className="font-weight-bold">Client Name: {props?.userData?.clientName}</h5>
+                    <h5 className="font-weight-bold">Client Code: {props?.userData?.clientCode}</h5>
                     <div className="container">
 
                       <Form>

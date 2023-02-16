@@ -29,9 +29,12 @@ const PendindKyc = () => {
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+
 
   const dispatch = useDispatch();
-  const kycSearch = (e) => {
+  const kycSearch = (e, fieldType) => {
+    fieldType === 'text' ? setSearchByDropDown(false) : setSearchByDropDown(true); 
     setSearchText(e.target.value);
   };
 
@@ -57,17 +60,43 @@ const PendindKyc = () => {
 
   useEffect(() => {
     if (searchText?.length > 0) {
-      setData(
-        pendingKycData?.filter((item) =>
-          Object.values(item)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText?.toLocaleLowerCase())
-        )
-      );
+      // search by dropdwon
+      if(isSearchByDropDown && searchText!==''){
+        let filter = {
+          isDirect: searchText
+        };
+    
+        let refData = pendingKycData
+        
+        refData = refData.filter(function(item) {
+          for (let key in filter) {
+            if (item[key] === undefined || item[key] !== filter[key]){
+              return false;
+            }
+          }
+          return true;
+        });
+        setData(refData)
+        console.log("search by dropdown")
+      }else{
+        // search by text
+        setData(
+          pendingKycData?.filter((item) =>
+            Object.values(item)
+              .join(" ")
+              .toLowerCase()
+              .includes(searchText?.toLocaleLowerCase())
+          )
+        );
+        console.log("search by text")
+
+      }
     } else {
       setData(pendingKycData);
     }
+
+    setSearchByDropDown(false)
+
   }, [searchText]);
 
   // const handleClick = (loginMasterId) => {
@@ -129,7 +158,7 @@ const PendindKyc = () => {
   }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("MM/DD/YYYY");
+    let date = moment(yourDate).format("DD/MM/YYYY");
     return date;
   };
 
@@ -142,7 +171,7 @@ const PendindKyc = () => {
           <label>Search</label>
           <input
             className="form-control"
-            onChange={kycSearch}
+            onChange={(e)=>kycSearch(e,"text")}
             type="text"
             placeholder="Search Here"
           />
@@ -179,8 +208,8 @@ const PendindKyc = () => {
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Onboard Type</label>
-          <select onChange={kycSearch} className="ant-input">
-            <option value="Select Role Type">Select Onboard Type</option>
+          <select onChange={(e)=>kycSearch(e,"dropdown")} className="ant-input">
+            <option value="">Select Onboard Type</option>
             <option value="">All</option>
             <option value="online">Online</option>
             <option value="offline">Offline</option>
@@ -277,7 +306,7 @@ const PendindKyc = () => {
                           data-target="#exampleModal"
                           disabled={user?.clientCode === null ? true : false}
                         >
-                          Add/View Comments
+                          Comments
                         </button>
                       ) : (
                         <></>

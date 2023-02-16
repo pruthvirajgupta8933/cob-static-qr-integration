@@ -10,7 +10,6 @@ import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import CommentModal from "./Onboarderchant/CommentModal";
 
-
 const RejectedKYC = () => {
   const roles = roleBasedAccess();
 
@@ -23,20 +22,28 @@ const RejectedKYC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
-  const [isOpenModal, setIsModalOpen] = useState(false)
-  const [isLoaded,setIsLoaded] = useState(false)
+  const [isOpenModal, setIsModalOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
-
+  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   const dispatch = useDispatch();
-  const kycSearch = (e) => {
+  // const kycSearch = (e) => {
+  //   setSearchText(e.target.value);
+  // };
+
+  const kycSearch = (e, fieldType) => {
+    fieldType === "text"
+      ? setSearchByDropDown(false)
+      : setSearchByDropDown(true);
     setSearchText(e.target.value);
   };
 
-
-  const kycForRejectedMerchnats=()=>{
-    dispatch(kycForRejectedMerchants({ page: currentPage, page_size: pageSize }))
+  const kycForRejectedMerchnats = () => {
+    dispatch(
+      kycForRejectedMerchants({ page: currentPage, page_size: pageSize })
+    )
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         setSpinner(false);
@@ -45,94 +52,102 @@ const RejectedKYC = () => {
         const dataCoun = resp?.payload?.count;
         setData(data);
         setKycIdClick(data);
-         setDataCount(dataCoun);
-         setRejectedMerchants(data);
-         setIsLoaded(false)   
+        setDataCount(dataCoun);
+        setRejectedMerchants(data);
+        setIsLoaded(false);
       })
 
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
-
-  }
-
-
+  };
   useEffect(() => {
-   
-    kycForRejectedMerchnats()
-    
-  }, [currentPage, pageSize]);
+    if (searchText?.length > 0) {
+      // search by dropdwon
+      if (isSearchByDropDown && searchText !== "") {
+        let filter = {
+          isDirect: searchText,
+        };
 
+        let refData = rejectedMerchants;
 
-////////////////////////////////////////////////// Search filter start here
-
-  useEffect(() => {
-    if (searchText.length > 0) {
-      setData(
-        rejectedMerchants.filter((item) =>
-          Object.values(item)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText?.toLocaleLowerCase())
-        )
-      );
+        refData = refData.filter(function(item) {
+          for (let key in filter) {
+            if (item[key] === undefined || item[key] !== filter[key]) {
+              return false;
+            }
+          }
+          return true;
+        });
+        setData(refData);
+        console.log("search by dropdown");
+      } else {
+        // search by text
+        setData(
+          rejectedMerchants?.filter((item) =>
+            Object.values(item)
+              .join(" ")
+              .toLowerCase()
+              .includes(searchText?.toLocaleLowerCase())
+          )
+        );
+        console.log("search by text");
+      }
     } else {
       setData(rejectedMerchants);
     }
-  }, [searchText]);
-  ////////////////////////////////////pagination start here
 
- 
+    setSearchByDropDown(false);
+  }, [searchText]);
+
+  useEffect(() => {
+    kycForRejectedMerchnats();
+  }, [currentPage, pageSize]);
+
   const totalPages = Math.ceil(dataCount / pageSize);
-  let pageNumbers = []
-  if(!Number.isNaN(totalPages)){
+  let pageNumbers = [];
+  if (!Number.isNaN(totalPages)) {
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
-const nextPage = () => {
-  setIsLoaded(true) 
-  setData([])
+  const nextPage = () => {
+    setIsLoaded(true);
+    setData([]);
     if (currentPage < pageNumbers?.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
-    setIsLoaded(true) 
-    setData([])
+    setIsLoaded(true);
+    setData([]);
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
 
-
   useEffect(() => {
     let lastSevenPage = totalPages - 7;
-    if (pageNumbers?.length>0) {
-      let start = 0
-      let end = (currentPage + 6)
+    if (pageNumbers?.length > 0) {
+      let start = 0;
+      let end = currentPage + 6;
       if (totalPages > 6) {
-        start = (currentPage - 1)
-  
+        start = currentPage - 1;
+
         if (parseInt(lastSevenPage) <= parseInt(start)) {
-          start = lastSevenPage
+          start = lastSevenPage;
         }
-  
       }
       const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
         return pgNumber;
-      })   
-     setDisplayPageNumber(pageNumber) 
+      });
+      setDisplayPageNumber(pageNumber);
     }
-  }, [currentPage, totalPages])
+  }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("MM/DD/YYYY");
-      return date
-    }
-
-
-
-
+    let date = moment(yourDate).format("DD/MM/YYYY");
+    return date;
+  };
 
   return (
     <div className="container-fluid flleft">
@@ -141,14 +156,28 @@ const nextPage = () => {
           <label>Search</label>
           <input
             className="form-control"
-            onChange={kycSearch}
+            onChange={(e) => kycSearch(e, "text")}
             type="text"
             placeholder="Search Here"
           />
         </div>
-        {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Approved Tab"} /> : <></>}
+        {openCommentModal === true ? (
+          <CommentModal
+            commentData={commentId}
+            isModalOpen={openCommentModal}
+            setModalState={setOpenCommentModal}
+            tabName={"Approved Tab"}
+          />
+        ) : (
+          <></>
+        )}
         <div>
-        <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderToPendingKyc={kycForRejectedMerchnats} />
+          <KycDetailsModal
+            kycId={kycIdClick}
+            handleModal={setIsModalOpen}
+            isOpenModal={isOpenModal}
+            renderToPendingKyc={kycForRejectedMerchnats}
+          />
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -165,16 +194,19 @@ const nextPage = () => {
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Onboard Type</label>
           <select
-           onChange={kycSearch}
+            onChange={(e) => kycSearch(e, "dropdown")}
             className="ant-input"
           >
-             <option value="Select Role Type">Select Onboard Type</option>
+            <option value="">Select Onboard Type</option>
             <option value="">All</option>
             <option value="online">Online</option>
             <option value="offline">Offline</option>
           </select>
         </div>
-        <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=Rejected'} filename={"Rejected"}/>
+        <MerchnatListExportToxl
+          URL={"?order_by=-merchantId&search=Rejected"}
+          filename={"Rejected"}
+        />
       </div>
 
       <div className="col-md-12 col-md-offset-4">
@@ -192,11 +224,16 @@ const nextPage = () => {
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
                 <th>View Status</th>
-                {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? ( <th>Action</th>) : <></>}
+                {roles?.verifier === true ||
+                roles?.approver === true ||
+                roles?.viewer === true ? (
+                  <th>Action</th>
+                ) : (
+                  <></>
+                )}
               </tr>
             </thead>
             <tbody>
-              {/* {spinner && <Spinner />} */}
               {data === null || data === [] ? (
                 <tr>
                   <td colSpan={"11"}>
@@ -208,13 +245,15 @@ const nextPage = () => {
               ) : (
                 <></>
               )}
-         
+
               {data?.length === 0 ? (
                 <tr>
-                <td colSpan={"11"}>
-                  <p className="text-center spinner-roll">{spinner && <Spinner />}</p>
-                </td>
-            </tr>
+                  <td colSpan={"11"}>
+                    <p className="text-center spinner-roll">
+                      {spinner && <Spinner />}
+                    </p>
+                  </td>
+                </tr>
               ) : (
                 data?.map((user, i) => (
                   <tr key={i}>
@@ -231,7 +270,10 @@ const nextPage = () => {
                       <button
                         type="button"
                         className="btn approve text-white  btn-xs"
-                        onClick={() => {setKycIdClick(user); setIsModalOpen(true) }}
+                        onClick={() => {
+                          setKycIdClick(user);
+                          setIsModalOpen(true);
+                        }}
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >
@@ -239,22 +281,25 @@ const nextPage = () => {
                       </button>
                     </td>
                     <td>
-                    {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
+                      {roles?.verifier === true ||
+                      roles?.approver === true ||
+                      roles?.viewer === true ? (
                         <button
-                        type="button"
-                        className="btn approve text-white  btn-xs"
-                        data-toggle="modal"
-                        onClick={() => {
-                          setCommentId(user)
-                          setOpenCommentModal(true)
-                
-                        }}
-                        data-target="#exampleModal"
-                        disabled={user?.clientCode === null ? true : false}
-                      >
-                        Add/View Comments
-                      </button>
-                    ) : <></> }
+                          type="button"
+                          className="btn approve text-white  btn-xs"
+                          data-toggle="modal"
+                          onClick={() => {
+                            setCommentId(user);
+                            setOpenCommentModal(true);
+                          }}
+                          data-target="#exampleModal"
+                          disabled={user?.clientCode === null ? true : false}
+                        >
+                          Comments
+                        </button>
+                      ) : (
+                        <></>
+                      )}
                     </td>
                   </tr>
                 ))
@@ -264,17 +309,17 @@ const nextPage = () => {
         </div>
         <nav>
           <ul className="pagination justify-content-center">
-          {isLoaded === true ? <Spinner /> : (
-            <li className="page-item">
-              <button 
-              className="page-link" 
-              onClick={prevPage}>
-                Previous
-              </button>
-            </li>
-          )}
+            {isLoaded === true ? (
+              <Spinner />
+            ) : (
+              <li className="page-item">
+                <button className="page-link" onClick={prevPage}>
+                  Previous
+                </button>
+              </li>
+            )}
             {displayPageNumber?.map((pgNumber, i) => (
-              <li 
+              <li
                 key={i}
                 className={
                   pgNumber === currentPage ? " page-item active" : "page-item"
@@ -282,23 +327,25 @@ const nextPage = () => {
                 onClick={() => setCurrentPage(pgNumber)}
               >
                 <a href={() => false} className={`page-link data_${i}`}>
-                  <span >
-                    {pgNumber}
-                  </span>
+                  <span>{pgNumber}</span>
                 </a>
               </li>
             ))}
 
-          {isLoaded === true ? <Spinner /> : (
-            <li className="page-item">
-              <button
-                className="page-link"
-                onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
-              >
-                Next
-              </button>
-            </li>
+            {isLoaded === true ? (
+              <Spinner />
+            ) : (
+              <li className="page-item">
+                <button
+                  className="page-link"
+                  onClick={nextPage}
+                  disabled={
+                    currentPage === pageNumbers[pageNumbers?.length - 1]
+                  }
+                >
+                  Next
+                </button>
+              </li>
             )}
           </ul>
         </nav>
