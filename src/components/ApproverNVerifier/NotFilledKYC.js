@@ -18,9 +18,12 @@ const NotFilledKYC = () => {
   const [pageSize, setPageSize] = useState(100);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   const dispatch = useDispatch();
-  const kycSearch = (e) => {
+
+  const kycSearch = (e, fieldType) => {
+    fieldType === 'text' ? setSearchByDropDown(false) : setSearchByDropDown(true); 
     setSearchText(e.target.value);
   };
 
@@ -44,25 +47,46 @@ const NotFilledKYC = () => {
   }, [currentPage, pageSize, dispatch]);
 
   //------- KYC NOT FILLED SEARCH FILTER ------------//
-  useEffect(() => {
-    // console.log("searchText",searchText)
+ useEffect(() => {
     if (searchText?.length > 0) {
-      setData(
-        notFilledData?.filter((item) =>
-          Object.values(item)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText?.toLocaleLowerCase())
-        )
-      );
-    } else {
-      // dispatch(kycForNotFilled({ page, page_size })).then((resp) => {
-      // const data = resp?.payload?.results;
-      setData(notFilledData);
-      // });
-    }
-  }, [searchText]);
+      // search by dropdwon
+      if(isSearchByDropDown && searchText!==''){
+        let filter = {
+          isDirect: searchText
+        };
+    
+        let refData = notFilledData
+        
+        refData = refData.filter(function(item) {
+          for (let key in filter) {
+            if (item[key] === undefined || item[key] !== filter[key]){
+              return false;
+            }
+          }
+          return true;
+        });
+        setData(refData)
+        console.log("search by dropdown")
+      }else{
+        // search by text
+        setData(
+          notFilledData?.filter((item) =>
+            Object.values(item)
+              .join(" ")
+              .toLowerCase()
+              .includes(searchText?.toLocaleLowerCase())
+          )
+        );
+        console.log("search by text")
 
+      }
+    } else {
+      setData(notFilledData);
+    }
+
+    setSearchByDropDown(false)
+
+  }, [searchText]);
   const totalPages = Math.ceil(dataCount / pageSize);
   let pageNumbers = [];
   if (!Number.isNaN(totalPages)) {
@@ -116,7 +140,7 @@ const NotFilledKYC = () => {
           <label>Search</label>
           <input
             className="form-control"
-            onChange={kycSearch}
+            onChange={(e)=>kycSearch(e,"text")}
             type="text"
             placeholder="Search Here"
           />
@@ -137,9 +161,9 @@ const NotFilledKYC = () => {
           <label>Onboard Type</label>
           <select
             className="ant-input"
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={(e)=>kycSearch(e,"dropdown")}
           >
-            <option value="Select Role Type">Select Onboard Type</option>
+            <option value="">Select Onboard Type</option>
             <option value="">All</option>
             <option value="online">Online</option>
             <option value="offline">Offline</option>

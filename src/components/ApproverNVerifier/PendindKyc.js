@@ -59,13 +59,6 @@ const PendindKyc = () => {
   }, [currentPage, pageSize, dispatch]);
 
   useEffect(() => {
-
-
-   
-
-    
-  
-    
     if (searchText?.length > 0) {
       // search by dropdwon
       if(isSearchByDropDown && searchText!==''){
