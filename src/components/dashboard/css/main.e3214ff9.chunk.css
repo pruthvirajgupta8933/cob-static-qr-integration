@@ -50368,7 +50368,7 @@ select {
 }
 .sidebar_menu_list {
     position: absolute;
-    top: 95px;
+    top: 80px;
     height: calc(100vh - 150px);
 }
 .sidebar-menu-divider {
