@@ -38437,7 +38437,7 @@ h6 {
 .gx-custom-sidebar.ant-layout-sider-lite .gx-layout-sider-header,
 .gx-mini-custom-sidebar.ant-layout-sider-lite .gx-layout-sider-header {
     box-shadow: none;
-    border-right: 1px solid #e8e8e8;
+    /* border-right: 1px solid #e8e8e8; */
 }
 @media screen and (max-width: 991px) {
     .gx-layout-sider-header {
@@ -38445,7 +38445,7 @@ h6 {
     }
 }
 .gx-sidebar-content {
-    border-right: 1px solid #e8e8e8;
+    /* border-right: 1px solid #e8e8e8; */
 }
 .gx-drawer-sidebar-dark .gx-sidebar-content,
 .gx-layout-sider-dark .gx-sidebar-content {
@@ -50368,7 +50368,7 @@ select {
 }
 .sidebar_menu_list {
     position: absolute;
-    top: 95px;
+    top: 80px;
     height: calc(100vh - 150px);
 }
 .sidebar-menu-divider {
