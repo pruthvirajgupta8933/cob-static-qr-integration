@@ -10,7 +10,23 @@ export const axiosInstance = axios.create({ });
 export const kycValidatorAuth = axios.create({
     headers: {
         "api-key":"6fecdd37ceb7416f89ef60623952d852"
-
     }
 })
 
+// Instance for JWT
+const BASE_URL = 'http://localhost:2020';
+
+export default axios.create({
+    baseURL: BASE_URL
+});
+
+export const axiosRefreshToken = axios.create({
+    baseURL: BASE_URL,
+    headers: { 'Content-Type': 'application/json' }
+})
+
+export const axiosPrivate = axios.create({
+    baseURL: BASE_URL,
+    headers: { 'Content-Type': 'application/json' },
+    // withCredentials: true
+});

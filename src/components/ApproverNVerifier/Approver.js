@@ -1,8 +1,6 @@
-import React, {useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useHistory,
-} from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import PendingVerification from "./PendingVerification";
 import VerifiedMerchant from "./VerifiedMerchant";
 import ApprovedMerchant from "./ApprovedMerchant";
@@ -12,15 +10,24 @@ import NotFilledKYC from "./NotFilledKYC";
 import RejectedKYC from "./RejectedKYC";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import { logout } from "../../slices/auth";
-import {merchantTab} from "../../slices/approverVerifierTabSlice"
+import { merchantTab } from "../../slices/approverVerifierTabSlice";
+import UseAxiosPrivate from "../../customHooks/useAxiosPrivate";
+import UserService from "../../services/test-service";
+import axios from "axios";
+import { CleaningServices } from "@mui/icons-material";
+import toastConfig from "../../utilities/toastTypes";
+import { fetchTestSlice } from "../../slices/test-slice";
+// import UserService from "../../services/user.service";
 
-function Approver() {
-const verifierApproverTab =  useSelector((state) => state.verifierApproverTab)
-const currenTab =  parseInt(verifierApproverTab?.currenTab)
+const Approver = () => {
+  const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
+  const currenTab = parseInt(verifierApproverTab?.currenTab);
 
+  const [users, setUsers] = useState();
+  const axiosPrivate = UseAxiosPrivate();
 
-// console.log("currenTab",currenTab)
-const dispatch = useDispatch();
+  // console.log("currenTab",currenTab)
+  const dispatch = useDispatch();
 
   let history = useHistory();
 
@@ -40,23 +47,50 @@ const dispatch = useDispatch();
   const redirect = () => {
     history.push("/dashboard/onboard-merchant");
   };
- 
 
+  const handleTabClick = (currenTab) => {
+    dispatch(merchantTab(currenTab));
+  };
 
- const handleTabClick= (currenTab)=>{
-  dispatch(merchantTab(currenTab))
- }
+  // dummy api call
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const controller = new AbortController();
+  //   const url = "http://localhost:2020/v1/books";
+  //   console.log("books");
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+  const getUsers = () => {
+    console.log("running")
+    UserService.getUserBoard().then((res) => {
+      console.log(res,'books');
+      setUsers(res.data.books)
+    });
+  };
+  //   // getUsers();
+
+  //   // return () => {
+  //   //   isMounted = false;
+  //   //   controller.abort();
+  //   // };
+  // }, []);
+
+  // console.log(TestService, "service");
 
   return (
     <section className="ant-layout">
       <div>
         <NavBar />
-        
       </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Merchant List</h1>
+            <h1 className="m-b-sm gx-float-left">
+              Merchant List
+              {/* <button onClick={getUsers}>Press</button> */}
+            </h1>
             <div className="container">
               <div className="row">
                 <div className="mr-5"></div>
@@ -73,6 +107,16 @@ const dispatch = useDispatch();
                   </button>
                 )}
               </div>
+              <ul>
+                {users &&
+                  users?.map((data) => {
+                    return (
+                      <>
+                        <li>{data?.title}</li>
+                      </>
+                    );
+                  })}
+              </ul>
             </div>
           </div>
           <section
@@ -172,7 +216,9 @@ const dispatch = useDispatch();
                         (currenTab === 3 && <PendingVerification />) ||
                         (currenTab === 4 && <VerifiedMerchant />) ||
                         (currenTab === 5 && <ApprovedMerchant />) ||
-                        (currenTab === 6 && <RejectedKYC />) || <NotFilledKYC />}
+                        (currenTab === 6 && <RejectedKYC />) || (
+                          <NotFilledKYC />
+                        )}
                     </div>
                   </div>
                 </section>
@@ -183,6 +229,6 @@ const dispatch = useDispatch();
       </main>
     </section>
   );
-}
+};
 
 export default Approver;
