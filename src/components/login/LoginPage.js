@@ -9,8 +9,6 @@ import { clearMessage } from "../../slices/message";
 import { toast } from "react-toastify";
 import "./Login.css";
 import imageSlide1 from "../../assets/images/COB.png";
-import useAuth from "../../customHooks/useAuth";
-import axios from "../../utilities/axiosInstance";
 import TokenService from "../../services/token.service";
 import UserService from "../../services/test-service";
 // import api from './api';
@@ -31,11 +29,8 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [auth, setAuthData] = useState(authentication);
   const [namee, setNamee] = useState("");
-  const { setAuth } = useAuth();
   
-  //custom state for login
-  const [testUser, setTestUser] = useState('');
-  const [pwd, setPwd] = useState('');
+
 
   const [values, setValues] = useState({
     password: "",
@@ -70,10 +65,8 @@ function LoginPage() {
 
   //Dummy login for JWT
   const customLogin = async () => {
-    console.log("runing")
-    const LOGIN_URL = "https://0c7e-103-106-192-134.in.ngrok.io/auth-service/auth/login";
-    setTestUser("username");
-    setPwd("password");
+
+
     const data = {
       clientUserId: "linkpaisa",
       userPassword: "linkpaisa",
@@ -81,10 +74,7 @@ function LoginPage() {
     UserService.login(data).then((res)=>{
       TokenService.setUser(res.data);
     })
-    axios.post(LOGIN_URL,data).then((res)=>{
-      console.log(res)
-    
-    })
+ 
 
       // navigate(from, { replace: true });
  

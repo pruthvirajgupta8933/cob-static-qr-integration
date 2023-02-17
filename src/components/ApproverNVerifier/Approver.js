@@ -11,20 +11,13 @@ import RejectedKYC from "./RejectedKYC";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import { logout } from "../../slices/auth";
 import { merchantTab } from "../../slices/approverVerifierTabSlice";
-import UseAxiosPrivate from "../../customHooks/useAxiosPrivate";
 import UserService from "../../services/test-service";
-import axios from "axios";
-import { CleaningServices } from "@mui/icons-material";
-import toastConfig from "../../utilities/toastTypes";
-import { fetchTestSlice } from "../../slices/test-slice";
-// import UserService from "../../services/user.service";
 
 const Approver = () => {
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
   const currenTab = parseInt(verifierApproverTab?.currenTab);
 
   const [users, setUsers] = useState();
-  const axiosPrivate = UseAxiosPrivate();
 
   // console.log("currenTab",currenTab)
   const dispatch = useDispatch();
@@ -55,14 +48,6 @@ const Approver = () => {
     dispatch(merchantTab(currenTab));
   };
 
-  // dummy api call
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const controller = new AbortController();
-  //   const url = "http://localhost:2020/v1/books";
-  //   console.log("books");
-
-
   const getUsers = () => {
     UserService.getUserBoard().then((res) => {
       setUsers(res.data.message)
@@ -72,15 +57,7 @@ const Approver = () => {
       // console.log(err);
     })
   };
-  //   // getUsers();
 
-  //   // return () => {
-  //   //   isMounted = false;
-  //   //   controller.abort();
-  //   // };
-  // }, []);
-
-  // console.log(TestService, "service");
 
   return (
     <section className="ant-layout">
@@ -92,7 +69,6 @@ const Approver = () => {
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">
               Merchant List
-              {/* <button onClick={getUsers}>Press</button> */}
             </h1>
             <div className="container">
               <div className="row">
@@ -110,9 +86,9 @@ const Approver = () => {
                   </button>
                 )}
               </div>
-              <ul>
+              {/* <ul>
               {users}
-              </ul>
+              </ul> */}
             </div>
           </div>
           <section

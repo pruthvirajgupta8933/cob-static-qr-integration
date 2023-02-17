@@ -5,7 +5,6 @@ import store from "./store";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { AuthProvider } from "./context/AuthProvider";
 import { BrowserRouter, HashRouter, Router } from "react-router-dom";
 import setupInterceptors from "./services/setupInterceptors";
 
@@ -13,9 +12,7 @@ ReactDOM.render(
   <Provider store={store}>
     {/* <HashRouter> */}
     <BrowserRouter>
-      <AuthProvider>
         <App />
-      </AuthProvider>
     </BrowserRouter>
     {/* </HashRouter> */}
   </Provider>,

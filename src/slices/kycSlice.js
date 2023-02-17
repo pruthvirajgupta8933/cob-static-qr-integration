@@ -4,7 +4,6 @@ import {
   axiosInstanceAuth,
   kycValidatorAuth,
 } from "../utilities/axiosInstance";
-import UseAxiosPrivate from "../customHooks/useAxiosPrivate";
 
 import { APP_ENV } from "../config";
 
@@ -147,20 +146,6 @@ const initialState = {
     isOpen:false
   }
 };
-
-export const testJWT = createAsyncThunk(
-  "testJWT/testJWT",
-  async () => {
-      const axiosPrivate = UseAxiosPrivate();
-      const testUrl = "http://localhost:2020/v1/books";
-    const response = await axiosPrivate
-      .get(`${testUrl}`)
-      .catch((error) => {
-        return error.response;
-      });
-    return response.data;
-  }
-);
 
 //--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
 export const updateContactInfo = createAsyncThunk(
