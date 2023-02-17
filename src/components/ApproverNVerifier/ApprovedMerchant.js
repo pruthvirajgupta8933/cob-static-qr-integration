@@ -29,12 +29,16 @@ function ApprovedMerchant() {
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [isLoaded,setIsLoaded] = useState(false)
+  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+
 
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
 
 
-  const approvedSearch = (e) => {
+
+  const approvedSearch = (e, fieldType) => {
+    fieldType === 'text' ? setSearchByDropDown(false) : setSearchByDropDown(true); 
     setSearchText(e.target.value);
   };
 
@@ -81,18 +85,44 @@ function ApprovedMerchant() {
   }
 
   useEffect(() => {
-    if (searchText.length > 0) {
-      setData(
-        approvedMerchantData.filter((item) =>
-          Object.values(item)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText?.toLocaleLowerCase())
-        )
-      );
+    if (searchText?.length > 0) {
+      // search by dropdwon
+      if(isSearchByDropDown && searchText!==''){
+        let filter = {
+          isDirect: searchText
+        };
+    
+        let refData = approvedMerchantData
+        
+        refData = refData.filter(function(item) {
+          for (let key in filter) {
+            if (item[key] === undefined || item[key] !== filter[key]){
+              return false;
+            }
+          }
+          return true;
+        });
+        setData(refData)
+        console.log("search by dropdown")
+      }else{
+        // search by text
+        setData(
+          approvedMerchantData?.filter((item) =>
+            Object.values(item)
+              .join(" ")
+              .toLowerCase()
+              .includes(searchText?.toLocaleLowerCase())
+          )
+        );
+        console.log("search by text")
+
+      }
     } else {
       setData(approvedMerchantData);
     }
+
+    setSearchByDropDown(false)
+
   }, [searchText]);
 
 
@@ -172,7 +202,7 @@ let pageNumbers = []
         <label>Search</label>
         <input
           className="form-control"
-          onChange={approvedSearch}
+          onChange={(e)=>approvedSearch(e,"text")}
           type="text"
           placeholder="Search Here"
         />
@@ -198,9 +228,10 @@ let pageNumbers = []
         <label>Onboard Type</label>
         <select
           className="ant-input"
-          onChange={approvedSearch}
+          onChange={(e)=>approvedSearch(e,"dropdown")}
+
         >
-          <option value="Select Role Type">Select Onboard Type</option>
+          <option value="">Select Onboard Type</option>
           <option value="">All</option>
           <option value="online">Online</option>
             <option value="offline">Offline</option>

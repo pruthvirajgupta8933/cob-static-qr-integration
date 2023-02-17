@@ -29,6 +29,8 @@ function VerifiedMerchant() {
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [isLoaded,setIsLoaded] = useState(false)
+  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+
 
 
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
@@ -39,7 +41,8 @@ function VerifiedMerchant() {
   // console.log(currenTab," Current Tab")
   const roles = roleBasedAccess();
 
-  const kycSearch = (e) => {
+  const kycSearch = (e, fieldType) => {
+    fieldType === 'text' ? setSearchByDropDown(false) : setSearchByDropDown(true); 
     setSearchText(e.target.value);
   };
 
@@ -84,19 +87,44 @@ function VerifiedMerchant() {
   }, [currentPage, pageSize]);
 
   useEffect(() => {
-    if (searchText.length > 0) {
-      setData(
-        verfiedMerchant.filter((item) =>
-          Object.values(item)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText?.toLocaleLowerCase())
-        )
-      );
+    if (searchText?.length > 0) {
+      // search by dropdwon
+      if(isSearchByDropDown && searchText!==''){
+        let filter = {
+          isDirect: searchText
+        };
+    
+        let refData = verfiedMerchant
+        
+        refData = refData.filter(function(item) {
+          for (let key in filter) {
+            if (item[key] === undefined || item[key] !== filter[key]){
+              return false;
+            }
+          }
+          return true;
+        });
+        setData(refData)
+        console.log("search by dropdown")
+      }else{
+        // search by text
+        setData(
+          verfiedMerchant?.filter((item) =>
+            Object.values(item)
+              .join(" ")
+              .toLowerCase()
+              .includes(searchText?.toLocaleLowerCase())
+          )
+        );
+        console.log("search by text")
+
+      }
     } else {
       setData(verfiedMerchant);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    setSearchByDropDown(false)
+
   }, [searchText]);
 
   
@@ -163,7 +191,7 @@ function VerifiedMerchant() {
         <label>Search</label>
         <input
           className="form-control"
-          onChange={kycSearch}
+          onChange={(e)=>kycSearch(e,"text")}
           type="text"
           placeholder="Search Here"
         />
@@ -183,8 +211,8 @@ function VerifiedMerchant() {
       {/* <KycDetailsModal kycId={kycIdClick} /> */}
       <div className="form-group col-lg-3 col-md-12 mt-2">
         <label>Onboard Type</label>
-        <select onChange={kycSearch} className="ant-input">
-          <option value="Select Role Type">Select Onboard Type</option>
+        <select onChange={(e)=>kycSearch(e,"dropdown")} className="ant-input">
+          <option value="">Select Onboard Type</option>
           <option value="">All</option>
           <option value="online">Online</option>
           <option value="offline">Offline</option>
