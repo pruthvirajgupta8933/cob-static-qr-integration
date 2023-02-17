@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "cob-nf-dev"
-  }
+    "default": "cob-staging",
+    "cob-prod": "cob-staging"
+  },
+  "targets": {},
+  "etags": {}
 }
