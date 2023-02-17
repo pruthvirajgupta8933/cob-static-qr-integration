@@ -4,7 +4,6 @@ import axios from "axios";
 import { B2B_URL } from "../config";
 
 
-
 const initialState = { 
 
 
@@ -16,7 +15,6 @@ export const challanTransactions = createAsyncThunk(
     "challan/challanTransactions",
     async (data) => {
       const requestParam = data.page;
-      
       const requestParam1 = data.page_size;
       const from_date = data.from_date
       const to_date = data.to_date
@@ -31,6 +29,31 @@ export const challanTransactions = createAsyncThunk(
       return response.data;
     }
   );
+
+  export const exportTransactions = createAsyncThunk(
+    "challan/exportTransactions",
+    async (data) => {
+      const requestParam = data.page;
+      
+      const requestParam1 = data.page_size;
+      const from_date = data.from_date
+      const to_date = data.to_date
+      const client_code = data.client_code
+      const response = await axios
+        .post(
+          `${B2B_URL.challanTransactionExport}/?page_size=${requestParam1}&page=${requestParam}&order_by=id`,{from_date,to_date,client_code},
+          {
+            responseType: 'arraybuffer'
+         })
+        .catch((error) => {
+          return error.response;
+        });
+  
+        return response
+    }
+  );
+
+
 
 
   export const challanTransactionSlice = createSlice({
