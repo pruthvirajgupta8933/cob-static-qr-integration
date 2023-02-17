@@ -12,6 +12,8 @@ import imageSlide1 from "../../assets/images/COB.png";
 import useAuth from "../../customHooks/useAuth";
 import axios from "../../utilities/axiosInstance";
 import TokenService from "../../services/token.service";
+import UserService from "../../services/test-service";
+// import api from './api';
 
 const INITIAL_FORM_STATE = {
   clientUserId: "",
@@ -69,16 +71,19 @@ function LoginPage() {
   //Dummy login for JWT
   const customLogin = async () => {
     console.log("runing")
-    const LOGIN_URL = "http://localhost:2020/v1/auth/signin";
+    const LOGIN_URL = "https://0c7e-103-106-192-134.in.ngrok.io/auth-service/auth/login";
     setTestUser("username");
     setPwd("password");
     const data = {
-      user: "username",
-      password: "password",
+      clientUserId: "linkpaisa",
+      userPassword: "linkpaisa",
     };
+    UserService.login(data).then((res)=>{
+      TokenService.setUser(res.data);
+    })
     axios.post(LOGIN_URL,data).then((res)=>{
       console.log(res)
-      TokenService.setUser(res.data);
+    
     })
 
       // navigate(from, { replace: true });

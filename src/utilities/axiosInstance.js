@@ -16,7 +16,7 @@ export const kycValidatorAuth = axios.create({
 // Instance for JWT
 const BASE_URL = 'http://localhost:2020';
 
-export default axios.create({
+ axios.create({
     baseURL: BASE_URL
 });
 
@@ -30,3 +30,13 @@ export const axiosPrivate = axios.create({
     headers: { 'Content-Type': 'application/json' },
     // withCredentials: true
 });
+
+//Instance for axios JWT instance
+ const instance = axios.create({
+    baseURL: "https://0c7e-103-106-192-134.in.ngrok.io",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+export default instance;
+  

@@ -34,6 +34,9 @@ const Approver = () => {
   let roles = roleBasedAccess();
 
   const loggedUser = roleBasedAccess();
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   useEffect(() => {
     if (loggedUser?.approver || loggedUser?.verifier || loggedUser?.viewer) {
@@ -59,15 +62,15 @@ const Approver = () => {
   //   const url = "http://localhost:2020/v1/books";
   //   console.log("books");
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+
   const getUsers = () => {
-    console.log("running")
     UserService.getUserBoard().then((res) => {
-      console.log(res,'books');
-      setUsers(res.data.books)
-    });
+      setUsers(res.data.message)
+    })
+    .catch((err)=>
+    {
+      // console.log(err);
+    })
   };
   //   // getUsers();
 
@@ -108,14 +111,7 @@ const Approver = () => {
                 )}
               </div>
               <ul>
-                {users &&
-                  users?.map((data) => {
-                    return (
-                      <>
-                        <li>{data?.title}</li>
-                      </>
-                    );
-                  })}
+              {users}
               </ul>
             </div>
           </div>

@@ -1,12 +1,15 @@
 import axiosInstance from "./api";
 import TokenService from "./token.service";
-// import { refreshToken } from "../actions/auth";
 
-const setup = (store) => {
+
+const setup = async (store) => {
   axiosInstance.interceptors.request.use(
     (config) => {
-      const token = TokenService.getLocalAccessToken();
-      console.log(token,'token')
+      const token =  TokenService.getLocalAccessToken();
+      // console.log('run fn')
+      console.log("step-2--accessToken", localStorage.getItem("accessToken"))
+      console.log("config ----", config?.url)
+      // console.log(token,'token')
       if (token) {
         config.headers["Authorization"] = 'Bearer ' + token;  // for Spring Boot back-end
         // config.headers["x-access-token"] = token; // for Node.js Express back-end
@@ -25,19 +28,19 @@ const setup = (store) => {
     },
     async (err) => {
       const originalConfig = err.config;
-
-      if (originalConfig.url !== "/auth/signin" && err.response) {
+      // console.log(originalConfig.url,'url');
+      if (originalConfig.url !== "/auth-service/auth/login" && err.response) {
         // Access Token was expired
-        if (err.response.status === 401 && !originalConfig._retry) {
+        if (err.response.status === 403 && !originalConfig._retry) {
           originalConfig._retry = true;
 
           try {
-            const rs = await axiosInstance.post("/auth/refresh", {
-              refreshToken: TokenService.getLocalRefreshToken(),
+          const rs = await axiosInstance.post("/auth-service/auth/refresh-token", {
+              refresh_token: TokenService.getLocalrefreshToken(),
             });
-            const  accessToken  = rs.data.JWT;
+            const  accessTok  = rs.data.accessToken;
             // dispatch(refreshToken(accessToken));
-            TokenService.updateLocalAccessToken(accessToken);
+            TokenService.updateLocalAccessToken(accessTok);
 
             return axiosInstance(originalConfig);
           } catch (_error) {

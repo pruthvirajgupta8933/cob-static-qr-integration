@@ -2,10 +2,13 @@ import api from './api';
 
 class UserService {
   getPublicContent() {
-    return api.get('/books');
+    return api.post('/demo');
   }
   getUserBoard() {
-    return api.get('/books');
+    return api.post('/demo');
+  }
+  login(data) {
+    return api.post('/auth-service/auth/login',data);
   }
 
 }
