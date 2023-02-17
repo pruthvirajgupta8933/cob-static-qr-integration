@@ -272,7 +272,8 @@ const API_LIVE = {
 
 
 const B2B_API_LIVE = {
-  challanTransaction: `${b2b_url}/e-collection/challan/get_transactions`
+  challanTransaction: `${b2b_url}/e-collection/challan/get_transactions`,
+  challanTransactionExport: `${b2b_url}/e-collection/challan/get_mis`
 }
 
 

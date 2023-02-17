@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import FormikController from "../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../_components/reuseable_components/convertToFormikSelectJson";
 import { useHistory } from "react-router-dom";
-import { challanTransactions } from "../slices/backTobusinessSlice";
+import { challanTransactions,exportTransactions } from "../slices/backTobusinessSlice";
 import toastConfig from "../utilities/toastTypes";
 import Spinner from "../components/ApproverNVerifier/Spinner";
 import DropDownCountPerPage from "../_components/reuseable_components/DropDownCountPerPage";
-import { exportToSpreadsheet } from "../utilities/exportToSpreadsheet";
+import Blob from 'blob';
 
 
 
@@ -33,6 +33,7 @@ const ChallanTransactReport = () => {
     const [isLoaded, setIsLoaded] = useState(false)
     const [saveData,setSaveData] = useState()
     const [disable,setDisable]=useState(false)
+    const [isexcelDataLoaded, setIsexcelDataLoaded] = useState(false)
 
 
 
@@ -222,54 +223,24 @@ useEffect(() => {
   };
 
 
-  const exportToExcelFn = () => {
-    const excelHeaderRow = [
-      "S.No",
-      "Client Code",
-      "Bank Code",
-      "Amount",
-      "Bank Reference No.",
-      "Challan No.",
-      // "Enquiry Id",
-      "IFSC Code",
-      "Status",
-      "Created On",
-      // "Udf1",
-      // "Udf2",
-      // "Udf3",
-      // "Udf4",
-      // "Udf5",
-      // "Udf6",
-    ];
-    let excelArr = [excelHeaderRow];
-    // eslint-disable-next-line array-callback-return
-    data?.map((item, index) => {
 
-      const allowDataToShow = {
-        srNo: item.srNo === null ? "" : index + 1,
-        client_code: item.client_code === null ? "" : item.client_code,
-        bank_code: item.bank_code === null ? "" : item.bank_code,
-        amount: item.amount === null ? "" : item.amount,
-        bank_reference_number: item.bank_reference_number === null ? "" : item.bank_reference_number,
-        challan_number: item.challan_number === null ? "" : item.challan_number,
-        // enquiry_id: item.enquiry_id === null ? "" : item.enquiry_id,
-        ifsc: item.ifsc === null ? "" : item.ifsc,
-        type: item.type === null ? "" : item.type,
-        created_on: item.created_on === null ? "" : item.created_on,
-        // udf1: item.udf1 === null ? "" : item.udf1,
-        // udf2: item.udf2 === null ? "" : item.udf2,
-        // udf3: item.udf3 === null ? "" : item.udf3,
-        // udf4: item.udf4 === null ? "" : item.udf4,
-        // udf5: item.udf5 === null ? "" : item.udf5,
-        // udf6: item.udf6 === null ? "" : item.udf6,
-        
-      };
+  const exportToExcelFn =  () => {
+    setIsexcelDataLoaded(true)
+    dispatch(exportTransactions({page: currentPage, page_size: pageSize,"from_date": saveData?.from_date,"to_date": saveData?.to_date,client_code: saveData?.clientCode})).then((res) => {
+    setIsexcelDataLoaded(false)
+    const blob = new Blob([res?.payload?.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `MIS_REPORT_${saveData?.clientCode}_${splitDate}.xlsx`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    })
+    
+  }
 
-      excelArr.push(Object.values(allowDataToShow));
-    });
-    const fileName = "Challan Transactions";
-    exportToSpreadsheet(excelArr, fileName);
-  };
+
+
 
   return (
     <section className="ant-layout">
@@ -360,6 +331,7 @@ useEffect(() => {
                   <button
                    className="btn btn-sm text-white  "
                    type="button"
+                   disabled={isexcelDataLoaded}
                    onClick={() => exportToExcelFn()}
                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
                  >
@@ -388,16 +360,12 @@ useEffect(() => {
                   <th>Amount</th>
                   <th>Bank Reference No.</th>
                   <th>Challan No.</th>
-                  {/* <th>Enquiry Id</th> */}
                   <th>IFSC Code</th>
+                  <th>GL</th>
+                  <th>SplGLInd</th>
                   <th>Status</th>
                   <th>Created On</th>
-                  {/* <th>Udf1</th>
-                  <th>Udf2</th>
-                  <th>Udf3</th>
-                  <th>Udf4</th>
-                  <th>Udf5</th>
-                  <th>Udf6</th> */}
+                 
                 </tr>
               </thead>
               <tbody>
@@ -428,16 +396,12 @@ useEffect(() => {
                         <td>{user?.amount}</td>
                         <td>{user?.bank_reference_number}</td>
                         <td>{user?.challan_number}</td>
-                        {/* <td>{user?.enquiry_id}</td> */}
                         <td>{user?.ifsc}</td>
+                        <td>{user?.gl}</td>
+                        <td>{user?.sp_igl_ind}</td>
                         <td>{user?.type}</td>
                         <td>{user?.created_on}</td>
-                        {/* <td>{user?.udf1}</td>
-                        <td>{user?.udf2}</td>
-                        <td>{user?.udf3}</td>
-                        <td>{user?.udf4}</td>
-                        <td>{user?.udf5}</td>
-                        <td>{user?.udf6}</td> */}
+                      
                       </tr>
                     ))}
                 <tr></tr>
