@@ -211,6 +211,7 @@ function VerifiedMerchant() {
                 <th>Email</th>
                 <th>Contact Number</th>
                 {/* <th>KYC Status</th> */}
+                <th>Verified Date</th>
                 <th>Registered Date</th>
                 <th>Onboard Type</th>
                 <th>View Status</th>
@@ -241,13 +242,14 @@ function VerifiedMerchant() {
                 data?.map((user, i) => (
                   <tr key={i}>
                     <td>{i + 1}</td>
-                    <td>{user.clientCode}</td>
-                    <td>{user.companyName}</td>
-                    <td>{user.name}</td>
-                    <td>{user.emailId}</td>
-                    <td>{user.contactNumber}</td>
+                    <td>{user?.clientCode}</td>
+                    <td>{user?.companyName}</td>
+                    <td>{user?.name}</td>
+                    <td>{user?.emailId}</td>
+                    <td>{user?.contactNumber}</td>
                     {/* <td>{user.status}</td> */}
-                    <td>{covertDate(user.signUpDate)}</td>
+                    <td>{user?.verified_date === null  ? "NA" : covertDate(user?.verified_date)}</td>
+                    <td>{covertDate(user?.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>
                     
