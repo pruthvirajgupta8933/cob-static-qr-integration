@@ -147,8 +147,6 @@ const initialState = {
   }
 };
 
-
-
 //--------------For Saving the Merchant Data Successfully (Contact Info) ---------------------
 export const updateContactInfo = createAsyncThunk(
   "UpdateContactInfo/updateContactInfo",
