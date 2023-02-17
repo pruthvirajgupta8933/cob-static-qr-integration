@@ -12,8 +12,6 @@ import  menuListReducer from "./slices/cob-dashboard/menulistSlice"
 import productCatalogueSlice  from "./slices/merchant-slice/productCatalogueSlice"
 import { ReferralMidReducer } from "./slices/referralAndMidOperationSlice";
 
-
-
 const reducer = {
   auth: authReducer,
   message: messageReducer,
@@ -26,14 +24,15 @@ const reducer = {
   payout:payoutReducer,
   menuListReducer:menuListReducer,
   productCatalogueSlice:productCatalogueSlice,
-  ReferralMidReducer:ReferralMidReducer
+  ReferralMidReducer:ReferralMidReducer,
+  
 
 };
 
 
 const store = configureStore({
   reducer: reducer,
-  devTools: true,
+  devTools: true
 });
 
 export default store;
