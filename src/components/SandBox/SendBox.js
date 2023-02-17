@@ -140,7 +140,7 @@ function Sandbox() {
                           htmlFor="inputPassword3"
                           className="col-form-label"
                         >
-                          Authentication Key{" "}
+                          Authentication Key
                         </label>
                         <input
                           type="text"
@@ -155,7 +155,7 @@ function Sandbox() {
                           htmlFor="inputPassword3"
                           className="col-form-label"
                         >
-                          Authentication IV{" "}
+                          Authentication IV
                         </label>
                         <input
                           type="text"
@@ -170,14 +170,14 @@ function Sandbox() {
                           htmlFor="inputPassword3"
                           className="col-form-label"
                         >
-                          Environment Base URL{" "}
+                          Environment Base URL
                         </label>
                         <input
                           type="text"
                           className="form-control"
                           id="inputPassword3"
                           disabled="true"
-                          value="https://sandbox.sabpaisa.in/SabPaisa/sabPaisaInit?v=1"
+                          value="https://stage-securepay.sabpaisa.in/SabPaisa/sabPaisaInit?v=1"
                         />
                       </div>
                     </div>

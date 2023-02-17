@@ -4,15 +4,17 @@ import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
 import { useDispatch, useSelector } from "react-redux";
 import toastConfig from "../../utilities/toastTypes";
-import { kycBankNames } from "../../slices/kycSlice";
+import { kycBankNames,kycpaymentModeType } from "../../slices/kycSlice";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { forGeneratingMid } from "../../slices/referralAndMidOperationSlice";
-
+import { getallGenrateMidData } from "../../slices/referralAndMidOperationSlice";
+import moment from "moment";
 const ViewGenerateMidModal = (props) => {
   const [show, setShow] = useState(false);
   const [bankData, setBankData] = useState([]);
+  const[paymentMode,setPaymentMode]=useState([])
   const [loading, setLoading] = useState(false);
-  const [disable, setDisable] = useState(false);
+ const[genrateMidData,setGenrateMidData]=useState([])
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
 
@@ -20,10 +22,14 @@ const ViewGenerateMidModal = (props) => {
 
   const initialValues = {
     bank_id: "",
+    payment_mode:""
   };
 
   const validationSchema = Yup.object({
     bank_id: Yup.string()
+      .required("Required")
+      .nullable(),
+      payment_mode:Yup.string()
       .required("Required")
       .nullable(),
   });
@@ -42,22 +48,58 @@ const ViewGenerateMidModal = (props) => {
       .catch((err) => console.log(err));
   }, []);
 
+
+  useEffect(() => {
+    dispatch(kycpaymentModeType())
+      .then((resp) => {
+        const data = convertToFormikSelectJson(
+          "payment_id",
+          "payment_mode",
+          resp.payload.PaymentModeData
+        );
+        setPaymentMode(data);
+      })
+
+      .catch((err) => console.log(err));
+  }, []);
+
+
+  useEffect(() => {
+    dispatch(getallGenrateMidData({clientCode:props?.userData?.clientCode}))
+        .then((resp) => {
+        const data = resp?.payload?.MidData;
+        setGenrateMidData(data)
+            
+            // setData(data);
+            
+        })
+
+        .catch((err) => {
+
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [props?.userData?.clientCode]);
+
   const handleSubmit = (values, resetForm) => {
+   
     setLoading(true);
     // setDisable(true)
 
     const midData = {
       clientCode: props?.userData?.clientCode,
-      bankName: values.bank_id,
+      bankName: values?.bank_id,
+      payment_mode:values?.payment_mode
     };
     dispatch(forGeneratingMid(midData))
       .then((resp) => {
         setData(resp.payload.ResponseData);
-        // console.log("API RESPONSE : :", resp);
-        toastConfig.successToast(resp.payload.message);
+        resp?.payload?.status_code === 200 ? toastConfig.successToast(resp?.payload?.message) :toastConfig.errorToast(resp?.payload)
+
+       
+        // toastConfig.successToast(resp.payload.message);
 
         // setDisable(false)
-        setShow(true);
+        
         setLoading(false);
         resetForm();
         return props.afterGeneratingMid()
@@ -65,17 +107,18 @@ const ViewGenerateMidModal = (props) => {
 
       .catch((err) => {
 
-        console.log(err,"Error")
+        
         toastConfig.errorToast(err);
-        // setDisable(false);
+       
       });
   };
 
-  // props.setOpenModal(false);
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("DD/MM/YYYY");
+      return date
+    }
 
-  // const propertyNames = Object.keys(data);
-  // console.log("propertyNames",propertyNames)
-  // console.log()
+  
 
   return (
     <div>
@@ -124,10 +167,10 @@ const ViewGenerateMidModal = (props) => {
                   </div>
                   <div className="modal-body">
                     <h5 className="font-weight-bold">
-                      Name: {props?.userData?.clientName}
+                      Client Name: {props?.userData?.clientName}
                     </h5>
                     <h5 className="font-weight-bold">
-                      ClientCode: {props?.userData?.clientCode}
+                      Client Code: {props?.userData?.clientCode}
                     </h5>
                     <div className="container">
                       <Form>
@@ -143,6 +186,17 @@ const ViewGenerateMidModal = (props) => {
                               options={bankData}
                             />
                           </div>
+                          <div className="col-lg-6">
+                            <label className="col-form-label mt-0 p-2">
+                              Mode<span style={{ color: "red" }}>*</span>
+                            </label>
+                            <FormikController
+                              control="select"
+                              name="payment_mode"
+                              className="form-control"
+                              options={paymentMode}
+                            />
+                          </div>
                         </div>
                         <div className="col-lg-6-">
                           <button
@@ -153,7 +207,7 @@ const ViewGenerateMidModal = (props) => {
                             {loading ? "Loading..." : "Generate MID"}
                           </button>
                         </div>
-                        {show ? (
+                       
                           <div
                             className="modal-footer"
                             style={{ display: "contents" }}
@@ -162,32 +216,30 @@ const ViewGenerateMidModal = (props) => {
                               <thead>
                                 <tr>
                                   <th>Client Code</th>
-                                  <th>Client Sub Merchant Id</th>
-                                  <th>Bank Request ID</th>
-                                  <th>Onboard Status</th>
-                                  <th>Client Name</th>
-                                  <th>Client Address</th>
-                                  <th>Client GST</th>
+                                  <th>Payment Mode</th>
+                                  <th>Bank Name</th>
+                                  <th>Sub Merchant Id</th>
+                                  <th>Created Date</th>
+                                  
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td>{data?.clientCode}</td>
-                                  <td>{data?.subMerchantId}</td>
-                                  <td>{data?.bankrequestId}</td>
-                                  <td>{data?.onboardStatus}</td>
-                                  <td>{data?.clientName}</td>
-                                  <td>{data?.clientAddress}</td>
-                                  <td>{data?.clientGstNo}</td>
+                                 {genrateMidData?.map((data, i) => (
+                                <tr key={i}>
+                                  <td>{data?.client_code}</td>
+                                  <td>{data?.PaymentMode}</td>
+                                  <td>{data?.BankName}</td>
+                                  <td>{data?.sub_merchant_id}</td>
+                                  <td>{covertDate(data?.created_date)}</td>
+                                  
                                 </tr>
+                                 ))}
                               </tbody>
                             </table>
 
                             {/* <button type="button" class="btn btn-secondary text-white" data-dismiss="modal" onClick={setShow(false)}>Close</button> */}
                           </div>
-                        ) : (
-                          <></>
-                        )}
+                        
                       </Form>
                     </div>
                   </div>

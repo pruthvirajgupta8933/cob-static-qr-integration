@@ -34,6 +34,8 @@ function PendingVerification() {
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isLoaded,setIsLoaded] = useState(false)
+  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+
 
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab)
@@ -43,7 +45,8 @@ function PendingVerification() {
 
  
   const dispatch = useDispatch();
-  const kycSearch = (e) => {
+  const kycSearch = (e, fieldType) => {
+    fieldType === 'text' ? setSearchByDropDown(false) : setSearchByDropDown(true); 
     setSearchText(e.target.value);
   };
 
@@ -87,19 +90,44 @@ function PendingVerification() {
 
   ///////////Kyc Search filter
   useEffect(() => {
-    if (searchText.length > 0) {
-      setData(
-        newRegistrationData.filter((item) =>
-          Object.values(item)
-            .join(" ")
-            .toLowerCase()
-            .includes(searchText?.toLocaleLowerCase())
-        )
-      );
+    if (searchText?.length > 0) {
+      // search by dropdwon
+      if(isSearchByDropDown && searchText!==''){
+        let filter = {
+          isDirect: searchText
+        };
+    
+        let refData = newRegistrationData
+        
+        refData = refData.filter(function(item) {
+          for (let key in filter) {
+            if (item[key] === undefined || item[key] !== filter[key]){
+              return false;
+            }
+          }
+          return true;
+        });
+        setData(refData)
+        console.log("search by dropdown")
+      }else{
+        // search by text
+        setData(
+          newRegistrationData?.filter((item) =>
+            Object.values(item)
+              .join(" ")
+              .toLowerCase()
+              .includes(searchText?.toLocaleLowerCase())
+          )
+        );
+        console.log("search by text")
+
+      }
     } else {
       setData(newRegistrationData);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    setSearchByDropDown(false)
+
   }, [searchText]);
 
   const totalPages = Math.ceil(dataCount / pageSize);
@@ -145,7 +173,7 @@ function PendingVerification() {
   }, [currentPage, totalPages]);
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("MM/DD/YYYY");
+    let date = moment(yourDate).format("DD/MM/YYYY");
       return date
     }
 
@@ -166,7 +194,7 @@ function PendingVerification() {
           <label>Search</label>
           <input
             className="form-control"
-            onChange={kycSearch}
+            onChange={(e)=>kycSearch(e,"text")}
             type="text"
             placeholder="Search Here"
           />
@@ -193,8 +221,8 @@ function PendingVerification() {
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <label>Onboard Type</label>
-          <select onChange={kycSearch} className="ant-input">
-            <option value="Select Role Type">Select Onboard Type</option>
+          <select onChange={(e)=>kycSearch(e,"dropdown")} className="ant-input">
+            <option value="">Select Onboard Type</option>
             <option value="">All</option>
             <option value="online">Online</option>
             <option value="offline">Offline</option>
@@ -264,7 +292,7 @@ function PendingVerification() {
                         data-toggle="modal"
                         data-target="#kycmodaldetail"
                       >
-                        {(roles?.verifier === true && currenTab === 3 ) || Allow_To_Do_Verify_Kyc_details === true ? "Verify KYC / View Status" : "View Status" }
+                        {(roles?.verifier === true && currenTab === 3 ) || Allow_To_Do_Verify_Kyc_details === true ? "Verify KYC " : "View Status" }
                       
                       </button>
                     </td>
@@ -282,7 +310,7 @@ function PendingVerification() {
                           data-target="#exampleModal"
                           disabled={user?.clientCode === null ? true : false}
                         >
-                          Add/View Comments
+                          Comments
                         </button>
                       ) : (
                         <></>

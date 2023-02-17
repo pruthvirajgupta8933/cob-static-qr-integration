@@ -92,11 +92,11 @@ const SideNavbar = () => {
       <div className="ant-layout-sider-children">
         <div className="gx-sidebar-content">
           <div className="brand-logo d-flex-item-right">
-            <div className="float-centre p-4">
-              <Link to={`${url}`} className="txt-white sidenavFonts">
+            <div className="float-centre pt-4 text-center- ml-3">
+              <Link to={`${url}`} className="txt-white sidenavFonts ">
                 <img
                   src={Sabpaisalogo3}
-                  width={150}
+                  width={120}
                   alt="sabpaisa"
                   title="sabpaisa"
                 />
