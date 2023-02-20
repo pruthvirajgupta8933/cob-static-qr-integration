@@ -38,6 +38,7 @@ const API_LIVE = {
   AUTH_CREATE_NEW_PASSWORD: `${url}/auth-service/account/forgot-password`,
   AUTH_CHANGE_PASSWORD: `${url}/auth-service/account/change-password`,
   AUTH_FORGET_PASSWORD: `${url}/auth-service/account/create-password`,
+  AUTH_CHECK_CLIENT_CODE: `${url}/auth-service/account/check-clientcode`,
   /* Email Verify for new register users */
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
 

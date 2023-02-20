@@ -53,7 +53,8 @@ const auth = {
     createNewPassowrd: null,
     isNewPasswordCreated: null,
   },
-  payLinkPermission: []
+  payLinkPermission: [],
+  avalabilityOfClientCode:{}
 };
 
 
@@ -295,6 +296,18 @@ export const changePasswordSlice = createAsyncThunk(
   }
 );
 
+// check client code is exists
+export const checkClientCodeSlice = createAsyncThunk(
+  "auth/checkClientCodeSlice",
+  async (requestParam) => {
+    const response = await AuthService.checkClintCode(requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+    return response.data;
+  }
+);
+
 // forgot password
 export const getEmailToSendOtpSlice = createAsyncThunk(
   "auth/getEmailToSendOtp",
@@ -401,6 +414,9 @@ const authSlice = createSlice({
     }
   },
   extraReducers: {
+    [checkClientCodeSlice.fulfilled]: (state, action) => {
+      state.avalabilityOfClientCode = action.payload
+    },
     [register.pending]: (state, action) => {
       state.isLoggedIn = null
       state.isUserRegistered = null;
