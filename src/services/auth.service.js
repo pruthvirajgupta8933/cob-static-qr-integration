@@ -82,6 +82,10 @@ const createClintCode = (object) => {
   return axiosInstanceAuth.post(API_URL.AUTH_CLIENT_CREATE, object)
 };
 
+const checkClintCode = (object) => {
+  return axiosInstanceAuth.post(API_URL.AUTH_CHECK_CLIENT_CODE, object)
+};
+
 
 // const updateClientProfile = (object, clientId) => {
 //   return axiosInstanceAuth.put(BASE_URL_FOR_PROFILE + "/updateProfile", object);
@@ -152,7 +156,8 @@ const authService = {
   getEmailToSendOTP,
   verifyOtpOnForgotPwd,
   createNewPassword,
-  checkPermission
+  checkPermission,
+  checkClintCode
 };
 
 export default authService;
