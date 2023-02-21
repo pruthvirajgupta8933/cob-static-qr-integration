@@ -39,7 +39,6 @@ function Home() {
   const { auth, kyc, productCatalogueSlice } = useSelector((state) => state);
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
   const { user } = auth;
-  let businessCat = user.clientMerchantDetailsList[0].business_cat_code
 
   const {SubscribedPlanData} = productCatalogueSlice
 
