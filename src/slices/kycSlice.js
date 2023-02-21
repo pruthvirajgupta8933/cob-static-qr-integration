@@ -8,6 +8,7 @@ import {
 import { APP_ENV } from "../config";
 
 const initialState = {
+  isLoading:false,
   documentByloginId: {},
   kycApproved: {
     count: null,
@@ -970,6 +971,19 @@ export const kycSlice = createSlice({
     }
   },
   extraReducers: {
+    [kycForNotFilled.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoading = true;
+    },
+    [kycForNotFilled.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoading = false;
+    },
+    [kycForNotFilled.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoading = false;
+    },
     [kycUserList.pending]: (state, action) => {
       state.status = "pending";
     },

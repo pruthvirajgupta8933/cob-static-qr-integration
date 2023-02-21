@@ -18,7 +18,6 @@ const Approver = () => {
   const currenTab = parseInt(verifierApproverTab?.currenTab);
 
   const [users, setUsers] = useState();
-
   // console.log("currenTab",currenTab)
   const dispatch = useDispatch();
 

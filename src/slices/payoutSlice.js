@@ -1,19 +1,40 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import { Payoutservice } from "../services/payoutService";
-import {
-  axiosInstanceAuth
-} from "../utilities/axiosInstance";
+import { axiosInstanceAuth } from "../utilities/axiosInstance";
 import API_URL from "../config";
+import api from "../services/api";
 
 const initialState = {
   ledgerDetails: [],
-  ledgerMerchant:[],
-  beneficiaryList:[],
-  transactionsMode:[],
-  paymentRequest:[],
+  ledgerMerchant: [],
+  beneficiaryList: [],
+  transactionsMode: [],
+  paymentRequest: [],
   isLoading: false,
+  clientData: [],
 };
+export const fetchClientCode = createAsyncThunk(
+  "dashbaord/payout/ledger",
+  async (thunkAPI) => {
+    try {
+      const response = await Payoutservice.fetchClientCode();
+      sessionStorage.setItem("ap", JSON.stringify(response?.data?.data?.auth_token));
+      sessionStorage.setItem("mid", JSON.stringify(response?.data?.data?.id));
+      return response.data;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      thunkAPI.dispatch(setMessage(message));
+      return thunkAPI.rejectWithValue();
+    }
+  }
+  );
+
 export const fetchledgerMerchantData = createAsyncThunk(
   "dashbaord/ledger",
   async (data, thunkAPI) => {
@@ -31,91 +52,91 @@ export const fetchledgerMerchantData = createAsyncThunk(
       return thunkAPI.rejectWithValue();
     }
   }
-);  
+);
 
-  export const fetchPayoutLedgerReportSlice = createAsyncThunk(
-    "dashbaord/ledger",
-    async (data) => {
-      const response = await axiosInstanceAuth
-        .post(
-          `${API_URL.getLedgersMerchantList}/?page=${data.data.pageNumber}&page_size=${data.data.pageSize}`,data.param,
-          {
-            headers: {
-              "auth-token": "R2wlqSVvlxiuVEGWgputdg==",
-            },
-          }
-        )
-        .catch((error) => {
-          return error.response;
-        });
-  
-      return response.data;
-    }
-  );
-
-  export const fetchBeneficiaryDetails = createAsyncThunk(
-    "dashbaord/beneficiary",
-    async (data) => {
-      const response = await axiosInstanceAuth
-        .get(
-          `${API_URL.fetchBeneficiary}/11?page=${data.data.pageNumber}&page_size=${data.data.pageSize}`,
-          {
-            headers: {
-              "auth-token": "R2wlqSVvlxiuVEGWgputdg==",
-            },
-          }
-        )
-        .catch((error) => {
-          return error.response;
-        });
-  
-      return response.data;
-    }
-  )
-  export const fetchTransactionModes = createAsyncThunk(
-    "dashbaord/payment_status",
-    async (data) => {
-      const param={
-        "query" : {
-            "merchant_id":"R2wlqSVvlxiuVEGWgputdg=="
+export const fetchPayoutLedgerReportSlice = createAsyncThunk(
+  "dashbaord/fetchPayoutLedgerReport",
+  async (data) => {
+    const authToken = JSON.parse(sessionStorage.getItem("ap"));
+    const response = await api
+      .post(
+        `${API_URL.getLedgersMerchantList}/?page=${data.data.pageNumber}&page_size=${data.data.pageSize}`,
+        data.param,
+        {
+          headers: {
+            "auth-token": authToken,
+          },
         }
-    }
+      )
+      .catch((error) => {
+        return error.response;
+      });
 
-      const response = await axiosInstanceAuth
-        .post(
-          `${API_URL.transactionMode}/`,param,
-          {
-            headers: {
-              "auth-token": "R2wlqSVvlxiuVEGWgputdg==",
-            },
-          }
-        )
-        .catch((error) => {
-          return error.response;
-        });
-  
-      return response.data;
-    }
-  )
-  export const PaymentRequest = createAsyncThunk(
-    "dashbaord/payment_status",
-    async (data) => {
-      const response = await axiosInstanceAuth
-        .post(
-          `${API_URL.paymentRequest}/`,data,
-          {
-            headers: {
-              "auth-token": "R2wlqSVvlxiuVEGWgputdg==",
-            },
-          }
-        )
-        .catch((error) => {
-          return error.response;
-        });
-  
-      return response.data;
-    }
-  )
+    return response.data;
+  }
+);
+
+export const fetchBeneficiaryDetails = createAsyncThunk(
+  "dashbaord/beneficiary",
+  async (data) => {
+    const authToken = JSON.parse(sessionStorage.getItem("ap"));
+    const merchantID = JSON.parse(sessionStorage.getItem("mid"));
+    const response = await api
+      .get(
+        `${API_URL.fetchBeneficiary}/${merchantID}?page=${data.data.pageNumber}&page_size=${data.data.pageSize}`,
+        {
+          headers: {
+            "auth-token": authToken,
+          },
+        }
+      )
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+export const fetchTransactionModes = createAsyncThunk(
+  "dashbaord/payment_status",
+  async (data) => {
+    const authToken = JSON.parse(sessionStorage.getItem("ap"));
+    const param = {
+      query: {
+        merchant_id: authToken,
+      },
+    };
+
+    const response = await api
+      .post(`${API_URL.transactionMode}/`, param, {
+        headers: {
+          "auth-token": authToken,
+        },
+      })
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+export const PaymentRequest = createAsyncThunk(
+  "dashbaord/payment_status",
+  async (data) => {
+    const authToken = JSON.parse(sessionStorage.getItem("ap"));
+    const response = await api
+      .post(`${API_URL.paymentRequest}/`, data, {
+        headers: {
+          "auth-token": authToken,
+        },
+      })
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
 export const payoutSlice = createSlice({
   name: "payout",
   initialState,
@@ -128,9 +149,19 @@ export const payoutSlice = createSlice({
     },
     clearSettlementReport: (state) => {
       state.ledgerDetails = [];
-    }
+    },
   },
   extraReducers: {
+    [fetchClientCode.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [fetchClientCode.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.clientData = action.payload;
+    },
+    [fetchClientCode.rejected]: (state) => {
+      state.isLoading = false;
+    },
     [fetchledgerMerchantData.pending]: (state) => {
       state.isLoading = true;
     },
@@ -160,7 +191,8 @@ export const payoutSlice = createSlice({
     },
     [fetchBeneficiaryDetails.rejected]: (state) => {
       state.isLoading = false;
-    },[fetchTransactionModes.pending]: (state) => {
+    },
+    [fetchTransactionModes.pending]: (state) => {
       state.isLoading = true;
     },
     [fetchTransactionModes.fulfilled]: (state, action) => {
@@ -169,7 +201,7 @@ export const payoutSlice = createSlice({
     },
     [fetchTransactionModes.rejected]: (state) => {
       state.isLoading = false;
-    }
+    },
   },
 });
 

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../components/dashboard/NavBar/NavBar";
 import {
   fetchPayoutLedgerReportSlice,
+  fetchClientCode
 } from "../slices/payoutSlice";
 import { useSelector, useStore, useDispatch } from "react-redux";
 import moment from "moment";
 import Spinner from "../_components/reuseable_components/ProgressBar";
 import LedgerCards from "./ledgerCards";
 import DropDownCountPerPage from "../_components/reuseable_components/DropDownCountPerPage";
+
 
 const PayoutLedger = (props) => {
   const dispatch = useDispatch();
@@ -23,6 +25,7 @@ const PayoutLedger = (props) => {
 
   useEffect(() => {
     fetchledgerMerchants();
+    dispatch(fetchClientCode());
   }, [currentPage, pageSize]);
 
   const TotalData = payoutState?.ledgerDetails?.count;
@@ -108,7 +111,7 @@ const PayoutLedger = (props) => {
         <div className="right_layout my_account_wrapper right_side_heading">
               <h1 className="m-b-sm gx-float-left">Ledger</h1>
             </div>
-          <LedgerCards />
+          {/* <LedgerCards /> */}
           <div className="container">
             <form onSubmit={handleSubmitDate}>
               <div className="row">
