@@ -38,7 +38,7 @@ import OnboardMerchant from "../ApproverNVerifier/Onboarderchant/OnboardMerchant
 import RefundTransactionHistory from "./AllPages/RefundTransactionHistory";
 import ChargeBackTxnHistory from "./AllPages/ChargeBackTxnHistory";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
-import { createClientProfile } from "../../slices/auth";
+import { checkClientCodeSlice, createClientProfile } from "../../slices/auth";
 import Sandbox from "../SandBox/SendBox";
 import AssignZone from "../ApproverNVerifier/AssignZone";
 import AdditionalKYC from "../ApproverNVerifier/AdditionalKYC";
@@ -66,62 +66,92 @@ import { isNull } from "lodash";
 import { merchantSubscribedPlanData } from "../../slices/merchant-slice/productCatalogueSlice";
 import ReferZone from "../ApproverNVerifier/ReferZone";
 import GenerateMid from "../ApproverNVerifier/GenerateMid";
+import { generateWord } from "../../utilities/generateClientCode";
 
 
 function Dashboard() {
   let history = useHistory();
   let { path } = useRouteMatch();
-  const { user } = useSelector((state) => state.auth);
+  const { user, avalabilityOfClientCode } = useSelector((state) => state.auth);
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
   const location = useLocation();
 
   // create new client code
   useEffect(() => {
-    
+    // console.log("user",user)
+
     if (roles?.merchant) {
+      console.log("merchant")
+      
       if (user?.clientMerchantDetailsList) {
+
+        console.log("merchant- clientlist available")
         if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
-          // create new client code
-          const uuidCode = Math.random().toString(36).slice(-6).toUpperCase();
-          const data = {
-            loginId: user?.loginId,
-            clientName: user?.clientContactPersonName,
-            clientCode: uuidCode,
-          };
 
-          dispatch(createClientProfile(data)).then(clientProfileRes => {
-            // console.log("response of the create client ", clientProfileRes);
-            // after create the client update the subscribe product
-            const postData = {
-              login_id: user?.loginId
+          console.log("merchant- client code null")
+          const clientFullName = user?.clientContactPersonName
+          const clientMobileNo = user?.clientMobileNo
+          const arrayOfClientCode =  generateWord(clientFullName, clientMobileNo)
+
+          console.log("arrayOfClientCode",arrayOfClientCode)
+          dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res=>{
+            // console.log("res",res?.payload?.clientCode)
+            let newClientCode = ""
+               // if client code available return status true, then make request with the given client
+
+            if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
+              newClientCode = res?.payload?.clientCode
+              console.log("newClientCode-step1",newClientCode)
+            } else {
+              newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+              console.log("newClientCode-step2",newClientCode)
             }
-            // fetch details of the user registraion
-            axiosInstanceAuth.post(API_URL.website_plan_details, postData).then(
-              res => {
-                // console.log("clientProfileRes", clientProfileRes)
-                const webData = res?.data?.data[0]?.plan_details
-                const postData = {
-                  clientId: clientProfileRes?.payload?.clientId,
-                  applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
-                  planId: !isNull(webData?.planid) ? webData?.planid : "1",
-                  planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
-                  applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
-                };
-
-                axiosInstanceAuth.post(
-                  API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-                  postData
-                ).then((res) => {
-                  dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
-
-                })
+  
+            console.log("new cleint code", newClientCode)
+  
+            // update new client code
+            const data = {
+              loginId: user?.loginId,
+              clientName: user?.clientContactPersonName,
+              clientCode: newClientCode,
+            };
+            // console.log("data", data)
+  
+            dispatch(createClientProfile(data)).then(clientProfileRes => {
+              // console.log("response of the create client ", clientProfileRes);
+              // after create the client update the subscribe product
+              const postData = {
+                login_id: user?.loginId
               }
-            )
-          }).catch(err => console.log(err));
-        } else {
-          // console.log("already created client code")
+              // fetch details of the user registraion
+              axiosInstanceAuth.post(API_URL.website_plan_details, postData).then(
+                res => {
+                  // console.log("clientProfileRes", clientProfileRes)
+                  const webData = res?.data?.data[0]?.plan_details
+                  const postData = {
+                    clientId: clientProfileRes?.payload?.clientId,
+                    applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
+                    planId: !isNull(webData?.planid) ? webData?.planid : "1",
+                    planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
+                    applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
+                  };
+  
+                  axiosInstanceAuth.post(
+                    API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+                    postData
+                  ).then((res) => {
+                    dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
+  
+                  })
+                }
+              )
+            }).catch(err => console.log(err));
+          })
+          
         }
+
+
       }
     }
   }, []);
@@ -138,7 +168,7 @@ function Dashboard() {
 
   useEffect(() => {
     // fetch subscribe product data
-    if(location?.pathname==="/dashboard"){
+    if (location?.pathname === "/dashboard") {
       dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
     }
   }, [location])
@@ -437,7 +467,7 @@ function Dashboard() {
         <Route exact path={`${path}/sabpaisa-pg/:subscribeId`} Component={SpPg}>
           <SpPg />
         </Route>
-       
+
         <MerchantRoute exact path={`${path}/payout/ledger`} Component={PayoutTransaction}>
           <SpPg />
         </MerchantRoute>
@@ -478,9 +508,9 @@ function Dashboard() {
             <SignupData />
           </ApproverRoute>
         )}
-      
 
-          {roles?.approver && (
+
+        {roles?.approver && (
           <ApproverRoute
             exact
             path={`${path}/referzone`}
@@ -491,7 +521,7 @@ function Dashboard() {
         )}
 
 
-         {roles?.approver && (
+        {roles?.approver && (
           <ApproverRoute
             exact
             path={`${path}/generatemid`}
@@ -500,7 +530,7 @@ function Dashboard() {
             <ReferZone />
           </ApproverRoute>
         )}
-          
+
 
 
         <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>

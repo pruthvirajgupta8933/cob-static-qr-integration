@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import {  useDispatch } from "react-redux";
-import { midGenerationList } from "../../slices/kycSlice";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import moment from "moment";
@@ -171,7 +170,6 @@ function AssignZone() {
                       <th>S. No.</th>
                       <th>Client Code</th>
                       <th>Merchant Name</th>
-                      <th>Sub Merchant Id</th>
                       <th> Email</th>
                       <th>Contact Number</th>
                       <th>KYC Status</th>
@@ -204,7 +202,6 @@ function AssignZone() {
                           <td>{i + 1}</td>
                           <td>{user.clientCode}</td>
                           <td>{user.name}</td>
-                          <td>{user.sub_merchant_id ? user.sub_merchant_id : "null"}</td>
                           <td>{user.emailId}</td>
                           <td>{user.contactNumber}</td>
                           <td>{user.status}</td>
