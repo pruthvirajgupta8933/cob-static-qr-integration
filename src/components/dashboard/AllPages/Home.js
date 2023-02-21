@@ -53,6 +53,7 @@ function Home() {
   }, [user]);
 
   useEffect(() => {
+    console.log(kyc?.kycUserList)
     setModalState(KycTabStatusStore?.status);
   }, [KycTabStatusStore]);
 
@@ -227,7 +228,7 @@ function Home() {
               </p>
             </div>
 
-            {(roles?.merchant === true && modalState !== "Approved") && (
+            {(roles?.merchant === true && kyc?.kycUserList?.status !== "Approved") && (
               <div className="col-12 col-md-12">
                 <div className="card col-lg-12- cardkyc pull-left">
                   <div className="font-weight-bold card-body Satoshi-Medium">
@@ -254,7 +255,7 @@ function Home() {
                 </div>
               </div>
             ) }
-            {(roles?.merchant === true && modalState === "Approved") && 
+            {(roles?.merchant === true && kyc?.kycUserList?.status === "Approved") && 
               (
                 <div className="col-12 col-md-12">
                   <div className="card col-lg-12- cardkyc pull-left">

@@ -18,6 +18,7 @@ import {
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../dashboard/NavBar/NavBar";
 import { isUndefined } from "lodash";
+import { KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED } from "../../utilities/enums";
 
 function KycForm() {
   const dispatch = useDispatch();
@@ -28,9 +29,7 @@ function KycForm() {
   const kycid = new URLSearchParams(search).get("kycid");
   const [tab, SetTab] = useState(1);
   const [title, setTitle] = useState("CONTACT INFO");
-
   const [kycPopUp, setKycPopUp] = useState(true);
-
   const { auth, kyc } = useSelector((state) => state);
   const { user } = auth;
   const { loginId } = user;
@@ -44,15 +43,13 @@ function KycForm() {
   }
 
   const { allTabsValidate, KycTabStatusStore } = kyc;
+  console.log("allTabsValidate", allTabsValidate)
 
   const merchant_consent = kyc?.kycUserList?.merchant_consent;
-  const BusinessOverviewStatus =
-    allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
-  const BusinessDetailsStatus =
-    allTabsValidate?.BusinessDetailsStatus?.submitStatus?.status;
+  const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
+  const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus?.submitStatus?.status;
   const bankDetails = allTabsValidate?.BankDetails?.submitStatus?.status;
-  const contactInfo =
-    allTabsValidate?.merchantContactInfo?.submitStatus?.status;
+  const contactInfo = allTabsValidate?.merchantContactInfo?.submitStatus?.status;
   const uploadDocuments = allTabsValidate?.UploadDoc?.submitStatus?.status;
 
 
@@ -90,16 +87,17 @@ function KycForm() {
     IsMerchantInfoFilled,
     IsSettlementInfoFilled = false;
   // let IsDocumentTabFilled = false
-
   // Now Check the tab status / accordingly change the UI
 
   if (
-    contactInfo === true ||
+
     (KycTabStatusStore?.general_info_status !== "Not-Filled" &&
       !isUndefined(KycTabStatusStore?.general_info_status))
   ) {
+    console.log("ddddd")
     IsGeneralInfoTabFilled = true;
   }
+
 
   if (
     BusinessOverviewStatus === true ||
@@ -118,12 +116,12 @@ function KycForm() {
   }
 
 
-  if(
+  if (
     bankDetails === true ||
-    (KycTabStatusStore?.settlement_info_status!=="Not-Filled" &&
-    !isUndefined(KycTabStatusStore?.settlement_info_status))){
-      IsSettlementInfoFilled = true
-        }
+    (KycTabStatusStore?.settlement_info_status !== "Not-Filled" &&
+      !isUndefined(KycTabStatusStore?.settlement_info_status))) {
+    IsSettlementInfoFilled = true
+  }
 
   if (
     uploadDocuments === true ||
@@ -133,11 +131,24 @@ function KycForm() {
     IsDocumentTabFilled = true;
   }
 
-  // console.log({IsGeneralInfoTabFilled,
-  //   isBusinessInfoStatus,
-  //   IsDocumentTabFilled,
-  //   IsMerchantInfoFilled,
-  //   IsSettlementInfoFilled})
+
+  const kycStatusArr = [
+    KYC_STATUS_PENDING,
+    KYC_STATUS_PROCESSING
+  ]
+
+
+  const kycStatusIcon = (tabStatus) => {
+
+    if (tabStatus === KYC_STATUS_REJECTED) {
+      return <i class={`fa kyc-form-status-icon fa-exclamation`} aria-hidden="true"></i>
+    }
+    if (kycStatusArr.includes(tabStatus)) {
+      return <i class={`fa kyc-form-status-icon fa-check`} aria-hidden="true"></i>
+    }
+
+  }
+
 
   return (
     <section className="ant-layout NunitoSans-Regular">
@@ -175,26 +186,33 @@ function KycForm() {
                         <div>
                           <ul>
                             <li className="nav-item p-2">
+                              {console.log("=================================")}
+                              {console.log("current tab", tab)}
+                              {console.log("IsGeneralInfoTabFilled", IsGeneralInfoTabFilled)}
+                              {console.log("KycTabStatusStore?.general_info_status", KycTabStatusStore?.general_info_status)}
                               <a
                                 href={() => false}
-                                className={
-                                  tab === 1 ? (
-                                    " nav-link activepaylink-kyc text-font d-flex"
-                                  ) : "inactive text-font d-flex" ? (
-                                    IsGeneralInfoTabFilled ? (
-                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
-                                    ) : (
-                                      "nav-link inactive text-font d-flex"
-                                    )
-                                  ) : (
-                                    <></>
-                                  )
-                                }
+                                // className={
+                                //   tab === 1 ? (
+                                //     "class1 nav-link activepaylink-kyc text-font d-flex"
+                                //   ) : "class2 inactive text-font d-flex" ? (
+                                //     IsGeneralInfoTabFilled ? (
+                                //       "class3 inactive text-font-ForStatusChange text-success p-2 d-flex"
+                                //     ) : (
+                                //       "class4 nav-link inactive text-font d-flex text-font-ForStatusChange"
+                                //     )
+                                //   ) : (
+                                //     <></>
+                                //   )
+                                // }
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 1 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
                                 onClick={() => {
                                   SetTab(1);
                                   setTitle("CONTACT INFO");
                                 }}
                               >
+                                {/* kyc status icon as per the status */}
+                                {kycStatusIcon(KycTabStatusStore?.general_info_status)}
                                 Merchant Contact Info
                               </a>
                             </li>
@@ -202,24 +220,27 @@ function KycForm() {
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}
-                                className={
-                                  tab === 2 ? (
-                                    " nav-link activepaylink-kyc text-font d-flex"
-                                  ) : "inactive text-font d-flex" ? (
-                                    isBusinessInfoStatus ? (
-                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
-                                    ) : (
-                                      "nav-link inactive text-font d-flex"
-                                    )
-                                  ) : (
-                                    <></>
-                                  )
-                                }
+                                // className={
+                                //   tab === 2 ? (
+                                //     " nav-link activepaylink-kyc text-font d-flex"
+                                //   ) : "inactive text-font d-flex" ? (
+                                //     isBusinessInfoStatus ? (
+                                //       "inactive text-font-ForStatusChange text-success p-2 d-flex"
+                                //     ) : (
+                                //       "nav-link inactive text-font d-flex"
+                                //     )
+                                //   ) : (
+                                //     <></>
+                                //   )
+                                // }
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 2 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
                                 onClick={() => {
                                   SetTab(2);
                                   setTitle("BUSINESS OVERVIEW");
                                 }}
                               >
+                                {/* kyc status icon as per the status */}
+                                {kycStatusIcon(KycTabStatusStore?.business_info_status)}
                                 Business Overview
                               </a>
                             </li>
@@ -227,48 +248,54 @@ function KycForm() {
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}
-                                className={
-                                  tab === 3 ? (
-                                    " nav-link activepaylink-kyc text-font d-flex"
-                                  ) : "inactive text-font d-flex" ? (
-                                    IsMerchantInfoFilled ? (
-                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
-                                    ) : (
-                                      "nav-link inactive text-font d-flex"
-                                    )
-                                  ) : (
-                                    <></>
-                                  )
-                                }
+                                // className={
+                                //   tab === 3 ? (
+                                //     " nav-link activepaylink-kyc text-font d-flex"
+                                //   ) : "inactive text-font d-flex" ? (
+                                //     IsMerchantInfoFilled ? (
+                                //       "inactive text-font-ForStatusChange text-success p-2 d-flex"
+                                //     ) : (
+                                //       "nav-link inactive text-font d-flex"
+                                //     )
+                                //   ) : (
+                                //     <></>
+                                //   )
+                                // }
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 3 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
                                 onClick={() => {
                                   SetTab(3);
                                   setTitle("BUSINESS DETAILS");
                                 }}
                               >
+                                {/* kyc status icon as per the status */}
+                                {kycStatusIcon(KycTabStatusStore?.merchant_info_status)}
                                 Business Details
                               </a>
                             </li>
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}
-                                className={
-                                  tab === 4 ? (
-                                    " nav-link activepaylink-kyc text-font d-flex"
-                                  ) : "inactive text-font d-flex" ? (
-                                    IsSettlementInfoFilled ? (
-                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
-                                    ) : (
-                                      "nav-link inactive text-font d-flex"
-                                    )
-                                  ) : (
-                                    <></>
-                                  )
-                                }
+                                // className={
+                                //   tab === 4 ? (
+                                //     " nav-link activepaylink-kyc text-font d-flex"
+                                //   ) : "inactive text-font d-flex" ? (
+                                //     IsSettlementInfoFilled ? (
+                                //       "inactive text-font-ForStatusChange text-success p-2 d-flex"
+                                //     ) : (
+                                //       "nav-link inactive text-font d-flex"
+                                //     )
+                                //   ) : (
+                                //     <></>
+                                //   )
+                                // }
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 4 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
                                 onClick={() => {
                                   SetTab(4);
                                   setTitle("BANK DETAILS");
                                 }}
                               >
+                                {/* kyc status icon as per the status */}
+                                {kycStatusIcon(KycTabStatusStore?.settlement_info_status)}
                                 Bank Details
                               </a>
                             </li>
@@ -276,46 +303,53 @@ function KycForm() {
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}
-                                className={
-                                  tab === 5 ? (
-                                    " nav-link activepaylink-kyc text-font d-flex"
-                                  ) : "inactive text-font d-flex" ? (
-                                    IsDocumentTabFilled ? (
-                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
-                                    ) : (
-                                      "nav-link inactive text-font d-flex"
-                                    )
-                                  ) : (
-                                    <></>
-                                  )
-                                }
+                                // className={
+                                //   tab === 5 ? (
+                                //     " nav-link activepaylink-kyc text-font d-flex"
+                                //   ) : "inactive text-font d-flex" ? (
+                                //     IsDocumentTabFilled ? (
+                                //       "inactive text-font-ForStatusChange text-success p-2 d-flex"
+                                //     ) : (
+                                //       "nav-link inactive text-font d-flex"
+                                //     )
+                                //   ) : (
+                                //     <></>
+                                //   )
+                                // }
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 5 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
                                 onClick={() => {
                                   SetTab(5);
                                   setTitle("DOCUMENTS UPLOAD");
                                 }}
                               >
+                                {/* kyc status icon as per the status */}
+                                {kycStatusIcon(KycTabStatusStore?.document_status)}
                                 Upload Document
                               </a>
                             </li>
+                            {/* {console.log("merchant_consent",merchant_consent)} */}
+                            {console.log("KycTabStatusStore", KycTabStatusStore)}
 
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}
-                                className={
-                                  tab === 6 ? (
-                                    " nav-link activepaylink-kyc text-font d-flex"
-                                  ) : "inactive text-font d-flex" ? (
-                                    uploadDocuments === true ||
-                                    merchant_consent?.term_condition ===
-                                      true ? (
-                                      "inactive text-font-ForStatusChange text-success p-2 d-flex"
-                                    ) : (
-                                      "nav-link inactive text-font d-flex"
-                                    )
-                                  ) : (
-                                    <></>
-                                  )
-                                }
+                                // className={
+
+                                //   tab === 6 ? (
+                                //     "nav-link activepaylink-kyc text-font d-flex p-2"
+                                //   ) : "inactive text-font d-flex" ? (
+                                //     kycStatusArr.includes(KycTabStatusStore?.status) ||
+                                //       merchant_consent?.term_condition ===
+                                //       false ? (
+                                //       "inactive text-font-ForStatusChange text-success p-2 d-flex"
+                                //     ) : (
+                                //       "nav-link inactive text-font d-flex p-2"
+                                //     )
+                                //   ) : (
+                                //     <></>
+                                //   )
+                                // }
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 6 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
                                 onClick={() => {
                                   SetTab(6);
                                   setTitle("SUBMIT KYC");
@@ -347,7 +381,7 @@ function KycForm() {
                             </span>
                           </button>
                         </h1>
-                        
+
                         {(tab === 1 && (
                           <ContactInfo
                             role={roles}

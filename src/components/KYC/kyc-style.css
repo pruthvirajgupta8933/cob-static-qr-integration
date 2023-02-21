@@ -5,16 +5,30 @@
   /* justify-content: center; */
 }
 
-a.activepaylink-kyc{
-  color:#fff !important;
-}
+
 .activepaylink-kyc {
-  background-color: #4bb543;
   color: white !important ;
   margin-left: 0;
-  /* padding-left: 46px; */
   white-space: nowrap;
 }
+
+.kyc_active_tab_success{
+  background-color: #4bb543;
+}
+
+.kyc_active_tab_error{
+  background-color: #ff0000;
+}
+
+.kyc_active_tab_warning{
+  background-color: #ffab07;
+}
+
+.kyc_active_tab_default{
+  background-color: #b2b2b2;
+}
+
+
 
 /* .inactive::before {
   position: fixed;
@@ -22,13 +36,13 @@ a.activepaylink-kyc{
   content: url(../../assets/images/check.png);
   display: inline-block;
 } */
-.activepaylink-kyc::after {
+/* .activepaylink-kyc::after {
   position: fixed;
   left: 201px;
   content: url(../../assets/images/arrow_back_ios.png);
   transform: matrix(1, 0, 0, -1, 11, 1);
   display: inline-block;
-}
+} */
 
 .btnbackground {
   background-color: #0156b3;
@@ -249,11 +263,11 @@ a.activepaylink-kyc{
 
 .text-font-ForStatusChange::before {
   /* position: fixed; */
-  position: relative;
+  /* position: relative;
   left: -7px;
   content: url(../../assets/images/check.png);
   display: inline-block;
-  padding-left: 13px;
+  padding-left: 13px; */
 }
 .text-font-ForStatusChange {
   /* font-family: Satoshi; */
@@ -261,8 +275,13 @@ a.activepaylink-kyc{
   font-weight: 700;
   line-height: 26px;
   letter-spacing: 0em;
-  color: green;
   white-space: nowrap;
+}
+
+.kyc-form-status-icon {
+  line-height: inherit;
+  margin-right: 5px;
+  font-size: 16px;
 }
 
 .text-kyc-header {
