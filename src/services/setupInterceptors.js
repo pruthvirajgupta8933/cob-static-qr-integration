@@ -1,4 +1,7 @@
+import API_URL from "../config";
+
 import {axiosInstanceJWT} from "../utilities/axiosInstance";
+import authService from "./auth.service";
 import TokenService from "./token.service";
 
 
@@ -16,6 +19,7 @@ const setup = async (store) => {
     }
   );
 
+
   axiosInstanceJWT.interceptors.response.use(
     (res) => {
       return res;
@@ -24,11 +28,16 @@ const setup = async (store) => {
       const originalConfig = err.config;
       if (originalConfig.url !== "/auth-service/auth/login" && err.response) {
         // Access Token was expired
+        if(err.response.status === 401 && !originalConfig._retry){
+          await authService.logout();
+          window.location.reload();
+        }
+        
         if (err.response.status === 403 && !originalConfig._retry) {
           originalConfig._retry = true;
 
           try {
-          const rs = await axiosInstanceJWT.post("/auth-service/auth/refresh-token", {
+          const rs = await axiosInstanceJWT.post(API_URL.BASE_URL_COB +"/auth-service/auth/refresh-token", {
               refresh_token: TokenService.getLocalrefreshToken(),
             });
             const  accessTok  = rs.data.accessToken;

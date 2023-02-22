@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import { axiosInstance } from "../utilities/axiosInstance";
 import AuthService from "../services/auth.service";
+import TokenService from "../services/token.service";
 
 const user = JSON.parse(localStorage.getItem("user"));
 const userAlreadyLoggedIn = user && user.loginId !== null ? true : false;
@@ -83,6 +84,8 @@ export const login = createAsyncThunk(
   async ({ username, password }, thunkAPI) => {
     try {
       const data = await AuthService.login(username, password);
+      console.log("data",data)
+      TokenService.setUser(data)
       return { user: data };
     } catch (error) {
       const message =

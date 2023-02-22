@@ -14,7 +14,6 @@ export const kycValidatorAuth = axios.create({
 
 //Instance for JWT
  export const axiosInstanceJWT = axios.create({
-    baseURL: "https://stgcobapi.sabpaisa.in",
     headers: {
       "Content-Type": "application/json",
     },

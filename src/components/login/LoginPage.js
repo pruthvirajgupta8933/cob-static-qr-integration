@@ -72,10 +72,7 @@ function LoginPage() {
     UserService.login(data).then((res)=>{
       TokenService.setUser(res.data);
     })
- 
 
-      // navigate(from, { replace: true });
- 
   };
 
   const handleLogin = (formValue) => {
@@ -91,7 +88,7 @@ function LoginPage() {
         const loginMessage = res?.payload?.user?.loginMessage;
         if (activeStatus === "Activate" && loginMessage === "success") {
           history.push("/dashboard");
-          customLogin();
+          // customLogin();
           setLoading(false);
         } else {
           if (loginMessage === "Pending") {
