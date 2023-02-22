@@ -258,6 +258,8 @@ const API_LIVE = {
   fetchBeneficiary:`${payout_url}/api/fetchBeneficiaryfor`,
   transactionMode: `${payout_url}/api/modesByMerchantId`,
   paymentRequest: `${payout_url}/api/PayoutTransactionRequest`,
+  fetchClientCode:`${payout_url}/api/getByClientCode/`,
+  
 
 
   // ---------------------------   NEW API FOR COMMENTS (2)

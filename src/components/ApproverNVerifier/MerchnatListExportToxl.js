@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 import React, { useState} from 'react'
-import { axiosInstanceAuth } from '../../utilities/axiosInstance';
+import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
 import API_URL from '../../config';
 
@@ -11,7 +11,7 @@ const MerchnatListExportToxl = (props) => {
   const exportToExcelFn = async () => {
     
     setLoading(true)
-    await axiosInstanceAuth.get(`${API_URL?.Export_FOR_MERCHANT_LIST}${props.URL}`).then((res) => {
+    await axiosInstanceJWT.get(`${API_URL?.Export_FOR_MERCHANT_LIST}${props.URL}`).then((res) => {
       if (res.status === 200) {
         const data = res?.data;
         

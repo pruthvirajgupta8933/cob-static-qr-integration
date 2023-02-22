@@ -7,11 +7,14 @@ import {
   fetchBeneficiaryDetails,
   fetchTransactionModes,
   PaymentRequest,
+  fetchClientCode
 } from "../slices/payoutSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Encrypt, Decrypt } from "../utilities/aes";
 import BankResponse from "./BankResponse";
 import FormikController from "../_components/formik/FormikController";
+import toastConfig from "../utilities/toastTypes";
+
 
 const MakePayment = (props) => {
   const dispatch = useDispatch();
@@ -22,6 +25,7 @@ const MakePayment = (props) => {
       pageSize: 10,
       pageNumber: 1,
     };
+    dispatch(fetchClientCode());
     dispatch(fetchBeneficiaryDetails({ data }));
     dispatch(fetchTransactionModes());
   }, []);
@@ -40,6 +44,7 @@ const MakePayment = (props) => {
   const [beneficiary, setbeneficiary] = useState("");
   const [paymentMode, setPaymentMode] = useState("");
   const payoutBeneficiaryState = useSelector((state) => state.payout);
+  const clientState=useSelector((state)=>state.payout.clientData);
   const payoutTransactionsState = useSelector((state) => state.payout);
   const [selectedBeneficiary, setSelectedBeneficiary] = useState({});
   const [bankdata, setData] = useState([]);
@@ -48,6 +53,8 @@ const MakePayment = (props) => {
   const beneficiaryData = payoutBeneficiaryState?.beneficiaryList.results;
 
   const transactionsMode = payoutTransactionsState?.transactionsMode?.data;
+  const authKey=clientState?.data?.auth_key;
+  const authIv=clientState?.data?.auth_iv;
 
   let data = beneficiary.toString();
   const FORM_VALIDATION = Yup.object().shape({
@@ -79,15 +86,15 @@ const MakePayment = (props) => {
     const data = JSON.stringify(
       Encrypt(
         `orderId=${values.order_id}&beneficiaryName=${values.benficiary_name}&beneficiaryAccount=${values.beneficiary_account}&beneficiaryIFSC=${values.ifsc_code}&amount=${values.amount}.00&purpose=${values.purpose},&remarks_description=${values.remarks},&mcc_code=${values.mcc}`,
-        `KIfO3ZTnUGUtkFec`,
-        `rZgL7cYEKLCOWLlv`
+        authKey,
+        authIv
       )
     );
     const UpiData = JSON.stringify(
       Encrypt(
         `orderId=${values.order_id}&upiId=${values.benficiary_upi}&amount=${values.amount}&purpose=${values.purpose}&remarks_description=${values.remakrs}&mcc_code=${values.mcc}`,
-        `KIfO3ZTnUGUtkFec`,
-        `rZgL7cYEKLCOWLlv`
+        authKey,
+        authIv
       )
     );
     dispatch(
@@ -104,18 +111,23 @@ const MakePayment = (props) => {
           if (typeof text !== "undefined") {
             let planText = Decrypt(
               text,
-              `KIfO3ZTnUGUtkFec`,
-              `rZgL7cYEKLCOWLlv`
+              authKey,
+              authIv
             );
             var str = planText.replace(/'/g, '"');
             var tempArr = [str];
             var resObj = JSON.parse(tempArr);
             setData(resObj);
           }
+          toastConfig.errorToast(res.payload.message);
         }
       }
-    });
-  };
+    }).catch((err)=>
+    {
+      console.log(err,'error');
+    })
+  }
+  
   const test = (e) => {
     let data = beneficiaryData.filter((data) => data.id == e);
     let obj = Object.assign({}, data);

@@ -65,11 +65,9 @@ function LoginPage() {
 
   //Dummy login for JWT
   const customLogin = async () => {
-
-
     const data = {
-      clientUserId: "linkpaisa",
-      userPassword: "linkpaisa",
+      clientUserId: "Abh789@sp",
+      userPassword: "P8c3WQ7ei",
     };
     UserService.login(data).then((res)=>{
       TokenService.setUser(res.data);
@@ -93,7 +91,7 @@ function LoginPage() {
         const loginMessage = res?.payload?.user?.loginMessage;
         if (activeStatus === "Activate" && loginMessage === "success") {
           history.push("/dashboard");
-          // customLogin();
+          customLogin();
           setLoading(false);
         } else {
           if (loginMessage === "Pending") {

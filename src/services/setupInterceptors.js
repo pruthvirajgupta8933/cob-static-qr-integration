@@ -1,9 +1,9 @@
-import axiosInstance from "./api";
+import {axiosInstanceJWT} from "../utilities/axiosInstance";
 import TokenService from "./token.service";
 
 
 const setup = async (store) => {
-  axiosInstance.interceptors.request.use(
+  axiosInstanceJWT.interceptors.request.use(
     (config) => {
       const token =  TokenService.getLocalAccessToken();
       if (token) {
@@ -16,7 +16,7 @@ const setup = async (store) => {
     }
   );
 
-  axiosInstance.interceptors.response.use(
+  axiosInstanceJWT.interceptors.response.use(
     (res) => {
       return res;
     },
@@ -28,14 +28,14 @@ const setup = async (store) => {
           originalConfig._retry = true;
 
           try {
-          const rs = await axiosInstance.post("/auth-service/auth/refresh-token", {
+          const rs = await axiosInstanceJWT.post("/auth-service/auth/refresh-token", {
               refresh_token: TokenService.getLocalrefreshToken(),
             });
             const  accessTok  = rs.data.accessToken;
             // dispatch(refreshToken(accessToken));
             TokenService.updateLocalAccessToken(accessTok);
 
-            return axiosInstance(originalConfig);
+            return axiosInstanceJWT(originalConfig);
           } catch (_error) {
             return Promise.reject(_error);
           }

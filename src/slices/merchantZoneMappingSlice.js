@@ -4,7 +4,7 @@ import API_URL from "../config";
 import zoneService from "../services/merchantZoneMapping.service";
 
 import {
-  axiosInstanceAuth,
+  axiosInstanceJWT,
  
 } from "../utilities/axiosInstance";
 
@@ -79,7 +79,7 @@ export const getZoneInfo= createAsyncThunk(
 export const riskCategory = createAsyncThunk(
     "riskCategory/riskCategory",
     async (requestParam) => {
-      const response = await axiosInstanceAuth
+      const response = await axiosInstanceJWT
         .put(`${API_URL.RISK_CATEGORY}`,  {
           headers: {
             // Authorization: ""
@@ -99,7 +99,7 @@ export const forSavingComments = createAsyncThunk(
     "merchnatzone/forSavingComments",
     async (requestParam) => {
         
-      const response = await axiosInstanceAuth
+      const response = await axiosInstanceJWT
         .post(`${API_URL.SAVE_COMMENTS}`, requestParam, {
             headers: {
                 // Authorization: ""
@@ -120,7 +120,7 @@ export const forSavingComments = createAsyncThunk(
     "merchnatzone/forGettingCommentList",
     async (requestParam) => {
         
-      const response = await axiosInstanceAuth
+      const response = await axiosInstanceJWT
         .post(`${API_URL.VIEW_COMMENTS_LIST}`, requestParam, {
             headers: {
                 // Authorization: ""
@@ -142,7 +142,7 @@ export const forSavingComments = createAsyncThunk(
     "merchnatzone/updatedCommentList",
     async (requestParam) => {
         
-      const response = await axiosInstanceAuth
+      const response = await axiosInstanceJWT
         .post(`${API_URL.COMMENTS_BOX}`, requestParam, {
             headers: {
                 // Authorization: ""

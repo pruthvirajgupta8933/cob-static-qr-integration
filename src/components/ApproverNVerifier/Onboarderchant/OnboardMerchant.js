@@ -10,7 +10,7 @@ import { register, udpateRegistrationStatus } from "../../../slices/auth";
 import { useHistory } from "react-router-dom";
 import { toast, Zoom } from "react-toastify";
 import API_URL from "../../../config";
-import { axiosInstanceAuth } from "../../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
 import NavBar from "../../dashboard/NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import { logout } from "../../../slices/auth";
@@ -88,7 +88,7 @@ const OnboardMerchant = () => {
   // }
   useEffect(() => {
 
-    axiosInstanceAuth
+    axiosInstanceJWT
       .get(API_URL.Business_Category_CODE)
       .then((resp) => {
         const data = resp.data; 
@@ -107,7 +107,7 @@ const OnboardMerchant = () => {
 
   
   useEffect(() => {
-    axiosInstanceAuth
+    axiosInstanceJWT
       .get(API_URL.Roles_DropDown)
       .then((resp) => {
         const data = resp.data;

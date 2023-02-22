@@ -5,7 +5,7 @@ import rafiki from "../../../../assets/images/rafiki.png";
 import { productSubscribeState } from "../../../../slices/dashboardSlice";
 import { useDispatch, useSelector } from "react-redux";
 import API_URL from "../../../../config";
-import { axiosInstanceAuth } from "../../../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import "./product.css";
 import toastConfig from "../../../../utilities/toastTypes";
 import { useParams,useHistory } from "react-router-dom";
@@ -39,7 +39,7 @@ const SabPaisaPricing = () => {
   const param = useParams();
 
   const getSubscribedPlan = (id) => {
-    axiosInstanceAuth
+    axiosInstanceJWT
       .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
       .then((resp) => {
         // console.log(resp?.data?.data[0]?.planId)
@@ -51,7 +51,7 @@ const SabPaisaPricing = () => {
   useEffect(() => {
     const id = param?.id;
     let url = API_URL.PRODUCT_SUB_DETAILS + "/" + id;
-    axiosInstanceAuth
+    axiosInstanceJWT
       .get(url)
       .then((resp) => {
         const data = resp.data.ProductDetail;
@@ -167,7 +167,7 @@ const SabPaisaPricing = () => {
     //   history.push("/dashboard/sabpaisa-pg");
     // }else{
       // setTempPlanId(plan_id)
-      const res = await axiosInstanceAuth.post(
+      const res = await axiosInstanceJWT.post(
         API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
         postData
       );
