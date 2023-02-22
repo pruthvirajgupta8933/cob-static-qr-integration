@@ -1,6 +1,6 @@
 import axios from "axios";
 import API_URL from "../config";
-import  { axiosInstance,axiosInstanceAuth} from "../utilities/axiosInstance"
+import  { axiosInstance,axiosInstanceJWT} from "../utilities/axiosInstance"
 
 // Home - successTxnSummary 
 

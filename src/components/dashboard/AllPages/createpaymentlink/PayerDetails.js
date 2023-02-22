@@ -8,7 +8,6 @@ import _ from 'lodash';
 import * as Yup from 'yup'
 import Genratelink from './Genratelink';
 import { Edituser } from './Edituser';
-// import { toast, Zoom } from 'react-toastify';
 import API_URL from '../../../../config';
 import toastConfig from '../../../../utilities/toastTypes';
 import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
@@ -21,7 +20,7 @@ const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2
 const validationSchema = Yup.object().shape({
     name: Yup.string().min(3, "It's too short").matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ").required("Required"),
     phone_number: Yup.string()
-        .required("required")
+        .required("Required")
         .matches(phoneRegExp, 'Phone number is not valid')
         .min(10, "to short")
         .max(10, "to long"),
@@ -42,7 +41,6 @@ const PayerDetails = () => {
     })
     const [searchText, setSearchText] = useState("");
     const { user } = useSelector((state) => state.auth);
-    // const [formData, setFormData] = useState(initialValues)
     const [displayList, setDisplayList] = useState([])
     const [data, setData] = useState([])
     const [customerType, setCustomerType] = useState([]);
@@ -64,7 +62,7 @@ const PayerDetails = () => {
 
     // Alluser data API INTEGRATION
     const loadUser = async () => {
-        await  axiosInstance.get(API_URL.GET_CUSTOMERS + clientCode)
+        await axiosInstance.get(API_URL.GET_CUSTOMERS + clientCode)
             .then(res => {
                 // console.log(res)
                 setData(res.data);
@@ -119,7 +117,7 @@ const PayerDetails = () => {
     // ADD User Dropdown api integration
 
     const getDrop = async (e) => {
-        await  axiosInstance.get(API_URL.GET_CUSTOMER_TYPE)
+        await axiosInstance.get(API_URL.GET_CUSTOMER_TYPE)
             .then(res => {
                 setCustomerType(res.data);
             })
@@ -132,7 +130,7 @@ const PayerDetails = () => {
     //ADD user API Integration
     const onSubmit = async (e) => {
         // console.log(e)
-        const res = await  axiosInstance.post(API_URL.ADD_CUSTOMER, {
+        const res = await axiosInstance.post(API_URL.ADD_CUSTOMER, {
             name: e.name,
             email: e.email,
             phone_number: e.phone_number,
@@ -187,7 +185,7 @@ const PayerDetails = () => {
         // confirm("do you confirm to delete it");
         var iscConfirm = window.confirm("Are you sure you want to delete it");
         if (iscConfirm) {
-            await  axiosInstance.delete(`${API_URL.DELETE_CUSTOMER}?Client_Code=${clientCode}&Customer_id=${id}`);
+            await axiosInstance.delete(`${API_URL.DELETE_CUSTOMER}?Client_Code=${clientCode}&Customer_id=${id}`);
             loadUser();
         }
     };
@@ -249,7 +247,8 @@ const PayerDetails = () => {
                                                 <ErrorMessage name="name">
                                                     {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                                 </ErrorMessage>
-
+                                            </div>
+                                            <div className="form-group">
                                                 <label htmlFor="recipient-name" className="col-form-label">Mobile No.:</label>
                                                 <Field
                                                     name="phone_number"
@@ -265,7 +264,8 @@ const PayerDetails = () => {
                                                 <ErrorMessage name="phone_number">
                                                     {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                                 </ErrorMessage>
-
+                                            </div>
+                                            <div className="form-group">
                                                 <label htmlFor="recipient-name" className="col-form-label">Email ID:</label>
                                                 <Field name="email"
                                                     autoComplete="off"
@@ -275,16 +275,17 @@ const PayerDetails = () => {
                                                 <ErrorMessage name="email">
                                                     {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                                                 </ErrorMessage>
+                                            </div>
+                                            <div className="form-group">
                                                 <label htmlFor="recipient-name" className="col-form-label">Payer Category:</label>
                                                 <Field name="customer_type_id" className="selct" component="select">
                                                     <option
                                                         type="text"
-                                                        className="form-control"
                                                         id="recipient-name"
                                                     >Select Your Payer Category</option>
                                                     {
                                                         customerType.map((payer, i) => (
-                                                            <option value={payer.id} key={i}>{payer.type}</option>
+                                                            <option value={payer.id} key={i}>{payer.type?.toUpperCase()}</option>
                                                         ))}
                                                 </Field>
                                             </div>
@@ -355,7 +356,7 @@ const PayerDetails = () => {
                                     <th scope="col">Email ID</th>
                                     <th scope="col">Payer  Category</th>
                                     <th scope="col">Edit</th>
-                                    
+
                                     <th scope="col">Action</th>
                                     <th scope="col">Delete</th>
                                 </tr>
@@ -369,9 +370,9 @@ const PayerDetails = () => {
                                         <td>{user.email}</td>
                                         <td>{user.customer_type}</td>
                                         <td>
-                                            <button type="button"  className="cratepaymentlinkclrsfigma text-white btn" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)} >Edit</button>
+                                            <button type="button" className="cratepaymentlinkclrsfigma text-white btn" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)} >Edit</button>
                                         </td>
-                                        
+
                                         <td>
                                             <button onClick={(e) => generateli(user.id)}
                                                 type="button"

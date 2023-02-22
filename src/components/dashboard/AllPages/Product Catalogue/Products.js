@@ -12,7 +12,7 @@ import epos from "../../../../assets/images/epos.png";
 import linkPaisa from "../../../../assets/images/linkPaisa.png";
 
 import API_URL from "../../../../config";
-import { axiosInstanceAuth } from "../../../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 
 const Products = () => {
   const [product, setProduct] = useState([]);
@@ -29,7 +29,7 @@ const Products = () => {
   ];
 
   useEffect(() => {
-    axiosInstanceAuth
+    axiosInstanceJWT
       .get(API_URL.PRODUCT_DETAILS)
       .then((resp) => {
         const data = resp.data.ProductDetail;

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { kycForNotFilled } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
+import Table from "../../_components/table_components/Table";
+import { NotFilledKYCData } from "../../utilities/tableData";
+import Paginataion from "../../_components/table_components/Pagination";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 
+const rowData = NotFilledKYCData;
 const NotFilledKYC = () => {
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(true);
@@ -21,13 +25,42 @@ const NotFilledKYC = () => {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   const dispatch = useDispatch();
-
+  const loadingState = useSelector((state) => state.kyc.isLoading);
   const kycSearch = (e, fieldType) => {
-    fieldType === 'text' ? setSearchByDropDown(false) : setSearchByDropDown(true); 
+    fieldType === "text"
+      ? setSearchByDropDown(false)
+      : setSearchByDropDown(true);
     setSearchText(e.target.value);
   };
 
-  useEffect(() => { 
+  //Map the table data
+  const colData = () => {
+    return (
+      <>
+        {data == []  ? (
+          <td colSpan={"11"}>
+            {" "}
+            <div className="nodatafound text-center">No data found </div>
+          </td>
+        ) : (
+          data?.map((data, key) => (
+            <tr>
+              <td>{key + 1}</td>
+              <td>{data.clientCode}</td>
+              <td>{data.name}</td>
+              <td>{data.emailId}</td>
+              <td>{data.contactNumber}</td>
+              <td>{data.status}</td>
+              <td> {covertDate(data.signUpDate)}</td>
+              <td>{data?.isDirect}</td>
+            </tr>
+          ))
+        )}
+      </>
+    );
+  };
+
+  useEffect(() => {
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
@@ -44,30 +77,30 @@ const NotFilledKYC = () => {
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
-  }, [currentPage, pageSize, dispatch]);
+  }, [currentPage, pageSize, dispatch,searchText]);
 
   //------- KYC NOT FILLED SEARCH FILTER ------------//
- useEffect(() => {
+  useEffect(() => {
     if (searchText?.length > 0) {
       // search by dropdwon
-      if(isSearchByDropDown && searchText!==''){
+      if (isSearchByDropDown && searchText !== "") {
         let filter = {
-          isDirect: searchText
+          isDirect: searchText,
         };
-    
-        let refData = notFilledData
-        
+
+        let refData = notFilledData;
+
         refData = refData.filter(function(item) {
           for (let key in filter) {
-            if (item[key] === undefined || item[key] !== filter[key]){
+            if (item[key] === undefined || item[key] !== filter[key]) {
               return false;
             }
           }
           return true;
         });
-        setData(refData)
-        console.log("search by dropdown")
-      }else{
+        setData(refData);
+        console.log("search by dropdown");
+      } else {
         // search by text
         setData(
           notFilledData?.filter((item) =>
@@ -77,15 +110,13 @@ const NotFilledKYC = () => {
               .includes(searchText?.toLocaleLowerCase())
           )
         );
-        console.log("search by text")
-
+        console.log("search by text");
       }
     } else {
       setData(notFilledData);
     }
 
-    setSearchByDropDown(false)
-
+    setSearchByDropDown(false);
   }, [searchText]);
   const totalPages = Math.ceil(dataCount / pageSize);
   let pageNumbers = [];
@@ -130,8 +161,8 @@ const NotFilledKYC = () => {
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
-      return date
-    }
+    return date;
+  };
 
   return (
     <div className="container-fluid flleft">
@@ -140,7 +171,7 @@ const NotFilledKYC = () => {
           <label>Search</label>
           <input
             className="form-control"
-            onChange={(e)=>kycSearch(e,"text")}
+            onChange={(e) => kycSearch(e, "text")}
             type="text"
             placeholder="Search Here"
           />
@@ -161,7 +192,7 @@ const NotFilledKYC = () => {
           <label>Onboard Type</label>
           <select
             className="ant-input"
-            onChange={(e)=>kycSearch(e,"dropdown")}
+            onChange={(e) => kycSearch(e, "dropdown")}
           >
             <option value="">Select Onboard Type</option>
             <option value="">All</option>
@@ -177,58 +208,14 @@ const NotFilledKYC = () => {
 
       <div className="col-md-12 col-md-offset-4">
         <div className="scroll overflow-auto">
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-                <th>S. No.</th>
-                <th>Client Code</th>
-                <th>Merchant Name</th>
-                <th>Email</th>
-                <th>Contact Number</th>
-                <th>KYC Status</th>
-                <th>Registered Date</th>
-                <th>Onboard Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data === null || data === [] ? (
-                <tr>
-                  <td colSpan={"11"}>
-                    <div className="nodatafound text-center">
-                      No data found{" "}
-                    </div>
-                  </td>
-                </tr>
-              ) : (
-                <></>
-              )}
-
-              {data?.length === 0 ? (
-                <tr>
-                  <td colSpan={"11"}>
-                    <p className="text-center spinner-roll">
-                      {spinner === true && <Spinner />}
-                    </p>
-                  </td>
-                </tr>
-              ) : (
-                data?.map((user, i) => (
-                  <tr key={i}>
-                    <td>{i + 1}</td>
-                    <td>{user.clientCode}</td>
-                    <td>{user.name}</td>
-                    <td>{user.emailId}</td>
-                    <td>{user.contactNumber}</td>
-                    <td>{user.status}</td>
-                    <td> {covertDate(user.signUpDate)}</td>
-                    <td>{user?.isDirect}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+ 
+          {loadingState ? (
+            <p className="text-center spinner-roll">{<Spinner />}</p>
+          ):
+          <Table row={rowData} col={colData} />} 
         </div>
         <nav>
+     {/* <Paginataion/> */}
           <ul className="pagination justify-content-center">
             {isLoaded === true ? (
               <Spinner />

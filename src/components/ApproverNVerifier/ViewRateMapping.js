@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
-import { axiosInstanceAuth } from '../../utilities/axiosInstance';
+import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import RateRadioMapping from './RateRadioMapping';
 import { useDispatch, useSelector } from "react-redux";
 import { riskCategory, businessCategory, templateRate, viewRateMap } from '../../slices/rateMappingSlice';
@@ -94,7 +94,7 @@ const ViewRateMapping = (props) => {
 
 
     // useEffect(() => {
-    //     axiosInstanceAuth
+    //     axiosInstanceJWT
     //         .get(API_URL.Business_Category_CODE)
     //         .then((resp) => {
     //             const data =

@@ -9,9 +9,10 @@ const LedgerCards = () => {
     ledgersMerchant();
   }, []);
   const ledgersMerchant = async () => {
+    const authToken = JSON.parse(sessionStorage.getItem("ap"));
     axios.get(API_URL.LedgersMerchant,{
       headers:{
-        "auth-token": "R2wlqSVvlxiuVEGWgputdg==",
+        "auth-token": authToken,
       }
     }).then((res) => {
       setMerchantData(res.data.data)
