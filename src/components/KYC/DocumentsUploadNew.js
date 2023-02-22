@@ -43,12 +43,13 @@ function DocumentsUpload(props) {
   const [imgAttr, setImgAttr] = useState("#");
 
   const { auth, kyc } = useSelector((state) => state);
-  const { allTabsValidate } = kyc;
+  const { allTabsValidate , KycTabStatusStore} = kyc;
   const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const kyc_status = KycList?.status;
   const businessType = KycList?.businessType;
 
+  const documentStatus = KycTabStatusStore?.document_status
 
 
   const { user } = auth;
@@ -373,7 +374,7 @@ function DocumentsUpload(props) {
                       options={docTypeList}
                       readOnly={readOnly}
                       disabled={
-                        kyc_status === "Verified" || kyc_status === "Approved"
+                        documentStatus === "Verified" || documentStatus === "Approved"
                           ? true
                           : false
                       }
@@ -393,8 +394,8 @@ function DocumentsUpload(props) {
                   </div>
 
                   {role?.merchant ? (
-                    KycList?.status !== "Approved" &&
-                      KycList?.status !== "Verified" ? (
+                    documentStatus !== "Approved" &&
+                    documentStatus !== "Verified" ? (
                       docTypeIdDropdown !== "" ? (
                         <>
                           <div className="col-lg-6 ">
@@ -448,8 +449,8 @@ function DocumentsUpload(props) {
                     <></>
                   )}
 
-                  {KycList?.status !== "Approved" &&
-                    KycList?.status !== "Verified" &&
+                  {documentStatus !== "Approved" &&
+                  documentStatus !== "Verified" &&
                     role?.merchant ? (
                     <div className="col-12">
                       <button
@@ -464,8 +465,8 @@ function DocumentsUpload(props) {
                       </button>
 
                       {/* add function go to the next step */}
-                      {KycList?.status !== "Approved" &&
-                        KycList?.status !== "Verified" &&
+                      {documentStatus !== "Approved" &&
+                      documentStatus !== "Verified" &&
                         role?.merchant &&
                         btn ? (
                         <button
@@ -514,8 +515,8 @@ function DocumentsUpload(props) {
                               <th>Document Name</th>
                               <th>Document Status</th>
                               {role?.merchant &&
-                                KycList?.status !== "Approved" &&
-                                KycList?.status !== "Verified" ? (
+                                documentStatus !== "Approved" &&
+                                documentStatus !== "Verified" ? (
                                 <th>Remove Item</th>
                               ) : (
                                 <></>
@@ -542,8 +543,8 @@ function DocumentsUpload(props) {
                                 </td>
                                 <td>{doc.status}</td>
                                 {role?.merchant &&
-                                  KycList?.status !== "Approved" &&
-                                  KycList?.status !== "Verified" ? (
+                                  documentStatus !== "Approved" &&
+                                  documentStatus !== "Verified" ? (
                                   <td>
                                     <button
                                       type="button"
