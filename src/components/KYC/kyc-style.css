@@ -28,6 +28,10 @@
   background-color: #b2b2b2;
 }
 
+.text-decoration-underline{
+  text-decoration: underline
+}
+
 
 
 /* .inactive::before {

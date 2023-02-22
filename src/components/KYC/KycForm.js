@@ -18,7 +18,7 @@ import {
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../dashboard/NavBar/NavBar";
 import { isUndefined } from "lodash";
-import { KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED } from "../../utilities/enums";
+import { KYC_STATUS_NOT_FILLED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_REJECTED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 
 function KycForm() {
   const dispatch = useDispatch();
@@ -70,11 +70,7 @@ function KycForm() {
   //API Integrated For Verification Of All Tabs ------------//
 
   useEffect(() => {
-    dispatch(
-      GetKycTabsStatus({
-        login_id: merchantloginMasterId,
-      })
-    );
+    dispatch(GetKycTabsStatus({login_id: merchantloginMasterId}));
   }, [merchantloginMasterId]);
 
   const redirect = () => {
@@ -132,21 +128,30 @@ function KycForm() {
   }
 
 
-  const kycStatusArr = [
-    KYC_STATUS_PENDING,
-    KYC_STATUS_PROCESSING
-  ]
-
+ 
 
   const kycStatusIcon = (tabStatus) => {
 
     if (tabStatus === KYC_STATUS_REJECTED) {
       return <i class={`fa kyc-form-status-icon fa-exclamation`} aria-hidden="true"></i>
     }
-    if (kycStatusArr.includes(tabStatus)) {
+    if (tabStatus===KYC_STATUS_PENDING || tabStatus===KYC_STATUS_PROCESSING) {
       return <i class={`fa kyc-form-status-icon fa-check`} aria-hidden="true"></i>
     }
+    if (tabStatus===KYC_STATUS_VERIFIED) {
+      return <i class={`fa kyc-form-status-icon fa-check-square-o`} aria-hidden="true"></i>
+    }
 
+  }
+
+  const kycTabColorClassByStatus = (tabStatus)=>{
+    if(tabStatus === KYC_STATUS_REJECTED){
+      return "kyc_active_tab_error"
+    }else if(tabStatus === KYC_STATUS_VERIFIED){
+      return "kyc_active_tab_success"
+    }else{
+      return "kyc_active_tab_default"
+    }
   }
 
 
@@ -188,8 +193,6 @@ function KycForm() {
                             <li className="nav-item p-2">
                               {console.log("=================================")}
                               {console.log("current tab", tab)}
-                              {console.log("IsGeneralInfoTabFilled", IsGeneralInfoTabFilled)}
-                              {console.log("KycTabStatusStore?.general_info_status", KycTabStatusStore?.general_info_status)}
                               <a
                                 href={() => false}
                                 // className={
@@ -205,7 +208,7 @@ function KycForm() {
                                 //     <></>
                                 //   )
                                 // }
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 1 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 1 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : `inactive`}`}
                                 onClick={() => {
                                   SetTab(1);
                                   setTitle("CONTACT INFO");
@@ -233,13 +236,15 @@ function KycForm() {
                                 //     <></>
                                 //   )
                                 // }
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 2 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex 
+                                  ${tab === 2 ? kycTabColorClassByStatus(KycTabStatusStore?.business_info_status) : `inactive`}`}
                                 onClick={() => {
                                   SetTab(2);
                                   setTitle("BUSINESS OVERVIEW");
                                 }}
                               >
                                 {/* kyc status icon as per the status */}
+                                {/* {console.log("KycTabStatusStore?.business_info_status",KycTabStatusStore?.business_info_status)} */}
                                 {kycStatusIcon(KycTabStatusStore?.business_info_status)}
                                 Business Overview
                               </a>
@@ -261,7 +266,7 @@ function KycForm() {
                                 //     <></>
                                 //   )
                                 // }
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 3 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 3 ? kycTabColorClassByStatus(KycTabStatusStore?.merchant_info_status) : `inactive`}`}
                                 onClick={() => {
                                   SetTab(3);
                                   setTitle("BUSINESS DETAILS");
@@ -288,7 +293,7 @@ function KycForm() {
                                 //     <></>
                                 //   )
                                 // }
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 4 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 4 ? kycTabColorClassByStatus(KycTabStatusStore?.settlement_info_status) : `inactive`}`}
                                 onClick={() => {
                                   SetTab(4);
                                   setTitle("BANK DETAILS");
@@ -316,7 +321,7 @@ function KycForm() {
                                 //     <></>
                                 //   )
                                 // }
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 5 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 5 ? kycTabColorClassByStatus(KycTabStatusStore?.document_status) : `inactive`}`}
                                 onClick={() => {
                                   SetTab(5);
                                   setTitle("DOCUMENTS UPLOAD");
@@ -349,12 +354,14 @@ function KycForm() {
                                 //     <></>
                                 //   )
                                 // }
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 6 ? `activepaylink- kyc_active_tab_default` : `inactive`}`}
+                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 6 ? kycTabColorClassByStatus(KycTabStatusStore?.status) : `inactive`}`}
                                 onClick={() => {
                                   SetTab(6);
                                   setTitle("SUBMIT KYC");
                                 }}
                               >
+                              {console.log("merchant_consent",merchant_consent)}
+                              { merchant_consent?.term_condition === true && kycStatusIcon(KycTabStatusStore?.status)}
                                 Submit KYC
                               </a>
                             </li>

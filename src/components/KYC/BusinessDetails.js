@@ -14,6 +14,7 @@ import {
   authPanValidation,
   gstValidation,
   kycUserList,
+  GetKycTabsStatus,
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
@@ -76,9 +77,8 @@ function BusinessDetails(props) {
       : BusinessDetailsStatus?.AuthPanValidation.last_name;
 
   let businessNamee = `${busiFirstName} ${busiLastName}`;
-  let businessAuthName = `${
-    busiAuthFirstName !== undefined ? busiAuthFirstName : ""
-  } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
+  let businessAuthName = `${busiAuthFirstName !== undefined ? busiAuthFirstName : ""
+    } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
 
   const panValidate = (values) => {
     dispatch(
@@ -299,6 +299,8 @@ function BusinessDetails(props) {
           setTab(4);
           setTitle("BANK DETAILS");
           dispatch(kycUserList({ login_id: loginId }));
+          dispatch(GetKycTabsStatus({ login_id: loginId }));
+
           setIsDisable(false);
         } else {
           toast.error(res?.payload?.message);
@@ -306,32 +308,7 @@ function BusinessDetails(props) {
         }
       });
     }
-    // else if (role.verifier) {
-    //   const veriferDetails = {
-    //     login_id: kycid,
-    //     merchant_info_verified_by: loginId,
-    //   };
-    //   dispatch(verifyKycEachTab(veriferDetails))
-    //     .then((resp) => {
-    //       resp?.payload?.merchant_info_status &&
-    //         toast.success(resp?.payload?.merchant_info_status);
-    //       resp?.payload?.detail && toast.error(resp?.payload?.detail);
-    //     })
-    //     .catch((e) => {
-    //       toast.error("Try Again Network Error");
-    //     });
-    // }
   };
-
-  // useEffect(() => {
-  //   if (role.approver) {
-  //     setReadOnly(true);
-  //     setButtonText("Approve and Next");
-  //   } else if (role.verifier) {
-  //     setReadOnly(true);
-  //     setButtonText("Verify and Next");
-  //   }
-  // }, [role]);
 
   return (
     <div className="col-sm-12 col-md-6 col-lg-12 col-md-offset-4">
@@ -357,38 +334,38 @@ function BusinessDetails(props) {
                   GSTIN<span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
-                <Field
-                  type="text"
-                  name="gst_number"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
-                {KycList?.gstNumber !== null &&
-                !errors.hasOwnProperty("gst_number") &&
-                !errors.hasOwnProperty("oldGstNumber") ? (
-                  <span className="success input-group-append">
-                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
-                  </span>
-                ) : (
-                  <div className="position-sticky pull-right- otpbtn input-group-append">
-                    <a
-                      href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
-                      onClick={() => {
-                        checkInputIsValid(
-                          errors,
-                          values,
-                          setFieldError,
-                          setFieldTouched,
-                          "gst_number"
-                        );
-                      }}
-                    >
-                      Verify GST
-                    </a>
-                  </div>
-                )}
+                  <Field
+                    type="text"
+                    name="gst_number"
+                    className="form-control"
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    readOnly={readOnly}
+                  />
+                  {KycList?.gstNumber !== null &&
+                    !errors.hasOwnProperty("gst_number") &&
+                    !errors.hasOwnProperty("oldGstNumber") ? (
+                    <span className="success input-group-append">
+                      <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
+                    </span>
+                  ) : (
+                    <div className="position-sticky pull-right- otpbtn input-group-append">
+                      <a
+                        href={() => false}
+                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
+                        onClick={() => {
+                          checkInputIsValid(
+                            errors,
+                            values,
+                            setFieldError,
+                            setFieldTouched,
+                            "gst_number"
+                          );
+                        }}
+                      >
+                        Verify GST
+                      </a>
+                    </div>
+                  )}
                 </div>
                 {
                   <ErrorMessage name="gst_number">
@@ -399,7 +376,7 @@ function BusinessDetails(props) {
                     )}
                   </ErrorMessage>
                 }
-                <br/>
+                <br />
                 {errors?.oldGstNumber && (
                   <span className="notVerifiedtext- text-danger mb-0">
                     {errors?.oldGstNumber}
@@ -412,7 +389,7 @@ function BusinessDetails(props) {
                 <label className="col-form-label mt-0 p-2">
                   Business PAN<span style={{ color: "red" }}>*</span>
                 </label>
-                
+
                 <FormikController
                   control="input"
                   type="text"
@@ -428,41 +405,41 @@ function BusinessDetails(props) {
                   <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
-                <Field
-                  type="text"
-                  name="signatory_pan"
-                  className="form-control"
-                  disabled={VerifyKycStatus === "Verified" ? true : false}
-                  readOnly={readOnly}
-                />
+                  <Field
+                    type="text"
+                    name="signatory_pan"
+                    className="form-control"
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    readOnly={readOnly}
+                  />
 
-                {KycList?.signatoryPAN !== null &&
-                !errors.hasOwnProperty("signatory_pan") &&
-                !errors.hasOwnProperty("oldSignatoryPan") ? (
-                  <span className="success input-group-append">
-                    <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary"/>
-                  </span>
-                ) : (
-                  <div className="position-sticky pull-right- otpbtn input-group-append">
-                    <a
-                      href={() => false}
-                      className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
-                      onClick={() => {
-                        checkInputIsValid(
-                          errors,
-                          values,
-                          setFieldError,
-                          setFieldTouched,
-                          "signatory_pan"
-                        );
-                      }}
-                    >
-                      Verify
-                    </a>
-                  </div>
-                )}
+                  {KycList?.signatoryPAN !== null &&
+                    !errors.hasOwnProperty("signatory_pan") &&
+                    !errors.hasOwnProperty("oldSignatoryPan") ? (
+                    <span className="success input-group-append">
+                      <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
+                    </span>
+                  ) : (
+                    <div className="position-sticky pull-right- otpbtn input-group-append">
+                      <a
+                        href={() => false}
+                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
+                        onClick={() => {
+                          checkInputIsValid(
+                            errors,
+                            values,
+                            setFieldError,
+                            setFieldTouched,
+                            "signatory_pan"
+                          );
+                        }}
+                      >
+                        Verify
+                      </a>
+                    </div>
+                  )}
                 </div>
-                 {
+                {
                   <ErrorMessage name="signatory_pan">
                     {(msg) => (
                       <span className="abhitest- errortxt- text-danger">
@@ -471,7 +448,7 @@ function BusinessDetails(props) {
                     )}
                   </ErrorMessage>
                 }
-                <br/>
+                <br />
                 {errors?.oldSignatoryPan && (
                   <span className="notVerifiedtext- text-danger mb-0">
                     {errors?.oldSignatoryPan}

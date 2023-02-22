@@ -13,6 +13,7 @@ import {
   bankAccountVerification,
   getBankId,
   kycUserList,
+  GetKycTabsStatus,
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
@@ -191,7 +192,6 @@ function BankDetails(props) {
     KycList?.ifscCode ? isIfscVerifed("1") : isIfscVerifed("");
   }, []);
 
-  // ------------------------------------------
 
   const onSubmit = (values) => {
     if (role.merchant) {
@@ -217,38 +217,17 @@ function BankDetails(props) {
           setIsDisable(false);
           setTitle("DOCUMENTS UPLOAD");
           dispatch(kycUserList({ login_id: loginId }));
+          dispatch(GetKycTabsStatus({ login_id: loginId }));
+
         } else {
           toast.error(res?.payload?.message);
           setIsDisable(false);
         }
       });
     }
-    // else if (role.verifier) {
-    //   const veriferDetails = {
-    //     login_id: kycid,
-    //     settlement_info_verified_by: loginId,
-    //   };
-    //   dispatch(verifyKycEachTab(veriferDetails))
-    //     .then((resp) => {
-    //       resp?.payload?.settlement_info_status &&
-    //         toast.success(resp?.payload?.settlement_info_status);
-    //       resp?.payload?.detail && toast.error(resp?.payload?.detail);
-    //     })
-    //     .catch((e) => {
-    //       toast.error("Try Again Network Error");
-    //     });
-    // }
   };
 
-  // useEffect(() => {
-  //   if (role.approver) {
-  //     setReadOnly(true);
-  //     setButtonText("Approve and Next");
-  //   } else if (role.verifier) {
-  //     setReadOnly(true);
-  //     setButtonText("Verify and Next");
-  //   }
-  // }, [role]);
+
 
   const checkInputIsValid = (err, val, setErr, setFieldTouched, key) => {
     const hasErr = err.hasOwnProperty(key);
