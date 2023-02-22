@@ -8,6 +8,7 @@ import DropDownCountPerPage from "../../_components/reuseable_components/DropDow
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../_components/table_components/Table";
 import { NotFilledKYCData } from "../../utilities/tableData";
+import Paginataion from "../../_components/table_components/Pagination";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 
 const rowData = NotFilledKYCData;
@@ -214,6 +215,7 @@ const NotFilledKYC = () => {
           <Table row={rowData} col={colData} />} 
         </div>
         <nav>
+     {/* <Paginataion/> */}
           <ul className="pagination justify-content-center">
             {isLoaded === true ? (
               <Spinner />

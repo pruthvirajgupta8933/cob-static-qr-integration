@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import { Payoutservice } from "../services/payoutService";
-import { axiosInstanceAuth } from "../utilities/axiosInstance";
 import API_URL from "../config";
-import api from "../services/api";
+import {axiosInstanceJWT} from "../utilities/axiosInstance";
 
 const initialState = {
   ledgerDetails: [],
@@ -58,7 +57,7 @@ export const fetchPayoutLedgerReportSlice = createAsyncThunk(
   "dashbaord/fetchPayoutLedgerReport",
   async (data) => {
     const authToken = JSON.parse(sessionStorage.getItem("ap"));
-    const response = await api
+    const response = await axiosInstanceJWT
       .post(
         `${API_URL.getLedgersMerchantList}/?page=${data.data.pageNumber}&page_size=${data.data.pageSize}`,
         data.param,
@@ -81,7 +80,7 @@ export const fetchBeneficiaryDetails = createAsyncThunk(
   async (data) => {
     const authToken = JSON.parse(sessionStorage.getItem("ap"));
     const merchantID = JSON.parse(sessionStorage.getItem("mid"));
-    const response = await api
+    const response = await axiosInstanceJWT
       .get(
         `${API_URL.fetchBeneficiary}/${merchantID}?page=${data.data.pageNumber}&page_size=${data.data.pageSize}`,
         {
@@ -107,7 +106,7 @@ export const fetchTransactionModes = createAsyncThunk(
       },
     };
 
-    const response = await api
+    const response = await axiosInstanceJWT
       .post(`${API_URL.transactionMode}/`, param, {
         headers: {
           "auth-token": authToken,
@@ -124,7 +123,7 @@ export const PaymentRequest = createAsyncThunk(
   "dashbaord/payment_status",
   async (data) => {
     const authToken = JSON.parse(sessionStorage.getItem("ap"));
-    const response = await api
+    const response = await axiosInstanceJWT
       .post(`${API_URL.paymentRequest}/`, data, {
         headers: {
           "auth-token": authToken,

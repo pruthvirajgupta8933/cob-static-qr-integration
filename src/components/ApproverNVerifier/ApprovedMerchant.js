@@ -7,7 +7,7 @@ import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import moment from "moment";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import CommentModal from "./Onboarderchant/CommentModal";
@@ -170,7 +170,7 @@ let pageNumbers = []
   ////////////////////////////////////////////// pagination code end here
 
   const viewDocument = async (loginMaidsterId) => {
-    const res = await axiosInstanceAuth
+    const res = await axiosInstanceJWT
       .post(API_URL.DOCUMENT_BY_LOGINID, {
         login_id: loginMaidsterId,
       })

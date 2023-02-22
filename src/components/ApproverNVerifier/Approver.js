@@ -11,7 +11,6 @@ import RejectedKYC from "./RejectedKYC";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import { logout } from "../../slices/auth";
 import { merchantTab } from "../../slices/approverVerifierTabSlice";
-import UserService from "../../services/test-service";
 
 const Approver = () => {
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
@@ -26,9 +25,6 @@ const Approver = () => {
   let roles = roleBasedAccess();
 
   const loggedUser = roleBasedAccess();
-  useEffect(() => {
-    getUsers();
-  }, []);
 
   useEffect(() => {
     if (loggedUser?.approver || loggedUser?.verifier || loggedUser?.viewer) {
@@ -45,16 +41,6 @@ const Approver = () => {
 
   const handleTabClick = (currenTab) => {
     dispatch(merchantTab(currenTab));
-  };
-
-  const getUsers = () => {
-    UserService.getUserBoard().then((res) => {
-      setUsers(res.data.message)
-    })
-    .catch((err)=>
-    {
-      // console.log(err);
-    })
   };
 
 
@@ -85,9 +71,6 @@ const Approver = () => {
                   </button>
                 )}
               </div>
-              {/* <ul>
-              {users}
-              </ul> */}
             </div>
           </div>
           <section
