@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import {
   kycBankNames,
   saveMerchantBankDetais,
-  verifyKycEachTab,
   ifscValidation,
   bankAccountVerification,
   getBankId,
@@ -22,7 +21,7 @@ function BankDetails(props) {
   const setTab = props.tab;
   const setTitle = props.title;
 
-  const { role, kycid } = props;
+  const { role } = props;
   const dispatch = useDispatch();
 
   const { kyc, auth } = useSelector((state) => state);
@@ -61,7 +60,6 @@ function BankDetails(props) {
     { key: "2", value: "Saving" },
   ];
 
-  let selectedChoice = selectedvalue === "1" ? "Current" : selectedvalue === "2" ? "Saving" : "";
 
   const initialValues = {
     account_holder_name:
@@ -78,7 +76,7 @@ function BankDetails(props) {
       bankDetailsById?.length > 0
         ? bankDetailsById[0]?.bankId
         : KycList?.merchant_account_details?.bankId, // change stste
-    account_type: KycList?.merchant_account_details?.accountType,
+    account_type: KycList?.merchant_account_details?.accountType === "Current" ? 1 : KycList?.merchant_account_details?.accountType === "Saving" ? 2 : "",
     branch: branch?.length > 2 ? branch : KycList?.merchant_account_details?.branch,
 
     isAccountNumberVerified: KycList?.accountNumber !== null ? "1" : "",
@@ -194,6 +192,7 @@ function BankDetails(props) {
 
 
   const onSubmit = (values) => {
+    let selectedChoice = values.account_type === 1 ? "Current" : values.account_type === 2 ? "Saving" : "";
     if (role.merchant) {
       setIsDisable(true);
       dispatch(
