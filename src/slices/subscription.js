@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import subscriptionService from "../services/subscription";
 
-// const user = JSON.parse(localStorage.getItem("user"));
+// const user = JSON.parse(sessionStorage.getItem("user"));
 
 
 

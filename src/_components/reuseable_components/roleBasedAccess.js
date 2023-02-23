@@ -1,6 +1,6 @@
 import { ALLOW_ROLE_AS_VERIFIER } from "../../utilities/permisson";
 export const roleBasedAccess = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user"));
     const roleId = user?.roleId;
     const loginId = user?.loginId;
 

@@ -40,12 +40,6 @@ const Products = () => {
       .catch((err) => console.log(err));
   }, []);
   
-  // product.map((Singleproduct, i) =>
-  //   localStorage.setItem(
-  //     `application_Name ${i}`,
-  //     Singleproduct.application_name
-  //   )
-  // );
 
   return (
     <section className="ant-layout">

@@ -26,59 +26,23 @@ const login = (username, password) => {
     })
     .then((response) => {
       
-      localStorage.setItem("user", JSON.stringify(response.data));
-      localStorage.setItem("categoryId", 1)
+      sessionStorage.setItem("user", JSON.stringify(response.data));
+      sessionStorage.setItem("categoryId", 1)
       sessionStorage.setItem("prog_id", stringEnc(password))
-      
-      // if (response.data.accessToken) {
-      //   localStorage.setItem("user", JSON.stringify(response.data));
-      //   localStorage.setItem("categoryId", 1)
-      //   localStorage.setItem("prog_id", stringEnc(password))
-        
-      // } else {
-      //   localStorage.setItem("user", JSON.stringify(response.data));
-      //   localStorage.setItem("categoryId", 1)
-      // }
-
-      // console.log(response.data)
       return response.data;
     });
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
-  localStorage.clear();
+  sessionStorage.removeItem("user");
   sessionStorage.clear();
-  // console.log('logout call auth service');
+  sessionStorage.clear();
+
 };
 
 
 
-// Home,
 
-// const sendEmail = (toEmail, toCc, subject, msg) => {
-//   return axiosInstanceAuth.post(API_URL.EMAIL_BASE_URL, {
-//     toEmail,
-//     toCc,
-//     subject,
-//     msg,
-//   })
-//     .then((response) => {
-//       if (response.data) {
-//         localStorage.setItem("sendEmail", JSON.stringify(response.data));
-//       } else {
-//         localStorage.setItem("sendEmail", JSON.stringify(response.data));
-//       }
-
-//       return response.data;
-//     });
-// };
-
-
-
-// profile service
-// const BASE_URL_FOR_PROFILE = "https://stgcobapi.sabpaisa.in/auth-service"
-// const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
 const createClintCode = (object) => {
   return axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, object)
 };

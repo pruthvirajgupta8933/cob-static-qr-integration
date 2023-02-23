@@ -19,9 +19,9 @@ const subscriptionplan = () => {
   .then((response) => {
     // console.log("subscribe data - service", response )
     if (response.data) {
-      localStorage.setItem("subscriptionplan", JSON.stringify(response.data));
+      sessionStorage.setItem("subscriptionplan", JSON.stringify(response.data));
     } else {
-      localStorage.setItem("subscriptionplan", JSON.stringify(response.data));
+      sessionStorage.setItem("subscriptionplan", JSON.stringify(response.data));
     }
     return response.data;
   });
@@ -31,9 +31,9 @@ const subscriptionPlanDetail = () => {
     return axiosInstance.post(API_URL.SUBSCRIBE_SERVICE)
     .then((response) => {
       if (response.data) {
-        localStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
+        sessionStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
       } else {
-        localStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
+        sessionStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
       }
   
       return response.data;
