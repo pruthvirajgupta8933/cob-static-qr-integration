@@ -35,7 +35,9 @@ const MakePayment = (props) => {
       pageSize: 10,
       pageNumber: 1,
     };
-    dispatch(fetchBeneficiaryDetails({ data }));
+    dispatch(fetchBeneficiaryDetails({ data })).then((res)=>{
+      toastConfig.infoToast(res.payload.message)
+    })
   };
 
   const fetchBeneficiaryMode = () => {
@@ -104,9 +106,13 @@ const MakePayment = (props) => {
       })
     ).then((res) => {
       if (res) {
+        console.log(res,"--makepayment")
         if (res.meta.requestStatus === "fulfilled") {
-          setBankRespDetails(true);
-          setPaymentForm(false);
+          if(res.payload.responseCode==="1")
+          {
+            setBankRespDetails(true);
+            setPaymentForm(false);
+          }
           let text = res.payload.resData;
           if (typeof text !== "undefined") {
             let planText = Decrypt(
@@ -119,7 +125,7 @@ const MakePayment = (props) => {
             var resObj = JSON.parse(tempArr);
             setData(resObj);
           }
-          toastConfig.errorToast(res.payload.message);
+          toastConfig.infoToast(res.payload.message);
         }
       }
     }).catch((err)=>
@@ -179,6 +185,7 @@ const MakePayment = (props) => {
                               onChange={(e) => test(e.target.value)}
                               name="beneficiary"
                               onClick={(e) => {
+                                fetchBeneficiary()
                                 formik.setFieldValue(
                                   "beneficiary_account",
                                   selectedBeneficiary[0]?.account_number

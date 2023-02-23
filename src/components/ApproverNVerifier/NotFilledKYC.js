@@ -20,7 +20,6 @@ const NotFilledKYC = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-  const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
@@ -37,7 +36,7 @@ const NotFilledKYC = () => {
   const colData = () => {
     return (
       <>
-        {data == []  ? (
+        {data == [] ? (
           <td colSpan={"11"}>
             {" "}
             <div className="nodatafound text-center">No data found </div>
@@ -77,7 +76,7 @@ const NotFilledKYC = () => {
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
-  }, [currentPage, pageSize, dispatch,searchText]);
+  }, [currentPage, pageSize, dispatch, searchText]);
 
   //------- KYC NOT FILLED SEARCH FILTER ------------//
   useEffect(() => {
@@ -124,44 +123,12 @@ const NotFilledKYC = () => {
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
 
-  const nextPage = () => {
-    setIsLoaded(true);
-    setData([]);
-    if (currentPage < pageNumbers?.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const prevPage = () => {
-    setIsLoaded(true);
-    setData([]);
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  useEffect(() => {
-    let lastSevenPage = totalPages - 7;
-    if (pageNumbers?.length > 0) {
-      let start = 0;
-      let end = currentPage + 6;
-      if (totalPages > 6) {
-        start = currentPage - 1;
-
-        if (parseInt(lastSevenPage) <= parseInt(start)) {
-          start = lastSevenPage;
-        }
-      }
-      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
-        return pgNumber;
-      });
-      setDisplayPageNumber(pageNumber);
-    }
-  }, [currentPage, totalPages]);
-
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
     return date;
+  };
+  const changeCurrentPage = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -208,54 +175,20 @@ const NotFilledKYC = () => {
 
       <div className="col-md-12 col-md-offset-4">
         <div className="scroll overflow-auto">
- 
           {loadingState ? (
             <p className="text-center spinner-roll">{<Spinner />}</p>
-          ):
-          <Table row={rowData} col={colData} />} 
+          ) : (
+            <Table row={rowData} col={colData} />
+          )}
         </div>
         <nav>
-     {/* <Paginataion/> */}
           <ul className="pagination justify-content-center">
-            {isLoaded === true ? (
-              <Spinner />
-            ) : (
-              <li className="page-item">
-                <button className="page-link" onClick={prevPage}>
-                  Previous
-                </button>
-              </li>
-            )}
-
-            {displayPageNumber?.map((pgNumber, i) => (
-              <li
-                key={i}
-                className={
-                  pgNumber === currentPage ? " page-item active" : "page-item"
-                }
-                onClick={() => setCurrentPage(pgNumber)}
-              >
-                <a href={() => false} className={`page-link data_${i}`}>
-                  <span>{pgNumber}</span>
-                </a>
-              </li>
-            ))}
-
-            {isLoaded === true ? (
-              <Spinner />
-            ) : (
-              <li className="page-item">
-                <button
-                  className="page-link"
-                  onClick={nextPage}
-                  disabled={
-                    currentPage === pageNumbers[pageNumbers?.length - 1]
-                  }
-                >
-                  Next
-                </button>
-              </li>
-            )}
+            <Paginataion
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+            />
           </ul>
         </nav>
       </div>
