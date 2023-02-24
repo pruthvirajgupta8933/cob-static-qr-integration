@@ -4,23 +4,22 @@ import { kycForNotFilled } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
 import moment from "moment";
-import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
-import Table from "../../_components/table_components/Table";
+import Table from "../../_components/table_components/table/Table";
 import { NotFilledKYCData } from "../../utilities/tableData";
-import Paginataion from "../../_components/table_components/Pagination";
+import Paginataion from "../../_components/table_components/pagination/Pagination";
+import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
+import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 
 const rowData = NotFilledKYCData;
 const NotFilledKYC = () => {
   const [data, setData] = useState([]);
-  const [spinner, setSpinner] = useState(true);
   const [notFilledData, setNotFilledData] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   const dispatch = useDispatch();
@@ -29,7 +28,7 @@ const NotFilledKYC = () => {
     fieldType === "text"
       ? setSearchByDropDown(false)
       : setSearchByDropDown(true);
-    setSearchText(e.target.value);
+    setSearchText(e);
   };
 
   //Map the table data
@@ -65,112 +64,62 @@ const NotFilledKYC = () => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         const data = resp?.payload?.results;
         const totalData = resp?.payload?.count;
-        setSpinner(false);
         setDataCount(totalData);
         setNotFilledData(data);
         setData(data);
-        setIsLoaded(false);
         // console.log("Paginataion Dta ===> ",notFilledData)
       })
 
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
-  }, [currentPage, pageSize, dispatch, searchText]);
+  }, [currentPage, pageSize, dispatch]);
 
-  //------- KYC NOT FILLED SEARCH FILTER ------------//
-  useEffect(() => {
-    if (searchText?.length > 0) {
-      // search by dropdwon
-      if (isSearchByDropDown && searchText !== "") {
-        let filter = {
-          isDirect: searchText,
-        };
 
-        let refData = notFilledData;
+  const searchByText=()=>
+  {
+    setData(
+      notFilledData?.filter((item) =>
+        Object.values(item)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchText?.toLocaleLowerCase())
+      ))
 
-        refData = refData.filter(function(item) {
-          for (let key in filter) {
-            if (item[key] === undefined || item[key] !== filter[key]) {
-              return false;
-            }
-          }
-          return true;
-        });
-        setData(refData);
-        console.log("search by dropdown");
-      } else {
-        // search by text
-        setData(
-          notFilledData?.filter((item) =>
-            Object.values(item)
-              .join(" ")
-              .toLowerCase()
-              .includes(searchText?.toLocaleLowerCase())
-          )
-        );
-        console.log("search by text");
-      }
-    } else {
-      setData(notFilledData);
-    }
-
-    setSearchByDropDown(false);
-  }, [searchText]);
-  const totalPages = Math.ceil(dataCount / pageSize);
-  let pageNumbers = [];
-  if (!Number.isNaN(totalPages)) {
-    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
   }
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
     return date;
   };
+  //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
+  };
+  //function for change page size
+  const changePageSize = (pageSize) => {
+    setPageSize(pageSize);
   };
 
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
+        <div className="form-group col-lg-6 col-md-12 mt-2">
+          <SearchFilter kycSearch={kycSearch} searchText={searchText} isSearchByDropDown={isSearchByDropDown} notFilledData={notFilledData} searchByText={searchByText} setData={setData} setSearchByDropDown={setSearchByDropDown} />
+        </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
-          <label>Search</label>
-          <input
-            className="form-control"
-            onChange={(e) => kycSearch(e, "text")}
-            type="text"
-            placeholder="Search Here"
+          <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            changePageSize={changePageSize}
           />
         </div>
-
-        <div className="form-group col-lg-3 col-md-12 mt-2">
-          <label>Count Per Page</label>
-          <select
-            value={pageSize}
-            rel={pageSize}
-            onChange={(e) => setPageSize(parseInt(e.target.value))}
-            className="ant-input"
-          >
-            <DropDownCountPerPage datalength={dataCount} />
-          </select>
-        </div>
-        <div className="form-group col-lg-3 col-md-12 mt-2">
-          <label>Onboard Type</label>
-          <select
-            className="ant-input"
-            onChange={(e) => kycSearch(e, "dropdown")}
-          >
-            <option value="">Select Onboard Type</option>
-            <option value="">All</option>
-            <option value="online">Online</option>
-            <option value="offline">Offline</option>
-          </select>
-        </div>
+      <div className="mt-1">
         <MerchnatListExportToxl
           URL={"?order_by=-merchantId&search=Not-Filled"}
           filename={"Not-Filled-KYC"}
         />
+      </div>
       </div>
 
       <div className="col-md-12 col-md-offset-4">
@@ -182,14 +131,12 @@ const NotFilledKYC = () => {
           )}
         </div>
         <nav>
-          <ul className="pagination justify-content-center">
-            <Paginataion
-              dataCount={dataCount}
-              pageSize={pageSize}
-              currentPage={currentPage}
-              changeCurrentPage={changeCurrentPage}
-            />
-          </ul>
+          <Paginataion
+            dataCount={dataCount}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            changeCurrentPage={changeCurrentPage}
+          />
         </nav>
       </div>
     </div>
