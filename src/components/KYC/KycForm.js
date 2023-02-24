@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useHistory,
-  useLocation,
+import { useHistory, useLocation,
 } from "react-router-dom/cjs/react-router-dom.min";
 import BankDetails from "./BankDetails";
 import BusinessDetails from "./BusinessDetails";
@@ -11,10 +9,7 @@ import ContactInfo from "./ContactInfo";
 import DocumentsUploadNew from "./DocumentsUploadNew";
 import SubmitKyc from "./SubmitKyc";
 import {
-  kycUserList,
-  kycDocumentUploadList,
-  GetKycTabsStatus,
-} from "../../slices/kycSlice";
+  kycUserList, kycDocumentUploadList, GetKycTabsStatus} from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../dashboard/NavBar/NavBar";
 
