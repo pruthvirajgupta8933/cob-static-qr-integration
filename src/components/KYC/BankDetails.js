@@ -303,7 +303,7 @@ function BankDetails(props) {
                     <div className="position-sticky pull-right- otpbtn input-group-append">
                       <a
                         href={() => false}
-                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
+                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary mb-0"
                         onClick={() => {
                           checkInputIsValid(
                             errors,
@@ -369,7 +369,7 @@ function BankDetails(props) {
                     <span className="position-sticky pull-right- otpbtn input-group-append">
                       <a
                         href={() => false}
-                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
+                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary mb-0"
                         onClick={() => {
                           checkInputIsValid(
                             errors,
