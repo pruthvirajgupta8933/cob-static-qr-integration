@@ -11,6 +11,7 @@ import Paginataion from "../../_components/table_components/pagination/Paginatio
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
+import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 
 const rowData = NotFilledKYCData;
 const NotFilledKYC = () => {
@@ -75,18 +76,16 @@ const NotFilledKYC = () => {
       });
   }, [currentPage, pageSize, dispatch]);
 
-
-  const searchByText=()=>
-  {
+  const searchByText = () => {
     setData(
       notFilledData?.filter((item) =>
         Object.values(item)
           .join(" ")
           .toLowerCase()
           .includes(searchText?.toLocaleLowerCase())
-      ))
-
-  }
+      )
+    );
+  };
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
@@ -100,13 +99,48 @@ const NotFilledKYC = () => {
   const changePageSize = (pageSize) => {
     setPageSize(pageSize);
   };
-
+  //options for search dropdown filter
+  const optionSearchData = [
+    {
+      name: "Select Onboard Type",
+      value: "",
+    },
+    {
+      name: "All",
+      value: "",
+    },
+    {
+      name: "online",
+      value: "online",
+    },
+    {
+      name: "Offline",
+      value: "offline",
+    },
+  ];
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
-        <div className="form-group col-lg-6 col-md-12 mt-2">
-          <SearchFilter kycSearch={kycSearch} searchText={searchText} isSearchByDropDown={isSearchByDropDown} notFilledData={notFilledData} searchByText={searchByText} setData={setData} setSearchByDropDown={setSearchByDropDown} />
+      <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
+          <SearchFilter
+            kycSearch={kycSearch}
+            searchText={searchText}
+            searchByText={searchByText}
+            setSearchByDropDown={setSearchByDropDown}
+          />
         </div>
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <SearchbyDropDown
+            kycSearch={kycSearch}
+            searchText={searchText}
+            isSearchByDropDown={isSearchByDropDown}
+            notFilledData={notFilledData}
+            setData={setData}
+            setSearchByDropDown={setSearchByDropDown}
+            optionSearchData={optionSearchData}
+          />
+        </div>
+  
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <CountPerPageFilter
             pageSize={pageSize}
@@ -114,12 +148,12 @@ const NotFilledKYC = () => {
             changePageSize={changePageSize}
           />
         </div>
-      <div className="mt-1">
-        <MerchnatListExportToxl
-          URL={"?order_by=-merchantId&search=Not-Filled"}
-          filename={"Not-Filled-KYC"}
-        />
-      </div>
+        <div className="mt-1">
+          <MerchnatListExportToxl
+            URL={"?order_by=-merchantId&search=Not-Filled"}
+            filename={"Not-Filled-KYC"}
+          />
+        </div>
       </div>
 
       <div className="col-md-12 col-md-offset-4">
