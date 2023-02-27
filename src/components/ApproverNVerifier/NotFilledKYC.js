@@ -110,7 +110,7 @@ const NotFilledKYC = () => {
       value: "",
     },
     {
-      name: "online",
+      name: "Online",
       value: "online",
     },
     {
