@@ -150,7 +150,7 @@ const NotFilledKYC = () => {
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
-            URL={"?order_by=-merchantId&search=Not-Filled"}
+            URL={"?order_by=-id&search=Not-Filled"}
             filename={"Not-Filled-KYC"}
           />
         </div>

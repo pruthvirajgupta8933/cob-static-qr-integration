@@ -151,15 +151,15 @@ const API_LIVE = {
   ////////////////////////////////////////SIGNUP DATA API
   GET_SIGNUP_DATA_INFO: `${url}/merchant/get-signup-info/`,
   //////////////////////// For merchnat list export to csv
-  Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
+  Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/`,
   /////////////////////////Kyc approver
   /* For pending*/
-  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not-Filled&order_by=-merchantId`,
-  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Pending&order_by=-merchantId`,
-  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Rejected&order_by=-merchantId`,
-  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?search=processing&order_by=-merchantId`,
-  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
-  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=Approved&order_by=-merchantId`,
+  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not-Filled&order_by=-id`,
+  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Pending&order_by=-id`,
+  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Rejected&order_by=-kyc_reject&search_map=kyc_reject`,
+  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?search=processing&order_by=-id`,
+  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=Verified&order_by=-verified_date&search_map=verified_date`,
+  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=Approved&order_by=-approved_date&search_map=approved_date`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,

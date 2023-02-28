@@ -221,7 +221,7 @@ function VerifiedMerchant() {
             optionSearchData={optionSearchData}
           />
       </div>
-      <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=verified'} filename= {"Pending-Approval"}/>
+      <MerchnatListExportToxl URL = {'?search=Verified&order_by=-verified_date&search_map=verified_date'} filename= {"Pending-Approval"}/>
       <div>
         
       {openCommentModal === true ?  
