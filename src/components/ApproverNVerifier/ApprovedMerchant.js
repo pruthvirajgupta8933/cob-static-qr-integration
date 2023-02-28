@@ -246,7 +246,7 @@ function ApprovedMerchant() {
             optionSearchData={optionSearchData}
           />
       </div>
-      <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=approved'} filename={"Approved"} />
+      <MerchnatListExportToxl URL = {'?search=Approved&order_by=-approved_date&search_map=approved_date'} filename={"Approved"} />
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
 

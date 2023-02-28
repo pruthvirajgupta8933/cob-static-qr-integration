@@ -230,7 +230,7 @@ function PendingVerification() {
             optionSearchData={optionSearchData}
           />
         </div>
-        <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=processing'} filename={"Pending-Verification"}/>
+        <MerchnatListExportToxl URL = {'?order_by=-id&search=processing'} filename={"Pending-Verification"}/>
       </div>
 
       <div className="col-md-12 col-md-offset-4">

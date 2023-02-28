@@ -612,11 +612,13 @@ export const onboardedReport = createAsyncThunk(
     const from_date = data.from_date;
     const to_date=data?.to_date
     const selectedvalue =data?.selectedChoice;
+    const dynamicDate = selectedvalue === "Verified" ? "verified_date" : selectedvalue === "Approved" ? "approved_date" : ""
+  
     
     const response = await axiosInstanceJWT
       .get(
         
-        `${API_URL.KYC_FOR_ONBOARDED}?search=${selectedvalue}&order_by=-merchantId&page=${requestParam}&page_size=${requestParam1}&from_date=${from_date}&to_date=${to_date}`,
+        `${API_URL.KYC_FOR_ONBOARDED}?search=${selectedvalue}&order_by=-${dynamicDate}&search_map=${dynamicDate}&page=${requestParam}&page_size=${requestParam1}&from_date=${from_date}&to_date=${to_date}`,
         {
           headers: {},
         }
