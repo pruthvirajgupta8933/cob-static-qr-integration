@@ -3,7 +3,6 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import axios from "axios";
 import API_URL from "../../config";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
     Regex,
@@ -48,7 +47,8 @@ const BizzAppForm = (props) => {
             .max(10, "too long")
             .nullable(),
         authorized_contact_person_email_id: Yup.string()
-            .required("Authorized contact person email id Required"),
+            .required("Authorized contact person email id Required")
+            .email("Must be a valid email"),
         technical_contact_person_contact_number: Yup.string()
             .trim()
             .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
@@ -58,7 +58,8 @@ const BizzAppForm = (props) => {
             .max(10, "too long")
             .nullable(),
         technical_contact_person_email_id: Yup.string()
-            .required("Technical contact person email id Required"),
+            .required("Technical contact person email id Required")
+            .email("Must be a valid email"),
         technical_contact_person_name: Yup.string()
             .required("Technical contact person name Required"),
         gst_number: Yup.string()
@@ -73,31 +74,6 @@ const BizzAppForm = (props) => {
             .required("mcc Required"),
     }
     );
-    // const [values, setValues] = useState({
-    //     merchant_business_name: "",
-    //     merchant_legal_name: "",
-    //     merchant_address: "",
-    //     product_name: "",
-    //     types_of_entity: "",
-    //     year_of_establishment: "",
-    //     merchant_portal: "",
-    //     average_transaction_amount: "",
-    //     expected_transactions_numbers: "",
-    //     account_details: "",
-    //     annual_transaction_value: "",
-    //     question: "",
-    //     authorized_contact_person_name: "",
-    //     authorized_contact_person_contact_number: "",
-    //     authorized_contact_person_email_id: "",
-    //     technical_contact_person_contact_number: "",
-    //     technical_contact_person_email_id: "",
-    //     technical_contact_person_name: "",
-    //     gst_number: "",
-    //     entity_pan_card_number: "",
-    //     zone: "",
-    //     nature_of_business: "",
-    //     mcc: ""
-    // });
     const initialValues = {
         merchant_business_name: "",
         merchant_legal_name: "",
@@ -157,7 +133,6 @@ const BizzAppForm = (props) => {
     ]
 
     const onSubmit = async (values) => {
-        console.log(">>>>>>>>>>>>>>>>>>>", values)
         const res = await axios
             .post(API_URL.BizzAPPForm, values)
             .then((response) => {
@@ -166,7 +141,13 @@ const BizzAppForm = (props) => {
                 } else {
                     toast.error(response.data.message);
                 }
-            });
+            }).error((error) => {
+                if (error.message) {
+                    toast.error(error.message);
+                } else {
+                    toast.error("Data not saved successfully");
+                }
+            })
     };
 
     return (
@@ -760,7 +741,7 @@ const BizzAppForm = (props) => {
                                                     )}
                                                 </ErrorMessage>
                                                 <div>
-                                                    <label htmlFor="zone1"><h3 className="font-weight-bold">Product name</h3></label>
+                                                    <label htmlFor="zone1"><h3 className="font-weight-bold">Zones</h3></label>
                                                     <br />
                                                     <Field name="zone" >
                                                         {
@@ -785,32 +766,6 @@ const BizzAppForm = (props) => {
                                                     </Field>
                                                 </div>
                                                 <ErrorMessage name="zone">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="nature_of_business1">
-                                                    <h3 className="font-weight-bold">Nature of business</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="nature_of_business1"
-                                                        name="nature_of_business"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="nature_of_business">
                                                     {(msg) => (
                                                         <div
                                                             className="abhitest"
