@@ -121,8 +121,6 @@ const ChallanTransactReport = () => {
       .catch((err) => {});
   }, [currentPage, pageSize]);
 
-
-
   useEffect(() => {
     if (searchText.length > 0) {
       setData(
@@ -307,11 +305,11 @@ const ChallanTransactReport = () => {
                     </div>
                     <div></div>
                     <div className="form-group col-lg-4 col-md-12 mt-2">
-                    <CountPerPageFilter
-            pageSize={pageSize}
-            dataCount={dataCount}
-            changePageSize={changePageSize}
-          />
+                      <CountPerPageFilter
+                        pageSize={pageSize}
+                        dataCount={dataCount}
+                        changePageSize={changePageSize}
+                      />
                     </div>
 
                     <div className="form-group col-lg-4 col-md-12 mt-5">

@@ -147,8 +147,8 @@ function VerifiedMerchant() {
           <td>{user?.emailId}</td>
           <td>{user?.contactNumber}</td>
           {/* <td>{user.status}</td> */}
-          <td>{user?.verified_date === null  ? "NA" : covertDate(user?.verified_date)}</td>
           <td>{covertDate(user?.signUpDate)}</td>
+          <td>{user?.verified_date === null  ? "NA" : covertDate(user?.verified_date)}</td>
           <td>{user?.isDirect}</td>
           <td>
           

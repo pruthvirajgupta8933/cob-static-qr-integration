@@ -122,13 +122,14 @@ export const NotFilledKYCData = [
       id: "6",
       row_name: "Contact Number",
     },
+  
     {
       id: "7",
-      row_name: "Verified Date",
+      row_name: "Registered Date",
     },
     {
       id: "8",
-      row_name: "Registered Date",
+      row_name: "Verified Date",
     },
     {
       id: "9",
