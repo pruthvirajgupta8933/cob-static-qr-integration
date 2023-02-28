@@ -9,6 +9,8 @@ import moment from "moment";
 import Spinner from "../_components/reuseable_components/ProgressBar";
 import LedgerCards from "./ledgerCards";
 import DropDownCountPerPage from "../_components/reuseable_components/DropDownCountPerPage";
+import Table from "../_components/table_components/table/Table";
+import {LedgerRowData} from '../utilities/tableData';
 
 
 const PayoutLedger = (props) => {
@@ -24,8 +26,10 @@ const PayoutLedger = (props) => {
   const [transferType, setTransferType] = useState("all");
 
   useEffect(() => {
-    fetchledgerMerchants();
-    dispatch(fetchClientCode());
+    dispatch(fetchClientCode()).then((res)=>
+    {
+      fetchledgerMerchants();
+    })
   }, [currentPage, pageSize]);
 
   const TotalData = payoutState?.ledgerDetails?.count;
@@ -100,6 +104,45 @@ const PayoutLedger = (props) => {
       setDisplayPageNumber(pageNumber);
     }
   }, [currentPage, totalPages]);
+   //Map the table data
+   const colData = () => {
+    return (
+      <>
+        {ledgerData == [] ? (
+          <td colSpan={"11"}>
+            {" "}
+            <div className="nodatafound text-center">No data found </div>
+          </td>
+        ) : (
+          ledgerData?.map((data, key) => (
+            <tr>
+                 <td>{data.id}</td>
+                          <td>{data.client_username}</td>
+                          <td>{`₹ ${data.amount}.00`}</td>
+                          <td>{data.type_status}</td>
+                          <td>{data.trans_status}</td>
+                          <td>{data.trans_type.toUpperCase()}</td>
+                          <td>
+                            {makeFirstLetterCapital(data.trans_amount_type)}
+                          </td>
+                          <td>{data.customer_ref_no}</td>
+                          <td>{convertDate(data.trans_completed_time)}</td>
+                          <td>{convertDate(data.trans_init_time)}</td>
+                          <td>{`₹ ${data.charge}.00`}</td>
+                          <td>{data.payment_mode}</td>
+                          <td>{data.bene_account_name}</td>
+                          <td>{data.bene_account_number}</td>
+                          <td>{data.bene_ifsc}</td>
+                          <td>{data.payout_trans_id}</td>
+                          <td>{data.opening_balance}</td>
+                          <td>{data.remarks}</td>
+                          <td>{convertDate(data.created_at)}</td>
+            </tr>
+          ))
+        )}
+      </>
+    );
+  };
 
   return (
     <>
@@ -196,6 +239,7 @@ const PayoutLedger = (props) => {
               {/* <p>{`Last ${transactionsCount} Transactions`}</p> */}
             </div>
             <div class="table-responsive">
+            <Table row={LedgerRowData} col={colData} />
               <table
                 cellspaccing={0}
                 cellPadding={10}
