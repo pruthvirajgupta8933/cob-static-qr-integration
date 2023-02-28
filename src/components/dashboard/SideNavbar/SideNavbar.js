@@ -18,22 +18,24 @@ const SideNavbar = () => {
     items: []
   })
 
-  const toggleMenu = (e) => {
-    // console.log("e",e)
-    console.log("e",e.target.firstElementChild.className)
-  
-    const currentToggle = e.currentTarget.attributes?.istoggle?.value.toString()
-    if (currentToggle === "true") {
-      e.currentTarget.attributes.istoggle.value = false
-      e.currentTarget.className ="hide-menu-nav"
-      e.target.firstElementChild.className = "fa fa-caret-down"
-    } else {
-      e.currentTarget.attributes.istoggle.value = true
-      e.currentTarget.className="show-menu-nav"      
-      e.target.firstElementChild.className = "fa fa-caret-up"
-    }
+// Do not remove the code
 
-  }
+  // const toggleMenu = (e) => {
+  //   // console.log("e",e)
+  //   console.log("e",e.target.firstElementChild.className)
+  
+  //   const currentToggle = e.currentTarget.attributes?.istoggle?.value.toString()
+  //   if (currentToggle === "true") {
+  //     e.currentTarget.attributes.istoggle.value = false
+  //     e.currentTarget.className ="hide-menu-nav"
+  //     e.target.firstElementChild.className = "fa fa-caret-down"
+  //   } else {
+  //     e.currentTarget.attributes.istoggle.value = true
+  //     e.currentTarget.className="show-menu-nav"      
+  //     e.target.firstElementChild.className = "fa fa-caret-up"
+  //   }
+
+  // }
 
   useEffect(() => {
     let tempArrayOfItems = []
@@ -45,7 +47,7 @@ const SideNavbar = () => {
         <React.Fragment key={m?.app_name}>
           <div
             className="main-menu-container"
-            onClick={(e) => toggleMenu(e)}
+            // onClick={(e) => toggleMenu(e)}
             isToggle="true"
           >
             <span className="sidebar-menu-divider-business">
