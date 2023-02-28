@@ -12,14 +12,13 @@ import DropDownCountPerPage from "../_components/reuseable_components/DropDownCo
 import Table from "../_components/table_components/table/Table";
 import { LedgerRowData } from "../utilities/tableData";
 import Paginataion from "../_components/table_components/pagination/Pagination";
+import CountPerPageFilter from "../_components/table_components/filters/CountPerPage";
 
 const PayoutLedger = (props) => {
   const dispatch = useDispatch();
   const payoutState = useSelector((state) => state.payout);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-  const [displayPageNumber, setDisplayPageNumber] = useState([]);
-  const [dataCount, setDataCount] = useState("");
   const [startDate, setStartDate] = useState("all");
   const [endDate, setEndDate] = useState("all");
   const [transStatus, setTransStatus] = useState("all");
@@ -34,6 +33,7 @@ const PayoutLedger = (props) => {
   const TotalData = payoutState?.ledgerDetails?.count;
   const ledgerData = payoutState?.ledgerDetails?.results;
   const transactionsCount = payoutState?.ledgerDetails?.count;
+  const loadingState = useSelector((state) => state.payout.isLoading);
 
   const fetchledgerMerchants = () => {
     const param = {
@@ -69,40 +69,7 @@ const PayoutLedger = (props) => {
     fetchledgerMerchants();
   };
 
-  //Pagination
-  const nextPage = () => {
-    if (currentPage < pageNumbers?.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-  const totalPages = Math.ceil(TotalData / pageSize);
-  let pageNumbers = [];
-  if (!Number.isNaN(totalPages)) {
-    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
-  }
-  useEffect(() => {
-    let lastSevenPage = totalPages - 7;
-    if (pageNumbers?.length > 0) {
-      let start = 0;
-      let end = currentPage + 6;
-      if (totalPages > 6) {
-        start = currentPage - 1;
 
-        if (parseInt(lastSevenPage) <= parseInt(start)) {
-          start = lastSevenPage;
-        }
-      }
-      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
-        return pgNumber;
-      });
-      setDisplayPageNumber(pageNumber);
-    }
-  }, [currentPage, totalPages]);
   //Map the table data
   const colData = () => {
     return (
@@ -140,10 +107,14 @@ const PayoutLedger = (props) => {
       </>
     );
   };
-    //function for change current page
-    const changeCurrentPage = (page) => {
-      setCurrentPage(page);
-    };
+  //function for change current page
+  const changeCurrentPage = (page) => {
+    setCurrentPage(page);
+  };
+  //function for change page size
+  const changePageSize = (pageSize) => {
+    setPageSize(pageSize);
+  };
 
   return (
     <>
@@ -173,7 +144,7 @@ const PayoutLedger = (props) => {
                     onChange={(e) => setStartDate(e.target.value)}
                   />
                 </div>
-                <div className="form-group  col-lg-2 mx-4">
+                <div className="form-group  col-lg-2 ">
                   <label>End Date</label>
                   <input
                     control="input"
@@ -217,44 +188,48 @@ const PayoutLedger = (props) => {
                     <option value="PAYOUT">PAYOUT</option>
                   </select>
                 </div>
-                <div className="form-group col-lg-1 mt-3">
+                <div className="form-group col-lg-2">
+                  <CountPerPageFilter
+                    pageSize={pageSize}
+                    dataCount={TotalData}
+                    changePageSize={changePageSize}
+                  />
+                </div>
+                <div className="form-group col-lg-2 mt-4">
                   <label></label>
-                  <button className="btn btn-sm btn-primary" type="submit">
+                  <button className="btn btn-sm btn-primary mt-2" type="submit">
                     Search{" "}
                   </button>
                 </div>
-                <div className="form-group col-lg-1 ml-3 mt-3 ">
+                {/* <div className="form-group col-lg-1 ml-3 mt-3 ">
                   <label></label>
                   <button
                     className="btn btn-sm btn-primary"
                     onClick={resetTable}
                   >
                     Reset{" "}
-                  </button>
-                </div>
+                  </button>s
+                </div> */}
               </div>
             </form>
           </div>
-
-          <div className="gx-main-content-wrapper">
-              {/* <p>{`Last ${transactionsCount} Transactions`}</p> */}
-                <div className="scroll overflow-auto">
-                  <Table row={LedgerRowData} col={colData} />
-                </div>
-            <div class="table-responsive">
-              <div className="col-md-12 col-md-offset-4">
-              </div>
+          <div className="col-md-12 ml-4 col-md-offset-4">
+            <div className="scroll overflow-auto">
+              {loadingState ? (
+                <p className="text-center spinner-roll">{<Spinner />}</p>
+              ) : (
+                <Table row={LedgerRowData} col={colData} />
+              )}
+            </div>
+            <div className="mt-2">
+              <Paginataion
+                dataCount={TotalData}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                changeCurrentPage={changeCurrentPage}
+              />
             </div>
           </div>
-        
-          <nav>
-          <Paginataion
-            dataCount={TotalData}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage}
-          />
-        </nav>
         </main>
       </section>
     </>

@@ -27,6 +27,83 @@ export const NotFilledKYCData = [
       row_name: "Onboard Type",
     },
   ];
+  export const TransactionRowData = [
+    { id: "1", row_name: "Id" },
+    { id: "2", row_name: "Client's Username" },
+    { id: "3", row_name: "Amount" },
+    {
+      id: "4",
+      row_name: "Status Type",
+    },
+    {
+      id: "5",
+      row_name: "Txn Status",
+    },
+    {
+      id: "6",
+      row_name: "Txn Type",
+    },
+    {
+      id: "7",
+      row_name: "Txn Amt Type",
+    },
+    {
+      id: "8",
+      row_name: "Customer Ref No/Order Id",
+    },
+    {
+      id: "9",
+      row_name: "Txn Completed time",
+    },
+    {
+      id: "10",
+      row_name: "Txn Initiated time",
+    },
+    {
+      id: "11",
+      row_name: "Charge",
+    },
+    {
+      id: "12",
+      row_name: "Payment Mode",
+    },
+    {
+      id: "13",
+      row_name: "Beneficiary Acc Name",
+    },
+    {
+      id: "14",
+      row_name: "Beneficiary Acc No",
+    },
+    {
+      id: "15",
+      row_name: "Beneficiary IFSC",
+    },
+    {
+      id: "16",
+      row_name: "Payout Txn Id",
+    },
+    {
+      id: "17",
+      row_name: "Opening Balance",
+    },
+    {
+      id: "18",
+      row_name: "Remarks",
+    },
+    {
+      id: "19",
+      row_name: "Created On",
+    },    
+    {
+      id: "20",
+      row_name: "Updated On",
+    },
+    {
+      id: "21",
+      row_name: "Deleted On",
+    }
+  ];
   export const LedgerRowData = [
     { id: "1", row_name: "Id" },
     { id: "2", row_name: "Client's Username" },
@@ -96,6 +173,14 @@ export const NotFilledKYCData = [
       row_name: "Created On",
     },    
   ];
+  export const beneficiaryRowData = [
+    { id: "1", row_name: "Full Name" },
+    
+    { id: "2", row_name: "A/C No" },
+    
+    { id: "3", row_name: "IFSC Code" },
+    { id: "4", row_name: "UPI ID" },
+  ]
 
   export const PendindKycData = [
 
