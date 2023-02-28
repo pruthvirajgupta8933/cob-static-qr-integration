@@ -13,7 +13,7 @@ if (ENV_PROD) {
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in"
-  
+
 
 }
 
@@ -41,6 +41,7 @@ const API_LIVE = {
   AUTH_CHECK_CLIENT_CODE: `${url}/auth-service/account/check-clientcode`,
   /* Email Verify for new register users */
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
+  BizzAPPForm: `${url}/biz-app-form/`,
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
   SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummary/",
@@ -162,9 +163,9 @@ const API_LIVE = {
   MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
   KYC_FOR_ONBOARDED: `${kyc_url}/kyc/get-merchant-data/`,
-  KYC_FOR_SAVING_REFER_MERCHANT:`${kyc_url}/kyc/refer-zone/save-refer-zone/`,
-  FOR_GENERATING_MID:`${kyc_url}/kyc/mid-creation/send-request-subMerchant-mid/`,
-  GET_ALL_GENERATE_MID_DATA:`${kyc_url}//kyc/mid-creation/get-merchant-mid-data/`,
+  KYC_FOR_SAVING_REFER_MERCHANT: `${kyc_url}/kyc/refer-zone/save-refer-zone/`,
+  FOR_GENERATING_MID: `${kyc_url}/kyc/mid-creation/send-request-subMerchant-mid/`,
+  GET_ALL_GENERATE_MID_DATA: `${kyc_url}//kyc/mid-creation/get-merchant-mid-data/`,
 
 
 
@@ -178,7 +179,7 @@ const API_LIVE = {
   Save_Settlement_Info: `${kyc_url}/kyc/save-settlement-info/`,
   //Get All Bnak Names in Kyc Bank Details Dropdown Tab
   GET_ALL_BANK_NAMES: `${kyc_url}/kyc/get-all-bank-name/`,
-  GET_PAYMENT_MODE:`${kyc_url}/kyc/mid-creation/get-payment-mode-type/`,
+  GET_PAYMENT_MODE: `${kyc_url}/kyc/mid-creation/get-payment-mode-type/`,
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
   Business_Category: `${kyc_url}/kyc/get-all-business-category/`,
   SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,
@@ -248,14 +249,14 @@ const API_LIVE = {
 
   // Check is client code mapped or not (ratemapping case)
   isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`,
-  
+
   //update version https://adminapi.sabpaisa.in/SabPaisaAdmin/REST/ManageFalg/Flag/LPSD1/apiversion/1/1111 
   UPDATE_VERSION_RATEMAPPING: `${adminAPIURL}/REST/ManageFalg/Flag`,
 
   // For Payout
-  LedgersMerchant:`${payout_url}/api/getLedgersMerchant`,
-  getLedgersMerchantList:`${payout_url}/api/getTransactionHistory`,
-  fetchBeneficiary:`${payout_url}/api/fetchBeneficiaryfor`,
+  LedgersMerchant: `${payout_url}/api/getLedgersMerchant`,
+  getLedgersMerchantList: `${payout_url}/api/getTransactionHistory`,
+  fetchBeneficiary: `${payout_url}/api/fetchBeneficiaryfor`,
   transactionMode: `${payout_url}/api/modesByMerchantId`,
   paymentRequest: `${payout_url}/api/PayoutTransactionRequest`,
 
@@ -264,9 +265,9 @@ const API_LIVE = {
   // Check is client code mapped or not (ratemapping case)
 
   //menu list by login id
-  menuListByLoginId : `${url}/menu-loginwise`,
+  menuListByLoginId: `${url}/menu-loginwise`,
 
-  
+
 };
 
 
