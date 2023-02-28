@@ -74,31 +74,6 @@ const BizzAppForm = (props) => {
             .required("mcc Required"),
     }
     );
-    // const [values, setValues] = useState({
-    //     merchant_business_name: "",
-    //     merchant_legal_name: "",
-    //     merchant_address: "",
-    //     product_name: "",
-    //     types_of_entity: "",
-    //     year_of_establishment: "",
-    //     merchant_portal: "",
-    //     average_transaction_amount: "",
-    //     expected_transactions_numbers: "",
-    //     account_details: "",
-    //     annual_transaction_value: "",
-    //     question: "",
-    //     authorized_contact_person_name: "",
-    //     authorized_contact_person_contact_number: "",
-    //     authorized_contact_person_email_id: "",
-    //     technical_contact_person_contact_number: "",
-    //     technical_contact_person_email_id: "",
-    //     technical_contact_person_name: "",
-    //     gst_number: "",
-    //     entity_pan_card_number: "",
-    //     zone: "",
-    //     nature_of_business: "",
-    //     mcc: ""
-    // });
     const initialValues = {
         merchant_business_name: "",
         merchant_legal_name: "",
