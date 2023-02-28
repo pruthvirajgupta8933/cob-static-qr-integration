@@ -152,7 +152,7 @@ function Registration() {
 
 
   useEffect(() => {
-    const userLocalData = JSON.parse(localStorage.getItem("user"));
+    const userLocalData = JSON.parse(sessionStorage.getItem("user"));
     const isLoggedInLc =
       userLocalData && userLocalData.loginId !== null ? true : false;
     if(isLoggedInLc){

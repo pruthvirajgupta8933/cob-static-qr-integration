@@ -9,6 +9,11 @@ import { APP_ENV } from "../config";
 
 const initialState = {
   isLoading:false,
+  isLoadingForPending:false,
+  isLoadingForPendingVerification:false,
+  isLoadingForPendingApproval:false,
+  isLoadingForApproved:false,
+  isLoadingForRejected:false,
   documentByloginId: {},
   kycApproved: {
     count: null,
@@ -607,11 +612,13 @@ export const onboardedReport = createAsyncThunk(
     const from_date = data.from_date;
     const to_date=data?.to_date
     const selectedvalue =data?.selectedChoice;
+    const dynamicDate = selectedvalue === "Verified" ? "verified_date" : selectedvalue === "Approved" ? "approved_date" : ""
+  
     
     const response = await axiosInstanceJWT
       .get(
         
-        `${API_URL.KYC_FOR_ONBOARDED}?search=${selectedvalue}&order_by=-merchantId&page=${requestParam}&page_size=${requestParam1}&from_date=${from_date}&to_date=${to_date}`,
+        `${API_URL.KYC_FOR_ONBOARDED}?search=${selectedvalue}&order_by=-${dynamicDate}&search_map=${dynamicDate}&page=${requestParam}&page_size=${requestParam1}&from_date=${from_date}&to_date=${to_date}`,
         {
           headers: {},
         }
@@ -984,6 +991,79 @@ export const kycSlice = createSlice({
       state.error = action.error.message;
       state.isLoading = false;
     },
+    //--------------------------------------------
+    [kycForPendingMerchants.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoadingForPending = true;
+    },
+    [kycForPendingMerchants.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoadingForPending = false;
+    },
+    [kycForPendingMerchants.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoadingForPending = false;
+    },
+    //------------------------------------------------
+    [kycForPending.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoadingForPendingVerification = true;
+    },
+    [kycForPending.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoadingForPendingVerification = false;
+    },
+    [kycForPending.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoadingForPendingVerification = false;
+    },
+    //-------------------------------------------
+    [kycForVerified.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoadingForPendingApproval = true;
+    },
+    [kycForVerified.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoadingForPendingApproval = false;
+    },
+    [kycForVerified.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoadingForPendingApproval = false;
+    },
+    //-----------------------------------------------
+    [kycForApproved.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoadingForApproved = true;
+    },
+    [kycForApproved.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoadingForApproved = false;
+    },
+    [kycForApproved.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoadingForApproved = false;
+    },
+    //-------------------------------------------------
+    [kycForRejectedMerchants.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoadingForRejected = true;
+    },
+    [kycForRejectedMerchants.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoadingForRejected = false;
+    },
+    [kycForRejectedMerchants.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoadingForRejected = false;
+    },
+//-------------------------------------------------------------
+
+    //-------------------------------------------------
     [kycUserList.pending]: (state, action) => {
       state.status = "pending";
     },

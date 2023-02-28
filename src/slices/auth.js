@@ -4,7 +4,7 @@ import { axiosInstance } from "../utilities/axiosInstance";
 import AuthService from "../services/auth.service";
 import TokenService from "../services/token.service";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const user = JSON.parse(sessionStorage.getItem("user"));
 const userAlreadyLoggedIn = user && user.loginId !== null ? true : false;
 
 const auth = {
@@ -208,8 +208,8 @@ export const createClientProfile = createAsyncThunk(
       const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
       const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
-      localStorage.setItem("user", JSON.stringify(allData))
-      localStorage.setItem("categoryId",1)
+      sessionStorage.setItem("user", JSON.stringify(allData))
+      sessionStorage.setItem("categoryId",1)
       return allData;
     } catch (error) {
       const message =
@@ -264,8 +264,8 @@ export const updateClientProfile = createAsyncThunk(
       const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
       const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
-      localStorage.setItem("user", JSON.stringify(allData))
-      localStorage.setItem("categoryId",1)
+      sessionStorage.setItem("user", JSON.stringify(allData))
+      sessionStorage.setItem("categoryId",1)
 
       return allData;
     } catch (error) {
@@ -465,8 +465,8 @@ const authSlice = createSlice({
       }
       state.isLoggedIn = loggedInStatus;
       state.user = action.payload.user;
-      localStorage.setItem("user", JSON.stringify(state.user))
-      localStorage.setItem("categoryId",1)
+      sessionStorage.setItem("user", JSON.stringify(state.user))
+      sessionStorage.setItem("categoryId",1)
       state.isValidUser = isValidData;
     },
     [login.pending]: (state) => {

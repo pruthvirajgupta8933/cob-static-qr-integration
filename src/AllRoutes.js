@@ -16,62 +16,65 @@ import MobileNavbar from './components/dashboard/SideNavbar/MobileNavbar';
 import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetails';
 import UrlNotFound from './components/dashboard/UrlNotFound';
 import NavBar from './components/dashboard/NavBar/NavBar';
+import BizzForm from './components/BizzAppForm/BizzForm'
 
-
-function AllRoutes(){
+function AllRoutes() {
 
   return (
-          <div>
-          <InternetConnection />
-            <Switch>             
-              <Route exact path="/login-page">
-                <LoginPage />
-              </Route>
-              <Route exact path="/registration">
-                <Registration />
-              </Route>
-              <Route path="/dashboard">
-                {/* <MobileNavbar/> */}
-                
-                <Dashboard />
-              </Route>
-              <Route exact path="/commonpages">
-                <CommonPage />
-              </Route>
-              <Route path="/forget">
-                <ForgetPassword />
-              </Route>
-              <Route exact path="/emailverification/:loginId">
-                <EmailVerification />
-              </Route>
-              <Route exact path="/Receipt">
-                <Recipts />
-              </Route>
-              <Route exact path="/stdReceipt">
-                <StudentRecipets />
-              </Route>
-              <Route exact path="/ReceiptByEmail">
-                <ReceiptByEmail />
-              </Route>
-              <Route exact path="/ReceiptWalchand">
-                <ReceiptWalchand />
-              </Route>
-              <Route exact path="/EmandatePage/">
-                <EmandatePage />
-              </Route>
-              <Route exact path="/login">
-                <LoginPage />
-              </Route>
-              <Route exact path="/">
-                <LoginPage />
-              </Route>
-              <Route exact path="/ViewTransactionDetails">
-                <ViewTransactionDetails />
-              </Route>
-              <Route path="*" component={UrlNotFound}/>
-            </Switch>
-          </div>
-      );
+    <div>
+      <InternetConnection />
+      <Switch>
+        <Route exact path="/login-page">
+          <LoginPage />
+        </Route>
+        <Route exact path="/registration">
+          <Registration />
+        </Route>
+        <Route path="/dashboard">
+          {/* <MobileNavbar/> */}
+
+          <Dashboard />
+        </Route>
+        <Route exact path="/commonpages">
+          <CommonPage />
+        </Route>
+        <Route path="/forget">
+          <ForgetPassword />
+        </Route>
+        <Route exact path="/emailverification/:loginId">
+          <EmailVerification />
+        </Route>
+        <Route exact path="/Receipt">
+          <Recipts />
+        </Route>
+        <Route exact path="/stdReceipt">
+          <StudentRecipets />
+        </Route>
+        <Route exact path="/ReceiptByEmail">
+          <ReceiptByEmail />
+        </Route>
+        <Route exact path="/ReceiptWalchand">
+          <ReceiptWalchand />
+        </Route>
+        <Route exact path="/EmandatePage/">
+          <EmandatePage />
+        </Route>
+        <Route exact path="/login">
+          <LoginPage />
+        </Route>
+        <Route exact path="/bizzForm">
+          <BizzForm />
+        </Route>
+        <Route exact path="/">
+          <LoginPage />
+        </Route>
+        <Route exact path="/ViewTransactionDetails">
+          <ViewTransactionDetails />
+        </Route>
+        <Route path="*" component={UrlNotFound} />
+      </Switch>
+    </div>
+  );
 }
 
 export default AllRoutes

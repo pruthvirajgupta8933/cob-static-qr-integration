@@ -39,6 +39,7 @@ const OnboardedReport = () => {
     const [showData, setShowData] = useState(false)
     const [selectedvalue, setSelectedvalue] = useState("")
     const [disabled, setDisabled] = useState(false)
+    const [authDate,setAuthDate] = useState("")
 
     const VerierAndApproverSearch = (e) => {
         setSearchText(e.target.value);
@@ -73,10 +74,11 @@ const OnboardedReport = () => {
 
 
 
+
     const handleSubmit = (values) => {
         setOnboradValue(values)
         setDisabled(true)
-        dispatch(onboardedReport({ page: currentPage, page_size: pageSize, selectedChoice, "from_date": values.from_date, "to_date": values.to_date }))
+        dispatch(onboardedReport({ page: currentPage, page_size: pageSize, selectedChoice,"from_date": values.from_date, "to_date": values.to_date }))
             .then((resp) => {
                 resp?.payload?.results.length ? toastConfig.successToast("Data Loaded") : toastConfig.errorToast("No Data Found")
 
