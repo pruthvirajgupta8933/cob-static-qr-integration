@@ -559,7 +559,7 @@ function Home() {
                       </h1>
 
                       <p className="modalscolrsfortextapprv m-0 text-center">
-                        You can accept payments upto INR 15,000
+                        You can accept payments upto INR 10,000
                       </p>
                       <p className="modalscolrsfortextapprv m-0 text-center">
                         Your KYC is currently under review.
