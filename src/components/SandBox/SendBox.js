@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { kycUserList } from "../../slices/kycSlice";
 import API_URL from "../../config";
 
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 
 
 function Sandbox() {
@@ -40,7 +40,7 @@ function Sandbox() {
   const clientDetailRequest = async () => {
 
     try {
-        const response = await axiosInstanceAuth.post(API_URL.CLIENT_DETAIL, {
+        const response = await axiosInstanceJWT.post(API_URL.CLIENT_DETAIL, {
             clientCode: clientCodeOfMerchant
         })
         setData(response.data.ClientData)
@@ -53,7 +53,7 @@ function Sandbox() {
 
 
   const getSubscribedPlan = (clientId, id)=>{
-    axiosInstanceAuth
+    axiosInstanceJWT
     .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
     .then((resp) => {
   

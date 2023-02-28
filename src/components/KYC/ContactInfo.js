@@ -32,7 +32,6 @@ function ContactInfo(props) {
   const dispatch = useDispatch();
 
   const { role, kycid } = props;
-  // console.log("this is the merchnat id here", props)
   const { auth, kyc } = useSelector((state) => state);
 
   const { user } = auth;
@@ -47,8 +46,7 @@ function ContactInfo(props) {
   const [buttonText, setButtonText] = useState("Save and Next");
   const [disable, setIsDisable] = useState(false);
 
-  const KycVerifyStatusForPhone = kyc.OtpVerificationResponseForPhone.status;
-  const KycVerifyStatusForEmail = kyc.OtpVerificationResponseForEmail.status;
+
 
   const initialValues = {
     name: KycList?.name,
@@ -142,22 +140,6 @@ function ContactInfo(props) {
       });
     }
 
-    // else if (role.verifier) {
-
-    //   // const veriferDetails = {
-    //   //   login_id: kycid,
-    //   //   general_info_verified_by: loginId,
-    //   // };
-    //   // dispatch(verifyKycEachTab(veriferDetails))
-    //   //   .then((resp) => {
-    //   //     resp?.payload?.general_info_status &&
-    //   //       toast.success(resp?.payload?.general_info_status);
-    //   //     resp?.payload?.detail && toast.error(resp?.payload?.detail);
-    //   //   })
-    //   //   .catch((e) => {
-    //   //     toast.error("Try Again Network Error");
-    //   //   });
-    // }
   };
 
   //-----------------Functionality To Send OTP Via Email Through Button ----------------------
@@ -236,15 +218,7 @@ function ContactInfo(props) {
     }
   };
 
-  // useEffect(() => {
-  //   if (role.approver) {
-  //     setReadOnly(true);
-  //     // setButtonText("Approve and Next");
-  //   } else if (role.verifier) {
-  //     setReadOnly(true);
-  //     // setButtonText("Verify and Next");
-  //   }
-  // }, [role]);
+
 
   return (
     <div
@@ -299,10 +273,10 @@ function ContactInfo(props) {
               </div>
             </div>
             {/*  Modal Popup for Otp Verification Email*/}
-            <MailVerificationModal
+            {/* <MailVerificationModal
               show={showOtpVerifyModalEmail}
               setShow={handlerModal}
-            />
+            /> */}
             {/*  Modal Popup for Otp Verification Email*/}
             <div className="row">
               <div className="col-sm-6 col-md-6 col-lg-6">
@@ -371,6 +345,7 @@ function ContactInfo(props) {
                   </span>
                 )}
               </div>
+
               {/*  Modal Popup for Otp Verification */}
               <PhoneVerficationModal
                 show={showOtpVerifyModalPhone}
@@ -391,10 +366,9 @@ function ContactInfo(props) {
                     readOnly={true}
                   />
 
-                  {KycList?.emailId !== null &&
-                  KycList?.isEmailVerified === 1 &&
-                  !errors.hasOwnProperty("email_id") &&
-                  !errors.hasOwnProperty("oldEmailId") ? (
+                  {
+                  KycList?.emailId !== null &&
+                  KycList?.isEmailVerified === 1 && (
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -405,30 +379,10 @@ function ContactInfo(props) {
                         className="btn-outline-secondary"
                       />
                     </span>
-                  ) : role.merchant ? (
-                    <div className="position-sticky pull-right- otpbtn input-group-append">
-                      {/* optbtn */}
-                      <a
-                        href={() => false}
-                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary"
-                        onClick={() => {
-                          checkInputIsValid(
-                            errors,
-                            values,
-                            setFieldError,
-                            "email_id"
-                          );
-                        }}
-                      >
-                        Send OTP
-                      </a>{" "}
-                    </div>
-                  ) : (
-                    <></>
                   )}
                 </div>
-                {
-                  <ErrorMessage name="email_id">
+                
+                {<ErrorMessage name="email_id">
                     {(msg) => (
                       <span className="abhitest- errortxt- text-danger">
                         {msg}
@@ -437,9 +391,6 @@ function ContactInfo(props) {
                   </ErrorMessage>
                 }
 
-                {errors?.oldEmailId && (
-                  <span className="text-danger">{errors?.oldEmailId}</span>
-                )}
               </div>
             </div>
 

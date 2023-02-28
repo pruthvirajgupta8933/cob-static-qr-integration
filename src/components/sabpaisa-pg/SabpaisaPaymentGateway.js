@@ -5,11 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 function SabpaisaPaymentGateway(props) {
   const clientDetails = props?.clientData
   const [isOpen, setIsOpen] = useState(false);
-  const [clientCode, setClientCode] = useState("SRSLT");
-  const [transUserName, setTransUserName] = useState("SRS792@sp");
-  const [transUserPassword, setTransUserPassword] = useState("7gBOD3ta9i");
-  const [authkey, setAuthkey] = useState("LAJLpvjNNdohDdc1");
-  const [authiv, setAuthiv] = useState("qukAvLVaOUCQzfif");
+  const [clientCode, setClientCode] = useState("SRSSUB");
+  const [transUserName, setTransUserName] = useState("nishant.jha_6493");
+  const [transUserPassword, setTransUserPassword] = useState("SRSSUB_SP6493");
+  const [authkey, setAuthkey] = useState("zho2xnrsE7p9Igcz");
+  const [authiv, setAuthiv] = useState("a8s5PqIDJQlA4AzP");
   const [callbackUrl, setCallbackUrl] = useState("");
   const [payerName, setpayerName] = useState("");
   const [payerEmail, setpayerEmail] = useState("");

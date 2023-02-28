@@ -42,7 +42,7 @@ function LoginPage() {
   const { user, userAlreadyLoggedIn } = auth;
 
   useEffect(() => {
-    const userLocalData = JSON.parse(localStorage.getItem("user"));
+    const userLocalData = JSON.parse(sessionStorage.getItem("user"));
     const isLoggedInLc =
       userLocalData && userLocalData.loginId !== null ? true : false;
     if (isLoggedInLc) {
@@ -65,19 +65,14 @@ function LoginPage() {
 
   //Dummy login for JWT
   const customLogin = async () => {
-
-
     const data = {
-      clientUserId: "linkpaisa",
-      userPassword: "linkpaisa",
+      clientUserId: "Abh789@sp",
+      userPassword: "P8c3WQ7ei",
     };
     UserService.login(data).then((res)=>{
       TokenService.setUser(res.data);
     })
- 
 
-      // navigate(from, { replace: true });
- 
   };
 
   const handleLogin = (formValue) => {

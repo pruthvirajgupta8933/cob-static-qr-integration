@@ -34,14 +34,14 @@ export const Profile = () => {
   var initNBlist,
     initDClist = [];
 
-  if (localStorage.getItem("NB_bank_list") !== null) {
-    initNBlist = JSON.parse(localStorage.getItem("NB_bank_list"));
+  if (sessionStorage.getItem("NB_bank_list") !== null) {
+    initNBlist = JSON.parse(sessionStorage.getItem("NB_bank_list"));
   } else {
     initNBlist = [];
   }
 
-  if (localStorage.getItem("DC_bank_list") !== null) {
-    initDClist = JSON.parse(localStorage.getItem("DC_bank_list"));
+  if (sessionStorage.getItem("DC_bank_list") !== null) {
+    initDClist = JSON.parse(sessionStorage.getItem("DC_bank_list"));
   }
   // const clientMerchantDetailsList = user?.clientMerchantDetailsList;
   const clientId = user?.clientMerchantDetailsList[0]?.clientId;

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import referralAndMidService from "../services/referralAndMid.service";
-import { axiosInstanceAuth } from "../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../utilities/axiosInstance";
 import API_URL from "../config";
 
 
@@ -63,7 +63,7 @@ export const saveReferingMerchant = createAsyncThunk(
 
 try {
         // const response = await referralAndMidService.forGeneratingMid(requestParam)
-        const response = await axiosInstanceAuth.get(`${API_URL.GET_ALL_GENERATE_MID_DATA}?clientCode=${clientCode}&order_by=-id`)
+        const response = await axiosInstanceJWT.get(`${API_URL.GET_ALL_GENERATE_MID_DATA}?clientCode=${clientCode}&order_by=-id`)
         return response.data;
       } catch (error) {
         const message =
