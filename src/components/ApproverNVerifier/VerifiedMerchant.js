@@ -119,7 +119,7 @@ function VerifiedMerchant() {
         value: "",
       },
       {
-        name: "online",
+        name: "Online",
         value: "online",
       },
       {

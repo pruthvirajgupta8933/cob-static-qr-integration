@@ -175,7 +175,7 @@ function PendingVerification() {
       value: "",
     },
     {
-      name: "online",
+      name: "Online",
       value: "online",
     },
     {

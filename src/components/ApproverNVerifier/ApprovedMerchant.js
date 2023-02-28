@@ -140,7 +140,7 @@ function ApprovedMerchant() {
       value: "",
     },
     {
-      name: "online",
+      name: "Online",
       value: "online",
     },
     {

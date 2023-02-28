@@ -150,7 +150,7 @@ const RejectedKYC = () => {
       value: "",
     },
     {
-      name: "online",
+      name: "Online",
       value: "online",
     },
     {

@@ -95,7 +95,7 @@ const PendindKyc = () => {
       value: "",
     },
     {
-      name: "online",
+      name: "Online",
       value: "online",
     },
     {
