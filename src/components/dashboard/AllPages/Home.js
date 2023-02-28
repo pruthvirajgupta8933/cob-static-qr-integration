@@ -53,7 +53,7 @@ function Home() {
   }, [user]);
 
   useEffect(() => {
-    console.log(kyc?.kycUserList)
+    // console.log(kyc?.kycUserList)
     setModalState(KycTabStatusStore?.status);
   }, [KycTabStatusStore]);
 

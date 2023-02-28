@@ -82,19 +82,19 @@ function Dashboard() {
     // console.log("user",user)
 
     if (roles?.merchant) {
-      console.log("merchant")
+      // console.log("merchant")
       
       if (user?.clientMerchantDetailsList) {
 
-        console.log("merchant- clientlist available")
+        // console.log("merchant- clientlist available")
         if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
 
-          console.log("merchant- client code null")
+          // console.log("merchant- client code null")
           const clientFullName = user?.clientContactPersonName
           const clientMobileNo = user?.clientMobileNo
           const arrayOfClientCode =  generateWord(clientFullName, clientMobileNo)
 
-          console.log("arrayOfClientCode",arrayOfClientCode)
+          // console.log("arrayOfClientCode",arrayOfClientCode)
           dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res=>{
             // console.log("res",res?.payload?.clientCode)
             let newClientCode = ""
@@ -102,13 +102,13 @@ function Dashboard() {
 
             if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
               newClientCode = res?.payload?.clientCode
-              console.log("newClientCode-step1",newClientCode)
+              // console.log("newClientCode-step1",newClientCode)
             } else {
               newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-              console.log("newClientCode-step2",newClientCode)
+              // console.log("newClientCode-step2",newClientCode)
             }
   
-            console.log("new cleint code", newClientCode)
+            // console.log("new cleint code", newClientCode)
   
             // update new client code
             const data = {
