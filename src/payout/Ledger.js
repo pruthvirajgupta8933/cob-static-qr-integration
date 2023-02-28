@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../components/dashboard/NavBar/NavBar";
 import {
   fetchPayoutLedgerReportSlice,
-  fetchClientCode
+  fetchClientCode,
 } from "../slices/payoutSlice";
 import { useSelector, useStore, useDispatch } from "react-redux";
 import moment from "moment";
@@ -10,14 +10,14 @@ import Spinner from "../_components/reuseable_components/ProgressBar";
 import LedgerCards from "./ledgerCards";
 import DropDownCountPerPage from "../_components/reuseable_components/DropDownCountPerPage";
 import Table from "../_components/table_components/table/Table";
-import {LedgerRowData} from '../utilities/tableData';
-
+import { LedgerRowData } from "../utilities/tableData";
+import Paginataion from "../_components/table_components/pagination/Pagination";
 
 const PayoutLedger = (props) => {
   const dispatch = useDispatch();
   const payoutState = useSelector((state) => state.payout);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(100);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [startDate, setStartDate] = useState("all");
@@ -26,10 +26,9 @@ const PayoutLedger = (props) => {
   const [transferType, setTransferType] = useState("all");
 
   useEffect(() => {
-    dispatch(fetchClientCode()).then((res)=>
-    {
+    dispatch(fetchClientCode()).then((res) => {
       fetchledgerMerchants();
-    })
+    });
   }, [currentPage, pageSize]);
 
   const TotalData = payoutState?.ledgerDetails?.count;
@@ -62,7 +61,7 @@ const PayoutLedger = (props) => {
     e.preventDefault();
     fetchledgerMerchants();
   };
-  const  resetTable = (e) => {
+  const resetTable = (e) => {
     setStartDate("all");
     setEndDate("all");
     setTransStatus((e.target.value = "all"));
@@ -104,8 +103,8 @@ const PayoutLedger = (props) => {
       setDisplayPageNumber(pageNumber);
     }
   }, [currentPage, totalPages]);
-   //Map the table data
-   const colData = () => {
+  //Map the table data
+  const colData = () => {
     return (
       <>
         {ledgerData == [] ? (
@@ -116,33 +115,35 @@ const PayoutLedger = (props) => {
         ) : (
           ledgerData?.map((data, key) => (
             <tr>
-                 <td>{data.id}</td>
-                          <td>{data.client_username}</td>
-                          <td>{`₹ ${data.amount}.00`}</td>
-                          <td>{data.type_status}</td>
-                          <td>{data.trans_status}</td>
-                          <td>{data.trans_type.toUpperCase()}</td>
-                          <td>
-                            {makeFirstLetterCapital(data.trans_amount_type)}
-                          </td>
-                          <td>{data.customer_ref_no}</td>
-                          <td>{convertDate(data.trans_completed_time)}</td>
-                          <td>{convertDate(data.trans_init_time)}</td>
-                          <td>{`₹ ${data.charge}.00`}</td>
-                          <td>{data.payment_mode}</td>
-                          <td>{data.bene_account_name}</td>
-                          <td>{data.bene_account_number}</td>
-                          <td>{data.bene_ifsc}</td>
-                          <td>{data.payout_trans_id}</td>
-                          <td>{data.opening_balance}</td>
-                          <td>{data.remarks}</td>
-                          <td>{convertDate(data.created_at)}</td>
+              <td>{data.id}</td>
+              <td>{data.client_username}</td>
+              <td>{`₹ ${data.amount}.00`}</td>
+              <td>{data.type_status}</td>
+              <td>{data.trans_status}</td>
+              <td>{data.trans_type.toUpperCase()}</td>
+              <td>{makeFirstLetterCapital(data.trans_amount_type)}</td>
+              <td>{data.customer_ref_no}</td>
+              <td>{convertDate(data.trans_completed_time)}</td>
+              <td>{convertDate(data.trans_init_time)}</td>
+              <td>{`₹ ${data.charge}.00`}</td>
+              <td>{data.payment_mode}</td>
+              <td>{data.bene_account_name}</td>
+              <td>{data.bene_account_number}</td>
+              <td>{data.bene_ifsc}</td>
+              <td>{data.payout_trans_id}</td>
+              <td>{data.opening_balance}</td>
+              <td>{data.remarks}</td>
+              <td>{convertDate(data.created_at)}</td>
             </tr>
           ))
         )}
       </>
     );
   };
+    //function for change current page
+    const changeCurrentPage = (page) => {
+      setCurrentPage(page);
+    };
 
   return (
     <>
@@ -151,9 +152,10 @@ const PayoutLedger = (props) => {
         {payoutState.isLoading && <Spinner />}
 
         <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
-        <div className="right_layout my_account_wrapper right_side_heading">
-              <h1 className="m-b-sm gx-float-left">Ledger</h1>
-            </div>
+          <div className="right_layout my_account_wrapper right_side_heading">
+            <h1 className="m-b-sm gx-float-left">Ledger</h1>
+          </div>
+
           {/* <LedgerCards /> */}
           <div className="container">
             <form onSubmit={handleSubmitDate}>
@@ -190,7 +192,7 @@ const PayoutLedger = (props) => {
                     className="form-control rounded-0"
                     // aria-label=".form-select-sm example"
                     value={transStatus}
-                    style={{height:"35px"}}
+                    style={{ height: "35px" }}
                   >
                     <option selected value="all">
                       All
@@ -206,7 +208,7 @@ const PayoutLedger = (props) => {
                     className="form-control rounded-0"
                     aria-label=".form-select-sm example"
                     value={transferType}
-                    style={{height:"34px"}}
+                    style={{ height: "34px" }}
                   >
                     <option selected value="all">
                       All
@@ -235,126 +237,24 @@ const PayoutLedger = (props) => {
           </div>
 
           <div className="gx-main-content-wrapper">
-            <div className="gap ml-4">
               {/* <p>{`Last ${transactionsCount} Transactions`}</p> */}
-            </div>
+                <div className="scroll overflow-auto">
+                  <Table row={LedgerRowData} col={colData} />
+                </div>
             <div class="table-responsive">
-            <Table row={LedgerRowData} col={colData} />
-              <table
-                cellspaccing={0}
-                cellPadding={10}
-                border={0}
-                width="100%"
-                className="tables ml-4 table-bordered"
-              >
-                <tbody>
-                  <tr>
-                    <th>Id</th>
-                    <th>Client's Username</th>
-                    <th>Amount</th>
-                    <th>Status Type</th>
-                    <th>Txn Status</th>
-                    <th>Txn Type</th>
-                    <th>Txn Amt Type</th>
-                    <th>Customer Ref No/Order Id</th>
-                    <th>Txn Completed time</th>
-                    <th>Txn Initiated time</th>
-                    <th>Charge</th>
-                    <th>Payment Mode</th>
-                    <th>Beneficiary Acc Name</th>
-                    <th>Beneficiary Acc No</th>
-                    <th>Beneficiary IFSC</th>
-                    <th>Payout Txn Id</th>
-                    <th>Opening Balance</th>
-                    <th>Remarks</th>
-                    <th>Created On</th>
-                  </tr>
-                  {ledgerData?.length == 0 ? (
-                    <tr>
-                      <td colSpan={"11"}>
-                        <div className="nodatafound text-center">
-                          No data found{" "}
-                        </div>
-                        <br />
-                        <br />
-                        {/* <p className="text-center">{spinner && <Spinner />}</p> */}
-                      </td>
-                    </tr>
-                  ) : (
-                    ledgerData?.map((data) => {
-                      return (
-                        <tr>
-                          <td>{data.id}</td>
-                          <td>{data.client_username}</td>
-                          <td>{`₹ ${data.amount}.00`}</td>
-                          <td>{data.type_status}</td>
-                          <td>{data.trans_status}</td>
-                          <td>{data.trans_type.toUpperCase()}</td>
-                          <td>
-                            {makeFirstLetterCapital(data.trans_amount_type)}
-                          </td>
-                          <td>{data.customer_ref_no}</td>
-                          <td>{convertDate(data.trans_completed_time)}</td>
-                          <td>{convertDate(data.trans_init_time)}</td>
-                          <td>{`₹ ${data.charge}.00`}</td>
-                          <td>{data.payment_mode}</td>
-                          <td>{data.bene_account_name}</td>
-                          <td>{data.bene_account_number}</td>
-                          <td>{data.bene_ifsc}</td>
-                          <td>{data.payout_trans_id}</td>
-                          <td>{data.opening_balance}</td>
-                          <td>{data.remarks}</td>
-                          <td>{convertDate(data.created_at)}</td>
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
+              <div className="col-md-12 col-md-offset-4">
+              </div>
             </div>
           </div>
-          <ul className="pagination justify-content-center mt-2">
-            <div className="form-group mr-2 ">
-              {/* <label>Count Per Page</label> */}
-              <select
-                value={pageSize}
-                rel={pageSize}
-                onChange={(e) => setPageSize(parseInt(e.target.value))}
-                className="ant-input"
-              >
-                <DropDownCountPerPage datalength={TotalData} />
-              </select>
-            </div>
-            <li className="page-item">
-              <button className="page-link" onClick={prevPage}>
-                Previous
-              </button>
-            </li>
-
-            {displayPageNumber?.map((pgNumber, i) => (
-              <li
-                key={i}
-                className={
-                  pgNumber === currentPage ? " page-item active" : "page-item"
-                }
-                onClick={() => setCurrentPage(pgNumber)}
-              >
-                <a href={() => false} className={`page-link data_${i}`}>
-                  <span>{pgNumber}</span>
-                </a>
-              </li>
-            ))}
-
-            <li className="page-item">
-              <button
-                className="page-link"
-                onClick={nextPage}
-                disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
-              >
-                Next
-              </button>
-            </li>
-          </ul>
+        
+          <nav>
+          <Paginataion
+            dataCount={TotalData}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            changeCurrentPage={changeCurrentPage}
+          />
+        </nav>
         </main>
       </section>
     </>
