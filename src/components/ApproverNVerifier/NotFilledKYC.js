@@ -37,6 +37,7 @@ const NotFilledKYC = () => {
     return (
       <>
         {data &&
+          (
           data?.map((data, key) => (
             <tr>
               <td>{key + 1}</td>
@@ -48,7 +49,8 @@ const NotFilledKYC = () => {
               <td> {covertDate(data.signUpDate)}</td>
               <td>{data?.isDirect}</td>
             </tr>
-          ))}
+          ))
+        )}
       </>
     );
   };
@@ -124,7 +126,16 @@ const NotFilledKYC = () => {
           />
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
-          <SearchbyDropDown
+        <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            changePageSize={changePageSize}
+          />
+          
+        </div>
+
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+        <SearchbyDropDown
             kycSearch={kycSearch}
             searchText={searchText}
             isSearchByDropDown={isSearchByDropDown}
@@ -132,14 +143,6 @@ const NotFilledKYC = () => {
             setData={setData}
             setSearchByDropDown={setSearchByDropDown}
             optionSearchData={optionSearchData}
-          />
-        </div>
-
-        <div className="form-group col-lg-3 col-md-12 mt-2">
-          <CountPerPageFilter
-            pageSize={pageSize}
-            dataCount={dataCount}
-            changePageSize={changePageSize}
           />
         </div>
         <div className="mt-1">
@@ -155,15 +158,15 @@ const NotFilledKYC = () => {
           {loadingState ? (
             <p className="text-center spinner-roll">{<Spinner />}</p>
           ) : (
-            ""
+            <Table row={rowData} col={colData} />
+            
           )}
         </div>
         <div>
-          {data.length == 0 ? (
+          {/* {data.length == 0 ? (
             <h2 className="d-flex justify-content-center">No Data Found</h2>
           ) : (
-            <Table row={rowData} col={colData} />
-          )}
+            )} */}
         </div>
         <nav>
           {data.length > 0 && (
