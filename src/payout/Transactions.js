@@ -102,12 +102,8 @@ const PayoutLedger = (props) => {
               <td>{data.opening_balance}</td>
               <td>{data.remarks}</td>
               <td>{convertDate(data.created_at)}</td>
-                          <td>{convertDate(data.updated_at)}</td>
-                          <td>
-                            {data.deleted_at
-                              ? convertDate(data.deleted_at)
-                              : ""}
-                          </td>
+              <td>{convertDate(data.updated_at)}</td>
+              <td>{data.deleted_at ? convertDate(data.deleted_at) : ""}</td>
             </tr>
           ))
         )}
@@ -224,16 +220,23 @@ const PayoutLedger = (props) => {
               {loadingState ? (
                 <p className="text-center spinner-roll">{<Spinner />}</p>
               ) : (
-                <Table row={TransactionRowData} col={colData} />
+                ""
               )}
             </div>
+            {ledgerData?.length == 0 ? (
+              <h2 className="d-flex justify-content-center">No Data Found</h2>
+            ) : (
+              <Table row={TransactionRowData} col={colData} />
+            )}
             <div className="mt-2">
-              <Paginataion
-                dataCount={TotalData}
-                pageSize={pageSize}
-                currentPage={currentPage}
-                changeCurrentPage={changeCurrentPage}
-              />
+              {ledgerData?.length > 0 && (
+                <Paginataion
+                  dataCount={TotalData}
+                  pageSize={pageSize}
+                  currentPage={currentPage}
+                  changeCurrentPage={changeCurrentPage}
+                />
+              )}
             </div>
           </div>
         </main>
