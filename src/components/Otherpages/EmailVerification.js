@@ -13,7 +13,7 @@ const EmailVerification = () => {
 
 
   useEffect(() => {
-    axiosInstanceJWT.put(`${API_URL.EMAIL_VERIFY}${loginId}`)
+    axiosInstance.put(`${API_URL.EMAIL_VERIFY}${loginId}`)
     .then((response) => {
       setData(response);
     })
