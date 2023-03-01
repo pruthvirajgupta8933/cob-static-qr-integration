@@ -5,6 +5,7 @@ import AuthService from "../services/auth.service";
 import TokenService from "../services/token.service";
 
 const user = JSON.parse(sessionStorage.getItem("user"));
+// console.log("user",user)
 const userAlreadyLoggedIn = user && user.loginId !== null ? true : false;
 
 const auth = {
@@ -84,7 +85,7 @@ export const login = createAsyncThunk(
   async ({ username, password }, thunkAPI) => {
     try {
       const data = await AuthService.login(username, password);
-      console.log("data",data)
+      // console.log("data",data)
       TokenService.setUser(data)
       return { user: data };
     } catch (error) {
@@ -459,6 +460,7 @@ const authSlice = createSlice({
       if (loginState === "Activate") {
         loggedInStatus = true;
         isValidData = 'Yes';
+        state.userAlreadyLoggedIn = true;
       } else {
         loggedInStatus = false;
         isValidData = 'No';
@@ -471,7 +473,7 @@ const authSlice = createSlice({
     },
     [login.pending]: (state) => {
       state.isLoggedIn = null;
-      state.userAlreadyLoggedIn = false;
+      // state.userAlreadyLoggedIn = false;
       state.isValidUser = '';
       state.user = null;
     },
