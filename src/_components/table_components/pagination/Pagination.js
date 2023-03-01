@@ -5,7 +5,7 @@ const Paginataion = ({dataCount,pageSize,currentPage,changeCurrentPage}) => {
 
 
   const totalPages = Math.ceil(dataCount / pageSize);
-  console.log(totalPages,'totalPages')
+  // console.log(totalPages,'totalPages')
   let pageNumbers = [];
   if (!Number.isNaN(totalPages)) {
     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
