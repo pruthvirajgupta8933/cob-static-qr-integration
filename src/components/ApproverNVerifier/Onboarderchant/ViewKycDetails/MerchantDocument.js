@@ -325,9 +325,9 @@ const [checkedClicked, setCheckedClicked] = useState(false)
 
 
           <thead>
-            {checkedClicked === true ?
+            {checkedClicked === true && (roles.approver || roles.verifier) &&
               <th colSpan={6} style={{ textAlign: "right" }}><CompleteVerifyAndRejectBtn roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} /></th>
-              : <></>}
+            }
             <tr>
 
               {currenTab === 3 || currenTab === 4 ?
