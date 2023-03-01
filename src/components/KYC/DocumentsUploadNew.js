@@ -288,7 +288,7 @@ function DocumentsUpload(props) {
                       ) === true
                         ? ""
                         : "* All Documents are mandatory and "}
-                      Document name should be unique."
+                      Document name should be unique.
                     </span>
                   </div>
 
