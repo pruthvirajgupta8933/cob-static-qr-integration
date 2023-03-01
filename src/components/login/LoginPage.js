@@ -45,7 +45,10 @@ function LoginPage() {
     const userLocalData = JSON.parse(sessionStorage.getItem("user"));
     const isLoggedInLc =
       userLocalData && userLocalData.loginId !== null ? true : false;
+      // console.log("isLoggedInLc",isLoggedInLc)
     if (isLoggedInLc) {
+      // console.log("userAlreadyLoggedIn",userAlreadyLoggedIn)
+      // console.log("user?.loginStatus",user?.loginStatus)
       if (userAlreadyLoggedIn && user?.loginStatus === "Activate") {
         // console.log("push to dashboard")
         history.push("/dashboard");

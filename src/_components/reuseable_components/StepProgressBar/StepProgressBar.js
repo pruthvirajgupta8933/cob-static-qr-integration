@@ -56,8 +56,6 @@ function StepProgressBar(props) {
   const [percentage,setPercentage] = useState(0);
 
   let status = props?.status;   
-  // console.log("status",status)
-  status = status?.toLowerCase();
 
   useEffect(() => {
     let data = [
