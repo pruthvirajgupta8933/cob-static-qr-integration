@@ -192,7 +192,7 @@ function BankDetails(props) {
 
 
   const onSubmit = (values) => {
-    let selectedChoice = values.account_type === 1 ? "Current" : values.account_type === 2 ? "Saving" : "";
+    let selectedChoice = values.account_type.toString() === "1" ? "Current" : values.account_type.toString() === "2" ? "Saving" : "";
     if (role.merchant) {
       setIsDisable(true);
       dispatch(

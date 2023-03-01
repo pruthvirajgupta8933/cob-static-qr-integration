@@ -265,7 +265,7 @@ function DocumentsUpload(props) {
                       Select Document Type
                       <span style={{ color: "red" }}>*</span>
                     </label>
-                  {console.log("kyc_status",kyc_status)}
+                  {/* {console.log("kyc_status",kyc_status)} */}
                     <FormikController
                       control="select"
                       name="docType"
