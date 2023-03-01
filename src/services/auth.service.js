@@ -85,18 +85,18 @@ const changePassword = (object) => {
 const getEmailToSendOTP = (object) => {
   // here we pass the valid email-id / username to send OTP on Phone number and email
 
-  return axiosInstanceJWT.post(API_URL.AUTH_GET_EMAIL_TO_SEND_OTP, object)
+  return axiosInstanceAuth.post(API_URL.AUTH_GET_EMAIL_TO_SEND_OTP, object)
 }
 
 
 const verifyOtpOnForgotPwd = (object) => {
   // here we pass received OTP on email / phone number
-  return axiosInstanceJWT.post(API_URL.AUTH_VERIFY_OTP_ON_FWD, object)
+  return axiosInstanceAuth.post(API_URL.AUTH_VERIFY_OTP_ON_FWD, object)
 }
 
 const createNewPassword = (object) => {
   //CREATE NEW PASSWORD
-  return axiosInstanceJWT.post(API_URL.AUTH_CREATE_NEW_PASSWORD, object)
+  return axiosInstanceAuth.post(API_URL.AUTH_CREATE_NEW_PASSWORD, object)
 }
 
 
