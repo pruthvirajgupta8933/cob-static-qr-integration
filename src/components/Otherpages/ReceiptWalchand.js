@@ -16,7 +16,7 @@ const ReceiptWalchand = () => {
     await axios
       .get(`${API_URL.FETCH_DATA_FOR_WACOE}?PRNNum=${pnrId}`)
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         let resData = response.data;
         if(response?.data.length === 0 || null) {
           toastConfig.errorToast("No Data Found")
