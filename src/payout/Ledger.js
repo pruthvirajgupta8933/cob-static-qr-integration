@@ -69,7 +69,6 @@ const PayoutLedger = (props) => {
     fetchledgerMerchants();
   };
 
-
   //Map the table data
   const colData = () => {
     return (
@@ -218,16 +217,25 @@ const PayoutLedger = (props) => {
               {loadingState ? (
                 <p className="text-center spinner-roll">{<Spinner />}</p>
               ) : (
+                ""
+              )}
+            </div>
+            <div>
+              {ledgerData?.length == 0 ? (
+                <h2 className="d-flex justify-content-center">No Data Found</h2>
+              ) : (
                 <Table row={LedgerRowData} col={colData} />
               )}
             </div>
             <div className="mt-2">
-              <Paginataion
-                dataCount={TotalData}
-                pageSize={pageSize}
-                currentPage={currentPage}
-                changeCurrentPage={changeCurrentPage}
-              />
+              {ledgerData?.length > 0 && (
+                <Paginataion
+                  dataCount={TotalData}
+                  pageSize={pageSize}
+                  currentPage={currentPage}
+                  changeCurrentPage={changeCurrentPage}
+                />
+              )}
             </div>
           </div>
         </main>

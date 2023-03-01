@@ -36,12 +36,7 @@ const NotFilledKYC = () => {
   const colData = () => {
     return (
       <>
-        {data == [] ? (
-          <td colSpan={"11"}>
-            {" "}
-            <div className="nodatafound text-center">No data found </div>
-          </td>
-        ) : (
+        {data &&
           data?.map((data, key) => (
             <tr>
               <td>{key + 1}</td>
@@ -53,8 +48,7 @@ const NotFilledKYC = () => {
               <td> {covertDate(data.signUpDate)}</td>
               <td>{data?.isDirect}</td>
             </tr>
-          ))
-        )}
+          ))}
       </>
     );
   };
@@ -121,7 +115,7 @@ const NotFilledKYC = () => {
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
-      <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
+        <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
           <SearchFilter
             kycSearch={kycSearch}
             searchText={searchText}
@@ -140,7 +134,7 @@ const NotFilledKYC = () => {
             optionSearchData={optionSearchData}
           />
         </div>
-  
+
         <div className="form-group col-lg-3 col-md-12 mt-2">
           <CountPerPageFilter
             pageSize={pageSize}
@@ -150,7 +144,7 @@ const NotFilledKYC = () => {
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
-            URL={"?order_by=-merchantId&search=Not-Filled"}
+            URL={"?order_by=-id&search=Not-Filled"}
             filename={"Not-Filled-KYC"}
           />
         </div>
@@ -161,16 +155,25 @@ const NotFilledKYC = () => {
           {loadingState ? (
             <p className="text-center spinner-roll">{<Spinner />}</p>
           ) : (
+            ""
+          )}
+        </div>
+        <div>
+          {data.length == 0 ? (
+            <h2 className="d-flex justify-content-center">No Data Found</h2>
+          ) : (
             <Table row={rowData} col={colData} />
           )}
         </div>
         <nav>
-          <Paginataion
-            dataCount={dataCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage}
-          />
+          {data.length > 0 && (
+            <Paginataion
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+            />
+          )}
         </nav>
       </div>
     </div>
