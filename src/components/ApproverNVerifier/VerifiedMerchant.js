@@ -78,7 +78,6 @@ function VerifiedMerchant() {
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
@@ -146,6 +145,7 @@ function VerifiedMerchant() {
           <td>{user?.name}</td>
           <td>{user?.emailId}</td>
           <td>{user?.contactNumber}</td>
+          <td>{user?.status}</td>
           {/* <td>{user.status}</td> */}
           <td>{covertDate(user?.signUpDate)}</td>
           <td>{user?.verified_date === null  ? "NA" : covertDate(user?.verified_date)}</td>

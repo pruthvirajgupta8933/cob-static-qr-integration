@@ -201,18 +201,22 @@ export const NotFilledKYCData = [
     },
     {
       id: "7",
-      row_name: "Registered Date",
+      row_name: "KYC Status",
     },
     {
       id: "8",
-      row_name: "Onboard Type",
+      row_name: "Registered Date",
     },
     {
       id: "9",
-      row_name: "View Status",
+      row_name: "Onboard Type",
     },
     {
       id: "10",
+      row_name: "View Status",
+    },
+    {
+      id: "11",
       row_name: "Action",
     },
 
@@ -278,22 +282,26 @@ export const NotFilledKYCData = [
     },
     {
       id: "7",
-      row_name: "Registered Date",
+      row_name: "KYC Status",
     },
     {
       id: "8",
-      row_name: "Verified Date",
+      row_name: "Registered Date",
     },
     {
       id: "9",
-      row_name: "Onboard Type",
+      row_name: "Verified Date",
     },
     {
       id: "10",
-      row_name: "View Status",
+      row_name: "Onboard Type",
     },
     {
       id: "11",
+      row_name: "View Status",
+    },
+    {
+      id: "12",
       row_name: "Action",
     },
 

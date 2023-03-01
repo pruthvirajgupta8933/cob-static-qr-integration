@@ -6,6 +6,7 @@ import sabpaisalogo from '../../assets/images/sabpaisalogo.png';
 import API_URL from '../../config';
 import FormikController from '../../_components/formik/FormikController';
 import { axiosInstance } from '../../utilities/axiosInstance';
+import toastConfig from '../../utilities/toastTypes';
 
 export const Recipts = () => {
 
@@ -20,8 +21,7 @@ export const Recipts = () => {
   const [show, setIsShow] = useState(false);
   // const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState([])
-  
-  const [isLoading, setIsLoading] = useState(false);
+  const [btnDisable,setBtnDisable] = useState(false)
 
 
  
@@ -59,24 +59,32 @@ export const Recipts = () => {
 // }
 const onSubmit = (input) => {
   setData({});
+  setBtnDisable(true)
   const transaction_id = input.transaction_id;
   axios
     .get(API_URL.VIEW_TXN + `/${transaction_id}`)
     .then((response) => {
-      if (response?.data.length > 0) {
-       
+      let res = response.data
+      if(res?.length === 0 || null) {
+        toastConfig.errorToast("No Data Found")
+        setBtnDisable(false)
+        setIsShow(false);
+      }
+      if (res?.length > 0) {
         setIsShow(true);
         setData(response?.data[0]);
+        toastConfig.successToast("Data Found")
+        setBtnDisable(false)
         //  setErrMessage(false);
       } else {
-        axios.get(API_URL.SP2_VIEW_TXN + `/${transaction_id}`).then((r) => {
+       axios.get(API_URL.SP2_VIEW_TXN + `/${transaction_id}`).then((r) => {
           if (r?.data.length > 0) {
-           
+            toastConfig.successToast("Data Found")
+            setBtnDisable(false)
             setIsShow(true);
             setData(r?.data[0]);
             // setErrMessage(false);
           } else {
-            setIsShow(false);
             // setErrMessage(true);
           }
         });
@@ -85,6 +93,7 @@ const onSubmit = (input) => {
     .catch((e) => {
       setIsShow(false);
       // setErrMessage(true);
+      setBtnDisable(false)
     });
 };
 
@@ -129,15 +138,11 @@ const onSubmit = (input) => {
                                 />
                             </div>
                           </div>
-                          <button className="btn receipt-button" type="submit">{isLoading ? "Loading...":"View"}</button>
+                          <button disabled={btnDisable} className="btn receipt-button" type="submit">View</button>
                     </Form>
                     )}
                 </Formik>
 
-                {isLoading?
-                      <div className="spinner-border" role="status">
-                      <span className="sr-only">Loading...</span>
-                    </div> : <></> }
               </div>
               </div>
         </div>

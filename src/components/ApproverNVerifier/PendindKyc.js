@@ -130,6 +130,7 @@ const PendindKyc = () => {
                     <td>{user.name}</td>
                     <td>{user.emailId}</td>
                     <td>{user.contactNumber}</td>
+                    <td>{user.status}</td>
                     <td>{covertDate(user.signUpDate)}</td>
                     <td>{user?.isDirect}</td>
                     <td>
