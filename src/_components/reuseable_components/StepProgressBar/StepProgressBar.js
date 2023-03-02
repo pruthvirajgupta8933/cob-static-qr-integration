@@ -56,7 +56,7 @@ function StepProgressBar(props) {
   const [kycStatusData,setKycStatusData] = useState([]);
   const [percentage,setPercentage] = useState(0);
 
-  let status = props?.status.toLocaleLowerCase();   
+  let status = props?.status?.toLocaleLowerCase();   
 
   useEffect(() => {
     let data = [
