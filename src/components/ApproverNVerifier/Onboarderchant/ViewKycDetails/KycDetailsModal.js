@@ -27,6 +27,7 @@ const KycDetailsModal = (props) => {
   let renderToPendingKyc=props?.renderToPendingKyc;
 
   let merchantKycId = props?.kycId;
+  console.log(props,'test');
 
   const [docList, setDocList] = useState([]);
   const [docTypeList, setDocTypeList] = useState([]);

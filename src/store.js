@@ -13,6 +13,7 @@ import productCatalogueSlice  from "./slices/merchant-slice/productCatalogueSlic
 import { ReferralMidReducer } from "./slices/referralAndMidOperationSlice";
 import { challanReducer } from "./slices/backTobusinessSlice";
 import merchantReportSlice from "./slices/merchant-slice/reportSlice"; 
+import { reportsDataReducer } from "./slices/subscription-slice/registeredMandateSlice";
 
 const reducer = {
   auth: authReducer,
@@ -28,8 +29,10 @@ const reducer = {
   productCatalogueSlice:productCatalogueSlice,
   ReferralMidReducer:ReferralMidReducer,
   challanReducer:challanReducer,
-  merchantReportSlice:merchantReportSlice
+  merchantReportSlice:merchantReportSlice,
   
+  // For subscription
+  Reports : reportsDataReducer
 
 };
 

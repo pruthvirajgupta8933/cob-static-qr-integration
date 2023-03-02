@@ -17,7 +17,7 @@ if (ENV_PROD) {
 
 }
 
-
+const subAPIURL = "https://subscription.sabpaisa.in/subscription";
 
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
@@ -270,6 +270,11 @@ const API_LIVE = {
 
   //menu list by login id
   menuListByLoginId: `${url}/menu-loginwise`,
+
+  // -------------------------------------------------------------------------Subscription APIS-------------------------------------------||
+  MANDATE_FREQUENCY: `${subAPIURL}/REST/GetCommonData/0/frequency`,
+  MANDATE_CATEGORY: `${subAPIURL}/REST/GetCommonData/0/MandateCategory`,
+  filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
 
 
 
