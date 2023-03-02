@@ -1077,14 +1077,17 @@ export const kycSlice = createSlice({
     ///////////////////////////////////
     [kycForApproved.pending]: (state, action) => {
       state.status = "pending";
+      state.isLoadingForApproved = true;
     },
     [kycForApproved.fulfilled]: (state, action) => {
       // console.log("action-11 ====>",action.payload)
       state.kycApproved = action.payload;
+      state.isLoadingForApproved = false;
     },
     [kycForApproved.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.error.message;
+      state.isLoadingForApproved = false;
     },
     ////////////////////////////////////////
     // [UploadLoginId.pending]: (state, action) => {
