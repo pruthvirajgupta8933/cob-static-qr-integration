@@ -2,7 +2,8 @@
   "projects": {
     "default": "cob-staging",
     "cob-prod": "cob-staging",
-    "cob-production": "cob-staging"
+    "cob-production": "cob-staging",
+    "cob-staging": "cob-staging"
   },
   "targets": {},
   "etags": {}
