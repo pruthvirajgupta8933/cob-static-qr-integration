@@ -388,7 +388,7 @@ const SettlementReportNew= () => {
                       </div>
                     </div>
                     <div className="form-row">
-                      <div className="form-group col-md-1">
+                      <div className="form-group col-md-1 mr-2">
                         <button
                         disabled={disable}
                           className=" btn bttn bttnbackgroundkyc"
@@ -398,7 +398,7 @@ const SettlementReportNew= () => {
                         </button>
                       </div>
                       {txnList?.length > 0 ? (
-                        <div className="form-group col-md-1">
+                        <div className="form-group col-md-1 ml-1">
                           <button
                             className="btn btn-sm text-white"
                             style={{ backgroundColor: "rgb(1, 86, 179)" }}
