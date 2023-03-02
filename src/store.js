@@ -12,6 +12,7 @@ import  menuListReducer from "./slices/cob-dashboard/menulistSlice"
 import productCatalogueSlice  from "./slices/merchant-slice/productCatalogueSlice"
 import { ReferralMidReducer } from "./slices/referralAndMidOperationSlice";
 import { challanReducer } from "./slices/backTobusinessSlice";
+import { reportsDataReducer } from "./slices/subscription-slice/registeredMandateSlice";
 
 const reducer = {
   auth: authReducer,
@@ -26,8 +27,10 @@ const reducer = {
   menuListReducer:menuListReducer,
   productCatalogueSlice:productCatalogueSlice,
   ReferralMidReducer:ReferralMidReducer,
-  challanReducer:challanReducer
+  challanReducer:challanReducer,
   
+  // For subscription
+  Reports : reportsDataReducer
 
 };
 

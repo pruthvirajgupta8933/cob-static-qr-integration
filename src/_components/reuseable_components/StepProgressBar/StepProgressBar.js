@@ -4,6 +4,7 @@ import "./stepProgressBar.css";
 import "react-step-progress-bar/styles.css";
 import { ProgressBar, Step } from "react-step-progress-bar";
 import "react-step-progress/dist/index.css";
+import { KYC_STATUS_APPROVED, KYC_STATUS_PENDING, KYC_STATUS_PROCESSING, KYC_STATUS_VERIFIED } from "../../../utilities/enums";
 
 
 
@@ -55,7 +56,7 @@ function StepProgressBar(props) {
   const [kycStatusData,setKycStatusData] = useState([]);
   const [percentage,setPercentage] = useState(0);
 
-  let status = props?.status;   
+  let status = props?.status?.toLocaleLowerCase();   
 
   useEffect(() => {
     let data = [
@@ -74,13 +75,13 @@ function StepProgressBar(props) {
     setKycStatusData(data);
 
     let percent = 0;
-    if (status === "pending" || status === "not-filled") {
+    if (status === KYC_STATUS_PENDING.toLocaleLowerCase() || status === "not-filled") {
       percent = 1
-    } else if (status === "processing") {
+    } else if (status === KYC_STATUS_PROCESSING.toLocaleLowerCase()) {
       percent = 33.3;
-    } else if (status === "verified") {
+    } else if (status === KYC_STATUS_VERIFIED.toLocaleLowerCase()) {
       percent = 66.6;
-    } else if (status === "approved") {
+    } else if (status === KYC_STATUS_APPROVED.toLocaleLowerCase()) {
       percent = 100;
     }
 

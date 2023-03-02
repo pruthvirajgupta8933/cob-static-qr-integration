@@ -265,7 +265,7 @@ function DocumentsUpload(props) {
                       Select Document Type
                       <span style={{ color: "red" }}>*</span>
                     </label>
-                  {console.log("kyc_status",kyc_status)}
+                  {/* {console.log("kyc_status",kyc_status)} */}
                     <FormikController
                       control="select"
                       name="docType"
@@ -288,7 +288,7 @@ function DocumentsUpload(props) {
                       ) === true
                         ? ""
                         : "* All Documents are mandatory and "}
-                      Document name should be unique."
+                      Document name should be unique.
                     </span>
                   </div>
 

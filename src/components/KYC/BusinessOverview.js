@@ -393,7 +393,7 @@ function BusinessOverview(props) {
                         control="input"
                         type="text"
                         name="website_app_url"
-                        placeHolder="Enter your website/ app URL"
+                        placeHolder="Enter your website/app URL"
                         className="form-control pull-left"
                         disabled={VerifyKycStatus === "Verified" ? true : false}
                         readOnly={readOnly}
