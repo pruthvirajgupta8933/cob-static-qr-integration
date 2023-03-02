@@ -12,8 +12,13 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
+import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
+import CommentModal from "./Onboarderchant/CommentModal";
+import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 
 const rowData = NotFilledKYCData;
+const roles = roleBasedAccess();
+
 const NotFilledKYC = () => {
   const [data, setData] = useState([]);
   const [notFilledData, setNotFilledData] = useState([]);
@@ -21,7 +26,12 @@ const NotFilledKYC = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
+  const [kycIdClick, setKycIdClick] = useState(null);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  const [isOpenModal, setIsModalOpen] = useState(false);
+  const [commentId, setCommentId] = useState({});
+  const [openCommentModal, setOpenCommentModal] = useState(false);
+
 
   const dispatch = useDispatch();
   const loadingState = useSelector((state) => state.kyc.isLoading);
@@ -47,6 +57,41 @@ const NotFilledKYC = () => {
               <td>{data.status}</td>
               <td> {covertDate(data.signUpDate)}</td>
               <td>{data?.isDirect}</td>
+              <td>
+                <button
+                  type="button"
+                  className="btn approve text-white  btn-xs"
+                  onClick={() => {
+                    setKycIdClick(data);
+                    setIsModalOpen(!isOpenModal);
+                  }}
+                  data-toggle="modal"
+                  data-target="#kycmodaldetail"
+                >
+                  View Status
+                </button>
+              </td>
+              <td>
+                {roles?.verifier === true ||
+                roles?.approver === true ||
+                roles?.viewer === true ? (
+                  <button
+                    type="button"
+                    className="btn approve text-white  btn-xs"
+                    data-toggle="modal"
+                    onClick={() => {
+                      setCommentId(data);
+                      setOpenCommentModal(true);
+                    }}
+                    data-target="#exampleModal"
+                    disabled={data?.clientCode === null ? true : false}
+                  >
+                    Comments
+                  </button>
+                ) : (
+                  <></>
+                )}
+              </td>
             </tr>
           ))}
       </>
@@ -114,6 +159,25 @@ const NotFilledKYC = () => {
   ];
   return (
     <div className="container-fluid flleft">
+      <div>
+          {openCommentModal === true ? (
+            <CommentModal
+              commentData={commentId}
+              isModalOpen={openCommentModal}
+              setModalState={setOpenCommentModal}
+              tabName={"Pending KYC"}
+            />
+          ) : (
+            <></>
+          )}
+
+          <KycDetailsModal
+            handleModal={setIsModalOpen}
+            kycId={kycIdClick}
+            isOpenModal={isOpenModal}
+          />
+        </div>
+
       <div className="form-row">
         <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
           <SearchFilter
