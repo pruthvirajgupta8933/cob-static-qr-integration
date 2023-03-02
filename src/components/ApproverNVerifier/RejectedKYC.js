@@ -232,30 +232,20 @@ const RejectedKYC = () => {
       </div>
 
       <div className="col-md-12 col-md-offset-4">
-      <div className="scroll overflow-auto">
-          {loadingState ? (
+        <div className="scroll overflow-auto">
+        {loadingState ? (
             <p className="text-center spinner-roll">{<Spinner />}</p>
           ) : (
-            ""
+            <Table row={rowData} col={colData} />
           )}
         </div>
-        <div>
-          {data?.length === 0 && !loadingState ? (
-            <h2 className="d-flex justify-content-center">No Data Found</h2>
-          ) : (
-            ""
-          )}
-        </div>
-        {data?.length !== 0 && <Table row={rowData} col={colData} />}
         <nav>
-          {data?.length > 0 && (
-            <Paginataion
-              dataCount={dataCount}
-              pageSize={pageSize}
-              currentPage={currentPage}
-              changeCurrentPage={changeCurrentPage}
-            />
-          )}
+        <Paginataion
+            dataCount={dataCount}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            changeCurrentPage={changeCurrentPage}
+          />
         </nav>
       </div>
     </div>

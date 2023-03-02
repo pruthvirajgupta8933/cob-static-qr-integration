@@ -1,40 +1,30 @@
-import { roleBasedAccess } from "../_components/reuseable_components/roleBasedAccess";
-
-let roles = roleBasedAccess()
 
 export const NotFilledKYCData = [
-    { id: "1", row_name: "S. No." },
-    { id: "2", row_name: "Client Code" },
-    { id: "3", row_name: "Merchant Name" },
-    {
-      id: "4",
-      row_name: "Email",
-    },
-    {
-      id: "5",
-      row_name: "Contact Number",
-    },
-    {
-      id: "6",
-      row_name: "KYC Status",
-    },
-    {
-      id: "7",
-      row_name: "Registered Date",
-    },
-    {
-      id: "8",
-      row_name: "Onboard Type",
-    },
-    {
-      id: "9",
-      row_name: "View Status",
-    },
-    {
-      id: "10",
-      row_name: "Action",
-    }
-  ];
+  { id: "1", row_name: "S. No." },
+  { id: "2", row_name: "Client Code" },
+  { id: "3", row_name: "Merchant Name" },
+  {
+    id: "4",
+    row_name: "Email",
+  },
+  {
+    id: "5",
+    row_name: "Contact Number",
+  },
+  {
+    id: "6",
+    row_name: "KYC Status",
+  },
+  {
+    id: "7",
+    row_name: "Registered Date",
+  },
+  {
+    id: "8",
+    row_name: "Onboard Type",
+  },
+];
+
   export const TransactionRowData = [
     { id: "1", row_name: "Id" },
     { id: "2", row_name: "Client's Username" },
@@ -209,18 +199,22 @@ export const NotFilledKYCData = [
     },
     {
       id: "7",
-      row_name: "Registered Date",
+      row_name: "KYC Status",
     },
     {
       id: "8",
-      row_name: "Onboard Type",
+      row_name: "Registered Date",
     },
     {
       id: "9",
-      row_name: "View Status",
+      row_name: "Onboard Type",
     },
     {
       id: "10",
+      row_name: "View Status",
+    },
+    {
+      id: "11",
       row_name: "Action",
     },
 
@@ -266,7 +260,6 @@ export const NotFilledKYCData = [
 
   ];
 
-
   export const PendingApprovalData = [
     
     { id: "1", row_name: "S. No." },
@@ -286,7 +279,7 @@ export const NotFilledKYCData = [
     },
     {
       id: "7",
-      row_name: "Verified Date",
+      row_name: "KYC Status",
     },
     {
       id: "8",
@@ -294,14 +287,18 @@ export const NotFilledKYCData = [
     },
     {
       id: "9",
-      row_name: "Onboard Type",
+      row_name: "Verified Date",
     },
     {
       id: "10",
-      row_name: "View Status",
+      row_name: "Onboard Type",
     },
     {
       id: "11",
+      row_name: "View Status",
+    },
+    {
+      id: "12",
       row_name: "Action",
     },
 
@@ -355,6 +352,8 @@ export const NotFilledKYCData = [
     },
 
   ];
+
+  
 
   export const ChallanReportData = [
     

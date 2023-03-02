@@ -16,7 +16,7 @@ const Table = (props) => {
   return (
     <>
       {" "}
-      <table className="table table-bordered table-responsive">
+      <table className="table table-bordered">
         <thead>
           <tr>{rowData()}</tr>
         </thead>

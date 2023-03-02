@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch , useSelector} from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
@@ -16,7 +16,9 @@ import SearchbyDropDown from "../../_components/table_components/filters/Searchb
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import Table from "../../_components/table_components/table/Table";
 
+
 function ApprovedMerchant() {
+
   const [data, setData] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
   const [dataCount, setDataCount] = useState("");
@@ -26,14 +28,15 @@ function ApprovedMerchant() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [kycIdClick, setKycIdClick] = useState(null);
-  const [isOpenModal, setIsModalOpen] = useState(false);
+  const [isOpenModal, setIsModalOpen] = useState(false)
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   const rowData = ApprovedTableData;
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
-  console.log(loadingState,'loadingState');
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
+
+
 
   const kycSearch = (e, fieldType) => {
     fieldType === "text"
@@ -43,14 +46,15 @@ function ApprovedMerchant() {
   };
 
   useEffect(() => {
+   
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
-        setDataCount(dataCoun);
-        setApprovedMerchantData(data);
+         setDataCount(dataCoun);
+         setApprovedMerchantData(data);
       })
 
       .catch((err) => {
@@ -60,22 +64,23 @@ function ApprovedMerchant() {
 
   /////////////////////////////////////Search filter
 
-  // Only used for refreshing the page by passing it to the props
+// Only used for refreshing the page by passing it to the props
   const approvedTable = () => {
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
-      .then((resp) => {
-        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setApprovedMerchantData(data);
-      })
+    .then((resp) => {
+      resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+      const data = resp?.payload?.results;
+      const dataCoun = resp?.payload?.count;
+      setData(data);
+       setDataCount(dataCoun);
+       setApprovedMerchantData(data);
+    })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
-  };
+    .catch((err) => {
+      toastConfig.errorToast("Data not loaded");
+    });
+  }
+
 
   const searchByText = () => {
     setData(
@@ -87,6 +92,8 @@ function ApprovedMerchant() {
       )
     );
   };
+
+
 
   // const viewDocument = async (loginMaidsterId) => {
   //   const res = await axiosInstanceJWT
@@ -108,19 +115,21 @@ function ApprovedMerchant() {
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
-    return date;
-  };
+      return date
+    }
 
-  //function for change current page
+
+      //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
   };
 
-  //function for change page size
-  const changePageSize = (pageSize) => {
+   //function for change page size
+   const changePageSize = (pageSize) => {
     setPageSize(pageSize);
   };
-
+  
+    
   const optionSearchData = [
     {
       name: "Select Onboard Type",
@@ -140,17 +149,19 @@ function ApprovedMerchant() {
     },
   ];
 
-  const colData = () => {
-    return (
-      <>
-        {data == [] ? (
-          <td colSpan={"11"}>
-            {" "}
-            <div className="nodatafound text-center">No data found </div>
-          </td>
-        ) : (
-          data?.map((user, i) => (
-            <tr key={i}>
+
+ 
+    const colData = () => {
+      return (
+        <>
+          {data == [] ? (
+            <td colSpan={"11"}>
+              {" "}
+              <div className="nodatafound text-center">No data found </div>
+            </td>
+          ) : (
+            data?.map((user, i) => (
+              <tr key={i}>
               <td>{i + 1}</td>
               <td>{user?.clientCode}</td>
               <td>{user?.companyName}</td>
@@ -159,133 +170,99 @@ function ApprovedMerchant() {
               <td>{user?.contactNumber}</td>
               <td>{user?.status}</td>
               <td>{covertDate(user.signUpDate)}</td>
-              <td>
-                {user?.verified_date === null
-                  ? "NA"
-                  : covertDate(user?.verified_date)}
-              </td>
+              <td>{user?.verified_date === null ? "NA" : covertDate(user?.verified_date)}</td>
               <td>{covertDate(user?.ApprovedDate)}</td>
               <td>{user?.isDirect}</td>
               <td>
+               
+                
                 <button
-                  type="button"
-                  className="btn approve text-white  btn-xs"
-                  onClick={() => {
-                    setKycIdClick(user);
-                    setIsModalOpen(true);
-                  }}
-                  data-toggle="modal"
-                  data-target="#kycmodaldetail"
-                >
-                  View Status
-                </button>
-              </td>
-              <td>
-                {roles?.verifier === true ||
-                roles?.approver === true ||
-                roles?.viewer === true ? (
-                  <button
                     type="button"
                     className="btn approve text-white  btn-xs"
+                    onClick={() =>  {setKycIdClick(user); setIsModalOpen(true) }}
                     data-toggle="modal"
-                    onClick={() => {
-                      setCommentId(user);
-                      setOpenCommentModal(true);
-                    }}
-                    data-target="#exampleModal"
-                    disabled={user?.clientCode === null ? true : false}
+                    data-target="#kycmodaldetail"
                   >
-                    Comments
+                    View Status
                   </button>
-                ) : (
-                  <></>
-                )}
+                  </td>
+                  <td>
+              {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
+                  <button
+                  type="button"
+                  className="btn approve text-white  btn-xs"
+                  data-toggle="modal"
+                  onClick={() => {
+                    setCommentId(user)
+                    setOpenCommentModal(true)
+          
+                  }}
+                  data-target="#exampleModal"
+                  disabled={user?.clientCode === null ? true : false}
+                >
+                   Comments
+                </button>
+              ) : <></> }
               </td>
+                      
             </tr>
-          ))
-        )}
-      </>
-    );
-  };
+            ))
+          )}
+        </>
+      );
+    };
 
   return (
     <div className="container-fluid flleft">
       <div className="form-group col-lg-3 col-md-12 mt-2">
-        <SearchFilter
-          kycSearch={kycSearch}
-          searchText={searchText}
-          searchByText={searchByText}
-          setSearchByDropDown={setSearchByDropDown}
-        />
+      <SearchFilter
+            kycSearch={kycSearch}
+            searchText={searchText}
+            searchByText={searchByText}
+            setSearchByDropDown={setSearchByDropDown}
+          />
       </div>
       <div>
-        {openCommentModal === true ? (
-          <CommentModal
-            commentData={commentId}
-            isModalOpen={openCommentModal}
-            setModalState={setOpenCommentModal}
-            tabName={"Approved Tab"}
-          />
-        ) : (
-          <></>
-        )}
 
-        <KycDetailsModal
-          kycId={kycIdClick}
-          handleModal={setIsModalOpen}
-          isOpenModal={isOpenModal}
-          renderApprovedTable={approvedTable}
-        />
+      {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Approved Tab"} /> : <></>}
+          
+          <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderApprovedTable={approvedTable}/>
+        </div>
+      <div className="form-group col-lg-3 col-md-12 mt-2">
+      <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            changePageSize={changePageSize}
+          />
       </div>
       <div className="form-group col-lg-3 col-md-12 mt-2">
-        <CountPerPageFilter
-          pageSize={pageSize}
-          dataCount={dataCount}
-          changePageSize={changePageSize}
-        />
+      <SearchbyDropDown
+            kycSearch={kycSearch}
+            searchText={searchText}
+            isSearchByDropDown={isSearchByDropDown}
+            notFilledData={approvedMerchantData}
+            setData={setData}
+            setSearchByDropDown={setSearchByDropDown}
+            optionSearchData={optionSearchData}
+          />
       </div>
-      <div className="form-group col-lg-3 col-md-12 mt-2">
-        <SearchbyDropDown
-          kycSearch={kycSearch}
-          searchText={searchText}
-          isSearchByDropDown={isSearchByDropDown}
-          notFilledData={approvedMerchantData}
-          setData={setData}
-          setSearchByDropDown={setSearchByDropDown}
-          optionSearchData={optionSearchData}
-        />
-      </div>
-      <MerchnatListExportToxl
-        URL={
-          "?search=Approved&order_by=-approved_date&search_map=approved_date"
-        }
-        filename={"Approved"}
-      />
+      <MerchnatListExportToxl URL = {'?search=Approved&order_by=-approved_date&search_map=approved_date'} filename={"Approved"} />
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
-          {loadingState ? (
+
+        {loadingState ? (
             <p className="text-center spinner-roll">{<Spinner />}</p>
           ) : (
-            ""
+            <Table row={rowData} col={colData} />
           )}
         </div>
-        <div>
-          {data?.length === 0 && !loadingState ? (
-            <h2 className="d-flex justify-content-center">No Data Found</h2>
-          ) : (
-            ""
-          )}
-        </div>
-        {data?.length !== 0 && <Table row={rowData} col={colData} />}
         <nav>
-          {data?.length > 0 && (
-            <Paginataion
-              dataCount={dataCount}
-              pageSize={pageSize}
-              currentPage={currentPage}
-              changeCurrentPage={changeCurrentPage}
-            />
-          )}
+        <Paginataion
+            dataCount={dataCount}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            changeCurrentPage={changeCurrentPage}
+          />
         </nav>
       </div>
     </div>
