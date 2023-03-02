@@ -57,16 +57,30 @@ const SideNavbar = () => {
             <ul id={`menulist_${m?.app_code}`} className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
               {m?.submenu?.map((sm) => (
                 sm?.is_active &&
-                <li className="ant-menu-item" role="menuitem" key={sm?.id}>
-                  <Link
-                    to={`${url}/${sm?.url}`}
-                    className="txt-white sidenavFonts"
-                  >
-                    <i className={sm?.sub_menu_icon}></i>
-                    &nbsp;{sm?.submenu_name}
-                  </Link>
 
-                </li>
+                  auth?.user?.loginId.toString() === "11235" ?
+                  (sm?.id !== 5 && sm?.id !== 6 && sm?.id !== 7 && sm?.id !== 8) &&
+                  <li className="ant-menu-item" role="menuitem" key={sm?.id}>
+                    <Link
+                      to={`${url}/${sm?.url}`}
+                      className="txt-white sidenavFonts"
+                    >
+                      <i className={sm?.sub_menu_icon}></i>
+                      &nbsp;{sm?.submenu_name}
+                    </Link>
+
+                  </li>
+                  :
+                  <li className="ant-menu-item" role="menuitem" key={sm?.id}>
+                    <Link
+                      to={`${url}/${sm?.url}`}
+                      className="txt-white sidenavFonts"
+                    >
+                      <i className={sm?.sub_menu_icon}></i>
+                      &nbsp;{sm?.submenu_name}
+                    </Link>
+
+                  </li>
               ))}
             </ul>
           </div>
@@ -141,36 +155,37 @@ const SideNavbar = () => {
                           </Link>
                         </li>
                       ) : (
-                      <React.Fragment></React.Fragment>
+                        <React.Fragment></React.Fragment>
                       )}
                       {renderMenuList}
 
-                      {auth?.user?.loginId.toString()==="11235" &&
+                      {auth?.user?.loginId.toString() === "11235" &&
                         <div
                           className="main-menu-container"
                           // onClick={(e) => toggleMenu(e)}
                           isToggle="true"
                         >
-                          <ul  className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
-                           
-                              <li className="ant-menu-item" role="menuitem" >
-                                <Link
-                                  to={`${url}/transaction-history-merchant`}
-                                  className="txt-white sidenavFonts"
-                                >
-                                  {/* <i></i> */}
-                                  Transactions History
-                                </Link>
-                              </li>
-                              <li className="ant-menu-item" role="menuitem" >
-                                <Link
-                                  to={`${url}/settled-transaction-merchant`}
-                                  className="txt-white sidenavFonts"
-                                >
-                                  {/* <i></i> */}
-                                  Settlement Report
-                                </Link>
-                              </li>
+                          <ul className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
+
+                            <li className="ant-menu-item" role="menuitem" >
+                              <Link
+                                to={`${url}/transaction-history-merchant`}
+                                className="txt-white sidenavFonts"
+                              >
+                                <i className="fa fa-bank"></i> 
+
+                                Transactions History
+                              </Link>
+                            </li>
+                            <li className="ant-menu-item" role="menuitem" >
+                              <Link
+                                to={`${url}/settled-transaction-merchant`}
+                                className="txt-white sidenavFonts"
+                              >
+                                <i className="fa fa-bank"></i> 
+                                Settlement Report
+                              </Link>
+                            </li>
                           </ul>
                         </div>
                       }
