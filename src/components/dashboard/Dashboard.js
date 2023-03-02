@@ -67,6 +67,7 @@ import { merchantSubscribedPlanData } from "../../slices/merchant-slice/productC
 import ReferZone from "../ApproverNVerifier/ReferZone";
 import GenerateMid from "../ApproverNVerifier/GenerateMid";
 import { generateWord } from "../../utilities/generateClientCode";
+import MandateReport from "../../subscription_components/MandateReport";
 
 
 function Dashboard() {
@@ -485,6 +486,14 @@ function Dashboard() {
         </MerchantRoute>
 
 
+        {/* Routing for subscription */}
+        {/* ----------------------------------------------------------------------------------------------------|| */}
+        <MerchantRoute exact path={`${path}/subscription/mandateReports`} Component={MandateReport}>
+          <SpPg />
+        </MerchantRoute>
+        
+
+        {/* -----------------------------------------------------------------------------------------------------|| */}
 
 
         {roles?.verifier && (
