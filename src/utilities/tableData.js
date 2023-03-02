@@ -26,6 +26,14 @@ export const NotFilledKYCData = [
       id: "8",
       row_name: "Onboard Type",
     },
+    {
+      id: "9",
+      row_name: "View Status",
+    },
+    {
+      id: "10",
+      row_name: "Action",
+    }
   ];
   export const TransactionRowData = [
     { id: "1", row_name: "Id" },
