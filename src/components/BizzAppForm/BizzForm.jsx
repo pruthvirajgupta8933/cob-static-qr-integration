@@ -9,35 +9,55 @@ import {
     RegexMsg,
     space,
 } from "../../_components/formik/ValidationRegex";
+import FormikController from '../../_components/formik/FormikController'
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const BizzAppForm = (props) => {
     const validationSchema = Yup.object().shape({
         merchant_business_name: Yup.string()
-            .required("Merchant bussiness name is required"),
+            .required("Required"),
         merchant_legal_name: Yup.string()
-            .required("Merchant legal name Required"),
+            .required("Required"),
         merchant_address: Yup.string()
-            .required("Merchant address Required"),
+            .required("Required"),
         product_name: Yup.string()
-            .required("Product name Required"),
+            .required("Required"),
         types_of_entity: Yup.string()
-            .required("Types of entity Required"),
+            .required("Required"),
         year_of_establishment: Yup.string()
-            .required("year of establishment Required"),
+            .required("Required")
+            .test(
+                'Is positive?',
+                'ERROR: The number must be greater than 0!',
+                (value) => value > 0
+            ),
         merchant_portal: Yup.string()
-            .required("Merchant portal Required"),
+            .required("Required"),
         average_transaction_amount: Yup.string()
-            .required("Average transaction amount Required"),
+            .required("Required")
+            .test(
+                'Is positive?',
+                'ERROR: The number must be greater than 0!',
+                (value) => value > 0
+            ),
         expected_transactions_numbers: Yup.string()
-            .required("Expected transactions numbers Required"),
+            .required("Required")
+            .test(
+                'Is positive?',
+                'ERROR: The number must be greater than 0!',
+                (value) => value > 0
+            ),
         account_details: Yup.string()
-            .required("Account details Required"),
+            .required("Required"),
         annual_transaction_value: Yup.string()
-            .required("annual transaction value Required"),
+            .required("Required").test(
+                'Is positive?',
+                'ERROR: The number must be greater than 0!',
+                (value) => value > 0
+            ),
         question: Yup.string()
-            .required("question Required"),
+            .required("Required"),
         authorized_contact_person_name: Yup.string()
-            .required("Authorized contact person name Required"),
+            .required("Required"),
         authorized_contact_person_contact_number: Yup.string()
             .trim()
             .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
@@ -47,7 +67,7 @@ const BizzAppForm = (props) => {
             .max(10, "too long")
             .nullable(),
         authorized_contact_person_email_id: Yup.string()
-            .required("Authorized contact person email id Required")
+            .required("Required")
             .email("Must be a valid email"),
         technical_contact_person_contact_number: Yup.string()
             .trim()
@@ -58,20 +78,20 @@ const BizzAppForm = (props) => {
             .max(10, "too long")
             .nullable(),
         technical_contact_person_email_id: Yup.string()
-            .required("Technical contact person email id Required")
+            .required("Required")
             .email("Must be a valid email"),
         technical_contact_person_name: Yup.string()
-            .required("Technical contact person name Required"),
+            .required("Required"),
         gst_number: Yup.string()
-            .required("GST number Required"),
+            .required("Required"),
         entity_pan_card_number: Yup.string()
-            .required("Entity pan card number Required"),
+            .required("Required"),
         zone: Yup.string()
-            .required("Zone Required"),
+            .required("Required"),
         nature_of_business: Yup.string()
-            .required("Nature of business Required"),
+            .required("Required"),
         mcc: Yup.string()
-            .required("mcc Required"),
+            .required("Required"),
     }
     );
     const initialValues = {
@@ -102,6 +122,7 @@ const BizzAppForm = (props) => {
 
 
     const product_name_options = [
+        { key: '', value: 'Select product name' },
         { key: 'Domestic Payment Gateway', value: 'Domestic Payment Gateway' },
         { key: 'International Payment Gateway', value: 'International Payment Gateway' },
         { key: 'Subscriptions', value: 'Subscriptions' },
@@ -112,6 +133,7 @@ const BizzAppForm = (props) => {
         { key: 'PayOut', value: 'PayOut' }
     ];
     const types_of_entity_options = [
+        { key: '', value: 'Select entity' },
         { key: 'Proprietorship', value: 'Proprietorship' },
         { key: 'Partnership', value: 'Partnership' },
         { key: 'Private Limited', value: 'Private Limited' },
@@ -123,6 +145,7 @@ const BizzAppForm = (props) => {
         { key: 'Association', value: 'Association' }
     ];
     const zone_options = [
+        { key: '', value: 'Select zone' },
         { key: 'East', value: 'East' },
         { key: 'West', value: 'West' },
         { key: 'North', value: 'North' },
@@ -133,6 +156,7 @@ const BizzAppForm = (props) => {
     ]
 
     const onSubmit = async (values) => {
+        console.log("kashif", values)
         const res = await axios
             .post(API_URL.BizzAPPForm, values)
             .then((response) => {
@@ -141,14 +165,35 @@ const BizzAppForm = (props) => {
                 } else {
                     toast.error(response.data.message);
                 }
-            }).error((error) => {
-                if (error.message) {
-                    toast.error(error.message);
-                } else {
-                    toast.error("Data not saved successfully");
-                }
+            }).catch((error) => {
+                toast.error("Data not saved");
             })
     };
+    const InputArray =
+        [{ control: "input", label: "Merchant business name (DBA name)", name: "merchant_business_name", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Merchant legal name", name: "merchant_legal_name", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Merchant address", name: "merchant_address", placeholder: "Enter your answer", type: 'text' },
+        { control: "select", label: "Product name", name: "product_name", placeholder: "Enter your answer", options: product_name_options },
+        { control: "select", label: "Type of entity", name: "types_of_entity", placeholder: "Enter your answer", options: types_of_entity_options },
+        { control: "input", label: "Merchant portal (website URL)", name: "merchant_portal", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Year of establishment", name: "year_of_establishment", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Average transaction amount", name: "average_transaction_amount", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Expected transaction numbers", name: "expected_transactions_numbers", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Account details", name: "account_details", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Annual transaction value", name: "annual_transaction_value", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Question", name: "question", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Authorized contact person name", name: "authorized_contact_person_name", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Authorized contact person contact number", name: "authorized_contact_person_contact_number", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Authorized contact person email id", name: "authorized_contact_person_email_id", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Technical contact person name", name: "technical_contact_person_name", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Technical contact person email id", name: "technical_contact_person_email_id", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Technical contact person contact number", name: "technical_contact_person_contact_number", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "GST number", name: "gst_number", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Entity PAN card number", name: "entity_pan_card_number", placeholder: "Enter your answer", type: 'text' },
+        { control: "input", label: "Nature of business", name: "nature_of_business", placeholder: "Enter your answer", type: 'text' },
+        { control: "select", label: "Zones", name: "zone", placeholder: "Enter your answer", options: zone_options },
+        { control: "input", label: "MCC", name: "mcc", placeholder: "Enter your answer", options: zone_options, type: "text" },
+        ]
 
     return (
         <div className="container-fluid">
@@ -157,7 +202,7 @@ const BizzAppForm = (props) => {
                     <div className="card ">
                         <div className="card-header text-center">SabPaisa Biz App Form</div>
                         <div className="card-body Satoshi-Medium">
-                            <h5 className="card-title">Please Enter the detatils. </h5>
+                            <h5 className="card-title">Please enter the detatils. </h5>
                             <Formik
                                 initialValues={initialValues}
                                 validationSchema={validationSchema}
@@ -167,644 +212,30 @@ const BizzAppForm = (props) => {
                                     <>
                                         <Form>
                                             <div className="form-group">
-                                                <label htmlFor="merchant_business_name1">
-                                                    <h3 className="font-weight-bold">Merchant Business Name (DBA Name)</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="merchant_business_name1"
-                                                        name="merchant_business_name"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="merchant_business_name">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
+                                                {InputArray.map((singleData) => {
+                                                    return (<>
+                                                        <div className="form-group ">
+                                                            {singleData.control === "input" ? <FormikController
+                                                                control={singleData.control}
+                                                                label={singleData.label}
+                                                                name={singleData.name}
+                                                                className="form-control rounded-0"
+                                                                placeholder={singleData.placeholder}
+                                                                type={singleData.type}
+                                                            /> : <FormikController
+                                                                control={singleData.control}
+                                                                label={singleData.label}
+                                                                name={singleData.name}
+                                                                className="form-control rounded-0"
+                                                                options={singleData.options}
 
-                                                <label htmlFor="merchant_legal_name1">
-                                                    <h3 className="font-weight-bold">Merchant Leagal Name</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="merchant_legal_name1"
-                                                        name="merchant_legal_name"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="merchant_legal_name">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
+                                                                type={singleData.type}
+                                                            />}
+
+
                                                         </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="merchant_address1">
-                                                    <h3 className="font-weight-bold">Merchant address </h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="merchant_address1"
-                                                        name="merchant_address"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="merchant_address">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <div>
-                                                    <label htmlFor="product_name1"><h3 className="font-weight-bold">Product name</h3></label>
-                                                    <br />
-                                                    <Field name="product_name" >
-                                                        {
-                                                            ({ field }) => {
-                                                                return product_name_options.map(option => {
-                                                                    return (
-                                                                        <React.Fragment key={option.key}>
-                                                                            <input
-                                                                                type='radio'
-                                                                                id={option.id}
-                                                                                {...field}
-                                                                                value={option.value}
-                                                                                checked={field.value === option.value}
-                                                                            />
-                                                                            <label htmlFor={option.id}>{option.key}</label>
-                                                                            <br />
-                                                                        </React.Fragment>
-                                                                    );
-                                                                })
-                                                            }
-                                                        }
-                                                    </Field>
-                                                </div>
-                                                <ErrorMessage name="product_name">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <div>
-                                                    <label htmlFor="types_of_entity1"><h3 className="font-weight-bold">Type of entity</h3></label>
-                                                    <br />
-                                                    <Field name="types_of_entity" >
-                                                        {
-                                                            ({ field }) => {
-                                                                return types_of_entity_options.map(option => {
-                                                                    return (
-                                                                        <React.Fragment key={option.key}>
-                                                                            <input
-                                                                                type='radio'
-                                                                                id={option.id}
-                                                                                {...field}
-                                                                                value={option.value}
-                                                                                checked={field.value === option.value}
-                                                                            />
-                                                                            <label htmlFor={option.id}>{option.key}</label>
-                                                                            <br />
-                                                                        </React.Fragment>
-                                                                    );
-                                                                })
-                                                            }
-                                                        }
-                                                    </Field>
-                                                </div>
-                                                <ErrorMessage name="types_of_entity">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="merchant_portal1">
-                                                    <h3 className="font-weight-bold">Merchant Portal (Website URL)</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="merchant_portal1"
-                                                        name="merchant_portal"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="merchant_portal">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="year_of_establishment1">
-                                                    <h3 className="font-weight-bold">Year of establishment</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="year_of_establishment1"
-                                                        name="year_of_establishment"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="year_of_establishment">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="average_transaction_amount1">
-                                                    <h3 className="font-weight-bold">Average transaction amount</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="average_transaction_amount1"
-                                                        name="average_transaction_amount"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="average_transaction_amount">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="expected_transactions_numbers1">
-                                                    <h3 className="font-weight-bold">Expected transactions numbers</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="expected_transactions_numbers1"
-                                                        name="expected_transactions_numbers"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="expected_transactions_numbers">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="account_details1">
-                                                    <h3 className="font-weight-bold">Account details</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="account_details1"
-                                                        name="account_details"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="account_details">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="annual_transaction_value1">
-                                                    <h3 className="font-weight-bold">Annual transaction value</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="annual_transaction_value1"
-                                                        name="annual_transaction_value"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="annual_transaction_value">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="question1">
-                                                    <h3 className="font-weight-bold">Question</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="question1"
-                                                        name="question"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="question">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="authorized_contact_person_name1">
-                                                    <h3 className="font-weight-bold">Authorized contact person name</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="authorized_contact_person_name1"
-                                                        name="authorized_contact_person_name"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="authorized_contact_person_name">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="authorized_contact_person_contact_number1">
-                                                    <h3 className="font-weight-bold">Authorized contact person contact number</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="authorized_contact_person_contact_number1"
-                                                        name="authorized_contact_person_contact_number"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="authorized_contact_person_contact_number">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="authorized_contact_person_email_id1">
-                                                    <h3 className="font-weight-bold">Authorized contact person email id</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="authorized_contact_person_email_id1"
-                                                        name="authorized_contact_person_email_id"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="authorized_contact_person_email_id">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="technical_contact_person_name1">
-                                                    <h3 className="font-weight-bold">Technical contact person name</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="technical_contact_person_name1"
-                                                        name="technical_contact_person_name"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="technical_contact_person_name">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="technical_contact_person_email_id1">
-                                                    <h3 className="font-weight-bold">Technical contact person EmailId</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="technical_contact_person_email_id1"
-                                                        name="technical_contact_person_email_id"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="technical_contact_person_email_id">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="technical_contact_person_contact_number1">
-                                                    <h3 className="font-weight-bold">Technical contact person contact number</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="technical_contact_person_contact_number1"
-                                                        name="technical_contact_person_contact_number"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="technical_contact_person_contact_number">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="gst_number1">
-                                                    <h3 className="font-weight-bold">GST number</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="gst_number1"
-                                                        name="gst_number"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="gst_number">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="entity_pan_card_number1">
-                                                    <h3 className="font-weight-bold">Entity PAN card number</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="entity_pan_card_number1"
-                                                        name="entity_pan_card_number"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="entity_pan_card_number">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="nature_of_business1">
-                                                    <h3 className="font-weight-bold">Nature of business</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="nature_of_business1"
-                                                        name="nature_of_business"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="nature_of_business">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <div>
-                                                    <label htmlFor="zone1"><h3 className="font-weight-bold">Zones</h3></label>
-                                                    <br />
-                                                    <Field name="zone" >
-                                                        {
-                                                            ({ field }) => {
-                                                                return zone_options.map(option => {
-                                                                    return (
-                                                                        <React.Fragment key={option.key}>
-                                                                            <input
-                                                                                type='radio'
-                                                                                id={option.id}
-                                                                                {...field}
-                                                                                value={option.value}
-                                                                                checked={field.value === option.value}
-                                                                            />
-                                                                            <label htmlFor={option.id}>{option.key}</label>
-                                                                            <br />
-                                                                        </React.Fragment>
-                                                                    );
-                                                                })
-                                                            }
-                                                        }
-                                                    </Field>
-                                                </div>
-                                                <ErrorMessage name="zone">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
-                                                <label htmlFor="mcc1">
-                                                    <h3 className="font-weight-bold">mcc</h3>
-                                                </label>
-                                                <div className="input-group" >
-                                                    <Field
-                                                        id="mcc1"
-                                                        name="mcc"
-                                                        className="form-control"
-                                                        placeholder="Enter your answer"
-                                                        type="text"
-                                                    />
-                                                </div>
-                                                <ErrorMessage name="mcc">
-                                                    {(msg) => (
-                                                        <div
-                                                            className="abhitest"
-                                                            style={{
-                                                                color: "red",
-                                                                position: "absolute",
-                                                                zIndex: " 999",
-                                                            }}
-                                                        >
-                                                            {msg}
-                                                        </div>
-                                                    )}
-                                                </ErrorMessage>
+                                                    </>)
+                                                })}
                                             </div>
                                             <button
                                                 type="submit"
@@ -819,7 +250,7 @@ const BizzAppForm = (props) => {
 
                         </div>
                         <div className="card-footer text-muted text-center">
-                            Sabpaisa.in
+                            sabpaisa.in
                         </div>
                     </div>
                 </div>
@@ -829,3 +260,6 @@ const BizzAppForm = (props) => {
 };
 
 export default BizzAppForm;
+
+
+
