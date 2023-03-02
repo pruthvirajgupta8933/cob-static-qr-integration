@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
-import { axiosInstanceAuth } from '../../utilities/axiosInstance';
+import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import { useDispatch, useSelector } from "react-redux";
 import { zoneDetail,zoneMaster,zoneEmployee,updateZoneData,getZoneInfo} from '../../slices/merchantZoneMappingSlice';
 
@@ -37,7 +37,7 @@ const ViewZoneModal = (props) => {
 
 
   // useEffect(() => {
-  //   axiosInstanceAuth
+  //   axiosInstanceJWT
   //     .get(API_URL.RISK_CATEGORY)
   //     .then((resp) => {
   //       const data =
@@ -51,7 +51,7 @@ const ViewZoneModal = (props) => {
 
 
   // useEffect(() => {
-  //   axiosInstanceAuth
+  //   axiosInstanceJWT
   //     .get(API_URL.ZONE_DETAILS)
   //     .then((resp) => {
   //       const data = convertToFormikSelectJson("zoneCode", "zoneName", resp?.data?.zones);

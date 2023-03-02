@@ -42,10 +42,13 @@ function LoginPage() {
   const { user, userAlreadyLoggedIn } = auth;
 
   useEffect(() => {
-    const userLocalData = JSON.parse(localStorage.getItem("user"));
+    const userLocalData = JSON.parse(sessionStorage.getItem("user"));
     const isLoggedInLc =
       userLocalData && userLocalData.loginId !== null ? true : false;
+      // console.log("isLoggedInLc",isLoggedInLc)
     if (isLoggedInLc) {
+      // console.log("userAlreadyLoggedIn",userAlreadyLoggedIn)
+      // console.log("user?.loginStatus",user?.loginStatus)
       if (userAlreadyLoggedIn && user?.loginStatus === "Activate") {
         // console.log("push to dashboard")
         history.push("/dashboard");
@@ -65,19 +68,14 @@ function LoginPage() {
 
   //Dummy login for JWT
   const customLogin = async () => {
-
-
     const data = {
-      clientUserId: "linkpaisa",
-      userPassword: "linkpaisa",
+      clientUserId: "Abh789@sp",
+      userPassword: "P8c3WQ7ei",
     };
     UserService.login(data).then((res)=>{
       TokenService.setUser(res.data);
     })
- 
 
-      // navigate(from, { replace: true });
- 
   };
 
   const handleLogin = (formValue) => {

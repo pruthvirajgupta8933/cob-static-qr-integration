@@ -1,14 +1,8 @@
-import api from './api';
+import {axiosInstanceJWT} from "../utilities/axiosInstance";
 
 class UserService {
-  getPublicContent() {
-    return api.post('/demo');
-  }
-  getUserBoard() {
-    return api.post('/demo');
-  }
   login(data) {
-    return api.post('/auth-service/auth/login',data);
+    return axiosInstanceJWT.post('/auth-service/auth/login',data);
   }
 
 }

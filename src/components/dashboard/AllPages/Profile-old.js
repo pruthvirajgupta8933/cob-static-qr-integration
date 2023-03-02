@@ -265,7 +265,7 @@ const FORM_VALIDATION = Yup.object().shape({
                                 name="clientCode"
                                 placeholder="Enter Client Code"
                                 style={{ marginLeft: "10px", width: "398px" }}
-                                onChange={(e) => console.log(e.target.value)}
+                                // onChange={(e) => console.log(e.target.value)}
                               />
                               <ErrorMessage name="clientCode">
                                 {(msg) => (

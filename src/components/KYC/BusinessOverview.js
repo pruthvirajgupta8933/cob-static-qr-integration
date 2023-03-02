@@ -15,6 +15,7 @@ import {
   collectionType,
   saveBusinessInfo,
   kycUserList,
+  GetKycTabsStatus,
 } from "../../slices/kycSlice";
 
 function BusinessOverview(props) {
@@ -233,6 +234,7 @@ function BusinessOverview(props) {
           setTab(3);
           setTitle("BUSINESS DETAILS");
           dispatch(kycUserList({ login_id: loginId }));
+          dispatch(GetKycTabsStatus({ login_id: loginId }));
           setIsDisabled(false)
         } else {
           toast.error(
@@ -245,21 +247,7 @@ function BusinessOverview(props) {
       });
     }
     }
-    // else if (role.verifier) {
-    //   const veriferDetails = {
-    //     login_id: kycid,
-    //     business_info_verified_by: loginId,
-    //   };
-    //   dispatch(verifyKycEachTab(veriferDetails))
-    //     .then((resp) => {
-    //       resp?.payload?.business_info_status &&
-    //         toast.success(resp?.payload?.business_info_status);
-    //       resp?.payload?.detail && toast.error(resp?.payload?.detail);
-    //     })
-    //     .catch((e) => {
-    //       toast.error("Try Again Network Error");
-    //     });
-    // }
+   
   };
 
   // let converter = require('number-to-words');
@@ -405,7 +393,7 @@ function BusinessOverview(props) {
                         control="input"
                         type="text"
                         name="website_app_url"
-                        placeHolder="Enter your website/ app URL"
+                        placeHolder="Enter your website/app URL"
                         className="form-control pull-left"
                         disabled={VerifyKycStatus === "Verified" ? true : false}
                         readOnly={readOnly}

@@ -1,6 +1,6 @@
 import PAYOUT_API_URL from "../config";
 import { axiosInstance } from "../utilities/axiosInstance";
-
+import { axiosInstanceJWT } from "../utilities/axiosInstance";
 
 const getLedgersMerchant = () => {
   const param = {
@@ -9,10 +9,10 @@ const getLedgersMerchant = () => {
     trans_status: "all",
     transfer_type: "all",
   };
-  return axiosInstance
-    .post(PAYOUT_API_URL.getLedgersMerchantList,param, {
+  return axiosInstanceJWT
+    .post(PAYOUT_API_URL.getLedgersMerchantList, param, {
       headers: {
-        "auth-token": "j0m8DtBgoqSeeV5G7wARyg==",
+        "auth-token": "CklPC/Ks1VJNX3aRZoNaUA==",
       },
     })
     .then((response) => {
@@ -21,7 +21,7 @@ const getLedgersMerchant = () => {
 };
 
 const fetchBeneficiaryHistory = () => {
-  return axiosInstance
+  return axiosInstanceJWT
     .get(PAYOUT_API_URL.fetchBeneficiary, {
       headers: {
         "auth-token": "j0m8DtBgoqSeeV5G7wARyg==",
@@ -31,7 +31,12 @@ const fetchBeneficiaryHistory = () => {
       return response.data;
     });
 };
+
+const fetchClientCode = () => {
+  return axiosInstanceJWT.get(PAYOUT_API_URL.fetchClientCode);
+};
 export const Payoutservice = {
+  fetchClientCode,
   getLedgersMerchant,
-  fetchBeneficiaryHistory
+  fetchBeneficiaryHistory,
 };

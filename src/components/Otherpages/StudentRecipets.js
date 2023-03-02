@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import sabpaisalogo from "../../assets/images/sabpaisalogo.png";
 import API_URL from "../../config";
+import toastConfig from "../../utilities/toastTypes";
 
 const StudentRecipets = () => {
   const initialState = {
@@ -18,9 +19,10 @@ const StudentRecipets = () => {
   const [transactionId, setTransactionId] = useState();
   const [studentId, setStudentId] = useState(0);
   const [show, setIsShow] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   // const [errMessage, setErrMessage] = useState('');
   const [data, setData] = useState([initialState]);
+  const [btnDisable,setBtnDisable] = useState(false)
 
   const onSubmit = async (e, transactionId, studentId) => {
     e.preventDefault();
@@ -29,25 +31,33 @@ const StudentRecipets = () => {
     } else {
       setStudentId(0);
     }
-     setIsLoading(true);
+    //  setIsLoading(true);
     setIsShow(false);
+    setBtnDisable(true)
     await axios
       .get(`${API_URL.RECEIPT_MB}${transactionId}/${studentId}`)
       .then((response) => {
+        if(response?.data.length === 0 || null) {
+          toastConfig.errorToast("No Data Found")
+          setBtnDisable(false)
+          setIsShow(false);
+        }
         if (response?.data.length > 0) {
         setData(response.data);
         setIsShow(true);
-        //  console.log("In If============")
-        setIsLoading(true);
+        setBtnDisable(false)
+        toastConfig.successToast("Data Found")
+        // setIsLoading(true);
       } else {
         axios.get(API_URL.SP2_VIEW_TXN + `/${transactionId}`).then((r) => {
           if (r?.data.length > 0) {
-            //  console.log("In else============")
             
             setIsShow(true);
             setData(r?.data);
-            setIsLoading(false);
+            toastConfig.successToast("Data Found")
+            // setIsLoading(false);
             // setErrMessage(false);
+            setBtnDisable(false)
           } else {
             setIsShow(false);
             // setErrMessage(true);
@@ -59,9 +69,10 @@ const StudentRecipets = () => {
       .catch((error) => {
         // console.log(error);
         alert("Kindly enter SabPaisa Transaction Id Or Student Id");
-        setIsLoading(false);
+        // setIsLoading(false);
         // console.log(e);
         setIsShow(false);
+        setBtnDisable(true)
         // setErrMessage('No Data Found');
       });
   };
@@ -128,16 +139,10 @@ const StudentRecipets = () => {
                       <button
                         className="btn receipt-button"
                         onClick={(e) => onSubmit(e, transactionId, studentId)}
+                        disabled={btnDisable}
                       >
-                        {isLoading ? "Loading..." : "View"}
+                        View
                       </button>
-                      {isLoading ? (
-                        <div className="spinner-border" role="status">
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                      ) : (
-                        <></>
-                      )}
                     </div>
                   </form>
                 </div>

@@ -2,22 +2,27 @@ import React, { useState } from "react";
 import axios from "axios";
 import sabpaisalogo from "../../assets/images/sabpaisalogo.png";
 import API_URL from "../../config";
+import toastConfig from "../../utilities/toastTypes";
 
 const ReceiptWalchand = () => {
   const [pnrId, setPnrId] = useState();
   const [show, setIsShow] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [btnDisable,setBtnDisable] = useState(false)
   const [data, setData] = useState([]);
 
   const onSubmit = async (e,pnrId) => {
+    setBtnDisable(true)
     e.preventDefault();
-    setIsLoading(true);
     await axios
       .get(`${API_URL.FETCH_DATA_FOR_WACOE}?PRNNum=${pnrId}`)
       .then((response) => {
-       
+        // console.log(response.data)
         let resData = response.data;
-        // console.log(resData,"=================data")
+        if(response?.data.length === 0 || null) {
+          toastConfig.errorToast("No Data Found")
+          setBtnDisable(false)
+          setIsShow(false);
+        }
         
         resData.map((dt, i) =>
           transactionStatus(dt.cid, dt.transId).then((response) => {
@@ -31,13 +36,14 @@ const ReceiptWalchand = () => {
         setInterval(() => {
           setData(resData);
           setIsShow(true);
-          setIsLoading(false);
+          setBtnDisable(false)
+     
           // setErrMessage('');
         }, 2000);
       }).catch((e) => {
 
         setIsShow(false);
-        setIsLoading(false);
+        setBtnDisable(false)
 
       });
   };
@@ -105,16 +111,11 @@ const ReceiptWalchand = () => {
                       <button
                         className="btn receipt-button"
                         onClick={(e) => onSubmit(e,pnrId)}
+                        disabled={btnDisable}
                       >
-                        {isLoading? "Loading...":"View"}
+                       View
                       </button>
-                      {isLoading ? (
-                        <div className="spinner-border" role="status">
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                      ) : (
-                        <></>
-                      )}
+                     
                     </div>
                   </form>
               </div>

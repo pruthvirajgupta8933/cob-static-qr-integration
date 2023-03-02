@@ -2,8 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setMessage } from "./message";
 import { axiosInstance } from "../utilities/axiosInstance";
 import AuthService from "../services/auth.service";
+import TokenService from "../services/token.service";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const user = JSON.parse(sessionStorage.getItem("user"));
+// console.log("user",user)
 const userAlreadyLoggedIn = user && user.loginId !== null ? true : false;
 
 const auth = {
@@ -53,7 +55,8 @@ const auth = {
     createNewPassowrd: null,
     isNewPasswordCreated: null,
   },
-  payLinkPermission: []
+  payLinkPermission: [],
+  avalabilityOfClientCode:{}
 };
 
 
@@ -82,6 +85,8 @@ export const login = createAsyncThunk(
   async ({ username, password }, thunkAPI) => {
     try {
       const data = await AuthService.login(username, password);
+      // console.log("data",data)
+      TokenService.setUser(data)
       return { user: data };
     } catch (error) {
       const message =
@@ -204,8 +209,8 @@ export const createClientProfile = createAsyncThunk(
       const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
       const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
-      localStorage.setItem("user", JSON.stringify(allData))
-      localStorage.setItem("categoryId",1)
+      sessionStorage.setItem("user", JSON.stringify(allData))
+      sessionStorage.setItem("categoryId",1)
       return allData;
     } catch (error) {
       const message =
@@ -260,8 +265,8 @@ export const updateClientProfile = createAsyncThunk(
       const mergeclientMerchantDetailsList = Object.assign(clientMerchantDetailsListObj, response.data);
       const clientMerchantDetailsList = [mergeclientMerchantDetailsList];
       allData.clientMerchantDetailsList = clientMerchantDetailsList;
-      localStorage.setItem("user", JSON.stringify(allData))
-      localStorage.setItem("categoryId",1)
+      sessionStorage.setItem("user", JSON.stringify(allData))
+      sessionStorage.setItem("categoryId",1)
 
       return allData;
     } catch (error) {
@@ -288,6 +293,18 @@ export const changePasswordSlice = createAsyncThunk(
   "auth/changePasswordSlice",
   async (requestParam) => {
     const response = await AuthService.changePassword(requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+    return response.data;
+  }
+);
+
+// check client code is exists
+export const checkClientCodeSlice = createAsyncThunk(
+  "auth/checkClientCodeSlice",
+  async (requestParam) => {
+    const response = await AuthService.checkClintCode(requestParam)
       .catch((error) => {
         return error.response;
       });
@@ -401,6 +418,9 @@ const authSlice = createSlice({
     }
   },
   extraReducers: {
+    [checkClientCodeSlice.fulfilled]: (state, action) => {
+      state.avalabilityOfClientCode = action.payload
+    },
     [register.pending]: (state, action) => {
       state.isLoggedIn = null
       state.isUserRegistered = null;
@@ -440,19 +460,20 @@ const authSlice = createSlice({
       if (loginState === "Activate") {
         loggedInStatus = true;
         isValidData = 'Yes';
+        state.userAlreadyLoggedIn = true;
       } else {
         loggedInStatus = false;
         isValidData = 'No';
       }
       state.isLoggedIn = loggedInStatus;
       state.user = action.payload.user;
-      localStorage.setItem("user", JSON.stringify(state.user))
-      localStorage.setItem("categoryId",1)
+      sessionStorage.setItem("user", JSON.stringify(state.user))
+      sessionStorage.setItem("categoryId",1)
       state.isValidUser = isValidData;
     },
     [login.pending]: (state) => {
       state.isLoggedIn = null;
-      state.userAlreadyLoggedIn = false;
+      // state.userAlreadyLoggedIn = false;
       state.isValidUser = '';
       state.user = null;
     },

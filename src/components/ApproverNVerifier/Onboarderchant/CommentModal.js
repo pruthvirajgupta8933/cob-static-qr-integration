@@ -297,7 +297,7 @@ const fileTypeCheck = (file)=>
                                         <td>
                                           {remark?.comment_by_user_name.toUpperCase()}
                                         </td>
-                                        <td style={{overflowWrap:"break-word"}}>{remark?.comments}</td>
+                                        <td style={{overflowWrap:"anywhere"}}>{remark?.comments}</td>
                                         <td>
                                           {dateManipulate(remark?.comment_on)}
                                         </td>

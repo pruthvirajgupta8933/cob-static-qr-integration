@@ -13,11 +13,11 @@ if (ENV_PROD) {
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in"
-  
+
 
 }
 
-
+const subAPIURL = "https://subscription.sabpaisa.in/subscription";
 
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
@@ -25,6 +25,7 @@ const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
 // https://reportapi.sabpaisa.in/SabPaisaReport/REST/GetMerchantTxnHistoryN
 
 const API_LIVE = {
+  BASE_URL_COB : url,
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
   AUTH_LOGIN: `${url}/auth-service/auth/login`,
@@ -40,8 +41,10 @@ const API_LIVE = {
   AUTH_CREATE_NEW_PASSWORD: `${url}/auth-service/account/forgot-password`,
   AUTH_CHANGE_PASSWORD: `${url}/auth-service/account/change-password`,
   AUTH_FORGET_PASSWORD: `${url}/auth-service/account/create-password`,
+  AUTH_CHECK_CLIENT_CODE: `${url}/auth-service/account/check-clientcode`,
   /* Email Verify for new register users */
   EMAIL_VERIFY: `${url}/auth-service/auth/emailVerify/`,
+  BizzAPPForm: `${url}/biz-app-form/`,
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
   SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummary/",
@@ -79,6 +82,8 @@ const API_LIVE = {
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
   RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
   ChargeBankTxnHistory: reportAPIURL + "/REST/GetChargebackTxnHistory",
+  GET_DOITC_SETTLED_TXN_HISTORY: url+"/SabPaisaReport/REST/GetDOITCSettledTxnHistory",
+  GET_DOITC_MERCHANT_TXN_HISTORY: url+"/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
 
   /* Transaction Enquiry */
   VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
@@ -91,8 +96,7 @@ const API_LIVE = {
   GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
   SMART_UPLOAD: "https://paybylink.sabpaisa.in/paymentlink/smartupload",
   EDIT_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/editCustomer/",
-  GET_CUSTOMER_TYPE:
-    "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
+  GET_CUSTOMER_TYPE: "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
   ADD_LINK: "https://paybylink.sabpaisa.in/paymentlink/addLink",
   ADD_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/addCustomers",
   DELETE_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/deleteCustomer",
@@ -150,22 +154,22 @@ const API_LIVE = {
   ////////////////////////////////////////SIGNUP DATA API
   GET_SIGNUP_DATA_INFO: `${url}/merchant/get-signup-info/`,
   //////////////////////// For merchnat list export to csv
-  Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/all-data/`,
+  Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/`,
   /////////////////////////Kyc approver
   /* For pending*/
-  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not-Filled&order_by=-merchantId`,
-  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Pending&order_by=-merchantId`,
-  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Rejected&order_by=-merchantId`,
-  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?search=processing&order_by=-merchantId`,
-  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=verified&order_by=-merchantId`,
-  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=Approved&order_by=-merchantId`,
+  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not-Filled&order_by=-id`,
+  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Pending&order_by=-id`,
+  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Rejected&order_by=-kyc_reject&search_map=kyc_reject`,
+  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?search=processing&order_by=-id`,
+  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=Verified&order_by=-verified_date&search_map=verified_date`,
+  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=Approved&order_by=-approved_date&search_map=approved_date`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
   KYC_FOR_ONBOARDED: `${kyc_url}/kyc/get-merchant-data/`,
-  KYC_FOR_SAVING_REFER_MERCHANT:`${kyc_url}/kyc/refer-zone/save-refer-zone/`,
-  FOR_GENERATING_MID:`${kyc_url}/kyc/mid-creation/send-request-subMerchant-mid/`,
-  GET_ALL_GENERATE_MID_DATA:`${kyc_url}//kyc/mid-creation/get-merchant-mid-data/`,
+  KYC_FOR_SAVING_REFER_MERCHANT: `${kyc_url}/kyc/refer-zone/save-refer-zone/`,
+  FOR_GENERATING_MID: `${kyc_url}/kyc/mid-creation/send-request-subMerchant-mid/`,
+  GET_ALL_GENERATE_MID_DATA: `${kyc_url}//kyc/mid-creation/get-merchant-mid-data/`,
 
 
 
@@ -179,7 +183,7 @@ const API_LIVE = {
   Save_Settlement_Info: `${kyc_url}/kyc/save-settlement-info/`,
   //Get All Bnak Names in Kyc Bank Details Dropdown Tab
   GET_ALL_BANK_NAMES: `${kyc_url}/kyc/get-all-bank-name/`,
-  GET_PAYMENT_MODE:`${kyc_url}/kyc/mid-creation/get-payment-mode-type/`,
+  GET_PAYMENT_MODE: `${kyc_url}/kyc/mid-creation/get-payment-mode-type/`,
   Business_overview_state: `${kyc_url}/kyc/get-all-lookup-state/`,
   Business_Category: `${kyc_url}/kyc/get-all-business-category/`,
   SAVE_MERCHANT_INFO: `${kyc_url}/kyc/save-merchant-info/`,
@@ -249,25 +253,35 @@ const API_LIVE = {
 
   // Check is client code mapped or not (ratemapping case)
   isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`,
-  
+
   //update version https://adminapi.sabpaisa.in/SabPaisaAdmin/REST/ManageFalg/Flag/LPSD1/apiversion/1/1111 
   UPDATE_VERSION_RATEMAPPING: `${adminAPIURL}/REST/ManageFalg/Flag`,
 
   // For Payout
-  LedgersMerchant:`${payout_url}/api/getLedgersMerchant`,
-  getLedgersMerchantList:`${payout_url}/api/getTransactionHistory`,
-  fetchBeneficiary:`${payout_url}/api/fetchBeneficiaryfor`,
+  LedgersMerchant: `${payout_url}/api/getLedgersMerchant`,
+  getLedgersMerchantList: `${payout_url}/api/getTransactionHistory`,
+  fetchBeneficiary: `${payout_url}/api/fetchBeneficiaryfor`,
   transactionMode: `${payout_url}/api/modesByMerchantId`,
   paymentRequest: `${payout_url}/api/PayoutTransactionRequest`,
+  fetchClientCode:`${payout_url}/api/getByClientCode/`,
+  
 
 
   // ---------------------------   NEW API FOR COMMENTS (2)
   // Check is client code mapped or not (ratemapping case)
 
   //menu list by login id
-  menuListByLoginId : `${url}/menu-loginwise`,
+  menuListByLoginId: `${url}/menu-loginwise`,
 
-  
+  // -------------------------------------------------------------------------Subscription APIS-------------------------------------------||
+  MANDATE_FREQUENCY: `${subAPIURL}/REST/GetCommonData/0/frequency`,
+  MANDATE_CATEGORY: `${subAPIURL}/REST/GetCommonData/0/MandateCategory`,
+  filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
+
+
+
+
+
 };
 
 

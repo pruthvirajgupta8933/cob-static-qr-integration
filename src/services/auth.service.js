@@ -1,5 +1,5 @@
 import API_URL from "../config";
-import { axiosInstance, axiosInstanceAuth } from "../utilities/axiosInstance";
+import { axiosInstance, axiosInstanceAuth, axiosInstanceJWT } from "../utilities/axiosInstance";
 import { stringEnc } from "../utilities/encodeDecode";
 
 const register = ({fullname, mobileNumber, email, business_cat_code, password, businessType, isDirect, requestId, roleId, plan_details}) => {
@@ -19,77 +19,46 @@ const register = ({fullname, mobileNumber, email, business_cat_code, password, b
 
 
 const login = (username, password) => {
-  return axiosInstanceAuth
+  return axiosInstanceJWT
     .post(API_URL.AUTH_LOGIN, {
       clientUserId: username,
       userPassword: password,
     })
     .then((response) => {
       
-      localStorage.setItem("user", JSON.stringify(response.data));
-      localStorage.setItem("categoryId", 1)
+      sessionStorage.setItem("user", JSON.stringify(response.data));
+      sessionStorage.setItem("categoryId", 1)
       sessionStorage.setItem("prog_id", stringEnc(password))
-      
-      // if (response.data.accessToken) {
-      //   localStorage.setItem("user", JSON.stringify(response.data));
-      //   localStorage.setItem("categoryId", 1)
-      //   localStorage.setItem("prog_id", stringEnc(password))
-        
-      // } else {
-      //   localStorage.setItem("user", JSON.stringify(response.data));
-      //   localStorage.setItem("categoryId", 1)
-      // }
-
-      // console.log(response.data)
       return response.data;
     });
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
-  localStorage.clear();
-  // console.log('logout call auth service');
+  sessionStorage.removeItem("user");
+  sessionStorage.clear();
+  sessionStorage.clear();
+
 };
 
 
 
-// Home,
 
-const sendEmail = (toEmail, toCc, subject, msg) => {
-  return axiosInstanceAuth.post(API_URL.EMAIL_BASE_URL, {
-    toEmail,
-    toCc,
-    subject,
-    msg,
-  })
-    .then((response) => {
-      if (response.data) {
-        localStorage.setItem("sendEmail", JSON.stringify(response.data));
-      } else {
-        localStorage.setItem("sendEmail", JSON.stringify(response.data));
-      }
-
-      return response.data;
-    });
-};
-
-
-
-// profile service
-// const BASE_URL_FOR_PROFILE = "https://stgcobapi.sabpaisa.in/auth-service"
-// const BANK_LIST_URL = "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/";
 const createClintCode = (object) => {
-  return axiosInstanceAuth.post(API_URL.AUTH_CLIENT_CREATE, object)
+  return axiosInstanceJWT.post(API_URL.AUTH_CLIENT_CREATE, object)
+};
+
+const checkClintCode = (object) => {
+  return axiosInstanceJWT.post(API_URL.AUTH_CHECK_CLIENT_CODE, object)
 };
 
 
 // const updateClientProfile = (object, clientId) => {
-//   return axiosInstanceAuth.put(BASE_URL_FOR_PROFILE + "/updateProfile", object);
+//   return axiosInstanceJWT.put(BASE_URL_FOR_PROFILE + "/updateProfile", object);
 // }
 
 
 // const verifyClientCode = (clientCode) => {
-//   return axiosInstanceAuth.get(BASE_URL + "/verifyClientCode/" + clientCode);
+//   return axiosInstanceJWT.get(BASE_URL + "/verifyClientCode/" + clientCode);
 // }
 
 
@@ -108,7 +77,7 @@ const verifyIfcsCode = (ifsc_code) => {
 
 const changePassword = (object) => {
   // console.log("profileservice",object)
-  return axiosInstanceAuth.put(API_URL.AUTH_CHANGE_PASSWORD, object)
+  return axiosInstanceJWT.put(API_URL.AUTH_CHANGE_PASSWORD, object)
 };
 
 
@@ -141,7 +110,7 @@ const authService = {
   register,
   login,
   logout,
-  sendEmail,
+  // sendEmail,
   createClintCode,
   // updateClientProfile,
   // verifyClientCode,
@@ -152,7 +121,8 @@ const authService = {
   getEmailToSendOTP,
   verifyOtpOnForgotPwd,
   createNewPassword,
-  checkPermission
+  checkPermission,
+  checkClintCode
 };
 
 export default authService;

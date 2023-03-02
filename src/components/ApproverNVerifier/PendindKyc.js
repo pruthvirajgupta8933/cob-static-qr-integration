@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { kycForPendingMerchants } from "../../slices/kycSlice";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import toastConfig from "../../utilities/toastTypes";
@@ -8,15 +8,21 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 import Spinner from "./Spinner";
 import CommentModal from "./Onboarderchant/CommentModal";
 import moment from "moment";
-import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
-
+import Table from "../../_components/table_components/table/Table";
+import { PendindKycData } from "../../utilities/tableData";
+import Paginataion from "../../_components/table_components/pagination/Pagination";
+import SearchFilter from "../../_components/table_components/filters/SearchFilter";
+import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
+import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 
 const PendindKyc = () => {
+  const rowData = PendindKycData;
   const roles = roleBasedAccess();
 
+  const loadingState = useSelector((state) => state.kyc.isLoadingForPending);
+
   const [data, setData] = useState([]);
-  const [spinner, setSpinner] = useState(true);
   const [dataCount, setDataCount] = useState("");
   const [pendingKycData, setPendingKycData] = useState([]);
   const [commentId, setCommentId] = useState({});
@@ -24,18 +30,27 @@ const PendindKyc = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-
-  const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
-
   const dispatch = useDispatch();
+
   const kycSearch = (e, fieldType) => {
-    fieldType === 'text' ? setSearchByDropDown(false) : setSearchByDropDown(true); 
-    setSearchText(e.target.value);
+    fieldType === "text"
+      ? setSearchByDropDown(false)
+      : setSearchByDropDown(true);
+    setSearchText(e);
+  };
+
+  //function for change current page
+  const changeCurrentPage = (page) => {
+    setCurrentPage(page);
+  };
+
+  //function for change page size
+  const changePageSize = (pageSize) => {
+    setPageSize(pageSize);
   };
 
   useEffect(() => {
@@ -45,11 +60,9 @@ const PendindKyc = () => {
 
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
-        setSpinner(false);
         setData(data);
         setDataCount(dataCoun);
         setPendingKycData(data);
-        setIsLoaded(false);
       })
 
       .catch((err) => {
@@ -58,108 +71,101 @@ const PendindKyc = () => {
       });
   }, [currentPage, pageSize, dispatch]);
 
-  useEffect(() => {
-    if (searchText?.length > 0) {
-      // search by dropdwon
-      if(isSearchByDropDown && searchText!==''){
-        let filter = {
-          isDirect: searchText
-        };
-    
-        let refData = pendingKycData
-        
-        refData = refData.filter(function(item) {
-          for (let key in filter) {
-            if (item[key] === undefined || item[key] !== filter[key]){
-              return false;
-            }
-          }
-          return true;
-        });
-        setData(refData)
-        console.log("search by dropdown")
-      }else{
-        // search by text
-        setData(
-          pendingKycData?.filter((item) =>
-            Object.values(item)
-              .join(" ")
-              .toLowerCase()
-              .includes(searchText?.toLocaleLowerCase())
-          )
-        );
-        console.log("search by text")
-
-      }
-    } else {
-      setData(pendingKycData);
-    }
-
-    setSearchByDropDown(false)
-
-  }, [searchText]);
-
-  // const handleClick = (loginMasterId) => {
-  //   dispatch(
-  //     GetKycTabsStatus({
-  //       login_id: loginMasterId,
-  //     })
-  //   ).then((res) => {
-  //     setStatusData(res?.payload);
-  //   });
-  // };
-  //--------------PENDING Merchants API -----------------//
-  // const indexOfLastRecord = currentPage * pageSize;
-  // const nPages = Math.ceil(pendingKycData?.length / pageSize);
-  const totalPages = Math.ceil(dataCount / pageSize);
-  let pageNumbers = [];
-  if (!Number.isNaN(totalPages)) {
-    pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
-  }
-
-  const nextPage = () => {
-    setIsLoaded(true);
-    setData([]);
-    if (currentPage < pageNumbers?.length) {
-      // console.log("hello", currentPage)
-
-      setCurrentPage(currentPage + 1);
-    }
+  const searchByText = () => {
+    setData(
+      pendingKycData?.filter((item) =>
+        Object.values(item)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchText?.toLocaleLowerCase())
+      )
+    );
   };
 
-  const prevPage = () => {
-    setIsLoaded(true);
-    setData([]);
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  useEffect(() => {
-    //  setTimeout(() => {
-    let lastSevenPage = totalPages - 7;
-    if (pageNumbers?.length > 0) {
-      let start = 0;
-      let end = currentPage + 6;
-      if (totalPages > 6) {
-        start = currentPage - 1;
-
-        if (parseInt(lastSevenPage) <= parseInt(start)) {
-          start = lastSevenPage;
-        }
-      }
-      const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
-        return pgNumber;
-      });
-
-      setDisplayPageNumber(pageNumber);
-    }
-    // }, 5000);
-  }, [currentPage, totalPages]);
+  const optionSearchData = [
+    {
+      name: "Select Onboard Type",
+      value: "",
+    },
+    {
+      name: "All",
+      value: "",
+    },
+    {
+      name: "Online",
+      value: "online",
+    },
+    {
+      name: "Offline",
+      value: "offline",
+    },
+  ];
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
     return date;
+  };
+
+  const colData = () => {
+    return (
+      <>
+        {data == [] ? (
+          <td colSpan={"11"}>
+            {" "}
+            <div className="nodatafound text-center">No data found </div>
+          </td>
+        ) : (
+          data?.map((user, i) => (
+            <tr>
+              <td>{i + 1}</td>
+              <td>{user.clientCode}</td>
+              <td>{user.companyName}</td>
+              <td>{user.name}</td>
+              <td>{user.emailId}</td>
+              <td>{user.contactNumber}</td>
+              <td>{user.status}</td>
+              <td>{covertDate(user.signUpDate)}</td>
+              <td>{user?.isDirect}</td>
+              <td>
+                <button
+                  type="button"
+                  className="btn approve text-white  btn-xs"
+                  onClick={() => {
+                    setKycIdClick(user);
+                    setIsModalOpen(!isOpenModal);
+                  }}
+                  data-toggle="modal"
+                  data-target="#kycmodaldetail"
+                >
+                  View Status
+                </button>
+              </td>
+              <td>
+                {roles?.verifier === true ||
+                roles?.approver === true ||
+                roles?.viewer === true ? (
+                  <button
+                    type="button"
+                    className="btn approve text-white  btn-xs"
+                    data-toggle="modal"
+                    onClick={() => {
+                      setCommentId(user);
+                      setOpenCommentModal(true);
+                    }}
+                    data-target="#exampleModal"
+                    disabled={user?.clientCode === null ? true : false}
+                  >
+                    Comments
+                  </button>
+                ) : (
+                  <></>
+                )}
+              </td>
+            </tr>
+          ))
+        )}
+      </>
+    );
   };
 
   // console.log("Data Loading",isLoaded)
@@ -168,12 +174,11 @@ const PendindKyc = () => {
     <div className="container-fluid flleft">
       <div className="form-row">
         <div className="form-group col-lg-3 col-md-12 mt-2">
-          <label>Search</label>
-          <input
-            className="form-control"
-            onChange={(e)=>kycSearch(e,"text")}
-            type="text"
-            placeholder="Search Here"
+          <SearchFilter
+            kycSearch={kycSearch}
+            searchText={searchText}
+            searchByText={searchByText}
+            setSearchByDropDown={setSearchByDropDown}
           />
         </div>
         <div>
@@ -196,170 +201,54 @@ const PendindKyc = () => {
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
-          <label>Count Per Page</label>
-          <select
-            value={pageSize}
-            rel={pageSize}
-            onChange={(e) => setPageSize(parseInt(e.target.value))}
-            className="ant-input"
-          >
-            <DropDownCountPerPage datalength={dataCount} />
-          </select>
+          <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            changePageSize={changePageSize}
+          />
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
-          <label>Onboard Type</label>
-          <select onChange={(e)=>kycSearch(e,"dropdown")} className="ant-input">
-            <option value="">Select Onboard Type</option>
-            <option value="">All</option>
-            <option value="online">Online</option>
-            <option value="offline">Offline</option>
-          </select>
+          <SearchbyDropDown
+            kycSearch={kycSearch}
+            searchText={searchText}
+            isSearchByDropDown={isSearchByDropDown}
+            notFilledData={pendingKycData}
+            setData={setData}
+            setSearchByDropDown={setSearchByDropDown}
+            optionSearchData={optionSearchData}
+          />
         </div>
         <MerchnatListExportToxl
-          URL={"?order_by=-merchantId&search=Pending"}
+          URL={"?order_by=-id&search=Pending"}
           filename={"Pending-KYC"}
         />
       </div>
 
       <div className="col-md-12 col-md-offset-4">
         <div className="scroll overflow-auto">
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-                <th>S. No.</th>
-                <th>Client Code</th>
-                <th>Company Name</th>
-                <th>Merchant Name</th>
-                <th>Email</th>
-                <th>Contact Number</th>
-                <th>Registered Date</th>
-                <th>Onboard Type</th>
-                <th>View Status</th>
-                {/* <th>View</th> */}
-                {roles?.verifier === true ||
-                roles?.approver === true ||
-                roles?.viewer === true ? (
-                  <th>Action</th>
-                ) : (
-                  <></>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {data === null || data === [] ? (
-                <tr>
-                  <td colSpan={"11"}>
-                    <div className="nodatafound text-center">
-                      No data found{" "}
-                    </div>
-                  </td>
-                </tr>
-              ) : (
-                <></>
-              )}
-
-             {data?.length === 0 ? (
-                <tr>
-                  <td colSpan={"11"}>
-                    <p className="text-center spinner-roll">{spinner && <Spinner />}</p>
-                  </td>
-                </tr>
-              ) : (
-                data?.map((user, i) => (
-                  <tr key={i}>
-                    <td>{i + 1}</td>
-                    <td>{user.clientCode}</td>
-                    <td>{user.companyName}</td>
-                    <td>{user.name}</td>
-                    <td>{user.emailId}</td>
-                    <td>{user.contactNumber}</td>
-                    <td>{covertDate(user.signUpDate)}</td>
-                    <td>{user?.isDirect}</td>
-                    {/* <td>{user.status}</td> */}
-
-                    <td>
-                      <button
-                        type="button"
-                        className="btn approve text-white  btn-xs"
-                        onClick={() => {
-                          setKycIdClick(user);
-                          setIsModalOpen(!isOpenModal);
-                        }}
-                        data-toggle="modal"
-                        data-target="#kycmodaldetail"
-                      >
-                        View Status
-                      </button>
-                    </td>
-                    <td>
-                      {roles?.verifier === true ||
-                      roles?.approver === true ||
-                      roles?.viewer === true ? (
-                        <button
-                          type="button"
-                          className="btn approve text-white  btn-xs"
-                          data-toggle="modal"
-                          onClick={() => {
-                            setCommentId(user);
-                            setOpenCommentModal(true);
-                          }}
-                          data-target="#exampleModal"
-                          disabled={user?.clientCode === null ? true : false}
-                        >
-                          Comments
-                        </button>
-                      ) : (
-                        <></>
-                      )}
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+          {loadingState ? (
+            <p className="text-center spinner-roll">{<Spinner />}</p>
+          ) : (
+            ""
+          )}
         </div>
+        <div>
+          {data.length === 0 && !loadingState ? (
+            <h2 className="d-flex justify-content-center">No Data Found</h2>
+          ) : (
+            ""
+          )}
+        </div>
+        {data.length !== 0 && <Table row={rowData} col={colData} />}
         <nav>
-          <ul className="pagination justify-content-center">
-            {isLoaded === true ? (
-              <Spinner />
-            ) : (
-              <li className="page-item">
-                <button className="page-link" onClick={prevPage}>
-                  Previous
-                </button>
-              </li>
-            )}
-
-            {displayPageNumber?.map((pgNumber, i) => (
-              <li
-                key={i}
-                className={
-                  pgNumber === currentPage ? " page-item active" : "page-item"
-                }
-                onClick={() => setCurrentPage(pgNumber)}
-              >
-                <a href={() => false} className={`page-link data_${i}`}>
-                  <span>{pgNumber}</span>
-                </a>
-              </li>
-            ))}
-
-            {isLoaded === true ? (
-              <Spinner />
-            ) : (
-              <li className="page-item">
-                <button
-                  className="page-link"
-                  onClick={nextPage}
-                  disabled={
-                    currentPage === pageNumbers[pageNumbers?.length - 1]
-                  }
-                >
-                  Next
-                </button>
-              </li>
-            )}
-          </ul>
+          {data.length > 0 && (
+            <Paginataion
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+            />
+          )}
         </nav>
       </div>
     </div>

@@ -47,7 +47,7 @@ function IdleTimerContainer (props) {
     // console.log("user did something");
     if(isLoggedIn){
         
-        localStorage.setItem("expiredTime", Date.now() + 1000 * TIMEOUT);
+        sessionStorage.setItem("expiredTime", Date.now() + 1000 * TIMEOUT);
         // console.log("log-1")
         // console.log("date-1",Date.now())
         // console.log("date-2",Date.now() + 1000*10 )
@@ -56,14 +56,14 @@ function IdleTimerContainer (props) {
 
   useEffect(() => {
     if(isLoggedIn){
-        localStorage.setItem("expiredTime", Date.now() + 1000 * TIMEOUT );
+        sessionStorage.setItem("expiredTime", Date.now() + 1000 * TIMEOUT );
         // console.log("log-2")
         // console.log(Date.now())
     }
   
    
     return () => {
-        localStorage.removeItem("expiredTime")
+        sessionStorage.removeItem("expiredTime")
     //   console.log("run fall back function")
     }
 

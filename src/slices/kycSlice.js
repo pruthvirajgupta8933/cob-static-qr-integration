@@ -1,13 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API_URL from "../config";
 import {
-  axiosInstanceAuth,
+  axiosInstanceJWT,
   kycValidatorAuth,
 } from "../utilities/axiosInstance";
 
 import { APP_ENV } from "../config";
 
 const initialState = {
+  isLoading:false,
+  isLoadingForPending:false,
+  isLoadingForPendingVerification:false,
+  isLoadingForPendingApproval:false,
+  isLoadingForApproved:false,
+  isLoadingForRejected:false,
   documentByloginId: {},
   kycApproved: {
     count: null,
@@ -151,7 +157,7 @@ const initialState = {
 export const updateContactInfo = createAsyncThunk(
   "UpdateContactInfo/updateContactInfo",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .put(`${API_URL.Save_General_Info}`, requestParam, {
         headers: {
           // Authorization: ""
@@ -171,7 +177,7 @@ export const updateContactInfo = createAsyncThunk(
 export const otpForContactInfo = createAsyncThunk(
   "OtpForContact/otpContactInfo",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL.Send_OTP}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -185,7 +191,7 @@ export const otpVerificationForContactForPhone = createAsyncThunk(
   "OtpVerificationForContactForPhone/otpVerificationForContactForPhone",
   async (requestParam) => {
     // console.log("requestParam",requestParam)
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL.Verify_OTP}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -199,7 +205,7 @@ export const otpVerificationForContactForEmail = createAsyncThunk(
   "OtpVerificationForContactForEmail/otpVerificationForContactForEmail",
   async (requestParam) => {
     // console.log("requestParam",requestParam)
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL.Verify_OTP}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -214,7 +220,7 @@ export const otpVerificationForContactForEmail = createAsyncThunk(
 export const businessType = createAsyncThunk(
   "kyc/businessType",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(`${API_URL.Business_type}`, {
         headers: {},
       })
@@ -229,7 +235,7 @@ export const businessType = createAsyncThunk(
 export const busiCategory = createAsyncThunk(
   "kyc/busiCategory",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(`${API_URL.Business_Category_CODE}`, {
         headers: {},
       })
@@ -244,7 +250,7 @@ export const busiCategory = createAsyncThunk(
 export const platformType = createAsyncThunk(
   "kyc/platformType",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(`${API_URL.Platform_type}`, {
         headers: {},
       })
@@ -260,7 +266,7 @@ export const platformType = createAsyncThunk(
 export const collectionFrequency = createAsyncThunk(
   "kyc/platformType",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(`${API_URL.Collection_frequency}`, {
         headers: {},
       })
@@ -276,7 +282,7 @@ export const collectionFrequency = createAsyncThunk(
 export const collectionType = createAsyncThunk(
   "kyc/collectionType",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(`${API_URL.Get_ALL_Collection_Type}`, {
         headers: {},
       })
@@ -291,7 +297,7 @@ export const collectionType = createAsyncThunk(
 export const saveBusinessInfo = createAsyncThunk(
   "kyc/saveBusinessInfo",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .put(`${API_URL.save_Business_Info}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -307,7 +313,7 @@ export const businessOverviewState = createAsyncThunk(
   async (requestParam) => {
     let response = {}
     if(APP_ENV){
-      response = await axiosInstanceAuth
+      response = await axiosInstanceJWT
       .get(`${API_URL.Business_overview_state_}`, {
         headers: {},
       })
@@ -316,7 +322,7 @@ export const businessOverviewState = createAsyncThunk(
       });
     }else{
 
-      response = await axiosInstanceAuth
+      response = await axiosInstanceJWT
       .post(`${API_URL.Business_overview_state_}`, {
         headers: {},
       })
@@ -335,7 +341,7 @@ export const businessOverviewState = createAsyncThunk(
 export const saveMerchantInfo = createAsyncThunk(
   "kyc/saveMerchantInfo",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL.SAVE_MERCHANT_INFO}`, requestParam, {
         headers: {
           // Authorization: ""
@@ -354,7 +360,7 @@ export const documentsUpload = createAsyncThunk(
   "kyc/documentsUpload",
   async (data) => {
      const requestParam = data?.businessType;
-   const response = await axiosInstanceAuth
+   const response = await axiosInstanceJWT
       .get(`${API_URL?.DocumentsUpload}/?business_type_id=${requestParam}`, {
         headers: {},
       })
@@ -371,7 +377,7 @@ export const documentsUpload = createAsyncThunk(
 export const merchantInfo = createAsyncThunk(
   "kyc/merchantInfo",
   async (requestParam) => {
-    const response = await axiosInstanceAuth({
+    const response = await axiosInstanceJWT({
       method: "post",
       url:
         requestParam.docType === "1"
@@ -392,7 +398,7 @@ export const merchantInfo = createAsyncThunk(
 export const kycUserList = createAsyncThunk(
   "kyc/kycUserList",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL.Kyc_User_List}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -409,7 +415,7 @@ export const kycUserList = createAsyncThunk(
 export const kycDocumentUploadList = createAsyncThunk(
   "kyc/kycDocumentUploadList",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL?.DOCUMENT_BY_LOGINID}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -425,7 +431,7 @@ export const kycDocumentUploadList = createAsyncThunk(
 export const GetKycTabsStatus = createAsyncThunk(
   "kyc/GetKycTabsStatus",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(`${API_URL.KYC_TAB_STATUS_URL}/${requestParam?.login_id}`)
       .catch((error) => {
         return error.response;
@@ -440,7 +446,7 @@ export const GetKycTabsStatus = createAsyncThunk(
 export const kycBankNames = createAsyncThunk(
   "kyc/kycBankNames",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(`${API_URL.GET_ALL_BANK_NAMES}`, {
         headers: {},
       })
@@ -455,7 +461,7 @@ export const kycBankNames = createAsyncThunk(
 export const kycpaymentModeType = createAsyncThunk(
   "kyc/kycBankNames",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(`${API_URL.GET_PAYMENT_MODE}`, {
         headers: {},
       })
@@ -475,7 +481,7 @@ export const kycpaymentModeType = createAsyncThunk(
 export const saveMerchantBankDetais = createAsyncThunk(
   "kyc/saveMerchantBankDetais",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .put(
         `${API_URL.Save_Settlement_Info}`,
         requestParam,
@@ -499,7 +505,7 @@ export const kycForNotFilled = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(
         `${API_URL.KYC_FOR_NOT_FILLED}&page=${requestParam}&page_size=${requestParam1}`,
         {
@@ -519,7 +525,7 @@ export const kycForPendingMerchants = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(
         `${API_URL.KYC_FOR_PENDING_MERCHANTS}&page=${requestParam}&page_size=${requestParam1}`,
         {
@@ -539,7 +545,7 @@ export const kycForRejectedMerchants = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(
         `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&page=${requestParam}&page_size=${requestParam1}`,
         {
@@ -561,7 +567,7 @@ export const kycForPending = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(
         `${API_URL.KYC_FOR_PROCESSING}&page=${requestParam}&page_size=${requestParam1}`,
         {
@@ -582,7 +588,7 @@ export const kycForVerified = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(
         `${API_URL.KYC_FOR_VERIFIED}&page=${requestParam}&page_size=${requestParam1}`,
         {
@@ -606,11 +612,13 @@ export const onboardedReport = createAsyncThunk(
     const from_date = data.from_date;
     const to_date=data?.to_date
     const selectedvalue =data?.selectedChoice;
+    const dynamicDate = selectedvalue === "Verified" ? "verified_date" : selectedvalue === "Approved" ? "approved_date" : ""
+  
     
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(
         
-        `${API_URL.KYC_FOR_ONBOARDED}?search=${selectedvalue}&order_by=-merchantId&page=${requestParam}&page_size=${requestParam1}&from_date=${from_date}&to_date=${to_date}`,
+        `${API_URL.KYC_FOR_ONBOARDED}?search=${selectedvalue}&order_by=-${dynamicDate}&search_map=${dynamicDate}&page=${requestParam}&page_size=${requestParam1}&from_date=${from_date}&to_date=${to_date}`,
         {
           headers: {},
         }
@@ -628,7 +636,7 @@ export const kycForApproved = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(
         `${API_URL.KYC_FOR_APPROVED}&page=${requestParam}&page_size=${requestParam1}`,
         {
@@ -646,7 +654,7 @@ export const kycForApproved = createAsyncThunk(
 export const kycForCompleted = createAsyncThunk(
   "kyc/kycForCompleted",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .get(`${API_URL.KYC_FOR_COMPLETED}`, {
         headers: {},  
       })
@@ -662,7 +670,7 @@ export const kycForCompleted = createAsyncThunk(
 // export const UploadLoginId = createAsyncThunk(
 //   "kyc/UploadLoginId",
 //   async (requestParam) => {
-//     const response = await axiosInstanceAuth
+//     const response = await axiosInstanceJWT
 //       .post(`${API_URL.DOCUMENT_BY_LOGINID}`, requestParam)
 //       .catch((error) => {
 //         return error.response;
@@ -677,7 +685,7 @@ export const kycForCompleted = createAsyncThunk(
 export const verifyKycEachTab = createAsyncThunk(
   "kyc/verifyKycEachTab",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL.VERIFY_EACH_TAB}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -697,7 +705,7 @@ export const verifyKycDocumentTab = createAsyncThunk(
       URL_FOR_DOCUMENT_VERIFY = API_URL.DOCUMENT_VERIFY;
     }
 
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .put(URL_FOR_DOCUMENT_VERIFY, requestParam)
       .catch((error) => {
         return error.response;
@@ -717,7 +725,7 @@ export const checkedDocumentReject = createAsyncThunk(
       URL_FOR_DOCUMENT_VERIFY = API_URL.CHECKED_DOCUMENT_REJECT;
     }
 
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .put(URL_FOR_DOCUMENT_VERIFY, requestParam)
       .catch((error) => {
         return error.response;
@@ -733,7 +741,7 @@ export const checkedDocumentReject = createAsyncThunk(
 export const removeDocument = createAsyncThunk(
   "kyc/removeDocument",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .put(API_URL.DOCUMENT_REMOVE, requestParam)
       .catch((error) => {
         return error.response;
@@ -746,7 +754,7 @@ export const removeDocument = createAsyncThunk(
 export const verifyComplete = createAsyncThunk(
   "kyc/verifyKycEachTab",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL.VERIFY_FINAL_ALL}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -758,7 +766,7 @@ export const verifyComplete = createAsyncThunk(
 export const approveDoc = createAsyncThunk(
   "kyc/approveDoc",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .put(`${API_URL.APPROVE_DOCUMENT}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -839,7 +847,7 @@ export const bankAccountVerification = createAsyncThunk(
 export const getBankId = createAsyncThunk(
   "kyc/getBankId",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL.GET_BANK_ID}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -854,7 +862,7 @@ export const getBankId = createAsyncThunk(
 export const businessTypeById = createAsyncThunk(
   "kyc/getBusinessTypeById",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL.GET_BUSINESS_TYPE_ID}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -869,7 +877,7 @@ export const businessTypeById = createAsyncThunk(
 export const businessCategoryById = createAsyncThunk(
   "kyc/businessCategoryById",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL.GET_BUSINESS_CATEGORY_ID}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -883,7 +891,7 @@ export const businessCategoryById = createAsyncThunk(
 export const approvekyc = createAsyncThunk(
   "kyc/approvekyc",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(`${API_URL.APPROVE_KYC}`, requestParam)
       .catch((error) => {
         return error.response;
@@ -898,7 +906,7 @@ export const approvekyc = createAsyncThunk(
 export const saveRegisteredAddress = createAsyncThunk(
   "kyc/saveRegisteredAddress",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(
         `${API_URL.Registered_Address}`,
         requestParam,
@@ -921,7 +929,7 @@ export const saveRegisteredAddress = createAsyncThunk(
 export const saveKycConsent = createAsyncThunk(
   "kyc/saveKycConsent",
   async (requestParam) => {
-    const response = await axiosInstanceAuth
+    const response = await axiosInstanceJWT
       .post(
         `${API_URL.Kyc_Consent}`,
         requestParam,
@@ -970,6 +978,92 @@ export const kycSlice = createSlice({
     }
   },
   extraReducers: {
+    [kycForNotFilled.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoading = true;
+    },
+    [kycForNotFilled.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoading = false;
+    },
+    [kycForNotFilled.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoading = false;
+    },
+    //--------------------------------------------
+    [kycForPendingMerchants.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoadingForPending = true;
+    },
+    [kycForPendingMerchants.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoadingForPending = false;
+    },
+    [kycForPendingMerchants.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoadingForPending = false;
+    },
+    //------------------------------------------------
+    [kycForPending.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoadingForPendingVerification = true;
+    },
+    [kycForPending.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoadingForPendingVerification = false;
+    },
+    [kycForPending.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoadingForPendingVerification = false;
+    },
+    //-------------------------------------------
+    [kycForVerified.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoadingForPendingApproval = true;
+    },
+    [kycForVerified.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoadingForPendingApproval = false;
+    },
+    [kycForVerified.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoadingForPendingApproval = false;
+    },
+    //-----------------------------------------------
+    [kycForApproved.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoadingForApproved = true;
+    },
+    [kycForApproved.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoadingForApproved = false;
+    },
+    [kycForApproved.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoadingForApproved = false;
+    },
+    //-------------------------------------------------
+    [kycForRejectedMerchants.pending]: (state, action) => {
+      state.status = "pending";
+      state.isLoadingForRejected = true;
+    },
+    [kycForRejectedMerchants.fulfilled]: (state, action) => {
+      state.kycUserList = action.payload;
+      state.isLoadingForRejected = false;
+    },
+    [kycForRejectedMerchants.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+      state.isLoadingForRejected = false;
+    },
+//-------------------------------------------------------------
+
+    //-------------------------------------------------
     [kycUserList.pending]: (state, action) => {
       state.status = "pending";
     },
@@ -983,14 +1077,17 @@ export const kycSlice = createSlice({
     ///////////////////////////////////
     [kycForApproved.pending]: (state, action) => {
       state.status = "pending";
+      state.isLoadingForApproved = true;
     },
     [kycForApproved.fulfilled]: (state, action) => {
       // console.log("action-11 ====>",action.payload)
       state.kycApproved = action.payload;
+      state.isLoadingForApproved = false;
     },
     [kycForApproved.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.error.message;
+      state.isLoadingForApproved = false;
     },
     ////////////////////////////////////////
     // [UploadLoginId.pending]: (state, action) => {

@@ -11,6 +11,9 @@ import { payoutReducer } from "./slices/payoutSlice";
 import  menuListReducer from "./slices/cob-dashboard/menulistSlice"
 import productCatalogueSlice  from "./slices/merchant-slice/productCatalogueSlice"
 import { ReferralMidReducer } from "./slices/referralAndMidOperationSlice";
+import { challanReducer } from "./slices/backTobusinessSlice";
+import merchantReportSlice from "./slices/merchant-slice/reportSlice"; 
+import { reportsDataReducer } from "./slices/subscription-slice/registeredMandateSlice";
 
 const reducer = {
   auth: authReducer,
@@ -25,7 +28,11 @@ const reducer = {
   menuListReducer:menuListReducer,
   productCatalogueSlice:productCatalogueSlice,
   ReferralMidReducer:ReferralMidReducer,
+  challanReducer:challanReducer,
+  merchantReportSlice:merchantReportSlice,
   
+  // For subscription
+  Reports : reportsDataReducer
 
 };
 

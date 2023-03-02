@@ -5,7 +5,7 @@ import rafiki from "../../../../assets/images/rafiki.png";
 import { productSubscribeState } from "../../../../slices/dashboardSlice";
 import { useDispatch, useSelector } from "react-redux";
 import API_URL from "../../../../config";
-import { axiosInstanceAuth } from "../../../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import "./product.css";
 import toastConfig from "../../../../utilities/toastTypes";
 import { useParams,useHistory } from "react-router-dom";
@@ -39,7 +39,7 @@ const SabPaisaPricing = () => {
   const param = useParams();
 
   const getSubscribedPlan = (id) => {
-    axiosInstanceAuth
+    axiosInstanceJWT
       .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
       .then((resp) => {
         // console.log(resp?.data?.data[0]?.planId)
@@ -51,7 +51,7 @@ const SabPaisaPricing = () => {
   useEffect(() => {
     const id = param?.id;
     let url = API_URL.PRODUCT_SUB_DETAILS + "/" + id;
-    axiosInstanceAuth
+    axiosInstanceJWT
       .get(url)
       .then((resp) => {
         const data = resp.data.ProductDetail;
@@ -62,92 +62,6 @@ const SabPaisaPricing = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
 
-
-
-
-  // // check rate mapping status before rate mapping
-  // const checkRateMappingStatus = (clientCodeF, clientCodeT, loginId) => {
-  //   axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/${clientCodeF}/${clientCodeT}/${loginId}`)
-  //     .then((resp) => {
-  //       const data = resp.data;
-  //       setRateCloneStatus(data[0].ID)
-  //       localStorage.setItem('RATE_MAPPING_CLONE', data[0].ID);
-  //     })
-  //     .catch((err) => { console.log(err) })
-  // }
-
-
-  // useEffect(() => {
-
-  //   // console.log("rateCloneStatus",rateCloneStatus)
-  //   // console.log("tempPlanId",tempPlanId)
-  //   // console.log("param?.id",param?.id)
-
-  //   if ((rateCloneStatus === 3 || rateCloneStatus === 0) && (param?.id === "10" && tempPlanId!==1 && tempPlanId!=="") ) {
-  //     console.log("cond true")
-  //     if (user?.clientMerchantDetailsList !== null) {
-  //       console.log("33")
-  //       const clientMerchantDetailsList = user?.clientMerchantDetailsList;
-  //       const clientCode = clientMerchantDetailsList[0]?.clientCode;
-  //       const clientId = clientMerchantDetailsList[0]?.clientId;
-  //       const clientContact = user?.clientMobileNo;
-  //       const clientEmail = user?.userName;
-  //       const clientName = clientMerchantDetailsList[0]?.clientName;
-  //       const clientUserName = user?.userName;
-  //       const passwrod = stringDec(sessionStorage.getItem('prog_id'));
-
-  //       const inputData = {
-  //         clientId: clientId,
-  //         clientCode: clientCode,
-  //         clientContact: clientContact,
-  //         clientEmail: clientEmail,
-  //         address: "Delhi",
-  //         clientLogoPath: "client/logopath",
-  //         clientName: clientName,
-  //         clientLink: "cltLink",
-  //         stateId: 9,
-  //         bid: "19", // ask
-  //         stateName: "DELHI",
-  //         bankName: "SBI",
-  //         client_username: clientUserName,
-  //         client_password: passwrod,
-  //         appId: "10", // ask
-  //         status: "Activate", // ask
-  //         client_type: "normal Client",
-  //         successUrl: "https://sabpaisa.in/",
-  //         failedUrl: "https://sabpaisa.in/",
-  //         subscriptionstatus: "Subscribed",
-  //         businessType: 2
-  //       };
-
-  //       // console.log("inputData",inputData);
-  //       // 1 - run RATE_MAPPING_GenerateClientFormForCob 
-
-  //       axiosInstance.post(API_URL.RATE_MAPPING_GenerateClientFormForCob, inputData).then(res => {
-
-  //         console.log("run RATE_MAPPING_GenerateClientFormForCob");
-  //         localStorage.setItem('RATE_MAPPING_GenerateClientFormForCob', "api trigger");
-  //         localStorage.setItem('resp_RATE_MAPPING_GenerateClientFormForCob', res?.toString());
-  //         //2 - rate map clone   // parent client code / new client code / login id
-  //         axiosInstance.get(`${API_URL.RATE_MAPPING_CLONE}/'COBED'/${clientCode}/${user?.loginId}`).then(res => {
-  //           console.log("run RATE_MAPPING_CLONE");
-  //           localStorage.setItem('RATE_MAPPING_CLONE', "api trigger");
-  //           localStorage.setItem('resp_RATE_MAPPING_CLONE', res?.toString());
-  //           // 3- enable pay link
-  //           //    axiosInstance.get(API_URL.RATE_ENABLE_PAYLINK + '/' + clientCode).then(res => {
-  //           //       localStorage.setItem('enablePaylink', "api trigger");
-  //           //       // console.log("3 api run")
-  //           //       dispatch(checkPermissionSlice(clientCode));
-  //           //   })
-  //         }).catch(err => { console.log(err) })
-  //       }).catch(err => { console.log(err) })
-
-
-  //     }
-  //   }
-
-
-  // }, [rateCloneStatus,tempPlanId])
 
 
   const handleClick = async (plan_id, plan_name, plan_code) => {
@@ -167,7 +81,7 @@ const SabPaisaPricing = () => {
     //   history.push("/dashboard/sabpaisa-pg");
     // }else{
       // setTempPlanId(plan_id)
-      const res = await axiosInstanceAuth.post(
+      const res = await axiosInstanceJWT.post(
         API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
         postData
       );

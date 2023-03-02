@@ -5,7 +5,7 @@ import { approvekyc, verifyComplete } from "../../slices/kycSlice";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { saveKycConsent,UpdateModalStatus } from "../../slices/kycSlice";
+import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
 import congImg from "../../assets/images/congImg.png";
 import { Link } from "react-router-dom";
 
@@ -15,18 +15,18 @@ function SubmitKyc(props) {
 
   const dispatch = useDispatch();
 
-  const {auth, kyc} =useSelector((state) => state); 
+  const { auth, kyc } = useSelector((state) => state);
   const { user } = auth
-  
+
   const { loginId } = user;
 
 
-  const {kycUserList} = kyc
+  const { kycUserList } = kyc
   const merchant_consent = kycUserList?.merchant_consent?.term_condition
 
   const kyc_status = kycUserList?.status
   const [readOnly, setReadOnly] = useState(false);
-  const [disable,setIsDisable] = useState(false)
+  const [disable, setIsDisable] = useState(false)
 
   const initialValues = {
     term_condition: merchant_consent,
@@ -41,7 +41,7 @@ function SubmitKyc(props) {
   // } 
 
   const validationSchema = Yup.object({
-    term_condition: Yup.string().oneOf(["true"],"You must accept all the terms & conditions"),
+    term_condition: Yup.string().oneOf(["true"], "You must accept all the terms & conditions"),
   });
 
   useEffect(() => {
@@ -96,13 +96,13 @@ function SubmitKyc(props) {
         submitted_by: loginId,
       })
     ).then((res) => {
-      if ( res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === true) {
+      if (res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === true) {
         toast.success(res?.payload?.message);
         setIsDisable(false)
         const kyc_consent_status = res?.payload?.status
-         dispatch(UpdateModalStatus(true))
-          history.push("/dashboard");
-          
+        dispatch(UpdateModalStatus(true))
+        history.push("/dashboard");
+
       } else {
         toast.error(res?.payload?.detail);
         setIsDisable(false)
@@ -116,7 +116,7 @@ function SubmitKyc(props) {
   //   history.push("/dashboard");
   // } 
   // },[consent_status])
-  
+
 
 
 
@@ -140,17 +140,17 @@ function SubmitKyc(props) {
                       type="checkbox"
                       name="term_condition"
                       readOnly={readOnly}
-                      disabled={(kyc_status === "Verified" || kyc_status === "Approved" )  ? true : false}
+                      disabled={(kyc_status === "Verified" || kyc_status === "Approved") ? true : false}
                       className="mr-0"
                     />
                   </div>
                   <div className="col-lg-11 para-style text-nowrap">
 
-                  I have read and understood the <a href="https://sabpaisa.in/term-conditions/"  rel="noreferrer"  alt="Term & Conditions" target="_blank" title="Term & Conditions">Terms & Conditions</a>, <a  href="https://sabpaisa.in/privacy-policy/" alt="Privacy Policy" target="_blank" title="Privacy Policy"  rel="noreferrer" >Privacy Policy</a>, <a href="https://sabpaisa.in/service-agreement" alt="Service Agreement" target="_blank" title="Service Agreement"  rel="noreferrer" >Service Agreement</a>
+                    I have read and understood the <a href="https://sabpaisa.in/term-conditions/" className="text-decoration-underline text-primary" rel="noreferrer" alt="Term & Conditions" target="_blank" title="Term & Conditions">Terms & Conditions</a>, <a href="https://sabpaisa.in/privacy-policy/" alt="Privacy Policy" target="_blank" title="Privacy Policy" rel="noreferrer" className="text-decoration-underline text-primary">Privacy Policy</a>, <a href="https://sabpaisa.in/service-agreement" alt="Service Agreement" target="_blank" title="Service Agreement" rel="noreferrer" className="text-decoration-underline text-primary" >Service Agreement</a>
                   </div>
                   <div className="col-lg-11 para-style2 text-nowrap">
                     By submitting the form, I agree to abide by the rules at all times.
-                    </div>
+                  </div>
                 </div>
               </div>
               {
@@ -169,30 +169,6 @@ function SubmitKyc(props) {
                   )}
                 </ErrorMessage>
               }
-              {/* {formik.setFieldValue("termAndCondition",setChecked(true))} */}
-              {/* <div className="form-check form-check-inline">
-                <FormikController
-                  control="checkbox"
-                  name="termAndCondition"
-                  options={termAndConditionOption}
-                  disabled={kyc_status === "Verified" ? true : false}
-                  readOnly={readOnly}
-                  checked={readOnly}
-                  className="mr-3"
-                />
-              </div> */}
-              {/* <div className="form-check form-check-inline">
-                <FormikController
-                  control="checkbox"
-                  name="serviceAgreement"
-                  options={serviceAgreementOption}
-                  disabled={kyc_status === "Verified" ? true : false}
-                  readOnly={readOnly}
-                  checked={readOnly}
-                  className="mr-3"
-                />
-              </div> */}
-
               <div className="my-5 p-2">
                 <hr
                   style={{
@@ -202,24 +178,14 @@ function SubmitKyc(props) {
                   }}
                 />
                 <div className="mt-3">
-                  {(kyc_status === "Verified" || kyc_status === "Approved" ) ? null : (
-                    <>
-                  
-                    <button
-                     disabled={disable}
-                     className="btn float-lg-right btnbackground text-white"
-                     type="submit"
-                     >
-                      Submit
-                    </button>
-                    {/* <button
-                        className="btn cick"
-                        data-toggle="modal"
-                        data-target="#kycSumitModal"
-                      >modal button</button> */}
-                    </>
-                 
-
+                  {(kyc_status === "Verified" || kyc_status === "Approved")  ? null : (
+                  <button
+                        disabled={disable}
+                        className="btn float-lg-right btnbackground text-white"
+                        type="submit"
+                      >
+                        Submit
+                      </button>
                   )}
                 </div>
 
@@ -229,52 +195,6 @@ function SubmitKyc(props) {
         </Formik>
       )}
 
-      {/* {role.verifier && (
-        <div className="row">
-          <div className="col-lg-12">
-            <p>
-              After Verify all the tab's , Kindly click on the{" "}
-              <strong> complete verify</strong> button{" "}
-            </p>
-          </div>
-
-          <div className="col-lg-12">
-            <button
-              className="btn float-lg-left"
-              type="submit"
-              style={{ backgroundColor: "#0156B3" }}
-              onClick={() => {
-                verifyApprove("verify");
-              }}
-            >
-              <h4 className="text-white font-weight-bold">Verify Complete</h4>
-            </button>
-          </div>
-        </div>
-      )}
-      {role.approver && (
-        <div className="row">
-          <div className="col-lg-12">
-            <p>
-              After Verify all the tab's , Kindly click on the{" "}
-              <strong> Approve KYC</strong> button{" "}
-            </p>
-          </div>
-
-          <div className="col-lg-12">
-            <button
-              className="btn float-lg-left"
-              type="submit"
-              style={{ backgroundColor: "#0156B3" }}
-              onClick={() => {
-                verifyApprove("approve");
-              }}
-            >
-              <h4 className="text-white font-weight-bold">Approve KYC</h4>
-            </button>
-          </div>
-        </div>
-      )} */}
     </div>
   );
 }

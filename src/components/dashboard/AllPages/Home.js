@@ -47,6 +47,7 @@ function Home() {
   }, [user]);
 
   useEffect(() => {
+    // console.log(kyc?.kycUserList)
     setModalState(KycTabStatusStore?.status);
   }, [KycTabStatusStore]);
 
@@ -223,7 +224,7 @@ function Home() {
               </p>
             </div>
 
-            {(roles?.merchant === true && modalState !== "Approved") && (
+            {(roles?.merchant === true && kyc?.kycUserList?.status !== "Approved") && (
               <div className="col-12 col-md-12">
                 <div className="card col-lg-12- cardkyc pull-left">
                   <div className="font-weight-bold card-body Satoshi-Medium">
@@ -250,7 +251,7 @@ function Home() {
                 </div>
               </div>
             ) }
-            {(roles?.merchant === true && modalState === "Approved") && 
+            {(roles?.merchant === true && kyc?.kycUserList?.status === "Approved") && 
               (
                 <div className="col-12 col-md-12">
                   <div className="card col-lg-12- cardkyc pull-left">
@@ -554,7 +555,7 @@ function Home() {
                       </h1>
 
                       <p className="modalscolrsfortextapprv m-0 text-center">
-                        You can accept payments upto INR 15,000
+                        You can accept payments upto INR 10,000
                       </p>
                       <p className="modalscolrsfortextapprv m-0 text-center">
                         Your KYC is currently under review.

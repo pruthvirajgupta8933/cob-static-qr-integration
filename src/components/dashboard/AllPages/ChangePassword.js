@@ -68,10 +68,10 @@ function ChangePassword() {
 
     new_password: Yup.string()
       .required("New Password Required")
-      .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-      ),
+    .matches(
+      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    ),
 
     confirm_password: Yup.string()
       .oneOf([Yup.ref("new_password"), null], "Passwords must match")

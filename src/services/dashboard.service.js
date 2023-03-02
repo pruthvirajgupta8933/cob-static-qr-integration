@@ -1,6 +1,5 @@
-import axios from "axios";
 import API_URL from "../config";
-import  { axiosInstance,axiosInstanceAuth} from "../utilities/axiosInstance"
+import { axiosInstance, axiosInstanceJWT } from "../utilities/axiosInstance"
 
 // Home - successTxnSummary 
 
@@ -9,69 +8,63 @@ const successTxnSummary = (fromdate, todate, clientcode) => {
     fromdate,
     todate,
     clientcode,
-  }).then((response)=>{
+  }).then((response) => {
     return response.data;
-  }).catch(err=>console.log(err));
+  }).catch(err => console.log(err));
 };
 
 const subscriptionplan = () => {
   return axiosInstance.get(API_URL.FETCH_APP_AND_PLAN)
-  .then((response) => {
-    // console.log("subscribe data - service", response )
-    if (response.data) {
-      localStorage.setItem("subscriptionplan", JSON.stringify(response.data));
-    } else {
-      localStorage.setItem("subscriptionplan", JSON.stringify(response.data));
-    }
-    return response.data;
-  });
+    .then((response) => {
+      // console.log("subscribe data - service", response )
+      if (response.data) {
+        sessionStorage.setItem("subscriptionplan", JSON.stringify(response.data));
+      } else {
+        sessionStorage.setItem("subscriptionplan", JSON.stringify(response.data));
+      }
+      return response.data;
+    });
 };
 
 const subscriptionPlanDetail = () => {
-    return axiosInstance.post(API_URL.SUBSCRIBE_SERVICE)
+  return axiosInstance.post(API_URL.SUBSCRIBE_SERVICE)
     .then((response) => {
       if (response.data) {
-        localStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
+        sessionStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
       } else {
-        localStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
+        sessionStorage.setItem("subscriptionchargesdetail", JSON.stringify(response.data));
       }
-  
+
       return response.data;
     });
-  };
+};
 
-const fetchTransactionHistory=(paramData)=>
-{ 
+const fetchTransactionHistory = (paramData) => {
   // const {clientCode,fromDate,payModeId,toDate,txnStatus,ref1,ref2} = paramData;
   // console.log("hit",`https://reportapi.sabpaisa.in/REST/txnHistory/${clientCode}/${txnStatus}/${payModeId}/${fromDate}/${toDate}/${ref1}/${ref2}`);
-  
-
-  return axiosInstance.post(API_URL.GetMerchantTxnHistory,paramData);
-  // axiosInstance.defaults.headers.common["Authorization"] = ';
+  return axiosInstance.post(API_URL.GetMerchantTxnHistory, paramData);
 }
 
 // const refund_url=`https://reportapi.sabpaisa.in/SabPaisaReport/REST/`
-const settlementReport=(paramData) => {
-  return axiosInstance.post(API_URL.SettlementReport,paramData)
+const settlementReport = (paramData) => {
+  return axiosInstance.post(API_URL.SettlementReport, paramData)
 }
 
-const refundTransactionHistory =(paramData) => {
-  // console.log("check3")
-  return axiosInstance.post(API_URL.RefundTxnHistory,paramData)
- 
+const refundTransactionHistory = (paramData) => {
+  return axiosInstance.post(API_URL.RefundTxnHistory, paramData)
+
 }
-const chargebackTxnHistory =(paramData) => {
-  return axiosInstance.post(API_URL.ChargeBankTxnHistory,paramData)
- 
+const chargebackTxnHistory = (paramData) => {
+  return axiosInstance.post(API_URL.ChargeBankTxnHistory, paramData)
+
 }
 
 export const Dashboardservice = {
-    successTxnSummary,
-    subscriptionplan,
-    subscriptionPlanDetail,
-    fetchTransactionHistory,
-    settlementReport,
-    refundTransactionHistory,
-    chargebackTxnHistory
-  };
-  
+  successTxnSummary,
+  subscriptionplan,
+  subscriptionPlanDetail,
+  fetchTransactionHistory,
+  settlementReport,
+  refundTransactionHistory,
+  chargebackTxnHistory
+};

@@ -9,7 +9,7 @@ import { logout, register, udpateRegistrationStatus } from "../../slices/auth";
 import { useHistory, Link } from "react-router-dom";
 import { toast, Zoom } from "react-toastify";
 import API_URL from "../../config";
-import { axiosInstanceAuth } from "../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 
 import "../login/css/home.css";
 import "../login/css/homestyle.css";
@@ -77,7 +77,7 @@ function Registration() {
 
 
   useEffect(() => {
-    axiosInstanceAuth
+    axiosInstanceJWT
       .get(API_URL.Business_Category_CODE)
       .then((resp) => {
         const data = resp?.data;
@@ -152,7 +152,7 @@ function Registration() {
 
 
   useEffect(() => {
-    const userLocalData = JSON.parse(localStorage.getItem("user"));
+    const userLocalData = JSON.parse(sessionStorage.getItem("user"));
     const isLoggedInLc =
       userLocalData && userLocalData.loginId !== null ? true : false;
     if(isLoggedInLc){
