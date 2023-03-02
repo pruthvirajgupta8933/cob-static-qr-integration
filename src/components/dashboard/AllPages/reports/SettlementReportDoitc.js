@@ -384,7 +384,7 @@ const SettlementReportDoitc = () => {
                           >
                             Export{" "}
                           </button> */}
-                          <CSVLink {...exportToCsv}>Export To CSV</CSVLink>
+                          <CSVLink className="btn btn-sm text-white btn-primary" {...exportToCsv}>Export To CSV</CSVLink>
                         </div>
                       ) : (
                         <></>

@@ -1,7 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.818800e0.css",
+<<<<<<< HEAD
     "main.js": "/static/js/main.86e85537.js",
+=======
+<<<<<<< Updated upstream
+    "main.js": "/static/js/main.8c96bc05.js",
+=======
+    "main.js": "/static/js/main.ddf0fe1d.js",
+>>>>>>> Stashed changes
+>>>>>>> cob-nf-staging
     "static/media/Roboto-Medium.ttf": "/static/media/Roboto-Medium.7c8d04cd831df3033c8a.ttf",
     "static/media/Roboto-Regular.ttf": "/static/media/Roboto-Regular.fc2b5060f7accec5cf74.ttf",
     "static/media/COB.png": "/static/media/COB.291fe45cb61eeb6e8b0d.png",
@@ -52,10 +60,26 @@
     "index.html": "/index.html",
     "static/media/download-icon.svg": "/static/media/download-icon.d9e61c59b5691e8f36ca94b0b79ae1fc.svg",
     "main.818800e0.css.map": "/static/css/main.818800e0.css.map",
+<<<<<<< HEAD
     "main.86e85537.js.map": "/static/js/main.86e85537.js.map"
   },
   "entrypoints": [
     "static/css/main.818800e0.css",
     "static/js/main.86e85537.js"
+=======
+<<<<<<< Updated upstream
+    "main.8c96bc05.js.map": "/static/js/main.8c96bc05.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.818800e0.css",
+    "static/js/main.8c96bc05.js"
+=======
+    "main.ddf0fe1d.js.map": "/static/js/main.ddf0fe1d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.818800e0.css",
+    "static/js/main.ddf0fe1d.js"
+>>>>>>> Stashed changes
+>>>>>>> cob-nf-staging
   ]
 }
