@@ -18,15 +18,15 @@ const MerchantDocument = (props) => {
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
-   const { user } = auth;
+  const { user } = auth;
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
-  
+
   const dropDownDocList = docTypeList?.map((r) => r?.key?.toString()); // Array for documents that is got by business catory type
   const newDropDownDocList = dropDownDocList.filter(element => element !== ''); // remove blank string in array
-  const uploadedDocList =  Object.values(docList)?.map((r) => r?.type) 
-  
+  const uploadedDocList = Object.values(docList)?.map((r) => r?.type)
+
   const removeCommon = (newDropDownDocList, uploadedDocList) => {
     const spreaded = [...newDropDownDocList, ...uploadedDocList];
     return spreaded.filter(el => {
@@ -64,21 +64,21 @@ const MerchantDocument = (props) => {
   let pendingDocument = getDocTypeNamee(unmatchedArray)
 
   ///////////////////////////////////////////////////////////////////////
-   const [buttonText, setButtonText] = useState("");
+  const [buttonText, setButtonText] = useState("");
   const [enableBtnApprover, setEnableBtnApprover] = useState(false)
   const [enableBtnVerifier, setEnableBtnVerifier] = useState(false)
   const [closeModal, setCloseModal] = useState(false)
   const [commetText, setCommetText] = useState()
   const [documentsIdList, setdocumentsIdList] = useState([])
- 
-const [checkedClicked, setCheckedClicked] = useState(false)
+
+  const [checkedClicked, setCheckedClicked] = useState(false)
   // const [enableeBtn, setEnableBtn] = useState(false)
 
   // console.log("this is the real statsus",staus)
 
   // const [loader, setLoader] = useState(false)
   const [buttonClick, setButtonClick] = useState(null)
-  
+
 
   const getDocTypeName = (id) => {
     // eslint-disable-next-line array-callback-return
@@ -92,7 +92,7 @@ const [checkedClicked, setCheckedClicked] = useState(false)
     return data[0]?.value;
   };
 
-  
+
 
   const getKycDocList = (role) => {
     dispatch(
@@ -200,10 +200,10 @@ const [checkedClicked, setCheckedClicked] = useState(false)
     } else {
       <></>
     }
-  },[ role,Allow_To_Do_Verify_Kyc_details]);
+  }, [role, Allow_To_Do_Verify_Kyc_details]);
 
 
- useEffect(() => {
+  useEffect(() => {
 
     /////////////////////////////////////////////// button enable condition for verifier
 
@@ -226,7 +226,7 @@ const [checkedClicked, setCheckedClicked] = useState(false)
       let enableBtn = false;
       if (currenTab === 4) {
         if (roles.approver === true)
-          
+
           enableBtn = true;
       }
       setEnableBtnApprover(enableBtn);
@@ -242,7 +242,7 @@ const [checkedClicked, setCheckedClicked] = useState(false)
 
 
 
-  
+
 
   useEffect(() => {
 
@@ -262,7 +262,7 @@ const [checkedClicked, setCheckedClicked] = useState(false)
       setdocumentsIdList(prev => [...data])
       setCheckedClicked(true)
     }
-    data?.length === 0 &&  setCheckedClicked(false)
+    data?.length === 0 && setCheckedClicked(false)
   }
 
 
@@ -319,24 +319,25 @@ const [checkedClicked, setCheckedClicked] = useState(false)
           return (<> <span className="text-danger"> {item?.value}</span><br /></>)
         })}
       </div>
-      
+
       <div className="col-lg-12 mt-4 m-2 hoz-scroll">
         <table className="table table-bordered w-100">
 
 
           <thead>
             {checkedClicked === true && (roles.approver || roles.verifier) &&
-              <th colSpan={6} style={{ textAlign: "right" }}><CompleteVerifyAndRejectBtn roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} /></th>
+              <th colSpan={6} style={{ textAlign: "right" }}>
+                <CompleteVerifyAndRejectBtn roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} />
+              </th>
             }
             <tr>
-
-              {currenTab === 3 || currenTab === 4 ?
+              {(currenTab === 3 || currenTab === 4) && (roles.approver || roles.verifier) &&
                 <th>
                   <input
                     type="checkbox"
                     checked={documentsIdList?.length === KycDocUpload?.length ? true : false}
                     onChange={(e) => handleCheckChange(e)} /></th>
-                : <></>}
+              }
               <th>S.No.</th>
               <th>Merchant&nbsp;Document</th>
               <th>Document&nbsp;Comment</th>
@@ -350,9 +351,9 @@ const [checkedClicked, setCheckedClicked] = useState(false)
               KycDocUpload?.map((doc, i) => {
                 return (
                   <tr key={i} >
-                    {currenTab === 3 || currenTab === 4 ?
+                    {(currenTab === 3 || currenTab === 4) && (roles.approver || roles.verifier) ?
                       <td>
-                        
+
                         <input
                           type="checkbox"
                           value={doc?.documentId}
@@ -365,8 +366,8 @@ const [checkedClicked, setCheckedClicked] = useState(false)
                     <td>{i + 1}</td>
 
                     <td><h5 className="text-wrap"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</h5>
-                    <h5><span className='font-weight-bold'>Doc.Status:</span> {doc?.status}</h5>
-                    <a
+                      <h5><span className='font-weight-bold'>Doc.Status:</span> {doc?.status}</h5>
+                      <a
                         href={doc?.filePath}
                         target="_blank"
                         rel="noreferrer"
@@ -377,7 +378,7 @@ const [checkedClicked, setCheckedClicked] = useState(false)
 
                     </td>
                     <td>
-                     
+
                       <p className="text-danger"> {doc?.comment === "Null" ? "" : doc?.comment}</p>
                     </td>
                     {/* <td>{doc?.status}</td> */}
@@ -412,14 +413,14 @@ const [checkedClicked, setCheckedClicked] = useState(false)
                             //   rejectDoc(doc?.documentId);
                             // }}
                             >
-                              <h5 className="text-danger">Reject</h5> 
+                              <h5 className="text-danger">Reject</h5>
                             </a>
                           </>
                           : <></>
                         }
                       </div>
                       {buttonClick === doc?.documentId && closeModal === true ?
-                        <div style={{"display":"grid"}}>
+                        <div style={{ "display": "grid" }}>
                           <label for="comments">Reject Comments</label>
 
                           <textarea id="comments" name="reject_commet" rows="4" cols="20" onChange={(e) => setCommetText(e.target.value)}>
