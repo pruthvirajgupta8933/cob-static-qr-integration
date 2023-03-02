@@ -130,7 +130,17 @@ const NotFilledKYC = () => {
           />
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
-          <SearchbyDropDown
+        <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            changePageSize={changePageSize}
+          />
+       
+        </div>
+       
+  
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+        <SearchbyDropDown
             kycSearch={kycSearch}
             searchText={searchText}
             isSearchByDropDown={isSearchByDropDown}
@@ -139,14 +149,7 @@ const NotFilledKYC = () => {
             setSearchByDropDown={setSearchByDropDown}
             optionSearchData={optionSearchData}
           />
-        </div>
-  
-        <div className="form-group col-lg-3 col-md-12 mt-2">
-          <CountPerPageFilter
-            pageSize={pageSize}
-            dataCount={dataCount}
-            changePageSize={changePageSize}
-          />
+     
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
