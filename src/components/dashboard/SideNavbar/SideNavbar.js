@@ -10,7 +10,7 @@ import "./sidenavbar.css"
 
 
 const SideNavbar = () => {
-  const { menuListReducer } = useSelector((state) => state);
+  const { menuListReducer, auth } = useSelector((state) => state);
   const [renderMenuList, setRenderMenuList] = useState(<></>);
   const { url } = useRouteMatch();
   const [menuToggleItem, setMenuToggleItem] = useState({
@@ -18,12 +18,12 @@ const SideNavbar = () => {
     items: []
   })
 
-// Do not remove the code
+  // Do not remove the code
 
   // const toggleMenu = (e) => {
   //   // console.log("e",e)
   //   console.log("e",e.target.firstElementChild.className)
-  
+
   //   const currentToggle = e.currentTarget.attributes?.istoggle?.value.toString()
   //   if (currentToggle === "true") {
   //     e.currentTarget.attributes.istoggle.value = false
@@ -43,7 +43,7 @@ const SideNavbar = () => {
       tempArrayOfItems.push(m?.app_code)
       setMenuToggleItem({ ...menuToggleItem, items: tempArrayOfItems })
       return (
-        m?.is_active===true && 
+        m?.is_active === true &&
         <React.Fragment key={m?.app_name}>
           <div
             className="main-menu-container"
@@ -87,7 +87,7 @@ const SideNavbar = () => {
 
   return (
     <React.Fragment>
-     <div className="headers "></div>
+      <div className="headers "></div>
       <input type="checkbox" className="openSidebarMenu" id="openSidebarMenu" title="ToggleBar" alt="ToggleBar" />
       {/* htmlfor="openSidebarMenu" that code writen by abhiverma but htmlfor got error when we used inside label code*/}
       <label for="openSidebarMenu" className="sidebarIconToggle ">
@@ -96,95 +96,125 @@ const SideNavbar = () => {
         <div className="spinner diagonal part-2"></div>
       </label>
       <aside className="gx-app-sidebar  gx-layout-sider-dark- false- ant-layout-sider- ant-layout-sider-dark d-none- col-lg-2 p-0 m-0-" id="sidebarMenu">
-      <div className="ant-layout-sider-children">
-        <div className="gx-sidebar-content">
-          <div className="brand-logo d-flex-item-right">
-            <div className="float-centre pt-4 text-center- ml-3">
-              <Link to={`${url}`} className="txt-white sidenavFonts ">
-                <img
-                  src={Sabpaisalogo3}
-                  width={120}
-                  alt="sabpaisa"
-                  title="sabpaisa"
-                />
-              </Link>
-            </div>
-            <div className="sidebar_menu_list">
-              <div
-                className="gx-layout-sider-scrollbar"
-                style={{
-                  position: "relative",
-                  overflow: "hidden",
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
+        <div className="ant-layout-sider-children">
+          <div className="gx-sidebar-content">
+            <div className="brand-logo d-flex-item-right">
+              <div className="float-centre pt-4 text-center- ml-3">
+                <Link to={`${url}`} className="txt-white sidenavFonts ">
+                  <img
+                    src={Sabpaisalogo3}
+                    width={120}
+                    alt="sabpaisa"
+                    title="sabpaisa"
+                  />
+                </Link>
+              </div>
+              <div className="sidebar_menu_list">
                 <div
+                  className="gx-layout-sider-scrollbar"
                   style={{
-                    position: "absolute",
-                    inset: "0px",
-                    overflow: "scroll",
-                    marginRight: "-3px",
-                    marginBottom: "-3px",
+                    position: "relative",
+                    overflow: "hidden",
+                    width: "100%",
+                    height: "100%",
                   }}
-                >
-                  <ul
-                    className="desktop-sidenave-typography ant-menu ant-menu-dark ant-menu-root ant-menu-inline Satoshi-Medium"
-                    role="menu"
-                    style={{ background: "#140633" }}
-                  >
-                    {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true || roleBasedShowTab?.b2b === true) ? (
-                      <li className="ant-menu-item" role="menuitem">
-                        <Link to={`${url}`} className="txt-white sidenavFonts">
-                          <img src={dashboard} width={17} alt="sabpaisa" />
-                          <span>&nbsp;Dashboard</span>
-                        </Link>
-                      </li>
-                    ) : (
-                      <React.Fragment></React.Fragment>
-                    )}
-                    {renderMenuList}
-
-                  </ul>
-                </div>
-                <div
-                  className="track-horizontal"
-                  style={{ display: "none", opacity: 0 }}
                 >
                   <div
                     style={{
                       position: "absolute",
-                      width: "6px",
-                      transition: "opacity 200ms ease 0s",
-                      opacity: 0,
-                      right: "2px",
-                      bottom: "2px",
-                      top: "2px",
-                      borderRadius: "3px",
+                      inset: "0px",
+                      overflow: "scroll",
+                      marginRight: "-3px",
+                      marginBottom: "-3px",
                     }}
+                  >
+                    <ul
+                      className="desktop-sidenave-typography ant-menu ant-menu-dark ant-menu-root ant-menu-inline Satoshi-Medium"
+                      role="menu"
+                      style={{ background: "#140633" }}
+                    >
+                      {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true || roleBasedShowTab?.b2b === true) ? (
+                        <li className="ant-menu-item" role="menuitem">
+                          <Link to={`${url}`} className="txt-white sidenavFonts">
+                            <img src={dashboard} width={17} alt="sabpaisa" />
+                            <span>&nbsp;Dashboard</span>
+                          </Link>
+                        </li>
+                      ) : (
+                      <React.Fragment></React.Fragment>
+                      )}
+                      {renderMenuList}
+
+                      {auth?.user?.loginId.toString()==="11235" &&
+                        <div
+                          className="main-menu-container"
+                          // onClick={(e) => toggleMenu(e)}
+                          isToggle="true"
+                        >
+                          <ul  className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
+                           
+                              <li className="ant-menu-item" role="menuitem" >
+                                <Link
+                                  to={`${url}/transaction-history-merchant`}
+                                  className="txt-white sidenavFonts"
+                                >
+                                  {/* <i></i> */}
+                                  Transactions History
+                                </Link>
+                              </li>
+                              <li className="ant-menu-item" role="menuitem" >
+                                <Link
+                                  to={`${url}/settled-transaction-merchant`}
+                                  className="txt-white sidenavFonts"
+                                >
+                                  {/* <i></i> */}
+                                  Settlement Report
+                                </Link>
+                              </li>
+                          </ul>
+                        </div>
+                      }
+
+                    </ul>
+                  </div>
+                  <div
+                    className="track-horizontal"
+                    style={{ display: "none", opacity: 0 }}
                   >
                     <div
                       style={{
-                        position: "relative",
-                        display: "block",
-                        width: "100%",
-                        cursor: "pointer",
-                        borderRadius: "inherit",
-                        backgroundColor: "rgba(0, 0, 0, 0.2)",
-                        height: "30px",
-                        transform: "translateY(31.5706px)",
+                        position: "absolute",
+                        width: "6px",
+                        transition: "opacity 200ms ease 0s",
+                        opacity: 0,
+                        right: "2px",
+                        bottom: "2px",
+                        top: "2px",
+                        borderRadius: "3px",
                       }}
-                    ></div>
+                    >
+                      <div
+                        style={{
+                          position: "relative",
+                          display: "block",
+                          width: "100%",
+                          cursor: "pointer",
+                          borderRadius: "inherit",
+                          backgroundColor: "rgba(0, 0, 0, 0.2)",
+                          height: "30px",
+                          transform: "translateY(31.5706px)",
+                        }}
+                      ></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        </div>
       </aside>
     </React.Fragment>
-   
+
   );
 };
 

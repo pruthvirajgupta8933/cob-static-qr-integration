@@ -67,6 +67,10 @@ import { merchantSubscribedPlanData } from "../../slices/merchant-slice/productC
 import ReferZone from "../ApproverNVerifier/ReferZone";
 import GenerateMid from "../ApproverNVerifier/GenerateMid";
 import { generateWord } from "../../utilities/generateClientCode";
+import SettledTransactionHistoryDoitc from "./AllPages/reports/SettledTransactionHistoryDoitc.js";
+import { transactionHistoryDoitc } from "../../slices/merchant-slice/reportSlice";
+import TransactionHistoryDoitc from "./AllPages/reports/TransactionHistoryDoitc";
+import SettlementReportDoitc from "./AllPages/reports/SettlementReportDoitc";
 
 
 function Dashboard() {
@@ -198,6 +202,23 @@ function Dashboard() {
         >
           <ChangePassword />
         </MerchantRoute>
+
+        <MerchantRoute
+          exact
+          path={`${path}/settled-transaction-merchant`}
+          Component={SettlementReportDoitc}
+        >
+          <SettlementReportDoitc />
+        </MerchantRoute>
+
+        <MerchantRoute
+          exact
+          path={`${path}/transaction-history-merchant`}
+          Component={TransactionHistoryDoitc}
+        >
+          <TransactionHistoryDoitc />
+        </MerchantRoute>
+
         {roles?.merchant === true ? (
           <MerchantRoute
             exact

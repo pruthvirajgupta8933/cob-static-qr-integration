@@ -80,6 +80,8 @@ const API_LIVE = {
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
   RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
   ChargeBankTxnHistory: reportAPIURL + "/REST/GetChargebackTxnHistory",
+  GET_DOITC_SETTLED_TXN_HISTORY: url+"/SabPaisaReport/REST/GetDOITCSettledTxnHistory",
+  GET_DOITC_MERCHANT_TXN_HISTORY: url+"/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
 
   /* Transaction Enquiry */
   VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
@@ -92,8 +94,7 @@ const API_LIVE = {
   GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
   SMART_UPLOAD: "https://paybylink.sabpaisa.in/paymentlink/smartupload",
   EDIT_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/editCustomer/",
-  GET_CUSTOMER_TYPE:
-    "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
+  GET_CUSTOMER_TYPE: "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
   ADD_LINK: "https://paybylink.sabpaisa.in/paymentlink/addLink",
   ADD_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/addCustomers",
   DELETE_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/deleteCustomer",
@@ -269,6 +270,9 @@ const API_LIVE = {
 
   //menu list by login id
   menuListByLoginId: `${url}/menu-loginwise`,
+
+
+
 
 
 };

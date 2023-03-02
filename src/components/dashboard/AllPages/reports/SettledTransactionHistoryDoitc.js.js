@@ -5,18 +5,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import FormikController from "../../../_components/formik/FormikController";
-import axios from "axios"
+import FormikController from "../../../../_components/formik/FormikController";
 import _ from 'lodash';
-import { clearTransactionHistory, fetchTransactionHistorySlice } from '../../../slices/dashboardSlice';
-import { exportToSpreadsheet } from '../../../utilities/exportToSpreadsheet';
-import API_URL from '../../../config';
-import DropDownCountPerPage from '../../../_components/reuseable_components/DropDownCountPerPage';
-import { convertToFormikSelectJson } from '../../../_components/reuseable_components/convertToFormikSelectJson';
-import { axiosInstance } from '../../../utilities/axiosInstance';
+import { clearTransactionHistory, fetchTransactionHistorySlice } from '../../../../slices/dashboardSlice';
+import { exportToSpreadsheet } from '../../../../utilities/exportToSpreadsheet';
+import API_URL from '../../../../config';
+import { convertToFormikSelectJson } from '../../../../_components/reuseable_components/convertToFormikSelectJson';
+import { axiosInstance } from '../../../../utilities/axiosInstance';
+import { CSVLink } from "react-csv";
 
 
-function TransactionHistoryDownload() {
+function SettledTransactionHistoryDoitc() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
@@ -39,6 +38,7 @@ function TransactionHistoryDownload() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showData, setShowData] = useState([])
   const [updateTxnList, setUpdateTxnList] = useState([])
+  const [exportToCsv, setExportToCsv] = useState({})
   const [pageCount, setPageCount] = useState(0);
   const [dataFound, setDataFound] = useState(false)
   const [buttonClicked, isButtonClicked] = useState(false);
@@ -55,9 +55,7 @@ function TransactionHistoryDownload() {
   const initialValues = {
     clientCode: "",
     fromDate: "",
-    endDate: "",
-    transaction_status: "All",
-    payment_mode: "All"
+    endDate: ""
   }
 
   const validationSchema = Yup.object({
@@ -66,35 +64,11 @@ function TransactionHistoryDownload() {
     endDate: Yup.date().min(
       Yup.ref('fromDate'),
       "End date can't be before Start date"
-    ).required("Required"),
-    transaction_status: Yup.string().required("Required"),
-    payment_mode: Yup.string().required("Required"),
+    ).required("Required")
 
   })
 
 
-
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-
-  //     if(showData.length < 1 &&  (updateTxnList.length > 0 || updateTxnList.length===0)){
-  //       setDataFound(true)
-  //     }else{
-  //       setDataFound(false)
-  //     }  
-  //   });
-
-  // }, [showData, updateTxnList])
-
-  // function dayDiff(dateFrom, dateTo) {
-  //   const date1 = new Date(dateFrom);
-  //   const date2 = new Date(dateTo);
-  //   const diffTime = Math.abs(date2 - date1);
-  //   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-  //   // console.log(diffDays,"diffDays")
-  //   return diffDays;
-  //  }
 
 
 
@@ -123,24 +97,7 @@ function TransactionHistoryDownload() {
 
   let isExtraDataRequired = false;
   let extraDataObj = {}
-  if (user.roleId === 3 || user.roleId === 13) {
-    isExtraDataRequired = true
-    extraDataObj = { key: "All", value: "All" }
-  }
   const clientCodeOption = convertToFormikSelectJson("clientCode", "clientName", clientMerchantDetailsList, extraDataObj, isExtraDataRequired)
-
-  const tempPayStatus = [{ key: "All", value: "All" }]
-  paymentStatusList.map(item => {
-    if (item !== 'INITIATED') {
-      tempPayStatus.push({ key: item, value: item })
-    }
-  })
-
-
-  const tempPaymode = [{ key: "All", value: "All" }]
-  paymentModeList.map(item => {
-    tempPaymode.push({ key: item.paymodeId, value: item.paymodeName })
-  })
 
 
   const pagination = (pageNo) => {
@@ -155,8 +112,6 @@ function TransactionHistoryDownload() {
     const dateRangeValid = checkValidation(fromDate, endDate);
 
     if (dateRangeValid) {
-      // isLoading(true);
-      // isButtonClicked(true);
       let strClientCode, clientCodeArrLength = "";
       if (clientCode === "All") {
         const allClientCode = []
@@ -172,23 +127,18 @@ function TransactionHistoryDownload() {
 
       let paramData = {
         clientCode: strClientCode,
-        paymentStatus: transaction_status,
-        paymentMode: payment_mode,
         fromDate: fromDate,
         endDate: endDate,
-        length: "0",
-        page: "0",
-        NoOfClient: clientCodeArrLength
       }
       // console.log(paramData)
-      dispatch(fetchTransactionHistorySlice(paramData))
+      dispatch(fetch(paramData))
     }
 
 
   }
 
   const checkValidation = (fromDate = "", toDate = "") => {
-    var flag = true
+    let flag = true
     if (fromDate === 0 || toDate === '') {
       alert("Please select the date.");
       flag = false;
@@ -197,7 +147,6 @@ function TransactionHistoryDownload() {
       const date2 = new Date(toDate);
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      // console.log("days",diffDays);
       if (diffDays < 0 || diffDays > 90) {
         flag = false;
         alert("The date range should be under 3 months");
@@ -211,43 +160,6 @@ function TransactionHistoryDownload() {
   }
 
 
-  // const txnHistory =  () => {  
-  //   var isValid = checkValidation();
-  //         if(isValid){ 
-  //           // isLoading(true);
-  //           isButtonClicked(true);
-  //           let strClientCode, clientCodeArrLength ="";
-  //             if(clientCode==="All"){
-  //             const allClientCode = []
-  //             clientMerchantDetailsList?.map((item)=>{
-  //               allClientCode.push(item.clientCode)
-  //             })
-  //             clientCodeArrLength = allClientCode.length.toString();
-  //             strClientCode = allClientCode.join().toString();
-  //           }else{
-  //             strClientCode = clientCode;
-  //             clientCodeArrLength = "1"
-  //           }
-
-  //           let paramData = {
-  //             clientCode:strClientCode,
-  //             paymentStatus:txnStatus,
-  //             paymentMode:payModeId,
-  //             fromDate:fromDate,
-  //             endDate:toDate,
-  //             length: "0",
-  //             page: "0",
-  //             NoOfClient: clientCodeArrLength
-  //           } 
-
-  //           dispatch(fetchTransactionHistorySlice(paramData))
-  //     }else{
-  //       console.log('API not trigger!');
-  //     }
-  // } 
-
-
-
   useEffect(() => {
     // Remove initiated from transaction history response
     let TxnListArrUpdated = dashboard.transactionHistory
@@ -257,8 +169,6 @@ function TransactionHistoryDownload() {
     setPaginatedData(_(TxnListArrUpdated).slice(0).take(pageSize).value())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard])
-
-  // console.log("buttonclicked",buttonClicked);
 
 
 
@@ -280,11 +190,10 @@ function TransactionHistoryDownload() {
 
 
   useEffect(() => {
-    getPaymentStatusList();
-    paymodeList();
+
     SetTxnList([]);
     return () => {
-      dispatch(clearTransactionHistory())
+      // dispatch(clearTransactionHistory())
     }
 
   }, [])
@@ -312,7 +221,7 @@ function TransactionHistoryDownload() {
 
     const excelHeaderRow =
       ["S.No", "Trans ID", "Client Trans ID", "Challan Number / VAN", "Amount", "Transaction Date", "Payment Status	", "Payee First Name", "Payee Last Name", "Payee Mob number", "Payee Email", "Client Code", "Payment Mode", "Payee Address", "Udf1", "Udf2", "Udf3", "Udf4", "Udf5", "Udf6", "Udf7", "Udf8", "Udf9", "Udf10", "Udf11", "Udf20", "Gr.No", "Bank Response", "IFSC Code", "Payer Account No", "Bank Txn Id"];
-    let excelArr = [excelHeaderRow];
+    let excelArr = [];
     // eslint-disable-next-line array-callback-return
     txnList.map((item, index) => {
       // console.log(JSON.stringify(item));
@@ -355,6 +264,14 @@ function TransactionHistoryDownload() {
     })
     // console.log("excelArr",excelArr)
     const fileName = "Transactions-Report";
+
+    const csvReport = {
+      data: excelArr,
+      headers: excelHeaderRow,
+      filename: fileName
+    };
+
+  setExportToCsv(csvReport)
     exportToSpreadsheet(excelArr, fileName);
 
   }
@@ -379,7 +296,7 @@ function TransactionHistoryDownload() {
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Transactions History Download</h1>
+            <h1 className="m-b-sm gx-float-left">Settlement Report</h1>
           </div>
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid">
@@ -424,27 +341,6 @@ function TransactionHistoryDownload() {
                         />
                       </div>
 
-                      <div className="form-group col-md-2 mx-3">
-                        <FormikController
-                          control="select"
-                          label="Transactions Status"
-                          name="transaction_status"
-                          className="form-control rounded-0"
-                          options={tempPayStatus}
-                        />
-                      </div>
-
-                      <div className="form-group col-md-2 mx-3">
-                        <FormikController
-                          control="select"
-                          label="Payment Mode"
-                          name="payment_mode"
-                          className="form-control rounded-0"
-                          options={tempPaymode}
-                        />
-                      </div>
-
-
                     </div>
                     <div className="form-row" >
                       <div className="form-group col-md-1 ml-3">
@@ -460,113 +356,6 @@ function TransactionHistoryDownload() {
                   </Form>
                 )}
               </Formik>
-              {/*
-              <div className="row">
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>Client Name</label>
-                  <select
-                    className="ant-input"
-                    onChange={(e) => {
-                      getInputValue("clientCode", e.target.value);
-                    }}
-                  >
-                    {user.roleId===3 || user.roleId===13 ?
-                    <option value="All">All</option>
-                      :
-                    <option value="">Select</option> }
-                    {clientMerchantDetailsList?.map((item,i) => {
-                      return (
-                        <option value={item.clientCode} key={i}>
-                          {item.clientCode + " - " + item.clientName}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>From Date</label>
-                  <input
-                    rel={finalDate}
-                    type="date"
-                    className="ant-input"
-                    placeholder="From Date"
-                    onChange={(e) => {
-                      getInputValue("fromDate", e.target.value);
-                    }}
-                    max= {new Date().toLocaleDateString('en-ca')}
-                  />
-                </div>
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>To Date</label>
-                  <input
-                    type="date"
-                    max= {new Date().toLocaleDateString('en-ca')}
-                    className="ant-input"
-                    placeholder="To Date"
-                    onChange={(e) => {
-                      getInputValue("toDate", e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>Transactions Status</label>
-                  <select
-                    className="ant-input"
-                    onChange={(e) => {
-                      getInputValue("txnStatus", e.target.value);
-                    }}
-                  >
-                    <option value="All" key="0">All</option>
-                    {paymentStatusList.map((item, i) => {
-                      return  item!=='INITIATED'? <option value={item} key={i} rel={i} > {item} </option>: '';
-                    })}
-                  </select>
-                </div>
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>Payment Mode</label>
-                  <select
-                    className="ant-input"
-                    onChange={(e) => {
-                      getInputValue("payMode", e.target.value);
-                    }}
-                  >
-                    <option value="All">All</option>
-                    {paymentModeList.map((item,i) => {
-                      return (
-                        <option value={item.paymodeId} key={i}>
-                          {item.paymodeName}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <button
-                    className="view_history topmarg"
-                    onClick={() => txnHistory()}
-                  >
-                    Search
-                  </button>
-                      {  show ? 
-                        <button className="view_history topmarg" onClick={()=>exportToExcelFn()}>Export </button>
-                    :  '' }
-                  </div>
-
-
-                  {  show ? 
-                  <React.Fragment>
-                  <div className="col-lg-4 mrg-btm- bgcolor">
-                    <label>Search Transaction ID</label>
-                    <input type="text" className="ant-input" placeholder="Search here" onChange={(e)=>{SetSearchText(e.target.value)}} />
-                  </div>
-                  <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>Count per page</label>
-                  <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
-                  <DropDownCountPerPage datalength={txnList.length} />
-                  </select>
-                </div>                 
-                  </React.Fragment> : <></> }
-              </div> */}
             </div>
           </section>
 
@@ -711,4 +500,4 @@ function TransactionHistoryDownload() {
   );
 }
 
-export default TransactionHistoryDownload
+export default SettledTransactionHistoryDoitc
