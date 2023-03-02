@@ -57,6 +57,20 @@ const SideNavbar = () => {
             <ul id={`menulist_${m?.app_code}`} className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
               {m?.submenu?.map((sm) => (
                 sm?.is_active &&
+
+                auth?.user?.loginId.toString()==="11235" ?
+                (sm?.id !==5 && sm?.id !== 6) &&
+                <li className="ant-menu-item" role="menuitem" key={sm?.id}>
+                  <Link
+                    to={`${url}/${sm?.url}`}
+                    className="txt-white sidenavFonts"
+                  >
+                    <i className={sm?.sub_menu_icon}></i>
+                    &nbsp;{sm?.submenu_name}
+                  </Link>
+
+                </li>
+                :
                 <li className="ant-menu-item" role="menuitem" key={sm?.id}>
                   <Link
                     to={`${url}/${sm?.url}`}
