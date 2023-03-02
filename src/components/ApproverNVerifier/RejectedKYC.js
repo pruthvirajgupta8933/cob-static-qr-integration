@@ -240,15 +240,15 @@ const RejectedKYC = () => {
           )}
         </div>
         <div>
-          {data.length === 0 && !loadingState ? (
+          {data?.length === 0 && !loadingState ? (
             <h2 className="d-flex justify-content-center">No Data Found</h2>
           ) : (
             ""
           )}
         </div>
-        {data.length !== 0 && <Table row={rowData} col={colData} />}
+        {data?.length !== 0 && <Table row={rowData} col={colData} />}
         <nav>
-          {data.length > 0 && (
+          {data?.length > 0 && (
             <Paginataion
               dataCount={dataCount}
               pageSize={pageSize}
