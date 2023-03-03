@@ -206,46 +206,21 @@ const SettlementReportDoitc = () => {
 
   const exportToExcelFn = () => {
     const excelHeaderRow = [
-      "srNo",
-      "txn_id",
-      "client_txn_id",
-      "challan_no",
-      "payee_amount",
-      // { label: "srNo", key: "srNo" },
-
-      "trans_date",
-
-      "status",
-
-      "payee_first_name",
-
-      "client_code",
-
-      "payment_mode",
-
-      "client_name",
-
-      "settlement_date",
-
-      "settlement_amount",
-
-      "settlement_status",
-
-      "refund_status",
-
-      "refund_process_on",
-
-      "refunded_amount",
-
-      "refund_track_id",
-
-      "refund_reason",
-
-      "chargeback_status",
-
-      "charge_back_amount",
-
-      "charge_back_date"
+      "Trans ID",
+      "Client Trans ID",
+      "Challan Number / VAN",
+      "Amount",
+      "Transaction Date",
+      "Payment Status",
+      "Payer First Name",
+      "Client Code",
+      "Payment Mode",
+      "client name",
+      "Current Status",
+      "Processing date",
+      "Processing amount",
+      "Track id",
+      "Remarks"
     ];
     const excelArr = [];
     // console.log("txnList",txnList)
@@ -253,44 +228,21 @@ const SettlementReportDoitc = () => {
     merchantReportSlice?.settledTransactionHistoryDoitc?.data?.map((item, index) => {
 
       const allowDataToShow = {
-        'srNo': item.srNo === null ? "" : item.srNo,
         'txn_id': item.txn_id === null ? "" : item.txn_id,
         'client_txn_id': item.client_txn_id === null ? "" : item.client_txn_id,
         'challan_no': item.challan_no === null ? "" : item.challan_no,
-        // 'pg_pay_mode': item.pg_pay_mode === null ? "" : item.pg_pay_mode,
         'payee_amount': item.payee_amount === null ? "" : Number.parseFloat(item.payee_amount),
         'trans_date': item.trans_date === null ? "" : item.trans_date,
         'status': item.status === null ? "" : item.status,
         'payee_first_name': item.payee_first_name === null ? "" : item.payee_first_name,
-
         'client_code': item.client_code === null ? "" : item.client_code,
         'payment_mode': item.payment_mode === null ? "" : item.payment_mode,
-
         'client_name': item.client_name === null ? "" : item.client_name,
-
-        // 'paid_amount': item.paid_amount === null ? "" : Number.parseFloat(item.paid_amount),
-        // 'act_amount': item.act_amount === null ? "" : Number.parseFloat(item.act_amount),
-        // 'pag_response_code': item.pag_response_code === null ? "" : item.pag_response_code,
-        // 'resp_msg': item.resp_msg === null ? "" : item.resp_msg,
-
-        // 'pg_return_amount': item.pg_return_amount === null ? "" : Number.parseFloat(item.pg_return_amount),
-        // 'p_convcharges': item.p_convcharges === null ? "" : item.p_convcharges,
-        // 'p_ep_charges': item.p_ep_charges === null ? "" : item.p_ep_charges,
-        // 'p_gst': item.p_gst === null ? "" : item.p_gst,
-        'settlement_date': item.settlement_date === null ? "" : item.settlement_date,
-        'settlement_amount': item.settlement_amount === null ? "" : Number.parseFloat(item.settlement_amount),
-        'settlement_status': item.settlement_status === null ? "" : item.settlement_status,
-        // 'settlement_by': item.settlement_by === null ? "" : item.settlement_by,
         'refund_status': item.settlement_bank_ref === null ? "" : item.refund_status,
         'refund_process_on': item.refund_process_on === null ? "" : item.refund_process_on,
         'refunded_amount': item.refunded_amount === null ? "" : item.refunded_amount,
-
         'refund_track_id': item.refund_track_id === null ? "" : item.refund_track_id,
-        'refund_reason': item.refund_reason === null ? "" : item.refund_reason,
-        'chargeback_status': item.chargeback_status === null ? "" : item.chargeback_status,
-        'charge_back_amount': item.charge_back_amount === null ? "" : item.charge_back_amount,
-        'charge_back_date': item.charge_back_date === null ? "" : item.charge_back_date
-
+        'refund_reason': item.refund_reason === null ? "" : item.refund_reason
       };
 
       excelArr.push(Object.values(allowDataToShow));
@@ -302,7 +254,7 @@ const SettlementReportDoitc = () => {
     const csvReport = {
       data: excelArr,
       headers: excelHeaderRow,
-      filename: 'Settlement-Report'
+      filename: fileName
     };
 
     setExportToCsv(csvReport)
@@ -441,18 +393,21 @@ const SettlementReportDoitc = () => {
                     {txnList.length > 0 ? (
                       <tr>
                         <th> S.No </th>
-                        <th> Client Code </th>
-                        <th> Client Name </th>
-                        <th> SP Transaction ID </th>
-                        <th> GR Number </th>
-                        <th> Client Transaction ID </th>
+                        <th> Trans ID</th>
+                        <th> Client Trans ID </th>
+                        <th> Challan Number / VAN </th>
                         <th> Amount </th>
-                        <th> Settlement Amount </th>
-                        <th> Settlement Date </th>
-                        <th> Settlement Bank Ref </th>
-                        <th> Settlement UTR </th>
-                        <th> Settlement Remarks </th>
-                        {/* <th> Settlement By </th> */}
+                        <th> Transaction Date </th>
+                        <th> Payment Status </th>
+                        <th> Payer First Name</th>
+                        <th> Client Code </th>
+                        <th> Payment Mode </th>
+                        <th> client name </th>
+                        <th> Current Status </th>
+                        <th> Processing date </th>
+                        <th> Processing amount</th>
+                        <th> Track id</th>
+                        <th> Remarks</th>
                       </tr>
                     ) : (
                       <></>
@@ -464,24 +419,21 @@ const SettlementReportDoitc = () => {
                         return (
                           <tr key={i}>
                             <td>{i + 1}</td>
-                            <td>{item.client_code}</td>
-                            <td>{item.client_name}</td>
                             <td>{item.txn_id}</td>
-                            <td>{item?.gr_number}</td>
                             <td>{item.client_txn_id}</td>
-                            <td>
-                              {Number.parseFloat(item.payee_amount).toFixed(2)}
-                            </td>
-                            <td>
-                              {Number.parseFloat(
-                                item.settlement_amount
-                              ).toFixed(2)}
-                            </td>
-                            <td>{item.settlement_date}</td>
-                            <td>{item.settlement_bank_ref}</td>
-                            <td>{item.settlement_utr}</td>
-                            <td>{item.settlement_remarks}</td>
-                            {/* <td>{item.settlement_by}</td> */}
+                            <td>{item.challan_no}</td>
+                            <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
+                            <td>{item?.trans_date}</td>
+                            <td>{item.status}</td>
+                            <td>{item.payee_first_name}</td>
+                            <td>{item.client_code}</td>
+                            <td>{item.payment_mode}</td>
+                            <td>{item.client_name}</td>
+                            <td>{item.refund_status}</td>
+                            <td>{item.refund_process_on}</td>
+                            <td>{Number.parseFloat(item.refunded_amount).toFixed(2)}</td>
+                            <td>{item.refund_track_id}</td>
+                            <td>{item.refund_reason}</td>
                           </tr>
                         );
                       })}
