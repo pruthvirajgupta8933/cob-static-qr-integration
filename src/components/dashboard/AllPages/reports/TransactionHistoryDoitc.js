@@ -35,7 +35,7 @@ const TransactionHistoryDoitc = () => {
 
   const { isLoadingTxnHistory } = dashboard;
   // const { transactionHistoryDoitc } = merchantReportSlice;
-  
+
 
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
@@ -87,7 +87,7 @@ const TransactionHistoryDoitc = () => {
 
 
   const initialValues = {
-    clientCode:clientCode,
+    clientCode: clientCode,
     fromDate: todayDate,
     endDate: todayDate,
     transaction_status: "All",
@@ -135,7 +135,7 @@ const TransactionHistoryDoitc = () => {
     extraDataObj = { key: "All", value: "All" };
   }
 
-  const forClientCode=true;
+  const forClientCode = true;
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
     "clientName",
@@ -176,7 +176,7 @@ const TransactionHistoryDoitc = () => {
 
       let strClientCode,
         clientCodeArrLength = "";
-// console.log("clientCode",clientCode);
+      // console.log("clientCode",clientCode);
       if (values.clientCode === "All") {
 
         const allClientCode = [];
@@ -196,9 +196,9 @@ const TransactionHistoryDoitc = () => {
         paymentMode: payment_mode,
         fromDate: fromDate,
         endDate: endDate,
-    
+
       };
-      console.log("ddfdf")
+      // console.log("ddfdf")
       dispatch(transactionHistoryDoitc(paramData));
     }
   };
@@ -226,7 +226,7 @@ const TransactionHistoryDoitc = () => {
   useEffect(() => {
     // Remove initiated from transaction history response
     let TxnListArrUpdated = merchantReportSlice?.transactionHistoryDoitc?.data;
-    console.log("TxnListArrUpdated",TxnListArrUpdated)
+    console.log("TxnListArrUpdated", TxnListArrUpdated)
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
     SetTxnList(TxnListArrUpdated);
@@ -306,16 +306,19 @@ const TransactionHistoryDoitc = () => {
       "Client Trans ID",
       "Challan Number / VAN",
       "Amount",
+      "Conv. charges",
+      "EP charges",
+      "GST",
+      "Total Amount",
       "Transaction Date",
       "Payment Status	",
       "Payee First Name",
-      "Payee Last Name",
       "Payee Mob number",
       "Payee Email",
       "Client Code",
       "Payment Mode",
       "Payee Address",
-      "Encrypted PAN",
+      // "Encrypted PAN",
       "Udf1",
       "Udf2",
       "Udf3",
@@ -343,21 +346,19 @@ const TransactionHistoryDoitc = () => {
         txn_id: item.txn_id === null ? "" : item.txn_id,
         client_txn_id: item.client_txn_id === null ? "" : item.client_txn_id,
         challan_no: item.challan_no === null ? "" : item.challan_no,
-        payee_amount:
-          item.payee_amount === null
-            ? ""
-            : Number.parseFloat(item.payee_amount),
+        payee_amount:item.payee_amount === null ? "" : Number.parseFloat(item.payee_amount),
+        p_convcharges:item.p_convcharges === null ? "" : Number.parseFloat(item.p_convcharges),
+        p_ep_charges:item.p_ep_charges === null ? "" : Number.parseFloat(item.p_ep_charges),
+        p_gst: item.p_gst=== null ? "" : item.p_gst,
+        total_amount: item.total_amount === null ? "" : Number.parseFloat(item.total_amount),
         trans_date: item.trans_date === null ? "" : item.trans_date,
         status: item.status === null ? "" : item.status,
-        payee_first_name:
-          item.payee_first_name === null ? "" : item.payee_first_name,
-        payee_lst_name: item.payee_lst_name === null ? "" : item.payee_lst_name,
+        payee_first_name:item.payee_first_name === null ? "" : item.payee_first_name,
         payee_mob: item.payee_mob === null ? "" : item.payee_mob,
         payee_email: item.payee_email === null ? "" : item.payee_email,
         client_code: item.client_code === null ? "" : item.client_code,
         payment_mode: item.payment_mode === null ? "" : item.payment_mode,
         payee_address: item.payee_address === null ? "" : item.payee_address,
-        encrypted_pan: item.encrypted_pan === null ? "" : item.encrypted_pan,
         udf1: item.udf1 === null ? "" : item.udf1,
         udf2: item.udf2 === null ? "" : item.udf2,
         udf3: item.udf3 === null ? "" : item.udf3,
@@ -373,8 +374,7 @@ const TransactionHistoryDoitc = () => {
         gr_number: item.gr_number === null ? "" : item.gr_number,
         bank_message: item.bank_message === null ? "" : item.bank_message,
         ifsc_code: item.ifsc_code === null ? "" : item.ifsc_code,
-        payer_acount_number:
-          item.payer_acount_number === null ? "" : item.payer_acount_number,
+        payer_acount_number: item.payer_acount_number === null ? "" : item.payer_acount_number,
         bank_txn_id: item.bank_txn_id === null ? "" : item.bank_txn_id,
       };
 
@@ -384,7 +384,7 @@ const TransactionHistoryDoitc = () => {
     const csvReport = {
       data: excelArr,
       headers: excelHeaderRow,
-      filename: 'Transactions-Report'
+      filename: fileName
     };
 
     setExportToCsv(csvReport)
@@ -438,7 +438,7 @@ const TransactionHistoryDoitc = () => {
                             className="form-control rounded-0"
                             options={clientCodeOption}
                           />
-                          
+
                         </div>
                       )}
 
@@ -507,7 +507,7 @@ const TransactionHistoryDoitc = () => {
                               >
                                 Export
                               </button> */}
-                          <CSVLink  className="btn btn-sm text-white btn-primary" {...exportToCsv}>Export To CSV</CSVLink>
+                              <CSVLink className="btn btn-sm text-white btn-primary" {...exportToCsv}>Export To CSV</CSVLink>
 
                             </div>
                           </div>
@@ -519,7 +519,7 @@ const TransactionHistoryDoitc = () => {
                   </Form>
                 )}
               </Formik>
-             
+
             </div>
           </section>
 
@@ -566,16 +566,20 @@ const TransactionHistoryDoitc = () => {
                         <th> Client Trans ID </th>
                         <th> Challan Number / VAN </th>
                         <th> Amount </th>
+                        <th> Conv. Charges</th>
+                        <th> EP charges </th>
+                        <th> GST </th>
+                        <th> Total Amount </th>
                         <th> Transaction Date </th>
                         <th> Payment Status </th>
                         <th> Payer First Name </th>
-                        <th> Payer Last Name </th>
+                        {/* <th> Payer Last Name </th> */}
                         <th> Payer Mob number </th>
                         <th> Payer Email </th>
                         <th> Client Code </th>
                         <th> Payment Mode </th>
                         <th> Payer Address </th>
-                        <th> Encrypted PAN </th>
+                        {/* <th> Encrypted PAN </th> */}
                         <th> Udf1 </th>
                         <th> Udf2 </th>
                         <th> Udf3 </th>
@@ -607,19 +611,21 @@ const TransactionHistoryDoitc = () => {
                             <td>{item.txn_id}</td>
                             <td>{item.client_txn_id}</td>
                             <td>{item.challan_no}</td>
-                            <td>
-                              {Number.parseFloat(item.payee_amount).toFixed(2)}
-                            </td>
+                            <td>{Number.parseFloat(item.payee_amount).toFixed(2)}</td>
+                            <td>{Number.parseFloat(item.p_convcharges).toFixed(2)}</td>
+                            <td>{Number.parseFloat(item.p_ep_charges).toFixed(2)}</td>
+                            <td>{item.p_gst}</td>
+                            <td>{Number.parseFloat(item.total_amount).toFixed(2)}</td>
                             <td>{item.trans_date}</td>
                             <td>{item.status}</td>
                             <td>{item.payee_first_name}</td>
-                            <td>{item.payee_lst_name}</td>
+                            {/* <td>{item.payee_lst_name}</td> */}
                             <td>{item.payee_mob}</td>
                             <td>{item.payee_email}</td>
                             <td>{item.client_code}</td>
                             <td>{item.payment_mode}</td>
                             <td>{item.payee_address}</td>
-                            <td>{item.encrypted_pan}</td>
+                            {/* <td>{item.encrypted_pan}</td> */}
                             <td>{item.udf1}</td>
                             <td>{item.udf2}</td>
                             <td>{item.udf3}</td>
