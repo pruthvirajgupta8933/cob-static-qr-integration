@@ -236,7 +236,7 @@ const TransactionHistoryDoitc = () => {
         .take(pageSize)
         .value()
     );
-    exportToExcelFn();
+    // exportToExcelFn();
   }, [merchantReportSlice]);
 
 
@@ -337,13 +337,13 @@ const TransactionHistoryDoitc = () => {
       "Payer Account No",
       "Bank Txn Id",
     ];
-    let excelArr = [];
+    let excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     merchantReportSlice?.transactionHistoryDoitc?.data?.map((item, index) => {
 
       const allowDataToShow = {
         srNo: item.srNo === null ? "" : index + 1,
-        txn_id: item.txn_id === null ? "" : item.txn_id,
+        txn_id: item.txn_id === null ? "" : item?.txn_id.toString(),
         client_txn_id: item.client_txn_id === null ? "" : item.client_txn_id,
         challan_no: item.challan_no === null ? "" : item.challan_no,
         payee_amount:item.payee_amount === null ? "" : Number.parseFloat(item.payee_amount),
@@ -381,14 +381,14 @@ const TransactionHistoryDoitc = () => {
       excelArr.push(Object.values(allowDataToShow));
     });
     const fileName = "Transactions-Report";
-    const csvReport = {
-      data: excelArr,
-      headers: excelHeaderRow,
-      filename: fileName
-    };
+    // const csvReport = {
+    //   data: excelArr,
+    //   headers: excelHeaderRow,
+    //   filename: fileName
+    // };
 
-    setExportToCsv(csvReport)
-    // exportToSpreadsheet(excelArr, fileName);
+    // setExportToCsv(csvReport)
+    exportToSpreadsheet(excelArr, fileName);
   };
 
   const today = new Date();
@@ -499,15 +499,15 @@ const TransactionHistoryDoitc = () => {
                         <>
                           <div className="form-row">
                             <div className="form-group col-md-1 ml-4">
-                              {/* <button
+                              <button
                                 className="btn btn-sm text-white"
                                 type="button"
                                 onClick={() => exportToExcelFn()}
                                 style={{ backgroundColor: "rgb(1, 86, 179)" }}
                               >
                                 Export
-                              </button> */}
-                              <CSVLink className="btn btn-sm text-white btn-primary" {...exportToCsv}>Export To CSV</CSVLink>
+                              </button>
+                              {/* <CSVLink className="btn btn-sm text-white btn-primary" {...exportToCsv}>Export To CSV</CSVLink> */}
 
                             </div>
                           </div>
