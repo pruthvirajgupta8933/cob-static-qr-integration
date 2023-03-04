@@ -12,7 +12,7 @@ import { exportToSpreadsheet } from '../../../../utilities/exportToSpreadsheet';
 import API_URL from '../../../../config';
 import { convertToFormikSelectJson } from '../../../../_components/reuseable_components/convertToFormikSelectJson';
 import { axiosInstance } from '../../../../utilities/axiosInstance';
-import { CSVLink } from "react-csv";
+// import { CSVLink } from "react-csv";
 
 
 function SettledTransactionHistoryDoitc() {
