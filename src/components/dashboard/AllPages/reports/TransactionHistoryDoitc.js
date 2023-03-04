@@ -21,7 +21,7 @@ import { axiosInstance } from "../../../../utilities/axiosInstance";
 import Notification from "../../../../_components/reuseable_components/Notification";
 import moment from "moment";
 import { clearTransactionHistoryDoitc, transactionHistoryDoitc } from "../../../../slices/merchant-slice/reportSlice";
-import { CSVLink } from "react-csv";
+// import { CSVLink } from "react-csv";
 
 
 const TransactionHistoryDoitc = () => {
@@ -236,7 +236,6 @@ const TransactionHistoryDoitc = () => {
         .take(pageSize)
         .value()
     );
-    // exportToExcelFn();
   }, [merchantReportSlice]);
 
 
@@ -299,26 +298,27 @@ const TransactionHistoryDoitc = () => {
     SetSearchText(e.target.value);
   };
 
-  const exportToExcelFn = () => {
+
+  // export to excel
+  const exportToExcelFn = (exportType) => {
     const excelHeaderRow = [
       "S.No",
       "Trans ID",
       "Client Trans ID",
       "Challan Number / VAN",
       "Amount",
-      "Conv. charges",
-      "EP charges",
+      "Conv. Charges",
+      "EP Charges",
       "GST",
       "Total Amount",
       "Transaction Date",
-      "Payment Status	",
+      "Payment Status",
       "Payee First Name",
-      "Payee Mob number",
+      "Payee Mob. Number",
       "Payee Email",
       "Client Code",
       "Payment Mode",
       "Payee Address",
-      // "Encrypted PAN",
       "Udf1",
       "Udf2",
       "Udf3",
@@ -340,56 +340,95 @@ const TransactionHistoryDoitc = () => {
     let excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     merchantReportSlice?.transactionHistoryDoitc?.data?.map((item, index) => {
-
       const allowDataToShow = {
-        srNo: item.srNo === null ? "" : index + 1,
-        txn_id: item.txn_id === null ? "" : item?.txn_id.toString(),
-        client_txn_id: item.client_txn_id === null ? "" : item.client_txn_id,
-        challan_no: item.challan_no === null ? "" : item.challan_no,
-        payee_amount:item.payee_amount === null ? "" : Number.parseFloat(item.payee_amount),
-        p_convcharges:item.p_convcharges === null ? "" : Number.parseFloat(item.p_convcharges),
-        p_ep_charges:item.p_ep_charges === null ? "" : Number.parseFloat(item.p_ep_charges),
-        p_gst: item.p_gst=== null ? "" : item.p_gst,
-        total_amount: item.total_amount === null ? "" : Number.parseFloat(item.total_amount),
-        trans_date: item.trans_date === null ? "" : item.trans_date,
-        status: item.status === null ? "" : item.status,
-        payee_first_name:item.payee_first_name === null ? "" : item.payee_first_name,
-        payee_mob: item.payee_mob === null ? "" : item.payee_mob,
-        payee_email: item.payee_email === null ? "" : item.payee_email,
-        client_code: item.client_code === null ? "" : item.client_code,
-        payment_mode: item.payment_mode === null ? "" : item.payment_mode,
-        payee_address: item.payee_address === null ? "" : item.payee_address,
-        udf1: item.udf1 === null ? "" : item.udf1,
-        udf2: item.udf2 === null ? "" : item.udf2,
-        udf3: item.udf3 === null ? "" : item.udf3,
-        udf4: item.udf4 === null ? "" : item.udf4,
-        udf5: item.udf5 === null ? "" : item.udf5,
-        udf6: item.udf6 === null ? "" : item.udf6,
-        udf7: item.udf7 === null ? "" : item.udf7,
-        udf8: item.udf8 === null ? "" : item.udf8,
-        udf9: item.udf9 === null ? "" : item.udf9,
-        udf10: item.udf10 === null ? "" : item.udf10,
-        udf11: item.udf11 === null ? "" : item.udf11,
-        udf20: item.udf20 === null ? "" : item.udf20,
-        gr_number: item.gr_number === null ? "" : item.gr_number,
-        bank_message: item.bank_message === null ? "" : item.bank_message,
-        ifsc_code: item.ifsc_code === null ? "" : item.ifsc_code,
-        payer_acount_number: item.payer_acount_number === null ? "" : item.payer_acount_number,
-        bank_txn_id: item.bank_txn_id === null ? "" : item.bank_txn_id,
+        srNo: item.srNo === null ? "null" : index + 1,
+        txn_id: item.txn_id === null ? "null" : item?.txn_id.toString(),
+        client_txn_id: item.client_txn_id === null ? "null" : item.client_txn_id,
+        challan_no: item.challan_no === null ? "null" : item.challan_no,
+        payee_amount: item.payee_amount === null ? "null" : Number.parseFloat(item.payee_amount),
+        p_convcharges: item.p_convcharges === null ? "null" : Number.parseFloat(item.p_convcharges),
+        p_ep_charges: item.p_ep_charges === null ? "null" : Number.parseFloat(item.p_ep_charges),
+        p_gst: item.p_gst === null ? "null" : item.p_gst,
+        total_amount: item.total_amount === null ? "null" : Number.parseFloat(item.total_amount),
+        trans_date: item.trans_date === null ? "null" : item.trans_date,
+        status: item.status === null ? "null" : item.status,
+        payee_first_name: item.payee_first_name === null ? "null" : item.payee_first_name,
+        payee_mob: item.payee_mob === null ? "null" : item.payee_mob,
+        payee_email: item.payee_email === null ? "null" : item.payee_email,
+        client_code: item.client_code === null ? "null" : item.client_code,
+        payment_mode: item.payment_mode === null ? "null" : item.payment_mode,
+        payee_address: item.payee_address === null ? "null" : item.payee_address,
+        udf1: item.udf1 === null ? "null" : item.udf1,
+        udf2: item.udf2 === null ? "null" : item.udf2,
+        udf3: item.udf3 === null ? "null" : item.udf3,
+        udf4: item.udf4 === null ? "null" : item.udf4,
+        udf5: item.udf5 === null ? "null" : item.udf5,
+        udf6: item.udf6 === null ? "null" : item.udf6,
+        udf7: item.udf7 === null ? "null" : item.udf7,
+        udf8: item.udf8 === null ? "null" : item.udf8,
+        udf9: item.udf9 === null ? "null" : item.udf9,
+        udf10: item.udf10 === null ? "null" : item.udf10,
+        udf11: item.udf11 === null ? "null" : item.udf11,
+        udf20: item.udf20 === null ? "null" : item.udf20,
+        gr_number: item.gr_number === null ? "null" : item.gr_number,
+        bank_message: item.bank_message === null ? "null" : item.bank_message,
+        ifsc_code: item.ifsc_code === null ? "null" : item.ifsc_code,
+        payer_acount_number: item.payer_acount_number === null ? "null" : item.payer_acount_number,
+        bank_txn_id: item.bank_txn_id === null ? "null" : item.bank_txn_id,
       };
-
       excelArr.push(Object.values(allowDataToShow));
     });
-    const fileName = "Transactions-Report";
-    // const csvReport = {
-    //   data: excelArr,
-    //   headers: excelHeaderRow,
-    //   filename: fileName
-    // };
 
-    // setExportToCsv(csvReport)
-    exportToSpreadsheet(excelArr, fileName);
+  
+
+    // Function to convert data to CSV format
+    //exportType = csv/ csv-ms-excel
+    function arrayToCSV(data, exportType) {
+      const csv = data.map(row => row.map(val => {
+        if (typeof val === 'number') {
+          if (val.toString().length >= 14) {
+            return `${val.toString()};`
+          }
+          return val.toString()
+        } else {
+          return `"${val.toString()}"`;
+        }
+
+      })
+        .join(exportType === 'csv' ? ',' : ';')).join('\n');
+      return csv;
+    }
+
+    // Function to download CSV file
+    function downloadCSV(data, filename, exportType) {
+      const csv = arrayToCSV(data, exportType);
+      const blob = new Blob([csv], {
+        type: "text/plain;charset=utf-8;"
+      });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    const fileName = "Transactions-Report";
+    if (exportType === "xlxs") {
+      exportToSpreadsheet(excelArr, fileName + "-xlxs", exportType);
+    } else if (exportType === "csv") {
+      downloadCSV(excelArr, fileName + "-csv.csv", exportType);
+    } else if (exportType === "csv-ms-excel") {
+      downloadCSV(excelArr, fileName + "-csv-xlxs.csv", exportType);
+    }
+
+
   };
+
+
+
 
   const today = new Date();
   const lastThreeMonth = new Date(today);
@@ -498,18 +537,53 @@ const TransactionHistoryDoitc = () => {
                       {txnList?.length > 0 ? (
                         <>
                           <div className="form-row">
-                            <div className="form-group col-md-1 ml-4">
+                            <div className="dropdown form-group col-md-1 ml-4">
+                              <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Export
+                              </button>
+                              <div className="dropdown-menu bg-light p-2" aria-labelledby="dropdownMenu2">
+                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button"  onClick={() => exportToExcelFn("csv")}>CSV</button>
+                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button" onClick={() => exportToExcelFn("csv-ms-excel")}>CSV for MS-Excel</button>
+                                <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button"  onClick={() => exportToExcelFn("xlxs")}>Excel</button>
+                              </div>
+                            </div>
+
+                            {/* <div className="form-group col-md-1 ml-4">
                               <button
                                 className="btn btn-sm text-white"
                                 type="button"
-                                onClick={() => exportToExcelFn()}
+                                onClick={() => exportToExcelFn("xlxs")}
                                 style={{ backgroundColor: "rgb(1, 86, 179)" }}
                               >
                                 Export
                               </button>
-                              {/* <CSVLink className="btn btn-sm text-white btn-primary" {...exportToCsv}>Export To CSV</CSVLink> */}
+                            </div> */}
+                            {/* <div className="form-group col-md-1 ml-4">
 
-                            </div>
+
+                              <button
+                                className="btn btn-sm text-white"
+                                type="button"
+                                onClick={() => exportToExcelFn("csv")}
+                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                              >
+                                Export To CSV
+                              </button>
+
+                            </div> */}
+                            {/* <div className="form-group col-md-1 ml-4">
+
+                              <button
+                                className="btn btn-sm text-white"
+                                type="button"
+                                onClick={() => exportToExcelFn("csv-ms-excel")}
+                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                              >
+                                Export To CSV For MS-Excel
+                              </button>
+                         
+
+                            </div> */}
                           </div>
                         </>
                       ) : (
@@ -567,19 +641,17 @@ const TransactionHistoryDoitc = () => {
                         <th> Challan Number / VAN </th>
                         <th> Amount </th>
                         <th> Conv. Charges</th>
-                        <th> EP charges </th>
+                        <th> EP. Charges </th>
                         <th> GST </th>
                         <th> Total Amount </th>
                         <th> Transaction Date </th>
                         <th> Payment Status </th>
                         <th> Payer First Name </th>
-                        {/* <th> Payer Last Name </th> */}
-                        <th> Payer Mob number </th>
+                        <th> Payer Mob. Number </th>
                         <th> Payer Email </th>
                         <th> Client Code </th>
                         <th> Payment Mode </th>
                         <th> Payer Address </th>
-                        {/* <th> Encrypted PAN </th> */}
                         <th> Udf1 </th>
                         <th> Udf2 </th>
                         <th> Udf3 </th>
@@ -619,13 +691,11 @@ const TransactionHistoryDoitc = () => {
                             <td>{item.trans_date}</td>
                             <td>{item.status}</td>
                             <td>{item.payee_first_name}</td>
-                            {/* <td>{item.payee_lst_name}</td> */}
                             <td>{item.payee_mob}</td>
                             <td>{item.payee_email}</td>
                             <td>{item.client_code}</td>
                             <td>{item.payment_mode}</td>
                             <td>{item.payee_address}</td>
-                            {/* <td>{item.encrypted_pan}</td> */}
                             <td>{item.udf1}</td>
                             <td>{item.udf2}</td>
                             <td>{item.udf3}</td>
