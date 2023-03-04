@@ -226,7 +226,7 @@ const SettlementReportDoitc = () => {
       "Settlement Date",
       "Chargeback Amount",
       "Chargeback Date",
-      "Settlement Status",
+      "Chargeback Status",
 
     ];
     const excelArr = [excelHeaderRow];
