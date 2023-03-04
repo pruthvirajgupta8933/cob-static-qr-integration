@@ -144,7 +144,7 @@ const SettlementReportDoitc = () => {
         .take(pageSize)
         .value()
     );
-    exportToExcelFn()
+    // exportToExcelFn()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [merchantReportSlice]);
 
@@ -220,9 +220,16 @@ const SettlementReportDoitc = () => {
       "Processing date",
       "Processing amount",
       "Track id",
-      "Remarks"
+      "Remarks",
+      "Settlement Amount",
+      "Current Status",
+      "Settlement Date",
+      "Chargeback Amount",
+      "Chargeback Date",
+      "Settlement Status",
+
     ];
-    const excelArr = [];
+    const excelArr = [excelHeaderRow];
     // console.log("txnList",txnList)
     // eslint-disable-next-line array-callback-return
     merchantReportSlice?.settledTransactionHistoryDoitc?.data?.map((item, index) => {
@@ -242,7 +249,13 @@ const SettlementReportDoitc = () => {
         'refund_process_on': item.refund_process_on === null ? "" : item.refund_process_on,
         'refunded_amount': item.refunded_amount === null ? "" : item.refunded_amount,
         'refund_track_id': item.refund_track_id === null ? "" : item.refund_track_id,
-        'refund_reason': item.refund_reason === null ? "" : item.refund_reason
+        'refund_reason': item.refund_reason === null ? "" : item.refund_reason,
+        'settlement_amount': item.settlement_amount === null ? "" : Number.parseFloat(item.settlement_amount),
+        'settlement_status': item.settlement_status === null ? "" : item.settlement_status,
+        'settlement_date': item.settlement_date === null ? "" : item.settlement_date,
+        'charge_back_amount': item.charge_back_amount === null ? "" : Number.parseFloat(item.charge_back_amount),
+        'charge_back_date': item.charge_back_date === null ? "" : item.charge_back_date,
+        'chargeback_status': item.chargeback_status === null ? "" : item.chargeback_status,
       };
 
       excelArr.push(Object.values(allowDataToShow));
@@ -251,13 +264,15 @@ const SettlementReportDoitc = () => {
     // console.log("excelArr", excelArr)
     const fileName = "Settlement-Report";
 
-    const csvReport = {
-      data: excelArr,
-      headers: excelHeaderRow,
-      filename: fileName
-    };
+    // const csvReport = {
+    //   data: excelArr,
+    //   headers: excelHeaderRow,
+    //   filename: fileName
+    // };
 
-    setExportToCsv(csvReport)
+    // setExportToCsv(csvReport)
+    exportToSpreadsheet(excelArr, fileName);
+
 
   };
 
@@ -328,15 +343,15 @@ const SettlementReportDoitc = () => {
                       </div>
                       {txnList?.length > 0 ? (
                         <div className="form-group col-md-1">
-                          {/* <button
+                          <button
                             className="btn btn-sm text-white"
                             style={{ backgroundColor: "rgb(1, 86, 179)" }}
                             type="button"
                             onClick={() => exportToExcelFn()}
                           >
                             Export{" "}
-                          </button> */}
-                          <CSVLink className="btn btn-sm text-white btn-primary" {...exportToCsv}>Export To CSV</CSVLink>
+                          </button>
+                          {/* <CSVLink className="btn btn-sm text-white btn-primary" {...exportToCsv}>Export To CSV</CSVLink> */}
                         </div>
                       ) : (
                         <></>
