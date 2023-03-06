@@ -218,9 +218,9 @@ const SettlementReportDoitc = () => {
       "Payment Mode",
       "Client Name",
 
-      "Current Status",
-      "Processing Date",
-      "Processing Amount",
+      "Settlement Status",
+      "Settlement Date",
+      "Settlement Amount",
       "Refund Status",
       "Refunded Date",
 
@@ -465,9 +465,9 @@ const SettlementReportDoitc = () => {
                         <th> Client Code </th>
                         <th> Payment Mode </th>
                         <th> Client Name </th>
-                        <th> Current Status </th>
-                        <th> Processing Date </th>
-                        <th> Processing Amount</th>
+                        <th> Settlement Status </th>
+                        <th> Settlement Date </th>
+                        <th> Settlement Amount</th>
                         <th> Refund Status</th>
                         <th> Refunded Date</th>
                         <th> Refunded Amount</th>
