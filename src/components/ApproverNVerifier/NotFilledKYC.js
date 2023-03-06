@@ -12,6 +12,7 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
+import CustomLoader from "../../_components/loader/index";
 
 const rowData = NotFilledKYCData;
 const NotFilledKYC = () => {
@@ -159,17 +160,20 @@ const NotFilledKYC = () => {
       <div className="col-md-12 col-md-offset-4">
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
-            <Table row={rowData} col={colData}
-                  dataCount={dataCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage} />
+            <Table
+              row={rowData}
+              col={colData}
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+            />
           )}
         </div>
-        {loadingState && (
-          <p className="text-center spinner-roll">{<Spinner />}</p>
+        <CustomLoader loadingState={loadingState} />
+        {data?.length == 0 && !loadingState && (
+          <h2 className="text-center">No data Found</h2>
         )}
-        {data?.length == 0 && !loadingState && <h2 className="text-center">No data Found</h2>}
       </div>
     </div>
   );
