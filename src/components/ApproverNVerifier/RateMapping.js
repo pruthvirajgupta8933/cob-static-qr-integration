@@ -10,7 +10,8 @@ import NavBar from "../../components/dashboard/NavBar/NavBar";
 import ViewRateMapping from "./ViewRateMapping";
 import { AssignZoneData } from "../../utilities/tableData";
 import Spinner from "./Spinner";
-import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown"
+import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
+import CustomLoader from "../../_components/loader";
 
 function RateMapping() {
   const rowData = AssignZoneData;
@@ -27,7 +28,6 @@ function RateMapping() {
   const [openZoneModal, setOpenModal] = useState(false);
   const [modalDisplayData, setModalDisplayData] = useState({});
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
@@ -134,26 +134,25 @@ function RateMapping() {
     setPageSize(pageSize);
   };
 
-    //options for search dropdown filter
-    const optionSearchData = [
-      {
-        name: "Select Onboard Type",
-        value: "",
-      },
-      {
-        name: "All",
-        value: "",
-      },
-      {
-        name: "Online",
-        value: "online",
-      },
-      {
-        name: "Offline",
-        value: "offline",
-      },
-    ];
-
+  //options for search dropdown filter
+  const optionSearchData = [
+    {
+      name: "Select Onboard Type",
+      value: "",
+    },
+    {
+      name: "All",
+      value: "",
+    },
+    {
+      name: "Online",
+      value: "online",
+    },
+    {
+      name: "Offline",
+      value: "offline",
+    },
+  ];
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("MM/DD/YYYY");
@@ -187,14 +186,14 @@ function RateMapping() {
               </div>
             </div>
             <div className="col-lg-4 mrg-btm- bgcolor">
-            <CountPerPageFilter
+              <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}
                 changePageSize={changePageSize}
               />
             </div>
             <div className="form-group col-lg-3 col-md-12 mt-2">
-            <SearchbyDropDown
+              <SearchbyDropDown
                 kycSearch={kycSearch}
                 searchText={searchText}
                 isSearchByDropDown={isSearchByDropDown}
@@ -217,11 +216,9 @@ function RateMapping() {
                   />
                 )}
               </div>
-              {loadingState && (
-                <p className="text-center spinner-roll">{<Spinner />}</p>
-              )}
+              <CustomLoader loadingState={loadingState} />
               {data?.length == 0 && !loadingState && (
-                <h2 className="text-center font-weight-bold">No Data Found</h2>
+                <h2 className="text-center">No data Found</h2>
               )}
             </div>
           </div>

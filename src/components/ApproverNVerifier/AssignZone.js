@@ -6,14 +6,13 @@ import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import ViewZoneModal from "./ViewZoneModal";
 import moment from "moment";
-import Paginataion from "../../_components/table_components/pagination/Pagination";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import Table from "../../_components/table_components/table/Table";
 import { AssignZoneData } from "../../utilities/tableData";
-import Spinner from "./Spinner";
 import NavBar from "../../components/dashboard/NavBar/NavBar";
+import CustomLoader from "../../_components/loader";
 
 function AssignZone() {
   const rowData = AssignZoneData;
@@ -24,16 +23,13 @@ function AssignZone() {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [displayPageNumber, setDisplayPageNumber] = useState([]);
   const [modalDisplayData, setModalDisplayData] = useState({});
   const [openZoneModal, setOpenModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
-  const approvedSearch = (e) => {
-    setSearchText(e.target.value);
-  };
+
 
   const kycSearch = (e, fieldType) => {
     fieldType === "text"
@@ -203,11 +199,9 @@ function AssignZone() {
                   />
                 )}
               </div>
-              {loadingState && (
-                <p className="text-center spinner-roll">{<Spinner />}</p>
-              )}
+              <CustomLoader loadingState={loadingState} />
               {data?.length == 0 && !loadingState && (
-                <h2 className="text-center font-weight-bold">No Data Found</h2>
+                <h2 className="text-center font-weight-bold">No data Found</h2>
               )}
             </div>
           </div>

@@ -172,7 +172,7 @@ const NotFilledKYC = () => {
         </div>
         <CustomLoader loadingState={loadingState} />
         {data?.length == 0 && !loadingState && (
-          <h2 className="text-center">No data Found</h2>
+          <h2 className="text-center font-weight-bold">No Data Found</h2>
         )}
       </div>
     </div>

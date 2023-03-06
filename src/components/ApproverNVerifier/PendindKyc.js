@@ -11,10 +11,10 @@ import moment from "moment";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../_components/table_components/table/Table";
 import { PendindKycData } from "../../utilities/tableData";
-import Paginataion from "../../_components/table_components/pagination/Pagination";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
+import CustomLoader from "../../_components/loader";
 
 const PendindKyc = () => {
   const rowData = PendindKycData;
@@ -237,11 +237,9 @@ const PendindKyc = () => {
             />
           )}
         </div>
-        {loadingState && (
-          <p className="text-center spinner-roll">{<Spinner />}</p>
-        )}
+        <CustomLoader loadingState={loadingState} />
         {data?.length == 0 && !loadingState && (
-          <h2 className="text-center font-weight-bold">No Data Found</h2>
+          <h2 className="text-center font-weight-bold">No data Found</h2>
         )}
       </div>
     </div>

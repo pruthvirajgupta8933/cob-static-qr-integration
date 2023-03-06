@@ -15,6 +15,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import Table from "../../_components/table_components/table/Table";
+import CustomLoader from "../../_components/loader";
 
 
 function ApprovedMerchant() {
@@ -258,10 +259,10 @@ function ApprovedMerchant() {
             changeCurrentPage={changeCurrentPage} />
           )}
         </div>
-        {loadingState && (
-          <p className="text-center spinner-roll">{<Spinner />}</p>
+        <CustomLoader loadingState={loadingState} />
+        {data?.length == 0 && !loadingState && (
+          <h2 className="text-center font-weight-bold">No data Found</h2>
         )}
-        {data?.length == 0 && !loadingState && <h2 className="text-center font-weight-bold">No Data Found</h2>}
       </div>
     </div>
   );
