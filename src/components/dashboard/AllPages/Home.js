@@ -102,22 +102,24 @@ function Home() {
         {/* KYC ALETT */}
         {roles?.merchant === true ?
           <React.Fragment>
-            {unPaidProduct?.length > 0 && unPaidProduct?.map((data) => (
-              <AlertBox
-                key={data?.clientSubscribedPlanDetailsId}
+            {unPaidProduct?.length > 0 &&  
+               <AlertBox
+                cardData={unPaidProduct}
+                // key={data?.clientSubscribedPlanDetailsId}
                 heading={`Payment Alert`}
-                text1={`Kindly pay the amount of the subscribed product` }
-                text2={`Product : ${data?.applicationName}` }
-                text3={`Product Plan : ${data?.planName}` }
-                linkUrl={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}
+                // text1={`Kindly pay the amount of the subscribed product` }
+                // text2={`Product : ${data?.applicationName}` }
+                // text3={`Product Plan : ${data?.planName}`}
+                // linkUrl={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}
                 linkName={'Make Payment'}
                 bgColor={'alert-danger'}
               />
-            ))}
+              }
             <KycAlert />
           </React.Fragment>
           : <></>}
 
+    
         <div className="announcement-banner-container_new  announcement-banner">
           <div className="onboarding-illustration-top">
             <img
