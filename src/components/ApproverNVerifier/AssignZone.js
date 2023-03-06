@@ -192,20 +192,23 @@ function AssignZone() {
             </div>
             <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
               <div className="scroll overflow-auto">
-                {loadingState ? (
-                  <p className="text-center spinner-roll">{<Spinner />}</p>
-                ) : (
-                  <Table row={rowData} col={colData} />
+                {!loadingState && data?.length !== 0 && (
+                  <Table
+                    row={rowData}
+                    col={colData}
+                    dataCount={dataCount}
+                    pageSize={pageSize}
+                    currentPage={currentPage}
+                    changeCurrentPage={changeCurrentPage}
+                  />
                 )}
               </div>
-              <nav>
-                <Paginataion
-                  dataCount={dataCount}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  changeCurrentPage={changeCurrentPage}
-                />
-              </nav>
+              {loadingState && (
+                <p className="text-center spinner-roll">{<Spinner />}</p>
+              )}
+              {data?.length == 0 && !loadingState && (
+                <h2 className="text-center font-weight-bold">No Data Found</h2>
+              )}
             </div>
           </div>
         </div>
