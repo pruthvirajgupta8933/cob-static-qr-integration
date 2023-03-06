@@ -155,7 +155,7 @@ const BizzAppForm = (props) => {
         { key: 'New Cob', value: 'New Cob' },
     ]
 
-    const onSubmit = async (values) => {
+    const onSubmit = async (values, { setSubmitting, resetForm }) => {
         console.log("kashif", values)
         const res = await axios
             .post(API_URL.BizzAPPForm, values)
@@ -165,6 +165,7 @@ const BizzAppForm = (props) => {
                 } else {
                     toast.error(response.data.message);
                 }
+                resetForm(initialValues)
             }).catch((error) => {
                 toast.error("Data not saved");
             })

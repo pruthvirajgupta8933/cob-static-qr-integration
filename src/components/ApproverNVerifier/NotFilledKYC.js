@@ -121,7 +121,7 @@ const NotFilledKYC = () => {
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
-      <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
+        <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
           <SearchFilter
             kycSearch={kycSearch}
             searchText={searchText}
@@ -130,17 +130,15 @@ const NotFilledKYC = () => {
           />
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <CountPerPageFilter
+          <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
             changePageSize={changePageSize}
           />
-       
         </div>
-       
-  
+
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <SearchbyDropDown
+          <SearchbyDropDown
             kycSearch={kycSearch}
             searchText={searchText}
             isSearchByDropDown={isSearchByDropDown}
@@ -149,7 +147,6 @@ const NotFilledKYC = () => {
             setSearchByDropDown={setSearchByDropDown}
             optionSearchData={optionSearchData}
           />
-     
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
@@ -161,20 +158,18 @@ const NotFilledKYC = () => {
 
       <div className="col-md-12 col-md-offset-4">
         <div className="scroll overflow-auto">
-          {loadingState ? (
-            <p className="text-center spinner-roll">{<Spinner />}</p>
-          ) : (
-            <Table row={rowData} col={colData} />
-          )}
-        </div>
-        <nav>
-          <Paginataion
-            dataCount={dataCount}
+          {!loadingState && data?.length !== 0 && (
+            <Table row={rowData} col={colData}
+                  dataCount={dataCount}
             pageSize={pageSize}
             currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage}
-          />
-        </nav>
+            changeCurrentPage={changeCurrentPage} />
+          )}
+        </div>
+        {loadingState && (
+          <p className="text-center spinner-roll">{<Spinner />}</p>
+        )}
+        {data?.length == 0 && !loadingState && <h2 className="text-center">No data Found</h2>}
       </div>
     </div>
   );

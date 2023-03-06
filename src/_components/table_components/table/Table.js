@@ -1,4 +1,5 @@
 import React from "react";
+import Paginataion from "../pagination/Pagination";
 
 const Table = (props) => {
 
@@ -9,6 +10,7 @@ const Table = (props) => {
         {data.map((data, key) => (
           <th>{data.row_name}</th>
         ))}
+   
       </>
     );
   };
@@ -22,6 +24,7 @@ const Table = (props) => {
         </thead>
         <tbody>{props?.col()}</tbody>
       </table>
+      <Paginataion dataCount={props.dataCount} pageSize={props.pageSize} currentPage={props.currentPage}  changeCurrentPage={props.changeCurrentPage} />
     </>
   );
 };

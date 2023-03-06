@@ -171,7 +171,7 @@ function ApprovedMerchant() {
               <td>{user?.status}</td>
               <td>{covertDate(user.signUpDate)}</td>
               <td>{user?.verified_date === null ? "NA" : covertDate(user?.verified_date)}</td>
-              <td>{covertDate(user?.ApprovedDate)}</td>
+              <td>{covertDate(user?.approved_date)}</td>
               <td>{user?.isDirect}</td>
               <td>
                
