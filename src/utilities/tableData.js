@@ -25,6 +25,77 @@ export const NotFilledKYCData = [
   },
 ];
 
+
+export const AssignZoneData = [
+  { id: "1", row_name: "S. No." },
+  { id: "2", row_name: "Client Code" },
+  { id: "3", row_name: "Merchant Name" },
+  {
+    id: "4",
+    row_name: "Email",
+  },
+  {
+    id: "5",
+    row_name: "Contact Number",
+  },
+  {
+    id: "6",
+    row_name: "KYC Status",
+  },
+  {
+    id: "7",
+    row_name: "Registered Date",
+  },
+  {
+    id: "8",
+    row_name: "Onboard Type",
+  },
+  {
+    id: "9",
+    row_name: "View Zone",
+  },
+];
+
+export const ReferZoneData = [
+  { id: "1", row_name: "S. No." },
+  { id: "2", row_name: "Client Code" },
+  { id: "3", row_name: "Merchant Name" },
+  {
+    id: "4",
+    row_name: "Email",
+  },
+  {
+    id: "5",
+    row_name: "Contact Number",
+  },
+  {
+    id: "6",
+    row_name: "Sourcing Point",
+  },
+  {
+    id: "7",
+    row_name: "Sourcing Code",
+  },
+  {
+    id: "8",
+    row_name: "KYC Status",
+  },
+  {
+    id: "9",
+    row_name: "Registered Date",
+  },
+  {
+    id: "10",
+    row_name: "Onboard Type",
+  },
+  {
+    id: "11",
+    row_name: "Action",
+  },
+];
+
+
+
   export const TransactionRowData = [
     { id: "1", row_name: "Id" },
     { id: "2", row_name: "Client's Username" },
