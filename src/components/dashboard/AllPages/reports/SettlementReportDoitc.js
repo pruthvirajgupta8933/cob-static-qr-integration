@@ -217,17 +217,19 @@ const SettlementReportDoitc = () => {
       "Client Code",
       "Payment Mode",
       "Client Name",
+
       "Current Status",
       "Processing Date",
       "Processing Amount",
-      "Track Id",
-      "Remarks",
-      "Refunded On",
       "Refund Status",
-      "Refunded Amount",
-      "Charged Amount",
-      "Charged Date",
+      "Refunded Date",
+
+      "Refunded Amount",      
+      "Track Id",
       "Chargeback Status",
+      "Charged Date",
+      "Charged Amount",
+      "Remarks",
 
     ];
     const excelArr = [excelHeaderRow];
@@ -250,14 +252,15 @@ const SettlementReportDoitc = () => {
         'settlement_status': item.settlement_status === null ? "null" : item.settlement_status,
         'settlement_date': item.settlement_date === null ? "null" : item.settlement_date,
         'settlement_amount': item.settlement_amount === null ? "null" : Number.parseFloat(item.settlement_amount),
-        'refund_track_id': item.refund_track_id === null ? "null" : item.refund_track_id,
-        'refund_reason': item.refund_reason === null ? "null" : item.refund_reason,
-        'refund_process_on': item.refund_process_on === null ? "null" : item.refund_process_on,
         'refund_status': item.settlement_bank_ref === null ? "null" : item.refund_status,
+        'refund_process_on': item.refund_process_on === null ? "null" : item.refund_process_on,
         'refunded_amount': item.refunded_amount === null ? "null" : item.refunded_amount,
-        'charge_back_amount': item.charge_back_amount === null ? "null" : Number.parseFloat(item.charge_back_amount),
-        'charge_back_date': item.charge_back_date === null ? "null" : item.charge_back_date,
+        'refund_track_id': item.refund_track_id === null ? "null" : item.refund_track_id,
         'chargeback_status': item.chargeback_status === null ? "null" : item.chargeback_status,
+        'charge_back_date': item.charge_back_date === null ? "null" : item.charge_back_date,
+        'charge_back_amount': item.charge_back_amount === null ? "null" : Number.parseFloat(item.charge_back_amount),
+
+        'refund_reason': item.refund_reason === null ? "null" : item.refund_reason,
       };
 
       excelArr.push(Object.values(allowDataToShow));
@@ -465,14 +468,14 @@ const SettlementReportDoitc = () => {
                         <th> Current Status </th>
                         <th> Processing Date </th>
                         <th> Processing Amount</th>
-                        <th> Track Id</th>
-                        <th> Remarks</th>
-                        <th> Refunded On</th>
                         <th> Refund Status</th>
+                        <th> Refunded Date</th>
                         <th> Refunded Amount</th>
-                        <th> Charged Amount</th>
-                        <th> Charged Date</th>
+                        <th> Track Id</th>
                         <th> Chargeback Status</th>
+                        <th> Charged Date</th>
+                        <th> Charged Amount</th>
+                        <th> Remarks</th>
                       </tr>
                     ) : (
                       <></>
@@ -497,14 +500,14 @@ const SettlementReportDoitc = () => {
                             <td>{item.settlement_status}</td>
                             <td>{item.settlement_date}</td>
                             <td>{Number.parseFloat(item.settlement_amount).toFixed(2)}</td>
-                            <td>{item.refund_track_id}</td>
-                            <td>{item.refund_reason}</td>
-                            <td>{item.refund_process_on}</td>
                             <td>{item.refund_status}</td>
+                            <td>{item.refund_process_on}</td>
                             <td>{Number.parseFloat(item.refunded_amount).toFixed(2)}</td>
-                            <td>{Number.parseFloat(item.charge_back_amount).toFixed(2)}</td>
-                            <td>{item.charge_back_date}</td>
+                            <td>{item.refund_track_id}</td>
                             <td>{item.chargeback_status}</td>
+                            <td>{item.charge_back_date}</td>
+                            <td>{Number.parseFloat(item.charge_back_amount).toFixed(2)}</td>
+                            <td>{item.refund_reason}</td>
                           </tr>
                         );
                       })}
