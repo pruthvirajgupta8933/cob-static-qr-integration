@@ -272,10 +272,13 @@ const API_LIVE = {
   menuListByLoginId: `${url}/menu-loginwise`,
 
   // -------------------------------------------------------------------------Subscription APIS-------------------------------------------||
+  // Mandate Report
   MANDATE_FREQUENCY: `${subAPIURL}/REST/GetCommonData/0/frequency`,
   MANDATE_CATEGORY: `${subAPIURL}/REST/GetCommonData/0/MandateCategory`,
   filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
 
+  // Debit Report
+  filterDebitReport: `${subAPIURL}/npci/filterDebitReport`,
 
 
 

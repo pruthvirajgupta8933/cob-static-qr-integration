@@ -536,6 +536,7 @@ export const ReferZoneData = [
   ];
 
   // For subscription paisa
+  // Mandate Reports
 export const MandateReportData = [
 
   { id: "1", row_name: "S.No" },
@@ -603,5 +604,55 @@ export const MandateReportData = [
   
 ];
 
+
+// Debit Reports
+export const DebitReportData = [
+
+  { id: "1", row_name: "S.No" },
+  { id: "2", row_name: "Transaction ID" },
+  { id: "3", row_name: "UMRN Number" },
+  { id: "4", row_name: "Payment Status" },
+  { id: "5", row_name: "Reason" },
+  { id: "6", row_name: "Settelment Amount" },
+  { id: "7", row_name: "Settlement Status" },
+  { id: "8", row_name: "Merchant Name" },
+  { id: "9", row_name: "Bank Message" },
+  { id: "10", row_name: "Bank Reference Number" },
+  { id: "11", row_name: "Batch Reference Number" },
+  { id: "12", row_name: "Transaction Initialization Date" },
+  { id: "13", row_name: "Transaction Complete Date" },
+  { id: "14", row_name: "Next Due Date" },
+  { id: "15", row_name: "Statue Reason Code" },
+  { id: "16", row_name: "Division Code" },
+  { id: "17", row_name: "Customer Reference Number" },
+  { id: "18", row_name: "Remarks" },
+  { id: "19", row_name: "Remarks 1" },
+  { id: "20", row_name: "Remarks 2" },
+  { id: "21", row_name: "Remarks 3" },
+  { id: "22", row_name: "Remarks 4" },
+  { id: "23", row_name: "Remarks 5" },
+  { id: "24", row_name: "Customer Transaction Reference Number" },
+  { id: "25", row_name: "Bank Id" },
+  { id: "26", row_name: "Bank ResponseCode" },
+  { id: "27", row_name: "Bank Name" },
+  { id: "28", row_name: "issettled" },
+  { id: "29", row_name: "issettledsponcer" },
+  { id: "30", row_name: "pAmount" },
+  { id: "31", row_name: "settlementamountsponcer" },
+  { id: "32", row_name: "settlementbankref" },
+  { id: "33", row_name: "settlementbankrefsponcer" },
+  { id: "34", row_name: "settlementby" },
+  { id: "35", row_name: "settlementbysponcer" },
+  { id: "36", row_name: "settlementdate" },
+  { id: "37", row_name: "settlementdatesponcer" },
+  { id: "38", row_name: "settlementremarks" },
+  { id: "39", row_name: "settlementremarkssponcer" },
+  { id: "40", row_name: "settlementstatussponcer" },
+  { id: "41", row_name: "settlementutr" },
+  { id: "42", row_name: "settlementutrsponcer" },
+  { id: "43", row_name: "transactionAmount" },
+
+  
+];
 
   
