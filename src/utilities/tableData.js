@@ -96,6 +96,10 @@ export const ReferZoneData = [
 
 
 
+
+
+
+
   export const TransactionRowData = [
     { id: "1", row_name: "Id" },
     { id: "2", row_name: "Client's Username" },
@@ -173,6 +177,70 @@ export const ReferZoneData = [
       row_name: "Deleted On",
     }
   ];
+
+  export const RefundTransactionData = [
+    { id: "1", row_name: "S. No" },
+    { id: "2", row_name: "Client Code" },
+    { id: "3", row_name: "Client Name" },
+    {
+      id: "4",
+      row_name: "SP Transaction ID",
+    },
+    {
+      id: "5",
+      row_name: "Client Transacrion ID",
+    },
+    {
+      id: "6",
+      row_name: "Amount",
+    },
+    {
+      id: "7",
+      row_name: "amount_adjust_on",
+    },
+    {
+      id: "8",
+      row_name: "amount_available_to_adjust",
+    },
+    {
+      id: "9",
+      row_name: "bank_name",
+    },
+    {
+      id: "10",
+      row_name: "money_asked_from_merchant",
+    },
+    {
+      id: "11",
+      row_name: "Payment Mode",
+    },
+    {
+      id: "12",
+      row_name: "refund_initiated_on",
+    },
+    {
+      id: "13",
+      row_name: "refund_process_on",
+    },
+    {
+      id: "14",
+      row_name: "refund_reason",
+    },
+    {
+      id: "15",
+      row_name: "refund_track_id",
+    },
+    {
+      id: "16",
+      row_name: "refunded_amount",
+    },
+    {
+      id: "17",
+      row_name: "trans_date",
+    },
+  ];
+
+
   export const LedgerRowData = [
     { id: "1", row_name: "Id" },
     { id: "2", row_name: "Client's Username" },

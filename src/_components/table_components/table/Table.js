@@ -2,7 +2,6 @@ import React from "react";
 import Paginataion from "../pagination/Pagination";
 
 const Table = (props) => {
-
   const rowData = () => {
     const data = props?.row;
     return (
@@ -10,11 +9,10 @@ const Table = (props) => {
         {data.map((data, key) => (
           <th>{data.row_name}</th>
         ))}
-   
       </>
     );
   };
-  
+
   return (
     <>
       {" "}
@@ -24,7 +22,14 @@ const Table = (props) => {
         </thead>
         <tbody>{props?.col()}</tbody>
       </table>
-      <Paginataion dataCount={props.dataCount} pageSize={props.pageSize} currentPage={props.currentPage}  changeCurrentPage={props.changeCurrentPage} />
+      {props?.dataCount > 0 && (
+        <Paginataion
+          dataCount={props.dataCount}
+          pageSize={props.pageSize}
+          currentPage={props.currentPage}
+          changeCurrentPage={props.changeCurrentPage}
+        />
+      )}
     </>
   );
 };

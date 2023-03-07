@@ -5,7 +5,8 @@ import { B2B_URL } from "../config";
 
 
 const initialState = { 
-  isLoadingForChallan:false
+  isLoading:false,
+
 
 }
 
@@ -63,17 +64,19 @@ export const challanTransactions = createAsyncThunk(
     extraReducers: {
       [challanTransactions.pending]: (state, action) => {
         state.status = "pending";
+        state.isLoading = true;
      
         
       },
       [challanTransactions.fulfilled]: (state, action) => {
-      
+        state.isLoading = false;
        
 
       },
       [challanTransactions.rejected]: (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
+        state.isLoading = false;
       },
       // ------------------------------------ For Comments ---------------------
     
