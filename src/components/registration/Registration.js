@@ -635,7 +635,7 @@ function Registration() {
                                         to={`/login`}
                                         style={{ color: "#0156B3" }}
                                       >
-                                        Sign in
+                                        Login
                                       </Link></div>
                                     </div>
                                   </div>

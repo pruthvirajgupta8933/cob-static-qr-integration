@@ -55,7 +55,8 @@ const BizzAppForm = (props) => {
                 (value) => value > 0
             ),
         question: Yup.string()
-            .required("Required"),
+            // .required("Required")
+            ,
         authorized_contact_person_name: Yup.string()
             .required("Required"),
         authorized_contact_person_contact_number: Yup.string()
@@ -106,7 +107,7 @@ const BizzAppForm = (props) => {
         expected_transactions_numbers: "",
         account_details: "",
         annual_transaction_value: "",
-        question: "",
+        question: "static default question",
         authorized_contact_person_name: "",
         authorized_contact_person_contact_number: "",
         authorized_contact_person_email_id: "",
@@ -182,7 +183,7 @@ const BizzAppForm = (props) => {
         { control: "input", label: "Expected transaction numbers", name: "expected_transactions_numbers", placeholder: "Enter your answer", type: 'text' },
         { control: "input", label: "Account details", name: "account_details", placeholder: "Enter your answer", type: 'text' },
         { control: "input", label: "Annual transaction value", name: "annual_transaction_value", placeholder: "Enter your answer", type: 'text' },
-        { control: "input", label: "Question", name: "question", placeholder: "Enter your answer", type: 'text' },
+        // { control: "input", label: "Question", name: "question", placeholder: "Enter your answer", type: 'text' },
         { control: "input", label: "Authorized contact person name", name: "authorized_contact_person_name", placeholder: "Enter your answer", type: 'text' },
         { control: "input", label: "Authorized contact person contact number", name: "authorized_contact_person_contact_number", placeholder: "Enter your answer", type: 'text' },
         { control: "input", label: "Authorized contact person email id", name: "authorized_contact_person_email_id", placeholder: "Enter your answer", type: 'text' },
