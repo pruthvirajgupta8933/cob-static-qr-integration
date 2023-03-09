@@ -59,7 +59,7 @@ const OnboardMerchant = () => {
   const [isActive, setActive] = useState(true);
   const [acceptTc, setAcceptTc] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
-  const [btnDisable, setBtnDisable] = useState(true);
+  const [btnDisable, setBtnDisable] = useState(false);
 
   const [businessCode, setBusinessCode] = useState([]);
   const [roles,setRoles] = useState([]);
@@ -131,7 +131,6 @@ const OnboardMerchant = () => {
       business_cat_code,
       roleId
     } = formData;
-
     dispatch(
       register({
         fullname: fullname,
@@ -467,11 +466,7 @@ const OnboardMerchant = () => {
                                         maxLength={255}
                                         id="user-pws"
                                         placeholder="Type your password here"
-                                        type={
-                                          valuesIn.showPassword
-                                            ? "text"
-                                            : "password"
-                                        }
+                                        type="password"
                                         name="passwordd"
                                         size={50}
                                         autoComplete="off"
@@ -544,12 +539,14 @@ const OnboardMerchant = () => {
                                       }
 
                                       <span
-                                        className="hide-password"
+                                        className="input-group-addon eyeicon2"
                                         onClick={handleClickShowPassword}
-                                        style={{ marginTop: "49px", marginRight: "-20px" }}
                                       >
                                         {valuesIn.showPassword ? (
-                                          <i className="fa fa-eye" aria-hidden="true"></i>
+                                          <i
+                                            className="fa fa-eye"
+                                            aria-hidden="true"
+                                          ></i>
                                         ) : (
                                           <i
                                             className="fa fa-eye-slash"
@@ -562,12 +559,15 @@ const OnboardMerchant = () => {
                                   <div className="sminputs">
                                     <div className="simform__actions">
                                       <button
-                                        className="figmabtn text-white mt-4 disabled1"
+                                        className="figmabtn Satoshi-Medium text-white mt-4- disabled1 w-50"
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
-                                        // disabled={btnDisable}
-                                        disabled={(!(formik.isValid && formik.dirty)) ? true : false}
+                                        disabled={btnDisable ||
+                                          !(formik.isValid && formik.dirty)
+                                          ? true
+                                          : false
+                                        }
                                         data-rel={btnDisable}
                                       >
                                         Submit

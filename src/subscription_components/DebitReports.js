@@ -27,7 +27,7 @@ const DebitReports = (props) => {
 
     // For loader using redux
     const { isLoadingDebitHistory } = useSelector(state => state.DebitReports)
-    console.log("anand>>>>>>>>>>>>>>>>>>>>>>>>>",isLoadingDebitHistory);
+    // console.log("anand>>>>>>>>>>>>>>>>>>>>>>>>>",isLoadingDebitHistory);
 
 
     let now = moment().format("YYYY-M-D");
@@ -81,7 +81,6 @@ const DebitReports = (props) => {
         const {
             fromDate,
             endDate,
-            mandate_frequency,
             registration_status,
         } = values;
         const dateRangeValid = checkValidation(fromDate, endDate);
