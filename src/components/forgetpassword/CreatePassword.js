@@ -21,27 +21,40 @@ const CreatePassword = (props) => {
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Confirm Password Required"),
   });
-  const [values, setValues] = useState({
+
+
+  const [passwordType, setPasswordType] = useState({
+    confirmpassword: "",
+    showPasswords: false,
+  });
+
+  const [valuesIn, setValuesIn] = useState({
     password: "",
     showPassword: false,
   });
-  const [passwordType, setPasswordType] = useState(true);
-  const [passwordInput, setPasswordInput] = useState("");
-  const handlePasswordChange = (evnt) => {
-    setPasswordInput(evnt.target.value);
-  };
-  const togglePassword = () => {
-    setPasswordType(!passwordType);
-  };
+
+
+ 
+
 
   const initialValues = {
     password: "",
     confirmpassword: "",
   };
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
+  const togglePassword = () => {
+    setPasswordType({
+      ...passwordType,
+      showPasswords: !passwordType.showPasswords,
+    });
   };
+
+
+  const handleClickShowPassword = () => {
+    setValuesIn({ ...valuesIn, showPassword: !valuesIn.showPassword });
+  };
+
+ 
 
   const onSubmit = async (values) => {
     const res = await axiosInstanceJWT
@@ -83,28 +96,39 @@ const CreatePassword = (props) => {
                           New Password
                         </label>
                         <div className="input-group" id="show_hide_password">
-                          <Field
-                            name="password"
-                            className="form-control"
-                            id="exampleInputPassword1"
-                            aria-describedby="PasswordHelp"
-                            placeholder="Enter New Password"
-                            type={values.showPassword ? "text" : "password"}
-                          />
+                        <Field
+                                        className="form-control"
+                                        maxLength={255}
+                                        id="user-pws"
+                                        placeholder="Password"
+                                        type={
+                                          valuesIn.showPassword
+                                            ? "text"
+                                            : "password"
+                                        }
+                                        name="password"
 
-                          <div className="input-group-addon viewicon">
-                            <a onClick={handleClickShowPassword}>
-                              {" "}
-                              {values.showPassword ? (
-                                <i
-                                  className="fa fa-eye-slash"
-                                  aria-hidden="true"
-                                ></i>
-                              ) : (
-                                <i className="fa fa-eye" aria-hidden="true"></i>
-                              )}
-                            </a>
-                          </div>
+                                        autoComplete="off"
+                                      />
+                                      <div className="input-group-addon viewforanother">
+                                        <a
+                                          href={() => false}
+                                          onClick={handleClickShowPassword}
+                                        >
+                                          {valuesIn.showPassword ? (
+                                            <i
+                                              className="fa fa-eye"
+                                              aria-hidden="true"
+                                            ></i>
+                                          ) : (
+                                            <i
+                                              className="fa fa-eye-slash"
+                                              aria-hidden="true"
+                                            ></i>
+                                          )}
+                                        </a>
+                                      </div>
+
                         </div>
                         <ErrorMessage name="password">
                           {(msg) => (
@@ -124,28 +148,38 @@ const CreatePassword = (props) => {
                           New Password
                         </label> */}
                         <div className="input-group mt-40">
-                          <Field
-                            name="confirmpassword"
-                            className="form-control"
-                            id="exampleInputPassword2"
-                            aria-describedby="PasswordHelp"
-                            placeholder="Re-type password"
-                            type={passwordType ? "password" : "text"}
-                            // onChange={handlePasswordChange}
-                            // value={passwordInput}
-                          />
-                          <div className="input-group-addon viewicon">
-                            <a onClick={togglePassword}>
-                              {passwordType === "confirmpassword" ? (
-                                <i
-                                  className="fa fa-eye-slash"
-                                  aria-hidden="true"
-                                ></i>
-                              ) : (
-                                <i className="fa fa-eye" aria-hidden="true"></i>
-                              )}
-                            </a>
-                          </div>
+                        <Field
+                                        className="form-control"
+                                        maxLength={255}
+                                        id="user-cpw"
+                                        placeholder="Re-type password"
+                                        type={
+                                          passwordType.showPasswords
+                                            ? "text"
+                                            : "password"
+                                        }
+                                        name="confirmpassword"
+                                        size={50}
+                                      />
+
+                                      <div className="input-group-addon viewforanother">
+                                        <a
+                                          href={() => false}
+                                          onClick={togglePassword}
+                                        >
+                                          {passwordType.showPasswords ? (
+                                            <i
+                                              className="fa fa-eye"
+                                              aria-hidden="true"
+                                            ></i>
+                                          ) : (
+                                            <i
+                                              className="fa fa-eye-slash"
+                                              aria-hidden="true"
+                                            ></i>
+                                          )}
+                                        </a>
+                                      </div>
                                               </div>
                                               <ErrorMessage name="confirmpassword">
                             {(msg) => (
