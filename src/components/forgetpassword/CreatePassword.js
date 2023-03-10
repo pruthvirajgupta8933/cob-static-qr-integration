@@ -68,7 +68,7 @@ const CreatePassword = (props) => {
         <div className="col-sm-6 mx-auto">
           <div className="card ">
             <div className="card-header text-center">Create Password</div>
-            <div className="card-body Satoshi-Medium">
+            <div className="card-body NunitoSans-Regular">
               <h5 className="card-title">Please Enter the detatils. </h5>
               <Formik
                 initialValues={initialValues}
@@ -129,7 +129,7 @@ const CreatePassword = (props) => {
                             className="form-control"
                             id="exampleInputPassword2"
                             aria-describedby="PasswordHelp"
-                            placeholder="Re-type New Password"
+                            placeholder="Re-type password"
                             type={passwordType ? "password" : "text"}
                             // onChange={handlePasswordChange}
                             // value={passwordInput}

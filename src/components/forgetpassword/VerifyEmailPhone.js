@@ -100,7 +100,7 @@ const VerifyEmailPhone = (props) => {
               <div className="card-header text-center Satoshi-Medium">
                 Forgot Password
               </div>
-              <div className="card-body Satoshi-Medium">
+              <div className="card-body NunitoSans-Regular">
                 <h5 className="card-title">
                   We have sent the OTP on your registered Email Address and on
                   Phone Number.{" "}
