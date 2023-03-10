@@ -82,7 +82,7 @@ const CreatePassword = (props) => {
           <div className="card ">
             <div className="card-header text-center">Create Password</div>
             <div className="card-body NunitoSans-Regular">
-              <h5 className="card-title">Please Enter the detatils. </h5>
+              <h5 className="card-title">Please Enter the details. </h5>
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
