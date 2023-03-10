@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+import Yup from "../../_components/formik/Yup"
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
@@ -27,7 +28,6 @@ function BusinessOverview(props) {
   const [disabled, setIsDisabled] = useState(false)
   const { auth, kyc } = useSelector((state) => state);
 
-  let setPlatform,setCollectFreqency,setCollection,setAppUrl=[];
   let readOnly = false;
   let buttonText = "Save and Next";
 
@@ -97,9 +97,10 @@ function BusinessOverview(props) {
       billing_label: Yup.string()
         .trim()
         .min(1, "Please enter more than 1 character")
-        .max(250, "Please enter not more than 250 characters")
+        .max(250, "Please do not enter more than 250 characters")
         .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
         .required("Required")
+        .wordLength("Word character length exceeded")
         .nullable(),
       // company_website: Yup.string().trim()
       //   .matches(urlRegex, "Website Url is not Valid")
@@ -108,6 +109,7 @@ function BusinessOverview(props) {
       website_app_url: Yup.string().when(["seletcted_website_app_url"], {
         is: "Yes",
         then: Yup.string()
+          .url("Please enter the valid website url")
           .trim()
           .ensure()
           .required("Website App Url is required")
@@ -120,10 +122,21 @@ function BusinessOverview(props) {
         .trim()
         .required("Required")
         .matches(Regex.digit, RegexMsg.digit)
+        .test("IntergerRequired", "Invalid Value 0", (val) => {
+        return val > 0
+        })
+        .min(1,"Please enter more than 1 character")
+        .max(19,"Please do not enter more then 19 characters")
         .nullable(),
+
       avg_ticket_size: Yup.string()
         .trim()
         .matches(Regex.digit, RegexMsg.digit)
+        .min(1,"Please enter more than 1 character")
+        .max(19,"Please do not enter more then 19 characters")
+        .test("IntergerRequired", "Invalid Value 0", (val) => {
+          return val > 0
+          })
         .required("Required")
         .nullable(),
     },
@@ -336,7 +349,7 @@ function BusinessOverview(props) {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12">
                 <label className="col-form-label p-2 mt-0">
-                  Business Label <span style={{ color: "red" }}>*</span>
+                  Business Discription <span style={{ color: "red" }}>*</span>
                 </label>
 
                 <FormikController
@@ -347,7 +360,7 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-
+                <p>Please give a brief description of the nature of your business. Please give examples of products you sell, business category you operate in, your customers and channels through which you operate (website, offline retail).</p>
                 <div className="my-5- p-2- w-100 pull-left">
                   <hr
                     style={{
@@ -381,12 +394,12 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-                {console.log(formik)}
+                
                 {formik.values?.seletcted_website_app_url === "Yes" && (
                   <div className="row">
                     <div className="col-lg-10">
                       <label className="col-form-label p-2 mt-0">
-                        Company Website
+                        Company Website / App URL 
                         <span style={{ color: "red" }}>*</span>
                       </label>
                       <FormikController

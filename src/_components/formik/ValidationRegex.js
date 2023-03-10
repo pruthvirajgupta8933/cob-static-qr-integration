@@ -19,6 +19,22 @@ export const RegexMsg = {
     address : "Address is not in valid format, Special Characters are not allowed (#,$,@ etc)"
 }
 
+
+
+
+export const wordValidation = function(str, validCharLength=20) {
+    if(str?.length>0){
+    const wordArr = str.split(" ")
+    let notValidWord = []
+    notValidWord =  wordArr.filter((word)=>{
+      return word.length>20
+    })    
+    return notValidWord.length >= 1 ? false : true
+  }
+  
+  };
+
+
 // validation warning
 // "Only alphabets are allowed for this field "
 // "Only Numbers are allowed for this field " 
