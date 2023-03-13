@@ -6,7 +6,7 @@ import "./index.css";
 
 const Table = (props) => {
   const rowData = () => {
-    const data = props?.row;
+    const data = props?.btnData;
     return (
       <>
         {data?.map((data, key) => (
@@ -22,9 +22,12 @@ const Table = (props) => {
 
   return (
     <>
+    <div>
+      
+    </div>
        <DataTable
           className="table table-bordered "
-          columns={props.rowData}
+          columns={props.row}
           data={props.data}
           sortIcon={<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>}
           // pagination

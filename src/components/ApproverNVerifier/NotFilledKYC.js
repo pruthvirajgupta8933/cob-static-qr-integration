@@ -13,6 +13,7 @@ import SearchbyDropDown from "../../_components/table_components/filters/Searchb
 import CustomLoader from "../../_components/loader/index";
 
 const rowData = NotFilledKYCData;
+console.log(rowData, "rowData");
 const NotFilledKYC = () => {
   const [data, setData] = useState([]);
   const [notFilledData, setNotFilledData] = useState([]);
@@ -31,7 +32,18 @@ const NotFilledKYC = () => {
     setSearchText(e);
   };
 
-
+  const mappedData = data?.map(item => {
+    return {
+      sno:item.sno,
+      name: item.name,
+      clientCode:item.clientCode,
+      emailId:item.emailId,
+      contactNumber:item.contactNumber,
+      status:item.status,
+      signUpDate:item.signUpDate,
+      isDirect:item.isDirect
+    };
+  });
 
   useEffect(() => {
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
@@ -134,12 +146,12 @@ const NotFilledKYC = () => {
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
             <Table
+              row={rowData}
               dataCount={dataCount}
               pageSize={pageSize}
               currentPage={currentPage}
               changeCurrentPage={changeCurrentPage}
-              data={data}
-              rowData={rowData}
+              data={mappedData}
             />
           )}
         </div>

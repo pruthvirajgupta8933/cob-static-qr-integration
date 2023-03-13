@@ -16,11 +16,13 @@ export const NotFilledKYCData = [
     selector: (row) => row.clientCode,
   },
   {
-    id: "3",
+    key:"name",
+    // id: "3",
     name: "Merchant Name",
     selector: (row) => row?.name,
     sortable: true,
-    cell: (row) => <div style={{ whiteSpace: "unset" }}>{row?.name}</div>,
+    // cell: (row) => <div style={{ whiteSpace: "unset" }}>{row?.name}</div>,
+    label:"Name",
   },
   {
     id: "4",
@@ -375,42 +377,45 @@ export const PendindKycData = [
 ];
 
 export const PendingVerificationData = [
-  { id: "1", row_name: "S. No." },
-  { id: "2", row_name: "Client Code" },
-  { id: "3", row_name: "Company Name" },
+  { id: "1", name: "S. No." },
+  { id: "2", name: "Client Code",selector:(row)=>row.clientCode },
+  { id: "3", name: "Company Name" },
   {
     id: "4",
-    row_name: "Merchant Name",
+    name: "Merchant Name",
   },
   {
     id: "5",
-    row_name: "Email",
+    name: "Email",
   },
   {
     id: "6",
-    row_name: "Contact Number",
+    name: "Contact Number",
   },
   {
     id: "7",
-    row_name: "KYC Status",
+    name: "KYC Status",
   },
   {
     id: "8",
-    row_name: "Registered Date",
+    name: "Registered Date",
   },
   {
     id: "9",
-    row_name: "Onboard Type",
+    name: "Onboard Type",
   },
   {
     id: "10",
-    row_name: "View Status",
+    name: "View Status",
+    selector:(row)=>row.viewStatus,
   },
   {
     id: "11",
-    row_name: "Action",
+    name: "Action",
   },
+  
 ];
+
 
 export const PendingApprovalData = [
   { id: "1", row_name: "S. No." },

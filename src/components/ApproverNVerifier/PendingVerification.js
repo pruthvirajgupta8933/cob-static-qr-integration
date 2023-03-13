@@ -19,6 +19,95 @@ import CustomLoader from "../../_components/loader";
 
 function PendingVerification() {
   const roles = roleBasedAccess();
+  const [data, setData] = useState([]);
+  const PendingVerificationData = [
+    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+    { id: "2", name: "Client Code", selector: (row) => row.clientCode },
+    { id: "3", name: "Company Name", selector: (row) => row.companyName },
+    {
+      id: "4",
+      name: "Merchant Name",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      id: "5",
+      name: "Email",
+      selector: (row) => row.emailId,
+    },
+    {
+      id: "6",
+      name: "Contact Number",
+      selector: (row) => row.contactNumber,
+    },
+    {
+      id: "7",
+      name: "KYC Status",
+      selector: (row) => row.status,
+    },
+    {
+      id: "8",
+      name: "Registered Date",
+      selector: (row) => covertDate(row.signUpDate),
+      sortable: true,
+    },
+    {
+      id: "9",
+      name: "Onboard Type",
+      selector: (row) => row.isDirect,
+    },
+    {
+      id: "10",
+      name: "View Status",
+      selector: (row) => row.viewStatus,
+      cell: (row) => (
+        <button
+          type="button"
+          className="btn approve text-white  btn-xs mt-2"
+          onClick={() => {
+            // setKycIdClick(data);
+            setIsModalOpen(true);
+          }}
+          data-toggle="modal"
+          data-target="#kycmodaldetail"
+        >
+          {(roles?.verifier === true && currenTab === 3) ||
+          Allow_To_Do_Verify_Kyc_details === true
+            ? "Verify KYC "
+            : "View Status"}
+        </button>
+      ),
+    },
+    {
+      id: "11",
+      name: "Action",
+      selector: (row) => row.actionStatus,
+      cell: () => (
+        <div>
+          {roles?.verifier === true ||
+          roles?.approver === true ||
+          roles?.viewer === true ? (
+            <button
+              type="button"
+              className="btn approve text-white  btn-xs mt-2"
+              data-toggle="modal"
+              onClick={() => {
+              //  setCommentId(data);
+                setOpenCommentModal(true);
+              }}
+              data-target="#exampleModal"
+             // disabled={data?.clientCode === null ? true : false}
+            >
+              Comments
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
+      ),
+    },
+  ];
+
   const rowData = PendingVerificationData;
   //  const { user } = useSelector((state) => state.auth);
   const roleBasePermissions = roleBasedAccess();
@@ -31,7 +120,7 @@ function PendingVerification() {
   //  const { loginId } = user;
   //  const id =loginId
 
-  const [data, setData] = useState([]);
+
   const [dataCount, setDataCount] = useState("");
   const [newRegistrationData, setNewRegistrationData] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -91,7 +180,7 @@ function PendingVerification() {
   const colData = () => {
     return data?.map((user, i) => (
       <tr key={i}>
-        <td>{i + 1}</td>
+        {/* <td>{i + 1}</td>
         <td>{user.clientCode}</td>
         <td>{user.companyName}</td>
         <td>{user.name}</td>
@@ -99,7 +188,7 @@ function PendingVerification() {
         <td>{user.contactNumber}</td>
         <td>{user.status}</td>
         <td>{covertDate(user.signUpDate)}</td>
-        <td>{user?.isDirect}</td>
+        <td>{user?.isDirect}</td> */}
         {/* <td>{user?.comments}</td> */}
         <td>
           <button
@@ -142,6 +231,20 @@ function PendingVerification() {
       </tr>
     ));
   };
+  const mappedData = data?.map((item) => {
+    return {
+      sno: item.sno,
+      clientCode: item.clientCode,
+      companyName: item.companyName,
+      name: item.name,
+      emailId: item.emailId,
+      contactNumber: item.contactNumber,
+      status: item.status,
+      signUpDate: item.signUpDate,
+      isDirect: item.isDirect,
+      comments: item.comments,
+    };
+  });
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -151,6 +254,9 @@ function PendingVerification() {
   //function for change page size
   const changePageSize = (pageSize) => {
     setPageSize(pageSize);
+  };
+  const testData = (data) => {
+    console.log(data);
   };
 
   const searchByText = () => {
@@ -254,7 +360,7 @@ function PendingVerification() {
           {!loadingState && data?.length !== 0 && (
             <Table
               row={rowData}
-              col={colData}
+              data={mappedData}
               dataCount={dataCount}
               pageSize={pageSize}
               currentPage={currentPage}
