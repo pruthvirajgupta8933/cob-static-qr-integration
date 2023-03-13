@@ -489,6 +489,10 @@ export const ReferZoneData = [
       id: "13",
       row_name: "Action",
     },
+    {
+      id: "14",
+      row_name: "Upload Agreement"
+    }
 
   ];
 
