@@ -918,12 +918,13 @@ a.sidenavFonts {
 
   color: #4285f8;
 }
-.spinner-border {
+/* .spinner-border {
   position: absolute;
   top: 82%;
   left: 58%;
   transform: translate (-50%);
-}
+} */
+
 .borders {
   position: absolute;
   top: -82px;

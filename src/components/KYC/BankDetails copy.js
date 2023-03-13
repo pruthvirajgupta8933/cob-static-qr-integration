@@ -56,7 +56,7 @@ function BankDetails(props) {
   const { loginId } = user;
 
   const selectedType = [
-    { key: "", value: "Select" },
+    { key: "", value: "Select"},
     { key: "1", value: "Current" },
     { key: "2", value: "Saving" },
   ];
@@ -67,8 +67,8 @@ function BankDetails(props) {
       accHolderName.length > 2
         ? accHolderName
         : KycList?.accountHolderName
-          ? KycList?.accountHolderName
-          : "",
+        ? KycList?.accountHolderName
+        : "",
     account_number: KycList?.accountNumber,
     oldAccountNumber: KycList?.accountNumber,
     ifsc_code: KycList?.ifscCode,
@@ -250,7 +250,6 @@ function BankDetails(props) {
 
     if (!hasErr && isValidVal && val[key] !== "" && key === "account_number") {
       const ifscCodeVal = val?.ifsc_code;
-      ifscValidationNo(val?.ifsc_code);
       bankAccountValidate(val[key], ifscCodeVal);
     }
   };
@@ -287,7 +286,7 @@ function BankDetails(props) {
                     readOnly={readOnly}
                   />
 
-                  {/* {KycList?.ifscCode !== null &&
+                  {KycList?.ifscCode !== null &&
                   !errors.hasOwnProperty("ifsc_code") &&
                   !errors.hasOwnProperty("oldIfscCode") ? (
                     <span className="success input-group-append">
@@ -318,7 +317,7 @@ function BankDetails(props) {
                         Verify
                       </a>
                     </div>
-                  )} */}
+                  )}
                 </div>
                 {
                   <ErrorMessage name="ifsc_code">
@@ -343,7 +342,6 @@ function BankDetails(props) {
                   <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
-
                   <Field
                     type="text"
                     name="account_number"
@@ -351,37 +349,8 @@ function BankDetails(props) {
                     readOnly={readOnly}
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                   />
-                  <span className="success input-group-append">
-                    {/* <img
-                        src={gotVerified}
-                        alt=""
-                        title=""
-                        width={"20px"}
-                        height={"20px"}
-                        className="btn-outline-secondary"
-                      /> */}
 
-                  </span>
-                  <div class="input-group-append">
-                    <button class="btn btnbackground text-white mb-0" type="button"   
-                        onClick={() => {
-                          checkInputIsValid(
-                            errors,
-                            values,
-                            setFieldError,
-                            setFieldTouched,
-                            "account_number"
-                          );
-                        }}>
-                      {/* <span class="spinner-border spinner-border-sm" role="status">
-                        <span class="sr-only">Loading...</span>
-                      </span> */}
-                      Verify
-                    </button>
-                  </div>
-
-
-                  {/* {KycList?.accountNumber !== null &&
+                  {KycList?.accountNumber !== null &&
                   values?.account_number === KycList?.accountNumber &&
                   !errors.hasOwnProperty("account_number") &&
                   !errors.hasOwnProperty("oldAccountNumber") ? (
@@ -395,10 +364,8 @@ function BankDetails(props) {
                         className="btn-outline-secondary"
                       />
                     </span>
-                  ) : 
-                  !errors.hasOwnProperty("oldIfscCode") &&
-                    !errors.hasOwnProperty("ifsc_code") ?
-                     (
+                  ) : !errors.hasOwnProperty("oldIfscCode") &&
+                    !errors.hasOwnProperty("ifsc_code") ? (
                     <span className="position-sticky pull-right- otpbtn input-group-append">
                       <a
                         href={() => false}
@@ -418,7 +385,7 @@ function BankDetails(props) {
                     </span>
                   ) : (
                     <> </>
-                  )} */}
+                  )}
                 </div>
                 {
                   <ErrorMessage name="account_number">
