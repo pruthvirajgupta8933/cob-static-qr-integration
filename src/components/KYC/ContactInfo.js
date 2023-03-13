@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
+import Yup from "../../_components/formik/Yup"
 import FormikController from "../../_components/formik/FormikController";
 import API_URL from "../../config";
 import axios from "axios";
@@ -20,6 +21,7 @@ import {
   Regex,
   RegexMsg,
   space,
+  wordValidation,
 } from "../../_components/formik/ValidationRegex";
 import { values } from "lodash";
 import gotVerified from "../../assets/images/verified.png";
@@ -60,11 +62,16 @@ function ContactInfo(props) {
   const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   const aadhaarRegex = /(^[0-9]{4}[0-9]{4}[0-9]{4}$)|(^[0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|(^[0-9]{4}-[0-9]{4}-[0-9]{4}$)/;
 
+
+
+
   const validationSchema = Yup.object({
     name: Yup.string()
       .trim()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
+      .wordLength("Word character length exceeded")
+      .max(100, "Maximum 100 characters are allowed")
       .nullable(),
     contact_number: Yup.string()
       .trim()
@@ -72,7 +79,7 @@ function ContactInfo(props) {
       .required("Required")
       .matches(phoneRegExp, "Phone number is not valid")
       .min(10, "Phone number is not valid")
-      .max(10, "too long")
+      .max(10, "Only 10 digits are allowed ")
       .nullable(),
     oldContactNumber: Yup.string()
       .trim()
@@ -217,8 +224,6 @@ function ContactInfo(props) {
       setShowOtpVerifyModalEmail(val);
     }
   };
-
-
 
   return (
     <div

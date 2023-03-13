@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import Yup from "../../_components/formik/Yup";
 import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +16,7 @@ import {
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
+
 
 function BankDetails(props) {
   const setTab = props.tab;
@@ -92,11 +93,10 @@ function BankDetails(props) {
     ifsc_code: Yup.string()
       .trim()
       .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .matches(IFSCRegex, "Your IFSC Number is Invalid")
+      .matches(IFSCRegex, "Your IFSC code is Invalid and must be in capital letters")
       .min(6, "Username must be at least 6 characters")
       .max(20, "Username must not exceed 20 characters")
       .required("Required")
-
       .nullable(),
     account_number: Yup.string()
       .trim()

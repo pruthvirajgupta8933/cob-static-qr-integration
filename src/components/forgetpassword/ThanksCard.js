@@ -8,7 +8,7 @@ function ThanksCard(props) {
         <div className="col-sm-6 mx-auto">
           <div className="card ">
             <div className="card-header text-center">Password Changed</div>
-            <div className="card-body Satoshi-Medium">
+            <div className="card-body NunitoSans-Regular">
               <h5 className="card-title">Password Changed successfully </h5>
 
               {/* <p className="card-text" style={{ display: "block" }}>

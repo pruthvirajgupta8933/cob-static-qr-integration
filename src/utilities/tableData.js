@@ -7,13 +7,13 @@ export const NotFilledKYCData = [
   {
     id: "1",
     name: "S.No",
-    selector: (row) => row?.sno,
+    selector: (row) => row.sno,
     sortable: true,
   },
   {
     id: "2",
     name: "Client Code",
-    selector: (row) => row?.clientCode,
+    selector: (row) => row.clientCode,
   },
   {
     id: "3",

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import Yup from "../../_components/formik/Yup";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import FormikController from "../../_components/formik/FormikController";
@@ -206,6 +205,8 @@ function BusinessDetails(props) {
       .trim()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
+      .max(50,"City name character length exceeded")
+      .wordLength("Word character length exceeded")
       .nullable(),
     state_id: Yup.string()
       .required("Required")
@@ -219,6 +220,8 @@ function BusinessDetails(props) {
       .trim()
       .matches(Regex.addressForSpecific, RegexMsg.addressForSpecific)
       .required("Required")
+      .wordLength("Word character length exceeded")
+      .max(120, "Address Max length exceeded, 120 charactes are allowed")
       .nullable(),
   });
 

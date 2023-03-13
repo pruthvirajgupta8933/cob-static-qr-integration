@@ -173,23 +173,27 @@ function DocumentsUpload(props) {
 
 
   const removeDoc = (doc_id) => {
-    const rejectDetails = {
-      document_id: doc_id,
-      removed_by: loginId,
-    };
-    dispatch(removeDocument(rejectDetails))
-      .then((resp) => {
-        setTimeout(() => {
-          getKycDocList(role);
-        }, 1300);
-
-        resp?.payload?.status
-          ? toast.success(resp?.payload?.message)
-          : toast.error(resp?.payload?.message);
-      })
-      .catch((e) => {
-        toast.error("Try Again Network Error");
-      });
+    const isConfirm = window.confirm("Are you sure you want to remove this document");
+    if(isConfirm){
+      const rejectDetails = {
+        document_id: doc_id,
+        removed_by: loginId,
+      };
+      dispatch(removeDocument(rejectDetails))
+        .then((resp) => {
+          setTimeout(() => {
+            getKycDocList(role);
+          }, 1300);
+  
+          resp?.payload?.status
+            ? toast.success(resp?.payload?.message)
+            : toast.error(resp?.payload?.message);
+        })
+        .catch((e) => {
+          toast.error("Try Again Network Error");
+        });
+    }
+    
   };
 
   const getKycDocList = (role) => {
