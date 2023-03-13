@@ -13,7 +13,6 @@ import SearchbyDropDown from "../../_components/table_components/filters/Searchb
 import CustomLoader from "../../_components/loader/index";
 
 const rowData = NotFilledKYCData;
-console.log(rowData, "rowData");
 const NotFilledKYC = () => {
   const [data, setData] = useState([]);
   const [notFilledData, setNotFilledData] = useState([]);
