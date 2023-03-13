@@ -2,12 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForNotFilled } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
-import Spinner from "./Spinner";
 import moment from "moment";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../_components/table_components/table/Table";
 import { NotFilledKYCData } from "../../utilities/tableData";
-import Paginataion from "../../_components/table_components/pagination/Pagination";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
@@ -15,6 +13,7 @@ import SearchbyDropDown from "../../_components/table_components/filters/Searchb
 import CustomLoader from "../../_components/loader/index";
 
 const rowData = NotFilledKYCData;
+console.log(rowData, "rowData");
 const NotFilledKYC = () => {
   const [data, setData] = useState([]);
   const [notFilledData, setNotFilledData] = useState([]);
@@ -33,32 +32,7 @@ const NotFilledKYC = () => {
     setSearchText(e);
   };
 
-  //Map the table data
-  const colData = () => {
-    return (
-      <>
-        {data == [] ? (
-          <td colSpan={"11"}>
-            {" "}
-            <div className="nodatafound text-center">No data found </div>
-          </td>
-        ) : (
-          data?.map((data, key) => (
-            <tr>
-              <td>{key + 1}</td>
-              <td>{data.clientCode}</td>
-              <td>{data.name}</td>
-              <td>{data.emailId}</td>
-              <td>{data.contactNumber}</td>
-              <td>{data.status}</td>
-              <td> {covertDate(data.signUpDate)}</td>
-              <td>{data?.isDirect}</td>
-            </tr>
-          ))
-        )}
-      </>
-    );
-  };
+
 
   useEffect(() => {
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
@@ -161,18 +135,18 @@ const NotFilledKYC = () => {
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
             <Table
-              row={rowData}
-              col={colData}
               dataCount={dataCount}
               pageSize={pageSize}
               currentPage={currentPage}
               changeCurrentPage={changeCurrentPage}
+              data={data}
+              rowData={rowData}
             />
           )}
         </div>
         <CustomLoader loadingState={loadingState} />
         {data?.length == 0 && !loadingState && (
-          <h2 className="text-center font-weight-bold">No Data Found</h2>
+          <h2 className="text-center">No data Found</h2>
         )}
       </div>
     </div>

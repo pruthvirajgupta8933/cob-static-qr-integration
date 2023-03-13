@@ -1,0 +1,25 @@
+.rdt_Table .rdt_TableRow {
+    /* border: 0.5px solid #dee2e6; */
+    white-space: normal;
+  }
+  
+  .rdt_TableCol {
+   border-right: 0.5px solid #dee2e6;
+   white-space: normal !important;
+  }
+  .rdt_TableCell{
+    border-right: 0.5px solid #dee2e6;
+  }
+  .dnsAhI
+  {
+    white-space: normal !important;
+  }
+ 
+.ccwXBw 
+  {
+    white-space: normal !important;
+  }
+  .rdt_TableHeadRow{
+    background-color: #f9fafd !important;
+    font-weight: 600 !important;
+  }

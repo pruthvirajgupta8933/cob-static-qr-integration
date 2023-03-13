@@ -106,7 +106,7 @@ const PendindKyc = () => {
     return date;
   };
 
-  const colData = () => {
+  const colData = (data) => {
     return (
       <>
         {data == [] ? (
@@ -192,7 +192,6 @@ const PendindKyc = () => {
           ) : (
             <></>
           )}
-
           <KycDetailsModal
             handleModal={setIsModalOpen}
             kycId={kycIdClick}

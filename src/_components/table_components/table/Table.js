@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Paginataion from "../pagination/Pagination";
+import DataTable from "react-data-table-component";
+import "./index.css";
+// import 'datatables.net/css/jquery.dataTables.min.css';
 
 const Table = (props) => {
   const rowData = () => {
     const data = props?.row;
     return (
       <>
-        {data.map((data, key) => (
-          <th>{data.row_name}</th>
+        {data?.map((data, key) => (
+          <>
+            <th>
+              <div>{data.row_name}</div>
+            </th>
+          </>
         ))}
       </>
     );
@@ -15,13 +22,21 @@ const Table = (props) => {
 
   return (
     <>
+       <DataTable
+          className="table table-bordered "
+          columns={props.rowData}
+          data={props.data}
+          sortIcon={<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>}
+          // pagination
+          // selectableRows
+        />
       {" "}
-      <table className="table table-bordered">
+      {/* <table className="table table-bordered" >
         <thead>
           <tr>{rowData()}</tr>
         </thead>
         <tbody>{props?.col()}</tbody>
-      </table>
+      </table> */}
       {props?.dataCount > 0 && (
         <Paginataion
           dataCount={props.dataCount}
