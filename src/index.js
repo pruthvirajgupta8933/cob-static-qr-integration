@@ -8,6 +8,7 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter, HashRouter, Router } from "react-router-dom";
 import setupInterceptors from "./services/setupInterceptors";
 
+
 ReactDOM.render(
   <Provider store={store}>
     {/* <HashRouter> */}

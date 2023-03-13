@@ -70,6 +70,7 @@ import { generateWord } from "../../utilities/generateClientCode";
 import TransactionHistoryDoitc from "./AllPages/reports/TransactionHistoryDoitc";
 import SettlementReportDoitc from "./AllPages/reports/SettlementReportDoitc";
 import MandateReport from "../../subscription_components/MandateReport";
+import DebitReports from "../../subscription_components/DebitReports";
 
 
 function Dashboard() {
@@ -508,6 +509,9 @@ function Dashboard() {
         {/* Routing for subscription */}
         {/* ----------------------------------------------------------------------------------------------------|| */}
         <MerchantRoute exact path={`${path}/subscription/mandateReports`} Component={MandateReport}>
+          <SpPg />
+        </MerchantRoute>
+        <MerchantRoute exact path={`${path}/subscription/debitReports`} Component={DebitReports}>
           <SpPg />
         </MerchantRoute>
         

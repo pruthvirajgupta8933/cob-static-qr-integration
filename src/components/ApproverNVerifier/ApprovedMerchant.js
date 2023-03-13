@@ -16,6 +16,7 @@ import SearchbyDropDown from "../../_components/table_components/filters/Searchb
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
+import ViewDocumentModal from "./Onboarderchant/ViewDocumentModal";
 
 
 function ApprovedMerchant() {
@@ -31,11 +32,13 @@ function ApprovedMerchant() {
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  const [openDocumentModal, setOpenDocumentModal] = useState(false);
 
   const rowData = ApprovedTableData;
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
+  // console.log("KKKKKKKKKKKKK",commentId);
 
 
 
@@ -205,6 +208,25 @@ function ApprovedMerchant() {
                 </button>
               ) : <></> }
               </td>
+
+              <td>
+              {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
+                  <button
+                  type="button"
+                  className="btn approve text-white  btn-xs"
+                  data-toggle="modal"
+                  onClick={() => {
+                    setCommentId(user)
+                    setOpenDocumentModal(true)
+          
+                  }}
+                  data-target="#exampleModal"
+                  disabled={user?.clientCode === null ? true : false}
+                >
+                   Upload Agreement
+                </button>
+              ) : <></> }
+              </td>
                       
             </tr>
             ))
@@ -229,6 +251,12 @@ function ApprovedMerchant() {
           
           <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderApprovedTable={approvedTable}/>
         </div>
+
+      <div>
+        {openDocumentModal === true ? <ViewDocumentModal documentData={commentId} isModalOpen={openDocumentModal} setModalState={setOpenDocumentModal} tabName={"Approved Tab"} /> : <></>}
+        <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderApprovedTable={approvedTable}/>
+      </div>
+
       <div className="form-group col-lg-3 col-md-12 mt-2">
       <CountPerPageFilter
             pageSize={pageSize}
