@@ -9,7 +9,6 @@ import CommentModal from "./Onboarderchant/CommentModal";
 import moment from "moment";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
-import { PendingVerificationData } from "../../utilities/tableData";
 import Table from "../../_components/table_components/table/Table";
 import Paginataion from "../../_components/table_components/pagination/Pagination";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
@@ -65,7 +64,7 @@ function PendingVerification() {
           type="button"
           className="btn approve text-white  btn-xs mt-2"
           onClick={() => {
-            // setKycIdClick(data);
+            setKycIdClick(row);
             setIsModalOpen(true);
           }}
           data-toggle="modal"
@@ -82,7 +81,7 @@ function PendingVerification() {
       id: "11",
       name: "Action",
       selector: (row) => row.actionStatus,
-      cell: () => (
+      cell: (row) => (
         <div>
           {roles?.verifier === true ||
           roles?.approver === true ||
@@ -92,11 +91,11 @@ function PendingVerification() {
               className="btn approve text-white  btn-xs mt-2"
               data-toggle="modal"
               onClick={() => {
-              //  setCommentId(data);
+                setCommentId(row);
                 setOpenCommentModal(true);
               }}
               data-target="#exampleModal"
-             // disabled={data?.clientCode === null ? true : false}
+              disabled={row?.clientCode === null ? true : false}
             >
               Comments
             </button>
@@ -119,7 +118,6 @@ function PendingVerification() {
 
   //  const { loginId } = user;
   //  const id =loginId
-
 
   const [dataCount, setDataCount] = useState("");
   const [newRegistrationData, setNewRegistrationData] = useState([]);
@@ -176,22 +174,6 @@ function PendingVerification() {
         toastConfig.errorToast("Data not loaded");
       });
   }, [currentPage, pageSize]);
-
-
-  const mappedData = data?.map((item) => {
-    return {
-      sno: item.sno,
-      clientCode: item.clientCode,
-      companyName: item.companyName,
-      name: item.name,
-      emailId: item.emailId,
-      contactNumber: item.contactNumber,
-      status: item.status,
-      signUpDate: item.signUpDate,
-      isDirect: item.isDirect,
-      comments: item.comments,
-    };
-  });
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -303,8 +285,8 @@ function PendingVerification() {
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
             <Table
-              row={rowData}
-              data={mappedData}
+              row={PendingVerificationData}
+              data={data}
               dataCount={dataCount}
               pageSize={pageSize}
               currentPage={currentPage}
