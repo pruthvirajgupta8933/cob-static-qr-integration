@@ -153,6 +153,8 @@ const ChallanTransactReport = () => {
     ));
   };
 
+  
+
   // console.log(pageSize,"page Size")
 
   const handleSubmit = (values) => {
@@ -336,11 +338,12 @@ const ChallanTransactReport = () => {
             <div className="scroll overflow-auto">
               <Table
                 row={rowData}
-                col={colData}
+                data={data}
                 dataCount={dataCount}
                 pageSize={pageSize}
                 currentPage={currentPage}
                 changeCurrentPage={changeCurrentPage}
+               
               />
             </div>
             <CustomLoader loadingState={loadingState} />
