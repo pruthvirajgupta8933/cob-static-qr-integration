@@ -31,28 +31,28 @@ function VerifiedMerchant() {
 
   const PendingApprovalData = [
     { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
-    { id: "2", name: "Client Code", selector: (row) => row.clientCode },
-    { id: "3", name: "Company Name", selector: (row) => row.companyName },
+    { id: "2", name: "Client Code", selector: (row) => <div className="removeWhiteSpace">row.clientCode </div>},
+    { id: "3", name: "Company Name", selector: (row) => <div className="removeWhiteSpace">row.companyName</div>},
     {
       id: "4",
       name: "Merchant Name",
-      selector: (row) => row.name,
+      selector: (row) => <div className="removeWhiteSpace">row.name</div>,
       sortable: true,
     },
     {
       id: "5",
       name: "Email",
-      selector: (row) => row.emailId,
+      selector: (row) => <div className="removeWhiteSpace">row.emailId</div>,
     },
     {
       id: "6",
       name: "Contact Number",
-      selector: (row) => row.contactNumber,
+      selector: (row) => <div className="removeWhiteSpace">contactNumber</div>,
     },
     {
       id: "7",
       name: "KYC Status",
-      selector: (row) => row.status,
+      selector: (row) => <div className="removeWhiteSpace">row.status</div>,
     },
     {
       id: "8",
