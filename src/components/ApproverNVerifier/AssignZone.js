@@ -10,15 +10,13 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import Table from "../../_components/table_components/table/Table";
-import { AssignZoneData } from "../../utilities/tableData";
 import NavBar from "../../components/dashboard/NavBar/NavBar";
 import CustomLoader from "../../_components/loader";
 
 function AssignZone() {
-  const rowData = AssignZoneData;
   const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
-  const [dataCount, setDataCount] = useState("");
+  const [dataCount, setDataCount] = useState(0);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,47 +62,6 @@ function AssignZone() {
     );
   };
 
-  //Map the table data
-  const colData = () => {
-    return (
-      <>
-        {data == [] ? (
-          <td colSpan={"11"}>
-            {" "}
-            <div className="nodatafound text-center">No Data Found </div>
-          </td>
-        ) : (
-          data?.map((user, i) => (
-            <tr key={i}>
-              <td>{i + 1}</td>
-              <td>{user.clientCode}</td>
-              <td>{user.name}</td>
-              <td>{user.emailId}</td>
-              <td>{user.contactNumber}</td>
-              <td>{user.status}</td>
-              <td> {covertDate(user.signUpDate)}</td>
-              <td>{user?.isDirect}</td>
-              {/* <td>  <button type="button" className="btn btn-primary" onClick={onClick}>View Document</button></td> */}
-              <td>
-                <button
-                  type="submit"
-                  onClick={() => {
-                    setModalDisplayData(user);
-                    setOpenModal(true);
-                  }}
-                  className="btn btnbackground text-white"
-                  data-toggle="modal"
-                  data-target="#exampleModalCenter"
-                >
-                  Update Zone
-                </button>
-              </td>
-            </tr>
-          ))
-        )}
-      </>
-    );
-  };
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
@@ -141,6 +98,62 @@ function AssignZone() {
     },
   ];
 
+
+  const AssignZoneData = [
+    { id: "1", name: "S. No.", selector: (row) => row.sno ,sortable:true },
+    { id: "2", name: "Client Code", selector: (row) => row.clientCode },
+    { id: "3", name: "Merchant Name", selector: (row) => row.name,  sortable:true },
+    {
+      id: "4",
+      name: "Email",
+      selector: (row) => row.emailId
+    },
+    {
+      id: "5",
+      name: "Contact Number",
+      selector: (row) => row.contactNumber
+    },
+    {
+      id: "6",
+      name: "KYC Status",
+      selector: (row) => row.status
+    },
+    {
+      id: "7",
+      name: "Registered Date",
+      selector: (row) => covertDate(row.signUpDate),
+      sortable:true
+    },
+    {
+      id: "8",
+      name: "Onboard Type",
+      selector: (row) => row.isDirect
+    },
+    {
+      id: "9",
+      name: "View Zone",
+      cell: (row) => (
+        <div className="mt-3">
+          <button
+            type="button"
+            className="btn approve text-white  btn-xs mt-2"
+            onClick={() => {
+              setModalDisplayData(row);
+              setOpenModal(true);
+            }}
+            data-toggle="modal"
+            data-target="#exampleModalCenter"
+          >
+            Update Zone
+          </button>
+        </div>
+      )
+
+    },
+  ];
+
+
+
   return (
     <section className="ant-layout">
       <div>
@@ -160,7 +173,7 @@ function AssignZone() {
                 setSearchByDropDown={setSearchByDropDown}
               />
               <div>
-                {" "}
+
                 {openZoneModal === true ? (
                   <ViewZoneModal userData={modalDisplayData} />
                 ) : (
@@ -190,8 +203,8 @@ function AssignZone() {
               <div className="scroll overflow-auto">
                 {!loadingState && data?.length !== 0 && (
                   <Table
-                    row={rowData}
-                    col={colData}
+                    row={AssignZoneData}
+                    data={data}
                     dataCount={dataCount}
                     pageSize={pageSize}
                     currentPage={currentPage}
@@ -200,7 +213,7 @@ function AssignZone() {
                 )}
               </div>
               <CustomLoader loadingState={loadingState} />
-              {data?.length == 0 && !loadingState && (
+              {data?.length === 0 && !loadingState && (
                 <h2 className="text-center font-weight-bold">No Data Found</h2>
               )}
             </div>
