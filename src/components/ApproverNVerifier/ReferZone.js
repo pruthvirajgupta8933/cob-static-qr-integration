@@ -76,7 +76,7 @@ const ReferZone = () => {
             setModalDisplayData(row);
             setOpenModal(true);
           }}
-          className="btn btnbackground text-white mt-2 p-2"
+          className="approve btnbackground text-white"
           data-toggle="modal"
           data-target="#exampleModalCenter"
         >

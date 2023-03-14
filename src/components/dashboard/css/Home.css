@@ -150,6 +150,13 @@ table.tables tr:nth-child(odd) {
 /*All Approvekyc button color class */
 .approve {
   background: #0156b3;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 8px;
+  white-space: nowrap;
+  border: 0px;
+
 }
 
 /*All forget password button color here */

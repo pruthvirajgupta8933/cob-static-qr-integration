@@ -63,11 +63,12 @@ function PendingVerification() {
     {
       id: "10",
       name: "View Status",
-      selector: (row) => row.viewStatus,
+      // selector: (row) => row.viewStatus,
       cell: (row) => (
+        <div className="mt-2">
         <button
           type="button"
-          className="btn approve text-white  btn-xs mt-2"
+          className="approve text-white  btn-xs "
           onClick={() => {
             setKycIdClick(row);
             setIsModalOpen(true);
@@ -80,12 +81,13 @@ function PendingVerification() {
             ? "Verify KYC "
             : "View Status"}
         </button>
+        </div>
       ),
     },
     {
       id: "11",
       name: "Action",
-      selector: (row) => row.actionStatus,
+      // selector: (row) => row.actionStatus,
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
@@ -93,7 +95,7 @@ function PendingVerification() {
           roles?.viewer === true ? (
             <button
               type="button"
-              className="btn approve text-white  btn-xs mt-2"
+              className="approve text-white  btn-xs"
               data-toggle="modal"
               onClick={() => {
                 setCommentId(row);

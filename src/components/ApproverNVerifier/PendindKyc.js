@@ -90,9 +90,10 @@ const PendindKyc = () => {
       name: "View Status",
       selector: (row) => row.viewStatus,
       cell: (row) => (
+        <div>
         <button
           type="button"
-          className="btn approve text-white  btn-xs mt-2"
+          className="approve text-white  btn-xs "
           onClick={() => {
             setKycIdClick(row);
             setIsModalOpen(!isOpenModal);
@@ -102,6 +103,7 @@ const PendindKyc = () => {
         >
           View Status
         </button>
+        </div>
       ),
     },
     {
@@ -115,7 +117,7 @@ const PendindKyc = () => {
           roles?.viewer === true ? (
             <button
               type="button"
-              className="btn approve text-white  btn-xs mt-2"
+              className="approve text-white"
               data-toggle="modal"
               onClick={() => {
                 setCommentId(row);
