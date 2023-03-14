@@ -23,7 +23,7 @@ const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
 
 const API_LIVE = {
-  BASE_URL_COB : url,
+  BASE_URL_COB: url,
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
   AUTH_LOGIN: `${url}/auth-service/auth/login`,
@@ -80,8 +80,8 @@ const API_LIVE = {
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
   RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
   ChargeBankTxnHistory: reportAPIURL + "/REST/GetChargebackTxnHistory",
-  GET_DOITC_SETTLED_TXN_HISTORY: url+"/SabPaisaReport/REST/GetDOITCSettledTxnHistory",
-  GET_DOITC_MERCHANT_TXN_HISTORY: url+"/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
+  GET_DOITC_SETTLED_TXN_HISTORY: url + "/SabPaisaReport/REST/GetDOITCSettledTxnHistory",
+  GET_DOITC_MERCHANT_TXN_HISTORY: url + "/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
 
   /* Transaction Enquiry */
   VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
@@ -151,6 +151,7 @@ const API_LIVE = {
   TEMPLATE_DETAILS_BYRISKCODE: `${url}/merchant/get-template-detail-by-business-code`,
   ////////////////////////////////////////SIGNUP DATA API
   GET_SIGNUP_DATA_INFO: `${url}/merchant/get-signup-info/`,
+  GET_BIZZ_DATA: `${url}/get-biz-app-form/`,
   //////////////////////// For merchnat list export to csv
   Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/`,
   /////////////////////////Kyc approver
@@ -268,8 +269,8 @@ const API_LIVE = {
   fetchBeneficiary: `${payout_url}/api/fetchBeneficiaryfor`,
   transactionMode: `${payout_url}/api/modesByMerchantId`,
   paymentRequest: `${payout_url}/api/PayoutTransactionRequest`,
-  fetchClientCode:`${payout_url}/api/getByClientCode/`,
-  
+  fetchClientCode: `${payout_url}/api/getByClientCode/`,
+
 
 
   // ---------------------------   NEW API FOR COMMENTS (2)
