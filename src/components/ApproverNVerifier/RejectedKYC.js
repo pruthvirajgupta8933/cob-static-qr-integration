@@ -80,7 +80,7 @@ const RejectedKYC = () => {
         <div className="mt-2">
         <button
         type="button"
-        className="btn approve text-white  btn-xs"
+        className="approve text-white  btn-xs "
         onClick={() => {
           setKycIdClick(row);
           setIsModalOpen(true);
@@ -104,7 +104,7 @@ const RejectedKYC = () => {
           roles?.viewer === true ? (
             <button
               type="button"
-              className="btn approve text-white  btn-xs"
+              className="approve text-white  btn-xs "
               data-toggle="modal"
               onClick={() => {
                 setCommentId(row);

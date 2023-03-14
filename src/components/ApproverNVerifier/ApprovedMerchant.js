@@ -96,7 +96,7 @@ function ApprovedMerchant() {
         <div className="mt-2">
         <button
         type="button"
-        className="btn approve text-white  btn-xs"
+        className="approve text-white  btn-xs "
         onClick={() =>  {
           setKycIdClick(row); 
           setIsModalOpen(true) 
@@ -111,13 +111,13 @@ function ApprovedMerchant() {
     },
     {
       id: "13",
-      name: "Action",
+      name: "Upload Agreement",
       cell: (row) => (
         <div className="mt-2">
       {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
                   <button
                   type="button"
-                  className="btn approve text-white  btn-xs"
+                  className="approve text-white  btn-xs "
                   data-toggle="modal"
                   onClick={() => {
                     setCommentId(row)
@@ -127,7 +127,7 @@ function ApprovedMerchant() {
                   data-target="#exampleModal"
                   disabled={row?.clientCode === null ? true : false}
                 >
-                   Upload Agreement
+                   Upload 
                 </button>
               ) : <></> }
         </div>

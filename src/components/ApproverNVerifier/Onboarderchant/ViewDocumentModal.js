@@ -16,6 +16,7 @@ const ViewDocumentModal = (props) => {
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
+  const [btnDisable,setBtnDisable] = useState(false)
 
 
   const initialValues = {
@@ -61,7 +62,7 @@ const ViewDocumentModal = (props) => {
   const validationSchema = Yup.object({
     comments: Yup.string()
       .min(1, "Please enter , more than 1 character")
-      .max(100, "Please do not  enter more than 100 characters")
+      .max(200, "Please do not enter more than 100 characters")
       .required("Required")
       .nullable(),
   });
@@ -69,6 +70,7 @@ const ViewDocumentModal = (props) => {
 
   const handleSubmit = async (values) => {
     // console.log("values ::", values);
+    setBtnDisable(true)
     let formData = new FormData();
     formData.append("type", "22") 
     formData.append("approver_id", loginId);
@@ -85,14 +87,17 @@ const ViewDocumentModal = (props) => {
           toast.success(resp?.payload?.message);
           commentUpdate();
           resetUploadFile();
+          setBtnDisable(false)
         } else {
           toast.error(resp?.payload?.message);
           resetUploadFile();
           commentUpdate();
+          setBtnDisable(false)
         }
       })
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
+        setBtnDisable(false)
       });
   };
 
@@ -266,6 +271,7 @@ const ViewDocumentModal = (props) => {
                               <button
                                 type="submit"
                                 className="btn approve text-white  btn-xs"
+                                disabled={btnDisable}
                               >
                                 Submit
                               </button>
