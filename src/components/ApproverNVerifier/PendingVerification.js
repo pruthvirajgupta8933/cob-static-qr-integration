@@ -65,7 +65,7 @@ function PendingVerification() {
           type="button"
           className="btn approve text-white  btn-xs mt-2"
           onClick={() => {
-            // setKycIdClick(data);
+            setKycIdClick(row);
             setIsModalOpen(true);
           }}
           data-toggle="modal"
@@ -82,7 +82,7 @@ function PendingVerification() {
       id: "11",
       name: "Action",
       selector: (row) => row.actionStatus,
-      cell: () => (
+      cell: (row) => (
         <div>
           {roles?.verifier === true ||
           roles?.approver === true ||
@@ -92,11 +92,11 @@ function PendingVerification() {
               className="btn approve text-white  btn-xs mt-2"
               data-toggle="modal"
               onClick={() => {
-              //  setCommentId(data);
+               setCommentId(data);
                 setOpenCommentModal(true);
               }}
               data-target="#exampleModal"
-             // disabled={data?.clientCode === null ? true : false}
+             disabled={data?.clientCode === null ? true : false}
             >
               Comments
             </button>
@@ -178,20 +178,6 @@ function PendingVerification() {
   }, [currentPage, pageSize]);
 
 
-  const mappedData = data?.map((item) => {
-    return {
-      sno: item.sno,
-      clientCode: item.clientCode,
-      companyName: item.companyName,
-      name: item.name,
-      emailId: item.emailId,
-      contactNumber: item.contactNumber,
-      status: item.status,
-      signUpDate: item.signUpDate,
-      isDirect: item.isDirect,
-      comments: item.comments,
-    };
-  });
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -304,7 +290,7 @@ function PendingVerification() {
           {!loadingState && data?.length !== 0 && (
             <Table
               row={rowData}
-              data={mappedData}
+              data={data}
               dataCount={dataCount}
               pageSize={pageSize}
               currentPage={currentPage}
