@@ -14,6 +14,7 @@ export const NotFilledKYCData = [
     id: "2",
     name: "Client Code",
     selector: (row) => row.clientCode,
+    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>
   },
   {
     key:"name",
@@ -21,18 +22,19 @@ export const NotFilledKYCData = [
     name: "Merchant Name",
     selector: (row) => row?.name,
     sortable: true,
-    // cell: (row) => <div style={{ whiteSpace: "unset" }}>{row?.name}</div>,
-    label:"Name",
+    cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>
   },
   {
     id: "4",
     name: "Email",
     selector: (row) => row?.emailId,
+    cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>
   },
   {
     id: "5",
     name: "Contact Number",
     selector: (row) => row.contactNumber,
+    cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>
   },
   {
     id: "6",
@@ -52,73 +54,8 @@ export const NotFilledKYCData = [
   },
 ];
 
-export const AssignZoneData = [
-  { id: "1", row_name: "S. No." },
-  { id: "2", row_name: "Client Code" },
-  { id: "3", row_name: "Merchant Name" },
-  {
-    id: "4",
-    row_name: "Email",
-  },
-  {
-    id: "5",
-    row_name: "Contact Number",
-  },
-  {
-    id: "6",
-    row_name: "KYC Status",
-  },
-  {
-    id: "7",
-    row_name: "Registered Date",
-  },
-  {
-    id: "8",
-    row_name: "Onboard Type",
-  },
-  {
-    id: "9",
-    row_name: "View Zone",
-  },
-];
 
-export const ReferZoneData = [
-  { id: "1", row_name: "S. No." },
-  { id: "2", row_name: "Client Code" },
-  { id: "3", row_name: "Merchant Name" },
-  {
-    id: "4",
-    row_name: "Email",
-  },
-  {
-    id: "5",
-    row_name: "Contact Number",
-  },
-  {
-    id: "6",
-    row_name: "Sourcing Point",
-  },
-  {
-    id: "7",
-    row_name: "Sourcing Code",
-  },
-  {
-    id: "8",
-    row_name: "KYC Status",
-  },
-  {
-    id: "9",
-    row_name: "Registered Date",
-  },
-  {
-    id: "10",
-    row_name: "Onboard Type",
-  },
-  {
-    id: "11",
-    row_name: "Action",
-  },
-];
+
 
 export const TransactionRowData = [
   { id: "1", row_name: "Id" },

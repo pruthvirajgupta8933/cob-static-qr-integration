@@ -8,6 +8,11 @@ label {
   display: block;
   margin-top: 10px;
 }
+.removeWhiteSpace{
+  white-space: unset;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 
 .login-form,
 .signup-form {
