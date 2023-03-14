@@ -9,8 +9,6 @@ import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import CommentModal from "./Onboarderchant/CommentModal";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
-import { ApprovedTableData } from "../../utilities/tableData";
-import Paginataion from "../../_components/table_components/pagination/Pagination";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
@@ -34,7 +32,103 @@ function ApprovedMerchant() {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
 
-  const rowData = ApprovedTableData;
+
+  const ApprovedTableData = [
+    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+    { id: "2", name: "Client Code", selector: (row) => row.clientCode },
+    { id: "3", name: "Company Name", selector: (row) => row.companyName },
+    {
+      id: "4",
+      name: "Merchant Name",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      id: "5",
+      name: "Email",
+      selector: (row) => row.emailId,
+    },
+    {
+      id: "6",
+      name: "Contact Number",
+      selector: (row) => row.contactNumber,
+    },
+    {
+      id: "7",
+      name: "KYC Status",
+      selector: (row) => row.status,
+    },
+    {
+      id: "8",
+      name: "Registered Date",
+      selector: (row) => covertDate(row.signUpDate),
+      sortable: true,
+    },
+    {
+      id: "9",
+      name: "Verified Date",
+      selector: (row) => covertDate(row?.verified_date ? row?.verified_date : "NA"),
+      sortable: true,
+    },
+    {
+      id: "10",
+      name: "Approved Date",
+      selector: (row) => covertDate(row?.approved_date ? row?.approved_date : "NA"),
+      sortable: true,
+    },
+    
+    {
+      id: "11",
+      name: "Onboard Type",
+      selector: (row) => row.isDirect,
+    },
+    {
+      id: "12",
+      name: "View Status",
+      cell: (row) => (
+        <div className="mt-2">
+        <button
+        type="button"
+        className="btn approve text-white  btn-xs"
+        onClick={() =>  {
+          setKycIdClick(row); 
+          setIsModalOpen(true) 
+        }}
+        data-toggle="modal"
+        data-target="#kycmodaldetail"
+      >
+        View Status
+      </button>
+      </div>
+      ),
+    },
+    {
+      id: "13",
+      name: "Action",
+      cell: (row) => (
+        <div className="mt-2">
+      {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
+                  <button
+                  type="button"
+                  className="btn approve text-white  btn-xs"
+                  data-toggle="modal"
+                  onClick={() => {
+                    setCommentId(row)
+                    setOpenDocumentModal(true)
+          
+                  }}
+                  data-target="#exampleModal"
+                  disabled={row?.clientCode === null ? true : false}
+                >
+                   Upload Agreement
+                </button>
+              ) : <></> }
+        </div>
+      ),
+    },
+  ];
+
+
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
@@ -99,24 +193,6 @@ function ApprovedMerchant() {
 
 
 
-  // const viewDocument = async (loginMaidsterId) => {
-  //   const res = await axiosInstanceJWT
-  //     .post(API_URL.DOCUMENT_BY_LOGINID, {
-  //       login_id: loginMaidsterId,
-  //     })
-  //     .then((res) => {
-  //       if (res.status === 200) {
-  //         const data = res.data;
-  //         // setDocImageData(data);
-  //         const docId = data[0].documentId;
-  //         const file = data[0].filePath;
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Please try again after sometimes.", error);
-  //     });
-  // };
-
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
       return date
@@ -154,86 +230,6 @@ function ApprovedMerchant() {
   ];
 
 
- 
-    const colData = () => {
-      return (
-        <>
-          {data == [] ? (
-            <td colSpan={"11"}>
-              {" "}
-              <div className="nodatafound text-center">No data found </div>
-            </td>
-          ) : (
-            data?.map((user, i) => (
-              <tr key={i}>
-              <td>{i + 1}</td>
-              <td>{user?.clientCode}</td>
-              <td>{user?.companyName}</td>
-              <td>{user?.name}</td>
-              <td>{user?.emailId}</td>
-              <td>{user?.contactNumber}</td>
-              <td>{user?.status}</td>
-              <td>{covertDate(user.signUpDate)}</td>
-              <td>{user?.verified_date === null ? "NA" : covertDate(user?.verified_date)}</td>
-              <td>{covertDate(user?.approved_date)}</td>
-              <td>{user?.isDirect}</td>
-              <td>
-               
-                
-                <button
-                    type="button"
-                    className="btn approve text-white  btn-xs"
-                    onClick={() =>  {setKycIdClick(user); setIsModalOpen(true) }}
-                    data-toggle="modal"
-                    data-target="#kycmodaldetail"
-                  >
-                    View Status
-                  </button>
-                  </td>
-                  <td>
-              {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
-                  <button
-                  type="button"
-                  className="btn approve text-white  btn-xs"
-                  data-toggle="modal"
-                  onClick={() => {
-                    setCommentId(user)
-                    setOpenCommentModal(true)
-          
-                  }}
-                  data-target="#exampleModal"
-                  disabled={user?.clientCode === null ? true : false}
-                >
-                   Comments
-                </button>
-              ) : <></> }
-              </td>
-
-              <td>
-              {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
-                  <button
-                  type="button"
-                  className="btn approve text-white  btn-xs"
-                  data-toggle="modal"
-                  onClick={() => {
-                    setCommentId(user)
-                    setOpenDocumentModal(true)
-          
-                  }}
-                  data-target="#exampleModal"
-                  disabled={user?.clientCode === null ? true : false}
-                >
-                   Upload Agreement
-                </button>
-              ) : <></> }
-              </td>
-                      
-            </tr>
-            ))
-          )}
-        </>
-      );
-    };
 
   return (
     <div className="container-fluid flleft">
@@ -280,11 +276,15 @@ function ApprovedMerchant() {
         <div className="scroll overflow-auto">
 
         {!loadingState && data?.length !== 0 && (
-            <Table row={rowData} col={colData}
+            <Table 
+            row={ApprovedTableData}
+            data={data}
             dataCount={dataCount}
             pageSize={pageSize}
             currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage} />
+            changeCurrentPage={changeCurrentPage}
+
+            />
           )}
         </div>
         <CustomLoader loadingState={loadingState} />

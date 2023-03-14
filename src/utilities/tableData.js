@@ -54,6 +54,99 @@ export const NotFilledKYCData = [
   },
 ];
 
+export const ChallanReportData = [
+  { id: "1",
+   name: "S. No." ,
+   selector: (row) => row.sno,
+    sortable: true,
+  
+  },
+  { id: "2", 
+  name: "Client Code" ,
+  selector: (row) => row.client_code,
+},
+
+  { id: "3", 
+  name: "Bank Name",
+  selector: (row) => row.bank_code,
+  sortable: true,
+ },
+  {
+    id: "4",
+    name: "Amount",
+    selector: (row) => row.amount,
+    
+  },
+  {
+    id: "5",
+    name: "Bank Reference No.",
+    selector: (row) => row.bank_reference_number,
+    
+    
+  },
+  {
+    id: "6",
+    name: "Challan No.",
+    selector: (row) => row.challan_number
+  },
+  {
+    id: "7",
+    name: "IFSC Code",
+    selector: (row) => row.ifsc
+  },
+  {
+    id: "8",
+    name: "GL",
+    selector: (row) => row.gl
+  },
+  {
+    id: "9",
+    name: "SplGLInd",
+    selector: (row) => row.sp_igl_ind
+  },
+  {
+    id: "10",
+    name: "Status",
+    selector: (row) => row.type
+  },
+  {
+    id: "11",
+    name: "Created On",
+    selector: (row) => covertDate(row.created_on),
+    sortable: true,
+  },
+];
+
+
+export const AssignZoneData = [
+  { id: "1", row_name: "S. No." },
+  { id: "2", row_name: "Client Code" },
+  { id: "3", row_name: "Merchant Name" },
+  {
+    id: "4",
+    row_name: "Email",
+  },
+  {
+    id: "5",
+    row_name: "Contact Number",
+  },
+  {
+    id: "6",
+    row_name: "KYC Status",
+  },
+  {
+    id: "7",
+    row_name: "Registered Date",
+  },
+  {
+    id: "8",
+    row_name: "Onboard Type",
+  },
+  {
+    id: "9",
+    row_name: "View Zone",
+  },
+];
 
 
 
@@ -406,43 +499,7 @@ export const ApprovedTableData = [
   },
 ];
 
-export const ChallanReportData = [
-  { id: "1", row_name: "S. No." },
-  { id: "2", row_name: "Client Code" },
-  { id: "3", row_name: "Bank Name" },
-  {
-    id: "4",
-    row_name: "Amount",
-  },
-  {
-    id: "5",
-    row_name: "Bank Reference No.",
-  },
-  {
-    id: "6",
-    row_name: "Challan No.",
-  },
-  {
-    id: "7",
-    row_name: "IFSC Code",
-  },
-  {
-    id: "8",
-    row_name: "GL",
-  },
-  {
-    id: "9",
-    row_name: "SplGLInd",
-  },
-  {
-    id: "10",
-    row_name: "Status",
-  },
-  {
-    id: "11",
-    row_name: "Created On",
-  },
-];
+
 
 // For subscription paisa
 export const MandateReportData = [
