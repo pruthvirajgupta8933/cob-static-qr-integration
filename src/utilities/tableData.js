@@ -68,26 +68,30 @@ export const ChallanReportData = [
 
   { id: "3", 
   name: "Bank Name",
-  selector: (row) =>  <div className="removeWhiteSpace">row.bank_code</div>,
+  selector: (row) => row.bank_code,
+  cell: (row) => <div className="removeWhiteSpace">{row?.bank_code}</div>,
   sortable: true,
  },
   {
     id: "4",
     name: "Amount",
-    selector: (row) => <div className="removeWhiteSpace">row.amount</div>,
+    selector: (row) => row.amount,
+    cell: (row) => <div className="removeWhiteSpace">{row?.amount}</div> 
     
   },
   {
     id: "5",
     name: "Bank Reference No.",
-    selector: (row) => <div className="removeWhiteSpace">row.bank_reference_number</div>,
+    selector: (row) => row.bank_reference_number,
+    cell: (row) => <div className="removeWhiteSpace">{row?.bank_reference_number}</div> 
     
     
   },
   {
     id: "6",
     name: "Challan No.",
-    selector: (row) => <div className="removeWhiteSpace">row.challan_number</div>
+    selector: (row) => row.challan_number,
+    cell: (row) => <div className="removeWhiteSpace">{row?.challan_number}</div> 
   },
   {
     id: "7",
@@ -97,12 +101,14 @@ export const ChallanReportData = [
   {
     id: "8",
     name: "GL",
-    selector: (row) => <div className="removeWhiteSpace">row.gl</div>
+    selector: (row) => row.gl,
+    cell: (row) => <div className="removeWhiteSpace">{row?.gl}</div> 
   },
   {
     id: "9",
     name: "SplGLInd",
-    selector: (row) => <div className="removeWhiteSpace">row.sp_igl_ind</div>
+    selector: (row) => row.sp_igl_ind,
+    cell: (row) => <div className="removeWhiteSpace">{row?.sp_igl_ind}</div> 
   },
   {
     id: "10",

@@ -31,28 +31,37 @@ function VerifiedMerchant() {
 
   const PendingApprovalData = [
     { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
-    { id: "2", name: "Client Code", selector: (row) => <div className="removeWhiteSpace">row.clientCode </div>},
-    { id: "3", name: "Company Name", selector: (row) => <div className="removeWhiteSpace">row.companyName</div>},
+    { id: "2", name: "Client Code", selector: (row) => row.clientCode,
+    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div> 
+  
+  },
+    { id: "3", name: "Company Name", selector: (row) => row.companyName ,
+    cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div> 
+
+  },
     {
       id: "4",
       name: "Merchant Name",
-      selector: (row) => <div className="removeWhiteSpace">row.name</div>,
+      selector: (row) => row.name,
+      cell: (row) => <div className="removeWhiteSpace">{row?.name}</div> ,
       sortable: true,
     },
     {
       id: "5",
       name: "Email",
-      selector: (row) => <div className="removeWhiteSpace">row.emailId</div>,
+      selector: (row) => row.emailId,
+      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div> ,
     },
     {
       id: "6",
       name: "Contact Number",
-      selector: (row) => <div className="removeWhiteSpace">contactNumber</div>,
+      selector: (row) => row.contactNumber,
+      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>
     },
     {
       id: "7",
       name: "KYC Status",
-      selector: (row) => <div className="removeWhiteSpace">row.status</div>,
+      selector: (row) => row.status,
     },
     {
       id: "8",
