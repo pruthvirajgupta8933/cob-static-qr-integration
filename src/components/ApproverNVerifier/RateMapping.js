@@ -8,13 +8,13 @@ import Table from "../../_components/table_components/table/Table";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import NavBar from "../../components/dashboard/NavBar/NavBar";
 import ViewRateMapping from "./ViewRateMapping";
-import { AssignZoneData } from "../../utilities/tableData";
+// import { AssignZoneData } from "../../utilities/tableData";
 import Spinner from "./Spinner";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CustomLoader from "../../_components/loader";
 
 function RateMapping() {
-  const rowData = AssignZoneData;
+  // const rowData = AssignZoneData;
   const dispatch = useDispatch();
 
   const [data, setData] = useState([]);
@@ -46,7 +46,7 @@ function RateMapping() {
         setData(data);
       })
 
-      .catch((err) => {});
+      .catch((err) => { });
   }, [currentPage, pageSize]);
 
   useEffect(() => {
@@ -159,6 +159,63 @@ function RateMapping() {
     return date;
   };
 
+
+
+
+  const AssignZoneData = [
+    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable:true },
+    { id: "2", name: "Client Code", selector: (row) => row.clientCode },
+    { id: "3", name: "Merchant Name", selector: (row) => row.name , sortable:true},
+    {
+      id: "4",
+      name: "Email",
+      selector: (row) => row.emailId
+    },
+    {
+      id: "5",
+      name: "Contact Number",
+      selector: (row) => row.contactNumber
+    },
+    {
+      id: "6",
+      name: "KYC Status",
+      selector: (row) => row.status
+    },
+    {
+      id: "7",
+      name: "Registered Date",
+      selector: (row) => covertDate(row.signUpDate),
+      sortable:true
+    },
+    {
+      id: "8",
+      name: "Onboard Type",
+      selector: (row) => row.isDirect
+    },
+    {
+      id: "9",
+      name: "Action",
+      cell: (row) => (
+        <div className="mt-3">
+        <button
+          type="submit"
+          onClick={() => {
+            setModalDisplayData(row);
+            setOpenModal(true);
+          }}
+          className="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleModalCenter"
+        >
+          Rate Map
+        </button>
+        </div>
+      )
+
+    },
+  ];
+
+
   return (
     <section className="ant-layout">
       <div>
@@ -205,10 +262,11 @@ function RateMapping() {
             </div>
             <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
               <div className="scroll overflow-auto">
+                {console.log(data)}
                 {!loadingState && data?.length !== 0 && (
                   <Table
-                    row={rowData}
-                    col={colData}
+                    row={AssignZoneData}
+                    data={data}
                     dataCount={dataCount}
                     pageSize={pageSize}
                     currentPage={currentPage}

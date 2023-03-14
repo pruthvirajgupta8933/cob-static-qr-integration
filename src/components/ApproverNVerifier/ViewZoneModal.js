@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Formik, Form } from "formik";
-import API_URL from '../../config';
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
-import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import { useDispatch, useSelector } from "react-redux";
 import { zoneDetail,zoneMaster,zoneEmployee,updateZoneData,getZoneInfo} from '../../slices/merchantZoneMappingSlice';
 
@@ -19,16 +17,17 @@ const initialValues = {
 const validationSchema = Yup.object({
   zoneName: Yup.string().required("Required").nullable(),
   zoneHeadName: Yup.string().required("Required").nullable(),
-  zoneEmployee: Yup.string().required("Required").nullable(),
-  // risk_category: Yup.string().required("Required").nullable()
+  zoneEmployee: Yup.string().required("Required").nullable()
 })
 
 
 const ViewZoneModal = (props) => {
+
+  console.log("props",props)
+
   const [zone, setZone] = useState([])
   const [zoneHead, setZoneHead] = useState([])
   const [employee, setEmployee] = useState([])
-  const [risk, setRisk] = useState([])
   const [show, setShow] = useState(true);
   const [zoneCode, setZoneCode] = useState("")
   const [empCode, setEmpcode] = useState("")
@@ -36,29 +35,6 @@ const ViewZoneModal = (props) => {
   const dispatch = useDispatch();
 
 
-  // useEffect(() => {
-  //   axiosInstanceJWT
-  //     .get(API_URL.RISK_CATEGORY)
-  //     .then((resp) => {
-  //       const data =
-  //         convertToFormikSelectJson("risk_category_code", "risk_category_name", resp?.data);
-
-  //       setRisk(data);
-        
-  //     })
-  //   // .catch((err) => console.log(err));
-  // }, []);
-
-
-  // useEffect(() => {
-  //   axiosInstanceJWT
-  //     .get(API_URL.ZONE_DETAILS)
-  //     .then((resp) => {
-  //       const data = convertToFormikSelectJson("zoneCode", "zoneName", resp?.data?.zones);
-  //       setZone(data);
-  //     })
-  //   // .catch((err) => console.log(err));
-  // }, []);
 
   useEffect(() => {
     dispatch(zoneDetail()).then((resp) => {
@@ -150,45 +126,6 @@ const ViewZoneModal = (props) => {
       })
 
   }
-
-
-
-  // const totalPages = Math.ceil(dataCount / pageSize);
-  // const pageNumbers = [...Array(totalPages + 1).keys()].slice(1);
-
-  
-  // const nextPage = () => {
-  //   if (currentPage < pageNumbers?.length) {
-  //     setCurrentPage(currentPage + 1);
-  //   }
-  // };
-
-  // const prevPage = () => {
-  //   if (currentPage > 1) {
-  //     setCurrentPage(currentPage - 1);
-  //   }
-  // };
-
-
-  // useEffect(() => {
-  //   let lastSevenPage = totalPages - 7;
-  //   if (pageNumbers?.length>0) {
-  //     let start = 0
-  //     let end = (currentPage + 6)
-  //     if (totalPages > 6) {
-  //       start = (currentPage - 1)
-  
-  //       if (parseInt(lastSevenPage) <= parseInt(start)) {
-  //         start = lastSevenPage
-  //       }
-  
-  //     }
-  //     const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
-  //       return pgNumber;
-  //     })   
-  //    setDisplayPageNumber(pageNumber) 
-  //   }
-  // }, [currentPage, totalPages])
 
 
   return (
@@ -290,29 +227,7 @@ const ViewZoneModal = (props) => {
 
                               </div>
                             </div>
-                            {/* <div className="col-lg-6">
-                              <div className="input full- optional">
-                                <label
-                                  className="string optional"
-                                  htmlFor="risk_category"
-                                >
-                                  Risk category
-                                </label>
-                                <FormikController
-                                  control="select"
-                                  name="risk_category"
-                                  options={risk}
-                                  className="form-control"
-
-                                />
-
-
-
-                              </div>
-                            </div> */}
                           </div>
-
-                        
                         <div className="modal-footer">
                           {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
                           <button type="subbmit" onClick={resetForm} className="btn btn-primary">Update Zone</button>
@@ -346,7 +261,6 @@ const ViewZoneModal = (props) => {
       <td>{zoneInfo?.zone_name}</td>
       <td>{zoneInfo?.zone_head_name}</td>
       <td>{zoneInfo?.employee_name}</td>
-      {/* <td>{zoneInfo?.risk_name}</td> */}
     </tr>
   </tbody>
 </table>

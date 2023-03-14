@@ -69,25 +69,29 @@ export const ChallanReportData = [
   { id: "3", 
   name: "Bank Name",
   selector: (row) => row.bank_code,
+  cell: (row) => <div className="removeWhiteSpace">{row?.bank_code}</div>,
   sortable: true,
  },
   {
     id: "4",
     name: "Amount",
     selector: (row) => row.amount,
+    cell: (row) => <div className="removeWhiteSpace">{row?.amount}</div> 
     
   },
   {
     id: "5",
     name: "Bank Reference No.",
     selector: (row) => row.bank_reference_number,
+    cell: (row) => <div className="removeWhiteSpace">{row?.bank_reference_number}</div> 
     
     
   },
   {
     id: "6",
     name: "Challan No.",
-    selector: (row) => row.challan_number
+    selector: (row) => row.challan_number,
+    cell: (row) => <div className="removeWhiteSpace">{row?.challan_number}</div> 
   },
   {
     id: "7",
@@ -97,12 +101,14 @@ export const ChallanReportData = [
   {
     id: "8",
     name: "GL",
-    selector: (row) => row.gl
+    selector: (row) => row.gl,
+    cell: (row) => <div className="removeWhiteSpace">{row?.gl}</div> 
   },
   {
     id: "9",
     name: "SplGLInd",
-    selector: (row) => row.sp_igl_ind
+    selector: (row) => row.sp_igl_ind,
+    cell: (row) => <div className="removeWhiteSpace">{row?.sp_igl_ind}</div> 
   },
   {
     id: "10",
