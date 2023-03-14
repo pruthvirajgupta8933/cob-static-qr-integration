@@ -87,7 +87,7 @@ function VerifiedMerchant() {
            <div className="mt-2">
         <button
             type="button"
-            className="approve text-white  btn-xs "
+            className="approve text-white  btn-xs"
             onClick={() => {
               setKycIdClick(row);
               setIsModalOpen(true);
