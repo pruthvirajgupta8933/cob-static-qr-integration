@@ -32,40 +32,58 @@ const PendindKyc = () => {
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
-
   const PendindKycRowData = [
-    { id: "1", name: "S. No.",selector:(row)=>row.sno,sortable:true },
-    { id: "2", name: "Client Code",selector:(row)=>row.clientCode },
-    { id: "3", name: "Company Name",selector:(row)=>row.companyName },
+    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+    {
+      id: "2",
+      name: "Client Code",
+      selector: (row) => row.clientCode,
+      cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
+    },
+    {
+      id: "3",
+      name: "Company Name",
+      selector: (row) => row.companyName,
+      cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
+    },
+
     {
       id: "4",
       name: "Merchant Name",
-      selector:(row)=>row.name
+      selector: (row) => row.name,
+      sortable:true,
+      cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>,
     },
     {
       id: "5",
       name: "Email",
-      selector:(row)=>row.emailId
+      selector: (row) => row.emailId,
+      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
     },
     {
       id: "6",
       name: "Contact Number",
-      selector:(row)=>row.contactNumber
+      selector: (row) => row.contactNumber,
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row?.contactNumber}</div>
+      ),
     },
     {
       id: "7",
       name: "KYC Status",
-      selector:(row)=>row.status
+      selector: (row) => row.status,
+
     },
     {
       id: "8",
       name: "Registered Date",
-      selector:(row)=>covertDate(row.signUpDate)
+      selector: (row) => covertDate(row.signUpDate),
+      sortable:true,
     },
     {
       id: "9",
       name: "Onboard Type",
-      selector:(row)=>row.isDirect
+      selector: (row) => row.isDirect,
     },
     {
       id: "10",
@@ -73,18 +91,17 @@ const PendindKyc = () => {
       selector: (row) => row.viewStatus,
       cell: (row) => (
         <button
-        type="button"
-        className="btn approve text-white  btn-xs mt-2"
-        onClick={() => {
-          setKycIdClick(row);
-          setIsModalOpen(!isOpenModal);
-        }}
-        data-toggle="modal"
-        data-target="#kycmodaldetail"
-      >
-       
-        View Status
-      </button>
+          type="button"
+          className="btn approve text-white  btn-xs mt-2"
+          onClick={() => {
+            setKycIdClick(row);
+            setIsModalOpen(!isOpenModal);
+          }}
+          data-toggle="modal"
+          data-target="#kycmodaldetail"
+        >
+          View Status
+        </button>
       ),
     },
     {
@@ -93,30 +110,29 @@ const PendindKyc = () => {
       selector: (row) => row.actionStatus,
       cell: (row) => (
         <div>
-       {roles?.verifier === true ||
-                roles?.approver === true ||
-                roles?.viewer === true ? (
-                  <button
-                    type="button"
-                    className="btn approve text-white  btn-xs mt-2"
-                    data-toggle="modal"
-                    onClick={() => {
-                      setCommentId(row);
-                      setOpenCommentModal(true);
-                    }}
-                    data-target="#exampleModal"
-                    disabled={row?.clientCode === null ? true : false}
-                  >
-                    Comments
-                  </button>
-                ) : (
-                  <></>
-                )}
+          {roles?.verifier === true ||
+          roles?.approver === true ||
+          roles?.viewer === true ? (
+            <button
+              type="button"
+              className="btn approve text-white  btn-xs mt-2"
+              data-toggle="modal"
+              onClick={() => {
+                setCommentId(row);
+                setOpenCommentModal(true);
+              }}
+              data-target="#exampleModal"
+              disabled={row?.clientCode === null ? true : false}
+            >
+              Comments
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
       ),
     },
   ];
-
 
   const dispatch = useDispatch();
 
@@ -189,8 +205,6 @@ const PendindKyc = () => {
     let date = moment(yourDate).format("DD/MM/YYYY");
     return date;
   };
-
-
 
   // console.log("Data Loading",isLoaded)
 

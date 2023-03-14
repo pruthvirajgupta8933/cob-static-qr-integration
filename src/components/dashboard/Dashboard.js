@@ -563,6 +563,10 @@ function Dashboard() {
           </ApproverRoute>
         )}
 
+     <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
+          <ChallanTransactReport />
+        </B2BRouting>
+
         {roles?.verifier === true ? <VerifierRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
           <BizzAppData />
         </VerifierRoute> : roles?.approver === true ?
@@ -571,9 +575,7 @@ function Dashboard() {
           </ApproverRoute> :
           <></>}
 
-        <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
-          <ChallanTransactReport />
-        </B2BRouting>
+       
 
         <Route path={`${path}/*`} component={UrlNotFound} >
           <UrlNotFound />

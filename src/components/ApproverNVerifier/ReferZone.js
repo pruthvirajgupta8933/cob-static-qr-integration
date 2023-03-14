@@ -1,20 +1,90 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import React, { useState, useEffect } from "react";
-import {  useDispatch , useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import moment from "moment";
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
-import ViewReferZoneModal from "../ApproverNVerifier/ViewReferZoneModal"
-import NavBar from "../../components/dashboard/NavBar/NavBar"
+import ViewReferZoneModal from "../ApproverNVerifier/ViewReferZoneModal";
+import NavBar from "../../components/dashboard/NavBar/NavBar";
 import Table from "../../_components/table_components/table/Table";
-import SearchFilter from "../../_components/table_components/filters/SearchFilter"; 
+import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
-import { ReferZoneData } from "../../utilities/tableData";
 import CustomLoader from "../../_components/loader";
 
 const ReferZone = () => {
+  const ReferZoneData = [
+    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+    { id: "2", name: "Client Code", selector: (row) => row.clientCode,
+    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>},
+    {
+      id: "3",
+      name: "Merchant Name",
+      selector: (row) => row.name,
+      sortable: true,
+      cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>
+    },
+    {
+      id: "4",
+      name: "Email",
+      selector: (row) => row.emailId,
+      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>
+    },
+    {
+      id: "5",
+      name: "Contact Number",
+      selector: (row) => row.contactNumber,
+      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>
+    },
+    {
+      id: "6",
+      name: "Sourcing Point",
+      selector: (row) => row.sourcing_point,
+      cell: (row) => <div className="removeWhiteSpace">{row?.sourcing_point}</div>
+    },
+    {
+      id: "7",
+      name: "Sourcing Code",
+      selector: (row) => row.sourcing_code,
+      cell: (row) => <div className="removeWhiteSpace">{row?.sourcing_code}</div>
+      
+    },
+    {
+      id: "8",
+      name: "KYC Status",
+      selector: (row) => row.status,
+    },
+    {
+      id: "9",
+      name: "Registered Date",
+      selector: (row) => covertDate(row.signUpDate),
+      sortable: true,
+    },
+    {
+      id: "10",
+      name: "Onboard Type",
+      selector: (row) => row.isDirect,
+    },
+    {
+      id: "11",
+      name: "Add Sourcing Partner",
+      cell: (row) => (
+        <button
+          type="submit"
+          onClick={() => {
+            setModalDisplayData(row);
+            setOpenModal(true);
+          }}
+          className="btn btnbackground text-white mt-2 p-2"
+          data-toggle="modal"
+          data-target="#exampleModalCenter"
+        >
+          Update
+        </button>
+      ),
+    },
+  ];
   const rowData = ReferZoneData;
   const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
@@ -23,10 +93,9 @@ const ReferZone = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
- const [modalDisplayData, setModalDisplayData] = useState({});
-  const [openZoneModal, setOpenModal] = useState(false)
+  const [modalDisplayData, setModalDisplayData] = useState({});
+  const [openZoneModal, setOpenModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  
 
   const dispatch = useDispatch();
 
@@ -36,47 +105,33 @@ const ReferZone = () => {
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
-
-
   const refreshAfterRefer = () => {
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-       const data = resp?.payload?.results;
+        const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
-         setDataCount(dataCoun);
-         setAssignzone(data);
+        setDataCount(dataCoun);
+        setAssignzone(data);
       })
 
-      .catch((err) => {
-      });
-  
-
-  }
-
-
+      .catch((err) => {});
+  };
 
   useEffect(() => {
-   
     dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
-       const data = resp?.payload?.results;
+        const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
-         setDataCount(dataCoun);
-         setAssignzone(data);
+        setDataCount(dataCoun);
+        setAssignzone(data);
       })
 
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
-  
   }, [currentPage, pageSize]);
-
-
-
-
-
 
   const kycSearch = (e, fieldType) => {
     fieldType === "text"
@@ -85,14 +140,11 @@ const ReferZone = () => {
     setSearchText(e);
   };
 
-
-
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("MM/DD/YYYY");
-      return date
-    }
+    return date;
+  };
 
-    
   const searchByText = (text) => {
     setData(
       assignZone?.filter((item) =>
@@ -104,8 +156,7 @@ const ReferZone = () => {
     );
   };
 
-
-     //function for change current page
+  //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
   };
@@ -116,44 +167,7 @@ const ReferZone = () => {
   };
 
 
-    const colData = () => {
-      return (
-        <>
-          {data == [] ? (
-            <td colSpan={"11"}>
-              {" "}
-              <div className="nodatafound text-center">No Data Found </div>
-            </td>
-          ) : (
-            data?.map((user, i) => (
-              <tr key={i}>
-              <td>{i + 1}</td>
-              <td>{user.clientCode}</td>
-              <td>{user.name}</td>
-              <td>{user.emailId}</td>
-              <td>{user.contactNumber}</td>
-              <td>{user.sourcing_point}</td>
-              <td>{user.sourcing_code}</td>
-              <td>{user.status}</td>
-              <td> {covertDate(user.signUpDate)}</td>
-              <td>{user?.isDirect}</td>
-              {/* <td>  <button type="button" className="btn btn-primary" onClick={onClick}>View Document</button></td> */}
-              <td>
-                <button type="submit" onClick={()=>{setModalDisplayData(user)
-                setOpenModal((true))
-                }} className="btn btnbackground text-white" data-toggle="modal" data-target="#exampleModalCenter">
-                  Refer Merchant
-                </button>
-              </td>
-            </tr>
-            ))
-          )}
-        </>
-      );
-    };
-
-
-    return (
+  return (
     <section className="ant-layout">
       <div>
         <NavBar />
@@ -161,34 +175,45 @@ const ReferZone = () => {
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Provision of Sourcing Partner</h1>
-
-
+            <h1 className="m-b-sm gx-float-left">
+              Provision of Sourcing Partner
+            </h1>
           </div>
           <div className="container-fluid flleft">
             <div className="col-lg-4 mrg-btm- bgcolor">
-            <SearchFilter
+              <SearchFilter
                 kycSearch={kycSearch}
                 searchText={searchText}
                 searchByText={searchByText}
                 setSearchByDropDown={setSearchByDropDown}
               />
-              <div> { openZoneModal === true ? <ViewReferZoneModal userData={modalDisplayData} setOpenModal={setOpenModal}  refreshAfterRefer={refreshAfterRefer} /> : <></> }</div> 
+              <div>
+                {" "}
+                {openZoneModal === true ? (
+                  <ViewReferZoneModal
+                    userData={modalDisplayData}
+                    setOpenModal={setOpenModal}
+                    refreshAfterRefer={refreshAfterRefer}
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
             <div className="col-lg-4 mrg-btm- bgcolor">
-            <CountPerPageFilter
+              <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}
                 changePageSize={changePageSize}
               />
             </div>
-         
+
             <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
               <div className="scroll overflow-auto">
-              {!loadingState && data?.length !== 0 && (
+                {!loadingState && data?.length !== 0 && (
                   <Table
-                    row={rowData}
-                    col={colData}
+                    row={ReferZoneData}
+                    data={data}
                     dataCount={dataCount}
                     pageSize={pageSize}
                     currentPage={currentPage}
@@ -205,6 +230,6 @@ const ReferZone = () => {
         </div>
       </main>
     </section>
-  )
-}
+  );
+};
 export default ReferZone;
