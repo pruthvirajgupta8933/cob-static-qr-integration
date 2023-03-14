@@ -51,6 +51,7 @@ const PendindKyc = () => {
       id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
+      sortable:true,
       cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>,
     },
     {
@@ -71,11 +72,13 @@ const PendindKyc = () => {
       id: "7",
       name: "KYC Status",
       selector: (row) => row.status,
+
     },
     {
       id: "8",
       name: "Registered Date",
       selector: (row) => covertDate(row.signUpDate),
+      sortable:true,
     },
     {
       id: "9",
