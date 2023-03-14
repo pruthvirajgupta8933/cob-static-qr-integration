@@ -10,14 +10,12 @@ import CommentModal from "./Onboarderchant/CommentModal";
 import moment from "moment";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../_components/table_components/table/Table";
-import { PendindKycData } from "../../utilities/tableData";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
 
 const PendindKyc = () => {
-  const rowData = PendindKycData;
   const roles = roleBasedAccess();
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForPending);
@@ -33,6 +31,92 @@ const PendindKyc = () => {
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+
+
+  const PendindKycRowData = [
+    { id: "1", name: "S. No.",selector:(row)=>row.sno,sortable:true },
+    { id: "2", name: "Client Code",selector:(row)=>row.clientCode },
+    { id: "3", name: "Company Name",selector:(row)=>row.companyName },
+    {
+      id: "4",
+      name: "Merchant Name",
+      selector:(row)=>row.name
+    },
+    {
+      id: "5",
+      name: "Email",
+      selector:(row)=>row.emailId
+    },
+    {
+      id: "6",
+      name: "Contact Number",
+      selector:(row)=>row.contactNumber
+    },
+    {
+      id: "7",
+      name: "KYC Status",
+      selector:(row)=>row.status
+    },
+    {
+      id: "8",
+      name: "Registered Date",
+      selector:(row)=>covertDate(row.signUpDate)
+    },
+    {
+      id: "9",
+      name: "Onboard Type",
+      selector:(row)=>row.isDirect
+    },
+    {
+      id: "10",
+      name: "View Status",
+      selector: (row) => row.viewStatus,
+      cell: (row) => (
+        <button
+        type="button"
+        className="btn approve text-white  btn-xs mt-2"
+        onClick={() => {
+          setKycIdClick(row);
+          setIsModalOpen(!isOpenModal);
+        }}
+        data-toggle="modal"
+        data-target="#kycmodaldetail"
+      >
+       
+        View Status
+      </button>
+      ),
+    },
+    {
+      id: "11",
+      name: "Action",
+      selector: (row) => row.actionStatus,
+      cell: (row) => (
+        <div>
+       {roles?.verifier === true ||
+                roles?.approver === true ||
+                roles?.viewer === true ? (
+                  <button
+                    type="button"
+                    className="btn approve text-white  btn-xs mt-2"
+                    data-toggle="modal"
+                    onClick={() => {
+                      setCommentId(row);
+                      setOpenCommentModal(true);
+                    }}
+                    data-target="#exampleModal"
+                    disabled={row?.clientCode === null ? true : false}
+                  >
+                    Comments
+                  </button>
+                ) : (
+                  <></>
+                )}
+        </div>
+      ),
+    },
+  ];
+
 
   const dispatch = useDispatch();
 
@@ -106,67 +190,7 @@ const PendindKyc = () => {
     return date;
   };
 
-  const colData = (data) => {
-    return (
-      <>
-        {data == [] ? (
-          <td colSpan={"11"}>
-            {" "}
-            <div className="nodatafound text-center">No data found </div>
-          </td>
-        ) : (
-          data?.map((user, i) => (
-            <tr>
-              <td>{i + 1}</td>
-              <td>{user.clientCode}</td>
-              <td>{user.companyName}</td>
-              <td>{user.name}</td>
-              <td>{user.emailId}</td>
-              <td>{user.contactNumber}</td>
-              <td>{user.status}</td>
-              <td>{covertDate(user.signUpDate)}</td>
-              <td>{user?.isDirect}</td>
-              <td>
-                <button
-                  type="button"
-                  className="btn approve text-white  btn-xs"
-                  onClick={() => {
-                    setKycIdClick(user);
-                    setIsModalOpen(!isOpenModal);
-                  }}
-                  data-toggle="modal"
-                  data-target="#kycmodaldetail"
-                >
-                  View Status
-                </button>
-              </td>
-              <td>
-                {roles?.verifier === true ||
-                roles?.approver === true ||
-                roles?.viewer === true ? (
-                  <button
-                    type="button"
-                    className="btn approve text-white  btn-xs"
-                    data-toggle="modal"
-                    onClick={() => {
-                      setCommentId(user);
-                      setOpenCommentModal(true);
-                    }}
-                    data-target="#exampleModal"
-                    disabled={user?.clientCode === null ? true : false}
-                  >
-                    Comments
-                  </button>
-                ) : (
-                  <></>
-                )}
-              </td>
-            </tr>
-          ))
-        )}
-      </>
-    );
-  };
+
 
   // console.log("Data Loading",isLoaded)
 
@@ -227,8 +251,8 @@ const PendindKyc = () => {
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
             <Table
-              row={rowData}
-              col={colData}
+              row={PendindKycRowData}
+              data={data}
               dataCount={dataCount}
               pageSize={pageSize}
               currentPage={currentPage}

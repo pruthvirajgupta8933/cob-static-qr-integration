@@ -146,7 +146,7 @@ function VerifiedMerchant() {
         <td>
           <button
             type="button"
-            className="btn approve text-white  btn-xs"
+            className="btn approve text-white  btn-xs mt-2"
             onClick={() => {
               setKycIdClick(user);
               setIsModalOpen(true);
@@ -166,7 +166,7 @@ function VerifiedMerchant() {
           roles?.viewer === true ? (
             <button
               type="button"
-              className="btn approve text-white  btn-xs"
+              className="btn approve text-white  btn-xs mt-2"
               data-toggle="modal"
               onClick={() => {
                 setCommentId(user);
@@ -250,6 +250,7 @@ function VerifiedMerchant() {
             <Table
               row={rowData}
               col={colData}
+              data={data}
               dataCount={dataCount}
               pageSize={pageSize}
               currentPage={currentPage}

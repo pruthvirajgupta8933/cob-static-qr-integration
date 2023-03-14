@@ -177,60 +177,7 @@ function PendingVerification() {
       });
   }, [currentPage, pageSize]);
 
-  const colData = () => {
-    return data?.map((user, i) => (
-      <tr key={i}>
-        {/* <td>{i + 1}</td>
-        <td>{user.clientCode}</td>
-        <td>{user.companyName}</td>
-        <td>{user.name}</td>
-        <td>{user.emailId}</td>
-        <td>{user.contactNumber}</td>
-        <td>{user.status}</td>
-        <td>{covertDate(user.signUpDate)}</td>
-        <td>{user?.isDirect}</td> */}
-        {/* <td>{user?.comments}</td> */}
-        <td>
-          <button
-            type="button"
-            className="btn approve text-white  btn-xs"
-            onClick={() => {
-              setKycIdClick(user);
-              setIsModalOpen(true);
-            }}
-            data-toggle="modal"
-            data-target="#kycmodaldetail"
-          >
-            {(roles?.verifier === true && currenTab === 3) ||
-            Allow_To_Do_Verify_Kyc_details === true
-              ? "Verify KYC "
-              : "View Status"}
-          </button>
-        </td>
-        <td>
-          {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
-            <button
-              type="button"
-              className="btn approve text-white  btn-xs"
-              data-toggle="modal"
-              onClick={() => {
-                setCommentId(user);
-                setOpenCommentModal(true);
-              }}
-              data-target="#exampleModal"
-              disabled={user?.clientCode === null ? true : false}
-            >
-              Comments
-            </button>
-          ) : (
-            <></>
-          )}
-        </td>
-      </tr>
-    ));
-  };
+
   const mappedData = data?.map((item) => {
     return {
       sno: item.sno,
@@ -254,9 +201,6 @@ function PendingVerification() {
   //function for change page size
   const changePageSize = (pageSize) => {
     setPageSize(pageSize);
-  };
-  const testData = (data) => {
-    console.log(data);
   };
 
   const searchByText = () => {

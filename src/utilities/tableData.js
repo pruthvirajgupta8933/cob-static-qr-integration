@@ -338,43 +338,7 @@ export const beneficiaryRowData = [
   { id: "4", row_name: "UPI ID" },
 ];
 
-export const PendindKycData = [
-  { id: "1", row_name: "S. No." },
-  { id: "2", row_name: "Client Code" },
-  { id: "3", row_name: "Company Name" },
-  {
-    id: "4",
-    row_name: "Merchant Name",
-  },
-  {
-    id: "5",
-    row_name: "Email",
-  },
-  {
-    id: "6",
-    row_name: "Contact Number",
-  },
-  {
-    id: "7",
-    row_name: "KYC Status",
-  },
-  {
-    id: "8",
-    row_name: "Registered Date",
-  },
-  {
-    id: "9",
-    row_name: "Onboard Type",
-  },
-  {
-    id: "10",
-    row_name: "View Status",
-  },
-  {
-    id: "11",
-    row_name: "Action",
-  },
-];
+
 
 export const PendingVerificationData = [
   { id: "1", name: "S. No." },

@@ -19,6 +19,8 @@ import CompleteVerification from "./CompleteVerification";
 import { isNumber } from "lodash";
 
 const KycDetailsModal = (props) => {
+  // console.log(props)
+
   let closeVerification = props?.handleModal;
 
   let renderPendingApprovel = props.renderPendingApproval;
@@ -27,7 +29,7 @@ const KycDetailsModal = (props) => {
   let renderToPendingKyc=props?.renderToPendingKyc;
 
   let merchantKycId = props?.kycId;
-  console.log(props,'test');
+  // console.log(props,'test');
 
   const [docList, setDocList] = useState([]);
   const [docTypeList, setDocTypeList] = useState([]);
