@@ -62,7 +62,7 @@ const ViewDocumentModal = (props) => {
   const validationSchema = Yup.object({
     comments: Yup.string()
       .min(1, "Please enter , more than 1 character")
-      .max(200, "Please do not enter more than 100 characters")
+      .max(200, "Please do not enter more than 200 characters")
       .required("Required")
       .nullable(),
   });
