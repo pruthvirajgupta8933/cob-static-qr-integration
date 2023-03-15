@@ -22,8 +22,6 @@ const PendindKyc = () => {
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
-  
-
   const [data, setData] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [pendingKycData, setPendingKycData] = useState([]);
