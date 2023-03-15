@@ -29,7 +29,7 @@ const Table = (props) => {
           className="table table-bordered "
           columns={props.row}
           data={props.data}
-          sortIcon={<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>}
+          sortIcon={<i  class="fa fa-arrow-up ml-2"></i>}
           // pagination
           // selectableRows
         />
