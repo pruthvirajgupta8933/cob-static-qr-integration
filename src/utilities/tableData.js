@@ -1,8 +1,9 @@
 import moment from "moment";
 const covertDate = (yourDate) => {
-  let date = moment(yourDate).format("DD/MM/YYYY");
+  let date = moment(yourDate).format("MM/DD/YYYY");
   return date;
 };
+
 export const NotFilledKYCData = [
   {
     id: "1",
@@ -44,8 +45,9 @@ export const NotFilledKYCData = [
   {
     id: "7",
     name: "Registered Date",
-    selector: (row) => covertDate(row.signUpDate),
+    selector: (row) =>row.signUpDate,
     sortable: true,
+    cell:(row)=><div>{covertDate(row.signUpDate)}</div>
   },
   {
     id: "8",
@@ -59,7 +61,6 @@ export const ChallanReportData = [
    name: "S. No." ,
    selector: (row) => row.sno,
     sortable: true,
-  
   },
   { id: "2", 
   name: "Client Code" ,
@@ -84,8 +85,7 @@ export const ChallanReportData = [
     name: "Bank Reference No.",
     selector: (row) => row.bank_reference_number,
     cell: (row) => <div className="removeWhiteSpace">{row?.bank_reference_number}</div> 
-    
-    
+
   },
   {
     id: "6",

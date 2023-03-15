@@ -58,8 +58,9 @@ const ReferZone = () => {
     {
       id: "9",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
+      selector: (row) => row.signUpDate,
       sortable: true,
+      cell:(row)=><div>{covertDate(row.signUpDate)}</div>
     },
     {
       id: "10",
