@@ -3,6 +3,11 @@ const covertDate = (yourDate) => {
   let date = moment(yourDate).format("DD/MM/YYYY");
   return date;
 };
+
+function capitalizeFirstLetter(param) {
+  return param?.charAt(0).toUpperCase() + param?.slice(1);
+}
+
 export const NotFilledKYCData = [
   {
     id: "1",
@@ -22,7 +27,7 @@ export const NotFilledKYCData = [
     name: "Merchant Name",
     selector: (row) => row?.name,
     sortable: true,
-    cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>
+    cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA" )}</div>
   },
   {
     id: "4",
@@ -44,13 +49,14 @@ export const NotFilledKYCData = [
   {
     id: "7",
     name: "Registered Date",
-    selector: (row) => covertDate(row.signUpDate),
+    selector: (row) =>row.signUpDate,
     sortable: true,
+    cell:(row)=><div>{covertDate(row.signUpDate)}</div>
   },
   {
     id: "8",
     name: "Onboard Type",
-    selector: (row) => covertDate(row.isDirect),
+    selector: (row) => row.isDirect,
   },
 ];
 
@@ -59,7 +65,6 @@ export const ChallanReportData = [
    name: "S. No." ,
    selector: (row) => row.sno,
     sortable: true,
-  
   },
   { id: "2", 
   name: "Client Code" ,
@@ -84,8 +89,7 @@ export const ChallanReportData = [
     name: "Bank Reference No.",
     selector: (row) => row.bank_reference_number,
     cell: (row) => <div className="removeWhiteSpace">{row?.bank_reference_number}</div> 
-    
-    
+
   },
   {
     id: "6",

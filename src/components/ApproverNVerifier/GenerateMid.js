@@ -14,6 +14,9 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import CustomLoader from "../../_components/loader";
 
 function AssignZone() {
+  function capitalizeFirstLetter(param) {
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
   const AssignZoneData = [
     { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
     { id: "2", name: "Client Code", selector: (row) => row.clientCode,
@@ -24,7 +27,7 @@ function AssignZone() {
       name: "Merchant Name",
       selector: (row) => row.name,
       sortable: true,
-      cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name?row?.name:"NA")}</div>
     },
     {
       id: "4",
@@ -46,8 +49,9 @@ function AssignZone() {
     {
       id: "7",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
+      selector: (row) => row.signUpDate,
       sortable: true,
+      cell:(row)=><div>{covertDate(row.signUpDate)}</div>
     },
     {
       id: "8",

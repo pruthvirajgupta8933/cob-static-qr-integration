@@ -31,8 +31,7 @@ function AllRoutes() {
           <Registration />
         </Route>
         <Route path="/dashboard">
-          {/* <MobileNavbar/> */}
-
+          {/* <MobileNavbar/> */} 
           <Dashboard />
         </Route>
         <Route exact path="/commonpages">

@@ -19,7 +19,9 @@ const PendindKyc = () => {
   const roles = roleBasedAccess();
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForPending);
-
+  function capitalizeFirstLetter(param) {
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
   const [data, setData] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [pendingKycData, setPendingKycData] = useState([]);
@@ -52,7 +54,7 @@ const PendindKyc = () => {
       name: "Merchant Name",
       selector: (row) => row.name,
       sortable:true,
-      cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>,
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA") }</div>,
     },
     {
       id: "5",
@@ -77,8 +79,9 @@ const PendindKyc = () => {
     {
       id: "8",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
+      selector: (row) => row.signUpDate,
       sortable:true,
+      cell:(row)=><div>{covertDate(row.signUpDate)}</div>
     },
     {
       id: "9",

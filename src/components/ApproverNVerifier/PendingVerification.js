@@ -19,6 +19,9 @@ import CustomLoader from "../../_components/loader";
 function PendingVerification() {
   const roles = roleBasedAccess();
   const [data, setData] = useState([]);
+  function capitalizeFirstLetter(param) {
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
   const PendingVerificationData = [
     { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
     { id: "2", name: "Client Code", selector: (row) => row.clientCode,
@@ -30,7 +33,7 @@ function PendingVerification() {
       name: "Merchant Name",
       selector: (row) => row.name,
       sortable: true,
-      cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA")}</div>
     },
     {
       id: "5",
@@ -52,8 +55,9 @@ function PendingVerification() {
     {
       id: "8",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
+      selector: (row) => row.signUpDate,
       sortable: true,
+      cell:(row)=><div>{covertDate(row.signUpDate)}</div>
     },
     {
       id: "9",
