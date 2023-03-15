@@ -23,10 +23,3 @@
     background-color: #f9fafd !important;
     font-weight: 600 !important;
   }
-  .react-data-table th.sortable:hover::before,
-.react-data-table th.sortable:focus::before {
-  color: inherit;
-  opacity: 1;
-  text-shadow: none;
-  cursor: pointer;
-}

@@ -1,8 +1,12 @@
 import moment from "moment";
 const covertDate = (yourDate) => {
-  let date = moment(yourDate).format("MM/DD/YYYY");
+  let date = moment(yourDate).format("DD/MM/YYYY");
   return date;
 };
+
+function capitalizeFirstLetter(param) {
+  return param?.charAt(0).toUpperCase() + param?.slice(1);
+}
 
 export const NotFilledKYCData = [
   {
@@ -23,7 +27,7 @@ export const NotFilledKYCData = [
     name: "Merchant Name",
     selector: (row) => row?.name,
     sortable: true,
-    cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>
+    cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA" )}</div>
   },
   {
     id: "4",
@@ -52,7 +56,7 @@ export const NotFilledKYCData = [
   {
     id: "8",
     name: "Onboard Type",
-    selector: (row) => covertDate(row.isDirect),
+    selector: (row) => row.isDirect,
   },
 ];
 
