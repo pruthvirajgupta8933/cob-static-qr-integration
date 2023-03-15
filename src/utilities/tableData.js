@@ -122,7 +122,8 @@ export const ChallanReportData = [
   {
     id: "11",
     name: "Created On",
-    selector: (row) => covertDate(row.created_on),
+    selector: (row) => row.created_on,
+    cell: (row) => covertDate(row.created_on),
     sortable: true,
   },
 ];
