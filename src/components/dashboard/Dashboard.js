@@ -569,7 +569,7 @@ function Dashboard() {
 
         {roles?.verifier === true ? <VerifierRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
           <BizzAppData />
-        </VerifierRoute> : roles?.approver === true ?
+        </VerifierRoute> : roles?.approver === true && roles?.viewer === true ?
           <ApproverRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
             < BizzAppData />
           </ApproverRoute> :
