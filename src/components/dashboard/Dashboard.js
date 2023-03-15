@@ -51,7 +51,7 @@ import ApproverRoute from "../../ProtectedRoutes/ApproverRoute";
 import ViewerRoute from "../../ProtectedRoutes/ViewerRoute";
 import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
-import { axiosInstanceAuth,axiosInstanceJWT } from "../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
 import PayoutTransaction from "../../payout/Ledger";
 import TransactionsPayoutHistory from "../../payout/Transactions";

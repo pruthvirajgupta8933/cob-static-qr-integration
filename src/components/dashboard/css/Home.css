@@ -118,6 +118,14 @@ table.tables tr:nth-child(odd) {
   top: 10px;
   z-index: 999;
 }
+
+.viewforanother {
+  position: absolute;
+  right: 13px;
+  top: 8px;
+  z-index: 999;
+}
+
 .viewfor {
   position: absolute;
   right: 13px;

@@ -15,6 +15,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import Table from "../../_components/table_components/table/Table";
+import CustomLoader from "../../_components/loader";
 
 
 function ApprovedMerchant() {
@@ -250,20 +251,18 @@ function ApprovedMerchant() {
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
 
-        {loadingState ? (
-            <p className="text-center spinner-roll">{<Spinner />}</p>
-          ) : (
-            <Table row={rowData} col={colData} />
-          )}
-        </div>
-        <nav>
-        <Paginataion
+        {!loadingState && data?.length !== 0 && (
+            <Table row={rowData} col={colData}
             dataCount={dataCount}
             pageSize={pageSize}
             currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage}
-          />
-        </nav>
+            changeCurrentPage={changeCurrentPage} />
+          )}
+        </div>
+        <CustomLoader loadingState={loadingState} />
+        {data?.length == 0 && !loadingState && (
+          <h2 className="text-center font-weight-bold">No Data Found</h2>
+        )}
       </div>
     </div>
   );

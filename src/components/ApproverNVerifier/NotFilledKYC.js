@@ -12,6 +12,7 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
+import CustomLoader from "../../_components/loader/index";
 
 const rowData = NotFilledKYCData;
 const NotFilledKYC = () => {
@@ -121,7 +122,7 @@ const NotFilledKYC = () => {
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
-      <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
+        <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
           <SearchFilter
             kycSearch={kycSearch}
             searchText={searchText}
@@ -130,17 +131,15 @@ const NotFilledKYC = () => {
           />
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <CountPerPageFilter
+          <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
             changePageSize={changePageSize}
           />
-       
         </div>
-       
-  
+
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <SearchbyDropDown
+          <SearchbyDropDown
             kycSearch={kycSearch}
             searchText={searchText}
             isSearchByDropDown={isSearchByDropDown}
@@ -149,7 +148,6 @@ const NotFilledKYC = () => {
             setSearchByDropDown={setSearchByDropDown}
             optionSearchData={optionSearchData}
           />
-     
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
@@ -161,20 +159,21 @@ const NotFilledKYC = () => {
 
       <div className="col-md-12 col-md-offset-4">
         <div className="scroll overflow-auto">
-          {loadingState ? (
-            <p className="text-center spinner-roll">{<Spinner />}</p>
-          ) : (
-            <Table row={rowData} col={colData} />
+          {!loadingState && data?.length !== 0 && (
+            <Table
+              row={rowData}
+              col={colData}
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+            />
           )}
         </div>
-        <nav>
-          <Paginataion
-            dataCount={dataCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage}
-          />
-        </nav>
+        <CustomLoader loadingState={loadingState} />
+        {data?.length == 0 && !loadingState && (
+          <h2 className="text-center font-weight-bold">No Data Found</h2>
+        )}
       </div>
     </div>
   );
