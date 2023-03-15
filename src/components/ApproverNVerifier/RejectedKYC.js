@@ -31,6 +31,12 @@ const RejectedKYC = () => {
 
   const dispatch = useDispatch();
   
+
+  function capitalizeFirstLetter(param) {
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
+
+
   const RejectedTableData = [
     { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
     { id: "2", name: "Client Code", selector: (row) => row.clientCode,
@@ -42,7 +48,7 @@ const RejectedKYC = () => {
       id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
-      cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>,
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA")}</div>,
       sortable: true,
     },
     {
@@ -64,7 +70,8 @@ const RejectedKYC = () => {
     {
       id: "8",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
+      selector: (row) => row.signUpDate,
+      cell: (row) => covertDate(row.signUpDate),
       sortable: true,
     },
     {

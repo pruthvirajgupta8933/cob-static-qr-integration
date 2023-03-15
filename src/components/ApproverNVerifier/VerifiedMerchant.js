@@ -28,6 +28,12 @@ function VerifiedMerchant() {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
 
+  function capitalizeFirstLetter(param) {
+    // console.log(param,"param")
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
+
+
 
   const PendingApprovalData = [
     { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
@@ -43,7 +49,7 @@ function VerifiedMerchant() {
       id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
-      cell: (row) => <div className="removeWhiteSpace">{row?.name}</div> ,
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA" )}</div> ,
       sortable: true,
     },
     {
@@ -66,13 +72,15 @@ function VerifiedMerchant() {
     {
       id: "8",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
+      selector: (row) => row.signUpDate,
+      cell: (row) => covertDate(row.signUpDate),
       sortable: true,
     },
     {
       id: "9",
       name: "Verified Date",
-      selector: (row) => covertDate(row.verified_date ? row.verified_date : "NA"),
+      selector: (row) => row.verified_date,
+      cell: (row) => covertDate(row.verified_date),
       sortable: true,
     },
     {

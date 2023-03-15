@@ -27,7 +27,9 @@ function AssignZone() {
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
-
+  function capitalizeFirstLetter(param) {
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
 
   const kycSearch = (e, fieldType) => {
     fieldType === "text"
@@ -102,7 +104,7 @@ function AssignZone() {
   const AssignZoneData = [
     { id: "1", name: "S. No.", selector: (row) => row.sno ,sortable:true },
     { id: "2", name: "Client Code", selector: (row) => row.clientCode },
-    { id: "3", name: "Merchant Name", selector: (row) => row.name,  sortable:true },
+    { id: "3", name: "Merchant Name", selector: (row) => capitalizeFirstLetter(row?.name ? row?.name : "NA"),  sortable:true },
     {
       id: "4",
       name: "Email",
@@ -121,7 +123,8 @@ function AssignZone() {
     {
       id: "7",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
+      selector: (row) => row.signUpDate,
+      cell: (row) => covertDate(row.signUpDate),
       sortable:true
     },
     {

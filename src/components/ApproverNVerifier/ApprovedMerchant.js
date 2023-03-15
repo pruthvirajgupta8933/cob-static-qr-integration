@@ -32,6 +32,11 @@ function ApprovedMerchant() {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
 
+  function capitalizeFirstLetter(param) {
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
+
+
 
   const ApprovedTableData = [
     { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
@@ -46,7 +51,7 @@ function ApprovedMerchant() {
       id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
-      cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>,
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA")}</div>,
       sortable: true,
     },
     {
@@ -68,19 +73,22 @@ function ApprovedMerchant() {
     {
       id: "8",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
+      selector: (row) => row.signUpDate,
+      cell: (row) => covertDate(row.signUpDate),
       sortable: true,
     },
     {
       id: "9",
       name: "Verified Date",
-      selector: (row) => covertDate(row?.verified_date ? row?.verified_date : "NA"),
+      selector: (row) => row?.verified_date,
+      cell: (row) => covertDate(row?.verified_date),
       sortable: true,
     },
     {
       id: "10",
       name: "Approved Date",
-      selector: (row) => covertDate(row?.approved_date ? row?.approved_date : "NA"),
+      selector: (row) =>  row?.approved_date,
+      cell: (row) => covertDate(row?.approved_date),
       sortable: true,
     },
     
