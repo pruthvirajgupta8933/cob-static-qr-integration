@@ -64,6 +64,7 @@ function ApprovedMerchant() {
       id: "6",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
+      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>
     },
     {
       id: "7",
