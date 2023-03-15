@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForNotFilled } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
-import Spinner from "./Spinner";
 import moment from "moment";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../_components/table_components/table/Table";
 import { NotFilledKYCData } from "../../utilities/tableData";
-import Paginataion from "../../_components/table_components/pagination/Pagination";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
+import CustomLoader from "../../_components/loader/index";
 
 const rowData = NotFilledKYCData;
 const NotFilledKYC = () => {
@@ -32,32 +31,18 @@ const NotFilledKYC = () => {
     setSearchText(e);
   };
 
-  //Map the table data
-  const colData = () => {
-    return (
-      <>
-        {data == [] ? (
-          <td colSpan={"11"}>
-            {" "}
-            <div className="nodatafound text-center">No data found </div>
-          </td>
-        ) : (
-          data?.map((data, key) => (
-            <tr>
-              <td>{key + 1}</td>
-              <td>{data.clientCode}</td>
-              <td>{data.name}</td>
-              <td>{data.emailId}</td>
-              <td>{data.contactNumber}</td>
-              <td>{data.status}</td>
-              <td> {covertDate(data.signUpDate)}</td>
-              <td>{data?.isDirect}</td>
-            </tr>
-          ))
-        )}
-      </>
-    );
-  };
+  const mappedData = data?.map(item => {
+    return {
+      sno:item.sno,
+      name: item.name,
+      clientCode:item.clientCode,
+      emailId:item.emailId,
+      contactNumber:item.contactNumber,
+      status:item.status,
+      signUpDate:item.signUpDate,
+      isDirect:item.isDirect
+    };
+  });
 
   useEffect(() => {
     dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
@@ -68,7 +53,6 @@ const NotFilledKYC = () => {
         setDataCount(totalData);
         setNotFilledData(data);
         setData(data);
-        // console.log("Paginataion Dta ===> ",notFilledData)
       })
 
       .catch((err) => {
@@ -121,7 +105,7 @@ const NotFilledKYC = () => {
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
-      <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
+        <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
           <SearchFilter
             kycSearch={kycSearch}
             searchText={searchText}
@@ -130,17 +114,15 @@ const NotFilledKYC = () => {
           />
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <CountPerPageFilter
+          <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
             changePageSize={changePageSize}
           />
-       
         </div>
-       
-  
+
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <SearchbyDropDown
+          <SearchbyDropDown
             kycSearch={kycSearch}
             searchText={searchText}
             isSearchByDropDown={isSearchByDropDown}
@@ -149,7 +131,6 @@ const NotFilledKYC = () => {
             setSearchByDropDown={setSearchByDropDown}
             optionSearchData={optionSearchData}
           />
-     
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
@@ -161,20 +142,21 @@ const NotFilledKYC = () => {
 
       <div className="col-md-12 col-md-offset-4">
         <div className="scroll overflow-auto">
-          {loadingState ? (
-            <p className="text-center spinner-roll">{<Spinner />}</p>
-          ) : (
-            <Table row={rowData} col={colData} />
+          {!loadingState && data?.length !== 0 && (
+            <Table
+              row={rowData}
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+              data={mappedData}
+            />
           )}
         </div>
-        <nav>
-          <Paginataion
-            dataCount={dataCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage}
-          />
-        </nav>
+        <CustomLoader loadingState={loadingState} />
+        {data?.length == 0 && !loadingState && (
+          <h2 className="text-center">No data Found</h2>
+        )}
       </div>
     </div>
   );

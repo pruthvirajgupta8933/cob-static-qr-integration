@@ -25,7 +25,7 @@ const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
 // https://reportapi.sabpaisa.in/SabPaisaReport/REST/GetMerchantTxnHistoryN
 
 const API_LIVE = {
-  BASE_URL_COB : url,
+  BASE_URL_COB: url,
   //------------------------------------------------------------
   AUTH_SIGNUP: `${url}/auth-service/auth/signup`,
   AUTH_LOGIN: `${url}/auth-service/auth/login`,
@@ -82,8 +82,8 @@ const API_LIVE = {
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
   RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
   ChargeBankTxnHistory: reportAPIURL + "/REST/GetChargebackTxnHistory",
-  GET_DOITC_SETTLED_TXN_HISTORY: url+"/SabPaisaReport/REST/GetDOITCSettledTxnHistory",
-  GET_DOITC_MERCHANT_TXN_HISTORY: url+"/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
+  GET_DOITC_SETTLED_TXN_HISTORY: url + "/SabPaisaReport/REST/GetDOITCSettledTxnHistory",
+  GET_DOITC_MERCHANT_TXN_HISTORY: url + "/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
 
   /* Transaction Enquiry */
   VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
@@ -153,6 +153,7 @@ const API_LIVE = {
   TEMPLATE_DETAILS_BYRISKCODE: `${url}/merchant/get-template-detail-by-business-code`,
   ////////////////////////////////////////SIGNUP DATA API
   GET_SIGNUP_DATA_INFO: `${url}/merchant/get-signup-info/`,
+  GET_BIZZ_DATA: `${url}/get-biz-app-form/`,
   //////////////////////// For merchnat list export to csv
   Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/`,
   /////////////////////////Kyc approver
@@ -250,6 +251,13 @@ const API_LIVE = {
   VIEW_COMMENTS_LIST: `${url}/merchant/get-comments-by-clientcode`,
 
   // ---------------------------   NEW API FOR COMMENTS (2)
+  // ---------------------------   NEW API FOR Documents
+  // 1)submit
+  UPLOAD_E_AGREEMENT: `${kyc_url}/kyc/upload-merchant-document/upload-agreement/`,
+  REMOVE_AGREEMENT: `${kyc_url}/kyc/upload-merchant-document/remove-agreement-doc/`,
+  GET_MERCHANT_AGREEMENT_BY_LOGIN_ID: `${kyc_url}/kyc/upload-merchant-document/get-merchant-agreement-by-login-id/`,
+
+  // --------------------------------------------------->
 
   // Check is client code mapped or not (ratemapping case)
   isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`,
@@ -263,8 +271,8 @@ const API_LIVE = {
   fetchBeneficiary: `${payout_url}/api/fetchBeneficiaryfor`,
   transactionMode: `${payout_url}/api/modesByMerchantId`,
   paymentRequest: `${payout_url}/api/PayoutTransactionRequest`,
-  fetchClientCode:`${payout_url}/api/getByClientCode/`,
-  
+  fetchClientCode: `${payout_url}/api/getByClientCode/`,
+
 
 
   // ---------------------------   NEW API FOR COMMENTS (2)
@@ -274,10 +282,13 @@ const API_LIVE = {
   menuListByLoginId: `${url}/menu-loginwise`,
 
   // -------------------------------------------------------------------------Subscription APIS-------------------------------------------||
+  // Mandate Report
   MANDATE_FREQUENCY: `${subAPIURL}/REST/GetCommonData/0/frequency`,
   MANDATE_CATEGORY: `${subAPIURL}/REST/GetCommonData/0/MandateCategory`,
   filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
 
+  // Debit Report
+  filterDebitReport: `${subAPIURL}/npci/filterDebitReport`,
 
 
 

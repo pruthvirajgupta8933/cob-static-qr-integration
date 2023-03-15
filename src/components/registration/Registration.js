@@ -331,7 +331,7 @@ function Registration() {
                                     fontSize: "18px",
                                   }}
                                 >
-                                  Signup
+                                  Sign up
                                 </span>
                                 &nbsp; to Create New Account
                               </span>
@@ -394,7 +394,7 @@ function Registration() {
                                           className="string optional"
                                           htmlFor="mobile"
                                         >
-                                          Enter Mobile Number
+                                          Mobile Number
                                         </label>
                                         <Field
                                           className="string optional"
@@ -556,7 +556,7 @@ function Registration() {
                                         className="string optional"
                                         maxLength={255}
                                         id="user-cpw"
-                                        placeholder="Re-enter"
+                                        placeholder="Re-enter the password"
                                         type={
                                           passwordType.showPasswords
                                             ? "text"
@@ -630,12 +630,12 @@ function Registration() {
                                     </div>
                                   </div>
                                   <div className="container">
-                                    <div className="row">
-                                      <div className="col">Already have an account? <Link
+                                    <div className="row text-primary">
+                                      <div className="col ">Already have an account? <Link
                                         to={`/login`}
                                         style={{ color: "#0156B3" }}
                                       >
-                                        Sign in
+                                        Login
                                       </Link></div>
                                     </div>
                                   </div>

@@ -1,8 +1,11 @@
-
-import React,{useEffect,useState} from "react";
-const Paginataion = ({dataCount,pageSize,currentPage,changeCurrentPage}) => {
+import React, { useEffect, useState } from "react";
+const Paginataion = ({
+  dataCount,
+  pageSize,
+  currentPage,
+  changeCurrentPage,
+}) => {
   const [displayPageNumber, setDisplayPageNumber] = useState([]);
-
 
   const totalPages = Math.ceil(dataCount / pageSize);
   // console.log(totalPages,'totalPages')
@@ -42,18 +45,15 @@ const Paginataion = ({dataCount,pageSize,currentPage,changeCurrentPage}) => {
     }
   }, [currentPage, totalPages]);
 
-
   return (
     <>
       {" "}
       <ul className="pagination justify-content-center">
-          <li className="page-item">
-            <button className="page-link"
-             onClick={prevPage}
-            >
-              Previous
-            </button>
-          </li>
+        <li className="page-item">
+          <button className="page-link" onClick={prevPage}>
+            Previous
+          </button>
+        </li>
 
         {displayPageNumber?.map((pgNumber, i) => (
           <li
@@ -61,8 +61,7 @@ const Paginataion = ({dataCount,pageSize,currentPage,changeCurrentPage}) => {
             className={
               pgNumber === currentPage ? " page-item active" : "page-item"
             }
-            onClick={()=>changeCurrentPage(pgNumber)}
-      
+            onClick={() => changeCurrentPage(pgNumber)}
           >
             <a href={() => false} className={`page-link data_${i}`}>
               <span>{pgNumber}</span>
@@ -70,16 +69,15 @@ const Paginataion = ({dataCount,pageSize,currentPage,changeCurrentPage}) => {
           </li>
         ))}
 
-      
-          <li className="page-item">
-            <button
-              className="page-link"
-              onClick={nextPage}
-              disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
-            >
-              Next
-            </button>
-          </li>
+        <li className="page-item">
+          <button
+            className="page-link"
+            onClick={nextPage}
+            disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
+          >
+            Next
+          </button>
+        </li>
       </ul>
     </>
   );

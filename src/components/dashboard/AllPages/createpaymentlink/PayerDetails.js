@@ -183,7 +183,7 @@ const PayerDetails = () => {
 
     const deleteUser = async id => {
         // confirm("do you confirm to delete it");
-        var iscConfirm = window.confirm("Are you sure you want to delete it");
+        var iscConfirm = window.confirm("Are you sure you want to delete it ?");
         if (iscConfirm) {
             await axiosInstance.delete(`${API_URL.DELETE_CUSTOMER}?Client_Code=${clientCode}&Customer_id=${id}`);
             loadUser();

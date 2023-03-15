@@ -106,5 +106,6 @@ const merchantReportSlice = createSlice({
 
 export default merchantReportSlice.reducer;
 export const {
-    clearTransactionHistoryDoitc
+    clearTransactionHistoryDoitc,
+    clearSettledTransactionHistory
 } = merchantReportSlice.actions

@@ -118,6 +118,14 @@ table.tables tr:nth-child(odd) {
   top: 10px;
   z-index: 999;
 }
+
+.viewforanother {
+  position: absolute;
+  right: 13px;
+  top: 8px;
+  z-index: 999;
+}
+
 .viewfor {
   position: absolute;
   right: 13px;
@@ -142,6 +150,13 @@ table.tables tr:nth-child(odd) {
 /*All Approvekyc button color class */
 .approve {
   background: #0156b3;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 8px;
+  white-space: nowrap;
+  border: 0px;
+
 }
 
 /*All forget password button color here */
@@ -918,12 +933,13 @@ a.sidenavFonts {
 
   color: #4285f8;
 }
-.spinner-border {
+/* .spinner-border {
   position: absolute;
   top: 82%;
   left: 58%;
   transform: translate (-50%);
-}
+} */
+
 .borders {
   position: absolute;
   top: -82px;

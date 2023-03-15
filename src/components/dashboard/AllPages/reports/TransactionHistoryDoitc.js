@@ -8,9 +8,6 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../../../_components/formik/FormikController";
 import _ from "lodash";
-import {
-  clearTransactionHistory
-} from "../../../../slices/dashboardSlice";
 import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
 import API_URL from "../../../../config";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
@@ -18,10 +15,8 @@ import { convertToFormikSelectJson } from "../../../../_components/reuseable_com
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../../../dashboard/NavBar/NavBar";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
-import Notification from "../../../../_components/reuseable_components/Notification";
 import moment from "moment";
 import { clearTransactionHistoryDoitc, transactionHistoryDoitc } from "../../../../slices/merchant-slice/reportSlice";
-// import { CSVLink } from "react-csv";
 
 
 const TransactionHistoryDoitc = () => {
@@ -29,14 +24,8 @@ const TransactionHistoryDoitc = () => {
   const history = useHistory();
   const roles = roleBasedAccess();
 
-  const { auth, dashboard, merchantReportSlice } = useSelector((state) => state);
+  const { auth, merchantReportSlice } = useSelector((state) => state);
   const { user } = auth;
-
-
-  const { isLoadingTxnHistory } = dashboard;
-  // const { transactionHistoryDoitc } = merchantReportSlice;
-
-
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
   const [startDate, setStartDate] = useState("");
@@ -50,9 +39,9 @@ const TransactionHistoryDoitc = () => {
   const [showData, setShowData] = useState([]);
   const [updateTxnList, setUpdateTxnList] = useState([]);
   const [pageCount, setPageCount] = useState(0);
-  const [dataFound, setDataFound] = useState(false);
+
   const [buttonClicked, isButtonClicked] = useState(false);
-  const [exportToCsv, setExportToCsv] = useState({});
+  // const [exportToCsv, setExportToCsv] = useState({});
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -269,7 +258,7 @@ const TransactionHistoryDoitc = () => {
     paymodeList();
     SetTxnList([]);
     return () => {
-      // dispatch(clearTransactionHistoryDoitc());
+      dispatch(clearTransactionHistoryDoitc());
     };
   }, []);
 
@@ -547,43 +536,6 @@ const TransactionHistoryDoitc = () => {
                                 <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button"  onClick={() => exportToExcelFn("xlxs")}>Excel</button>
                               </div>
                             </div>
-
-                            {/* <div className="form-group col-md-1 ml-4">
-                              <button
-                                className="btn btn-sm text-white"
-                                type="button"
-                                onClick={() => exportToExcelFn("xlxs")}
-                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                              >
-                                Export
-                              </button>
-                            </div> */}
-                            {/* <div className="form-group col-md-1 ml-4">
-
-
-                              <button
-                                className="btn btn-sm text-white"
-                                type="button"
-                                onClick={() => exportToExcelFn("csv")}
-                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                              >
-                                Export To CSV
-                              </button>
-
-                            </div> */}
-                            {/* <div className="form-group col-md-1 ml-4">
-
-                              <button
-                                className="btn btn-sm text-white"
-                                type="button"
-                                onClick={() => exportToExcelFn("csv-ms-excel")}
-                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                              >
-                                Export To CSV For MS-Excel
-                              </button>
-                         
-
-                            </div> */}
                           </div>
                         </>
                       ) : (

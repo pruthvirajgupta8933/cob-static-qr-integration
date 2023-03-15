@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { kycForPendingMerchants } from "../../slices/kycSlice";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import toastConfig from "../../utilities/toastTypes";
@@ -10,18 +10,18 @@ import CommentModal from "./Onboarderchant/CommentModal";
 import moment from "moment";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../_components/table_components/table/Table";
-import { PendindKycData } from "../../utilities/tableData";
-import Paginataion from "../../_components/table_components/pagination/Pagination";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
-  
+import CustomLoader from "../../_components/loader";
+
 const PendindKyc = () => {
-  const rowData = PendindKycData;
   const roles = roleBasedAccess();
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForPending);
-
+  function capitalizeFirstLetter(param) {
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
   const [data, setData] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [pendingKycData, setPendingKycData] = useState([]);
@@ -34,6 +34,110 @@ const PendindKyc = () => {
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
+  const PendindKycRowData = [
+    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+    {
+      id: "2",
+      name: "Client Code",
+      selector: (row) => row.clientCode,
+      cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
+    },
+    {
+      id: "3",
+      name: "Company Name",
+      selector: (row) => row.companyName,
+      cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
+    },
+
+    {
+      id: "4",
+      name: "Merchant Name",
+      selector: (row) => row.name,
+      sortable:true,
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA") }</div>,
+    },
+    {
+      id: "5",
+      name: "Email",
+      selector: (row) => row.emailId,
+      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
+    },
+    {
+      id: "6",
+      name: "Contact Number",
+      selector: (row) => row.contactNumber,
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row?.contactNumber}</div>
+      ),
+    },
+    {
+      id: "7",
+      name: "KYC Status",
+      selector: (row) => row.status,
+
+    },
+    {
+      id: "8",
+      name: "Registered Date",
+      selector: (row) => row.signUpDate,
+      sortable:true,
+      cell:(row)=><div>{covertDate(row.signUpDate)}</div>
+    },
+    {
+      id: "9",
+      name: "Onboard Type",
+      selector: (row) => row.isDirect,
+    },
+    {
+      id: "10",
+      name: "View Status",
+      selector: (row) => row.viewStatus,
+      cell: (row) => (
+        <div>
+        <button
+          type="button"
+          className="approve text-white  btn-xs "
+          onClick={() => {
+            setKycIdClick(row);
+            setIsModalOpen(!isOpenModal);
+          }}
+          data-toggle="modal"
+          data-target="#kycmodaldetail"
+        >
+          View Status
+        </button>
+        </div>
+      ),
+    },
+    {
+      id: "11",
+      name: "Action",
+      selector: (row) => row.actionStatus,
+      cell: (row) => (
+        <div>
+          {roles?.verifier === true ||
+          roles?.approver === true ||
+          roles?.viewer === true ? (
+            <button
+              type="button"
+              className="approve text-white"
+              data-toggle="modal"
+              onClick={() => {
+                setCommentId(row);
+                setOpenCommentModal(true);
+              }}
+              data-target="#exampleModal"
+              disabled={row?.clientCode === null ? true : false}
+            >
+              Comments
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
+      ),
+    },
+  ];
 
   const dispatch = useDispatch();
 
@@ -44,15 +148,13 @@ const PendindKyc = () => {
     setSearchText(e);
   };
 
-
- 
   //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
   };
 
-   //function for change page size
-   const changePageSize = (pageSize) => {
+  //function for change page size
+  const changePageSize = (pageSize) => {
     setPageSize(pageSize);
   };
 
@@ -104,79 +206,10 @@ const PendindKyc = () => {
     },
   ];
 
-
-
- 
-
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
     return date;
   };
-
-  const colData = () => {
-    return (
-      <>
-        {data == [] ? (
-          <td colSpan={"11"}>
-            {" "}
-            <div className="nodatafound text-center">No data found </div>
-          </td>
-        ) : (
-          data?.map((user, i) => (
-            <tr>
-             <td>{i + 1}</td>
-                    <td>{user.clientCode}</td>
-                    <td>{user.companyName}</td>
-                    <td>{user.name}</td>
-                    <td>{user.emailId}</td>
-                    <td>{user.contactNumber}</td>
-                    <td>{user.status}</td>
-                    <td>{covertDate(user.signUpDate)}</td>
-                    <td>{user?.isDirect}</td>
-                    <td>
-                      <button
-                        type="button"
-                        className="btn approve text-white  btn-xs"
-                        onClick={() => {
-                          setKycIdClick(user);
-                          setIsModalOpen(!isOpenModal);
-                        }}
-                        data-toggle="modal"
-                        data-target="#kycmodaldetail"
-                      >
-                        View Status
-                      </button>
-                    </td>
-                    <td>
-                      {roles?.verifier === true ||
-                      roles?.approver === true ||
-                      roles?.viewer === true ? (
-                        <button
-                          type="button"
-                          className="btn approve text-white  btn-xs"
-                          data-toggle="modal"
-                          onClick={() => {
-                            setCommentId(user);
-                            setOpenCommentModal(true);
-                          }}
-                          data-target="#exampleModal"
-                          disabled={user?.clientCode === null ? true : false}
-                        >
-                          Comments
-                        </button>
-                      ) : (
-                        <></>
-                      )}
-                    </td>
-            </tr>
-          ))
-        )}
-      </>
-    );
-  };
-
-
-  
 
   // console.log("Data Loading",isLoaded)
 
@@ -184,7 +217,7 @@ const PendindKyc = () => {
     <div className="container-fluid flleft">
       <div className="form-row">
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <SearchFilter
+          <SearchFilter
             kycSearch={kycSearch}
             searchText={searchText}
             searchByText={searchByText}
@@ -202,7 +235,6 @@ const PendindKyc = () => {
           ) : (
             <></>
           )}
-
           <KycDetailsModal
             handleModal={setIsModalOpen}
             kycId={kycIdClick}
@@ -211,14 +243,14 @@ const PendindKyc = () => {
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <CountPerPageFilter
+          <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}
             changePageSize={changePageSize}
           />
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">
-        <SearchbyDropDown
+          <SearchbyDropDown
             kycSearch={kycSearch}
             searchText={searchText}
             isSearchByDropDown={isSearchByDropDown}
@@ -236,20 +268,21 @@ const PendindKyc = () => {
 
       <div className="col-md-12 col-md-offset-4">
         <div className="scroll overflow-auto">
-        {loadingState ? (
-            <p className="text-center spinner-roll">{<Spinner />}</p>
-          ) : (
-            <Table row={rowData} col={colData} />
+          {!loadingState && data?.length !== 0 && (
+            <Table
+              row={PendindKycRowData}
+              data={data}
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+            />
           )}
         </div>
-        <nav>
-        <Paginataion
-            dataCount={dataCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage}
-          />
-        </nav>
+        <CustomLoader loadingState={loadingState} />
+        {data?.length == 0 && !loadingState && (
+          <h2 className="text-center font-weight-bold">No Data Found</h2>
+        )}
       </div>
     </div>
   );
