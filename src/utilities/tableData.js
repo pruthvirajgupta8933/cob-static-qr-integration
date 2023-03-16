@@ -39,8 +39,6 @@ export const NotFilledKYCData = [
     selector: (row) => row?.emailId,
     cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
     width:"250px",
-
-
   },
   {
     id: "5",
@@ -74,10 +72,12 @@ export const ChallanReportData = [
    name: "S. No." ,
    selector: (row) => row.sno,
     sortable: true,
+    width:"86px"
   },
   { id: "2", 
   name: "Client Code" ,
   selector: (row) => row.client_code,
+  width:"130px"
 },
 
   { id: "3", 
@@ -85,6 +85,7 @@ export const ChallanReportData = [
   selector: (row) => row.bank_code,
   cell: (row) => <div className="removeWhiteSpace">{row?.bank_code}</div>,
   sortable: true,
+  width:"150px"
  },
   {
     id: "4",
@@ -97,14 +98,16 @@ export const ChallanReportData = [
     id: "5",
     name: "Bank Reference No.",
     selector: (row) => row.bank_reference_number,
-    cell: (row) => <div className="removeWhiteSpace">{row?.bank_reference_number}</div> 
+    cell: (row) => <div className="removeWhiteSpace">{row?.bank_reference_number}</div>, 
+    width:"200px"
 
   },
   {
     id: "6",
     name: "Challan No.",
     selector: (row) => row.challan_number,
-    cell: (row) => <div className="removeWhiteSpace">{row?.challan_number}</div> 
+    cell: (row) => <div className="removeWhiteSpace">{row?.challan_number}</div>,
+    width:"200px"
   },
   {
     id: "7",

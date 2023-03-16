@@ -22,9 +22,7 @@ const Table = (props) => {
 
   return (
     <>
-    <div>
-      
-    </div>
+    <div style={{ height: '500px', overflow: 'auto' }}>   
        <DataTable
           className="table table-bordered sticky-header  position-sticky"
           columns={props.row}
@@ -32,7 +30,8 @@ const Table = (props) => {
           sortIcon={<i  class="fa fa-arrow-up ml-1"></i>}
           // pagination
           // selectableRows
-        />
+          />
+          </div>
       {" "}
       {/* <table className="table table-bordered" >
         <thead>
