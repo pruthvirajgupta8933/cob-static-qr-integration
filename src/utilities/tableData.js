@@ -62,10 +62,10 @@ export const NotFilledKYCData = [
 
 export const ChallanReportData = [
   { id: "1",
-   name: "S. No." ,
+   name: "S.No" ,
    selector: (row) => row.sno,
     sortable: true,
-    width:"86px"
+    width:"95px"
   },
   { id: "2", 
   name: "Client Code" ,

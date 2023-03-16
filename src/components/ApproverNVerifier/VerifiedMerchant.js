@@ -36,14 +36,14 @@ function VerifiedMerchant() {
 
 
   const PendingApprovalData = [
-    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true , width:"86px"},
+    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true , width:"90px"},
     { id: "2", name: "Client Code", selector: (row) => row.clientCode,
     cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>, width:"130px"
   
   },
     { id: "3", name: "Company Name", selector: (row) => row.companyName ,
     cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
-    width:"230px"
+    width:"400px"
 
   },
     {
@@ -59,7 +59,7 @@ function VerifiedMerchant() {
       name: "Email",
       selector: (row) => row.emailId,
       cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
-      width:"200px"
+      width:"220px"
     },
     {
       id: "6",
