@@ -168,14 +168,14 @@ function RateMapping() {
 
 
   const AssignZoneData = [
-    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable:true,width:"86px" },
+    { id: "1", name: "S.No", selector: (row) => row.sno, sortable:true,width:"95px" },
     { id: "2", name: "Client Code", selector: (row) => row.clientCode ,width:"130px" },
     { id: "3", name: "Merchant Name", selector: (row) => capitalizeFirstLetter(row?.name ? row?.name : "NA") , sortable:true, width:"200px"},
     {
       id: "4",
       name: "Email",
       selector: (row) => row.emailId,
-      width:"200px"
+      width:"220px"
     },
     {
       id: "5",

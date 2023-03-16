@@ -38,7 +38,7 @@ const RejectedKYC = () => {
 
 
   const RejectedTableData = [
-    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true ,width:"86px"},
+    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true ,width:"95px"},
     { id: "2", name: "Client Code", selector: (row) => row.clientCode,
     cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,width:"130px"
   },
@@ -51,14 +51,14 @@ const RejectedKYC = () => {
       selector: (row) => row.name,
       cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA")}</div>,
       sortable: true,
-      width:"200px"
+      width:"300px"
     },
     {
       id: "5",
       name: "Email",
       selector: (row) => row.emailId,
       cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
-      width:"200px"
+      width:"220px"
     },
     {
       id: "6",
