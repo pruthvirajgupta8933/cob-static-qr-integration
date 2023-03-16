@@ -23,7 +23,7 @@ const Table = (props) => {
   return (
     <> 
        <DataTable
-          className="table table-bordered"
+          className="table table-bordered rdt_TableHeadRow"
           columns={props.row}
           data={props.data}
           sortIcon={<i  class="fa fa-arrow-up ml-1"></i>}
