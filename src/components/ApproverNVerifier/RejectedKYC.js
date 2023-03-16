@@ -38,30 +38,34 @@ const RejectedKYC = () => {
 
 
   const RejectedTableData = [
-    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true ,width:"95px"},
     { id: "2", name: "Client Code", selector: (row) => row.clientCode,
-    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>
+    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,width:"130px"
   },
     { id: "3", name: "Company Name", selector: (row) => row.companyName ,
-    cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>},
+    cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,  width:"230px"},
+  
     {
       id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
       cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA")}</div>,
       sortable: true,
+      width:"300px"
     },
     {
       id: "5",
       name: "Email",
       selector: (row) => row.emailId,
-      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>
+      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
+      width:"220px"
     },
     {
       id: "6",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
-      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>
+      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
+      width:"150px"
     },
     {
       id: "7",
@@ -74,6 +78,8 @@ const RejectedKYC = () => {
       selector: (row) => row.signUpDate,
       cell: (row) => covertDate(row.signUpDate),
       sortable: true,
+      width:"150px"
+      
     },
     {
       id: "9",
@@ -224,7 +230,7 @@ const RejectedKYC = () => {
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
-            tabName={"Approved Tab"}
+            tabName={"Rejected Tab"}
           />
         ) : (
           <></>

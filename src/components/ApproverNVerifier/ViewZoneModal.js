@@ -23,7 +23,7 @@ const validationSchema = Yup.object({
 
 const ViewZoneModal = (props) => {
 
-  console.log("props",props)
+  // console.log("props",props)
 
   const [zone, setZone] = useState([])
   const [zoneHead, setZoneHead] = useState([])
