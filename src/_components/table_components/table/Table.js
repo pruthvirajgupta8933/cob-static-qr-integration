@@ -22,9 +22,9 @@ const Table = (props) => {
 
   return (
     <>
-    <div style={{ height: '500px', overflow: 'auto' }}>   
+    <div>   
        <DataTable
-          className="table table-bordered sticky-header  position-sticky"
+          className="table table-bordered sticky-header"
           columns={props.row}
           data={props.data}
           sortIcon={<i  class="fa fa-arrow-up ml-1"></i>}
