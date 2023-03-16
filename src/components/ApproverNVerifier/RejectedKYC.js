@@ -224,7 +224,7 @@ const RejectedKYC = () => {
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
-            tabName={"Approved Tab"}
+            tabName={"Rejected Tab"}
           />
         ) : (
           <></>

@@ -19,7 +19,13 @@
   {
     white-space: normal !important;
   }
-  .rdt_TableHeadRow{
+ .sticky-header{
+  position: sticky;
+  top:0;
+ }
+  .sticky-header .rdt_TableHeadRow {
+    position: -webkit-sticky;
+    top: 0; /* required */
     background-color: #f9fafd !important;
     font-weight: 600 !important;
   }

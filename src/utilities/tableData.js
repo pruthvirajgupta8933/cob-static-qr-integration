@@ -14,32 +14,40 @@ export const NotFilledKYCData = [
     name: "S.No",
     selector: (row) => row.sno,
     sortable: true,
+    width:"86px",
+    cell: (row) => <div className="removeWhiteSpace">{row?.sno}</div>,
   },
   {
     id: "2",
     name: "Client Code",
     selector: (row) => row.clientCode,
-    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>
+    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
+    width:"130px"
   },
   {
     key:"name",
     // id: "3",
     name: "Merchant Name",
-    selector: (row) => row?.name,
+    // selector: (row) => row?.name,
     sortable: true,
-    cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA" )}</div>
+    cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA" )}</div>,
+    width:"200px"
   },
   {
     id: "4",
     name: "Email",
     selector: (row) => row?.emailId,
-    cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>
+    cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
+    width:"250px",
+
+
   },
   {
     id: "5",
     name: "Contact Number",
     selector: (row) => row.contactNumber,
-    cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>
+    cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
+    width:"150px"
   },
   {
     id: "6",
@@ -51,7 +59,8 @@ export const NotFilledKYCData = [
     name: "Registered Date",
     selector: (row) =>row.signUpDate,
     sortable: true,
-    cell:(row)=><div>{covertDate(row.signUpDate)}</div>
+    cell:(row)=><div>{covertDate(row.signUpDate)}</div>,
+    width:"150px"
   },
   {
     id: "8",

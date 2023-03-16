@@ -18,27 +18,30 @@ const ReferZone = () => {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
   const ReferZoneData = [
-    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true,width:"86px" },
     { id: "2", name: "Client Code", selector: (row) => row.clientCode,
-    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>},
+    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,width:"130px"},
     {
       id: "3",
       name: "Merchant Name",
       selector: (row) => row.name,
       sortable: true,
-      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name?row?.name:"NA")}</div>
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name?row?.name:"NA")}</div>,
+      width:"150px"
     },
     {
       id: "4",
       name: "Email",
       selector: (row) => row.emailId,
-      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>
+      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
+      width:"220px"
     },
     {
       id: "5",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
-      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>
+      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
+      width:"150px"
     },
     {
       id: "6",
@@ -50,7 +53,8 @@ const ReferZone = () => {
       id: "7",
       name: "Sourcing Code",
       selector: (row) => row.sourcing_code,
-      cell: (row) => <div className="removeWhiteSpace">{row?.sourcing_code}</div>
+      cell: (row) => <div className="removeWhiteSpace">{row?.sourcing_code}</div>,
+      width:"150px"
       
     },
     {
@@ -63,7 +67,8 @@ const ReferZone = () => {
       name: "Registered Date",
       selector: (row) => row.signUpDate,
       sortable: true,
-      cell:(row)=><div>{covertDate(row.signUpDate)}</div>
+      cell:(row)=><div>{covertDate(row.signUpDate)}</div>,
+      width:"150px"
     },
     {
       id: "10",

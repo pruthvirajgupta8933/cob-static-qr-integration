@@ -26,10 +26,10 @@ const Table = (props) => {
       
     </div>
        <DataTable
-          className="table table-bordered "
+          className="table table-bordered sticky-header  position-sticky"
           columns={props.row}
           data={props.data}
-          sortIcon={<i  class="fa fa-arrow-up ml-2"></i>}
+          sortIcon={<i  class="fa fa-arrow-up ml-1"></i>}
           // pagination
           // selectableRows
         />

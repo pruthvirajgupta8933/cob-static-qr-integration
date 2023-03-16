@@ -142,6 +142,34 @@ function ApprovedMerchant() {
         </div>
       ),
     },
+    {
+      id: "14",
+      name: "Action",
+      selector: (row) => row.actionStatus,
+      cell: (row) => (
+        <div>
+          {roles?.verifier === true ||
+          roles?.approver === true ||
+          roles?.viewer === true ? (
+            <button
+              type="button"
+              className="approve text-white"
+              data-toggle="modal"
+              onClick={() => {
+                setCommentId(row);
+                setOpenCommentModal(true);
+              }}
+              data-target="#exampleModal"
+              disabled={row?.clientCode === null ? true : false}
+            >
+              Comments
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
+      ),
+    },
   ];
 
 
