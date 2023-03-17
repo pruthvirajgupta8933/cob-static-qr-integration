@@ -3,15 +3,18 @@
 @import url("../src/assets/fonts/NunitoSans/nunitosans.css");
 @import url("../src/assets/fonts/Roboto/roboto.css");
 @import url("../src/assets/fonts/Roboto/roboto.css");
+html {
+  overflow-y:scroll;
+}
 
 label {
   display: block;
   margin-top: 10px;
 }
 .removeWhiteSpace{
-  white-space: unset;
   padding-top: 10px;
   padding-bottom: 10px;
+
 }
 
 .login-form,
