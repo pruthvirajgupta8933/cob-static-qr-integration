@@ -28,7 +28,7 @@ export const NotFilledKYCData = [
     key:"name",
     // id: "3",
     name: "Merchant Name",
-    // selector: (row) => row?.name,
+    selector: (row) => row?.name,
     sortable: true,
     cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA" )}</div>,
     width:"200px"
