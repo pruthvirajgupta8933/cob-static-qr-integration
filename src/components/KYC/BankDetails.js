@@ -262,6 +262,7 @@ function BankDetails(props) {
     }
   };
 
+
   return (
     <div className="col-md-12 col-md-offset-4" style={{ width: "100%" }}>
       <Formik
@@ -278,7 +279,6 @@ function BankDetails(props) {
           handleChange,
         }) => (
           <Form>
-            {/* {console.log(values)} */}
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6 ">
 
@@ -294,7 +294,7 @@ function BankDetails(props) {
                     readOnly={readOnly}
                   />
 
-                  {(KycList?.ifscCode !== null && loading) &&
+                  {(values?.ifscCode !== null && loading) &&
                     <div class="input-group-append">
                       <button class="btn btnbackground text-white mb-0" type="button"
                         disabled={loading}
@@ -309,8 +309,7 @@ function BankDetails(props) {
                   }
 
                   {/* if found any error in validation */}
-                  {(KycList?.ifscCode !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) &&
-
+                  {(values?.ifscCode !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) &&
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -359,7 +358,7 @@ function BankDetails(props) {
                   />
 
                   {/* if both values are same then display verified icon */}
-                  {(KycList?.ifscCode !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) && <span className="success input-group-append">
+                  {(values?.ifscCode !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) && <span className="success input-group-append">
                     <img
                       src={gotVerified}
                       alt=""
@@ -372,7 +371,7 @@ function BankDetails(props) {
                   }
 
                   {/* if found any error in validation */}
-                  {(KycList?.ifscCode !== null && (errors.hasOwnProperty("oldAccountNumber") || errors.hasOwnProperty("oldIfscCode"))) &&
+                  {(values?.ifscCode !== null && (errors.hasOwnProperty("oldAccountNumber") || errors.hasOwnProperty("oldIfscCode"))) &&
                     <div class="input-group-append">
                       <button class="btn btnbackground text-white mb-0" type="button"
                         disabled={loading}
