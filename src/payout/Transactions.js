@@ -72,44 +72,7 @@ const PayoutLedger = (props) => {
   };
 
   //Map the table data
-  const colData = () => {
-    return (
-      <>
-        {ledgerData == [] ? (
-          <td colSpan={"11"}>
-            {" "}
-            <div className="nodatafound text-center">No data found </div>
-          </td>
-        ) : (
-          ledgerData?.map((data, key) => (
-            <tr>
-              <td>{data.id}</td>
-              <td>{data.client_username}</td>
-              <td>{`₹ ${data.amount}.00`}</td>
-              <td>{data.type_status}</td>
-              <td>{data.trans_status}</td>
-              <td>{data.trans_type.toUpperCase()}</td>
-              <td>{makeFirstLetterCapital(data.trans_amount_type)}</td>
-              <td>{data.customer_ref_no}</td>
-              <td>{convertDate(data.trans_completed_time)}</td>
-              <td>{convertDate(data.trans_init_time)}</td>
-              <td>{`₹ ${data.charge}.00`}</td>
-              <td>{data.payment_mode}</td>
-              <td>{data.bene_account_name}</td>
-              <td>{data.bene_account_number}</td>
-              <td>{data.bene_ifsc}</td>
-              <td>{data.payout_trans_id}</td>
-              <td>{data.opening_balance}</td>
-              <td>{data.remarks}</td>
-              <td>{convertDate(data.created_at)}</td>
-              <td>{convertDate(data.updated_at)}</td>
-              <td>{data.deleted_at ? convertDate(data.deleted_at) : ""}</td>
-            </tr>
-          ))
-        )}
-      </>
-    );
-  };
+
   //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
@@ -226,18 +189,15 @@ const PayoutLedger = (props) => {
             {ledgerData?.length == 0 ? (
               <h2 className="d-flex justify-content-center">No Data Found</h2>
             ) : (
-              <Table row={TransactionRowData} col={colData} />
+              <Table
+                row={TransactionRowData}
+                data={ledgerData}
+                dataCount={TotalData}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                changeCurrentPage={changeCurrentPage}
+              />
             )}
-            <div className="mt-2">
-              {ledgerData?.length > 0 && (
-                <Paginataion
-                  dataCount={TotalData}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  changeCurrentPage={changeCurrentPage}
-                />
-              )}
-            </div>
           </div>
         </main>
       </section>

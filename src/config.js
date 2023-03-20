@@ -13,8 +13,6 @@ if (ENV_PROD) {
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in"
-
-
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";

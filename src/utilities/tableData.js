@@ -14,7 +14,7 @@ export const NotFilledKYCData = [
     name: "S.No",
     selector: (row) => row.sno,
     sortable: true,
-    width:"86px",
+    width: "86px",
     cell: (row) => <div className="removeWhiteSpace">{row?.sno}</div>,
   },
   {
@@ -22,30 +22,34 @@ export const NotFilledKYCData = [
     name: "Client Code",
     selector: (row) => row.clientCode,
     cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
-    width:"130px"
+    width: "130px",
   },
   {
-    key:"name",
-    // id: "3",
+    key: "name",
+    // id: "3",P
     name: "Merchant Name",
     selector: (row) => row?.name,
     sortable: true,
-    cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA" )}</div>,
-    width:"200px"
+    cell: (row) => (
+      <div className="removeWhiteSpace">
+        {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
+      </div>
+    ),
+    width: "200px",
   },
   {
     id: "4",
     name: "Email",
     selector: (row) => row?.emailId,
     cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
-    width:"250px",
+    width: "250px",
   },
   {
     id: "5",
     name: "Contact Number",
     selector: (row) => row.contactNumber,
     cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
-    width:"150px"
+    width: "150px",
   },
   {
     id: "6",
@@ -55,10 +59,10 @@ export const NotFilledKYCData = [
   {
     id: "7",
     name: "Registered Date",
-    selector: (row) =>row.signUpDate,
+    selector: (row) => row.signUpDate,
     sortable: true,
-    cell:(row)=><div>{covertDate(row.signUpDate)}</div>,
-    width:"150px"
+    cell: (row) => <div>{covertDate(row.signUpDate)}</div>,
+    width: "150px",
   },
   {
     id: "8",
@@ -68,68 +72,73 @@ export const NotFilledKYCData = [
 ];
 
 export const ChallanReportData = [
-  { id: "1",
-   name: "S.No" ,
-   selector: (row) => row.sno,
+  {
+    id: "1",
+    name: "S.No",
+    selector: (row) => row.sno,
     sortable: true,
-    width:"95px"
+    width: "95px",
   },
-  { id: "2", 
-  name: "Client Code" ,
-  selector: (row) => row.client_code,
-  width:"130px"
-},
+  {
+    id: "2",
+    name: "Client Code",
+    selector: (row) => row.client_code,
+    width: "130px",
+  },
 
-  { id: "3", 
-  name: "Bank Name",
-  selector: (row) => row.bank_code,
-  cell: (row) => <div className="removeWhiteSpace">{row?.bank_code}</div>,
-  sortable: true,
-  width:"150px"
- },
+  {
+    id: "3",
+    name: "Bank Name",
+    selector: (row) => row.bank_code,
+    cell: (row) => <div className="removeWhiteSpace">{row?.bank_code}</div>,
+    sortable: true,
+    width: "150px",
+  },
   {
     id: "4",
     name: "Amount",
     selector: (row) => row.amount,
-    cell: (row) => <div className="removeWhiteSpace">{row?.amount}</div> 
-    
+    cell: (row) => <div className="removeWhiteSpace">{row?.amount}</div>,
   },
   {
     id: "5",
     name: "Bank Reference No.",
     selector: (row) => row.bank_reference_number,
-    cell: (row) => <div className="removeWhiteSpace">{row?.bank_reference_number}</div>, 
-    width:"200px"
-
+    cell: (row) => (
+      <div className="removeWhiteSpace">{row?.bank_reference_number}</div>
+    ),
+    width: "200px",
   },
   {
     id: "6",
     name: "Challan No.",
     selector: (row) => row.challan_number,
-    cell: (row) => <div className="removeWhiteSpace">{row?.challan_number}</div>,
-    width:"200px"
+    cell: (row) => (
+      <div className="removeWhiteSpace">{row?.challan_number}</div>
+    ),
+    width: "200px",
   },
   {
     id: "7",
     name: "IFSC Code",
-    selector: (row) => row.ifsc
+    selector: (row) => row.ifsc,
   },
   {
     id: "8",
     name: "GL",
     selector: (row) => row.gl,
-    cell: (row) => <div className="removeWhiteSpace">{row?.gl}</div> 
+    cell: (row) => <div className="removeWhiteSpace">{row?.gl}</div>,
   },
   {
     id: "9",
     name: "SplGLInd",
     selector: (row) => row.sp_igl_ind,
-    cell: (row) => <div className="removeWhiteSpace">{row?.sp_igl_ind}</div> 
+    cell: (row) => <div className="removeWhiteSpace">{row?.sp_igl_ind}</div>,
   },
   {
     id: "10",
     name: "Status",
-    selector: (row) => row.type
+    selector: (row) => row.type,
   },
   {
     id: "11",
@@ -139,7 +148,6 @@ export const ChallanReportData = [
     sortable: true,
   },
 ];
-
 
 export const AssignZoneData = [
   { id: "1", row_name: "S. No." },
@@ -171,83 +179,140 @@ export const AssignZoneData = [
   },
 ];
 
-
-
 export const TransactionRowData = [
-  { id: "1", row_name: "Id" },
-  { id: "2", row_name: "Client's Username" },
-  { id: "3", row_name: "Amount" },
+  {
+    id: "1",
+    name: "S.No",
+    width: "86px",
+    selector: (row) => row.sno,
+    sortable: true,
+  },
+  {
+    id: "2",
+    name: "Client's Username",
+    selector: (row) => row.client_username,
+  },
+  {
+    id: "3",
+    width: "80px",
+    name: "Amount",
+    selector: (row) => row.amount,
+    sortable: true,
+  },
   {
     id: "4",
-    row_name: "Status Type",
+    name: "Status Type",
+    selector: (row) => row.type_status,
+    width: "100px",
   },
   {
     id: "5",
-    row_name: "Txn Status",
+    name: "Txn Status",
+    selector: (row) => row.trans_status,
+    width: "100px",
   },
   {
     id: "6",
-    row_name: "Txn Type",
+    name: "Txn Type",
+    selector: (row) => row.trans_type.toUpperCase(),
+    width: "100px",
   },
   {
     id: "7",
-    row_name: "Txn Amt Type",
+    name: "Txn Amt Type",
+    selector: (row) => row.trans_amount_type,
+    width: "100px",
   },
   {
     id: "8",
-    row_name: "Customer Ref No/Order Id",
+    name: "Customer Ref No/Order Id",
+    selector: (row) => row.customer_ref_no,
+    width: "300px",
   },
   {
     id: "9",
-    row_name: "Txn Completed time",
+    name: "Txn Completed time",
+    selector: (row) => row.trans_completed_time,
+    cell: (row) => <div>{covertDate(row.trans_completed_time)}</div>,
+    sortable: true,
+    width: "120px",
   },
   {
     id: "10",
-    row_name: "Txn Initiated time",
+    name: "Txn Initiated time",
+    selector: (row) => row.trans_init_time,
+    cell: (row) => <div>{covertDate(row.trans_init_time)}</div>,
+    sortable: true,
+    width: "120px",
   },
   {
     id: "11",
-    row_name: "Charge",
+    name: "Charge",
+    selector: (row) => `₹${row.charge.toFixed(2)}`,
+    sortable: true,
   },
   {
     id: "12",
-    row_name: "Payment Mode",
+    name: "Payment Mode",
+    selector: (row) => row.payment_mode,
   },
   {
     id: "13",
-    row_name: "Beneficiary Acc Name",
+    name: "Beneficiary Acc Name",
+    selector: (row) => row.bene_account_name,
+    width: "220px",
   },
   {
     id: "14",
-    row_name: "Beneficiary Acc No",
+    name: "Beneficiary Acc No",
+    selector: (row) => row.bene_account_number,
+    width: "150px",
   },
   {
     id: "15",
-    row_name: "Beneficiary IFSC",
+    name: "Beneficiary IFSC",
+    selector: (row) => row.bene_ifsc,
+    width: "120px",
   },
   {
     id: "16",
-    row_name: "Payout Txn Id",
+    name: "Payout Txn Id",
+    selector: (row) => row.payout_trans_id,
+    width: "220px",
   },
   {
     id: "17",
-    row_name: "Opening Balance",
+    name: "Opening Balance",
+    selector: (row) => row.opening_balance,
+    sortable: true,
+    width: "100px",
   },
   {
     id: "18",
-    row_name: "Remarks",
+    name: "Remarks",
+    selector: (row) => row.remarks,
+    width: "200px",
+    cell: (row) => <div className="removeWhiteSpace">{row.remarks}</div>,
   },
   {
     id: "19",
-    row_name: "Created On",
+    name: "Created On",
+    selector: (row) => row.created_at,
+    cell: (row) => <div>{covertDate(row.created_at)}</div>,
+    sortable: true,
+    width: "120px",
   },
   {
     id: "20",
-    row_name: "Updated On",
+    name: "Updated On",
+    cell: (row) => <div>{covertDate(row.updated_at)}</div>,
+    sortable:true
   },
   {
     id: "21",
-    row_name: "Deleted On",
+    name: "Deleted On",
+    cell: (row) => <div>{covertDate(row.deleted_at)}</div>,
+    sortable:true
   },
 ];
 
@@ -314,88 +379,170 @@ export const RefundTransactionData = [
 ];
 
 export const LedgerRowData = [
-  { id: "1", row_name: "Id" },
-  { id: "2", row_name: "Client's Username" },
-  { id: "3", row_name: "Amount" },
+  {
+    id: "1",
+    name: "S.No",
+    width: "86px",
+    selector: (row) => row.sno,
+    sortable: true,
+  },
+  {
+    id: "2",
+    name: "Client's Username",
+    selector: (row) => row.client_username,
+  },
+  {
+    id: "3",
+    width: "80px",
+    name: "Amount",
+    selector: (row) => row.amount,
+    sortable: true,
+  },
   {
     id: "4",
-    row_name: "Status Type",
+    name: "Status Type",
+    selector: (row) => row.type_status,
+    width: "100px",
   },
   {
     id: "5",
-    row_name: "Txn Status",
+    name: "Txn Status",
+    selector: (row) => row.trans_status,
+    width: "100px",
   },
   {
     id: "6",
-    row_name: "Txn Type",
+    name: "Txn Type",
+    selector: (row) => row.trans_type.toUpperCase(),
+    width: "100px",
   },
   {
     id: "7",
-    row_name: "Txn Amt Type",
+    name: "Txn Amt Type",
+    selector: (row) => row.trans_amount_type,
+    width: "100px",
   },
   {
     id: "8",
-    row_name: "Customer Ref No/Order Id",
+    name: "Customer Ref No/Order Id",
+    selector: (row) => row.customer_ref_no,
+    width: "300px",
   },
   {
     id: "9",
-    row_name: "Txn Completed time",
+    name: "Txn Completed time",
+    selector: (row) => row.trans_completed_time,
+    cell: (row) => <div>{covertDate(row.trans_completed_time)}</div>,
+    sortable: true,
+    width: "120px",
   },
   {
     id: "10",
-    row_name: "Txn Initiated time",
+    name: "Txn Initiated time",
+    selector: (row) => row.trans_init_time,
+    cell: (row) => <div>{covertDate(row.trans_init_time)}</div>,
+    sortable: true,
+    width: "120px",
   },
   {
     id: "11",
-    row_name: "Charge",
+    name: "Charge",
+    selector: (row) => `₹${row.charge.toFixed(2)}`,
+    sortable: true,
   },
   {
     id: "12",
-    row_name: "Payment Mode",
+    name: "Payment Mode",
+    selector: (row) => row.payment_mode,
   },
   {
     id: "13",
-    row_name: "Beneficiary Acc Name",
+    name: "Beneficiary Acc Name",
+    selector: (row) => row.bene_account_name,
+    width: "220px",
   },
   {
     id: "14",
-    row_name: "Beneficiary Acc No",
+    name: "Beneficiary Acc No",
+    selector: (row) => row.bene_account_number,
+    width: "150px",
   },
   {
     id: "15",
-    row_name: "Beneficiary IFSC",
+    name: "Beneficiary IFSC",
+    selector: (row) => row.bene_ifsc,
+    width: "120px",
   },
   {
     id: "16",
-    row_name: "Payout Txn Id",
+    name: "Payout Txn Id",
+    selector: (row) => row.payout_trans_id,
+    width: "220px",
   },
   {
     id: "17",
-    row_name: "Opening Balance",
+    name: "Opening Balance",
+    selector: (row) => row.opening_balance,
+    sortable: true,
+    width: "100px",
   },
   {
     id: "18",
-    row_name: "Remarks",
+    name: "Remarks",
+    selector: (row) => row.remarks,
+    width: "200px",
+    cell: (row) => <div className="removeWhiteSpace">{row.remarks}</div>,
   },
   {
     id: "19",
-    row_name: "Created On",
+    name: "Created On",
+    selector: (row) => row.created_at,
+    cell: (row) => <div>{covertDate(row.created_at)}</div>,
+    sortable: true,
+    width: "120px",
   },
 ];
 export const beneficiaryRowData = [
-  { id: "1", row_name: "Full Name" },
+  {
+    id: "0",
+    name: "S.No",
+    selector: (row) => row.sno,
+    sortable: true,
+    width: "86px",
+    sortable: true,
+  },
+  {
+    id: "1",
+    name: "Full Name",
+    selector: (row) => row.full_name,
+    width: "200px",
+  },
 
-  { id: "2", row_name: "A/C No" },
+  {
+    id: "2",
+    name: "A/C No",
+    selector: (row) => row.account_number,
+    width: "200px",
+  },
 
-  { id: "3", row_name: "IFSC Code" },
-  { id: "4", row_name: "UPI ID" },
+  {
+    id: "3",
+    name: "IFSC Code",
+    selector: (row) => row.ifsc_code,
+    width: "150px",
+  },
+  {
+    id: "4",
+    name: "UPI ID",
+    selector: (row) => row.upi_id,
+    // width: "200px",
+    // cell: (row) => <div>{row.upi_id}</div>,
+  },
 ];
-
-
 
 export const PendingVerificationData = [
   { id: "1", name: "S. No." },
-  { id: "2", name: "Client Code",selector:(row)=>row.clientCode },
+  { id: "2", name: "Client Code", selector: (row) => row.clientCode },
   { id: "3", name: "Company Name" },
   {
     id: "4",
@@ -424,15 +571,13 @@ export const PendingVerificationData = [
   {
     id: "10",
     name: "View Status",
-    selector:(row)=>row.viewStatus,
+    selector: (row) => row.viewStatus,
   },
   {
     id: "11",
     name: "Action",
   },
-  
 ];
-
 
 export const PendingApprovalData = [
   { id: "1", row_name: "S. No." },
@@ -521,8 +666,6 @@ export const ApprovedTableData = [
     row_name: "Action",
   },
 ];
-
-
 
 // For subscription paisa
 export const MandateReportData = [
