@@ -22,13 +22,15 @@ import { roleBasedAccess } from "../../_components/reuseable_components/roleBase
 // import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 import { isNull } from "lodash";
 import { isUndefined } from "lodash";
-import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
+import {
+  KYC_STATUS_APPROVED,
+  KYC_STATUS_VERIFIED,
+} from "../../utilities/enums";
 
 function DocumentsUpload(props) {
   const setTab = props.tab;
   const setTitle = props.title;
   const { role, kycid } = props;
-
 
   const roles = roleBasedAccess();
 
@@ -42,34 +44,44 @@ function DocumentsUpload(props) {
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Upload Document");
   const [imgAttr, setImgAttr] = useState("#");
+  const [newOptionsData,setnewOptionsData]=useState(docTypeList);
+  console.log(imgAttr,'iiiii');
 
   const { auth, kyc } = useSelector((state) => state);
   const { allTabsValidate, KycTabStatusStore } = kyc;
-  const BusinessOverviewStatus = allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
+  const BusinessOverviewStatus =
+    allTabsValidate?.BusiOverviewwStatus?.submitStatus?.status;
   const KycList = kyc?.kycUserList;
   const kyc_status = KycList?.status;
   const businessType = KycList?.businessType;
 
-  const documentStatus = KycTabStatusStore?.document_status
-
+  const documentStatus = KycTabStatusStore?.document_status;
 
   const { user } = auth;
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
 
-
+    const documentListData = savedData?.map((data) => data?.type);
+    const dropdownListData = docTypeList?.map((data) => data?.key);
+    const alreadyUploadedData = dropdownListData?.filter((elem) => documentListData?.includes(elem?.toString()));
+    const newDocumentedOption = docTypeList?.map((obj,key) => {
+      if(alreadyUploadedData.includes(obj.key))
+      {
+        return { ...obj, disabled: true};  
+      }
+      return obj;
+    });
   function readURL(input, id) {
     if (input?.files && input?.files[0]) {
       let reader = new FileReader();
       reader.onload = function (e) {
-        setImgAttr(e.target.result)
+        setImgAttr(e.target.result);
       };
 
       reader.readAsDataURL(input.files[0]);
     }
   }
-
 
   useEffect(() => {
     setSavedData(KycDocUpload);
@@ -81,9 +93,7 @@ function DocumentsUpload(props) {
   };
 
   const validationSchema = Yup.object({
-    docType: Yup.string()
-      .required("Document Required")
-      .nullable(),
+    docType: Yup.string().required("Document Required").nullable(),
     document_img: Yup.mixed().nullable(),
   });
 
@@ -96,16 +106,13 @@ function DocumentsUpload(props) {
       .catch((err) => console.log(err));
   }, []);
 
-  const required = []
+  const required = [];
   docTypeList?.filter((a) => {
     if (a.optional1) {
-      let val = a.key
-      required.push(val)
+      let val = a.key;
+      required.push(val);
     }
-
-  })
-
-
+  });
 
   const isrequired = savedData?.map((r) => r.type);
   // const myFilter = (elm) => {
@@ -117,13 +124,12 @@ function DocumentsUpload(props) {
     setSelectedFile(e.target.files[0]);
     // console.log(e.target)
     readURL(e.target, id);
-
   };
-  const [disable, setDisable] = useState(false)
+  const [disable, setDisable] = useState(false);
   const onSubmit = (values, action) => {
     // If merchant logged in
 
-    setDisable(true)
+    setDisable(true);
     if (role.merchant) {
       // console.log("selectedFile",selectedFile)
       if (!isNull(selectedFile) && !isUndefined(selectedFile)) {
@@ -149,18 +155,17 @@ function DocumentsUpload(props) {
                 response?.payload?.message?.toString();
               toast.error(message);
             }
-            setDisable(false)
+            setDisable(false);
           })
           .catch(function (error) {
             console.error("Error:", error);
             toast.error("Something went wrong while saving the document");
-            setDisable(false)
+            setDisable(false);
           });
       } else {
         toast.error("Please select a document to upload");
-        setDisable(false)
+        setDisable(false);
       }
-
     }
 
     // update doc list after the upload the document
@@ -169,10 +174,11 @@ function DocumentsUpload(props) {
     }, 2000);
   };
 
-
   const removeDoc = (doc_id) => {
-    const isConfirm = window.confirm("Are you sure you want to remove this document");
-    if(isConfirm){
+    const isConfirm = window.confirm(
+      "Are you sure you want to remove this document"
+    );
+    if (isConfirm) {
       const rejectDetails = {
         document_id: doc_id,
         removed_by: loginId,
@@ -182,7 +188,7 @@ function DocumentsUpload(props) {
           setTimeout(() => {
             getKycDocList(role);
           }, 1300);
-  
+
           resp?.payload?.status
             ? toast.success(resp?.payload?.message)
             : toast.error(resp?.payload?.message);
@@ -191,7 +197,6 @@ function DocumentsUpload(props) {
           toast.error("Try Again Network Error");
         });
     }
-    
   };
 
   const getKycDocList = (role) => {
@@ -206,10 +211,7 @@ function DocumentsUpload(props) {
     getKycDocList(role);
   }, []);
 
-
-
   let submitAction = undefined;
-
 
   let btn = false;
   requiredDocList?.map((i) => {
@@ -232,24 +234,20 @@ function DocumentsUpload(props) {
   };
 
   useEffect(() => {
-    setImgAttr("#")
-    setSelectedFile(null)
-
+    setImgAttr("#");
+    setSelectedFile(null);
   }, [docTypeIdDropdown]);
 
-
   const stringManulate = (str) => {
-    let str1 = str.substring(0, 15)
-    return `${str1}...`
-
-  }
-
+    let str1 = str.substring(0, 15);
+    return `${str1}...`;
+  };
 
   return (
     <>
       {BusinessOverviewStatus === true ||
-        (KycList?.businessType !== null &&
-          KycList?.businessType !== undefined) ? (
+      (KycList?.businessType !== null &&
+        KycList?.businessType !== undefined) ? (
         <div className="col-md-12">
           <Formik
             initialValues={initialValues}
@@ -267,15 +265,16 @@ function DocumentsUpload(props) {
                       Select Document Type
                       <span style={{ color: "red" }}>*</span>
                     </label>
-                  {/* {console.log("kyc_status",kyc_status)} */}
+                    {/* {console.log("kyc_status",kyc_status)} */}
                     <FormikController
                       control="select"
                       name="docType"
                       className="form-control"
-                      options={docTypeList}
+                      options={newDocumentedOption}
                       readOnly={readOnly}
                       disabled={
-                        (documentStatus === KYC_STATUS_VERIFIED || documentStatus === KYC_STATUS_APPROVED)
+                        documentStatus === KYC_STATUS_VERIFIED ||
+                        documentStatus === KYC_STATUS_APPROVED
                           ? true
                           : false
                       }
@@ -309,19 +308,21 @@ function DocumentsUpload(props) {
                                   className="file-upload-input"
                                   id="3"
                                   onChange={(e) => handleChange(e, 3)}
-                                // onChange={(e) => console.log(e, 3)}
+                                  // onChange={(e) => console.log(e, 3)}
                                 />
                                 <div className="drag-text">
-                                  <h3 className="p-2 font-16">
+                                  <p className="p-2 font-9">
                                     Add the selected document
-                                  </h3>
+                                  </p>
                                   <img
                                     alt="Doc"
                                     src={plus}
-                                    style={{ width: 30 }}
-                                    className="mb-4"
+                                    style={{ width: 15 }}
+                                    className="mb-2"
                                   />
-                                  <p className="card-text">Upto 2 MB file size</p>
+                                  <p className="card-text">
+                                    Upto 2 MB file size
+                                  </p>
                                 </div>
                               </div>
                             </div>
@@ -330,14 +331,26 @@ function DocumentsUpload(props) {
                           <div className="col-lg-6 ">
                             {/* uploaded document preview */}
                             {/* {console.log("imgAttr",imgAttr)} */}
-                            {imgAttr === "#" ? <></> :
+                            {
+                               (imgAttr!=="#" && imgAttr.startsWith("data:application/pdf")) ?
+                                <iframe
+                                src={imgAttr + "#toolbar=0"}
+                                height={200}
+                                width={250}
+                              />:""
+
+                            }
+                            {imgAttr === "#" || imgAttr.startsWith("data:application/pdf") ? (
+                              <></>
+                            ) : (
                               <div className="file-upload-content imagepre_3">
                                 <img
                                   className="file-upload-image imagepre_sub_3"
                                   src={imgAttr}
                                   alt="Document"
                                 />
-                              </div>}
+                              </div>
+                            )}
                           </div>
                         </>
                       ) : (
@@ -352,7 +365,7 @@ function DocumentsUpload(props) {
 
                   {documentStatus !== "Approved" &&
                   documentStatus !== "Verified" &&
-                    role?.merchant ? (
+                  role?.merchant ? (
                     <div className="col-12">
                       <button
                         className="btn btnbackground text-white mt-5"
@@ -368,8 +381,8 @@ function DocumentsUpload(props) {
                       {/* add function go to the next step */}
                       {documentStatus !== "Approved" &&
                       documentStatus !== "Verified" &&
-                        role?.merchant &&
-                        btn ? (
+                      role?.merchant &&
+                      btn ? (
                         <button
                           className="btn btnbackground text-white mt-5"
                           type="button"
@@ -416,8 +429,8 @@ function DocumentsUpload(props) {
                               <th>Document Name</th>
                               <th>Document Status</th>
                               {role?.merchant &&
-                                documentStatus !== "Approved" &&
-                                documentStatus !== "Verified" ? (
+                              documentStatus !== "Approved" &&
+                              documentStatus !== "Verified" ? (
                                 <th>Remove Item</th>
                               ) : (
                                 <></>
@@ -444,8 +457,8 @@ function DocumentsUpload(props) {
                                 </td>
                                 <td>{doc.status}</td>
                                 {role?.merchant &&
-                                  documentStatus !== "Approved" &&
-                                  documentStatus !== "Verified" ? (
+                                documentStatus !== "Approved" &&
+                                documentStatus !== "Verified" ? (
                                   <td>
                                     <button
                                       type="button"
@@ -459,7 +472,6 @@ function DocumentsUpload(props) {
                                 ) : (
                                   <></>
                                 )}
-
                               </tr>
                             ))}
                           </tbody>
