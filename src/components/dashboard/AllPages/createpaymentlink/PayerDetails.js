@@ -47,6 +47,7 @@ const PayerDetails = () => {
     const [pageSize, setPageSize] = useState(10);
     const [paginatedata, setPaginatedData] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
+    const [editModalToggle, setEditModalToggle] = useState(false);
     const [pageCount, setPageCount] = useState(data ? Math.ceil(data.length / pageSize) : 0);
 
 
@@ -77,6 +78,7 @@ const PayerDetails = () => {
     useEffect(() => {
         loadUser();
         getDrop();
+        // setEditModalToggle(false)
     }, []);
 
 
@@ -150,7 +152,7 @@ const PayerDetails = () => {
     // USE FOR EDIT FORM
 
     const handleClick = (id) => {
-        //console.log(id);
+        setEditModalToggle(true)
         data.filter((dataItem) => {
             if (dataItem.id === id) {
                 setEditForm(
@@ -160,7 +162,6 @@ const PayerDetails = () => {
                         phone: dataItem.phone_number,
                         editCustomerTypeId: dataItem.customer_type_id,
                         id: dataItem.id
-
                     }
                 )
 
@@ -183,7 +184,7 @@ const PayerDetails = () => {
 
     const deleteUser = async id => {
         // confirm("do you confirm to delete it");
-        var iscConfirm = window.confirm("Are you sure you want to delete it ?");
+        let iscConfirm = window.confirm("Are you sure you want to delete it ?");
         if (iscConfirm) {
             await axiosInstance.delete(`${API_URL.DELETE_CUSTOMER}?Client_Code=${clientCode}&Customer_id=${id}`);
             loadUser();
@@ -205,7 +206,7 @@ const PayerDetails = () => {
 
         <React.Fragment>
 
-            <Edituser items={editform} callBackFn={edit} />
+            <Edituser items={editform} callBackFn={edit} modalToggle={editModalToggle} fnSetModalToggle={setEditModalToggle} />
             <Genratelink generatedata={genrateform} />
             <div className="mymodals modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
@@ -370,7 +371,7 @@ const PayerDetails = () => {
                                         <td>{user.email}</td>
                                         <td>{user.customer_type}</td>
                                         <td>
-                                            <button type="button" className="cratepaymentlinkclrsfigma text-white btn" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)} >Edit</button>
+                                            <button type="button" className="cratepaymentlinkclrsfigma text-white btn"  onClick={(e) => handleClick(user.id)} >Edit</button>
                                         </td>
 
                                         <td>
