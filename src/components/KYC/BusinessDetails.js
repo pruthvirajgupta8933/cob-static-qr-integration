@@ -136,51 +136,67 @@ function BusinessDetails(props) {
   };
   const gstinData = BusinessDetailsStatus?.GSTINValidation;
 
+  const radioBtnOptions = [
+    { "value": true, "key": "Yes" },
+    { "value": false, "key": "No" },
+  ]
+
   const initialValues = {
     company_name:
       gstinData?.trade_name?.length > 2
         ? gstinData?.trade_name
         : KycList?.companyName,
     company_logo: "",
-    registerd_with_gst: "True",
-    gst_number: KycList?.gstNumber,
-    oldGstNumber: KycList?.gstNumber,
-    pan_card: gstinData?.pan?.length > 2 ? gstinData?.pan : KycList?.panCard,
-    signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
-    oldSignatoryPan: KycList?.signatoryPAN,
-    name_on_pancard:
-      businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard,
+    registerd_with_gst: KycList?.registerdWithGST.toString(),
+
+    name_on_pancard: businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard,
     pin_code: KycList?.merchant_address_details?.pin_code,
     city_id: KycList?.merchant_address_details?.city,
     state_id: KycList?.merchant_address_details?.state,
     registered_business_address: KycList?.merchant_address_details?.address,
     operational_address: KycList?.merchant_address_details?.address,
+
+    gst_number: KycList?.gstNumber,
+    prevGstNumber: KycList?.gstNumber,
+
+    pan_card: gstinData?.pan?.length > 2 ? gstinData?.pan : KycList?.panCard,
+    prev_pan_card: KycList?.panCard,
+
+    signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
+    prevSignatoryPan: KycList?.signatoryPAN,
+
+    isGSTINVerified: KycList?.gstNumber !== null ? "1" : "",
     isPANVerified: KycList?.panCard !== null ? "1" : "",
     isAuthPANVerified: KycList?.signatoryPAN !== null ? "1" : "",
-    isGSTINVerified: KycList?.gstNumber !== null ? "1" : "",
   };
 
+  console.log("initialValues",initialValues)
   const validationSchema = Yup.object({
-    company_name: Yup.string()
-      .trim()
+    company_name: Yup.string().trim()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
       .required("Required")
       .nullable(),
-    gst_number: Yup.string()
-      .trim()
-      .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
-      .matches(regexGSTN, "GSTIN Number is Invalid")
-      .required("Required")
-      .nullable(),
-    oldGstNumber: Yup.string()
-      .oneOf(
-        [Yup.ref("gst_number"), null],
-        "You need to verify Your GSTIN Number"
-      )
-      .required("You need to verify Your GSTIN Number")
-      .nullable(),
+    gst_number: Yup.string().when(["registerd_with_gst"], {
+      is: true,
+      then: Yup.string()
+        .trim()
+        .matches(Regex.acceptAlphaNumeric, RegexMsg.acceptAlphaNumeric)
+        .matches(regexGSTN, "GSTIN Number is Invalid")
+        .required("Required")
+        .nullable(),
+      otherwise: Yup.string()
+        .notRequired()
+        .nullable(),
+    }),
+    prevGstNumber: Yup.string().when(["registerd_with_gst"], {
+      is: true,
+      then: Yup.string().oneOf(
+        [Yup.ref("gst_number"), null], "You need to verify Your GSTIN Number")
+        .required("You need to verify Your GSTIN Number")
+        .nullable(),
+      otherwise: Yup.string().notRequired().nullable()
+    }),
     pan_card: Yup.string()
-      .trim()
       .matches(reqexPAN, "PAN number is Invalid")
       .required("Required")
       .nullable(),
@@ -189,7 +205,7 @@ function BusinessDetails(props) {
       .matches(reqexPAN, "Authorized PAN number is Invalid")
       .required("Required")
       .nullable(),
-    oldSignatoryPan: Yup.string()
+    prevSignatoryPan: Yup.string()
       .oneOf(
         [Yup.ref("signatory_pan"), null],
         "You need to verify Your Authorized Signatory PAN Number"
@@ -205,7 +221,7 @@ function BusinessDetails(props) {
       .trim()
       .matches(Regex.acceptAlphabet, RegexMsg.acceptAlphabet)
       .required("Required")
-      .max(50,"City name character length exceeded")
+      .max(50, "City name character length exceeded")
       .wordLength("Word character length exceeded")
       .nullable(),
     state_id: Yup.string()
@@ -223,7 +239,11 @@ function BusinessDetails(props) {
       .wordLength("Word character length exceeded")
       .max(120, "Address Max length exceeded, 120 charactes are allowed")
       .nullable(),
-  });
+    registerd_with_gst: Yup.boolean().required("Required").nullable(),
+  },
+
+    [["registerd_with_gst"]]
+  );
 
   useEffect(() => {
     dispatch(businessOverviewState())
@@ -243,6 +263,7 @@ function BusinessDetails(props) {
 
     const fieldVal = val[key];
     let isValidVal = true;
+
     if (fieldVal === null || fieldVal === undefined) {
       isValidVal = false;
       setFieldTouched(key, true);
@@ -254,7 +275,7 @@ function BusinessDetails(props) {
       }
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "pan_card") {
-      panValidate(val[key]);
+      authValidation(val[key]);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
       authValidation(val[key]);
@@ -331,8 +352,26 @@ function BusinessDetails(props) {
           handleChange,
         }) => (
           <Form>
+            {console.log("initialValues", initialValues)}
             <div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-12 marg-b">
+              <div className="col-sm-12 col-md-6 col-lg-6 marg-b">
+                <div className="input-group">
+                  <div>
+                    {/* {console.log("values",values)} */}
+                    <FormikController
+                      control="radio"
+                      name="registerd_with_gst"
+                      options={radioBtnOptions}
+                      className="form-check-input"
+                      label="Do you have a GST Number ?"
+                    />
+
+                  </div>
+                </div>
+              </div>
+              {/* if merchant has GST number */}
+              {console.log("values?.registerd_with_gst",values?.registerd_with_gst)}
+              {values?.registerd_with_gst == "true" && <div className="col-sm-12 col-md-6 col-lg-6 marg-b">
                 <label className="col-form-label mt-0 p-2">
                   GSTIN<span style={{ color: "red" }}>*</span>
                 </label>
@@ -346,7 +385,8 @@ function BusinessDetails(props) {
                   />
                   {KycList?.gstNumber !== null &&
                     !errors.hasOwnProperty("gst_number") &&
-                    !errors.hasOwnProperty("oldGstNumber") ? (
+                    !errors.hasOwnProperty("prevGstNumber") ? (
+
                     <span className="success input-group-append">
                       <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                     </span>
@@ -380,26 +420,53 @@ function BusinessDetails(props) {
                   </ErrorMessage>
                 }
                 <br />
-                {errors?.oldGstNumber && (
+                {errors?.prevGstNumber && (
                   <span className="notVerifiedtext- text-danger mb-0">
-                    {errors?.oldGstNumber}
+                    {errors?.prevGstNumber}
                   </span>
                 )}
-              </div>
+              </div>}
             </div>
+
+            
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
-                <label className="col-form-label mt-0 p-2">
-                  Business PAN<span style={{ color: "red" }}>*</span>
-                </label>
 
+                <label className="col-form-label mt-0 p-2">
+                  Business PAN <span style={{ color: "red" }}>*</span>
+                </label>
+                <div className="input-group">
                 <FormikController
                   control="input"
                   type="text"
                   name="pan_card"
                   className="form-control"
-                  readOnly={readOnly === false ? true : readOnly}
+                  dataRel={values?.registerd_with_gst}
+                  readOnly={values?.registerd_with_gst === 'true' ? true : false}
                 />
+                  {values?.registerd_with_gst==='true' &&   <span className="success input-group-append">
+                      <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
+                  </span> }
+                  
+                  {values?.registerd_with_gst==='false' &&  <div className="position-sticky pull-right- otpbtn input-group-append">
+                      <a
+                        href={() => false}
+                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary mb-0"
+                        onClick={() => {
+                          checkInputIsValid(
+                            errors,
+                            values,
+                            setFieldError,
+                            setFieldTouched,
+                            "pan_card"
+                          );
+                        }}
+                      >
+                        Verify
+                      </a>
+                    </div> }
+                </div>
+
               </div>
 
               <div className="col-sm-12 col-md-6 col-lg-6">
@@ -418,7 +485,7 @@ function BusinessDetails(props) {
 
                   {KycList?.signatoryPAN !== null &&
                     !errors.hasOwnProperty("signatory_pan") &&
-                    !errors.hasOwnProperty("oldSignatoryPan") ? (
+                    !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
                       <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                     </span>
@@ -452,9 +519,9 @@ function BusinessDetails(props) {
                   </ErrorMessage>
                 }
                 <br />
-                {errors?.oldSignatoryPan && (
+                {errors?.prevSignatoryPan && (
                   <span className="notVerifiedtext- text-danger mb-0">
-                    {errors?.oldSignatoryPan}
+                    {errors?.prevSignatoryPan}
                   </span>
                 )}
               </div>
