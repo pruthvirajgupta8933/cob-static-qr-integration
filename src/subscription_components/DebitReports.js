@@ -402,7 +402,7 @@ const DebitReports = (props) => {
                                 <>
                                     <h4>Total Record : {mandateData.length} </h4>
                                     <div className="scroll overflow-auto">
-                                        <Table row={rowData} col={colData} />
+                                        <Table row={rowData} data={mandateData} />
                                     </div>
                                 </>
                             ) : (

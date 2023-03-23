@@ -44,8 +44,7 @@ function DocumentsUpload(props) {
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Upload Document");
   const [imgAttr, setImgAttr] = useState("#");
-  const [newOptionsData,setnewOptionsData]=useState(docTypeList);
-  console.log(imgAttr,'iiiii');
+  const [newOptionsData, setnewOptionsData] = useState(docTypeList);
 
   const { auth, kyc } = useSelector((state) => state);
   const { allTabsValidate, KycTabStatusStore } = kyc;
@@ -61,17 +60,17 @@ function DocumentsUpload(props) {
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
-
-    const documentListData = savedData?.map((data) => data?.type);
-    const dropdownListData = docTypeList?.map((data) => data?.key);
-    const alreadyUploadedData = dropdownListData?.filter((elem) => documentListData?.includes(elem?.toString()));
-    const newDocumentedOption = docTypeList?.map((obj,key) => {
-      if(alreadyUploadedData.includes(obj.key))
-      {
-        return { ...obj, disabled: true};  
-      }
-      return obj;
-    });
+  const documentListData = savedData?.map((data) => data?.type);
+  const dropdownListData = docTypeList?.map((data) => data?.key);
+  const alreadyUploadedData = dropdownListData?.filter((elem) =>
+    documentListData?.includes(elem?.toString())
+  );
+  const newDocumentedOption = docTypeList?.map((obj, key) => {
+    if (alreadyUploadedData.includes(obj.key)) {
+      return { ...obj, disabled: true };
+    }
+    return obj;
+  });
   function readURL(input, id) {
     if (input?.files && input?.files[0]) {
       let reader = new FileReader();
@@ -102,8 +101,12 @@ function DocumentsUpload(props) {
       .then((resp) => {
         const data = convertToFormikSelectJson("id", "name", resp?.payload);
         setDocTypeList(data);
+        setImgAttr("#");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setImgAttr("#");
+        console.log(err);
+      });
   }, []);
 
   const required = [];
@@ -318,7 +321,7 @@ function DocumentsUpload(props) {
                                     alt="Doc"
                                     src={plus}
                                     style={{ width: 15 }}
-                                    className="mb-2"
+                                    className="mb-1 pb-3"
                                   />
                                   <p className="card-text">
                                     Upto 2 MB file size
@@ -331,16 +334,18 @@ function DocumentsUpload(props) {
                           <div className="col-lg-6 ">
                             {/* uploaded document preview */}
                             {/* {console.log("imgAttr",imgAttr)} */}
-                            {
-                               (imgAttr!=="#" && imgAttr.startsWith("data:application/pdf")) ?
-                                <iframe
+                            {imgAttr !== "#" &&
+                            imgAttr.startsWith("data:application/pdf") ? (
+                              <iframe
                                 src={imgAttr + "#toolbar=0"}
-                                height={200}
-                                width={250}
-                              />:""
-
-                            }
-                            {imgAttr === "#" || imgAttr.startsWith("data:application/pdf") ? (
+                                height={155}
+                                width={150}
+                              />
+                            ) : (
+                              ""
+                            )}
+                            {imgAttr === "#" ||
+                            imgAttr.startsWith("data:application/pdf") ? (
                               <></>
                             ) : (
                               <div className="file-upload-content imagepre_3">

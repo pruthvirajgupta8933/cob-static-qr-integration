@@ -3,7 +3,7 @@
     background-color: #ffffff;
     /* width: 600px; */
     margin: 0 auto;
-    padding: 10px;
+    padding: 15px;
   }
   
   .file-upload-btn {
@@ -33,9 +33,6 @@
     transition: all .2s ease;
   }
   
-  .file-upload-content {
-    text-align: center;
-  }
   
   .file-upload-input {
     position: absolute;
@@ -77,10 +74,10 @@
   }
   
   .file-upload-image {
-    max-height: 200px;
-    max-width: 200px;
+    max-height: 155px;
+    max-width: 180px;
     margin: auto;
-    padding: 20px;
+    margin-left: 10px;
   }
   
   .remove-image {
