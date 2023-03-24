@@ -70,7 +70,6 @@ import { generateWord } from "../../utilities/generateClientCode";
 import TransactionHistoryDoitc from "./AllPages/reports/TransactionHistoryDoitc";
 import SettlementReportDoitc from "./AllPages/reports/SettlementReportDoitc";
 import MandateReport from "../../subscription_components/MandateReport";
-import DebitReports from "../../subscription_components/DebitReports";
 import BizzAppData from '../ApproverNVerifier/BizzData';
 import CreateMandate from "../../subscription_components/Create_Mandate/index";
 import DebitReport from "../../subscription_components/DebitReport";
@@ -516,7 +515,7 @@ function Dashboard() {
           <SpPg />
         </MerchantRoute>
         <MerchantRoute exact path={`${path}/subscription/debitReports`} Component={DebitReport}>
-          <SpPg />
+        <DebitReport />
         </MerchantRoute>
         <MerchantRoute exact path={`${path}/subscription/mandate_registration`} Component={CreateMandate}>
           <SpPg />
