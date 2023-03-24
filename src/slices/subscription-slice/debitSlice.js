@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import API_URL from "../../config";
 import { DebitService } from "../../services/subscription-service/debit.service";
 import { setMessage } from "../message";
+import axios from "axios";
 
 
 
@@ -13,20 +15,21 @@ const initialState = {
 
 export const filterForAllDebitReportsSlice = createAsyncThunk(
   "userManagement/filterForAllDebitReports",
-  async (data, thunkAPI) => {
-    try {
-      const response = await DebitService.filterForAllDebitReports(data);
-      return response.data;
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      thunkAPI.dispatch(setMessage(message));
-      return thunkAPI.rejectWithValue();
-    }
+  async (data) => {
+    const requestParam = data.page;
+    const requestParam1 = data.size;
+    const fromDate = data.fromDate
+    const toDate = data.toDate
+    const m_id = data.m_id
+    const status = data.status
+    const response = await axios
+      .post(
+        `${API_URL.filterDebitReport}?page=${requestParam}&size=${requestParam1}`,{fromDate,toDate,m_id,status})
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
   }
 );
 

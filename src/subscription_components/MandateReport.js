@@ -571,7 +571,7 @@ const MandateReports = (props) => {
                 <>
                   <h4>Total Record : {mandateData.length} </h4>
                   <div className="scroll overflow-auto">
-                    <Table row={rowData} col={colData} />
+                    <Table row={MandateReportData} data={mandateData}/>
                   </div>
                 </>
               ) : (

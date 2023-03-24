@@ -286,7 +286,7 @@ const API_LIVE = {
   filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
 
   // Debit Report
-  filterDebitReport: `${subAPIURL}/npci/filterDebitReport`,
+  filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
 
 
 
