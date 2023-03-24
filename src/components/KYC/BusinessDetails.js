@@ -17,6 +17,7 @@ import {
 } from "../../slices/kycSlice";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
+import { isNull, values } from "lodash";
 
 function BusinessDetails(props) {
   const setTab = props.tab;
@@ -37,49 +38,49 @@ function BusinessDetails(props) {
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
   const KycList = kyc?.kycUserList;
 
+  // console.log("BusinessDetailsStatus",BusinessDetailsStatus)
   const { loginId } = user;
   const [BusinessOverview, setBusinessOverview] = useState([]);
   const [gstin, setGstin] = useState("");
-  const [fieldValue, setFieldValue] = useState("");
+  // const [fieldValue, setFieldValue] = useState("");
   const [checked, setChecked] = useState(false);
   const [readOnly, setReadOnly] = useState(false);
   const [buttonText, setButtonText] = useState("Save and Next");
   const [disable, setIsDisable] = useState(false);
 
-  const [operationvalue, setOperationvalue] = useState(
-    KycList.registeredBusinessAdress
-  );
+  const [latestCompanyNameFromResp, setLatestCompanyNameFromResp] = useState("")
+  const [bussinessPanFromGST, setBussinessPanFromGST] = useState("")
+  const [gstNumberByState, setGstNumberByState] = useState("")
+  const [registerWithGstState, setRegisterWithGstState] = useState(false)
+
+
+
   const dispatch = useDispatch();
 
   const notValid = useSelector(
     (state) =>
       state.kyc.allTabsValidate.BusinessDetailsStatus.AuthPanValidation.message
   );
-  const busiFirstName =
-    BusinessDetailsStatus?.PanValidation?.first_name === null
-      ? ""
-      : BusinessDetailsStatus?.PanValidation?.first_name;
+  const busiFirstName = BusinessDetailsStatus?.PanValidation?.first_name === null ? "" : BusinessDetailsStatus?.PanValidation?.first_name;
 
-  const busiLastName =
-    BusinessDetailsStatus?.PanValidation?.last_name === null
-      ? ""
-      : BusinessDetailsStatus?.PanValidation?.last_name;
+  const busiLastName = BusinessDetailsStatus?.PanValidation?.last_name === null ? "" : BusinessDetailsStatus?.PanValidation?.last_name;
 
-  const busiAuthFirstName =
-    BusinessDetailsStatus.AuthPanValidation.first_name === null
-      ? ""
-      : BusinessDetailsStatus?.AuthPanValidation.first_name;
+  const busiAuthFirstName = BusinessDetailsStatus.AuthPanValidation.first_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.first_name;
 
-  const busiAuthLastName =
-    BusinessDetailsStatus?.AuthPanValidation?.last_name === null
-      ? ""
-      : BusinessDetailsStatus?.AuthPanValidation.last_name;
+  const busiAuthLastName = BusinessDetailsStatus?.AuthPanValidation?.last_name === null ? "" : BusinessDetailsStatus?.AuthPanValidation.last_name;
 
-  let businessNamee = `${busiFirstName} ${busiLastName}`;
+  let businessName = `${busiFirstName} ${busiLastName}`;
   let businessAuthName = `${busiAuthFirstName !== undefined ? busiAuthFirstName : ""
     } ${busiAuthLastName !== undefined ? busiAuthLastName : ""}`;
 
-  const panValidate = (values) => {
+  const trimFullName = (strOne, strTwo)=>{
+      let fullStr = isNull(strOne) ? "" : strOne
+      fullStr += isNull(strTwo) ? "" : strTwo
+      return fullStr
+  }
+
+  const panValidate = (values, key, setFieldValue) => {
+
     dispatch(
       panValidation({
         pan_number: values,
@@ -90,14 +91,24 @@ function BusinessDetails(props) {
         res.payload.status === true &&
         res.payload.valid === true
       ) {
+
+        const fullNameByPan = trimFullName(res?.payload?.first_name, res?.payload?.last_name)
+        // setFieldValue(key, fullNameByPan)
+        setLatestCompanyNameFromResp(fullNameByPan)
+        setBussinessPanFromGST(values)
+        setGstNumberByState("")
         toast.success(res?.payload?.message);
+        
       } else {
+        setFieldValue(key, "")
         toast.error(res?.payload?.message);
       }
     });
+    setRegisterWithGstState('false')
   };
 
-  const gstinValidate = (values) => {
+
+  const gstinValidate = (values, key, setFieldValue) => {
     dispatch(
       gstValidation({
         gst_number: values,
@@ -110,12 +121,23 @@ function BusinessDetails(props) {
         res.payload.status === true &&
         res.payload.valid === true
       ) {
+        const fullNameByAuthPan = trimFullName(res?.payload?.legal_name, "")
+        // console.log(key, fullNameByAuthPan)
+        // setFieldValue(key, fullNameByAuthPan)
+        setLatestCompanyNameFromResp(fullNameByAuthPan)
+        setBussinessPanFromGST(res?.payload?.pan)
+        setGstNumberByState(values)
+
         toast.success(res?.payload?.message);
       } else {
+        setFieldValue(key, "")
+
         toast.error(res?.payload?.message);
       }
     });
+    setRegisterWithGstState('true')
   };
+
 
   const authValidation = (values) => {
     dispatch(
@@ -141,13 +163,20 @@ function BusinessDetails(props) {
     { "value": false, "key": "No" },
   ]
 
+  // get company name from GST and Business pan 
+  let companyNameFromResponse = ""
+  if(gstinData?.trade_name?.length > 3){
+    companyNameFromResponse = gstinData?.trade_name
+  }else if(businessName?.length > 3){
+    companyNameFromResponse = businessName
+  }else{
+    companyNameFromResponse = KycList?.companyName
+  }
+
   const initialValues = {
-    company_name:
-      gstinData?.trade_name?.length > 2
-        ? gstinData?.trade_name
-        : KycList?.companyName,
+    company_name: latestCompanyNameFromResp,
     company_logo: "",
-    registerd_with_gst: KycList?.registerdWithGST.toString(),
+    registerd_with_gst: registerWithGstState,
 
     name_on_pancard: businessAuthName.length > 2 ? businessAuthName : KycList?.nameOnPanCard,
     pin_code: KycList?.merchant_address_details?.pin_code,
@@ -156,11 +185,12 @@ function BusinessDetails(props) {
     registered_business_address: KycList?.merchant_address_details?.address,
     operational_address: KycList?.merchant_address_details?.address,
 
-    gst_number: KycList?.gstNumber,
+    gst_number: gstNumberByState,
     prevGstNumber: KycList?.gstNumber,
 
-    pan_card: gstinData?.pan?.length > 2 ? gstinData?.pan : KycList?.panCard,
-    prev_pan_card: KycList?.panCard,
+    // pan_card: gstinData?.pan?.length > 2 ? gstinData?.pan : KycList?.panCard,
+    pan_card: bussinessPanFromGST,
+    prev_pan_card: bussinessPanFromGST?.length > 2 ? bussinessPanFromGST : KycList?.panCard,
 
     signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
     prevSignatoryPan: KycList?.signatoryPAN,
@@ -170,7 +200,9 @@ function BusinessDetails(props) {
     isAuthPANVerified: KycList?.signatoryPAN !== null ? "1" : "",
   };
 
-  console.log("initialValues",initialValues)
+  console.log("registerd_with_gst",initialValues.registerd_with_gst)
+
+  // console.log("initialValues",initialValues)
   const validationSchema = Yup.object({
     company_name: Yup.string().trim()
       .matches(Regex.alphaBetwithhyphon, RegexMsg.alphaBetwithhyphon)
@@ -256,10 +288,17 @@ function BusinessDetails(props) {
         setBusinessOverview(data);
       })
       .catch((err) => console.log(err));
+
+      // set initial value
+      setLatestCompanyNameFromResp(KycList?.companyName)
+      setBussinessPanFromGST(KycList?.panCard)
+      setRegisterWithGstState(KycList?.registerdWithGST?.toString())
+      setGstNumberByState(KycList?.gstNumber)
   }, []);
 
-  const checkInputIsValid = (err, val, setErr, setFieldTouched, key) => {
+  const   checkInputIsValid = async (err, val, setErr, setFieldTouched, key, setFieldValue = ()=>{console.log("default fn call")} ) => {
     const hasErr = err.hasOwnProperty(key);
+    // console.log("hasErr-"+key ,err.hasOwnProperty(key))
 
     const fieldVal = val[key];
     let isValidVal = true;
@@ -268,6 +307,7 @@ function BusinessDetails(props) {
       isValidVal = false;
       setFieldTouched(key, true);
     }
+    // console.log("isValidVal",isValidVal);
 
     if (hasErr) {
       if (val[key] === "") {
@@ -275,13 +315,14 @@ function BusinessDetails(props) {
       }
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "pan_card") {
-      authValidation(val[key]);
+      // console.log("check 2")
+      await panValidate(val[key], "company_name", setFieldValue);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "signatory_pan") {
-      authValidation(val[key]);
+      await authValidation(val[key]);
     }
     if (!hasErr && isValidVal && val[key] !== "" && key === "gst_number") {
-      gstinValidate(val[key]);
+      await gstinValidate(val[key], "company_name", setFieldValue);
     }
   };
 
@@ -290,7 +331,7 @@ function BusinessDetails(props) {
       setIsDisable(true);
       const bodyFormData = new FormData();
       bodyFormData.append("company_name", values.company_name);
-      bodyFormData.append("registerd_with_gst", values.registerd_with_gst);
+      bodyFormData.append("registerd_with_gst", JSON.parse(values.registerd_with_gst));
       bodyFormData.append("gst_number", values.gst_number);
       bodyFormData.append("pan_card", values.pan_card);
       bodyFormData.append("signatory_pan", values.signatory_pan);
@@ -310,7 +351,7 @@ function BusinessDetails(props) {
         "registered_business_address",
         values.registered_business_address
       );
-      bodyFormData.append("files", fieldValue);
+      bodyFormData.append("files", "");
       bodyFormData.append("modified_by", loginId);
       bodyFormData.append("login_id", loginId);
 
@@ -334,6 +375,13 @@ function BusinessDetails(props) {
     }
   };
 
+  const enableVerifiedIconByParam = (key, formVal)=>{
+    let status = false;
+    console.log(formVal)
+
+
+  }
+
   return (
     <div className="col-sm-12 col-md-6 col-lg-12 col-md-offset-4">
       <Formik
@@ -349,10 +397,10 @@ function BusinessDetails(props) {
           errors,
           setFieldError,
           setFieldTouched,
-          handleChange,
+          change
         }) => (
           <Form>
-            {console.log("initialValues", initialValues)}
+            {console.log("values", values)}
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6 marg-b">
                 <div className="input-group">
@@ -363,6 +411,12 @@ function BusinessDetails(props) {
                       name="registerd_with_gst"
                       options={radioBtnOptions}
                       className="form-check-input"
+                      onChange={(e)=>{
+                        setFieldValue("registerd_with_gst",e.target.value)
+                        setFieldValue("pan_card","")
+                        setFieldValue("company_name","")
+                        setFieldValue("gst_number","")
+                      }}
                       label="Do you have a GST Number ?"
                     />
 
@@ -370,8 +424,10 @@ function BusinessDetails(props) {
                 </div>
               </div>
               {/* if merchant has GST number */}
-              {console.log("values?.registerd_with_gst",values?.registerd_with_gst)}
-              {values?.registerd_with_gst == "true" && <div className="col-sm-12 col-md-6 col-lg-6 marg-b">
+              {/* {console.log("values?.registerd_with_gst",typeof(values?.registerd_with_gst))}
+              {values?.registerd_with_gst == 'true' ? console.log("okay tested") : console.log("failed") } */}
+              {values?.registerd_with_gst == "true" ?
+              <div className="col-sm-12 col-md-6 col-lg-6 marg-b">
                 <label className="col-form-label mt-0 p-2">
                   GSTIN<span style={{ color: "red" }}>*</span>
                 </label>
@@ -383,6 +439,7 @@ function BusinessDetails(props) {
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                     readOnly={readOnly}
                   />
+         
                   {KycList?.gstNumber !== null &&
                     !errors.hasOwnProperty("gst_number") &&
                     !errors.hasOwnProperty("prevGstNumber") ? (
@@ -401,7 +458,8 @@ function BusinessDetails(props) {
                             values,
                             setFieldError,
                             setFieldTouched,
-                            "gst_number"
+                            "gst_number",
+                            setFieldValue
                           );
                         }}
                       >
@@ -425,7 +483,13 @@ function BusinessDetails(props) {
                     {errors?.prevGstNumber}
                   </span>
                 )}
-              </div>}
+              </div> :
+              <div className="col-sm-12 col-md-6 col-lg-6 marg-b">
+              <div className="input-group">
+                <a className="btn btn-sm btn-primary" href="#">Download GST Declaration Format </a>
+              </div>
+              </div>
+              }
             </div>
 
             
@@ -441,14 +505,22 @@ function BusinessDetails(props) {
                   type="text"
                   name="pan_card"
                   className="form-control"
-                  dataRel={values?.registerd_with_gst}
                   readOnly={values?.registerd_with_gst === 'true' ? true : false}
                 />
-                  {values?.registerd_with_gst==='true' &&   <span className="success input-group-append">
+                {/* {console.log(values?.pan_card !== null &&
+                    !errors.hasOwnProperty("pan_card") &&
+                    !errors.hasOwnProperty("prev_pan_card") &&
+                    (values?.pan_card===values?.prev_pan_card)
+                    )} */}
+                  {(values?.pan_card !== null &&
+                    !errors.hasOwnProperty("pan_card") &&
+                    !errors.hasOwnProperty("prev_pan_card") &&
+                    (values?.pan_card===values?.prev_pan_card) &&
+                    (values?.registerd_with_gst === 'true' && values?.gst_number!=="")
+                    ) ?   <span className="success input-group-append">
                       <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
-                  </span> }
-                  
-                  {values?.registerd_with_gst==='false' &&  <div className="position-sticky pull-right- otpbtn input-group-append">
+                  </span> 
+                  :  <div className="position-sticky pull-right- otpbtn input-group-append">
                       <a
                         href={() => false}
                         className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary mb-0"
@@ -458,7 +530,8 @@ function BusinessDetails(props) {
                             values,
                             setFieldError,
                             setFieldTouched,
-                            "pan_card"
+                            "pan_card",
+                            setFieldValue
                           );
                         }}
                       >
@@ -466,8 +539,8 @@ function BusinessDetails(props) {
                       </a>
                     </div> }
                 </div>
-
               </div>
+
 
               <div className="col-sm-12 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
@@ -529,7 +602,6 @@ function BusinessDetails(props) {
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
-                  {" "}
                   Business Name<span style={{ color: "red" }}>*</span>
                 </label>
                 <FormikController
