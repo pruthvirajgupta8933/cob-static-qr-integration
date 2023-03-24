@@ -287,7 +287,11 @@ const API_LIVE = {
   frequency:`${subAPIURL}/REST/GetCommonData/0/frequency`,
   mandateType:`${subAPIURL}/REST/GetCommonData/0/MandateType`,
   // Debit Report
-  filterDebitReport: `${subAPIURL}/npci/filterDebitReport`,
+  filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
+
+
+
+
 };
 
 
