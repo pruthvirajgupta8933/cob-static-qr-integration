@@ -1,79 +1,90 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { useDispatch, useSelector } from "react-redux";
-import { zoneDetail,zoneMaster,zoneEmployee,updateZoneData,getZoneInfo} from '../../slices/merchantZoneMappingSlice';
+import {
+  zoneDetail,
+  zoneMaster,
+  zoneEmployee,
+  updateZoneData,
+  getZoneInfo,
+} from "../../slices/merchantZoneMappingSlice";
 
 const initialValues = {
   zoneName: "",
   zoneHeadName: "",
   zoneEmployee: "",
-  risk_category: "0"
-}
+  risk_category: "0",
+};
 
 const validationSchema = Yup.object({
   zoneName: Yup.string().required("Required").nullable(),
   zoneHeadName: Yup.string().required("Required").nullable(),
-  zoneEmployee: Yup.string().required("Required").nullable()
-})
-
+  zoneEmployee: Yup.string().required("Required").nullable(),
+});
 
 const ViewZoneModal = (props) => {
-
   // console.log("props",props)
 
-  const [zone, setZone] = useState([])
-  const [zoneHead, setZoneHead] = useState([])
-  const [employee, setEmployee] = useState([])
+  const [zone, setZone] = useState([]);
+  const [zoneHead, setZoneHead] = useState([]);
+  const [employee, setEmployee] = useState([]);
   const [show, setShow] = useState(true);
-  const [zoneCode, setZoneCode] = useState("")
-  const [empCode, setEmpcode] = useState("")
-  const[zoneInfo,setZoneinfo]=useState([])
+  const [zoneCode, setZoneCode] = useState("");
+  const [empCode, setEmpcode] = useState("");
+  const [zoneInfo, setZoneinfo] = useState([]);
   const dispatch = useDispatch();
 
-
-
   useEffect(() => {
-    dispatch(zoneDetail()).then((resp) => {
-            const data = convertToFormikSelectJson("zoneCode", "zoneName", resp?.payload?.zones);
-             setZone(data)
-            })
-            .catch((err) => console.log(err));
+    dispatch(zoneDetail())
+      .then((resp) => {
+        const data = convertToFormikSelectJson(
+          "zoneCode",
+          "zoneName",
+          resp?.payload?.zones
+        );
+        setZone(data);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
-
   useEffect(() => {
-
     if (zoneCode !== "") {
       const postData = {
-        zoneCode: zoneCode
+        zoneCode: zoneCode,
       };
-     dispatch(zoneMaster(postData)).then((resp) => {
-          const data = convertToFormikSelectJson("empCode", "zoneHeadName", resp?.payload?.zone_master);
-          setZoneHead(data)
-        }).catch(() => {
-
+      dispatch(zoneMaster(postData))
+        .then((resp) => {
+          const data = convertToFormikSelectJson(
+            "empCode",
+            "zoneHeadName",
+            resp?.payload?.zone_master
+          );
+          setZoneHead(data);
         })
+        .catch(() => {});
     }
-
   }, [zoneCode]);
 
   useEffect(() => {
-
     if (empCode !== "") {
       const postData = {
-        ManagerId: empCode
+        ManagerId: empCode,
       };
-      dispatch(zoneEmployee(postData)).then((resp) => {
-          const data = convertToFormikSelectJson("empCode", "empName", resp?.payload?.zone_master);
+      dispatch(zoneEmployee(postData))
+        .then((resp) => {
+          const data = convertToFormikSelectJson(
+            "empCode",
+            "empName",
+            resp?.payload?.zone_master
+          );
 
-          setEmployee(data)
-        }).catch((err) => {
-
+          setEmployee(data);
         })
+        .catch((err) => {});
     }
   }, [empCode]);
 
@@ -81,57 +92,49 @@ const ViewZoneModal = (props) => {
     //  console.log("vlaues",values);
 
     const postData = {
-      "client_code": props?.userData?.clientCode,
-      "risk_category_code": values?.risk_category,
-      "zone_code": values?.zoneName,
-      "zone_head_emp_code": values?.zoneHeadName,
-      "emp_code": values?.zoneEmployee,
-
+      client_code: props?.userData?.clientCode,
+      risk_category_code: values?.risk_category,
+      zone_code: values?.zoneName,
+      zone_head_emp_code: values?.zoneHeadName,
+      emp_code: values?.zoneEmployee,
     };
-    dispatch(updateZoneData(postData)).then((resp) => {
+    dispatch(updateZoneData(postData))
+      .then((resp) => {
         toast.success(resp?.data?.message);
-        getZoneInfobyClientCode(props?.userData?.clientCode)
-        setShow(true)
-      }).catch(() => {
-
-
+        getZoneInfobyClientCode(props?.userData?.clientCode);
+        setShow(true);
       })
-  }
+      .catch(() => {});
+  };
 
-
-
-  useEffect(()=>{
-    if(props?.userData?.clientCode){
+  useEffect(() => {
+    if (props?.userData?.clientCode) {
       getZoneInfobyClientCode(props?.userData?.clientCode);
-
     }
-    
-  
-   },[props])
+  }, [props]);
 
-
-
-  const getZoneInfobyClientCode=(clientCode)=>{
+  const getZoneInfobyClientCode = (clientCode) => {
     const postData = {
-      client_code: clientCode
+      client_code: clientCode,
     };
-    
-      dispatch(getZoneInfo(postData)).then((resp) => {
-       
-        setZoneinfo(resp?.payload)
 
-       
-      }).catch(() => {
-
+    dispatch(getZoneInfo(postData))
+      .then((resp) => {
+        setZoneinfo(resp?.payload);
       })
-
-  }
-
+      .catch(() => {});
+  };
 
   return (
     <div>
-
-      <div className="modal fade mymodals" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div
+        className="modal fade mymodals"
+        id="exampleModalCenter"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <Formik
@@ -139,30 +142,39 @@ const ViewZoneModal = (props) => {
               validationSchema={validationSchema}
               // onSubmit={(values)=>handleSubmit(values)}
               onSubmit={(values, { resetForm }) => {
-                handleSubmit(values)
-                resetForm()
+                handleSubmit(values);
+                resetForm();
               }}
               enableReinitialize={true}
             >
               {(formik, resetForm) => (
-
                 <>
-
                   <div className="modal-header">
-                    <h5 className="modal-title bolding text-black" id="exampleModalLongTitle">Zone</h5>
+                    <h5
+                      className="modal-title bolding text-black"
+                      id="exampleModalLongTitle"
+                    >
+                      Zone
+                    </h5>
 
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close"  >
-                      <span aria-hidden="true">&times;
-                      </span>
+                    <button
+                      type="button"
+                      className="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div className="modal-body">
-                    <h5 className="font-weight-bold">Client Name: {props?.userData?.clientName}</h5>
-                    <h5 className="font-weight-bold">Client Code: {props?.userData?.clientCode}</h5>
+                    <h5 className="font-weight-bold">
+                      Client Name: {props?.userData?.clientName}
+                    </h5>
+                    <h5 className="font-weight-bold">
+                      Client Code: {props?.userData?.clientCode}
+                    </h5>
                     <div className="container">
-
                       <Form>
-
                         <div className="row">
                           <div className="col-lg-4">
                             <div className="input full- optional">
@@ -183,7 +195,6 @@ const ViewZoneModal = (props) => {
                                 setZoneCode(formik?.values?.zoneName)
                               )}
                             </div>
-
                           </div>
                           <div className="col-lg-4">
                             <div className="input full- optional">
@@ -198,84 +209,73 @@ const ViewZoneModal = (props) => {
                                 name="zoneHeadName"
                                 options={zoneHead}
                                 className="form-control"
-
                               />
                               {formik.handleChange(
                                 "zoneHeadName",
                                 setEmpcode(formik?.values?.zoneHeadName)
                               )}
-
                             </div>
                           </div>
-                         
-                          
-                            <div className="col-lg-4">
-                              <div className="input full- optional">
-                                <label
-                                  className="string optional"
-                                  htmlFor="zoneEmployee"
-                                >
-                                  Zone Employee
-                                </label>
-                                <FormikController
-                                  control="select"
-                                  name="zoneEmployee"
-                                  options={employee}
-                                  className="form-control"
 
-                                />
-
-                              </div>
+                          <div className="col-lg-4">
+                            <div className="input full- optional">
+                              <label
+                                className="string optional"
+                                htmlFor="zoneEmployee"
+                              >
+                                Zone Employee
+                              </label>
+                              <FormikController
+                                control="select"
+                                name="zoneEmployee"
+                                options={employee}
+                                className="form-control"
+                              />
                             </div>
                           </div>
+                        </div>
                         <div className="modal-footer">
                           {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
-                          <button type="subbmit" onClick={resetForm} className="btn btn-primary">Update Zone</button>
+                          <button
+                            type="subbmit"
+                            onClick={resetForm}
+                            className="btn btn-primary"
+                          >
+                            Update Zone
+                          </button>
                         </div>
                       </Form>
-
-
                     </div>
-
                   </div>
-
-
                 </>
               )}
-
             </Formik>
             {show === true ? (
-            <table className="table">
-            
-  <thead>
-    <tr>
-      
-      <th scope="col">Zone Name</th>
-      <th scope="col">Zone Head Name</th>
-      <th scope="col">Employee Name</th>
-      {/* <th scope="col">Risk Category</th> */}
-      </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>{zoneInfo?.zone_name}</td>
-      <td>{zoneInfo?.zone_head_name}</td>
-      <td>{zoneInfo?.employee_name}</td>
-    </tr>
-  </tbody>
-</table>
-  ) : (
-    <></>
-  )}
-
-
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Zone Name</th>
+                    <th scope="col">Zone Head Name</th>
+                    <th scope="col">Employee Name</th>
+                    {/* <th scope="col">Risk Category</th> */}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{zoneInfo?.zone_name}</td>
+                    <td>{zoneInfo?.zone_head_name}</td>
+                    <td>{zoneInfo?.employee_name}</td>
+                  </tr>
+                </tbody>
+              </table>
+            ) : (
+              <></>
+            )}
           </div>
-
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default ViewZoneModal
+export default ViewZoneModal;
