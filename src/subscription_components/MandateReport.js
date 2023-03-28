@@ -128,7 +128,7 @@ const MandateReport = () => {
         status: saveData?.status,
         fromDate: saveData?.fromDate,
         toDate: saveData?.endDate,
-        m_id: "23",
+        m_id: loginId,
         page: currentPage,
         size: pageSize,
       })
@@ -406,7 +406,7 @@ const MandateReport = () => {
         status: status,
         fromDate: fromDate,
         toDate: endDate,
-        m_id: "23",
+        m_id: loginId,
         page: currentPage,
         size: pageSize,
       };
