@@ -8,13 +8,14 @@ import { merchantZoneMappingReducer } from "./slices/merchantZoneMappingSlice";
 import { merchantListReducer } from "./slices/approverVerifierTabSlice";
 import { kycOperationReducer } from "./slices/kycOperationSlice";
 import { payoutReducer } from "./slices/payoutSlice";
-import  menuListReducer from "./slices/cob-dashboard/menulistSlice"
-import productCatalogueSlice  from "./slices/merchant-slice/productCatalogueSlice"
+import menuListReducer from "./slices/cob-dashboard/menulistSlice";
+import productCatalogueSlice from "./slices/merchant-slice/productCatalogueSlice";
 import { ReferralMidReducer } from "./slices/referralAndMidOperationSlice";
 import { challanReducer } from "./slices/backTobusinessSlice";
-import merchantReportSlice from "./slices/merchant-slice/reportSlice"; 
+import merchantReportSlice from "./slices/merchant-slice/reportSlice";
 import { reportsDataReducer } from "./slices/subscription-slice/registeredMandateSlice";
 import { DebitReportsDataReducer } from "./slices/subscription-slice/debitSlice";
+import { createMandateReducer } from "./slices/subscription-slice/createMandateSlice";
 
 const reducer = {
   auth: authReducer,
@@ -25,23 +26,22 @@ const reducer = {
   zone: merchantZoneMappingReducer,
   verifierApproverTab: merchantListReducer,
   kycOperationReducer: kycOperationReducer,
-  payout:payoutReducer,
-  menuListReducer:menuListReducer,
-  productCatalogueSlice:productCatalogueSlice,
-  ReferralMidReducer:ReferralMidReducer,
-  challanReducer:challanReducer,
-  merchantReportSlice:merchantReportSlice,
-  
+  payout: payoutReducer,
+  menuListReducer: menuListReducer,
+  productCatalogueSlice: productCatalogueSlice,
+  ReferralMidReducer: ReferralMidReducer,
+  challanReducer: challanReducer,
+  merchantReportSlice: merchantReportSlice,
+
   // For subscription
-  Reports : reportsDataReducer,
-  DebitReports : DebitReportsDataReducer,
-
+  Reports: reportsDataReducer,
+  DebitReports: DebitReportsDataReducer,
+  createMandate:createMandateReducer
 };
-
 
 const store = configureStore({
   reducer: reducer,
-  devTools: true
+  devTools: true,
 });
 
 export default store;

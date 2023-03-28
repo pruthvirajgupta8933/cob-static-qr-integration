@@ -138,7 +138,7 @@ function AssignZone() {
     },
     {
       id: "9",
-      name: "View Zone",
+      name: "Merchant Configuration",
       cell: (row) => (
         <div className="mt-3">
           <button
@@ -151,7 +151,7 @@ function AssignZone() {
             data-toggle="modal"
             data-target="#exampleModalCenter"
           >
-            Update Zone
+          Configuration
           </button>
         </div>
       )
@@ -169,7 +169,7 @@ function AssignZone() {
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Assign Zone</h1>
+            <h1 className="m-b-sm gx-float-left">Configuration</h1>
           </div>
           <div className="container-fluid flleft">
             <div className="col-lg-4 mrg-btm- bgcolor">

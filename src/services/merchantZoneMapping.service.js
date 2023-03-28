@@ -27,12 +27,26 @@ const  getZoneInfo = (postData) => {
   return axiosInstanceJWT.post(API_URL.GET_ZONE_INFO,postData)
    
 }
+
+const  getZoneEmployeName = () => {
+  return axiosInstanceJWT.get(API_URL.GET_EMPLOYEE_NAME)
+   
+}
+
+const getMccCodeMaster = () => {
+  return axiosInstanceJWT.get(API_URL.GET_MCC_MASTER_CODE)
+   
+}
+
+
   
   const zoneService = {
     zoneDetails,
     zoneMasters,
     zoneEmployee,
     updateZoneData,
-    getZoneInfo
+    getZoneInfo,
+    getZoneEmployeName,
+    getMccCodeMaster
   };
   export default zoneService;
