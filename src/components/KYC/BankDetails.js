@@ -84,6 +84,7 @@ function BankDetails(props) {
     isAccountNumberVerified: KycList?.accountNumber !== null ? "1" : "",
   };
 
+  console.log("initinaitla value s", initialValues.account_type)
 
   const validationSchema = Yup.object({
     account_holder_name: Yup.string()
@@ -437,6 +438,8 @@ function BankDetails(props) {
                 <label className="col-form-label mt-0 p-2">
                   Account Type<span style={{ color: "red" }}>*</span>
                 </label>
+                {console.log("this is paramenter ", selectedType)}
+
                 <FormikController
                   control="select"
                   name="account_type"

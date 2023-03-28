@@ -24,7 +24,8 @@ const validationSchema = Yup.object().shape({
         .matches(phoneRegExp, 'Phone number is not valid')
         .min(10, "to short")
         .max(10, "to long"),
-    email: Yup.string().email("Enter valid email").required("Required")
+    email: Yup.string().email("Enter valid email").required("Required"),
+    customer_type_id:Yup.string().required("Required")
 })
 
 const PayerDetails = () => {
@@ -216,7 +217,7 @@ const PayerDetails = () => {
                                     name: "",
                                     email: "",
                                     phone_number: "",
-                                    customer_type_id: 0
+                                    customer_type_id: "",
                                 }
                             }
                             validationSchema={validationSchema}
@@ -288,6 +289,16 @@ const PayerDetails = () => {
                                                             <option value={payer.id} key={i}>{payer.type?.toUpperCase()}</option>
                                                         ))}
                                                 </Field>
+                                                {
+                                          <ErrorMessage name="customer_type_id">
+                                            {(msg) => (
+                                              <p
+                                                className="abhitest">
+                                                {msg}
+                                              </p>
+                                            )}
+                                          </ErrorMessage>
+                                        }
                                             </div>
                                             <div className="modal-footer">
                                                 <button
