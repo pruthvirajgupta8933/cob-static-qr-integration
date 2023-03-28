@@ -110,6 +110,7 @@ class MandateForm extends Component {
   showBankDetails = (e,values) => {
     console.log(values,'kkk');
     const updatedData={...this.state.data,...values};
+    
   
     if (e == "showPersonalDetails") {
       this.setState({
