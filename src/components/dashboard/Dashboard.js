@@ -512,7 +512,7 @@ function Dashboard() {
         {/* Routing for subscription */}
         {/* ----------------------------------------------------------------------------------------------------|| */}
         <MerchantRoute exact path={`${path}/subscription/mandateReports`} Component={MandateReport}>
-          <SpPg />
+          <MandateReport/>
         </MerchantRoute>
         <MerchantRoute exact path={`${path}/subscription/debitReports`} Component={DebitReport}>
         <DebitReport />
