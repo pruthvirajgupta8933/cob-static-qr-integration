@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ProgressBar() {
+function ProgressBar({}) {
     return (
         <div className='col-lg-10 col-md-10 mrg-btm- bgcolor' >
             <div className="text-center">

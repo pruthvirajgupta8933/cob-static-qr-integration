@@ -22,6 +22,8 @@ const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
 
 // https://reportapi.sabpaisa.in/SabPaisaReport/REST/GetMerchantTxnHistoryN
 
+
+
 const API_LIVE = {
   BASE_URL_COB: url,
   //------------------------------------------------------------
@@ -287,6 +289,12 @@ const API_LIVE = {
   MANDATE_FREQUENCY: `${subAPIURL}/REST/GetCommonData/0/frequency`,
   MANDATE_CATEGORY: `${subAPIURL}/REST/GetCommonData/0/MandateCategory`,
   filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
+  frequency:`${subAPIURL}/REST/GetCommonData/0/frequency`,
+  mandateType:`${subAPIURL}/REST/GetCommonData/0/MandateType`,
+  requestType:`${subAPIURL}/REST/GetCommonData/0/RequestType`,
+  bankName:`${subAPIURL}/REST/GetCommonData/0/nb`,
+  mandateRegistration:`${subAPIURL}/mandateRegistration`,
+  filterMandateReport: `${subAPIURL}/npci/filterMandateReportCob`,
 
   // Debit Report
   filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,

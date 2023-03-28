@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
@@ -17,7 +17,6 @@ const validationSchema = Yup.object({
 
 
 const ViewZoneModal = (props) => {
-
   // console.log("props",props)
 
   const [riskCategoryCode, setRiskCategoryCode] = useState([])
@@ -148,7 +147,6 @@ useEffect(() => {
   useEffect(() => {
     if (props?.userData?.clientCode) {
       getZoneInfobyClientCode(props?.userData?.clientCode);
-
     }
 
 
@@ -159,7 +157,7 @@ useEffect(() => {
 
   const getZoneInfobyClientCode = (clientCode) => {
     const postData = {
-      client_code: clientCode
+      client_code: clientCode,
     };
      dispatch(getZoneInfo(postData)).then((resp) => {
      setZoneinfo(resp?.payload)
@@ -173,8 +171,14 @@ useEffect(() => {
 
   return (
     <div>
-
-      <div className="modal fade mymodals" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div
+        className="modal fade mymodals"
+        id="exampleModalCenter"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <Formik
@@ -187,24 +191,28 @@ useEffect(() => {
               enableReinitialize={true}
             >
               {(formik, resetForm) => (
-
                 <>
-
                   <div className="modal-header">
                     <h5 className="modal-title bolding text-black" id="exampleModalLongTitle">Merchant Configuration</h5>
 
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close"  >
-                      <span aria-hidden="true">&times;
-                      </span>
+                    <button
+                      type="button"
+                      className="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div className="modal-body">
-                    <h5 className="font-weight-bold">Client Name: {props?.userData?.clientName}</h5>
-                    <h5 className="font-weight-bold">Client Code: {props?.userData?.clientCode}</h5>
+                    <h5 className="font-weight-bold">
+                      Client Name: {props?.userData?.clientName}
+                    </h5>
+                    <h5 className="font-weight-bold">
+                      Client Code: {props?.userData?.clientCode}
+                    </h5>
                     <div className="container">
-
                       <Form>
-
                         <div className="row">
 
                           <div className="col-lg-4">
@@ -222,7 +230,6 @@ useEffect(() => {
                                 className="form-control"
                               // readOnly={true}
                               />
-
                             </div>
                           </div>
 
@@ -258,7 +265,6 @@ useEffect(() => {
                                 name="mccCode"
                                 options={mccCode}
                                 className="form-control"
-
                               />
 
                             </div>
@@ -275,16 +281,10 @@ useEffect(() => {
                            className="btn btn-primary" disabled={buttonDisable}>Submit</button>
                         </div>
                       </Form>
-
-
                     </div>
-
                   </div>
-
-
                 </>
               )}
-
             </Formik>
 
             <table className="table">
@@ -313,9 +313,8 @@ useEffect(() => {
  
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default ViewZoneModal
+export default ViewZoneModal;
