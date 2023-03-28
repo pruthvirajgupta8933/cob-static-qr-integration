@@ -20,9 +20,33 @@ const fetchMandateType = () => {
 };
 const fetchMandatePurpose = () => {
   return axiosInstance
-    .get(subAPIURL.mandateCategory)
+    .get(subAPIURL.MANDATE_CATEGORY)
     .then((response) => {
       return response;
+    })
+    .catch((err) => console.log(err));
+};
+const fetchrequestType = () => {
+  return axiosInstance
+    .get(subAPIURL.requestType)
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => console.log(err));
+};
+const fetchBankName = () => {
+  return axiosInstance
+    .get(subAPIURL.bankName)
+    .then((resp) => {
+      return resp;
+    })
+    .catch((err) => console.log(err));
+};
+const creatingMandate = (data) => {
+  return axiosInstance
+    .post(subAPIURL.mandateRegistration,data)
+    .then((resp) => {
+      return resp;
     })
     .catch((err) => console.log(err));
 };
@@ -31,4 +55,7 @@ export const createMandateService = {
   fetchFrequency,
   fetchMandateType,
   fetchMandatePurpose,
+  fetchrequestType,
+  fetchBankName,
+  creatingMandate
 };
