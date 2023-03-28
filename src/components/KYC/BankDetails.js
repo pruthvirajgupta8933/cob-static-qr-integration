@@ -438,7 +438,7 @@ function BankDetails(props) {
                 <label className="col-form-label mt-0 p-2">
                   Account Type<span style={{ color: "red" }}>*</span>
                 </label>
-                {console.log("this is paramenter ", selectedType)}
+                
 
                 <FormikController
                   control="select"
