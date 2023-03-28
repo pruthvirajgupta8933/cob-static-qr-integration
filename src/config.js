@@ -1,4 +1,4 @@
-const ENV_PROD = false; // don't change in the local environment
+const ENV_PROD = false; // For proudction make it true, don't change in the local environment
 let url, kyc_url, b2b_url, kyc_validate, payout_url = "";
 
 if (ENV_PROD) {
@@ -13,14 +13,14 @@ if (ENV_PROD) {
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in"
-
-
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
 
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
+
+// https://reportapi.sabpaisa.in/SabPaisaReport/REST/GetMerchantTxnHistoryN
 
 const API_LIVE = {
   BASE_URL_COB: url,
@@ -161,10 +161,10 @@ const API_LIVE = {
   /* For pending*/
   KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not-Filled&order_by=-id`,
   KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Pending&order_by=-id`,
-  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Rejected&order_by=-kyc_reject&search_map=kyc_reject`,
+  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Rejected&order_by=-kyc_reject`,
   KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?search=processing&order_by=-id`,
-  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=Verified&order_by=-verified_date&search_map=verified_date`,
-  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=Approved&order_by=-approved_date&search_map=approved_date`,
+  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=Verified&order_by=-verified_date`,
+  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=Approved&order_by=-approved_date`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
@@ -289,7 +289,7 @@ const API_LIVE = {
   filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
 
   // Debit Report
-  filterDebitReport: `${subAPIURL}/npci/filterDebitReport`,
+  filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
 
 
 

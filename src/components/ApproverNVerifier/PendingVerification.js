@@ -19,30 +19,36 @@ import CustomLoader from "../../_components/loader";
 function PendingVerification() {
   const roles = roleBasedAccess();
   const [data, setData] = useState([]);
+  function capitalizeFirstLetter(param) {
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
   const PendingVerificationData = [
-    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true, width:"86px" },
     { id: "2", name: "Client Code", selector: (row) => row.clientCode,
-    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div> },
+    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>, width:"130px" },
     { id: "3", name: "Company Name", selector: (row) => row.companyName,
-    cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div> },
+    cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,width:"300px" },
     {
       id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
       sortable: true,
-      cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA")}</div>,
+      width:"180px"
     },
     {
       id: "5",
       name: "Email",
       selector: (row) => row.emailId,
-      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>
+      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
+      width:"220px"
     },
     {
       id: "6",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
-      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>
+      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
+      width:"150px"
     },
     {
       id: "7",
@@ -52,8 +58,10 @@ function PendingVerification() {
     {
       id: "8",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
+      selector: (row) => row.signUpDate,
       sortable: true,
+      cell:(row)=><div>{covertDate(row.signUpDate)}</div>,
+      width:"150px"
     },
     {
       id: "9",

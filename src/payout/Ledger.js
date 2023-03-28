@@ -32,7 +32,6 @@ const PayoutLedger = (props) => {
 
   const TotalData = payoutState?.ledgerDetails?.count;
   const ledgerData = payoutState?.ledgerDetails?.results;
-  const transactionsCount = payoutState?.ledgerDetails?.count;
   const loadingState = useSelector((state) => state.payout.isLoading);
 
   const fetchledgerMerchants = () => {
@@ -69,43 +68,6 @@ const PayoutLedger = (props) => {
     fetchledgerMerchants();
   };
 
-  //Map the table data
-  const colData = () => {
-    return (
-      <>
-        {ledgerData == [] ? (
-          <td colSpan={"11"}>
-            {" "}
-            <div className="nodatafound text-center">No data found </div>
-          </td>
-        ) : (
-          ledgerData?.map((data, key) => (
-            <tr>
-              <td>{data.id}</td>
-              <td>{data.client_username}</td>
-              <td>{`₹ ${data.amount}.00`}</td>
-              <td>{data.type_status}</td>
-              <td>{data.trans_status}</td>
-              <td>{data.trans_type.toUpperCase()}</td>
-              <td>{makeFirstLetterCapital(data.trans_amount_type)}</td>
-              <td>{data.customer_ref_no}</td>
-              <td>{convertDate(data.trans_completed_time)}</td>
-              <td>{convertDate(data.trans_init_time)}</td>
-              <td>{`₹ ${data.charge}.00`}</td>
-              <td>{data.payment_mode}</td>
-              <td>{data.bene_account_name}</td>
-              <td>{data.bene_account_number}</td>
-              <td>{data.bene_ifsc}</td>
-              <td>{data.payout_trans_id}</td>
-              <td>{data.opening_balance}</td>
-              <td>{data.remarks}</td>
-              <td>{convertDate(data.created_at)}</td>
-            </tr>
-          ))
-        )}
-      </>
-    );
-  };
   //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
@@ -126,7 +88,6 @@ const PayoutLedger = (props) => {
             <h1 className="m-b-sm gx-float-left">Ledger</h1>
           </div>
 
-          {/* <LedgerCards /> */}
           <div className="container">
             <form onSubmit={handleSubmitDate}>
               <div className="row">
@@ -203,10 +164,10 @@ const PayoutLedger = (props) => {
                 {/* <div className="form-group col-lg-1 ml-3 mt-3 ">
                   <label></label>
                   <button
-                    className="btn btn-sm btn-primary"
-                    onClick={resetTable}
+                  className="btn btn-sm btn-primary"
+                  onClick={resetTable}
                   >
-                    Reset{" "}
+                  Reset{" "}
                   </button>s
                 </div> */}
               </div>
@@ -221,19 +182,20 @@ const PayoutLedger = (props) => {
               )}
             </div>
             <div>
+              <div className="d-flex">
+              <LedgerCards />
+                <p class="text-secondary">Transaction Count {TotalData}</p>
+              </div>
               {ledgerData?.length == 0 ? (
                 <h2 className="d-flex justify-content-center">No Data Found</h2>
               ) : (
-                <Table row={LedgerRowData} col={colData} />
-              )}
-            </div>
-            <div className="mt-2">
-              {ledgerData?.length > 0 && (
-                <Paginataion
+                <Table
+                  row={LedgerRowData}
                   dataCount={TotalData}
                   pageSize={pageSize}
                   currentPage={currentPage}
                   changeCurrentPage={changeCurrentPage}
+                  data={ledgerData}
                 />
               )}
             </div>

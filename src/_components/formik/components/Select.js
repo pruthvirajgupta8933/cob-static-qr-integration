@@ -1,17 +1,18 @@
 import React from "react"
 import { Field, ErrorMessage } from "formik"
+import "./index.css";
 
 function Select(props) {
   const { label, name, options,  ...rest } = props
-  
+
   return (
     <React.Fragment>
       {typeof(label)!=="undefined"?<label htmlFor={name}> {label}</label> : <></>}
-      <Field as="select" id={name} name={name} {...rest}>
+      <Field as="select" id={name} name={name} {...rest}  >
         {options.map((option,i) => {
           return (
-            <option key={i} value={option.key} dataKey={i}>
-              {option.value}
+            <option key={i} value={option.key} dataKey={i} disabled={option?.disabled} >
+             {option?.value}
             </option>
           )
         })}

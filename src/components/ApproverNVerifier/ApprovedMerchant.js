@@ -32,33 +32,43 @@ function ApprovedMerchant() {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
 
+  function capitalizeFirstLetter(param) {
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
+
+
 
   const ApprovedTableData = [
-    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true,width:"95px" },
     { id: "2", name: "Client Code", selector: (row) => row.clientCode,
-    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>
+    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,width:"130px"
   },
     { id: "3", name: "Company Name", selector: (row) => row.companyName, 
-    cell: (row) => <div className="removeWhiteSpace">{row?.companyName }</div>
+    cell: (row) => <div className="removeWhiteSpace">{row?.companyName }</div>,
+    width:"300px"
     
   },
     {
       id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
-      cell: (row) => <div className="removeWhiteSpace">{row?.name}</div>,
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA")}</div>,
       sortable: true,
+      width:"200px"
     },
     {
       id: "5",
       name: "Email",
       selector: (row) => row.emailId,
-      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>
+      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
+      width:"220px"
     },
     {
       id: "6",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
+      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
+      width:"150px"
     },
     {
       id: "7",
@@ -68,20 +78,26 @@ function ApprovedMerchant() {
     {
       id: "8",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
+      selector: (row) => row.signUpDate,
+      cell: (row) => covertDate(row.signUpDate),
       sortable: true,
+      width:"150px"
     },
     {
       id: "9",
       name: "Verified Date",
-      selector: (row) => covertDate(row?.verified_date ? row?.verified_date : "NA"),
+      selector: (row) => row?.verified_date,
+      cell: (row) => covertDate(row?.verified_date),
       sortable: true,
+      width:"150px"
     },
     {
       id: "10",
       name: "Approved Date",
-      selector: (row) => covertDate(row?.approved_date ? row?.approved_date : "NA"),
+      selector: (row) =>  row?.approved_date,
+      cell: (row) => covertDate(row?.approved_date),
       sortable: true,
+      width:"150px"
     },
     
     {
@@ -130,6 +146,34 @@ function ApprovedMerchant() {
                    Upload 
                 </button>
               ) : <></> }
+        </div>
+      ),
+    },
+    {
+      id: "14",
+      name: "Action",
+      selector: (row) => row.actionStatus,
+      cell: (row) => (
+        <div>
+          {roles?.verifier === true ||
+          roles?.approver === true ||
+          roles?.viewer === true ? (
+            <button
+              type="button"
+              className="approve text-white"
+              data-toggle="modal"
+              onClick={() => {
+                setCommentId(row);
+                setOpenCommentModal(true);
+              }}
+              data-target="#exampleModal"
+              disabled={row?.clientCode === null ? true : false}
+            >
+              Comments
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
       ),
     },

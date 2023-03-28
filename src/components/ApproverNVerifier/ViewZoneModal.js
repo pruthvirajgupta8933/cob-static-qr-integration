@@ -18,10 +18,12 @@ const validationSchema = Yup.object({
 
 const ViewZoneModal = (props) => {
 
+  // console.log("props",props)
 
   const [riskCategoryCode, setRiskCategoryCode] = useState([])
   const [employeeName, setEmployeeName] = useState([])
   const [mccCode, setMccCode] = useState([])
+  const[buttonDisable,setButtonDisable]=useState(false)
   // const [show, setShow] = useState(false)
 
   const [zoneInfo, setZoneinfo] = useState([])
@@ -106,6 +108,7 @@ useEffect(() => {
   
 
   const handleSubmit = (values, { resetForm }) => {
+    setButtonDisable(true)
     
     const postData = {
       "client_code": props?.userData?.clientCode,
@@ -121,11 +124,13 @@ useEffect(() => {
       if (resp.meta.requestStatus === "fulfilled") {
         toast.success(resp?.payload?.message)
         resetForm();
+        setButtonDisable(false)
         getZoneInfobyClientCode(props?.userData?.clientCode)
         // setShow(true)
 
       } else {
         toast.error(resp?.payload?.message)
+        setButtonDisable(false)
       }
 
 
@@ -264,7 +269,10 @@ useEffect(() => {
                         </div>
                         <div className="modal-footer">
                           {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
-                          <button type="submit" onClick={resetForm} className="btn btn-primary">Submit</button>
+                          <button 
+                          type="submit"
+                           onClick={resetForm} 
+                           className="btn btn-primary" disabled={buttonDisable}>Submit</button>
                         </div>
                       </Form>
 

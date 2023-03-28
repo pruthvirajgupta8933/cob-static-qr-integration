@@ -70,8 +70,9 @@ import { generateWord } from "../../utilities/generateClientCode";
 import TransactionHistoryDoitc from "./AllPages/reports/TransactionHistoryDoitc";
 import SettlementReportDoitc from "./AllPages/reports/SettlementReportDoitc";
 import MandateReport from "../../subscription_components/MandateReport";
-import DebitReports from "../../subscription_components/DebitReports";
-import BizzAppData from '../ApproverNVerifier/BizzData'
+import BizzAppData from '../ApproverNVerifier/BizzData';
+import CreateMandate from "../../subscription_components/Create_Mandate/index";
+import DebitReport from "../../subscription_components/DebitReport";
 
 function Dashboard() {
   let history = useHistory();
@@ -80,6 +81,8 @@ function Dashboard() {
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
   const location = useLocation();
+
+  // console.log(roles)
 
   // create new client code
   useEffect(() => {
@@ -511,10 +514,12 @@ function Dashboard() {
         <MerchantRoute exact path={`${path}/subscription/mandateReports`} Component={MandateReport}>
           <SpPg />
         </MerchantRoute>
-        <MerchantRoute exact path={`${path}/subscription/debitReports`} Component={DebitReports}>
+        <MerchantRoute exact path={`${path}/subscription/debitReports`} Component={DebitReport}>
+        <DebitReport />
+        </MerchantRoute>
+        <MerchantRoute exact path={`${path}/subscription/mandate_registration`} Component={CreateMandate}>
           <SpPg />
         </MerchantRoute>
-
 
         {/* -----------------------------------------------------------------------------------------------------|| */}
 
@@ -572,11 +577,11 @@ function Dashboard() {
         </VerifierRoute> : roles?.approver === true ?
           <ApproverRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
             < BizzAppData />
-          </ApproverRoute> :
-          <></>}
-
-       
-
+          </ApproverRoute> : roles.viewer === true && (
+            
+           <ViewerRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
+             < BizzAppData />
+           </ViewerRoute> )}
         <Route path={`${path}/*`} component={UrlNotFound} >
           <UrlNotFound />
         </Route>

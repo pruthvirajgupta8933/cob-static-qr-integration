@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-
 import { toast, Zoom } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../../../config";
@@ -19,10 +17,6 @@ export const Edituser = (props) => {
   let history = useHistory();
   const { myname, email, phone, editCustomerTypeId, id } = props.items;
   const callBackFn = props.callBackFn;
-  // const [username, setUsername] = useState(myname);
-  // const [useremail, setUserEmail] = useState(email);
-  // const [usercustomer, setUserCustomer] = useState(editCustomerTypeId);
-  // const [userphone, setUserPhone] = useState(phone);
 
   const initialValues = {
     name: myname,
@@ -102,7 +96,8 @@ export const Edituser = (props) => {
     getDrop();
   }, []);
 
-  // console.log("username", username);
+
+console.log("props.modalToggle", props.modalToggle)
 
   //modal body and modal footer need to send in custom modal as a props.
   const modalBody = () => {
@@ -156,7 +151,7 @@ export const Edituser = (props) => {
                 <button
                   type="button"
                   className="ColrsforDeletefigma ml-2 text-white "
-                  data-dismiss="modal"
+                  onClick={()=>props.fnSetModalToggle(false)}
                 >
                   Cancel
                 </button>
@@ -170,7 +165,7 @@ export const Edituser = (props) => {
 
   return (
     <>
-      <CustomModal headerTitle={"Edit"} modalBody={modalBody} />
+      <CustomModal headerTitle={"Edit"} modalBody={modalBody} modalToggle={props.modalToggle} fnSetModalToggle={props.fnSetModalToggle} />
     </>
   );
 };

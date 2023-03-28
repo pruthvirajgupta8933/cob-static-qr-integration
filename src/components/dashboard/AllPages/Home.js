@@ -39,17 +39,11 @@ function Home() {
   const { auth, kyc, productCatalogueSlice } = useSelector((state) => state);
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
   const { user } = auth;
-  let businessCat = user.clientMerchantDetailsList[0].business_cat_code
 
   const {SubscribedPlanData} = productCatalogueSlice
 
   useEffect(() => {
-    dispatch(subscriptionplan);
-    dispatch(
-      GetKycTabsStatus({
-        login_id: user?.loginId,
-      })
-    )
+      GetKycTabsStatus({login_id: user?.loginId})
   }, [user]);
 
   useEffect(() => {
@@ -93,12 +87,14 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
+
         {/* hide when login by bank and businees category b2b */}
         {(roles?.bank === true || roles?.b2b === true) ? (
           <></>
         ) : (
           <StepProgressBar status={kyc?.kycUserList?.status} />
         )}
+
         {/* KYC ALETT */}
         {roles?.merchant === true ?
           <React.Fragment>

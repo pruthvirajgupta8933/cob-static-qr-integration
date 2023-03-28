@@ -154,6 +154,11 @@ function RateMapping() {
     },
   ];
 
+
+  function capitalizeFirstLetter(param) {
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
+
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("MM/DD/YYYY");
     return date;
@@ -163,18 +168,20 @@ function RateMapping() {
 
 
   const AssignZoneData = [
-    { id: "1", name: "S. No.", selector: (row) => row.sno, sortable:true },
-    { id: "2", name: "Client Code", selector: (row) => row.clientCode },
-    { id: "3", name: "Merchant Name", selector: (row) => row.name , sortable:true},
+    { id: "1", name: "S.No", selector: (row) => row.sno, sortable:true,width:"95px" },
+    { id: "2", name: "Client Code", selector: (row) => row.clientCode ,width:"130px" },
+    { id: "3", name: "Merchant Name", selector: (row) => capitalizeFirstLetter(row?.name ? row?.name : "NA") , sortable:true, width:"200px"},
     {
       id: "4",
       name: "Email",
-      selector: (row) => row.emailId
+      selector: (row) => row.emailId,
+      width:"220px"
     },
     {
       id: "5",
       name: "Contact Number",
-      selector: (row) => row.contactNumber
+      selector: (row) => row.contactNumber,
+      width:"150px"
     },
     {
       id: "6",
@@ -184,8 +191,10 @@ function RateMapping() {
     {
       id: "7",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
-      sortable:true
+      selector: (row) => row.signUpDate,
+      cell: (row) => covertDate(row.signUpDate),
+      sortable:true,
+      width:"150px"
     },
     {
       id: "8",

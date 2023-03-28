@@ -1,5 +1,10 @@
 {
   "projects": {
-    "default": "cob-nf-dev"
-  }
+    "default": "cob-staging",
+    "cob-prod": "cob-staging",
+    "cob-production": "cob-staging",
+    "cob-staging": "cob-staging"
+  },
+  "targets": {},
+  "etags": {}
 }

@@ -1,0 +1,13 @@
+.dot {
+  padding: 2px;
+  width: 20px;
+  border-radius: 50%;
+  font-size: 12px;
+  text-align: center;
+}
+.dot-text {
+  margin-left: -10px;
+}
+.dot-text-last {
+  margin-left: 30px;
+}
