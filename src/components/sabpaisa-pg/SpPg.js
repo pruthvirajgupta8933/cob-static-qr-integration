@@ -8,6 +8,8 @@ import { createClientTxnId } from '../../services/merchant-service/prouduct-cata
 import { toast } from "react-toastify";
 import { Link, useParams } from 'react-router-dom'
 import {  isNull } from 'lodash'
+import payment_default_gif from "../../assets/images/image_processing20201113-8803-s9v2bo.gif"
+import payment_response_gif from "../../assets/images/image_processing20210906-19522-9n3ter.gif"
 
 function SpPg() {
 
@@ -126,6 +128,10 @@ function SpPg() {
                         <section className="features8 cid-sg6XYTl25a" id="features08-3-">
                             <div className="container">
                                 <div className="row">
+                                <div className="col-lg-6">
+                                    <img src={reponseFromServerFlag ? payment_default_gif: payment_response_gif} alt="payment" />
+                                </div>
+                                <div className="col-lg-6">
                                     <div className="card">
                                         <div className="card-header">
                                         </div>
@@ -153,7 +159,7 @@ function SpPg() {
                                         }
 
                                     </div>
-
+                                </div>
                                 </div>
                             </div>
                         </section>
