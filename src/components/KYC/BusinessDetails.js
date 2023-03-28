@@ -51,7 +51,7 @@ function BusinessDetails(props) {
   const [latestCompanyNameFromResp, setLatestCompanyNameFromResp] = useState("")
   const [bussinessPanFromGST, setBussinessPanFromGST] = useState("")
   const [gstNumberByState, setGstNumberByState] = useState("")
-  const [registerWithGstState, setRegisterWithGstState] = useState(false)
+  const [registerWithGstState, setRegisterWithGstState] = useState('true')
 
 
 
@@ -293,7 +293,7 @@ function BusinessDetails(props) {
       // set initial value
       setLatestCompanyNameFromResp(KycList?.companyName)
       setBussinessPanFromGST(KycList?.panCard)
-      setRegisterWithGstState(KycList?.registerdWithGST?.toString())
+      setRegisterWithGstState(KycList?.registerdWithGST?.toString() ?? 'true')
       setGstNumberByState(KycList?.gstNumber)
   }, []);
 
@@ -442,8 +442,8 @@ function BusinessDetails(props) {
                     readOnly={readOnly}
                   />
          
-                  {values?.gstNumber !== null &&
-                    values?.gstNumber !== "" &&
+                  {values?.gst_number !== null &&
+                    values?.gst_number !== "" &&
                     !errors.hasOwnProperty("gst_number") &&
                     !errors.hasOwnProperty("prevGstNumber") ? (
                     <span className="success input-group-append">
@@ -568,8 +568,8 @@ function BusinessDetails(props) {
                     disabled={VerifyKycStatus === "Verified" ? true : false}
                     readOnly={readOnly}
                   />
-
-                  {values?.signatoryPAN !== null &&
+                  {values?.signatory_pan !== null &&
+                    values?.signatory_pan !== "" &&
                     !errors.hasOwnProperty("signatory_pan") &&
                     !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">

@@ -272,7 +272,7 @@ function ContactInfo(props) {
                   type="text"
                   name="aadhar_number"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
-                  className="form-control"
+                  className="form-control maskedInput"
                   readOnly={readOnly}
                 />
               </div>

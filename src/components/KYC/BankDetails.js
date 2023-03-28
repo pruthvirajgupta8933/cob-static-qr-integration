@@ -310,7 +310,7 @@ function BankDetails(props) {
                   }
 
                   {/* if found any error in validation */}
-                  {(values?.ifscCode !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) &&
+                  {(values?.ifsc_code !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) &&
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -359,7 +359,7 @@ function BankDetails(props) {
                   />
 
                   {/* if both values are same then display verified icon */}
-                  {(values?.ifscCode !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) && <span className="success input-group-append">
+                  {(values?.account_number !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) && <span className="success input-group-append">
                     <img
                       src={gotVerified}
                       alt=""
