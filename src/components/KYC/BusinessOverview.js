@@ -349,7 +349,7 @@ function BusinessOverview(props) {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-12">
                 <label className="col-form-label p-2 mt-0">
-                  Business Discription <span style={{ color: "red" }}>*</span>
+                  Business Description <span style={{ color: "red" }}>*</span>
                 </label>
 
                 <FormikController
