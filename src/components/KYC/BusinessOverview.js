@@ -134,7 +134,7 @@ function BusinessOverview(props) {
         .matches(Regex.digit, RegexMsg.digit)
         .min(1,"Please enter more than 1 character")
         .max(19,"Please do not enter more then 19 characters")
-        .test("IntergerRequired", "Invalid Value 0", (val) => {
+        .test("IntergerRequired", "Value should be more then 1", (val) => {
           return val > 0
           })
         .required("Required")
