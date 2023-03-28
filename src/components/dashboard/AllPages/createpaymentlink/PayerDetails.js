@@ -294,7 +294,7 @@ const PayerDetails = () => {
                                           <ErrorMessage name="customer_type_id">
                                             {(msg) => (
                                               <p
-                                                className="abhitest">
+                                                className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>
                                                 {msg}
                                               </p>
                                             )}

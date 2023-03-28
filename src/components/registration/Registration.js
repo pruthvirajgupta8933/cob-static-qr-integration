@@ -615,7 +615,7 @@ function Registration() {
                                         }
                                         data-rel={btnDisable}
                                       >
-                                        Signup
+                                        Sign up
                                       </button>
 
                                       <span className="simform__actions-sidetext"></span>
