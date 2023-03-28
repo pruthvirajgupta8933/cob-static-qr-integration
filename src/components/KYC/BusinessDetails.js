@@ -172,6 +172,7 @@ function BusinessDetails(props) {
   }else{
     companyNameFromResponse = KycList?.companyName
   }
+  console.log("gstNumberByState",gstNumberByState)
 
   const initialValues = {
     company_name: latestCompanyNameFromResp,
@@ -186,18 +187,18 @@ function BusinessDetails(props) {
     operational_address: KycList?.merchant_address_details?.address,
 
     gst_number: gstNumberByState,
-    prevGstNumber: KycList?.gstNumber,
+    prevGstNumber: gstNumberByState==="" ? gstNumberByState : gstNumberByState?.length > 2 ? gstNumberByState : KycList?.gstNumber,
 
     // pan_card: gstinData?.pan?.length > 2 ? gstinData?.pan : KycList?.panCard,
     pan_card: bussinessPanFromGST,
-    prev_pan_card: bussinessPanFromGST?.length > 2 ? bussinessPanFromGST : KycList?.panCard,
+    prev_pan_card: bussinessPanFromGST==="" ? bussinessPanFromGST : bussinessPanFromGST?.length > 2 ? bussinessPanFromGST : KycList?.panCard,
 
     signatory_pan: KycList?.signatoryPAN === null ? "" : KycList?.signatoryPAN,
     prevSignatoryPan: KycList?.signatoryPAN,
 
-    isGSTINVerified: KycList?.gstNumber !== null ? "1" : "",
-    isPANVerified: KycList?.panCard !== null ? "1" : "",
-    isAuthPANVerified: KycList?.signatoryPAN !== null ? "1" : "",
+    // isGSTINVerified: KycList?.gstNumber !== null ? "1" : "",
+    // isPANVerified: KycList?.panCard !== null ? "1" : "",
+    // isAuthPANVerified: KycList?.signatoryPAN !== null ? "1" : "",
   };
 
   console.log("registerd_with_gst",initialValues.registerd_with_gst)
@@ -413,9 +414,10 @@ function BusinessDetails(props) {
                       className="form-check-input"
                       onChange={(e)=>{
                         setFieldValue("registerd_with_gst",e.target.value)
-                        setFieldValue("pan_card","")
                         setFieldValue("company_name","")
-                        setFieldValue("gst_number","")
+                        setFieldValue("pan_card","")                        
+                        setFieldValue("prev_pan_card","")                        
+                        setFieldValue("prevGstNumber","")
                       }}
                       label="Do you have a GST Number ?"
                     />
@@ -440,10 +442,10 @@ function BusinessDetails(props) {
                     readOnly={readOnly}
                   />
          
-                  {KycList?.gstNumber !== null &&
+                  {values?.gstNumber !== null &&
+                    values?.gstNumber !== "" &&
                     !errors.hasOwnProperty("gst_number") &&
                     !errors.hasOwnProperty("prevGstNumber") ? (
-
                     <span className="success input-group-append">
                       <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                     </span>
@@ -486,7 +488,7 @@ function BusinessDetails(props) {
               </div> :
               <div className="col-sm-12 col-md-6 col-lg-6 marg-b">
               <div className="input-group">
-                <a className="btn btn-sm btn-primary" href="#">Download GST Declaration Format </a>
+                <a className="btn btn-sm btn-primary" href="https://sp2-partner.sabpaisa.in/SRS+GST+Declaration.pdf" target="_blank"  rel="noreferrer" alt="GST Declaration Form">Download GST Declaration Format </a>
               </div>
               </div>
               }
@@ -500,24 +502,22 @@ function BusinessDetails(props) {
                   Business PAN <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
-                <FormikController
-                  control="input"
-                  type="text"
-                  name="pan_card"
-                  className="form-control"
-                  readOnly={values?.registerd_with_gst === 'true' ? true : false}
-                />
-                {/* {console.log(values?.pan_card !== null &&
-                    !errors.hasOwnProperty("pan_card") &&
-                    !errors.hasOwnProperty("prev_pan_card") &&
-                    (values?.pan_card===values?.prev_pan_card)
-                    )} */}
+                <Field
+                    type="text"
+                    name="pan_card"
+                    className="form-control"
+                    disabled={VerifyKycStatus === "Verified" ? true : false}
+                    readOnly={values?.registerd_with_gst === 'true' ? true : false}
+                  />
+
                   {(values?.pan_card !== null &&
+                    values?.pan_card !== "" &&
                     !errors.hasOwnProperty("pan_card") &&
                     !errors.hasOwnProperty("prev_pan_card") &&
                     (values?.pan_card===values?.prev_pan_card) &&
-                    (values?.registerd_with_gst === 'true' && values?.gst_number!=="")
-                    ) ?   <span className="success input-group-append">
+                    {/* (values?.registerd_with_gst === 'true' && values?.gst_number!=="") */}
+                    ) ?  
+                    <span className="success input-group-append">
                       <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                   </span> 
                   :  <div className="position-sticky pull-right- otpbtn input-group-append">
@@ -539,6 +539,19 @@ function BusinessDetails(props) {
                       </a>
                     </div> }
                 </div>
+                {errors?.pan_card && (
+                  <p className="notVerifiedtext- text-danger mb-0">
+                    {errors?.pan_card}
+                  </p>
+                )}
+
+                {errors?.prev_pan_card && (
+                  <p className="notVerifiedtext- text-danger mb-0">
+                    {errors?.prev_pan_card}
+                  </p>
+                )}
+
+                
               </div>
 
 
@@ -556,7 +569,7 @@ function BusinessDetails(props) {
                     readOnly={readOnly}
                   />
 
-                  {KycList?.signatoryPAN !== null &&
+                  {values?.signatoryPAN !== null &&
                     !errors.hasOwnProperty("signatory_pan") &&
                     !errors.hasOwnProperty("prevSignatoryPan") ? (
                     <span className="success input-group-append">
