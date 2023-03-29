@@ -155,7 +155,7 @@ function LoginPage() {
                                         className="string optional loginFontForLabel NunitoSans-Regular"
                                         htmlFor="user-name"
                                       >
-                                        User Name
+                                        User name
                                       </label>
                                       <Field
                                         className="string optional NunitoSans-Regular"

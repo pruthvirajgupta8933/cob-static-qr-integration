@@ -135,7 +135,7 @@ const ViewReferZoneModal = (props) => {
                                 checked=""
                                 name="sourcing_point"
                                 options={referingMode}
-                                className="form-check-input"
+                                className="form-control pull-left mr-2"
                                 placeholder="Enter Source Code"
                               />
                             </div>

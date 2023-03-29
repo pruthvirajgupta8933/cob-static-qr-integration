@@ -44,7 +44,7 @@ const fetchBankName = () => {
 };
 const creatingMandate = (data) => {
   return axiosInstance
-    .post(subAPIURL.mandateRegistration, data)
+    .post(subAPIURL.mandateRegistration,data)
     .then((resp) => {
       return resp;
     })
@@ -57,5 +57,5 @@ export const createMandateService = {
   fetchMandatePurpose,
   fetchrequestType,
   fetchBankName,
-  creatingMandate,
+  creatingMandate
 };

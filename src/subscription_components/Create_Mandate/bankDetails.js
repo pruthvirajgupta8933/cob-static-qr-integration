@@ -1,16 +1,25 @@
-import React from "react";
+import React , {useState} from "react";
 import { Formik, Form } from "formik";
 import FormikController from "../../_components/formik/FormikController";
 import * as Yup from "yup";
+import { bankAccountVerification } from "../../slices/kycSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => {
+
+  const dispatch = useDispatch();
+
+  const [verifiedStatus,setVerifiedStatus] = useState(false)
+  const [validStatus,setValidStatus] = useState(false)
+
   let authModeOptions = [
-    { key: "Select", value: "Select" },
+    { key: "Select", value: "" },
     { key: "Netbanking", value: "Netbanking" },
     { key: "Debit Card", value: "Debitcard" },
   ];
   let accuntTypeOptions = [
-    { key: "Select", value: "Select" },
+    { key: "Select", value: "" },
     { key: "Savings", value: "Savings" },
     { key: "Current", value: "Current" },
   ];
@@ -23,8 +32,40 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
     payerAccountType: Yup.string().required("Required"),
   });
   const handleSubmit = (values) => {
-    console.log(values);
-    showbankData(values);
+    console.log(values,"=====================>");
+    showbankData(values,validStatus,verifiedStatus);
+
+
+    dispatch(
+      bankAccountVerification({
+        account_number: values?.payerAccountNumber,
+        ifsc: values?.payerBankIfscCode,
+      })
+    ).then((res) => {
+      if (
+        res?.meta?.requestStatus === "fulfilled" &&
+        res?.payload?.status === true &&
+        res?.payload?.valid === true
+      ) {
+        toast.success(res?.payload?.message);
+        setValidStatus(true)
+        setVerifiedStatus(true)
+       
+      }if (
+        res?.meta?.requestStatus === "fulfilled" &&
+        res?.payload?.status === true &&
+        res?.payload?.valid === false
+      ) {
+        toast.error(res?.payload?.message)
+      }
+      else {
+        toast.error(res?.payload?.detail);
+      }
+    });
+
+
+
+
   };
   return (
     <div>

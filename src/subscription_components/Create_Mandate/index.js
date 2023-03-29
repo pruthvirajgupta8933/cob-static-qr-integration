@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component ,useState} from "react";
 import NavBar from "../../components/dashboard/NavBar/NavBar";
 import FormikController from "../../_components/formik/FormikController";
 import Progress from "../../_components/progress_bar/Progress";
@@ -12,11 +12,13 @@ import { createMandateService } from "../../services/subscription-service/create
 import PersonalDetails from "./personalDetails";
 import BankDetails from "./bankDetails";
 import * as Yup from "yup";
+import AuthMandate from "./Mandate_Submission/authMandate";
 
 let options1 = [
   { key: "Select", value: "Select" },
   { key: "Fixed", value: "Fixed" },
 ];
+
 const FORM_VALIDATION = Yup.object().shape({
   mandateType: Yup.string()
     // .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
@@ -29,7 +31,7 @@ const FORM_VALIDATION = Yup.object().shape({
   schemeReferenceNumber: Yup.string().required("Required"),
   consumerReferenceNumber: Yup.string().required("Required"),
   emiamount: Yup.string().required("Required"),
-  requestType:Yup.string().required("Required")
+  requestType: Yup.string().required("Required"),
 });
 
 class MandateForm extends Component {
@@ -43,9 +45,11 @@ class MandateForm extends Component {
       mandateScreen: true,
       personalScreen: false,
       bankScreen: false,
+      mandateSubmission: false,
       progressWidth: "0%",
+      progressBar: true,
       bankName: [],
-
+      updatedData:[]
     };
   }
 
@@ -99,33 +103,44 @@ class MandateForm extends Component {
       personalScreen: true,
       mandateScreen: false,
       progressWidth: "50%",
-      data:values
+      data: values,
+      progressBar:true
     });
-  
+
     console.log("running");
 
     // Do something with the form data
   };
 
-  showBankDetails = (e,values) => {
-    console.log(values,'kkk');
-    const updatedData={...this.state.data,...values};
-    
-  
+  showBankDetails = (e, values) => {
+    console.log(values, "kkk");
+    const updatedData = { ...this.state.data, ...values };
+
     if (e == "showPersonalDetails") {
       this.setState({
         personalScreen: false,
         bankScreen: true,
         progressWidth: "100%",
-        data:updatedData
+        data: updatedData,
+        progressBar:true
       });
     }
   };
-  showbankData=(val)=>
-  {
-    const updatedData={...this.state.data,...val};
-    console.log(updatedData,'updated')
-  }
+  showbankData = (val, validStatus, verifiedStatus) => {
+    const updatedData = { ...this.state.data, ...val };
+    if (verifiedStatus && validStatus) {
+      this.setState({
+        personalScreen: false,
+        bankScreen: false,
+        mandateSubmission: true,
+        mandateScreen: false,
+        progressBar:false,
+        updatedData:updatedData
+      });
+    }
+    console.log(updatedData, "updated");
+    console.log(validStatus, verifiedStatus, "state-------");
+  };
 
   backToPreviousScreen = (e) => {
     if (e == "personalScreen") {
@@ -134,6 +149,7 @@ class MandateForm extends Component {
         bankScreen: false,
         mandateScreen: false,
         progressWidth: "50%",
+        progressBar:true
       });
     } else if (e == "mandateScreen") {
       this.setState({
@@ -141,6 +157,7 @@ class MandateForm extends Component {
         bankScreen: false,
         mandateScreen: true,
         progressWidth: "0%",
+        progressBar:true
       });
     }
   };
@@ -173,15 +190,21 @@ class MandateForm extends Component {
       this.state.bankName
     );
     console.log(frequencyOptionsData);
+    
+    console.log(this.state.progressBar,"Progressb Bar Status")
     return (
       <>
         <section className="ant-layout">
           <div>
             <NavBar />
           </div>
+          {this.state.progressBar && (
           <div className="progress_bar_container">
+          
             <Progress progressWidth={this.state.progressWidth} />
-          </div>
+         
+          </div>  
+           )}     
           <div className="container">
             {this.state.personalScreen && (
               <PersonalDetails
@@ -196,6 +219,7 @@ class MandateForm extends Component {
                 showbankData={this.showbankData}
               />
             )}
+            {this.state.mandateSubmission && <AuthMandate  updatedData={this.state.updatedData}/> } 
             <div className="inner-container ">
               <Formik
                 initialValues={{
@@ -207,7 +231,7 @@ class MandateForm extends Component {
                   schemeReferenceNumber: "",
                   consumerReferenceNumber: "",
                   emiamount: "",
-                  requestType:""
+                  requestType: "",
                 }}
                 validationSchema={FORM_VALIDATION}
                 onSubmit={this.handleSubmit}

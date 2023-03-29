@@ -123,13 +123,13 @@ function KycForm() {
                       <h1 className="m-b-sm gx-float-left paymentHeader text-left">
                         KYC Form
                         <span>
-                          <h6 className="paymentSubHeader mr-2 mt-2 mb-1 border-bottom">
+                          <h6 className="paymentSubHeader mr-2 mt-2">
                             Complete KYC to start accepting payments
                           </h6>
                         </span>
                       </h1>
 
-                      <div className="card-body pt-0">
+                      <div className="card-body">
                         <div>
                           <ul>
                             <li className="nav-item p-2">

@@ -60,7 +60,7 @@ function DocumentsUpload(props) {
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
-  const documentListData = savedData?.filter((data)=>((data.status).toLowerCase())!=="rejected")?.map((data) => data?.type);
+  const documentListData = savedData?.map((data) => data?.type);
   const dropdownListData = docTypeList?.map((data) => data?.key);
   const alreadyUploadedData = dropdownListData?.filter((elem) =>
     documentListData?.includes(elem?.toString())
@@ -71,7 +71,6 @@ function DocumentsUpload(props) {
     }
     return obj;
   });
-  console.log(savedData)
   function readURL(input, id) {
     if (input?.files && input?.files[0]) {
       let reader = new FileReader();
@@ -117,7 +116,6 @@ function DocumentsUpload(props) {
       required.push(val);
     }
   });
-
 
   const isrequired = savedData?.map((r) => r.type);
   // const myFilter = (elm) => {

@@ -55,7 +55,7 @@ const RateRadioMapping = (props) => {
                           <Form>
                            
                             <FormikController
-                              control="radio" // do not add extra class and css
+                              control="radio"
                               name="isChecked"
                               options={radiobutton}
                               className="form-control"

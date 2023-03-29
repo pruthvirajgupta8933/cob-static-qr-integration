@@ -75,7 +75,7 @@ const EnterUserID = (props) => {
                           className="form-control"
                           id="exampleInputEmail1"
                           aria-describedby="emailHelp"
-                          placeholder="Enter email address"
+                          placeholder="Enter email"
                         />
                         {
                           <ErrorMessage name="email">

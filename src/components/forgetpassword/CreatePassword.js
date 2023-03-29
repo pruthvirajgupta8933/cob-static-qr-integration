@@ -144,10 +144,10 @@ const CreatePassword = (props) => {
                             </div>
                           )}
                         </ErrorMessage>
-                        <label htmlFor="exampleInputPassword2">
-                         Confirm Password
-                        </label>
-                        <div className="input-group mt-1">
+                        {/* <label htmlFor="exampleInputPassword2">
+                          New Password
+                        </label> */}
+                        <div className="input-group mt-40">
                         <Field
                                         className="form-control"
                                         maxLength={255}
