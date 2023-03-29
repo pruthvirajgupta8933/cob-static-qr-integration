@@ -47,7 +47,7 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
         res?.payload?.status === true &&
         res?.payload?.valid === true
       ) {
-        toast.success(res?.payload?.message);
+        // toast.success(res?.payload?.message);
         setValidStatus(true)
         setVerifiedStatus(true)
        
