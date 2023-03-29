@@ -488,6 +488,9 @@ function BusinessDetails(props) {
               </div> :
               <div className="col-sm-12 col-md-6 col-lg-6 marg-b">
               <div className="input-group">
+              <label>
+              Kindly fill the donwloaded form and upload in the <strong>Upload Document</strong> Tab"
+              </label>
                 <a className="btn btn-sm btn-primary" href="https://sp2-partner.sabpaisa.in/SRS+GST+Declaration.pdf" target="_blank"  rel="noreferrer" alt="GST Declaration Form">Download GST Declaration Format </a>
               </div>
               </div>
