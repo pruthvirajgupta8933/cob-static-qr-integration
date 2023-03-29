@@ -127,7 +127,7 @@ function SpPg() {
                         </div>
                         <section className="features8 cid-sg6XYTl25a" id="features08-3-">
                             <div className="container">
-                                <div className="row">
+                            <div className="row">
                                 <div className="col-lg-6">
                                     <img src={reponseFromServerFlag ? payment_default_gif: payment_response_gif} alt="payment" />
                                 </div>
