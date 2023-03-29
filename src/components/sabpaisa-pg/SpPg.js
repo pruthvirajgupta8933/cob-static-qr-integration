@@ -149,9 +149,9 @@ function SpPg() {
                                             </div>
                                             :
                                             <div className="card-body">
-                                                <h5 className="card-title">Make payment to activate the selected plan.</h5>
-                                                <h5 className="card-title">Amount : {selectedPlan[0]?.actual_price} INR</h5>
-                                                <h5 className="card-title">Plan Name : {selectedPlan[0]?.plan_name}</h5>
+                                                <h3 className="card-title">Make payment to activate the selected plan.</h3>
+                                                <h4 className="card-title">Amount : {selectedPlan[0]?.actual_price} INR</h4>
+                                                <h4 className="card-title">Plan Name : {selectedPlan[0]?.plan_name}</h4>
                                                 {/* <h5 className="card-title">Amount : {selectedPlan[0]?.planPrice}</h5> */}
                                                 {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
                                                 <button onClick={() => { getClientTxnId(selectedPlan, auth?.user) }} className="btn btn-primary">Pay Now</button>

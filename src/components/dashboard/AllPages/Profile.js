@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 import NavBar from "../NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-
+import profileIllustration from "../../../assets/images/profile-illustration.png"
 
 
 export const Profile = () => {
@@ -191,10 +191,12 @@ export const Profile = () => {
             </h1>
 
 
-
-            <div className="panel panel-default">
+            <div className="row">
+            
+              <div className="col-lg-7">
+              <div className="panel panel-default">
               <form className="form-horizontal form_cmplt" onSubmit={handleSubmit(onSubmit)}>
-                <div className="panel-heading text-uppercase">User Details </div>
+                {/* <div className="panel-heading text-uppercase">User Details </div> */}
                 <ul className="list-group">
                   <li className="list-group-item">
                     <div className="col-lg-6">
@@ -235,7 +237,7 @@ export const Profile = () => {
 
                   </li>
                   {roleBasedShowTab.merchant ? <li className="list-group-item">
-                    <div className="col-lg-12 text-center">
+                    <div className="col-lg-6">
                       {/* <label><strong>Change Password</strong></label> -<br/> */}
                       <Link to={`/dashboard/change-password`}>
                         <button type="button" className="form-control btn btn-primary for_passwrd w-50" >
@@ -250,6 +252,14 @@ export const Profile = () => {
               </form>
 
             </div>
+              </div>
+
+              <div className="col-lg-5">
+                <img src={profileIllustration} alt="profile" />
+              </div>
+              
+            </div>
+         
 
             <div className="ant-tabs ant-tabs-top ant-tabs-line">
               <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>

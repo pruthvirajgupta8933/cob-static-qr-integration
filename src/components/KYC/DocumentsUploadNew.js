@@ -266,7 +266,7 @@ function DocumentsUpload(props) {
               <Form>
                 <div className="form-row">
                   <div className="col-sm-12 col-md-12 col-lg-12 mb-2">
-                    <label className=" col-form-label mt-0 p-2">
+                    <label className=" col-form-label mt-0">
                       Select Document Type
                       <span style={{ color: "red" }}>*</span>
                     </label>
@@ -410,7 +410,7 @@ function DocumentsUpload(props) {
                       {savedData?.length > 0 ? (
                         <div className="container">
                           <div className="row">
-                            <div className="col-sm">
+                            <div className="col p-0">
                               <h3
                                 style={{
                                   fontWeight: "500",
@@ -425,9 +425,7 @@ function DocumentsUpload(props) {
                       ) : (
                         <></>
                       )}
-                      {/* button visible for the verifier */}
-
-                      <div className="col-lg-12 border mt-4 m-2 test">
+                      <div className="col-lg-12">
                         <table className="table table-bordered">
                           <thead>
                             <tr>

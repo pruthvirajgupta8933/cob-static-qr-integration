@@ -122,7 +122,7 @@ function BusinessOverview(props) {
         .trim()
         .required("Required")
         .matches(Regex.digit, RegexMsg.digit)
-        .test("IntergerRequired", "Invalid Value 0", (val) => {
+        .test("IntergerRequired", "Value should be more then 1", (val) => {
         return val > 0
         })
         .min(1,"Please enter more than 1 character")
