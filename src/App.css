@@ -324,3 +324,7 @@ label {
 .font-size-16{
   font-size: 16px !important;
 }
+
+.maskedInput{
+  -webkit-text-security:disc
+}

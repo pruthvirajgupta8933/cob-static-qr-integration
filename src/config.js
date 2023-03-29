@@ -147,6 +147,9 @@ const API_LIVE = {
   ZONE_EMPLOYEE: `${url}/zone/employee-detail`,
   UPDATE_ZONE_DATA: `${url}/zone/update-zone-data`,
   GET_ZONE_INFO: `${url}/zone/get-zone-info`,
+
+  GET_EMPLOYEE_NAME:`${url}/merchant/employee-data/?order_by=empName`,
+  GET_MCC_MASTER_CODE:`${url}/get-mcc-master-data/?order_by=mcc_ellaboration`,
   ////////////////////////////////////////Rate mapping
   GET_RISK_BUISENSS_BYID: `${url}/merchant/get-risk-business-by-id`,
   GET_RISK_TEMPLSTE: `${url}/merchant/get-risk-category-template`,

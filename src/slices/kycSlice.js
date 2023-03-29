@@ -775,10 +775,26 @@ export const approveDoc = createAsyncThunk(
     return response.data;
   }
 );
-//----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
+//----- GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 export const panValidation = createAsyncThunk(
   "kyc/panValidation",
   async (requestParam) => {
+    console.log("check 1",requestParam)
+    const response = await kycValidatorAuth
+      .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    console.log("check 3")
+    return response.data;
+  }
+);
+
+export const authPanValidationrr = createAsyncThunk(
+  "kyc/authPanValidationrr",
+  async (requestParam) => {
+    console.log("check 4")
     const response = await kycValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
@@ -792,6 +808,7 @@ export const panValidation = createAsyncThunk(
 export const authPanValidation = createAsyncThunk(
   "kyc/authPanValidation",
   async (requestParam) => {
+    console.log("check 5")
     const response = await kycValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
@@ -1161,14 +1178,13 @@ export const kycSlice = createSlice({
 
     //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 
-    // [panValidation.fulfilled]: (state, action) => {
-    //   console.log("panValidation")
-
-    //   state.allTabsValidate.BusinessDetailsStatus.PanValidation = action.payload;
-    //   if (action?.payload?.status === true && action?.payload?.valid === true) {
-    //     state.kycUserList.panCard = action?.meta?.arg?.pan_number
-    //   }
-    // },
+    [panValidation.fulfilled]: (state, action) => {
+      console.log("panValidation")
+      state.allTabsValidate.BusinessDetailsStatus.PanValidation = action.payload;
+      if (action?.payload?.status === true && action?.payload?.valid === true) {
+        state.kycUserList.panCard = action?.meta?.arg?.pan_number
+      }
+    },
 
     //-----------------------------------
 

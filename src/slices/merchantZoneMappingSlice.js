@@ -64,6 +64,33 @@ export const updateZoneData= createAsyncThunk(
   }
 );
 
+
+export const getZoneEmployeName= createAsyncThunk(
+  "zoneEmployee/zoneEmployee",
+  async ( requestParam) => {
+    
+    try {
+      const response = await zoneService.getZoneEmployeName(requestParam)
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getMccCodeMaster = createAsyncThunk(
+  "zoneEmployee/zoneEmployee",
+  async () => {
+    
+    try {
+      const response = await zoneService.getMccCodeMaster()
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
 export const getZoneInfo= createAsyncThunk(
   "zoneEmployee/zoneEmployee",
   async ( requestParam) => {
