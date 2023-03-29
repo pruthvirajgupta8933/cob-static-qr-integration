@@ -4,10 +4,22 @@ import MandateSummary from "./mandateDetails/mandateSummary";
 import PersonalDetails from "./mandateDetails/personalDetails";
 import MandateBankDetails from "./mandateDetails/mandateBankDetails";
 import "./mandateDetails/mandateSubmission.css"
+import { Formik, Form } from "formik";
+
 
 const AuthMandate = ({updatedData}) => {
 
-  console.log(updatedData,"props ==========>")
+
+  const initialValues = {
+
+  }
+
+  const validationSchema = {
+
+
+  }
+
+  
   return (
     <div class="row">
     <div class="col-lg-6">
