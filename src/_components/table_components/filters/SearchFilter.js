@@ -18,11 +18,8 @@ const SearchFilter = ({
         type="text"
         placeholder="Search Here"
       />
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button">
-          Button
-        </button>
-      </div>
+        <div class="input-group-append">
+  </div>
     </div>
   );
 };
