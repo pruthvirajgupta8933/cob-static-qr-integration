@@ -17,7 +17,6 @@ const SearchFilter = ({
   const [filterbtn, showfilterbtn] = useState(false);
 
   const handleSearchSubmit = (e) => {
-    console.log(searchQueryText);
     e.preventDefault();
     kycSearch(searchQueryText);
     searchByText(searchQueryText);
@@ -55,7 +54,7 @@ const SearchFilter = ({
             </div>
           )}
         </div>
-        {filterbtn && (
+        {(filterbtn && searchText!=="") && (
           <div
             onClick={() => {
               clearFilter(true);

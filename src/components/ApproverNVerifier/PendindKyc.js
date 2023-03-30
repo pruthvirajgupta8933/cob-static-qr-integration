@@ -5,7 +5,6 @@ import { kycForPendingMerchants } from "../../slices/kycSlice";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import toastConfig from "../../utilities/toastTypes";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
-import Spinner from "./Spinner";
 import CommentModal from "./Onboarderchant/CommentModal";
 import moment from "moment";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
@@ -35,36 +34,46 @@ const PendindKyc = () => {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   const PendindKycRowData = [
-    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true,width:"86px" },
+    {
+      id: "1",
+      name: "S.No",
+      selector: (row) => row.sno,
+      sortable: true,
+      width: "86px",
+    },
     {
       id: "2",
       name: "Client Code",
       selector: (row) => row.clientCode,
       cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
-      width:"130px",
+      width: "130px",
     },
     {
       id: "3",
       name: "Company Name",
       selector: (row) => row.companyName,
       cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
-        width:"300px"
+      width: "300px",
     },
 
     {
       id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
-      sortable:true,
-      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA") }</div>,
-      width:"200px"
+      sortable: true,
+      cell: (row) => (
+        <div className="removeWhiteSpace">
+          {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
+        </div>
+      ),
+      width: "200px",
     },
     {
       id: "5",
       name: "Email",
       selector: (row) => row.emailId,
       cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
-      width:"220px"
+      width: "220px",
     },
     {
       id: "6",
@@ -73,21 +82,20 @@ const PendindKyc = () => {
       cell: (row) => (
         <div className="removeWhiteSpace">{row?.contactNumber}</div>
       ),
-      width:"150px"
+      width: "150px",
     },
     {
       id: "7",
       name: "KYC Status",
       selector: (row) => row.status,
-
     },
     {
       id: "8",
       name: "Registered Date",
       selector: (row) => row.signUpDate,
-      sortable:true,
-      cell:(row)=><div>{covertDate(row.signUpDate)}</div>,
-      width:"150px"
+      sortable: true,
+      cell: (row) => <div>{covertDate(row.signUpDate)}</div>,
+      width: "150px",
     },
     {
       id: "9",
@@ -100,18 +108,18 @@ const PendindKyc = () => {
       selector: (row) => row.viewStatus,
       cell: (row) => (
         <div>
-        <button
-          type="button"
-          className="approve text-white  btn-xs "
-          onClick={() => {
-            setKycIdClick(row);
-            setIsModalOpen(!isOpenModal);
-          }}
-          data-toggle="modal"
-          data-target="#kycmodaldetail"
-        >
-          View Status
-        </button>
+          <button
+            type="button"
+            className="approve text-white  btn-xs "
+            onClick={() => {
+              setKycIdClick(row);
+              setIsModalOpen(!isOpenModal);
+            }}
+            data-toggle="modal"
+            data-target="#kycmodaldetail"
+          >
+            View Status
+          </button>
         </div>
       ),
     },
@@ -165,7 +173,17 @@ const PendindKyc = () => {
   };
 
   useEffect(() => {
-    dispatch(kycForPendingMerchants({ page: currentPage, page_size: pageSize }))
+    fetchData();
+  }, [currentPage, pageSize, searchText, dispatch]);
+  const fetchData = () => {
+    dispatch(
+      kycForPendingMerchants({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Pending",
+      })
+    )
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
 
@@ -180,7 +198,7 @@ const PendindKyc = () => {
         console.log(err);
         toastConfig.errorToast("Data not loaded");
       });
-  }, [currentPage, pageSize, dispatch]);
+  };
 
   const searchByText = () => {
     setData(
@@ -213,10 +231,16 @@ const PendindKyc = () => {
   ];
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
     return date;
   };
-
+  //for api search pass key searchbyapi
+  const clearFilter = (e) => {
+    if (e) {
+      setSearchText("");
+      fetchData();
+    }
+  };
   // console.log("Data Loading",isLoaded)
 
   return (
@@ -227,7 +251,9 @@ const PendindKyc = () => {
             kycSearch={kycSearch}
             searchText={searchText}
             searchByText={searchByText}
+            searchTextByApiCall={true}
             setSearchByDropDown={setSearchByDropDown}
+            clearFilter={clearFilter}
           />
         </div>
         <div>
@@ -282,6 +308,8 @@ const PendindKyc = () => {
               pageSize={pageSize}
               currentPage={currentPage}
               changeCurrentPage={changeCurrentPage}
+              clearFilter={clearFilter}
+              searchTextByApiCall={true}
             />
           )}
         </div>

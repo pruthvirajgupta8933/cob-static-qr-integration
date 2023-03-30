@@ -1,6 +1,6 @@
 import moment from "moment";
 const covertDate = (yourDate) => {
-  let date = moment(yourDate).format("DD/MM/YYYY");
+  let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
   return date;
 };
 

@@ -527,7 +527,7 @@ export const kycForPendingMerchants = createAsyncThunk(
     const requestParam1 = data.page_size;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_PENDING_MERCHANTS}&page=${requestParam}&page_size=${requestParam1}`,
+        `${API_URL.KYC_FOR_PENDING_MERCHANTS}?search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
         {
           headers: {},
         }
@@ -547,7 +547,7 @@ export const kycForRejectedMerchants = createAsyncThunk(
     const requestParam1 = data.page_size;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&page=${requestParam}&page_size=${requestParam1}`,
+        `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
         {
           headers: {},
         }
@@ -569,7 +569,7 @@ export const kycForPending = createAsyncThunk(
     const requestParam1 = data.page_size;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_PROCESSING}&page=${requestParam}&page_size=${requestParam1}`,
+        `${API_URL.KYC_FOR_PROCESSING}?search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
         {
           headers: {},
         }
@@ -590,7 +590,7 @@ export const kycForVerified = createAsyncThunk(
     const requestParam1 = data.page_size;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_VERIFIED}&page=${requestParam}&page_size=${requestParam1}`,
+        `${API_URL.KYC_FOR_VERIFIED}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
         {
           headers: {},
         }
@@ -638,7 +638,7 @@ export const kycForApproved = createAsyncThunk(
     const requestParam1 = data.page_size;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_APPROVED}&page=${requestParam}&page_size=${requestParam1}`,
+        `${API_URL.KYC_FOR_APPROVED}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
         {
           headers: {},
         }
