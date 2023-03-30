@@ -21,10 +21,6 @@ const NotFilledKYC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  const [merchantStatus, setMerchantStatus] = useState({});
-  const [textSearch, settextSearch] = useState(false);
-
-  console.log(data, "--------data");
 
   const dispatch = useDispatch();
   const loadingState = useSelector((state) => state.kyc.isLoading);
@@ -49,21 +45,7 @@ const NotFilledKYC = () => {
   });
 
   useEffect(() => {
-    // dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize, searchquery:searchText,merchantStatus:"Pending"}))
-    //   .then((resp) => {
-    //     resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-    //     const data = resp?.payload?.results;
-    //     const totalData = resp?.payload?.count;
-    //     setDataCount(totalData);
-    //     setNotFilledData(data);
-    //     setData(data);
-    //   })
-
-    //   .catch((err) => {
-    //     toastConfig.errorToast("Data not loaded");
-    //   });
     fetchData();
-
   }, [currentPage, pageSize, searchText, dispatch]);
 
   const searchByText = () => {
@@ -76,7 +58,6 @@ const NotFilledKYC = () => {
       )
     );
   };
-
 
   const fetchData = () => {
     dispatch(
@@ -99,10 +80,6 @@ const NotFilledKYC = () => {
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
-  };
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-    return date;
   };
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -131,11 +108,11 @@ const NotFilledKYC = () => {
       value: "offline",
     },
   ];
+
+  //for api search pass key searchbyapi
   const clearFilter = (e) => {
-    console.log(e, "running");
-    if(e)
-    {
-      setSearchText("")
+    if (e) {
+      setSearchText("");
       fetchData();
     }
   };
@@ -150,7 +127,6 @@ const NotFilledKYC = () => {
             searchTextByApiCall={true}
             setSearchByDropDown={setSearchByDropDown}
             searchData={notFilledData}
-            setData={setData}
             clearFilter={clearFilter}
           />
         </div>
