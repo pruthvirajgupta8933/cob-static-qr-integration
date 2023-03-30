@@ -128,6 +128,7 @@ const API_LIVE = {
   ViewTxnEnqMultiParam: adminAPIURL + "/Enquiry/ViewTxnEnqMultiParam",
 
   /**Kyc DocumentsUploads */
+  searchQuery:`${kyc_url}/kyc/get-merchant-data/?search=Pending&search_query=lpsuman2001@gmail.com&page_size=5&page=1`,
   DocumentsUpload: `${kyc_url}/kyc/document-type`, //get APi
 
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
@@ -161,7 +162,7 @@ const API_LIVE = {
   Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/`,
   /////////////////////////Kyc approver
   /* For pending*/
-  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not-Filled&order_by=-id`,
+  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data`,
   KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Pending&order_by=-id`,
   KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Rejected&order_by=-kyc_reject`,
   KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?search=processing&order_by=-id`,
@@ -298,6 +299,7 @@ const API_LIVE = {
 
   // Debit Report
   filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
+
 
 
 

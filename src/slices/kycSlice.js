@@ -507,7 +507,7 @@ export const kycForNotFilled = createAsyncThunk(
     const requestParam1 = data.page_size;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_NOT_FILLED}&page=${requestParam}&page_size=${requestParam1}`,
+        `${API_URL.KYC_FOR_NOT_FILLED}?search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
         {
           headers: {},
         }
