@@ -7,28 +7,32 @@ const CompleteVerifyAndRejectBtn = (props) => {
 
 
   const dispatch = useDispatch();
-  const { roleBasePermissions, merchantKycId, documentsIdList, setCheckedClicked, docList, setdocumentsIdList} = props;
+  const { roleBasePermissions, merchantKycId, documentsIdList, setCheckedClicked, docList, setdocumentsIdList, checkedClicked } = props;
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab)
   const { auth } = useSelector((state) => state);
   const { user } = auth;
   const { loginId } = user;
   const roles = roleBasedAccess();
-  
+
 
   const dropDownDocList = docList?.map((r) => r?.status?.toString());
+  // console.log("dropDownDocList", dropDownDocList)
 
-const hasPendingItem = dropDownDocList.some(item => item.includes("Pending" || "Rejected"))
+  const hasPendingItem = dropDownDocList.some(item => item.includes("Pending"))
+  const hasRejectItem = dropDownDocList.some(item => item.includes("Rejected"))
+  const hasVerifiedItem = dropDownDocList.some(item => item.includes("Verified")) // tab 4
+  const hasApprovedItem = dropDownDocList.some(item => item.includes("Approved")) // tab 4
 
-  const hasApproved = dropDownDocList.some(item => item.includes("Verified")) // tab 4
 
-
-const [buttonText, setButtonText] = useState("Complete Verify");
+  const [buttonText, setButtonText] = useState("Verify");
   const [buttonClick, setButtonClick] = useState(false)
   const [commetText, setCommetText] = useState()
- 
+
   const [disable, setDisable] = useState(false)
-  const[enableButton,setEnableButton]=useState(false)
+  const [enableButtonForVerifier, setEnableButtonForVerifier] = useState(false)
+  const [enableButtonForApprover, setEnableButtonForApprover] = useState(false)
+  const [enableRejectButton, setEnableRejectButton] = useState(false)
   const Allow_To_Do_Verify_Kyc_details = roleBasePermissions.permission.Allow_To_Do_Verify_Kyc_details
 
 
@@ -42,77 +46,94 @@ const [buttonText, setButtonText] = useState("Complete Verify");
     );
   };
 
+
+  // enable btn when verifier is logged in
   const enableVerifyBtn = () => {
+    // console.log("hasPendingItem", hasPendingItem)
+    // console.log("roles?.verifier", roles?.verifier)
+    // console.log("currenTab", currenTab)
     // console.log("runing...........");
     let enableBtn = false;
-    if ((hasPendingItem) && (roles?.verifier && currenTab === 3)) {
-      enableBtn = true;
+    if (hasPendingItem && (roles?.verifier && currenTab === 3)) {
+      enableBtn = true; // when verifier logged in
     }
+
+
+    // for tab 3 if approver logged in
+    if (hasPendingItem && currenTab === 3 && (roles?.approver && roles.permission.Allow_To_Do_Verify_Kyc_details)) {
+      enableBtn = true; // when approver logged in and has permisson to verify the pendign verification tab 
+    }
+
+
+    // for tab 4 if approver logged in
+    if (hasVerifiedItem && currenTab === 4 && roles?.approver) {
+      enableBtn = true; // when approver logged in and has permisson to verify the pendign verification tab 
+    }
+
+
+
     return enableBtn;
   };
-  // let enableBtn = enableVerifyBtn();
-
-  useEffect(()=>{
-    setEnableButton(enableVerifyBtn())
-
-  },[])
 
 
+  const enableRejectBtn = () => {
 
-  const enableApproverBtn = () => {
+    // console.log("runing...........");
     let enableBtn = false;
-    if (roles?.approver)
-      if ((hasApproved && currenTab === 4) || (hasPendingItem && currenTab === 3)) {
-        enableBtn = true;
+    // if ( (hasPendingItem || hasVerifiedItem) && (roles?.verifier || roles?.approver) && (currenTab === 3 || currenTab === 4) ) {
+    //   enableBtn = true;
+    // }
 
+    if (roles?.verifier) {
+      if (hasPendingItem && currenTab === 3) {
+        enableBtn = true; // if logged by verifier and doc status is pending then  enable reject btn
       }
+    }
+
+
+    if (roles?.approver) {
+      if ( hasVerifiedItem  &&  currenTab === 4) {
+        enableBtn = true; // if logged by approver and doc status is verified  then  enable reject btn
+      }
+     
+      if ( hasPendingItem &&  (currenTab === 3 && roles.permission.Allow_To_Do_Verify_Kyc_details)) {
+        enableBtn = true; // if logged by approver and doc status is verified  then  enable reject btn
+      }
+     
+    }
+
     return enableBtn;
   };
-  let enableApprovBtn = enableApproverBtn();
-
-
-
-
-
-  // console.log(roles?.approver, "roles?.approver")
-
-  // // console.log("enableBtn", enableBtn)
-  // console.log("hasApproved", hasApproved)
-  // console.log("roles", roles?.approver)
-  // console.log("currentab", currenTab)
-
-
 
 
 
   useEffect(() => {
+    setEnableButtonForVerifier(enableVerifyBtn())
+    setEnableButtonForApprover(enableVerifyBtn())
+    setEnableRejectButton(enableRejectBtn())
 
-
-    ////////////////////////////////////////////////////// Button enable for approver
-
-
-    // For current tab 5
-
-
-    //////////////////////////////////////////////////// for verifier
+  }, [checkedClicked])
 
 
 
+  // const enableApproverBtn = () => {
+  //   let enableBtn = false;
+  //   if (roles?.approver)
+  //     if ((hasVerifiedItem && currenTab === 4) || (hasPendingItem && currenTab === 3)) {
+  //       enableBtn = true;
 
-    // console.log("currenTab",currenTab)
-    // console.log("isverified",isverified)
-    // console.log("Allow_To_Do_Verify_Kyc_details",Allow_To_Do_Verify_Kyc_details)
-    // console.log("roles",roles)
+  //     }
+  //   return enableBtn;
+  // };
 
 
-
-    if (currenTab === 3  ) {
-
-      setButtonText("Verify Selected")
+  useEffect(() => {
+    if (currenTab === 3) {
+      setButtonText("Verify All Selected")
       // console.log("The Button Name is verify kyc",buttonText)
     }
     if (currenTab === 4) {
-      setButtonText("Approve KYC")
+      setButtonText("Approve All Selected")
       // console.log("The Button Name is Approve kyc",buttonText)
 
     }
@@ -135,6 +156,7 @@ const [buttonText, setButtonText] = useState("Complete Verify");
         resp?.payload?.status && toast.success(resp?.payload?.message);
         setButtonClick(null)
         // setCloseModal(false)
+        setCheckedClicked(false)
         setCommetText("")
         setDisable(false)
         if (typeof resp?.payload?.status === "undefined") {
@@ -155,24 +177,21 @@ const [buttonText, setButtonText] = useState("Complete Verify");
       verified_by: loginId,
       comment: "Document Verified"
     };
-    
+
 
     if ((roles?.verifier || roles?.approver) && currenTab === 3) {
       dispatch(verifyKycDocumentTab(postData)).then((resp) => {
         if (resp?.payload?.status) {
-          
-          setEnableButton(false)
+
+          setEnableButtonForVerifier(false)
           setdocumentsIdList([])
           setCheckedClicked(false)
-           getKycDocList(roles);
+          getKycDocList(roles);
           toast.success(resp?.payload?.message)
-           
+
 
         } else {
           toast.error(resp?.payload?.message)
-
-
-
         }
 
       })
@@ -190,8 +209,8 @@ const [buttonText, setButtonText] = useState("Complete Verify");
             resp?.payload?.status
               ? toast.success(resp?.payload?.message)
               : toast.error(resp?.payload?.message);
-              setdocumentsIdList([])
-              setCheckedClicked(false)
+            setdocumentsIdList([])
+            setCheckedClicked(false)
 
             getKycDocList(roles);
           });
@@ -201,25 +220,27 @@ const [buttonText, setButtonText] = useState("Complete Verify");
 
 
   return (
-
     <div className="container">
       <div className="row">
-
         <div className="col-lg-3-">
-          
-          {  enableButton || enableApprovBtn  ?
+          {(enableButtonForVerifier || enableButtonForApprover) &&
             <button type="button"
               onClick={() => { verifyApproveDoc() }}
-              className="btn btn-info btn-sm text-white">{buttonText}</button> : <></>}
+              className="btn btn-info btn-sm text-white">{buttonText}
+            </button>
+          }
 
-              
-          <button type="button"
-            onClick={() => setButtonClick(true)}
-            className="btn btn-danger btn-sm text-white">Reject Selected</button>
+          {enableRejectButton &&
+            <button type="button"
+              onClick={() => setButtonClick(true)}
+              className="btn btn-danger btn-sm text-white">
+              Reject Selected
+            </button>}
         </div>
       </div>
-      {buttonClick === true ?
 
+
+      {buttonClick === true ?
         <div style={{ float: "left" }}>
           <textarea id="comments" name="reject_commet" placeholder="Reason for rejection" rows="4" cols="40" onChange={(e) => setCommetText(e.target.value)}>
           </textarea>

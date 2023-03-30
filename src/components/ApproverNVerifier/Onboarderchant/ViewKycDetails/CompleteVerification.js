@@ -349,7 +349,6 @@ const CompleteVerification = (props) => {
             <button type="button" onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white">Reject KYC</button></>
           : enableBtnApprovedTab === true ? <button type="button"
             onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white">Reject KYC</button> : <> </> // Reject kyc for currentab 4(Approved) 
-
         }
 
         {/* {(currenTab === 4 || currenTab === 5 || currenTab === 6) && (roles?.approver) ?
