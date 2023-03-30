@@ -327,7 +327,7 @@ const MerchantDocument = (props) => {
           <thead>
             {checkedClicked === true && (roles.approver || roles.verifier) &&
               <th colSpan={6} style={{ textAlign: "right" }}>
-                <CompleteVerifyAndRejectBtn roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} />
+                <CompleteVerifyAndRejectBtn roles={roles} roleBasePermissions={roleBasePermissions}  setdocumentsIdList={setdocumentsIdList} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked}  />
               </th>
             }
             <tr>

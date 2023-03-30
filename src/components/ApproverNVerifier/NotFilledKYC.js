@@ -31,34 +31,22 @@ const NotFilledKYC = () => {
     setSearchText(e);
   };
 
-  const mappedData = data?.map(item => {
+  const mappedData = data?.map((item) => {
     return {
-      sno:item.sno,
+      sno: item.sno,
       name: item.name,
-      clientCode:item.clientCode,
-      emailId:item.emailId,
-      contactNumber:item.contactNumber,
-      status:item.status,
-      signUpDate:item.signUpDate,
-      isDirect:item.isDirect
+      clientCode: item.clientCode,
+      emailId: item.emailId,
+      contactNumber: item.contactNumber,
+      status: item.status,
+      signUpDate: item.signUpDate,
+      isDirect: item.isDirect,
     };
   });
 
   useEffect(() => {
-    dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
-      .then((resp) => {
-        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-        const data = resp?.payload?.results;
-        const totalData = resp?.payload?.count;
-        setDataCount(totalData);
-        setNotFilledData(data);
-        setData(data);
-      })
-
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
-  }, [currentPage, pageSize, dispatch]);
+    fetchData();
+  }, [currentPage, pageSize, searchText, dispatch]);
 
   const searchByText = () => {
     setData(
@@ -71,9 +59,27 @@ const NotFilledKYC = () => {
     );
   };
 
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-    return date;
+  const fetchData = () => {
+    dispatch(
+      kycForNotFilled({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Not-Filled",
+      })
+    )
+      .then((resp) => {
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+        const data = resp?.payload?.results;
+        const totalData = resp?.payload?.count;
+        setDataCount(totalData);
+        setNotFilledData(data);
+        setData(data);
+      })
+
+      .catch((err) => {
+        toastConfig.errorToast("Data not loaded");
+      });
   };
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -102,6 +108,14 @@ const NotFilledKYC = () => {
       value: "offline",
     },
   ];
+
+  //for api search pass key searchbyapi
+  const clearFilter = (e) => {
+    if (e) {
+      setSearchText("");
+      fetchData();
+    }
+  };
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
@@ -110,7 +124,10 @@ const NotFilledKYC = () => {
             kycSearch={kycSearch}
             searchText={searchText}
             searchByText={searchByText}
+            searchTextByApiCall={true}
             setSearchByDropDown={setSearchByDropDown}
+            searchData={notFilledData}
+            clearFilter={clearFilter}
           />
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">

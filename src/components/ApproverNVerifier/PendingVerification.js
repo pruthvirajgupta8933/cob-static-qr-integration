@@ -23,32 +23,54 @@ function PendingVerification() {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
   const PendingVerificationData = [
-    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true, width:"86px" },
-    { id: "2", name: "Client Code", selector: (row) => row.clientCode,
-    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>, width:"130px" },
-    { id: "3", name: "Company Name", selector: (row) => row.companyName,
-    cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,width:"300px" },
+    {
+      id: "1",
+      name: "S.No",
+      selector: (row) => row.sno,
+      sortable: true,
+      width: "86px",
+    },
+    {
+      id: "2",
+      name: "Client Code",
+      selector: (row) => row.clientCode,
+      cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
+      width: "130px",
+    },
+    {
+      id: "3",
+      name: "Company Name",
+      selector: (row) => row.companyName,
+      cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
+      width: "300px",
+    },
     {
       id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
       sortable: true,
-      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA")}</div>,
-      width:"180px"
+      cell: (row) => (
+        <div className="removeWhiteSpace">
+          {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
+        </div>
+      ),
+      width: "180px",
     },
     {
       id: "5",
       name: "Email",
       selector: (row) => row.emailId,
       cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
-      width:"220px"
+      width: "220px",
     },
     {
       id: "6",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
-      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
-      width:"150px"
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row?.contactNumber}</div>
+      ),
+      width: "150px",
     },
     {
       id: "7",
@@ -60,8 +82,8 @@ function PendingVerification() {
       name: "Registered Date",
       selector: (row) => row.signUpDate,
       sortable: true,
-      cell:(row)=><div>{covertDate(row.signUpDate)}</div>,
-      width:"150px"
+      cell: (row) => <div>{covertDate(row.signUpDate)}</div>,
+      width: "150px",
     },
     {
       id: "9",
@@ -74,21 +96,21 @@ function PendingVerification() {
       // selector: (row) => row.viewStatus,
       cell: (row) => (
         <div className="mt-2">
-        <button
-          type="button"
-          className="approve text-white  btn-xs "
-          onClick={() => {
-            setKycIdClick(row);
-            setIsModalOpen(true);
-          }}
-          data-toggle="modal"
-          data-target="#kycmodaldetail"
-        >
-          {(roles?.verifier === true && currenTab === 3) ||
-          Allow_To_Do_Verify_Kyc_details === true
-            ? "Verify KYC "
-            : "View Status"}
-        </button>
+          <button
+            type="button"
+            className="approve text-white  btn-xs "
+            onClick={() => {
+              setKycIdClick(row);
+              setIsModalOpen(true);
+            }}
+            data-toggle="modal"
+            data-target="#kycmodaldetail"
+          >
+            {(roles?.verifier === true && currenTab === 3) ||
+            Allow_To_Do_Verify_Kyc_details === true
+              ? "Verify KYC "
+              : "View Status"}
+          </button>
         </div>
       ),
     },
@@ -174,7 +196,18 @@ function PendingVerification() {
   //---------------GET Api for KycPending-------------------
 
   useEffect(() => {
-    dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
+    fetchData();
+  }, [currentPage, searchText, searchText, pageSize]);
+
+  const fetchData = () => {
+    dispatch(
+      kycForPending({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Processing",
+      })
+    )
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         const data = resp?.payload?.results;
@@ -188,7 +221,7 @@ function PendingVerification() {
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
-  }, [currentPage, pageSize]);
+  };
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -231,8 +264,15 @@ function PendingVerification() {
   ];
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
     return date;
+  };
+  //for api search pass key searchbyapi
+  const clearFilter = (e) => {
+    if (e) {
+      setSearchText("");
+      fetchData();
+    }
   };
 
   return (
@@ -244,6 +284,8 @@ function PendingVerification() {
             searchText={searchText}
             searchByText={searchByText}
             setSearchByDropDown={setSearchByDropDown}
+            searchTextByApiCall={true}
+            clearFilter={clearFilter}
           />
         </div>
         <div>
@@ -306,6 +348,8 @@ function PendingVerification() {
               pageSize={pageSize}
               currentPage={currentPage}
               changeCurrentPage={changeCurrentPage}
+              clearFilter={clearFilter}
+              searchTextByApiCall={true}
             />
           )}
         </div>

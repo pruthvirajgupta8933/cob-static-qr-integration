@@ -9,8 +9,7 @@ import { clearMessage } from "../../slices/message";
 import { toast } from "react-toastify";
 import "./Login.css";
 import imageSlide1 from "../../assets/images/COB.png";
-import TokenService from "../../services/token.service";
-import UserService from "../../services/test-service";
+
 // import api from './api';
 
 const INITIAL_FORM_STATE = {
@@ -66,17 +65,7 @@ function LoginPage() {
     dispatch(clearMessage());
   }, [dispatch]);
 
-  //Dummy login for JWT
-  const customLogin = async () => {
-    const data = {
-      clientUserId: "Abh789@sp",
-      userPassword: "P8c3WQ7ei",
-    };
-    UserService.login(data).then((res)=>{
-      TokenService.setUser(res.data);
-    })
 
-  };
 
   const handleLogin = (formValue) => {
     const { clientUserId, userPassword } = formValue;
@@ -109,6 +98,8 @@ function LoginPage() {
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
+
+  const queryString  = window.location.search
 
   return (
     <>
@@ -155,7 +146,7 @@ function LoginPage() {
                                         className="string optional loginFontForLabel NunitoSans-Regular"
                                         htmlFor="user-name"
                                       >
-                                        User Name
+                                        Username
                                       </label>
                                       <Field
                                         className="string optional NunitoSans-Regular"
@@ -230,7 +221,7 @@ function LoginPage() {
                                         ""
                                       )}
                                       <Link
-                                        to={`/forget`}
+                                        to={`/forget/${queryString}`}
                                         className="pull-right mt-2"
                                         style={{ color: "#0A2FB6" }}
                                       >
