@@ -9,7 +9,7 @@ import validation from "../validation";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { axiosInstanceJWT } from "../../utilities/axiosInstance";
+import { axiosInstanceJWT,axiosInstanceAuth } from "../../utilities/axiosInstance";
 
 const VerifyEmailPhone = (props) => {
   const { handleFormSubmit } = props;
@@ -57,7 +57,7 @@ const VerifyEmailPhone = (props) => {
         otp: emailotp,
       });
 
-      await axiosInstanceJWT
+      await axiosInstanceAuth
         .post(API_URL.AUTH_VERIFY_OTP_ON_FWD, sendOtp, {
           headers: { "Content-Type": "application/json" },
         })

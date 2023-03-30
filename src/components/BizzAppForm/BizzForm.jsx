@@ -157,8 +157,7 @@ const BizzAppForm = (props) => {
     ]
 
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
-        console.log("kashif", values)
-        const res = await axios
+        const res = await axiosInstanceAuth
             .post(API_URL.BizzAPPForm, values)
             .then((response) => {
                 if (response.status === 200) {
