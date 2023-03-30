@@ -4,20 +4,12 @@ import MandateSummary from "./mandateDetails/mandateSummary";
 import PersonalDetails from "./mandateDetails/personalDetails";
 import MandateBankDetails from "./mandateDetails/mandateBankDetails";
 import "./mandateDetails/mandateSubmission.css"
-import { Formik, Form } from "formik";
+import npciLogo from "../../../assets/images/npci.png"
 
 
 const AuthMandate = ({updatedData}) => {
 
 
-  const initialValues = {
-
-  }
-
-  const validationSchema = {
-
-
-  }
 
   
   return (
@@ -26,12 +18,13 @@ const AuthMandate = ({updatedData}) => {
     <div id="accordion" style={{marginTop:"50px"}}>
 
     <div class="card-header mandateCard" id="headingOne" style={{borderRadius:"20px"}}>
-      <h5 class="mb-0">
+      <h3 class="mb-0">
         <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-         E-Mandate Summary 
+         E-Mandate Summary &nbsp;
+        
           <i class="fa fa-chevron-down downMandate" aria-hidden="true"></i>
         </button>
-      </h5>
+      </h3>
     </div>
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
@@ -42,12 +35,12 @@ const AuthMandate = ({updatedData}) => {
  
  
     <div class="card-header mandateCard" id="headingTwo">
-      <h5 class="mb-0">
+      <h3 class="mb-0">
         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-         Mandate Summary 
+         Mandate Summary  &nbsp; &nbsp;  &nbsp;
           <i class="fa fa-chevron-down downMandate" aria-hidden="true"></i>
         </button>
-      </h5>
+      </h3>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
       <div class="card-body">
@@ -56,12 +49,12 @@ const AuthMandate = ({updatedData}) => {
     </div>
 
     <div class="card-header mandateCard" id="headingThree">
-      <h5 class="mb-0">
+      <h3 class="mb-0">
         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-      Personal Details
+      Personal Details  &nbsp;  &nbsp;  &nbsp; &nbsp; &nbsp;
         <i class="fa fa-chevron-down downMandate" aria-hidden="true"></i>
         </button>
-      </h5>
+      </h3>
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
       <div class="card-body">
@@ -69,12 +62,12 @@ const AuthMandate = ({updatedData}) => {
       </div>
     </div>
     <div class="card-header mandateCard" id="headingFour">
-      <h5 class="mb-0">
+      <h3 class="mb-0">
         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-   Bank Details
+   Bank Details  &nbsp;  &nbsp;  &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp;
         <i class="fa fa-chevron-down downMandate" aria-hidden="true"></i>
         </button>
-      </h5>
+      </h3>
     </div>
     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
       <div class="card-body">
@@ -121,6 +114,15 @@ const AuthMandate = ({updatedData}) => {
     <div>
       <p>I further agree that SabPaisa Pvt. Ltd. is only a Third Party Technology Service Provider and does not have any liability towards the transaction mandate or any subsequent action which arises. Any dispute/differences or issues to the solely between the user entity Corporate or the bank and me.</p>
     </div>
+    
+    <img
+                              src={npciLogo}
+                              alt="SabPaisa"
+                              title="SabPaisa"
+                              className="rounded mx-auto d-block"
+                             
+                            />
+    
     
   
   </div>
