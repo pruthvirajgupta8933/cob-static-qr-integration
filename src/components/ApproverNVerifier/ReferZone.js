@@ -18,44 +18,64 @@ const ReferZone = () => {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
   const ReferZoneData = [
-    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true,width:"86px" },
-    { id: "2", name: "Client Code", selector: (row) => row.clientCode,
-    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,width:"130px"},
+    {
+      id: "1",
+      name: "S.No",
+      selector: (row) => row.sno,
+      sortable: true,
+      width: "86px",
+    },
+    {
+      id: "2",
+      name: "Client Code",
+      selector: (row) => row.clientCode,
+      cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
+      width: "130px",
+    },
     {
       id: "3",
       name: "Merchant Name",
       selector: (row) => row.name,
       sortable: true,
-      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name?row?.name:"NA")}</div>,
-      width:"150px"
+      cell: (row) => (
+        <div className="removeWhiteSpace">
+          {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
+        </div>
+      ),
+      width: "150px",
     },
     {
       id: "4",
       name: "Email",
       selector: (row) => row.emailId,
       cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
-      width:"220px"
+      width: "220px",
     },
     {
       id: "5",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
-      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
-      width:"150px"
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row?.contactNumber}</div>
+      ),
+      width: "150px",
     },
     {
       id: "6",
       name: "Sourcing Point",
       selector: (row) => row.sourcing_point,
-      cell: (row) => <div className="removeWhiteSpace">{row?.sourcing_point}</div>
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row?.sourcing_point}</div>
+      ),
     },
     {
       id: "7",
       name: "Sourcing Code",
       selector: (row) => row.sourcing_code,
-      cell: (row) => <div className="removeWhiteSpace">{row?.sourcing_code}</div>,
-      width:"150px"
-      
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row?.sourcing_code}</div>
+      ),
+      width: "150px",
     },
     {
       id: "8",
@@ -67,8 +87,8 @@ const ReferZone = () => {
       name: "Registered Date",
       selector: (row) => row.signUpDate,
       sortable: true,
-      cell:(row)=><div>{covertDate(row.signUpDate)}</div>,
-      width:"150px"
+      cell: (row) => <div>{covertDate(row.signUpDate)}</div>,
+      width: "150px",
     },
     {
       id: "10",
@@ -115,7 +135,14 @@ const ReferZone = () => {
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
   const refreshAfterRefer = () => {
-    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
+    dispatch(
+      kycForApproved({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: "",
+        merchantStatus: "Approved",
+      })
+    )
       .then((resp) => {
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
@@ -128,7 +155,14 @@ const ReferZone = () => {
   };
 
   useEffect(() => {
-    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
+    dispatch(
+      kycForApproved({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: "",
+        merchantStatus: "Approved",
+      })
+    )
       .then((resp) => {
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
@@ -174,7 +208,6 @@ const ReferZone = () => {
   const changePageSize = (pageSize) => {
     setPageSize(pageSize);
   };
-
 
   return (
     <section className="ant-layout">

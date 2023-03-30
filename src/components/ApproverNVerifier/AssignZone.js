@@ -39,7 +39,8 @@ function AssignZone() {
   };
 
   useEffect(() => {
-    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
+    dispatch(kycForApproved({ page: currentPage, page_size: pageSize,searchquery: "",
+      merchantStatus: "Approved", }))
       .then((resp) => {
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;

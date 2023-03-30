@@ -114,7 +114,14 @@ function AssignZone() {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   const afterGeneratingMid = () => {
-    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
+    dispatch(
+      kycForApproved({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: "",
+        merchantStatus: "Approved",
+      })
+    )
       .then((resp) => {
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
@@ -129,7 +136,14 @@ function AssignZone() {
   };
 
   useEffect(() => {
-    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
+    dispatch(
+      kycForApproved({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: "",
+        merchantStatus: "Approved",
+      })
+    )
       .then((resp) => {
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
