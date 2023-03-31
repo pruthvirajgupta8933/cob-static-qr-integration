@@ -1409,3 +1409,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   overflow-y: hidden;
   white-space: nowrap;
 }
+
+table.nowrap td{
+  white-space: nowrap;
+}

@@ -140,7 +140,7 @@ return (
         <section className="">
         <div className="container-fluid flleft  p-3 my-3 ">
         {! paginatedata ? (<h3> No Data Found</h3>) : ( <React.Fragment>  <div className="scroll" style={{overflow: "auto"}}>
-                <table className="table table-bordered">
+                <table className="table table-bordered nowrap">
                     <thead>
                     <tr>
                       <th>Serial No.</th>
@@ -149,7 +149,7 @@ return (
                       <th>Customer Type</th>
                       <th> Customer Email</th>
                       <th>Created At</th>
-                      <th>Customer ID</th>
+                      <th>Remarks</th>
                       <th>Customer Name</th>
                       <th>Full Link</th>
                     </tr>
@@ -158,14 +158,15 @@ return (
                         {paginatedata.map((user,i) => (
                           <tr key={i}>
                             <td>{i+1}</td>
-                            <td>{user.customer_phoneNumber}</td>
-                            <td>{user.amount}</td>
-                            <td>{user.customer_type}</td>
-                            <td>{user.customer_email}</td>
-                            <td>{user.created_at}</td>
-                            <td>{user.customer_id}</td>
-                            <td>{user.customer_name}</td>
-                            <td>{user.full_link}</td>
+                            <td>{user?.customer_phoneNumber}</td>
+                            <td>{user?.amount}</td>
+                            <td>{user?.customer_type}</td>
+                            <td>{user?.customer_email}</td>
+                            <td>{user?.created_at}</td>
+                            <td>{user?.remarks}</td>
+                            {/* <td>{user.customer_id}</td> */}
+                            <td>{user?.customer_name}</td>
+                            <td>{user?.full_link}</td>
                           </tr>
                         ))}
                     </tbody>
