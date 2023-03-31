@@ -87,8 +87,7 @@ const ViewRateMapping = (props) => {
             setDisable(false)
             dispatch(templateRate(postData)).then((resp) => {
                 const data = convertToFormikSelectJson("rate_template_code", "rate_template_name", resp?.payload);
-console.log(data,"this is data")
-                setBusinessTemplates(data)
+               setBusinessTemplates(data)
             }).catch((err) => {
 
             })
@@ -181,7 +180,7 @@ console.log(data,"this is data")
                                         <div className="container">
 
                                             <Form>
-                                                {console.log(formik)}
+                                               
 
                                                 <div className="row">
                                                     <div className="col-lg-4">
