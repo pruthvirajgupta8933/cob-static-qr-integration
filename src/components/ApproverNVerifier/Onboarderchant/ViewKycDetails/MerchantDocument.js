@@ -72,7 +72,7 @@ const MerchantDocument = (props) => {
   const [documentsIdList, setdocumentsIdList] = useState([])
 
   const [checkedClicked, setCheckedClicked] = useState(false)
-  console.log("checkedClicked",checkedClicked)
+  // console.log("checkedClicked",checkedClicked)
   // const [enableeBtn, setEnableBtn] = useState(false)
 
   // console.log("this is the real statsus",staus)
