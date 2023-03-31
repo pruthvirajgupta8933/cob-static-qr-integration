@@ -310,13 +310,7 @@ function ApprovedMerchant() {
       value: "offline",
     },
   ];
-  //for api search pass key searchbyapi
-  const clearFilter = (e) => {
-    if (e) {
-      setSearchText("");
-      fetchData();
-    }
-  };
+
 
   return (
     <div className="container-fluid flleft">
@@ -326,7 +320,6 @@ function ApprovedMerchant() {
           searchText={searchText}
           searchByText={searchByText}
           setSearchByDropDown={setSearchByDropDown}
-          clearFilter={clearFilter}
           searchTextByApiCall={true}
         />
       </div>
