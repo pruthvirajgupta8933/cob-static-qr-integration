@@ -29,6 +29,8 @@ function ApprovedMerchant() {
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
+  const [onboardType, setOnboardType] = useState("")
+
 
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
@@ -202,15 +204,20 @@ function ApprovedMerchant() {
   // console.log("KKKKKKKKKKKKK",commentId);
 
   const kycSearch = (e, fieldType) => {
-    fieldType === "text"
-      ? setSearchByDropDown(false)
-      : setSearchByDropDown(true);
-    setSearchText(e);
-  };
+    if(fieldType === "text"){
+      setSearchByDropDown(false)
+      setSearchText(e);
+    }
+    if(fieldType === "dropdown"){
+      setSearchByDropDown(true)
+      setOnboardType(e)
+    }
+  }
+
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, searchText, pageSize]);
+  }, [currentPage, searchText, pageSize, onboardType]);
   const fetchData = () => {
     dispatch(
       kycForApproved({
@@ -218,6 +225,7 @@ function ApprovedMerchant() {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Approved",
+        isDirect:onboardType
       })
     )
       .then((resp) => {

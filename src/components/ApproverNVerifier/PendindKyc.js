@@ -32,6 +32,8 @@ const PendindKyc = () => {
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  const [onboardType, setOnboardType] = useState("")
+
 
   const PendindKycRowData = [
     {
@@ -155,12 +157,23 @@ const PendindKyc = () => {
 
   const dispatch = useDispatch();
 
+  // const kycSearch = (e, fieldType) => {
+  //   fieldType === "text"
+  //     ? setSearchByDropDown(false)
+  //     : setSearchByDropDown(true);
+  //   setSearchText(e);
+  // };
+
   const kycSearch = (e, fieldType) => {
-    fieldType === "text"
-      ? setSearchByDropDown(false)
-      : setSearchByDropDown(true);
-    setSearchText(e);
-  };
+    if(fieldType === "text"){
+      setSearchByDropDown(false)
+      setSearchText(e);
+    }
+    if(fieldType === "dropdown"){
+      setSearchByDropDown(true)
+      setOnboardType(e)
+    }
+  }
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -174,7 +187,8 @@ const PendindKyc = () => {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, pageSize, searchText, dispatch]);
+  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
+
   const fetchData = () => {
     dispatch(
       kycForPendingMerchants({
@@ -182,6 +196,7 @@ const PendindKyc = () => {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Pending",
+        isDirect:onboardType
       })
     )
       .then((resp) => {

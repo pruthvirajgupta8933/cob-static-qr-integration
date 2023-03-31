@@ -28,6 +28,8 @@ const RejectedKYC = () => {
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  const [onboardType, setOnboardType] = useState("")
+
 
   const dispatch = useDispatch();
 
@@ -154,18 +156,26 @@ const RejectedKYC = () => {
       ),
     },
   ];
-
   const kycSearch = (e, fieldType) => {
-    fieldType === "text"
-      ? setSearchByDropDown(false)
-      : setSearchByDropDown(true);
-    setSearchText(e);
-  };
+    if(fieldType === "text"){
+      setSearchByDropDown(false)
+      setSearchText(e);
+    }
+    if(fieldType === "dropdown"){
+      setSearchByDropDown(true)
+      setOnboardType(e)
+    }
+  }
 
   const kycForRejectedMerchnats = () => {
     dispatch(
-      kycForRejectedMerchants({ page: currentPage, page_size: pageSize, searchquery: searchText,
-        merchantStatus: "Rejected", })
+      kycForRejectedMerchants({ 
+        page: currentPage, 
+        page_size: pageSize, 
+        searchquery: searchText,
+        merchantStatus: "Rejected",
+        isDirect:onboardType
+      })
     )
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
@@ -184,7 +194,7 @@ const RejectedKYC = () => {
 
   useEffect(() => {
     kycForRejectedMerchnats();
-  }, [currentPage, pageSize,searchText]);
+  }, [currentPage, pageSize,searchText, onboardType]);
 
   const searchByText = () => {
     setData(

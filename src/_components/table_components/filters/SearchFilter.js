@@ -13,12 +13,13 @@ const SearchFilter = ({
     searchByText();
     setSearchByDropDown(false);
   }, [searchText]);
+
   const [searchQueryText, setsearchQueryText] = useState("");
   const [filterbtn, showfilterbtn] = useState(false);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    kycSearch(searchQueryText);
+    kycSearch(searchQueryText, 'text');
     searchByText(searchQueryText);
   };
 
@@ -54,6 +55,7 @@ const SearchFilter = ({
             </div>
           )}
         </div>
+
         {(filterbtn && searchText!=="") && (
           <div
             onClick={() => {
@@ -64,7 +66,7 @@ const SearchFilter = ({
             className="border p-1 clearfilter"
           >
             <i class="fa fa-times" aria-hidden="true">
-              {" clear filter"}
+              {" Clear Filter"}
             </i>
           </div>
         )}
