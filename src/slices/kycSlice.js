@@ -498,20 +498,15 @@ export const saveMerchantBankDetais = createAsyncThunk(
   }
 );
 /////////////////////////////////KYC APPROVED API
-
-
 export const kycForNotFilled = createAsyncThunk(
   "kyc/kycForNotFilled",
   async (data) => {
-    const requestParam = data.page;
-    const requestParam1 = data.page_size;
+    const requestParam = data?.page;
+    const requestParam1 = data?.page_size;
+    const isDirect = data?.isDirect
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_NOT_FILLED}?search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
-        {
-          headers: {},
-        }
-      )
+        `${API_URL.KYC_FOR_NOT_FILLED}?search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
       .catch((error) => {
         return error.response;
       });
@@ -523,15 +518,13 @@ export const kycForNotFilled = createAsyncThunk(
 export const kycForPendingMerchants = createAsyncThunk(
   "kyc/kycForPendingMerchants",
   async (data) => {
-    const requestParam = data.page;
-    const requestParam1 = data.page_size;
+    const requestParam = data?.page;
+    const requestParam1 = data?.page_size;
+    const isDirect = data?.isDirect;
+
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_PENDING_MERCHANTS}?search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
-        {
-          headers: {},
-        }
-      )
+        `${API_URL.KYC_FOR_PENDING_MERCHANTS}?search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
       .catch((error) => {
         return error.response;
       });
@@ -543,11 +536,12 @@ export const kycForPendingMerchants = createAsyncThunk(
 export const kycForRejectedMerchants = createAsyncThunk(
   "kyc/kycForRejectedMerchants",
   async (data) => {
-    const requestParam = data.page;
-    const requestParam1 = data.page_size;
+    const requestParam = data?.page;
+    const requestParam1 = data?.page_size;
+    const isDirect = data?.isDirect;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
+        `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`,
         {
           headers: {},
         }
@@ -567,12 +561,11 @@ export const kycForPending = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
+    const isDirect = data?.isDirect;
+
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_PROCESSING}?search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
-        {
-          headers: {},
-        }
+        `${API_URL.KYC_FOR_PROCESSING}?search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
         return error.response;
@@ -588,12 +581,11 @@ export const kycForVerified = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
+    const isDirect = data?.isDirect;
+
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_VERIFIED}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
-        {
-          headers: {},
-        }
+        `${API_URL.KYC_FOR_VERIFIED}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
         return error.response;
@@ -636,13 +628,12 @@ export const kycForApproved = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
+    const isDirect = data?.isDirect;
+
+
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_APPROVED}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}`,
-        {
-          headers: {},
-        }
-      )
+        `${API_URL.KYC_FOR_APPROVED}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
       .catch((error) => {
         return error.response;
       });

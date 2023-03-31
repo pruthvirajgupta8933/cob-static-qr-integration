@@ -21,14 +21,23 @@ const NotFilledKYC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  
+  const [onboardType, setOnboardType] = useState("")
 
   const dispatch = useDispatch();
   const loadingState = useSelector((state) => state.kyc.isLoading);
+
   const kycSearch = (e, fieldType) => {
-    fieldType === "text"
-      ? setSearchByDropDown(false)
-      : setSearchByDropDown(true);
-    setSearchText(e);
+    if(fieldType === "text"){
+      setSearchByDropDown(false)
+      setSearchText(e);
+    }
+    if(fieldType === "dropdown"){
+      setSearchByDropDown(true)
+      setOnboardType(e)
+    }
+    
+  
   };
 
   const mappedData = data?.map((item) => {
@@ -46,7 +55,7 @@ const NotFilledKYC = () => {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, pageSize, searchText, dispatch]);
+  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
   const searchByText = () => {
     setData(
@@ -66,6 +75,7 @@ const NotFilledKYC = () => {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Not-Filled",
+        isDirect:onboardType
       })
     )
       .then((resp) => {

@@ -14,10 +14,12 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import CustomLoader from "../../_components/loader";
 
 function VerifiedMerchant() {
+
+  const dispatch = useDispatch();
+
   const [data, setData] = useState([]);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
   const [dataCount, setDataCount] = useState("");
-  const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
@@ -26,6 +28,8 @@ function VerifiedMerchant() {
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  const [onboardType, setOnboardType] = useState("")
+
 
   function capitalizeFirstLetter(param) {
     // console.log(param,"param")
@@ -169,11 +173,17 @@ function VerifiedMerchant() {
   const roles = roleBasedAccess();
 
   const kycSearch = (e, fieldType) => {
-    fieldType === "text"
-      ? setSearchByDropDown(false)
-      : setSearchByDropDown(true);
-    setSearchText(e);
-  };
+    if(fieldType === "text"){
+      setSearchByDropDown(false)
+      setSearchText(e);
+    }
+    if(fieldType === "dropdown"){
+      setSearchByDropDown(true)
+      setOnboardType(e)
+    }
+  }
+
+
 
   const verifyMerchant = () => {
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
@@ -204,7 +214,7 @@ function VerifiedMerchant() {
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, searchText, pageSize]);
+  }, [currentPage, searchText, pageSize, onboardType]);
 
   const fetchData = () => {
     dispatch(
@@ -213,6 +223,7 @@ function VerifiedMerchant() {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Verified",
+        isDirect:onboardType
       })
     )
       .then((resp) => {

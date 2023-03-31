@@ -19,6 +19,10 @@ import CustomLoader from "../../_components/loader";
 function PendingVerification() {
   const roles = roleBasedAccess();
   const [data, setData] = useState([]);
+  const [onboardType, setOnboardType] = useState("")
+
+
+
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
@@ -172,11 +176,15 @@ function PendingVerification() {
   const dispatch = useDispatch();
 
   const kycSearch = (e, fieldType) => {
-    fieldType === "text"
-      ? setSearchByDropDown(false)
-      : setSearchByDropDown(true);
-    setSearchText(e);
-  };
+    if(fieldType === "text"){
+      setSearchByDropDown(false)
+      setSearchText(e);
+    }
+    if(fieldType === "dropdown"){
+      setSearchByDropDown(true)
+      setOnboardType(e)
+    }
+  }
 
   const pendingVerify = () => {
     dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
@@ -197,7 +205,7 @@ function PendingVerification() {
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, searchText, searchText, pageSize]);
+  }, [currentPage, searchText, searchText, pageSize, onboardType]);
 
   const fetchData = () => {
     dispatch(
@@ -206,6 +214,7 @@ function PendingVerification() {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Processing",
+        isDirect:onboardType
       })
     )
       .then((resp) => {
