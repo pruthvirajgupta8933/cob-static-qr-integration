@@ -241,13 +241,6 @@ const RejectedKYC = () => {
     setPageSize(pageSize);
   };
 
-    //for api search pass key searchbyapi
-    const clearFilter = (e) => {
-      if (e) {
-        setSearchText("");
-        kycForRejectedMerchnats();
-      }
-    };
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
@@ -258,7 +251,6 @@ const RejectedKYC = () => {
             searchByText={searchByText}
             setSearchByDropDown={setSearchByDropDown}
             searchTextByApiCall={true}
-            clearFilter={clearFilter}
           />
         </div>
         {openCommentModal === true ? (

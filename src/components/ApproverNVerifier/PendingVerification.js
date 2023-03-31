@@ -276,13 +276,7 @@ function PendingVerification() {
     let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
     return date;
   };
-  //for api search pass key searchbyapi
-  const clearFilter = (e) => {
-    if (e) {
-      setSearchText("");
-      fetchData();
-    }
-  };
+
 
   return (
     <div className="container-fluid flleft">
@@ -294,7 +288,6 @@ function PendingVerification() {
             searchByText={searchByText}
             setSearchByDropDown={setSearchByDropDown}
             searchTextByApiCall={true}
-            clearFilter={clearFilter}
           />
         </div>
         <div>
@@ -357,8 +350,6 @@ function PendingVerification() {
               pageSize={pageSize}
               currentPage={currentPage}
               changeCurrentPage={changeCurrentPage}
-              clearFilter={clearFilter}
-              searchTextByApiCall={true}
             />
           )}
         </div>

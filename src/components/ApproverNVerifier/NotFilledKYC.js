@@ -119,13 +119,7 @@ const NotFilledKYC = () => {
     },
   ];
 
-  //for api search pass key searchbyapi
-  const clearFilter = (e) => {
-    if (e) {
-      setSearchText("");
-      fetchData();
-    }
-  };
+
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
@@ -137,7 +131,6 @@ const NotFilledKYC = () => {
             searchTextByApiCall={true}
             setSearchByDropDown={setSearchByDropDown}
             searchData={notFilledData}
-            clearFilter={clearFilter}
           />
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">

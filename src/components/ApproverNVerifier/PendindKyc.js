@@ -249,13 +249,7 @@ const PendindKyc = () => {
     let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
     return date;
   };
-  //for api search pass key searchbyapi
-  const clearFilter = (e) => {
-    if (e) {
-      setSearchText("");
-      fetchData();
-    }
-  };
+
   // console.log("Data Loading",isLoaded)
 
   return (
@@ -268,7 +262,6 @@ const PendindKyc = () => {
             searchByText={searchByText}
             searchTextByApiCall={true}
             setSearchByDropDown={setSearchByDropDown}
-            clearFilter={clearFilter}
           />
         </div>
         <div>
@@ -323,8 +316,6 @@ const PendindKyc = () => {
               pageSize={pageSize}
               currentPage={currentPage}
               changeCurrentPage={changeCurrentPage}
-              clearFilter={clearFilter}
-              searchTextByApiCall={true}
             />
           )}
         </div>
