@@ -289,7 +289,7 @@ function RateMapping() {
             </div>
             <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
               <div className="scroll overflow-auto">
-                {console.log(data)}
+                {/* {console.log(data)} */}
                 {!loadingState && data?.length !== 0 && (
                   <Table
                     row={AssignZoneData}

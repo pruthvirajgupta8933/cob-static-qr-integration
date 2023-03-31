@@ -240,7 +240,7 @@ export const Profile = () => {
                     <div className="col-lg-6">
                       {/* <label><strong>Change Password</strong></label> -<br/> */}
                       <Link to={`/dashboard/change-password`}>
-                        <button type="button" className="form-control btn btn-primary for_passwrd w-50" >
+                        <button type="button" className="form-control btn btn-primary for_passwrd w-60" >
                           Change Password
                         </button>
                       </Link>
