@@ -632,7 +632,7 @@ export const kycForApproved = createAsyncThunk(
     const isDirect = data?.isDirect ===undefined ? "" : data?.isDirect;
     const searchquery = data?.searchquery === undefined ? "" : data?.searchquery;
 
-    console.log("isDirect",isDirect)
+    // console.log("isDirect",isDirect)
     const response = await axiosInstanceJWT
       .get(
         `${API_URL.KYC_FOR_APPROVED}&search=${data.merchantStatus}&search_query=${searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
