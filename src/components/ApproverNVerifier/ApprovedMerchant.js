@@ -246,24 +246,25 @@ function ApprovedMerchant() {
 
   // Only used for refreshing the page by passing it to the props
   const approvedTable = () => {
-    dispatch(
-      kycForApproved({
-        page: currentPage,
-        page_size: pageSize,
-      })
-    )
-      .then((resp) => {
-        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setApprovedMerchantData(data);
-      })
+    fetchData()
+    // dispatch(
+    //   kycForApproved({
+    //     page: currentPage,
+    //     page_size: pageSize,
+    //   })
+    // )
+    //   .then((resp) => {
+    //     resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+    //     const data = resp?.payload?.results;
+    //     const dataCoun = resp?.payload?.count;
+    //     setData(data);
+    //     setDataCount(dataCoun);
+    //     setApprovedMerchantData(data);
+    //   })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+    //   .catch((err) => {
+    //     toastConfig.errorToast("Data not loaded");
+    //   });
   };
 
   const searchByText = () => {

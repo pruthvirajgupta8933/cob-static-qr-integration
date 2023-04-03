@@ -186,18 +186,19 @@ function VerifiedMerchant() {
 
 
   const verifyMerchant = () => {
-    dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
-      .then((resp) => {
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setVerifiedMerchant(data);
-      })
+    fetchData()
+    // dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
+    //   .then((resp) => {
+    //     const data = resp?.payload?.results;
+    //     const dataCoun = resp?.payload?.count;
+    //     setData(data);
+    //     setDataCount(dataCoun);
+    //     setVerifiedMerchant(data);
+    //   })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+    //   .catch((err) => {
+    //     toastConfig.errorToast("Data not loaded");
+    //   });
   };
 
   const searchByText = () => {

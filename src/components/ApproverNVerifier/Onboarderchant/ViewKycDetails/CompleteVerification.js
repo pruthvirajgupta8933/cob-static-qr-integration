@@ -132,7 +132,14 @@ const CompleteVerification = (props) => {
           dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
           setButtonClick(false)
           setCommetText("");
-          return currenTab === 4 ? pendingApporvalTable() : currenTab === 3 ? pendingVerfyTable() : <></>
+          if(currenTab === 4){
+            return pendingApporvalTable()
+          }else if(currenTab === 3){
+            return pendingVerfyTable()
+          }else if (currenTab===5){
+            return approvedTable()
+          }
+          // return currenTab === 4 ? pendingApporvalTable() : currenTab === 3 ? pendingVerfyTable() : currenTab === 5 ? approvedTable() :<></>
         })
         .catch((e) => {
           toast.error("Something went wrong, Please Try Again later")

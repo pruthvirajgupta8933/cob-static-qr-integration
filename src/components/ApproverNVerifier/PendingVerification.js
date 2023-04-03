@@ -187,18 +187,19 @@ function PendingVerification() {
   }
 
   const pendingVerify = () => {
-    dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
-      .then((resp) => {
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setNewRegistrationData(data);
-      })
+    fetchData();
+    // dispatch(kycForPending({ page: currentPage, page_size: pageSize }))
+    //   .then((resp) => {
+    //     const data = resp?.payload?.results;
+    //     const dataCoun = resp?.payload?.count;
+    //     setData(data);
+    //     setDataCount(dataCoun);
+    //     setNewRegistrationData(data);
+    //   })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+    //   .catch((err) => {
+    //     toastConfig.errorToast("Data not loaded");
+    //   });
   };
 
   //---------------GET Api for KycPending-------------------

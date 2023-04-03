@@ -13,6 +13,7 @@ import Table from "../_components/table_components/table/Table";
 import { LedgerRowData } from "../utilities/tableData";
 import Paginataion from "../_components/table_components/pagination/Pagination";
 import CountPerPageFilter from "../_components/table_components/filters/CountPerPage";
+// import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 const PayoutLedger = (props) => {
   const dispatch = useDispatch();
@@ -161,6 +162,10 @@ const PayoutLedger = (props) => {
                     Search{" "}
                   </button>
                 </div>
+                {/* <MerchnatListExportToxl
+            URL={"?order_by=-id&search=Not-Filled"}
+            filename={"Not-Filled-KYC"}
+          /> */}
                 {/* <div className="form-group col-lg-1 ml-3 mt-3 ">
                   <label></label>
                   <button
