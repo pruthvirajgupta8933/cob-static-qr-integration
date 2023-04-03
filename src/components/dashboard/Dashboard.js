@@ -431,7 +431,7 @@ function Dashboard() {
           </ViewerRoute>
         )}
 
-        <ApproverRoute exact path={`${path}/assignzone`} Component={AssignZone}>
+        <ApproverRoute exact path={`${path}/configuration`} Component={AssignZone}>
           <AssignZone />
         </ApproverRoute>
 
