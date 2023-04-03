@@ -136,7 +136,7 @@ const CreatePassword = (props) => {
                               className="abhitest"
                               style={{
                                 color: "red",
-                                position: "absolute",
+                                // position: "absolute",
                                 zIndex: " 999",
                               }}
                             >
@@ -187,7 +187,7 @@ const CreatePassword = (props) => {
                                 className="abhitest"
                                 style={{
                                   color: "red",
-                                  position: "absolute",
+                                  // position: "absolute",
                                   zIndex: " 999",
                                 }}
                               >
