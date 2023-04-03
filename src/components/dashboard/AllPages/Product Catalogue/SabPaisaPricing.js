@@ -8,9 +8,10 @@ import API_URL from "../../../../config";
 import { axiosInstanceJWT } from "../../../../utilities/axiosInstance";
 import "./product.css";
 import toastConfig from "../../../../utilities/toastTypes";
-import { useParams,useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { logout } from "../../../../slices/auth";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
+import CustomModal from "../../../../_components/custom_modal";
 
 const SabPaisaPricing = () => {
   const history = useHistory();
@@ -19,8 +20,10 @@ const SabPaisaPricing = () => {
   const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
+  const [modalToggle, setModalToggle] = useState(false);
 
-  console.log("selectedPlan",selectedPlan)
+
+  // console.log("selectedPlan", selectedPlan)
   const dispatch = useDispatch();
   const clickHandler = (value) => {
     history.push("/dashboard");
@@ -30,7 +33,7 @@ const SabPaisaPricing = () => {
   const { clientId, business_cat_code } = user.clientMerchantDetailsList[0];
 
   useEffect(() => {
-    if(roles?.merchant !== true) {
+    if (roles?.merchant !== true) {
       dispatch(logout())
     }
   })
@@ -59,13 +62,13 @@ const SabPaisaPricing = () => {
         setProductDetails(data);
       })
     getSubscribedPlan(id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
 
 
 
   const handleClick = async (plan_id, plan_name, plan_code) => {
-    
+
     const postData = {
       clientId: clientId,
       applicationName: param?.name,
@@ -73,49 +76,78 @@ const SabPaisaPricing = () => {
       planName: plan_name,
       applicationId: param?.id,
     };
-
-    // if(plan_code==="005"){
-    //   // only for subscription plan , we route to payment gateway
-    //   sessionStorage.setItem("tempProductPlanData",JSON.stringify(postData))
-    //   setTempSelectedData(postData)
-    //   history.push("/dashboard/sabpaisa-pg");
-    // }else{
-      // setTempPlanId(plan_id)
-      const res = await axiosInstanceJWT.post(
-        API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-        postData
-      );
-     
+    
+    axiosInstanceJWT.post(
+      API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+      postData
+    ).then(res=>{
       if (res?.status === 200) {
-        // console.log("1")
-        // only PG product without subscription plan check rate mapping status
-        // if (param?.id === "10" && plan_id!==1) {
-        //   // console.log("2")
-        //   // only for payment gateway we have to check rate mapping status
-        //   // checkRateMappingStatus("COBED", user?.clientMerchantDetailsList[0]?.clientCode, user?.loginId)
-        // }
-  
-        getSubscribedPlan(plan_id);
-        toastConfig.successToast(res?.data?.message);
-      } else {
-        toastConfig.errorToast("Something went wrong");
-      }
-    // }
-   
-   
-
-   
+        getSubscribedPlan(param?.id);
+        setModalToggle(true)
+      } 
+    }).catch(err=> toastConfig.errorToast(err))
 
   };
+
+
+  const modalBody = () => {
+    return (
+      <React.Fragment>
+        <h2 className="subscribingproduct mb-0">
+          Thank You For Subscribing
+        </h2>
+        <div className="text-center">
+          <h2 className="manshacss">
+            Our team will contact you and help you integrate your platform.
+            Till then, please familiarize yourself with our Dashboard
+          </h2>
+        </div>
+        <div className="row">
+          <div className="col-lg-12 text-center">
+            <img
+              src={rafiki}
+              className="modalsimageclass-1"
+              alt="SabPaisa"
+              title="SabPaisa"
+              style={{ width: 250 }}
+            />
+          </div>
+        </div>
+      </React.Fragment>
+    )
+  }
+  const modalFooter = () => {
+    return (
+      <div className="col-lg-12 text-center">
+
+      <button
+        type="button"
+        className="ColrsforredirectProdct text-white m-0"
+        onClick={() => clickHandler(true)}
+        data-dismiss="modal"
+      >
+        Return to Dashboard
+      </button>
+
+    </div>
+    )
+  }
+
+
 
 
   return (
 
     <section className="ant-layout">
+    {/* custom modal for thanks message after select the plan */}
+      <CustomModal modalBody={modalBody} modalFooter={modalFooter} modalToggle={modalToggle} fnSetModalToggle={setModalToggle} />
+
+
       <div>
         <NavBar />
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
+
         <div>
           <h1 className="text-center headingpricing text-md-start">SabPaisa Pricing</h1>
           <h2 className="text-center headingpricing prdhead">{param?.name}</h2>
@@ -131,120 +163,55 @@ const SabPaisaPricing = () => {
 
               // if user select the business catagory gamming then hide the subscription plan
               (business_cat_code === "37" && Products.plan_code === "005") ? <></> :
-                (param?.id === '14') ? 
-                <div className="card col-lg-4">
-                  <div className="card-body">
-                    <div className="col-lg-12">
-                      <h2 className="pull-left- bold-font text-center mb-20 price d_block">
-                        {(Products.plan_price === "Connect" && Products.plan_name === "Enterprise") ?
-                          <></> :
-                          <>
-                            {Products?.plan_price?.split("*")[0]} <span className={`title2 ${param?.id === "14" ? 'fontn' : 'fontna'}`}> {Products?.plan_price?.split("*")[1]}</span>
-                          </>
-                        }
-                      </h2>
-                      <span className="blockquote mb-0 pull-left- text-center">
-                        <span className="w-50 pxsolid text-center mt-40 min-heit">&nbsp;</span>
-                        <h4 className="mb-20 featurespricing">FEATURES INCLUDING</h4>
-                        <ul className="list-group list-group-flush">
-                          {Products?.plan_description
-                            .split(",")
-                            .map((details) => (
-                              <li className="list-group-item fnt-sz"><p className="firstli1 mb-1">{details}</p></li>
-                            ))}
-                        </ul>
-                      </span>
-                      <span className=" text-center">
-                        <p className="mt-20">
+                (param?.id === '14') ?
+                  <div className="card col-lg-4">
+                    <div className="card-body">
+                      <div className="col-lg-12">
+                        <h2 className="pull-left- bold-font text-center mb-20 price d_block">
+                          {(Products.plan_price === "Connect" && Products.plan_name === "Enterprise") ?
+                            <></> :
+                            <>
+                              {Products?.plan_price?.split("*")[0]} <span className={`title2 ${param?.id === "14" ? 'fontn' : 'fontna'}`}> {Products?.plan_price?.split("*")[1]}</span>
+                            </>
+                          }
+                        </h2>
+                        <span className="blockquote mb-0 pull-left- text-center">
+                          <span className="w-50 pxsolid text-center mt-40 min-heit">&nbsp;</span>
+                          <h4 className="mb-20 featurespricing">FEATURES INCLUDING</h4>
+                          <ul className="list-group list-group-flush">
+                            {Products?.plan_description
+                              .split(",")
+                              .map((details) => (
+                                <li className="list-group-item fnt-sz" key={details}><p className="firstli1 mb-1">{details}</p></li>
+                              ))}
+                          </ul>
+                        </span>
+                        <span className=" text-center">
+                          <p className="mt-20">
 
-                          <button
-                            type="button"
-                            className={`font-weight-bold btn choosePlan-1 btn-lg w-50 ${selectedPlan?.planId === Products?.plan_id ? "btn-bg-color" : ""}`}
-                            data-toggle="modal"
-                            data-target="#subscription"
-                            disabled={selectedPlan?.planId !== "" ? true : false}
-                            onClick={() => {
-                              if (selectedPlan?.planId !== Products?.plan_id) {
-                                handleClick(
-                                  Products.plan_id,
-                                  Products.plan_name,
-                                  Products?.plan_code
-                                )
+                            <button
+                              type="button"
+                              className={`font-weight-bold btn choosePlan-1 btn-lg w-50 ${selectedPlan?.planId === Products?.plan_id ? "btn-bg-color" : ""}`}
+                              // disabled={selectedPlan?.planId !== "" ? true : false}
+                              onClick={() => {
+                                if (selectedPlan?.planId !== Products?.plan_id) {
+                                  handleClick(
+                                    Products.plan_id,
+                                    Products.plan_name,
+                                    Products?.plan_code
+                                  )
+                                }
                               }
-                            }
-                            }
-                          >
-                            {(selectedPlan?.planId === Products.plan_id) ? "Selected Plan" : "Choose Plan"}
-                          </button>
-                        </p>
-                        <div
-                          className="modal fade"
-                          id="subscription"
-                          tabIndex="-1"
-                          role="dialog"
-                          aria-labelledby="subscriptionModalLabel"
-                          aria-hidden="true"
-                        >
-                          <div className="modal-dialog" role="document">
-                            <div className="modal-content">
-                              <div className="modal-header modal-header-fignma">
-
-                                <button
-                                  type="button"
-                                  className="close"
-                                  data-dismiss="modal"
-                                  aria-label="Close"
-                                onClick={() => clickHandler(false)}
-                                >
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-
-                              </div>
-                              <div className="modal-body">
-                                <h2 className="subscribingproduct mb-0">
-                                  Thank You For Subscribing
-                                </h2>
-
-                                <div className="text-center">
-                                  <h2 className="manshacss">
-                                    Our team will contact you and help you integrate your platform.
-                                    Till then, please familiarize yourself with our Dashboard
-
-                                  </h2>
-                                </div>
-                                <div className="row">
-                                  <div className="col-lg-12 text-center">
-                                    <img
-                                      src={rafiki}
-                                      className="modalsimageclass-1"
-                                      alt="SabPaisa"
-                                      title="SabPaisa"
-                                      style={{ width: 250 }}
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="modal-footer m-0 p-2">
-                                <div className="col-lg-12 text-center">
-
-                                  <button
-                                    type="button"
-                                    className="ColrsforredirectProdct text-white m-0"
-                                    onClick={() => clickHandler(true)}
-                                    data-dismiss="modal"
-                                  >
-                                    Return to Dashboard
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </span>
+                              }
+                            >
+                              {(selectedPlan?.planId === Products.plan_id) ? "Selected Plan" : "Choose Plan"}
+                            </button>
+                          </p>
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                :
+                  :
                   <div className={`px-1 ${Products?.plan_id === 45 ? "col-lg-12" : ""} 
                     ${productDetails.length === 4 ? "col-lg-3" : "col-lg-4"}  `} >
                     <div className="card heightcards">
@@ -266,9 +233,7 @@ const SabPaisaPricing = () => {
                             <button
                               type="button"
                               className={`font-weight-bold btn choosePlan-1 btn-lg ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
-                              data-toggle="modal"
-                              data-target="#exampleModal"
-                              disabled={selectedPlan?.planId !== "" ? true : false}
+                              // disabled={selectedPlan?.planId !== "" ? true : false}
                               onClick={() => {
                                 if (selectedPlan?.planId !== Products.plan_id) {
                                   handleClick(
@@ -286,77 +251,6 @@ const SabPaisaPricing = () => {
                           </div>
                         </div>
 
-
-
-                        <div
-                          className="modal fade"
-                          id="exampleModal"
-                          tabIndex="-1"
-                          role="dialog"
-                          aria-labelledby="exampleModalLabel"
-                          aria-hidden="true"
-                        >
-                          <div
-                            className="modal-dialog"
-
-                            role="document"
-                          >
-                            <div className="modal-content">
-                              <div className="modal-header modal-header-fignma">
-
-                                <button
-                                  type="button"
-                                  className="close"
-                                  data-dismiss="modal"
-                                  aria-label="Close"
-                                onClick={() => clickHandler(false)}
-                                >
-
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-
-                              </div>
-                              <div className="modal-body">
-                                <h2 className="subscribingproduct mb-0">
-                                  Thank You For Subscribing
-                                </h2>
-
-                                <div className="text-center">
-                                  <h2 className="manshacss">
-                                    Our team will contact you and help you integrate your platform.
-                                    Till then, please familiarize yourself with our Dashboard
-
-                                  </h2>
-                                </div>
-                                <div className="row">
-                                  <div className="col-lg-12 text-center">
-                                    <img
-                                      src={rafiki}
-                                      className="modalsimageclass-1"
-                                      alt="SabPaisa"
-                                      title="SabPaisa"
-                                      style={{ width: 250 }}
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="modal-footer m-0 p-2">
-                                <div className="col-lg-12 text-center">
-
-                                  <button
-                                    type="button"
-                                    className="ColrsforredirectProdct text-white m-0"
-                                    onClick={() => clickHandler(true)}
-                                    data-dismiss="modal"
-                                  >
-                                    Return to Dashboard
-                                  </button>
-
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                         <span className="w-50 pxsolid text-center">&nbsp;</span>
                         <h2 className="featurespricing">FEATURES INCLUDING</h2>
                         <div className="text-center">

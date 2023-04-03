@@ -1,5 +1,5 @@
 import API_URL from "../config";
-import { axiosInstance, axiosInstanceJWT } from "../utilities/axiosInstance"
+import { axiosInstance, axiosInstanceJWT,axiosInstanceAuth } from "../utilities/axiosInstance"
 
 // Home - successTxnSummary 
 
@@ -47,7 +47,7 @@ const fetchTransactionHistory = (paramData) => {
 
 // const refund_url=`https://reportapi.sabpaisa.in/SabPaisaReport/REST/`
 const settlementReport = (paramData) => {
-  return axiosInstance.post(API_URL.SettlementReport, paramData)
+  return axiosInstanceAuth.post(API_URL.SettlementReport, paramData)
 }
 
 const refundTransactionHistory = (paramData) => {

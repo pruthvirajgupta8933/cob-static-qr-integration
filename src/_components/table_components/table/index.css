@@ -9,6 +9,7 @@
   }
   .rdt_TableCell{
     border-right: 0.5px solid #dee2e6;
+    font-size: 12px;
   }
   .dnsAhI
   {
@@ -22,4 +23,6 @@
   .rdt_TableHeadRow {
     background-color: #f9fafd !important;
     font-weight: 600 !important;
+    font-size: 14px;
+    
   }

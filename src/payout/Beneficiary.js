@@ -7,9 +7,7 @@ import DropDownCountPerPage from "../_components/reuseable_components/DropDownCo
 import Table from "../_components/table_components/table/Table";
 import { beneficiaryRowData } from "../utilities/tableData";
 import Paginataion from "../_components/table_components/pagination/Pagination";
-import {
-  fetchClientCode,
-} from "../slices/payoutSlice";
+import { fetchClientCode } from "../slices/payoutSlice";
 
 const Beneficiary = () => {
   const dispatch = useDispatch();
@@ -40,28 +38,6 @@ const Beneficiary = () => {
   };
 
 
-  //Map the table data
-  const colData = () => {
-    return (
-      <>
-        {beneficiaryData == [] ? (
-          <td colSpan={"11"}>
-            {" "}
-            <div className="nodatafound text-center">No data found </div>
-          </td>
-        ) : (
-          beneficiaryData?.map((data, key) => (
-            <tr>
-              <td>{makeFirstLetterCapital(data.full_name)}</td>
-              <td>{data.account_number}</td>
-              <td>{data.ifsc_code}</td>
-              <td>{data.upi_id}</td>
-            </tr>
-          ))
-        )}
-      </>
-    );
-  };
   //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
@@ -88,18 +64,17 @@ const Beneficiary = () => {
                   {loadingState ? (
                     <p className="text-center spinner-roll">{<Spinner />}</p>
                   ) : (
-                    <Table row={beneficiaryRowData} col={colData} />
+                    <Table
+                      row={beneficiaryRowData}
+                      data={beneficiaryData}
+                      dataCount={TotalData}
+                      pageSize={pageSize}
+                      currentPage={currentPage}
+                      changeCurrentPage={changeCurrentPage}
+                    />
                   )}
                 </div>
               </div>
-            </div>
-            <div className="mt-2">
-              <Paginataion
-                dataCount={TotalData}
-                pageSize={pageSize}
-                currentPage={currentPage}
-                changeCurrentPage={changeCurrentPage}
-              />
             </div>
           </div>
         </main>

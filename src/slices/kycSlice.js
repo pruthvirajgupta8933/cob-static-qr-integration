@@ -498,20 +498,15 @@ export const saveMerchantBankDetais = createAsyncThunk(
   }
 );
 /////////////////////////////////KYC APPROVED API
-
-
 export const kycForNotFilled = createAsyncThunk(
   "kyc/kycForNotFilled",
   async (data) => {
-    const requestParam = data.page;
-    const requestParam1 = data.page_size;
+    const requestParam = data?.page;
+    const requestParam1 = data?.page_size;
+    const isDirect = data?.isDirect
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_NOT_FILLED}&page=${requestParam}&page_size=${requestParam1}`,
-        {
-          headers: {},
-        }
-      )
+        `${API_URL.KYC_FOR_NOT_FILLED}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
       .catch((error) => {
         return error.response;
       });
@@ -523,15 +518,13 @@ export const kycForNotFilled = createAsyncThunk(
 export const kycForPendingMerchants = createAsyncThunk(
   "kyc/kycForPendingMerchants",
   async (data) => {
-    const requestParam = data.page;
-    const requestParam1 = data.page_size;
+    const requestParam = data?.page;
+    const requestParam1 = data?.page_size;
+    const isDirect = data?.isDirect;
+
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_PENDING_MERCHANTS}&page=${requestParam}&page_size=${requestParam1}`,
-        {
-          headers: {},
-        }
-      )
+        `${API_URL.KYC_FOR_PENDING_MERCHANTS}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
       .catch((error) => {
         return error.response;
       });
@@ -543,11 +536,12 @@ export const kycForPendingMerchants = createAsyncThunk(
 export const kycForRejectedMerchants = createAsyncThunk(
   "kyc/kycForRejectedMerchants",
   async (data) => {
-    const requestParam = data.page;
-    const requestParam1 = data.page_size;
+    const requestParam = data?.page;
+    const requestParam1 = data?.page_size;
+    const isDirect = data?.isDirect;
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&page=${requestParam}&page_size=${requestParam1}`,
+        `${API_URL.KYC_FOR_REJECTED_MERCHANTS}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`,
         {
           headers: {},
         }
@@ -567,12 +561,11 @@ export const kycForPending = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
+    const isDirect = data?.isDirect;
+
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_PROCESSING}&page=${requestParam}&page_size=${requestParam1}`,
-        {
-          headers: {},
-        }
+        `${API_URL.KYC_FOR_PROCESSING}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
         return error.response;
@@ -588,12 +581,11 @@ export const kycForVerified = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
+    const isDirect = data?.isDirect;
+
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_VERIFIED}&page=${requestParam}&page_size=${requestParam1}`,
-        {
-          headers: {},
-        }
+        `${API_URL.KYC_FOR_VERIFIED}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`
       )
       .catch((error) => {
         return error.response;
@@ -636,13 +628,12 @@ export const kycForApproved = createAsyncThunk(
   async (data) => {
     const requestParam = data.page;
     const requestParam1 = data.page_size;
+    const isDirect = data?.isDirect;
+
+
     const response = await axiosInstanceJWT
       .get(
-        `${API_URL.KYC_FOR_APPROVED}&page=${requestParam}&page_size=${requestParam1}`,
-        {
-          headers: {},
-        }
-      )
+        `${API_URL.KYC_FOR_APPROVED}&search=${data.merchantStatus}&search_query=${data.searchquery}&page=${requestParam}&page_size=${requestParam1}&isDirect=${isDirect}`)
       .catch((error) => {
         return error.response;
       });
@@ -775,10 +766,26 @@ export const approveDoc = createAsyncThunk(
     return response.data;
   }
 );
-//----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
+//----- GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 export const panValidation = createAsyncThunk(
   "kyc/panValidation",
   async (requestParam) => {
+    console.log("check 1",requestParam)
+    const response = await kycValidatorAuth
+      .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
+      .catch((error) => {
+        return error.response;
+      });
+
+    console.log("check 3")
+    return response.data;
+  }
+);
+
+export const authPanValidationrr = createAsyncThunk(
+  "kyc/authPanValidationrr",
+  async (requestParam) => {
+    console.log("check 4")
     const response = await kycValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
@@ -792,6 +799,7 @@ export const panValidation = createAsyncThunk(
 export const authPanValidation = createAsyncThunk(
   "kyc/authPanValidation",
   async (requestParam) => {
+    console.log("check 5")
     const response = await kycValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
@@ -1161,14 +1169,13 @@ export const kycSlice = createSlice({
 
     //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 
-    // [panValidation.fulfilled]: (state, action) => {
-    //   console.log("panValidation")
-
-    //   state.allTabsValidate.BusinessDetailsStatus.PanValidation = action.payload;
-    //   if (action?.payload?.status === true && action?.payload?.valid === true) {
-    //     state.kycUserList.panCard = action?.meta?.arg?.pan_number
-    //   }
-    // },
+    [panValidation.fulfilled]: (state, action) => {
+      console.log("panValidation")
+      state.allTabsValidate.BusinessDetailsStatus.PanValidation = action.payload;
+      if (action?.payload?.status === true && action?.payload?.valid === true) {
+        state.kycUserList.panCard = action?.meta?.arg?.pan_number
+      }
+    },
 
     //-----------------------------------
 

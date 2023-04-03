@@ -39,7 +39,14 @@ function AssignZone() {
   };
 
   useEffect(() => {
-    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
+    dispatch(
+      kycForApproved({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: "",
+        merchantStatus: "Approved",
+      })
+    )
       .then((resp) => {
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
@@ -63,7 +70,6 @@ function AssignZone() {
       )
     );
   };
-
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
@@ -100,45 +106,60 @@ function AssignZone() {
     },
   ];
 
-
   const AssignZoneData = [
-    { id: "1", name: "S.No", selector: (row) => row.sno ,sortable:true ,width:"95px"},
-    { id: "2", name: "Client Code", selector: (row) => row.clientCode, width:"130px" },
-    { id: "3", name: "Merchant Name", selector: (row) => capitalizeFirstLetter(row?.name ? row?.name : "NA"),  sortable:true,  width:"200px" },
+    {
+      id: "1",
+      name: "S.No",
+      selector: (row) => row.sno,
+      sortable: true,
+      width: "95px",
+    },
+    {
+      id: "2",
+      name: "Client Code",
+      selector: (row) => row.clientCode,
+      width: "130px",
+    },
+    {
+      id: "3",
+      name: "Merchant Name",
+      selector: (row) => capitalizeFirstLetter(row?.name ? row?.name : "NA"),
+      sortable: true,
+      width: "200px",
+    },
     {
       id: "4",
       name: "Email",
       selector: (row) => row.emailId,
-      width:"220px"
+      width: "220px",
     },
     {
       id: "5",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
-      width:"150px"
-      
+      width: "150px",
     },
     {
       id: "6",
       name: "KYC Status",
-      selector: (row) => row.status
+      selector: (row) => row.status,
     },
     {
       id: "7",
       name: "Registered Date",
       selector: (row) => row.signUpDate,
       cell: (row) => covertDate(row.signUpDate),
-      sortable:true,
-      width:"150px"
+      sortable: true,
+      width: "150px",
     },
     {
       id: "8",
       name: "Onboard Type",
-      selector: (row) => row.isDirect
+      selector: (row) => row.isDirect,
     },
     {
       id: "9",
-      name: "View Zone",
+      name: "Merchant Configuration",
       cell: (row) => (
         <div className="mt-3">
           <button
@@ -151,15 +172,12 @@ function AssignZone() {
             data-toggle="modal"
             data-target="#exampleModalCenter"
           >
-            Update Zone
+            Configuration
           </button>
         </div>
-      )
-
+      ),
     },
   ];
-
-
 
   return (
     <section className="ant-layout">
@@ -169,7 +187,7 @@ function AssignZone() {
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Assign Zone</h1>
+            <h1 className="m-b-sm gx-float-left">Configuration</h1>
           </div>
           <div className="container-fluid flleft">
             <div className="col-lg-4 mrg-btm- bgcolor">
@@ -180,7 +198,6 @@ function AssignZone() {
                 setSearchByDropDown={setSearchByDropDown}
               />
               <div>
-
                 {openZoneModal === true ? (
                   <ViewZoneModal userData={modalDisplayData} />
                 ) : (

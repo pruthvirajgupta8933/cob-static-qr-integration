@@ -305,7 +305,6 @@ const OnboardedReport = () => {
 
                                     </div>
                                     <div className="form-group col-md-4">
-
                                         <FormikController
                                             control="select"
                                             type="date"

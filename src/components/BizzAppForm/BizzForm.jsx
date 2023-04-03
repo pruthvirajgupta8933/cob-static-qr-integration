@@ -10,6 +10,7 @@ import {
     space,
 } from "../../_components/formik/ValidationRegex";
 import FormikController from '../../_components/formik/FormikController'
+import { axiosInstanceAuth } from "../../utilities/axiosInstance";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const BizzAppForm = (props) => {
     const validationSchema = Yup.object().shape({
@@ -156,8 +157,7 @@ const BizzAppForm = (props) => {
     ]
 
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
-        console.log("kashif", values)
-        const res = await axios
+        const res = await axiosInstanceAuth
             .post(API_URL.BizzAPPForm, values)
             .then((response) => {
                 if (response.status === 200) {

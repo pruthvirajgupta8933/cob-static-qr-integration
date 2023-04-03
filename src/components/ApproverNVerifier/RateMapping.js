@@ -36,7 +36,14 @@ function RateMapping() {
   };
 
   useEffect(() => {
-    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
+    dispatch(
+      kycForApproved({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Approved",
+      })
+    )
       .then((resp) => {
         const data = resp?.payload?.results;
         //  resp?.payload?.results!==null ?  toastConfig.errorToast("No data Found") : <></>
@@ -46,7 +53,7 @@ function RateMapping() {
         setData(data);
       })
 
-      .catch((err) => { });
+      .catch((err) => {});
   }, [currentPage, pageSize]);
 
   useEffect(() => {
@@ -154,7 +161,6 @@ function RateMapping() {
     },
   ];
 
-
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
@@ -164,66 +170,78 @@ function RateMapping() {
     return date;
   };
 
-
-
-
   const AssignZoneData = [
-    { id: "1", name: "S.No", selector: (row) => row.sno, sortable:true,width:"95px" },
-    { id: "2", name: "Client Code", selector: (row) => row.clientCode ,width:"130px" },
-    { id: "3", name: "Merchant Name", selector: (row) => capitalizeFirstLetter(row?.name ? row?.name : "NA") , sortable:true, width:"200px"},
+    {
+      id: "1",
+      name: "S.No",
+      selector: (row) => row.sno,
+      sortable: true,
+      width: "95px",
+    },
+    {
+      id: "2",
+      name: "Client Code",
+      selector: (row) => row.clientCode,
+      width: "130px",
+    },
+    {
+      id: "3",
+      name: "Merchant Name",
+      selector: (row) => capitalizeFirstLetter(row?.name ? row?.name : "NA"),
+      sortable: true,
+      width: "200px",
+    },
     {
       id: "4",
       name: "Email",
       selector: (row) => row.emailId,
-      width:"220px"
+      width: "220px",
     },
     {
       id: "5",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
-      width:"150px"
+      width: "150px",
     },
     {
       id: "6",
       name: "KYC Status",
-      selector: (row) => row.status
+      selector: (row) => row.status,
     },
     {
       id: "7",
       name: "Registered Date",
       selector: (row) => row.signUpDate,
       cell: (row) => covertDate(row.signUpDate),
-      sortable:true,
-      width:"150px"
+      sortable: true,
+      width: "150px",
     },
     {
       id: "8",
       name: "Onboard Type",
-      selector: (row) => row.isDirect
+      selector: (row) => row.isDirect,
     },
     {
       id: "9",
       name: "Action",
       cell: (row) => (
         <div className="mt-3">
-        <button
-          type="submit"
-          onClick={() => {
-            setModalDisplayData(row);
-            setOpenModal(true);
-          }}
-          className="btn btn-primary"
-          data-toggle="modal"
-          data-target="#exampleModalCenter"
-        >
-          Rate Map
-        </button>
+          <button
+            type="submit"
+            onClick={() => {
+              setModalDisplayData(row);
+              setOpenModal(true);
+            }}
+            className="btn btn-primary"
+            data-toggle="modal"
+            data-target="#exampleModalCenter"
+          >
+            Rate Map
+          </button>
         </div>
-      )
-
+      ),
     },
   ];
-
 
   return (
     <section className="ant-layout">
@@ -271,7 +289,7 @@ function RateMapping() {
             </div>
             <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
               <div className="scroll overflow-auto">
-                {console.log(data)}
+                {/* {console.log(data)} */}
                 {!loadingState && data?.length !== 0 && (
                   <Table
                     row={AssignZoneData}

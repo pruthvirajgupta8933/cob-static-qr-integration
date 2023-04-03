@@ -72,6 +72,7 @@ const MerchantDocument = (props) => {
   const [documentsIdList, setdocumentsIdList] = useState([])
 
   const [checkedClicked, setCheckedClicked] = useState(false)
+  // console.log("checkedClicked",checkedClicked)
   // const [enableeBtn, setEnableBtn] = useState(false)
 
   // console.log("this is the real statsus",staus)
@@ -327,7 +328,16 @@ const MerchantDocument = (props) => {
           <thead>
             {checkedClicked === true && (roles.approver || roles.verifier) &&
               <th colSpan={6} style={{ textAlign: "right" }}>
-                <CompleteVerifyAndRejectBtn roles={roles} roleBasePermissions={roleBasePermissions} merchantKycId={merchantKycId} documentsIdList={documentsIdList} docList={docList} setCheckedClicked={setCheckedClicked} />
+                <CompleteVerifyAndRejectBtn 
+                  roles={roles} 
+                  roleBasePermissions={roleBasePermissions}  
+                  setdocumentsIdList={setdocumentsIdList} 
+                  merchantKycId={merchantKycId} 
+                  documentsIdList={documentsIdList} 
+                  docList={docList} 
+                  setCheckedClicked={setCheckedClicked} 
+                  checkedClicked={checkedClicked}
+                    />
               </th>
             }
             <tr>

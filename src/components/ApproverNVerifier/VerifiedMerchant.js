@@ -7,17 +7,19 @@ import moment from "moment";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
-import Table from "../../_components/table_components/table/Table"
+import Table from "../../_components/table_components/table/Table";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
 
 function VerifiedMerchant() {
+
+  const dispatch = useDispatch();
+
   const [data, setData] = useState([]);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
   const [dataCount, setDataCount] = useState("");
-  const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
@@ -26,6 +28,7 @@ function VerifiedMerchant() {
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  const [onboardType, setOnboardType] = useState("")
 
 
   function capitalizeFirstLetter(param) {
@@ -33,40 +36,55 @@ function VerifiedMerchant() {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
 
-
-
   const PendingApprovalData = [
-    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true , width:"90px"},
-    { id: "2", name: "Client Code", selector: (row) => row.clientCode,
-    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>, width:"130px"
-  
-  },
-    { id: "3", name: "Company Name", selector: (row) => row.companyName ,
-    cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
-    width:"400px"
-
-  },
+    {
+      id: "1",
+      name: "S.No",
+      selector: (row) => row.sno,
+      sortable: true,
+      width: "90px",
+    },
+    {
+      id: "2",
+      name: "Client Code",
+      selector: (row) => row.clientCode,
+      cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
+      width: "130px",
+    },
+    {
+      id: "3",
+      name: "Company Name",
+      selector: (row) => row.companyName,
+      cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
+      width: "400px",
+    },
     {
       id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
-      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA" )}</div> ,
+      cell: (row) => (
+        <div className="removeWhiteSpace">
+          {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
+        </div>
+      ),
       sortable: true,
-      width:"200px"
+      width: "200px",
     },
     {
       id: "5",
       name: "Email",
       selector: (row) => row.emailId,
       cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
-      width:"220px"
+      width: "220px",
     },
     {
       id: "6",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
-      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
-      width:"150px"
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row?.contactNumber}</div>
+      ),
+      width: "150px",
     },
     {
       id: "7",
@@ -79,7 +97,7 @@ function VerifiedMerchant() {
       selector: (row) => row.signUpDate,
       cell: (row) => covertDate(row.signUpDate),
       sortable: true,
-      width:"150px"
+      width: "150px",
     },
     {
       id: "9",
@@ -87,7 +105,7 @@ function VerifiedMerchant() {
       selector: (row) => row.verified_date,
       cell: (row) => covertDate(row.verified_date),
       sortable: true,
-      width:"150px"
+      width: "150px",
     },
     {
       id: "10",
@@ -98,8 +116,8 @@ function VerifiedMerchant() {
       id: "11",
       name: "View Status",
       cell: (row) => (
-           <div className="mt-2">
-        <button
+        <div className="mt-2">
+          <button
             type="button"
             className="approve text-white  btn-xs"
             onClick={() => {
@@ -113,7 +131,7 @@ function VerifiedMerchant() {
               ? "Approve KYC "
               : "View Status"}
           </button>
-          </div>
+        </div>
       ),
     },
     {
@@ -121,7 +139,7 @@ function VerifiedMerchant() {
       name: "Action",
       cell: (row) => (
         <div className="mt-2">
-        {roles?.verifier === true ||
+          {roles?.verifier === true ||
           roles?.approver === true ||
           roles?.viewer === true ? (
             <button
@@ -155,25 +173,32 @@ function VerifiedMerchant() {
   const roles = roleBasedAccess();
 
   const kycSearch = (e, fieldType) => {
-    fieldType === "text"
-      ? setSearchByDropDown(false)
-      : setSearchByDropDown(true);
-    setSearchText(e);
-  };
+    if(fieldType === "text"){
+      setSearchByDropDown(false)
+      setSearchText(e);
+    }
+    if(fieldType === "dropdown"){
+      setSearchByDropDown(true)
+      setOnboardType(e)
+    }
+  }
+
+
 
   const verifyMerchant = () => {
-    dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
-      .then((resp) => {
-        const data = resp?.payload?.results;
-        const dataCoun = resp?.payload?.count;
-        setData(data);
-        setDataCount(dataCoun);
-        setVerifiedMerchant(data);
-      })
+    fetchData()
+    // dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
+    //   .then((resp) => {
+    //     const data = resp?.payload?.results;
+    //     const dataCoun = resp?.payload?.count;
+    //     setData(data);
+    //     setDataCount(dataCoun);
+    //     setVerifiedMerchant(data);
+    //   })
 
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
+    //   .catch((err) => {
+    //     toastConfig.errorToast("Data not loaded");
+    //   });
   };
 
   const searchByText = () => {
@@ -188,7 +213,20 @@ function VerifiedMerchant() {
   };
 
   useEffect(() => {
-    dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage, searchText, pageSize, onboardType]);
+
+  const fetchData = () => {
+    dispatch(
+      kycForVerified({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Verified",
+        isDirect:onboardType
+      })
+    )
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         const data = resp?.payload?.results;
@@ -202,8 +240,7 @@ function VerifiedMerchant() {
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, pageSize]);
+  };
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -235,10 +272,9 @@ function VerifiedMerchant() {
   ];
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
     return date;
   };
-
 
 
   return (
@@ -249,6 +285,7 @@ function VerifiedMerchant() {
           searchText={searchText}
           searchByText={searchByText}
           setSearchByDropDown={setSearchByDropDown}
+          searchTextByApiCall={true}
         />
       </div>
 

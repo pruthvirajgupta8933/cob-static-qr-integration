@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForNotFilled } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
-import moment from "moment";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import Table from "../../_components/table_components/table/Table";
 import { NotFilledKYCData } from "../../utilities/tableData";
@@ -21,44 +20,41 @@ const NotFilledKYC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  
+  const [onboardType, setOnboardType] = useState("")
 
   const dispatch = useDispatch();
   const loadingState = useSelector((state) => state.kyc.isLoading);
+
   const kycSearch = (e, fieldType) => {
-    fieldType === "text"
-      ? setSearchByDropDown(false)
-      : setSearchByDropDown(true);
-    setSearchText(e);
+    if(fieldType === "text"){
+      setSearchByDropDown(false)
+      setSearchText(e);
+    }
+    if(fieldType === "dropdown"){
+      setSearchByDropDown(true)
+      setOnboardType(e)
+    }
+    
+  
   };
 
-  const mappedData = data?.map(item => {
+  const mappedData = data?.map((item) => {
     return {
-      sno:item.sno,
+      sno: item.sno,
       name: item.name,
-      clientCode:item.clientCode,
-      emailId:item.emailId,
-      contactNumber:item.contactNumber,
-      status:item.status,
-      signUpDate:item.signUpDate,
-      isDirect:item.isDirect
+      clientCode: item.clientCode,
+      emailId: item.emailId,
+      contactNumber: item.contactNumber,
+      status: item.status,
+      signUpDate: item.signUpDate,
+      isDirect: item.isDirect,
     };
   });
 
   useEffect(() => {
-    dispatch(kycForNotFilled({ page: currentPage, page_size: pageSize }))
-      .then((resp) => {
-        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-        const data = resp?.payload?.results;
-        const totalData = resp?.payload?.count;
-        setDataCount(totalData);
-        setNotFilledData(data);
-        setData(data);
-      })
-
-      .catch((err) => {
-        toastConfig.errorToast("Data not loaded");
-      });
-  }, [currentPage, pageSize, dispatch]);
+    fetchData();
+  }, [currentPage, pageSize, searchText, dispatch, onboardType]);
 
   const searchByText = () => {
     setData(
@@ -71,9 +67,28 @@ const NotFilledKYC = () => {
     );
   };
 
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-    return date;
+  const fetchData = () => {
+    dispatch(
+      kycForNotFilled({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Not-Filled",
+        isDirect:onboardType
+      })
+    )
+      .then((resp) => {
+        resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+        const data = resp?.payload?.results;
+        const totalData = resp?.payload?.count;
+        setDataCount(totalData);
+        setNotFilledData(data);
+        setData(data);
+      })
+
+      .catch((err) => {
+        toastConfig.errorToast("Data not loaded");
+      });
   };
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -102,6 +117,8 @@ const NotFilledKYC = () => {
       value: "offline",
     },
   ];
+
+
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
@@ -110,7 +127,9 @@ const NotFilledKYC = () => {
             kycSearch={kycSearch}
             searchText={searchText}
             searchByText={searchByText}
+            searchTextByApiCall={true}
             setSearchByDropDown={setSearchByDropDown}
+            searchData={notFilledData}
           />
         </div>
         <div className="form-group col-lg-3 col-md-12 mt-2">

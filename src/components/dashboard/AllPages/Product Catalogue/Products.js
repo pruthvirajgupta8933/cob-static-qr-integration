@@ -64,10 +64,10 @@ const Products = () => {
             </div>
           </div>
         </div>
-        <div className="container-fluid row">
-          {spinner && <span className="spinner-border" role="status"></span>}
+        <div className="container-fluid row justify-content-md-center">
+          {spinner && <div className="row justify-content-md-center"><span className="spinner-border" role="status"></span></div>}
 
-          {product.map((Products, i) => (
+          {product?.map((Products, i) => (
             <div className="col-sm-12 col-md-12 col-lg-6" key={i}>
               <div className="card mt-0">
                 <div className="card-body-">

@@ -136,7 +136,7 @@ const CreatePassword = (props) => {
                               className="abhitest"
                               style={{
                                 color: "red",
-                                position: "absolute",
+                                // position: "absolute",
                                 zIndex: " 999",
                               }}
                             >
@@ -144,10 +144,10 @@ const CreatePassword = (props) => {
                             </div>
                           )}
                         </ErrorMessage>
-                        {/* <label htmlFor="exampleInputPassword2">
-                          New Password
-                        </label> */}
-                        <div className="input-group mt-40">
+                        <label htmlFor="exampleInputPassword2">
+                         Confirm Password
+                        </label>
+                        <div className="input-group mt-1">
                         <Field
                                         className="form-control"
                                         maxLength={255}
@@ -187,7 +187,7 @@ const CreatePassword = (props) => {
                                 className="abhitest"
                                 style={{
                                   color: "red",
-                                  position: "absolute",
+                                  // position: "absolute",
                                   zIndex: " 999",
                                 }}
                               >

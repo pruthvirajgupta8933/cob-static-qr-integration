@@ -20,6 +20,14 @@ const Table = (props) => {
     );
   };
 
+  const fixedHeaderFooter = {
+    header : true,
+     footer: true,
+     footerOffset: 40 ,
+     scrollX:true,
+     scrollY:true
+  }
+
   return (
     <> 
        <DataTable
@@ -27,6 +35,7 @@ const Table = (props) => {
           columns={props.row}
           data={props.data}
           sortIcon={<i  class="fa fa-arrow-up ml-1"></i>}
+          fixedHeader = {fixedHeaderFooter}
           // pagination
           // selectableRows
           />

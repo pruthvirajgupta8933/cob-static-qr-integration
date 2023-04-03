@@ -84,6 +84,7 @@ function BankDetails(props) {
     isAccountNumberVerified: KycList?.accountNumber !== null ? "1" : "",
   };
 
+  console.log("initinaitla value s", initialValues.account_type)
 
   const validationSchema = Yup.object({
     account_holder_name: Yup.string()
@@ -309,7 +310,7 @@ function BankDetails(props) {
                   }
 
                   {/* if found any error in validation */}
-                  {(values?.ifscCode !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) &&
+                  {(values?.ifsc_code !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) &&
                     <span className="success input-group-append">
                       <img
                         src={gotVerified}
@@ -358,7 +359,7 @@ function BankDetails(props) {
                   />
 
                   {/* if both values are same then display verified icon */}
-                  {(values?.ifscCode !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) && <span className="success input-group-append">
+                  {(values?.account_number !== null && !errors.hasOwnProperty("oldAccountNumber") && !errors.hasOwnProperty("oldIfscCode")) && <span className="success input-group-append">
                     <img
                       src={gotVerified}
                       alt=""
@@ -436,6 +437,8 @@ function BankDetails(props) {
                 <label className="col-form-label mt-0 p-2">
                   Account Type<span style={{ color: "red" }}>*</span>
                 </label>
+                
+
                 <FormikController
                   control="select"
                   name="account_type"

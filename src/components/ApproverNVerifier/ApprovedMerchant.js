@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { useDispatch , useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { kycForApproved } from "../../slices/kycSlice";
 import toastConfig from "../../utilities/toastTypes";
 import Spinner from "./Spinner";
@@ -16,9 +16,7 @@ import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
 import ViewDocumentModal from "./Onboarderchant/ViewDocumentModal";
 
-
 function ApprovedMerchant() {
-
   const [data, setData] = useState([]);
   const [approvedMerchantData, setApprovedMerchantData] = useState([]);
   const [dataCount, setDataCount] = useState("");
@@ -28,47 +26,65 @@ function ApprovedMerchant() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [kycIdClick, setKycIdClick] = useState(null);
-  const [isOpenModal, setIsModalOpen] = useState(false)
+  const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [openDocumentModal, setOpenDocumentModal] = useState(false);
+  const [onboardType, setOnboardType] = useState("")
+
 
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
 
-
-
   const ApprovedTableData = [
-    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true,width:"95px" },
-    { id: "2", name: "Client Code", selector: (row) => row.clientCode,
-    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,width:"130px"
-  },
-    { id: "3", name: "Company Name", selector: (row) => row.companyName, 
-    cell: (row) => <div className="removeWhiteSpace">{row?.companyName }</div>,
-    width:"300px"
-    
-  },
+    {
+      id: "1",
+      name: "S.No",
+      selector: (row) => row.sno,
+      sortable: true,
+      width: "95px",
+    },
+    {
+      id: "2",
+      name: "Client Code",
+      selector: (row) => row.clientCode,
+      cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,
+      width: "130px",
+    },
+    {
+      id: "3",
+      name: "Company Name",
+      selector: (row) => row.companyName,
+      cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
+      width: "300px",
+    },
     {
       id: "4",
       name: "Merchant Name",
       selector: (row) => row.name,
-      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA")}</div>,
+      cell: (row) => (
+        <div className="removeWhiteSpace">
+          {capitalizeFirstLetter(row?.name ? row?.name : "NA")}
+        </div>
+      ),
       sortable: true,
-      width:"200px"
+      width: "200px",
     },
     {
       id: "5",
       name: "Email",
       selector: (row) => row.emailId,
       cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
-      width:"220px"
+      width: "220px",
     },
     {
       id: "6",
       name: "Contact Number",
       selector: (row) => row.contactNumber,
-      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
-      width:"150px"
+      cell: (row) => (
+        <div className="removeWhiteSpace">{row?.contactNumber}</div>
+      ),
+      width: "150px",
     },
     {
       id: "7",
@@ -81,7 +97,7 @@ function ApprovedMerchant() {
       selector: (row) => row.signUpDate,
       cell: (row) => covertDate(row.signUpDate),
       sortable: true,
-      width:"150px"
+      width: "150px",
     },
     {
       id: "9",
@@ -89,17 +105,17 @@ function ApprovedMerchant() {
       selector: (row) => row?.verified_date,
       cell: (row) => covertDate(row?.verified_date),
       sortable: true,
-      width:"150px"
+      width: "150px",
     },
     {
       id: "10",
       name: "Approved Date",
-      selector: (row) =>  row?.approved_date,
+      selector: (row) => row?.approved_date,
       cell: (row) => covertDate(row?.approved_date),
       sortable: true,
-      width:"150px"
+      width: "150px",
     },
-    
+
     {
       id: "11",
       name: "Onboard Type",
@@ -110,19 +126,19 @@ function ApprovedMerchant() {
       name: "View Status",
       cell: (row) => (
         <div className="mt-2">
-        <button
-        type="button"
-        className="approve text-white  btn-xs "
-        onClick={() =>  {
-          setKycIdClick(row); 
-          setIsModalOpen(true) 
-        }}
-        data-toggle="modal"
-        data-target="#kycmodaldetail"
-      >
-        View Status
-      </button>
-      </div>
+          <button
+            type="button"
+            className="approve text-white  btn-xs "
+            onClick={() => {
+              setKycIdClick(row);
+              setIsModalOpen(true);
+            }}
+            data-toggle="modal"
+            data-target="#kycmodaldetail"
+          >
+            View Status
+          </button>
+        </div>
       ),
     },
     {
@@ -130,22 +146,25 @@ function ApprovedMerchant() {
       name: "Upload Agreement",
       cell: (row) => (
         <div className="mt-2">
-      {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
-                  <button
-                  type="button"
-                  className="approve text-white  btn-xs "
-                  data-toggle="modal"
-                  onClick={() => {
-                    setCommentId(row)
-                    setOpenDocumentModal(true)
-          
-                  }}
-                  data-target="#exampleModal"
-                  disabled={row?.clientCode === null ? true : false}
-                >
-                   Upload 
-                </button>
-              ) : <></> }
+          {roles?.verifier === true ||
+          roles?.approver === true ||
+          roles?.viewer === true ? (
+            <button
+              type="button"
+              className="approve text-white  btn-xs "
+              data-toggle="modal"
+              onClick={() => {
+                setCommentId(row);
+                setOpenDocumentModal(true);
+              }}
+              data-target="#exampleModal"
+              disabled={row?.clientCode === null ? true : false}
+            >
+              Upload
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
       ),
     },
@@ -179,57 +198,74 @@ function ApprovedMerchant() {
     },
   ];
 
-
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
   // console.log("KKKKKKKKKKKKK",commentId);
 
-
-
   const kycSearch = (e, fieldType) => {
-    fieldType === "text"
-      ? setSearchByDropDown(false)
-      : setSearchByDropDown(true);
-    setSearchText(e);
-  };
+    if(fieldType === "text"){
+      setSearchByDropDown(false)
+      setSearchText(e);
+    }
+    if(fieldType === "dropdown"){
+      setSearchByDropDown(true)
+      setOnboardType(e)
+    }
+  }
+
 
   useEffect(() => {
-   
-    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
+    fetchData();
+  }, [currentPage, searchText, pageSize, onboardType]);
+  const fetchData = () => {
+    dispatch(
+      kycForApproved({
+        page: currentPage,
+        page_size: pageSize,
+        searchquery: searchText,
+        merchantStatus: "Approved",
+        isDirect:onboardType
+      })
+    )
       .then((resp) => {
         resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
-         setDataCount(dataCoun);
-         setApprovedMerchantData(data);
+        setDataCount(dataCoun);
+        setApprovedMerchantData(data);
       })
 
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
-  }, [currentPage, pageSize]);
+  };
 
   /////////////////////////////////////Search filter
 
-// Only used for refreshing the page by passing it to the props
+  // Only used for refreshing the page by passing it to the props
   const approvedTable = () => {
-    dispatch(kycForApproved({ page: currentPage, page_size: pageSize }))
-    .then((resp) => {
-      resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-      const data = resp?.payload?.results;
-      const dataCoun = resp?.payload?.count;
-      setData(data);
-       setDataCount(dataCoun);
-       setApprovedMerchantData(data);
-    })
+    fetchData()
+    // dispatch(
+    //   kycForApproved({
+    //     page: currentPage,
+    //     page_size: pageSize,
+    //   })
+    // )
+    //   .then((resp) => {
+    //     resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
+    //     const data = resp?.payload?.results;
+    //     const dataCoun = resp?.payload?.count;
+    //     setData(data);
+    //     setDataCount(dataCoun);
+    //     setApprovedMerchantData(data);
+    //   })
 
-    .catch((err) => {
-      toastConfig.errorToast("Data not loaded");
-    });
-  }
-
+    //   .catch((err) => {
+    //     toastConfig.errorToast("Data not loaded");
+    //   });
+  };
 
   const searchByText = () => {
     setData(
@@ -242,25 +278,21 @@ function ApprovedMerchant() {
     );
   };
 
-
-
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-      return date
-    }
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    return date;
+  };
 
-
-      //function for change current page
+  //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
   };
 
-   //function for change page size
-   const changePageSize = (pageSize) => {
+  //function for change page size
+  const changePageSize = (pageSize) => {
     setPageSize(pageSize);
   };
-  
-    
+
   const optionSearchData = [
     {
       name: "Select Onboard Type",
@@ -281,60 +313,90 @@ function ApprovedMerchant() {
   ];
 
 
-
   return (
     <div className="container-fluid flleft">
       <div className="form-group col-lg-3 col-md-12 mt-2">
-      <SearchFilter
-            kycSearch={kycSearch}
-            searchText={searchText}
-            searchByText={searchByText}
-            setSearchByDropDown={setSearchByDropDown}
-          />
+        <SearchFilter
+          kycSearch={kycSearch}
+          searchText={searchText}
+          searchByText={searchByText}
+          setSearchByDropDown={setSearchByDropDown}
+          searchTextByApiCall={true}
+        />
       </div>
       <div>
+        {openCommentModal === true ? (
+          <CommentModal
+            commentData={commentId}
+            isModalOpen={openCommentModal}
+            setModalState={setOpenCommentModal}
+            tabName={"Approved Tab"}
+          />
+        ) : (
+          <></>
+        )}
 
-      {openCommentModal === true ? <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Approved Tab"} /> : <></>}
-          
-          <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderApprovedTable={approvedTable}/>
-        </div>
+        <KycDetailsModal
+          kycId={kycIdClick}
+          handleModal={setIsModalOpen}
+          isOpenModal={isOpenModal}
+          renderApprovedTable={approvedTable}
+        />
+      </div>
 
       <div>
-        {openDocumentModal === true ? <ViewDocumentModal documentData={commentId} isModalOpen={openDocumentModal} setModalState={setOpenDocumentModal} tabName={"Approved Tab"} /> : <></>}
-        <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderApprovedTable={approvedTable}/>
+        {openDocumentModal === true ? (
+          <ViewDocumentModal
+            documentData={commentId}
+            isModalOpen={openDocumentModal}
+            setModalState={setOpenDocumentModal}
+            tabName={"Approved Tab"}
+          />
+        ) : (
+          <></>
+        )}
+        <KycDetailsModal
+          kycId={kycIdClick}
+          handleModal={setIsModalOpen}
+          isOpenModal={isOpenModal}
+          renderApprovedTable={approvedTable}
+        />
       </div>
 
       <div className="form-group col-lg-3 col-md-12 mt-2">
-      <CountPerPageFilter
-            pageSize={pageSize}
-            dataCount={dataCount}
-            changePageSize={changePageSize}
-          />
+        <CountPerPageFilter
+          pageSize={pageSize}
+          dataCount={dataCount}
+          changePageSize={changePageSize}
+        />
       </div>
       <div className="form-group col-lg-3 col-md-12 mt-2">
-      <SearchbyDropDown
-            kycSearch={kycSearch}
-            searchText={searchText}
-            isSearchByDropDown={isSearchByDropDown}
-            notFilledData={approvedMerchantData}
-            setData={setData}
-            setSearchByDropDown={setSearchByDropDown}
-            optionSearchData={optionSearchData}
-          />
+        <SearchbyDropDown
+          kycSearch={kycSearch}
+          searchText={searchText}
+          isSearchByDropDown={isSearchByDropDown}
+          notFilledData={approvedMerchantData}
+          setData={setData}
+          setSearchByDropDown={setSearchByDropDown}
+          optionSearchData={optionSearchData}
+        />
       </div>
-      <MerchnatListExportToxl URL = {'?search=Approved&order_by=-approved_date&search_map=approved_date'} filename={"Approved"} />
+      <MerchnatListExportToxl
+        URL={
+          "?search=Approved&order_by=-approved_date&search_map=approved_date"
+        }
+        filename={"Approved"}
+      />
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
-
-        {!loadingState && data?.length !== 0 && (
-            <Table 
-            row={ApprovedTableData}
-            data={data}
-            dataCount={dataCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage}
-
+          {!loadingState && data?.length !== 0 && (
+            <Table
+              row={ApprovedTableData}
+              data={data}
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
             />
           )}
         </div>

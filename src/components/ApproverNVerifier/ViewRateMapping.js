@@ -10,17 +10,18 @@ import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import RateRadioMapping from './RateRadioMapping';
 import { useDispatch, useSelector } from "react-redux";
 import { riskCategory, businessCategory, templateRate, viewRateMap } from '../../slices/rateMappingSlice';
+import { busiCategory } from '../../slices/kycSlice';
 
 const initialValues = {
-    rate_template_name: "",
+    business_category: "",
     risk_category_name: "",
     category_name: ""
 }
 
 const validationSchema = Yup.object({
-    rate_template_name: Yup.string().required("Required").nullable(),
+    business_category: Yup.string().required("Required").nullable(),
     risk_category_name: Yup.string().required("Required").nullable(),
-    category_name: Yup.string().required("Required").nullable()
+   
 })
 
 
@@ -42,12 +43,14 @@ const ViewRateMapping = (props) => {
 
 
     useEffect(() => {
-        setDisable(false)
-        dispatch(riskCategory())
+       
+        dispatch(busiCategory())
             .then((resp) => {
-                const data =
-                    convertToFormikSelectJson("risk_category_code", "risk_category_name", resp?.payload);
-
+                const data = convertToFormikSelectJson(
+                    "category_id",
+                    "category_name",
+                    resp.payload
+                  );
                 setRisk(data);
 
             })
@@ -59,7 +62,7 @@ const ViewRateMapping = (props) => {
             const postData = {
                 risk_category_code: riskCode
             };
-            setDisable(false)
+           
             dispatch(businessCategory(postData)).then((resp) => {
 
                 const data = convertToFormikSelectJson("business_category_id", "category_name", resp?.payload?.Data);
@@ -71,8 +74,12 @@ const ViewRateMapping = (props) => {
         }
     }, [riskCode]);
 
+
+    
+
     ///////////////////////////////////////////////////////////new Work
     useEffect(() => {
+       
         if (businessTemplate !== "") {
             const postData = {
                 business_cat_code: businessTemplate
@@ -80,8 +87,7 @@ const ViewRateMapping = (props) => {
             setDisable(false)
             dispatch(templateRate(postData)).then((resp) => {
                 const data = convertToFormikSelectJson("rate_template_code", "rate_template_name", resp?.payload);
-
-                setBusinessTemplates(data)
+               setBusinessTemplates(data)
             }).catch((err) => {
 
             })
@@ -120,12 +126,13 @@ const ViewRateMapping = (props) => {
 
     const handleSubmit = (values) => {
         setDisable(true)
+        console.log(values)
 
 
         const postData = {
-            "rate_template_code": values.category_name,
-            "business_cat_code": values.risk_category_name,
-            "risk_cat_code": values.rate_template_name
+            "rate_template_code": values?.business_category,
+            "business_cat_code": values?.risk_category_name,
+            // "risk_cat_code": values.rate_template_name
 
         };
         dispatch(viewRateMap(postData)).then((resp) => {
@@ -173,31 +180,37 @@ const ViewRateMapping = (props) => {
                                         <div className="container">
 
                                             <Form>
+                                               
 
                                                 <div className="row">
                                                     <div className="col-lg-4">
                                                         <div className="input full- optional">
                                                             <label
                                                                 className="string optional"
-                                                                htmlFor="risk_category"
+                                                                htmlFor="business_category"
                                                             >
-                                                                Risk Category
+                                                                Business Category
                                                             </label>
                                                             <FormikController
                                                                 control="select"
-                                                                name="category_name"
+                                                                name="business_category"
                                                                 options={risk}
                                                                 className="form-control"
 
                                                             />
                                                             {formik.handleChange(
+                                                                "rate_template_name",
+                                                                setBusinessTemplate(formik?.values?.business_category),
+                                                              
+                                                            )}
+                                                            {/* {formik.handleChange(
                                                                 "category_name",
                                                                 setRiskCode(formik?.values?.category_name)
-                                                            )}
+                                                            )} */}
 
                                                         </div>
                                                     </div>
-                                                    <div className="col-lg-4">
+                                                    {/* <div className="col-lg-4">
                                                         <div className="input full- optional">
                                                             <label
                                                                 className="string optional"
@@ -219,7 +232,7 @@ const ViewRateMapping = (props) => {
 
 
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                     <div className="col-lg-4">
                                                         <div className="input full- optional">
                                                             <label

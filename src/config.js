@@ -1,4 +1,4 @@
-const ENV_PROD = true; // For proudction make it true, don't change in the local environment
+const ENV_PROD = false; // For proudction make it true, don't change in the local environment
 let url, kyc_url, b2b_url, kyc_validate, payout_url = "";
 
 if (ENV_PROD) {
@@ -13,8 +13,6 @@ if (ENV_PROD) {
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in"
-
-
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
@@ -23,6 +21,8 @@ const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
 
 // https://reportapi.sabpaisa.in/SabPaisaReport/REST/GetMerchantTxnHistoryN
+
+
 
 const API_LIVE = {
   BASE_URL_COB: url,
@@ -128,6 +128,7 @@ const API_LIVE = {
   ViewTxnEnqMultiParam: adminAPIURL + "/Enquiry/ViewTxnEnqMultiParam",
 
   /**Kyc DocumentsUploads */
+  searchQuery:`${kyc_url}/kyc/get-merchant-data/?search=Pending&search_query=lpsuman2001@gmail.com&page_size=5&page=1`,
   DocumentsUpload: `${kyc_url}/kyc/document-type`, //get APi
 
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
@@ -147,6 +148,9 @@ const API_LIVE = {
   ZONE_EMPLOYEE: `${url}/zone/employee-detail`,
   UPDATE_ZONE_DATA: `${url}/zone/update-zone-data`,
   GET_ZONE_INFO: `${url}/zone/get-zone-info`,
+
+  GET_EMPLOYEE_NAME:`${url}/merchant/employee-data/?order_by=empName`,
+  GET_MCC_MASTER_CODE:`${url}/get-mcc-master-data/?order_by=mcc_ellaboration`,
   ////////////////////////////////////////Rate mapping
   GET_RISK_BUISENSS_BYID: `${url}/merchant/get-risk-business-by-id`,
   GET_RISK_TEMPLSTE: `${url}/merchant/get-risk-category-template`,
@@ -158,12 +162,12 @@ const API_LIVE = {
   Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/`,
   /////////////////////////Kyc approver
   /* For pending*/
-  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?search=Not-Filled&order_by=-id`,
-  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Pending&order_by=-id`,
-  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?search=Rejected&order_by=-kyc_reject`,
-  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?search=processing&order_by=-id`,
-  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?search=Verified&order_by=-verified_date`,
-  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?search=Approved&order_by=-approved_date`,
+  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-kyc_reject`,
+  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?order_by=-verified_date`,
+  KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
   MERCHANT_DOCUMENT: `${kyc_url}/kyc/get-merchant-document`,
   DOCUMENT_BY_LOGINID: `${kyc_url}/kyc/upload-merchant-document/document-by-login-id/`,
@@ -286,9 +290,16 @@ const API_LIVE = {
   MANDATE_FREQUENCY: `${subAPIURL}/REST/GetCommonData/0/frequency`,
   MANDATE_CATEGORY: `${subAPIURL}/REST/GetCommonData/0/MandateCategory`,
   filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
+  frequency:`${subAPIURL}/REST/GetCommonData/0/frequency`,
+  mandateType:`${subAPIURL}/REST/GetCommonData/0/MandateType`,
+  requestType:`${subAPIURL}/REST/GetCommonData/0/RequestType`,
+  bankName:`${subAPIURL}/REST/GetCommonData/0/nb`,
+  mandateRegistration:`${subAPIURL}/mandateRegistration`,
+  filterMandateReport: `${subAPIURL}/npci/filterMandateReportCob`,
 
   // Debit Report
-  filterDebitReport: `${subAPIURL}/npci/filterDebitReport`,
+  filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
+
 
 
 

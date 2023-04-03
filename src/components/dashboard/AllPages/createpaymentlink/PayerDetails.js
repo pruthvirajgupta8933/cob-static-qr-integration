@@ -24,7 +24,8 @@ const validationSchema = Yup.object().shape({
         .matches(phoneRegExp, 'Phone number is not valid')
         .min(10, "to short")
         .max(10, "to long"),
-    email: Yup.string().email("Enter valid email").required("Required")
+    email: Yup.string().email("Enter valid email").required("Required"),
+    customer_type_id:Yup.string().required("Required")
 })
 
 const PayerDetails = () => {
@@ -47,6 +48,7 @@ const PayerDetails = () => {
     const [pageSize, setPageSize] = useState(10);
     const [paginatedata, setPaginatedData] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
+    const [editModalToggle, setEditModalToggle] = useState(false);
     const [pageCount, setPageCount] = useState(data ? Math.ceil(data.length / pageSize) : 0);
 
 
@@ -77,6 +79,7 @@ const PayerDetails = () => {
     useEffect(() => {
         loadUser();
         getDrop();
+        // setEditModalToggle(false)
     }, []);
 
 
@@ -150,7 +153,7 @@ const PayerDetails = () => {
     // USE FOR EDIT FORM
 
     const handleClick = (id) => {
-        //console.log(id);
+        setEditModalToggle(true)
         data.filter((dataItem) => {
             if (dataItem.id === id) {
                 setEditForm(
@@ -160,7 +163,6 @@ const PayerDetails = () => {
                         phone: dataItem.phone_number,
                         editCustomerTypeId: dataItem.customer_type_id,
                         id: dataItem.id
-
                     }
                 )
 
@@ -183,7 +185,7 @@ const PayerDetails = () => {
 
     const deleteUser = async id => {
         // confirm("do you confirm to delete it");
-        var iscConfirm = window.confirm("Are you sure you want to delete it ?");
+        let iscConfirm = window.confirm("Are you sure you want to delete it ?");
         if (iscConfirm) {
             await axiosInstance.delete(`${API_URL.DELETE_CUSTOMER}?Client_Code=${clientCode}&Customer_id=${id}`);
             loadUser();
@@ -205,7 +207,7 @@ const PayerDetails = () => {
 
         <React.Fragment>
 
-            <Edituser items={editform} callBackFn={edit} />
+            <Edituser items={editform} callBackFn={edit} modalToggle={editModalToggle} fnSetModalToggle={setEditModalToggle} />
             <Genratelink generatedata={genrateform} />
             <div className="mymodals modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
@@ -216,7 +218,7 @@ const PayerDetails = () => {
                                     name: "",
                                     email: "",
                                     phone_number: "",
-                                    customer_type_id: 0
+                                    customer_type_id: "",
                                 }
                             }
                             validationSchema={validationSchema}
@@ -288,6 +290,16 @@ const PayerDetails = () => {
                                                             <option value={payer.id} key={i}>{payer.type?.toUpperCase()}</option>
                                                         ))}
                                                 </Field>
+                                                {
+                                          <ErrorMessage name="customer_type_id">
+                                            {(msg) => (
+                                              <p
+                                                className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>
+                                                {msg}
+                                              </p>
+                                            )}
+                                          </ErrorMessage>
+                                        }
                                             </div>
                                             <div className="modal-footer">
                                                 <button
@@ -370,7 +382,7 @@ const PayerDetails = () => {
                                         <td>{user.email}</td>
                                         <td>{user.customer_type}</td>
                                         <td>
-                                            <button type="button" className="cratepaymentlinkclrsfigma text-white btn" data-toggle="modal" data-target="#web" onClick={(e) => handleClick(user.id)} >Edit</button>
+                                            <button type="button" className="cratepaymentlinkclrsfigma text-white btn"  onClick={(e) => handleClick(user.id)} >Edit</button>
                                         </td>
 
                                         <td>

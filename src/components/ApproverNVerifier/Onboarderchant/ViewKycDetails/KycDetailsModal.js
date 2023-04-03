@@ -44,7 +44,7 @@ const KycDetailsModal = (props) => {
   const state = useSelector((state) => state);
   const { kyc } = state;
 
-  const { KycTabStatusStore } = kyc;
+  const { KycTabStatusStore, KycDocUpload } = kyc;
   // console.log(KycTabStatusStore)
   //------------------------------------------------------------------
 
@@ -54,9 +54,7 @@ const KycDetailsModal = (props) => {
     if (merchantKycId !== null) {
       dispatch(
         kycDocumentUploadList({ login_id: merchantKycId?.loginMasterId })
-      ).then((resp) => {
-        setDocList(resp?.payload);
-      })
+      )
       // console.log(merchantKycId?.loginMasterId)
       dispatch(
         GetKycTabsStatus({
@@ -106,6 +104,10 @@ const KycDetailsModal = (props) => {
   }, [dispatch,merchantKycId?.businessCategory]);
 
 
+  useEffect(() => {
+    setDocList(KycDocUpload)
+  }, [KycDocUpload])
+  
 
   return (
     <div
@@ -168,7 +170,7 @@ const KycDetailsModal = (props) => {
 
               {/* Merchant Documents */}
               <MerchantDocument
-                docList={docList}
+                docList={KycDocUpload}
                 setDocList={setDocList}
                 docTypeList={docTypeList}
                 role={roles}

@@ -132,7 +132,14 @@ const CompleteVerification = (props) => {
           dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
           setButtonClick(false)
           setCommetText("");
-          return currenTab === 4 ? pendingApporvalTable() : currenTab === 3 ? pendingVerfyTable() : <></>
+          if(currenTab === 4){
+            return pendingApporvalTable()
+          }else if(currenTab === 3){
+            return pendingVerfyTable()
+          }else if (currenTab===5){
+            return approvedTable()
+          }
+          // return currenTab === 4 ? pendingApporvalTable() : currenTab === 3 ? pendingVerfyTable() : currenTab === 5 ? approvedTable() :<></>
         })
         .catch((e) => {
           toast.error("Something went wrong, Please Try Again later")
@@ -349,7 +356,6 @@ const CompleteVerification = (props) => {
             <button type="button" onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white">Reject KYC</button></>
           : enableBtnApprovedTab === true ? <button type="button"
             onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white">Reject KYC</button> : <> </> // Reject kyc for currentab 4(Approved) 
-
         }
 
         {/* {(currenTab === 4 || currenTab === 5 || currenTab === 6) && (roles?.approver) ?
