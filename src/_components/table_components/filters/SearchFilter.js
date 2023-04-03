@@ -7,7 +7,7 @@ const SearchFilter = ({
   searchByText,
   setSearchByDropDown,
   searchTextByApiCall,
-  clearFilter,
+  // clearFilter,
 }) => {
   useEffect(() => {
     searchByText();
@@ -22,6 +22,10 @@ const SearchFilter = ({
     kycSearch(searchQueryText, 'text');
     searchByText(searchQueryText);
   };
+  const clearFilter=()=>
+  {
+    kycSearch("", 'text');
+  }
 
   return (
     <div>
@@ -59,7 +63,7 @@ const SearchFilter = ({
         {(filterbtn && searchText!=="") && (
           <div
             onClick={() => {
-              clearFilter(true);
+              clearFilter();
               setsearchQueryText("");
               showfilterbtn(false);
             }}

@@ -274,13 +274,7 @@ function VerifiedMerchant() {
     let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
     return date;
   };
-  //for api search pass key searchbyapi
-  const clearFilter = (e) => {
-    if (e) {
-      setSearchText("");
-      fetchData();
-    }
-  };
+
 
   return (
     <div className="container-fluid flleft">
@@ -291,7 +285,6 @@ function VerifiedMerchant() {
           searchByText={searchByText}
           setSearchByDropDown={setSearchByDropDown}
           searchTextByApiCall={true}
-          clearFilter={clearFilter}
         />
       </div>
 
