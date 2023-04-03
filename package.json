@@ -24,6 +24,7 @@
     "formik": "^2.2.9",
     "history": "^5.0.1",
     "jquery": "^3.6.4",
+    "js-loader": "^0.1.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "number-to-words": "^1.2.4",

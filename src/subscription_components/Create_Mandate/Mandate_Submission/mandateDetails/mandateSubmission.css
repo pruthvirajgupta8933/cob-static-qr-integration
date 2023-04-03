@@ -7,3 +7,7 @@
  .downMandate {
      margin-left: 350px;
  }
+
+ .mand {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+ }

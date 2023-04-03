@@ -51,6 +51,28 @@ export const fetchMandateType = createAsyncThunk(
   }
 );
 
+export const createMandateSubmission = createAsyncThunk(
+  "createMandateSubmission/createMandateSubmission",
+  async ( requestParam, thunkAPI) => {
+    try {
+      const response = await createMandateService.mandateSubmission(requestParam)
+      return response.data;
+    } catch (error) {
+      const message =
+      (error.response &&
+        error.response.data &&
+        error.response.data.detail) ||
+      error.message ||
+      error.toString() || error.request.toString();
+    thunkAPI.dispatch(setMessage(message));
+    return thunkAPI.rejectWithValue(message); 
+      
+      
+    }
+  }
+);
+
+
 
 // viewSelected Slice----
 
