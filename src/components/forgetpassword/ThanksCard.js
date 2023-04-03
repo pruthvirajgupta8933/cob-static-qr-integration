@@ -15,7 +15,7 @@ function ThanksCard(props) {
                 With supporting text below as a natural lead-in to additional
                 content.
               </p> */}
-              <Link to="/">Back to login</Link>
+              <Link to="/" className="btn btn-primary">Back to login</Link>
             </div>
             <div className="card-footer text-muted text-center">
               Sabpaisa.in
