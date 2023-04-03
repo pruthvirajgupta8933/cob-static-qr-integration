@@ -1,6 +1,5 @@
 const ENV_PROD = true; // For proudction make it true, don't change in the local environment
 let url, kyc_url, b2b_url, kyc_validate, payout_url = "";
-
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
