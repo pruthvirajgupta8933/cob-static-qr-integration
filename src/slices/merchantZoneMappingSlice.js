@@ -137,6 +137,64 @@ export const forSavingComments = createAsyncThunk(
   );
 
 
+  export const forSavingDocument = createAsyncThunk(
+    "merchnatzone/forSavingDocument",
+    async (requestParam) => {
+        
+      const response = await axiosInstanceJWT
+        .post(`${API_URL.UPLOAD_E_AGREEMENT}`, requestParam, {
+            headers: {
+                // Authorization: ""
+              },
+
+         
+        })
+        .catch((error) => {
+          return error.response;
+        });
+      // console.log(response)
+      return response.data;
+    }
+  );
+
+  export const forGettingDocumentList = createAsyncThunk(
+    "merchnatzone/forGettingDocumentList",
+    async (requestParam) => {
+        
+      const response = await axiosInstanceJWT
+        .post(`${API_URL.GET_MERCHANT_AGREEMENT_BY_LOGIN_ID}`, requestParam, {
+            headers: {
+                // Authorization: ""
+              },
+
+        })
+        .catch((error) => {
+          return error.response;
+        });
+      // console.log(response)
+      return response.data;
+    }
+  );
+
+  export const removeDocumentSlice = createAsyncThunk(
+    "merchnatzone/removeDocumentSlice",
+    async (requestParam) => {
+        
+      const response = await axiosInstanceJWT
+        .put(`${API_URL.REMOVE_AGREEMENT}`, requestParam, {
+            headers: {
+                // Authorization: ""
+              },
+
+        })
+        .catch((error) => {
+          return error.response;
+        });
+      // console.log(response)
+      return response.data;
+    }
+  );
+
 
   export const updatedCommentList = createAsyncThunk(
     "merchnatzone/updatedCommentList",

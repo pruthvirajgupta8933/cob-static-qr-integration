@@ -51,7 +51,7 @@ import ApproverRoute from "../../ProtectedRoutes/ApproverRoute";
 import ViewerRoute from "../../ProtectedRoutes/ViewerRoute";
 import SpPg from "../sabpaisa-pg/SpPg";
 import UrlNotFound from "./UrlNotFound";
-import { axiosInstanceAuth,axiosInstanceJWT } from "../../utilities/axiosInstance";
+import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import API_URL from "../../config";
 import PayoutTransaction from "../../payout/Ledger";
 import TransactionsPayoutHistory from "../../payout/Transactions";
@@ -70,7 +70,8 @@ import { generateWord } from "../../utilities/generateClientCode";
 import TransactionHistoryDoitc from "./AllPages/reports/TransactionHistoryDoitc";
 import SettlementReportDoitc from "./AllPages/reports/SettlementReportDoitc";
 import MandateReport from "../../subscription_components/MandateReport";
-
+import DebitReports from "../../subscription_components/DebitReports";
+import BizzAppData from '../ApproverNVerifier/BizzData'
 
 function Dashboard() {
   let history = useHistory();
@@ -80,13 +81,15 @@ function Dashboard() {
   const dispatch = useDispatch();
   const location = useLocation();
 
+  // console.log(roles)
+
   // create new client code
   useEffect(() => {
     // console.log("user",user)
 
     if (roles?.merchant) {
       // console.log("merchant")
-      
+
       if (user?.clientMerchantDetailsList) {
 
         // console.log("merchant- clientlist available")
@@ -95,13 +98,13 @@ function Dashboard() {
           // console.log("merchant- client code null")
           const clientFullName = user?.clientContactPersonName
           const clientMobileNo = user?.clientMobileNo
-          const arrayOfClientCode =  generateWord(clientFullName, clientMobileNo)
+          const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
 
           // console.log("arrayOfClientCode",arrayOfClientCode)
-          dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res=>{
+          dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
             // console.log("res",res?.payload?.clientCode)
             let newClientCode = ""
-               // if client code available return status true, then make request with the given client
+            // if client code available return status true, then make request with the given client
 
             if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
               newClientCode = res?.payload?.clientCode
@@ -110,9 +113,9 @@ function Dashboard() {
               newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
               // console.log("newClientCode-step2",newClientCode)
             }
-  
+
             // console.log("new cleint code", newClientCode)
-  
+
             // update new client code
             const data = {
               loginId: user?.loginId,
@@ -120,7 +123,7 @@ function Dashboard() {
               clientCode: newClientCode,
             };
             // console.log("data", data)
-  
+
             dispatch(createClientProfile(data)).then(clientProfileRes => {
               // console.log("response of the create client ", clientProfileRes);
               // after create the client update the subscribe product
@@ -139,19 +142,19 @@ function Dashboard() {
                     planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
                     applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
                   };
-  
+
                   axiosInstanceJWT.post(
                     API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
                     postData
                   ).then((res) => {
                     dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
-  
+
                   })
                 }
               )
             }).catch(err => console.log(err));
           })
-          
+
         }
 
 
@@ -510,7 +513,10 @@ function Dashboard() {
         <MerchantRoute exact path={`${path}/subscription/mandateReports`} Component={MandateReport}>
           <SpPg />
         </MerchantRoute>
-        
+        <MerchantRoute exact path={`${path}/subscription/debitReports`} Component={DebitReports}>
+          <SpPg />
+        </MerchantRoute>
+
 
         {/* -----------------------------------------------------------------------------------------------------|| */}
 
@@ -559,11 +565,22 @@ function Dashboard() {
           </ApproverRoute>
         )}
 
-
-
-        <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
+     <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
           <ChallanTransactReport />
         </B2BRouting>
+
+        {roles?.verifier === true ? <VerifierRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
+          <BizzAppData />
+        </VerifierRoute> : roles?.approver === true ?
+          <ApproverRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
+            < BizzAppData />
+          </ApproverRoute> : roles.viewer === true && (
+            
+           <ViewerRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
+             < BizzAppData />
+           </ViewerRoute> )}
+
+       
 
         <Route path={`${path}/*`} component={UrlNotFound} >
           <UrlNotFound />

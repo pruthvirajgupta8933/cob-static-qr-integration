@@ -12,64 +12,65 @@ function KycAlert() {
   // console.log(KycTabStatusStore,"KycTabStatusStore")
 
   useEffect(() => {
-  
+
     const statusVal = "Rejected";
     let allStatus = []
-    if(KycTabStatusStore?.general_info_status === statusVal){
+    if (KycTabStatusStore?.general_info_status === statusVal) {
 
       allStatus.push({
-        "tab":"Merchant Contact Info",
-        "comment":KycTabStatusStore?.general_info_reject_comments 
+        "tab": "Merchant Contact Info",
+        "comment": KycTabStatusStore?.general_info_reject_comments
       })
 
     }
-    
-    if(KycTabStatusStore?.business_info_status === statusVal){
-      allStatus.push({
-        "tab":"Business Overview",
-        "comment":KycTabStatusStore?.business_info_reject_comments 
-      })
-    }
 
-    if(KycTabStatusStore?.merchant_info_status === statusVal){
+    if (KycTabStatusStore?.business_info_status === statusVal) {
       allStatus.push({
-        "tab":"Business Details",
-        "comment":KycTabStatusStore?.merchant_info_reject_comments 
-      })
-    }
-    if(KycTabStatusStore?.settlement_info_status === statusVal){
-      allStatus.push({
-        "tab":"Bank Details",
-        "comment":KycTabStatusStore?.settlement_info_reject_comments
+        "tab": "Business Overview",
+        "comment": KycTabStatusStore?.business_info_reject_comments
       })
     }
 
-    if(KycTabStatusStore?.document_status === statusVal){
+    if (KycTabStatusStore?.merchant_info_status === statusVal) {
       allStatus.push({
-        "tab":"KYC Documents",
-        "comment":"Your Documents are rejected. Kindly check it."
+        "tab": "Business Details",
+        "comment": KycTabStatusStore?.merchant_info_reject_comments
       })
     }
-    
-    if(KycTabStatusStore?.status === statusVal){
+    if (KycTabStatusStore?.settlement_info_status === statusVal) {
       allStatus.push({
-        "tab":"Reason for rejection",
-        "comment":KycTabStatusStore?.comments
+        "tab": "Bank Details",
+        "comment": KycTabStatusStore?.settlement_info_reject_comments
+      })
+    }
+
+    if (KycTabStatusStore?.document_status === statusVal) {
+      allStatus.push({
+        "tab": "KYC Documents",
+        "comment": "Your Documents are rejected. Kindly check it."
+      })
+    }
+
+    if (KycTabStatusStore?.status === statusVal) {
+      allStatus.push({
+        "tab": "Reason for rejection",
+        "comment": KycTabStatusStore?.comments
       })
     }
     setKycTabRejectionStatus(allStatus)
   }, [KycTabStatusStore])
-  
+
   return (
-    kycTabRejectionStatus?.length>0 && 
+    kycTabRejectionStatus?.length > 0 &&
     <div className="alert alert-danger NunitoSans-Regular" role="alert" >
       <h4 className="alert-heading">KYC Alert!</h4>
-      {kycTabRejectionStatus && kycTabRejectionStatus?.map((kycTabStatus,i)=>(
-         <p key={i}><span>{kycTabStatus?.tab} : {kycTabStatus?.comment}</span> </p>)
-         )}
+      {kycTabRejectionStatus && kycTabRejectionStatus?.map((kycTabStatus, i) => (
+        <p key={i}><span>{kycTabStatus?.tab} : {kycTabStatus?.comment}</span> </p>)
+      )}
       <hr />
       <Link className="btn btnbackground text-white" to="dashboard/kyc">Go to KYC the Form</Link>
     </div>
+
   )
 }
 

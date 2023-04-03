@@ -4,10 +4,7 @@ import { Link, useRouteMatch } from "react-router-dom";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png";
 import dashboard from "../../../assets/images/dashb.png";
-import "./sidenavbar.css"
-
-
-
+import "./sidenavbar.css";
 
 const SideNavbar = () => {
   const { menuListReducer, auth } = useSelector((state) => state);
@@ -15,8 +12,8 @@ const SideNavbar = () => {
   const { url } = useRouteMatch();
   const [menuToggleItem, setMenuToggleItem] = useState({
     checked: false,
-    items: []
-  })
+    items: [],
+  });
 
   // Do not remove the code
 
@@ -31,85 +28,100 @@ const SideNavbar = () => {
   //     e.target.firstElementChild.className = "fa fa-caret-down"
   //   } else {
   //     e.currentTarget.attributes.istoggle.value = true
-  //     e.currentTarget.className="show-menu-nav"      
+  //     e.currentTarget.className="show-menu-nav"
   //     e.target.firstElementChild.className = "fa fa-caret-up"
   //   }
 
   // }
 
   useEffect(() => {
-    let tempArrayOfItems = []
+    let tempArrayOfItems = [];
     const displayMenu = menuListReducer?.enableMenu?.map((m) => {
-      tempArrayOfItems.push(m?.app_code)
-      setMenuToggleItem({ ...menuToggleItem, items: tempArrayOfItems })
+      tempArrayOfItems.push(m?.app_code);
+      setMenuToggleItem({ ...menuToggleItem, items: tempArrayOfItems });
       return (
-        m?.is_active === true &&
-        <React.Fragment key={m?.app_name}>
-          <div
-            className="main-menu-container"
-            // onClick={(e) => toggleMenu(e)}
-            isToggle="true"
-          >
-            <span className="sidebar-menu-divider-business">
-              {m?.app_name}  <i className={`fa fa-caret-up`} aria-hidden="true"></i>
-            </span>
+        m?.is_active === true && (
+          <React.Fragment key={m?.app_name}>
+            <div
+              className="main-menu-container"
+              // onClick={(e) => toggleMenu(e)}
+              isToggle="true"
+            >
+              <span className="sidebar-menu-divider-business">
+                {m?.app_name}{" "}
+                <i className={`fa fa-caret-up`} aria-hidden="true"></i>
+              </span>
 
-            <ul id={`menulist_${m?.app_code}`} className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
-              {m?.submenu?.map((sm) => (
-                sm?.is_active &&
+              <ul
+                id={`menulist_${m?.app_code}`}
+                className={`ant-menu ant-menu-sub ant-menu-inline`}
+                role="menu"
+              >
+                {m?.submenu?.map((sm) =>
+                  sm?.is_active &&
+                  auth?.user?.loginId.toString() === "11235" ? (
+                    sm?.id !== 5 &&
+                    sm?.id !== 6 &&
+                    sm?.id !== 7 &&
+                    sm?.id !== 8 && (
+                      <li
+                        className="ant-menu-item"
+                        role="menuitem"
+                        key={sm?.id}
+                      >
+                        <Link
+                          to={`${url}/${sm?.url}`}
+                          className="txt-white sidenavFonts"
+                        >
+                          <i className={sm?.sub_menu_icon}></i>
+                          &nbsp;{sm?.submenu_name}
+                        </Link>
+                      </li>
+                    )
+                  ) : (
+                    <li className="ant-menu-item" role="menuitem" key={sm?.id}>
+                      <Link
+                        to={`${url}/${sm?.url}`}
+                        className="txt-white sidenavFonts"
+                      >
+                        <i className={sm?.sub_menu_icon}></i>
+                        &nbsp;{sm?.submenu_name}
+                      </Link>
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
+          </React.Fragment>
+        )
+      );
+    });
 
-                  auth?.user?.loginId.toString() === "11235" ?
-                  (sm?.id !== 5 && sm?.id !== 6 && sm?.id !== 7 && sm?.id !== 8) &&
-                  <li className="ant-menu-item" role="menuitem" key={sm?.id}>
-                    <Link
-                      to={`${url}/${sm?.url}`}
-                      className="txt-white sidenavFonts"
-                    >
-                      <i className={sm?.sub_menu_icon}></i>
-                      &nbsp;{sm?.submenu_name}
-                    </Link>
-
-                  </li>
-                  :
-                  <li className="ant-menu-item" role="menuitem" key={sm?.id}>
-                    <Link
-                      to={`${url}/${sm?.url}`}
-                      className="txt-white sidenavFonts"
-                    >
-                      <i className={sm?.sub_menu_icon}></i>
-                      &nbsp;{sm?.submenu_name}
-                    </Link>
-
-                  </li>
-              ))}
-            </ul>
-          </div>
-
-        </React.Fragment>
-      )
-
-
-    })
-
-    setRenderMenuList(displayMenu)
-
+    setRenderMenuList(displayMenu);
   }, [menuListReducer]);
 
-
   const roleBasedShowTab = roleBasedAccess();
-
 
   return (
     <React.Fragment>
       <div className="headers "></div>
-      <input type="checkbox" className="openSidebarMenu" id="openSidebarMenu" title="ToggleBar" alt="ToggleBar" />
+      <input
+        type="checkbox"
+        className="openSidebarMenu"
+        id="openSidebarMenu"
+        title="ToggleBar"
+        alt="ToggleBar"
+      />
       {/* htmlfor="openSidebarMenu" that code writen by abhiverma but htmlfor got error when we used inside label code*/}
       <label for="openSidebarMenu" className="sidebarIconToggle ">
         <div className="spinner diagonal part-1"></div>
         <div className="spinner horizontal"></div>
         <div className="spinner diagonal part-2"></div>
       </label>
-      <aside className="gx-app-sidebar  gx-layout-sider-dark- false- ant-layout-sider- ant-layout-sider-dark d-none- col-lg-2 p-0 m-0-" id="sidebarMenu">
+      <aside
+        className="gx-app-sidebar  gx-layout-sider-dark- false- ant-layout-sider- ant-layout-sider-dark d-none- col-lg-2 p-0 m-0-"
+        id="sidebarMenu"
+      >
         <div className="ant-layout-sider-children">
           <div className="gx-sidebar-content">
             <div className="brand-logo d-flex-item-right">
@@ -147,9 +159,14 @@ const SideNavbar = () => {
                       role="menu"
                       style={{ background: "#140633" }}
                     >
-                      {(roleBasedShowTab?.merchant === true || roleBasedShowTab?.bank === true || roleBasedShowTab?.b2b === true) ? (
+                      {roleBasedShowTab?.merchant === true ||
+                      roleBasedShowTab?.bank === true ||
+                      roleBasedShowTab?.b2b === true ? (
                         <li className="ant-menu-item" role="menuitem">
-                          <Link to={`${url}`} className="txt-white sidenavFonts">
+                          <Link
+                            to={`${url}`}
+                            className="txt-white sidenavFonts"
+                          >
                             <img src={dashboard} width={17} alt="sabpaisa" />
                             <span>&nbsp;Dashboard</span>
                           </Link>
@@ -159,37 +176,37 @@ const SideNavbar = () => {
                       )}
                       {renderMenuList}
 
-                      {auth?.user?.loginId.toString() === "11235" &&
+                      {auth?.user?.loginId.toString() === "11235" && (
                         <div
                           className="main-menu-container"
                           // onClick={(e) => toggleMenu(e)}
                           isToggle="true"
                         >
-                          <ul className={`ant-menu ant-menu-sub ant-menu-inline`} role="menu">
-
-                            <li className="ant-menu-item" role="menuitem" >
+                          <ul
+                            className={`ant-menu ant-menu-sub ant-menu-inline`}
+                            role="menu"
+                          >
+                            <li className="ant-menu-item" role="menuitem">
                               <Link
                                 to={`${url}/transaction-history-merchant`}
                                 className="txt-white sidenavFonts"
                               >
-                                <i className="fa fa-bank"></i> 
-
+                                <i className="fa fa-bank"></i>
                                 Transactions History
                               </Link>
                             </li>
-                            <li className="ant-menu-item" role="menuitem" >
+                            <li className="ant-menu-item" role="menuitem">
                               <Link
                                 to={`${url}/settled-transaction-merchant`}
                                 className="txt-white sidenavFonts"
                               >
-                                <i className="fa fa-bank"></i> 
+                                <i className="fa fa-bank"></i>
                                 Settlement Report
                               </Link>
                             </li>
                           </ul>
                         </div>
-                      }
-
+                      )}
                     </ul>
                   </div>
                   <div
@@ -229,7 +246,6 @@ const SideNavbar = () => {
         </div>
       </aside>
     </React.Fragment>
-
   );
 };
 

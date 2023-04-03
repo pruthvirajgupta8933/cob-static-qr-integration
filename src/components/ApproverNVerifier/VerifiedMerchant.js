@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch , useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { kycForVerified } from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import toastConfig from "../../utilities/toastTypes";
-import Spinner from "./Spinner";
 import moment from "moment";
 import CommentModal from "./Onboarderchant/CommentModal";
 import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
-import { PendingApprovalData } from "../../utilities/tableData";
-import Table from "../../_components/table_components/table/Table";
-import Paginataion from "../../_components/table_components/pagination/Pagination";
+import Table from "../../_components/table_components/table/Table"
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
+import CustomLoader from "../../_components/loader";
 
 function VerifiedMerchant() {
   const [data, setData] = useState([]);
@@ -26,15 +24,132 @@ function VerifiedMerchant() {
   const [kycIdClick, setKycIdClick] = useState(null);
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
-  const [isOpenModal, setIsModalOpen] = useState(false)
+  const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
-  const rowData =  PendingApprovalData;
-  const loadingState = useSelector((state) => state.kyc.isLoadingForPendingApproval);
-  const verifierApproverTab = useSelector((state) => state.verifierApproverTab)
-  const currenTab = parseInt(verifierApproverTab?.currenTab)
-  
 
+  function capitalizeFirstLetter(param) {
+    // console.log(param,"param")
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
+
+
+
+  const PendingApprovalData = [
+    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true , width:"90px"},
+    { id: "2", name: "Client Code", selector: (row) => row.clientCode,
+    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>, width:"130px"
+  
+  },
+    { id: "3", name: "Company Name", selector: (row) => row.companyName ,
+    cell: (row) => <div className="removeWhiteSpace">{row?.companyName}</div>,
+    width:"400px"
+
+  },
+    {
+      id: "4",
+      name: "Merchant Name",
+      selector: (row) => row.name,
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA" )}</div> ,
+      sortable: true,
+      width:"200px"
+    },
+    {
+      id: "5",
+      name: "Email",
+      selector: (row) => row.emailId,
+      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
+      width:"220px"
+    },
+    {
+      id: "6",
+      name: "Contact Number",
+      selector: (row) => row.contactNumber,
+      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
+      width:"150px"
+    },
+    {
+      id: "7",
+      name: "KYC Status",
+      selector: (row) => row.status,
+    },
+    {
+      id: "8",
+      name: "Registered Date",
+      selector: (row) => row.signUpDate,
+      cell: (row) => covertDate(row.signUpDate),
+      sortable: true,
+      width:"150px"
+    },
+    {
+      id: "9",
+      name: "Verified Date",
+      selector: (row) => row.verified_date,
+      cell: (row) => covertDate(row.verified_date),
+      sortable: true,
+      width:"150px"
+    },
+    {
+      id: "10",
+      name: "Onboard Type",
+      selector: (row) => row.isDirect,
+    },
+    {
+      id: "11",
+      name: "View Status",
+      cell: (row) => (
+           <div className="mt-2">
+        <button
+            type="button"
+            className="approve text-white  btn-xs"
+            onClick={() => {
+              setKycIdClick(row);
+              setIsModalOpen(true);
+            }}
+            data-toggle="modal"
+            data-target="#kycmodaldetail"
+          >
+            {roles?.approver === true && currenTab === 4
+              ? "Approve KYC "
+              : "View Status"}
+          </button>
+          </div>
+      ),
+    },
+    {
+      id: "12",
+      name: "Action",
+      cell: (row) => (
+        <div className="mt-2">
+        {roles?.verifier === true ||
+          roles?.approver === true ||
+          roles?.viewer === true ? (
+            <button
+              type="button"
+              className="approve text-white  btn-xs "
+              data-toggle="modal"
+              onClick={() => {
+                setCommentId(row);
+                setOpenCommentModal(true);
+              }}
+              data-target="#exampleModal"
+              disabled={row?.clientCode === null ? true : false}
+            >
+              Comments
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
+      ),
+    },
+  ];
+
+  const loadingState = useSelector(
+    (state) => state.kyc.isLoadingForPendingApproval
+  );
+  const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
+  const currenTab = parseInt(verifierApproverTab?.currenTab);
 
   // console.log(currenTab," Current Tab")
   const roles = roleBasedAccess();
@@ -61,7 +176,6 @@ function VerifiedMerchant() {
       });
   };
 
-
   const searchByText = () => {
     setData(
       verfiedMerchant?.filter((item) =>
@@ -73,7 +187,6 @@ function VerifiedMerchant() {
     );
   };
 
-
   useEffect(() => {
     dispatch(kycForVerified({ page: currentPage, page_size: pageSize }))
       .then((resp) => {
@@ -84,168 +197,126 @@ function VerifiedMerchant() {
         setKycIdClick(data);
         setDataCount(dataCoun);
         setVerifiedMerchant(data);
-      
       })
 
       .catch((err) => {
         toastConfig.errorToast("Data not loaded");
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, pageSize]);
 
-  
-  
-  
   //function for change current page
   const changeCurrentPage = (page) => {
     setCurrentPage(page);
   };
 
-     //function for change page size
-     const changePageSize = (pageSize) => {
-      setPageSize(pageSize);
-    };
- 
+  //function for change page size
+  const changePageSize = (pageSize) => {
+    setPageSize(pageSize);
+  };
 
- 
-    const optionSearchData = [
-      {
-        name: "Select Onboard Type",
-        value: "",
-      },
-      {
-        name: "All",
-        value: "",
-      },
-      {
-        name: "Online",
-        value: "online",
-      },
-      {
-        name: "Offline",
-        value: "offline",
-      },
-    ];
-
-
+  const optionSearchData = [
+    {
+      name: "Select Onboard Type",
+      value: "",
+    },
+    {
+      name: "All",
+      value: "",
+    },
+    {
+      name: "Online",
+      value: "online",
+    },
+    {
+      name: "Offline",
+      value: "offline",
+    },
+  ];
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
-      return date
-    }
+    return date;
+  };
 
 
-    const colData = () => {
-      return (
-        data?.map((user, i) => (
-          <tr key={i}>
-          <td>{i + 1}</td>
-          <td>{user?.clientCode}</td>
-          <td>{user?.companyName}</td>
-          <td>{user?.name}</td>
-          <td>{user?.emailId}</td>
-          <td>{user?.contactNumber}</td>
-          <td>{user?.status}</td>
-          {/* <td>{user.status}</td> */}
-          <td>{covertDate(user?.signUpDate)}</td>
-          <td>{user?.verified_date === null  ? "NA" : covertDate(user?.verified_date)}</td>
-          <td>{user?.isDirect}</td>
-          <td>
-          
-            <button
-              type="button"
-              className="btn approve text-white  btn-xs"
-              onClick={() => {setKycIdClick(user); setIsModalOpen(true) }}
-              data-toggle="modal"
-              data-target="#kycmodaldetail"
-            >
-             { roles?.approver === true && currenTab === 4 ?  "Approve KYC " : "View Status" } 
-            </button>
-          </td>
-          {/* <td>{user?.comments}</td> */}
-          <td>
-            {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
-              <button
-                type="button"
-                className="btn approve text-white  btn-xs"
-                data-toggle="modal"
-                onClick={() =>  {                           
-                  setCommentId(user)
-                  setOpenCommentModal(true)
-                }}
-                data-target="#exampleModal"
-              disabled={user?.clientCode === null ? true : false}
-              >
-                 Comments
-              </button>
-            ) : (
-              <></>
-            )}
-            
-          </td>
-      
-        </tr>
-        ))
-  
-  
-      )
-    }
 
   return (
     <div className="container-fluid flleft">
       <div className="form-group col-lg-3 col-md-12 mt-2">
-      <SearchFilter
-            kycSearch={kycSearch}
-            searchText={searchText}
-            searchByText={searchByText}
-            setSearchByDropDown={setSearchByDropDown}
-          />
+        <SearchFilter
+          kycSearch={kycSearch}
+          searchText={searchText}
+          searchByText={searchByText}
+          setSearchByDropDown={setSearchByDropDown}
+        />
       </div>
 
       <div className="form-group col-lg-3 col-md-12 mt-2">
-      <CountPerPageFilter
-            pageSize={pageSize}
-            dataCount={dataCount}
-            changePageSize={changePageSize}
-          />
+        <CountPerPageFilter
+          pageSize={pageSize}
+          dataCount={dataCount}
+          changePageSize={changePageSize}
+        />
       </div>
       {/* <KycDetailsModal kycId={kycIdClick} /> */}
       <div className="form-group col-lg-3 col-md-12 mt-2">
-      <SearchbyDropDown
-            kycSearch={kycSearch}
-            searchText={searchText}
-            isSearchByDropDown={isSearchByDropDown}
-            notFilledData={verfiedMerchant}
-            setData={setData}
-            setSearchByDropDown={setSearchByDropDown}
-            optionSearchData={optionSearchData}
-          />
+        <SearchbyDropDown
+          kycSearch={kycSearch}
+          searchText={searchText}
+          isSearchByDropDown={isSearchByDropDown}
+          notFilledData={verfiedMerchant}
+          setData={setData}
+          setSearchByDropDown={setSearchByDropDown}
+          optionSearchData={optionSearchData}
+        />
       </div>
-      <MerchnatListExportToxl URL = {'?search=Verified&order_by=-verified_date&search_map=verified_date'} filename= {"Pending-Approval"}/>
+      <MerchnatListExportToxl
+        URL={
+          "?search=Verified&order_by=-verified_date&search_map=verified_date"
+        }
+        filename={"Pending-Approval"}
+      />
       <div>
-        
-      {openCommentModal === true ?  
-      <CommentModal commentData={commentId} isModalOpen={openCommentModal} setModalState={setOpenCommentModal} tabName={"Pending Approval"} /> 
-      : <></>}
-      
-      {isOpenModal ? <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderPendingApproval={verifyMerchant}   /> : <></>}
-           </div>
+        {openCommentModal === true ? (
+          <CommentModal
+            commentData={commentId}
+            isModalOpen={openCommentModal}
+            setModalState={setOpenCommentModal}
+            tabName={"Pending Approval"}
+          />
+        ) : (
+          <></>
+        )}
+
+        {isOpenModal ? (
+          <KycDetailsModal
+            kycId={kycIdClick}
+            handleModal={setIsModalOpen}
+            isOpenModal={isOpenModal}
+            renderPendingApproval={verifyMerchant}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
       <div className="container-fluid pull-left p-3- my-3- col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
-        {loadingState ? (
-            <p className="text-center spinner-roll">{<Spinner />}</p>
-          ) : (
-            <Table row={rowData} col={colData} />
+          {!loadingState && data?.length !== 0 && (
+            <Table
+              row={PendingApprovalData}
+              data={data}
+              dataCount={dataCount}
+              pageSize={pageSize}
+              currentPage={currentPage}
+              changeCurrentPage={changeCurrentPage}
+            />
           )}
         </div>
-        <nav>
-        <Paginataion
-            dataCount={dataCount}
-            pageSize={pageSize}
-            currentPage={currentPage}
-            changeCurrentPage={changeCurrentPage}
-          />
-        </nav>
+        <CustomLoader loadingState={loadingState} />
+        {data?.length == 0 && !loadingState && (
+          <h2 className="text-center font-weight-bold">No Data Found</h2>
+        )}
       </div>
     </div>
   );

@@ -3,10 +3,18 @@
 @import url("../src/assets/fonts/NunitoSans/nunitosans.css");
 @import url("../src/assets/fonts/Roboto/roboto.css");
 @import url("../src/assets/fonts/Roboto/roboto.css");
+html {
+  overflow-y:scroll;
+}
 
 label {
   display: block;
   margin-top: 10px;
+}
+.removeWhiteSpace{
+  padding-top: 10px;
+  padding-bottom: 10px;
+
 }
 
 .login-form,
@@ -305,4 +313,14 @@ label {
     background-color: darkgoldenrod;
     color: black;
   }
+}
+
+/* Font Size Class */
+
+.font-size-14{
+  font-size: 14px !important;
+}
+
+.font-size-16{
+  font-size: 16px !important;
 }

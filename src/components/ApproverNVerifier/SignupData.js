@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import FormikController from "../../_components/formik/FormikController";
 import { axiosInstanceJWT } from '../../utilities/axiosInstance';
 import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
+import Table from '../../_components/table_components/table/Table';
+import CustomLoader from '../../_components/loader';
 // import toastConfig from '../../utilities/toastTypes';
 
 
@@ -23,6 +25,16 @@ const validationSchema = Yup.object({
 
 const SignupData = () => {
   const [signupData, setSignupData] = useState([]);
+
+  const [loadingState, setLoadingState] = useState(false);
+  const [dataCount, setDataCount] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
+
+  // const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
+
+
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -44,6 +56,7 @@ const SignupData = () => {
 
 
   const handleSubmit = (values) => {
+    setLoadingState(true)
     const postData = {
       "from_date": values.from_date,
       "to_date": values.to_date
@@ -51,13 +64,15 @@ const SignupData = () => {
     };
     let apiRes = axiosInstanceJWT
       .post(API_URL.GET_SIGNUP_DATA_INFO, postData).then((resp) => {
-
-        // resp?.data?.Merchant_Info !== [] ? toastConfig.successToast("Data Loaded") : toastConfig.errorToas("No Data Found")
-        // // toast.success("Data Loaded");
         setSignupData(resp?.data?.Merchant_Info)
+        // console.log(resp?.data)
         setShow(true)
+        setLoadingState(false)
+        setDataCount(resp?.data?.length)
+        
 
       }).catch((error) => {
+        setLoadingState(false)
         apiRes = error.response;
         toast.error(apiRes?.data?.message)
       })
@@ -131,6 +146,76 @@ const SignupData = () => {
   // }
 
 
+  
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("DD/MM/YYYY");
+    return date;
+  };
+
+  //function for change current page
+  const changeCurrentPage = (page) => {
+    setCurrentPage(page);
+  };
+
+  //function for change page size
+  const changePageSize = (pageSize) => {
+    setPageSize(pageSize);
+  };
+
+
+  const rowSignUpData = [
+    { id: "1", name: "S. No.", selector: (row) => row.sno ,sortable:true },
+    { id: "2", name: "Merchant Name", selector: (row) => row.name,  sortable:true },
+    {
+      id: "3",
+      name: "Email",
+      selector: (row) => row.email
+    },
+    {
+      id: "4",
+      name: "Contact Number",
+      selector: (row) => row.mobileNumber
+    },
+    {
+      id: "5",
+      name: "Registered Date",
+      selector: (row) => covertDate(row.createdDate),
+      sortable:true
+    },
+    {
+      id: "6",
+      name: "Status",
+      selector: (row) => row.status,
+      sortable:true
+    },
+    {
+      id: "7",
+      name: "Business Category",
+      selector: (row) => row.business_category_name
+    },
+    {
+      id: "8",
+      name: "Product Name",
+      selector: (row) => row.website_plan_details?.appName
+    },
+    {
+      id: "9",
+      name: "Plan Name",
+      selector: (row) => row.website_plan_details?.planName
+    },
+    {
+      id: "10",
+      name: "Landing Page Name",
+      selector: (row) => row.website_plan_details?.page
+    },
+    {
+      id: "11",
+      name: "Platform",
+      selector: (row) => row.website_plan_details?.platform_id
+    }
+
+  ];
+
 
   return (
     <section className="ant-layout">
@@ -202,57 +287,27 @@ const SignupData = () => {
             </Form>
 
           </Formik>
-          <div className="col-md-12 col-md-offset-4">
-            <div className="scroll overflow-auto">
-              {show === true ? (
-                <table className="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>S. No.</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Mobile Number</th>
-                      <th>Created Date</th>
-                      <th>Status</th>
-                      <th>Business category Name</th>
-                      <th>Product Name</th>
-                      <th>Plan Name</th>
-                      <th>Landing Page Name</th>
-                      <th>Platform</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-
-                    {signupData?.length === 0 || signupData?.length === undefined ? (
-                      <tr>
-                        <td colSpan={"8"}>
-                          <h1 className="nodatafound">No data found</h1>
-                        </td>
-                      </tr>
-                    ) : (
-                      signupData?.map((SignData, i) => (
-                        <tr key={i}>
-                          <td>{i + 1}</td>
-                          <td>{SignData?.name}</td>
-                          <td>{SignData?.email}</td>
-                          <td>{SignData?.mobileNumber}</td>
-                          <td>{SignData?.createdDate}</td>
-                          <td>{SignData?.status}</td>
-                          <td>{SignData?.business_category_name}</td>
-                          <td>{SignData?.website_plan_details?.appName}</td>
-                          <td>{SignData?.website_plan_details?.planName}</td>
-                          <td>{SignData?.website_plan_details?.page}</td>
-                          <td>{SignData?.website_plan_details?.platform_id}</td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              ) : (
-                <></>
+          <>
+    
+          <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+              <div className="scroll overflow-auto">
+                {!loadingState && signupData?.length !== 0 && (
+                  <Table
+                    row={rowSignUpData}
+                    data={signupData}
+                    dataCount={dataCount}
+                    pageSize={pageSize}
+                    currentPage={currentPage}
+                    changeCurrentPage={changeCurrentPage}
+                  />
+                )}
+              </div>
+              <CustomLoader loadingState={loadingState} />
+              {signupData?.length === 0 && !loadingState && (
+                <h2 className="text-center font-weight-bold">No Data Found</h2>
               )}
             </div>
-          </div>
+            </>
         </div>
       </main>
     </section>

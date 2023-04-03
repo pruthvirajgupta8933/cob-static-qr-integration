@@ -9,12 +9,12 @@ import KycDetailsModal from "./Onboarderchant/ViewKycDetails/KycDetailsModal";
 import MerchnatListExportToxl from "./MerchnatListExportToxl";
 import CommentModal from "./Onboarderchant/CommentModal";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
-import { ApprovedTableData } from "../../utilities/tableData";
-import Paginataion from "../../_components/table_components/pagination/Pagination";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import Table from "../../_components/table_components/table/Table";
+import CustomLoader from "../../_components/loader";
+import ViewDocumentModal from "./Onboarderchant/ViewDocumentModal";
 
 
 function ApprovedMerchant() {
@@ -30,11 +30,160 @@ function ApprovedMerchant() {
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false)
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  const [openDocumentModal, setOpenDocumentModal] = useState(false);
 
-  const rowData = ApprovedTableData;
+  function capitalizeFirstLetter(param) {
+    return param?.charAt(0).toUpperCase() + param?.slice(1);
+  }
+
+
+
+  const ApprovedTableData = [
+    { id: "1", name: "S.No", selector: (row) => row.sno, sortable: true,width:"95px" },
+    { id: "2", name: "Client Code", selector: (row) => row.clientCode,
+    cell: (row) => <div className="removeWhiteSpace">{row?.clientCode}</div>,width:"130px"
+  },
+    { id: "3", name: "Company Name", selector: (row) => row.companyName, 
+    cell: (row) => <div className="removeWhiteSpace">{row?.companyName }</div>,
+    width:"300px"
+    
+  },
+    {
+      id: "4",
+      name: "Merchant Name",
+      selector: (row) => row.name,
+      cell: (row) => <div className="removeWhiteSpace">{capitalizeFirstLetter(row?.name ? row?.name : "NA")}</div>,
+      sortable: true,
+      width:"200px"
+    },
+    {
+      id: "5",
+      name: "Email",
+      selector: (row) => row.emailId,
+      cell: (row) => <div className="removeWhiteSpace">{row?.emailId}</div>,
+      width:"220px"
+    },
+    {
+      id: "6",
+      name: "Contact Number",
+      selector: (row) => row.contactNumber,
+      cell: (row) => <div className="removeWhiteSpace">{row?.contactNumber}</div>,
+      width:"150px"
+    },
+    {
+      id: "7",
+      name: "KYC Status",
+      selector: (row) => row.status,
+    },
+    {
+      id: "8",
+      name: "Registered Date",
+      selector: (row) => row.signUpDate,
+      cell: (row) => covertDate(row.signUpDate),
+      sortable: true,
+      width:"150px"
+    },
+    {
+      id: "9",
+      name: "Verified Date",
+      selector: (row) => row?.verified_date,
+      cell: (row) => covertDate(row?.verified_date),
+      sortable: true,
+      width:"150px"
+    },
+    {
+      id: "10",
+      name: "Approved Date",
+      selector: (row) =>  row?.approved_date,
+      cell: (row) => covertDate(row?.approved_date),
+      sortable: true,
+      width:"150px"
+    },
+    
+    {
+      id: "11",
+      name: "Onboard Type",
+      selector: (row) => row.isDirect,
+    },
+    {
+      id: "12",
+      name: "View Status",
+      cell: (row) => (
+        <div className="mt-2">
+        <button
+        type="button"
+        className="approve text-white  btn-xs "
+        onClick={() =>  {
+          setKycIdClick(row); 
+          setIsModalOpen(true) 
+        }}
+        data-toggle="modal"
+        data-target="#kycmodaldetail"
+      >
+        View Status
+      </button>
+      </div>
+      ),
+    },
+    {
+      id: "13",
+      name: "Upload Agreement",
+      cell: (row) => (
+        <div className="mt-2">
+      {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
+                  <button
+                  type="button"
+                  className="approve text-white  btn-xs "
+                  data-toggle="modal"
+                  onClick={() => {
+                    setCommentId(row)
+                    setOpenDocumentModal(true)
+          
+                  }}
+                  data-target="#exampleModal"
+                  disabled={row?.clientCode === null ? true : false}
+                >
+                   Upload 
+                </button>
+              ) : <></> }
+        </div>
+      ),
+    },
+    {
+      id: "14",
+      name: "Action",
+      selector: (row) => row.actionStatus,
+      cell: (row) => (
+        <div>
+          {roles?.verifier === true ||
+          roles?.approver === true ||
+          roles?.viewer === true ? (
+            <button
+              type="button"
+              className="approve text-white"
+              data-toggle="modal"
+              onClick={() => {
+                setCommentId(row);
+                setOpenCommentModal(true);
+              }}
+              data-target="#exampleModal"
+              disabled={row?.clientCode === null ? true : false}
+            >
+              Comments
+            </button>
+          ) : (
+            <></>
+          )}
+        </div>
+      ),
+    },
+  ];
+
+
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
+  // console.log("KKKKKKKKKKKKK",commentId);
 
 
 
@@ -95,24 +244,6 @@ function ApprovedMerchant() {
 
 
 
-  // const viewDocument = async (loginMaidsterId) => {
-  //   const res = await axiosInstanceJWT
-  //     .post(API_URL.DOCUMENT_BY_LOGINID, {
-  //       login_id: loginMaidsterId,
-  //     })
-  //     .then((res) => {
-  //       if (res.status === 200) {
-  //         const data = res.data;
-  //         // setDocImageData(data);
-  //         const docId = data[0].documentId;
-  //         const file = data[0].filePath;
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Please try again after sometimes.", error);
-  //     });
-  // };
-
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
       return date
@@ -150,67 +281,6 @@ function ApprovedMerchant() {
   ];
 
 
- 
-    const colData = () => {
-      return (
-        <>
-          {data == [] ? (
-            <td colSpan={"11"}>
-              {" "}
-              <div className="nodatafound text-center">No data found </div>
-            </td>
-          ) : (
-            data?.map((user, i) => (
-              <tr key={i}>
-              <td>{i + 1}</td>
-              <td>{user?.clientCode}</td>
-              <td>{user?.companyName}</td>
-              <td>{user?.name}</td>
-              <td>{user?.emailId}</td>
-              <td>{user?.contactNumber}</td>
-              <td>{user?.status}</td>
-              <td>{covertDate(user.signUpDate)}</td>
-              <td>{user?.verified_date === null ? "NA" : covertDate(user?.verified_date)}</td>
-              <td>{covertDate(user?.approved_date)}</td>
-              <td>{user?.isDirect}</td>
-              <td>
-               
-                
-                <button
-                    type="button"
-                    className="btn approve text-white  btn-xs"
-                    onClick={() =>  {setKycIdClick(user); setIsModalOpen(true) }}
-                    data-toggle="modal"
-                    data-target="#kycmodaldetail"
-                  >
-                    View Status
-                  </button>
-                  </td>
-                  <td>
-              {roles?.verifier === true || roles?.approver === true || roles?.viewer === true ? (
-                  <button
-                  type="button"
-                  className="btn approve text-white  btn-xs"
-                  data-toggle="modal"
-                  onClick={() => {
-                    setCommentId(user)
-                    setOpenCommentModal(true)
-          
-                  }}
-                  data-target="#exampleModal"
-                  disabled={user?.clientCode === null ? true : false}
-                >
-                   Comments
-                </button>
-              ) : <></> }
-              </td>
-                      
-            </tr>
-            ))
-          )}
-        </>
-      );
-    };
 
   return (
     <div className="container-fluid flleft">
@@ -228,6 +298,12 @@ function ApprovedMerchant() {
           
           <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderApprovedTable={approvedTable}/>
         </div>
+
+      <div>
+        {openDocumentModal === true ? <ViewDocumentModal documentData={commentId} isModalOpen={openDocumentModal} setModalState={setOpenDocumentModal} tabName={"Approved Tab"} /> : <></>}
+        <KycDetailsModal kycId={kycIdClick} handleModal={setIsModalOpen}  isOpenModal={isOpenModal} renderApprovedTable={approvedTable}/>
+      </div>
+
       <div className="form-group col-lg-3 col-md-12 mt-2">
       <CountPerPageFilter
             pageSize={pageSize}
@@ -250,20 +326,22 @@ function ApprovedMerchant() {
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
 
-        {loadingState ? (
-            <p className="text-center spinner-roll">{<Spinner />}</p>
-          ) : (
-            <Table row={rowData} col={colData} />
-          )}
-        </div>
-        <nav>
-        <Paginataion
+        {!loadingState && data?.length !== 0 && (
+            <Table 
+            row={ApprovedTableData}
+            data={data}
             dataCount={dataCount}
             pageSize={pageSize}
             currentPage={currentPage}
             changeCurrentPage={changeCurrentPage}
-          />
-        </nav>
+
+            />
+          )}
+        </div>
+        <CustomLoader loadingState={loadingState} />
+        {data?.length == 0 && !loadingState && (
+          <h2 className="text-center font-weight-bold">No Data Found</h2>
+        )}
       </div>
     </div>
   );

@@ -12,13 +12,11 @@ import {
   exportTransactions,
 } from "../slices/backTobusinessSlice";
 import toastConfig from "../utilities/toastTypes";
-import Spinner from "../components/ApproverNVerifier/Spinner";
-import DropDownCountPerPage from "../_components/reuseable_components/DropDownCountPerPage";
 import Blob from "blob";
 import { ChallanReportData } from "../utilities/tableData";
 import Table from "../_components/table_components/table/Table";
-import Paginataion from "../_components/table_components/pagination/Pagination";
 import CountPerPageFilter from "../../src/_components/table_components/filters/CountPerPage";
+import CustomLoader from "../_components/loader";
 
 const ChallanTransactReport = () => {
   const dispatch = useDispatch();
@@ -27,6 +25,10 @@ const ChallanTransactReport = () => {
 
   const history = useHistory();
   const { auth } = useSelector((state) => state);
+  const loadingState = useSelector((state) => state.challanReducer.isLoading);
+
+  // console.log(loadingState,"loadingState")
+
   const { user } = auth;
   const [data, setData] = useState([]);
   const [spinner, setSpinner] = useState(false);
@@ -36,8 +38,6 @@ const ChallanTransactReport = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
-  const [displayPageNumber, setDisplayPageNumber] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [saveData, setSaveData] = useState();
   const [disable, setDisable] = useState(false);
   const [isexcelDataLoaded, setIsexcelDataLoaded] = useState(false);
@@ -115,7 +115,6 @@ const ChallanTransactReport = () => {
         setData(data);
         setDataCount(dataCoun);
         setVerifiedMerchant(data);
-        setIsLoaded(false);
       })
 
       .catch((err) => {});
@@ -154,6 +153,8 @@ const ChallanTransactReport = () => {
     ));
   };
 
+  
+
   // console.log(pageSize,"page Size")
 
   const handleSubmit = (values) => {
@@ -177,7 +178,7 @@ const ChallanTransactReport = () => {
         if (data?.length === 0 && data !== null) {
           // Return null value
         } else {
-          toastConfig.successToast("Data loaded");
+          // toastConfig.successToast("Data loaded");
         }
 
         setData(data);
@@ -335,31 +336,19 @@ const ChallanTransactReport = () => {
           <div className="col-md-12 col-md-offset-4">
             <h5 className="font-weight-bold">Total Records: {data?.length}</h5>
             <div className="scroll overflow-auto">
-              <Table row={rowData} col={colData} />
+              <Table
+                row={rowData}
+                data={data}
+                dataCount={dataCount}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                changeCurrentPage={changeCurrentPage}
+               
+              />
             </div>
-            {data?.length === 0 ? (
-              <tr>
-                <td colSpan={"15"}>
-                  <h1 className="nodatafound">No Data Found</h1>
-                  <br />
-                  <br />
-                </td>
-              </tr>
-            ) : (
-              <></>
-            )}
-
-            {data?.length !== 0 ? (
-              <nav>
-                <Paginataion
-                  dataCount={dataCount}
-                  pageSize={pageSize}
-                  currentPage={currentPage}
-                  changeCurrentPage={changeCurrentPage}
-                />
-              </nav>
-            ) : (
-              <></>
+            <CustomLoader loadingState={loadingState} />
+            {data?.length == 0 && !loadingState && (
+              <h2 className="text-center font-weight-bold">No Data Found</h2>
             )}
           </div>
         ) : (

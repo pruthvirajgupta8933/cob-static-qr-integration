@@ -8,28 +8,22 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormikController from "../../../../_components/formik/FormikController";
 import { toast } from "react-toastify";
-import {
-  clearSettlementReport,
-  fetchSettlementReportSlice,
-} from "../../../../slices/dashboardSlice";
-import Notification from "../../../../_components/reuseable_components/Notification";
 import { exportToSpreadsheet } from "../../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../../_components/reuseable_components/convertToFormikSelectJson";
 import NavBar from "../../NavBar/NavBar";
 import moment from "moment";
-import { settledTransactionHistoryDoitc, clearSettledTransactionHistory } from "../../../../slices/merchant-slice/reportSlice";
-// import { CSVLink } from "react-csv";
+import { clearSettledTransactionHistory, settledTransactionHistoryDoitc } from "../../../../slices/merchant-slice/reportSlice";
+
+
 
 const SettlementReportDoitc = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { auth, dashboard, merchantReportSlice } = useSelector((state) => state);
+  const { auth, merchantReportSlice } = useSelector((state) => state);
   const { user } = auth;
 
-  const { isLoadingTxnHistory } = dashboard;
   const [txnList, SetTxnList] = useState([]);
-  // const [filterList,SetFilterList] = useState([])
   const [searchText, SetSearchText] = useState("");
 
   const [pageSize, setPageSize] = useState(10);
@@ -37,10 +31,8 @@ const SettlementReportDoitc = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showData, setShowData] = useState([]);
   const [updateTxnList, setUpdateTxnList] = useState([]);
-  const [exportToCsv, setExportToCsv] = useState({});
   const [pageCount, setPageCount] = useState(0);
   const [dataFound, setDataFound] = useState(false);
-  const [triggerForReport, setTriggerForReport] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
   const [disable, setIsDisable] = useState(false)
 
@@ -148,13 +140,6 @@ const SettlementReportDoitc = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [merchantReportSlice]);
 
-  useEffect(() => {
-
-  }, [triggerForReport])
-  
-
-  console.log("exprot", exportToCsv)
-
 
 
   useEffect(() => {
@@ -183,7 +168,7 @@ const SettlementReportDoitc = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(clearSettlementReport());
+      dispatch(clearSettledTransactionHistory());
     };
   }, []);
 
@@ -320,9 +305,6 @@ const SettlementReportDoitc = () => {
       <div>
         <NavBar />
       </div>
-      {/* <div className="profileBarStatus">
-        <Notification />
-      </div> */}
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
           <div className="right_layout my_account_wrapper right_side_heading">
@@ -390,15 +372,6 @@ const SettlementReportDoitc = () => {
                                 <button className="dropdown-item m-0 p-0 btn btn-sm btn-secondary text-left" type="button"  onClick={() => exportToExcelFn("xlxs")}>Excel</button>
                               </div>
                             </div>
-                          {/* <button
-                            className="btn btn-sm text-white"
-                            style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                            type="button"
-                            onClick={() => exportToExcelFn()}
-                          >
-                            Export{" "}
-                          </button> */}
-                          {/* <CSVLink className="btn btn-sm text-white btn-primary" {...exportToCsv}>Export To CSV</CSVLink> */}
                         </div>
                       ) : (
                         <></>
