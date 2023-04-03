@@ -162,10 +162,10 @@ const API_LIVE = {
   Export_FOR_MERCHANT_LIST: `${kyc_url}/kyc/get-merchant-data/`,
   /////////////////////////Kyc approver
   /* For pending*/
-  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/`,
-  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/`,
+  KYC_FOR_NOT_FILLED: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
+  KYC_FOR_PENDING_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
   KYC_FOR_REJECTED_MERCHANTS: `${kyc_url}/kyc/get-merchant-data/?order_by=-kyc_reject`,
-  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/`,
+  KYC_FOR_PROCESSING: `${kyc_url}/kyc/get-merchant-data/?order_by=-id`,
   KYC_FOR_VERIFIED: `${kyc_url}/kyc/get-merchant-data/?order_by=-verified_date`,
   KYC_FOR_APPROVED: `${kyc_url}/kyc/get-merchant-data/?order_by=-approved_date`,
   KYC_FOR_COMPLETED: `${kyc_url}/kyc/get-merchant-data/?search=completed&order_by=-merchantId`,
