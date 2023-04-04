@@ -110,8 +110,9 @@ const RejectedKYC = () => {
       id: "10",
       name: "View Status",
       selector: (row) => row.viewStatus,
+      width:"110px",
       cell: (row) => (
-        <div className="mt-2">
+        <div>
           <button
             type="button"
             className="approve text-white  btn-xs "
@@ -132,7 +133,7 @@ const RejectedKYC = () => {
       name: "Action",
       selector: (row) => row.actionStatus,
       cell: (row) => (
-        <div className="mt-2">
+        <div>
           {roles?.verifier === true ||
           roles?.approver === true ||
           roles?.viewer === true ? (

@@ -99,7 +99,7 @@ function PendingVerification() {
       name: "View Status",
       // selector: (row) => row.viewStatus,
       cell: (row) => (
-        <div className="mt-2">
+        <div>
           <button
             type="button"
             className="approve text-white  btn-xs "

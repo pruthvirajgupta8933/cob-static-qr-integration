@@ -4,7 +4,11 @@ export const axiosInstanceAuth = axios.create({
   headers: { Authorization: "2044c5ea-d46f-4e9e-8b7a-2aa73ce44e69" },
 });
 
-export const axiosInstance = axios.create({});
+export const axiosInstance = axios.create({
+  headers: {
+    "auth-token": "B6oXD7U738vpl2T49RPbuQ==",
+  },
+});
 
 export const kycValidatorAuth = axios.create({
   headers: {

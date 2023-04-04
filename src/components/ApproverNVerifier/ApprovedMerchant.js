@@ -124,8 +124,9 @@ function ApprovedMerchant() {
     {
       id: "12",
       name: "View Status",
+      width:"110px",
       cell: (row) => (
-        <div className="mt-2">
+        <div>
           <button
             type="button"
             className="approve text-white  btn-xs "
@@ -145,7 +146,7 @@ function ApprovedMerchant() {
       id: "13",
       name: "Upload Agreement",
       cell: (row) => (
-        <div className="mt-2">
+        <div >
           {roles?.verifier === true ||
           roles?.approver === true ||
           roles?.viewer === true ? (
@@ -201,7 +202,6 @@ function ApprovedMerchant() {
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
-  // console.log("KKKKKKKKKKKKK",commentId);
 
   const kycSearch = (e, fieldType) => {
     if(fieldType === "text"){
@@ -246,25 +246,7 @@ function ApprovedMerchant() {
 
   // Only used for refreshing the page by passing it to the props
   const approvedTable = () => {
-    fetchData()
-    // dispatch(
-    //   kycForApproved({
-    //     page: currentPage,
-    //     page_size: pageSize,
-    //   })
-    // )
-    //   .then((resp) => {
-    //     resp?.payload?.status_code && toastConfig.errorToast("Data Not Loaded");
-    //     const data = resp?.payload?.results;
-    //     const dataCoun = resp?.payload?.count;
-    //     setData(data);
-    //     setDataCount(dataCoun);
-    //     setApprovedMerchantData(data);
-    //   })
-
-    //   .catch((err) => {
-    //     toastConfig.errorToast("Data not loaded");
-    //   });
+    fetchData();
   };
 
   const searchByText = () => {

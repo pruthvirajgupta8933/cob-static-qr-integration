@@ -115,11 +115,12 @@ function VerifiedMerchant() {
     {
       id: "11",
       name: "View Status",
+      width:"120px",
       cell: (row) => (
-        <div className="mt-2">
+        <div>
           <button
             type="button"
-            className="approve text-white  btn-xs"
+            className="approve text-white  btn-xs mr-3"
             onClick={() => {
               setKycIdClick(row);
               setIsModalOpen(true);
@@ -128,7 +129,7 @@ function VerifiedMerchant() {
             data-target="#kycmodaldetail"
           >
             {roles?.approver === true && currenTab === 4
-              ? "Approve KYC "
+              ? "Approve KYC"
               : "View Status"}
           </button>
         </div>
@@ -138,7 +139,7 @@ function VerifiedMerchant() {
       id: "12",
       name: "Action",
       cell: (row) => (
-        <div className="mt-2">
+        <div>
           {roles?.verifier === true ||
           roles?.approver === true ||
           roles?.viewer === true ? (

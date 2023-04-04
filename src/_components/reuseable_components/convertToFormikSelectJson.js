@@ -5,9 +5,9 @@ export const convertToFormikSelectJson = (key, value, dataObject, extraDataObj =
     dataObject?.map((item,i) => {
         if (forClientCode) {
             let valShow = item[key] + ` - ` + item[value]
-            tempArr.push({ key: item[key], value: valShow.toUpperCase(), optional1:item?.is_required})
+            tempArr.push({ key: item[key], value: valShow, optional1:item?.is_required})
         } else {
-            tempArr.push({ key: item[key], value: item[value].toUpperCase(), optional1:item?.is_required})
+            tempArr.push({ key: item[key], value: item[value], optional1:item?.is_required})
         }
     })
     return tempArr
