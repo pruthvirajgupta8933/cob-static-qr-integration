@@ -77,10 +77,6 @@ const AuthMandate = ({ updatedData }) => {
       console.log(res?.payload, "ressssssssssssss");
     });
   };
-
-  const fetchFrequencyData = () =>  {
-    console.group(updated?.authencationMode, "Data recovered from the schedule")
-  }
   return (
     <div class="row">
       <div class="col-lg-6 mand">
