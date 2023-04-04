@@ -1,7 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.2959ec83.css",
-    "main.js": "/static/js/main.aa423ac4.js",
+    "main.css": "/static/css/main.115582d1.css",
+    "main.js": "/static/js/main.1fa23845.js",
+    "static/media/image_processing20210906-19522-9n3ter.gif": "/static/media/image_processing20210906-19522-9n3ter.2506922709cb9505af17.gif",
+    "static/media/image_processing20201113-8803-s9v2bo.gif": "/static/media/image_processing20201113-8803-s9v2bo.b5c0f0b95e32990991b6.gif",
+    "static/media/profile-illustration.png": "/static/media/profile-illustration.72707d1190ae079ac624.png",
     "static/media/Roboto-Medium.ttf": "/static/media/Roboto-Medium.7c8d04cd831df3033c8a.ttf",
     "static/media/Roboto-Regular.ttf": "/static/media/Roboto-Regular.fc2b5060f7accec5cf74.ttf",
     "static/media/COB.png": "/static/media/COB.291fe45cb61eeb6e8b0d.png",
@@ -51,11 +54,11 @@
     "static/media/sabpaisa-white-logo1.png": "/static/media/sabpaisa-white-logo1.09a57ac63c50ae0ebcd1.png",
     "index.html": "/index.html",
     "static/media/download-icon.svg": "/static/media/download-icon.d9e61c59b5691e8f36ca94b0b79ae1fc.svg",
-    "main.2959ec83.css.map": "/static/css/main.2959ec83.css.map",
-    "main.aa423ac4.js.map": "/static/js/main.aa423ac4.js.map"
+    "main.115582d1.css.map": "/static/css/main.115582d1.css.map",
+    "main.1fa23845.js.map": "/static/js/main.1fa23845.js.map"
   },
   "entrypoints": [
-    "static/css/main.2959ec83.css",
-    "static/js/main.aa423ac4.js"
+    "static/css/main.115582d1.css",
+    "static/js/main.1fa23845.js"
   ]
 }

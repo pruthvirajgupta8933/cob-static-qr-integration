@@ -55,9 +55,8 @@ const BizzAppForm = (props) => {
                 'ERROR: The number must be greater than 0!',
                 (value) => value > 0
             ),
-        question: Yup.string()
-            // .required("Required")
-            ,
+        // question: Yup.string()
+        //     .required("Required"),
         authorized_contact_person_name: Yup.string()
             .required("Required"),
         authorized_contact_person_contact_number: Yup.string()
@@ -108,7 +107,7 @@ const BizzAppForm = (props) => {
         expected_transactions_numbers: "",
         account_details: "",
         annual_transaction_value: "",
-        question: "static default question",
+        question: "default static question",
         authorized_contact_person_name: "",
         authorized_contact_person_contact_number: "",
         authorized_contact_person_email_id: "",
