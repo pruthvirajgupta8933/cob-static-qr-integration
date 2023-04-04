@@ -13,6 +13,7 @@ import Table from "../_components/table_components/table/Table";
 import { LedgerRowData } from "../utilities/tableData";
 import Paginataion from "../_components/table_components/pagination/Pagination";
 import CountPerPageFilter from "../_components/table_components/filters/CountPerPage";
+import ExportToExcel from "../_components/exportToExcel/index";
 // import MerchnatListExportToxl from "./MerchnatListExportToxl";
 
 const PayoutLedger = (props) => {
@@ -156,11 +157,11 @@ const PayoutLedger = (props) => {
                     changePageSize={changePageSize}
                   />
                 </div>
-                <div className="form-group col-lg-2 mt-4">
-                  <label></label>
-                  <button className="btn btn-sm btn-primary mt-2" type="submit">
+                <div className="form-group col-lg-1 mt-4 d-flex">
+                  <button className="btn  btn-primary mt-2" type="submit">
                     Search{" "}
                   </button>
+                  <ExportToExcel />
                 </div>
                 {/* <MerchnatListExportToxl
             URL={"?order_by=-id&search=Not-Filled"}
@@ -188,7 +189,7 @@ const PayoutLedger = (props) => {
             </div>
             <div>
               <div className="d-flex">
-              <LedgerCards />
+                <LedgerCards />
                 <p class="text-secondary">Transaction Count {TotalData}</p>
               </div>
               {ledgerData?.length == 0 ? (

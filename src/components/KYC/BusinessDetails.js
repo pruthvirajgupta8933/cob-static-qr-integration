@@ -410,6 +410,7 @@ function BusinessDetails(props) {
                     <FormikController
                       control="radio"
                       name="registerd_with_gst"
+                      label="Do you have a GST Number ?"
                       options={radioBtnOptions}
                       className="form-check-input"
                       onChange={(e)=>{
@@ -419,7 +420,9 @@ function BusinessDetails(props) {
                         setFieldValue("prev_pan_card","")                        
                         setFieldValue("prevGstNumber","")
                       }}
-                      label="Do you have a GST Number ?"
+                      
+                      disabled={VerifyKycStatus === "Verified" ? true : false}
+                      readOnly={readOnly}
                     />
 
                   </div>

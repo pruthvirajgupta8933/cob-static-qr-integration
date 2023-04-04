@@ -172,7 +172,7 @@ function AssignZone() {
             data-toggle="modal"
             data-target="#exampleModalCenter"
           >
-            Configuration
+            Configure
           </button>
         </div>
       ),
