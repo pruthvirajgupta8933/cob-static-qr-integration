@@ -32,7 +32,7 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
     payerAccountType: Yup.string().required("Required"),
   });
   const handleSubmit = (values) => {
-    console.log(values,"=====================>");
+    // console.log(values,"=====================>");
     showbankData(values,validStatus,verifiedStatus);
 
 
