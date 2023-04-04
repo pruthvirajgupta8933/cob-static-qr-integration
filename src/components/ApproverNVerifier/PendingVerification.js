@@ -19,9 +19,7 @@ import CustomLoader from "../../_components/loader";
 function PendingVerification() {
   const roles = roleBasedAccess();
   const [data, setData] = useState([]);
-  const [onboardType, setOnboardType] = useState("")
-
-
+  const [onboardType, setOnboardType] = useState("");
 
   function capitalizeFirstLetter(param) {
     return param?.charAt(0).toUpperCase() + param?.slice(1);
@@ -176,15 +174,15 @@ function PendingVerification() {
   const dispatch = useDispatch();
 
   const kycSearch = (e, fieldType) => {
-    if(fieldType === "text"){
-      setSearchByDropDown(false)
+    if (fieldType === "text") {
+      setSearchByDropDown(false);
       setSearchText(e);
     }
-    if(fieldType === "dropdown"){
-      setSearchByDropDown(true)
-      setOnboardType(e)
+    if (fieldType === "dropdown") {
+      setSearchByDropDown(true);
+      setOnboardType(e);
     }
-  }
+  };
 
   const pendingVerify = () => {
     fetchData();
@@ -215,7 +213,7 @@ function PendingVerification() {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Processing",
-        isDirect:onboardType
+        isDirect: onboardType,
       })
     )
       .then((resp) => {
@@ -278,7 +276,6 @@ function PendingVerification() {
     return date;
   };
 
-
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
@@ -335,10 +332,12 @@ function PendingVerification() {
             optionSearchData={optionSearchData}
           />
         </div>
-        <MerchnatListExportToxl
-          URL={"?order_by=-id&search=processing"}
-          filename={"Pending-Verification"}
-        />
+        <div className="mt-1">
+          <MerchnatListExportToxl
+            URL={"?order_by=-id&search=processing"}
+            filename={"Pending-Verification"}
+          />
+        </div>
       </div>
 
       <div className="col-md-12 col-md-offset-4">

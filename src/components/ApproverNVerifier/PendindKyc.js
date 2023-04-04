@@ -300,10 +300,12 @@ const PendindKyc = () => {
             optionSearchData={optionSearchData}
           />
         </div>
+        <div className="mt-1">
         <MerchnatListExportToxl
           URL={"?order_by=-id&search=Pending"}
           filename={"Pending-KYC"}
         />
+        </div>
       </div>
 
       <div className="col-md-12 col-md-offset-4">

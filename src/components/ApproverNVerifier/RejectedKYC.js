@@ -28,8 +28,7 @@ const RejectedKYC = () => {
   const [commentId, setCommentId] = useState({});
   const [openCommentModal, setOpenCommentModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  const [onboardType, setOnboardType] = useState("")
-
+  const [onboardType, setOnboardType] = useState("");
 
   const dispatch = useDispatch();
 
@@ -110,7 +109,7 @@ const RejectedKYC = () => {
       id: "10",
       name: "View Status",
       selector: (row) => row.viewStatus,
-      width:"110px",
+      width: "110px",
       cell: (row) => (
         <div>
           <button
@@ -158,24 +157,24 @@ const RejectedKYC = () => {
     },
   ];
   const kycSearch = (e, fieldType) => {
-    if(fieldType === "text"){
-      setSearchByDropDown(false)
+    if (fieldType === "text") {
+      setSearchByDropDown(false);
       setSearchText(e);
     }
-    if(fieldType === "dropdown"){
-      setSearchByDropDown(true)
-      setOnboardType(e)
+    if (fieldType === "dropdown") {
+      setSearchByDropDown(true);
+      setOnboardType(e);
     }
-  }
+  };
 
   const kycForRejectedMerchnats = () => {
     dispatch(
-      kycForRejectedMerchants({ 
-        page: currentPage, 
-        page_size: pageSize, 
+      kycForRejectedMerchants({
+        page: currentPage,
+        page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Rejected",
-        isDirect:onboardType
+        isDirect: onboardType,
       })
     )
       .then((resp) => {
@@ -195,7 +194,7 @@ const RejectedKYC = () => {
 
   useEffect(() => {
     kycForRejectedMerchnats();
-  }, [currentPage, pageSize,searchText, onboardType]);
+  }, [currentPage, pageSize, searchText, onboardType]);
 
   const searchByText = () => {
     setData(
@@ -291,10 +290,12 @@ const RejectedKYC = () => {
             optionSearchData={optionSearchData}
           />
         </div>
-        <MerchnatListExportToxl
-          URL={"?search=Rejected&order_by=-kyc_reject&search_map=kyc_reject"}
-          filename={"Rejected"}
-        />
+        <div className="mt-1">
+          <MerchnatListExportToxl
+            URL={"?search=Rejected&order_by=-kyc_reject&search_map=kyc_reject"}
+            filename={"Rejected"}
+          />
+        </div>
       </div>
 
       <div className="col-md-12 col-md-offset-4">

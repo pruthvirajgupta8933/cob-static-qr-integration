@@ -363,12 +363,14 @@ function ApprovedMerchant() {
           optionSearchData={optionSearchData}
         />
       </div>
+      <div className="mt-1">
       <MerchnatListExportToxl
         URL={
           "?search=Approved&order_by=-approved_date&search_map=approved_date"
         }
         filename={"Approved"}
       />
+      </div>
       <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
