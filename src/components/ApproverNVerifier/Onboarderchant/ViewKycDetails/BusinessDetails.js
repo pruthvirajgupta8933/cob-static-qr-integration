@@ -60,13 +60,18 @@ const BusinessDetails = (props) => {
 
   }
 
+  console.log("merchantKycId",merchantKycId)
+
   return (
     <div className="row mb-4 border">
       <div className="col-lg-12">
         <h3 className="font-weight-bold">Business Details</h3>
       </div>
 
+
       <div className="col-sm-12 col-md-12 col-lg-12 marg-b">
+      {merchantKycId?.registerdWithGST ? 
+      <React.Fragment>
         <label className="col-form-label mt-0 p-2">
           GSTIN<span style={{ color: "red" }}>*</span>
         </label>
@@ -87,6 +92,10 @@ const BusinessDetails = (props) => {
         
           )}
         </span>
+      </React.Fragment> :
+      <p className="text-danger">Note : Merchant has not GST details</p>
+      }
+     
       </div>
 
 
@@ -106,7 +115,7 @@ const BusinessDetails = (props) => {
 
       <div className="col-sm-12 col-md-6 col-lg-6">
         <label className="col-form-label mt-0 p-2">
-          Authorized Signatory PAN{" "}
+          Authorized Signatory PAN
           <span style={{ color: "red" }}>*</span>
         </label>
         <input

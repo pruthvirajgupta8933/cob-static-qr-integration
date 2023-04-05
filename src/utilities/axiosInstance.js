@@ -6,7 +6,6 @@ export const axiosInstanceAuth = axios.create({
 
 export const axiosInstance = axios.create({
   headers: {
-    "auth-token": "B6oXD7U738vpl2T49RPbuQ==",
   },
 });
 
