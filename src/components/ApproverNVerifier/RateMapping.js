@@ -232,7 +232,7 @@ function RateMapping() {
               setModalDisplayData(row);
               setOpenModal(true);
             }}
-            className="btn btn-primary"
+            className="btn approve text-white"
             data-toggle="modal"
             data-target="#exampleModalCenter"
           >

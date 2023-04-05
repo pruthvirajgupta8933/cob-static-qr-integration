@@ -292,13 +292,13 @@ const OnboardMerchant = () => {
                                           className="string optional"
                                           htmlFor="mobile"
                                         >
-                                          Enter Mobile
+                                          Enter Mobile Number
                                         </label>
                                         <Field
                                           className="string optional"
                                           maxLength={10}
                                           id="mobilenumber"
-                                          placeholder="Mobile Number"
+                                          placeholder="Mobile Number"  
                                           name="mobilenumber"
                                           type="text"
                                           pattern="\d{10}"
@@ -425,6 +425,7 @@ const OnboardMerchant = () => {
                                           <option
                                             type="text"
                                             className="form-control"
+                                            value={""}
                                           >
                                             Select Roles
                                           </option>
