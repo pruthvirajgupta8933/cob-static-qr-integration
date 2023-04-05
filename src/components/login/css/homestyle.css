@@ -7921,11 +7921,11 @@ footer {
     }
 }
 
-.loaders {
+/* .loaders {
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
-}
+} */
 
 .mt-31{
     margin-top: 31px;
