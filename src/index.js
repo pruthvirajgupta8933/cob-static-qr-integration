@@ -7,6 +7,8 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter, HashRouter, Router } from "react-router-dom";
 import setupInterceptors from "./services/setupInterceptors";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
 
 
 ReactDOM.render(

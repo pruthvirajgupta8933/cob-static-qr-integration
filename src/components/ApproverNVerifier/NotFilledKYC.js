@@ -10,6 +10,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 // import Pagination from "../../_components/reuseable_components/PaginationForKyc";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CustomLoader from "../../_components/loader/index";
+import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 
 const rowData = NotFilledKYCData;
 const NotFilledKYC = () => {
@@ -174,7 +175,10 @@ const NotFilledKYC = () => {
             />
           )}
         </div>
-        <CustomLoader loadingState={loadingState} />
+        {/* <CustomLoader loadingState={loadingState} /> */}
+        { loadingState &&
+          <SkeletonTable/>
+        }
         {data?.length == 0 && !loadingState && (
           <h2 className="text-center">No data Found</h2>
         )}
