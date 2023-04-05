@@ -121,7 +121,7 @@ function BusinessDetails(props) {
         res.payload.status === true &&
         res.payload.valid === true
       ) {
-        const fullNameByAuthPan = trimFullName(res?.payload?.legal_name, "")
+        const fullNameByAuthPan = trimFullName(res?.payload?.trade_name, "")
         // console.log(key, fullNameByAuthPan)
         // setFieldValue(key, fullNameByAuthPan)
         setLatestCompanyNameFromResp(fullNameByAuthPan)
@@ -172,7 +172,7 @@ function BusinessDetails(props) {
   }else{
     companyNameFromResponse = KycList?.companyName
   }
-  console.log("gstNumberByState",gstNumberByState)
+  // console.log("gstNumberByState",gstNumberByState)
 
   const initialValues = {
     company_name: latestCompanyNameFromResp,
