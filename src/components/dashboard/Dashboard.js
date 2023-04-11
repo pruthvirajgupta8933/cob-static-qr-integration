@@ -136,6 +136,9 @@ function Dashboard() {
                 res => {
                   // console.log("clientProfileRes", clientProfileRes)
                   const webData = res?.data?.data[0]?.plan_details
+                  
+                  // if business catagory gaming then not subscribed the plan
+                  if(user?.clientMerchantDetailsList[0]?.business_cat_code!=="37"){
                   const postData = {
                     clientId: clientProfileRes?.payload?.clientId,
                     applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
@@ -152,6 +155,7 @@ function Dashboard() {
 
                   })
                 }
+              } // end subscibe
               )
             }).catch(err => console.log(err));
           })
