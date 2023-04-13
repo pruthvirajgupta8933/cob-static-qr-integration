@@ -201,7 +201,6 @@ function BusinessDetails(props) {
     // isAuthPANVerified: KycList?.signatoryPAN !== null ? "1" : "",
   };
 
-  console.log("registerd_with_gst",initialValues.registerd_with_gst)
 
   // console.log("initialValues",initialValues)
   const validationSchema = Yup.object({
@@ -297,7 +296,7 @@ function BusinessDetails(props) {
       setGstNumberByState(KycList?.gstNumber)
   }, []);
 
-  const   checkInputIsValid = async (err, val, setErr, setFieldTouched, key, setFieldValue = ()=>{console.log("default fn call")} ) => {
+  const   checkInputIsValid = async (err, val, setErr, setFieldTouched, key, setFieldValue = ()=>{} ) => {
     const hasErr = err.hasOwnProperty(key);
     // console.log("hasErr-"+key ,err.hasOwnProperty(key))
 
@@ -378,7 +377,7 @@ function BusinessDetails(props) {
 
   const enableVerifiedIconByParam = (key, formVal)=>{
     let status = false;
-    console.log(formVal)
+
 
 
   }
@@ -401,7 +400,6 @@ function BusinessDetails(props) {
           change
         }) => (
           <Form>
-            {console.log("values", values)}
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-6 marg-b">
                 <div className="input-group">
@@ -717,7 +715,7 @@ function BusinessDetails(props) {
                       <button
                         type="submit"
                         disabled={disable}
-                        className="btn float-lg-right btnbackground text-white"
+                        className="save-next-btn float-lg-right btnbackground text-white"
                       >
                         {buttonText}
                       </button>
