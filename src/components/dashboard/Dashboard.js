@@ -136,21 +136,25 @@ function Dashboard() {
                 res => {
                   // console.log("clientProfileRes", clientProfileRes)
                   const webData = res?.data?.data[0]?.plan_details
-                  const postData = {
-                    clientId: clientProfileRes?.payload?.clientId,
-                    applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
-                    planId: !isNull(webData?.planid) ? webData?.planid : "1",
-                    planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
-                    applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
-                  };
 
-                  axiosInstanceJWT.post(
-                    API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-                    postData
-                  ).then((res) => {
-                    dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
-
-                  })
+                  // if business catagory gaming then not subscribed the plan
+                  if(user?.clientMerchantDetailsList[0]?.business_cat_code!=="37"){
+                    const postData = {
+                      clientId: clientProfileRes?.payload?.clientId,
+                      applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
+                      planId: !isNull(webData?.planid) ? webData?.planid : "1",
+                      planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
+                      applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
+                    };
+  
+                    axiosInstanceJWT.post(
+                      API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+                      postData
+                    ).then((res) => {
+                      dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
+  
+                    })
+                  } // end subscribe
                 }
               )
             }).catch(err => console.log(err));

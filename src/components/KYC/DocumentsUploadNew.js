@@ -71,7 +71,6 @@ function DocumentsUpload(props) {
     }
     return obj;
   });
-  console.log(savedData)
   function readURL(input, id) {
     if (input?.files && input?.files[0]) {
       let reader = new FileReader();
@@ -106,7 +105,6 @@ function DocumentsUpload(props) {
       })
       .catch((err) => {
         setImgAttr("#");
-        console.log(err);
       });
   }, []);
 
@@ -163,7 +161,6 @@ function DocumentsUpload(props) {
             setDisable(false);
           })
           .catch(function (error) {
-            console.error("Error:", error);
             toast.error("Something went wrong while saving the document");
             setDisable(false);
           });
@@ -375,7 +372,7 @@ function DocumentsUpload(props) {
                   role?.merchant ? (
                     <div className="col-12">
                       <button
-                        className="btn btnbackground text-white mt-5"
+                        className="save-next-btn btnbackground text-white mt-4"
                         type="button"
                         disabled={disable}
                         onClick={() => {
@@ -391,7 +388,7 @@ function DocumentsUpload(props) {
                       role?.merchant &&
                       btn ? (
                         <button
-                          className="btn btnbackground text-white mt-5"
+                          className="save-next-btn btnbackground text-white mt-3 ml-3"
                           type="button"
                           onClick={() => setTab(6)}
                         >
@@ -410,7 +407,7 @@ function DocumentsUpload(props) {
                       {savedData?.length > 0 ? (
                         <div className="container">
                           <div className="row">
-                            <div className="col p-0">
+                            <div className="col p-0 mt-2">
                               <h3
                                 style={{
                                   fontWeight: "500",

@@ -12,6 +12,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
+import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 
 function VerifiedMerchant() {
 
@@ -342,7 +343,8 @@ function VerifiedMerchant() {
             />
           )}
         </div>
-        <CustomLoader loadingState={loadingState} />
+        {/* <CustomLoader loadingState={loadingState} /> */}
+        {loadingState && <SkeletonTable />}
         {data?.length == 0 && !loadingState && (
           <h2 className="text-center font-weight-bold">No Data Found</h2>
         )}
