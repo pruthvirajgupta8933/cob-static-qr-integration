@@ -57,7 +57,7 @@ import PayoutTransaction from "../../payout/Ledger";
 import TransactionsPayoutHistory from "../../payout/Transactions";
 import Beneficiary from "../../payout/Beneficiary";
 import MISReport from "../../payout/MISReport";
-import MakePayment from '../../payout/MakePayment';
+import MakePayment from "../../payout/MakePayment";
 import OnboardedReport from "../ApproverNVerifier/OnboardedReport";
 import ChallanTransactReport from "../../B2B_components/ChallanTransactReport";
 import B2BRouting from "../../B2B_components/Routes/B2BRouting";
@@ -70,7 +70,7 @@ import { generateWord } from "../../utilities/generateClientCode";
 import TransactionHistoryDoitc from "./AllPages/reports/TransactionHistoryDoitc";
 import SettlementReportDoitc from "./AllPages/reports/SettlementReportDoitc";
 import MandateReport from "../../subscription_components/MandateReport";
-import BizzAppData from '../ApproverNVerifier/BizzData';
+import BizzAppData from "../ApproverNVerifier/BizzData";
 import CreateMandate from "../../subscription_components/Create_Mandate/index";
 import DebitReport from "../../subscription_components/DebitReport";
 
@@ -92,26 +92,35 @@ function Dashboard() {
       // console.log("merchant")
 
       if (user?.clientMerchantDetailsList) {
-
         // console.log("merchant- clientlist available")
         if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
-
           // console.log("merchant- client code null")
-          const clientFullName = user?.clientContactPersonName
-          const clientMobileNo = user?.clientMobileNo
-          const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
+          const clientFullName = user?.clientContactPersonName;
+          const clientMobileNo = user?.clientMobileNo;
+          const arrayOfClientCode = generateWord(
+            clientFullName,
+            clientMobileNo
+          );
 
           // console.log("arrayOfClientCode",arrayOfClientCode)
-          dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
+          dispatch(
+            checkClientCodeSlice({ client_code: arrayOfClientCode })
+          ).then((res) => {
             // console.log("res",res?.payload?.clientCode)
-            let newClientCode = ""
+            let newClientCode = "";
             // if client code available return status true, then make request with the given client
 
-            if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
-              newClientCode = res?.payload?.clientCode
+            if (
+              res?.payload?.clientCode !== "" &&
+              res?.payload?.status === true
+            ) {
+              newClientCode = res?.payload?.clientCode;
               // console.log("newClientCode-step1",newClientCode)
             } else {
-              newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+              newClientCode = Math.random()
+                .toString(36)
+                .slice(-6)
+                .toUpperCase();
               // console.log("newClientCode-step2",newClientCode)
             }
 
@@ -125,64 +134,101 @@ function Dashboard() {
             };
             // console.log("data", data)
 
-            dispatch(createClientProfile(data)).then(clientProfileRes => {
-              // console.log("response of the create client ", clientProfileRes);
-              // after create the client update the subscribe product
-              const postData = {
-                login_id: user?.loginId
-              }
-              // fetch details of the user registraion
-              axiosInstanceJWT.post(API_URL.website_plan_details, postData).then(
-                res => {
-                  // console.log("clientProfileRes", clientProfileRes)
-                  const webData = res?.data?.data[0]?.plan_details
+            dispatch(createClientProfile(data))
+              .then((clientProfileRes) => {
+                // console.log("response of the create client ", clientProfileRes);
+                // after create the client update the subscribe product
+                const postData = {
+                  login_id: user?.loginId,
+                };
+                // fetch details of the user registraion
+                axiosInstanceJWT
+                  .post(API_URL.website_plan_details, postData)
+                  .then(
+                    (res) => {
+                      // console.log("clientProfileRes", clientProfileRes)
+                      const webData = res?.data?.data[0]?.plan_details;
 
-                  // if business catagory gaming then not subscribed the plan
-                  if(user?.clientMerchantDetailsList[0]?.business_cat_code!=="37"){
-                    const postData = {
-                      clientId: clientProfileRes?.payload?.clientId,
-                      applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
-                      planId: !isNull(webData?.planid) ? webData?.planid : "1",
-                      planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
-                      applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
-                    };
-  
-                    axiosInstanceJWT.post(
-                      API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
-                      postData
-                    ).then((res) => {
-                      dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
-  
-                    })
-                  } // end subscribe
-                }
-              )
-            }).catch(err => console.log(err));
-          })
+                      // if business catagory gaming then not subscribed the plan
+                      if (
+                        user?.clientMerchantDetailsList[0]
+                          ?.business_cat_code !== "37"
+                      ) {
+                        const postData = {
+                          clientId: clientProfileRes?.payload?.clientId,
+                          applicationName: !isNull(webData?.appName)
+                            ? webData?.appName
+                            : "Paymentgateway",
+                          planId: !isNull(webData?.planid)
+                            ? webData?.planid
+                            : "1",
+                          planName: !isNull(webData?.planName)
+                            ? webData?.planName
+                            : "Subscription",
+                          applicationId: !isNull(webData?.appid)
+                            ? webData?.appid
+                            : "10",
+                        };
 
+                        // if business catagory gaming then not subscribed the plan
+                        if (
+                          user?.clientMerchantDetailsList[0]
+                            ?.business_cat_code !== "37"
+                        ) {
+                          const postData = {
+                            clientId: clientProfileRes?.payload?.clientId,
+                            applicationName: !isNull(webData?.appName)
+                              ? webData?.appName
+                              : "Paymentgateway",
+                            planId: !isNull(webData?.planid)
+                              ? webData?.planid
+                              : "1",
+                            planName: !isNull(webData?.planName)
+                              ? webData?.planName
+                              : "Subscription",
+                            applicationId: !isNull(webData?.appid)
+                              ? webData?.appid
+                              : "10",
+                          };
+
+                          axiosInstanceJWT
+                            .post(API_URL.SUBSCRIBE_FETCHAPPAND_PLAN, postData)
+                            .then((res) => {
+                              dispatch(
+                                merchantSubscribedPlanData({
+                                  clientId: clientProfileRes?.payload?.clientId,
+                                })
+                              );
+                            });
+                        } // end subscribe
+                      }
+                    } // end subscibe
+                  );
+              })
+              .catch((err) => console.log(err));
+          });
         }
-
-
       }
     }
   }, []);
 
-
-
   useEffect(() => {
     const postBody = {
-      LoginId: user?.loginId
-    }
-    dispatch(fetchMenuList(postBody))
-  }, [user, dispatch])
-
+      LoginId: user?.loginId,
+    };
+    dispatch(fetchMenuList(postBody));
+  }, [user, dispatch]);
 
   useEffect(() => {
     // fetch subscribe product data
     if (location?.pathname === "/dashboard") {
-      dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
+      dispatch(
+        merchantSubscribedPlanData({
+          clientId: user?.clientMerchantDetailsList[0]?.clientId,
+        })
+      );
     }
-  }, [location])
+  }, [location]);
 
   if (user !== null && user.userAlreadyLoggedIn) {
     history.push("/login-page");
@@ -196,7 +242,7 @@ function Dashboard() {
       <div></div>
       <SideNavbar />
       <Switch>
-        <Route exact path={path} >
+        <Route exact path={path}>
           <Home />
         </Route>
         <Route exact path={`${path}/profile`}>
@@ -435,7 +481,11 @@ function Dashboard() {
           </ViewerRoute>
         )}
 
-        <ApproverRoute exact path={`${path}/configuration`} Component={AssignZone}>
+        <ApproverRoute
+          exact
+          path={`${path}/configuration`}
+          Component={AssignZone}
+        >
           <AssignZone />
         </ApproverRoute>
 
@@ -446,7 +496,6 @@ function Dashboard() {
             Component={SignupData}
           >
             <SignupData />
-
           </VerifierRoute>
         ) : roles?.approver === true ? (
           <ApproverRoute
@@ -496,37 +545,67 @@ function Dashboard() {
           <SpPg />
         </Route>
 
-        <MerchantRoute exact path={`${path}/payout/ledger`} Component={PayoutTransaction}>
+        <MerchantRoute
+          exact
+          path={`${path}/payout/ledger`}
+          Component={PayoutTransaction}
+        >
           <SpPg />
         </MerchantRoute>
-        <MerchantRoute exact path={`${path}/payout/transactions`} Component={TransactionsPayoutHistory}>
+        <MerchantRoute
+          exact
+          path={`${path}/payout/transactions`}
+          Component={TransactionsPayoutHistory}
+        >
           <SpPg />
         </MerchantRoute>
-        <MerchantRoute exact path={`${path}/payout/beneficiary`} Component={Beneficiary}>
+        <MerchantRoute
+          exact
+          path={`${path}/payout/beneficiary`}
+          Component={Beneficiary}
+        >
           <SpPg />
         </MerchantRoute>
-        <MerchantRoute exact path={`${path}/payout/mis_report`} Component={MISReport}>
+        <MerchantRoute
+          exact
+          path={`${path}/payout/mis_report`}
+          Component={MISReport}
+        >
           <SpPg />
         </MerchantRoute>
-        <MerchantRoute exact path={`${path}/payout/payment_status`} Component={MakePayment}>
+        <MerchantRoute
+          exact
+          path={`${path}/payout/payment_status`}
+          Component={MakePayment}
+        >
           <SpPg />
         </MerchantRoute>
-
 
         {/* Routing for subscription */}
         {/* ----------------------------------------------------------------------------------------------------|| */}
-        <MerchantRoute exact path={`${path}/subscription/mandateReports`} Component={MandateReport}>
-          <MandateReport/>
+        <MerchantRoute
+          exact
+          path={`${path}/subscription/mandateReports`}
+          Component={MandateReport}
+        >
+          <MandateReport />
         </MerchantRoute>
-        <MerchantRoute exact path={`${path}/subscription/debitReports`} Component={DebitReport}>
-        <DebitReport />
+        <MerchantRoute
+          exact
+          path={`${path}/subscription/debitReports`}
+          Component={DebitReport}
+        >
+          <DebitReport />
         </MerchantRoute>
-        <MerchantRoute exact path={`${path}/subscription/mandate_registration`} Component={CreateMandate}>
+        <MerchantRoute
+          exact
+          path={`${path}/subscription/mandate_registration`}
+          Component={CreateMandate}
+        >
           <SpPg />
         </MerchantRoute>
 
         {/* -----------------------------------------------------------------------------------------------------|| */}
-
 
         {roles?.verifier && (
           <VerifierRoute
@@ -535,10 +614,8 @@ function Dashboard() {
             Component={OnboardedReport}
           >
             <SignupData />
-
           </VerifierRoute>
         )}
-
 
         {roles?.approver && (
           <ApproverRoute
@@ -550,17 +627,11 @@ function Dashboard() {
           </ApproverRoute>
         )}
 
-
         {roles?.approver && (
-          <ApproverRoute
-            exact
-            path={`${path}/referzone`}
-            Component={ReferZone}
-          >
+          <ApproverRoute exact path={`${path}/referzone`} Component={ReferZone}>
             <ReferZone />
           </ApproverRoute>
         )}
-
 
         {roles?.approver && (
           <ApproverRoute
@@ -572,21 +643,42 @@ function Dashboard() {
           </ApproverRoute>
         )}
 
-     <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
+        <B2BRouting
+          exact
+          path={`${path}/emami/challan-transactions`}
+          Component={ChallanTransactReport}
+        >
           <ChallanTransactReport />
         </B2BRouting>
 
-        {roles?.verifier === true ? <VerifierRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
-          <BizzAppData />
-        </VerifierRoute> : roles?.approver === true ?
-          <ApproverRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
-            < BizzAppData />
-          </ApproverRoute> : roles.viewer === true && (
-            
-           <ViewerRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
-             < BizzAppData />
-           </ViewerRoute> )}
-        <Route path={`${path}/*`} component={UrlNotFound} >
+        {roles?.verifier === true ? (
+          <VerifierRoute
+            exact
+            path={`${path}/bizz-appdata`}
+            Component={BizzAppData}
+          >
+            <BizzAppData />
+          </VerifierRoute>
+        ) : roles?.approver === true ? (
+          <ApproverRoute
+            exact
+            path={`${path}/bizz-appdata`}
+            Component={BizzAppData}
+          >
+            <BizzAppData />
+          </ApproverRoute>
+        ) : (
+          roles.viewer === true && (
+            <ViewerRoute
+              exact
+              path={`${path}/bizz-appdata`}
+              Component={BizzAppData}
+            >
+              <BizzAppData />
+            </ViewerRoute>
+          )
+        )}
+        <Route path={`${path}/*`} component={UrlNotFound}>
           <UrlNotFound />
         </Route>
       </Switch>
