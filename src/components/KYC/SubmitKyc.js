@@ -16,17 +16,16 @@ function SubmitKyc(props) {
   const dispatch = useDispatch();
 
   const { auth, kyc } = useSelector((state) => state);
-  const { user } = auth
+  const { user } = auth;
 
   const { loginId } = user;
 
+  const { kycUserList } = kyc;
+  const merchant_consent = kycUserList?.merchant_consent?.term_condition;
 
-  const { kycUserList } = kyc
-  const merchant_consent = kycUserList?.merchant_consent?.term_condition
-
-  const kyc_status = kycUserList?.status
+  const kyc_status = kycUserList?.status;
   const [readOnly, setReadOnly] = useState(false);
-  const [disable, setIsDisable] = useState(false)
+  const [disable, setIsDisable] = useState(false);
 
   const initialValues = {
     term_condition: merchant_consent,
@@ -38,10 +37,13 @@ function SubmitKyc(props) {
 
   // if(consent_status === true) {
   //   history.push("/dashboard");
-  // } 
+  // }
 
   const validationSchema = Yup.object({
-    term_condition: Yup.string().oneOf(["true"], "You must accept all the terms & conditions"),
+    term_condition: Yup.string().oneOf(
+      ["true"],
+      "You must accept all the terms & conditions"
+    ),
   });
 
   useEffect(() => {
@@ -52,8 +54,6 @@ function SubmitKyc(props) {
     }
   }, [role]);
 
-
-
   const verifyApprove = (val) => {
     if (val === "verify") {
       const data = {
@@ -63,10 +63,12 @@ function SubmitKyc(props) {
 
       dispatch(verifyComplete(data))
         .then((resp) => {
-          resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
+          resp?.payload?.status_code === 200
+            ? toast.success(resp?.payload?.message)
+            : toast.error(resp?.payload?.message);
         })
         .catch((e) => {
-          toast.error("Something went wrong, Please Try Again later")
+          toast.error("Something went wrong, Please Try Again later");
         });
     }
 
@@ -78,17 +80,18 @@ function SubmitKyc(props) {
 
       dispatch(approvekyc(dataAppr))
         .then((resp) => {
-          resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload?.message)
+          resp?.payload?.status_code === 200
+            ? toast.success(resp?.payload?.message)
+            : toast.error(resp?.payload?.message);
         })
         .catch((e) => {
-          toast.error("Something went wrong, Please Try Again later")
-
+          toast.error("Something went wrong, Please Try Again later");
         });
     }
   };
 
   const onSubmit = () => {
-    setIsDisable(true)
+    setIsDisable(true);
     dispatch(
       saveKycConsent({
         term_condition: true,
@@ -96,31 +99,27 @@ function SubmitKyc(props) {
         submitted_by: loginId,
       })
     ).then((res) => {
-      if (res?.meta?.requestStatus === "fulfilled" && res?.payload?.status === true) {
+      if (
+        res?.meta?.requestStatus === "fulfilled" &&
+        res?.payload?.status === true
+      ) {
         toast.success(res?.payload?.message);
-        setIsDisable(false)
-        const kyc_consent_status = res?.payload?.status
-        dispatch(UpdateModalStatus(true))
+        setIsDisable(false);
+        const kyc_consent_status = res?.payload?.status;
+        dispatch(UpdateModalStatus(true));
         history.push("/dashboard");
-
       } else {
         toast.error(res?.payload?.detail);
-        setIsDisable(false)
+        setIsDisable(false);
       }
     });
   };
 
-
   // useEffect(() => {
   // if(consent_status === true) {
   //   history.push("/dashboard");
-  // } 
+  // }
   // },[consent_status])
-
-
-
-
-
 
   return (
     <div className="col-md-12 p-3 NunitoSans-Regular">
@@ -135,21 +134,60 @@ function SubmitKyc(props) {
             <Form>
               <div className="form-group row">
                 <div className="row">
-                  <div className="col-lg- checkboxstyle">
-                    <Field
-                      type="checkbox"
-                      name="term_condition"
-                      readOnly={readOnly}
-                      disabled={(kyc_status === "Verified" || kyc_status === "Approved") ? true : false}
-                      className="mr-0"
-                    />
-                  </div>
-                  <div className="col-lg-11 para-style text-nowrap">
-
-                    I have read and understood the <a href="https://sabpaisa.in/term-conditions/" className="text-decoration-underline text-primary" rel="noreferrer" alt="Term & Conditions" target="_blank" title="Term & Conditions">Terms & Conditions</a>, <a href="https://sabpaisa.in/privacy-policy/" alt="Privacy Policy" target="_blank" title="Privacy Policy" rel="noreferrer" className="text-decoration-underline text-primary">Privacy Policy</a>, <a href="https://sabpaisa.in/service-agreement" alt="Service Agreement" target="_blank" title="Service Agreement" rel="noreferrer" className="text-decoration-underline text-primary" >Service Agreement</a>
-                  </div>
-                  <div className="col-lg-11 para-style2 text-nowrap">
-                    By submitting the form, I agree to abide by the rules at all times.
+                  <div className="col  checkboxstyle">
+                    <div>
+                      <div className="para-style">
+                        <Field
+                          type="checkbox"
+                          name="term_condition"
+                          readOnly={readOnly}
+                          disabled={
+                            kyc_status === "Verified" ||
+                            kyc_status === "Approved"
+                              ? true
+                              : false
+                          }
+                          className="mr-2 mt-1"
+                        />
+                        I have read and understood the{" "}
+                        <a
+                          href="https://sabpaisa.in/term-conditions/"
+                          className="text-decoration-underline text-primary"
+                          rel="noreferrer"
+                          alt="Term & Conditions"
+                          target="_blank"
+                          title="Term & Conditions"
+                        >
+                          Terms & Conditions
+                        </a>
+                        ,{" "}
+                        <a
+                          href="https://sabpaisa.in/privacy-policy/"
+                          alt="Privacy Policy"
+                          target="_blank"
+                          title="Privacy Policy"
+                          rel="noreferrer"
+                          className="text-decoration-underline text-primary"
+                        >
+                          Privacy Policy
+                        </a>
+                        ,{" "}
+                        <a
+                          href="https://sabpaisa.in/service-agreement"
+                          alt="Service Agreement"
+                          target="_blank"
+                          title="Service Agreement"
+                          rel="noreferrer"
+                          className="text-decoration-underline text-primary"
+                        >
+                          Service Agreement
+                        </a>
+                      </div>
+                      <div className="col-lg-11 para-style2 ">
+                        By submitting the form, I agree to abide by the rules at
+                        all times.
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -178,23 +216,22 @@ function SubmitKyc(props) {
                   }}
                 />
                 <div className="mt-3">
-                  {(kyc_status === "Verified" || kyc_status === "Approved")  ? null : (
-                  <button
-                        disabled={disable}
-                        className="btn float-lg-right btnbackground text-white"
-                        type="submit"
-                      >
-                        Submit
-                      </button>
+                  {kyc_status === "Verified" ||
+                  kyc_status === "Approved" ? null : (
+                    <button
+                      disabled={disable}
+                      className="save-next-btn float-lg-right btnbackground text-white"
+                      type="submit"
+                    >
+                      Submit
+                    </button>
                   )}
                 </div>
-
               </div>
             </Form>
           )}
         </Formik>
       )}
-
     </div>
   );
 }

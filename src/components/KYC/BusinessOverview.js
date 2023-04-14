@@ -483,7 +483,7 @@ function BusinessOverview(props) {
                       <></>
                     ) : (
                       <button
-                        className="btn float-lg-right btnbackground text-white"
+                        className="save-next-btn float-lg-right btnbackground text-white"
                         type="submit"
                         disabled={disabled}
                       >

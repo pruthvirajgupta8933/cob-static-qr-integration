@@ -284,7 +284,7 @@ const AdditionalKYC = () => {
                     <div className="col-lg-5">
                       <button
                         type="submit"
-                        className="btn float-lg-right btnbackground text-white"
+                        className="btn btnbackground text-white"
                       >
                         Verify
                       </button>

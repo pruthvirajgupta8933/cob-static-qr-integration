@@ -1,51 +1,29 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import Paginataion from "../pagination/Pagination";
 import DataTable from "react-data-table-component";
 import "./index.css";
-// import 'datatables.net/css/jquery.dataTables.min.css';
+import SkeletonTable from "./skeleton-table";
 
 const Table = (props) => {
-  const rowData = () => {
-    const data = props?.btnData;
-    return (
-      <>
-        {data?.map((data, key) => (
-          <>
-            <th>
-              <div>{data.row_name}</div>
-            </th>
-          </>
-        ))}
-      </>
-    );
+  const fixedHeaderFooter = {
+    header: true,
+    footer: true,
+    footerOffset: 40,
+    scrollX: true,
+    scrollY: true,
   };
 
-  const fixedHeaderFooter = {
-    header : true,
-     footer: true,
-     footerOffset: 40 ,
-     scrollX:true,
-     scrollY:true
-  }
-
   return (
-    <> 
-       <DataTable
-          className="table table-bordered rdt_TableHeadRow"
-          columns={props.row}
-          data={props.data}
-          sortIcon={<i  class="fa fa-arrow-up ml-1"></i>}
-          fixedHeader = {fixedHeaderFooter}
-          // pagination
-          // selectableRows
-          />
-      {" "}
-      {/* <table className="table table-bordered" >
-        <thead>
-          <tr>{rowData()}</tr>
-        </thead>
-        <tbody>{props?.col()}</tbody>
-      </table> */}
+    <>
+      <DataTable
+        className="table table-bordered"
+        columns={props.row}
+        data={props.data}
+        sortIcon={<i class="fa fa-arrow-up ml-1"></i>}
+        fixedHeader={fixedHeaderFooter}
+        // pagination
+        // selectableRows
+      />{" "}
       {props?.dataCount > 0 && (
         <Paginataion
           dataCount={props.dataCount}

@@ -4,6 +4,12 @@
   display: flex;
   /* justify-content: center; */
 }
+.save-next-btn
+{
+  border-radius: 4px;
+  border: 0px;
+  padding: 8px;
+}
 
 
 .activepaylink-kyc {
