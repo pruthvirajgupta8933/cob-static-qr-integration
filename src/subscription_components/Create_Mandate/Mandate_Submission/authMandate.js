@@ -38,44 +38,48 @@ const AuthMandate = ({ updatedData }) => {
   ];
   const [value, setValue] = useState("");
 
+
+  console.log("updatedData :  :",updatedData)
+
   const onSubmit = (values) => {
 
+    // console.log(values)
 
     const mandadateSubmissionDetails = {
       clientCode: 3,
       clientRegistrationId: 4430200951,
-      consumerReferenceNumber: "tertertertr22s",
+      consumerReferenceNumber: updatedData?.consumerReferenceNumber,
       mandatePurpose: "Education fees",
       payerUtilitityCode: "NACH00000000022341",
       mandateEndDate: null,
-      payerName: "Ansari",
+      payerName: updatedData?.payerName,
       mandateMaxAmount: "11.00",
       mandateType: "ONLINE",
       mandateStartDate: "2023-04-06T16:40:00.000Z",
-      panNo: "AKZPA3341F",
+      panNo: updatedData?.panNo,
       mandateCategory: "E001",
-      payerAccountNumber: "62300100005139",
-      payerAccountType: "SAVINGS",
-      payerBank: "BARB",
-      payerEmail: "rahmat.ali@sabpaisa.in",
-      payerMobile: "+91-8750212347",
-      telePhone: "+91-011-50212347",
-      payerBankIfscCode: "BARB0VJRAPH",
-      authenticationMode: "Netbanking",
-      frequency: "DAIL",
-      requestType: "REGSTRN",
+      payerAccountNumber: updatedData?.payerAccountNumber,
+      payerAccountType: updatedData?.payerAccountType,
+      payerBank: updatedData?.payerBank,
+      payerEmail: updatedData?.payerEmail,
+      payerMobile: `+91-${updatedData?.payerMobile}`,
+      telePhone: `+91-${updatedData?.telePhone}`,
+      payerBankIfscCode: updatedData?.payerBankIfscCode,
+      authenticationMode: values?.sourcing_code,
+      frequency: updatedData?.frequency,
+      requestType: updatedData?.requestType,
       npciPaymentBankCode: "BARB",
-      schemeReferenceNumber: "ewrewrewr",
+      schemeReferenceNumber: updatedData?.schemeReferenceNumber,
       untilCancelled: true,
       userType: "merchant",
-      emiamount: "",
-    }
+      emiamount: updatedData?.emiamount,
+    };
 
-    dispatch(
-      createMandateSubmission(mandadateSubmissionDetails)
-    ).then((res) => {
-      console.log(res?.payload, "ressssssssssssss");
-    });
+    dispatch(createMandateSubmission(mandadateSubmissionDetails)).then(
+      (res) => {
+        console.log(res?.payload, "ressssssssssssss");
+      }
+    );
   };
   return (
     <div class="row">
@@ -229,15 +233,14 @@ const AuthMandate = ({ updatedData }) => {
                     1. I confirm that the contents have been carefully read,
                     understood and correct in all respects.
                   </div>
-                
                   2. I agree for the debit of mandate processing charges by the
                   bank as per the latest schedule of charges of the bank.
                   <div>
-                  <Field
-                    type="checkbox"
-                    name="term_condition"
-                    className="mr-0"
-                  />
+                    <Field
+                      type="checkbox"
+                      name="term_condition"
+                      className="mr-0"
+                    />
                     3. I am authorizing the user entity to debit my account
                     based on the instructions as agreed.
                   </div>
