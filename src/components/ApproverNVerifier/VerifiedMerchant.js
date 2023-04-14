@@ -308,27 +308,23 @@ function VerifiedMerchant() {
       />
       </div>
       <div>
-        {openCommentModal === true ? (
+       
           <CommentModal
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
             tabName={"Pending Approval"}
           />
-        ) : (
-          <></>
-        )}
+      
 
-        {isOpenModal ? (
+     
           <KycDetailsModal
             kycId={kycIdClick}
             handleModal={setIsModalOpen}
             isOpenModal={isOpenModal}
             renderPendingApproval={verifyMerchant}
           />
-        ) : (
-          <></>
-        )}
+     
       </div>
       <div className="container-fluid pull-left p-3- my-3- col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">

@@ -265,16 +265,12 @@ const PendindKyc = () => {
           />
         </div>
         <div>
-          {openCommentModal === true ? (
             <CommentModal
               commentData={commentId}
               isModalOpen={openCommentModal}
               setModalState={setOpenCommentModal}
               tabName={"Pending KYC"}
             />
-          ) : (
-            <></>
-          )}
           <KycDetailsModal
             handleModal={setIsModalOpen}
             kycId={kycIdClick}

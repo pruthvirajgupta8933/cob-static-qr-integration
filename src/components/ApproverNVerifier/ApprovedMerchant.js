@@ -309,16 +309,14 @@ function ApprovedMerchant() {
         />
       </div>
       <div>
-        {openCommentModal === true ? (
+        
           <CommentModal
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
             tabName={"Approved Tab"}
           />
-        ) : (
-          <></>
-        )}
+      
 
         <KycDetailsModal
           kycId={kycIdClick}

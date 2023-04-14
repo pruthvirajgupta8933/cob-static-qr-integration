@@ -254,16 +254,14 @@ const RejectedKYC = () => {
             searchTextByApiCall={true}
           />
         </div>
-        {openCommentModal === true ? (
+        
           <CommentModal
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
             tabName={"Rejected Tab"}
           />
-        ) : (
-          <></>
-        )}
+      
         <div>
           <KycDetailsModal
             kycId={kycIdClick}
