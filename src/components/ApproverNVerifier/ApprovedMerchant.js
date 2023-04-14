@@ -327,16 +327,14 @@ function ApprovedMerchant() {
       </div>
 
       <div>
-        {openDocumentModal === true ? (
+      
           <ViewDocumentModal
             documentData={commentId}
             isModalOpen={openDocumentModal}
             setModalState={setOpenDocumentModal}
             tabName={"Approved Tab"}
           />
-        ) : (
-          <></>
-        )}
+      
         <KycDetailsModal
           kycId={kycIdClick}
           handleModal={setIsModalOpen}
