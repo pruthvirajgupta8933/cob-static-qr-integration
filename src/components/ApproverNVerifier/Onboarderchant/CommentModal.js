@@ -13,6 +13,7 @@ import moment from "moment";
 import "./comment.css";
 import downloadIcon from "../../../assets/images/download-icon.svg";
 import _ from "lodash";
+import CustomModal from "../../../_components/custom_modal";
 
 const CommentModal = (props) => {
   const [commentsList, setCommentsList] = useState([]);
@@ -73,7 +74,6 @@ const CommentModal = (props) => {
       .nullable(),
   });
 
-
   const handleSubmit = async (values) => {
     let formData = new FormData();
     formData.append("files", attachCommentFile);
@@ -81,8 +81,7 @@ const CommentModal = (props) => {
     formData.append("client_code", props?.commentData?.clientCode);
     formData.append("comments", values.comments);
     formData.append("merchant_tab", props?.tabName);
-    dispatch(forSavingComments(formData)
-    )
+    dispatch(forSavingComments(formData))
       .then((resp) => {
         if (resp?.payload?.message?.status && resp?.payload?.status) {
           toast.success(resp?.payload?.message.message);
@@ -110,246 +109,263 @@ const CommentModal = (props) => {
       setUploadStatus(true);
     }
   };
-  const isUrlValid=(userInput)=> {
-    let res = userInput.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
-    if(res == null)
-        return false;
-    else
-        return true;
-}
-const fileTypeCheck = (file)=>
-  {
-    let ext =  file.split('.').pop();
-    const formats = ["pdf", "jpg", "jpeg","png" ];
+  const isUrlValid = (userInput) => {
+    let res = userInput.match(
+      /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+    );
+    if (res == null) return false;
+    else return true;
+  };
+  const fileTypeCheck = (file) => {
+    let ext = file.split(".").pop();
+    const formats = ["pdf", "jpg", "jpeg", "png"];
     let htmlType = _.includes(formats, `${ext}`);
-    if(!htmlType)
-    {
+    if (!htmlType) {
       return false;
-    }
-    else
-    {
+    } else {
       return true;
     }
-  }
+  };
 
-  return (
-    <div>
-      <div
-        tabIndex="-1"
-        role="dialog"
-        aria-hidden="true"
-        className={
-          "modal fade mymodals" +
-          (props?.isModalOpen ? " show d-block" : " d-none")
-        }
-      >
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5
-                className="modal-title bolding text-black"
-                id="exampleModalLongTitle"
-              >
-                Add your comments
-              </h5>
+  const headerTitle = () => {
+    return (
+      <>
+    
+        <h5
+          className="modal-title bolding text-black"
+          id="exampleModalLongTitle"
+        >
+          Add your comments
+        </h5>
 
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-                onClick={() => {
-                  setCommentsList([]);
-                  props?.setModalState(false);
-                }}
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
+        <button
+          type="button"
+          className="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          onClick={() => {
+            setCommentsList([]);
+            props?.setModalState(false);
+          }}
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </>
+    );
+  };
+
+  const modalbody = () => {
+    return (
+    <>
+    
               <h5 className="font-weight-bold">
                 Merchant Name: {props?.commentData?.clientName}
               </h5>
               <h5 className="font-weight-bold">
                 Client Code: {props?.commentData?.clientCode}
               </h5>
-            </div>
-            <div className="container">
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={(values, { resetForm }) => {
-                  handleSubmit(values);
-                  resetForm();
-                }}
-                enableReinitialize={true}
-              >
-                <Form>
-                  <div className="container">
-                    <div className="row">
-                      <div>
-                        <div className="col-lg-12-" style={{ width: "315px" }}>
-                          <FormikController
-                            control="textArea"
-                            name="comments"
-                            className="form-control"
-                          />
-                          <div class="file-input">
-                            <h5 className="font-weight-bold">Attachments</h5>
-                            <input
-                              ref={aRef}
-                              type="file"
-                              id="file"
-                              class="file"
-                              onChange={(e) => handleUploadAttachments(e)}
-                            />
-                            <div className="d-flex">
-                              <div>
-                                <label for="file">
-                                  Upload Files{" "}
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    fill="currentColor"
-                                    class="bi bi-paperclip"
-                                    viewBox="0 0 16 16"
-                                  >
-                                    <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
-                                  </svg>
-                                  <p class="file-name"></p>
-                                </label>
-                              </div>
-                              <div className="mt-2 ml-3">
-                                <button
-                                  type="submit"
-                                  className="btn approve text-white  btn-xs"
-                                >
-                                  Submit
-                                </button>
-                              </div>
 
-                              <div></div>
-                            </div>
-
-                            <div className="d-flex justify-content-between">
-                              {uploadStatus && (
-                                <>
-                                  <div>{attachCommentFile?.name}</div>
-                                  <button
-                                    type="button"
-                                    class="close"
-                                    aria-label="Close"
-                                    onClick={resetUploadFile}
-                                  >
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="container">
-                        <div className="row">
+              <div className="container">
+                <Formik
+                  initialValues={initialValues}
+                  validationSchema={validationSchema}
+                  onSubmit={(values, { resetForm }) => {
+                    handleSubmit(values);
+                    resetForm();
+                  }}
+                  enableReinitialize={true}
+                >
+                  <Form>
+                    <div className="container">
+                      <div className="row">
+                        <div>
                           <div
-                            className="col-lg-5"
-                            style={{
-                              marginTop: "28px",
-                              textDecoration: "underline",
-                            }}
+                            className="col-lg-12-"
+                            style={{ width: "315px" }}
                           >
-                            <h2 className="font-weight-bold">
-                              Previous Comments
-                            </h2>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col hoz-scroll-">
-                            <table className="table table-bordered">
-                              <thead>
-                                <tr>
-                                  <th>Commented By</th>
-                                  <th>Comments</th>
-                                  <th>Date of Comments</th>
-                                  <th>Comments from tab</th>
-                                  <th>Download Attachments</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {(commentsList?.length === undefined ||
-                                  commentsList?.length === 0) && (
-                                  <tr>
-                                    <td colSpan="3">
-                                      <h3 className="font-weight-bold text-center">
-                                        No Data found
-                                      </h3>
-                                    </td>
-                                  </tr>
-                                )}
+                            <FormikController
+                              control="textArea"
+                              name="comments"
+                              className="form-control"
+                            />
+                            <div class="file-input">
+                              <h5 className="font-weight-bold">Attachments</h5>
+                              <input
+                                ref={aRef}
+                                type="file"
+                                id="file"
+                                class="file"
+                                onChange={(e) => handleUploadAttachments(e)}
+                              />
+                              <div className="d-flex">
+                                <div>
+                                  <label for="file">
+                                    Upload Files{" "}
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="16"
+                                      height="16"
+                                      fill="currentColor"
+                                      class="bi bi-paperclip"
+                                      viewBox="0 0 16 16"
+                                    >
+                                      <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                                    </svg>
+                                    <p class="file-name"></p>
+                                  </label>
+                                </div>
+                                <div className="mt-2 ml-3">
+                                  <button
+                                    type="submit"
+                                    className="btn approve text-white  btn-xs"
+                                  >
+                                    Submit
+                                  </button>
+                                </div>
 
-                                {(commentsList?.length !== undefined ||
-                                  commentsList?.length > 0) &&
-                                Array.isArray(commentsList)
-                                  ? commentsList?.map((remark, i) => (
-                                      <tr key={i}>
-                                        <td>
-                                          {remark?.comment_by_user_name.toUpperCase()}
-                                        </td>
-                                        <td style={{overflowWrap:"anywhere"}}>{remark?.comments}</td>
-                                        <td>
-                                          {dateManipulate(remark?.comment_on)}
-                                        </td>
-                                        <td>{remark?.merchant_tab}</td>
-                                        <td>
-                                          {remark?.file_path !== null  && isUrlValid(remark?.file_path) && fileTypeCheck(remark?.file_path) && (
-                                            <a
-                                              href={remark?.file_path}
-                                              target={"_blank"}
-                                              download
-                                            >
-                                              <img
-                                                src={downloadIcon}
-                                                style={{
-                                                  height: "20px",
-                                                  width: "20px",
-                                                  margin: "auto",
-                                                }}
-                                              />
-                                            </a>
-                                          )}
-                                        </td>
-                                      </tr>
-                                    ))
-                                  : []}
-                              </tbody>
-                            </table>
+                                <div></div>
+                              </div>
+
+                              <div className="d-flex justify-content-between">
+                                {uploadStatus && (
+                                  <>
+                                    <div>{attachCommentFile?.name}</div>
+                                    <button
+                                      type="button"
+                                      class="close"
+                                      aria-label="Close"
+                                      onClick={resetUploadFile}
+                                    >
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <div className="modal-footer">
-                          <button
-                            type="button"
-                            className="btn btn-secondary text-white"
-                            data-dismiss="modal"
-                            onClick={() => {
-                              setCommentsList([]);
-                              props?.setModalState(false);
-                            }}
-                          >
-                            Close
-                          </button>
+
+                        <div className="container">
+                          <div className="row">
+                            <div
+                              className="col-lg-5"
+                              style={{
+                                marginTop: "28px",
+                                textDecoration: "underline",
+                              }}
+                            >
+                              <h2 className="font-weight-bold">
+                                Previous Comments
+                              </h2>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col hoz-scroll-">
+                              <table className="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th>Commented By</th>
+                                    <th>Comments</th>
+                                    <th>Date of Comments</th>
+                                    <th>Comments from tab</th>
+                                    <th>Download Attachments</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {(commentsList?.length === undefined ||
+                                    commentsList?.length === 0) && (
+                                    <tr>
+                                      <td colSpan="3">
+                                        <h3 className="font-weight-bold text-center">
+                                          No Data found
+                                        </h3>
+                                      </td>
+                                    </tr>
+                                  )}
+
+                                  {(commentsList?.length !== undefined ||
+                                    commentsList?.length > 0) &&
+                                  Array.isArray(commentsList)
+                                    ? commentsList?.map((remark, i) => (
+                                        <tr key={i}>
+                                          <td>
+                                            {remark?.comment_by_user_name.toUpperCase()}
+                                          </td>
+                                          <td
+                                            style={{ overflowWrap: "anywhere" }}
+                                          >
+                                            {remark?.comments}
+                                          </td>
+                                          <td>
+                                            {dateManipulate(remark?.comment_on)}
+                                          </td>
+                                          <td>{remark?.merchant_tab}</td>
+                                          <td>
+                                            {remark?.file_path !== null &&
+                                              isUrlValid(remark?.file_path) &&
+                                              fileTypeCheck(
+                                                remark?.file_path
+                                              ) && (
+                                                <a
+                                                  href={remark?.file_path}
+                                                  target={"_blank"}
+                                                  download
+                                                >
+                                                  <img
+                                                    src={downloadIcon}
+                                                    style={{
+                                                      height: "20px",
+                                                      width: "20px",
+                                                      margin: "auto",
+                                                    }}
+                                                  />
+                                                </a>
+                                              )}
+                                          </td>
+                                        </tr>
+                                      ))
+                                    : []}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </Form>
-              </Formik>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                  </Form>
+                </Formik>
+              </div>
+            
+    </>)
+  };
+
+  const modalFooter = () => {
+    return (
+      <>
+        <button
+          type="button"
+          className="btn btn-secondary text-white"
+          data-dismiss="modal"
+          onClick={() => {
+            setCommentsList([]);
+            props?.setModalState(false);
+          }}
+        >
+          Close
+        </button>
+      </>
+    );
+  };
+
+
+
+ 
+
+  return (
+    <>
+       <CustomModal modalBody={modalbody} headerTitle={"Add your comments"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
+    </>
+  
   );
 };
 
