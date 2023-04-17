@@ -12,6 +12,7 @@ import SearchbyDropDown from "../../_components/table_components/filters/Searchb
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
+import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 
 const RejectedKYC = () => {
   const roles = roleBasedAccess();
@@ -253,16 +254,14 @@ const RejectedKYC = () => {
             searchTextByApiCall={true}
           />
         </div>
-        {openCommentModal === true ? (
+        
           <CommentModal
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
             tabName={"Rejected Tab"}
           />
-        ) : (
-          <></>
-        )}
+      
         <div>
           <KycDetailsModal
             kycId={kycIdClick}
@@ -311,7 +310,9 @@ const RejectedKYC = () => {
             />
           )}
         </div>
-        <CustomLoader loadingState={loadingState} />
+        {/* <CustomLoader loadingState={loadingState} /> */}
+        {loadingState && <SkeletonTable />}
+
         {data?.length == 0 && !loadingState && (
           <h2 className="text-center font-weight-bold">No Data Found</h2>
         )}

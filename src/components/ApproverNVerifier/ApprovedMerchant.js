@@ -15,6 +15,8 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
 import ViewDocumentModal from "./Onboarderchant/ViewDocumentModal";
+import SkeletonTable from "../../_components/table_components/table/skeleton-table";
+
 
 function ApprovedMerchant() {
   const [data, setData] = useState([]);
@@ -307,16 +309,14 @@ function ApprovedMerchant() {
         />
       </div>
       <div>
-        {openCommentModal === true ? (
+        
           <CommentModal
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
             tabName={"Approved Tab"}
           />
-        ) : (
-          <></>
-        )}
+      
 
         <KycDetailsModal
           kycId={kycIdClick}
@@ -327,16 +327,14 @@ function ApprovedMerchant() {
       </div>
 
       <div>
-        {openDocumentModal === true ? (
+      
           <ViewDocumentModal
             documentData={commentId}
             isModalOpen={openDocumentModal}
             setModalState={setOpenDocumentModal}
             tabName={"Approved Tab"}
           />
-        ) : (
-          <></>
-        )}
+      
         <KycDetailsModal
           kycId={kycIdClick}
           handleModal={setIsModalOpen}
@@ -384,7 +382,8 @@ function ApprovedMerchant() {
             />
           )}
         </div>
-        <CustomLoader loadingState={loadingState} />
+        {/* <CustomLoader loadingState={loadingState} /> */}
+        {loadingState && <SkeletonTable />}
         {data?.length == 0 && !loadingState && (
           <h2 className="text-center font-weight-bold">No Data Found</h2>
         )}

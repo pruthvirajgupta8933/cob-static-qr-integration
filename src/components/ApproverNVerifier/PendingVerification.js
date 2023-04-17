@@ -15,6 +15,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
+import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 
 function PendingVerification() {
   const roles = roleBasedAccess();
@@ -289,29 +290,24 @@ function PendingVerification() {
           />
         </div>
         <div>
-          {openCommentModal === true ? (
+         
             <CommentModal
               commentData={commentId}
               isModalOpen={openCommentModal}
               setModalState={setOpenCommentModal}
               tabName={"Pending Verification"}
             />
-          ) : (
-            <></>
-          )}
+      
 
           {/* KYC Details Modal */}
 
-          {isOpenModal === true ? (
+       
             <KycDetailsModal
               kycId={kycIdClick}
               handleModal={setIsModalOpen}
               isOpenModal={isOpenModal}
               renderPendingVerification={pendingVerify}
             />
-          ) : (
-            <></>
-          )}
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -353,7 +349,8 @@ function PendingVerification() {
             />
           )}
         </div>
-        <CustomLoader loadingState={loadingState} />
+        {/* <CustomLoader loadingState={loadingState} /> */}
+        {loadingState && <SkeletonTable />}
         {data?.length == 0 && !loadingState && (
           <h2 className="text-center font-weight-bold">No Data Found</h2>
         )}

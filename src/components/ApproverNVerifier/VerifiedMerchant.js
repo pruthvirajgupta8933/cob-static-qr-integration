@@ -12,6 +12,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
+import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 
 function VerifiedMerchant() {
 
@@ -307,27 +308,23 @@ function VerifiedMerchant() {
       />
       </div>
       <div>
-        {openCommentModal === true ? (
+       
           <CommentModal
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
             tabName={"Pending Approval"}
           />
-        ) : (
-          <></>
-        )}
+      
 
-        {isOpenModal ? (
+     
           <KycDetailsModal
             kycId={kycIdClick}
             handleModal={setIsModalOpen}
             isOpenModal={isOpenModal}
             renderPendingApproval={verifyMerchant}
           />
-        ) : (
-          <></>
-        )}
+     
       </div>
       <div className="container-fluid pull-left p-3- my-3- col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">
@@ -342,7 +339,8 @@ function VerifiedMerchant() {
             />
           )}
         </div>
-        <CustomLoader loadingState={loadingState} />
+        {/* <CustomLoader loadingState={loadingState} /> */}
+        {loadingState && <SkeletonTable />}
         {data?.length == 0 && !loadingState && (
           <h2 className="text-center font-weight-bold">No Data Found</h2>
         )}

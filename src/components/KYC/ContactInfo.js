@@ -26,6 +26,7 @@ import {
 import { values } from "lodash";
 import gotVerified from "../../assets/images/verified.png";
 import $ from "jquery";
+import "./kyc-style.css";
 
 function ContactInfo(props) {
   const setTab = props.tab;
@@ -415,7 +416,7 @@ function ContactInfo(props) {
                     <button
                       disabled={disable}
                       type="submit"
-                      className="btn float-lg-right btnbackground text-white"
+                      className="save-next-btn float-lg-right btnbackground text-white"
                     >
                       {buttonText}
                     </button>

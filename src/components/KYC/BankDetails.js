@@ -84,7 +84,6 @@ function BankDetails(props) {
     isAccountNumberVerified: KycList?.accountNumber !== null ? "1" : "",
   };
 
-  console.log("initinaitla value s", initialValues.account_type)
 
   const validationSchema = Yup.object({
     account_holder_name: Yup.string()
@@ -497,7 +496,7 @@ function BankDetails(props) {
                   {VerifyKycStatus === "Verified" ? null : (
                     <button
                       disabled={disable}
-                      className="btn float-lg-right btnbackground text-white"
+                      className="save-next-btn float-lg-right btnbackground text-white"
                       type="submit"
                     >
                       {" "}

@@ -13,6 +13,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
+import SkeletonTable from "../../_components/table_components/table/skeleton-table";
 
 const PendindKyc = () => {
   const roles = roleBasedAccess();
@@ -32,8 +33,7 @@ const PendindKyc = () => {
   const [kycIdClick, setKycIdClick] = useState(null);
   const [isOpenModal, setIsModalOpen] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
-  const [onboardType, setOnboardType] = useState("")
-
+  const [onboardType, setOnboardType] = useState("");
 
   const PendindKycRowData = [
     {
@@ -165,15 +165,15 @@ const PendindKyc = () => {
   // };
 
   const kycSearch = (e, fieldType) => {
-    if(fieldType === "text"){
-      setSearchByDropDown(false)
+    if (fieldType === "text") {
+      setSearchByDropDown(false);
       setSearchText(e);
     }
-    if(fieldType === "dropdown"){
-      setSearchByDropDown(true)
-      setOnboardType(e)
+    if (fieldType === "dropdown") {
+      setSearchByDropDown(true);
+      setOnboardType(e);
     }
-  }
+  };
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -196,7 +196,7 @@ const PendindKyc = () => {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Pending",
-        isDirect:onboardType
+        isDirect: onboardType,
       })
     )
       .then((resp) => {
@@ -265,16 +265,12 @@ const PendindKyc = () => {
           />
         </div>
         <div>
-          {openCommentModal === true ? (
             <CommentModal
               commentData={commentId}
               isModalOpen={openCommentModal}
               setModalState={setOpenCommentModal}
               tabName={"Pending KYC"}
             />
-          ) : (
-            <></>
-          )}
           <KycDetailsModal
             handleModal={setIsModalOpen}
             kycId={kycIdClick}
@@ -301,10 +297,10 @@ const PendindKyc = () => {
           />
         </div>
         <div className="mt-1">
-        <MerchnatListExportToxl
-          URL={"?order_by=-id&search=Pending"}
-          filename={"Pending-KYC"}
-        />
+          <MerchnatListExportToxl
+            URL={"?order_by=-id&search=Pending"}
+            filename={"Pending-KYC"}
+          />
         </div>
       </div>
 
@@ -321,7 +317,8 @@ const PendindKyc = () => {
             />
           )}
         </div>
-        <CustomLoader loadingState={loadingState} />
+        {/* <CustomLoader loadingState={loadingState} /> */}
+        {loadingState && <SkeletonTable />}
         {data?.length == 0 && !loadingState && (
           <h2 className="text-center font-weight-bold">No Data Found</h2>
         )}

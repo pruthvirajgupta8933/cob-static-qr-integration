@@ -204,7 +204,7 @@ const ChallanTransactReport = () => {
     setPageSize(pageSize);
   };
 
-  const exportToExcelFn = () => {
+  const exportToExcelFn = () => {  
     setIsexcelDataLoaded(true);
     dispatch(
       exportTransactions({

@@ -10,6 +10,7 @@ import moment from "moment";
 import "./comment.css";
 import downloadIcon from "../../../assets/images/download-icon.svg";
 import _ from "lodash";
+import CustomModal from "../../../_components/custom_modal";
 
 const ViewDocumentModal = (props) => {
   // console.log("This is props ::",props);
@@ -173,50 +174,17 @@ const ViewDocumentModal = (props) => {
 
   // ---------------------------------------------------------------------------------||
 
-
+const modalBody = () => {
   return (
-    <div>
-      <div
-        tabIndex="-1"
-        role="dialog"
-        aria-hidden="true"
-        className={
-          "modal fade mymodals" +
-          (props?.isModalOpen ? " show d-block" : " d-none")
-        }
-      >
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5
-                className="modal-title bolding text-black"
-                id="exampleModalLongTitle"
-              >
-                Upload Agreement
-              </h5>
-
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-                onClick={() => {
-                  setCommentsList([]);
-                  props?.setModalState(false);
-                }}
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
+    <>
+     
               <h5 className="font-weight-bold">
                 Merchant Name: {props?.documentData?.clientName}
               </h5>
               <h5 className="font-weight-bold">
                 Client Code: {props?.documentData?.clientCode}
               </h5>
-            </div>
-            <div className="container">
+              <div className="container">
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -382,7 +350,22 @@ const ViewDocumentModal = (props) => {
                             </table>
                           </div>
                         </div>
-                        <div className="modal-footer">
+                      
+                      </div>
+                    </div>
+                  </div>
+                </Form>
+              </Formik>
+            </div>
+            
+
+    </>
+  )
+}
+  const modalFooter = () =>{
+    return (
+      <>
+ 
                           <button
                             type="button"
                             className="btn btn-secondary text-white"
@@ -394,17 +377,20 @@ const ViewDocumentModal = (props) => {
                           >
                             Close
                           </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Form>
-              </Formik>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                    
+
+      </>
+    )
+  }
+
+
+
+
+  return (
+    <>
+     <CustomModal modalBody={modalBody} headerTitle={"Upload Agreement"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
+    </>
+   
   );
 };
 
