@@ -6,7 +6,7 @@ import "../../login/css/style.css"
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { register, udpateRegistrationStatus } from "../../../slices/auth";
+import { register } from "../../../slices/auth";
 import { useHistory } from "react-router-dom";
 import { toast, Zoom } from "react-toastify";
 import API_URL from "../../../config";

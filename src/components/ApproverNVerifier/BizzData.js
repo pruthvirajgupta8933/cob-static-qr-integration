@@ -132,7 +132,7 @@ const BizzAppData = () => {
             <main className="gx-layout-content ant-layout-content">
                 <div className="gx-main-content-wrapper">
                     <div className="right_layout my_account_wrapper right_side_heading">
-                        <h1 className="m-b-sm gx-float-left">Bizz App Data</h1>
+                        <h1 className="btn approve text-white btn-xs">Bizz App Data</h1>
                     </div>
                     <Formik
                         initialValues={initialValues}
@@ -170,7 +170,7 @@ const BizzAppData = () => {
                                         />
                                     </div>
                                     <div className=" col-md-4 mx-4">
-                                        <button type="subbmit" className="btn btn-primary">Submit</button>
+                                        <button type="subbmit" className="btn approve text-white btn-xs">Submit</button>
 
                                     </div>
                                     {FormData?.length > 0 ? (
