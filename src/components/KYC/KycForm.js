@@ -143,6 +143,7 @@ function KycForm() {
                               >
                                 {/* kyc status icon as per the status */}
                                 {kycStatusIcon(KycTabStatusStore?.general_info_status)}
+                                {/* <span className="tooltiptext">{`Status : ${KycTabStatusStore?.general_info_status}`}</span> */}
                                 Merchant Contact Info
                               </a>
                             </li>

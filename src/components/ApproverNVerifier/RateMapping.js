@@ -225,14 +225,14 @@ function RateMapping() {
       id: "9",
       name: "Action",
       cell: (row) => (
-        <div className="mt-3">
+        <div >
           <button
             type="submit"
             onClick={() => {
               setModalDisplayData(row);
               setOpenModal(true);
             }}
-            className="btn approve text-white"
+            className="save-next-btn approve text-white"
             data-toggle="modal"
             data-target="#exampleModalCenter"
           >
@@ -269,7 +269,7 @@ function RateMapping() {
                 )}
               </div>
             </div>
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className="col-lg-3 mrg-btm- bgcolor">
               <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}

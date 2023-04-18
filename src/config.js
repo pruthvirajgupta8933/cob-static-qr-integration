@@ -16,7 +16,6 @@ if (ENV_PROD) {
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
-
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
 

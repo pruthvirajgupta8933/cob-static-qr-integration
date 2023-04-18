@@ -302,7 +302,7 @@ function VerifiedMerchant() {
       <div className="mt-1">
       <MerchnatListExportToxl
         URL={
-          "?search=Verified&order_by=-verified_date&search_map=verified_date"
+          "export-excel/?search=Verified"
         }
         filename={"Pending-Approval"}
       />

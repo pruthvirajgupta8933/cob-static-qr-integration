@@ -298,7 +298,7 @@ const PendindKyc = () => {
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
-            URL={"?order_by=-id&search=Pending"}
+            URL={"export-excel/?search=Pending"}
             filename={"Pending-KYC"}
           />
         </div>

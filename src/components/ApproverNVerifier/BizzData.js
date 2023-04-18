@@ -169,28 +169,27 @@ const BizzAppData = () => {
                                             className="form-control rounded-0"
                                         />
                                     </div>
+<<<<<<< HEAD
                                     <div className=" col-md-4 mx-4">
                                         <button type="subbmit" className="btn approve text-white btn-xs">Submit</button>
+=======
+                                    <div className=" col-md-4 ">
+                                        <button type="subbmit" className="btn approve text-white btn-xs">Submit</button>
+                                           {FormData?.length > 0 ? (
+                                                <button
+                                                className="btn btn-sm text-white"
+                                                type="button"
+                                                onClick={() => exportToExcelFn()}
+                                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                                            >
+                                                Export
+                                            </button> ) : <></>}
+>>>>>>> 40988961daee411ae92e53d42eea597f1ed71fa1
 
                                     </div>
-                                    {FormData?.length > 0 ? (
-                                        <div className="form-row">
-                                            <div className="form-group col-md-1 ml-4">
-                                                <button
-                                                    className="btn btn-sm text-white"
-                                                    type="button"
-                                                    onClick={() => exportToExcelFn()}
-                                                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                                                >
-                                                    Export
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <></>
-                                    )}
+                                    
                                 </div>
-                                {FormData?.length === 0 || FormData?.length === undefined ? <></> : <h4>Total number of record is {FormData?.length}</h4>}
+                                {FormData?.length === 0 || FormData?.length === undefined ? <></> : <h4>Total Records :  {FormData?.length}</h4>}
 
                             </div>
                         </Form>

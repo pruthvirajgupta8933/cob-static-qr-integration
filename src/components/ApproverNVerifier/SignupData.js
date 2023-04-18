@@ -262,26 +262,20 @@ const SignupData = () => {
                       className="form-control rounded-0"
                     />
                   </div>
-                  <div className=" col-md-4 mx-4">
-                    <button type="subbmit"  className="btn approve text-white btn-xs">Submit</button>
+                  <div className=" col-md-4">
+                    <button type="submit"  className="btn approve text-white btn-xsbtn approve text-white btn-xs">Submit</button>
+                    {signupData?.length > 0 ? (
+                       <button
+                       className="btn btn-sm text-white"
+                       type="button"
+                       onClick={() => exportToExcelFn()}
+                       style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                     >
+                       Export
+                     </button> ) : <></>}
 
                   </div>
-                  {signupData?.length > 0 ? (
-                    <div className="form-row">
-                      <div className="form-group col-md-1 ml-4">
-                        <button
-                          className="btn btn-sm text-white"
-                          type="button"
-                          onClick={() => exportToExcelFn()}
-                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                        >
-                          Export
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <></>
-                  )}
+                  
                 </div>
               </div>
             </Form>
