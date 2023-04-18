@@ -364,7 +364,7 @@ function ApprovedMerchant() {
       <div className="mt-1">
       <MerchnatListExportToxl
         URL={
-          "?search=Approved&order_by=-approved_date&search_map=approved_date"
+          "export-excel/?search=Approved"
         }
         filename={"Approved"}
       />

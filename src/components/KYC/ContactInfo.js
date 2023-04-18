@@ -351,14 +351,6 @@ function ContactInfo(props) {
                   </span>
                 )}
               </div>
-
-              {/*  Modal Popup for Otp Verification */}
-              <PhoneVerficationModal
-                show={showOtpVerifyModalPhone}
-                setShow={handlerModal}
-              />
-              {/*  Modal Popup for Otp Verification Mobile */}
-
               <div className="col-sm-6 col-md-6 col-lg-6 ">
                 <label className="col-form-label mt-0 p-2">
                   Email Id<span style={{ color: "red" }}>*</span>
@@ -398,6 +390,13 @@ function ContactInfo(props) {
                 }
 
               </div>
+              
+              {/*  Modal Popup for Otp Verification */}
+              <PhoneVerficationModal
+                show={showOtpVerifyModalPhone}
+                setShow={handlerModal}
+              />
+              {/*  Modal Popup for Otp Verification Mobile */}
             </div>
 
             <div className="my-5- p-2- w-100 pull-left">

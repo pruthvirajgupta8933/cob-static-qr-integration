@@ -269,7 +269,7 @@ function RateMapping() {
                 )}
               </div>
             </div>
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className="col-lg-3 mrg-btm- bgcolor">
               <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}

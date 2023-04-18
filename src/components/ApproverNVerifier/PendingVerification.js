@@ -330,7 +330,7 @@ function PendingVerification() {
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
-            URL={"?order_by=-id&search=processing"}
+            URL={"export-excel/?search=processing"}
             filename={"Pending-Verification"}
           />
         </div>

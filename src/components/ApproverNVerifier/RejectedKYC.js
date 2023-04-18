@@ -291,7 +291,7 @@ const RejectedKYC = () => {
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
-            URL={"?search=Rejected&order_by=-kyc_reject&search_map=kyc_reject"}
+            URL={"export-excel/?search=Rejected"}
             filename={"Rejected"}
           />
         </div>

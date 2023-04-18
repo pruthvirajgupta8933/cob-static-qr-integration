@@ -129,6 +129,9 @@ const PaymentLinkDetail = () => {
             </div>
 
           </div>
+          <div className="mt-5" >
+            <CustomLoader loadingState={loadingState} />
+                  </div>
           <div className="row">
             <div className="col-lg-4 mrg-btm- bgcolor">
               <p>Total Records: {data.length}</p>
@@ -139,9 +142,6 @@ const PaymentLinkDetail = () => {
       </section>
 
 
-          <div className="mt-5" >
-            <CustomLoader loadingState={loadingState} />
-          </div>
       <section className="">
         <div className="container-fluid flleft  p-3 my-3 ">
           {!paginatedata ? (<h3> No Data Found</h3>) : (<React.Fragment>  <div className="scroll" style={{ overflow: "auto" }}>
@@ -183,10 +183,7 @@ const PaymentLinkDetail = () => {
 
             </table>
 
-
-
-
-            {data?.length == 0 && !loadingState && (
+             {data?.length == 0 && !loadingState && (
               <h2 className="text-center">No data Found</h2>
             )}
           </div>
