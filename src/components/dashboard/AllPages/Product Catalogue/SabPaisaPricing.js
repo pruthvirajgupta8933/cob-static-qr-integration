@@ -19,11 +19,11 @@ const SabPaisaPricing = () => {
 
   const [productDetails, setProductDetails] = useState([]);
   const [spinner, setSpinner] = useState(true);
-  const [selectedPlan, setSelectedPlan] = useState({ planId: "" });
+  const [selectedPlan, setSelectedPlan] = useState({});
   const [modalToggle, setModalToggle] = useState(false);
 
 
-  // console.log("selectedPlan", selectedPlan)
+  console.log("selectedPlan", selectedPlan)
   const dispatch = useDispatch();
   const clickHandler = (value) => {
     history.push("/dashboard");
@@ -46,7 +46,7 @@ const SabPaisaPricing = () => {
       .post(API_URL.Get_Subscribed_Plan_Detail_By_ClientId, { "clientId": clientId, "applicationId": id })
       .then((resp) => {
         // console.log(resp?.data?.data[0]?.planId)
-        setSelectedPlan({ planId: resp?.data?.data[0]?.planId === null ? "" : resp?.data?.data[0]?.planId })
+        setSelectedPlan(resp?.data?.data[0])
       })
   }
 
@@ -84,8 +84,9 @@ const SabPaisaPricing = () => {
       if (res?.status === 200) {
         getSubscribedPlan(param?.id);
         setModalToggle(true)
-      } 
-    }).catch(err=> toastConfig.errorToast(err))
+      }
+
+    }).catch(error=> toastConfig.errorToast(error.response?.data?.detail))
 
   };
 
@@ -192,7 +193,7 @@ const SabPaisaPricing = () => {
                             <button
                               type="button"
                               className={`font-weight-bold btn choosePlan-1 btn-lg w-50 ${selectedPlan?.planId === Products?.plan_id ? "btn-bg-color" : ""}`}
-                              // disabled={selectedPlan?.planId !== "" ? true : false}
+                              disabled={selectedPlan?.mandateStatus === "success" ? true : false}
                               onClick={() => {
                                 if (selectedPlan?.planId !== Products?.plan_id) {
                                   handleClick(
@@ -233,9 +234,9 @@ const SabPaisaPricing = () => {
                             <button
                               type="button"
                               className={`font-weight-bold btn choosePlan-1 btn-lg ${selectedPlan?.planId === Products.plan_id ? "btn-bg-color" : ""}`}
-                              // disabled={selectedPlan?.planId !== "" ? true : false}
+                              disabled={selectedPlan?.mandateStatus === "success" ? true : false}
                               onClick={() => {
-                                if (selectedPlan?.planId !== Products.plan_id) {
+                                if (selectedPlan?.planId !== Products?.plan_id) {
                                   handleClick(
                                     Products.plan_id,
                                     Products.plan_name,
