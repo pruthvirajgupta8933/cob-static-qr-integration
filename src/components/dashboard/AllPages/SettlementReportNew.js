@@ -391,7 +391,7 @@ const SettlementReportNew= () => {
                       <div className="form-group col-md-1 mr-2">
                         <button
                         disabled={disable}
-                          className=" btn bttn bttnbackgroundkyc"
+                          className="verify-btn bttn bttnbackgroundkyc"
                           type="submit"
                         >
                           Search{" "}

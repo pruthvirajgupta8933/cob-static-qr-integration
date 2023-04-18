@@ -64,7 +64,7 @@ const Approver = () => {
                   <button
                     type="button"
                     className="btn"
-                    style={{ background: "#012167", color: "white",width:"15%",marginLeft:"35px" }}
+                    style={{ background: "#012167", color: "white",width:"15%",marginLeft:"35px",padding:"0px" }}
                     onClick={() => redirect()}
                   >
                     Onboard Merchant

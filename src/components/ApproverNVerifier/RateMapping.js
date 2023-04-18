@@ -225,14 +225,14 @@ function RateMapping() {
       id: "9",
       name: "Action",
       cell: (row) => (
-        <div className="mt-3">
+        <div >
           <button
             type="submit"
             onClick={() => {
               setModalDisplayData(row);
               setOpenModal(true);
             }}
-            className="btn approve text-white"
+            className="save-next-btn approve text-white"
             data-toggle="modal"
             data-target="#exampleModalCenter"
           >
