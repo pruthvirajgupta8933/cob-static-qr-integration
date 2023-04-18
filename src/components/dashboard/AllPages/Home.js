@@ -103,7 +103,7 @@ function Home() {
                 cardData={unPaidProduct}
                 // key={data?.clientSubscribedPlanDetailsId}
                 heading={`Payment Alert`}
-                // text1={`Kindly pay the amount of the subscribed product` }
+                text1={`Kindly pay the amount of the subscribed product` }
                 // text2={`Product : ${data?.applicationName}` }
                 // text3={`Product Plan : ${data?.planName}`}
                 // linkUrl={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}

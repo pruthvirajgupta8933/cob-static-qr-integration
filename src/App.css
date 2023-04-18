@@ -328,3 +328,32 @@ label {
 .maskedInput{
   -webkit-text-security:disc
 }
+
+
+
+/* Tooltip container */
+.tooltip-custom {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip-custom .tooltiptext {
+  visibility: hidden;
+  width: auto;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  display: block;
+  border-radius: 1px 8px 8px 16px;
+  margin: 2px;
+  font-size: 12px;
+}
+
+/* Show tooltip on hover */
+.tooltip-custom:hover .tooltiptext {
+  visibility: visible;
+}
