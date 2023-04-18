@@ -16,6 +16,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 import gotVerified from "../../assets/images/verified.png";
+import "./kyc-style.css";
 
 const AdditionalKYC = () => {
   const dispatch = useDispatch();
@@ -284,7 +285,7 @@ const AdditionalKYC = () => {
                     <div className="col-lg-5">
                       <button
                         type="submit"
-                        className="btn btnbackground text-white"
+                        className="verify-btn btnbackground text-white"
                       >
                         Verify
                       </button>
@@ -319,7 +320,7 @@ const AdditionalKYC = () => {
                     <div className="col-lg-5">
                       <button
                         type="submit"
-                        className="btn float-lg-right btnbackground text-white"
+                        className="verify-btn float-lg-right btnbackground text-white"
                       >
                         Verify
                       </button>
@@ -371,7 +372,7 @@ const AdditionalKYC = () => {
                     <div className="col-lg-8">
                       <button
                         type="submit"
-                        className="btn float-lg-right btnbackground text-white"
+                        className="verify-btn float-lg-right btnbackground text-white"
                       >
                         Verify
                       </button>

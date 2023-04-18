@@ -161,10 +161,10 @@ function AssignZone() {
       id: "9",
       name: "Merchant Configuration",
       cell: (row) => (
-        <div className="mt-3">
+        <div >
           <button
             type="button"
-            className="btn approve text-white  btn-xs mt-2"
+            className="save-next-btn approve text-white  btn-xs "
             onClick={() => {
               setModalDisplayData(row);
               setOpenModal(true);

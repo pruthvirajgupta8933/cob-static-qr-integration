@@ -390,9 +390,10 @@ function BusinessOverview(props) {
                   }}
                   name="seletcted_website_app_url"
                   options={WebsiteAppUrl}
-                  className="form-control pull-left mr-2"
+                  // className="form-control pull-left mr-2"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
+                  className="form-check-input"
                 />
                 
                 {formik.values?.seletcted_website_app_url === "Yes" && (
