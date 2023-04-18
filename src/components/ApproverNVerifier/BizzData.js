@@ -169,10 +169,6 @@ const BizzAppData = () => {
                                             className="form-control rounded-0"
                                         />
                                     </div>
-<<<<<<< HEAD
-                                    <div className=" col-md-4 mx-4">
-                                        <button type="subbmit" className="btn approve text-white btn-xs">Submit</button>
-=======
                                     <div className=" col-md-4 ">
                                         <button type="subbmit" className="btn approve text-white btn-xs">Submit</button>
                                            {FormData?.length > 0 ? (
@@ -184,7 +180,6 @@ const BizzAppData = () => {
                                             >
                                                 Export
                                             </button> ) : <></>}
->>>>>>> 40988961daee411ae92e53d42eea597f1ed71fa1
 
                                     </div>
                                     
