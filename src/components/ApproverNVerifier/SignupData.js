@@ -263,7 +263,7 @@ const SignupData = () => {
                     />
                   </div>
                   <div className=" col-md-4">
-                    <button type="submit"  className="btn approve text-white btn-xsbtn approve text-white btn-xs">Submit</button>
+                    <button type="submit"  className="verify-btn approve text-white btn-xsbtn approve text-white btn-xs">Submit</button>
                     {signupData?.length > 0 ? (
                        <button
                        className="btn btn-sm text-white"
