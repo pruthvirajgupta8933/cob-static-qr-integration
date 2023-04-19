@@ -303,19 +303,21 @@ function LoginPage() {
                               rel="noreferrer"
                               target={"_blank"}
                               alt="SabPaisa Terms & Conditions"
+                              className="colorforterms_condition"
                               title="SabPaisa Terms & Conditions"
                             >
                               Terms & Conditions
                             </a>
-                            &nbsp;|{" "}
+                            {/* &nbsp;|{" "} */}
                             <a
                               href="https://sabpaisa.in/privacy-policy/"
                               rel="noreferrer"
                               target={"_blank"}
                               alt="SabPaisa Privacy Policy"
+                              className="colorforterms_condition"
                               title="SabPaisa Privacy Policy"
                             >
-                              Privacy Policy
+                              &nbsp;|{" "} Privacy Policy
                             </a>
                           </p>
                         </div>

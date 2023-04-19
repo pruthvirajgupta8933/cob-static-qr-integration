@@ -848,6 +848,11 @@ a.sidenavFonts {
   color: white !important;
 }
 
+.colorforterms_condition{
+  color: #4285f8 !important;
+
+}
+
 .choosePlan-2 {
   padding: 2em !important;
   font-size: 1em !important;

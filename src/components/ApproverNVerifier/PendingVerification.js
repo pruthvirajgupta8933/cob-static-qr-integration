@@ -88,13 +88,22 @@ function PendingVerification() {
       cell: (row) => <div>{covertDate(row.signUpDate)}</div>,
       width: "150px",
     },
+
     {
       id: "9",
+      name: "Submitted Date",
+      selector: (row) => row.updated_on,
+      sortable: true,
+      cell: (row) => <div>{covertDate(row.updated_on)}</div>,
+      width: "150px",
+    },
+    {
+      id: "10",
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
     {
-      id: "10",
+      id: "11",
       name: "View Status",
       // selector: (row) => row.viewStatus,
       cell: (row) => (
