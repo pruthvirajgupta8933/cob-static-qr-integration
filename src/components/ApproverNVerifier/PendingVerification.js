@@ -282,7 +282,7 @@ function PendingVerification() {
   ];
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a").toUpperCase();
     return date;
   };
 
