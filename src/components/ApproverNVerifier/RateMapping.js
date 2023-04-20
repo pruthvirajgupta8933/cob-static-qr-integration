@@ -254,12 +254,13 @@ function RateMapping() {
             <h1 className="m-b-sm gx-float-left">Rate Mapping</h1>
           </div>
           <div className="container-fluid flleft">
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className="col-lg-3 mt-2">
               <SearchFilter
                 kycSearch={kycSearch}
                 searchText={searchText}
                 searchByText={searchByText}
                 setSearchByDropDown={setSearchByDropDown}
+                searchTextByApiCall={true}
               />
               <div>
                 {openZoneModal === true ? (
@@ -269,7 +270,7 @@ function RateMapping() {
                 )}
               </div>
             </div>
-            <div className="col-lg-3 mrg-btm- bgcolor">
+            <div className="col-lg-3 mt-2">
               <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}
