@@ -853,6 +853,20 @@ a.sidenavFonts {
 
 }
 
+
+.verify-btnGst{
+  padding: 10px;
+    border: 0px;
+    border-radius: 4px;
+    width: 100px;
+    margin-top: 10px;
+}
+
+.integration-button{
+  border-radius: 4px;
+  
+}
+
 .choosePlan-2 {
   padding: 2em !important;
   font-size: 1em !important;
