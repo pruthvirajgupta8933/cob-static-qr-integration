@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState,useEffect } from "react";
 import NavBar from "../dashboard/NavBar/NavBar";
 import { Formik, Form } from "formik";
 import API_URL from "../../config";
@@ -11,7 +12,10 @@ import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
-// import toastConfig from '../../utilities/toastTypes';
+import SearchFilter from "../../_components/table_components/filters/SearchFilter";
+// import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
+import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage"
+
 
 const validationSchema = Yup.object({
   from_date: Yup.date().required("Required").nullable(),
@@ -22,6 +26,10 @@ const validationSchema = Yup.object({
 
 const SignupData = () => {
   const [signupData, setSignupData] = useState([]);
+  const [assignZone, setAssignzone] = useState([]);
+  const [isSearchByDropDown, setSearchByDropDown] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [saveData, setSaveData] = useState();
 
   const [loadingState, setLoadingState] = useState(false);
   const [dataCount, setDataCount] = useState(0);
@@ -45,21 +53,76 @@ const SignupData = () => {
     from_date: splitDate,
     to_date: splitDate,
   };
+  const kycSearch = (e, fieldType) => {
+    fieldType === "text"
+      ? setSearchByDropDown(false)
+      : setSearchByDropDown(true);
+    setSearchText(e);
+  };
+
+  const searchByText = (text) => {
+    setSignupData(
+      assignZone?.filter((item) =>
+        Object.values(item)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchText?.toLocaleLowerCase())
+      )
+    );
+  };
+
+  
+
+  //function for change current page
+  // const changeCurrentPage = (page) => {
+  //   setCurrentPage(page);
+  // };
+
+  // //function for change page size
+  // const changePageSize = (pageSize) => {
+  //   setPageSize(pageSize);
+  // };
+
+  useEffect(() => {
+    const postData = {
+      from_date: saveData?.from_date,
+      to_date: saveData?.to_date,
+    };
+    let apiRes = axiosInstanceJWT
+      .post(`${API_URL.GET_SIGNUP_DATA_INFO}?page=${currentPage}&page_size=${pageSize}`,postData)
+      .then((resp) => {
+        setSignupData(resp?.data?.Merchant_Info);
+        setAssignzone(resp?.data?.Merchant_Info);
+        // console.log(resp?.data)
+        setShow(true);
+        setLoadingState(false);
+        setDataCount(resp?.data?.count);
+      })
+      .catch((error) => {
+        setLoadingState(false);
+        
+      });
+  }, [currentPage, pageSize]);
+
+
+ 
 
   const handleSubmit = (values) => {
+    setSaveData(values)
     setLoadingState(true);
     const postData = {
       from_date: values.from_date,
       to_date: values.to_date,
     };
     let apiRes = axiosInstanceJWT
-      .post(API_URL.GET_SIGNUP_DATA_INFO, postData)
+      .post(`${API_URL.GET_SIGNUP_DATA_INFO}?page=${currentPage}&page_size=${pageSize}`,postData)
       .then((resp) => {
         setSignupData(resp?.data?.Merchant_Info);
+        setAssignzone(resp?.data?.Merchant_Info);
         // console.log(resp?.data)
         setShow(true);
         setLoadingState(false);
-        setDataCount(resp?.data?.length);
+        setDataCount(resp?.data?.count);
       })
       .catch((error) => {
         setLoadingState(false);
@@ -289,10 +352,37 @@ const SignupData = () => {
               </div>
             </Form>
           </Formik>
+          {!loadingState && signupData?.length !== 0 && (
           <>
+        
+          <div className="col-lg-4 mrg-btm- bgcolor">
+              <SearchFilter
+                kycSearch={kycSearch}
+                searchText={searchText}
+                searchByText={searchByText}
+                setSearchByDropDown={setSearchByDropDown}
+              />
+              <div>
+               </div>
+            </div>
+          {
+            console.log(pageSize,"pageSize")
+          }
+          
+            <div className="col-lg-3 mrg-btm- bgcolor">
+            <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            changePageSize={changePageSize}
+          />
+            </div>
+       
+
             <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
               <div className="scroll overflow-auto ml-4">
+              
                 {!loadingState && signupData?.length !== 0 && (
+                  
                   <Table
                     row={rowSignUpData}
                     data={signupData}
@@ -309,6 +399,7 @@ const SignupData = () => {
               )}
             </div>
           </>
+             )}
         </div>
       </main>
     </section>
