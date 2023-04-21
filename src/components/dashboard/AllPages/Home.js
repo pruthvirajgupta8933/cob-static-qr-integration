@@ -111,6 +111,8 @@ function Home() {
                 bgColor={'alert-danger'}
               />
               }
+
+              
             <KycAlert />
           </React.Fragment>
           : <></>}

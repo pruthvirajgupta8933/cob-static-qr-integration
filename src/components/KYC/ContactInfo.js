@@ -249,7 +249,7 @@ function ContactInfo(props) {
           <Form>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6 ">
-                <label className="col-form-label mt-0 p-2">
+                <label className="col-form-label mt-0 p-2" >
                   Contact Name<span style={{ color: "red" }}>*</span>
                 </label>
 
@@ -263,8 +263,8 @@ function ContactInfo(props) {
                 />
               </div>
 
-              <div className="col-sm-6 col-md-6 col-lg-6 ">
-                <label className="col-form-label mt-0 p-2">
+              <div className="col-sm-6 col-md-6 col-lg-6" >
+                <label className="col-form-label mt-0 p-2 " >
                   Aadhaar No.<span style={{ color: "red" }}>*</span>
                 </label>
 
@@ -275,6 +275,7 @@ function ContactInfo(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   className="form-control maskedInput"
                   readOnly={readOnly}
+                  
                 />
               </div>
             </div>
@@ -286,7 +287,7 @@ function ContactInfo(props) {
             {/*  Modal Popup for Otp Verification Email*/}
             <div className="row">
               <div className="col-sm-6 col-md-6 col-lg-6">
-                <label className="col-form-label mt-0 p-2">
+                <label className="col-form-label mt-0 p-2" data-tip="We will react out to this phone for any account related issues.">
                   Contact Number<span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
