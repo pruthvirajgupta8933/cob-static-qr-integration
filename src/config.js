@@ -299,6 +299,9 @@ const API_LIVE = {
   // Debit Report
   filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
   mandateSubmit:`${subAPIURL}/registration`,
+  mandateSendRequest:`https://enach.npci.org.in/onmags/sendRequest`
+
+
 
 
 

@@ -2,7 +2,8 @@ import { CleaningServices } from "@mui/icons-material";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createMandateService } from "../../services/subscription-service/create.mandate.service";
 import { setMessage } from "../message";
-
+import { kycValidatorAuth } from "../../utilities/axiosInstance";
+import subAPIURL from "../../config";
 
 
 const initialState = {
@@ -51,26 +52,9 @@ export const fetchMandateType = createAsyncThunk(
   }
 );
 
-export const createMandateSubmission = createAsyncThunk(
-  "createMandateSubmission/createMandateSubmission",
-  async ( requestParam, thunkAPI) => {
-    try {
-      const response = await createMandateService.mandateSubmission(requestParam)
-      return response.data;
-    } catch (error) {
-      const message =
-      (error.response &&
-        error.response.data &&
-        error.response.data.detail) ||
-      error.message ||
-      error.toString() || error.request.toString();
-    thunkAPI.dispatch(setMessage(message));
-    return thunkAPI.rejectWithValue(message); 
-      
-      
-    }
-  }
-);
+
+
+
 
 
 

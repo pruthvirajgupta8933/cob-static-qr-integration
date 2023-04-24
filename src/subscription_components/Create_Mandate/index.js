@@ -13,6 +13,7 @@ import PersonalDetails from "./personalDetails";
 import BankDetails from "./bankDetails";
 import * as Yup from "yup";
 import AuthMandate from "./Mandate_Submission/authMandate";
+import moment from "moment";
 
 let options1 = [
   { key: "Select", value: "Select" },
@@ -32,6 +33,7 @@ const FORM_VALIDATION = Yup.object().shape({
   consumerReferenceNumber: Yup.string().required("Required"),
   emiamount: Yup.string().required("Required"),
   requestType: Yup.string().required("Required"),
+  // untilCancelled: Yup.bool().oneOf([true], "Specify End Date or check Until cancelled"),
 });
 
 class MandateForm extends Component {
@@ -49,9 +51,12 @@ class MandateForm extends Component {
       progressWidth: "0%",
       progressBar: true,
       bankName: [],
-      updatedData:[]
+      updatedData:[],
+      // disableEndDate:false,
+      // isChecked:false
     };
   }
+  
 
   componentDidMount() {
     this.props.fetchFrequency();
@@ -70,6 +75,7 @@ class MandateForm extends Component {
         });
       }
     });
+
     createMandateService.fetchrequestType().then((resp) => {
       if (resp.status === 200) {
         this.setState({
@@ -86,28 +92,53 @@ class MandateForm extends Component {
     });
   }
 
-  // handleInputChange = (event) => {
-  //   const target = event.target;
-  //   const value = target.value;
-  //   const name = target.name;
-
-  //   this.setState({
-  //     [name]: value,
-  //   });
-  // };
+  
 
   handleSubmit = (values) => {
+
+    
+  const getDescriptionById = (id) =>  {
+    const result = this.state.mandateCategory.filter((item) => item.id === id);
+    return result.length > 0 ? result[0].description : '';
+  }
+
     // e.preventDefault();
-    console.log(values, "This is values");
+    console.log(values,"values")
+
+
+    const now = new Date()
+    const startDate = values.mandateStartDate.split("-").map(Number); // Convert the startDate string to an array of numbers
+    const startDateObj = new Date(Date.UTC(startDate[0], startDate[1] - 1, startDate[2], now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds()));
+    const startIsoDate =  startDateObj.toISOString(); // "2023-04-24T16:53:52.960Z"
+
+    const endDate = values.mandateEndDate.split("-").map(Number);
+    const endDateObj = new Date(Date.UTC(endDate[0], endDate[1] - 1, endDate[2], now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds(), now.getUTCMilliseconds()));
+    const endIsoDate =  endDateObj.toISOString();
+
+
+  const newValues = {
+      consumerReferenceNumber: values.consumerReferenceNumber,
+      emiamount:values.emiamount,
+      frequency: values.frequency,
+      mandateCategory: getDescriptionById(Number(values.mandateCategory)),
+      mandateEndDate: endIsoDate,
+      mandateMaxAmount: values.mandateMaxAmount,
+      mandateStartDate: startIsoDate,
+      mandateType: values.mandateType,
+      requestType: values.requestType,
+      schemeReferenceNumber: values.schemeReferenceNumber,
+      untilCancelled: values.untilCancelled
+  }
+
     this.setState({
       personalScreen: true,
       mandateScreen: false,
       progressWidth: "50%",
-      data: values,
+      data: newValues,
       progressBar:true
     });
 
-    console.log("running");
+    // console.log("running");
 
     // Do something with the form data
   };
@@ -138,8 +169,8 @@ class MandateForm extends Component {
         updatedData:updatedData
       });
     }
-    console.log(updatedData, "updated");
-    console.log(validStatus, verifiedStatus, "state-------");
+    // console.log(updatedData, "updated");
+    // console.log(validStatus, verifiedStatus, "state-------");
   };
 
   backToPreviousScreen = (e) => {
@@ -161,6 +192,9 @@ class MandateForm extends Component {
       });
     }
   };
+
+  
+  // handleCheckboxClick = () => { this.setState(prevState => ({ isChecked: !prevState.isChecked, disableEndDate: !prevState.disableEndDate })); }
 
   render() {
     const frequencyData = this.props.createMandate?.fetchFrequencyData;
@@ -190,8 +224,10 @@ class MandateForm extends Component {
       this.state.bankName
     );
     console.log(frequencyOptionsData);
+
+
     
-    console.log(this.state.progressBar,"Progressb Bar Status")
+
     return (
       <>
         <section className="ant-layout">
@@ -232,6 +268,8 @@ class MandateForm extends Component {
                   consumerReferenceNumber: "",
                   emiamount: "",
                   requestType: "",
+                  mandateCategory:"",
+                  // untilCancelled:false
                 }}
                 validationSchema={FORM_VALIDATION}
                 onSubmit={this.handleSubmit}
@@ -327,6 +365,18 @@ class MandateForm extends Component {
                             className="form-control rounded-0"
                           />
                         </div>
+                     {/* <div className="col-lg-1 mr-3">
+                     <Field
+                      type="checkbox"
+                      name="untilCancelled"
+                      className="mr-0"
+                      checked={this.state.isChecked} 
+                      onClick={this.handleCheckboxClick}
+                    />
+               
+                    Until Cancelled
+                     </div> */}
+                        
                         <div className="col-lg-4">
                           <FormikController
                             control="input"
@@ -334,6 +384,7 @@ class MandateForm extends Component {
                             label="End Date"
                             name="mandateEndDate"
                             className="form-control rounded-0"
+                            disabled={this.state.disableEndDate}
                           />
                         </div>
                       </div>

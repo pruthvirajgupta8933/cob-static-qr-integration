@@ -8,11 +8,13 @@ import npciLogo from "../../../assets/images/npci.png";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import FormikController from "../../../_components/formik/FormikController";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { createMandateSubmission } from "../../../slices/subscription-slice/createMandateSlice";
+import subAPIURL from "../../../config";
+import { axiosInstance} from "../../../utilities/axiosInstance";
+import "../Mandate_Submission/mandateDetails/mandateSubmission.css"
+
 
 const AuthMandate = ({ updatedData }) => {
-  const dispatch = useDispatch();
+  const [mandateSubmissionResponse, setMandateSubmissionResponse] = useState()
 
   const initialValues = {
     term_condition: "",
@@ -38,61 +40,75 @@ const AuthMandate = ({ updatedData }) => {
   ];
   const [value, setValue] = useState("");
 
+  function generateRandomNumber() {
+    const min = 1000000000; 
+    const max = 9999999999; 
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
 
-  console.log("updatedData :  :",updatedData)
+  const randomNumber = generateRandomNumber();
+
+  console.log("updatedData :  :", updatedData);
 
   const onSubmit = (values) => {
-
     // console.log(values)
 
-    const mandadateSubmissionDetails = {
+    const mandateSubmissionDetails = {
       clientCode: 3,
-      clientRegistrationId: 4430200951,
+      clientRegistrationId: Number(randomNumber),
       consumerReferenceNumber: updatedData?.consumerReferenceNumber,
-      mandatePurpose: "Education fees",
+      mandatePurpose: updatedData?.mandateCategory,
       payerUtilitityCode: "NACH00000000022341",
-      mandateEndDate: null,
+      mandateEndDate: updatedData?.mandateEndDate,
       payerName: updatedData?.payerName,
-      mandateMaxAmount: "11.00",
+      mandateMaxAmount: "100.00",
       mandateType: "ONLINE",
-      mandateStartDate: "2023-04-06T16:40:00.000Z",
-      panNo: updatedData?.panNo,
+      mandateStartDate : updatedData?.mandateStartDate,
+      panNo: updatedData?.panNo ? updatedData?.panNo : "",
       mandateCategory: "E001",
       payerAccountNumber: updatedData?.payerAccountNumber,
       payerAccountType: updatedData?.payerAccountType,
       payerBank: updatedData?.payerBank,
       payerEmail: updatedData?.payerEmail,
       payerMobile: `+91-${updatedData?.payerMobile}`,
-      telePhone: `+91-${updatedData?.telePhone}`,
+      telePhone: `+91-011-${updatedData?.telePhone}`,
       payerBankIfscCode: updatedData?.payerBankIfscCode,
       authenticationMode: values?.sourcing_code,
       frequency: updatedData?.frequency,
       requestType: updatedData?.requestType,
-      npciPaymentBankCode: "BARB",
+      npciPaymentBankCode: updatedData?.payerBank,
       schemeReferenceNumber: updatedData?.schemeReferenceNumber,
-      untilCancelled: true,
+      untilCancelled: false,
       userType: "merchant",
-      emiamount: updatedData?.emiamount,
+     emiamount: "",
     };
 
-    dispatch(createMandateSubmission(mandadateSubmissionDetails)).then(
-      (res) => {
-        console.log(res?.payload, "ressssssssssssss");
-      }
-    );
+
+
+
+    axiosInstance.post(subAPIURL.mandateSubmit, mandateSubmissionDetails)
+      .then((res) => {
+        console.log("API Submission Response", res);
+        setMandateSubmissionResponse(res.data)
+        document.getElementById("mandate_form").submit();
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
-    <div class="row">
-      <div class="col-lg-6 mand">
+    <div className="row">
+      <div className="col-lg-6 mand">
         <div id="accordion" style={{ marginTop: "50px" }}>
           <div
-            class="card-header mandateCard"
+            className="card-header mandateCard"
             id="headingOne"
             style={{ borderRadius: "20px" }}
           >
-            <h3 class="mb-0">
+            <h3 className="mb-0">
               <button
-                class="btn btn-link"
+                className="btn btn-link"
                 data-toggle="collapse"
                 data-target="#collapseOne"
                 aria-expanded="true"
@@ -100,7 +116,7 @@ const AuthMandate = ({ updatedData }) => {
               >
                 E-Mandate Summary &nbsp;
                 <i
-                  class="fa fa-chevron-down downMandate"
+                  className="fa fa-chevron-down downMandate"
                   aria-hidden="true"
                 ></i>
               </button>
@@ -109,19 +125,19 @@ const AuthMandate = ({ updatedData }) => {
 
           <div
             id="collapseOne"
-            class="collapse show"
+            className="collapse show"
             aria-labelledby="headingOne"
             data-parent="#accordion"
           >
-            <div class="card-body">
+            <div className="card-body">
               <EmandateSummary updatedData={updatedData} />
             </div>
           </div>
 
-          <div class="card-header mandateCard" id="headingTwo">
-            <h3 class="mb-0">
+          <div className="card-header mandateCard" id="headingTwo">
+            <h3 className="mb-0">
               <button
-                class="btn btn-link collapsed"
+                className="btn btn-link collapsed"
                 data-toggle="collapse"
                 data-target="#collapseTwo"
                 aria-expanded="false"
@@ -129,7 +145,7 @@ const AuthMandate = ({ updatedData }) => {
               >
                 Mandate Summary &nbsp; &nbsp; &nbsp;
                 <i
-                  class="fa fa-chevron-down downMandate"
+                  className="fa fa-chevron-down downMandate"
                   aria-hidden="true"
                 ></i>
               </button>
@@ -137,19 +153,19 @@ const AuthMandate = ({ updatedData }) => {
           </div>
           <div
             id="collapseTwo"
-            class="collapse"
+            className="collapse"
             aria-labelledby="headingTwo"
             data-parent="#accordion"
           >
-            <div class="card-body">
+            <div className="card-body">
               <MandateSummary updatedData={updatedData} />
             </div>
           </div>
 
-          <div class="card-header mandateCard" id="headingThree">
-            <h3 class="mb-0">
+          <div className="card-header mandateCard" id="headingThree">
+            <h3 className="mb-0">
               <button
-                class="btn btn-link collapsed"
+                className="btn btn-link collapsed"
                 data-toggle="collapse"
                 data-target="#collapseThree"
                 aria-expanded="false"
@@ -157,7 +173,7 @@ const AuthMandate = ({ updatedData }) => {
               >
                 Personal Details &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                 <i
-                  class="fa fa-chevron-down downMandate"
+                  className="fa fa-chevron-down downMandate"
                   aria-hidden="true"
                 ></i>
               </button>
@@ -165,18 +181,18 @@ const AuthMandate = ({ updatedData }) => {
           </div>
           <div
             id="collapseThree"
-            class="collapse"
+            className="collapse"
             aria-labelledby="headingThree"
             data-parent="#accordion"
           >
-            <div class="card-body">
+            <div className="card-body">
               <PersonalDetails updatedData={updatedData} />
             </div>
           </div>
-          <div class="card-header mandateCard" id="headingFour">
-            <h3 class="mb-0">
+          <div className="card-header mandateCard" id="headingFour">
+            <h3 className="mb-0">
               <button
-                class="btn btn-link collapsed"
+                className="btn btn-link collapsed"
                 data-toggle="collapse"
                 data-target="#collapseFour"
                 aria-expanded="false"
@@ -184,7 +200,7 @@ const AuthMandate = ({ updatedData }) => {
               >
                 Bank Details &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                 <i
-                  class="fa fa-chevron-down downMandate"
+                  className="fa fa-chevron-down downMandate"
                   aria-hidden="true"
                 ></i>
               </button>
@@ -192,22 +208,22 @@ const AuthMandate = ({ updatedData }) => {
           </div>
           <div
             id="collapseFour"
-            class="collapse"
+            className="collapse"
             aria-labelledby="headingFour"
             data-parent="#accordion"
           >
-            <div class="card-body">
+            <div className="card-body">
               <MandateBankDetails updatedData={updatedData} />
             </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="card-header text-center font-weight-bold">
+      <div className="col-lg-6">
+        <div className="card">
+          <div className="card-header text-center font-weight-bold">
             Mandate Authorization
           </div>
-          <div class="card-body">
+          <div className="card-body">
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -265,22 +281,28 @@ const AuthMandate = ({ updatedData }) => {
                       )}
                     </ErrorMessage>
                   }
-                  <div class="container">
-                    <div class="row mt-3">
-                      <div class="col-sm">
+                  <div className="container">
+                    <div className="row mt-3">
+                      <div className="col-sm">
                         <button
                           type="button"
-                          class="btn btn-danger btn-sm text-white"
+                          className="btn btn-danger btn-sm text-white"
                         >
                           Cancel
                         </button>
                       </div>
 
-                      <div class="col-sm" style={{ display: "contents" }}>
+                      <div className="col-sm" style={{ display: "contents" }}>
                         <button
                           type="submit"
-                          class="btn btn-success btn-sm text-white"
+                          className="btn btn-success btn-sm text-white"
+                          disabled={
+                            !(formik.isValid && formik.dirty)
+                              ? true
+                              : false
+                          }
                         >
+                          
                           Proceed
                         </button>
                       </div>
@@ -290,9 +312,9 @@ const AuthMandate = ({ updatedData }) => {
               )}
             </Formik>
 
-            <div class="container">
-              <div class="row mt-3">
-                <div class="col-sm">
+            <div className="container">
+              <div className="row mt-3">
+                <div className="col-sm">
                   <h4 className="font-weight-bold text-decoration-underline text-center">
                     Disclaimer
                   </h4>
@@ -312,12 +334,22 @@ const AuthMandate = ({ updatedData }) => {
                   src={npciLogo}
                   alt="SabPaisa"
                   title="SabPaisa"
-                  className="rounded mx-auto d-block"
+                  className="rounded mx-auto d-block npciimg"
                 />
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div className="col-lg-12 d-none">
+        {mandateSubmissionResponse?.merchantID &&  <form id="mandate_form" method="post" action="https://enach.npci.org.in/onmags/sendRequest" >
+                  <input name="MerchantID" value={mandateSubmissionResponse?.merchantID}  />
+                  <input name="MandateReqDoc" value={mandateSubmissionResponse?.mandateReqDoc}  />
+                  <input name="BankID" value={mandateSubmissionResponse?.bankID}  />
+                  <input name="CheckSumVal" value={mandateSubmissionResponse?.checkSumVal}  />
+                  <input name="AuthMode" value={mandateSubmissionResponse?.authMode}  />
+            </form>}
+            
       </div>
     </div>
   );

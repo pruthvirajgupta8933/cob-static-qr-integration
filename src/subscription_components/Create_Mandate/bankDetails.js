@@ -42,6 +42,7 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
         ifsc: values?.payerBankIfscCode,
       })
     ).then((res) => {
+      console.log(res,"res")
       if (
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true &&
@@ -53,8 +54,7 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
        
       }if (
         res?.meta?.requestStatus === "fulfilled" &&
-        res?.payload?.status === true &&
-        res?.payload?.valid === false
+        res?.payload?.status === false
       ) {
         toast.error(res?.payload?.message)
       }
