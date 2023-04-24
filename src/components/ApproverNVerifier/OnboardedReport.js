@@ -10,6 +10,7 @@ import moment from "moment";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
 import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
+import { onboardedReportExport } from '../../slices/kycSlice';
 
 
 
@@ -31,6 +32,7 @@ const OnboardedReport = () => {
     const [searchText, setSearchText] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(100);
+   
     // eslint-disable-next-line no-unused-vars
     const [kycIdClick, setKycIdClick] = useState(null);
     const [displayPageNumber, setDisplayPageNumber] = useState([]);
@@ -39,7 +41,8 @@ const OnboardedReport = () => {
     const [showData, setShowData] = useState(false)
     const [selectedvalue, setSelectedvalue] = useState("")
     const [disabled, setDisabled] = useState(false)
-    const [authDate,setAuthDate] = useState("")
+   
+    
 
     const VerierAndApproverSearch = (e) => {
         setSearchText(e.target.value);
@@ -80,7 +83,7 @@ const OnboardedReport = () => {
         setDisabled(true)
         dispatch(onboardedReport({ page: currentPage, page_size: pageSize, selectedChoice,"from_date": values.from_date, "to_date": values.to_date }))
             .then((resp) => {
-                resp?.payload?.results.length ? toastConfig.successToast("Data Loaded") : toastConfig.errorToast("No Data Found")
+                // resp?.payload?.results?.length ? setShowData(true) : toastConfig.errorToast("No Data Found")
 
                 setSpinner(false);
                 setSpinner(false);
@@ -90,6 +93,7 @@ const OnboardedReport = () => {
                 const dataCoun = resp?.payload?.count;
                 // setKycIdClick(data);
                 setData(data);
+               
                 setDataCount(dataCoun);
                 setShowData(true)
                 setVerifiedMerchant(data);
@@ -101,6 +105,7 @@ const OnboardedReport = () => {
             .catch((err) => {
                 toastConfig.errorToast("Data not loaded");
                 setDisabled(false)
+                
             });
 
     }
@@ -201,59 +206,78 @@ const OnboardedReport = () => {
     ]
 
 
-    const exportToExcelFn = () => {
-        const excelHeaderRow = [
-            "S.No",
-            "Name",
-            "Email",
-            "Mobile Number",
-            "Created Date",
-            "Status",
-            "Business Category Name",
-            "Business Category Code",
-            "Company Name",
-            "Company's Website",
-            "GST Number",
-            "Business Type",
-            "Expected Transactions",
-            "Zone Code",
-            "Address",
-            "Product Name",
-            "Plan Name",
-            "Landing  Page Name",
-            "Platform",
-        ];
-        let excelArr = [excelHeaderRow];
-        // eslint-disable-next-line array-callback-return
-        data.map((item, index) => {
+    
+    //     const excelHeaderRow = [
+    //         "S.No",
+    //         "Name",
+    //         "Email",
+    //         "Mobile Number",
+    //         "Created Date",
+    //         "Status",
+    //         "Business Category Name",
+    //         "Business Category Code",
+    //         "Company Name",
+    //         "Company's Website",
+    //         "GST Number",
+    //         "Business Type",
+    //         "Expected Transactions",
+    //         "Zone Code",
+    //         "Address",
+    //         "Product Name",
+    //         "Plan Name",
+    //         "Landing  Page Name",
+    //         "Platform",
+    //     ];
+    //     let excelArr = [excelHeaderRow];
+    //     // eslint-disable-next-line array-callback-return
+    //     data.map((item, index) => {
 
-            const allowDataToShow = {
-                srNo: item.srNo === null ? "" : index + 1,
-                name: item.name === null ? "" : item.name,
-                email: item.email === null ? "" : item.email,
-                mobileNumber: item.mobileNumber === null ? "" : item.mobileNumber,
-                createdDate: item.createdDate === null ? "" : item.createdDate,
-                status: item.status === null ? "" : item.status,
-                business_category_name: item.business_category_name === null ? "" : item.business_category_name,
-                business_cat_code: item.business_cat_code === null ? "" : item.business_cat_code,
-                company_name: item.company_name === null ? "" : item.company_name,
-                companyWebsite: item.companyWebsite === null ? "" : item.companyWebsite,
-                gstNumber: item.gstNumber === null ? "" : item.gstNumber,
-                businessType: item.businessType === null ? "" : item.businessType,
-                expectedTransactions: item.businessType === null ? "" : item.expectedTransactions,
-                zone_code: item.zone_code === null ? "" : item.zone_code,
-                address: item.address === null ? "" : item.address,
-                product_name: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.appName,
-                plan_name: item?.website_plan_details?.planName === null ? "" : item?.website_plan_details?.planName,
-                landing_page_name: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.page,
-                platForm: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.platform,
-            };
+    //         const allowDataToShow = {
+    //             srNo: item.srNo === null ? "" : index + 1,
+    //             name: item.name === null ? "" : item.name,
+    //             email: item.email === null ? "" : item.email,
+    //             mobileNumber: item.mobileNumber === null ? "" : item.mobileNumber,
+    //             createdDate: item.createdDate === null ? "" : item.createdDate,
+    //             status: item.status === null ? "" : item.status,
+    //             business_category_name: item.business_category_name === null ? "" : item.business_category_name,
+    //             business_cat_code: item.business_cat_code === null ? "" : item.business_cat_code,
+    //             company_name: item.company_name === null ? "" : item.company_name,
+    //             companyWebsite: item.companyWebsite === null ? "" : item.companyWebsite,
+    //             gstNumber: item.gstNumber === null ? "" : item.gstNumber,
+    //             businessType: item.businessType === null ? "" : item.businessType,
+    //             expectedTransactions: item.businessType === null ? "" : item.expectedTransactions,
+    //             zone_code: item.zone_code === null ? "" : item.zone_code,
+    //             address: item.address === null ? "" : item.address,
+    //             product_name: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.appName,
+    //             plan_name: item?.website_plan_details?.planName === null ? "" : item?.website_plan_details?.planName,
+    //             landing_page_name: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.page,
+    //             platForm: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.platform,
+    //         };
 
-            excelArr.push(Object.values(allowDataToShow));
+    //         excelArr.push(Object.values(allowDataToShow));
+    //     });
+    //     const fileName = "Onboarded-Report";
+    //     exportToSpreadsheet(excelArr, fileName);
+    // };
+    const exportToExcelFn = () => {  
+       
+        dispatch(onboardedReportExport({ selectedChoice,
+             "from_date": onboardValue.from_date, 
+             "to_date": onboardValue.to_date }))
+        .then((res) => {
+          
+          const blob = new Blob([res?.payload], {
+            type:
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `ONBOARDED_REPORT_.xlsx`;
+          a.click();
+          window.URL.revokeObjectURL(url);
         });
-        const fileName = "Onboarded-Report";
-        exportToSpreadsheet(excelArr, fileName);
-    };
+      };
 
     return (
         <section className="ant-layout">
@@ -279,7 +303,7 @@ const OnboardedReport = () => {
                             <div className="container">
                                 <div className="row">
 
-                                    <div className="form-group col-md-4">
+                                    <div className="form-group col-md-3">
                                         <FormikController
                                             control="input"
                                             type="date"
@@ -292,7 +316,7 @@ const OnboardedReport = () => {
 
                                     </div>
 
-                                    <div className="form-group col-md-4 ">
+                                    <div className="form-group col-md-3 ">
                                         <FormikController
                                             control="input"
                                             type="date"
@@ -304,7 +328,7 @@ const OnboardedReport = () => {
 
 
                                     </div>
-                                    <div className="form-group col-md-4">
+                                    <div className="form-group col-md-3">
                                         <FormikController
                                             control="select"
                                             type="date"
@@ -321,7 +345,7 @@ const OnboardedReport = () => {
 
 
                                     </div>
-                                    <div className=" col-md-3 ">
+                                    <div className=" col-md-3 mt-5- mt-2-addon ">
                                         <button
                                             type="subbmit"
                                             className="verify-btn approve text-white btn-xs"
@@ -331,7 +355,7 @@ const OnboardedReport = () => {
 
 
                                     </div>
-                                    {showData === true ?
+                                    {showData === true && data?.length !== 0 ?
 
 
                                         <div className="container-fluid flleft">
@@ -376,7 +400,7 @@ const OnboardedReport = () => {
 
                                         </div>
 
-                                        : <></>}
+                                        : showData === true && data.length===0 ? <div className="nodatafounds text-center mt-5">No data found </div> : <></>  }
 
 
 
@@ -391,7 +415,7 @@ const OnboardedReport = () => {
 
 
 
-                {showData === true ?
+                {showData === true  && data?.length !== 0 ?
                     <div className="col-md-12 col-md-offset-4">
                         <h5 className="font-weight-bold">Total Records:{data?.length}</h5>
                         <div className="scroll overflow-auto">
@@ -413,6 +437,7 @@ const OnboardedReport = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
+                                  
 
                                     {data?.length === 0 ? (
                                         <tr>
