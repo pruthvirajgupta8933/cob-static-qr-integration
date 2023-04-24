@@ -389,7 +389,7 @@ class MandateForm extends Component {
                           />
                         </div>
                       </div>
-                      <button class="btn btn-primary" type="submit">
+                      <button class="btn bttn bttnbackgroundkyc" type="submit">
                         Next
                       </button>
                     </div>

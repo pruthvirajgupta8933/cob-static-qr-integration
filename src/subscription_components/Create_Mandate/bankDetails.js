@@ -139,7 +139,7 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
           >
             Back
           </button>
-          <button class="btn btn-primary" type="submit">
+          <button class="btn bttn bttnbackgroundkyc" type="submit">
             Next
           </button>
         </Form>
