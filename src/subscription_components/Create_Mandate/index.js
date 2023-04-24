@@ -25,6 +25,7 @@ const FORM_VALIDATION = Yup.object().shape({
     // .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
     .required("Required"),
   mandateMaxAmount: Yup.string().required("Required"),
+  mandateCategory:Yup.string().required("Required"),
   frequency: Yup.string().required("Required"),
   emiamount: Yup.string().required("Required"),
   mandateEndDate: Yup.string().required("Required"),

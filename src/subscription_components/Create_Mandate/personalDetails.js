@@ -13,7 +13,12 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
       .required("Required"),
     payerEmail: Yup.string().required("Required"),
     payerMobile: Yup.string().required("Required"),
+    telePhone: Yup.string()
+    .matches(/^([^\d]*\d){0,8}[^\d]*$/, 'Invalid telphone Number')
+    .notRequired(),
   });
+
+
 
   return (
     <div>
