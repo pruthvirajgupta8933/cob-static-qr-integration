@@ -35,7 +35,7 @@ const NavBar = () => {
           </div>
         </ul>
 
-        <div>
+        
           {/* Dropdown in the Nav Bar */}
           <div className="dropdown show">
             <a
@@ -47,8 +47,7 @@ const NavBar = () => {
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <i
-                className="fa fa-user fa-2xl"
+              <i className="fa fa-user fa-2xl"
                 aria-hidden="true"
                 style={{ fontSize: "24px", color: "white" }}
               ></i>
@@ -58,10 +57,7 @@ const NavBar = () => {
               ></span>
               <span className="caret text-white text-uppercase">{username}</span>
             </a>
-            <div
-              className="dropdown-menu text-white navpro"
-              
-            >
+            <div className="dropdown-menu text-white navpro">
               <div className="row px-md-3 p-2">
                 <Link to="/dashboard/profile" className="dropdown-item text-white">
                   Profile
@@ -78,7 +74,7 @@ const NavBar = () => {
               </div>
             </div>
           </div>
-        </div>
+        
         {/* Dropdown in the Nav Bar */}
       </nav>
   );

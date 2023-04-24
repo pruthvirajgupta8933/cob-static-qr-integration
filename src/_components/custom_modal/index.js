@@ -1,12 +1,26 @@
-import React from "react";
+import React,{ useEffect, useState }from "react";
 
 const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetModalToggle }) => {
+
+  const handleEscapeKey = (event) => {
+    if (event.key === "Escape") {   
+      fnSetModalToggle(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, []);
 
   return (
     <div
       className={
           "modal fade mymodals" +
-          (modalToggle ? " show d-block" : " d-none")
+          ((modalToggle) ? " show d-block" : " d-none")
         }
       id="web"
       role="dialog"

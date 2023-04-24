@@ -15,7 +15,7 @@ function AlertBox(props) {
             <button className="btn btn-link  font-size-16" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                 {/* <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" />
                 <span className="sr-only">Loading...</span> */}
-                <span className="ml-1 tooltip-custom">{heading}<span className="tooltiptext">{text1}</span></span>
+                <span className="ml-1 tooltip-custom" data-tip={text1}>{heading}</span>
               <i className="ml-1 fa fa-arrow-circle-o-right" aria-hidden="true"></i>
             </button>
           </h5>
@@ -30,7 +30,7 @@ function AlertBox(props) {
                     <p>{`Product : ${data?.applicationName}`} </p>
                     <p>{`Product Plan : ${data?.planName}`} </p>
                     <hr />
-                    <Link className="btn btnbackground text-white btn-sm" to={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}>{linkName}</Link>
+                    <Link className="verify-btn btnbackground text-white btn-sm" to={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}>{linkName}</Link>
                   </div>
                 </div>
               ))}

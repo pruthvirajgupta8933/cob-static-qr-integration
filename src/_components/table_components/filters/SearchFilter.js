@@ -19,22 +19,21 @@ const SearchFilter = ({
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    kycSearch(searchQueryText, 'text');
+    kycSearch(searchQueryText, "text");
     searchByText(searchQueryText);
   };
-  const clearFilter=()=>
-  {
-    kycSearch("", 'text');
-  }
+  const clearFilter = () => {
+    kycSearch("", "text");
+  };
 
   return (
     <div>
       <label>Search</label>
       <form onSubmit={handleSearchSubmit}>
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 ">
           {searchTextByApiCall && (
             <input
-              className="form-control"
+              className="form-control search-filter"
               onChange={(e) => setsearchQueryText(e.target.value, "text")}
               type="text"
               value={searchQueryText}
@@ -60,7 +59,7 @@ const SearchFilter = ({
           )}
         </div>
 
-        {(filterbtn && searchText!=="") && (
+        {filterbtn && searchText !== "" && (
           <div
             onClick={() => {
               clearFilter();

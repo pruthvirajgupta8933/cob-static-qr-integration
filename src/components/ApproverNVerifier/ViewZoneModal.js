@@ -205,17 +205,17 @@ useEffect(() => {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <h5 className="font-weight-bold">
+                    <h5 className="font-weight-bold ml-3">
                       Client Name: {props?.userData?.clientName}
                     </h5>
-                    <h5 className="font-weight-bold">
+                    <h5 className="font-weight-bold ml-3">
                       Client Code: {props?.userData?.clientCode}
                     </h5>
                     <div className="container">
                       <Form>
                         <div className="row">
 
-                          <div className="col-lg-4">
+                          <div className="col-lg-4 ">
                             <div className="input full- optional">
                               <label
                                 className="string optional"
@@ -258,7 +258,7 @@ useEffect(() => {
                                 className="string optional"
                                 htmlFor="mccCode"
                               >
-                                Mcc Code
+                                MCC Code
                               </label>
                               <FormikController
                                 control="select"
@@ -270,24 +270,22 @@ useEffect(() => {
                             </div>
                           </div>
 
-
-
-                        </div>
+                         </div>
                         <div className="modal-footer">
                           {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
                           <button 
                           type="submit"
                            onClick={resetForm} 
-                           className="btn btn-primary" disabled={buttonDisable}>Submit</button>
+                           className="verify-btn btnbackground text-white" disabled={buttonDisable}>Submit</button>
                         </div>
                       </Form>
                     </div>
                   </div>
                 </>
               )}
-            </Formik>
-
-            <table className="table">
+              </Formik>
+              <div className="container mr-2">
+            <table className="table mr-2">
 
               <thead>
                 <tr>
@@ -307,9 +305,13 @@ useEffect(() => {
               </tbody>
             </table>
 
-
+            </div>
+            
+            
 
           </div>
+
+          
  
         </div>
       </div>

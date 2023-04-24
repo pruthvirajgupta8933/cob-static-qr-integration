@@ -335,7 +335,7 @@ const OnboardedReport = () => {
 
 
                                         <div className="container-fluid flleft">
-                                            <div className="form-group col-lg-4 col-md-12 mt-2">
+                                            <div className="form-group col-lg-3 col-md-12 mt-3">
                                                 <label>Search</label>
                                                 <input
                                                     className="form-control"
@@ -348,7 +348,7 @@ const OnboardedReport = () => {
 
 
                                             </div>
-                                            <div className="form-group col-lg-4 col-md-12 mt-2">
+                                            <div className="form-group col-lg-3 mt-3">
                                                 <label>Count Per Page</label>
                                                 <select
                                                     value={pageSize}
@@ -360,7 +360,7 @@ const OnboardedReport = () => {
                                                 </select>
                                             </div>
 
-                                            <div className="form-group col-lg-4 col-md-12 mt-5">
+                                            <div className="form-group col-lg-5 mt-5 ">
                                                 <button
                                                     className="btn btn-sm text-white"
                                                     type="button"

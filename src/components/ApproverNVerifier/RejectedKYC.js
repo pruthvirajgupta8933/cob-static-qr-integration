@@ -103,11 +103,19 @@ const RejectedKYC = () => {
     },
     {
       id: "9",
+      name: "Submitted Date",
+      selector: (row) => row.updated_on,
+      sortable: true,
+      cell: (row) => <div>{covertDate(row.updated_on)}</div>,
+      width: "150px",
+    },
+    {
+      id: "10",
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
     {
-      id: "10",
+      id: "11",
       name: "View Status",
       selector: (row) => row.viewStatus,
       width: "110px",
@@ -129,7 +137,7 @@ const RejectedKYC = () => {
       ),
     },
     {
-      id: "11",
+      id: "12",
       name: "Action",
       selector: (row) => row.actionStatus,
       cell: (row) => (
@@ -228,7 +236,7 @@ const RejectedKYC = () => {
   ];
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a").toUpperCase();
     return date;
   };
 
@@ -291,7 +299,7 @@ const RejectedKYC = () => {
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
-            URL={"?search=Rejected&order_by=-kyc_reject&search_map=kyc_reject"}
+            URL={"export-excel/?search=Rejected"}
             filename={"Rejected"}
           />
         </div>
