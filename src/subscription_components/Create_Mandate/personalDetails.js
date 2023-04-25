@@ -7,12 +7,15 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
     showBankDetails("showPersonalDetails",values);
     console.log(values,'values');
   };
+  
   const FORM_VALIDATION = Yup.object().shape({
     payerName: Yup.string()
       // .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
       .required("Required"),
     payerEmail: Yup.string().required("Required"),
-    payerMobile: Yup.string().required("Required"),
+    payerMobile: Yup.string()
+    .matches(/^(?!0)\d{10}$/, 'Phone number must not start with 0 and be 10 digits long')
+    .required("Required"),
     telePhone: Yup.string()
     .matches(/^([^\d]*\d){0,8}[^\d]*$/, 'Invalid telphone Number')
     .notRequired(),

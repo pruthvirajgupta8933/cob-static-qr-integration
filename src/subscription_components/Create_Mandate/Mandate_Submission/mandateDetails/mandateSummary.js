@@ -2,7 +2,7 @@ import React from "react";
 
 const MandateSummary = ({updatedData}) => {
 
-  console.log(updatedData,"New Updated Data")
+  // console.log(updatedData,"New Updated Data")
   return (
     <div>
       <div class="row">

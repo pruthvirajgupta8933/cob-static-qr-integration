@@ -9,12 +9,12 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import FormikController from "../../../_components/formik/FormikController";
 import * as Yup from "yup";
 import subAPIURL from "../../../config";
-import { axiosInstance} from "../../../utilities/axiosInstance";
-import "../Mandate_Submission/mandateDetails/mandateSubmission.css"
-
+import { axiosInstance } from "../../../utilities/axiosInstance";
+import "../Mandate_Submission/mandateDetails/mandateSubmission.css";
 
 const AuthMandate = ({ updatedData }) => {
-  const [mandateSubmissionResponse, setMandateSubmissionResponse] = useState()
+  const [mandateSubmissionResponse, setMandateSubmissionResponse] = useState();
+  const [showLoader,setShowLoader] = useState(false)
 
   const initialValues = {
     term_condition: "",
@@ -41,8 +41,8 @@ const AuthMandate = ({ updatedData }) => {
   const [value, setValue] = useState("");
 
   function generateRandomNumber() {
-    const min = 1000000000; 
-    const max = 9999999999; 
+    const min = 1000000000;
+    const max = 9999999999;
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
@@ -52,6 +52,7 @@ const AuthMandate = ({ updatedData }) => {
 
   const onSubmit = (values) => {
     // console.log(values)
+    setShowLoader(false)
 
     const mandateSubmissionDetails = {
       clientCode: 3,
@@ -63,7 +64,7 @@ const AuthMandate = ({ updatedData }) => {
       payerName: updatedData?.payerName,
       mandateMaxAmount: "100.00",
       mandateType: "ONLINE",
-      mandateStartDate : updatedData?.mandateStartDate,
+      mandateStartDate: updatedData?.mandateStartDate,
       panNo: updatedData?.panNo ? updatedData?.panNo : "",
       mandateCategory: updatedData?.mandateCategory,
       payerAccountNumber: updatedData?.payerAccountNumber,
@@ -80,18 +81,16 @@ const AuthMandate = ({ updatedData }) => {
       schemeReferenceNumber: updatedData?.schemeReferenceNumber,
       untilCancelled: false,
       userType: "merchant",
-     emiamount: "",
+      emiamount: "",
     };
 
-
-
-
-    axiosInstance.post(subAPIURL.mandateSubmit, mandateSubmissionDetails)
+    axiosInstance
+      .post(subAPIURL.mandateSubmit, mandateSubmissionDetails)
       .then((res) => {
         console.log("API Submission Response", res);
-        setMandateSubmissionResponse(res.data)
+        setMandateSubmissionResponse(res.data);
+        setShowLoader(true)
         document.getElementById("mandate_form").submit();
-
       })
       .catch((error) => {
         console.log(error);
@@ -297,13 +296,22 @@ const AuthMandate = ({ updatedData }) => {
                           type="submit"
                           className="btn btn-success btn-sm text-white"
                           disabled={
-                            !(formik.isValid && formik.dirty)
-                              ? true
-                              : false
+                            !(formik.isValid && formik.dirty) ? true : false
                           }
                         >
-                          
-                          Proceed
+                          {showLoader === true ? (
+                            <>
+                           
+                              <span
+                                class="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                              ></span>
+                            &nbsp;  Please wait...
+                            </>
+                          ) : (
+                            "Proceed"
+                          )}
                         </button>
                       </div>
                     </div>
@@ -342,14 +350,31 @@ const AuthMandate = ({ updatedData }) => {
         </div>
       </div>
       <div className="col-lg-12 d-none">
-        {mandateSubmissionResponse?.merchantID &&  <form id="mandate_form" method="post" action="https://enach.npci.org.in/onmags/sendRequest" >
-                  <input name="MerchantID" value={mandateSubmissionResponse?.merchantID}  />
-                  <input name="MandateReqDoc" value={mandateSubmissionResponse?.mandateReqDoc}  />
-                  <input name="BankID" value={mandateSubmissionResponse?.bankID}  />
-                  <input name="CheckSumVal" value={mandateSubmissionResponse?.checkSumVal}  />
-                  <input name="AuthMode" value={mandateSubmissionResponse?.authMode}  />
-            </form>}
-            
+        {mandateSubmissionResponse?.merchantID && (
+          <form
+            id="mandate_form"
+            method="post"
+            action="https://enach.npci.org.in/onmags/sendRequest"
+          >
+            <input
+              name="MerchantID"
+              value={mandateSubmissionResponse?.merchantID}
+            />
+            <input
+              name="MandateReqDoc"
+              value={mandateSubmissionResponse?.mandateReqDoc}
+            />
+            <input name="BankID" value={mandateSubmissionResponse?.bankID} />
+            <input
+              name="CheckSumVal"
+              value={mandateSubmissionResponse?.checkSumVal}
+            />
+            <input
+              name="AuthMode"
+              value={mandateSubmissionResponse?.authMode}
+            />
+          </form>
+        )}
       </div>
     </div>
   );

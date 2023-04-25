@@ -1,7 +1,7 @@
 import React from "react";
 
 const EmandateSummary = ({ updatedData }) => {
-  console.log("EEEEEEEEmandate Summary Object", updatedData);
+  // console.log("EEEEEEEEmandate Summary Object", updatedData);
 
   return (
     <div>

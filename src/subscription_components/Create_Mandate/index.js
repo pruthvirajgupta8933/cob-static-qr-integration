@@ -106,8 +106,8 @@ class MandateForm extends Component {
     }
 
     console.log(getDescriptionById(values.mandateCategory).toString())
-    // e.preventDefault();
-    console.log(values,"values")
+    // // e.preventDefault();
+    // console.log(values,"values")
 
 
     const now = new Date()
