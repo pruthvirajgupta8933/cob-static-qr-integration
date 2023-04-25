@@ -399,7 +399,7 @@ label {
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	border-radius: 3px;
-	white-space:nowrap;
+	/* white-space:nowrap; */
 	word-wrap:normal;
 }
 [data-tip]:hover:before,

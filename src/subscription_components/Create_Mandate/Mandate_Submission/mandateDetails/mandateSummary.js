@@ -81,7 +81,7 @@ const MandateSummary = ({updatedData}) => {
           </div>
           <div class="col-sm">
             <h4>Mandate Purpose</h4>
-            <p className="text-secondary">{updatedData?.mandateCategory}</p>
+            <p className="text-secondary">{updatedData?.mandatePurpose}</p>
           </div>
         </div>
       </div>

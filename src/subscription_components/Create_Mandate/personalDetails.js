@@ -13,7 +13,12 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
       .required("Required"),
     payerEmail: Yup.string().required("Required"),
     payerMobile: Yup.string().required("Required"),
+    telePhone: Yup.string()
+    .matches(/^([^\d]*\d){0,8}[^\d]*$/, 'Invalid telphone Number')
+    .notRequired(),
   });
+
+
 
   return (
     <div>
@@ -95,7 +100,7 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
           >
             Back
           </button>
-          <button class="btn btn-primary" type="submit">
+          <button class="btn bttn bttnbackgroundkyc" type="submit">
             Next
           </button>
         </Form>
