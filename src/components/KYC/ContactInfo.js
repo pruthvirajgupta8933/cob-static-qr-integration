@@ -226,6 +226,11 @@ function ContactInfo(props) {
     }
   };
 
+  const tooltipData = {
+    "contact_person_name": "The name of an individual who serves as a point of contact for a particular organization or business.",
+    "contact_phone": "We will react out to this phone for any account related issues."
+  }
+
   return (
     <div
       className="col-md-12 col-md-offset-4 Satoshi-Medium"
@@ -249,8 +254,8 @@ function ContactInfo(props) {
           <Form>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6 ">
-                <label className="col-form-label mt-0 p-2" >
-                  Contact Name<span style={{ color: "red" }}>*</span>
+                <label className="col-form-label mt-0 p-2" data-tip={tooltipData.contact_person_name}>
+                  Contact Person Name<span style={{ color: "red" }}>*</span>
                 </label>
 
                 <FormikController
@@ -287,7 +292,7 @@ function ContactInfo(props) {
             {/*  Modal Popup for Otp Verification Email*/}
             <div className="row">
               <div className="col-sm-6 col-md-6 col-lg-6">
-                <label className="col-form-label mt-0 p-2" data-tip="We will react out to this phone for any account related issues.">
+                <label className="col-form-label mt-0 p-2" data-tip={tooltipData.contact_phone}>
                   Contact Number<span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
