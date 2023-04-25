@@ -307,19 +307,19 @@ const SignupData = () => {
             <Form>
               <div className="container">
                 <div className="row">
-                  <div className="form-group col-md-4">
+                  <div className="form-group  col-md-3 ml-4">
                     <FormikController
                       control="input"
                       type="date"
                       label="From Date"
                       name="from_date"
-                      className="form-control rounded-0"
+                      className="form-control rounded-0 "
                       // value={startDate}
                       // onChange={(e)=>setStartDate(e.target.value)}
                     />
                   </div>
 
-                  <div className="form-group col-md-4 mx-4">
+                  <div className="form-group col-md-3 mx-4">
                     <FormikController
                       control="input"
                       type="date"
@@ -328,16 +328,19 @@ const SignupData = () => {
                       className="form-control rounded-0"
                     />
                   </div>
+                  </div>
+
+                  <div className="row">
                   <div className=" col-md-4">
                     <button
                       type="submit"
-                      className="verify-btn approve text-white  text-white "
+                      className="verify-btn approve text-white  text-white ml-4 "
                     >
                       Submit
                     </button>
                     {signupData?.length > 0 ? (
                       <button
-                        className="verify-btn approve  text-white ml-3"
+                        className="verify-btn approve  text-white ml-4"
                         type="button"
                         onClick={() => exportToExcelFn()}
                         style={{ backgroundColor: "rgb(1, 86, 179)" }}
@@ -349,13 +352,15 @@ const SignupData = () => {
                     )}
                   </div>
                 </div>
+                 
+                 
               </div>
             </Form>
           </Formik>
           {!loadingState && signupData?.length !== 0 && (
           <>
         
-          <div className="col-lg-4 mrg-btm- bgcolor">
+        <div className="form-group col-lg-3 col-md-12 mt-2 ml-4">
               <SearchFilter
                 kycSearch={kycSearch}
                 searchText={searchText}
@@ -369,7 +374,7 @@ const SignupData = () => {
             console.log(pageSize,"pageSize")
           }
           
-            <div className="col-lg-3 mrg-btm- bgcolor">
+          <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
             <CountPerPageFilter
             pageSize={pageSize}
             dataCount={dataCount}

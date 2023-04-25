@@ -1,6 +1,8 @@
 import React from "react";
 
 const MandateSummary = ({updatedData}) => {
+
+  console.log(updatedData,"New Updated Data")
   return (
     <div>
       <div class="row">
@@ -79,7 +81,7 @@ const MandateSummary = ({updatedData}) => {
           </div>
           <div class="col-sm">
             <h4>Mandate Purpose</h4>
-            <p className="text-secondary"></p>
+            <p className="text-secondary">{updatedData?.mandateCategory}</p>
           </div>
         </div>
       </div>

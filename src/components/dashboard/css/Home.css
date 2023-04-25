@@ -853,6 +853,20 @@ a.sidenavFonts {
 
 }
 
+
+.verify-btnGst{
+  padding: 10px;
+    border: 0px;
+    border-radius: 4px;
+    width: 100px;
+    margin-top: 10px;
+}
+
+.integration-button{
+  border-radius: 4px;
+  
+}
+
 .choosePlan-2 {
   padding: 2em !important;
   font-size: 1em !important;
@@ -1417,4 +1431,17 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 table.nowrap td{
   white-space: nowrap;
+}
+
+
+.mt-2-addon{
+  margin-top: 2.3rem !important;
+}
+.nodatafounds{
+  /* margin: 24px; */
+    margin-left: -78px;
+    text-align: center;
+    padding: 15px;
+    font-size: 24px;
+    font-weight: 700;
 }
