@@ -72,7 +72,7 @@ const AuthMandate = ({ updatedData }) => {
       payerBank: updatedData?.payerBank,
       payerEmail: updatedData?.payerEmail,
       payerMobile: `+91-${updatedData?.payerMobile}`,
-      telePhone: `+91-011-${updatedData?.telePhone}`,
+      telePhone:  updatedData?.telePhone !== "" ? `+91-011-${updatedData?.telePhone}` : "",
       payerBankIfscCode: updatedData?.payerBankIfscCode,
       authenticationMode: values?.sourcing_code,
       frequency: updatedData?.frequency,

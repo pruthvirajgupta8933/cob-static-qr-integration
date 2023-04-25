@@ -5,9 +5,11 @@ import * as Yup from "yup";
 const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
   const handleSubmitPersonal = (values) => {
     showBankDetails("showPersonalDetails",values);
-    console.log(values,'values');
+    // console.log(values,'values');
   };
   
+
+
   const FORM_VALIDATION = Yup.object().shape({
     payerName: Yup.string()
       // .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
@@ -17,7 +19,10 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
     .matches(/^(?!0)\d{10}$/, 'Phone number must not start with 0 and be 10 digits long')
     .required("Required"),
     telePhone: Yup.string()
-    .matches(/^([^\d]*\d){0,8}[^\d]*$/, 'Invalid telphone Number')
+    .matches(/^[0-9]{8}$/, 'Invalid telphone Number')
+    .notRequired(),
+    panNo: Yup.string()
+    .matches(/^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/, 'Invalid PAN Number')
     .notRequired(),
   });
 
@@ -69,7 +74,7 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
             <div className="col-lg-4 form-group">
               <FormikController
                 control="input"
-                label="PAN Number"
+                label="PAN Number ( Optional ) "
                 name="panNo"
                 className="form-control rounded-0 mt-0"
                 // options={frequencyOptionsData}
@@ -80,7 +85,7 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
             <div className="col-lg-4 form-group">
               <FormikController
                 control="input"
-                label="Telephone Number (optional) "
+                label="Telephone Number ( Optional )"
                 name="telePhone"
                 className="form-control rounded-0 mt-0"
                 // options={options1}
