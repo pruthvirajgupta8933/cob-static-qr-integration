@@ -370,9 +370,7 @@ const SignupData = () => {
               <div>
                </div>
             </div>
-          {
-            console.log(pageSize,"pageSize")
-          }
+          
           
           <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
             <CountPerPageFilter

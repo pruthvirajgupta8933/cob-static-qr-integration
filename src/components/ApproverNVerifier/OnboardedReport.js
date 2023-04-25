@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react'
 import NavBar from '../dashboard/NavBar/NavBar'
 import { Formik, Form } from "formik";
 import { useDispatch } from "react-redux";
-import Spinner from './Spinner';
+// import Spinner from './Spinner';
 import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import toastConfig from "../../utilities/toastTypes";
 import { onboardedReport } from '../../slices/kycSlice';
 import moment from "moment";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
-import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
+// import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
 import { onboardedReportExport } from '../../slices/kycSlice';
+import SearchFilter from '../../_components/table_components/filters/SearchFilter';
+import Table from '../../_components/table_components/table/Table';
+import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage"
+import CustomLoader from '../../_components/loader';
 
 
 
@@ -29,20 +33,110 @@ const OnboardedReport = () => {
     const [data, setData] = useState([]);
     const [verfiedMerchant, setVerifiedMerchant] = useState([]);
     const [dataCount, setDataCount] = useState("");
-    const [searchText, setSearchText] = useState("");
+
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(100);
-   
+    const [loadingState, setLoadingState] = useState(false);
+
     // eslint-disable-next-line no-unused-vars
     const [kycIdClick, setKycIdClick] = useState(null);
+    const [isSearchByDropDown, setSearchByDropDown] = useState(false);
     const [displayPageNumber, setDisplayPageNumber] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false)
     const [onboardValue, setOnboradValue] = useState("")
+    const [searchText, setSearchText] = useState("");
     const [showData, setShowData] = useState(false)
     const [selectedvalue, setSelectedvalue] = useState("")
     const [disabled, setDisabled] = useState(false)
-   
-    
+
+    const covertDate = (yourDate) => {
+        let date = moment(yourDate).format("DD/MM/YYYY");
+        return date;
+    };
+
+
+
+
+    const rowSignUpData = [
+        { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
+        {
+            id: "2",
+            name: "Client Code",
+            selector: (row) => row.clientCode,
+            sortable: true,
+        },
+        {
+            id: "3",
+            name: "Company Name",
+            selector: (row) => row.companyName,
+        },
+        {
+            id: "4",
+            name: "Merchant Name",
+            selector: (row) => row.name,
+        },
+
+        {
+            id: "5",
+            name: "Email",
+            selector: (row) => row.emailId,
+        },
+
+        {
+            id: "6",
+            name: "Contact Number",
+            selector: (row) => row.contactNumber,
+        },
+        {
+            id: "7",
+            name: "Kyc Status",
+            selector: (row) => row.status,
+            sortable: true,
+        },
+        {
+            id: "8",
+            name: "Registered Date",
+            selector: (row) => covertDate(row.signUpDate),
+            sortable: true,
+        },
+
+        {
+            id: "9",
+            name: "Onboard Type",
+            selector: (row) => row.isDirect,
+        },
+
+    ];
+
+    const changePageSize = (pageSize) => {
+        setPageSize(pageSize);
+    };
+    const changeCurrentPage = (page) => {
+        setCurrentPage(page);
+    };
+
+
+
+    const kycSearch = (e, fieldType) => {
+        fieldType === "text"
+            ? setSearchByDropDown(false)
+            : setSearchByDropDown(true);
+        setSearchText(e);
+    };
+
+    const searchByText = (text) => {
+        setData(
+            verfiedMerchant?.filter((item) =>
+                Object.values(item)
+                    .join(" ")
+                    .toLowerCase()
+                    .includes(searchText?.toLocaleLowerCase())
+            )
+        );
+    };
+
+
+
 
     const VerierAndApproverSearch = (e) => {
         setSearchText(e.target.value);
@@ -81,7 +175,7 @@ const OnboardedReport = () => {
     const handleSubmit = (values) => {
         setOnboradValue(values)
         setDisabled(true)
-        dispatch(onboardedReport({ page: currentPage, page_size: pageSize, selectedChoice,"from_date": values.from_date, "to_date": values.to_date }))
+        dispatch(onboardedReport({ page: currentPage, page_size: pageSize, selectedChoice, "from_date": values.from_date, "to_date": values.to_date }))
             .then((resp) => {
                 // resp?.payload?.results?.length ? setShowData(true) : toastConfig.errorToast("No Data Found")
 
@@ -93,7 +187,7 @@ const OnboardedReport = () => {
                 const dataCoun = resp?.payload?.count;
                 // setKycIdClick(data);
                 setData(data);
-               
+
                 setDataCount(dataCoun);
                 setShowData(true)
                 setVerifiedMerchant(data);
@@ -105,27 +199,27 @@ const OnboardedReport = () => {
             .catch((err) => {
                 toastConfig.errorToast("Data not loaded");
                 setDisabled(false)
-                
+
             });
 
     }
 
 
-    useEffect(() => {
-        if (searchText.length > 0) {
-            setData(
-                verfiedMerchant.filter((item) =>
-                    Object.values(item)
-                        .join(" ")
-                        .toLowerCase()
-                        .includes(searchText?.toLocaleLowerCase())
-                )
-            );
-        } else {
-            setData(verfiedMerchant);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchText]);
+    // useEffect(() => {
+    //     if (searchText.length > 0) {
+    //         setData(
+    //             verfiedMerchant.filter((item) =>
+    //                 Object.values(item)
+    //                     .join(" ")
+    //                     .toLowerCase()
+    //                     .includes(searchText?.toLocaleLowerCase())
+    //             )
+    //         );
+    //     } else {
+    //         setData(verfiedMerchant);
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [searchText]);
 
 
 
@@ -154,48 +248,48 @@ const OnboardedReport = () => {
 
 
 
-    const totalPages = Math.ceil(dataCount / pageSize);
-    let pageNumbers = []
-    if (!Number.isNaN(totalPages)) {
-        pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
-    }
+    // const totalPages = Math.ceil(dataCount / pageSize);
+    // let pageNumbers = []
+    // if (!Number.isNaN(totalPages)) {
+    //     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
+    // }
 
 
-    const nextPage = () => {
-        setIsLoaded(true)
-        setData([])
-        if (currentPage < pageNumbers.length) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
+    // const nextPage = () => {
+    //     setIsLoaded(true)
+    //     setData([])
+    //     if (currentPage < pageNumbers.length) {
+    //         setCurrentPage(currentPage + 1);
+    //     }
+    // };
 
-    const prevPage = () => {
-        setIsLoaded(true)
-        setData([])
-        if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
-        }
-    };
+    // const prevPage = () => {
+    //     setIsLoaded(true)
+    //     setData([])
+    //     if (currentPage > 1) {
+    //         setCurrentPage(currentPage - 1);
+    //     }
+    // };
 
-    useEffect(() => {
-        let lastSevenPage = totalPages - 7;
-        if (pageNumbers?.length > 0) {
-            let start = 0;
-            let end = currentPage + 6;
-            if (totalPages > 6) {
-                start = currentPage - 1;
+    // useEffect(() => {
+    //     let lastSevenPage = totalPages - 7;
+    //     if (pageNumbers?.length > 0) {
+    //         let start = 0;
+    //         let end = currentPage + 6;
+    //         if (totalPages > 6) {
+    //             start = currentPage - 1;
 
-                if (parseInt(lastSevenPage) <= parseInt(start)) {
-                    start = lastSevenPage;
-                }
-            }
-            const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
-                return pgNumber;
-            });
-            setDisplayPageNumber(pageNumber);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPage, totalPages]);
+    //             if (parseInt(lastSevenPage) <= parseInt(start)) {
+    //                 start = lastSevenPage;
+    //             }
+    //         }
+    //         const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
+    //             return pgNumber;
+    //         });
+    //         setDisplayPageNumber(pageNumber);
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [currentPage, totalPages]);
 
 
 
@@ -206,7 +300,7 @@ const OnboardedReport = () => {
     ]
 
 
-    
+
     //     const excelHeaderRow = [
     //         "S.No",
     //         "Name",
@@ -259,25 +353,27 @@ const OnboardedReport = () => {
     //     const fileName = "Onboarded-Report";
     //     exportToSpreadsheet(excelArr, fileName);
     // };
-    const exportToExcelFn = () => {  
-       
-        dispatch(onboardedReportExport({ selectedChoice,
-             "from_date": onboardValue.from_date, 
-             "to_date": onboardValue.to_date }))
-        .then((res) => {
-          
-          const blob = new Blob([res?.payload], {
-            type:
-              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          });
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = `ONBOARDED_REPORT_.xlsx`;
-          a.click();
-          window.URL.revokeObjectURL(url);
-        });
-      };
+    const exportToExcelFn = () => {
+
+        dispatch(onboardedReportExport({
+            selectedChoice,
+            "from_date": onboardValue.from_date,
+            "to_date": onboardValue.to_date
+        }))
+            .then((res) => {
+
+                const blob = new Blob([res?.payload], {
+                    type:
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `ONBOARDED_REPORT_.xlsx`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            });
+    };
 
     return (
         <section className="ant-layout">
@@ -355,11 +451,11 @@ const OnboardedReport = () => {
 
 
                                     </div>
-                                    {showData === true && data?.length !== 0 ?
 
 
-                                        <div className="container-fluid flleft">
-                                            <div className="form-group col-lg-3 col-md-12 mt-3">
+
+                                    <div className="container-fluid flleft">
+                                        {/* <div className="form-group col-lg-3 col-md-12 mt-3">
                                                 <label>Search</label>
                                                 <input
                                                     className="form-control"
@@ -367,12 +463,12 @@ const OnboardedReport = () => {
                                                     type="text"
                                                     placeholder="Search Here"
                                                 />
-                                            </div>
-                                            <div>
+                                            </div> */}
+                                        <div>
 
 
-                                            </div>
-                                            <div className="form-group col-lg-3 mt-3">
+                                        </div>
+                                        {/* <div className="form-group col-lg-3 mt-3">
                                                 <label>Count Per Page</label>
                                                 <select
                                                     value={pageSize}
@@ -382,25 +478,14 @@ const OnboardedReport = () => {
                                                 >
                                                     <DropDownCountPerPage datalength={dataCount} />
                                                 </select>
-                                            </div>
-
-                                            <div className="form-group col-lg-5 mt-5 ">
-                                                <button
-                                                    className="btn btn-sm text-white"
-                                                    type="button"
-                                                    onClick={() => exportToExcelFn()}
-                                                    style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                                                >
-                                                    Export
-                                                </button>
-                                            </div>
+                                            </div> */}
 
 
-                                            {/* <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=approved'} filename={"Approved"} /> */}
 
-                                        </div>
 
-                                        : showData === true && data.length===0 ? <div className="nodatafounds text-center mt-5">No data found </div> : <></>  }
+                                        {/* <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=approved'} filename={"Approved"} /> */}
+
+                                    </div>
 
 
 
@@ -413,112 +498,65 @@ const OnboardedReport = () => {
 
                 </Formik>
 
+                {!loadingState && data?.length !== 0   && (
+                    <>
 
-
-                {showData === true  && data?.length !== 0 ?
-                    <div className="col-md-12 col-md-offset-4">
-                        <h5 className="font-weight-bold">Total Records:{data?.length}</h5>
-                        <div className="scroll overflow-auto">
-
-
-                            <table className="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>S.No</th>
-                                        <th>Client Code</th>
-                                        <th>Company Name</th>
-                                        <th>Merchant Name</th>
-                                        <th>Email</th>
-                                        <th>Contact Number</th>
-                                        <th>KYC Status</th>
-                                        <th>Registered Date</th>
-                                        <th>Onboard Type</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                  
-
-                                    {data?.length === 0 ? (
-                                        <tr>
-                                            <td colSpan={"11"}>
-                                                <div className="nodatafound text-center">No data found </div>
-                                                <br /><br /><br /><br />
-                                                <p className="text-center">{spinner && <Spinner />}</p>
-                                            </td>
-                                        </tr>
-                                    ) : (
-                                        data?.map((user, i) => (
-                                            <tr key={i}>
-                                                <td>{i + 1}</td>
-                                                <td>{user.clientCode}</td>
-                                                <td>{user.companyName}</td>
-                                                <td>{user.name}</td>
-                                                <td>{user.emailId}</td>
-                                                <td>{user.contactNumber}</td>
-                                                <td>{user.status}</td>
-                                                <td>{user.signUpDate}</td>
-                                                <td>{user?.isDirect}</td>
-                                                <td>
-
-
-                                                </td>
-                                                {/* <td>{user?.comments}</td> */}
-
-
-                                            </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
-
+                        <div className="form-group col-lg-3 col-md-12 mt-2 ml-4">
+                            <SearchFilter
+                                kycSearch={kycSearch}
+                                searchText={searchText}
+                                searchByText={searchByText}
+                                setSearchByDropDown={setSearchByDropDown}
+                            />
+                            <div>
+                            </div>
                         </div>
-                        <nav>
-                            <ul className="pagination justify-content-center">
-                                {isLoaded === true ? <Spinner /> : (
-                                    <li className="page-item">
-                                        <button
-                                            className="page-link"
-                                            onClick={prevPage}>
-                                            Previous
-                                        </button>
-                                    </li>)}
-                                {displayPageNumber?.map((pgNumber, i) => (
-                                    <li
-                                        key={i}
-                                        className={
-                                            pgNumber === currentPage ? " page-item active" : "page-item"
-                                        }
-                                        onClick={() => setCurrentPage(pgNumber)}
-                                    >
-                                        <a href={() => false} className={`page-link data_${i}`}>
-                                            <span >
-                                                {pgNumber}
-                                            </span>
-                                        </a>
-                                    </li>
-                                ))}
-
-                                {isLoaded === true ? <Spinner /> : (
-                                    <li className="page-item">
-                                        <button
-                                            className="page-link"
-                                            onClick={nextPage}
-                                            disabled={currentPage === pageNumbers[pageNumbers?.length - 1]}
-                                        >
-                                            Next
-                                        </button>
-                                    </li>)}
-                            </ul>
-                        </nav>
-
-                    </div>
-                    : <></>}
 
 
+                        <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
+                            <CountPerPageFilter
+                                pageSize={pageSize}
+                                dataCount={dataCount}
+                                changePageSize={changePageSize}
+                            />
+                        </div>
+                        <div className="form-group col-lg-5 mt-5 ">
+                            <button
+                                className="btn btn-sm text-white"
+                                type="button"
+                                onClick={() => exportToExcelFn()}
+                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                            >
+                                Export
+                            </button>
+                        </div>
+                       
+
+                        <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+                            <div className="scroll overflow-auto ml-4">
+
+                                {!loadingState && data?.length !== 0 && (
+
+                                    <Table
+                                        row={rowSignUpData}
+                                        data={data}
+                                        dataCount={dataCount}
+                                        pageSize={pageSize}
+                                        currentPage={currentPage}
+                                        changeCurrentPage={changeCurrentPage}
+                                    />
+                                )}
+                            </div>
+                            <CustomLoader loadingState={loadingState} />
+                            {data?.length === 0 && !loadingState && data===[] &&  (
+                                <h2 className="text-center font-weight-bold">No Data Found</h2>
+                            )}
+                        </div>
+                    </>
+                )}
 
 
-            </div>
+</div>
 
         </section>
 
