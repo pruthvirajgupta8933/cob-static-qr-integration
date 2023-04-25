@@ -98,11 +98,14 @@ class MandateForm extends Component {
   handleSubmit = (values) => {
 
     
-  const getDescriptionById = (id) =>  {
-    const result = this.state.mandateCategory.filter((item) => item.id === id);
-    return result.length > 0 ? result[0].description : '';
-  }
+    const getDescriptionById = (code) => {
+      // Find an item in the `mandateCategory` array that matches the `code` parameter
+      const result = this.state.mandateCategory.filter(item => item.code === code);
+      // If a matching item is found, return its `description` field, otherwise return an empty string
+      return result.length > 0 ? result[0].description : '';
+    }
 
+    console.log(getDescriptionById(values.mandateCategory).toString())
     // e.preventDefault();
     console.log(values,"values")
 
@@ -121,7 +124,8 @@ class MandateForm extends Component {
       consumerReferenceNumber: values.consumerReferenceNumber,
       emiamount:values.emiamount,
       frequency: values.frequency,
-      mandateCategory: getDescriptionById(Number(values.mandateCategory)),
+      mandateCategory: values.mandateCategory,
+      mandatePurpose:getDescriptionById(values.mandateCategory).toString(),
       mandateEndDate: endIsoDate,
       mandateMaxAmount: values.mandateMaxAmount,
       mandateStartDate: startIsoDate,
@@ -210,7 +214,7 @@ class MandateForm extends Component {
       this.state.mandateType
     );
     const mandateTypeCategory = convertToFormikSelectJson(
-      "id",
+      "code",
       "description",
       this.state.mandateCategory
     );
