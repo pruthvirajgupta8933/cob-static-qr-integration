@@ -42,8 +42,8 @@ function Home() {
   const { SubscribedPlanData } = productCatalogueSlice;
 
   useEffect(() => {
-    GetKycTabsStatus({ login_id: user?.loginId });
-  }, [user]);
+    dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
+  }, []);
 
   useEffect(() => {
     // console.log(kyc?.kycUserList)
@@ -96,7 +96,7 @@ function Home() {
           <StepProgressBar status={kyc?.kycUserList?.status} />
         )}
 
-        {/* KYC ALETT */}
+      
         {roles?.merchant === true ? (
           <React.Fragment>
             {unPaidProduct?.length > 0 && (
@@ -114,7 +114,7 @@ function Home() {
               )
               }
 
-              
+                {/* KYC ALETT */}
             <KycAlert />
           </React.Fragment>
         ) : (
