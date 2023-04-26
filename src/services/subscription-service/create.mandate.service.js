@@ -51,10 +51,7 @@ const creatingMandate = (data) => {
     .catch((err) => console.log(err));
 };
 
-const mandateSubmission = (mandadateSubmissionDetails) => {
-  return axiosInstance.post(subAPIURL.mandateSubmit,mandadateSubmissionDetails)
 
-}
 
 export const createMandateService = {
   fetchFrequency,
@@ -63,5 +60,4 @@ export const createMandateService = {
   fetchrequestType,
   fetchBankName,
   creatingMandate,
-  mandateSubmission
 };

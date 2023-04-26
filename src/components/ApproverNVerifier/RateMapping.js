@@ -8,32 +8,25 @@ import Table from "../../_components/table_components/table/Table";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import NavBar from "../../components/dashboard/NavBar/NavBar";
 import ViewRateMapping from "./ViewRateMapping";
-// import { AssignZoneData } from "../../utilities/tableData";
-import Spinner from "./Spinner";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CustomLoader from "../../_components/loader";
 
 function RateMapping() {
-  // const rowData = AssignZoneData;
   const dispatch = useDispatch();
-
-  const [data, setData] = useState([]);
+const [data, setData] = useState([]);
   const [assignZone, setAssignzone] = useState([]);
   const [dataCount, setDataCount] = useState("");
   const [searchText, setSearchText] = useState("");
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [displayPageNumber, setDisplayPageNumber] = useState([]);
+   const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+ 
   const [openZoneModal, setOpenModal] = useState(false);
   const [modalDisplayData, setModalDisplayData] = useState({});
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
   const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
-  const approvedSearch = (e) => {
-    setSearchText(e.target.value);
-  };
+ 
 
   useEffect(() => {
     dispatch(
@@ -72,46 +65,46 @@ function RateMapping() {
   }, [searchText]);
 
   //Map the table data
-  const colData = () => {
-    return (
-      <>
-        {data == [] ? (
-          <td colSpan={"11"}>
-            {" "}
-            <div className="nodatafound text-center">No data found </div>
-          </td>
-        ) : (
-          data?.map((user, i) => (
-            <tr key={i}>
-              <td>{i + 1}</td>
-              <td>{user.clientCode}</td>
-              <td>{user.name}</td>
-              <td>{user.emailId}</td>
-              <td>{user.contactNumber}</td>
-              <td>{user.status}</td>
-              <td>{covertDate(user.signUpDate)}</td>
-              <td>{user?.isDirect}</td>
-              {/* <td>  <button type="button" className="btn btn-primary" onClick={onClick}>View Document</button></td> */}
-              <td>
-                <button
-                  type="submit"
-                  onClick={() => {
-                    setModalDisplayData(user);
-                    setOpenModal(true);
-                  }}
-                  className="btn btn-primary"
-                  data-toggle="modal"
-                  data-target="#exampleModalCenter"
-                >
-                  Rate Map
-                </button>
-              </td>
-            </tr>
-          ))
-        )}
-      </>
-    );
-  };
+  // const colData = () => {
+  //   return (
+  //     <>
+  //       {data == [] ? (
+  //         <td colSpan={"11"}>
+  //           {" "}
+  //           <div className="nodatafound text-center">No data found </div>
+  //         </td>
+  //       ) : (
+  //         data?.map((user, i) => (
+  //           <tr key={i}>
+  //             <td>{i + 1}</td>
+  //             <td>{user.clientCode}</td>
+  //             <td>{user.name}</td>
+  //             <td>{user.emailId}</td>
+  //             <td>{user.contactNumber}</td>
+  //             <td>{user.status}</td>
+  //             <td>{covertDate(user.signUpDate)}</td>
+  //             <td>{user?.isDirect}</td>
+  //             {/* <td>  <button type="button" className="btn btn-primary" onClick={onClick}>View Document</button></td> */}
+  //             <td>
+  //               <button
+  //                 type="submit"
+  //                 onClick={() => {
+  //                   setModalDisplayData(user);
+  //                   setOpenModal(true);
+  //                 }}
+  //                 className="btn btn-primary"
+  //                 data-toggle="modal"
+  //                 data-target="#exampleModalCenter"
+  //               >
+  //                 Rate Map
+  //               </button>
+  //             </td>
+  //           </tr>
+  //         ))
+  //       )}
+  //     </>
+  //   );
+  // };
 
   const searchByText = (text) => {
     setData(
@@ -290,7 +283,7 @@ function RateMapping() {
             </div>
             <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
               <div className="scroll overflow-auto">
-                {/* {console.log(data)} */}
+                
                 {!loadingState && data?.length !== 0 && (
                   <Table
                     row={AssignZoneData}

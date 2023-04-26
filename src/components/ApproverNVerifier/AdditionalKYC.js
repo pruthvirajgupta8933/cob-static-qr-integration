@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import NavBar from "../dashboard/NavBar/NavBar";
-import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useState } from "react";
 import FormikController from "../../_components/formik/FormikController";
 import { Formik, Form } from "formik";
@@ -8,22 +7,19 @@ import * as Yup from "yup";
 import {
   authPanValidation,
   gstValidation,
-  ifscValidation,
-  getBankId,
   bankAccountVerification,
 } from "../../slices/kycSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
-import gotVerified from "../../assets/images/verified.png";
+
 import "./kyc-style.css";
 
 const AdditionalKYC = () => {
   const dispatch = useDispatch();
   const { kyc } = useSelector((state) => state);
 
-  const KycList = kyc?.kycUserList;
-  const { allTabsValidate } = kyc;
+const { allTabsValidate } = kyc;
 
   const documentTypeList = [
     { documentType: "PAN", value: "1" },
@@ -52,7 +48,7 @@ const AdditionalKYC = () => {
   const AccountNoRgex = /^[a-zA-Z0-9]{2,25}$/;
 
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
-  const bankAccountStatus = allTabsValidate?.BankDetails;
+  // const bankAccountStatus = allTabsValidate?.BankDetails;
 
   //  For PAN INFORMATION
   const panFirstName =
@@ -98,7 +94,7 @@ const AdditionalKYC = () => {
       ? ""
       : BusinessDetailsStatus?.GSTINValidation?.updated;
 
-  const gstinValidity = BusinessDetailsStatus?.GSTINValidation?.valid;
+   const gstinValidity = BusinessDetailsStatus?.GSTINValidation?.valid;
 
   //  For GSTIN INFORMATION
 
@@ -157,6 +153,8 @@ const AdditionalKYC = () => {
   const [panStatus, setPanStatus] = useState(false);
   const [gstStatus, setGstStatus] = useState(false);
   const [bankStatus, setBankStatus] = useState(false);
+  const[buttonDisable,setButtonDisable]=useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (event) => {
     setSelectedDocType(event.target.value);
@@ -174,17 +172,22 @@ const AdditionalKYC = () => {
   }, [selectedDocType]);
 
   const handleSubmitForPAN = (values) => {
+    setButtonDisable(true)
+    setIsLoading(true)
     dispatch(
       authPanValidation({
         pan_number: values.pan_card,
       })
     ).then((res) => {
       if (
+        setButtonDisable(false),
+        setIsLoading(false),
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
+       
       ) {
-        toast.success(res.payload.message);
+        // toast.success(res.payload.message);
         setPanStatus(res.payload.status);
         // console.log("PAN Data",res.payload)
       } else {
@@ -194,6 +197,8 @@ const AdditionalKYC = () => {
   };
 
   const handleSubmitForGSTIN = (values) => {
+    setIsLoading(true)
+   
     dispatch(
       gstValidation({
         gst_number: values.gst_number,
@@ -202,11 +207,13 @@ const AdditionalKYC = () => {
       })
     ).then((res) => {
       if (
+        
+        setIsLoading(false),
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
       ) {
-        toast.success(res?.payload?.message);
+        // toast.success(res?.payload?.message);
         setGstStatus(res.payload.status);
       } else {
         toast.error(res?.payload?.message);
@@ -215,6 +222,7 @@ const AdditionalKYC = () => {
   };
 
   const handleSubmitForBankAccount = (values) => {
+    setButtonDisable(true)
     dispatch(
       bankAccountVerification({
         account_number: values.account_number,
@@ -222,11 +230,12 @@ const AdditionalKYC = () => {
       })
     ).then((res) => {
       if (
+        setButtonDisable(false),
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true &&
         res?.payload?.valid === true
       ) {
-        toast.success(res?.payload?.message);
+        // toast.success(res?.payload?.message);
         setBankStatus(res?.payload?.status);
       } else {
         toast.error(res?.payload?.message);
@@ -248,7 +257,7 @@ const AdditionalKYC = () => {
             <div className="row">
               <div className="col-lg-12 mb-4 bgcolor-">
                 <div className="form-group col-lg-3 col-md-12 mt-2">
-                  <label>Document Type</label>
+                  <label className="col-form-label mt-0 p-2 ml-1">Document Type</label>
                   <select
                     className="ant-input"
                     documentType={selectedDocType}
@@ -272,7 +281,7 @@ const AdditionalKYC = () => {
                 <Form className="form">
                   <div className="container">
                     <div className="row">
-                      <div className="col-lg-5">
+                      <div className="col-lg-3">
                         <FormikController
                           control="input"
                           type="text"
@@ -282,14 +291,27 @@ const AdditionalKYC = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-lg-5">
+                    <div className="row">
+                    <div className="col-lg-3 mr-2">
                       <button
                         type="submit"
+                        // className={`verify-btn btnbackground text-white ${isLoading ? 'spinner-grow spinner-grow-sm text-light mr-1' : ''}`}
                         className="verify-btn btnbackground text-white"
+                        // disabled={buttonDisable}
                       >
-                        Verify
+                       {/* {isLoading ? 'Loading...' : 'Verify'} */}
+                       {
+                        isLoading && 
+                        <>
+                       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                       
+                        </>
+                       }
+                       Verify
                       </button>
                     </div>
+                    </div>
+                    
                   </div>
                 </Form>
               </Formik>
@@ -307,7 +329,7 @@ const AdditionalKYC = () => {
                 <Form className="form">
                   <div className="container">
                     <div className="row">
-                      <div className="col-lg-5">
+                      <div className="col-lg-3">
                         <FormikController
                           control="input"
                           type="text"
@@ -317,14 +339,25 @@ const AdditionalKYC = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-lg-5">
+                    <div className="row">
+                    <div className="col-lg-3 mr-5">
                       <button
                         type="submit"
-                        className="verify-btn float-lg-right btnbackground text-white"
+                        className="verify-btn btnbackground text-white"
+                        disabled={buttonDisable}
                       >
+                        {
+                        isLoading && 
+                        <>
+                       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                       
+                        </>
+                       }
                         Verify
                       </button>
                     </div>
+                    </div>
+                    
                   </div>
                 </Form>
               </Formik>
@@ -341,8 +374,8 @@ const AdditionalKYC = () => {
               >
                 <Form className="form">
                   <div className="row">
-                    <div className="col-lg-4">
-                      <label className="col-form-label mt-0 p-2">
+                    <div className="col-lg-3 ml-3">
+                      <label className="col-form-label mt-0 p-2 ml-1">
                         IFSC Code<span style={{ color: "red" }}>*</span>
                       </label>
 
@@ -355,7 +388,7 @@ const AdditionalKYC = () => {
                       />
                     </div>
 
-                    <div className="col-lg-4">
+                    <div className="col-lg-3">
                       <label className="col-form-label mt-0 p-2">
                         Business Account Number{" "}
                         <span style={{ color: "red" }}>*</span>
@@ -369,10 +402,11 @@ const AdditionalKYC = () => {
                         placeholder="Enter your Account Number"
                       />
                     </div>
-                    <div className="col-lg-8">
+                    <div className="col-lg-3 mt-4">
                       <button
                         type="submit"
-                        className="verify-btn float-lg-right btnbackground text-white"
+                        className="verify-btnGst  btnbackground text-white"
+                        disabled={buttonDisable}
                       >
                         Verify
                       </button>

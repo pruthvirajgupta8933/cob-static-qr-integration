@@ -104,10 +104,10 @@ const BusinessOverview = (props) => {
 
       <div className="col-sm-6 col-md-6 col-lg-6">
         <label className="col-form-label p-2 mt-0">
-          Business Label <span style={{ color: "red" }}>*</span>
+          Business Description <span style={{ color: "red" }}>*</span>
         </label>
 
-        <input
+        <textarea
           type="text"
           className="form-control"
           id="inputPassword3"
@@ -115,7 +115,8 @@ const BusinessOverview = (props) => {
           value={
             merchantKycId?.billingLabel
           }
-        />
+        >
+        </textarea>
       </div>
 
       {/* <div className="col-sm-4 col-md-4 col-lg-4">
