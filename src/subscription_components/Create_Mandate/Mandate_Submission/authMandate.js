@@ -48,7 +48,7 @@ const AuthMandate = ({ updatedData }) => {
 
   const randomNumber = generateRandomNumber();
 
-  console.log("updatedData :  :", updatedData);
+  // console.log("updatedData :  :", updatedData);
 
   const onSubmit = (values) => {
     // console.log(values)
@@ -60,7 +60,7 @@ const AuthMandate = ({ updatedData }) => {
       consumerReferenceNumber: updatedData?.consumerReferenceNumber,
       mandatePurpose: updatedData?.mandatePurpose,
       payerUtilitityCode: "NACH00000000022341",
-      mandateEndDate: updatedData?.mandateEndDate,
+      mandateEndDate: updatedData?.untilCancelled === true ? null : updatedData?.mandateEndDate,
       payerName: updatedData?.payerName,
       mandateMaxAmount: "100.00",
       mandateType: "ONLINE",
@@ -79,7 +79,7 @@ const AuthMandate = ({ updatedData }) => {
       requestType: updatedData?.requestType,
       npciPaymentBankCode: updatedData?.payerBank,
       schemeReferenceNumber: updatedData?.schemeReferenceNumber,
-      untilCancelled: false,
+      untilCancelled: updatedData?.untilCancelled,
       userType: "merchant",
       emiamount: "",
     };
@@ -87,7 +87,7 @@ const AuthMandate = ({ updatedData }) => {
     axiosInstance
       .post(subAPIURL.mandateSubmit, mandateSubmissionDetails)
       .then((res) => {
-        console.log("API Submission Response", res);
+        // console.log("API Submission Response", res);
         setMandateSubmissionResponse(res.data);
         setShowLoader(true)
         document.getElementById("mandate_form").submit();
@@ -96,6 +96,8 @@ const AuthMandate = ({ updatedData }) => {
         console.log(error);
       });
   };
+
+
   return (
     <div className="row">
       <div className="col-lg-6 mand">

@@ -8,14 +8,13 @@ const MandateSummary = ({updatedData}) => {
 
 const startDate = updatedData?.mandateStartDate;
 const selectedStartdate = new Date(startDate);
-const endDate = updatedData?.mandateEndDate;
+const endDate = updatedData?.untilCancelled === true ? "" : updatedData?.mandateEndDate;
 const selectedEndDate = new Date(endDate);
 const options = { weekday: 'short', month: 'short', day: 'numeric' };
 
 
 const formattedStartDate = selectedStartdate.toLocaleDateString('en-US', options);
-const formattedEndDate = selectedEndDate.toLocaleDateString('en-US', options);
-
+const formattedEndDate = updatedData?.untilCancelled === true ? "Until Cancelled"  : selectedEndDate.toLocaleDateString('en-US', options);
 
 
   return (
@@ -80,7 +79,7 @@ const formattedEndDate = selectedEndDate.toLocaleDateString('en-US', options);
           </div>
           <div class="col-sm">
             <h4>Until Cancelled</h4>
-            <p className="text-secondary"></p>
+            <p className="text-secondary">{updatedData?.untilCancelled.toString()}</p>
           </div>
           <div class="col-sm">
             <h4>Request Type</h4>
