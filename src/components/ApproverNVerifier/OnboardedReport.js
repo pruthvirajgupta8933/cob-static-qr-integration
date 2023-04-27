@@ -21,7 +21,7 @@ const validationSchema = Yup.object({
   to_date: Yup.date()
     .min(Yup.ref("from_date"), "End date can't be before Start date")
     .required("Required"),
-  status: Yup.string().required("Required"),
+  status: Yup.string().required("Required").nullable(),
 });
 
 const OnboardedReport = () => {
@@ -287,7 +287,7 @@ const OnboardedReport = () => {
   // }, [currentPage, totalPages]);
 
   const selectStatus = [
-    { key: "0", value: "Select" },
+    { key: "0", value: "Select"},
     { key: "1", value: "Verified" },
     { key: "2", value: "Approved" },
   ];
@@ -464,7 +464,7 @@ const OnboardedReport = () => {
             </Form>
           )}
         </Formik>
-        {dataClick === true && noResultsFound.length === 0 ? (
+        {dataClick === true && noResultsFound?.length === 0 ? (
           <h2 className="text-center font-weight-bold">No Data Found</h2>
         ) : (
           <></>
