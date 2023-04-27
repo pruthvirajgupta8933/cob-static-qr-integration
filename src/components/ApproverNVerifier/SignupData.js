@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../dashboard/NavBar/NavBar";
 import { Formik, Form } from "formik";
 import API_URL from "../../config";
@@ -14,8 +14,7 @@ import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 // import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
-import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage"
-
+import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage";
 
 const validationSchema = Yup.object({
   from_date: Yup.date().required("Required").nullable(),
@@ -71,8 +70,6 @@ const SignupData = () => {
     );
   };
 
-  
-
   //function for change current page
   // const changeCurrentPage = (page) => {
   //   setCurrentPage(page);
@@ -89,7 +86,10 @@ const SignupData = () => {
       to_date: saveData?.to_date,
     };
     let apiRes = axiosInstanceJWT
-      .post(`${API_URL.GET_SIGNUP_DATA_INFO}?page=${currentPage}&page_size=${pageSize}`,postData)
+      .post(
+        `${API_URL.GET_SIGNUP_DATA_INFO}?page=${currentPage}&page_size=${pageSize}`,
+        postData
+      )
       .then((resp) => {
         setSignupData(resp?.data?.Merchant_Info);
         setAssignzone(resp?.data?.Merchant_Info);
@@ -100,22 +100,21 @@ const SignupData = () => {
       })
       .catch((error) => {
         setLoadingState(false);
-        
       });
   }, [currentPage, pageSize]);
 
-
- 
-
   const handleSubmit = (values) => {
-    setSaveData(values)
+    setSaveData(values);
     setLoadingState(true);
     const postData = {
       from_date: values.from_date,
       to_date: values.to_date,
     };
     let apiRes = axiosInstanceJWT
-      .post(`${API_URL.GET_SIGNUP_DATA_INFO}?page=${currentPage}&page_size=${pageSize}`,postData)
+      .post(
+        `${API_URL.GET_SIGNUP_DATA_INFO}?page=${currentPage}&page_size=${pageSize}`,
+        postData
+      )
       .then((resp) => {
         setSignupData(resp?.data?.Merchant_Info);
         setAssignzone(resp?.data?.Merchant_Info);
@@ -213,6 +212,9 @@ const SignupData = () => {
   //       ))
   //     })
   // }
+
+  console.log(signupData, "Sign Up Data Found That is alled in the main");
+  console.log(loadingState, "State of the API Request");
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
@@ -328,9 +330,9 @@ const SignupData = () => {
                       className="form-control rounded-0"
                     />
                   </div>
-                  </div>
+                </div>
 
-                  <div className="row">
+                <div className="row">
                   <div className=" col-md-4">
                     <button
                       type="submit"
@@ -352,57 +354,53 @@ const SignupData = () => {
                     )}
                   </div>
                 </div>
-                 
-                 
               </div>
             </Form>
           </Formik>
           {!loadingState && signupData?.length !== 0 && (
-          <>
-        
-        <div className="form-group col-lg-3 col-md-12 mt-2 ml-4">
-              <SearchFilter
-                kycSearch={kycSearch}
-                searchText={searchText}
-                searchByText={searchByText}
-                setSearchByDropDown={setSearchByDropDown}
-              />
-              <div>
-               </div>
-            </div>
-          
-          
-          <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
-            <CountPerPageFilter
-            pageSize={pageSize}
-            dataCount={dataCount}
-            changePageSize={changePageSize}
-          />
-            </div>
-       
+            <>
+              <div className="form-group col-lg-3 col-md-12 mt-2 ml-4">
+                <SearchFilter
+                  kycSearch={kycSearch}
+                  searchText={searchText}
+                  searchByText={searchByText}
+                  setSearchByDropDown={setSearchByDropDown}
+                />
+                <div></div>
+              </div>
 
-            <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
-              <div className="scroll overflow-auto ml-4">
-              
-                {!loadingState && signupData?.length !== 0 && (
-                  
-                  <Table
-                    row={rowSignUpData}
-                    data={signupData}
-                    dataCount={dataCount}
-                    pageSize={pageSize}
-                    currentPage={currentPage}
-                    changeCurrentPage={changeCurrentPage}
-                  />
+              <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
+                <CountPerPageFilter
+                  pageSize={pageSize}
+                  dataCount={dataCount}
+                  changePageSize={changePageSize}
+                />
+              </div>
+
+              <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+                <div className="scroll overflow-auto ml-4">
+                  {!loadingState && signupData?.length !== 0 && (
+                    <Table
+                      row={rowSignUpData}
+                      data={signupData}
+                      dataCount={dataCount}
+                      pageSize={pageSize}
+                      currentPage={currentPage}
+                      changeCurrentPage={changeCurrentPage}
+                    />
+                  )}
+                </div>
+                <CustomLoader loadingState={loadingState} />
+                {signupData.length === 0 && !loadingState ? (
+                  <h2 className="text-center font-weight-bold">
+                    No Data Found
+                  </h2>
+                ) : (
+                  <></>
                 )}
               </div>
-              <CustomLoader loadingState={loadingState} />
-              {signupData?.length === 0 && !loadingState && (
-                <h2 className="text-center font-weight-bold">No Data Found</h2>
-              )}
-            </div>
-          </>
-             )}
+            </>
+          )}
         </div>
       </main>
     </section>
