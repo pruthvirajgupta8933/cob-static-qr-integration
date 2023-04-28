@@ -24,12 +24,21 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
     { key: "Current", value: "Current" },
   ];
   const FORM_VALIDATION = Yup.object().shape({
-    authenticationMode: Yup.string()
-      // .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-      .required("Required").nullable(),
-    payerBank: Yup.string().required("Required"),
+    authenticationMode: Yup.string().test(
+      "isRequired",
+      "Required",
+      function(value) {
+        return value !== "Select";
+      }).nullable(),
+    payerBank: Yup.string().required("Required").nullable(),
     payerAccountNumber: Yup.string().required("Required"),
-    payerAccountType: Yup.string().required("Required"),
+    payerAccountType:  Yup.string().test(
+      "isRequired",
+      "Required",
+      function(value) {
+        return value !== "Select";
+      }
+    ).nullable(),
   });
   const handleSubmit = (values) => {
     // console.log(values,"=====================>");
