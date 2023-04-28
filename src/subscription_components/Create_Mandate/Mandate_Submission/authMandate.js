@@ -11,10 +11,15 @@ import * as Yup from "yup";
 import subAPIURL from "../../../config";
 import { axiosInstance } from "../../../utilities/axiosInstance";
 import "../Mandate_Submission/mandateDetails/mandateSubmission.css";
+import CustomModal from "../../../_components/custom_modal";
+import { useHistory } from "react-router-dom";
 
 const AuthMandate = ({ updatedData }) => {
   const [mandateSubmissionResponse, setMandateSubmissionResponse] = useState();
   const [showLoader,setShowLoader] = useState(false)
+  const [isModalOpen, setIsModalOpen ] =  useState(false);
+  const history = useHistory()
+
 
   const initialValues = {
     term_condition: "",
@@ -98,9 +103,37 @@ const AuthMandate = ({ updatedData }) => {
   };
 
 
+  const pushToDashboard = () => {
+    history.push("/dashboard")
+
+  }
+
+  const modalBody =  () => {
+    return (
+      <>
+      <div className="text-centre">
+      <h5>Do you really want to Cancel this Mandate Request ?</h5>
+      </div>
+      </>
+    )
+  }
+
+
+  const modalFooter = () => {
+    return (
+   <>
+    <button type="button" class="btn btn-secondary text-white" onClick={pushToDashboard}>Disagree</button>
+    <button type="button" class="btn approve text-white btn-xs" data-dismiss="modal" onClick={() => {setIsModalOpen(false)}}>Agree</button>
+    </>
+ 
+    )
+
+  }
+
   return (
     <div className="row">
       <div className="col-lg-6 mand">
+      <CustomModal modalBody={modalBody} headerTitle={"Manadate Cancellation"} modalFooter={modalFooter} modalToggle={isModalOpen} fnSetModalToggle={setIsModalOpen} />
         <div id="accordion" style={{ marginTop: "50px" }}>
           <div
             className="card-header mandateCard"
@@ -288,6 +321,7 @@ const AuthMandate = ({ updatedData }) => {
                         <button
                           type="button"
                           className="btn btn-danger btn-sm text-white"
+                          onClick={() => {setIsModalOpen(true)}}
                         >
                           Cancel
                         </button>

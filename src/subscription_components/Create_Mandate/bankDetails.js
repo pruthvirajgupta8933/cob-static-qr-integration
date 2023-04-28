@@ -14,19 +14,19 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
   const [validStatus,setValidStatus] = useState(false)
 
   let authModeOptions = [
-    { key: "Select", value: "" },
+    { key: "Select", value: "Select" },
     { key: "Netbanking", value: "Netbanking" },
     { key: "Debit Card", value: "Debitcard" },
   ];
   let accuntTypeOptions = [
-    { key: "Select", value: "" },
+    { key: "Select", value: "Select" },
     { key: "Savings", value: "Savings" },
     { key: "Current", value: "Current" },
   ];
   const FORM_VALIDATION = Yup.object().shape({
     authenticationMode: Yup.string()
       // .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-      .required("Required"),
+      .required("Required").nullable(),
     payerBank: Yup.string().required("Required"),
     payerAccountNumber: Yup.string().required("Required"),
     payerAccountType: Yup.string().required("Required"),
