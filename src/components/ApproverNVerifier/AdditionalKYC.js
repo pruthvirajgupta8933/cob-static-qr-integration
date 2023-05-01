@@ -530,7 +530,7 @@ const { allTabsValidate } = kyc;
                       ? "True"
                       : accountValidity === false
                       ? "false"
-                      : "Not Found"}
+                      : "Not Found"} 
                   </div>
                   {/* <div className="col-lg-5">
           
