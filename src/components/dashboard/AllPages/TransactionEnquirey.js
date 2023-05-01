@@ -142,7 +142,7 @@ function TransactionEnquirey() {
 
                           <button
                           disabled={disable}
-                            className=" btn bttn bttnbackgroundkyc mt-2"
+                            className="verify-btn text-white bttnbackgroundkyc mt-2"
                             type="submit"
                           >
                             View
@@ -253,7 +253,7 @@ function TransactionEnquirey() {
                   <button
                     Value="click"
                     onClick={onClick}
-                    className=" btn bttn font-weight-bold bttnbackgroundkyc float-right"
+                    className="verify-btn bttn font-weight-bold bttnbackgroundkyc float-right"
                   >
                     Print
                   </button>

@@ -405,7 +405,7 @@ const { allTabsValidate } = kyc;
                     <div className="col-lg-3 mt-4">
                       <button
                         type="submit"
-                        className="verify-btnGst  btnbackground text-white"
+                        className="verify-btn Gst  btnbackground text-white"
                         disabled={buttonDisable}
                       >
                         Verify

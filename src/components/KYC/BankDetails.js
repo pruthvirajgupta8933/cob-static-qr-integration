@@ -373,7 +373,7 @@ function BankDetails(props) {
                   {/* if found any error in validation */}
                   {(values?.ifscCode !== null && (errors.hasOwnProperty("oldAccountNumber") || errors.hasOwnProperty("oldIfscCode"))) &&
                     <div class="input-group-append">
-                      <button class="btn btnbackground text-white mb-0" type="button"
+                      <button class="verify-btn btnbackground text-white mb-0" type="button"
                         disabled={loading}
                         onClick={() => {
                           checkInputIsValid(

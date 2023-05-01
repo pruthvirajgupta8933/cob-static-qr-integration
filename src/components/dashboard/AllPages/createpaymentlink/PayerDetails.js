@@ -12,6 +12,8 @@ import API_URL from '../../../../config';
 import toastConfig from '../../../../utilities/toastTypes';
 import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
 import { axiosInstance } from '../../../../utilities/axiosInstance';
+import "./index.css";
+
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 
@@ -382,13 +384,13 @@ const PayerDetails = () => {
                                         <td>{user.email}</td>
                                         <td>{user.customer_type}</td>
                                         <td>
-                                            <button type="button" className="cratepaymentlinkclrsfigma text-white btn"  onClick={(e) => handleClick(user.id)} >Edit</button>
+                                            <button type="button" className="verify-btn cratepaymentlinkclrsfigma text-white"  onClick={(e) => handleClick(user.id)} >Edit</button>
                                         </td>
 
                                         <td>
                                             <button onClick={(e) => generateli(user.id)}
                                                 type="button"
-                                                className="cratepaymentlinkclrsfigma text-white btn"
+                                                className="verify-btn cratepaymentlinkclrsfigma text-white"
                                                 data-toggle="modal"
                                                 data-target="#bhuvi"
                                                 data-whatever="@getbootstrap"
