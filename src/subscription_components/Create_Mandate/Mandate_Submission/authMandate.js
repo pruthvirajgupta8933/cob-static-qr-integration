@@ -11,10 +11,15 @@ import * as Yup from "yup";
 import subAPIURL from "../../../config";
 import { axiosInstance } from "../../../utilities/axiosInstance";
 import "../Mandate_Submission/mandateDetails/mandateSubmission.css";
+import CustomModal from "../../../_components/custom_modal";
+import { useHistory } from "react-router-dom";
 
 const AuthMandate = ({ updatedData }) => {
   const [mandateSubmissionResponse, setMandateSubmissionResponse] = useState();
   const [showLoader,setShowLoader] = useState(false)
+  const [isModalOpen, setIsModalOpen ] =  useState(false);
+  const history = useHistory()
+
 
   const initialValues = {
     term_condition: "",
@@ -48,7 +53,7 @@ const AuthMandate = ({ updatedData }) => {
 
   const randomNumber = generateRandomNumber();
 
-  console.log("updatedData :  :", updatedData);
+  // console.log("updatedData :  :", updatedData);
 
   const onSubmit = (values) => {
     // console.log(values)
@@ -60,7 +65,7 @@ const AuthMandate = ({ updatedData }) => {
       consumerReferenceNumber: updatedData?.consumerReferenceNumber,
       mandatePurpose: updatedData?.mandatePurpose,
       payerUtilitityCode: "NACH00000000022341",
-      mandateEndDate: updatedData?.mandateEndDate,
+      mandateEndDate: updatedData?.untilCancelled === true ? null : updatedData?.mandateEndDate,
       payerName: updatedData?.payerName,
       mandateMaxAmount: "100.00",
       mandateType: "ONLINE",
@@ -79,7 +84,7 @@ const AuthMandate = ({ updatedData }) => {
       requestType: updatedData?.requestType,
       npciPaymentBankCode: updatedData?.payerBank,
       schemeReferenceNumber: updatedData?.schemeReferenceNumber,
-      untilCancelled: false,
+      untilCancelled: updatedData?.untilCancelled,
       userType: "merchant",
       emiamount: "",
     };
@@ -87,7 +92,7 @@ const AuthMandate = ({ updatedData }) => {
     axiosInstance
       .post(subAPIURL.mandateSubmit, mandateSubmissionDetails)
       .then((res) => {
-        console.log("API Submission Response", res);
+        // console.log("API Submission Response", res);
         setMandateSubmissionResponse(res.data);
         setShowLoader(true)
         document.getElementById("mandate_form").submit();
@@ -96,9 +101,39 @@ const AuthMandate = ({ updatedData }) => {
         console.log(error);
       });
   };
+
+
+  const pushToDashboard = () => {
+    history.push("/dashboard")
+
+  }
+
+  const modalBody =  () => {
+    return (
+      <>
+      <div className="text-centre">
+      <h5>Do you really want to Cancel this Mandate Request ?</h5>
+      </div>
+      </>
+    )
+  }
+
+
+  const modalFooter = () => {
+    return (
+   <>
+    <button type="button" class="btn btn-secondary text-white" onClick={pushToDashboard}>Disagree</button>
+    <button type="button" class="btn approve text-white btn-xs" data-dismiss="modal" onClick={() => {setIsModalOpen(false)}}>Agree</button>
+    </>
+ 
+    )
+
+  }
+
   return (
     <div className="row">
       <div className="col-lg-6 mand">
+      <CustomModal modalBody={modalBody} headerTitle={"Manadate Cancellation"} modalFooter={modalFooter} modalToggle={isModalOpen} fnSetModalToggle={setIsModalOpen} />
         <div id="accordion" style={{ marginTop: "50px" }}>
           <div
             className="card-header mandateCard"
@@ -286,6 +321,7 @@ const AuthMandate = ({ updatedData }) => {
                         <button
                           type="button"
                           className="btn btn-danger btn-sm text-white"
+                          onClick={() => {setIsModalOpen(true)}}
                         >
                           Cancel
                         </button>

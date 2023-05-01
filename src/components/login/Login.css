@@ -33,7 +33,7 @@
 }
 .login-btn:disabled {
   border: 0px;
-  background-color: #F7F7F7;
+  background-color: #e4e4e4;
   color: #333;
 }
 

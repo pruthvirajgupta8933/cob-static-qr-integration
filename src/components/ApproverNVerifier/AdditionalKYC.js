@@ -3,6 +3,7 @@ import NavBar from "../dashboard/NavBar/NavBar";
 import { useState } from "react";
 import FormikController from "../../_components/formik/FormikController";
 import { Formik, Form } from "formik";
+import { camelCase } from 'lodash';
 import * as Yup from "yup";
 import {
   authPanValidation,
@@ -67,36 +68,7 @@ const { allTabsValidate } = kyc;
 
   //  For PAN INFORMATION
 
-  //  For GSTIN INFORMATION
-
-  const panNumber =
-    BusinessDetailsStatus?.GSTINValidation?.pan === null
-      ? ""
-      : BusinessDetailsStatus?.GSTINValidation?.pan;
-
-  const gst_trade_name =
-    BusinessDetailsStatus?.GSTINValidation?.trade_name === null
-      ? ""
-      : BusinessDetailsStatus?.GSTINValidation?.trade_name;
-
-  const state =
-    BusinessDetailsStatus?.GSTINValidation?.state === null
-      ? ""
-      : BusinessDetailsStatus?.GSTINValidation?.state;
-
-  const registered_date =
-    BusinessDetailsStatus?.GSTINValidation?.register === null
-      ? ""
-      : BusinessDetailsStatus?.GSTINValidation?.register;
-
-  const updated_date =
-    BusinessDetailsStatus?.GSTINValidation?.updated === null
-      ? ""
-      : BusinessDetailsStatus?.GSTINValidation?.updated;
-
-   const gstinValidity = BusinessDetailsStatus?.GSTINValidation?.valid;
-
-  //  For GSTIN INFORMATION
+  
 
   // For Bank Account Info
 
@@ -151,10 +123,23 @@ const { allTabsValidate } = kyc;
 
   const [selectedDocType, setSelectedDocType] = useState("");
   const [panStatus, setPanStatus] = useState(false);
+  const [gstinData,setGstinData]=useState([])
+  
   const [gstStatus, setGstStatus] = useState(false);
   const [bankStatus, setBankStatus] = useState(false);
   const[buttonDisable,setButtonDisable]=useState(false)
   const [isLoading, setIsLoading] = useState(false);
+  const[showPanInfo,setShowPanInfo]=useState([])
+
+  const objArray = Object.entries(gstinData);
+ const panInfodata=Object.entries(showPanInfo);
+  
+  
+
+
+
+
+  
 
   const handleChange = (event) => {
     setSelectedDocType(event.target.value);
@@ -181,6 +166,7 @@ const { allTabsValidate } = kyc;
     ).then((res) => {
       if (
         setButtonDisable(false),
+        setShowPanInfo(res?.payload),
         setIsLoading(false),
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
@@ -206,9 +192,12 @@ const { allTabsValidate } = kyc;
         fy: "2018-19",
       })
     ).then((res) => {
+      
+      
       if (
         
         setIsLoading(false),
+        setGstinData(res?.payload),
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
@@ -419,73 +408,103 @@ const { allTabsValidate } = kyc;
             )}
 
             {panStatus === true && selectedDocType === "1" ? (
-              <div className="container" style={{ marginTop: "91px" }}>
-                <h2 className="font-weight-bold">PAN Information</h2>
-                <div className="row">
-                  <div className="col-lg-4 font-weight-bold">
-                    Name : {accHolderName.length > 2 ? accHolderName : ""}
-                  </div>
-                  {/* <div className="col-lg-5">
+               <div class="container mt-5">
+               <h2 class="font-weight-bold">GSTIN Information</h2>
+               <div class="row">
+                 {panInfodata.map(([key, value]) => (
+                   <div class="col-md-6 p-2" key={key}>
+                     <span class="font-weight-bold mb-1">
+                       {key.replace('_', ' ')}:
+                     </span>
+                     {typeof value === "boolean" ? (
+                       <span>{value.toString()}</span>
+                     ) : (
+                       <span>{value}</span>
+                     )}
+                   </div>
+                 ))}
+               </div>
+             </div>
+            //   <div className="container" style={{ marginTop: "91px" }}>
+            //     <h2 className="font-weight-bold">PAN Information</h2>
+            //     <div className="row">
+            //       <div className="col-lg-4 font-weight-bold">
+            //         Name : {accHolderName.length > 2 ? accHolderName : ""}
+            //       </div>
+            //       {/* <div className="col-lg-5">
           
-            </div> */}
-                  <div className="col-lg-4 font-weight-bold">
-                    Valid :{" "}
-                    {panValidity === true
-                      ? "True"
-                      : panValidity === false
-                      ? "false"
-                      : "Not Found"}
-                  </div>
-                  <div className="col-lg-5"></div>
-                </div>
-              </div>
+            // </div> */}
+            //       <div className="col-lg-4 font-weight-bold">
+            //         Valid :{" "}
+            //         {panValidity === true
+            //           ? "True"
+            //           : panValidity === false
+            //           ? "false"
+            //           : "Not Found"}
+            //       </div>
+            //       <div className="col-lg-5"></div>
+            //     </div>
+            //   </div>
             ) : (
               ""
             )}
 
-            {gstStatus === true && selectedDocType === "2" ? (
-              <div className="container" style={{ marginTop: "91px" }}>
-                <h2 className="font-weight-bold">GSTIN Information</h2>
-                <div className="row">
-                  <div className="col-lg-4 font-weight-bold">
-                    Trade Name : {gst_trade_name ? gst_trade_name : ""}
-                  </div>
-                  {/* <div className="col-lg-5">
-          
-            </div> */}
-                  <div className="col-lg-4 font-weight-bold">PAN : {panNumber}</div>
-                </div>
-                <div className="row">
-                  <div className="col-lg-4 font-weight-bold">
-                    State : {state ? state : ""}
-                  </div>
-                  {/* <div className="col-lg-5">
-          
-            </div> */}
-                  <div className="col-lg-4 font-weight-bold">
-                    Registered Date : {registered_date ? registered_date : ""}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-lg-4 font-weight-bold">
-                    Updated Date : {updated_date ? updated_date : ""}
-                  </div>
-                  {/* <div className="col-lg-5">
-          
-            </div> */}
-                  <div className="col-lg-4 font-weight-bold">
-                    Valid :{" "}
-                    {gstinValidity === true
-                      ? "True"
-                      : gstinValidity === false
-                      ? "false"
-                      : "Not Found"}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
+            {/* <div>
+   
+            {gstinData.map((data, index) => (
+
+<>
+        <h2 className="font-weight-bold">GSTIN Information</h2>
+        <div className="row">
+          <div className="col-lg-4 font-weight-bold">
+            Trade Name : {data.tradeName ? data.tradeName : ""}
+          </div>
+          <div className="col-lg-4 font-weight-bold">PAN : {data.panNumber}</div>
+        </div>
+        <div className="row">
+          <div className="col-lg-4 font-weight-bold">
+            State : {data.state ? data.state : ""}
+          </div>
+          <div className="col-lg-4 font-weight-bold">
+            Registered Date : {data.registered_date ? data.registered_date : ""}
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-lg-4 font-weight-bold">
+            Updated Date : {data.updated_date ? data.updated_date : ""}
+          </div>
+          <div className="col-lg-4 font-weight-bold">
+            Valid :{" "}
+            {data.gstinValidity === true
+              ? "True"
+              : data.gstinValidity === false
+              ? "false"
+              : "Not Found"}
+          </div>
+        </div>
+        </>
+      
+    ))}
+  </div> */}
+ {gstStatus===true &&  selectedDocType === "2" &&
+  <div class="container mt-5">
+  <h2 class="font-weight-bold">GSTIN Information</h2>
+  <div class="row">
+    {objArray.map(([key, value]) => (
+      <div class="col-md-6 p-2" key={key}>
+        <span class="font-weight-bold mb-1">
+          {key.replace('_', ' ')}:
+        </span>
+        {typeof value === "boolean" ? (
+          <span>{value.toString()}</span>
+        ) : (
+          <span>{value}</span>
+        )}
+      </div>
+    ))}
+  </div>
+</div>
+}
 
             {bankStatus === true && selectedDocType === "3" ? (
               <div className="container" style={{ marginTop: "32px" }}>
@@ -511,7 +530,7 @@ const { allTabsValidate } = kyc;
                       ? "True"
                       : accountValidity === false
                       ? "false"
-                      : "Not Found"}
+                      : "Not Found"} 
                   </div>
                   {/* <div className="col-lg-5">
           
