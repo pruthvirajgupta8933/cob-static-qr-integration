@@ -192,6 +192,8 @@ function Registration() {
   }, [isUserRegistered, dispatch, history, message]);
 
 
+  const queryStringUrl  = window.location.search
+
   return (
     <>
       <HeaderPage />
@@ -632,7 +634,7 @@ function Registration() {
                                   <div className="container">
                                     <div className="row text-primary">
                                       <div className="col ">Already have an account? <Link
-                                        to={`/login`}
+                                        to={`/login/${queryStringUrl}`}
                                         style={{ color: "#0156B3" }}
                                       >
                                         Login

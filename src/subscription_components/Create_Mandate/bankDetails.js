@@ -14,22 +14,31 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
   const [validStatus,setValidStatus] = useState(false)
 
   let authModeOptions = [
-    { key: "Select", value: "" },
+    { key: "Select", value: "Select" },
     { key: "Netbanking", value: "Netbanking" },
     { key: "Debit Card", value: "Debitcard" },
   ];
   let accuntTypeOptions = [
-    { key: "Select", value: "" },
+    { key: "Select", value: "Select" },
     { key: "Savings", value: "Savings" },
     { key: "Current", value: "Current" },
   ];
   const FORM_VALIDATION = Yup.object().shape({
-    authenticationMode: Yup.string()
-      // .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-      .required("Required"),
-    payerBank: Yup.string().required("Required"),
+    authenticationMode: Yup.string().test(
+      "isRequired",
+      "Required",
+      function(value) {
+        return value !== "Select";
+      }).nullable(),
+    payerBank: Yup.string().required("Required").nullable(),
     payerAccountNumber: Yup.string().required("Required"),
-    payerAccountType: Yup.string().required("Required"),
+    payerAccountType:  Yup.string().test(
+      "isRequired",
+      "Required",
+      function(value) {
+        return value !== "Select";
+      }
+    ).nullable(),
   });
   const handleSubmit = (values) => {
     // console.log(values,"=====================>");
