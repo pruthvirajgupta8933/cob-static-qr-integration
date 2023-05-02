@@ -3,7 +3,7 @@ import NavBar from "../dashboard/NavBar/NavBar";
 import { Formik, Form } from "formik";
 import { useDispatch } from "react-redux";
 // import Spinner from './Spinner';
-import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
+// import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
 import toastConfig from "../../utilities/toastTypes";
 import { onboardedReport } from "../../slices/kycSlice";
 import moment from "moment";
@@ -417,7 +417,7 @@ const OnboardedReport = () => {
                       label="Select your choice"
                       name="status"
                       options={selectStatus}
-                      className="form-control rounded-0"
+                      className="ant-input"
                     />
                     {formik.handleChange(
                       "status",

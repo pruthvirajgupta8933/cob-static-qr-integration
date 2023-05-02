@@ -131,7 +131,7 @@ const pages = _.range(1, pageCount + 1)
                       <th>Status</th>
                       <th>Client Txn Id</th>
                       <th>Link Id</th>
-                      <th colSpan={1}>Link_Valid_Date </th>
+                      <th colSpan={1}>Link Valid Date </th>
                       <th>Created At</th>
                       <th>Payment Collected</th>
                       <th>Numeric Link Id</th>
