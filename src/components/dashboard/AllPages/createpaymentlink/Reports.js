@@ -6,10 +6,12 @@ import API_URL from '../../../../config';
 import toastConfig from '../../../../utilities/toastTypes';
 import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
 import { axiosInstance } from '../../../../utilities/axiosInstance';
+import CustomLoader from '../../../../_components/loader';
 const Reports = () => {
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
+  const [loadingState, setLoadingState] = useState(true)
   const [data , setData] = useState([]);
   const [displayList, setDisplayList] = useState([])
   const [searchText, setSearchText] = useState('');
@@ -20,16 +22,17 @@ const Reports = () => {
 
 
 useEffect(() => {
-  toastConfig.infoToast("Report Loading")
+  // toastConfig.infoToast("Report Loading")
    axiosInstance.get(`${API_URL.GET_REPORTS}${clientCode}`)  
   .then(res => {     
-    toastConfig.successToast("Report Data loaded")
+    // toastConfig.successToast("Report Data loaded")
     setData(res.data);  
     setDisplayList(res.data)
+    setLoadingState(false)
     setPaginatedData(_(res.data).slice(0).take(pageSize).value())
     })  
   .catch((err) => {
-    toastConfig.errorToast("Report Data not loaded !")  
+    // toastConfig.errorToast("Report Data not loaded !")  
   });
 
 }, []);
@@ -102,6 +105,9 @@ const pages = _.range(1, pageCount + 1)
                         </select>
                     </div>
                     </div>
+                    <div className="mt-5" >
+            <CustomLoader loadingState={loadingState} />
+                  </div>
                     <div className="row">
                     <div className="col-lg-4 mrg-btm- bgcolor">
                             <p>Total Records: {data.length}</p>
@@ -125,7 +131,7 @@ const pages = _.range(1, pageCount + 1)
                       <th>Status</th>
                       <th>Client Txn Id</th>
                       <th>Link Id</th>
-                      <th colSpan={1}>Link_Valid_Date </th>
+                      <th colSpan={1}>Link Valid Date </th>
                       <th>Created At</th>
                       <th>Payment Collected</th>
                       <th>Numeric Link Id</th>

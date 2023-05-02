@@ -222,7 +222,7 @@ const ReferZone = () => {
             </h1>
           </div>
           <div className="container-fluid flleft">
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className="col-lg-3 mrg-btm- bgcolor">
               <SearchFilter
                 kycSearch={kycSearch}
                 searchText={searchText}
@@ -242,7 +242,7 @@ const ReferZone = () => {
                 )}
               </div>
             </div>
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className="col-lg-3 mrg-btm- bgcolor">
               <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}

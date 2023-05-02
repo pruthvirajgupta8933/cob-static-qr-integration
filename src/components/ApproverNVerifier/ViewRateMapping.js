@@ -1,15 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { Formik, Form } from "formik";
-import API_URL from '../../config';
-import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
-import { axiosInstanceJWT } from '../../utilities/axiosInstance';
+
 import RateRadioMapping from './RateRadioMapping';
-import { useDispatch, useSelector } from "react-redux";
-import { riskCategory, businessCategory, templateRate, viewRateMap } from '../../slices/rateMappingSlice';
+import { useDispatch } from "react-redux";
+import { businessCategory, templateRate, viewRateMap } from '../../slices/rateMappingSlice';
 import { busiCategory } from '../../slices/kycSlice';
 
 const initialValues = {
@@ -27,13 +25,13 @@ const validationSchema = Yup.object({
 
 const ViewRateMapping = (props) => {
 
-    const [template, setTemplate] = useState([])
+    // const [template, setTemplate] = useState([])
     const [businessTemplate, setBusinessTemplate] = useState("")
     const [businessTemplates, setBusinessTemplates] = useState([])
     const [show, setShow] = useState(false)
     const [riskTemplate, setRisktemplate] = useState([])
     const [risk, setRisk] = useState([])
-    const [riskCode, setRiskCode] = useState("")
+    // const [riskCode, setRiskCode] = useState("")
 
     const [disable, setDisable] = useState(false)
 
@@ -57,22 +55,22 @@ const ViewRateMapping = (props) => {
         // .catch((err) => console.log(err));
     }, []);
 
-    useEffect(() => {
-        if (riskCode !== "") {
-            const postData = {
-                risk_category_code: riskCode
-            };
+    // useEffect(() => {
+    //     if (riskCode !== "") {
+    //         const postData = {
+    //             risk_category_code: riskCode
+    //         };
            
-            dispatch(businessCategory(postData)).then((resp) => {
+    //         dispatch(businessCategory(postData)).then((resp) => {
 
-                const data = convertToFormikSelectJson("business_category_id", "category_name", resp?.payload?.Data);
+    //             const data = convertToFormikSelectJson("business_category_id", "category_name", resp?.payload?.Data);
 
-                setTemplate(data)
-            }).catch((err) => {
+    //             setTemplate(data)
+    //         }).catch((err) => {
 
-            })
-        }
-    }, [riskCode]);
+    //         })
+    //     }
+    // }, [riskCode]);
 
 
     
@@ -175,15 +173,15 @@ const ViewRateMapping = (props) => {
                                         </button>
                                     </div>
                                     <div className="modal-body">
-                                        <h5 className="font-weight-bold">Client Name: {props?.userData?.clientName}</h5>
-                                        <h5 className="font-weight-bold">Client Code: {props?.userData?.clientCode}</h5>
+                                        <h5 className="font-weight-bold ml-3">Client Name: {props?.userData?.clientName}</h5>
+                                        <h5 className="font-weight-bold ml-3">Client Code: {props?.userData?.clientCode}</h5>
                                         <div className="container">
 
                                             <Form>
                                                
 
                                                 <div className="row">
-                                                    <div className="col-lg-4">
+                                                    <div className="col-lg-6 ">
                                                         <div className="input full- optional">
                                                             <label
                                                                 className="string optional"
@@ -233,7 +231,7 @@ const ViewRateMapping = (props) => {
 
                                                         </div>
                                                     </div> */}
-                                                    <div className="col-lg-4">
+                                                    <div className="col-lg-6">
                                                         <div className="input full- optional">
                                                             <label
                                                                 className="string optional"
@@ -258,7 +256,7 @@ const ViewRateMapping = (props) => {
 
                                                 <div className="modal-footer">
                                                     {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
-                                                    <button disabled={disable} type="submit" className="btn btn-primary">View</button>
+                                                    <button disabled={disable} type="submit" className="btn cob-btn-primary  text-white">View</button>
                                                     {show === true ? (
                                                         <div className='col-lg-12'>
                                                             <RateRadioMapping riskTemplate={riskTemplate} chiledCode={props?.userData} />

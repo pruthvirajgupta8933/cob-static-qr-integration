@@ -12,6 +12,8 @@ import API_URL from '../../../../config';
 import toastConfig from '../../../../utilities/toastTypes';
 import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
 import { axiosInstance } from '../../../../utilities/axiosInstance';
+import "./index.css";
+
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
 
@@ -304,12 +306,12 @@ const PayerDetails = () => {
                                             <div className="modal-footer">
                                                 <button
                                                     type="submit"
-                                                    className="cratepaymentlinkclrsfigma text-white" >
+                                                    className="btn cob-btn-primary text-white" >
                                                     Submit
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    className="ColrsforDeletefigma text-white"
+                                                    className="btn cob-btn-secondary btn-danger text-white"
                                                     data-dismiss="modal"
                                                     onClick={resetForm}>
                                                     Cancel
@@ -330,7 +332,7 @@ const PayerDetails = () => {
                 <div className="container-fluid flleft">
                     <div className="row">
                         <div className="col-lg-4 pl-4">
-                            <button type="button" className="cratepaymentlinkclrsfigma text-white" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
+                            <button type="button" className="btn cob-btn-primary btn-primary text-white" data-toggle="modal" data-target="#exampleModal">Add Single Payer</button>
                         </div>
                     </div>
 
@@ -382,13 +384,13 @@ const PayerDetails = () => {
                                         <td>{user.email}</td>
                                         <td>{user.customer_type}</td>
                                         <td>
-                                            <button type="button" className="cratepaymentlinkclrsfigma text-white btn"  onClick={(e) => handleClick(user.id)} >Edit</button>
+                                            <button type="button" className="btn cob-btn-primary btn-primary text-white"  onClick={(e) => handleClick(user.id)} >Edit</button>
                                         </td>
 
                                         <td>
                                             <button onClick={(e) => generateli(user.id)}
                                                 type="button"
-                                                className="cratepaymentlinkclrsfigma text-white btn"
+                                                className="btn cob-btn-primary  text-white"
                                                 data-toggle="modal"
                                                 data-target="#bhuvi"
                                                 data-whatever="@getbootstrap"
@@ -398,7 +400,7 @@ const PayerDetails = () => {
                                             </div>
                                         </td>
                                         <td>
-                                            <button className="ColrsforDeletefigma text-white mt-7 btn-danger btn" onClick={() => deleteUser(user.id)}  >Delete</button>
+                                            <button className="btn  cob-btn-secondary btn-danger text-white mt-7 " onClick={() => deleteUser(user.id)}  >Delete</button>
                                         </td>
                                     </tr>
                                 ))}

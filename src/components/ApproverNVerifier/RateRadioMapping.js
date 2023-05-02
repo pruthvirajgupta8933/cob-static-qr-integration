@@ -1,25 +1,23 @@
 import React from "react";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
+
 import { useSelector } from "react-redux";
-import FormikController from "../../_components/formik/FormikController";
 
-const initialStateForRadio = {
-  isChecked: "",
-};
+// const initialStateForRadio = {
+//   isChecked: "",
+// };
 
-const NewvalidationSchemaforRadio = Yup.object({
-  isChecked: Yup.string()
-    .required("Please choose Rate Template")
-    .nullable(),
-});
+// const NewvalidationSchemaforRadio = Yup.object({
+//   isChecked: Yup.string()
+//     .required("Please choose Rate Template")
+//     .nullable(),
+// });
 
 const RateRadioMapping = (props) => {
   const { user } = useSelector((state) => state.auth);
   // const loginId = user.loginId;
   const username = user.clientContactPersonName;
 
-  const radiobutton = [{ key: "", value: "true" }];
+  // const radiobutton = [{ key: "", value: "true" }];
 
   // const handleSubmitForRadio = (values) => {
   //   // console.log(values)
@@ -30,8 +28,8 @@ const RateRadioMapping = (props) => {
     );
   };
   return (
-    <div>
-      <table className="table mt-5-">
+    <div className="container">
+            <table className="table">
         <thead>
           <tr>
             <th scope="col">Check</th>
@@ -80,7 +78,7 @@ const RateRadioMapping = (props) => {
 
                   </td>
 
-                  <td>{riskTemplate?.client_code}</td>
+                  <td>{riskTemplate?.client_code }</td>
                   <td>{riskTemplate?.rate_template_name}</td>
                 </tr>
                ))

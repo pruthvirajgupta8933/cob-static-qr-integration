@@ -14,22 +14,31 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
   const [validStatus,setValidStatus] = useState(false)
 
   let authModeOptions = [
-    { key: "Select", value: "" },
+    { key: "Select", value: "Select" },
     { key: "Netbanking", value: "Netbanking" },
     { key: "Debit Card", value: "Debitcard" },
   ];
   let accuntTypeOptions = [
-    { key: "Select", value: "" },
+    { key: "Select", value: "Select" },
     { key: "Savings", value: "Savings" },
     { key: "Current", value: "Current" },
   ];
   const FORM_VALIDATION = Yup.object().shape({
-    authenticationMode: Yup.string()
-      // .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-      .required("Required"),
-    payerBank: Yup.string().required("Required"),
+    authenticationMode: Yup.string().test(
+      "isRequired",
+      "Required",
+      function(value) {
+        return value !== "Select";
+      }).nullable(),
+    payerBank: Yup.string().required("Required").nullable(),
     payerAccountNumber: Yup.string().required("Required"),
-    payerAccountType: Yup.string().required("Required"),
+    payerAccountType:  Yup.string().test(
+      "isRequired",
+      "Required",
+      function(value) {
+        return value !== "Select";
+      }
+    ).nullable(),
   });
   const handleSubmit = (values) => {
     // console.log(values,"=====================>");
@@ -42,6 +51,7 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
         ifsc: values?.payerBankIfscCode,
       })
     ).then((res) => {
+      // console.log(res,"res")
       if (
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true &&
@@ -53,8 +63,7 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
        
       }if (
         res?.meta?.requestStatus === "fulfilled" &&
-        res?.payload?.status === true &&
-        res?.payload?.valid === false
+        res?.payload?.status === false
       ) {
         toast.error(res?.payload?.message)
       }
@@ -139,7 +148,7 @@ const BankDetails = ({ backToPersonalScreen, bankNameOptions,showbankData }) => 
           >
             Back
           </button>
-          <button class="btn btn-primary" type="submit">
+          <button class="btn bttn bttnbackgroundkyc" type="submit">
             Next
           </button>
         </Form>

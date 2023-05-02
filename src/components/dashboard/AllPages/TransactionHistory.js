@@ -346,6 +346,14 @@ const TransactionHistory = () => {
       "Udf9",
       "Udf10",
       "Udf11",
+      "Udf12",
+      "Udf13",
+      "Udf14",
+      "Udf15",
+      "Udf16",
+      "Udf17",
+      "Udf18",
+      "Udf19",
       "Udf20",
       "Gr.No",
       "Bank Response",
@@ -388,6 +396,14 @@ const TransactionHistory = () => {
         udf9: item.udf9 === null ? "" : item.udf9,
         udf10: item.udf10 === null ? "" : item.udf10,
         udf11: item.udf11 === null ? "" : item.udf11,
+        udf12: item.udf12 === null ? "" : item.udf12,
+        udf13: item.udf13 === null ? "" : item.udf13,
+        udf14: item.udf14 === null ? "" : item.udf14,
+        udf15: item.udf15 === null ? "" : item.udf15,
+        udf16: item.udf16 === null ? "" : item.udf16,
+        udf17: item.udf17 === null ? "" : item.udf17,
+        udf18: item.udf18 === null ? "" : item.udf18,
+        udf19: item.udf19 === null ? "" : item.udf19,
         udf20: item.udf20 === null ? "" : item.udf20,
         gr_number: item.gr_number === null ? "" : item.gr_number,
         bank_message: item.bank_message === null ? "" : item.bank_message,
@@ -701,6 +717,14 @@ const TransactionHistory = () => {
                         <th> Udf9 </th>
                         <th> Udf10 </th>
                         <th> Udf11 </th>
+                        <th> Udf12 </th>
+                        <th> Udf13 </th>
+                        <th> Udf14 </th>
+                        <th> Udf15 </th>
+                        <th> Udf16 </th>
+                        <th> Udf17 </th>
+                        <th> Udf18 </th>
+                        <th> Udf19 </th>
                         <th> Udf20 </th>
                         <th> Gr.No </th>
                         <th> Bank Response </th>
@@ -745,6 +769,14 @@ const TransactionHistory = () => {
                             <td>{item.udf9}</td>
                             <td>{item.udf10}</td>
                             <td>{item.udf11}</td>
+                            <td>{item.udf12}</td>
+                            <td>{item.udf13}</td>
+                            <td>{item.udf14}</td>
+                            <td>{item.udf15}</td>
+                            <td>{item.udf16}</td>
+                            <td>{item.udf17}</td>
+                            <td>{item.udf18}</td>
+                            <td>{item.udf19}</td>
                             <td>{item.udf20}</td>
                             <td>{item.gr_number}</td>
                             <td>{item.bank_message}</td>

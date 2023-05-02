@@ -100,8 +100,17 @@ function VerifiedMerchant() {
       sortable: true,
       width: "150px",
     },
+
     {
       id: "9",
+      name: "Submitted Date",
+      selector: (row) => row.updated_on,
+      sortable: true,
+      cell: (row) => <div>{covertDate(row.updated_on)}</div>,
+      width: "150px",
+    },
+    {
+      id: "10",
       name: "Verified Date",
       selector: (row) => row.verified_date,
       cell: (row) => covertDate(row.verified_date),
@@ -109,12 +118,12 @@ function VerifiedMerchant() {
       width: "150px",
     },
     {
-      id: "10",
+      id: "11",
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
     {
-      id: "11",
+      id: "12",
       name: "View Status",
       width:"120px",
       cell: (row) => (
@@ -137,13 +146,10 @@ function VerifiedMerchant() {
       ),
     },
     {
-      id: "12",
+      id: "13",
       name: "Action",
       cell: (row) => (
         <div>
-          {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white  btn-xs "
@@ -157,9 +163,6 @@ function VerifiedMerchant() {
             >
               Comments
             </button>
-          ) : (
-            <></>
-          )}
         </div>
       ),
     },
@@ -263,7 +266,7 @@ function VerifiedMerchant() {
   ];
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a").toUpperCase();
     return date;
   };
 
@@ -302,33 +305,28 @@ function VerifiedMerchant() {
       <div className="mt-1">
       <MerchnatListExportToxl
         URL={
-          "?search=Verified&order_by=-verified_date&search_map=verified_date"
+          "export-excel/?search=Verified"
         }
         filename={"Pending-Approval"}
       />
       </div>
       <div>
-        {openCommentModal === true ? (
-          <CommentModal
+      
+       {openCommentModal && <CommentModal
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
             tabName={"Pending Approval"}
-          />
-        ) : (
-          <></>
-        )}
-
-        {isOpenModal ? (
-          <KycDetailsModal
+          />}
+     
+     {isOpenModal && <KycDetailsModal
             kycId={kycIdClick}
             handleModal={setIsModalOpen}
             isOpenModal={isOpenModal}
             renderPendingApproval={verifyMerchant}
-          />
-        ) : (
-          <></>
-        )}
+          />}
+          
+     
       </div>
       <div className="container-fluid pull-left p-3- my-3- col-md-12- col-md-offset-4">
         <div className="scroll overflow-auto">

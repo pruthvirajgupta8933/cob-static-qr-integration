@@ -17,6 +17,7 @@ import MerchantDocument from "./MerchantDocument";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import CompleteVerification from "./CompleteVerification";
 import { isNumber } from "lodash";
+import CustomModal from "../../../../_components/custom_modal";
 
 const KycDetailsModal = (props) => {
   // console.log(props)
@@ -107,89 +108,69 @@ const KycDetailsModal = (props) => {
   useEffect(() => {
     setDocList(KycDocUpload)
   }, [KycDocUpload])
-  
 
-  return (
-    <div
-      tabIndex="-1"
-      role="dialog"
-      className={
-        "modal fade mymodals" +
-        (props?.isOpenModal ? " show d-block" : " d-none")
-      }
-      aria-hidden="true"
-      style={{ overflow: "scroll" }}
-    >
-      <div className="modal-dialog" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h3 className="modal-title font-weight-bold" id="kycmodaldetail">
-              Merchant KYC Details
-            </h3>
-            <button
-              type="button"
-              className="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              onClick={() => {
-                props?.handleModal(false);
-              }}
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
 
-          <div className="modal-body">
-            <div className="container">
-              {/* contact info section */}
-              <MerchantContactInfo
-                merchantKycId={merchantKycId}
-                role={roles}
-                KycTabStatus={KycTabStatusStore}
-              />
+  const modalBody = () => {
+    return (
+      <>
+          <div className="container">
+            
+            {/* contact info section */}
+            <MerchantContactInfo
+              merchantKycId={merchantKycId}
+              role={roles}
+              KycTabStatus={KycTabStatusStore}
+            />
 
-              {/* business overview */}
-              <BusinessOverview
-                businessTypeResponse={businessTypeResponse}
-                businessCategoryResponse={businessCategoryResponse}
-                merchantKycId={merchantKycId}
-                KycTabStatus={KycTabStatusStore}
-              />
-
-              {/* business details */}
-              <BusinessDetails
-                merchantKycId={merchantKycId}
-                KycTabStatus={KycTabStatusStore}
-              />
-
-              {/* Bank details */}
-              <BankDetails
-                merchantKycId={merchantKycId}
-                KycTabStatus={KycTabStatusStore}
-              />
-
-              {/* Merchant Documents */}
-              <MerchantDocument
-                docList={KycDocUpload}
-                setDocList={setDocList}
-                docTypeList={docTypeList}
-                role={roles}
-                merchantKycId={merchantKycId}
-                KycTabStatus={KycTabStatusStore}
-              />
-            </div>
-            <CompleteVerification
+            {/* business overview */}
+            <BusinessOverview
+              businessTypeResponse={businessTypeResponse}
+              businessCategoryResponse={businessCategoryResponse}
               merchantKycId={merchantKycId}
               KycTabStatus={KycTabStatusStore}
-              renderApprovalTable={renderPendingApprovel}
-              renderPendingVerificationData={renderPendingVerificationTable}
-              renderApprovedTable={renderApprovedTable}
-              closeVerification={closeVerification}
-              renderToPendingKyc={renderToPendingKyc}
             />
-          </div>
 
-          <div className="modal-footer">
+            {/* business details */}
+            <BusinessDetails
+              merchantKycId={merchantKycId}
+              KycTabStatus={KycTabStatusStore}
+            />
+
+            {/* Bank details */}
+            <BankDetails
+              merchantKycId={merchantKycId}
+              KycTabStatus={KycTabStatusStore}
+            />
+
+            {/* Merchant Documents */}
+            <MerchantDocument
+              docList={KycDocUpload}
+              setDocList={setDocList}
+              docTypeList={docTypeList}
+              role={roles}
+              merchantKycId={merchantKycId}
+              KycTabStatus={KycTabStatusStore}
+            />
+               <CompleteVerification
+            merchantKycId={merchantKycId}
+            KycTabStatus={KycTabStatusStore}
+            renderApprovalTable={renderPendingApprovel}
+            renderPendingVerificationData={renderPendingVerificationTable}
+            renderApprovedTable={renderApprovedTable}
+            closeVerification={closeVerification}
+            renderToPendingKyc={renderToPendingKyc}
+          />
+          </div>
+      
+
+      </>
+    )
+  }
+
+  const modalFooter = () => {
+    return (
+      <>
+            <div className="modal-footer">
             <button
               type="button"
               className="btn btn-secondary text-white"
@@ -200,10 +181,17 @@ const KycDetailsModal = (props) => {
             >
               Close
             </button>
-          </div>
+         
         </div>
-      </div>
-    </div>
+      </>
+    )
+  }
+  
+
+  return (
+    <>
+     <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />
+    </>
   );
 };
 

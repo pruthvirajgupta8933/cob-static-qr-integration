@@ -5,16 +5,18 @@ import { Link } from 'react-router-dom'
 function KycAlert() {
 
   const kyc = useSelector(state => state.kyc)
+  // console.log("kyc",kyc)
   const [kycTabRejectionStatus, setKycTabRejectionStatus] = useState(null)
 
   const KycTabStatusStore = kyc.KycTabStatusStore
-
+  // console.log("KycTabStatusStore")
   // console.log(KycTabStatusStore,"KycTabStatusStore")
 
   useEffect(() => {
 
     const statusVal = "Rejected";
     let allStatus = []
+    // console.log("alert KycTabStatusStore",KycTabStatusStore)
     if (KycTabStatusStore?.general_info_status === statusVal) {
 
       allStatus.push({
@@ -53,22 +55,23 @@ function KycAlert() {
 
     if (KycTabStatusStore?.status === statusVal) {
       allStatus.push({
-        "tab": "Reason for rejection",
+        "tab": "Reason Of Rejection",
         "comment": KycTabStatusStore?.comments
       })
     }
     setKycTabRejectionStatus(allStatus)
   }, [KycTabStatusStore])
 
+  // console.log("kycTabRejectionStatus",kycTabRejectionStatus)
   return (
     kycTabRejectionStatus?.length > 0 &&
     <div className="alert alert-danger NunitoSans-Regular" role="alert" >
-      <h4 className="alert-heading">KYC Alert!</h4>
+      <h4 className="alert-heading" data-tip="Kindly Update your KYC">KYC Alert!</h4>
       {kycTabRejectionStatus && kycTabRejectionStatus?.map((kycTabStatus, i) => (
         <p key={i}><span>{kycTabStatus?.tab} : {kycTabStatus?.comment}</span> </p>)
       )}
       <hr />
-      <Link className="btn btnbackground text-white" to="dashboard/kyc">Go to KYC the Form</Link>
+      <Link className="submit-btn btnbackground text-white" to="dashboard/kyc">Go to KYC the Form</Link>
     </div>
 
   )

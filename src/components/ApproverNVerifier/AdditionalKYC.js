@@ -1,28 +1,26 @@
 import React, { useEffect } from "react";
 import NavBar from "../dashboard/NavBar/NavBar";
-import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { useState } from "react";
 import FormikController from "../../_components/formik/FormikController";
 import { Formik, Form } from "formik";
+import { camelCase } from 'lodash';
 import * as Yup from "yup";
 import {
   authPanValidation,
   gstValidation,
-  ifscValidation,
-  getBankId,
   bankAccountVerification,
 } from "../../slices/kycSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
-import gotVerified from "../../assets/images/verified.png";
+
+import "./kyc-style.css";
 
 const AdditionalKYC = () => {
   const dispatch = useDispatch();
   const { kyc } = useSelector((state) => state);
 
-  const KycList = kyc?.kycUserList;
-  const { allTabsValidate } = kyc;
+const { allTabsValidate } = kyc;
 
   const documentTypeList = [
     { documentType: "PAN", value: "1" },
@@ -51,7 +49,7 @@ const AdditionalKYC = () => {
   const AccountNoRgex = /^[a-zA-Z0-9]{2,25}$/;
 
   const BusinessDetailsStatus = allTabsValidate?.BusinessDetailsStatus;
-  const bankAccountStatus = allTabsValidate?.BankDetails;
+  // const bankAccountStatus = allTabsValidate?.BankDetails;
 
   //  For PAN INFORMATION
   const panFirstName =
@@ -70,36 +68,7 @@ const AdditionalKYC = () => {
 
   //  For PAN INFORMATION
 
-  //  For GSTIN INFORMATION
-
-  const panNumber =
-    BusinessDetailsStatus?.GSTINValidation?.pan === null
-      ? ""
-      : BusinessDetailsStatus?.GSTINValidation?.pan;
-
-  const gst_trade_name =
-    BusinessDetailsStatus?.GSTINValidation?.trade_name === null
-      ? ""
-      : BusinessDetailsStatus?.GSTINValidation?.trade_name;
-
-  const state =
-    BusinessDetailsStatus?.GSTINValidation?.state === null
-      ? ""
-      : BusinessDetailsStatus?.GSTINValidation?.state;
-
-  const registered_date =
-    BusinessDetailsStatus?.GSTINValidation?.register === null
-      ? ""
-      : BusinessDetailsStatus?.GSTINValidation?.register;
-
-  const updated_date =
-    BusinessDetailsStatus?.GSTINValidation?.updated === null
-      ? ""
-      : BusinessDetailsStatus?.GSTINValidation?.updated;
-
-  const gstinValidity = BusinessDetailsStatus?.GSTINValidation?.valid;
-
-  //  For GSTIN INFORMATION
+  
 
   // For Bank Account Info
 
@@ -154,8 +123,23 @@ const AdditionalKYC = () => {
 
   const [selectedDocType, setSelectedDocType] = useState("");
   const [panStatus, setPanStatus] = useState(false);
+  const [gstinData,setGstinData]=useState([])
+  
   const [gstStatus, setGstStatus] = useState(false);
   const [bankStatus, setBankStatus] = useState(false);
+  const[buttonDisable,setButtonDisable]=useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const[showPanInfo,setShowPanInfo]=useState([])
+
+  const objArray = Object.entries(gstinData);
+ const panInfodata=Object.entries(showPanInfo);
+  
+  
+
+
+
+
+  
 
   const handleChange = (event) => {
     setSelectedDocType(event.target.value);
@@ -173,17 +157,23 @@ const AdditionalKYC = () => {
   }, [selectedDocType]);
 
   const handleSubmitForPAN = (values) => {
+    setButtonDisable(true)
+    setIsLoading(true)
     dispatch(
       authPanValidation({
         pan_number: values.pan_card,
       })
     ).then((res) => {
       if (
+        setButtonDisable(false),
+        setShowPanInfo(res?.payload),
+        setIsLoading(false),
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
+       
       ) {
-        toast.success(res.payload.message);
+        // toast.success(res.payload.message);
         setPanStatus(res.payload.status);
         // console.log("PAN Data",res.payload)
       } else {
@@ -193,6 +183,8 @@ const AdditionalKYC = () => {
   };
 
   const handleSubmitForGSTIN = (values) => {
+    setIsLoading(true)
+   
     dispatch(
       gstValidation({
         gst_number: values.gst_number,
@@ -200,12 +192,17 @@ const AdditionalKYC = () => {
         fy: "2018-19",
       })
     ).then((res) => {
+      
+      
       if (
+        
+        setIsLoading(false),
+        setGstinData(res?.payload),
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
       ) {
-        toast.success(res?.payload?.message);
+        // toast.success(res?.payload?.message);
         setGstStatus(res.payload.status);
       } else {
         toast.error(res?.payload?.message);
@@ -214,6 +211,7 @@ const AdditionalKYC = () => {
   };
 
   const handleSubmitForBankAccount = (values) => {
+    setButtonDisable(true)
     dispatch(
       bankAccountVerification({
         account_number: values.account_number,
@@ -221,11 +219,12 @@ const AdditionalKYC = () => {
       })
     ).then((res) => {
       if (
+        setButtonDisable(false),
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true &&
         res?.payload?.valid === true
       ) {
-        toast.success(res?.payload?.message);
+        // toast.success(res?.payload?.message);
         setBankStatus(res?.payload?.status);
       } else {
         toast.error(res?.payload?.message);
@@ -247,7 +246,7 @@ const AdditionalKYC = () => {
             <div className="row">
               <div className="col-lg-12 mb-4 bgcolor-">
                 <div className="form-group col-lg-3 col-md-12 mt-2">
-                  <label>Document Type</label>
+                  <label className="col-form-label mt-0 p-2 ml-1">Document Type</label>
                   <select
                     className="ant-input"
                     documentType={selectedDocType}
@@ -271,7 +270,7 @@ const AdditionalKYC = () => {
                 <Form className="form">
                   <div className="container">
                     <div className="row">
-                      <div className="col-lg-5">
+                      <div className="col-lg-3">
                         <FormikController
                           control="input"
                           type="text"
@@ -281,14 +280,27 @@ const AdditionalKYC = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-lg-5">
+                    <div className="row">
+                    <div className="col-lg-3 mr-2">
                       <button
                         type="submit"
-                        className="btn btnbackground text-white"
+                        // className={`verify-btn btnbackground text-white ${isLoading ? 'spinner-grow spinner-grow-sm text-light mr-1' : ''}`}
+                        className="btn cob-btn-primary  text-white"
+                        // disabled={buttonDisable}
                       >
-                        Verify
+                       {/* {isLoading ? 'Loading...' : 'Verify'} */}
+                       {
+                        isLoading && 
+                        <>
+                       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                       
+                        </>
+                       }
+                       Verify
                       </button>
                     </div>
+                    </div>
+                    
                   </div>
                 </Form>
               </Formik>
@@ -306,7 +318,7 @@ const AdditionalKYC = () => {
                 <Form className="form">
                   <div className="container">
                     <div className="row">
-                      <div className="col-lg-5">
+                      <div className="col-lg-3">
                         <FormikController
                           control="input"
                           type="text"
@@ -316,14 +328,25 @@ const AdditionalKYC = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-lg-5">
+                    <div className="row">
+                    <div className="col-lg-3 mr-5">
                       <button
                         type="submit"
-                        className="btn float-lg-right btnbackground text-white"
+                        className="btn cob-btn-primary  text-white"
+                        disabled={buttonDisable}
                       >
+                        {
+                        isLoading && 
+                        <>
+                       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                       
+                        </>
+                       }
                         Verify
                       </button>
                     </div>
+                    </div>
+                    
                   </div>
                 </Form>
               </Formik>
@@ -340,8 +363,8 @@ const AdditionalKYC = () => {
               >
                 <Form className="form">
                   <div className="row">
-                    <div className="col-lg-4">
-                      <label className="col-form-label mt-0 p-2">
+                    <div className="col-lg-3 ml-3">
+                      <label className="col-form-label mt-0 p-2 ml-1">
                         IFSC Code<span style={{ color: "red" }}>*</span>
                       </label>
 
@@ -354,7 +377,7 @@ const AdditionalKYC = () => {
                       />
                     </div>
 
-                    <div className="col-lg-4">
+                    <div className="col-lg-3">
                       <label className="col-form-label mt-0 p-2">
                         Business Account Number{" "}
                         <span style={{ color: "red" }}>*</span>
@@ -368,10 +391,11 @@ const AdditionalKYC = () => {
                         placeholder="Enter your Account Number"
                       />
                     </div>
-                    <div className="col-lg-8">
+                    <div className="col-lg-3 mt-4">
                       <button
                         type="submit"
-                        className="btn float-lg-right btnbackground text-white"
+                        className="btn cob-btn-primary text-white"
+                        disabled={buttonDisable}
                       >
                         Verify
                       </button>
@@ -384,73 +408,103 @@ const AdditionalKYC = () => {
             )}
 
             {panStatus === true && selectedDocType === "1" ? (
-              <div className="container" style={{ marginTop: "91px" }}>
-                <h2 className="font-weight-bold">PAN Information</h2>
-                <div className="row">
-                  <div className="col-lg-4 font-weight-bold">
-                    Name : {accHolderName.length > 2 ? accHolderName : ""}
-                  </div>
-                  {/* <div className="col-lg-5">
+               <div class="container mt-5">
+               <h2 class="font-weight-bold">GSTIN Information</h2>
+               <div class="row">
+                 {panInfodata.map(([key, value]) => (
+                   <div class="col-md-6 p-2" key={key}>
+                     <span class="font-weight-bold mb-1">
+                       {key.replace('_', ' ')}:
+                     </span>
+                     {typeof value === "boolean" ? (
+                       <span>{value.toString()}</span>
+                     ) : (
+                       <span>{value}</span>
+                     )}
+                   </div>
+                 ))}
+               </div>
+             </div>
+            //   <div className="container" style={{ marginTop: "91px" }}>
+            //     <h2 className="font-weight-bold">PAN Information</h2>
+            //     <div className="row">
+            //       <div className="col-lg-4 font-weight-bold">
+            //         Name : {accHolderName.length > 2 ? accHolderName : ""}
+            //       </div>
+            //       {/* <div className="col-lg-5">
           
-            </div> */}
-                  <div className="col-lg-4 font-weight-bold">
-                    Valid :{" "}
-                    {panValidity === true
-                      ? "True"
-                      : panValidity === false
-                      ? "false"
-                      : "Not Found"}
-                  </div>
-                  <div className="col-lg-5"></div>
-                </div>
-              </div>
+            // </div> */}
+            //       <div className="col-lg-4 font-weight-bold">
+            //         Valid :{" "}
+            //         {panValidity === true
+            //           ? "True"
+            //           : panValidity === false
+            //           ? "false"
+            //           : "Not Found"}
+            //       </div>
+            //       <div className="col-lg-5"></div>
+            //     </div>
+            //   </div>
             ) : (
               ""
             )}
 
-            {gstStatus === true && selectedDocType === "2" ? (
-              <div className="container" style={{ marginTop: "91px" }}>
-                <h2 className="font-weight-bold">GSTIN Information</h2>
-                <div className="row">
-                  <div className="col-lg-4 font-weight-bold">
-                    Trade Name : {gst_trade_name ? gst_trade_name : ""}
-                  </div>
-                  {/* <div className="col-lg-5">
-          
-            </div> */}
-                  <div className="col-lg-4 font-weight-bold">PAN : {panNumber}</div>
-                </div>
-                <div className="row">
-                  <div className="col-lg-4 font-weight-bold">
-                    State : {state ? state : ""}
-                  </div>
-                  {/* <div className="col-lg-5">
-          
-            </div> */}
-                  <div className="col-lg-4 font-weight-bold">
-                    Registered Date : {registered_date ? registered_date : ""}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-lg-4 font-weight-bold">
-                    Updated Date : {updated_date ? updated_date : ""}
-                  </div>
-                  {/* <div className="col-lg-5">
-          
-            </div> */}
-                  <div className="col-lg-4 font-weight-bold">
-                    Valid :{" "}
-                    {gstinValidity === true
-                      ? "True"
-                      : gstinValidity === false
-                      ? "false"
-                      : "Not Found"}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
+            {/* <div>
+   
+            {gstinData.map((data, index) => (
+
+<>
+        <h2 className="font-weight-bold">GSTIN Information</h2>
+        <div className="row">
+          <div className="col-lg-4 font-weight-bold">
+            Trade Name : {data.tradeName ? data.tradeName : ""}
+          </div>
+          <div className="col-lg-4 font-weight-bold">PAN : {data.panNumber}</div>
+        </div>
+        <div className="row">
+          <div className="col-lg-4 font-weight-bold">
+            State : {data.state ? data.state : ""}
+          </div>
+          <div className="col-lg-4 font-weight-bold">
+            Registered Date : {data.registered_date ? data.registered_date : ""}
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-lg-4 font-weight-bold">
+            Updated Date : {data.updated_date ? data.updated_date : ""}
+          </div>
+          <div className="col-lg-4 font-weight-bold">
+            Valid :{" "}
+            {data.gstinValidity === true
+              ? "True"
+              : data.gstinValidity === false
+              ? "false"
+              : "Not Found"}
+          </div>
+        </div>
+        </>
+      
+    ))}
+  </div> */}
+ {gstStatus===true &&  selectedDocType === "2" &&
+  <div class="container mt-5">
+  <h2 class="font-weight-bold">GSTIN Information</h2>
+  <div class="row">
+    {objArray.map(([key, value]) => (
+      <div class="col-md-6 p-2" key={key}>
+        <span class="font-weight-bold mb-1">
+          {key.replace('_', ' ')}:
+        </span>
+        {typeof value === "boolean" ? (
+          <span>{value.toString()}</span>
+        ) : (
+          <span>{value}</span>
+        )}
+      </div>
+    ))}
+  </div>
+</div>
+}
 
             {bankStatus === true && selectedDocType === "3" ? (
               <div className="container" style={{ marginTop: "32px" }}>
@@ -476,7 +530,7 @@ const AdditionalKYC = () => {
                       ? "True"
                       : accountValidity === false
                       ? "false"
-                      : "Not Found"}
+                      : "Not Found"} 
                   </div>
                   {/* <div className="col-lg-5">
           

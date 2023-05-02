@@ -88,13 +88,22 @@ function PendingVerification() {
       cell: (row) => <div>{covertDate(row.signUpDate)}</div>,
       width: "150px",
     },
+
     {
       id: "9",
+      name: "Submitted Date",
+      selector: (row) => row.updated_on,
+      sortable: true,
+      cell: (row) => <div>{covertDate(row.updated_on)}</div>,
+      width: "150px",
+    },
+    {
+      id: "10",
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
     {
-      id: "10",
+      id: "11",
       name: "View Status",
       // selector: (row) => row.viewStatus,
       cell: (row) => (
@@ -273,7 +282,7 @@ function PendingVerification() {
   ];
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a").toUpperCase();
     return date;
   };
 
@@ -290,29 +299,25 @@ function PendingVerification() {
           />
         </div>
         <div>
-          {openCommentModal === true ? (
-            <CommentModal
+        
+         {openCommentModal && <CommentModal
               commentData={commentId}
               isModalOpen={openCommentModal}
               setModalState={setOpenCommentModal}
               tabName={"Pending Verification"}
-            />
-          ) : (
-            <></>
-          )}
+            />}
+            
+      
 
           {/* KYC Details Modal */}
 
-          {isOpenModal === true ? (
-            <KycDetailsModal
+       {isOpenModal && <KycDetailsModal
               kycId={kycIdClick}
               handleModal={setIsModalOpen}
               isOpenModal={isOpenModal}
               renderPendingVerification={pendingVerify}
-            />
-          ) : (
-            <></>
-          )}
+            /> }
+            
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -335,7 +340,7 @@ function PendingVerification() {
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
-            URL={"?order_by=-id&search=processing"}
+            URL={"export-excel/?search=processing"}
             filename={"Pending-Verification"}
           />
         </div>

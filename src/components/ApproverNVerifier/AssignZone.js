@@ -161,10 +161,10 @@ function AssignZone() {
       id: "9",
       name: "Merchant Configuration",
       cell: (row) => (
-        <div className="mt-3">
+        <div >
           <button
             type="button"
-            className="btn approve text-white  btn-xs mt-2"
+            className="save-next-btn approve text-white  btn-xs "
             onClick={() => {
               setModalDisplayData(row);
               setOpenModal(true);
@@ -190,12 +190,13 @@ function AssignZone() {
             <h1 className="m-b-sm gx-float-left">Configuration</h1>
           </div>
           <div className="container-fluid flleft">
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className="col-lg-3 mt-2">
               <SearchFilter
                 kycSearch={kycSearch}
                 searchText={searchText}
                 searchByText={searchByText}
                 setSearchByDropDown={setSearchByDropDown}
+                searchTextByApiCall={true}
               />
               <div>
                 {openZoneModal === true ? (
@@ -205,7 +206,7 @@ function AssignZone() {
                 )}
               </div>
             </div>
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className="col-lg-3 mt-2">
               <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}

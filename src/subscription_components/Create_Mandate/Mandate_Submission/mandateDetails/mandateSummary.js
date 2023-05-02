@@ -1,13 +1,29 @@
 import React from "react";
 
 const MandateSummary = ({updatedData}) => {
+
+  // console.log(updatedData,"New Updated Data")
+
+
+
+const startDate = updatedData?.mandateStartDate;
+const selectedStartdate = new Date(startDate);
+const endDate = updatedData?.untilCancelled === true ? "" : updatedData?.mandateEndDate;
+const selectedEndDate = new Date(endDate);
+const options = { weekday: 'short', month: 'short', day: 'numeric' };
+
+
+const formattedStartDate = selectedStartdate.toLocaleDateString('en-US', options);
+const formattedEndDate = updatedData?.untilCancelled === true ? "Until Cancelled"  : selectedEndDate.toLocaleDateString('en-US', options);
+
+
   return (
     <div>
       <div class="row">
         <div class="col-sm">
           <h4>Mandate Variant</h4>
           <span>
-            <p className="text-secondary"></p>
+            <p className="text-secondary">ONLINE</p>
           </span>
         </div>
         <div class="col-sm">
@@ -51,19 +67,19 @@ const MandateSummary = ({updatedData}) => {
           </div>
           <div class="col-sm">
             <h4>Start date</h4>
-            <p className="text-secondary">{updatedData?.mandateStartDate}</p>
+            <p className="text-secondary">{formattedStartDate}</p>
           </div>
         </div>
         <div class="row">
           <div class="col-sm">
             <h4>End date</h4>
             <span>
-              <p className="text-secondary">{updatedData?.mandateEndDate}</p>
+              <p className="text-secondary">{formattedEndDate}</p>
             </span>
           </div>
           <div class="col-sm">
             <h4>Until Cancelled</h4>
-            <p className="text-secondary"></p>
+            <p className="text-secondary">{updatedData?.untilCancelled.toString()}</p>
           </div>
           <div class="col-sm">
             <h4>Request Type</h4>
@@ -74,12 +90,12 @@ const MandateSummary = ({updatedData}) => {
           <div class="col-sm">
             <h4>Requested By</h4>
             <span>
-              <p className="text-secondary"></p>
+              <p className="text-secondary">Merchant</p>
             </span>
           </div>
           <div class="col-sm">
             <h4>Mandate Purpose</h4>
-            <p className="text-secondary"></p>
+            <p className="text-secondary">{updatedData?.mandatePurpose}</p>
           </div>
         </div>
       </div>

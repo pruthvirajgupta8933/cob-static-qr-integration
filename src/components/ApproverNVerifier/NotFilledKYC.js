@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { kycForNotFilled } from "../../slices/kycSlice";
@@ -156,7 +157,7 @@ const NotFilledKYC = () => {
         </div>
         <div className="mt-1">
           <MerchnatListExportToxl
-            URL={"?order_by=-id&search=Not-Filled"}
+            URL={"export-excel/?search=Not-Filled"}
             filename={"Not-Filled-KYC"}
           />
         </div>

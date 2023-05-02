@@ -28,7 +28,6 @@ import { DefaultRateMapping } from "../../../utilities/DefaultRateMapping";
 import { isNull } from "lodash";
 import AlertBox from "../../../_components/reuseable_components/AlertBox";
 
-
 function Home() {
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
@@ -40,11 +39,11 @@ function Home() {
   const { KycTabStatusStore, OpenModalForKycSubmit } = kyc;
   const { user } = auth;
 
-  const {SubscribedPlanData} = productCatalogueSlice
+  const { SubscribedPlanData } = productCatalogueSlice;
 
   useEffect(() => {
-      GetKycTabsStatus({login_id: user?.loginId})
-  }, [user]);
+    dispatch(GetKycTabsStatus({ login_id: user?.loginId }));
+  }, []);
 
   useEffect(() => {
     // console.log(kyc?.kycUserList)
@@ -71,13 +70,16 @@ function Home() {
     return <Redirect to={`${path}/approver`} />;
   }
 
-
   const handleClose = () => {
     dispatch(UpdateModalStatus(false));
   };
 
   // filter only subscription plan
-  const unPaidProduct = SubscribedPlanData?.filter((d) => ((isNull(d?.mandateStatus) || d?.mandateStatus==="pending") && (d?.plan_code==="005")))
+  const unPaidProduct = SubscribedPlanData?.filter(
+    (d) =>
+      (isNull(d?.mandateStatus) || d?.mandateStatus === "pending") &&
+      d?.plan_code === "005"
+  );
 
   return (
     <section className="ant-layout Satoshi-Medium NunitoSans-Regular">
@@ -87,35 +89,38 @@ function Home() {
 
       {/* KYC container start from here */}
       <div className="announcement-banner-container col-lg-12">
-
         {/* hide when login by bank and businees category b2b */}
-        {(roles?.bank === true || roles?.b2b === true) ? (
+        {roles?.bank === true || roles?.b2b === true ? (
           <></>
         ) : (
           <StepProgressBar status={kyc?.kycUserList?.status} />
         )}
 
-        {/* KYC ALETT */}
-        {roles?.merchant === true ?
+      
+        {roles?.merchant === true ? (
           <React.Fragment>
-            {unPaidProduct?.length > 0 &&  
-               <AlertBox
+            {unPaidProduct?.length > 0 && (
+              <AlertBox
                 cardData={unPaidProduct}
                 // key={data?.clientSubscribedPlanDetailsId}
                 heading={`Payment Alert`}
-                // text1={`Kindly pay the amount of the subscribed product` }
+                text1={`Kindly pay the amount of the subscribed product`}
                 // text2={`Product : ${data?.applicationName}` }
                 // text3={`Product Plan : ${data?.planName}`}
                 // linkUrl={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}
-                linkName={'Make Payment'}
-                bgColor={'alert-danger'}
+                linkName={"Make Payment"}
+                bgColor={"alert-danger"}
               />
+              )
               }
+
+                {/* KYC ALETT */}
             <KycAlert />
           </React.Fragment>
-          : <></>}
+        ) : (
+          <></>
+        )}
 
-    
         <div className="announcement-banner-container_new  announcement-banner">
           <div className="onboarding-illustration-top">
             <img
@@ -128,7 +133,8 @@ function Home() {
           <div className="row">
             <div
               className="col-12 col-md-3 aos-init aos-animate"
-              data-aos="fade-up">
+              data-aos="fade-up"
+            >
               <div className="icon text-primary mb-3">
                 <svg
                   width="24"
@@ -226,51 +232,53 @@ function Home() {
               </p>
             </div>
 
-            {(roles?.merchant === true && kyc?.kycUserList?.status !== "Approved") && (
-              <div className="col-12 col-md-12">
-                <div className="card col-lg-12- cardkyc pull-left">
-                  <div className="font-weight-bold card-body Satoshi-Medium">
-                    <span>
-                      You can accept payments upto ₹10,000 for now. To extend
-                      the limit complete your KYC and get it approved.
-                    </span>
-                    <Link
-                      to={`/dashboard/kyc`}
-                      data-toggle="modal"
-                      data-target="#exampleModalCenter"
-                    >
-                      <button
-                        className="text-white  kycbtns"
-                        style={{
-                          backgroundColor: "#0156B3",
-                          paddingLeft: "10px",
-                        }}
+            {roles?.merchant === true &&
+              kyc?.kycUserList?.status !== "Approved" && (
+                <div className="col-12 col-md-12">
+                  <div className="card col-lg-12- cardkyc pull-left">
+                    <div className="font-weight-bold card-body Satoshi-Medium">
+                      <span>
+                        You can accept payments upto ₹10,000 for now. To extend
+                        the limit complete your KYC and get it approved.
+                      </span>
+                      <Link
+                        to={`/dashboard/kyc`}
+                        data-toggle="modal"
+                        data-target="#exampleModalCenter"
                       >
-                        Complete KYC
-                      </button>
-                    </Link>
+                        <button
+                          className="text-white  kycbtns"
+                          style={{
+                            backgroundColor: "#0156B3",
+                            paddingLeft: "10px",
+                          }}
+                        >
+                          Complete KYC
+                        </button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) }
-            {(roles?.merchant === true && kyc?.kycUserList?.status === "Approved") && 
-              (
+              )}
+            {roles?.merchant === true &&
+              kyc?.kycUserList?.status === "Approved" && (
                 <div className="col-12 col-md-12">
                   <div className="card col-lg-12- cardkyc pull-left">
                     <div className="font-weight-bold card-body Satoshi-Medium">
                       <span>
                         Congratulations! Your KYC documents have been approved.
                       </span>
-                      <button className="text-white pull-right kycbtns" disabled>
+                      <button
+                        className="text-white pull-right kycbtns"
+                        disabled
+                      >
                         KYC Done
                       </button>
                     </div>
                   </div>
                 </div>
               )}
-
           </div>
-
         </div>
 
         {roles?.merchant === true && (
@@ -287,8 +295,12 @@ function Home() {
                     &nbsp;Payment Links
                   </h2>
                   <p className="paragraphcssdashboards">
-                    Payment Links is the world’s first Unified link-based payment method, for payment collections with the help of links for a wide range of payment modes. Collect payments even without a website through easy payment links.
-                    Payment Links offers password-protected and shortened payment links for seamless payment collection.
+                    Payment Links is the world’s first Unified link-based
+                    payment method, for payment collections with the help of
+                    links for a wide range of payment modes. Collect payments
+                    even without a website through easy payment links. Payment
+                    Links offers password-protected and shortened payment links
+                    for seamless payment collection.
                   </p>
                   <Link to={`/dashboard/sabpaisa-pricing/13/PayLink`}>
                     <p className="pricingclasscss">
@@ -395,7 +407,7 @@ function Home() {
               </div>
             </div>
           </div>
-        ) }
+        )}
       </div>
 
       {/* KYC container end here */}
@@ -416,7 +428,7 @@ function Home() {
       </main>
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
-      {(roles?.bank === true || roles?.b2b === true) ? (
+      {roles?.bank === true || roles?.b2b === true ? (
         <></>
       ) : (
         <div
@@ -426,16 +438,13 @@ function Home() {
           }
           role="dialog"
         >
-
           <div className="modal-dialog modal-dialog-centered " role="document">
             <div className="modal-content">
               <div className="modal-body Satoshi-Medium">
-
                 {/* ratemapping loader  */}
                 <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
 
-
-                {!(isRateMappingInProcess) &&
+                {!isRateMappingInProcess && (
                   <div className="">
                     <button
                       type="button"
@@ -451,11 +460,13 @@ function Home() {
 
                     <div className="row">
                       <div className="col-sm">
-                        <h1 className="homeModalHeading">Welcome to SabPaisa!</h1>
+                        <h1 className="homeModalHeading">
+                          Welcome to SabPaisa!
+                        </h1>
                         <h2 className="modalscolrsfortext">
                           Complete the KYC to activate your account and start
-                          accepting payments. Fill in all the information to start
-                          your SabPaisa Payment services.
+                          accepting payments. Fill in all the information to
+                          start your SabPaisa Payment services.
                         </h2>
                       </div>
 
@@ -499,11 +510,7 @@ function Home() {
                       </div>
                     </div>
                   </div>
-                }
-
-
-
-
+                )}
               </div>
             </div>
           </div>
@@ -515,7 +522,7 @@ function Home() {
       {/* need to fix this modal on condition */}
       <div
         className={
-          "modal fade mymodals" +
+          "modal fade mymodals " +
           (OpenModalForKycSubmit?.isOpen === true ? " show d-block" : " d-none")
         }
         role="dialog"
@@ -582,11 +589,9 @@ function Home() {
                     </ul>
                   </div>
 
-                  <div className="rounded mx-auto d-block">
+                  <div className="rounded mx-auto d-block text-center">
                     <img
                       src={congratsImg}
-                      width={250}
-                      className="modalsimageclass"
                       alt="SabPaisa"
                       title="SabPaisa"
                     />
@@ -606,101 +611,6 @@ function Home() {
           </div>
         </div>
       </div>
-
-      {/* KYC SUBMIT MODAL AFTER SUBMITTING THE KYC FORM */}
-      {/* <section>
-       <div
-        className={
-          "modal hide fade mymodals" +
-          (OpenModalForKycSubmit?.isOpen === true ? " show d-block" : " d-none")
-        }
-        tabIndex="-1"
-        role="dialog"
-        style={{ marginLeft: "214px", marginTop: "6px" }}
-        id="submitKyc"
-        data-bs-backdrop="static" data-bs-keyboard="false"
-        aria-labelledby="submitKycLabel"
-      >
-        <div className="modal-dialog modal-dialog-centered " role="document" style={{ maxWidth: 480 }}>
-          <div className="modal-content modalsubmitmodal">
-            <div className="modal-body Satoshi-Medium">
-              <button
-                type="button"
-                data-bs-dismiss="modal"
-                className="close"
-                aria-label="Close"
-                onClick={() => {
-                  handleClose()
-                }}
-              
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <div className="row">
-                          <div className="col-lg-12">
-                            <h1
-                              className="text-center"
-                              style={{
-                                color: "#4BB543",
-                                fontWeight: "700",
-                                fontStyle: "normal",
-                                fontSize: "32px",
-                              }}
-                            >
-                              Congratulations!
-                            </h1>
-                            <p className="modalscolrsfortextapprv m-0 text-center">
-                            You can accept payments upto INR 15,000
-                            </p>
-                            <p className="modalscolrsfortextapprv m-0 text-center">
-                            Your KYC is currently under review. 
-                            <br/>
-                            <br/>
-                            The KYC review process ususally takes 3-4 working days.
-                            We will notify you in case we want any clarification on your KYC.
-
-                            </p>
-                          </div>
-                        </div>
-                        <div className="row">
-                        
-                          <div className="col-lg-12 text-center">
-                            <img
-                              src={congImg}
-                              className="modalsimageclass-1"
-                              alt="SabPaisa"
-                              title="SabPaisa"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="modal-footer p-2">
-                        <div className="col-lg-12 p-0 m-0 text-center">
-                        <button
-                              type="button"
-                              className="ColrsforredirectProdct text-white m-0"
-                              data-bs-dismiss="modal"
-                              onClick={() => {
-                                handleClose()
-                              }}
-                            
-                            >
-                              Close
-                            </button>
-                        </div> */}
-
-      {/* </Link> */}
-
-      {/* </div>
-          </div>
-        </div>
-      </div>
-      </section>
-       
-   
-       */}
-      {/* KYC SUBMIT MODAL AFTER SUBMITTING THE KYC FORM */}
-
       {/* Dashboard open pop up start here {IF KYC IS APPROVED}*/}
     </section>
   );

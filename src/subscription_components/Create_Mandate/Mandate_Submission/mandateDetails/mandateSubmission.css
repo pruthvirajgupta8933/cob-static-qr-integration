@@ -10,4 +10,9 @@
 
  .mand {
     border: 1px solid rgba(0, 0, 0, 0.12);
+    text-decoration: none;
+ }
+
+ .npciimg {
+    width: 250px;
  }

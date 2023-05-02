@@ -28,8 +28,6 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [auth, setAuthData] = useState(authentication);
   const [namee, setNamee] = useState("");
-  
-
 
   const [values, setValues] = useState({
     password: "",
@@ -44,7 +42,7 @@ function LoginPage() {
     const userLocalData = JSON.parse(sessionStorage.getItem("user"));
     const isLoggedInLc =
       userLocalData && userLocalData.loginId !== null ? true : false;
-      // console.log("isLoggedInLc",isLoggedInLc)
+    // console.log("isLoggedInLc",isLoggedInLc)
     if (isLoggedInLc) {
       // console.log("userAlreadyLoggedIn",userAlreadyLoggedIn)
       // console.log("user?.loginStatus",user?.loginStatus)
@@ -64,8 +62,6 @@ function LoginPage() {
   useEffect(() => {
     dispatch(clearMessage());
   }, [dispatch]);
-
-
 
   const handleLogin = (formValue) => {
     const { clientUserId, userPassword } = formValue;
@@ -99,7 +95,7 @@ function LoginPage() {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
-  const queryString  = window.location.search
+  const queryString = window.location.search;
 
   return (
     <>
@@ -264,13 +260,8 @@ function LoginPage() {
 
                                   <div className="simform__actions mt-4">
                                     <button
-                                      className="sumbit btn-0156B3"
+                                      className="login-btn shadow-sm"
                                       type="sumbit"
-                                      style={{
-                                        boxShadow:
-                                          "0px 14px 10px rgba(66, 133, 248, 0.5)",
-                                        borderRadius: "6px",
-                                      }}
                                       disabled={
                                         !(formik.isValid && formik.dirty)
                                           ? true
@@ -278,17 +269,13 @@ function LoginPage() {
                                       }
                                     >
                                       {loading && (
-                                        // <span
-                                        //   className="spinner-border forSpinner NunitoSans-Regular"
-                                        //   role="status"
-                                        // ></span>
-                                        <div
-                                          className="spinner-border text-secondary- NunitoSans-Regular"
+                                        <span
+                                          class="spinner-grow spinner-grow-sm text-light mr-1"
                                           role="status"
-                                        ></div>
-                                        // <div className="spinner-grow" role="status"></div>
+                                          aria-hidden="true"
+                                        ></span>
                                       )}
-                                      Login
+                                      Login <i class="fa fa-sign-in" aria-hidden="true"></i>
                                     </button>
                                   </div>
                                 </Form>
@@ -303,19 +290,21 @@ function LoginPage() {
                               rel="noreferrer"
                               target={"_blank"}
                               alt="SabPaisa Terms & Conditions"
+                              className="colorforterms_condition"
                               title="SabPaisa Terms & Conditions"
                             >
                               Terms & Conditions
                             </a>
-                            &nbsp;|{" "}
+                            {/* &nbsp;|{" "} */}
                             <a
                               href="https://sabpaisa.in/privacy-policy/"
                               rel="noreferrer"
                               target={"_blank"}
                               alt="SabPaisa Privacy Policy"
+                              className="colorforterms_condition"
                               title="SabPaisa Privacy Policy"
                             >
-                              Privacy Policy
+                              &nbsp;| Privacy Policy
                             </a>
                           </p>
                         </div>

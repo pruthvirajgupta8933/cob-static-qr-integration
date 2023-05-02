@@ -23,6 +23,19 @@
   overflow: hidden;
   
 }
+.login-btn
+{
+  background: #19376D;
+  color: #fff;
+  border-radius: 4px;
+  width: 100%;
+  padding: 10px;
+}
+.login-btn:disabled {
+  border: 0px;
+  background-color: #e4e4e4;
+  color: #333;
+}
 
 .header .dropdown-menu li a{
   border-bottom:1px solid #ccc;

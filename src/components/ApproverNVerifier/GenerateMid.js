@@ -203,7 +203,8 @@ function AssignZone() {
             <h1 className="m-b-sm gx-float-left">MID Generation</h1>
           </div>
           <div className="container-fluid flleft">
-            <div className="col-lg-4 mrg-btm- bgcolor">
+          <div className="row">
+            <div className="form-group  col-md-3">
               <SearchFilter
                 kycSearch={kycSearch}
                 searchText={searchText}
@@ -223,7 +224,7 @@ function AssignZone() {
                 )}
               </div>
             </div>
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className="form-group col-md-3 mx-4">
               <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}
@@ -231,8 +232,8 @@ function AssignZone() {
               />
             </div>
 
-            <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
-              <div className="scroll overflow-auto">
+            <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4 mr-3">
+              <div className="scroll overflow-auto mr-3">
                 {!loadingState && data?.length !== 0 && (
                   <Table
                     row={AssignZoneData}
@@ -250,6 +251,7 @@ function AssignZone() {
               )}
             </div>
           </div>
+        </div>
         </div>
       </main>
     </section>

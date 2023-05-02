@@ -403,12 +403,12 @@ table.tables tr:nth-child(odd) {
   padding: 8px 20px;
 }
 
-.ColrsforDeletefigma {
+/* .btn  cob-btn-secondary {
   background: #ff3e06;
   border: 0;
   border-radius: 3px;
   padding: 8px 20px;
-}
+} */
 
 .ColrsforredirectProdct {
   /* background: #FF3E06; */
@@ -846,6 +846,25 @@ a.sidenavFonts {
 .btn-bg-color {
   background: #4285f8 !important;
   color: white !important;
+}
+
+.colorforterms_condition{
+  color: #4285f8 !important;
+
+}
+
+
+.verify-btnGst{
+  padding: 10px;
+    border: 0px;
+    border-radius: 4px;
+    width: 100px;
+    margin-top: 10px;
+}
+
+.integration-button{
+  border-radius: 4px;
+  
 }
 
 .choosePlan-2 {
@@ -1412,4 +1431,17 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 table.nowrap td{
   white-space: nowrap;
+}
+
+
+.mt-2-addon{
+  margin-top: 2.3rem !important;
+}
+.nodatafounds{
+  /* margin: 24px; */
+    margin-left: -78px;
+    text-align: center;
+    padding: 15px;
+    font-size: 24px;
+    font-weight: 700;
 }

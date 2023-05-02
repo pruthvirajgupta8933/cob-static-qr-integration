@@ -431,12 +431,13 @@ export const kycDocumentUploadList = createAsyncThunk(
 export const GetKycTabsStatus = createAsyncThunk(
   "kyc/GetKycTabsStatus",
   async (requestParam) => {
+    console.log("alert", "check 1")
     const response = await axiosInstanceJWT
       .get(`${API_URL.KYC_TAB_STATUS_URL}/${requestParam?.login_id}`)
       .catch((error) => {
         return error.response;
       });
-
+    console.log("alert ", response.data)
     return response.data;
   }
 );
@@ -615,6 +616,32 @@ export const onboardedReport = createAsyncThunk(
           headers: {},
         }
       )
+      .catch((error) => {
+        return error.response;
+      });
+
+    return response.data;
+  }
+);
+
+////////////////////////////////////////////////
+export const onboardedReportExport = createAsyncThunk(
+  "kyc/kycForVerified",
+  async (data) => {
+   
+    const from_date = data.from_date;
+    const to_date=data?.to_date
+    const selectedvalue =data?.selectedChoice;
+    const dynamicDate = selectedvalue === "Verified" ? "verified_date" : selectedvalue === "Approved" ? "approved_date" : ""
+  
+    
+    const response = await axiosInstanceJWT
+      .get(
+        
+        `${API_URL.KYC_FOR_ONBOARDED}export-excel/?search=${selectedvalue}&search_map=${dynamicDate}&from_date=${from_date}&to_date=${to_date}`,
+        {
+          responseType: 'arraybuffer'
+       })
       .catch((error) => {
         return error.response;
       });
@@ -1248,12 +1275,18 @@ export const kycSlice = createSlice({
     },
     //Kyc Verification for All Tabs
     [GetKycTabsStatus.pending]: (state, action) => {
+      // console.log("alert 1" )
       state.status = "pending";
     },
     [GetKycTabsStatus.fulfilled]: (state, action) => {
+      // console.log("alert 2" )
+      
       state.KycTabStatusStore = action.payload;
+
     },
     [GetKycTabsStatus.rejected]: (state, action) => {
+      // console.log("alert 3" )
+
       state.status = "failed";
       state.error = action.error.message;
     },

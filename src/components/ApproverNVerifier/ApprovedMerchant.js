@@ -103,6 +103,16 @@ function ApprovedMerchant() {
     },
     {
       id: "9",
+      name: "Submitted Date",
+      selector: (row) => row.updated_on,
+      sortable: true,
+      cell: (row) => <div>{covertDate(row.updated_on)}</div>,
+      width: "150px",
+    },
+
+
+    {
+      id: "10",
       name: "Verified Date",
       selector: (row) => row?.verified_date,
       cell: (row) => covertDate(row?.verified_date),
@@ -110,7 +120,7 @@ function ApprovedMerchant() {
       width: "150px",
     },
     {
-      id: "10",
+      id: "11",
       name: "Approved Date",
       selector: (row) => row?.approved_date,
       cell: (row) => covertDate(row?.approved_date),
@@ -119,12 +129,12 @@ function ApprovedMerchant() {
     },
 
     {
-      id: "11",
+      id: "12",
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
     {
-      id: "12",
+      id: "13",
       name: "View Status",
       width:"110px",
       cell: (row) => (
@@ -145,7 +155,7 @@ function ApprovedMerchant() {
       ),
     },
     {
-      id: "13",
+      id: "14",
       name: "Upload Agreement",
       cell: (row) => (
         <div >
@@ -172,7 +182,7 @@ function ApprovedMerchant() {
       ),
     },
     {
-      id: "14",
+      id: "15",
       name: "Action",
       selector: (row) => row.actionStatus,
       cell: (row) => (
@@ -263,7 +273,7 @@ function ApprovedMerchant() {
   };
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a").toUpperCase();
     return date;
   };
 
@@ -309,42 +319,38 @@ function ApprovedMerchant() {
         />
       </div>
       <div>
-        {openCommentModal === true ? (
-          <CommentModal
+        {openCommentModal && <CommentModal
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
             tabName={"Approved Tab"}
-          />
-        ) : (
-          <></>
-        )}
-
-        <KycDetailsModal
+          /> }
+          
+      
+{isOpenModal && <KycDetailsModal
           kycId={kycIdClick}
           handleModal={setIsModalOpen}
           isOpenModal={isOpenModal}
           renderApprovedTable={approvedTable}
-        />
+        />}
+        
       </div>
 
       <div>
-        {openDocumentModal === true ? (
-          <ViewDocumentModal
+      {openDocumentModal && <ViewDocumentModal
             documentData={commentId}
             isModalOpen={openDocumentModal}
             setModalState={setOpenDocumentModal}
             tabName={"Approved Tab"}
-          />
-        ) : (
-          <></>
-        )}
-        <KycDetailsModal
+          />}
+          
+      {isOpenModal && <KycDetailsModal
           kycId={kycIdClick}
           handleModal={setIsModalOpen}
           isOpenModal={isOpenModal}
           renderApprovedTable={approvedTable}
-        />
+        />}
+        
       </div>
 
       <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -368,7 +374,7 @@ function ApprovedMerchant() {
       <div className="mt-1">
       <MerchnatListExportToxl
         URL={
-          "?search=Approved&order_by=-approved_date&search_map=approved_date"
+          "export-excel/?search=Approved"
         }
         filename={"Approved"}
       />
