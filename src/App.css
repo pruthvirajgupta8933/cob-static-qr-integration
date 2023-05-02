@@ -406,3 +406,29 @@ label {
 [data-tip]:hover:after {
 	display:block;
 }
+
+
+/* global button color classes */
+
+/* Primary */
+.cob-btn-primary{
+  background-color: #0156b3 !important;
+}
+
+.cob-btn-primary :hover {
+  background-color: #1d88fb;
+
+}
+
+
+
+/* secondary */
+
+.cob-btn-secondary {
+  background-color: #ff3e06 !important;
+}
+
+.cob-btn-secondary :hover {
+  background-color: #f48566;
+
+}

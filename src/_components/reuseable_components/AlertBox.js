@@ -30,7 +30,7 @@ function AlertBox(props) {
                     <p>{`Product : ${data?.applicationName}`} </p>
                     <p>{`Product Plan : ${data?.planName}`} </p>
                     <hr />
-                    <Link className="verify-btn btnbackground text-white btn-sm" to={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}>{linkName}</Link>
+                    <Link className="btn cob-btn-primary  text-white btn-sm" to={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}>{linkName}</Link>
                   </div>
                 </div>
               ))}

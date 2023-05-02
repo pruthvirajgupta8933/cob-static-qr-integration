@@ -285,7 +285,7 @@ const { allTabsValidate } = kyc;
                       <button
                         type="submit"
                         // className={`verify-btn btnbackground text-white ${isLoading ? 'spinner-grow spinner-grow-sm text-light mr-1' : ''}`}
-                        className="verify-btn btnbackground text-white"
+                        className="btn cob-btn-primary  text-white"
                         // disabled={buttonDisable}
                       >
                        {/* {isLoading ? 'Loading...' : 'Verify'} */}
@@ -332,7 +332,7 @@ const { allTabsValidate } = kyc;
                     <div className="col-lg-3 mr-5">
                       <button
                         type="submit"
-                        className="verify-btn btnbackground text-white"
+                        className="btn cob-btn-primary  text-white"
                         disabled={buttonDisable}
                       >
                         {
@@ -394,7 +394,7 @@ const { allTabsValidate } = kyc;
                     <div className="col-lg-3 mt-4">
                       <button
                         type="submit"
-                        className="verify-btn Gst  btnbackground text-white"
+                        className="btn cob-btn-primary text-white"
                         disabled={buttonDisable}
                       >
                         Verify

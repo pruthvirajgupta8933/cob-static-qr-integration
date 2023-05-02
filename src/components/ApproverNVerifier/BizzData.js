@@ -220,13 +220,13 @@ const BizzAppData = () => {
                   <div className=" col-md-4 ">
                     <button
                       type="submit"
-                      className="verify-btn approve text-white ml-4"
+                      className="btn cob-btn-primary ml-4 approve text-white"
                     >
                       Submit
                     </button>
                     {FormData?.length > 0 ? (
                       <button
-                        className="verify-btn approve text-white ml-3"
+                        className="btn cob-btn-primary  approve text-white ml-3"
                         type="button"
                         onClick={() => exportToExcelFn()}
                         style={{ backgroundColor: "rgb(1, 86, 179)" }}

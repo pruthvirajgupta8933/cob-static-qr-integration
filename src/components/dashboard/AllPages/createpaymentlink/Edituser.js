@@ -144,13 +144,13 @@ console.log("props.modalToggle", props.modalToggle)
                 />
                 <button
                   type="submit"
-                  className=" cratepaymentlinkclrsfigma text-white "
+                  className="btn cob-btn-primary text-white "
                 >
                   Update
                 </button>
                 <button
                   type="button"
-                  className="ColrsforDeletefigma ml-2 text-white "
+                  className="btn cob-btn-secondary ml-2 text-white"
                   onClick={()=>props.fnSetModalToggle(false)}
                 >
                   Cancel

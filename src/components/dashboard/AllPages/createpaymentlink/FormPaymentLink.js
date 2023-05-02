@@ -308,13 +308,13 @@ function FormPaymentLink(props) {
                       <div className="form-row">
                         <button
                           type="submit"
-                          className="cratepaymentlinkclrsfigma mb-3 text-white btn"
+                          className="btn cob-btn-primary btn-primary mb-3 text-white"
                         >
                           SUBMIT
                         </button>
                         <button onClick={resetForm}
                           type="button"
-                          className="ColrsforDeletefigma text-white ml-2 btn"
+                          className="btn cob-btn-secondary text-white ml-2"
                           data-dismiss="modal"
                         >
                           CANCEL

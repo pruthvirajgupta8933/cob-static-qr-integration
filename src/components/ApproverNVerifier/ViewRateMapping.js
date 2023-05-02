@@ -256,7 +256,7 @@ const ViewRateMapping = (props) => {
 
                                                 <div className="modal-footer">
                                                     {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
-                                                    <button disabled={disable} type="submit" className="verify-btn btnbackground text-white">View</button>
+                                                    <button disabled={disable} type="submit" className="btn cob-btn-primary  text-white">View</button>
                                                     {show === true ? (
                                                         <div className='col-lg-12'>
                                                             <RateRadioMapping riskTemplate={riskTemplate} chiledCode={props?.userData} />

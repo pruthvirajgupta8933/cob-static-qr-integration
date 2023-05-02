@@ -300,11 +300,7 @@ const MerchantDocument = (props) => {
     }
   }
 
-  useEffect(() => {
-    return () => {
 
-    }
-  }, [documentsIdList?.length])
 
   // console.log("=========merchant doc start==========")
   // console.log("enableBtnVerifier", enableBtnVerifier)
@@ -325,7 +321,7 @@ const MerchantDocument = (props) => {
         <table className="table table-bordered w-100">
 
 
-          <thead>
+        <thead>
             {checkedClicked === true && (roles.approver || roles.verifier) &&
               <th colSpan={6} style={{ textAlign: "right" }}>
                 <CompleteVerifyAndRejectBtn 
@@ -356,6 +352,7 @@ const MerchantDocument = (props) => {
 
             </tr>
           </thead>
+          
           <tbody>
             {KycDocUpload?.length > 0 ? (
               KycDocUpload?.map((doc, i) => {
@@ -448,9 +445,8 @@ const MerchantDocument = (props) => {
             )}
           </tbody>
         </table>
-
       </div>
-    </div >
+    </div>
   )
 }
 

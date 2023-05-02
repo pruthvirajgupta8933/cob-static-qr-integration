@@ -325,7 +325,7 @@ const ChargeBackTxnHistory= () => {
                       <div className="form-group col-md-1">
                         <button
                          disabled={disable}
-                          className="verify-btn bttn bttnbackgroundkyc"
+                          className="btn cob-btn-primary text-white"
                           type="submit"
                         >
                           Search{" "}

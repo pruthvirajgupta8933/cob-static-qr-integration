@@ -338,13 +338,13 @@ const SignupData = () => {
                   <div className=" col-md-4">
                     <button
                       type="submit"
-                      className="verify-btn approve text-white  text-white ml-4 "
+                      className="btn cob-btn-primary approve text-white  text-white ml-4 "
                     >
                       Submit
                     </button>
                     {signupData?.length > 0 ? (
                       <button
-                        className="verify-btn approve  text-white ml-4"
+                        className="btn cob-btn-primary  approve  text-white ml-4"
                         type="button"
                         onClick={() => exportToExcelFn()}
                         style={{ backgroundColor: "rgb(1, 86, 179)" }}
