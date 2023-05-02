@@ -1,4 +1,4 @@
-/* create payment link */
+
 .activepaylink {
     background: #b3b3ca !important;
       border: none !important;
@@ -787,13 +787,11 @@
 [class*=" icon-"]:before,
 [class^="icon-"]:before,
 [data-icon]:before {
-    /* font-family: gaxon !important; */
     font-style: normal !important;
     font-weight: 400 !important;
     font-feature-settings: normal !important;
     font-variant: normal !important;
     text-transform: none !important;
-    /* speak: none; */
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -1591,12 +1589,6 @@
     content: "\e0a9";
 }
 
-/*!
- * Bootstrap v4.0.0 (https://getbootstrap.com)
- * Copyright 2011-2018 The Bootstrap Authors
- * Copyright 2011-2018 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
 :root {
     --blue: #007bff;
     --indigo: #6610f2;
@@ -1631,7 +1623,6 @@ html {
     -webkit-tap-highlight-color: transparent;
 }
 body {
-    /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol; */
     font-size: 1rem;
     line-height: 1.5;
     color: #212529;
@@ -1684,7 +1675,7 @@ code,
 kbd,
 pre,
 samp {
-    /* font-family: monospace, monospace; */
+   
 }
 pre {
     margin-bottom: 1rem;
@@ -1729,7 +1720,7 @@ h4,
 h5,
 h6 {
     margin-bottom: 0.5rem;
-    /* font-family: inherit; */
+   
     font-weight: 500;
     color: inherit;
 }
@@ -1848,12 +1839,7 @@ mark {
     font-size: 90%;
     color: #6c757d;
 }
-code,
-kbd,
-pre,
-samp {
-    /* font-family: SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace; */
-}
+
 code {
     font-size: 87.5%;
     color: #e83e8c;
@@ -3393,7 +3379,7 @@ select.form-control-lg:not([size]):not([multiple]) {
 }
 .btn:not(:disabled):not(.disabled).active,
 .btn:not(:disabled):not(.disabled):active {
-    background-image: none;
+    /* background-image: none; */
 }
 a.btn.disabled,
 fieldset:disabled a.btn {
@@ -5817,20 +5803,9 @@ button.close {
 }
 .modal-backdrop {
     display:none !important
-    /* position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1040;
-    background-color: #000; */
+   
 }
-.modal-backdrop.fade {
-    /* opacity: 0; */
-}
-.modal-backdrop.show {
-    /* opacity: 0.5; */
-}
+
 .modal-header {
     display: flex;
     align-items: flex-start;
@@ -8736,7 +8711,6 @@ a.text-dark:hover {
     src: url(https://fonts.gstatic.com/s/materialicons/v67/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
 }
 .material-icons {
-    /* font-family: Material Icons; */
     font-weight: 400;
     font-style: normal;
     font-size: 24px;
@@ -10264,7 +10238,6 @@ input::-ms-reveal {
     box-sizing: border-box;
 }
 html {
-    /* font-family: sans-serif; */
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
@@ -10311,7 +10284,6 @@ h4,
 h5,
 h6 {
     margin-top: 0;
-    /* margin-bottom: 0.5em; */
    
     font-weight: 500;
 }
@@ -10414,7 +10386,6 @@ kbd,
 pre,
 samp {
     font-size: 1em;
-    /* font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace; */
 }
 pre {
     margin-top: 0;
@@ -15844,7 +15815,6 @@ a.ant-btn-sm {
     font-feature-settings: "tnum", "tnum";
     position: absolute;
     z-index: 1050;
-    /* font-family: Muli, BlinkMacSystemFont, -apple-system, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Arial, sans-serif; */
 }
 .ant-calendar-picker-container.slide-up-appear.slide-up-appear-active.ant-calendar-picker-container-placement-topLeft,
 .ant-calendar-picker-container.slide-up-appear.slide-up-appear-active.ant-calendar-picker-container-placement-topRight,
@@ -16040,7 +16010,6 @@ a.ant-btn-sm {
     padding: 0 5px;
     color: #595959;
     font-size: 16px;
-    /* font-family: Arial, Hiragino Sans GB, Microsoft Yahei, "Microsoft Sans Serif", sans-serif; */
     line-height: 40px;
 }
 .ant-calendar-header .ant-calendar-prev-century-btn,
@@ -17135,7 +17104,6 @@ li.ant-calendar-time-picker-select-option-disabled:hover {
     padding: 0 5px;
     color: #595959;
     font-size: 16px;
-    /* font-family: Arial, Hiragino Sans GB, Microsoft Yahei, "Microsoft Sans Serif", sans-serif; */
     line-height: 40px;
 }
 .ant-calendar-month-panel-header .ant-calendar-month-panel-prev-century-btn,
@@ -17411,7 +17379,6 @@ li.ant-calendar-time-picker-select-option-disabled:hover {
     padding: 0 5px;
     color: #595959;
     font-size: 16px;
-    /* font-family: Arial, Hiragino Sans GB, Microsoft Yahei, "Microsoft Sans Serif", sans-serif; */
     line-height: 40px;
 }
 .ant-calendar-year-panel-header .ant-calendar-year-panel-prev-century-btn,
@@ -17686,7 +17653,6 @@ li.ant-calendar-time-picker-select-option-disabled:hover {
     padding: 0 5px;
     color: #595959;
     font-size: 16px;
-    /* font-family: Arial, Hiragino Sans GB, Microsoft Yahei, "Microsoft Sans Serif", sans-serif; */
     line-height: 40px;
 }
 .ant-calendar-decade-panel-header .ant-calendar-decade-panel-prev-century-btn,
@@ -18714,7 +18680,6 @@ li.ant-calendar-time-picker-select-option-disabled:hover {
     margin-right: 4px;
     color: #f5222d;
     font-size: 13px;
-    /* font-family: SimSun, sans-serif; */
     line-height: 1;
     content: "*";
 }
@@ -24122,8 +24087,7 @@ textarea.ant-mentions-wrapper .ant-mentions-editor {
     white-space: nowrap;
     text-overflow: ellipsis;
     cursor: pointer;
-    /* -webkit-transition: background 0.3s;
-    transition: background 0.3s; */
+
 }
 .ant-mentions-dropdown-item-active,
 .ant-mentions-dropdown-item.focus,
@@ -24362,8 +24326,7 @@ textarea.ant-mentions {
     white-space: nowrap;
     text-overflow: ellipsis;
     cursor: pointer;
-    /* -webkit-transition: background 0.3s ease;
-    transition: background 0.3s ease; */
+
 }
 .ant-mentions-dropdown-menu-item:hover {
     background-color: #e6faff;
@@ -24590,7 +24553,7 @@ textarea.ant-mentions {
     width: 6px;
     height: 1.5px;
     background: #fff;
-    /* background: #545454\9; */
+
     background-image: none\9;
     border-radius: 2px;
     -webkit-transition: background 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), top 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), -webkit-transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -25633,7 +25596,6 @@ textarea.ant-mentions {
 }
 .ant-pagination-item {
     min-width: 32px;
-    /* font-family: Arial; */
     text-align: center;
     list-style: none;
     background-color: #fff;
@@ -25757,7 +25719,6 @@ textarea.ant-mentions {
     min-width: 32px;
     height: 32px;
     color: #545454;
-    /* font-family: Arial; */
     line-height: 32px;
     text-align: center;
     vertical-align: middle;
@@ -32338,7 +32299,6 @@ div.ant-typography-edit-content {
 .ant-typography-ellipsis-multiple-line {
     display: -webkit-box;
     -webkit-line-clamp: 3;
-    /*! autoprefixer: ignore next */
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -33346,9 +33306,9 @@ a.gx-text-sepia:hover {
 a.gx-btn-primary,
 a.gx-btn-primary:focus,
 a.gx-btn-primary:hover {
-    color: #fff !important;
-    background-color: #038fde !important;
-    border-color: #038fde !important;
+    color: #fff;
+    background-color: #038fde ;
+    border-color: #038fde ;
 }
 .btn-primary.disabled,
 .btn-primary:disabled,
@@ -34983,10 +34943,7 @@ hr {
 .gx-object-cover {
     object-fit: cover;
 }
-.cke_editable,
-.cke_editor_editor2 {
-    /* font-family: Muli, BlinkMacSystemFont, -apple-system, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Arial, sans-serif !important; */
-}
+
 .gx-top2 {
     position: relative;
     top: 2px;
@@ -37435,7 +37392,7 @@ hr {
 .h4,
 .h5,
 .h6 {
-    /* color: #262626; */
+   
     font-weight: 400;
     line-height: 1.2;
 }
@@ -38324,7 +38281,7 @@ h6 {
 .gx-layout-sider-dark {
     background-color: #011b33;
     color: #011b33;
-    /* display:none; */
+ 
 }
 .gx-layout-sider-header {
     padding: 20px;
@@ -38394,16 +38351,14 @@ h6 {
 .gx-custom-sidebar.ant-layout-sider-lite .gx-layout-sider-header,
 .gx-mini-custom-sidebar.ant-layout-sider-lite .gx-layout-sider-header {
     box-shadow: none;
-    /* border-right: 1px solid #e8e8e8; */
+  
 }
 @media screen and (max-width: 991px) {
     .gx-layout-sider-header {
         padding-left: 30px;
     }
 }
-.gx-sidebar-content {
-    /* border-right: 1px solid #e8e8e8; */
-}
+
 .gx-drawer-sidebar-dark .gx-sidebar-content,
 .gx-layout-sider-dark .gx-sidebar-content {
     border-right: 0;
@@ -38665,9 +38620,7 @@ h6 {
     background-color: #fff;
     border-radius: 0;
 }
-.ant-menu-submenu > .ant-menu.ant-menu-sub .ant-menu-item {
-    /* padding-left: 54px !important; */
-}
+
 .ant-drawer .ant-menu-submenu > .ant-menu.ant-menu-sub .ant-menu-item,
 .ant-layout-sider .ant-menu-submenu > .ant-menu.ant-menu-sub .ant-menu-item {
     padding-left: 80px !important;
@@ -39236,7 +39189,7 @@ h6 {
     bottom: 0;
     z-index: 1;
     text-align: center;
-    /* font-family: gaxon !important; */
+
     font-size: 29px;
     line-height: 5px;
 }
@@ -39572,7 +39525,7 @@ h6 {
     left: 50%;
     top: 50%;
     z-index: 1;
-    /* font-family: gaxon !important; */
+
     content: "\30";
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
@@ -48350,7 +48303,7 @@ body {
 .left_signup {
     display: flex;
     height: 100vh;
-    /* background-image: url(''); */
+
     background-size: cover;
     align-items: center;
     justify-content: center;
@@ -50063,7 +50016,7 @@ select {
 }
 .profileBarStatus {
     background: #fff;
-    /* border-bottom: 5px solid #faebcc; */
+  
      color: #8a6d3b; 
     padding: 15px 15px 20px;
     margin: 0 0 20px;
@@ -52514,7 +52467,7 @@ select {
 .page_footer:before {
     height: 1px;
     width: 100%;
-    /* background: -webkit-gradient(linear, left top, right top, from(hsla(0, 0%, 85.9%, 0)), color-stop(#dae7ee), to(hsla(0, 0%, 85.9%, 0))); */
+  
     background: linear-gradient(to left, hsla(0, 0%, 85.9%, 0), #dae7ee, hsla(0, 0%, 85.9%, 0));
     background: -webkit-linear-gradient(to left, hsla(0, 0%, 85.9%, 0), #dae7ee, hsla(0, 0%, 85.9%, 0));
     margin: 0;
@@ -53837,7 +53790,7 @@ select {
 .prwview_tab_img {
     float: left;
     width: 100%;
-    /* background: url('') no-repeat 50%; */
+ 
     width: 700px;
     height: 380px;
     margin: 20px 0 0;
@@ -54078,7 +54031,7 @@ select {
     position: absolute;
     top: -60px;
     left: -60px;
-    /* background: url('') no-repeat; */
+ 
     width: 204px;
     height: 182px;
     content: "";
@@ -54087,7 +54040,7 @@ select {
     position: absolute;
     bottom: -60px;
     right: -60px;
-    /* background: url('') no-repeat; */
+   
     width: 204px;
     height: 182px;
     content: "";
@@ -55118,7 +55071,7 @@ select {
 }
 
 
-/**  settlement Report **/
+
 .hr {
     margin-top: 1rem;
     margin-bottom: 1rem;

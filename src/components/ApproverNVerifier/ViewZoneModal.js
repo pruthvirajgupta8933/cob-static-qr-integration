@@ -277,7 +277,7 @@ useEffect(() => {
                           <button 
                           type="submit"
                            onClick={resetForm} 
-                           className="verify-btn btnbackground text-white" disabled={buttonDisable}>Submit</button>
+                           className="btn cob-btn-primary  text-white" disabled={buttonDisable}>Submit</button>
                         </div>
                       </Form>
                     </div>

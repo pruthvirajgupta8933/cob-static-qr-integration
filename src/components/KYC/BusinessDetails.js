@@ -377,9 +377,6 @@ function BusinessDetails(props) {
 
   const enableVerifiedIconByParam = (key, formVal)=>{
     let status = false;
-
-
-
   }
 
   return (
@@ -492,7 +489,7 @@ function BusinessDetails(props) {
               <label>
               Kindly fill the donwloaded form and upload in the <strong>Upload Document</strong> Tab"
               </label>
-                <a className="btn btn-sm btn-primary" href="https://sp2-partner.sabpaisa.in/SRS+GST+Declaration.pdf" target="_blank"  rel="noreferrer" alt="GST Declaration Form">Download GST Declaration Format </a>
+                <a className="btn cob-btn-primary text-white" href="https://sp2-partner.sabpaisa.in/SRS+GST+Declaration.pdf" target="_blank"  rel="noreferrer" alt="GST Declaration Form">Download GST Declaration Format </a>
               </div>
               </div>
               }

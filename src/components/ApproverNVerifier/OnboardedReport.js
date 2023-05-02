@@ -427,7 +427,7 @@ const OnboardedReport = () => {
                   <div className=" col-md-3 mt-5- mt-2-addon ">
                     <button
                       type="subbmit"
-                      className="verify-btn approve text-white btn-xs"
+                      className="btn cob-btn-primary  approve text-white btn-xs"
                       disabled={disabled}
                     >
                       Submit
