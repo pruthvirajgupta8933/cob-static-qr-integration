@@ -150,7 +150,7 @@ console.log("props.modalToggle", props.modalToggle)
                 </button>
                 <button
                   type="button"
-                  className="btn cob-btn-secondary ml-2 text-white "
+                  className="btn cob-btn-secondary ml-2 text-white"
                   onClick={()=>props.fnSetModalToggle(false)}
                 >
                   Cancel

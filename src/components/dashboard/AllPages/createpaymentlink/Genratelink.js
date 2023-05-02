@@ -324,14 +324,13 @@ const { user } = useSelector((state) => state.auth);
                       <div className="modal-footer">
                         <button
                           type="submit"
-                          className="btn cob-btn-primary text-white"
+                          className="btn cob-btn-primary btn-primary text-white"
                         >
                           SUBMIT
                         </button>
                         <button
                           type="button"
-                          style={{ postion: "absolute", top: 290, left: 380 }}
-                          className="btn  cob-btn-secondary text-white btn"
+                          className="btn cob-btn-secondary btn-danger text-white"
                           data-dismiss="modal"
                           onClick={resetForm}
                         >

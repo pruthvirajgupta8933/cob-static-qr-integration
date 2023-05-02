@@ -101,7 +101,7 @@ const PaymentLinkDetail = () => {
             <div className="col-lg-4 pl-4">
               <button
                 type="button"
-                className="btn cob-btn-primary text-white"
+                className="btn cob-btn-primary btn-primary text-white"
                 data-toggle="modal"
                 data-target="#exampleModal"
                 data-whatever="@getbootstrap">
