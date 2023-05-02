@@ -29,11 +29,14 @@ const SignupData = () => {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [saveData, setSaveData] = useState();
+  
 
   const [loadingState, setLoadingState] = useState(false);
   const [dataCount, setDataCount] = useState(0);
+  
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  console.log(signupData.length,"my signupdata")
 
   // const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
@@ -213,8 +216,7 @@ const SignupData = () => {
   //     })
   // }
 
-  console.log(signupData, "Sign Up Data Found That is alled in the main");
-  console.log(loadingState, "State of the API Request");
+  
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
@@ -357,6 +359,9 @@ const SignupData = () => {
               </div>
             </Form>
           </Formik>
+          {signupData.length===0 && show===true && <h2 className="text-center font-weight-bold mt-5">
+                    No Data Found
+                  </h2>}
           {!loadingState && signupData?.length !== 0 && (
             <>
               <div className="form-group col-lg-3 col-md-12 mt-2 ml-4">
@@ -391,13 +396,14 @@ const SignupData = () => {
                   )}
                 </div>
                 <CustomLoader loadingState={loadingState} />
-                {signupData.length === 0 && !loadingState ? (
+                
+                {/* {signupData?.length === 0 && !loadingState ? (
                   <h2 className="text-center font-weight-bold">
                     No Data Found
                   </h2>
                 ) : (
                   <></>
-                )}
+                )} */}
               </div>
             </>
           )}

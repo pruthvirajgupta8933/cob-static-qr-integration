@@ -195,7 +195,7 @@ const BizzAppData = () => {
             <Form>
               <div className="container">
                 <div className="row">
-                  <div className="form-group col-md-4">
+                  <div className="form-group  col-md-3 ml-4">
                     <FormikController
                       control="input"
                       type="date"
@@ -207,7 +207,7 @@ const BizzAppData = () => {
                     />
                   </div>
 
-                  <div className="form-group col-md-4 mx-4">
+                  <div className="form-group col-md-3 mx-4">
                     <FormikController
                       control="input"
                       type="date"
@@ -216,10 +216,11 @@ const BizzAppData = () => {
                       className="form-control rounded-0"
                     />
                   </div>
+                  <div className="row">
                   <div className=" col-md-4 ">
                     <button
                       type="submit"
-                      className="btn cob-btn-primary  approve text-white"
+                      className="btn cob-btn-primary ml-4 approve text-white"
                     >
                       Submit
                     </button>
@@ -235,19 +236,23 @@ const BizzAppData = () => {
                     ) : (
                       <></>
                     )}
+                    </div>
                   </div>
                 </div>
                 {FormData?.length === 0 || FormData?.length === undefined ? (
                   <></>
                 ) : (
-                  <h4 className="mt-3">Total Records : {FormData?.length}</h4>
+                  <h4 className="mt-4 ml-3">Total Records : {FormData?.length}</h4>
                 )}
               </div>
             </Form>
           </Formik>
+          {FormData.length===0 && show===true && <h2 className="text-center font-weight-bold mt-5">
+                    No Data Found
+                  </h2>}
           <div className="col-md-12 col-md-offset-4">
             <div className="scroll overflow-auto">
-              {show === true ? (
+              {show === true && FormData?.length !== 0 ? (
                 <table className="table table-bordered ml-4">
                   <thead>
                     <tr>
@@ -281,9 +286,9 @@ const BizzAppData = () => {
                     {FormData?.length === 0 ||
                     FormData?.length === undefined ? (
                       <tr>
-                        <td colSpan={"8"}>
+                        {/* <td colSpan={"8"}>
                           <h1 className="nodatafound">No data found</h1>
-                        </td>
+                        </td> */}
                       </tr>
                     ) : (
                       FormData?.map((SingleFormData, i) => (
