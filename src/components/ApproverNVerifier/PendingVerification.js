@@ -299,24 +299,25 @@ function PendingVerification() {
           />
         </div>
         <div>
-         
-            <CommentModal
+        
+         {openCommentModal && <CommentModal
               commentData={commentId}
               isModalOpen={openCommentModal}
               setModalState={setOpenCommentModal}
               tabName={"Pending Verification"}
-            />
+            />}
+            
       
 
           {/* KYC Details Modal */}
 
-       
-            <KycDetailsModal
+       {isOpenModal && <KycDetailsModal
               kycId={kycIdClick}
               handleModal={setIsModalOpen}
               isOpenModal={isOpenModal}
               renderPendingVerification={pendingVerify}
-            />
+            /> }
+            
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">

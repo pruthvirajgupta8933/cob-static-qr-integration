@@ -150,9 +150,6 @@ function VerifiedMerchant() {
       name: "Action",
       cell: (row) => (
         <div>
-          {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white  btn-xs "
@@ -166,9 +163,6 @@ function VerifiedMerchant() {
             >
               Comments
             </button>
-          ) : (
-            <></>
-          )}
         </div>
       ),
     },
@@ -317,22 +311,21 @@ function VerifiedMerchant() {
       />
       </div>
       <div>
-       
-          <CommentModal
+      
+       {openCommentModal && <CommentModal
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
             tabName={"Pending Approval"}
-          />
-      
-
+          />}
      
-          <KycDetailsModal
+     {isOpenModal && <KycDetailsModal
             kycId={kycIdClick}
             handleModal={setIsModalOpen}
             isOpenModal={isOpenModal}
             renderPendingApproval={verifyMerchant}
-          />
+          />}
+          
      
       </div>
       <div className="container-fluid pull-left p-3- my-3- col-md-12- col-md-offset-4">

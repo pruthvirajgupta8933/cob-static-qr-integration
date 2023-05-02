@@ -142,7 +142,6 @@ const PendindKyc = () => {
                 setCommentId(row);
                 setOpenCommentModal(true);
               }}
-              data-target="#exampleModal"
               disabled={row?.clientCode === null ? true : false}
             >
               Comments
@@ -265,17 +264,18 @@ const PendindKyc = () => {
           />
         </div>
         <div>
-            <CommentModal
+           {openCommentModal && <CommentModal
               commentData={commentId}
               isModalOpen={openCommentModal}
               setModalState={setOpenCommentModal}
               tabName={"Pending KYC"}
-            />
-          <KycDetailsModal
+            /> } 
+            {isOpenModal && <KycDetailsModal
             handleModal={setIsModalOpen}
             kycId={kycIdClick}
             isOpenModal={isOpenModal}
-          />
+          />}
+          
         </div>
 
         <div className="form-group col-lg-3 col-md-12 mt-2">

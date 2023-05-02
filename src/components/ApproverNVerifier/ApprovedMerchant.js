@@ -319,38 +319,38 @@ function ApprovedMerchant() {
         />
       </div>
       <div>
-        
-          <CommentModal
+        {openCommentModal && <CommentModal
             commentData={commentId}
             isModalOpen={openCommentModal}
             setModalState={setOpenCommentModal}
             tabName={"Approved Tab"}
-          />
+          /> }
+          
       
-
-        <KycDetailsModal
+{isOpenModal && <KycDetailsModal
           kycId={kycIdClick}
           handleModal={setIsModalOpen}
           isOpenModal={isOpenModal}
           renderApprovedTable={approvedTable}
-        />
+        />}
+        
       </div>
 
       <div>
-      
-          <ViewDocumentModal
+      {openDocumentModal && <ViewDocumentModal
             documentData={commentId}
             isModalOpen={openDocumentModal}
             setModalState={setOpenDocumentModal}
             tabName={"Approved Tab"}
-          />
-      
-        <KycDetailsModal
+          />}
+          
+      {isOpenModal && <KycDetailsModal
           kycId={kycIdClick}
           handleModal={setIsModalOpen}
           isOpenModal={isOpenModal}
           renderApprovedTable={approvedTable}
-        />
+        />}
+        
       </div>
 
       <div className="form-group col-lg-3 col-md-12 mt-2">
