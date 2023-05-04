@@ -288,7 +288,7 @@ const API_LIVE = {
   // Mandate Report
   MANDATE_FREQUENCY: `${subAPIURL}/REST/GetCommonData/0/frequency`,
   MANDATE_CATEGORY: `${subAPIURL}/REST/GetCommonData/0/MandateCategory`,
-  filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
+  // filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
   frequency:`${subAPIURL}/REST/GetCommonData/0/frequency`,
   mandateType:`${subAPIURL}/REST/GetCommonData/0/MandateType`,
   requestType:`${subAPIURL}/REST/GetCommonData/0/RequestType`,
@@ -300,13 +300,6 @@ const API_LIVE = {
   filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
   mandateSubmit:`${subAPIURL}/registration`,
   mandateSendRequest:`https://enach.npci.org.in/onmags/sendRequest`
-
-
-
-
-
-
-
 };
 
 

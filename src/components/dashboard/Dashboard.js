@@ -1,9 +1,4 @@
-import React, { useEffect, useState } from "react";
-import "./css/Home.css";
-import "./css/50.684f163d.chunk.css";
-import "./css/main.e3214ff9.chunk.css";
-import "./css/loader.css";
-
+import React, { useEffect } from "react";
 import SideNavbar from "./SideNavbar/SideNavbar";
 import Home from "./AllPages/Home";
 import TransactionEnquirey from "./AllPages/TransactionEnquirey";
@@ -74,48 +69,40 @@ import BizzAppData from '../ApproverNVerifier/BizzData';
 import CreateMandate from "../../subscription_components/Create_Mandate/index";
 import DebitReport from "../../subscription_components/DebitReport";
 
+// import css
+import "./css/Home.css";
+import "./css/50.684f163d.chunk.css";
+import "./css/main.e3214ff9.chunk.css";
+import "./css/loader.css";
+
 function Dashboard() {
   let history = useHistory();
   let { path } = useRouteMatch();
-  const { user, avalabilityOfClientCode } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const roles = roleBasedAccess();
   const dispatch = useDispatch();
   const location = useLocation();
 
-  // console.log(roles)
 
   // create new client code
   useEffect(() => {
-    // console.log("user",user)
+        //  check the role and clientcode should be null
+        if (roles?.merchant && user?.clientMerchantDetailsList[0]?.clientCode === null) {
 
-    if (roles?.merchant) {
-      // console.log("merchant")
-
-      if (user?.clientMerchantDetailsList) {
-
-        // console.log("merchant- clientlist available")
-        if (user?.clientMerchantDetailsList[0]?.clientCode === null) {
-
-          // console.log("merchant- client code null")
           const clientFullName = user?.clientContactPersonName
           const clientMobileNo = user?.clientMobileNo
           const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
 
-          // console.log("arrayOfClientCode",arrayOfClientCode)
           dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
-            // console.log("res",res?.payload?.clientCode)
+          
             let newClientCode = ""
             // if client code available return status true, then make request with the given client
-
             if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
               newClientCode = res?.payload?.clientCode
-              // console.log("newClientCode-step1",newClientCode)
+           
             } else {
               newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
-              // console.log("newClientCode-step2",newClientCode)
             }
-
-            // console.log("new cleint code", newClientCode)
 
             // update new client code
             const data = {
@@ -123,21 +110,20 @@ function Dashboard() {
               clientName: user?.clientContactPersonName,
               clientCode: newClientCode,
             };
-            // console.log("data", data)
+         
 
             dispatch(createClientProfile(data)).then(clientProfileRes => {
-              // console.log("response of the create client ", clientProfileRes);
               // after create the client update the subscribe product
               const postData = {
                 login_id: user?.loginId
               }
+
               // fetch details of the user registraion
               axiosInstanceJWT.post(API_URL.website_plan_details, postData).then(
                 res => {
-                  // console.log("clientProfileRes", clientProfileRes)
                   const webData = res?.data?.data[0]?.plan_details
 
-                  // if business catagory gaming then not subscribed the plan
+                  // if business catagory code is gaming then not subscribed the plan
                   if(user?.clientMerchantDetailsList[0]?.business_cat_code!=="37"){
                     const postData = {
                       clientId: clientProfileRes?.payload?.clientId,
@@ -161,10 +147,6 @@ function Dashboard() {
           })
 
         }
-
-
-      }
-    }
   }, []);
 
 
