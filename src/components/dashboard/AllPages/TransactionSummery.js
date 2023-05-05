@@ -15,7 +15,8 @@ function TransactionSummery() {
 
 
   let currentDate = new Date().toJSON().slice(0, 10);
-  let fromDate, toDate = currentDate;
+  let fromDate = currentDate;
+  let toDate = currentDate;
   // const [toDate, setToDate] = useState(currentDate);
   const [dttype, setDttype] = useState("1");
   const [search, SetSearch] = useState("");
