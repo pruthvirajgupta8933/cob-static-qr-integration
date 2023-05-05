@@ -3,12 +3,9 @@ import { axiosInstance, axiosInstanceJWT,axiosInstanceAuth } from "../utilities/
 
 // Home - successTxnSummary 
 
-const successTxnSummary = (fromdate, todate, clientcode) => {
-  return axiosInstance.post(API_URL.SUCCESS_TXN_SUMMARY, {
-    fromdate,
-    todate,
-    clientcode,
-  }).then((response) => {
+const successTxnSummary = (object) => {
+  // console.log("object", object)
+  return axiosInstance.post(API_URL.SUCCESS_TXN_SUMMARY, object ).then((response) => {
     return response.data;
   }).catch(err => console.log(err));
 };

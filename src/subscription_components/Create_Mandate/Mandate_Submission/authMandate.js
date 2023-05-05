@@ -53,7 +53,7 @@ const AuthMandate = ({ updatedData }) => {
 
   const randomNumber = generateRandomNumber();
 
-  // console.log("updatedData :  :", updatedData);
+  console.log("updatedData :  :", updatedData);
 
   const onSubmit = (values) => {
     // console.log(values)
@@ -67,7 +67,7 @@ const AuthMandate = ({ updatedData }) => {
       payerUtilitityCode: "NACH00000000022341",
       mandateEndDate: updatedData?.untilCancelled === true ? null : updatedData?.mandateEndDate,
       payerName: updatedData?.payerName,
-      mandateMaxAmount: "100.00",
+      mandateMaxAmount: updatedData?.emiamount,
       mandateType: "ONLINE",
       mandateStartDate: updatedData?.mandateStartDate,
       panNo: updatedData?.panNo ? updatedData?.panNo : "",

@@ -45,8 +45,8 @@ const API_LIVE = {
   BizzAPPForm: `${url}/biz-app-form/`,
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
-  SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummary/",
-
+  SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummaryMerchant/",
+// https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
   // * Rate mapping */
   RATE_MAPPING_GenerateClientFormForCob: adminAPIURL + "/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
@@ -287,7 +287,7 @@ const API_LIVE = {
   // Mandate Report
   MANDATE_FREQUENCY: `${subAPIURL}/REST/GetCommonData/0/frequency`,
   MANDATE_CATEGORY: `${subAPIURL}/REST/GetCommonData/0/MandateCategory`,
-  filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
+  // filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
   frequency:`${subAPIURL}/REST/GetCommonData/0/frequency`,
   mandateType:`${subAPIURL}/REST/GetCommonData/0/MandateType`,
   requestType:`${subAPIURL}/REST/GetCommonData/0/RequestType`,
@@ -299,13 +299,6 @@ const API_LIVE = {
   filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
   mandateSubmit:`${subAPIURL}/registration`,
   mandateSendRequest:`https://enach.npci.org.in/onmags/sendRequest`
-
-
-
-
-
-
-
 };
 
 

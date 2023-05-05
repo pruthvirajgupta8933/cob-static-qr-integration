@@ -2,9 +2,9 @@ import React from 'react'
 
 function ProgressBar({}) {
     return (
-        <div className='col-lg-10 col-md-10 mrg-btm- bgcolor' >
-            <div className="text-center">
-                <div className="spinner-border text-success" style={{width: '3rem', height: '3rem'}} >
+        <div className='col-lg-12' >
+            <div className="text-center p-4 m-4">
+                <div className="spinner-border" style={{width: '2rem', height: '2rem'}} >
                     <span className="sr-only">Loading...</span>
                 </div>
             </div>
