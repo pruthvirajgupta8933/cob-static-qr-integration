@@ -431,13 +431,13 @@ export const kycDocumentUploadList = createAsyncThunk(
 export const GetKycTabsStatus = createAsyncThunk(
   "kyc/GetKycTabsStatus",
   async (requestParam) => {
-    console.log("alert", "check 1")
+    // console.log("alert", "check 1")
     const response = await axiosInstanceJWT
       .get(`${API_URL.KYC_TAB_STATUS_URL}/${requestParam?.login_id}`)
       .catch((error) => {
         return error.response;
       });
-    console.log("alert ", response.data)
+    // console.log("alert ", response.data)
     return response.data;
   }
 );
@@ -799,14 +799,14 @@ export const approveDoc = createAsyncThunk(
 export const panValidation = createAsyncThunk(
   "kyc/panValidation",
   async (requestParam) => {
-    console.log("check 1",requestParam)
+    // console.log("check 1",requestParam)
     const response = await kycValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
         return error.response;
       });
 
-    console.log("check 3")
+    // console.log("check 3")
     return response.data;
   }
 );
@@ -814,7 +814,7 @@ export const panValidation = createAsyncThunk(
 export const authPanValidationrr = createAsyncThunk(
   "kyc/authPanValidationrr",
   async (requestParam) => {
-    console.log("check 4")
+    // console.log("check 4")
     const response = await kycValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
@@ -828,7 +828,7 @@ export const authPanValidationrr = createAsyncThunk(
 export const authPanValidation = createAsyncThunk(
   "kyc/authPanValidation",
   async (requestParam) => {
-    console.log("check 5")
+    // console.log("check 5")
     const response = await kycValidatorAuth
       .post(`${API_URL.VALIDATE_KYC}/validate-pan/`, requestParam)
       .catch((error) => {
@@ -1199,7 +1199,7 @@ export const kycSlice = createSlice({
     //----- KYC ALL NUMBERS(GST,PAN,ACCOUNT NO, AADHAAR,IFSC) KYC VALIDATTE ------//
 
     [panValidation.fulfilled]: (state, action) => {
-      console.log("panValidation")
+      // console.log("panValidation")
       state.allTabsValidate.BusinessDetailsStatus.PanValidation = action.payload;
       if (action?.payload?.status === true && action?.payload?.valid === true) {
         state.kycUserList.panCard = action?.meta?.arg?.pan_number
