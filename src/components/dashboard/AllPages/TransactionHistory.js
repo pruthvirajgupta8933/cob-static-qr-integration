@@ -192,12 +192,9 @@ const TransactionHistory = () => {
     const dateRangeValid = checkValidation(fromDate, endDate);
 
     if (dateRangeValid) {
+      let strClientCode, clientCodeArrLength = "";
 
-      let strClientCode,
-        clientCodeArrLength = "";
-// console.log("clientCode",clientCode);
       if (values.clientCode === "All") {
-
         const allClientCode = [];
         clientMerchantDetailsList?.map((item) => {
           allClientCode.push(item.clientCode);

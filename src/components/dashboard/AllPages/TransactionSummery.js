@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  successTxnSummary,
-  subscriptionplan,
-  subscriptionPlanDetail,
-} from "../../../slices/dashboardSlice";
+import {successTxnSummary } from "../../../slices/dashboardSlice";
 import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
 import { useRouteMatch, Redirect } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import "../css/Home.css";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
 function TransactionSummery() {
   // console.log("home page call");
   const dispatch = useDispatch();
   let { path } = useRouteMatch();
-  var currentDate = new Date().toJSON().slice(0, 10);
-  const [fromDate, setFromDate] = useState(currentDate);
-  const [toDate, setToDate] = useState(currentDate);
-  const [clientCode, setClientCode] = useState("1");
+  const userRole = roleBasedAccess()
 
+
+  let currentDate = new Date().toJSON().slice(0, 10);
+  let fromDate, toDate = currentDate;
+  // const [toDate, setToDate] = useState(currentDate);
+  const [dttype, setDttype] = useState("1");
   const [search, SetSearch] = useState("");
   const [txnList, SetTxnList] = useState([]);
   const [showData, SetShowData] = useState([]);
 
   const { dashboard, auth } = useSelector((state) => state);
   // console.log("dashboard",dashboard)
-  const { isLoading, successTxnsumry, subscribedService } = dashboard;
+  const { isLoading, successTxnsumry } = dashboard;
   const { user } = auth;
   var clientCodeArr = [];
   var totalSuccessTxn = 0;
@@ -33,14 +32,30 @@ function TransactionSummery() {
 
   // dispatch action when client code change
   useEffect(() => {
-    const objParam = { fromDate, toDate, clientCode };
+    // console.log("user", user)
+    let strClientCode, clientCodeArrLength = "";
+
+    if (userRole.merchant !== true) {
+      const allClientCode = [];
+      user.clientMerchantDetailsList?.map((item) => {
+        allClientCode.push(item.clientCode);
+      });
+
+      clientCodeArrLength = allClientCode.length.toString();
+      strClientCode = allClientCode.join().toString();
+    } else {
+      strClientCode = user?.clientMerchantDetailsList[0]?.clientCode;
+      clientCodeArrLength = "1";
+    }
+
+    const objParam = { fromdate: fromDate, todate: toDate, dttype, clientcodelst: strClientCode, clientNo: clientCodeArrLength };
     var DefaulttxnList = [];
     SetTxnList(DefaulttxnList);
     SetShowData(DefaulttxnList);
-    // console.log(objParam);
-    dispatch(subscriptionplan);
+    
     dispatch(successTxnSummary(objParam));
-  }, [clientCode]);
+  }, [dttype]);
+
 
   // console.log('successTxnsumry',successTxnsumry );
   // console.log('clientMerchantDetailsList',user.clientMerchantDetailsList);
@@ -123,8 +138,8 @@ function TransactionSummery() {
                   {/* <label>&nbsp;</label> */}
                   <select
                     className="ant-input"
-                    value={clientCode}
-                    onChange={(e) => setClientCode(e.currentTarget.value)}
+                    value={dttype}
+                    onChange={(e) => setDttype(e.currentTarget.value)}
                   >
                     <option defaultValue="selected" value="1">
                       Today
@@ -186,10 +201,8 @@ function TransactionSummery() {
                   </tbody>
                 </table>
 
-                {showData.length <= 0 && isLoading === false ? (
-                  <div className="mx-auto showMsg mt-5"> No Record Found</div>
-                ) : (
-                  <></>
+                {(showData.length <= 0 && isLoading === false) && (
+                  <div className="text-center p-4 m-4"> <h3>Record Not Found</h3></div>
                 )}
 
                 {isLoading ? <ProgressBar /> : <></>}
@@ -197,14 +210,14 @@ function TransactionSummery() {
             </div>
           </section>
         </div>
-        <footer className="ant-layout-footer">
+        {/* <footer className="ant-layout-footer">
           <div className="gx-layout-footer-content">
             © 2021 Ippopay. All Rights Reserved.{" "}
             <span className="pull-right">
               Ippopay's GST Number : 33AADCF9175D1ZP
             </span>
           </div>
-        </footer>
+        </footer> */}
       </main>
     </section>
   );

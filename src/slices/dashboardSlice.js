@@ -21,11 +21,7 @@ export const successTxnSummary = createAsyncThunk(
     "dashbaord/successTxnSummary",
     async (object, thunkAPI ) => {
         try {
-            // console.log(object);
-            const {fromDate,toDate,clientCode} = object;
-            const response = await Dashboardservice.successTxnSummary(fromDate,toDate,clientCode );
-            //thunkAPI.dispatch(setMessage(response.data.message));
-            // console.log('slice',response)
+            const response = await Dashboardservice.successTxnSummary(object);
             return response;
           } catch (error) {
             const message =

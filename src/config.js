@@ -46,8 +46,8 @@ const API_LIVE = {
   BizzAPPForm: `${url}/biz-app-form/`,
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
-  SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummary/",
-
+  SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummaryMerchant/",
+// https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
   // * Rate mapping */
   RATE_MAPPING_GenerateClientFormForCob: adminAPIURL + "/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
