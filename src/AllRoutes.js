@@ -22,7 +22,7 @@ function AllRoutes() {
 
   return (
     <div>
-      <InternetConnection />
+      {/* <InternetConnection /> */}
       <Switch>
         <Route exact path="/login-page">
           <LoginPage />
