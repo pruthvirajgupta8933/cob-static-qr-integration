@@ -157,6 +157,10 @@
   width: 45%;
 }
 
+.menu-tab-kyc{
+  padding: 0 !important;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .optbtn {
@@ -165,6 +169,7 @@
   
 .cardsection{
   width:100% !important;
+
 }
 }
 
@@ -328,7 +333,7 @@
 }
 
 .cardsection{
-    background-color: #F2F2F2;                       
+    background-color:whitesmoke !important;                       
     height: 100%;
     margin-top: 0rem;
     width: 730px;

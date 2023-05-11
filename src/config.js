@@ -260,6 +260,9 @@ const API_LIVE = {
   REMOVE_AGREEMENT: `${kyc_url}/kyc/upload-merchant-document/remove-agreement-doc/`,
   GET_MERCHANT_AGREEMENT_BY_LOGIN_ID: `${kyc_url}/kyc/upload-merchant-document/get-merchant-agreement-by-login-id/`,
 
+
+  // refer list 
+  GET_REFERRAL:  `${kyc_url}/kyc/refer-zone/get-referral-zone-mapper/`,
   // --------------------------------------------------->
 
   // Check is client code mapped or not (ratemapping case)

@@ -131,7 +131,7 @@ function KycForm() {
 
                       <div className="card-body pt-0">
                         <div>
-                          <ul>
+                          <ul className="menu-tab-kyc">
                             <li className="nav-item p-2">
                               <a
                                 href={() => false}

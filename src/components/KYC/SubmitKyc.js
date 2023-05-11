@@ -8,6 +8,11 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
 import congImg from "../../assets/images/congImg.png";
 import { Link } from "react-router-dom";
+import { axiosInstanceAuth, axiosInstanceJWT } from "../../utilities/axiosInstance";
+import API_URL from "../../config";
+import { getRefferal } from "../../services/kyc/merchant-kyc";
+import FormikController from "../../_components/formik/FormikController";
+import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 
 function SubmitKyc(props) {
   const history = useHistory();
@@ -26,77 +31,52 @@ function SubmitKyc(props) {
   const kyc_status = kycUserList?.status;
   const [readOnly, setReadOnly] = useState(false);
   const [disable, setIsDisable] = useState(false);
+  const [refferalList, setRefferalList] =  useState([])
+  const [refferalListSelectOption, setRefferalListSelectOption] =  useState([])
 
   const initialValues = {
     term_condition: merchant_consent,
+    referal_code : ""
   };
 
-  // const redirect = () => {
-  //   history.push("/dashboard");
-  // };
-
-  // if(consent_status === true) {
-  //   history.push("/dashboard");
-  // }
-
   const validationSchema = Yup.object({
+    referal_code: Yup.string(),
     term_condition: Yup.string().oneOf(
       ["true"],
       "You must accept all the terms & conditions"
     ),
   });
 
+
+
   useEffect(() => {
-    if (role.approver) {
-      setReadOnly(true);
-    } else if (role.verifier) {
-      setReadOnly(true);
-    }
-  }, [role]);
+    getRefferal().then(res=>{
+      setRefferalList(res?.data?.message)
+     const data =  convertToFormikSelectJson(
+        "emp_code",
+        "referral_code",
+        res?.data?.message
+      )
+      setRefferalListSelectOption(data)
 
-  const verifyApprove = (val) => {
-    if (val === "verify") {
-      const data = {
-        login_id: kycid,
-        verified_by: loginId,
-      };
+    
+    }).catch(err=>console.log(err))
 
-      dispatch(verifyComplete(data))
-        .then((resp) => {
-          resp?.payload?.status_code === 200
-            ? toast.success(resp?.payload?.message)
-            : toast.error(resp?.payload?.message);
-        })
-        .catch((e) => {
-          toast.error("Something went wrong, Please Try Again later");
-        });
-    }
 
-    if (val === "approve") {
-      const dataAppr = {
-        login_id: kycid,
-        approved_by: loginId,
-      };
+    
+  }, []);
 
-      dispatch(approvekyc(dataAppr))
-        .then((resp) => {
-          resp?.payload?.status_code === 200
-            ? toast.success(resp?.payload?.message)
-            : toast.error(resp?.payload?.message);
-        })
-        .catch((e) => {
-          toast.error("Something went wrong, Please Try Again later");
-        });
-    }
-  };
 
-  const onSubmit = () => {
+
+  const onSubmit = (value) => {
+    console.log("value",value)
     setIsDisable(true);
-    dispatch(
+    dispatch( 
       saveKycConsent({
-        term_condition: true,
+        term_condition: value.term_condition,
         login_id: loginId,
         submitted_by: loginId,
+        emp_code : value.referal_code
       })
     ).then((res) => {
       if (
@@ -114,6 +94,8 @@ function SubmitKyc(props) {
       }
     });
   };
+
+
 
   // useEffect(() => {
   // if(consent_status === true) {
@@ -134,7 +116,17 @@ function SubmitKyc(props) {
             <Form>
               <div className="form-group row">
                 <div className="row">
-                  <div className="col  checkboxstyle">
+                  <div className="col-4">
+                  
+                  <FormikController
+                  control="select"
+                  name="referal_code"
+                  options={refferalListSelectOption}
+                  className="form-control "
+                  label="Referal Code (Optional)"
+                />
+                  </div>
+                  <div className="col-12  checkboxstyle">
                     <div>
                       <div className="para-style">
                         <Field
