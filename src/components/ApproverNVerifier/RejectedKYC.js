@@ -116,6 +116,11 @@ const RejectedKYC = () => {
     },
     {
       id: "11",
+      name: "Emp. Code",
+      selector: (row) => row.emp_code,
+    },
+    {
+      id: "12",
       name: "View Status",
       selector: (row) => row.viewStatus,
       width: "110px",
@@ -137,7 +142,7 @@ const RejectedKYC = () => {
       ),
     },
     {
-      id: "12",
+      id: "13",
       name: "Action",
       selector: (row) => row.actionStatus,
       cell: (row) => (

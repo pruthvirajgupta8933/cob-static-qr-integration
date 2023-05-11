@@ -104,6 +104,11 @@ function PendingVerification() {
     },
     {
       id: "11",
+      name: "Emp. Code",
+      selector: (row) => row.emp_code,
+    },
+    {
+      id: "12",
       name: "View Status",
       // selector: (row) => row.viewStatus,
       cell: (row) => (
@@ -127,7 +132,7 @@ function PendingVerification() {
       ),
     },
     {
-      id: "11",
+      id: "13",
       name: "Action",
       // selector: (row) => row.actionStatus,
       cell: (row) => (

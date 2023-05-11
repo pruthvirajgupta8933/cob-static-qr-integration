@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { approvekyc, verifyComplete } from "../../slices/kycSlice";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
-import congImg from "../../assets/images/congImg.png";
-import { Link } from "react-router-dom";
-import { axiosInstanceAuth, axiosInstanceJWT } from "../../utilities/axiosInstance";
-import API_URL from "../../config";
 import { getRefferal } from "../../services/kyc/merchant-kyc";
 import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
+import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 
 function SubmitKyc(props) {
   const history = useHistory();
-  const { role, kycid } = props;
+  const { role } = props;
 
   const dispatch = useDispatch();
 
@@ -27,20 +24,22 @@ function SubmitKyc(props) {
 
   const { kycUserList } = kyc;
   const merchant_consent = kycUserList?.merchant_consent?.term_condition;
+  const isEmpCodeSaved = kycUserList?.emp_code?.is_saved;
+  const empCode = kycUserList?.emp_code?.emp_code;
 
   const kyc_status = kycUserList?.status;
   const [readOnly, setReadOnly] = useState(false);
   const [disable, setIsDisable] = useState(false);
-  const [refferalList, setRefferalList] =  useState([])
-  const [refferalListSelectOption, setRefferalListSelectOption] =  useState([])
+  const [refferalList, setRefferalList] = useState([])
+  const [refferalListSelectOption, setRefferalListSelectOption] = useState([])
 
   const initialValues = {
     term_condition: merchant_consent,
-    referal_code : ""
+    referal_code: empCode
   };
 
   const validationSchema = Yup.object({
-    referal_code: Yup.string(),
+    referal_code: Yup.string().nullable(),
     term_condition: Yup.string().oneOf(
       ["true"],
       "You must accept all the terms & conditions"
@@ -50,33 +49,33 @@ function SubmitKyc(props) {
 
 
   useEffect(() => {
-    getRefferal().then(res=>{
+    getRefferal().then(res => {
       setRefferalList(res?.data?.message)
-     const data =  convertToFormikSelectJson(
+      const data = convertToFormikSelectJson(
         "emp_code",
         "referral_code",
         res?.data?.message
       )
       setRefferalListSelectOption(data)
 
-    
-    }).catch(err=>console.log(err))
+
+    }).catch(err => console.log(err))
 
 
-    
+
   }, []);
 
 
 
   const onSubmit = (value) => {
-    console.log("value",value)
+    console.log("value", value)
     setIsDisable(true);
-    dispatch( 
+    dispatch(
       saveKycConsent({
         term_condition: value.term_condition,
         login_id: loginId,
         submitted_by: loginId,
-        emp_code : value.referal_code
+        emp_code: value.referal_code
       })
     ).then((res) => {
       if (
@@ -85,7 +84,7 @@ function SubmitKyc(props) {
       ) {
         toast.success(res?.payload?.message);
         setIsDisable(false);
-        const kyc_consent_status = res?.payload?.status;
+        // const kyc_consent_status = res?.payload?.status;
         dispatch(UpdateModalStatus(true));
         history.push("/dashboard");
       } else {
@@ -116,26 +115,26 @@ function SubmitKyc(props) {
             <Form>
               <div className="form-group row">
                 <div className="row">
-                  <div className="col-4">
-                  
-                  <FormikController
-                  control="select"
-                  name="referal_code"
-                  options={refferalListSelectOption}
-                  className="form-control "
-                  label="Referal Code (Optional)"
-                />
-                  </div>
+                  {!isEmpCodeSaved && (kyc_status !== KYC_STATUS_VERIFIED || kyc_status !== KYC_STATUS_APPROVED )&&
+                    <div className="col-4">
+                      <FormikController
+                        control="select"
+                        name="referal_code"
+                        options={refferalListSelectOption}
+                        className="form-control "
+                        label="Referal Code (Optional)"
+                      />
+                    </div>
+                  }
                   <div className="col-12  checkboxstyle">
                     <div>
                       <div className="para-style">
                         <Field
                           type="checkbox"
                           name="term_condition"
-                          readOnly={readOnly}
                           disabled={
-                            kyc_status === "Verified" ||
-                            kyc_status === "Approved"
+                            kyc_status.toLowerCase() === KYC_STATUS_VERIFIED.toLowerCase() ||
+                              kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()
                               ? true
                               : false
                           }
@@ -208,8 +207,8 @@ function SubmitKyc(props) {
                   }}
                 />
                 <div className="mt-3">
-                  {kyc_status === "Verified" ||
-                  kyc_status === "Approved" ? null : (
+                  {(kyc_status.toLowerCase() === KYC_STATUS_VERIFIED.toLowerCase() ||
+                    kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()) ? <></>:  (
                     <button
                       disabled={disable}
                       className="save-next-btn float-lg-right btnbackground text-white"
