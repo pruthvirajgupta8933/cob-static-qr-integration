@@ -17,6 +17,8 @@ import ViewTransactionDetails from './components/Otherpages/ViewTransactionDetai
 import UrlNotFound from './components/dashboard/UrlNotFound';
 import NavBar from './components/dashboard/NavBar/NavBar';
 import BizzForm from './components/BizzAppForm/BizzForm'
+import PrivacyPolicy from './TermsOfService/PrivacyPolicy';
+import TermsAndConditions from './TermsOfService/TermsAndConditions';
 
 function AllRoutes() {
 
@@ -58,11 +60,14 @@ function AllRoutes() {
         <Route exact path="/EmandatePage/">
           <EmandatePage />
         </Route>
+        <Route exact path="/TermsAndCondtions">
+       <TermsAndConditions/>
+        </Route>
         <Route exact path="/login">
           <LoginPage />
         </Route>
-        <Route exact path="/bizzForm">
-          <BizzForm />
+        <Route exact path="/PrivacyPolicy">
+         <PrivacyPolicy/>
         </Route>
         <Route exact path="/">
           <LoginPage />
