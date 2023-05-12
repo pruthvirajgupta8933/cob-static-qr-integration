@@ -156,7 +156,7 @@ const ViewReferZoneModal = (props) => {
                               />
                               <button
                                 type="subbmit"
-                                className="submit-btn btnbackground text-white"
+                                className="submit-btn cob-btn-primary text-white"
                               >
                                 
                                 Refer Merchant
