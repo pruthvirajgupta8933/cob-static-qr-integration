@@ -211,7 +211,7 @@ function SubmitKyc(props) {
                     kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()) ? <></>:  (
                     <button
                       disabled={disable}
-                      className="save-next-btn float-lg-right btnbackground btn-primary  text-white"
+                      className="save-next-btn float-lg-right btnbackground text-white"
                       type="submit"
                     >
                       Submit

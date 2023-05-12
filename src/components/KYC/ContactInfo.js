@@ -322,7 +322,7 @@ function ContactInfo(props) {
                     <div className="position-sticky pull-right- otpbtn input-group-append">
                       <a
                         href={() => false}
-                        className="btn btnbackground btn-primary  text-white btn-sm optbtn- btn-outline-secondary mb-0"
+                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary mb-0"
                         onClick={() => {
                           checkInputIsValid(
                             errors,
@@ -421,7 +421,7 @@ function ContactInfo(props) {
                     <button
                       disabled={disable}
                       type="submit"
-                      className="save-next-btn float-lg-right btnbackground btn-primary  text-white"
+                      className="save-next-btn float-lg-right btnbackground text-white"
                     >
                       {buttonText}
                     </button>
