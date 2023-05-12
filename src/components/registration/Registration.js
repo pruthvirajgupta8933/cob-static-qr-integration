@@ -606,7 +606,7 @@ function Registration() {
                                   <div className="sminputs">
                                     <div className="simform__actions-">
                                       <button
-                                        className="figmabtn Satoshi-Medium text-white mt-4- disabled1 w-50"
+                                        className="figmabtn Satoshi-Medium text-white disabled1 w-50"
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
@@ -617,7 +617,7 @@ function Registration() {
                                         }
                                         data-rel={btnDisable}
                                       >
-                                        Sign up
+                                        Create an account
                                       </button>
 
                                       <span className="simform__actions-sidetext"></span>
@@ -632,13 +632,13 @@ function Registration() {
                                     </div>
                                   </div>
                                   <div className="container">
-                                    <div className="row text-primary">
-                                      <div className="col ">Already have an account? <Link
+                                    <div className="row mt-4">
+                                      <h4>Already have an account? <Link
                                         to={`/login/${queryStringUrl}`}
-                                        style={{ color: "#0156B3" }}
+                                        className="text-primary text-decoration-underline pb-2"
                                       >
                                         Login
-                                      </Link></div>
+                                      </Link></h4>
                                     </div>
                                   </div>
                                 </Form>

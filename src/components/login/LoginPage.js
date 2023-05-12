@@ -102,7 +102,6 @@ function LoginPage() {
       <HeaderPage />
       <div className="container-fluid toppad">
         <div className="row">
-          <div className="col-lg-1"></div>
           <div className="authfy-container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
             <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right pt-0 login-float-right nopad login-float-none">
               {/* col-sm-12 col-md-12 col-lg-6 authfy-panel-right  */}
@@ -281,10 +280,12 @@ function LoginPage() {
                                 </Form>
                               )}
                             </Formik>
+                            <div className="logmod__form- m-r-l-100- mt-3 termsconditionss NunitoSans-Regular text-center">
+                        <div className="col text-center">
+                            <h4>Don’t have an account with SabPaisa? <Link className="text-primary text-decoration-underline" to="/Registration">Signup</Link>
+                            </h4>
                           </div>
-                        </div>
-                        <div className="logmod__form- m-r-l-100- mt-3 termsconditionss NunitoSans-Regular text-center">
-                          <p>
+                          <p className="fs-6">
                             <a
                               href="https://sabpaisa.in/term-conditions/"
                               rel="noreferrer"
@@ -295,7 +296,7 @@ function LoginPage() {
                             >
                               Terms & Conditions
                             </a>
-                            {/* &nbsp;|{" "} */}
+                            
                             <a
                               href="https://sabpaisa.in/privacy-policy/"
                               rel="noreferrer"
@@ -308,64 +309,15 @@ function LoginPage() {
                             </a>
                           </p>
                         </div>
+                          </div>
+                        
+                        </div>
+                      
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="authfy-panel panel-forgot">
-                  <div className="row">
-                    <div className="col-xs-12 col-sm-12">
-                      <div className="authfy-heading">
-                        <h3 className="auth-title">Recover your password</h3>
-                        <p>
-                          Fill in your e-mail address below and we will send you
-                          an email with further instructions.
-                        </p>
-                      </div>
-                      <form
-                        name="forgetForm"
-                        className="forgetForm"
-                        action="#"
-                        method="POST"
-                      >
-                        <div className="form-group">
-                          <input
-                            type="email"
-                            className="form-control"
-                            name="username"
-                            placeholder="Email address"
-                          />
-                        </div>
-                        <div className="form-group">
-                          <button
-                            className="btn btn-lg btn-primary btn-block"
-                            type="submit"
-                          >
-                            Recover your password
-                          </button>
-                        </div>
-                        <div className="form-group">
-                          <a
-                            className="lnk-toggler"
-                            data-panel=".panel-login"
-                            href={() => false}
-                          >
-                            Already have an account?
-                          </a>
-                        </div>
-                        <div className="form-group">
-                          <a
-                            className="lnk-toggler"
-                            data-panel=".panel-signup"
-                            href={() => false}
-                          >
-                            Don’t have an account?
-                          </a>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>{" "}
+        
                 {/* ./panel-forgot */}
               </div>{" "}
               {/* ./authfy-login */}
@@ -480,10 +432,12 @@ function LoginPage() {
               </div>
             </div>
           </div>
-
+          <div className="col-lg-12">
           <p className="footerforcopyright NunitoSans-Regular text-center">
             Copyright @ 2023 SabPaisa All Rights Reserved version 1.0
           </p>
+          </div>
+
         </div>
         {/* ./row */}
       </div>
