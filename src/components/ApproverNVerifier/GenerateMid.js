@@ -88,7 +88,7 @@ function AssignZone() {
             setModalDisplayData(row);
             setOpenModal(true);
           }}
-          className="approve btnbackground text-white"
+          className="approve btnbackground btn-primary  text-white"
           data-toggle="modal"
           data-target="#exampleModalCenter"
         >

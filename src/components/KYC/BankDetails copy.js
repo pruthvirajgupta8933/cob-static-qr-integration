@@ -303,7 +303,7 @@ function BankDetails(props) {
                     <div className="position-sticky pull-right- otpbtn input-group-append">
                       <a
                         href={() => false}
-                        className="btn btnbackground text-white btn-sm optbtn- btn-outline-secondary mb-0"
+                        className="btn btnbackground btn-primary  text-white btn-sm optbtn- btn-outline-secondary mb-0"
                         onClick={() => {
                           checkInputIsValid(
                             errors,
@@ -481,7 +481,7 @@ function BankDetails(props) {
                   {VerifyKycStatus === "Verified" ? null : (
                     <button
                       disabled={disable}
-                      className="btn float-lg-right btnbackground text-white"
+                      className="btn float-lg-right btnbackground btn-primary  text-white"
                       type="submit"
                     >
                       {" "}

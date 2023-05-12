@@ -284,7 +284,7 @@ const { allTabsValidate } = kyc;
                     <div className="col-lg-3 mr-2">
                       <button
                         type="submit"
-                        // className={`verify-btn btnbackground text-white ${isLoading ? 'spinner-grow spinner-grow-sm text-light mr-1' : ''}`}
+                        // className={`verify-btn btnbackground btn-primary  text-white ${isLoading ? 'spinner-grow spinner-grow-sm text-light mr-1' : ''}`}
                         className="btn cob-btn-primary  text-white"
                         // disabled={buttonDisable}
                       >
