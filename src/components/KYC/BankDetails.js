@@ -296,7 +296,7 @@ function BankDetails(props) {
 
                   {(values?.ifscCode !== null && loading) &&
                     <div class="input-group-append">
-                      <button class="btn btnbackground text-white mb-0" type="button"
+                      <button class="btn cob-btn-primary text-white mb-0" type="button"
                         disabled={loading}
                       >
 
@@ -496,7 +496,7 @@ function BankDetails(props) {
                   {VerifyKycStatus === "Verified" ? null : (
                     <button
                       disabled={disable}
-                      className="save-next-btn float-lg-right btnbackground text-white"
+                      className="save-next-btn float-lg-right cob-btn-primary text-white"
                       type="submit"
                     >
                       {" "}

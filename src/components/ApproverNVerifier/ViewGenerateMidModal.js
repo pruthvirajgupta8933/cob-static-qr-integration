@@ -201,7 +201,7 @@ const ViewGenerateMidModal = (props) => {
                         <div className="col-lg-6-">
                           <button
                             type="subbmit"
-                            className="submit-btn btnbackground text-white"
+                            className="submit-btn cob-btn-primary text-white"
                             // disabled={disable}
                           >
                             {loading ? "Loading..." : "Generate MID"}
