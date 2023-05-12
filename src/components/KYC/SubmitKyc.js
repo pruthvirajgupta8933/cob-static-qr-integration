@@ -119,7 +119,7 @@ function SubmitKyc(props) {
                     <div className="col-4">
                       <FormikController
                         control="select"
-                        name="referal_code"
+                        name="referral_code"
                         options={refferalListSelectOption}
                         className="form-control "
                         label="Referal Code (Optional)"
