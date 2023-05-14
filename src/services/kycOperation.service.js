@@ -33,8 +33,12 @@ const rejectKycOperation = (veriferDetails) => {
 
   const onboardedReport=(onboarderReportdata) => {
     return axiosInstanceJWT.post(API_URL.KYC_FOR_VERIFIED,onboarderReportdata)
-
   }
+  export const expectedTransactions = (id) => {
+    const url=API_URL.getExpectedTransaction;
+    return axiosInstanceJWT.get(`${url}?slab_type_id=${id}`);
+}
+
 
   const kycOperationService = {
     rejectKycOperation,
@@ -43,7 +47,8 @@ const rejectKycOperation = (veriferDetails) => {
     reverseToPendingVerification,
     reverseToPendingApproval,
     reverseToPendingkyc,
-    onboardedReport
+    onboardedReport,
+    expectedTransactions
    
   };
   export default kycOperationService;
