@@ -60,7 +60,7 @@ function DocumentsUpload(props) {
   const { loginId } = user;
   const { KycDocUpload } = kyc;
 
-  const documentListData = savedData?.filter((data)=>((data.status).toLowerCase())!=="rejected")?.map((data) => data?.type);
+  const documentListData = savedData?.filter((data)=>((data?.status).toLowerCase())!=="rejected")?.map((data) => data?.type);
   const dropdownListData = docTypeList?.map((data) => data?.key);
   const alreadyUploadedData = dropdownListData?.filter((elem) =>
     documentListData?.includes(elem?.toString())
@@ -372,7 +372,7 @@ function DocumentsUpload(props) {
                   role?.merchant ? (
                     <div className="col-12">
                       <button
-                        className="save-next-btn cob-btn-primary text-white mt-4"
+                        className="save-next-btn cob-btn-primary  text-white mt-4"
                         type="button"
                         disabled={disable}
                         onClick={() => {
@@ -388,7 +388,7 @@ function DocumentsUpload(props) {
                       role?.merchant &&
                       btn ? (
                         <button
-                          className="save-next-btn cob-btn-primary text-white mt-3 ml-3"
+                          className="save-next-btn cob-btn-primary  text-white mt-3 ml-3"
                           type="button"
                           onClick={() => setTab(6)}
                         >

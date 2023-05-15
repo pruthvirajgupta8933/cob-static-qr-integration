@@ -49,6 +49,7 @@ function SubmitKyc(props) {
 
 
   useEffect(() => {
+
     getRefferal().then(res => {
       setRefferalList(res?.data?.message)
       const data = convertToFormikSelectJson(
@@ -60,8 +61,7 @@ function SubmitKyc(props) {
 
 
     }).catch(err => console.log(err))
-
-
+  
 
   }, []);
 

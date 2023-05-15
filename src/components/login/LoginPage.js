@@ -98,9 +98,9 @@ function LoginPage() {
   const queryString = window.location.search;
 
   return (
-    <>
+    <React.Fragment>
       <HeaderPage />
-      <div className="container-fluid toppad">
+      <div className="container-fluid">
         <div className="row">
           <div className="authfy-container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
             <div className="col-sm-12 col-md-12 col-lg-6 authfy-panel-right pt-0 login-float-right nopad login-float-none">
@@ -281,43 +281,43 @@ function LoginPage() {
                               )}
                             </Formik>
                             <div className="logmod__form- m-r-l-100- mt-3 termsconditionss NunitoSans-Regular text-center">
-                        <div className="col text-center">
-                            <h4>Don’t have an account with SabPaisa? <Link className="text-primary text-decoration-underline" to="/Registration">Signup</Link>
-                            </h4>
+                              <div className="col text-center">
+                                <h4>Don’t have an account with SabPaisa? <Link className="text-primary text-decoration-underline" to="/Registration">Signup</Link>
+                                </h4>
+                              </div>
+                              <p className="fs-6">
+                                <a
+                                  href="https://sabpaisa.in/term-conditions/"
+                                  rel="noreferrer"
+                                  target={"_blank"}
+                                  alt="SabPaisa Terms & Conditions"
+                                  className="colorforterms_condition"
+                                  title="SabPaisa Terms & Conditions"
+                                >
+                                  Terms & Conditions
+                                </a>
+
+                                <a
+                                  href="https://sabpaisa.in/privacy-policy/"
+                                  rel="noreferrer"
+                                  target={"_blank"}
+                                  alt="SabPaisa Privacy Policy"
+                                  className="colorforterms_condition"
+                                  title="SabPaisa Privacy Policy"
+                                >
+                                  &nbsp;| Privacy Policy
+                                </a>
+                              </p>
+                            </div>
                           </div>
-                          <p className="fs-6">
-                            <a
-                              href="https://sabpaisa.in/term-conditions/"
-                              rel="noreferrer"
-                              target={"_blank"}
-                              alt="SabPaisa Terms & Conditions"
-                              className="colorforterms_condition"
-                              title="SabPaisa Terms & Conditions"
-                            >
-                              Terms & Conditions
-                            </a>
-                            
-                            <a
-                              href="https://sabpaisa.in/privacy-policy/"
-                              rel="noreferrer"
-                              target={"_blank"}
-                              alt="SabPaisa Privacy Policy"
-                              className="colorforterms_condition"
-                              title="SabPaisa Privacy Policy"
-                            >
-                              &nbsp;| Privacy Policy
-                            </a>
-                          </p>
+
                         </div>
-                          </div>
-                        
-                        </div>
-                      
+
                       </div>
                     </div>
                   </div>
                 </div>
-        
+
                 {/* ./panel-forgot */}
               </div>{" "}
               {/* ./authfy-login */}
@@ -431,17 +431,20 @@ function LoginPage() {
                 </div>
               </div>
             </div>
+
+            <div className="col-lg-12">
+              <p className="footerforcopyright NunitoSans-Regular text-center">
+                Copyright @ 2023 SabPaisa All Rights Reserved version 1.0
+              </p>
+            </div>
+
           </div>
-          <div className="col-lg-12">
-          <p className="footerforcopyright NunitoSans-Regular text-center">
-            Copyright @ 2023 SabPaisa All Rights Reserved version 1.0
-          </p>
-          </div>
+
 
         </div>
         {/* ./row */}
       </div>
-    </>
+    </React.Fragment>
   );
 }
 

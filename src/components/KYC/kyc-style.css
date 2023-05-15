@@ -12,6 +12,8 @@
 }
 
 
+
+
 .activepaylink-kyc {
   color: white !important ;
   margin-left: 0;
@@ -60,6 +62,7 @@
 
 .btnbackground {
   background-color: #0156b3;
+  /* background-color: rgb(1, 86, 179); */
  
 }
 .panVerfied {
@@ -157,10 +160,6 @@
   width: 45%;
 }
 
-.menu-tab-kyc{
-  padding: 0 !important;
-}
-
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .optbtn {
@@ -169,7 +168,6 @@
   
 .cardsection{
   width:100% !important;
-
 }
 }
 
@@ -333,7 +331,7 @@
 }
 
 .cardsection{
-    background-color:whitesmoke !important;                       
+    background-color: #F2F2F2;                       
     height: 100%;
     margin-top: 0rem;
     width: 730px;
@@ -419,4 +417,8 @@ a.inactive{
   margin-right: auto;
   width: 100%;
   
+}
+
+.menu-tab-kyc{
+  padding : 0px
 }

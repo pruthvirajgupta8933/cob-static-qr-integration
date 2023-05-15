@@ -197,7 +197,7 @@ function Registration() {
   return (
     <>
       <HeaderPage />
-      <div className="container-fluid toppad">
+      <div className="container-fluid">
         <div className="row">
           <div className="col-lg-1"></div>
           <div className="authfy-container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
@@ -620,7 +620,38 @@ function Registration() {
                                         Create an account
                                       </button>
 
-                                      <span className="simform__actions-sidetext"></span>
+                                      <div className="row mt-4">
+                                      <h4>Already have an account? <Link
+                                        to={`/login/${queryStringUrl}`}
+                                        className="text-primary text-decoration-underline pb-2"
+                                      >
+                                        Login
+                                      </Link></h4>
+                                        <p className="fs-6">
+                                <a
+                                  href="https://sabpaisa.in/term-conditions/"
+                                  rel="noreferrer"
+                                  target={"_blank"}
+                                  alt="SabPaisa Terms & Conditions"
+                                  className="colorforterms_condition"
+                                  title="SabPaisa Terms & Conditions"
+                                >
+                                  Terms & Conditions
+                                </a>
+
+                                <a
+                                  href="https://sabpaisa.in/privacy-policy/"
+                                  rel="noreferrer"
+                                  target={"_blank"}
+                                  alt="SabPaisa Privacy Policy"
+                                  className="colorforterms_condition"
+                                  title="SabPaisa Privacy Policy"
+                                >
+                                  &nbsp;| Privacy Policy
+                                </a>
+                              </p>
+                                    </div>
+                                      {/* <span className="simform__actions-sidetext"></span>
                                       {<ErrorMessage name="terms_and_condition">
                                           {(msg) => (
                                             <p
@@ -628,17 +659,7 @@ function Registration() {
                                               {msg}
                                             </p>
                                           )}
-                                        </ErrorMessage>}
-                                    </div>
-                                  </div>
-                                  <div className="container">
-                                    <div className="row mt-4">
-                                      <h4>Already have an account? <Link
-                                        to={`/login/${queryStringUrl}`}
-                                        className="text-primary text-decoration-underline pb-2"
-                                      >
-                                        Login
-                                      </Link></h4>
+                                        </ErrorMessage>} */}
                                     </div>
                                   </div>
                                 </Form>
