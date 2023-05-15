@@ -3,7 +3,9 @@ let url,
   kyc_url,
   b2b_url,
   kyc_validate,
-  payout_url = "";
+  payout_url,
+  payLinkAPIURL = "";
+  
 
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
@@ -11,18 +13,20 @@ if (ENV_PROD) {
   kyc_validate = " https://kycvalidator.sabpaisa.in";
   payout_url = "https://payout.sabpaisa.in";
   b2b_url = "https://b2becollect.sabpaisa.in";
+  payLinkAPIURL="https://paybylink.sabpaisa.in/paymentlink";
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
   b2b_url = "https://stage-b2bchallan.sabpaisa.in";
+  payLinkAPIURL = "https://paybylink-staging.sabpaisa.in/paymentlink";
+
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
 const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
-const payLinkAPIURL = "https://paybylink-staging.sabpaisa.in/paymentlink";
 
 // https://reportapi.sabpaisa.in/SabPaisaReport/REST/GetMerchantTxnHistoryN
 
@@ -101,8 +105,7 @@ const API_LIVE = {
   GET_FILE_NAME: adminAPIURL + "/REST/settlementReport/getFileName/",
 
   /* PAYLINK */
-  GET_CUSTOMERS:
-    `${payLinkAPIURL}/getCustomers/`,
+  GET_CUSTOMERS: `${payLinkAPIURL}/getCustomers/`,
   SMART_UPLOAD: `${payLinkAPIURL}/smartupload`,
   EDIT_CUSTOMER: `${payLinkAPIURL}/editCustomer/`,
   GET_CUSTOMER_TYPE:
