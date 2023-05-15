@@ -3,7 +3,7 @@ import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 // import * as Yup from "yup";
-import Yup from "../../_components/formik/Yup"
+import Yup from "../../_components/formik/Yup";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import FormikController from "../../_components/formik/FormikController";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
@@ -18,6 +18,7 @@ import {
   kycUserList,
   GetKycTabsStatus,
 } from "../../slices/kycSlice";
+import kycOperationService from "../../services/kycOperation.service";
 
 function BusinessOverview(props) {
   const setTab = props.tab;
@@ -25,12 +26,13 @@ function BusinessOverview(props) {
   const { role } = props;
   const [data, setData] = useState([]);
   const [businessCategory, setBusinessCategory] = useState([]);
-  const [disabled, setIsDisabled] = useState(false)
+  const [disabled, setIsDisabled] = useState(false);
   const { auth, kyc } = useSelector((state) => state);
+  const [transactionRangeOption, setTransactionRangeOption] = useState([]);
+  const [avgTicketAmount, setAvgTicketAmount] = useState([]);
 
   let readOnly = false;
   let buttonText = "Save and Next";
-
 
   const { user } = auth;
   let clientMerchantDetailsList = {};
@@ -50,15 +52,13 @@ function BusinessOverview(props) {
 
   const dispatch = useDispatch();
 
-
-
   const WebsiteAppUrl = [
     { key: "Without website/app", value: "No" },
     { key: "On my website/app", value: "Yes" },
   ];
 
   const VerifyKycStatus = KycTabStatusStore?.business_info_status;
-  
+
   // check if data exists
   let business_category_code;
   if (business_cat_code !== null) {
@@ -88,9 +88,7 @@ function BusinessOverview(props) {
 
   const validationSchema = Yup.object(
     {
-      business_type: Yup.string()
-        .required("Select Business Type")
-        .nullable(),
+      business_type: Yup.string().required("Select Business Type").nullable(),
       business_category: Yup.string()
         .required("Select Business Category")
         .nullable(),
@@ -114,31 +112,27 @@ function BusinessOverview(props) {
           .ensure()
           .required("Website App Url is required")
           .nullable(),
-        otherwise: Yup.string()
-          .notRequired()
-          .nullable(),
+        otherwise: Yup.string().notRequired().nullable(),
       }),
-      expected_transactions: Yup.string()
-        .trim()
-        .required("Required")
-        .matches(Regex.digit, RegexMsg.digit)
-        .test("IntergerRequired", "Value should be more then 1", (val) => {
-        return val > 0
-        })
-        .min(1,"Please enter more than 1 character")
-        .max(19,"Please do not enter more then 19 characters")
-        .nullable(),
+      expected_transactions: Yup.string().trim().required("Required"),
+      // .matches(Regex.digit, RegexMsg.digit)
+      // .test("IntergerRequired", "Value should be more then 1", (val) => {
+      //   return val > 0;
+      // })
+      // .min(1, "Please enter more than 1 character")
+      // .max(19, "Please do not enter more then 19 characters")
+      // .nullable(),
 
       avg_ticket_size: Yup.string()
         .trim()
-        .matches(Regex.digit, RegexMsg.digit)
-        .min(1,"Please enter more than 1 character")
-        .max(19,"Please do not enter more then 19 characters")
-        .test("IntergerRequired", "Value should be more then 1", (val) => {
-          return val > 0
-          })
-        .required("Required")
-        .nullable(),
+        // .matches(Regex.digit, RegexMsg.digit)
+        // .min(1, "Please enter more than 1 character")
+        // .max(19, "Please do not enter more then 19 characters")
+        // .test("IntergerRequired", "Value should be more then 1", (val) => {
+        //   return val > 0;
+        // })
+        .required("Required"),
+      // .nullable(),
     },
     [["seletcted_website_app_url"]]
   );
@@ -218,55 +212,54 @@ function BusinessOverview(props) {
   const onSubmit = (values) => {
     if (role.merchant) {
       // setIsDisabled(true)
-      if (window.confirm(`Are you sure for the Expected Transaction : ${values.expected_transactions}`)) {
-        
-      dispatch(
-        saveBusinessInfo({
-          business_type: values.business_type,
-          business_category: values.business_category,
-          business_model: values.business_model,
-          billing_label: values.billing_label,
-          company_website: "NA",
-          erp_check: values.erp_check,
-          platform_id: values.platform_id,
-          collection_type_id: values.collection_type_id,
-          collection_frequency_id: values.collection_frequency_id,
-          expected_transactions: values.expected_transactions,
-          form_build: values.form_build,
-          avg_ticket_size: values.avg_ticket_size,
-          ticket_size: values.ticket_size,
-          modified_by: loginId,
-          login_id: loginId,
-          is_website_url:
-            values.seletcted_website_app_url === "Yes" ? "True" : "False",
-          website_app_url: values.website_app_url,
-        })
-      ).then((res) => {
-        if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
-          toast.success(res.payload.message);
-          setTab(3);
-          setTitle("BUSINESS DETAILS");
-          dispatch(kycUserList({ login_id: loginId }));
-          dispatch(GetKycTabsStatus({ login_id: loginId }));
-          setIsDisabled(false)
-        } else {
-          toast.error(
-            res?.payload?.message
-              ? res?.payload?.message
-              : "Something Went Wrong! Please try again after some time."
-          );
-          setIsDisabled(false)
-        }
-      });
+      if (
+        window.confirm(
+          `Are you sure for the Expected Transaction : ${values.expected_transactions}`
+        )
+      ) {
+        dispatch(
+          saveBusinessInfo({
+            business_type: values.business_type,
+            business_category: values.business_category,
+            business_model: values.business_model,
+            billing_label: values.billing_label,
+            company_website: "NA",
+            erp_check: values.erp_check,
+            platform_id: values.platform_id,
+            collection_type_id: values.collection_type_id,
+            collection_frequency_id: values.collection_frequency_id,
+            expected_transactions: values.expected_transactions,
+            form_build: values.form_build,
+            avg_ticket_size: values.avg_ticket_size,
+            ticket_size: values.ticket_size,
+            modified_by: loginId,
+            login_id: loginId,
+            is_website_url:
+              values.seletcted_website_app_url === "Yes" ? "True" : "False",
+            website_app_url: values.website_app_url,
+          })
+        ).then((res) => {
+          if (res.meta.requestStatus === "fulfilled" && res.payload.status) {
+            toast.success(res.payload.message);
+            setTab(3);
+            setTitle("BUSINESS DETAILS");
+            dispatch(kycUserList({ login_id: loginId }));
+            dispatch(GetKycTabsStatus({ login_id: loginId }));
+            setIsDisabled(false);
+          } else {
+            toast.error(
+              res?.payload?.message
+                ? res?.payload?.message
+                : "Something Went Wrong! Please try again after some time."
+            );
+            setIsDisabled(false);
+          }
+        });
+      }
     }
-    }
-   
   };
 
   // let converter = require('number-to-words');
-
-
-
 
   // function div(x) {
   //   if(!isNaN(x) && !isNull(x)){
@@ -279,14 +272,31 @@ function BusinessOverview(props) {
   //     }
   //   }
 
-
   // }
+  useEffect(() => {
+    getExpectedTransactions("1");
+    getExpectedTransactions("2");
+  }, []);
 
+  const getExpectedTransactions = async (slabId) => {
+    try {
+      const response = await kycOperationService.expectedTransactions(slabId);
+      if (response.status === 200) {
+        if (slabId == 1) {
+          setTransactionRangeOption(response.data.data);
+        } else if (slabId == 2) {
+          setAvgTicketAmount(response.data.data);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handleShowHide = (event) => {
     const getuser = event.target.value;
     // setAppUrl(getuser);
   };
-//////////////////////////////////// Check for finite number
+  //////////////////////////////////// Check for finite number
   // useEffect(() => {
   //   const number = numberChnaged;
   //   if (number?.length > 1) {
@@ -297,7 +307,6 @@ function BusinessOverview(props) {
   //       } else {
   //         setTextWord("")
 
-
   //       }
   //     }
   //   }
@@ -305,6 +314,17 @@ function BusinessOverview(props) {
   // }, [numberChnaged])
 
   ////////////////////////////////
+
+  const slabOptions = convertToFormikSelectJson(
+    "id",
+    "slab_range",
+    transactionRangeOption
+  );
+  const ticketOptions = convertToFormikSelectJson(
+    "id",
+    "slab_range",
+    avgTicketAmount
+  );
 
   return (
     <div className="col-md-12 p-3">
@@ -360,7 +380,12 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-                <p>Please give a brief description of the nature of your business. Please give examples of products you sell, business category you operate in, your customers and channels through which you operate (website, offline retail).</p>
+                <p>
+                  Please give a brief description of the nature of your
+                  business. Please give examples of products you sell, business
+                  category you operate in, your customers and channels through
+                  which you operate (website, offline retail).
+                </p>
                 <div className="my-5- p-2- w-100 pull-left">
                   <hr
                     style={{
@@ -395,12 +420,12 @@ function BusinessOverview(props) {
                   readOnly={readOnly}
                   className="form-check-input"
                 />
-                
+
                 {formik.values?.seletcted_website_app_url === "Yes" && (
                   <div className="row">
                     <div className="col-lg-10">
                       <label className="col-form-label p-2 mt-0">
-                        Company Website / App URL 
+                        Company Website / App URL
                         <span style={{ color: "red" }}>*</span>
                       </label>
                       <FormikController
@@ -435,23 +460,23 @@ function BusinessOverview(props) {
 
               <div className="col-sm-4 col-md-4 col-lg-4">
                 <label className="col-form-label p-2 mt-0">
-                  Expected Transaction/Year<span style={{ color: "red" }}>*</span>
-                 
+                  Expected Transaction/Year
+                  <span style={{ color: "red" }}>*</span>
                 </label>
 
-              <FormikController
-                  control="input"
-                  type="text"
+                <FormikController
+                  control="select"
+                  // type="text"
                   name="expected_transactions"
-                  className="form-control"
+                  valueFlag={true}
+                  className="form-select form-control"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
+                  options={slabOptions}
+                  onClick={() => getExpectedTransactions(1)}
                 />
-                 {/* <span className="font-weight-bold m-0">{textWord}</span> */}
-                {/* {formik.handleChange(
-                  "expected_transactions",
-                  setNumberChanged(formik?.values?.expected_transactions)
-                )} */}
+
+                {/* <span className="font-weight-bold m-0">{textWord}</span> */}
               </div>
 
               <div className="col-sm-4 col-md-4 col-lg-4">
@@ -460,12 +485,15 @@ function BusinessOverview(props) {
                 </label>
 
                 <FormikController
-                  control="input"
+                  control="select"
                   type="text"
                   name="avg_ticket_size"
-                  className="form-control"
+                  className="form-select form-control"
+                  valueFlag={true}
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
+                  options={ticketOptions}
+                  onClick={() => getExpectedTransactions(2)}
                 />
               </div>
             </div>
