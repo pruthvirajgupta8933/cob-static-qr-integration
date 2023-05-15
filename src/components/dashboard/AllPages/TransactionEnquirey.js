@@ -22,21 +22,17 @@ function TransactionEnquirey() {
   const [errMessage, setErrMessage] = useState("");
   const [data, setData] = useState({});
   const [printData, setPrintData] = useState([]);
-  const [disable,setIsDisable] = useState(false)
-  const { auth } = useSelector((state) => state);
-  const { user } = auth;
-
-  let history = useHistory();
+  const [disable, setIsDisable] = useState(false)
 
   const onSubmit = (input) => {
     setData({});
     setIsDisable(true)
     const transaction_id = input.transaction_id;
-    axios
-      .get(API_URL.VIEW_TXN + `/${transaction_id}`)
+
+    axios.get(API_URL.VIEW_TXN + `/${transaction_id}`)
       .then((response) => {
         if (response?.data.length > 0) {
-         
+
           setIsShow(true);
           setData(response?.data[0]);
           setErrMessage(false);
@@ -44,7 +40,7 @@ function TransactionEnquirey() {
         } else {
           axios.get(API_URL.SP2_VIEW_TXN + `/${transaction_id}`).then((r) => {
             if (r?.data.length > 0) {
-             
+
               setIsShow(true);
               setIsDisable(false)
               setData(r?.data[0]);
@@ -53,9 +49,12 @@ function TransactionEnquirey() {
               setIsShow(false);
               setErrMessage(true);
               setIsDisable(false)
-              
+
             }
-          });
+          }).catch((err) => { 
+            setIsShow(false);
+            setErrMessage(true);
+            setIsDisable(false)});
         }
       })
       .catch((e) => {
@@ -64,6 +63,7 @@ function TransactionEnquirey() {
         setIsDisable(false)
       });
   };
+
 
   useEffect(() => {
     const tempArr = [
@@ -82,9 +82,16 @@ function TransactionEnquirey() {
 
       { key: "Client Code ", value: data.client_code },
       { key: "Client Txn Id", value: data.client_txn_Id },
+
+      { key: "Settlement Status", value: data.udf1 },
+      { key: "Chargeback ", value: data.udf2 },
+      { key: "Refund ", value: data.udf3 },
+      { key: "Refund Track Id ", value: data.udf4 },
     ];
     setPrintData(tempArr);
+
   }, [data]);
+
 
   const onClick = async () => {
     let tableContents = document.getElementById("print_docuement").innerHTML;
@@ -94,14 +101,6 @@ function TransactionEnquirey() {
     await a.print();
   };
 
-  if (
-    user &&
-    user.clientMerchantDetailsList === null &&
-    user.roleId !== 3 &&
-    user.roleId !== 13
-  ) {
-    history.push("/dashboard/profile");
-  }
 
   return (
     <section className="ant-layout">
@@ -116,149 +115,73 @@ function TransactionEnquirey() {
           <div className="right_layout my_account_wrapper right_side_heading">
             <h1 className="m-b-sm gx-float-left">Transaction Enquiry</h1>
           </div>
-          <section
-            className="features8 cid-sg6XYTl25a flleft col-lg-12"
-            id="features08-3-"
-          >
+          <section className="features8 cid-sg6XYTl25a flleft col-lg-12">
             <div className="container-fluid">
               <div className="row">
-                <Formik
-                  initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={onSubmit}
-                >
-                  {(formik) => (
-                    <Form className="col-lg-12 bgcolor">
-                      <div className="form-row">
-                        <div className="form-group col-md-6 col-sm-12 col-lg-6">
-                          <FormikController
-                            control="input"
-                            type="text"
-                            label="Transaction ID  *"
-                            name="transaction_id"
-                            placeholder="Enter Sabpaisa Transaction ID"
-                            className="form-control"
-                          />
+                <div className="col-12">
+                  <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={onSubmit}
+                  >
+                    {(formik) => (
+                      <Form className="col-lg-12 bgcolor">
+                        <div className="form-row">
+                          <div className="form-group col-md-4 col-sm-12 col-lg-4">
+                            <FormikController
+                              control="input"
+                              type="text"
+                              label="Transaction ID  *"
+                              lableClassName="font-weight-bold"
+                              name="transaction_id"
+                              placeholder="Enter Sabpaisa Transaction ID"
+                              className="form-control"
+                            />
 
-                          <button
-                          disabled={disable}
-                            className="btn cob-btn-primary  text-white bttnbackgroundkyc mt-2"
-                            type="submit"
-                          >
-                            View
-                          </button>
+                            <button
+                              disabled={disable}
+                              className="btn cob-btn-primary  text-white bttnbackgroundkyc mt-2"
+                              type="submit"
+                            >
+                              View
+                            </button>
+                            {(show && printData?.length > 0) && <button
+                              Value="click"
+                              onClick={onClick}
+                              className="btn btn-secondary text-white mt-2"
+                            >
+                              <i class="fa fa-print" aria-hidden="true"></i> Print
+                            </button>}
+
+                          </div>
                         </div>
-                      </div>
-                    </Form>
-                  )}
-                </Formik>
+                      </Form>
+                    )}
+                  </Formik>
+                </div>
 
-                {show && data?.txn_id ? (
-                  <div className="overflow-auto col-lg-12 ">
+                {show && printData?.length > 0 && (
+                  <div className="overflow-auto col-lg-12 mb-5 border">
+                    <div class="container">
+                      <div class="row">
+                        {printData?.map((datas, key) =>
+                          (<div class="col-4 p-2" key={datas.key.toString()}><p><span className="font-weight-bold"> {datas.key} :</span> {datas.value} </p></div>)
+                        )}
+                      </div>
+                    </div>
+
                     {/* Print Data  */}
                     <PrintDocument data={printData} />
-                    <table
-                      cellspacing={0}
-                      cellPadding={10}
-                      border={0}
-                      width="100%"
-                      className="tables"
-                      id="enquiry"
-                    >
-                      <tbody>
-                        <tr>
-                          <td>Txn Id:</td>
-                          <td className="bold">
-                            <b>{data.txn_id}</b>
-                          </td>
-                          <td>Payment Mode :</td>
-                          <td className="bold">
-                            <b>{data.payment_mode}</b>
-                          </td>
-                          <td>Payee Name :</td>
-                          <td className="bold">
-                            <b>{data.payee_name}</b>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Payee Mobile:</td>
-                          <td className="bold">
-                            <b>{data.payee_mob}</b>
-                          </td>
-                          <td>Payee Email :</td>
-                          <td className="bold">
-                            <b>{data.payee_email}</b>
-                          </td>
-                          <td>Status :</td>
-                          <td className="bold">
-                            <b>{data.status}</b>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Bank Txn Id :</td>
-                          <td className="bold">
-                            <b>{data.bank_txn_id}</b>
-                          </td>
-                          <td>Client Name :</td>
-                          <td>
-                            <b>{data.client_name}</b>
-                          </td>
-                          <td>Client Id : </td>
-                          <td className="bold">
-                            <b>{data.client_id}</b>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Payee Amount :</td>
-                          <td className="bold">
-                            <b>{data.payee_amount}</b>
-                          </td>
-                          <td>Paid Amount :</td>
-                          <td className="bold">
-                            <b>{data.paid_amount}</b>
-                          </td>
-                          <td>Transaction Date :</td>
-                          <td className="bold">
-                            <b>{data.trans_date}</b>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td> Client Code :</td>
-                          <td className="bold">
-                            <b>{data.client_code}</b>
-                          </td>
-                          <td>Client Txn Id:</td>
-                          <td className="bold">
-                            <b>{data.client_txn_Id}</b>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
                   </div>
-                ) : (
-                  <> </>
                 )}
 
                 {errMessage && (
-                  <h3
-                    style={{
-                      color: "red",
-                    }}
-                  >
+                  <div className="col">
+                  <h3 className="text-danger text-center">
                     Record Not Found!
                   </h3>
-                )}
-
-                {show && data.txn_id ? (
-                  <button
-                    Value="click"
-                    onClick={onClick}
-                    className="btn cob-btn-primary  bttn font-weight-bold bttnbackgroundkyc float-right"
-                  >
-                    Print
-                  </button>
-                ) : (
-                  <></>
+                  </div>
+                 
                 )}
               </div>
             </div>

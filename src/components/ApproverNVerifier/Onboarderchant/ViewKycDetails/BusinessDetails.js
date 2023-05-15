@@ -60,7 +60,7 @@ const BusinessDetails = (props) => {
 
   }
 
-  console.log("merchantKycId",merchantKycId)
+  // console.log("merchantKycId",merchantKycId)
 
   return (
     <div className="row mb-4 border">

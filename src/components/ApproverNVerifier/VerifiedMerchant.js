@@ -124,6 +124,11 @@ function VerifiedMerchant() {
     },
     {
       id: "12",
+      name: "Emp. Code",
+      selector: (row) => row.emp_code,
+    },
+    {
+      id: "13",
       name: "View Status",
       width:"120px",
       cell: (row) => (
@@ -146,7 +151,7 @@ function VerifiedMerchant() {
       ),
     },
     {
-      id: "13",
+      id: "14",
       name: "Action",
       cell: (row) => (
         <div>

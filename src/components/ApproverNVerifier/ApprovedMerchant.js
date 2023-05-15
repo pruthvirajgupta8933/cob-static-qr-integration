@@ -135,6 +135,11 @@ function ApprovedMerchant() {
     },
     {
       id: "13",
+      name: "Emp. Code",
+      selector: (row) => row.emp_code,
+    },
+    {
+      id: "14",
       name: "View Status",
       width:"110px",
       cell: (row) => (
@@ -155,7 +160,7 @@ function ApprovedMerchant() {
       ),
     },
     {
-      id: "14",
+      id: "15",
       name: "Upload Agreement",
       cell: (row) => (
         <div >
@@ -182,7 +187,7 @@ function ApprovedMerchant() {
       ),
     },
     {
-      id: "15",
+      id: "16",
       name: "Action",
       selector: (row) => row.actionStatus,
       cell: (row) => (

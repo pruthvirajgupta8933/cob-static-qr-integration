@@ -12,6 +12,8 @@
 }
 
 
+
+
 .activepaylink-kyc {
   color: white !important ;
   margin-left: 0;
@@ -60,6 +62,7 @@
 
 .btnbackground {
   background-color: #0156b3;
+  /* background-color: rgb(1, 86, 179); */
  
 }
 .panVerfied {
@@ -414,4 +417,8 @@ a.inactive{
   margin-right: auto;
   width: 100%;
   
+}
+
+.menu-tab-kyc{
+  padding : 0px
 }

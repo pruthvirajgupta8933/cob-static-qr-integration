@@ -197,7 +197,7 @@ function Registration() {
   return (
     <>
       <HeaderPage />
-      <div className="container-fluid toppad">
+      <div className="container-fluid">
         <div className="row">
           <div className="col-lg-1"></div>
           <div className="authfy-container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
@@ -606,7 +606,7 @@ function Registration() {
                                   <div className="sminputs">
                                     <div className="simform__actions-">
                                       <button
-                                        className="figmabtn Satoshi-Medium text-white mt-4- disabled1 w-50"
+                                        className="figmabtn Satoshi-Medium text-white disabled1 w-50"
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
@@ -617,10 +617,41 @@ function Registration() {
                                         }
                                         data-rel={btnDisable}
                                       >
-                                        Sign up
+                                        Create an account
                                       </button>
 
-                                      <span className="simform__actions-sidetext"></span>
+                                      <div className="row mt-4">
+                                      <h4>Already have an account? <Link
+                                        to={`/login/${queryStringUrl}`}
+                                        className="text-primary text-decoration-underline pb-2"
+                                      >
+                                        Login
+                                      </Link></h4>
+                                        <p className="fs-6">
+                                <a
+                                  href="https://sabpaisa.in/term-conditions/"
+                                  rel="noreferrer"
+                                  target={"_blank"}
+                                  alt="SabPaisa Terms & Conditions"
+                                  className="colorforterms_condition"
+                                  title="SabPaisa Terms & Conditions"
+                                >
+                                  Terms & Conditions
+                                </a>
+
+                                <a
+                                  href="https://sabpaisa.in/privacy-policy/"
+                                  rel="noreferrer"
+                                  target={"_blank"}
+                                  alt="SabPaisa Privacy Policy"
+                                  className="colorforterms_condition"
+                                  title="SabPaisa Privacy Policy"
+                                >
+                                  &nbsp;| Privacy Policy
+                                </a>
+                              </p>
+                                    </div>
+                                      {/* <span className="simform__actions-sidetext"></span>
                                       {<ErrorMessage name="terms_and_condition">
                                           {(msg) => (
                                             <p
@@ -628,17 +659,7 @@ function Registration() {
                                               {msg}
                                             </p>
                                           )}
-                                        </ErrorMessage>}
-                                    </div>
-                                  </div>
-                                  <div className="container">
-                                    <div className="row text-primary">
-                                      <div className="col ">Already have an account? <Link
-                                        to={`/login/${queryStringUrl}`}
-                                        style={{ color: "#0156B3" }}
-                                      >
-                                        Login
-                                      </Link></div>
+                                        </ErrorMessage>} */}
                                     </div>
                                   </div>
                                 </Form>

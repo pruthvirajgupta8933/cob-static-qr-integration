@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { approvekyc, verifyComplete } from "../../slices/kycSlice";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
-import congImg from "../../assets/images/congImg.png";
-import { Link } from "react-router-dom";
+import { getRefferal } from "../../services/kyc/merchant-kyc";
+import FormikController from "../../_components/formik/FormikController";
+import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
+import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
 
 function SubmitKyc(props) {
   const history = useHistory();
-  const { role, kycid } = props;
+  const { role } = props;
 
   const dispatch = useDispatch();
 
@@ -22,81 +24,58 @@ function SubmitKyc(props) {
 
   const { kycUserList } = kyc;
   const merchant_consent = kycUserList?.merchant_consent?.term_condition;
+  const isEmpCodeSaved = kycUserList?.emp_code?.is_saved;
+  const empCode = kycUserList?.emp_code?.emp_code;
 
   const kyc_status = kycUserList?.status;
   const [readOnly, setReadOnly] = useState(false);
   const [disable, setIsDisable] = useState(false);
+  const [refferalList, setRefferalList] = useState([])
+  const [refferalListSelectOption, setRefferalListSelectOption] = useState([])
 
   const initialValues = {
     term_condition: merchant_consent,
+    referal_code: empCode
   };
 
-  // const redirect = () => {
-  //   history.push("/dashboard");
-  // };
-
-  // if(consent_status === true) {
-  //   history.push("/dashboard");
-  // }
-
   const validationSchema = Yup.object({
+    referal_code: Yup.string().nullable(),
     term_condition: Yup.string().oneOf(
       ["true"],
       "You must accept all the terms & conditions"
     ),
   });
 
+
+
   useEffect(() => {
-    if (role.approver) {
-      setReadOnly(true);
-    } else if (role.verifier) {
-      setReadOnly(true);
-    }
-  }, [role]);
 
-  const verifyApprove = (val) => {
-    if (val === "verify") {
-      const data = {
-        login_id: kycid,
-        verified_by: loginId,
-      };
+    getRefferal().then(res => {
+      setRefferalList(res?.data?.message)
+      const data = convertToFormikSelectJson(
+        "emp_code",
+        "referral_code",
+        res?.data?.message
+      )
+      setRefferalListSelectOption(data)
 
-      dispatch(verifyComplete(data))
-        .then((resp) => {
-          resp?.payload?.status_code === 200
-            ? toast.success(resp?.payload?.message)
-            : toast.error(resp?.payload?.message);
-        })
-        .catch((e) => {
-          toast.error("Something went wrong, Please Try Again later");
-        });
-    }
 
-    if (val === "approve") {
-      const dataAppr = {
-        login_id: kycid,
-        approved_by: loginId,
-      };
+    }).catch(err => console.log(err))
+  
 
-      dispatch(approvekyc(dataAppr))
-        .then((resp) => {
-          resp?.payload?.status_code === 200
-            ? toast.success(resp?.payload?.message)
-            : toast.error(resp?.payload?.message);
-        })
-        .catch((e) => {
-          toast.error("Something went wrong, Please Try Again later");
-        });
-    }
-  };
+  }, []);
 
-  const onSubmit = () => {
+
+
+  const onSubmit = (value) => {
+    console.log("value", value)
     setIsDisable(true);
     dispatch(
       saveKycConsent({
-        term_condition: true,
+        term_condition: value.term_condition,
         login_id: loginId,
         submitted_by: loginId,
+        emp_code: value.referal_code
       })
     ).then((res) => {
       if (
@@ -105,7 +84,7 @@ function SubmitKyc(props) {
       ) {
         toast.success(res?.payload?.message);
         setIsDisable(false);
-        const kyc_consent_status = res?.payload?.status;
+        // const kyc_consent_status = res?.payload?.status;
         dispatch(UpdateModalStatus(true));
         history.push("/dashboard");
       } else {
@@ -114,6 +93,8 @@ function SubmitKyc(props) {
       }
     });
   };
+
+
 
   // useEffect(() => {
   // if(consent_status === true) {
@@ -134,16 +115,26 @@ function SubmitKyc(props) {
             <Form>
               <div className="form-group row">
                 <div className="row">
-                  <div className="col  checkboxstyle">
+                  {!isEmpCodeSaved && (kyc_status !== KYC_STATUS_VERIFIED || kyc_status !== KYC_STATUS_APPROVED )&&
+                    <div className="col-4">
+                      <FormikController
+                        control="select"
+                        name="referral_code"
+                        options={refferalListSelectOption}
+                        className="form-control "
+                        label="Referal Code (Optional)"
+                      />
+                    </div>
+                  }
+                  <div className="col-12  checkboxstyle">
                     <div>
                       <div className="para-style">
                         <Field
                           type="checkbox"
                           name="term_condition"
-                          readOnly={readOnly}
                           disabled={
-                            kyc_status === "Verified" ||
-                            kyc_status === "Approved"
+                            kyc_status.toLowerCase() === KYC_STATUS_VERIFIED.toLowerCase() ||
+                              kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()
                               ? true
                               : false
                           }
@@ -216,8 +207,8 @@ function SubmitKyc(props) {
                   }}
                 />
                 <div className="mt-3">
-                  {kyc_status === "Verified" ||
-                  kyc_status === "Approved" ? null : (
+                  {(kyc_status.toLowerCase() === KYC_STATUS_VERIFIED.toLowerCase() ||
+                    kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()) ? <></>:  (
                     <button
                       disabled={disable}
                       className="save-next-btn float-lg-right cob-btn-primary text-white"

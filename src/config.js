@@ -1,17 +1,27 @@
-const ENV_PROD = true; // For proudction make it true, don't change in the local environment
-let url, kyc_url, b2b_url, kyc_validate, payout_url = "";
+const ENV_PROD = false; // For proudction make it true, don't change in the local environment
+let url,
+  kyc_url,
+  b2b_url,
+  kyc_validate,
+  payout_url,
+  payLinkAPIURL = "";
+  
+
 if (ENV_PROD) {
   url = "https://cobawsapi.sabpaisa.in";
   kyc_url = "https://cobkyc.sabpaisa.in";
   kyc_validate = " https://kycvalidator.sabpaisa.in";
   payout_url = "https://payout.sabpaisa.in";
-  b2b_url = "https://b2becollect.sabpaisa.in"
+  b2b_url = "https://b2becollect.sabpaisa.in";
+  payLinkAPIURL="https://paybylink.sabpaisa.in/paymentlink";
 } else {
   url = "https://stgcobapi.sabpaisa.in";
   kyc_url = "https://stgcobkyc.sabpaisa.in";
   kyc_validate = "https://stage-kycvalidator.sabpaisa.in";
   payout_url = "https://staging-payout.sabpaisa.in";
-  b2b_url = "https://stage-b2bchallan.sabpaisa.in"
+  b2b_url = "https://stage-b2bchallan.sabpaisa.in";
+  payLinkAPIURL = "https://paybylink-staging.sabpaisa.in/paymentlink";
+
 }
 
 const subAPIURL = "https://subscription.sabpaisa.in/subscription";
@@ -19,8 +29,6 @@ const adminAPIURL = "https://adminapi.sabpaisa.in/SabPaisaAdmin";
 const reportAPIURL = "https://reportapi.sabpaisa.in/SabPaisaReport";
 
 // https://reportapi.sabpaisa.in/SabPaisaReport/REST/GetMerchantTxnHistoryN
-
-
 
 const API_LIVE = {
   BASE_URL_COB: url,
@@ -30,6 +38,8 @@ const API_LIVE = {
   ////////////////////////////////////---------------------------business_cat_code api
 
   Business_Category_CODE: `${kyc_url}/kyc/get-all-business-category/`,
+  getExpectedTransaction:`${kyc_url}/kyc/get-range/transaction-range`,
+
 
   // AUTH_CLIENT_CREATE : "${url}/auth-service/client",
   AUTH_CLIENT_CREATE: `${url}/auth-service/client`,
@@ -46,14 +56,16 @@ const API_LIVE = {
 
   EMAIL_BASE_URL: adminAPIURL + "/REST/Email/sendEmail",
   SUCCESS_TXN_SUMMARY: reportAPIURL + "/REST/SuccessTxnSummaryMerchant/",
-// https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
+  // https://reportapi.sabpaisa.in/SabPaisaReport/REST/SuccessTxnSummaryMerchant/
   // * Rate mapping */
-  RATE_MAPPING_GenerateClientFormForCob: adminAPIURL + "/REST/config/GenerateClientFormForCob",
+  RATE_MAPPING_GenerateClientFormForCob:
+    adminAPIURL + "/REST/config/GenerateClientFormForCob",
   // https://adminapi.sabpaisa.in/REST/Ratemapping/cloning/clientCodeF/clientCodeT/loginBy
   RATE_MAPPING_CLONE: adminAPIURL + "/REST/Ratemapping/cloning",
   RATE_ENABLE_PAYLINK: adminAPIURL + "/getDataByCommonProc/getCommonData/31",
 
-  CHECK_PERMISSION_PAYLINK: adminAPIURL + "/getDataByCommonProc/getCommonData/29/",
+  CHECK_PERMISSION_PAYLINK:
+    adminAPIURL + "/getDataByCommonProc/getCommonData/29/",
   BANK_IFSC_CODE_VERIFY: "https://ifsc.razorpay.com/",
   BANK_LIST_NB:
     "https://subscription.sabpaisa.in/subscription/REST/GetCommonData/0/nb",
@@ -80,8 +92,10 @@ const API_LIVE = {
   SettlementReport: reportAPIURL + "/REST/GetSettledTxnHistory",
   RefundTxnHistory: reportAPIURL + "/REST/GetRefundTxnHistory",
   ChargeBankTxnHistory: reportAPIURL + "/REST/GetChargebackTxnHistory",
-  GET_DOITC_SETTLED_TXN_HISTORY: url + "/SabPaisaReport/REST/GetDOITCSettledTxnHistory",
-  GET_DOITC_MERCHANT_TXN_HISTORY: url + "/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
+  GET_DOITC_SETTLED_TXN_HISTORY:
+    url + "/SabPaisaReport/REST/GetDOITCSettledTxnHistory",
+  GET_DOITC_MERCHANT_TXN_HISTORY:
+    url + "/SabPaisaReport/REST/GetDOITCMerchantTxnHistory",
 
   /* Transaction Enquiry */
   VIEW_TXN: reportAPIURL + "/Enquiry/ViewTxn",
@@ -91,15 +105,16 @@ const API_LIVE = {
   GET_FILE_NAME: adminAPIURL + "/REST/settlementReport/getFileName/",
 
   /* PAYLINK */
-  GET_CUSTOMERS: "https://paybylink.sabpaisa.in/paymentlink/getCustomers/",
-  SMART_UPLOAD: "https://paybylink.sabpaisa.in/paymentlink/smartupload",
-  EDIT_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/editCustomer/",
-  GET_CUSTOMER_TYPE: "https://paybylink.sabpaisa.in/paymentlink/getCustomerTypes",
-  ADD_LINK: "https://paybylink.sabpaisa.in/paymentlink/addLink",
-  ADD_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/addCustomers",
-  DELETE_CUSTOMER: "https://paybylink.sabpaisa.in/paymentlink/deleteCustomer",
-  GET_LINKS: "https://paybylink.sabpaisa.in/paymentlink/getLinks/",
-  GET_REPORTS: "https://paybylink.sabpaisa.in/paymentlink/getReports/",
+  GET_CUSTOMERS: `${payLinkAPIURL}/getCustomers/`,
+  SMART_UPLOAD: `${payLinkAPIURL}/smartupload`,
+  EDIT_CUSTOMER: `${payLinkAPIURL}/editCustomer/`,
+  GET_CUSTOMER_TYPE:
+    `${payLinkAPIURL}/getCustomerTypes`,
+  ADD_LINK: `${payLinkAPIURL}/addLink`,
+  ADD_CUSTOMER: `${payLinkAPIURL}/addCustomers`,
+  DELETE_CUSTOMER: `${payLinkAPIURL}/deleteCustomer`,
+  GET_LINKS: `${payLinkAPIURL}/getLinks/`,
+  GET_REPORTS: `${payLinkAPIURL}/getReports/`,
 
   /** GET MANDATE REG. STATUS */
   MANDATE_REGISTRATION_STATUS:
@@ -126,7 +141,7 @@ const API_LIVE = {
   ViewTxnEnqMultiParam: adminAPIURL + "/Enquiry/ViewTxnEnqMultiParam",
 
   /**Kyc DocumentsUploads */
-  searchQuery:`${kyc_url}/kyc/get-merchant-data/?search=Pending&search_query=lpsuman2001@gmail.com&page_size=5&page=1`,
+  searchQuery: `${kyc_url}/kyc/get-merchant-data/?search=Pending&search_query=lpsuman2001@gmail.com&page_size=5&page=1`,
   DocumentsUpload: `${kyc_url}/kyc/document-type`, //get APi
 
   Upload_Merchant_document: `${kyc_url}/kyc/upload-merchant-document/`, //post APi
@@ -147,8 +162,8 @@ const API_LIVE = {
   UPDATE_ZONE_DATA: `${url}/zone/update-zone-data`,
   GET_ZONE_INFO: `${url}/zone/get-zone-info`,
 
-  GET_EMPLOYEE_NAME:`${url}/merchant/employee-data/?order_by=empName`,
-  GET_MCC_MASTER_CODE:`${url}/get-mcc-master-data/?order_by=mcc_ellaboration`,
+  GET_EMPLOYEE_NAME: `${url}/merchant/employee-data/?order_by=empName`,
+  GET_MCC_MASTER_CODE: `${url}/get-mcc-master-data/?order_by=mcc_ellaboration`,
   ////////////////////////////////////////Rate mapping
   GET_RISK_BUISENSS_BYID: `${url}/merchant/get-risk-business-by-id`,
   GET_RISK_TEMPLSTE: `${url}/merchant/get-risk-category-template`,
@@ -173,8 +188,6 @@ const API_LIVE = {
   KYC_FOR_SAVING_REFER_MERCHANT: `${kyc_url}/kyc/refer-zone/save-refer-zone/`,
   FOR_GENERATING_MID: `${kyc_url}/kyc/mid-creation/send-request-subMerchant-mid/`,
   GET_ALL_GENERATE_MID_DATA: `${kyc_url}//kyc/mid-creation/get-merchant-mid-data/`,
-
-
 
   /** Contact Information */
   Save_General_Info: `${kyc_url}/kyc/save-general-info/`,
@@ -208,8 +221,6 @@ const API_LIVE = {
   UPDATE_SUBSCRIBED_PLAN_DETAILS: `${url}/subscribed/update-detail`,
   PRE_UPDATE_SUBSCRIBE_DETAILS: `${url}/subscribed/Pre-update-subscribed-detail`,
 
-
-
   /* get bank , business type, business category by Id */
   GET_BANK_ID: `${kyc_url}/kyc/get-bank-id-by-name/`,
   GET_BUSINESS_TYPE_ID: `${kyc_url}/kyc/get-business-type-by-id/`,
@@ -234,15 +245,13 @@ const API_LIVE = {
   Back_To_Pending_Approval: `${kyc_url}/kyc/reverse-kyc/re-approval/`,
   Back_To_Pending_KYC: `${kyc_url}/kyc/reverse-kyc/re-kyc-submit/`,
 
-
-
   // Client Detail SandBox //
   CLIENT_DETAIL: `${url}/clientDetail`,
   // KYC VALIDATE URL
   VALIDATE_KYC: `${kyc_validate}/validator`,
   // For comments in approver and merchant (Pending Verification and Pending Approval)
   COMMENTS_BOX: `${url}/merchant/update-comments`,
-  // OnBoard Merchant Role URL 
+  // OnBoard Merchant Role URL
   Roles_DropDown: `${kyc_url}/kyc/get-all-role-details/`,
   // Fetch selected product during registration
   website_plan_details: `${url}/auth-service/auth/login/website-plan-detail`,
@@ -259,12 +268,14 @@ const API_LIVE = {
   REMOVE_AGREEMENT: `${kyc_url}/kyc/upload-merchant-document/remove-agreement-doc/`,
   GET_MERCHANT_AGREEMENT_BY_LOGIN_ID: `${kyc_url}/kyc/upload-merchant-document/get-merchant-agreement-by-login-id/`,
 
+  // refer list
+  GET_REFERRAL: `${kyc_url}/kyc/refer-zone/get-referral-zone-mapper/`,
   // --------------------------------------------------->
 
   // Check is client code mapped or not (ratemapping case)
   isClientCodeMapped: `${adminAPIURL}/getDataByCommonProc/getCommonData/4`,
 
-  //update version https://adminapi.sabpaisa.in/SabPaisaAdmin/REST/ManageFalg/Flag/LPSD1/apiversion/1/1111 
+  //update version https://adminapi.sabpaisa.in/SabPaisaAdmin/REST/ManageFalg/Flag/LPSD1/apiversion/1/1111
   UPDATE_VERSION_RATEMAPPING: `${adminAPIURL}/REST/ManageFalg/Flag`,
 
   // For Payout
@@ -274,8 +285,6 @@ const API_LIVE = {
   transactionMode: `${payout_url}/api/modesByMerchantId`,
   paymentRequest: `${payout_url}/api/PayoutTransactionRequest`,
   fetchClientCode: `${payout_url}/api/getByClientCode/`,
-
-
 
   // ---------------------------   NEW API FOR COMMENTS (2)
   // Check is client code mapped or not (ratemapping case)
@@ -288,31 +297,28 @@ const API_LIVE = {
   MANDATE_FREQUENCY: `${subAPIURL}/REST/GetCommonData/0/frequency`,
   MANDATE_CATEGORY: `${subAPIURL}/REST/GetCommonData/0/MandateCategory`,
   // filterMandateReport: `${subAPIURL}/npci/filterMandateReport`,
-  frequency:`${subAPIURL}/REST/GetCommonData/0/frequency`,
-  mandateType:`${subAPIURL}/REST/GetCommonData/0/MandateType`,
-  requestType:`${subAPIURL}/REST/GetCommonData/0/RequestType`,
-  bankName:`${subAPIURL}/REST/GetCommonData/0/nb`,
-  mandateRegistration:`${subAPIURL}/mandateRegistration`,
+  frequency: `${subAPIURL}/REST/GetCommonData/0/frequency`,
+  mandateType: `${subAPIURL}/REST/GetCommonData/0/MandateType`,
+  requestType: `${subAPIURL}/REST/GetCommonData/0/RequestType`,
+  bankName: `${subAPIURL}/REST/GetCommonData/0/nb`,
+  mandateRegistration: `${subAPIURL}/mandateRegistration`,
   filterMandateReport: `${subAPIURL}/npci/filterMandateReportCob`,
 
   // Debit Report
   filterDebitReport: `${subAPIURL}/npci/filterDebitReportCob`,
-  mandateSubmit:`${subAPIURL}/registration`,
-  mandateSendRequest:`https://enach.npci.org.in/onmags/sendRequest`
+  mandateSubmit: `${subAPIURL}/registration`,
+  mandateSendRequest: `https://enach.npci.org.in/onmags/sendRequest`,
 };
-
 
 const B2B_API_LIVE = {
   challanTransaction: `${b2b_url}/e-collection/challan/get_transactions`,
-  challanTransactionExport: `${b2b_url}/e-collection/challan/get_mis`
-}
-
+  challanTransactionExport: `${b2b_url}/e-collection/challan/get_mis`,
+};
 
 const API_URL = API_LIVE;
 
 export const B2B_URL = B2B_API_LIVE;
 export default API_URL;
-
 
 export const APP_ENV = ENV_PROD;
 
