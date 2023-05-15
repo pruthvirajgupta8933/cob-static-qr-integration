@@ -302,7 +302,7 @@ function Sandbox() {
                           htmlFor="inputPassword3"
                           className="col-form-label"
                         >
-                          Environment Base URL
+                          SabPaisa Domain/Environment Base URL
                         </label>
 
                         <input
