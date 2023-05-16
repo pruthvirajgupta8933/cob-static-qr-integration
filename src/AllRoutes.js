@@ -19,6 +19,7 @@ import UrlNotFound from './components/dashboard/UrlNotFound';
 import BizzForm from './components/BizzAppForm/BizzForm'
 import PrivacyPolicy from './TermsOfService/PrivacyPolicy';
 import TermsAndConditions from './TermsOfService/TermsAndConditions';
+import Test from './components/Otherpages/Test';
 
 function AllRoutes() {
 
@@ -76,6 +77,9 @@ function AllRoutes() {
       </Route>
       <Route exact path="/PrivacyPolicy">
         <PrivacyPolicy />
+      </Route>
+      <Route exact path="/test-login">
+        <Test />
       </Route>
       <Route path="*" component={UrlNotFound} />
     </Switch>
