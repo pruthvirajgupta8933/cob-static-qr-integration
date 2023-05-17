@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
@@ -31,12 +31,21 @@ const SideNavbar = () => {
   //     e.currentTarget.className="show-menu-nav"
   //     e.target.firstElementChild.className = "fa fa-caret-up"
   //   }
-
   // }
 
+  const itemRef = useRef([])
+
+  const menuToggleHandler = (d)=>{
+    console.log("d",d)
+  }
+  // itemRef.current.push("hh")
+
   useEffect(() => {
+    itemRef.current = []
     let tempArrayOfItems = [];
     const displayMenu = menuListReducer?.enableMenu?.map((m) => {
+  itemRef.current.push({item: m?.app_code , status: true})
+      
       tempArrayOfItems.push(m?.app_code);
       setMenuToggleItem({ ...menuToggleItem, items: tempArrayOfItems });
       return (
@@ -47,8 +56,8 @@ const SideNavbar = () => {
               // onClick={(e) => toggleMenu(e)}
               isToggle="true"
             >
-              <span className="sidebar-menu-divider-business">
-                {m?.app_name}{" "}
+              <span className="sidebar-menu-divider-business" onClick={()=>menuToggleHandler(m?.app_code)} >
+                {m?.app_name}
                 <i className={`fa fa-caret-up`} aria-hidden="true"></i>
               </span>
 
@@ -99,6 +108,8 @@ const SideNavbar = () => {
 
     setRenderMenuList(displayMenu);
   }, [menuListReducer]);
+
+  itemRef.current?.filter((item)=> item.item===13)
 
   const roleBasedShowTab = roleBasedAccess();
 
