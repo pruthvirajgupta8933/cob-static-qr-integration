@@ -3,7 +3,7 @@ import NavBar from "../dashboard/NavBar/NavBar";
 import StepProgressBar from "../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import { useDispatch, useSelector } from "react-redux";
 import { kycUserList } from "../../slices/kycSlice";
-import API_URL from "../../config";
+import API_URL, { APP_ENV } from "../../config";
 
 import { axiosInstanceAuth, axiosInstanceJWT } from "../../utilities/axiosInstance";
 
@@ -93,14 +93,13 @@ function Sandbox() {
               <div className="container">
                 <div className="col-lg-12 border m-1 p-2-">
                   <a
-                    className="btn"
                     data-toggle="collapse"
                     href="#multiCollapseExample1"
                     role="button"
                     aria-expanded="true"
                     aria-controls="multiCollapseExample1"
                   >
-                    <h2>Test Credentials </h2>
+                    <h2 className="font-weight-bold"><u>Test Credentials</u> </h2>
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
@@ -135,6 +134,24 @@ function Sandbox() {
                           value="Abh789@sp"
                         />
                       </div>
+                    {!APP_ENV &&
+                      <div className="col-lg-4">
+                        <label
+                          htmlFor="inputPassword3"
+                          className="col-form-label"
+                        >
+                          Password
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="inputPassword3"
+                          disabled="true"
+                          value="P8c3WQ7ei@sp"
+                        />
+                      </div>}
+                    
+
                       <div className="col-lg-4">
                         <label
                           htmlFor="inputPassword3"
@@ -186,14 +203,13 @@ function Sandbox() {
                 
                 <div className="col-lg-12 border m-1 p-2-">
                   <a
-                    className="btn"
                     data-toggle="collapse"
                     href="#multiCollapseExample2"
                     role="button"
                     aria-expanded="true"
                     aria-controls="multiCollapseExample2"
                   >
-                    <h2>Live Credentials</h2>
+                    <h2 className="font-weight-bold"><u>Live Credentials</u></h2>
                   </a>
 
                   <form

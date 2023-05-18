@@ -16,36 +16,30 @@ const SideNavbar = () => {
   });
 
   // Do not remove the code
+  const elementRef = useRef();
+  const [itemRef, setItemRef] = useState({})
 
-  // const toggleMenu = (e) => {
-  //   // console.log("e",e)
-  //   console.log("e",e.target.firstElementChild.className)
 
-  //   const currentToggle = e.currentTarget.attributes?.istoggle?.value.toString()
-  //   if (currentToggle === "true") {
-  //     e.currentTarget.attributes.istoggle.value = false
-  //     e.currentTarget.className ="hide-menu-nav"
-  //     e.target.firstElementChild.className = "fa fa-caret-down"
-  //   } else {
-  //     e.currentTarget.attributes.istoggle.value = true
-  //     e.currentTarget.className="show-menu-nav"
-  //     e.target.firstElementChild.className = "fa fa-caret-up"
-  //   }
-  // }
+  const toggleMenu = (val, obj) => {
+    
+    setItemRef(prevState => ({
+      ...prevState,
+      [val]: !prevState[val]
+    }));
 
-  const itemRef = useRef([])
-
-  const menuToggleHandler = (d)=>{
-    console.log("d",d)
+    console.log("elementRef",elementRef)
   }
-  // itemRef.current.push("hh")
 
   useEffect(() => {
-    itemRef.current = []
+
     let tempArrayOfItems = [];
-    const displayMenu = menuListReducer?.enableMenu?.map((m) => {
-  itemRef.current.push({item: m?.app_code , status: true})
-      
+    let menuTempObj = {}
+
+    const displayMenu = menuListReducer?.enableMenu?.map((m, index) => {
+      // console.log(itemRef)
+      // setItemRef({ ...itemRef, [m?.app_code]: true })
+      menuTempObj[m?.app_code] = true
+
       tempArrayOfItems.push(m?.app_code);
       setMenuToggleItem({ ...menuToggleItem, items: tempArrayOfItems });
       return (
@@ -53,22 +47,22 @@ const SideNavbar = () => {
           <React.Fragment key={m?.app_name}>
             <div
               className="main-menu-container"
-              // onClick={(e) => toggleMenu(e)}
               isToggle="true"
             >
-              <span className="sidebar-menu-divider-business" onClick={()=>menuToggleHandler(m?.app_code)} >
+              <span className="sidebar-menu-divider-business" onClick={() => toggleMenu(m?.app_code, itemRef)} >
                 {m?.app_name}
                 <i className={`fa fa-caret-up`} aria-hidden="true"></i>
               </span>
-
-              <ul
+       
+              <ul 
+                dataRel={JSON.stringify(itemRef)}
                 id={`menulist_${m?.app_code}`}
                 className={`ant-menu ant-menu-sub ant-menu-inline`}
                 role="menu"
               >
                 {m?.submenu?.map((sm) =>
                   sm?.is_active &&
-                  auth?.user?.loginId.toString() === "11235" ? (
+                    auth?.user?.loginId.toString() === "11235" ? (
                     sm?.id !== 5 &&
                     sm?.id !== 6 &&
                     sm?.id !== 7 &&
@@ -106,16 +100,19 @@ const SideNavbar = () => {
       );
     });
 
+    setItemRef(menuTempObj)
     setRenderMenuList(displayMenu);
+    
   }, [menuListReducer]);
 
-  itemRef.current?.filter((item)=> item.item===13)
+
+  console.log("itemRef", itemRef)
 
   const roleBasedShowTab = roleBasedAccess();
 
   return (
-    <React.Fragment>
-      <div className="headers "></div>
+    <React.Fragment >
+      <div className="headers"></div>
       <input
         type="checkbox"
         className="openSidebarMenu"
@@ -171,8 +168,8 @@ const SideNavbar = () => {
                       style={{ background: "#140633" }}
                     >
                       {roleBasedShowTab?.merchant === true ||
-                      roleBasedShowTab?.bank === true ||
-                      roleBasedShowTab?.b2b === true ? (
+                        roleBasedShowTab?.bank === true ||
+                        roleBasedShowTab?.b2b === true ? (
                         <li className="ant-menu-item" role="menuitem">
                           <Link
                             to={`${url}`}
