@@ -1,8 +1,25 @@
-import React from 'react';
-import GoogleLogin from 'react-google-login';
+import React, { useEffect, useState } from "react";
+import GoogleLogin from "react-google-login";
+import { gapi } from "gapi-script";
+import CustomModal from "../../_components/custom_modal";
+import AfterSignUp from "./AfterSignup";
+import Registration from "../registration/Registration";
+
 
 const GoogleLoginButton = () => {
-  const clientId = '836072751988-tv9md4rbfi2nsp078mu3kvql47el5q4s.apps.googleusercontent.com';
+  const clientId =
+    "836072751988-7o1oegb07dtt7cfcgv5nfph1sqi4pnd4.apps.googleusercontent.com";
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: clientId,
+        scope: "email",
+      });
+    }
+
+    gapi.load("client:auth2", start);
+  }, []);
 
   // const handleLoginSuccess = (response) => {
   //   console.log("fn call")
@@ -16,18 +33,33 @@ const GoogleLoginButton = () => {
     // Handle the response from Google Sign-In
   };
 
-  const LoginFailure = (response)=>{
-    console.log("err",response);
+  const LoginFailure = (response) => {
+    console.log("err", response);
+  };
+  const modalBody = () => {
+    return (
+      <>
+        <AfterSignUp hideDetails={true} />
+      </>
+    );
+  };
 
-  }
   return (
-    <GoogleLogin
-      clientId={clientId}
-      onSuccess={responseGoogle}
-      onFailure={LoginFailure}
-      buttonText="Sign in with Google"
-      cookiePolicy={'single_host_origin'}
-    />
+    <>
+      <GoogleLogin
+        clientId={clientId}
+        onSuccess={responseGoogle}
+        onFailure={LoginFailure}
+        buttonText="Sign in with Google"
+        cookiePolicy={"single_host_origin"}
+      />
+      <CustomModal
+        modalBody={modalBody}
+        headerTitle={"Registration"}
+        modalToggle={isModalOpen}
+        fnSetModalToggle={setIsModalOpen}
+      />
+    </>
   );
 };
 
