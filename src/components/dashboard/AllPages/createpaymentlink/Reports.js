@@ -7,6 +7,8 @@ import toastConfig from '../../../../utilities/toastTypes';
 import DropDownCountPerPage from '../../../../_components/reuseable_components/DropDownCountPerPage';
 import { axiosInstance } from '../../../../utilities/axiosInstance';
 import CustomLoader from '../../../../_components/loader';
+import moment from 'moment';
+
 const Reports = () => {
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([])
@@ -20,6 +22,20 @@ const Reports = () => {
   const {clientCode} = clientMerchantDetailsList[0];
   const [pageCount,setPageCount ] = useState(data ? Math.ceil(data.length/pageSize) : 0);
 
+  let now = moment().format("YYYY-M-D");
+  let splitDate = now.split("-");
+  if (splitDate[1].length === 1) {
+    splitDate[1] = "0" + splitDate[1];
+  }
+  if (splitDate[2].length === 1) {
+    splitDate[2] = "0" + splitDate[2];
+  }
+  splitDate = splitDate.join("-");
+
+  const convertDate = (yourDate) => {
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    return date;
+  };
 
 useEffect(() => {
   // toastConfig.infoToast("Report Loading")
@@ -148,7 +164,7 @@ const pages = _.range(1, pageCount + 1)
                             <td>{report.transaction_status}</td>
                             <td>{report.client_transaction_id}</td>
                             <td>{report.link_id}</td>
-                            <td>{report?.link_valid_date?.replace("T"," ")}</td>
+                            <td>{convertDate(report?.link_valid_date?.replace("T"," "))}</td>
                             <td>{report.created_at}</td>
                             <td>{report.payment_collected}</td>
                             <td>{report.numeric_link_id}</td>

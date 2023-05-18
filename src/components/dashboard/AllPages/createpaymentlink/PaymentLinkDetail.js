@@ -9,6 +9,8 @@ import DropDownCountPerPage from "../../../../_components/reuseable_components/D
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import CustomLoader from "../../../../_components/loader";
 import Spinner from "../../../ApproverNVerifier/Spinner";
+import moment from "moment";
+
 const PaymentLinkDetail = () => {
 
   const [pageSize, setPageSize] = useState(10);
@@ -24,6 +26,20 @@ const PaymentLinkDetail = () => {
   const [pageCount, setPageCount] = useState(data ? Math.ceil(data.length / pageSize) : 0);
 
 
+  let now = moment().format("YYYY-M-D");
+  let splitDate = now.split("-");
+  if (splitDate[1].length === 1) {
+    splitDate[1] = "0" + splitDate[1];
+  }
+  if (splitDate[2].length === 1) {
+    splitDate[2] = "0" + splitDate[2];
+  }
+  splitDate = splitDate.join("-");
+
+  const convertDate = (yourDate) => {
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    return date;
+  };
 
   const loaduser = () => {
     // toastConfig.infoToast("Loading")
@@ -170,7 +186,7 @@ const PaymentLinkDetail = () => {
                       <td>{user?.amount}</td>
                       <td>{user?.customer_type}</td>
                       <td>{user?.customer_email}</td>
-                      <td>{user?.created_at}</td>
+                      <td>{convertDate(user?.created_at)}</td>
                       <td>{user?.remarks}</td>
                       {/* <td>{user.customer_id}</td> */}
                       <td>{user?.customer_name}</td>
