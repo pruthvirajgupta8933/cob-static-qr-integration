@@ -210,11 +210,19 @@ function BusinessOverview(props) {
   }, []);
 
   const onSubmit = (values) => {
+    const expectedTxn= values.expected_transactions.split("-");
+    const numbers = expectedTxn.map(part => parseInt(part));
+    const maxValueTxn = Math.max(...numbers); 
+    const ticketSize = values.avg_ticket_size.split("-");
+    const avgTicket= ticketSize.map(part => parseInt(part))
+    const maxTicketSize=Math.max(...avgTicket);
+    const avgCount=maxValueTxn*maxTicketSize;
+
     if (role.merchant) {
       // setIsDisabled(true)
       if (
         window.confirm(
-          `Are you sure for the Expected Transaction : ${values.expected_transactions}`
+          `Are you sure for the Expected Transaction : ${avgCount}`
         )
       ) {
         dispatch(

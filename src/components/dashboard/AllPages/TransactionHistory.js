@@ -62,6 +62,11 @@ const TransactionHistory = () => {
   }
   splitDate = splitDate.join("-");
 
+  const convertDate = (yourDate) => {
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    return date;
+  };
+
   let clientMerchantDetailsList = [];
   if (
     user &&
@@ -745,7 +750,7 @@ const TransactionHistory = () => {
                             <td>
                               {Number.parseFloat(item.payee_amount).toFixed(2)}
                             </td>
-                            <td>{item.trans_date}</td>
+                            <td>{convertDate(item.trans_date)}</td>
                             <td>{item.status}</td>
                             <td>{item.payee_first_name}</td>
                             <td>{item.payee_lst_name}</td>
