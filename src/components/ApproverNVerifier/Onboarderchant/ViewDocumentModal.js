@@ -104,7 +104,7 @@ const ViewDocumentModal = (props) => {
 
 
   const dateManipulate = (yourDate) => {
-    let date = moment(yourDate).format("MM/DD/YYYY HH:mm:ss");
+    let date = moment(yourDate).format("DD/MM/YYYY HH:mm:ss");
     return date;
   };
 
