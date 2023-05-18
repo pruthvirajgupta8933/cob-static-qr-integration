@@ -50,6 +50,12 @@ const SettlementReportNew= () => {
   }
   splitDate = splitDate.join("-");
 
+
+  const convertDate = (yourDate) => {
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    return date;
+  };
+
   let clientMerchantDetailsList = [];
   if (
     user &&
@@ -499,7 +505,7 @@ const SettlementReportNew= () => {
                                 item.settlement_amount
                               ).toFixed(2)}
                             </td>
-                            <td>{item.settlement_date}</td>
+                            <td>{convertDate(item.settlement_date)}</td>
                             <td>{item.settlement_bank_ref}</td>
                             <td>{item.settlement_utr}</td>
                             <td>{item.settlement_remarks}</td>

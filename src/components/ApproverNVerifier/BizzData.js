@@ -30,6 +30,11 @@ const BizzAppData = () => {
   }
   splitDate = splitDate.join("-");
 
+  const convertDate = (yourDate) => {
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    return date;
+  };
+
   const [show, setShow] = useState(false);
   const initialValues = {
     start_date: splitDate,
@@ -334,7 +339,7 @@ const BizzAppData = () => {
                           <td>{SingleFormData?.zone}</td>
                           <td>{SingleFormData?.entity_pan_card_number}</td>
                           <td>{SingleFormData?.gst_number}</td>
-                          <td>{SingleFormData?.created_on}</td>
+                          <td>{convertDate(SingleFormData?.created_on)}</td>
                         </tr>
                       ))
                     )}
