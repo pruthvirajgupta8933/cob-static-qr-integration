@@ -12,7 +12,7 @@ const GoogleLoginButton = ({ enableSocialLogin, btnText }) => {
     // onLogoutSuccess: handleLogout,
   });
 
-  const clientId =
+  var clientId =
     "836072751988-7o1oegb07dtt7cfcgv5nfph1sqi4pnd4.apps.googleusercontent.com";
   useEffect(() => {
     function start() {
