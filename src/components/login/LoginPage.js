@@ -9,6 +9,7 @@ import { clearMessage } from "../../slices/message";
 import { toast } from "react-toastify";
 import "./Login.css";
 import imageSlide1 from "../../assets/images/COB.png";
+import GoogleLoginButton from "../social-login/GoogleLoginButton";
 
 // import api from './api';
 
@@ -96,6 +97,34 @@ function LoginPage() {
   };
 
   const queryString = window.location.search;
+  const enableSocialLogin =(flag,response)=>
+  {
+    const username = response?.profileObj?.email;
+    const is_social = true;
+    if(flag)
+    {
+    dispatch(login({ username,is_social })).then((res) => {
+      if (res?.payload?.user) {   
+        const activeStatus = res?.payload?.user?.loginStatus;
+        const loginMessage = res?.payload?.user?.loginMessage;
+        if (activeStatus === "Activate" && loginMessage === "success") {
+          history.push("/dashboard");
+          // customLogin();
+          setLoading(false);
+        } else {
+          if (loginMessage === "Pending") {
+            toast.error(loginMessage);
+          }
+          setLoading(false);
+        }
+      } else {
+        history.push("/Registration");
+        setLoading(false);
+        toast.error(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
+      }
+    })
+  }
+  }
 
   return (
     <React.Fragment>
@@ -280,6 +309,7 @@ function LoginPage() {
                                 </Form>
                               )}
                             </Formik>
+                            <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
                             <div className="logmod__form- m-r-l-100- mt-3 termsconditionss NunitoSans-Regular text-center">
                               <div className="col text-center">
                                 <h4>Don’t have an account with SabPaisa? <Link className="text-primary text-decoration-underline" to="/Registration">Signup</Link>

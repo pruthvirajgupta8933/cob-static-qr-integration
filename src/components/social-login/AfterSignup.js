@@ -20,31 +20,16 @@ import "../login/css/style.css";
 const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const FORM_VALIDATION = Yup.object().shape({
-  fullname: Yup.string()
-    .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field ")
-    .required("Required"),
+
   mobilenumber: Yup.string()
     .required("Required")
     .matches(phoneRegExp, "Phone number is not valid")
     .min(10, "Phone number in not valid")
     .max(10, "too long"),
-  emaill: Yup.string()
-    .email("Must be a valid email")
-    .max(255)
-    .required("Required"),
-  passwordd: Yup.string()
-    .required("Password Required")
-    .matches(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-    ),
-  confirmpasswordd: Yup.string()
-    .oneOf([Yup.ref("passwordd"), null], "Passwords must match")
-    .required("Confirm Password"),
   business_cat_code: Yup.string().required("Required"),
 });
 
-function Registration({hideDetails}) {
+function Registration({hideDetails,getPendingDetails}) {
   const history = useHistory();
 
   const reduxState = useSelector((state) => state);
@@ -55,6 +40,8 @@ function Registration({hideDetails}) {
   const [btnDisable, setBtnDisable] = useState(false);
   const [businessCode, setBusinessCode] = useState([]);
   const [queryString, setQueryString] = useState({});
+  const [mobileNumber,setMobileNumber]=useState("");
+  const [businessCategoryCode,setBussinessCategoryCode]=useState("");
   const [passwordType, setPasswordType] = useState({
     confirmpassword: "",
     showPasswords: false,
@@ -112,37 +99,12 @@ function Registration({hideDetails}) {
 
   const handleRegistration = (formData, { resetForm }) => {
     let businessType = 1;
-    let {
-      fullname,
-      mobilenumber,
-      emaill,
-      passwordd,
-      business_cat_code,
-    } = formData;
-    setBtnDisable(true)
+    console.log(formData);
+    setMobileNumber(formData?.mobilenumber);
+    setBussinessCategoryCode(formData?.business_cat_code);
+    setBtnDisable(false);
 
-    dispatch(
-      register({
-        fullname: fullname,
-        mobileNumber: mobilenumber,
-        email: emaill,
-        business_cat_code: business_cat_code,
-        password: passwordd,
-        businessType,
-        isDirect: true,
-        requestId: null,
-        plan_details:queryString
-      })
-
-    )
-      .unwrap()
-      .then((res) => {
-        setBtnDisable(false);
-        resetForm();
-      })
-      .catch((err) => {
-        setBtnDisable(false);
-      });
+    getPendingDetails(mobileNumber,businessCategoryCode);
   };
 
 
@@ -164,8 +126,6 @@ function Registration({hideDetails}) {
 
 
   useEffect(() => {
-    
-
     if (isUserRegistered === true) {
       toast.success(message.message, {
         position: "top-right",
@@ -193,6 +153,7 @@ function Registration({hideDetails}) {
 
 
   const queryStringUrl  = window.location.search
+
 
   return (
     <>
