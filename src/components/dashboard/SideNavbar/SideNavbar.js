@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png";
 import dashboard from "../../../assets/images/dashb.png";
-import "./sidenavbar.css";
+// import "./sidenavbar.css";
+import "./sidenavbar.css"
 
 const SideNavbar = () => {
   const { menuListReducer, auth } = useSelector((state) => state);
@@ -15,28 +16,23 @@ const SideNavbar = () => {
     items: [],
   });
 
-  // Do not remove the code
 
-  // const toggleMenu = (e) => {
-  //   // console.log("e",e)
-  //   console.log("e",e.target.firstElementChild.className)
+  const toggleMenu = (e) => {
+    e.currentTarget.nextSibling.classList.toggle("hide-menu-nav")
+  }
 
-  //   const currentToggle = e.currentTarget.attributes?.istoggle?.value.toString()
-  //   if (currentToggle === "true") {
-  //     e.currentTarget.attributes.istoggle.value = false
-  //     e.currentTarget.className ="hide-menu-nav"
-  //     e.target.firstElementChild.className = "fa fa-caret-down"
-  //   } else {
-  //     e.currentTarget.attributes.istoggle.value = true
-  //     e.currentTarget.className="show-menu-nav"
-  //     e.target.firstElementChild.className = "fa fa-caret-up"
-  //   }
 
-  // }
+
 
   useEffect(() => {
+
     let tempArrayOfItems = [];
-    const displayMenu = menuListReducer?.enableMenu?.map((m) => {
+    let menuTempObj = {}
+
+    const displayMenu = menuListReducer?.enableMenu?.map((m, index) => {
+   
+      menuTempObj[m?.app_code] = true
+
       tempArrayOfItems.push(m?.app_code);
       setMenuToggleItem({ ...menuToggleItem, items: tempArrayOfItems });
       return (
@@ -44,22 +40,21 @@ const SideNavbar = () => {
           <React.Fragment key={m?.app_name}>
             <div
               className="main-menu-container"
-              // onClick={(e) => toggleMenu(e)}
               isToggle="true"
             >
-              <span className="sidebar-menu-divider-business">
-                {m?.app_name}{" "}
-                <i className={`fa fa-caret-up`} aria-hidden="true"></i>
+              <span className="sidebar-menu-divider-business" onClick={(e) => toggleMenu(e)} >
+                {m?.app_name}
+                <i className={`fa fa-caret-up ml-1`} aria-hidden="true"></i>
               </span>
 
-              <ul
+              <ul 
                 id={`menulist_${m?.app_code}`}
                 className={`ant-menu ant-menu-sub ant-menu-inline`}
                 role="menu"
               >
                 {m?.submenu?.map((sm) =>
                   sm?.is_active &&
-                  auth?.user?.loginId.toString() === "11235" ? (
+                    auth?.user?.loginId.toString() === "11235" ? (
                     sm?.id !== 5 &&
                     sm?.id !== 6 &&
                     sm?.id !== 7 &&
@@ -98,13 +93,17 @@ const SideNavbar = () => {
     });
 
     setRenderMenuList(displayMenu);
+    
   }, [menuListReducer]);
+
+
+  // console.log("itemRef", itemRef)
 
   const roleBasedShowTab = roleBasedAccess();
 
   return (
-    <React.Fragment>
-      <div className="headers "></div>
+    <React.Fragment >
+      <div className="headers"></div>
       <input
         type="checkbox"
         className="openSidebarMenu"
@@ -160,8 +159,8 @@ const SideNavbar = () => {
                       style={{ background: "#140633" }}
                     >
                       {roleBasedShowTab?.merchant === true ||
-                      roleBasedShowTab?.bank === true ||
-                      roleBasedShowTab?.b2b === true ? (
+                        roleBasedShowTab?.bank === true ||
+                        roleBasedShowTab?.b2b === true ? (
                         <li className="ant-menu-item" role="menuitem">
                           <Link
                             to={`${url}`}
@@ -179,7 +178,6 @@ const SideNavbar = () => {
                       {auth?.user?.loginId.toString() === "11235" && (
                         <div
                           className="main-menu-container"
-                          // onClick={(e) => toggleMenu(e)}
                           isToggle="true"
                         >
                           <ul
