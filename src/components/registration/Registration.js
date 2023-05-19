@@ -10,14 +10,17 @@ import { useHistory, Link } from "react-router-dom";
 import { toast, Zoom } from "react-toastify";
 import API_URL from "../../config";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
+import AfterSignUp from "../../components/social-login/AfterSignup";
 
 import "../login/css/home.css";
 import "../login/css/homestyle.css";
 import "../login/css/style-style.css";
 import "../login/css/style.css";
+import GoogleLoginButton from "../social-login/GoogleLoginButton";
+import CustomModal from "../../_components/custom_modal";
 
-
-const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const FORM_VALIDATION = Yup.object().shape({
   fullname: Yup.string()
@@ -48,6 +51,8 @@ function Registration() {
   const history = useHistory();
 
   const reduxState = useSelector((state) => state);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const { message, auth } = reduxState;
   const authData = auth;
   const { isUserRegistered } = authData;
@@ -65,7 +70,10 @@ function Registration() {
     showPassword: false,
   });
 
-  
+  //details from goole sign in
+  const [fullName,setFullName]=useState("");
+  const [email,setEmail]=useState("");
+
   const dispatch = useDispatch();
 
   const togglePassword = () => {
@@ -74,7 +82,6 @@ function Registration() {
       showPasswords: !passwordType.showPasswords,
     });
   };
-
 
   useEffect(() => {
     axiosInstanceJWT
@@ -90,36 +97,31 @@ function Registration() {
       })
       .catch((err) => console.log(err));
 
-      const search = window.location.search;
-      const params = new URLSearchParams(search);
-      const appid = params.get('appid'); 
-      const planid = params.get('planid'); 
-      const domain = params.get('domain'); 
-      const page = params.get('page'); 
-      const appName = params.get('appName'); 
-      const planName = params.get('planName'); 
+    const search = window.location.search;
+    const params = new URLSearchParams(search);
+    const appid = params.get("appid");
+    const planid = params.get("planid");
+    const domain = params.get("domain");
+    const page = params.get("page");
+    const appName = params.get("appName");
+    const planName = params.get("planName");
 
-      const paramObject = {
-        appid,
-        planid,
-        domain,
-        page,
-        appName,
-        planName
-      }
-      setQueryString(paramObject);
+    const paramObject = {
+      appid,
+      planid,
+      domain,
+      page,
+      appName,
+      planName,
+    };
+    setQueryString(paramObject);
   }, []);
 
   const handleRegistration = (formData, { resetForm }) => {
     let businessType = 1;
-    let {
-      fullname,
-      mobilenumber,
-      emaill,
-      passwordd,
-      business_cat_code,
-    } = formData;
-    setBtnDisable(true)
+    let { fullname, mobilenumber, emaill, passwordd, business_cat_code } =
+      formData;
+    setBtnDisable(true);
 
     dispatch(
       register({
@@ -131,9 +133,9 @@ function Registration() {
         businessType,
         isDirect: true,
         requestId: null,
-        plan_details:queryString
+        plan_details: queryString,
+        is_social:true
       })
-
     )
       .unwrap()
       .then((res) => {
@@ -145,27 +147,22 @@ function Registration() {
       });
   };
 
-
   const handleClickShowPassword = () => {
     setValuesIn({ ...valuesIn, showPassword: !valuesIn.showPassword });
   };
-
 
   useEffect(() => {
     const userLocalData = JSON.parse(sessionStorage.getItem("user"));
     const isLoggedInLc =
       userLocalData && userLocalData.loginId !== null ? true : false;
-    if(isLoggedInLc){
-        history.push("/dashboard")
-    }else{
-      dispatch(logout())
+    if (isLoggedInLc) {
+      history.push("/dashboard");
+    } else {
+      dispatch(logout());
     }
   }, []);
 
-
   useEffect(() => {
-    
-
     if (isUserRegistered === true) {
       toast.success(message.message, {
         position: "top-right",
@@ -192,11 +189,69 @@ function Registration() {
   }, [isUserRegistered, dispatch, history, message]);
 
 
-  const queryStringUrl  = window.location.search
+  const enableSocialLogin=(flag,response)=>
+  {
+    setIsModalOpen(true);
+    toast.warning("Please add mobile number & bussiness category.")
+    setFullName(response?.profileObj?.familyName);
+    setEmail(response?.profileObj?.email);
+
+  }
+  const queryStringUrl = window.location.search;
+
+
+  //function to get pending details like mobile number,bussiness caregory code
+  const getPendingDetails=(mobileNumber,businessCategoryCode)=>
+  {
+    let businessType = 1;
+    console.log(mobileNumber,businessCategoryCode);
+    if(mobileNumber && businessCategoryCode)
+    {
+      setBtnDisable(true);
+      dispatch(
+        register({
+          fullname: fullName,
+          mobileNumber: mobileNumber,
+          email: email,
+          business_cat_code: businessCategoryCode,
+          // password: passwordd,
+          businessType,
+          isDirect: true,
+          requestId: null,
+          plan_details: queryString,
+          is_social:true
+        })
+      )
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+          setBtnDisable(false);
+          // resetForm();
+        })
+        .catch((err) => {
+          setBtnDisable(false);
+        });
+    }
+
+  }
+
+  const modalBody = () => {
+    return (
+      <>
+        <AfterSignUp hideDetails={true} getPendingDetails={getPendingDetails} />
+      </>
+    );
+  };
 
   return (
     <>
       <HeaderPage />
+      <CustomModal
+          modalBody={modalBody}
+          headerTitle={"Registration"}
+          modalToggle={isModalOpen}
+          fnSetModalToggle={setIsModalOpen}
+        />
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-1"></div>
@@ -238,10 +293,10 @@ function Registration() {
                               className="font-size-32 mb-2 NunitoSans-Regular"
                               style={{ color: "#012167" }}
                             >
-                            business
+                              business
                             </p>
                             <p className="mt-2 loginBanSubHeader NunitoSans-Regular">
-                              boost  your&nbsp;finance
+                              boost your&nbsp;finance
                             </p>
                             <img
                               src={onlineshopinglogo}
@@ -266,8 +321,7 @@ function Registration() {
                               business
                             </p>
                             <p className="mt-2 loginBanSubHeader NunitoSans-Regular">
-                              
-                              boost  your&nbsp;finance
+                              boost your&nbsp;finance
                             </p>
                             <img
                               src={onlineshopinglogo}
@@ -289,12 +343,10 @@ function Registration() {
                               className="font-size-32 mb-2 NunitoSans-Regular"
                               style={{ color: "#012167" }}
                             >
-                              
                               business
                             </p>
                             <p className="mt-2 loginBanSubHeader NunitoSans-Regular">
-                              
-                              boost  your&nbsp;finance
+                              boost your&nbsp;finance
                             </p>
                             <img
                               src={onlineshopinglogo}
@@ -352,7 +404,7 @@ function Registration() {
                               }}
                               validationSchema={FORM_VALIDATION}
                               onSubmit={(values, { resetForm }) => {
-                                handleRegistration(values, { resetForm })
+                                handleRegistration(values, { resetForm });
                               }}
                             >
                               {(formik, resetForm) => (
@@ -381,8 +433,7 @@ function Registration() {
                                       {
                                         <ErrorMessage name="fullname">
                                           {(msg) => (
-                                            <p
-                                              className="abhitest errortxt">
+                                            <p className="abhitest errortxt">
                                               {msg}
                                             </p>
                                           )}
@@ -416,8 +467,7 @@ function Registration() {
                                         {
                                           <ErrorMessage name="mobilenumber">
                                             {(msg) => (
-                                              <p
-                                                className="abhitest errortxt">
+                                              <p className="abhitest errortxt">
                                                 {msg}
                                               </p>
                                             )}
@@ -443,8 +493,7 @@ function Registration() {
                                         {
                                           <ErrorMessage name="emaill">
                                             {(msg) => (
-                                              <p
-                                                className="abhitest errortxt">
+                                              <p className="abhitest errortxt">
                                                 {msg}
                                               </p>
                                             )}
@@ -484,8 +533,7 @@ function Registration() {
                                         {
                                           <ErrorMessage name="business_cat_code">
                                             {(msg) => (
-                                              <p
-                                                className="abhitest errortxt">
+                                              <p className="abhitest errortxt">
                                                 {msg}
                                               </p>
                                             )}
@@ -494,7 +542,7 @@ function Registration() {
                                       </div>
                                     </div>
                                   </div>
-
+                             
                                   <div className="sminputs mb-40">
                                     <div className="input full- optional">
                                       <label
@@ -514,7 +562,6 @@ function Registration() {
                                             : "password"
                                         }
                                         name="passwordd"
-
                                         autoComplete="off"
                                       />
                                       <div className="input-group-addon viewfor">
@@ -539,8 +586,7 @@ function Registration() {
                                       {
                                         <ErrorMessage name="passwordd">
                                           {(msg) => (
-                                            <p
-                                              className="abhitest errortxt">
+                                            <p className="abhitest errortxt">
                                               {msg}
                                             </p>
                                           )}
@@ -594,8 +640,7 @@ function Registration() {
                                       {
                                         <ErrorMessage name="confirmpasswordd">
                                           {(msg) => (
-                                            <p
-                                              className="abhitest errortxt">
+                                            <p className="abhitest errortxt">
                                               {msg}
                                             </p>
                                           )}
@@ -610,47 +655,54 @@ function Registration() {
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"
-                                        disabled={btnDisable ||
+                                        disabled={
+                                          btnDisable ||
                                           !(formik.isValid && formik.dirty)
-                                          ? true
-                                          : false
+                                            ? true
+                                            : false
                                         }
                                         data-rel={btnDisable}
                                       >
                                         Create an account
                                       </button>
 
-                                      <div className="row mt-4">
-                                      <h4>Already have an account? <Link
-                                        to={`/login/${queryStringUrl}`}
-                                        className="text-primary text-decoration-underline pb-2"
-                                      >
-                                        Login
-                                      </Link></h4>
+                                      <div className="row ">
+                                        <div className="d-flex justify-content-center mt-2">
+                                          <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} />
+                                        </div>
+                                        <h4 className="mt-2">
+                                          Already have an account?{" "}
+                                          <Link
+                                            to={`/login/${queryStringUrl}`}
+                                            className="text-primary text-decoration-underline pb-2"
+                                          >
+                                            Login
+                                          </Link>
+                                        </h4>
                                         <p className="fs-6">
-                                <a
-                                  href="https://sabpaisa.in/term-conditions/"
-                                  rel="noreferrer"
-                                  target={"_blank"}
-                                  alt="SabPaisa Terms & Conditions"
-                                  className="colorforterms_condition"
-                                  title="SabPaisa Terms & Conditions"
-                                >
-                                  Terms & Conditions
-                                </a>
+                                          <a
+                                            href="https://sabpaisa.in/term-conditions/"
+                                            rel="noreferrer"
+                                            target={"_blank"}
+                                            alt="SabPaisa Terms & Conditions"
+                                            className="colorforterms_condition"
+                                            title="SabPaisa Terms & Conditions"
+                                          >
+                                            Terms & Conditions
+                                          </a>
 
-                                <a
-                                  href="https://sabpaisa.in/privacy-policy/"
-                                  rel="noreferrer"
-                                  target={"_blank"}
-                                  alt="SabPaisa Privacy Policy"
-                                  className="colorforterms_condition"
-                                  title="SabPaisa Privacy Policy"
-                                >
-                                  &nbsp;| Privacy Policy
-                                </a>
-                              </p>
-                                    </div>
+                                          <a
+                                            href="https://sabpaisa.in/privacy-policy/"
+                                            rel="noreferrer"
+                                            target={"_blank"}
+                                            alt="SabPaisa Privacy Policy"
+                                            className="colorforterms_condition"
+                                            title="SabPaisa Privacy Policy"
+                                          >
+                                            &nbsp;| Privacy Policy
+                                          </a>
+                                        </p>
+                                      </div>
                                       {/* <span className="simform__actions-sidetext"></span>
                                       {<ErrorMessage name="terms_and_condition">
                                           {(msg) => (

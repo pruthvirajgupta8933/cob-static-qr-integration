@@ -425,10 +425,10 @@ const TransactionHistory = () => {
   const lastThreeMonth = new Date(today);
   lastThreeMonth.setDate(lastThreeMonth.getDate() - 90);
   lastThreeMonth.toLocaleDateString("en-ca");
-  let month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
   let day = lastThreeMonth.getUTCDate();
+  let month = lastThreeMonth.getUTCMonth() + 1; //months from 1-12
   let year = lastThreeMonth.getUTCFullYear();
-  const finalDate = year + "-" + month + "-" + day;
+  const finalDate = day + "-" + month + "-" + year;
 
   // console.log("clientCodeOption",clientCodeOption)
 

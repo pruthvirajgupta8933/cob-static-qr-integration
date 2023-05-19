@@ -82,9 +82,9 @@ export const register = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ username, password }, thunkAPI) => {
+  async ({ username, password,is_social }, thunkAPI) => {
     try {
-      const data = await AuthService.login(username, password);
+      const data = await AuthService.login(username, password,is_social);
       // console.log("data",data)
       TokenService.setUser(data)
       return { user: data };

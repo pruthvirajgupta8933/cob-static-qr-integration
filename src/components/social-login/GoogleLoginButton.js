@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import GoogleLogin from "react-google-login";
 import { gapi } from "gapi-script";
-import CustomModal from "../../_components/custom_modal";
-import AfterSignUp from "./AfterSignup";
-import Registration from "../registration/Registration";
+import UseGoogleLogout from './GoogleLogout';
+import { useGoogleLogout } from 'react-google-login';
 
 
-const GoogleLoginButton = () => {
-  const clientId =
+
+const GoogleLoginButton = ({ enableSocialLogin, btnText }) => {
+  const signOut  = useGoogleLogout({
+    clientId: clientId,
+    // onLogoutSuccess: handleLogout,
+  });
+
+  var clientId =
     "836072751988-7o1oegb07dtt7cfcgv5nfph1sqi4pnd4.apps.googleusercontent.com";
-  const [isModalOpen, setIsModalOpen] = useState(true);
   useEffect(() => {
     function start() {
       gapi.client.init({
@@ -20,28 +24,14 @@ const GoogleLoginButton = () => {
 
     gapi.load("client:auth2", start);
   }, []);
-
-  // const handleLoginSuccess = (response) => {
-  //   console.log("fn call")
-  //   console.log("response", response)
-  //   const idToken = response.tokenId;
-  //   // Send idToken to your server for authentication
-  //   onLoginSuccess(idToken);
-  // };
   const responseGoogle = (response) => {
     console.log(response);
-    // Handle the response from Google Sign-In
+    enableSocialLogin(true, response);
+    signOut();
   };
 
   const LoginFailure = (response) => {
     console.log("err", response);
-  };
-  const modalBody = () => {
-    return (
-      <>
-        <AfterSignUp hideDetails={true} />
-      </>
-    );
   };
 
   return (
@@ -50,14 +40,8 @@ const GoogleLoginButton = () => {
         clientId={clientId}
         onSuccess={responseGoogle}
         onFailure={LoginFailure}
-        buttonText="Sign in with Google"
+        buttonText={btnText}
         cookiePolicy={"single_host_origin"}
-      />
-      <CustomModal
-        modalBody={modalBody}
-        headerTitle={"Registration"}
-        modalToggle={isModalOpen}
-        fnSetModalToggle={setIsModalOpen}
       />
     </>
   );

@@ -9,6 +9,8 @@ import API_URL from "../../../config";
 import FormikController from "../../../_components/formik/FormikController";
 import PrintDocument from "../../../_components/reuseable_components/PrintDocument";
 import NavBar from "../NavBar/NavBar";
+import moment from "moment";
+import CustomLoader from "../../../_components/loader";
 
 function TransactionEnquirey() {
   const initialValues = {
@@ -23,8 +25,25 @@ function TransactionEnquirey() {
   const [data, setData] = useState({});
   const [printData, setPrintData] = useState([]);
   const [disable, setIsDisable] = useState(false)
+  const [loadingState, setLoadingState] = useState(false)
+
+  let now = moment().format("YYYY-M-D");
+  let splitDate = now.split("-");
+  if (splitDate[1].length === 1) {
+    splitDate[1] = "0" + splitDate[1];
+  }
+  if (splitDate[2].length === 1) {
+    splitDate[2] = "0" + splitDate[2];
+  }
+  splitDate = splitDate.join("-");
+
+  const convertDate = (yourDate) => {
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    return date;
+  };
 
   const onSubmit = (input) => {
+    setLoadingState(true)
     setData({});
     setIsDisable(true)
     const transaction_id = input.transaction_id;
@@ -32,7 +51,9 @@ function TransactionEnquirey() {
     axios.get(API_URL.VIEW_TXN + `/${transaction_id}`)
       .then((response) => {
         if (response?.data.length > 0) {
-
+          
+          setLoadingState(false)
+         
           setIsShow(true);
           setData(response?.data[0]);
           setErrMessage(false);
@@ -40,7 +61,6 @@ function TransactionEnquirey() {
         } else {
           axios.get(API_URL.SP2_VIEW_TXN + `/${transaction_id}`).then((r) => {
             if (r?.data.length > 0) {
-
               setIsShow(true);
               setIsDisable(false)
               setData(r?.data[0]);
@@ -78,7 +98,7 @@ function TransactionEnquirey() {
       { key: "Client Id", value: data.client_id },
       { key: "Payee Amount", value: data.payee_amount },
       { key: "Paid Amount", value: data.paid_amount },
-      { key: "Transaction Date", value: data.trans_date },
+      { key: "Transaction Date", value: convertDate(data.trans_date) },
 
       { key: "Client Code ", value: data.client_code },
       { key: "Client Txn Id", value: data.client_txn_Id },
@@ -94,6 +114,7 @@ function TransactionEnquirey() {
 
 
   const onClick = async () => {
+    setLoadingState(false)
     let tableContents = document.getElementById("print_docuement").innerHTML;
     let a = window.open("", "", "height=900, width=900");
     a.document.write(tableContents);
@@ -159,14 +180,16 @@ function TransactionEnquirey() {
                     )}
                   </Formik>
                 </div>
-
-                {show && printData?.length > 0 && (
+                
+                <CustomLoader loadingState={loadingState} />     
+                
+                {!loadingState && show && printData?.length > 0 && (
                   <div className="overflow-auto col-lg-12 mb-5 border">
                     <div class="container">
                       <div class="row">
                         {printData?.map((datas, key) =>
                           (<div class="col-4 p-2" key={datas.key.toString()}><p><span className="font-weight-bold"> {datas.key} :</span> {datas.value} </p></div>)
-                        )}
+                          )}
                       </div>
                     </div>
 
