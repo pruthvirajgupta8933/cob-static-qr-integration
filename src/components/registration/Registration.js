@@ -667,10 +667,10 @@ function Registration() {
                                       </button>
 
                                       <div className="row ">
-                                        <div className="d-flex justify-content-center mt-1">
+                                        <div className="d-flex justify-content-center mt-2">
                                           <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} />
                                         </div>
-                                        <h4>
+                                        <h4 className="mt-2">
                                           Already have an account?{" "}
                                           <Link
                                             to={`/login/${queryStringUrl}`}
