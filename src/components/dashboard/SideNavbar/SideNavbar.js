@@ -4,7 +4,8 @@ import { Link, useRouteMatch } from "react-router-dom";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import Sabpaisalogo3 from "../../../assets/images/sabpaisa-white-logo1.png";
 import dashboard from "../../../assets/images/dashb.png";
-import "./sidenavbar.css";
+// import "./sidenavbar.css";
+import "./sidenavbar.css"
 
 const SideNavbar = () => {
   const { menuListReducer, auth } = useSelector((state) => state);
@@ -15,20 +16,13 @@ const SideNavbar = () => {
     items: [],
   });
 
-  // Do not remove the code
-  const elementRef = useRef();
-  const [itemRef, setItemRef] = useState({})
 
-
-  const toggleMenu = (val, obj) => {
-    
-    setItemRef(prevState => ({
-      ...prevState,
-      [val]: !prevState[val]
-    }));
-
-    console.log("elementRef",elementRef)
+  const toggleMenu = (e) => {
+    e.currentTarget.nextSibling.classList.toggle("hide-menu-nav")
   }
+
+
+
 
   useEffect(() => {
 
@@ -36,8 +30,7 @@ const SideNavbar = () => {
     let menuTempObj = {}
 
     const displayMenu = menuListReducer?.enableMenu?.map((m, index) => {
-      // console.log(itemRef)
-      // setItemRef({ ...itemRef, [m?.app_code]: true })
+   
       menuTempObj[m?.app_code] = true
 
       tempArrayOfItems.push(m?.app_code);
@@ -49,13 +42,12 @@ const SideNavbar = () => {
               className="main-menu-container"
               isToggle="true"
             >
-              <span className="sidebar-menu-divider-business" onClick={() => toggleMenu(m?.app_code, itemRef)} >
+              <span className="sidebar-menu-divider-business" onClick={(e) => toggleMenu(e)} >
                 {m?.app_name}
-                <i className={`fa fa-caret-up`} aria-hidden="true"></i>
+                <i className={`fa fa-caret-up ml-1`} aria-hidden="true"></i>
               </span>
-       
+
               <ul 
-                dataRel={JSON.stringify(itemRef)}
                 id={`menulist_${m?.app_code}`}
                 className={`ant-menu ant-menu-sub ant-menu-inline`}
                 role="menu"
@@ -100,13 +92,12 @@ const SideNavbar = () => {
       );
     });
 
-    setItemRef(menuTempObj)
     setRenderMenuList(displayMenu);
     
   }, [menuListReducer]);
 
 
-  console.log("itemRef", itemRef)
+  // console.log("itemRef", itemRef)
 
   const roleBasedShowTab = roleBasedAccess();
 
@@ -187,7 +178,6 @@ const SideNavbar = () => {
                       {auth?.user?.loginId.toString() === "11235" && (
                         <div
                           className="main-menu-container"
-                          // onClick={(e) => toggleMenu(e)}
                           isToggle="true"
                         >
                           <ul
