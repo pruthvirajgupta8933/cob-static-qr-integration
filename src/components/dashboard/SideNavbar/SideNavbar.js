@@ -111,8 +111,8 @@ const SideNavbar = () => {
         title="ToggleBar"
         alt="ToggleBar"
       />
-      {/* htmlfor="openSidebarMenu" that code writen by abhiverma but htmlfor got error when we used inside label code*/}
-      <label for="openSidebarMenu" className="sidebarIconToggle ">
+      {/* htmlhtmlFor="openSidebarMenu" that code writen by abhiverma but htmlfor got error when we used inside label code*/}
+      <label htmlFor="openSidebarMenu" className="sidebarIconToggle ">
         <div className="spinner diagonal part-1"></div>
         <div className="spinner horizontal"></div>
         <div className="spinner diagonal part-2"></div>
