@@ -1,4 +1,4 @@
-html {
+/* html {
   box-sizing: border-box;
 }
 
@@ -6,7 +6,7 @@ html {
 *:before,
 *:after {
   box-sizing: inherit;
-}
+} */
 
 .logmod {
   display: block;
@@ -320,13 +320,12 @@ html {
   line-height: 39px;
 }
 
-html {
+/* html {
   font-size: 16px;
   line-height: 24px;
-  /* font-family: "Lato", sans-serif; */
-}
+} */
 
-.btn,
+/* .btn,
 .simform__actions .sumbit {
   display: inline-block;
   line-height: normal;
@@ -394,8 +393,8 @@ html {
   width: 30px;
   height: 30px;
   min-width: 30px;
-}
-.btn:focus,
+} */
+/* .btn:focus,
 .simform__actions .sumbit:focus,
 .btn:active,
 .simform__actions .sumbit:active,
@@ -693,7 +692,7 @@ html {
 .btn.blue-grey:hover,
 .simform__actions .blue-grey.sumbit:hover {
   background-color: #566f7c;
-}
+} */
 
 .special {
   color: #f44336;

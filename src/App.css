@@ -7,10 +7,17 @@ html {
   overflow-y:scroll;
 }
 
-label {
+
+.bg-body-sp{
+  background-image: url("./assets/images/1280_800.png");
+background-repeat: no-repeat;
+background-size: cover;
+}
+
+/* label {
   display: block;
   margin-top: 10px;
-}
+} */
 .removeWhiteSpace{
   padding-top: 10px;
   padding-bottom: 10px;
@@ -431,4 +438,8 @@ label {
 .cob-btn-secondary :hover {
   background-color: #f48566;
 
+}
+
+.align-items-center {
+  -ms-flex-align: center!important;
 }

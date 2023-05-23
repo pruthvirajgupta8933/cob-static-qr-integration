@@ -105,7 +105,7 @@ position:absolute;
 /* 02. Common CSS */
 /*--------------------*/
 
-
+/* 
 body {
   font-family: 'Satoshi-Regular';
   font-size: 14px;
@@ -160,7 +160,7 @@ a:focus {
 .brand-logo {
   margin-top: 0px;
   margin-bottom: 0px;
-}
+} */
 
 /*--------------------*/
 /* 03. Section Panel UI CSS */
@@ -356,7 +356,7 @@ a:focus {
 /*--------------------*/
 /* 04. Check box UI CSS */
 /*--------------------*/
-
+/* 
 .checkbox input[type="checkbox"] {
   position: absolute;
   right: 9000px;
@@ -406,12 +406,12 @@ a:focus {
 .checkbox input[type="checkbox"]:checked + .label-text:after {
   font-family: "FontAwesome";
   content: "\f00c";
-}
+} */
 
 /*--------------------*/
 /* 05. Responsive CSS */
 /*--------------------*/
-
+/* 
 @media (min-width: 768px) {		
 
   .max-height-signup {
@@ -505,9 +505,9 @@ a:focus {
   .mobile-nav-show {
     display: none;
   }
-}
+} */
 
-@media (min-width: 1200px)
+/* @media (min-width: 1200px)
 {
 .col-lg-offset-3 {
     margin-left: 25%;
@@ -519,7 +519,7 @@ a:focus {
     float: left;
 }
   
-}
+} */
 
 
 

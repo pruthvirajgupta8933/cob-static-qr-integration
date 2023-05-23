@@ -1,0 +1,15 @@
+
+.cob_logo{
+    width: 11rem;
+height: 3rem;
+}
+
+.navbar_bg_color
+{
+    background: linear-gradient(90deg, rgba(14,4,43,1) 0%, rgba(44,35,98,1) 31%, rgba(25,7,76,0.9632586310891544) 100%);
+}
+
+.position_sticky{
+    position: sticky;
+    top: 0; right: 0; left: 0; z-index: 1030
+}
