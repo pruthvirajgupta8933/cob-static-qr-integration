@@ -119,7 +119,7 @@ function TransactionSummery() {
   return (
     <section className="ant-layout">
       <div>
-        <NavBar />
+        
       </div>
       {/* <div className="profileBarStatus">
         </div> */}

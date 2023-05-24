@@ -258,7 +258,7 @@ class MandateForm extends Component {
       <>
         <section className="ant-layout">
           <div>
-            <NavBar />
+            
           </div>
           {this.state.progressBar && (
             <div className="progress_bar_container">

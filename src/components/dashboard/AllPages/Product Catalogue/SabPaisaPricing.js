@@ -145,7 +145,7 @@ const SabPaisaPricing = () => {
 
 
       <div>
-        <NavBar />
+        
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
 

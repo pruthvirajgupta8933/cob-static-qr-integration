@@ -118,7 +118,7 @@ function SpPg() {
     return (
         <React.Fragment>
             <section className="ant-layout">
-                <NavBar />
+                
                 <SabpaisaPaymentGateway planData={selectedPlan} clientTxnId={newClientTxnId} openPg={isOpenPg} clientData={auth?.user} subscribeId={subscribeId} />
                 <main className="gx-layout-content ant-layout-content">
                     <div className="gx-main-content-wrapper">

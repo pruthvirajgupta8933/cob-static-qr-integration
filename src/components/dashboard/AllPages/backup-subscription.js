@@ -288,7 +288,7 @@ const Subsciption = () => {
   return (
     <section className="ant-layout">
       <div>
-        <NavBar />
+        
         {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
       </div>
       <main className="gx-layout-content ant-layout-content">

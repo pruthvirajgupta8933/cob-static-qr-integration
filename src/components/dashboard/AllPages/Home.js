@@ -84,7 +84,7 @@ function Home() {
   return (
     <section className="ant-layout Satoshi-Medium NunitoSans-Regular">
       <div className="m_none">
-        <NavBar />
+        {/*  */}
       </div>
 
       {/* KYC container start from here */}

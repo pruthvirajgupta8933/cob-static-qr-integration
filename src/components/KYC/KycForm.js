@@ -100,7 +100,7 @@ function KycForm() {
   return (
     <section className="ant-layout NunitoSans-Regular">
       <div>
-        <NavBar />
+        
       </div>
       <div
         className={

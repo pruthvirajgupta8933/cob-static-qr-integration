@@ -105,7 +105,7 @@ function ChangePassword() {
   return (
     <section className="ant-layout">
       <div>
-        <NavBar />
+        
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">

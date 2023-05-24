@@ -235,7 +235,7 @@ const { allTabsValidate } = kyc;
   return (
     <section className="ant-layout">
       <div>
-        <NavBar />
+        
       </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">

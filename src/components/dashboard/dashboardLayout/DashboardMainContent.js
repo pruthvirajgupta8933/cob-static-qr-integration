@@ -1,160 +1,584 @@
-import React from 'react'
+import React, { useEffect } from "react";
+
 import DashboardHeader from './header/DashboardHeader'
 import SideNavbar from './side-navbar/SideNavbar'
+import classes from "./dashboard-main.module.css"
+import Home from '../AllPages/Home'
+
+import TransactionEnquirey from "../AllPages/TransactionEnquirey";
+import SettlementReport from "../AllPages/SettlementReport";
+import TransactionHistory from "../AllPages/TransactionHistory";
+import {
+    useRouteMatch,
+    Switch,
+    Route,
+    Redirect,
+    useHistory,
+    useLocation,
+} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import ClientList from "../AllPages/ClientList";
+import PaymentLinkDetail from "../AllPages/createpaymentlink/PaymentLinkDetail";
+import Paylink from "../AllPages/Paylink";
+import { Profile } from "../AllPages/Profile";
+import Emandate from "../AllPages/Emandate";
+import PaymentResponse from "../AllPages/PaymentResponse";
+import KycForm from "../../KYC/KycForm";
+import Test from "../../Otherpages/Test";
+import SettlementReportNew from "../AllPages/SettlementReportNew";
+import TransactionHistoryDownload from "../AllPages/TransactionHistoryDownload";
+import Approver from "../../ApproverNVerifier/Approver";
+import ThanksPage from "../../Otherpages/ThanksPage";
+import ChangePassword from "../AllPages/ChangePassword";
+import Products from "../AllPages/Product Catalogue/Products";
+import SabPaisaPricing from "../AllPages/Product Catalogue/SabPaisaPricing";
+import TransactionSummery from "../AllPages/TransactionSummery";
+import OnboardMerchant from "../../ApproverNVerifier/Onboarderchant/OnboardMerchant";
+import RefundTransactionHistory from "../AllPages/RefundTransactionHistory";
+import ChargeBackTxnHistory from "../AllPages/ChargeBackTxnHistory";
+import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import { checkClientCodeSlice, createClientProfile } from "../../../slices/auth";
+import Sandbox from "../../SandBox/SendBox";
+import AssignZone from "../../ApproverNVerifier/AssignZone";
+import AdditionalKYC from "../../ApproverNVerifier/AdditionalKYC";
+import RateMapping from "../../ApproverNVerifier/RateMapping";
+import SignupData from "../../ApproverNVerifier/SignupData";
+import MerchantRoute from "../../../ProtectedRoutes/MerchantRoute";
+import BankRoute from "../../../ProtectedRoutes/BankRoute";
+import VerifierRoute from "../../../ProtectedRoutes/VerifierRoute";
+import ApproverRoute from "../../../ProtectedRoutes/ApproverRoute";
+import ViewerRoute from "../../../ProtectedRoutes/ViewerRoute";
+import SpPg from "../../sabpaisa-pg/SpPg";
+import UrlNotFound from "../UrlNotFound";
+import { axiosInstanceJWT } from "../../../utilities/axiosInstance";
+import API_URL from "../../../config";
+import PayoutTransaction from "../../../payout/Ledger";
+import TransactionsPayoutHistory from "../../../payout/Transactions";
+import Beneficiary from "../../../payout/Beneficiary";
+import MISReport from "../../../payout/MISReport";
+import MakePayment from '../../../payout/MakePayment';
+import OnboardedReport from "../../ApproverNVerifier/OnboardedReport";
+import ChallanTransactReport from "../../../B2B_components/ChallanTransactReport";
+import B2BRouting from "../../../B2B_components/Routes/B2BRouting";
+import { fetchMenuList } from "../../../slices/cob-dashboard/menulistSlice";
+import { isNull } from "lodash";
+import { merchantSubscribedPlanData } from "../../../slices/merchant-slice/productCatalogueSlice";
+import ReferZone from "../../ApproverNVerifier/ReferZone";
+import GenerateMid from "../../ApproverNVerifier/GenerateMid";
+import { generateWord } from "../../../utilities/generateClientCode";
+import TransactionHistoryDoitc from "../AllPages/reports/TransactionHistoryDoitc";
+import SettlementReportDoitc from "../AllPages/reports/SettlementReportDoitc";
+import MandateReport from "../../../subscription_components/MandateReport";
+import BizzAppData from '../../ApproverNVerifier/BizzData';
+import CreateMandate from "../../../subscription_components/Create_Mandate/index";
+import DebitReport from "../../../subscription_components/DebitReport";
+
 
 
 function DashboardMainContent() {
+    let history = useHistory();
+    let { path } = useRouteMatch();
+    const { user } = useSelector((state) => state.auth);
+    const roles = roleBasedAccess();
+    const dispatch = useDispatch();
+    const location = useLocation();
+
+
+    // create new client code
+    useEffect(() => {
+        //  check the role and clientcode should be null
+        if (roles?.merchant && user?.clientMerchantDetailsList[0]?.clientCode === null) {
+
+            const clientFullName = user?.clientContactPersonName
+            const clientMobileNo = user?.clientMobileNo
+            const arrayOfClientCode = generateWord(clientFullName, clientMobileNo)
+
+            dispatch(checkClientCodeSlice({ "client_code": arrayOfClientCode })).then(res => {
+
+                let newClientCode = ""
+                // if client code available return status true, then make request with the given client
+                if (res?.payload?.clientCode !== "" && res?.payload?.status === true) {
+                    newClientCode = res?.payload?.clientCode
+
+                } else {
+                    newClientCode = Math.random().toString(36).slice(-6).toUpperCase();
+                }
+
+                // update new client code
+                const data = {
+                    loginId: user?.loginId,
+                    clientName: user?.clientContactPersonName,
+                    clientCode: newClientCode,
+                };
+
+
+                dispatch(createClientProfile(data)).then(clientProfileRes => {
+                    // after create the client update the subscribe product
+                    const postData = {
+                        login_id: user?.loginId
+                    }
+
+                    // fetch details of the user registraion
+                    axiosInstanceJWT.post(API_URL.website_plan_details, postData).then(
+                        res => {
+                            const webData = res?.data?.data[0]?.plan_details
+
+                            // if business catagory code is gaming then not subscribed the plan
+                            if (user?.clientMerchantDetailsList[0]?.business_cat_code !== "37") {
+                                const postData = {
+                                    clientId: clientProfileRes?.payload?.clientId,
+                                    applicationName: !isNull(webData?.appName) ? webData?.appName : "Paymentgateway",
+                                    planId: !isNull(webData?.planid) ? webData?.planid : "1",
+                                    planName: !isNull(webData?.planName) ? webData?.planName : "Subscription",
+                                    applicationId: !isNull(webData?.appid) ? webData?.appid : "10"
+                                };
+
+                                axiosInstanceJWT.post(
+                                    API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
+                                    postData
+                                ).then((res) => {
+                                    dispatch(merchantSubscribedPlanData({ "clientId": clientProfileRes?.payload?.clientId }))
+
+                                })
+                            } // end subscribe
+                        }
+                    )
+                }).catch(err => console.log(err));
+            })
+
+        }
+    }, []);
+
+
+
+    useEffect(() => {
+        const postBody = {
+            LoginId: user?.loginId
+        }
+        dispatch(fetchMenuList(postBody))
+    }, [user, dispatch])
+
+
+    useEffect(() => {
+        // fetch subscribe product data
+        if (location?.pathname === "/dashboard") {
+            dispatch(merchantSubscribedPlanData({ "clientId": user?.clientMerchantDetailsList[0]?.clientId }))
+        }
+    }, [location])
+
+    if (user !== null && user.userAlreadyLoggedIn) {
+        history.push("/login-page");
+        return <Redirect to="/login-page" />;
+    } else if (user === null) {
+        return <Redirect to="/login-page" />;
+    }
+
     return (
         <React.Fragment>
             <DashboardHeader />
 
-            <div className="container-fluid">
+            <div className="container-fluid bg-light">
                 <div className="row">
                     <SideNavbar />
-                
-                    <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h1 className="h2">Dashboard</h1>
-                            {/* <div className="btn-toolbar mb-2 mb-md-0">
-                                <div className="btn-group me-2">
-                                    <button type="button" className="btn btn-sm btn-outline-secondary">Share</button>
-                                    <button type="button" className="btn btn-sm btn-outline-secondary">Export</button>
-                                </div>
-                                <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle">
-                                    <span data-feather="calendar" />
-                                    This week
-                                </button>
-                            </div> */}
-                        </div>
-                        {/* <canvas className="my-4 w-100" id="myChart" width={900} height={380} /> */}
-                        <h2>Section title</h2>
-                        <div className="table-responsive">
-                            <table className="table table-striped table-sm">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Header</th>
-                                        <th scope="col">Header</th>
-                                        <th scope="col">Header</th>
-                                        <th scope="col">Header</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1,001</td>
-                                        <td>random</td>
-                                        <td>data</td>
-                                        <td>placeholder</td>
-                                        <td>text</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,002</td>
-                                        <td>placeholder</td>
-                                        <td>irrelevant</td>
-                                        <td>visual</td>
-                                        <td>layout</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,003</td>
-                                        <td>data</td>
-                                        <td>rich</td>
-                                        <td>dashboard</td>
-                                        <td>tabular</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,003</td>
-                                        <td>information</td>
-                                        <td>placeholder</td>
-                                        <td>illustrative</td>
-                                        <td>data</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,004</td>
-                                        <td>text</td>
-                                        <td>random</td>
-                                        <td>layout</td>
-                                        <td>dashboard</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,005</td>
-                                        <td>dashboard</td>
-                                        <td>irrelevant</td>
-                                        <td>text</td>
-                                        <td>placeholder</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,006</td>
-                                        <td>dashboard</td>
-                                        <td>illustrative</td>
-                                        <td>rich</td>
-                                        <td>data</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,007</td>
-                                        <td>placeholder</td>
-                                        <td>tabular</td>
-                                        <td>information</td>
-                                        <td>irrelevant</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,008</td>
-                                        <td>random</td>
-                                        <td>data</td>
-                                        <td>placeholder</td>
-                                        <td>text</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,009</td>
-                                        <td>placeholder</td>
-                                        <td>irrelevant</td>
-                                        <td>visual</td>
-                                        <td>layout</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,010</td>
-                                        <td>data</td>
-                                        <td>rich</td>
-                                        <td>dashboard</td>
-                                        <td>tabular</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,011</td>
-                                        <td>information</td>
-                                        <td>placeholder</td>
-                                        <td>illustrative</td>
-                                        <td>data</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,012</td>
-                                        <td>text</td>
-                                        <td>placeholder</td>
-                                        <td>layout</td>
-                                        <td>dashboard</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,013</td>
-                                        <td>dashboard</td>
-                                        <td>irrelevant</td>
-                                        <td>text</td>
-                                        <td>visual</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,014</td>
-                                        <td>dashboard</td>
-                                        <td>illustrative</td>
-                                        <td>rich</td>
-                                        <td>data</td>
-                                    </tr>
-                                    <tr>
-                                        <td>1,015</td>
-                                        <td>random</td>
-                                        <td>tabular</td>
-                                        <td>information</td>
-                                        <td>text</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+
+                    <main className={"col-md-9 ms-sm-auto col-lg-10 px-md-4" `${classes.main_cob}`}>
+                        <Switch>
+                            <Route exact path={path} >
+                                <Home />
+                            </Route>
+                            <Route exact path={`${path}/profile`}>
+                                <Profile />
+                            </Route>
+                            <MerchantRoute
+                                exact
+                                path={`${path}/change-password`}
+                                Component={ChangePassword}
+                            >
+                                <ChangePassword />
+                            </MerchantRoute>
+
+                            <MerchantRoute
+                                exact
+                                path={`${path}/settled-transaction-merchant`}
+                                Component={SettlementReportDoitc}
+                            >
+                                <SettlementReportDoitc />
+                            </MerchantRoute>
+
+                            <MerchantRoute
+                                exact
+                                path={`${path}/transaction-history-merchant`}
+                                Component={TransactionHistoryDoitc}
+                            >
+                                <TransactionHistoryDoitc />
+                            </MerchantRoute>
+
+                            {roles?.merchant === true ? (
+                                <MerchantRoute
+                                    exact
+                                    path={`${path}/transaction-summery`}
+                                    Component={TransactionSummery}
+                                >
+                                    <TransactionSummery />
+                                </MerchantRoute>
+                            ) : (
+                                <BankRoute
+                                    exact
+                                    path={`${path}/transaction-summery`}
+                                    Component={TransactionSummery}
+                                >
+                                    <TransactionSummery />
+                                </BankRoute>
+                            )}
+
+                            <Route exact path={`${path}/onboard-merchant`}>
+                                <OnboardMerchant />
+                            </Route>
+
+                            {roles?.merchant === true ? (
+                                <MerchantRoute
+                                    exact
+                                    path={`${path}/transaction-enquiry`}
+                                    Component={TransactionEnquirey}
+                                >
+                                    <TransactionEnquirey />
+                                </MerchantRoute>
+                            ) : (
+                                <BankRoute
+                                    exact
+                                    path={`${path}/transaction-enquiry`}
+                                    Component={TransactionEnquirey}
+                                >
+                                    <TransactionEnquirey />
+                                </BankRoute>
+                            )}
+
+                            {roles?.merchant === true ? (
+                                <MerchantRoute
+                                    exact
+                                    path={`${path}/transaction-history`}
+                                    Component={TransactionHistory}
+                                >
+                                    <TransactionHistory />
+                                </MerchantRoute>
+                            ) : (
+                                <BankRoute
+                                    exact
+                                    path={`${path}/transaction-history`}
+                                    Component={TransactionHistory}
+                                >
+                                    <TransactionHistory />
+                                </BankRoute>
+                            )}
+
+                            <BankRoute exact path={`${path}/client-list`} Component={ClientList}>
+                                <ClientList />
+                            </BankRoute>
+
+                            {roles?.merchant === true ? (
+                                <MerchantRoute
+                                    exaxt
+                                    path={`${path}/settlement-report`}
+                                    Component={SettlementReport}
+                                >
+                                    <SettlementReport />
+                                </MerchantRoute>
+                            ) : (
+                                <BankRoute
+                                    exaxt
+                                    path={`${path}/settlement-report`}
+                                    Component={SettlementReport}
+                                >
+                                    <SettlementReport />
+                                </BankRoute>
+                            )}
+
+                            {roles?.merchant === true ? (
+                                <MerchantRoute
+                                    exaxt
+                                    path={`${path}/refund-transaction-history`}
+                                    Component={RefundTransactionHistory}
+                                >
+                                    <RefundTransactionHistory />
+                                </MerchantRoute>
+                            ) : (
+                                <BankRoute
+                                    exaxt
+                                    path={`${path}/refund-transaction-history`}
+                                    Component={RefundTransactionHistory}
+                                >
+                                    <RefundTransactionHistory />
+                                </BankRoute>
+                            )}
+
+                            {roles?.merchant === true ? (
+                                <MerchantRoute
+                                    exaxt
+                                    path={`${path}/chargeback-transaction-history`}
+                                    Component={ChargeBackTxnHistory}
+                                >
+                                    <ChargeBackTxnHistory />
+                                </MerchantRoute>
+                            ) : (
+                                <BankRoute
+                                    exaxt
+                                    path={`${path}/chargeback-transaction-history`}
+                                    Component={ChargeBackTxnHistory}
+                                >
+                                    <ChargeBackTxnHistory />
+                                </BankRoute>
+                            )}
+
+                            <MerchantRoute
+                                exaxt
+                                path={`${path}/product-catalogue`}
+                                Component={Products}
+                            >
+                                {/* <Subsciption /> */}
+                                <Products />
+                            </MerchantRoute>
+                            <MerchantRoute exaxt path={`${path}/paylink`} Component={Paylink}>
+                                <Paylink />
+                            </MerchantRoute>
+
+                            <MerchantRoute
+                                exaxt
+                                path={`${path}/paylinkdetail`}
+                                Component={PaymentLinkDetail}
+                            >
+                                <PaymentLinkDetail />
+                            </MerchantRoute>
+
+                            <MerchantRoute exaxt path={`${path}/emandate/`}>
+                                <Emandate />
+                            </MerchantRoute>
+                            <MerchantRoute exaxt path={`${path}/payment-response/`}>
+                                <PaymentResponse />
+                            </MerchantRoute>
+                            <MerchantRoute exact path={`${path}/test/`}>
+                                <Test />
+                            </MerchantRoute>
+
+                            {/* <Route exact path={`${path}/view-transaction-with-filter`}>
+          <ViewTransactionWithFilter />
+        </Route> */}
+
+                            {roles?.merchant === true ? (
+                                <MerchantRoute
+                                    exact
+                                    path={`${path}/settlement-report-new`}
+                                    Component={SettlementReportNew}
+                                >
+                                    <SettlementReportNew />
+                                </MerchantRoute>
+                            ) : (
+                                <BankRoute
+                                    exact
+                                    path={`${path}/settlement-report-new`}
+                                    Component={SettlementReportNew}
+                                >
+                                    <SettlementReportNew />
+                                </BankRoute>
+                            )}
+
+                            {roles?.merchant === true ? (
+                                <MerchantRoute
+                                    exact
+                                    path={`${path}/transaction-history-new`}
+                                    Component={TransactionHistoryDownload}
+                                >
+                                    <TransactionHistoryDownload />
+                                </MerchantRoute>
+                            ) : (
+                                <BankRoute
+                                    exact
+                                    path={`${path}/transaction-history-new`}
+                                    Component={TransactionHistoryDownload}
+                                >
+                                    <TransactionHistoryDownload />
+                                </BankRoute>
+                            )}
+
+                            <Route exact path={`${path}/sabpaisa-pricing/:id/:name`}>
+                                {/* getting issue to get query param in protected route */}
+                                <SabPaisaPricing />
+                            </Route>
+
+                            <MerchantRoute exact path={`${path}/kyc`} Component={KycForm}>
+                                <KycForm />
+                            </MerchantRoute>
+
+                            {roles?.verifier === true ? (
+                                <VerifierRoute exact path={`${path}/approver`} Component={Approver}>
+                                    <Approver />
+                                </VerifierRoute>
+                            ) : roles?.approver === true ? (
+                                <ApproverRoute exact path={`${path}/approver`} Component={Approver}>
+                                    <Approver />
+                                </ApproverRoute>
+                            ) : (
+                                <ViewerRoute exact path={`${path}/approver`} Component={Approver}>
+                                    <Approver />
+                                </ViewerRoute>
+                            )}
+
+                            <ApproverRoute exact path={`${path}/configuration`} Component={AssignZone}>
+                                <AssignZone />
+                            </ApproverRoute>
+
+                            {roles?.verifier === true ? (
+                                <VerifierRoute
+                                    exact
+                                    path={`${path}/signup-data`}
+                                    Component={SignupData}
+                                >
+                                    <SignupData />
+
+                                </VerifierRoute>
+                            ) : roles?.approver === true ? (
+                                <ApproverRoute
+                                    exact
+                                    path={`${path}/signup-data`}
+                                    Component={SignupData}
+                                >
+                                    <SignupData />
+                                </ApproverRoute>
+                            ) : (
+                                <ViewerRoute
+                                    exact
+                                    path={`${path}/signup-data`}
+                                    Component={SignupData}
+                                >
+                                    <SignupData />
+                                </ViewerRoute>
+                            )}
+
+                            <ApproverRoute
+                                exact
+                                path={`${path}/ratemapping`}
+                                Component={RateMapping}
+                            >
+                                <RateMapping />
+                            </ApproverRoute>
+
+                            <ApproverRoute
+                                exact
+                                path={`${path}/additional-kyc`}
+                                Component={AdditionalKYC}
+                            >
+                                <AdditionalKYC />
+                            </ApproverRoute>
+
+                            <Route exact path={`${path}/thanks`}>
+                                <ThanksPage />
+                            </Route>
+                            <MerchantRoute exact path={`${path}/Sandbox`} Component={Sandbox}>
+                                <Sandbox />
+                            </MerchantRoute>
+                            {/* <Route exact path={`${path}/pg-response`} >
+                         <PgResponse />
+                    </Route> */}
+
+                            <Route exact path={`${path}/sabpaisa-pg/:subscribeId`} Component={SpPg}>
+                                <SpPg />
+                            </Route>
+
+                            <MerchantRoute exact path={`${path}/payout/ledger`} Component={PayoutTransaction}>
+                                <SpPg />
+                            </MerchantRoute>
+                            <MerchantRoute exact path={`${path}/payout/transactions`} Component={TransactionsPayoutHistory}>
+                                <SpPg />
+                            </MerchantRoute>
+                            <MerchantRoute exact path={`${path}/payout/beneficiary`} Component={Beneficiary}>
+                                <SpPg />
+                            </MerchantRoute>
+                            <MerchantRoute exact path={`${path}/payout/mis_report`} Component={MISReport}>
+                                <SpPg />
+                            </MerchantRoute>
+                            <MerchantRoute exact path={`${path}/payout/payment_status`} Component={MakePayment}>
+                                <SpPg />
+                            </MerchantRoute>
+
+
+                            {/* Routing for subscription */}
+                            {/* ----------------------------------------------------------------------------------------------------|| */}
+                            <MerchantRoute exact path={`${path}/subscription/mandateReports`} Component={MandateReport}>
+                                <MandateReport />
+                            </MerchantRoute>
+                            <MerchantRoute exact path={`${path}/subscription/debitReports`} Component={DebitReport}>
+                                <DebitReport />
+                            </MerchantRoute>
+                            <MerchantRoute exact path={`${path}/subscription/mandate_registration`} Component={CreateMandate}>
+                                <SpPg />
+                            </MerchantRoute>
+
+                            {/* -----------------------------------------------------------------------------------------------------|| */}
+
+
+                            {roles?.verifier && (
+                                <VerifierRoute
+                                    exact
+                                    path={`${path}/onboarded-report`}
+                                    Component={OnboardedReport}
+                                >
+                                    <SignupData />
+
+                                </VerifierRoute>
+                            )}
+
+
+                            {roles?.approver && (
+                                <ApproverRoute
+                                    exact
+                                    path={`${path}/onboarded-report`}
+                                    Component={OnboardedReport}
+                                >
+                                    <SignupData />
+                                </ApproverRoute>
+                            )}
+
+
+                            {roles?.approver && (
+                                <ApproverRoute
+                                    exact
+                                    path={`${path}/referzone`}
+                                    Component={ReferZone}
+                                >
+                                    <ReferZone />
+                                </ApproverRoute>
+                            )}
+
+
+                            {roles?.approver && (
+                                <ApproverRoute
+                                    exact
+                                    path={`${path}/generatemid`}
+                                    Component={GenerateMid}
+                                >
+                                    <ReferZone />
+                                </ApproverRoute>
+                            )}
+
+                            <B2BRouting exact path={`${path}/emami/challan-transactions`} Component={ChallanTransactReport}>
+                                <ChallanTransactReport />
+                            </B2BRouting>
+
+                            {roles?.verifier === true ? <VerifierRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
+                                <BizzAppData />
+                            </VerifierRoute> : roles?.approver === true ?
+                                <ApproverRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
+                                    < BizzAppData />
+                                </ApproverRoute> : roles.viewer === true && (
+
+                                    <ViewerRoute exact path={`${path}/bizz-appdata`} Component={BizzAppData}>
+                                        < BizzAppData />
+                                    </ViewerRoute>)}
+                            <Route path={`${path}/*`} component={UrlNotFound} >
+                                <UrlNotFound />
+                            </Route>
+                        </Switch>
+
+
                     </main>
                 </div>
             </div>

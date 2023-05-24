@@ -49,12 +49,10 @@ function AllRoutes() {
       <Route exact path="/registration">
         <Signup />
       </Route>
-      <Route path="/dashboard">
-        {/* <MobileNavbar/> */}
+      {/* <Route path="/dashboard">
         <Dashboard />
-      </Route>
-      <Route path="/dashboard-main">
-        {/* <MobileNavbar/> */}
+      </Route> */}
+      <Route path="/dashboard">
         <DashboardMainContent />
       </Route>
       <Route exact path="/commonpages">

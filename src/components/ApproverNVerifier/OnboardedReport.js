@@ -368,7 +368,7 @@ const OnboardedReport = () => {
   return (
     <section className="ant-layout">
       <div>
-        <NavBar />
+        
       </div>
       <div className="gx-main-content-wrapper">
         <div className="right_layout my_account_wrapper right_side_heading">
