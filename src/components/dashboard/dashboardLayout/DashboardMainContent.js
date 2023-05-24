@@ -181,7 +181,7 @@ function DashboardMainContent() {
                 <div className="row">
                     <SideNavbar />
 
-                    <main className={"col-md-9 ms-sm-auto col-lg-10 px-md-4" `${classes.main_cob}`}>
+                    <main className={`col-md-9 ms-sm-auto col-lg-10 px-md-4 ${classes.main_cob}`}>
                         <Switch>
                             <Route exact path={path} >
                                 <Home />
