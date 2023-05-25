@@ -13,6 +13,7 @@ import toastConfig from "../../../../utilities/toastTypes";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import "./index.css";
+import classes from "./paylink.module.css"
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -141,7 +142,8 @@ const PayerDetails = () => {
   };
 
   //ADD user API Integration
-  const onSubmit = async (e) => {
+
+    const onSubmit = async (e) => {
     // console.log(e)
     const res = await axiosInstance.post(API_URL.ADD_CUSTOMER, {
       name: e.name,
@@ -150,8 +152,7 @@ const PayerDetails = () => {
       client_code: clientCode,
       customer_type_id: e.customer_type_id,
     });
-
-    loadUser();
+  loadUser();
     if (res.status === 200) {
       toastConfig.successToast("Payee added successfully");
     } else {
@@ -160,8 +161,7 @@ const PayerDetails = () => {
   };
 
   // USE FOR EDIT FORM
-
-  const handleClick = (id) => {
+const handleClick = (id) => {
     setEditModalToggle(true);
     data.filter((dataItem) => {
       if (dataItem.id === id) {
@@ -215,7 +215,7 @@ const PayerDetails = () => {
         modalToggle={editModalToggle}
         fnSetModalToggle={setEditModalToggle}
       />
-      <Genratelink generatedata={genrateform} />
+      <Genratelink generatedata={genrateform}/>
       <div
         className="mymodals modal fade"
         id="exampleModal"
@@ -430,7 +430,8 @@ const PayerDetails = () => {
           </div>
 
           <div className="row">
-            <div className="col-lg-4 mrg-btm- bgcolor">
+          <div className={`col-lg-4 mrg-btm- mt-3`}>
+            {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
               <label>Search</label>
               <input
                 className="form-control"
@@ -439,7 +440,7 @@ const PayerDetails = () => {
                 placeholder="Search Here"
               />
             </div>
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className={`col-lg-4 mrg-btm- mt-3`}>
               <label>Count Per Page</label>
               <select
                 value={pageSize}
@@ -452,7 +453,7 @@ const PayerDetails = () => {
             </div>
           </div>
           <div className="row">
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className={`col-lg-4 mrg-btm- mt-3`}>
               <p>Total Records:{data.length}</p>
             </div>
           </div>

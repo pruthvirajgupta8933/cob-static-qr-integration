@@ -36,7 +36,7 @@ function Paylink() {
 <main className="gx-layout-content ant-layout-content">
   <div className="gx-main-content-wrapper">
     <div className="right_layout my_account_wrapper right_side_heading">
-      <h1 className="m-b-sm gx-float-left">Create Payment Link</h1>
+      <h4 className="m-b-sm gx-float-left">Create Payment Link</h4>
     </div>
     <section className="features8 cid-sg6XYTl25a flleft w-100" id="features08-3-">
       <div className="container-fluid">

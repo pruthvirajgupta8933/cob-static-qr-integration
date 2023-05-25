@@ -26,10 +26,10 @@ table.tables tr:nth-child(odd) {
   margin-top: 10px;
 }
 
-.bgcolor {
+/* .bgcolor {
   background: #fcfcfc;
   padding: 10px 0;
-}
+} */
 
 .my_account_wrapper .merchant-detail-container {
   justify-content: none !important;

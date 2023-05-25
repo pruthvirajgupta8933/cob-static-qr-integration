@@ -859,8 +859,8 @@ const TransactionHistory = () => {
                     </div>
                   </div>
                 ) : buttonClicked === true && txnList.length === 0 ? (
-                  <div className="showMsg">
-                    <h1 className="float-centre mr-5">Data Not Found</h1>
+                  <div>
+                    <h5 className="d-flex justify-content-center align-items-center">Data Not Found</h5>
                   </div>
                 ) : (
                   <div></div>

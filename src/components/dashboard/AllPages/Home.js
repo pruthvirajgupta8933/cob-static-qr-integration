@@ -13,7 +13,7 @@ import {
   kycUserList,
   UpdateModalStatus,
 } from "../../../slices/kycSlice";
-import NavBar from "../NavBar/NavBar";
+// import NavBar from "../NavBar/NavBar";
 import bro from "../../../assets/images/bro.png";
 import congratsImg from "../../../assets/images/congImg.png";
 import onlineimg from "../../../assets/images/onlinePayment.png";
@@ -156,7 +156,7 @@ function Home() {
                   </g>
                 </svg>{" "}
               </div>
-              <h2 className="font-weight-bold">Built for developers</h2>
+              <h5 className="font-weight-bold">Built for developers</h5>
               <p className="text-muted mb-6 mb-md-0">
                 Our kit is built to make your life easier. Variables, build
                 tooling, documentation, and reusable components.
@@ -188,7 +188,7 @@ function Home() {
                   </g>
                 </svg>{" "}
               </div>
-              <h2 className="font-weight-bold">Designed to be modern</h2>
+              <h5 className="font-weight-bold">Designed to be modern</h5>
               <p className="text-muted mb-6 mb-md-0">
                 Designed with the latest design trends in mind. Our kit feels
                 modern, minimal, and beautiful.
@@ -225,7 +225,7 @@ function Home() {
                   </g>
                 </svg>{" "}
               </div>
-              <h2 className="font-weight-bold">Documentation for everything</h2>
+              <h5 className="font-weight-bold">Documentation for everything</h5>
               <p className="text-muted mb-0">
                 We've written extensive documentation for components and tools,
                 so you never have to reverse engineer anything.
@@ -286,14 +286,14 @@ function Home() {
             <div className="row">
               <div className="col-sm  m-0 no-pad">
                 <div className="card">
-                  <h2 className="card-title dashboardEnablecss">
+                  <h4 className="card-title">
                     <img
                       className="card-img-left"
                       src={subscriptin}
                       alt="onlinepay"
                     />
                     &nbsp;Payment Links
-                  </h2>
+                  </h4>
                   <p className="paragraphcssdashboards">
                     Payment Links is the world’s first Unified link-based
                     payment method, for payment collections with the help of
@@ -310,7 +310,7 @@ function Home() {
                   </Link>
                 </div>
               </div>
-              <div className="col-sm mt-31">
+              <div className="col-sm mt-3">
                 <div className="row pt-2 m-0">
                   <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img

@@ -109,23 +109,23 @@ const pages = _.range(1, pageCount + 1)
        <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
                 <div className="container-fluid flleft">
                     <div className="row">  
-                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <div className="col-lg-4">
                     <label>Search</label>
                     <input className="form-control" type="text" placeholder="Search Here" value={searchText} onChange={getSearchTerm} />
                     </div>
 
-                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <div className="col-lg-4">
                         <label>Count Per Page</label>
                         <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
                         <DropDownCountPerPage datalength={data.length} />
                         </select>
                     </div>
                     </div>
-                    <div className="mt-5" >
+                    {/* <div className="mt-5" >
             <CustomLoader loadingState={loadingState} />
-                  </div>
+                  </div> */}
                     <div className="row">
-                    <div className="col-lg-4 mrg-btm- bgcolor">
+                    <div className="col-lg-4 mt-3">
                             <p>Total Records: {data.length}</p>
                     </div>
                     </div>
@@ -172,6 +172,10 @@ const pages = _.range(1, pageCount + 1)
                             ))}
                     </tbody>
                 </table>
+
+                <div class="d-flex justify-content-center align-items-center loader-container">
+              <CustomLoader loadingState={loadingState} />
+            </div>
           </div>
           <div>
             
