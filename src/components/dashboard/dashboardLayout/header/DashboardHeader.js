@@ -29,8 +29,8 @@ function DashboardHeader() {
 
             <div className="d-flex col-lg-10 justify-content-between">
                 <div>
-                    <p className="text-white m-0 ">Welcome back</p>
-                    <p className="text-white m-0">{loggedUser} Id &nbsp;: {loginId}</p>
+                    <p className="text-white m-0 text-uppercase">Welcome back</p>
+                    <p className="text-white m-0 text-uppercase">{loggedUser} Id &nbsp;: {loginId}</p>
 
                 </div>
                 <div>
@@ -39,7 +39,7 @@ function DashboardHeader() {
                     <a className="nav-link px-3" href="#">Sign out</a>
                 </div> */}
                         <div className="dropdown">
-                            <button className="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button className="btn btn-dark dropdown-toggle text-uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {username}
                             </button>
                             <ul className="dropdown-menu position-absolute">
