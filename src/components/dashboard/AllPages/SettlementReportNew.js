@@ -24,7 +24,6 @@ const SettlementReportNew= () => {
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
-
   const { isLoadingTxnHistory } = dashboard;
   const [txnList, SetTxnList] = useState([]);
   // const [filterList,SetFilterList] = useState([])
@@ -112,6 +111,7 @@ const SettlementReportNew= () => {
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
   };
+  
 
   const onSubmitHandler = (values) => {
     console.log(values)
@@ -350,9 +350,9 @@ const SettlementReportNew= () => {
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Settlement Report</h1>
-          </div>
+          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+            <h5 className="m-b-sm gx-float-left ml-3">Settlement Report</h5>
+          {/* </div> */}
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid">
               <Formik

@@ -276,11 +276,11 @@ const ChargeBackTxnHistory= () => {
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">
+          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+            <h5 className="m-b-sm gx-float-left ml-3">
               Chargeback Transaction History
-            </h1>
-          </div>
+            </h5>
+          {/* </div> */}
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid">
               <Formik
@@ -290,7 +290,7 @@ const ChargeBackTxnHistory= () => {
               >
                 {(formik) => (
                   <Form>
-                    <div className="form-row">
+                    <div className="form-row mt-4">
                       <div className="form-group col-md-4">
                         <FormikController
                           control="select"

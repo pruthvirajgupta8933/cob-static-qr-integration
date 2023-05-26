@@ -78,10 +78,10 @@ function Sandbox() {
       </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Integration Kit</h1>
+          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+            <h4 className="m-b-sm gx-float-left">Integration Kit</h4>
             <a className="btn btn-primary float-right text-white" href="https://sabpaisa.in/integration-kits/" target="_blank" rel="noreferrer">Developer Guide</a>
-          </div>
+          {/* </div> */}
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid"></div>
           </section>
@@ -99,7 +99,7 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample1"
                   >
-                    <h2 className="font-weight-bold"><u>Test Credentials</u> </h2>
+                    <h5 className="font-weight-bold"><u>Test Credentials</u> </h5>
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
@@ -209,7 +209,7 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample2"
                   >
-                    <h2 className="font-weight-bold"><u>Live Credentials</u></h2>
+                    <h5 className="font-weight-bold"><u>Live Credentials</u></h5>
                   </a>
 
                   <form

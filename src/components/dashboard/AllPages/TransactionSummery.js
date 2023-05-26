@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {successTxnSummary } from "../../../slices/dashboardSlice";
 import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
 import { useRouteMatch, Redirect } from "react-router-dom";
-import NavBar from "../NavBar/NavBar";
 import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
@@ -86,6 +86,7 @@ function TransactionSummery() {
     } else {
       //successTxnsumry=[];
     }
+  
   }, [successTxnsumry]);
 
   useEffect(() => {
@@ -125,16 +126,16 @@ function TransactionSummery() {
         </div> */}
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Transaction Summary</h1>
-          </div>
+          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+            <h5 className="m-b-sm gx-float-left ml-4">Transaction Summary</h5>
+          {/* </div> */}
           <section
             className="features8 cid-sg6XYTl25a flleft w-100"
             id="features08-3-"
           >
             <div className="container-fluid">
               <div className="row bgcolor">
-                <div className="form-group col-md-3 mx-4 mrg-btm- bgcolor-">
+                <div className="form-group col-md-3 mx-4">
                   {/* <label>Successful Transaction Summary</label> */}
                   {/* <label>&nbsp;</label> */}
                   <select
@@ -170,7 +171,7 @@ function TransactionSummery() {
                 <div className="gap ml-4">
                   <p>
                     Total Successful Transactions: {totalSuccessTxn} | Total
-                    Amount {`(INR)`}: {totalAmt}{" "}
+                    Amount {`(INR)`}: {totalAmt}{" "} 
                   </p>
                 </div>
                 <table

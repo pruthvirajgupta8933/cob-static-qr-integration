@@ -1,14 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-
 import API_URL from "../../../config";
 import FormikController from "../../../_components/formik/FormikController";
 import PrintDocument from "../../../_components/reuseable_components/PrintDocument";
-import NavBar from "../NavBar/NavBar";
 import moment from "moment";
 import CustomLoader from "../../../_components/loader";
 
@@ -133,9 +129,9 @@ function TransactionEnquirey() {
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Transaction Enquiry</h1>
-          </div>
+          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+            <h5 className="m-b-sm gx-float-left ml-5">Transaction Enquiry</h5>
+          {/* </div> */}
           <section className="features8 cid-sg6XYTl25a flleft col-lg-12">
             <div className="container-fluid">
               <div className="row">
@@ -146,8 +142,8 @@ function TransactionEnquirey() {
                     onSubmit={onSubmit}
                   >
                     {(formik) => (
-                      <Form className="col-lg-12 bgcolor">
-                        <div className="form-row">
+                      <Form className="col-lg-12">
+                        <div className="form-row mt-4 ml-1">
                           <div className="form-group col-md-4 col-sm-12 col-lg-4">
                             <FormikController
                               control="input"
@@ -169,7 +165,7 @@ function TransactionEnquirey() {
                             {(show && printData?.length > 0) && <button
                               Value="click"
                               onClick={onClick}
-                              className="btn btn-secondary text-white mt-2"
+                              className="btn btn-secondary text-white mt-2 ml-3"
                             >
                               <i class="fa fa-print" aria-hidden="true"></i> Print
                             </button>}
@@ -184,7 +180,7 @@ function TransactionEnquirey() {
                 <CustomLoader loadingState={loadingState} />     
                 
                 {!loadingState && show && printData?.length > 0 && (
-                  <div className="overflow-auto col-lg-12 mb-5 border">
+                  <div className="overflow-auto col-lg-12 mb-5 border ml-4">
                     <div class="container">
                       <div class="row">
                         {printData?.map((datas, key) =>
