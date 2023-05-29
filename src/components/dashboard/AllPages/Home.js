@@ -82,7 +82,7 @@ function Home() {
   );
 
   return (
-    <section className="ant-layout Satoshi-Medium NunitoSans-Regular">
+    <section className="ant-layout  NunitoSans-Regular">
       <div className="m_none">
         {/*  */}
       </div>
@@ -236,7 +236,7 @@ function Home() {
               kyc?.kycUserList?.status !== "Approved" && (
                 <div className="col-12 col-md-12">
                   <div className="card col-lg-12- cardkyc pull-left">
-                    <div className="font-weight-bold card-body Satoshi-Medium">
+                    <div className="font-weight-bold card-body ">
                       <span>
                         You can accept payments upto ₹10,000 for now. To extend
                         the limit complete your KYC and get it approved.
@@ -264,7 +264,7 @@ function Home() {
               kyc?.kycUserList?.status === "Approved" && (
                 <div className="col-12 col-md-12">
                   <div className="card col-lg-12- cardkyc pull-left">
-                    <div className="font-weight-bold card-body Satoshi-Medium">
+                    <div className="font-weight-bold card-body ">
                       <span>
                         Congratulations! Your KYC documents have been approved.
                       </span>
@@ -440,7 +440,7 @@ function Home() {
         >
           <div className="modal-dialog modal-dialog-centered " role="document">
             <div className="modal-content">
-              <div className="modal-body Satoshi-Medium">
+              <div className="modal-body ">
                 {/* ratemapping loader  */}
                 <DefaultRateMapping setFlag={setIsRateMappingInProcess} />
 
@@ -480,7 +480,7 @@ function Home() {
                       </div>
                     </div>
 
-                    <div className="row Satoshi-Medium">
+                    <div className="row ">
                       <div className="col-lg-4">
                         <Link
                           to={`/dashboard/kyc`}
@@ -532,7 +532,7 @@ function Home() {
             className="modal-content"
             style={{ width: "709px", marginTop: "70px" }}
           >
-            <div className="modal-body Satoshi-Medium">
+            <div className="modal-body ">
               <button
                 type="button"
                 onClick={() => {
@@ -545,7 +545,7 @@ function Home() {
                 <span aria-hidden="true">&times;</span>
               </button>
 
-              <div className="container Satoshi-Medium">
+              <div className="container ">
                 <div className="row justify-content-md-center">
                   <div className="col-md-auto">
                     <ul>

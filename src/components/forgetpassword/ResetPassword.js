@@ -56,7 +56,7 @@ const ResetPassword = (props) => {
         <div className="col-sm-6 mx-auto">
           <div className="card ">
             <div className="card-header text-center">Update Password</div>
-            <div className="card-body Satoshi-Medium">
+            <div className="card-body ">
               <h5 className="card-title">Please Enter the detatils. </h5>
               <Formik
                 initialValues={initialValues}

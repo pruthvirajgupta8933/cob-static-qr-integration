@@ -97,7 +97,7 @@ const VerifyEmailPhone = (props) => {
         <div className="row">
           <div className="col-sm-6 mx-auto">
             <div className="card ">
-              <div className="card-header text-center Satoshi-Medium">
+              <div className="card-header text-center ">
                 Forgot Password
               </div>
               <div className="card-body NunitoSans-Regular">

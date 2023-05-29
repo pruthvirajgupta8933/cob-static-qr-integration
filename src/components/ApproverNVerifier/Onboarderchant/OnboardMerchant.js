@@ -560,7 +560,7 @@ const OnboardMerchant = () => {
                                   <div className="sminputs">
                                     <div className="simform__actions">
                                       <button
-                                        className="figmabtn Satoshi-Medium text-white mt-4- disabled1 w-50"
+                                        className="figmabtn  text-white mt-4- disabled1 w-50"
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"

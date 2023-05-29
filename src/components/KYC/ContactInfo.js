@@ -233,7 +233,7 @@ function ContactInfo(props) {
 
   return (
     <div
-      className="col-md-12 col-md-offset-4 Satoshi-Medium"
+      className="col-md-12 col-md-offset-4 "
       style={{ width: "100%" }}
     >
       <Formik

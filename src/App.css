@@ -9,7 +9,8 @@ html {
 
 
 .bg-body-sp{
-  background-image: url("./assets/images/1280_800.png");
+  /* background-image: url("./assets/images/1280_800.png"); */
+  
 background-repeat: no-repeat;
 background-size: cover;
 }

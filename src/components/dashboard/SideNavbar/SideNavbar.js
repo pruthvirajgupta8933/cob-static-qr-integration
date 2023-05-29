@@ -154,7 +154,7 @@ const SideNavbar = () => {
                     }}
                   >
                     <ul
-                      className="desktop-sidenave-typography ant-menu ant-menu-dark ant-menu-root ant-menu-inline Satoshi-Medium"
+                      className="desktop-sidenave-typography ant-menu ant-menu-dark ant-menu-root ant-menu-inline "
                       role="menu"
                       style={{ background: "#140633" }}
                     >

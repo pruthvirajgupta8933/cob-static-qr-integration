@@ -72,7 +72,7 @@ function Sandbox() {
 
   // console.log("selected plan",selectedPlan)
   return (
-    <section className="ant-layout Satoshi-Medium">
+    <section className="ant-layout ">
       <div>
         
       </div>

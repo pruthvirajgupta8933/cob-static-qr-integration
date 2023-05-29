@@ -246,12 +246,12 @@ table.tables tr:nth-child(odd) {
   line-height: 22px;
 }
 
-.card .card-body {
+/* .card .card-body {
   padding: 1.25rem 0 !important;
 }
 .card {
   padding: 10px 26px !important;
-}
+} */
 .card .price {
   /* line-height: 22px;
     font-size: 44px;
@@ -262,7 +262,7 @@ table.tables tr:nth-child(odd) {
    
     line-height: 36px;
     padding: 0; */
-  line-height: 22px;
+  /* line-height: 22px;
   font-size: 20px;
   padding: 28px 0 0 0;
   font-weight: bold;
@@ -271,7 +271,7 @@ table.tables tr:nth-child(odd) {
   line-height: 24px;
   padding: 0;
   min-height: 20px;
-  max-height: 25px;
+  max-height: 25px; */
 }
 
 .kycbtns {
@@ -353,15 +353,15 @@ table.tables tr:nth-child(odd) {
 }
 
 .mymodals {
-  position: absolute;
+  /* position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100vh; */
   background: rgba(0, 0, 0, 0.5);
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   overflow: auto !important;
 }
 
