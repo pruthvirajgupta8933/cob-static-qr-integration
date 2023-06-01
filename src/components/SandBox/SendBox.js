@@ -72,26 +72,22 @@ function Sandbox() {
 
   // console.log("selected plan",selectedPlan)
   return (
-    <section className="ant-layout ">
-      <div>
-        
-      </div>
-      <main className="gx-layout-content ant-layout-content">
+    <section >
+      <main >
         <div className="gx-main-content-wrapper">
           {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-            <h4 className="m-b-sm gx-float-left">Integration Kit</h4>
+            <h5 className="m-b-sm gx-float-left">Integration Kit</h5>
             <a className="btn btn-primary float-right text-white" href="https://sabpaisa.in/integration-kits/" target="_blank" rel="noreferrer">Developer Guide</a>
           {/* </div> */}
           <section className="features8 cid-sg6XYTl25a flleft w-100">
-            <div className="container-fluid"></div>
-          </section>
-
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
-            <div className="container-fluid  p-3 my-3 ">
-              <StepProgressBar status={kycStatus} />
-              <div></div>
-              <div className="container">
-                <div className="col-lg-12 border m-1 p-2-">
+            <div className="container-fluid">
+            <div className="row">
+            <StepProgressBar status={kycStatus} />
+              
+            </div>
+              
+              <div className="row">
+                <div className="col-lg-12 border m-1 p-2">
                   <a
                     data-toggle="collapse"
                     href="#multiCollapseExample1"
@@ -99,7 +95,7 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample1"
                   >
-                    <h5 className="font-weight-bold"><u>Test Credentials</u> </h5>
+                    <h5 className=""><u>Test Credentials</u> </h5>
                   </a>
                   {/* <h2>Test Credentials</h2> */}
                   <form
@@ -201,7 +197,7 @@ function Sandbox() {
                   </form>
                 </div>
                 
-                <div className="col-lg-12 border m-1 p-2-">
+                <div className="col-lg-12 border m-1 p-2">
                   <a
                     data-toggle="collapse"
                     href="#multiCollapseExample2"
@@ -209,7 +205,7 @@ function Sandbox() {
                     aria-expanded="true"
                     aria-controls="multiCollapseExample2"
                   >
-                    <h5 className="font-weight-bold"><u>Live Credentials</u></h5>
+                    <h5 className=""><u>Live Credentials</u></h5>
                   </a>
 
                   <form

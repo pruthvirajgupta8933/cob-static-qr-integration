@@ -69,8 +69,8 @@ const Products = () => {
 
           {product?.map((Products, i) => (
             <div className="col-sm-12 col-md-12 col-lg-6" key={i}>
-              <div className="card mt-0">
-                <div className="card-body-">
+              <div className="card p-3 mt-2">
+                <div className="card-body">
                   <h5 className="card-title prod-header">
                     <img
                       className="card-img-left"
@@ -81,13 +81,13 @@ const Products = () => {
                     &nbsp;
                     {Products.application_name}
                   </h5>
-                  <p className="card-text prod-content truncate">
-                    {" "}
+                  <p className="card-text">
+                    
                     {Products.application_description}
                   </p>
                   <div>
                     <p className="prod-read">
-                      {" "}
+                    
                       <Link
                         to={`/dashboard/sabpaisa-pricing/${Products.application_id}/${Products.application_name}`}
                       >

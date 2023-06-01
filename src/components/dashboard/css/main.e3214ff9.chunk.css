@@ -23246,10 +23246,10 @@ textarea.ant-input-number {
     min-height: 0;
     background: #fff;
 }
-.ant-layout,
+/* .ant-layout,
 .ant-layout * {
     box-sizing: border-box;
-}
+} */
 .ant-layout.ant-layout-has-sider {
     flex-direction: row;
 }
@@ -48828,7 +48828,7 @@ body {
     font-weight: 700;
     color: #000;
 }
-.bld_place::-ms-input-placeholder {
+/* .bld_place::-ms-input-placeholder {
     text-align: left;
     font-size: 18px;
     font-weight: 700;
@@ -50002,18 +50002,18 @@ select {
 }
 .panel .ant-form-item-label {
     text-align: right;
-}
-.ant-card,
+} */
+/* .ant-card,
 .gx-card-overview,
 .gx-card-widget {
     border-radius: 5px;
-}
-.m-b-sm {
+} */
+/* .m-b-sm {
     margin-bottom: 10px;
 }
 .m-t-sm {
     margin-top: 10px;
-}
+} */
 .sidebar-menu-line {
     padding: 0 30px 0 20px;
 }
@@ -51048,9 +51048,9 @@ select {
     background-color: #edf1f2;
     float: right;
 }
-.text-left {
+/* .text-left {
     text-align: left;
-}
+} */
 .pos_relative {
     position: relative;
     min-height: 200px;

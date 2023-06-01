@@ -130,7 +130,7 @@ const CommentModal = (props) => {
   const headerTitle = () => {
     return (
       <>
-    
+
         <h5
           className="modal-title bolding text-black"
           id="exampleModalLongTitle"
@@ -156,187 +156,135 @@ const CommentModal = (props) => {
 
   const modalbody = () => {
     return (
-    <>
-    
-              <h5 className="font-weight-bold">
-                Merchant Name: {props?.commentData?.clientName}
-              </h5>
-              <h5 className="font-weight-bold">
-                Client Code: {props?.commentData?.clientCode}
-              </h5>
+      <div className="container-fluid">
+        <div>
+          <h6>
+            Merchant Name: {props?.commentData?.clientName}
+          </h6>
+          <h6>
+            Client Code: {props?.commentData?.clientCode}
+          </h6>
 
-              <div className="container">
-                <Formik
-                  initialValues={initialValues}
-                  validationSchema={validationSchema}
-                  onSubmit={(values, { resetForm }) => {
-                    handleSubmit(values);
-                    resetForm();
-                  }}
-                  enableReinitialize={true}
-                >
-                  <Form>
-                    <div className="container">
-                      <div className="row">
-                        <div>
-                          <div
-                            className="col-lg-12-"
-                            style={{ width: "315px" }}
-                          >
-                            <FormikController
-                              control="textArea"
-                              name="comments"
-                              className="form-control"
-                            />
-                            <div class="file-input">
-                              <h5 className="font-weight-bold">Attachments</h5>
-                              <input
-                                ref={aRef}
-                                type="file"
-                                id="file"
-                                class="file"
-                                onChange={(e) => handleUploadAttachments(e)}
-                              />
-                              <div className="d-flex">
-                                <div>
-                                  <label for="file">
-                                    Upload Files{" "}
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="16"
-                                      height="16"
-                                      fill="currentColor"
-                                      class="bi bi-paperclip"
-                                      viewBox="0 0 16 16"
-                                    >
-                                      <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
-                                    </svg>
-                                    <p class="file-name"></p>
-                                  </label>
-                                </div>
-                                <div className="mt-2 ml-3">
-                                  <button
-                                    type="submit"
-                                    className="submit-btn approve text-white  btn-xs"
-                                  >
-                                    Submit
-                                  </button>
-                                </div>
+        </div>
 
-                                <div></div>
-                              </div>
+        <div className="row">
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(values, { resetForm }) => {
+              handleSubmit(values);
+              resetForm();
+            }}
+            enableReinitialize={true}
+          >
+            <Form>
+              <div className="form-row">
+                <div className="col">
+                  <FormikController
+                    control="textArea"
+                    name="comments"
+                    className="form-control"
+                  />
+                </div>
 
-                              <div className="d-flex justify-content-between">
-                                {uploadStatus && (
-                                  <>
-                                    <div>{attachCommentFile?.name}</div>
-                                    <button
-                                      type="button"
-                                      class="close"
-                                      aria-label="Close"
-                                      onClick={resetUploadFile}
-                                    >
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="container">
-                          <div className="row">
-                            <div
-                              className="col-lg-5"
-                              style={{
-                                marginTop: "28px",
-                                textDecoration: "underline",
-                              }}
-                            >
-                              <h2 className="font-weight-bold">
-                                Previous Comments
-                              </h2>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="col hoz-scroll-">
-                              <table className="table table-bordered">
-                                <thead>
-                                  <tr>
-                                    <th>Commented By</th>
-                                    <th>Comments</th>
-                                    <th>Date of Comments</th>
-                                    <th>Comments from tab</th>
-                                    <th>Download Attachments</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {(commentsList?.length === undefined ||
-                                    commentsList?.length === 0) && (
-                                    <tr>
-                                      <td colSpan="3">
-                                        <h3 className="font-weight-bold text-center">
-                                          No Data found
-                                        </h3>
-                                      </td>
-                                    </tr>
-                                  )}
-
-                                  {(commentsList?.length !== undefined ||
-                                    commentsList?.length > 0) &&
-                                  Array.isArray(commentsList)
-                                    ? commentsList?.map((remark, i) => (
-                                        <tr key={i}>
-                                          <td>
-                                            {remark?.comment_by_user_name.toUpperCase()}
-                                          </td>
-                                          <td
-                                            style={{ overflowWrap: "anywhere" }}
-                                          >
-                                            {remark?.comments}
-                                          </td>
-                                          <td>
-                                            {dateManipulate(remark?.comment_on)}
-                                          </td>
-                                          <td>{remark?.merchant_tab}</td>
-                                          <td>
-                                            {remark?.file_path !== null &&
-                                              isUrlValid(remark?.file_path) &&
-                                              fileTypeCheck(
-                                                remark?.file_path
-                                              ) && (
-                                                <a
-                                                  href={remark?.file_path}
-                                                  target={"_blank"}
-                                                  download
-                                                >
-                                                  <img
-                                                    src={downloadIcon}
-                                                    style={{
-                                                      height: "20px",
-                                                      width: "20px",
-                                                      margin: "auto",
-                                                    }}
-                                                  />
-                                                </a>
-                                              )}
-                                          </td>
-                                        </tr>
-                                      ))
-                                    : []}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Form>
-                </Formik>
+                <div className="col">
+                  <label for="file-upload" class="custom-file-upload">
+                    <i class="fa fa-cloud-upload"></i> Upload File
+                  </label>
+                  <input id="file-upload" type="file" className="d-none" onChange={(e) => handleUploadAttachments(e)} ref={aRef} />
+                  <div className="mt-2 ml-3">
+                    <button
+                      type="submit"
+                      className="submit-btn approve text-white btn-xs"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
               </div>
-            
-    </>)
+
+
+              <div className="row g-3">
+
+                <div className="col hoz-scroll-">
+                  <h6 className="">
+                    Previous Comments
+                  </h6>
+                  <table className="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Commented By</th>
+                        <th>Comments</th>
+                        <th>Date of Comments</th>
+                        <th>Comments from tab</th>
+                        <th>Download Attachments</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(commentsList?.length === undefined ||
+                        commentsList?.length === 0) && (
+                          <tr>
+                            <td colSpan="3">
+                              <h6 className="text-center">
+                                No Data found
+                              </h6>
+                            </td>
+                          </tr>
+                        )}
+
+                      {(commentsList?.length !== undefined ||
+                        commentsList?.length > 0) &&
+                        Array.isArray(commentsList)
+                        ? commentsList?.map((remark, i) => (
+                          <tr key={i}>
+                            <td>
+                              {remark?.comment_by_user_name.toUpperCase()}
+                            </td>
+                            <td
+                              style={{ overflowWrap: "anywhere" }}
+                            >
+                              {remark?.comments}
+                            </td>
+                            <td>
+                              {dateManipulate(remark?.comment_on)}
+                            </td>
+                            <td>{remark?.merchant_tab}</td>
+                            <td>
+                              {remark?.file_path !== null &&
+                                isUrlValid(remark?.file_path) &&
+                                fileTypeCheck(
+                                  remark?.file_path
+                                ) && (
+                                  <a
+                                    href={remark?.file_path}
+                                    target={"_blank"}
+                                    download
+                                    rel="noreferrer"
+                                  >
+                                    <img
+                                      src={downloadIcon}
+                                      style={{
+                                        height: "20px",
+                                        width: "20px",
+                                        margin: "auto",
+                                      }}
+                                      alt=""
+                                    />
+                                  </a>
+                                )}
+                            </td>
+                          </tr>
+                        ))
+                        : []}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </Form>
+          </Formik>
+        </div>
+
+      </div>)
   };
 
   const modalFooter = () => {
@@ -359,13 +307,13 @@ const CommentModal = (props) => {
 
 
 
- 
+
 
   return (
     <>
-       <CustomModal modalBody={modalbody} headerTitle={"Add your comments"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
+      <CustomModal modalBody={modalbody} headerTitle={"Add your comments"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
     </>
-  
+
   );
 };
 

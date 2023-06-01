@@ -177,7 +177,7 @@ function DashboardMainContent() {
         <React.Fragment>
             <DashboardHeader />
 
-            <div className="container-fluid bg-light">
+            <div className="container-fluid">
                 <div className="row">
                     <SideNavbar />
 

@@ -21,26 +21,25 @@ function DashboardHeader() {
 
     return (
         <header className={`navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow position-fixed ${headerClasses.navbar_cob}`}>
-
-            <a className={`${headerClasses.navbar_brand_cob}  navbar-brand col-md-3 col-lg-2 me-0 px-3`} href={false}> <img src={Sabpaisalogo3} alt="profile" title="profile" className="w-50" /></a>
-            <button className={`position-absolute d-md-none collapsed navbar-toggler ${headerClasses.navbar_toggler_cob}`} type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon" />
+            <a className={`${headerClasses.navbar_brand_cob}  navbar-brand col-md-3 col-lg-2 me-0 px-3`} href={false}>
+            <button className={`d-md-none collapsed navbar-toggler `} type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                {/* <span className="navbar-toggler-icon" /> */}
+                <i className="fa fa-bars"></i>
             </button>
+                <img src={Sabpaisalogo3} alt="profile" title="profile" className={`${headerClasses.navbar_brand_logo}`} />
+            </a>
 
-            <div className="d-flex col-lg-10 justify-content-between">
-                <div>
-                    <p className="text-white m-0 text-uppercase">Welcome back</p>
+            <div className={`d-flex justify-content-between ${headerClasses.navbar_mobile}`}>
+                <div className={`${headerClasses.cob_d_none_mobile}`}>
+                    <p className={`text-white m-0 text-uppercase`}>Welcome back</p>
                     <p className="text-white m-0 text-uppercase">{loggedUser} Id &nbsp;: {loginId}</p>
 
                 </div>
                 <div>
                     <div className={`navbar-nav ${headerClasses.navbar_nav_cob}`}>
-                        {/* <div className="nav-item text-nowrap">
-                    <a className="nav-link px-3" href="#">Sign out</a>
-                </div> */}
                         <div className="dropdown">
                             <button className="btn btn-dark dropdown-toggle text-uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {username}
+                                {username}
                             </button>
                             <ul className="dropdown-menu position-absolute">
                                 <li>  <Link to="/dashboard/profile" className="dropdown-item">Profile</Link></li>
@@ -50,8 +49,6 @@ function DashboardHeader() {
                     </div>
                 </div>
             </div>
-
-
         </header>
 
     )

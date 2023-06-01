@@ -110,11 +110,11 @@ function KycForm() {
         style={{ overflow: "scroll" }}
       >
         <div
-          className="modal-dialog modal-dialog-center modal-lg"
+          className="modal-dialog modal-dialog-center modal-lg modal-xl"
           role="document"
         >
           <div className="modal-content kyc-modal_form ">
-            <div class="modal-header py-1">
+            <div class="modal-header p-1">
 
               <div>
                 <h5 class="modal-title" id="staticBackdropLabel"> KYC Form</h5>
@@ -128,39 +128,34 @@ function KycForm() {
             <div className="modal-body p-0">
               <div className="d-flex align-items-start">
 
-                <div className="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 1 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`} type="button" role="tab"  onClick={() => {
+                <div className="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 1 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`} id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true" onClick={() => {
                     SetTab(1);
                     setTitle("CONTACT INFO");
                   }} >{kycStatusIcon(KycTabStatusStore?.general_info_status)}
                     Merchant Contact Info</a>
-
-                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 2 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button" onClick={() => {
+                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 2 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`} id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false" onClick={() => {
                     SetTab(2);
                     setTitle("BUSINESS OVERVIEW");
                   }}>{kycStatusIcon(KycTabStatusStore?.business_info_status)}
                     Business Overview</a>
-
-                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 3 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`} type="button" onClick={() => {
+                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 3 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`} id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false" onClick={() => {
                     SetTab(3);
                     setTitle("BUSINESS DETAILS");
                   }}> {kycStatusIcon(KycTabStatusStore?.merchant_info_status)}
                     Business Details</a>
-
-                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 4 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button"  onClick={() => {
+                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 4 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`} id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false" onClick={() => {
                     SetTab(4);
                     setTitle("BANK DETAILS");
                   }}>  {kycStatusIcon(KycTabStatusStore?.settlement_info_status)}
                     Bank Details</a>
-
-                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 5 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button"  onClick={() => {
+                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 5 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`} id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false" onClick={() => {
                     SetTab(5);
                     setTitle("DOCUMENTS UPLOAD");
                   }} >
                     {kycStatusIcon(KycTabStatusStore?.document_status)}
                     Upload Document</a>
-
-                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 6 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button"  onClick={() => {
+                  <a href={false} className={`nav-link text-font-ForStatusChange ${tab === 6 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`} id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false" onClick={() => {
                     SetTab(6);
                     setTitle("SUBMIT KYC");
                   }}>
@@ -173,7 +168,7 @@ function KycForm() {
                 <div className="tab-content w-100" id="v-pills-tabContent">
                   <div className="card m-0 p-0">
                     <div className="card-body">
-                    <h5 className="mb-3">{title}</h5>
+
                       {(tab === 1 && (
                         <ContactInfo
                           role={roles}
@@ -236,7 +231,7 @@ function KycForm() {
                       </h1>
 
                       <div className="card-body pt-0">
-                         
+                        <div>
                           <ul className="menu-tab-kyc">
                             <li className="nav-item p-2">
                               <a
@@ -327,7 +322,7 @@ function KycForm() {
                               </a>
                             </li>
                           </ul>
-
+                        </div>
                       </div>
                     </div>
                   </div>

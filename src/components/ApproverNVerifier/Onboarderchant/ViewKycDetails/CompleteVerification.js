@@ -349,13 +349,13 @@ const CompleteVerification = (props) => {
         {enableBtnVerifier || enableBtnApprover ?
           <><button type="button" disabled={disable} onClick={() => {
             handleVerifyClick()
-          }} className="btn btn-info btn-sm text-white">{buttonText}</button>
+          }} className="btn btn-info btn-sm text-white m-2">{buttonText}</button>
 
 
 
-            <button type="button" onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white">Reject KYC</button></>
+            <button type="button" onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white m-2">Reject KYC</button></>
           : enableBtnApprovedTab === true ? <button type="button"
-            onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white">Reject KYC</button> : <> </> // Reject kyc for currentab 4(Approved) 
+            onClick={() => setButtonClick(true)} className="btn btn-danger btn-sm text-white m-2">Reject KYC</button> : <> </> // Reject kyc for currentab 4(Approved) 
         }
 
         {/* {(currenTab === 4 || currenTab === 5 || currenTab === 6) && (roles?.approver) ?
@@ -385,7 +385,7 @@ const CompleteVerification = (props) => {
             </textarea>
             <button type="button"
               onClick={() => handleRejectClick(commetText)}
-              className="btn btn-danger btn-sm text-white pull-left mt-20">Submit</button></> : <></>}
+              className="btn btn-danger btn-sm text-white pull-left m-2">Submit</button></> : <></>}
 
 
       </div>

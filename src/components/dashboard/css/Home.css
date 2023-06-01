@@ -228,7 +228,7 @@ table.tables tr:nth-child(odd) {
 
 .onboarding-illustration-top {
   position: absolute;
-  top: -40px;
+  /* top: -40px; */
   right: -81px;
 
   height: 60px;
@@ -817,7 +817,7 @@ a.sidenavFonts {
   /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 700;
-  font-size: 19px;
+  /* font-size: 19px; */
   line-height: 22px;
   color: #44525f;
 }

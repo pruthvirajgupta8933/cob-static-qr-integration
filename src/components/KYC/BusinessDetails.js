@@ -380,7 +380,7 @@ function BusinessDetails(props) {
   }
 
   return (
-    <div className="col-sm-12 col-md-6 col-lg-12 col-md-offset-4">
+    <div className="col-lg-12">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -398,7 +398,7 @@ function BusinessDetails(props) {
         }) => (
           <Form>
             <div className="row">
-              <div className="col-sm-12 col-md-6 col-lg-6 marg-b">
+              <div className="col-sm-12 col-md-6 col-lg-6">
                 <div className="input-group">
                   <div>
                     {/* {console.log("values",values)} */}
@@ -448,10 +448,10 @@ function BusinessDetails(props) {
                       <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                     </span>
                   ) : (
-                    <div className="position-sticky pull-right- otpbtn input-group-append">
+                    <div className="input-group-append">
                       <a
                         href={() => false}
-                        className="btn cob-btn-primary text-white btn-sm optbtn- btn-outline-secondary mb-0"
+                        className="btn cob-btn-primary text-white"
                         onClick={() => {
                           checkInputIsValid(
                             errors,
@@ -521,10 +521,10 @@ function BusinessDetails(props) {
                     <span className="success input-group-append">
                       <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                   </span> 
-                  :  <div className="position-sticky pull-right- otpbtn input-group-append">
+                  :  <div className="input-group-append">
                       <a
                         href={() => false}
-                        className="btn cob-btn-primary text-white btn-sm optbtn- btn-outline-secondary mb-0"
+                        className="btn cob-btn-primary text-white"
                         onClick={() => {
                           checkInputIsValid(
                             errors,
@@ -558,7 +558,7 @@ function BusinessDetails(props) {
 
               <div className="col-sm-12 col-md-6 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
-                  Authorized Signatory PAN{" "}
+                  Authorized Signatory PAN
                   <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="input-group">
@@ -577,10 +577,10 @@ function BusinessDetails(props) {
                       <img src={gotVerified} alt="" title="" width={'20px'} height={'20px'} className="btn-outline-secondary" />
                     </span>
                   ) : (
-                    <div className="position-sticky pull-right- otpbtn input-group-append">
+                    <div className="input-group-append">
                       <a
                         href={() => false}
-                        className="btn cob-btn-primary text-white btn-sm optbtn- btn-outline-secondary mb-0"
+                        className="btn cob-btn-primary text-white"
                         onClick={() => {
                           checkInputIsValid(
                             errors,
@@ -599,7 +599,7 @@ function BusinessDetails(props) {
                 {
                   <ErrorMessage name="signatory_pan">
                     {(msg) => (
-                      <span className="abhitest- errortxt- text-danger">
+                      <span className="text-danger">
                         {msg}
                       </span>
                     )}
@@ -607,7 +607,7 @@ function BusinessDetails(props) {
                 }
                 <br />
                 {errors?.prevSignatoryPan && (
-                  <span className="notVerifiedtext- text-danger mb-0">
+                  <span className="text-danger mb-0">
                     {errors?.prevSignatoryPan}
                   </span>
                 )}
@@ -697,16 +697,7 @@ function BusinessDetails(props) {
                 />
               </div>
             </div>
-            <div className="my-5- w-100 pull-left p-2">
-              <hr
-                style={{
-                  borderColor: "#D9D9D9",
-                  textShadow: "2px 2px 5px grey",
-                  width: "100%",
-                }}
-              />
-              <div className="mt-3">
-                <div className="row">
+            <div className="row">
                   <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
                     {VerifyKycStatus === "Verified" ? null : (
                       <button
@@ -719,8 +710,6 @@ function BusinessDetails(props) {
                     )}
                   </div>
                 </div>
-              </div>
-            </div>
           </Form>
         )}
       </Formik>

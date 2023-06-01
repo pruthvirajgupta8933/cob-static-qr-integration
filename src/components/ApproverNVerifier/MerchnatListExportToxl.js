@@ -49,7 +49,7 @@ const MerchnatListExportToxl = (props) => {
   }
 
   return (
-    <div className='form-group col-lg-3 col-md-12 mt-2'>
+    <div className='form-group col-lg-3 col-md-12'>
       
         <p>&nbsp;</p>
         <button
@@ -59,7 +59,7 @@ const MerchnatListExportToxl = (props) => {
           onClick={() => exportToExcelFn()}
           style={{ backgroundColor: "rgb(1, 86, 179)" }}
         >
-          {loading ? "Downloading..." : "Export"}
+         <i className="fa fa-download"/> {loading ? "Downloading..." : "Export"}
          
         </button>
      

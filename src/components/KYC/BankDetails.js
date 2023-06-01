@@ -264,7 +264,7 @@ function BankDetails(props) {
 
 
   return (
-    <div className="col-md-12 col-md-offset-4" style={{ width: "100%" }}>
+    <div className="col-lg-12">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -413,10 +413,6 @@ function BankDetails(props) {
                 )}
               </div>
             </div>
-
-
-
-
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label mt-0 p-2">
@@ -481,19 +477,9 @@ function BankDetails(props) {
                 />
               </div>
             </div>
-
-            <div className="my-5- p-2 w-100 pull-left">
-              <hr
-                style={{
-                  borderColor: "#D9D9D9",
-                  textShadow: "2px 2px 5px grey",
-                  width: "100%",
-                }}
-              />
-
-              <div className="row">
+            <div className="row">
                 <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                  {VerifyKycStatus === "Verified" ? null : (
+                  {VerifyKycStatus === "Verified" ? <></> : (
                     <button
                       disabled={disable}
                       className="save-next-btn float-lg-right cob-btn-primary text-white"
@@ -505,7 +491,6 @@ function BankDetails(props) {
                   )}
                 </div>
               </div>
-            </div>
           </Form>
         )}
       </Formik>

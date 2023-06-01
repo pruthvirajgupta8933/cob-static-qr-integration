@@ -9,7 +9,7 @@ import { Regex, RegexMsg } from "../../../_components/formik/ValidationRegex";
 import NavBar from "../NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import profileIllustration from "../../../assets/images/profile-illustration.png"
-
+import classes from "./Profile/profile.module.css"
 
 export const Profile = () => {
   const [isCreateorUpdate, setIsCreateorUpdate] = useState(true);
@@ -178,65 +178,62 @@ export const Profile = () => {
 
 
   return (
-    <section className="ant-layout">
-      <div>
-        
-      </div>
-      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper">
-
-            <h1 className="right_side_heading">
+    <section>
+      <main>
+        <div className="container-fluid">
+          <nav>
+            <h5 className="right_side_heading">
               My Profile
-            </h1>
+            </h5>
+          </nav>
+
+          <div className="row">
 
 
-            <div className="row">
-            
-              <div className="col-lg-7">
-              <div className="panel panel-default">
-              <form className="form-horizontal form_cmplt" onSubmit={handleSubmit(onSubmit)}>
-                {/* <div className="panel-heading text-uppercase">User Details </div> */}
-                <ul className="list-group">
-                  <li className="list-group-item">
-                    <div className="col-lg-6">
-                      <label><strong>Username : </strong></label>
-                      <span className="border-0 text-uppercase" disabled="true" readonly>
-                      &nbsp; {clientContactPersonName}
-                      </span>
-                      {/* <p className="invalid-feedback">
-            {errors.clientName?.message}
-          </p> */}
-                    </div>
-                    <div className="col-lg-6">
-                      <label><strong>Email Id : </strong></label>
-                      <span className="form-control- border-0" readonly disabled="true">
-                       &nbsp; {clientEmail}
-                      </span>
-                      {/* <p>{errors.email?.message}</p> */}
+            <div className="col-lg-7 ">
+
+              <div className="card">
+                {/* <h5 className="card-header">{clientContactPersonName}</h5> */}
+                <div className="card-body">
+
+                  <form>
+                    <div className="row mb-3">
+                      <label className="col-sm-2 col-form-label">Name</label>
+                      <div className="col-sm-10">
+                        <input type="text" className="form-control" value={clientContactPersonName} disabled={true} />
+                      </div>
                     </div>
 
-                    <div className="col-lg-6">
-                      <label><strong>Account Type : </strong></label>
-                      <span className="border-0 text-uppercase" readonly disabled="true">
-                      &nbsp; {LoggedUser}
-                      </span>
-                      {/* <p className="invalid-feedback">
-          {errors.phone?.message}
-        </p> */}
-                    </div>
-                    <div className="col-lg-6">
-                      <label><strong>Phone No. : </strong></label>
-                      <span className="form-control- border-0" readonly disabled="true">
-                      &nbsp; {clientMobileNo}
-                      </span>
-                      {/* <p className="invalid-feedback">
-          {errors.phone?.message}
-        </p> */}
+                    <div className="row mb-3">
+                      <label className="col-sm-2 col-form-label">Email Id</label>
+                      <div className="col-sm-10">
+                        <input type="text" className="form-control" value={clientEmail} disabled={true} />
+                      </div>
                     </div>
 
-                  </li>
-                  {roleBasedShowTab.merchant ? <li className="list-group-item">
+                    <div className="row mb-3">
+                      <label className="col-sm-2 col-form-label">Contact Nubmer</label>
+                      <div className="col-sm-10">
+                        <input type="text" className="form-control" value={clientMobileNo} disabled={true} />
+                      </div>
+                    </div>
+
+                    <div className="row mb-3">
+                      <label className="col-sm-2 col-form-label">Account Type</label>
+                      <div className="col-sm-10">
+                        <input type="text" className="form-control" value={LoggedUser} disabled={true} />
+                      </div>
+                    </div>
+
+                    {/* <div className="row mb-3">
+                      <label className="col-sm-2 col-form-label">KYC Status</label>
+                      <div className="col-sm-10">
+                        <input type="text" className="form-control" value={clientEmail} disabled={true} />
+                      </div>
+                    </div> */}
+
+                  </form>
+                  {roleBasedShowTab.merchant ?
                     <div className="col-lg-6">
                       {/* <label><strong>Change Password</strong></label> -<br/> */}
                       <Link to={`/dashboard/change-password`}>
@@ -246,95 +243,18 @@ export const Profile = () => {
                       </Link>
                       <p className="invalid-feedback">{errors.clientName?.message}</p>
                     </div>
-                  </li> : <></>}
+                    : <></>}
 
-                </ul>
-              </form>
 
-            </div>
-              </div>
-
-              <div className="col-lg-5">
-                <img src={profileIllustration} alt="profile" />
-              </div>
-              
-            </div>
-         
-
-            <div className="ant-tabs ant-tabs-top ant-tabs-line">
-              <div role="tablist" className="ant-tabs-bar ant-tabs-top-bar" tabIndex={0}>
-                <div className="ant-tabs-nav-container">
-                  <div className="ant-tabs-nav-wrap">
-                    <div className="ant-tabs-nav-scroll">
-                      <div className="ant-tabs-nav- ant-tabs-nav-animated">
-                        <div>
-                          {/* <h4 style={{background: "#ffa2a2",padding: "14px",margin:" auto",textAlign: "center"}}> */}
-                          {/* {message} */}
-                          {/* </h4> */}
-                          {/* <div role="tab" aria-disabled="false" aria-selected="true" className="ant-tabs-tab-active ant-tabs-tab">Basic Details</div> */}
-                        </div>
-                        <div
-                          className="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
-                          style={{
-                            display: "block",
-                            transform: "translate3d(0px, 0px, 0px)",
-                            width: "116px",
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
+
               </div>
-              <div  role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }} />
-              <div className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content" style={{ marginLeft: '0%' }}>
-                <div role="tabpanel" aria-hidden="false" className="ant-tabs-tabpane ant-tabs-tabpane-active">
-                  <div role="presentation" style={{ width: '0px', height: '0px', overflow: 'hidden', position: 'absolute' }}>
-                  </div>
-                  <div className="container col-sm-12 d-flex">
+            </div>
 
-                    {/* start form area */}
-                    <div className="container col-sm-8">
-                      <div className="col-md-12 ">
-                        {/* 
-                        <Link to="/reset" className="float-right " style={{margin:"-23px"}}>Change Password</Link> */}
-                        {/*  
-                          <div className="card mt-0">
-                            <div className="card-header">Basic Details</div>
-                            <div className="card-body-"> */}
-
-
-                      </div>
-                      {/* end form area */}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-              
-                role="presentation"
-                style={{
-                  width: "0px",
-                  height: "0px",
-                  overflow: "hidden",
-                  position: "absolute",
-                }}
-              ></div>
+            <div className="col-lg-5">
+              <img src={profileIllustration} alt="profile" className={`${classes.image}`} />
             </div>
           </div>
-          <div
-          
-            role="presentation"
-            style={{
-              width: "0px",
-              height: "0px",
-              overflow: "hidden",
-              position: "absolute",
-            }}
-          />
-          {/* </div>
-          </div>
-        </div> */}
         </div>
       </main>
     </section>

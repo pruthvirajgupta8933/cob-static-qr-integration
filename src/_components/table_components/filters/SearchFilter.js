@@ -27,7 +27,7 @@ const SearchFilter = ({
   };
 
   return (
-    <div>
+      <React.Fragment>
       <label>Search</label>
       <form onSubmit={handleSearchSubmit}>
         <div class="input-group mb-3 ">
@@ -74,7 +74,7 @@ const SearchFilter = ({
           </div>
         )}
       </form>
-    </div>
+    </React.Fragment>
   );
 };
 export default SearchFilter;

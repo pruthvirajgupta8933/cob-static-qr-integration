@@ -226,14 +226,14 @@ const CompleteVerifyAndRejectBtn = (props) => {
           {(enableButtonForVerifier || enableButtonForApprover) &&
             <button type="button"
               onClick={() => { verifyApproveDoc() }}
-              className="btn btn-info btn-sm text-white">{buttonText}
+              className="btn btn-info btn-sm text-white m-2">{buttonText}
             </button>
           }
 
           {enableRejectButton &&
             <button type="button"
               onClick={() => setButtonClick(true)}
-              className="btn btn-danger btn-sm text-white">
+              className="btn btn-danger btn-sm text-white m-2">
               Reject Selected
             </button>}
         </div>
@@ -248,7 +248,7 @@ const CompleteVerifyAndRejectBtn = (props) => {
             <button type="button"
               onClick={() => rejectDoc()}
               disabled={disable}
-              className="btn btn-danger btn-sm text-white">Submit</button></div></div> : <></>}
+              className="btn btn-danger btn-sm text-white m-2">Submit</button></div></div> : <></>}
 
 
     </div>

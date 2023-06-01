@@ -21,19 +21,20 @@
 }
 
 .kyc_active_tab_success{
-  background-color: #4bb543;
+  background-color: #4bb543 !important;
 }
 
 .kyc_active_tab_error{
-  background-color: #ff0000;
+  background-color: #ff0000 !important;
 }
 
 .kyc_active_tab_warning{
-  background-color: #ffab07;
+  background-color: #ffab07 !important;
 }
 
 .kyc_active_tab_default{
-  background-color: #b2b2b2;
+  background-color: #b2b2b2 !important;
+  color: #000;
 }
 
 .text-decoration-underline{
@@ -254,15 +255,14 @@
 
 /* For PAN VALIDATION IN BUSINESS Details */
 
-.kyc-modal_form {
+/* .kyc-modal_form {
   max-width: 1696px;
   min-width: 100%;
   display: revert;
-  /* margin-left: -6rem; */  
   height: 100%;
   margin-top: 126px;
   
-}
+} */
 
 .cross_KYC {
   height: 34px;
@@ -271,7 +271,6 @@
 }
 
 .text-font {
-  font-family: Satoshi-bold;
   font-size: 15px;
   font-weight: 700;
   line-height: 26px;
@@ -418,7 +417,7 @@ a.inactive{
   width: 100%;
   
 }
-
+/* 
 .menu-tab-kyc{
   padding : 0px
-}
+} */

@@ -130,7 +130,7 @@ function VerifiedMerchant() {
     {
       id: "13",
       name: "View Status",
-      width:"120px",
+      width: "120px",
       cell: (row) => (
         <div>
           <button
@@ -155,19 +155,19 @@ function VerifiedMerchant() {
       name: "Action",
       cell: (row) => (
         <div>
-            <button
-              type="button"
-              className="approve text-white  btn-xs "
-              data-toggle="modal"
-              onClick={() => {
-                setCommentId(row);
-                setOpenCommentModal(true);
-              }}
-              data-target="#exampleModal"
-              disabled={row?.clientCode === null ? true : false}
-            >
-              Comments
-            </button>
+          <button
+            type="button"
+            className="approve text-white  btn-xs "
+            data-toggle="modal"
+            onClick={() => {
+              setCommentId(row);
+              setOpenCommentModal(true);
+            }}
+            data-target="#exampleModal"
+            disabled={row?.clientCode === null ? true : false}
+          >
+            Comments
+          </button>
         </div>
       ),
     },
@@ -183,11 +183,11 @@ function VerifiedMerchant() {
   const roles = roleBasedAccess();
 
   const kycSearch = (e, fieldType) => {
-    if(fieldType === "text"){
+    if (fieldType === "text") {
       setSearchByDropDown(false)
       setSearchText(e);
     }
-    if(fieldType === "dropdown"){
+    if (fieldType === "dropdown") {
       setSearchByDropDown(true)
       setOnboardType(e)
     }
@@ -197,7 +197,7 @@ function VerifiedMerchant() {
 
   const verifyMerchant = () => {
     fetchData()
- 
+
   };
 
   const searchByText = () => {
@@ -223,7 +223,7 @@ function VerifiedMerchant() {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Verified",
-        isDirect:onboardType
+        isDirect: onboardType
       })
     )
       .then((resp) => {
@@ -277,63 +277,65 @@ function VerifiedMerchant() {
 
 
   return (
-    <div className="container-fluid flleft">
-      <div className="form-group col-lg-3 col-md-12 mt-2">
-        <SearchFilter
-          kycSearch={kycSearch}
-          searchText={searchText}
-          searchByText={searchByText}
-          setSearchByDropDown={setSearchByDropDown}
-          searchTextByApiCall={true}
-        />
-      </div>
+    <div className="container-fluid">
+      <div className="form-row">
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <SearchFilter
+            kycSearch={kycSearch}
+            searchText={searchText}
+            searchByText={searchByText}
+            setSearchByDropDown={setSearchByDropDown}
+            searchTextByApiCall={true}
+          />
+        </div>
 
-      <div className="form-group col-lg-3 col-md-12 mt-2">
-        <CountPerPageFilter
-          pageSize={pageSize}
-          dataCount={dataCount}
-          changePageSize={changePageSize}
-        />
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <CountPerPageFilter
+            pageSize={pageSize}
+            dataCount={dataCount}
+            changePageSize={changePageSize}
+          />
+        </div>
+        {/* <KycDetailsModal kycId={kycIdClick} /> */}
+        <div className="form-group col-lg-3 col-md-12 mt-2">
+          <SearchbyDropDown
+            kycSearch={kycSearch}
+            searchText={searchText}
+            isSearchByDropDown={isSearchByDropDown}
+            notFilledData={verfiedMerchant}
+            setData={setData}
+            setSearchByDropDown={setSearchByDropDown}
+            optionSearchData={optionSearchData}
+          />
+        </div>
+        <div className="">
+          <MerchnatListExportToxl
+            URL={
+              "export-excel/?search=Verified"
+            }
+            filename={"Pending-Approval"}
+          />
+        </div>
+        <div>
+        </div>
+
+        {openCommentModal && <CommentModal
+          commentData={commentId}
+          isModalOpen={openCommentModal}
+          setModalState={setOpenCommentModal}
+          tabName={"Pending Approval"}
+        />}
+
+        {isOpenModal && <KycDetailsModal
+          kycId={kycIdClick}
+          handleModal={setIsModalOpen}
+          isOpenModal={isOpenModal}
+          renderPendingApproval={verifyMerchant}
+        />}
+
+
       </div>
-      {/* <KycDetailsModal kycId={kycIdClick} /> */}
-      <div className="form-group col-lg-3 col-md-12 mt-2">
-        <SearchbyDropDown
-          kycSearch={kycSearch}
-          searchText={searchText}
-          isSearchByDropDown={isSearchByDropDown}
-          notFilledData={verfiedMerchant}
-          setData={setData}
-          setSearchByDropDown={setSearchByDropDown}
-          optionSearchData={optionSearchData}
-        />
-      </div>
-      <div className="mt-1">
-      <MerchnatListExportToxl
-        URL={
-          "export-excel/?search=Verified"
-        }
-        filename={"Pending-Approval"}
-      />
-      </div>
-      <div>
-      
-       {openCommentModal && <CommentModal
-            commentData={commentId}
-            isModalOpen={openCommentModal}
-            setModalState={setOpenCommentModal}
-            tabName={"Pending Approval"}
-          />}
-     
-     {isOpenModal && <KycDetailsModal
-            kycId={kycIdClick}
-            handleModal={setIsModalOpen}
-            isOpenModal={isOpenModal}
-            renderPendingApproval={verifyMerchant}
-          />}
-          
-     
-      </div>
-      <div className="container-fluid pull-left p-3- my-3- col-md-12- col-md-offset-4">
+      <div className="">
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
             <Table

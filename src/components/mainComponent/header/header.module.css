@@ -1,7 +1,8 @@
 
 .cob_logo{
-    width: 11rem;
-height: 3rem;
+    width: 100%;
+    max-width: 100px;
+    height: auto;
 }
 
 .navbar_bg_color

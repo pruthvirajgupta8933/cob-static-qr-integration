@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  subscriptionplan,
-  clearSuccessTxnsummary,
-} from "../../../slices/dashboardSlice";
+import {clearSuccessTxnsummary } from "../../../slices/dashboardSlice";
 import { useRouteMatch, Redirect, Link } from "react-router-dom";
 import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png";
 import "../css/Home.css";
@@ -27,6 +24,8 @@ import KycAlert from "../../KYC/KycAlert";
 import { DefaultRateMapping } from "../../../utilities/DefaultRateMapping";
 import { isNull } from "lodash";
 import AlertBox from "../../../_components/reuseable_components/AlertBox";
+import classes from "./Home/home.module.css"
+
 
 function Home() {
   const roles = roleBasedAccess();
@@ -82,210 +81,228 @@ function Home() {
   );
 
   return (
-    <section className="ant-layout  NunitoSans-Regular">
-      <div className="m_none">
-        {/*  */}
-      </div>
-
+    <section className="">
       {/* KYC container start from here */}
-      <div className="announcement-banner-container col-lg-12">
+      <div className="row">
         {/* hide when login by bank and businees category b2b */}
         {roles?.bank === true || roles?.b2b === true ? (
           <></>
         ) : (
           <StepProgressBar status={kyc?.kycUserList?.status} />
         )}
+      </div>
 
-      
-        {roles?.merchant === true ? (
-          <React.Fragment>
-            {unPaidProduct?.length > 0 && (
-              <AlertBox
-                cardData={unPaidProduct}
-                // key={data?.clientSubscribedPlanDetailsId}
-                heading={`Payment Alert`}
-                text1={`Kindly pay the amount of the subscribed product`}
-                // text2={`Product : ${data?.applicationName}` }
-                // text3={`Product Plan : ${data?.planName}`}
-                // linkUrl={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}
-                linkName={"Make Payment"}
-                bgColor={"alert-danger"}
-              />
+      <div className="row">
+        <div className="col-lg-12">
+          {roles?.merchant === true ? (
+            <React.Fragment>
+              {unPaidProduct?.length > 0 && (
+                <AlertBox
+                  cardData={unPaidProduct}
+                  // key={data?.clientSubscribedPlanDetailsId}
+                  heading={`Payment Alert`}
+                  text1={`Kindly pay the amount of the subscribed product`}
+                  // text2={`Product : ${data?.applicationName}` }
+                  // text3={`Product Plan : ${data?.planName}`}
+                  // linkUrl={`dashboard/sabpaisa-pg/${data?.clientSubscribedPlanDetailsId}`}
+                  linkName={"Make Payment"}
+                  bgColor={"alert-danger"}
+                />
               )
               }
 
-                {/* KYC ALETT */}
-            <KycAlert />
-          </React.Fragment>
-        ) : (
-          <></>
-        )}
+              {/* KYC ALETT */}
+              <KycAlert />
+            </React.Fragment>
+          ) : (
+            <></>
+          )}
+        </div>
 
-        <div className="announcement-banner-container_new  announcement-banner">
-          <div className="onboarding-illustration-top">
-            <img
-              src={onlineshopinglogo}
-              width={400}
-              alt="SabPaisa"
-              title="SabPaisa"
-            />
+      </div>
+      <hr />
+
+      <div className="row">
+
+        <div className="col-lg-9 d-flex justify-content-between">
+
+          <div
+            className="col-lg-3"
+            data-aos="fade-up"
+          >
+            <div className="icon text-primary mb-3">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g fill="none" fillRule="evenodd">
+                  <path d="M0 0h24v24H0z"></path>
+                  <path
+                    d="M7 3h10a4 4 0 110 8H7a4 4 0 110-8zm0 6a2 2 0 100-4 2 2 0 000 4z"
+                    fill="#335EEA"
+                  ></path>
+                  <path
+                    d="M7 13h10a4 4 0 110 8H7a4 4 0 110-8zm10 6a2 2 0 100-4 2 2 0 000 4z"
+                    fill="#335EEA"
+                    opacity=".3"
+                  ></path>
+                </g>
+              </svg>{" "}
+            </div>
+            <h5 className="font-weight-bold">Built for developers</h5>
+            <p className="text-muted mb-6 mb-md-0">
+              Our kit is built to make your life easier. Variables, build
+              tooling, documentation, and reusable components.
+            </p>
           </div>
-          <div className="row">
-            <div
-              className="col-12 col-md-3 aos-init aos-animate"
-              data-aos="fade-up"
-            >
-              <div className="icon text-primary mb-3">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g fill="none" fillRule="evenodd">
-                    <path d="M0 0h24v24H0z"></path>
-                    <path
-                      d="M7 3h10a4 4 0 110 8H7a4 4 0 110-8zm0 6a2 2 0 100-4 2 2 0 000 4z"
-                      fill="#335EEA"
-                    ></path>
-                    <path
-                      d="M7 13h10a4 4 0 110 8H7a4 4 0 110-8zm10 6a2 2 0 100-4 2 2 0 000 4z"
-                      fill="#335EEA"
-                      opacity=".3"
-                    ></path>
-                  </g>
-                </svg>{" "}
-              </div>
-              <h5 className="font-weight-bold">Built for developers</h5>
-              <p className="text-muted mb-6 mb-md-0">
-                Our kit is built to make your life easier. Variables, build
-                tooling, documentation, and reusable components.
-              </p>
-            </div>
-            <div
-              className="col-12 col-md-3 aos-init aos-animate"
-              data-aos="fade-up"
-              data-aos-delay="50"
-            >
-              <div className="icon text-primary mb-3">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g fill="none" fillRule="evenodd">
-                    <path d="M0 0h24v24H0z"></path>
-                    <path
-                      d="M5.5 4h4A1.5 1.5 0 0111 5.5v1A1.5 1.5 0 019.5 8h-4A1.5 1.5 0 014 6.5v-1A1.5 1.5 0 015.5 4zm9 12h4a1.5 1.5 0 011.5 1.5v1a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-1a1.5 1.5 0 011.5-1.5z"
-                      fill="#335EEA"
-                    ></path>
-                    <path
-                      d="M5.5 10h4a1.5 1.5 0 011.5 1.5v7A1.5 1.5 0 019.5 20h-4A1.5 1.5 0 014 18.5v-7A1.5 1.5 0 015.5 10zm9-6h4A1.5 1.5 0 0120 5.5v7a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-7A1.5 1.5 0 0114.5 4z"
-                      fill="#335EEA"
-                      opacity=".3"
-                    ></path>
-                  </g>
-                </svg>{" "}
-              </div>
-              <h5 className="font-weight-bold">Designed to be modern</h5>
-              <p className="text-muted mb-6 mb-md-0">
-                Designed with the latest design trends in mind. Our kit feels
-                modern, minimal, and beautiful.
-              </p>
-            </div>
-            <div
-              className="col-12 col-md-3 aos-init aos-animate"
-              data-aos="fade-up"
-              data-aos-delay="100"
-            >
-              <div className="icon text-primary mb-3">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g fill="none" fillRule="evenodd">
-                    <path d="M0 0h24v24H0z"></path>
-                    <path
-                      d="M17.272 8.685a1 1 0 111.456-1.37l4 4.25a1 1 0 010 1.37l-4 4.25a1 1 0 01-1.456-1.37l3.355-3.565-3.355-3.565zm-10.544 0L3.373 12.25l3.355 3.565a1 1 0 01-1.456 1.37l-4-4.25a1 1 0 010-1.37l4-4.25a1 1 0 011.456 1.37z"
-                      fill="#335EEA"
-                    ></path>
-                    <rect
-                      fill="#335EEA"
-                      opacity=".3"
-                      transform="rotate(15 12 12)"
-                      x="11"
-                      y="4"
-                      width="2"
-                      height="16"
-                      rx="1"
-                    ></rect>
-                  </g>
-                </svg>{" "}
-              </div>
-              <h5 className="font-weight-bold">Documentation for everything</h5>
-              <p className="text-muted mb-0">
-                We've written extensive documentation for components and tools,
-                so you never have to reverse engineer anything.
-              </p>
-            </div>
 
-            {roles?.merchant === true &&
-              kyc?.kycUserList?.status !== "Approved" && (
-                <div className="col-12 col-md-12">
-                  <div className="card col-lg-12- cardkyc pull-left">
-                    <div className="font-weight-bold card-body ">
-                      <span>
-                        You can accept payments upto ₹10,000 for now. To extend
-                        the limit complete your KYC and get it approved.
-                      </span>
-                      <Link
-                        to={`/dashboard/kyc`}
-                        data-toggle="modal"
-                        data-target="#exampleModalCenter"
-                      >
-                        <button
-                          className="text-white  kycbtns"
-                          style={{
-                            backgroundColor: "#0156B3",
-                            paddingLeft: "10px",
-                          }}
-                        >
-                          Complete KYC
-                        </button>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              )}
-            {roles?.merchant === true &&
-              kyc?.kycUserList?.status === "Approved" && (
-                <div className="col-12 col-md-12">
-                  <div className="card col-lg-12- cardkyc pull-left">
-                    <div className="font-weight-bold card-body ">
-                      <span>
-                        Congratulations! Your KYC documents have been approved.
-                      </span>
-                      <button
-                        className="text-white pull-right kycbtns"
-                        disabled
-                      >
-                        KYC Done
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
+          <div
+            className="col-lg-3"
+            data-aos="fade-up"
+            data-aos-delay="50"
+          >
+            <div className="icon text-primary mb-3">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g fill="none" fillRule="evenodd">
+                  <path d="M0 0h24v24H0z"></path>
+                  <path
+                    d="M5.5 4h4A1.5 1.5 0 0111 5.5v1A1.5 1.5 0 019.5 8h-4A1.5 1.5 0 014 6.5v-1A1.5 1.5 0 015.5 4zm9 12h4a1.5 1.5 0 011.5 1.5v1a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-1a1.5 1.5 0 011.5-1.5z"
+                    fill="#335EEA"
+                  ></path>
+                  <path
+                    d="M5.5 10h4a1.5 1.5 0 011.5 1.5v7A1.5 1.5 0 019.5 20h-4A1.5 1.5 0 014 18.5v-7A1.5 1.5 0 015.5 10zm9-6h4A1.5 1.5 0 0120 5.5v7a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-7A1.5 1.5 0 0114.5 4z"
+                    fill="#335EEA"
+                    opacity=".3"
+                  ></path>
+                </g>
+              </svg>{" "}
+            </div>
+            <h5 className="font-weight-bold">Designed to be modern</h5>
+            <p className="text-muted mb-6 mb-md-0">
+              Designed with the latest design trends in mind. Our kit feels
+              modern, minimal, and beautiful.
+            </p>
+          </div>
+
+          <div
+            className="col-lg-3"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div className="icon text-primary mb-3">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g fill="none" fillRule="evenodd">
+                  <path d="M0 0h24v24H0z"></path>
+                  <path
+                    d="M17.272 8.685a1 1 0 111.456-1.37l4 4.25a1 1 0 010 1.37l-4 4.25a1 1 0 01-1.456-1.37l3.355-3.565-3.355-3.565zm-10.544 0L3.373 12.25l3.355 3.565a1 1 0 01-1.456 1.37l-4-4.25a1 1 0 010-1.37l4-4.25a1 1 0 011.456 1.37z"
+                    fill="#335EEA"
+                  ></path>
+                  <rect
+                    fill="#335EEA"
+                    opacity=".3"
+                    transform="rotate(15 12 12)"
+                    x="11"
+                    y="4"
+                    width="2"
+                    height="16"
+                    rx="1"
+                  ></rect>
+                </g>
+              </svg>{" "}
+            </div>
+            <h5 className="font-weight-bold">Documentation for everything</h5>
+            <p className="text-muted mb-0">
+              We've written extensive documentation for components and tools,
+              so you never have to reverse engineer anything.
+            </p>
           </div>
         </div>
 
+        <div className={`col-lg-3 ${classes.mobile_d_none}`}>
+          <img
+            src={onlineshopinglogo}
+            width={400}
+            alt="SabPaisa"
+            title="SabPaisa"
+            className={`${classes.banner_image}`}
+          />
+        </div>
+      </div>
+
+      <hr />
+      <hr />
+      <hr />
+      <div className="row kyc-link">
+
+        {roles?.merchant === true &&
+          kyc?.kycUserList?.status !== "Approved" && (
+            <div className="col-lg-12 col-md-12">
+              <div className="card col-lg-12- cardkyc pull-left">
+                <div className="font-weight-bold card-body ">
+                  <span>
+                    You can accept payments upto ₹10,000 for now. To extend
+                    the limit complete your KYC and get it approved.
+                  </span>
+                  <Link
+                    to={`/dashboard/kyc`}
+                    data-toggle="modal"
+                    data-target="#exampleModalCenter"
+                  >
+                    <button
+                      className="text-white  kycbtns"
+                      style={{
+                        backgroundColor: "#0156B3",
+                        paddingLeft: "10px",
+                      }}
+                    >
+                      Complete KYC
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+        {roles?.merchant === true &&
+          kyc?.kycUserList?.status === "Approved" && (
+            <div className="col-lg-12 col-md-12">
+              <div className="card col-lg-12- cardkyc pull-left">
+                <div className="font-weight-bold card-body ">
+                  <span>
+                    Congratulations! Your KYC documents have been approved.
+                  </span>
+                  <button
+                    className="text-white pull-right kycbtns"
+                    disabled
+                  >
+                    KYC Done
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+      </div>
+
+      <hr />
+      <hr />
+      <div className="row">
         {roles?.merchant === true && (
-          <div className="container">
+          <div className="container-fluid">
             <div className="row">
-              <div className="col-sm  m-0 no-pad">
-                <div className="card">
+              <div className="col-lg-6">
+                <div className="">
                   <h4 className="card-title">
                     <img
                       className="card-img-left"
@@ -310,7 +327,7 @@ function Home() {
                   </Link>
                 </div>
               </div>
-              <div className="col-sm mt-3">
+              <div className="col-lg-6">
                 <div className="row pt-2 m-0">
                   <div className="col-6 d-flex flex-wrap my-2 no-pad">
                     <img
@@ -411,21 +428,7 @@ function Home() {
       </div>
 
       {/* KYC container end here */}
-      <main className="gx-layout-content ant-layout-content">
-        <div className="gx-main-content-wrapper">
-          <section
-            className="features8 cid-sg6XYTl25a flleft"
-            id="features08-3"
-            style={{ width: "100%" }}
-          >
-            <div className="container-fluid">
-              <div className="row bgcolor">
-                <div className="col-lg-12">{/* <KycAlert /> */}</div>
-              </div>
-            </div>
-          </section>
-        </div>
-      </main>
+
 
       {/* Dashboard open pop up start here {IF KYC IS PENDING}*/}
       {roles?.bank === true || roles?.b2b === true ? (

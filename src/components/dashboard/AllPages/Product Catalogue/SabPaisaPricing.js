@@ -149,15 +149,15 @@ const SabPaisaPricing = () => {
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
 
-        <div>
-          <h1 className="text-center headingpricing text-md-start">SabPaisa Pricing</h1>
-          <h2 className="text-center headingpricing prdhead">{param?.name}</h2>
-          <h3 className="forbasicparacss">
+        <div className="text-center">
+          <h1 >SabPaisa Pricing</h1>
+          <h5 className="headingpricing prdhead">{param?.name}</h5>
+          <h5 className="forbasicparacss">
             We offer a very competitive pricing to match your business needs.
             Sign Up now to get started.
-          </h3>
+          </h5>
         </div>
-        <div className="container mb-10">
+        <div className="container mb-10 mt-0">
           <div className="row flx">
             {spinner && <span className="spinner-border" role="status"></span>}
             {productDetails.map((Products) => (

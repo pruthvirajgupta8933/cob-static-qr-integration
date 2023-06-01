@@ -38,7 +38,7 @@
 body, html {
   
 
-    background: linear-gradient(50deg,#0e042b 36%,#1d0a5c 100%);
+    /* background: linear-gradient(50deg,#0e042b 36%,#1d0a5c 100%); */
     /* background-color: #f0f2f5;
      background-image: url("https://1.bp.blogspot.com/-fd1WXKk-TAc/XyqfngP4PiI/AAAAAAAAVMw/umQz3tkxtg43uPIy8W5og6gAkpCfjaTvACLcBGAsYHQ/w1563-h1563/bg-snell.png");
     background-image: url("../../../assets/images/bg-cob.png");
@@ -523,7 +523,7 @@ a:focus {
 
 
 
-@media (min-width: 768px)
+/* @media (min-width: 768px)
 {
 .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
     float: left;  
@@ -531,7 +531,7 @@ a:focus {
   .mdevice{
     width:100%;
   }
-}
+} */
 
 .push-right{
   float:right;
