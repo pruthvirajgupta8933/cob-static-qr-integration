@@ -366,15 +366,13 @@ const OnboardedReport = () => {
 
   console.log(dataClick, "data Click");
   return (
-    <section className="ant-layout">
-      <div>
-        
-      </div>
-      <div className="gx-main-content-wrapper">
-        <div className="right_layout my_account_wrapper right_side_heading">
-          <h1 className="m-b-sm gx-float-left mt-4">
+    <section className="">
+
+      <div className="">
+        <div className="">
+          <h5 className="">
             Verified and Approved Merchant
-          </h1>
+          </h5>
         </div>
         <Formik
           initialValues={initialValues}
@@ -386,16 +384,14 @@ const OnboardedReport = () => {
           enableReinitialize={true}
         >
           {(formik, resetForm) => (
-            <Form>
-              <div className="container">
-                <div className="row">
+            <Form className="row">
                   <div className="form-group col-md-3">
                     <FormikController
                       control="input"
                       type="date"
                       label="From Date"
                       name="from_date"
-                      className="form-control rounded-0"
+                      className="form-control"
                       // value={startDate}
                       // onChange={(e)=>setStartDate(e.target.value)}
                     />
@@ -407,7 +403,7 @@ const OnboardedReport = () => {
                       type="date"
                       label="End Date"
                       name="to_date"
-                      className="form-control rounded-0"
+                      className="form-control"
                     />
                   </div>
                   <div className="form-group col-md-3">
@@ -417,90 +413,66 @@ const OnboardedReport = () => {
                       label="Select your choice"
                       name="status"
                       options={selectStatus}
-                      className="ant-input"
+                      className="form-select"
                     />
                     {formik.handleChange(
                       "status",
                       setSelectedvalue(formik?.values?.status)
                     )}
                   </div>
-                  <div className=" col-md-3 mt-5- mt-2-addon ">
+
+                  <div className="form-group col-md-3">
+                  <label></label>
                     <button
                       type="subbmit"
-                      className="btn cob-btn-primary  approve text-white btn-xs"
+                      className="btn cob-btn-primary mt-4 approve text-white btn-xs"
                       disabled={disabled}
                     >
                       Submit
                     </button>
-                  </div>
-
-                  <div className="container-fluid flleft">
-                    {/* <div className="form-group col-lg-3 col-md-12 mt-3">
-                                                <label>Search</label>
-                                                <input
-                                                    className="form-control"
-                                                    onChange={VerierAndApproverSearch}
-                                                    type="text"
-                                                    placeholder="Search Here"
-                                                />
-                                            </div> */}
-                    <div></div>
-                    {/* <div className="form-group col-lg-3 mt-3">
-                                                <label>Count Per Page</label>
-                                                <select
-                                                    value={pageSize}
-                                                    rel={pageSize}
-                                                    onChange={(e) => setPageSize(parseInt(e.target.value))}
-                                                    className="ant-input"
-                                                >
-                                                    <DropDownCountPerPage datalength={dataCount} />
-                                                </select>
-                                            </div> */}
-
-                    {/* <MerchnatListExportToxl URL = {'?order_by=-merchantId&search=approved'} filename={"Approved"} /> */}
-                  </div>
                 </div>
-              </div>
             </Form>
           )}
         </Formik>
         {dataClick === true && noResultsFound?.length === 0 ? (
-          <h2 className="text-center font-weight-bold">No Data Found</h2>
+          <h5 className="text-center font-weight-bold">No Data Found</h5>
         ) : (
           <></>
         )}
 
+{console.log("loadingState",loadingState)}
+{console.log("data?.length",data?.length)}
         {!loadingState && data?.length !== 0 && (
           <>
-            <div className="form-group col-lg-3 col-md-12 mt-2 ml-4">
+          <div className="row">
+          <div className="form-group col-lg-3 ">
               <SearchFilter
                 kycSearch={kycSearch}
                 searchText={searchText}
                 searchByText={searchByText}
                 setSearchByDropDown={setSearchByDropDown}
               />
-              <div></div>
             </div>
 
-            <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
+            <div className="form-group col-lg-3">
               <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}
                 changePageSize={changePageSize}
               />
             </div>
-            <div className="form-group col-lg-5 mt-5 ">
+            <div className="form-group col-lg-3">
               <button
-                className="btn btn-sm text-white"
+                className="btn btn-sm text-white mt-4"
                 type="button"
                 onClick={() => exportToExcelFn()}
-                style={{ backgroundColor: "rgb(1, 86, 179)" }}
               >
                 Export
               </button>
             </div>
+          </div>
 
-            <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+            <div className="container-fluid ">
               <div className="scroll overflow-auto ml-4">
                 {!loadingState && data?.length !== 0 && (
                   <Table

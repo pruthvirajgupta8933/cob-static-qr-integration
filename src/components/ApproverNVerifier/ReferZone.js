@@ -151,7 +151,7 @@ const ReferZone = () => {
         setAssignzone(data);
       })
 
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   useEffect(() => {
@@ -210,47 +210,37 @@ const ReferZone = () => {
   };
 
   return (
-    <section className="ant-layout">
-      <div>
-        
-      </div>
-      <main className="gx-layout-content ant-layout-content">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">
+    <section className="">
+      <main className="">
+        <div className="">
+          <div className="">
+            <h5 className="">
               Provision of Sourcing Partner
-            </h1>
+            </h5>
           </div>
-          <div className="container-fluid flleft">
-            <div className="col-lg-3 mrg-btm- bgcolor">
-              <SearchFilter
-                kycSearch={kycSearch}
-                searchText={searchText}
-                searchByText={searchByText}
-                setSearchByDropDown={setSearchByDropDown}
-              />
-              <div>
-                {" "}
-                {openZoneModal === true ? (
-                  <ViewReferZoneModal
-                    userData={modalDisplayData}
-                    setOpenModal={setOpenModal}
-                    refreshAfterRefer={refreshAfterRefer}
-                  />
-                ) : (
-                  <></>
-                )}
+
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-lg-3">
+                <SearchFilter
+                  kycSearch={kycSearch}
+                  searchText={searchText}
+                  searchByText={searchByText}
+                  setSearchByDropDown={setSearchByDropDown}
+                />
+
+              </div>
+              <div className="col-lg-3">
+                <CountPerPageFilter
+                  pageSize={pageSize}
+                  dataCount={dataCount}
+                  changePageSize={changePageSize}
+                />
               </div>
             </div>
-            <div className="col-lg-3 mrg-btm- bgcolor">
-              <CountPerPageFilter
-                pageSize={pageSize}
-                dataCount={dataCount}
-                changePageSize={changePageSize}
-              />
-            </div>
 
-            <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+
+            <div className="">
               <div className="scroll overflow-auto">
                 {!loadingState && data?.length !== 0 && (
                   <Table
@@ -265,12 +255,25 @@ const ReferZone = () => {
               </div>
               <CustomLoader loadingState={loadingState} />
               {data?.length == 0 && !loadingState && (
-                <h2 className="text-center font-weight-bold">No Data Found</h2>
+                <h5 className="text-center font-weight-bold">No Data Found</h5>
               )}
             </div>
           </div>
         </div>
+
       </main>
+      <div>
+
+        {openZoneModal === true ? (
+          <ViewReferZoneModal
+            userData={modalDisplayData}
+            setOpenModal={setOpenModal}
+            refreshAfterRefer={refreshAfterRefer}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
     </section>
   );
 };

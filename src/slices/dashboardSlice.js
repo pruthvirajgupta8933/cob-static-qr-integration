@@ -14,6 +14,7 @@ const initialState = {
   refundTransactionHistory:[],
   isLoadingTxnHistory:false,
   productSubscribe : true,
+  isExportData:false
 };
 
 
@@ -190,6 +191,9 @@ export const successTxnSummary = createAsyncThunk(
       productSubscribeState : (state,action)=>{
 
           state.productSubscribe = action.payload;
+      },
+      exportTxnLoadingState:(state, action)=>{
+        state.isExportData = action.payload
       }
 
       
@@ -277,5 +281,5 @@ export const successTxnSummary = createAsyncThunk(
   })
 
 // Action creators are generated for each case reducer function
-export const { clearTransactionHistory , clearSuccessTxnsummary, clearSettlementReport,productSubscribeState } = dashboardSlice.actions
+export const { clearTransactionHistory , clearSuccessTxnsummary, clearSettlementReport, productSubscribeState, exportTxnLoadingState } = dashboardSlice.actions
 export const dashboardReducer = dashboardSlice.reducer

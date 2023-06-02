@@ -10,7 +10,8 @@ import FormikController from "../../../_components/formik/FormikController";
 import _ from "lodash";
 import {
   clearTransactionHistory,
-  fetchTransactionHistorySlice,
+  exportTxnLoadingState,
+  fetchTransactionHistorySlice
 } from "../../../slices/dashboardSlice";
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import API_URL from "../../../config";
@@ -21,6 +22,9 @@ import NavBar from "../../dashboard/NavBar/NavBar";
 import { axiosInstance } from "../../../utilities/axiosInstance";
 import Notification from "../../../_components/reuseable_components/Notification";
 import moment from "moment";
+
+
+
 const TransactionHistory = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -30,7 +34,7 @@ const TransactionHistory = () => {
   const { user } = auth;
 
 
-  const { isLoadingTxnHistory } = dashboard;
+  const { isLoadingTxnHistory, isExportData } = dashboard;
 
   const [paymentStatusList, SetPaymentStatusList] = useState([]);
   const [paymentModeList, SetPaymentModeList] = useState([]);
@@ -90,7 +94,7 @@ const TransactionHistory = () => {
 
 
   const initialValues = {
-    clientCode:clientCode,
+    clientCode: clientCode,
     fromDate: todayDate,
     endDate: todayDate,
     transaction_status: "All",
@@ -159,7 +163,7 @@ const TransactionHistory = () => {
     extraDataObj = { key: "All", value: "All" };
   }
 
-  const forClientCode=true;
+  const forClientCode = true;
   const clientCodeOption = convertToFormikSelectJson(
     "clientCode",
     "clientName",
@@ -320,7 +324,22 @@ const TransactionHistory = () => {
     SetSearchText(e.target.value);
   };
 
+  let loadingStateOfExcel=false
+
+
+//  let outerFuncation =()=>{
+
+//  }
+  
+  let handleExportLoading = (state) => {
+    dispatch(exportTxnLoadingState(state)) 
+    return state
+  }
+  
+
+
   const exportToExcelFn = () => {
+
     const excelHeaderRow = [
       "S.No",
       "Trans ID",
@@ -366,7 +385,6 @@ const TransactionHistory = () => {
     let excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     txnList.map((item, index) => {
-
       const allowDataToShow = {
         srNo: item.srNo === null ? "" : index + 1,
         txn_id: item.txn_id === null ? "" : item.txn_id,
@@ -418,7 +436,7 @@ const TransactionHistory = () => {
       excelArr.push(Object.values(allowDataToShow));
     });
     const fileName = "Transactions-Report";
-    exportToSpreadsheet(excelArr, fileName);
+    exportToSpreadsheet(excelArr, fileName, handleExportLoading);
   };
 
   const today = new Date();
@@ -437,10 +455,10 @@ const TransactionHistory = () => {
     <section className="ant-layout NunitoSans-Regular">
 
       <div>
-        
+
       </div>
       <div className="profileBarStatus">
-      <Notification/>
+        <Notification />
       </div>
       <main className="gx-layout-content ant-layout-content">
         <div className="gx-main-content-wrapper">
@@ -468,7 +486,7 @@ const TransactionHistory = () => {
                             className="form-control rounded-0"
                             options={clientCodeOption}
                           />
-                          
+
                         </div>
                       )}
 
@@ -529,13 +547,21 @@ const TransactionHistory = () => {
                         <>
                           <div className="form-row">
                             <div className="form-group col-md-1 ml-4">
+                            {/* {console.log("isExportData",isExportData)} */}
+                              {
+                                isExportData &&
+                                <div className="spinner-border" role="status">
+                                  <span className="sr-only">Loading...</span>
+                                </div>
+                              }
+                             
                               <button
                                 className="btn btn-sm text-white"
                                 type="button"
                                 onClick={() => exportToExcelFn()}
                                 style={{ backgroundColor: "rgb(1, 86, 179)" }}
                               >
-                                Export
+                                <i className="fa fa-download"></i> Export
                               </button>
                             </div>
                           </div>

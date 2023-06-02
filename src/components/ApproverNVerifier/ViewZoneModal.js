@@ -205,12 +205,15 @@ useEffect(() => {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <h5 className="font-weight-bold ml-3">
+                  <div className="mb-3">
+                  <p className="m-0">
                       Client Name: {props?.userData?.clientName}
-                    </h5>
-                    <h5 className="font-weight-bold ml-3">
+                    </p>
+                    <p className="m-0">
                       Client Code: {props?.userData?.clientCode}
-                    </h5>
+                    </p>
+                  </div>
+                    
                     <div className="container">
                       <Form>
                         <div className="row">

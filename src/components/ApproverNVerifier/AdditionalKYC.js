@@ -20,7 +20,7 @@ const AdditionalKYC = () => {
   const dispatch = useDispatch();
   const { kyc } = useSelector((state) => state);
 
-const { allTabsValidate } = kyc;
+  const { allTabsValidate } = kyc;
 
   const documentTypeList = [
     { documentType: "PAN", value: "1" },
@@ -68,7 +68,7 @@ const { allTabsValidate } = kyc;
 
   //  For PAN INFORMATION
 
-  
+
 
   // For Bank Account Info
 
@@ -108,7 +108,7 @@ const { allTabsValidate } = kyc;
       .matches(AccountNoRgex, "Your Account Number is Invalid")
       .required("Required")
       .nullable(),
-      
+
 
   });
 
@@ -123,23 +123,23 @@ const { allTabsValidate } = kyc;
 
   const [selectedDocType, setSelectedDocType] = useState("");
   const [panStatus, setPanStatus] = useState(false);
-  const [gstinData,setGstinData]=useState([])
-  
+  const [gstinData, setGstinData] = useState([])
+
   const [gstStatus, setGstStatus] = useState(false);
   const [bankStatus, setBankStatus] = useState(false);
-  const[buttonDisable,setButtonDisable]=useState(false)
+  const [buttonDisable, setButtonDisable] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
-  const[showPanInfo,setShowPanInfo]=useState([])
+  const [showPanInfo, setShowPanInfo] = useState([])
 
   const objArray = Object.entries(gstinData);
- const panInfodata=Object.entries(showPanInfo);
-  
-  
+  const panInfodata = Object.entries(showPanInfo);
 
 
 
 
-  
+
+
+
 
   const handleChange = (event) => {
     setSelectedDocType(event.target.value);
@@ -171,7 +171,7 @@ const { allTabsValidate } = kyc;
         res.meta.requestStatus === "fulfilled" &&
         res.payload.status === true &&
         res.payload.valid === true
-       
+
       ) {
         // toast.success(res.payload.message);
         setPanStatus(res.payload.status);
@@ -184,7 +184,7 @@ const { allTabsValidate } = kyc;
 
   const handleSubmitForGSTIN = (values) => {
     setIsLoading(true)
-   
+
     dispatch(
       gstValidation({
         gst_number: values.gst_number,
@@ -192,10 +192,10 @@ const { allTabsValidate } = kyc;
         fy: "2018-19",
       })
     ).then((res) => {
-      
-      
+
+
       if (
-        
+
         setIsLoading(false),
         setGstinData(res?.payload),
         res.meta.requestStatus === "fulfilled" &&
@@ -233,22 +233,19 @@ const { allTabsValidate } = kyc;
   };
 
   return (
-    <section className="ant-layout">
-      <div>
-        
-      </div>
-      <main className="gx-layout-content ant-layout-content">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Additional KYC</h1>
+    <section className="">
+      <main className="">
+        <div className="">
+          <div className="">
+            <h5 className="">Additional KYC</h5>
           </div>
           <div className="container-fluid">
             <div className="row">
-              <div className="col-lg-12 mb-4 bgcolor-">
-                <div className="form-group col-lg-3 col-md-12 mt-2">
-                  <label className="col-form-label mt-0 p-2 ml-1">Document Type</label>
+              <div className="col-lg-12">
+                <div className="form-group col-lg-3 col-md-12">
+                  <label className="form-label">Document Type</label>
                   <select
-                    className="ant-input"
+                    className="form-select"
                     documentType={selectedDocType}
                     onChange={handleChange}
                   >
@@ -281,26 +278,26 @@ const { allTabsValidate } = kyc;
                       </div>
                     </div>
                     <div className="row">
-                    <div className="col-lg-3 mr-2">
-                      <button
-                        type="submit"
-                        // className={`verify-btn cob-btn-primary text-white ${isLoading ? 'spinner-grow spinner-grow-sm text-light mr-1' : ''}`}
-                        className="btn cob-btn-primary  text-white"
+                      <div className="col-lg-3 mr-2">
+                        <button
+                          type="submit"
+                          // className={`verify-btn cob-btn-primary text-white ${isLoading ? 'spinner-grow spinner-grow-sm text-light mr-1' : ''}`}
+                          className="btn cob-btn-primary  text-white"
                         // disabled={buttonDisable}
-                      >
-                       {/* {isLoading ? 'Loading...' : 'Verify'} */}
-                       {
-                        isLoading && 
-                        <>
-                       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                       
-                        </>
-                       }
-                       Verify
-                      </button>
+                        >
+                          {/* {isLoading ? 'Loading...' : 'Verify'} */}
+                          {
+                            isLoading &&
+                            <>
+                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+
+                            </>
+                          }
+                          Verify
+                        </button>
+                      </div>
                     </div>
-                    </div>
-                    
+
                   </div>
                 </Form>
               </Formik>
@@ -329,24 +326,24 @@ const { allTabsValidate } = kyc;
                       </div>
                     </div>
                     <div className="row">
-                    <div className="col-lg-3 mr-5">
-                      <button
-                        type="submit"
-                        className="btn cob-btn-primary  text-white"
-                        disabled={buttonDisable}
-                      >
-                        {
-                        isLoading && 
-                        <>
-                       <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                       
-                        </>
-                       }
-                        Verify
-                      </button>
+                      <div className="col-lg-3 mr-5">
+                        <button
+                          type="submit"
+                          className="btn cob-btn-primary  text-white"
+                          disabled={buttonDisable}
+                        >
+                          {
+                            isLoading &&
+                            <>
+                              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+
+                            </>
+                          }
+                          Verify
+                        </button>
+                      </div>
                     </div>
-                    </div>
-                    
+
                   </div>
                 </Form>
               </Formik>
@@ -392,6 +389,7 @@ const { allTabsValidate } = kyc;
                       />
                     </div>
                     <div className="col-lg-3 mt-4">
+                      <p></p>
                       <button
                         type="submit"
                         className="btn cob-btn-primary text-white"
@@ -407,108 +405,50 @@ const { allTabsValidate } = kyc;
               ""
             )}
 
-            {panStatus === true && selectedDocType === "1" ? (
-               <div class="container mt-5">
-               <h2 class="font-weight-bold">GSTIN Information</h2>
-               <div class="row">
-                 {panInfodata.map(([key, value]) => (
-                   <div class="col-md-6 p-2" key={key}>
-                     <span class="font-weight-bold mb-1">
-                       {key.replace('_', ' ')}:
-                     </span>
-                     {typeof value === "boolean" ? (
-                       <span>{value.toString()}</span>
-                     ) : (
-                       <span>{value}</span>
-                     )}
-                   </div>
-                 ))}
-               </div>
-             </div>
-            //   <div className="container" style={{ marginTop: "91px" }}>
-            //     <h2 className="font-weight-bold">PAN Information</h2>
-            //     <div className="row">
-            //       <div className="col-lg-4 font-weight-bold">
-            //         Name : {accHolderName.length > 2 ? accHolderName : ""}
-            //       </div>
-            //       {/* <div className="col-lg-5">
-          
-            // </div> */}
-            //       <div className="col-lg-4 font-weight-bold">
-            //         Valid :{" "}
-            //         {panValidity === true
-            //           ? "True"
-            //           : panValidity === false
-            //           ? "false"
-            //           : "Not Found"}
-            //       </div>
-            //       <div className="col-lg-5"></div>
-            //     </div>
-            //   </div>
-            ) : (
-              ""
+            {panStatus === true && selectedDocType === "1" && (
+              <div class="container mt-5">
+                <h5 class="">PAN Details</h5>
+                <div class="row">
+                  {panInfodata.map(([key, value]) => (
+                    <div class="col-md-6 p-2 text-uppercase" key={key}>
+                      <span class="font-weight-bold mb-1">
+                        {key.replace('_', ' ')}:
+                      </span>
+                      {typeof value === "boolean" ? (
+                        <span>{value.toString()}</span>
+                      ) : (
+                        <span>&nbsp; {value}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
 
-            {/* <div>
-   
-            {gstinData.map((data, index) => (
-
-<>
-        <h2 className="font-weight-bold">GSTIN Information</h2>
-        <div className="row">
-          <div className="col-lg-4 font-weight-bold">
-            Trade Name : {data.tradeName ? data.tradeName : ""}
-          </div>
-          <div className="col-lg-4 font-weight-bold">PAN : {data.panNumber}</div>
-        </div>
-        <div className="row">
-          <div className="col-lg-4 font-weight-bold">
-            State : {data.state ? data.state : ""}
-          </div>
-          <div className="col-lg-4 font-weight-bold">
-            Registered Date : {data.registered_date ? data.registered_date : ""}
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-lg-4 font-weight-bold">
-            Updated Date : {data.updated_date ? data.updated_date : ""}
-          </div>
-          <div className="col-lg-4 font-weight-bold">
-            Valid :{" "}
-            {data.gstinValidity === true
-              ? "True"
-              : data.gstinValidity === false
-              ? "false"
-              : "Not Found"}
-          </div>
-        </div>
-        </>
-      
-    ))}
-  </div> */}
- {gstStatus===true &&  selectedDocType === "2" &&
-  <div class="container mt-5">
-  <h2 class="font-weight-bold">GSTIN Information</h2>
-  <div class="row">
-    {objArray.map(([key, value]) => (
-      <div class="col-md-6 p-2" key={key}>
-        <span class="font-weight-bold mb-1">
-          {key.replace('_', ' ')}:
-        </span>
-        {typeof value === "boolean" ? (
-          <span>{value.toString()}</span>
-        ) : (
-          <span>{value}</span>
-        )}
-      </div>
-    ))}
-  </div>
-</div>
-}
+        
+            {gstStatus === true && selectedDocType === "2" &&
+              <div class="container mt-5">
+                <h5 class="">GSTIN Information</h5>
+                <div class="row">
+                  {objArray.map(([key, value]) => (
+                    <div class="col-md-6 p-2 text-uppercase" key={key}>
+                      <span class="font-weight-bold mb-1">
+                        {key.replace('_', ' ')}:
+                      </span>
+                      {typeof value === "boolean" ? (
+                        <span>{value.toString()}</span>
+                      ) : (
+                        <span>&nbsp;{value}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            }
 
             {bankStatus === true && selectedDocType === "3" ? (
               <div className="container" style={{ marginTop: "32px" }}>
-                <h2 className="font-weight-bold">Bank Account Information</h2>
+                <h5 className="font-weight-bold">Bank Account Information</h5>
                 <div className="row">
                   <div className="col-lg-4 font-weight-bold">
                     Full Name :{" "}
@@ -529,8 +469,8 @@ const { allTabsValidate } = kyc;
                     {accountValidity === true
                       ? "True"
                       : accountValidity === false
-                      ? "false"
-                      : "Not Found"} 
+                        ? "false"
+                        : "Not Found"}
                   </div>
                   {/* <div className="col-lg-5">
           

@@ -103,15 +103,15 @@ const ViewReferZoneModal = (props) => {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <h5 className="font-weight-bold">
+                    <h6 className="">
                       Name: {props?.userData?.clientName}
-                    </h5>
-                    <h5 className="font-weight-bold">
+                    </h6>
+                    <h6 className="">
                       ClientCode: {props?.userData?.clientCode}
-                    </h5>
+                    </h6>
                     <div className="container">
                       <Form>
-                        <div class="container show-zone">
+                        <div class="container show-zone ">
                           <div class="row">
                             
                             <label
