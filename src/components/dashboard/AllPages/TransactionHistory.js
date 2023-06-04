@@ -324,7 +324,7 @@ const TransactionHistory = () => {
     SetSearchText(e.target.value);
   };
 
-    // console.log("isExportData",isExportData)
+  // console.log("isExportData",isExportData)
   // if(isExportData){
   //   console.log("data exporting, Please wait")
   // }
@@ -335,16 +335,16 @@ const TransactionHistory = () => {
   //     dispatch(exportTxnLoadingState(false))
   //   }
   // }, [isExportData, dispatch])
-  
+
   let handleExportLoading = (state) => {
     // console.log(state)
-    if(state){
+    if (state) {
       alert("Exporting Excel File, Please wait...")
     }
-    dispatch(exportTxnLoadingState(state)) 
+    dispatch(exportTxnLoadingState(state))
     return state
   }
-  
+
 
 
   const exportToExcelFn = () => {
@@ -461,20 +461,17 @@ const TransactionHistory = () => {
 
 
   return (
-    <section className="ant-layout NunitoSans-Regular">
-
-      <div>
-
-      </div>
+    <section className="">
       <div className="profileBarStatus">
         <Notification />
       </div>
-      <main className="gx-layout-content ant-layout-content">
-        <div className="gx-main-content-wrapper">
+
+      <main className="">
+        <div className="">
           {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-          <h5 className="mb-sm ml-4">Transactions History</h5>
+          <h5 className="">Transactions History</h5>
           {/* </div> */}
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
+          <section className="">
             <div className="container-fluid">
               <Formik
                 initialValues={initialValues}
@@ -487,7 +484,7 @@ const TransactionHistory = () => {
                       {roles?.merchant === true ? (
                         <></>
                       ) : (
-                        <div className="form-group col-md-2 mx-4">
+                        <div className="form-group col-lg-3">
                           <FormikController
                             control="select"
                             label="Client Code"
@@ -499,7 +496,7 @@ const TransactionHistory = () => {
                         </div>
                       )}
 
-                      <div className="form-group col-md-2 mx-4">
+                      <div className="form-group col-lg-3">
                         <FormikController
                           control="input"
                           type="date"
@@ -511,7 +508,7 @@ const TransactionHistory = () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-2 mx-4">
+                      <div className="form-group col-lg-3">
                         <FormikController
                           control="input"
                           type="date"
@@ -521,7 +518,7 @@ const TransactionHistory = () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-2 mx-4">
+                      <div className="form-group col-lg-3">
                         <FormikController
                           control="select"
                           label="Transactions Status"
@@ -531,7 +528,7 @@ const TransactionHistory = () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-2 mx-4">
+                      <div className="form-group col-lg-3">
                         <FormikController
                           control="select"
                           label="Payment Mode"
@@ -541,38 +538,34 @@ const TransactionHistory = () => {
                         />
                       </div>
                     </div>
+
                     <div className="form-row">
-                      <div className="form-group col-md-1 ml-4">
+                      <div className="form-group col-lg-1">
                         <button
-                          className="btn btn-sm  cob-btn-primary  text-white"
+                          className="btn btn-sm cob-btn-primary text-white"
                           type="submit"
-                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
                         >
                           Search
                         </button>
                         <p className="text-danger">{formik?.errors?.clientCode}</p>
                       </div>
+
                       {txnList?.length > 0 ? (
-                        <>
-                          <div className="form-row">
-                            <div className="form-group col-md-1 ml-4">
-                            {/* {console.log("isExportData",isExportData)} */}
-                              {
-                                isExportData === true ?
-                                  <span className="sr-only">Loading...</span> : <></>
-                              }
-                             
-                              <button
-                                className="btn btn-sm text-white  cob-btn-primary "
-                                type="button"
-                                onClick={() => exportToExcelFn()}
-                                style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                              >
-                                <i className="fa fa-download"></i> Export
-                              </button>
-                            </div>
-                          </div>
-                        </>
+                        <div className="form-group col-lg-1">
+                          {/* {console.log("isExportData",isExportData)} */}
+                          {
+                            isExportData === true ?
+                              <span className="sr-only">Loading...</span> : <></>
+                          }
+                          <button
+                            className="btn btn-sm text-white cob-btn-primary"
+                            type="button"
+                            onClick={() => exportToExcelFn()}
+                          >
+                            <i className="fa fa-download"></i> Export
+                          </button>
+                        </div>
+
                       ) : (
                         <></>
                       )}
@@ -580,116 +573,11 @@ const TransactionHistory = () => {
                   </Form>
                 )}
               </Formik>
-              {/*
-              <div className="row">
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>Client Name</label>
-                  <select
-                    className="ant-input"
-                    onChange={(e) => {
-                      getInputValue("clientCode", e.target.value);
-                    }}
-                  >
-                    {user.roleId===3 || user.roleId===13 ?
-                    <option value="All">All</option>
-                      :
-                    <option value="">Select</option> }
-                    {clientMerchantDetailsList?.map((item,i) => {
-                      return (
-                        <option value={item.clientCode} key={i}>
-                          {item.clientCode + " - " + item.clientName}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>From Date</label>
-                  <input
-                    rel={finalDate}
-                    type="date"
-                    className="ant-input"
-                    placeholder="From Date"
-                    onChange={(e) => {
-                      getInputValue("fromDate", e.target.value);
-                    }}
-                    max= {new Date().toLocaleDateString('en-ca')}
-                  />
-                </div>
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>To Date</label>
-                  <input
-                    type="date"
-                    max= {new Date().toLocaleDateString('en-ca')}
-                    className="ant-input"
-                    placeholder="To Date"
-                    onChange={(e) => {
-                      getInputValue("toDate", e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>Transactions Status</label>
-                  <select
-                    className="ant-input"
-                    onChange={(e) => {
-                      getInputValue("txnStatus", e.target.value);
-                    }}
-                  >
-                    <option value="All" key="0">All</option>
-                    {paymentStatusList.map((item, i) => {
-                      return  item!=='INITIATED'? <option value={item} key={i} rel={i} > {item} </option>: '';
-                    })}
-                  </select>
-                </div>
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>Payment Mode</label>
-                  <select
-                    className="ant-input"
-                    onChange={(e) => {
-                      getInputValue("payMode", e.target.value);
-                    }}
-                  >
-                    <option value="All">All</option>
-                    {paymentModeList.map((item,i) => {
-                      return (
-                        <option value={item.paymodeId} key={i}>
-                          {item.paymodeName}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-                <div className="col-lg-4 mrg-btm- bgcolor">
-                  <button
-                    className="view_history topmarg"
-                    onClick={() => txnHistory()}
-                  >
-                    Search
-                  </button>
-                      {  show ? 
-                        <button className="view_history topmarg" onClick={()=>exportToExcelFn()}>Export </button>
-                    :  '' }
-                  </div>
-                  {  show ? 
-                  <React.Fragment>
-                  <div className="col-lg-4 mrg-btm- bgcolor">
-                    <label>Search Transaction ID</label>
-                    <input type="text" className="ant-input" placeholder="Search here" onChange={(e)=>{SetSearchText(e.target.value)}} />
-                  </div>
-                  <div className="col-lg-4 mrg-btm- bgcolor">
-                  <label>Count per page</label>
-                  <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) =>setPageSize(parseInt(e.target.value))} >
-                  <DropDownCountPerPage datalength={txnList.length} />
-                  </select>
-                </div>                 
-                  </React.Fragment> : <></> }
-              </div> */}
             </div>
           </section>
 
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
-            <div className="container-fluid  p-3 my-3 ">
+          <section className="">
+            <div className="container-fluid p-3 my-3 ">
               {txnList.length > 0 ? (
                 <>
                   <div className="row">
@@ -715,7 +603,7 @@ const TransactionHistory = () => {
                       </select>
                     </div>
                   </div>
-                  <h4>Total Record : {txnList.length} </h4>
+                  <h6>Total Record : {txnList.length} </h6>
                 </>
               ) : (
                 <></>

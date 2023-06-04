@@ -354,7 +354,7 @@ const SettlementReportDoitc = () => {
                       <div className="form-group col-md-1">
                         <button
                           disabled={disable}
-                          className=" btn bttn bttnbackgroundkyc"
+                          className=" btn bttn cob-btn-primary"
                           type="submit"
                         >
                           Search{" "}

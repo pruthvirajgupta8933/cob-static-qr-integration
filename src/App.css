@@ -42,6 +42,10 @@ background-repeat: no-repeat;
 background-size: cover;
 }
 
+input, select{
+  font-size:14px !important;
+}
+
 /* label {
   display: block;
   margin-top: 10px;

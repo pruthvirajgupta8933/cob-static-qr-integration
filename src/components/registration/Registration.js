@@ -510,7 +510,7 @@ function Registration() {
                                         </label>
                                         <Field
                                           name="business_cat_code"
-                                          className="selct fnt-lab"
+                                          className="form-selct"
                                           component="select"
                                         >
                                           <option

@@ -132,7 +132,7 @@ function ChangePassword() {
 
                       <div className="col-lg-4 mb-3">
                         <label className="form-label">
-                          Old Password 
+                          Old Password
                         </label>
                         <Field
                           type={
@@ -148,7 +148,7 @@ function ChangePassword() {
 
                         <ErrorMessage name="old_password">
                           {(msg) => (
-                            <div className="error_msg_display">{msg}</div>
+                            <div className="text-danger m-0">{msg}</div>
                           )}
                         </ErrorMessage>
                       </div>
@@ -158,7 +158,7 @@ function ChangePassword() {
                         <label
                           className="form-label"
                         >
-                          New Password 
+                          New Password
                         </label>
                         <Field
                           type={values.showPassword ? "text" : "password"}
@@ -170,7 +170,7 @@ function ChangePassword() {
 
                         <ErrorMessage name="new_password">
                           {(msg) => (
-                            <div className="error_msg_display">{msg}</div>
+                            <div className="text-danger m-0">{msg}</div>
                           )}
                         </ErrorMessage>
                       </div>
@@ -182,44 +182,60 @@ function ChangePassword() {
                         >
                           Confirm New Password :
                         </label>
-                        <Field
-                          type={values.showPassword ? "text" : "password"}
-                          name="confirm_password"
-                          placeholder="Re-type New Password"
-                          className="form-control"
-                        />
-                        <span className="input-group-addon eyeicon">
-                          <a onClick={handleClickShowPassword} href={false}>
-                            
-                            {values.showPassword ? (
-                              <i className="fa fa-eye" aria-hidden="true"></i>
-                            ) : (
-                              <i
-                                className="fa fa-eye-slash"
-                                aria-hidden="true"
-                              ></i>
-                            )}
-                          </a>
-                        </span>
+                        <div className="input-group">
+
+                          <Field
+                            type={values.showPassword ? "text" : "password"}
+                            name="confirm_password"
+                            placeholder="Re-type New Password"
+                            className="form-control"
+                          />
+                          <div class="input-group-append">
+                          <span class="input-group-text" id="basic-addon2" onClick={handleClickShowPassword} > 
+                          {values.showPassword ? (
+                                <i className="fa fa-eye" aria-hidden="true"></i>
+                              ) : (
+                                <i
+                                  className="fa fa-eye-slash"
+                                  aria-hidden="true"
+                                ></i>
+                              )}
+                           </span></div>
+                          <span className="input-group-addon eyeicon d-none">
+                            <a onClick={handleClickShowPassword} href={false}>
+
+                              {values.showPassword ? (
+                                <i className="fa fa-eye" aria-hidden="true"></i>
+                              ) : (
+                                <i
+                                  className="fa fa-eye-slash"
+                                  aria-hidden="true"
+                                ></i>
+                              )}
+                            </a>
+                          </span>
+                       
+                        </div>
                         <ErrorMessage name="confirm_password">
-                          {(msg) => (
-                            <div className="error_msg_display">{msg}</div>
-                          )}
-                        </ErrorMessage>
+                            {(msg) => (
+                              <div className="text-danger m-0">{msg}</div>
+                            )}
+                          </ErrorMessage>
                       </div>
+
 
 
                       <div className="col-lg-4 mb-3">
                         <button
                           type="sumbit"
-                          className=" btn bttn font-weight-bold bttnbackgroundkyc w-100"
+                          className=" btn bttn font-weight-bold cob-btn-primary w-100"
 
                         >
                           Update Password
                         </button>
                       </div>
                     </div>
-              
+
                     <br />
                   </Form>
                 </Formik>

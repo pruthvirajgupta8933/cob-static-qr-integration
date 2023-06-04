@@ -250,7 +250,7 @@ function DocumentsUpload(props) {
       {BusinessOverviewStatus === true ||
       (KycList?.businessType !== null &&
         KycList?.businessType !== undefined) ? (
-        <div className="col-lg-12">
+        <div className="col-lg-12 p-0">
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -271,7 +271,7 @@ function DocumentsUpload(props) {
                     <FormikController
                       control="select"
                       name="docType"
-                      className="form-control"
+                      className="form-select"
                       options={newDocumentedOption}
                       readOnly={readOnly}
                       disabled={
@@ -374,9 +374,9 @@ function DocumentsUpload(props) {
               {documentStatus !== "Approved" &&
                   documentStatus !== "Verified" &&
                   role?.merchant ? (
-                    <div className="col-lg-6">
+                    <div className="col-lg-6  mt-4">
                       <button
-                        className="save-next-btn cob-btn-primary  text-white mt-4"
+                        className="btn btn-sm cob-btn-primary  text-white m-1"
                         type="button"
                         disabled={disable}
                         onClick={() => {
@@ -392,7 +392,7 @@ function DocumentsUpload(props) {
                       role?.merchant &&
                       btn ? (
                         <button
-                          className="save-next-btn cob-btn-primary  text-white mt-3 ml-3"
+                          className="btn btn-sm cob-btn-primary  text-white m-1"
                           type="button"
                           onClick={() => setTab(6)}
                         >

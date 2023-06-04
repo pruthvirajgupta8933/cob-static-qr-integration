@@ -612,7 +612,7 @@ const Subsciption = () => {
 
                           <p className="mb-0">
                             <a
-                              className=" btn bttn bttnbackgroundkyc collapsed"
+                              className=" btn bttn cob-btn-primary collapsed"
                               data-toggle="collapse"
                               href={`#collapseExample${s.applicationId}`}
                               role="button"
@@ -622,7 +622,7 @@ const Subsciption = () => {
                             >
                               Read More
                             </a>
-                            <button type="button" className=" btn bttn bttnbackgroundkyc collapsed"
+                            <button type="button" className=" btn bttn cob-btn-primary collapsed"
                               data-toggle="modal" data-target="#exampleModal"
                               // onClick={() => console.log('this is mapped data for modal : ', s)}
                             >
@@ -642,7 +642,7 @@ const Subsciption = () => {
 
                                   </div>
                                   <div className="modal-footer">
-                                    <button type="button" className="btn bttn bttnbackgroundkyc collapsed" data-dismiss="modal">Close</button>
+                                    <button type="button" className="btn bttn cob-btn-primary collapsed" data-dismiss="modal">Close</button>
                                   </div>
                                 </div>
                               </div>
@@ -651,7 +651,7 @@ const Subsciption = () => {
 
 
                             {/* <button
-                               className=" btn bttn bttnbackgroundkyc collapsed"
+                               className=" btn bttn cob-btn-primary collapsed"
                                 type="button"
                               >
                                 Subscribe

@@ -111,13 +111,14 @@ const PaymentLinkDetail = () => {
     <React.Fragment>
       {/* filter area */}
       <FormPaymentLink loaduser={loaduser} />
-      <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
-        <div className="container-fluid flleft">
+
+      <section className="" >
+        <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-4 pl-4">
+            <div className="col-lg-3">
               <button
                 type="button"
-                className="btn cob-btn-primary btn-primary text-white"
+                className="btn cob-btn-primary btn-primary text-white btn-sm"
                 data-toggle="modal"
                 data-target="#exampleModal"
                 data-whatever="@getbootstrap">
@@ -127,7 +128,7 @@ const PaymentLinkDetail = () => {
           </div>
 
           <div className="row">
-            <div className={`col-lg-4 mrg-btm- mt-3`}>
+            <div className={`col-lg-3 mt-3`}>
               {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
               <label>Search</label>
               <input
@@ -137,7 +138,7 @@ const PaymentLinkDetail = () => {
                 placeholder="Search Here"
               />
             </div>
-            <div className={`col-lg-4 mrg-btm- mt-3`}>
+            <div className={`col-lg-3 mt-3`}>
               <label>Count Per Page</label>
               <select
                 value={pageSize}
@@ -149,18 +150,14 @@ const PaymentLinkDetail = () => {
               </select>
             </div>
           </div>
-          <div className="row">
-            <div className={`col-lg-4 mrg-btm- mt-3`}>
-              <p>Total Records:{data.length}</p>
-            </div>
-          </div>
-
         </div>
       </section>
 
 
       <section className="">
-        <div className="container-fluid flleft  p-3 my-3 ">
+        <div className="container-fluid p-3 my-3">
+        <h6>Total Records:{data.length}</h6>
+
           {!paginatedata ? (<h3> No Data Found</h3>) : (<React.Fragment>  <div className="scroll" style={{ overflow: "auto" }}>
             <table className="table table-bordered nowrap">
               <thead>

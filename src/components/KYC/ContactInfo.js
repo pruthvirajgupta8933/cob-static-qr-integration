@@ -230,7 +230,7 @@ function ContactInfo(props) {
   }
 
   return (
-    <div className="col-lg-12">
+    <div className="col-lg-12 p-0">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -315,7 +315,7 @@ function ContactInfo(props) {
                     <div className="input-group-append">
                       <a
                         href={() => false}
-                        className="btn cob-btn-primary text-white"
+                        className="btn cob-btn-primary btn-sm text-white"
                         onClick={() => {
                           checkInputIsValid(
                             errors,

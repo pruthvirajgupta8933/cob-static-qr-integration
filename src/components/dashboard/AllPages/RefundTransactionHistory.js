@@ -267,7 +267,7 @@ const RefundTransactionHistory = () => {
                           control="select"
                           label="Client Code"
                           name="clientCode"
-                          className="form-control rounded-0 mt-0"
+                          className="form-select rounded-0 mt-0"
                           options={clientCodeOption}
                         />
                       </div>
@@ -296,7 +296,7 @@ const RefundTransactionHistory = () => {
                       <div className="form-group col-md-1">
                         <button
                           disabled={disable}
-                          className="btn cob-btn-primary text-white"
+                          className="btn cob-btn-primary text-white btn-sm"
                           type="submit"
                         >
                           {" "}
@@ -306,7 +306,7 @@ const RefundTransactionHistory = () => {
                       {txnList?.length > 0 ? (
                         <div className="form-group col-md-1">
                           <button
-                            className="btn cob-btn-primary  text-white ml-5"
+                            className="btn cob-btn-primary btn-sm text-white ml-5"
                             type=""
                             onClick={() => {
                               exportToExcelFn();

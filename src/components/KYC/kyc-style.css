@@ -22,14 +22,18 @@
 
 .kyc_active_tab_success{
   background-color: #4bb543 !important;
+  color: white !important;
 }
 
 .kyc_active_tab_error{
   background-color: #ff0000 !important;
+  color: white !important;
+
 }
 
 .kyc_active_tab_warning{
   background-color: #ffab07 !important;
+  color: #000;
 }
 
 .kyc_active_tab_default{

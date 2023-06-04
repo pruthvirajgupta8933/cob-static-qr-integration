@@ -142,7 +142,6 @@ function FormPaymentLink(props) {
                 </div>
                 <div className="container">
                   <Form>
-                   
                       <div className="form-group col-md-12">
                         <label
                           className="form-check-label"
@@ -308,13 +307,13 @@ function FormPaymentLink(props) {
                       <div className="form-row">
                         <button
                           type="submit"
-                          className="btn  cob-btn-primary  mb-3 text-white"
+                          className="btn btn-sm cob-btn-primary  mb-3 text-white"
                         >
                           SUBMIT
                         </button>
                         <button onClick={resetForm}
                           type="button"
-                          className="btn  cob-btn-primary mb-3 text-white ml-3"
+                          className="btn btn-sm  cob-btn-secondary mb-3 text-white ml-3"
                           data-dismiss="modal"
                         >
                           CANCEL

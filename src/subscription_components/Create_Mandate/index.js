@@ -421,7 +421,7 @@ class MandateForm extends Component {
                           </div>
                         </div>
                         <button
-                          class="btn bttn bttnbackgroundkyc"
+                          class="btn bttn cob-btn-primary"
                           type="submit"
                         >
                           Next

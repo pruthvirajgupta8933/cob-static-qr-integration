@@ -264,7 +264,7 @@ function BankDetails(props) {
 
 
   return (
-    <div className="col-lg-12">
+    <div className="col-lg-12 p-0">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -296,7 +296,7 @@ function BankDetails(props) {
 
                   {(values?.ifscCode !== null && loading) &&
                     <div class="input-group-append">
-                      <button class="btn cob-btn-primary text-white mb-0" type="button"
+                      <button class="btn cob-btn-primary text-white mb-0 btn-sm" type="button"
                         disabled={loading}
                       >
 
@@ -373,7 +373,7 @@ function BankDetails(props) {
                   {/* if found any error in validation */}
                   {(values?.ifscCode !== null && (errors.hasOwnProperty("oldAccountNumber") || errors.hasOwnProperty("oldIfscCode"))) &&
                     <div class="input-group-append">
-                      <button class="btn cob-btn-primary text-white mb-0" type="button"
+                      <button class="btn cob-btn-primary text-white mb-0 btn-sm" type="button"
                         disabled={loading}
                         onClick={() => {
                           checkInputIsValid(
@@ -482,10 +482,9 @@ function BankDetails(props) {
                   {VerifyKycStatus === "Verified" ? <></> : (
                     <button
                       disabled={disable}
-                      className="save-next-btn float-lg-right cob-btn-primary text-white"
+                      className="save-next-btn float-lg-right cob-btn-primary text-white btn-sm"
                       type="submit"
                     >
-                      {" "}
                       {buttonText}
                     </button>
                   )}

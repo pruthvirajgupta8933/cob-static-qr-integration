@@ -29,16 +29,13 @@ function Paylink() {
     
    
   return (
-<section className="ant-layout">
-<div>
-  
-</div>
-<main className="gx-layout-content ant-layout-content">
-  <div className="gx-main-content-wrapper">
-    <div className="right_layout my_account_wrapper right_side_heading">
-      <h4 className="m-b-sm gx-float-left">Create Payment Link</h4>
+<section className="">
+<main className="">
+  <div className="">
+    <div className="">
+      <h5 className="">Create Payment Link</h5>
     </div>
-    <section className="features8 cid-sg6XYTl25a flleft w-100" id="features08-3-">
+    <section className="">
       <div className="container-fluid">
         <div className="row">
         <div className="col-lg-12 mb-4 pl-0">

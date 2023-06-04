@@ -369,7 +369,7 @@ const OnboardMerchant = () => {
                                         </label>
                                         <Field
                                           name="business_cat_code"
-                                          className="selct"
+                                          className="form-select"
                                           component="select"
                                          
                                          
@@ -419,7 +419,7 @@ const OnboardMerchant = () => {
                                         </label>
                                         <Field
                                           name="roleId"
-                                          className="selct"
+                                          className="form-select"
                                           component="select"
                                         >
                                           <option

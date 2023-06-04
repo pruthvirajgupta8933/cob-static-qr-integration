@@ -76,17 +76,17 @@ const SabPaisaPricing = () => {
       planName: plan_name,
       applicationId: param?.id,
     };
-    
+
     axiosInstanceJWT.post(
       API_URL.SUBSCRIBE_FETCHAPPAND_PLAN,
       postData
-    ).then(res=>{
+    ).then(res => {
       if (res?.status === 200) {
         getSubscribedPlan(param?.id);
         setModalToggle(true)
       }
 
-    }).catch(error=> toastConfig.errorToast(error.response?.data?.detail))
+    }).catch(error => toastConfig.errorToast(error.response?.data?.detail))
 
   };
 
@@ -121,16 +121,16 @@ const SabPaisaPricing = () => {
     return (
       <div className="col-lg-12 text-center">
 
-      <button
-        type="button"
-        className="ColrsforredirectProdct text-white m-0"
-        onClick={() => clickHandler(true)}
-        data-dismiss="modal"
-      >
-        Return to Dashboard
-      </button>
+        <button
+          type="button"
+          className="ColrsforredirectProdct text-white m-0"
+          onClick={() => clickHandler(true)}
+          data-dismiss="modal"
+        >
+          Return to Dashboard
+        </button>
 
-    </div>
+      </div>
     )
   }
 
@@ -140,13 +140,11 @@ const SabPaisaPricing = () => {
   return (
 
     <section className="ant-layout">
-    {/* custom modal for thanks message after select the plan */}
+
+
+      {/* custom modal for thanks message after select the plan */}
       <CustomModal modalBody={modalBody} modalFooter={modalFooter} modalToggle={modalToggle} fnSetModalToggle={setModalToggle} />
 
-
-      <div>
-        
-      </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
 
         <div className="text-center">
@@ -157,15 +155,14 @@ const SabPaisaPricing = () => {
             Sign Up now to get started.
           </h5>
         </div>
-        <div className="container mb-10 mt-0">
-          <div className="row flx">
+        <div className="container">
+          <div className="d-flex justify-content-center">
             {spinner && <span className="spinner-border" role="status"></span>}
             {productDetails.map((Products) => (
-
               // if user select the business catagory gamming then hide the subscription plan
               (business_cat_code === "37" && Products.plan_code === "005") ? <></> :
                 (param?.id === '14') ?
-                  <div className="card col-lg-4">
+                  <div className="col-lg-4 card mx-3">
                     <div className="card-body">
                       <div className="col-lg-12">
                         <h2 className="pull-left- bold-font text-center mb-20 price d_block">
@@ -213,11 +210,9 @@ const SabPaisaPricing = () => {
                     </div>
                   </div>
                   :
-                  <div className={`px-1 ${Products?.plan_id === 45 ? "col-lg-12" : ""} 
-                    ${productDetails.length === 4 ? "col-lg-3" : "col-lg-4"}  `} >
-                    <div className="card heightcards">
+                  <div className="col-lg-4 card mx-3">
                       <div className="card-body">
-                        <div className="row- mb-5-">
+                        <div className="">
                           <div className="col-lg-12 text-center">
                             <h1 className="card-title- cardoneheadingcss pb-3-">
                               {Products.plan_name}
@@ -261,7 +256,6 @@ const SabPaisaPricing = () => {
                               <p className="firstli1 mb-1">{details}</p>
                             ))}
                         </div>
-                      </div>
                     </div>
                   </div>
             ))}

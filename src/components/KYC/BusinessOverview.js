@@ -335,7 +335,7 @@ function BusinessOverview(props) {
   );
 
   return (
-    <div className="col-lg-12">
+    <div className="col-lg-12 p-0">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -497,7 +497,7 @@ function BusinessOverview(props) {
                       <></>
                     ) : (
                       <button
-                        className="save-next-btn float-lg-right cob-btn-primary text-white btn"
+                        className="float-lg-right cob-btn-primary text-white btn btn-sm"
                         type="submit"
                         disabled={disabled}
                       >

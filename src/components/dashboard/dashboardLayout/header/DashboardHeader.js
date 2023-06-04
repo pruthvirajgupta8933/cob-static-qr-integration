@@ -38,8 +38,8 @@ function DashboardHeader() {
                 <div>
                     <div className={`navbar-nav ${headerClasses.navbar_nav_cob}`}>
                         <div className="dropdown">
-                            <button className="btn btn-dark dropdown-toggle text-uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {username}
+                            <button className="btn btn-dark btn-sm dropdown-toggle text-uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                               <i className="fa fa-user"/> {username}
                             </button>
                             <ul className="dropdown-menu position-absolute">
                                 <li>  <Link to="/dashboard/profile" className="dropdown-item">Profile</Link></li>
