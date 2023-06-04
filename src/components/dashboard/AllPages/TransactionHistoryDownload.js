@@ -448,11 +448,11 @@ function TransactionHistoryDownload() {
                     </div>
                     <div className="form-row" >
                       <div className="form-group col-md-1 ml-3">
-                        <button className="btn btn-sm btn-primary" type="submit">Search </button>
+                        <button className="btn btn-sm  cob-btn-primary " type="submit">Search </button>
                       </div>
                       {txnList?.length > 0 ?
                         <div className="form-group col-md-1">
-                          <button className="btn btn-sm  btn-success text-white" type="" onClick={() => exportToExcelFn()}>Export </button>
+                          <button className="btn btn-sm   cob-btn-primary s text-white" type="" onClick={() => exportToExcelFn()}>Export </button>
                         </div>
                         : <></>}
                     </div>

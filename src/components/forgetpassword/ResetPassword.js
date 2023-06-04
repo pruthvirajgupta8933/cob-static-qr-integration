@@ -153,7 +153,7 @@ const ResetPassword = (props) => {
                       </div>
                       <button
                         type="submit"
-                        className="btn btn-primary"
+                        className="btn  cob-btn-primary "
                         // onClick={() => props.props("a4")}
                       >
                         Submit

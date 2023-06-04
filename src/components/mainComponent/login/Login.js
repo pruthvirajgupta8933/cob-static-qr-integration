@@ -211,7 +211,7 @@ function Login() {
                                         </Link>
                                     </div>
                                     <div className="d-flex">
-                                    <button type="submit" className="btn btn-primary w-100 mb-2 " disabled={
+                                    <button type="submit" className="btn  cob-btn-primary  w-100 mb-2 " disabled={
                                         !(formik.isValid && formik.dirty)
                                             ? true
                                             : false

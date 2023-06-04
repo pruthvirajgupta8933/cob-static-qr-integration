@@ -60,7 +60,7 @@ const Approver = () => {
               ) : (
                 <button
                   type="button"
-                  className="btn btn-primary"
+                  className="btn  cob-btn-primary "
                   onClick={() => redirect()}
                 >
                   Onboard Merchant

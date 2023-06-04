@@ -308,13 +308,13 @@ function FormPaymentLink(props) {
                       <div className="form-row">
                         <button
                           type="submit"
-                          className="btn btn-primary mb-3 text-white"
+                          className="btn  cob-btn-primary  mb-3 text-white"
                         >
                           SUBMIT
                         </button>
                         <button onClick={resetForm}
                           type="button"
-                          className="btn btn-primary mb-3 text-white ml-3"
+                          className="btn  cob-btn-primary mb-3 text-white ml-3"
                           data-dismiss="modal"
                         >
                           CANCEL

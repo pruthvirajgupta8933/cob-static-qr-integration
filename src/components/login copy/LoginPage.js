@@ -338,7 +338,7 @@ function LoginPage() {
                         </div>
                         <div className="form-group">
                           <button
-                            className="btn btn-lg btn-primary btn-block"
+                            className="btn btn-lg  cob-btn-primary btn-block"
                             type="submit"
                           >
                             Recover your password

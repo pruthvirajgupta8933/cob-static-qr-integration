@@ -338,7 +338,7 @@ const DebitReport = () => {
                   <button
                     type="subbmit"
                     disabled={disable}
-                    className="btn approve text-white  btn-xs"
+                    className="btn approve text-white  btn-sm"
                   >
                     Submit
                   </button>

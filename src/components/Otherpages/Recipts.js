@@ -214,7 +214,7 @@ const onSubmit = (input) => {
 
               </table>
             </div>
-            <button value='click' onClick={onClick} className="btn btn-info" >Print</button>
+            <button value='click' onClick={onClick} className="btn  cob-btn-primary" >Print</button>
             </div>
             </React.Fragment> 
            

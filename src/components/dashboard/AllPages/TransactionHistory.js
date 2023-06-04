@@ -324,14 +324,23 @@ const TransactionHistory = () => {
     SetSearchText(e.target.value);
   };
 
-  let loadingStateOfExcel=false
+    // console.log("isExportData",isExportData)
+  // if(isExportData){
+  //   console.log("data exporting, Please wait")
+  // }
 
-
-//  let outerFuncation =()=>{
-
-//  }
+  // useEffect(() => {
+  //   console.log("isExportData",isExportData)
+  //   return ()=>{
+  //     dispatch(exportTxnLoadingState(false))
+  //   }
+  // }, [isExportData, dispatch])
   
   let handleExportLoading = (state) => {
+    // console.log(state)
+    if(state){
+      alert("Exporting Excel File, Please wait...")
+    }
     dispatch(exportTxnLoadingState(state)) 
     return state
   }
@@ -535,7 +544,7 @@ const TransactionHistory = () => {
                     <div className="form-row">
                       <div className="form-group col-md-1 ml-4">
                         <button
-                          className="btn btn-sm text-white"
+                          className="btn btn-sm  cob-btn-primary  text-white"
                           type="submit"
                           style={{ backgroundColor: "rgb(1, 86, 179)" }}
                         >
@@ -549,14 +558,12 @@ const TransactionHistory = () => {
                             <div className="form-group col-md-1 ml-4">
                             {/* {console.log("isExportData",isExportData)} */}
                               {
-                                isExportData &&
-                                <div className="spinner-border" role="status">
-                                  <span className="sr-only">Loading...</span>
-                                </div>
+                                isExportData === true ?
+                                  <span className="sr-only">Loading...</span> : <></>
                               }
                              
                               <button
-                                className="btn btn-sm text-white"
+                                className="btn btn-sm text-white  cob-btn-primary "
                                 type="button"
                                 onClick={() => exportToExcelFn()}
                                 style={{ backgroundColor: "rgb(1, 86, 179)" }}

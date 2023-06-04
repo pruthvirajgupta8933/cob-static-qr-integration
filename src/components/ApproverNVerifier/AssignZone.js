@@ -164,7 +164,7 @@ function AssignZone() {
         <div >
           <button
             type="button"
-            className="save-next-btn approve text-white  btn-xs "
+            className="save-next-btn approve text-white   cob-btn-primary btn-sm "
             onClick={() => {
               setModalDisplayData(row);
               setOpenModal(true);

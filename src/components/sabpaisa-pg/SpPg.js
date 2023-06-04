@@ -144,7 +144,7 @@ function SpPg() {
                                                 <p className="card-text">Payment Status : {responseData?.status}</p>
                                                 <p className="card-text">Transaction Date : {responseData?.transDate}</p>
                                                 <p className="card-text">{responseData?.sabpaisaMessage}</p>
-                                                <Link className="btn btn-primary" to="/dashboard">Back to Dashboard</Link>
+                                                <Link className="btn  cob-btn-primary btn-sm" to="/dashboard">Back to Dashboard</Link>
                                             </div>
                                             :
                                             <div className="card-body">
@@ -153,7 +153,7 @@ function SpPg() {
                                                 <p className="card-title">Plan Name : {selectedPlan[0]?.plan_name}</p>
                                                 {/* <h5 className="card-title">Amount : {selectedPlan[0]?.planPrice}</h5> */}
                                                 {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
-                                                <button onClick={() => { getClientTxnId(selectedPlan, auth?.user) }} className="btn btn-primary">Pay Now</button>
+                                                <button onClick={() => { getClientTxnId(selectedPlan, auth?.user) }} className="btn  cob-btn-primary btn-sm">Pay Now</button>
                                             </div>
                                         }
 

@@ -217,7 +217,7 @@ const StudentRecipets = () => {
                     <button
                       value="click"
                       onClick={onClick}
-                      className="btn btn-primary"
+                      className="btn  cob-btn-primary "
                     >
                       Print
                     </button>

@@ -58,7 +58,7 @@ export const KycModal = () => {
 
               <Link
                 type="button"
-                className="btn btn-primary"
+                className="btn  cob-btn-primary"
                 // onClick={()=>enableKycButton("later")}
               >
                 Later

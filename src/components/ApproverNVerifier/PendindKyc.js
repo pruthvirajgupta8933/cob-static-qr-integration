@@ -112,7 +112,7 @@ const PendindKyc = () => {
         <div>
           <button
             type="button"
-            className="approve text-white  btn-xs "
+            className="approve text-white  cob-btn-primary   btn-sm "
             onClick={() => {
               setKycIdClick(row);
               setIsModalOpen(!isOpenModal);

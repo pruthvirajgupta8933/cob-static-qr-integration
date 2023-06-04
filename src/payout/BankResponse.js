@@ -30,7 +30,7 @@ const BankResponse = (props) => {
                 <div class="col-md-4 col-md-offset-4">Payout Done</div>
               </div> */}
             </p>
-            <button onClick={()=>props.showMakePayment(true)} class="btn btn-primary">
+            <button onClick={()=>props.showMakePayment(true)} class="btn  cob-btn-primary ">
               Make Payment
             </button>
           </div>

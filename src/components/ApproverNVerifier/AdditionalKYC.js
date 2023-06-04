@@ -282,7 +282,7 @@ const AdditionalKYC = () => {
                         <button
                           type="submit"
                           // className={`verify-btn cob-btn-primary text-white ${isLoading ? 'spinner-grow spinner-grow-sm text-light mr-1' : ''}`}
-                          className="btn cob-btn-primary  text-white"
+                          className="btn cob-btn-primary text-white"
                         // disabled={buttonDisable}
                         >
                           {/* {isLoading ? 'Loading...' : 'Verify'} */}

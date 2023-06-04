@@ -356,12 +356,13 @@ const SignupData = () => {
               </div>
             </Form>
           </Formik>
-          {signupData.length===0 && show===true && <h2 className="text-center font-weight-bold mt-5">
+          {signupData.length===0 && show===true && <h5 className="text-center font-weight-bold mt-5">
                     No Data Found
-                  </h2>}
+                  </h5>}
           {!loadingState && signupData?.length !== 0 && (
             <>
-              <div className="form-group col-lg-3 col-md-12 mt-2 ml-4">
+            <div className="row mt-4">
+              <div className="form-group col-lg-3">
                 <SearchFilter
                   kycSearch={kycSearch}
                   searchText={searchText}
@@ -371,15 +372,15 @@ const SignupData = () => {
                 <div></div>
               </div>
 
-              <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
+              <div className="form-group col-lg-3">
                 <CountPerPageFilter
                   pageSize={pageSize}
                   dataCount={dataCount}
                   changePageSize={changePageSize}
                 />
               </div>
-
-              <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+</div>
+              <div className="container-fluid ">
                 <div className="scroll overflow-auto">
                   {!loadingState && signupData?.length !== 0 && (
                     <Table

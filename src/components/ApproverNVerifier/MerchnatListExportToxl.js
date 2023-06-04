@@ -53,7 +53,7 @@ const MerchnatListExportToxl = (props) => {
       
         <p>&nbsp;</p>
         <button
-          className="btn btn-sm text-white"
+          className="btn btn-sm text-white  cob-btn-primary"
           // disabled={isexcelDataLoaded}
           type="button"
           onClick={() => exportToExcelFn()}

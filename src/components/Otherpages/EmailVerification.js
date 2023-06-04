@@ -39,7 +39,7 @@ const EmailVerification = () => {
         <i className="fa fa-check" aria-hidden="true" style={{"color":data?"greenyellow":"#ff3030"}}></i> 
         </p>
         <p className="card-text" style={{"fontSize":"18px"}}>{data?"Thank you, your email has been verifed. Your account is now active. Please use the link below to login to your account.":"Please wait... !"}</p>
-        <Link to="/" className="btn btn-primary">LOGIN TO YOUR ACCOUNT</Link>
+        <Link to="/" className="btn  cob-btn-primary text-white">LOGIN TO YOUR ACCOUNT</Link>
       </div>
       </div>
     </div>

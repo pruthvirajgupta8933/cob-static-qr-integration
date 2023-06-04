@@ -341,7 +341,7 @@ function Signup() {
                                                 <label htmlFor="inputEmail4" className="form-label"> Business Category</label>
                                                 <Field
                                                     name="business_cat_code"
-                                                    className="selct fnt-lab"
+                                                    className="form-select"
                                                     component="select"
                                                 >
                                                     <option
@@ -435,7 +435,7 @@ function Signup() {
                                             <div className="form-group col-lg-6 col-md-6 col-sm-12 p-2 m-2 justify-content-center d-flex">
 
                                                 <button
-                                                    className="btn-primary btn text-white disabled1 w-100"
+                                                    className="cob-btn-primary btn text-white disabled1 w-100"
                                                     name="commit"
                                                     type="submit"
                                                     defaultValue="Create Account"

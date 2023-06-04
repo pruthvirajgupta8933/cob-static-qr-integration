@@ -454,7 +454,7 @@ const MakePayment = (props) => {
                       <div className="col-sm mt-4">
                         <button
                           type="submit"
-                          className="btn approve text-white  btn-xs"
+                          className="btn approve text-white  btn-sm"
                         >
                           Submit
                         </button>

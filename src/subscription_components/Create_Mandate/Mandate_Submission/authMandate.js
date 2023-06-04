@@ -123,7 +123,7 @@ const AuthMandate = ({ updatedData }) => {
     return (
    <>
     <button type="button" class="btn btn-secondary text-white" onClick={pushToDashboard}>Disagree</button>
-    <button type="button" class="btn approve text-white btn-xs" data-dismiss="modal" onClick={() => {setIsModalOpen(false)}}>Agree</button>
+    <button type="button" class="btn approve text-white btn-sm" data-dismiss="modal" onClick={() => {setIsModalOpen(false)}}>Agree</button>
     </>
  
     )

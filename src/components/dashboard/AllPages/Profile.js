@@ -237,7 +237,7 @@ export const Profile = () => {
                     <div className="col-lg-6">
                       {/* <label><strong>Change Password</strong></label> -<br/> */}
                       <Link to={`/dashboard/change-password`}>
-                        <button type="button" className="form-control btn btn-primary  text-white" >
+                        <button type="button" className="form-control btn  cob-btn-primary   text-white" >
                           Change Password
                         </button>
                       </Link>

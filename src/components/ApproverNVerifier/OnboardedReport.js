@@ -425,7 +425,7 @@ const OnboardedReport = () => {
                   <label></label>
                     <button
                       type="subbmit"
-                      className="btn cob-btn-primary mt-4 approve text-white btn-xs"
+                      className="btn cob-btn-primary mt-4 approve text-white btn-sm"
                       disabled={disabled}
                     >
                       Submit
@@ -463,7 +463,7 @@ const OnboardedReport = () => {
             </div>
             <div className="form-group col-lg-3">
               <button
-                className="btn btn-sm text-white mt-4"
+                className="btn btn-sm text-white mt-4 cob-btn-primary "
                 type="button"
                 onClick={() => exportToExcelFn()}
               >

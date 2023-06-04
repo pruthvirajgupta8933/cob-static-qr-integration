@@ -105,7 +105,7 @@ const ReferZone = () => {
             setModalDisplayData(row);
             setOpenModal(true);
           }}
-          className="approve cob-btn-primary text-white"
+          className="approve cob-btn-primary btn-sm text-white"
           data-toggle="modal"
           data-target="#exampleModalCenter"
         >

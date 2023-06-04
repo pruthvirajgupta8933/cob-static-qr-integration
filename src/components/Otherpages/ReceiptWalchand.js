@@ -189,7 +189,7 @@ const ReceiptWalchand = () => {
                       </table>
                     </div>
                     <div className="card-footer">
-                    <button value='click' onClick={()=>{printHandler('table_'+i)}} className="btn btn-primary">Print</button>
+                    <button value='click' onClick={()=>{printHandler('table_'+i)}} className="btn  cob-btn-primary ">Print</button>
                     </div>
                   </div>
                 </>

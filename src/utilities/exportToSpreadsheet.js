@@ -15,7 +15,6 @@ export const exportToSpreadsheet = (data, fileName, callback=()=>{} ) => {
 
     loading = true;
     callback(loading)
-    console.log("loading", loading)
     //Create a new Work Sheet using the data stored in an Array of Arrays.
     const workSheet = XLSX.utils.aoa_to_sheet(data);
     // Generate a Work Book containing the above sheet.
@@ -27,22 +26,22 @@ export const exportToSpreadsheet = (data, fileName, callback=()=>{} ) => {
     const excelBuffer = XLSX.write(workBook, { bookType: "xlsx", type: "array" });
     const fileData = new Blob([excelBuffer], { type: fileType });
     FileSaver.saveAs(fileData, fileName + fileExtension);
-    console.log('Excel file exported successfully.');
+    // console.log('Excel file exported successfully.');
 
 
     // Set loading state to false after export is done
     loading = false;
     callback(loading)
 
-    console.log("loading", loading)
+    // console.log("loading", loading)
   } catch (error) {
-    console.error('An error occurred while exporting to Excel:', error);
+    // console.error('An error occurred while exporting to Excel:', error);
 
     // Set loading state to false in case of an error
     loading = false;
     callback(loading)
 
-    console.log("loading", loading)
+    // console.log("loading", loading)
 
   }
 

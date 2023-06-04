@@ -233,7 +233,7 @@ const ViewDocumentModal = (props) => {
                       <div className="ml-3">
                         <button
                           type="submit"
-                          className="submit-btn approve text-white  btn-xs"
+                          className="submit-btn approve text-white  cob-btn-primary  btn-sm"
                           disabled={btnDisable}
                         >
                           Submit

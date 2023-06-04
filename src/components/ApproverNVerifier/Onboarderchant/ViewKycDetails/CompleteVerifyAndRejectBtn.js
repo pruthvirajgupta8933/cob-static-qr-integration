@@ -226,7 +226,7 @@ const CompleteVerifyAndRejectBtn = (props) => {
           {(enableButtonForVerifier || enableButtonForApprover) &&
             <button type="button"
               onClick={() => { verifyApproveDoc() }}
-              className="btn btn-info btn-sm text-white m-2">{buttonText}
+              className="btn  cob-btn-primary  btn-sm text-white m-2">{buttonText}
             </button>
           }
 

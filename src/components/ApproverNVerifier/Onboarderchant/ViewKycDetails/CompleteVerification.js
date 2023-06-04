@@ -349,7 +349,7 @@ const CompleteVerification = (props) => {
         {enableBtnVerifier || enableBtnApprover ?
           <><button type="button" disabled={disable} onClick={() => {
             handleVerifyClick()
-          }} className="btn btn-info btn-sm text-white m-2">{buttonText}</button>
+          }} className="btn  cob-btn-primary  btn-sm text-white m-2">{buttonText}</button>
 
 
 

@@ -325,16 +325,16 @@ const ChargeBackTxnHistory= () => {
                       <div className="form-group col-md-1">
                         <button
                          disabled={disable}
-                          className="btn cob-btn-primary text-white"
+                          className="btn cob- cob-btn-primary  text-white"
                           type="submit"
                         >
-                          Search{" "}
+                          Search
                         </button>
                       </div>
                       {txnList?.length > 0 ? (
                         <div className="form-group col-md-1">
                           <button
-                            className="btn btn-sm text-white"
+                            className="btn btn-sm text-white  cob-btn-primary "
                             style={{ backgroundColor: "rgb(1, 86, 179)" }}
                             type="button"
                             onClick={() => exportToExcelFn()}

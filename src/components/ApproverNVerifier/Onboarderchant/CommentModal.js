@@ -195,7 +195,7 @@ const CommentModal = (props) => {
                   <div className="mt-2 ml-3">
                     <button
                       type="submit"
-                      className="submit-btn approve text-white btn-xs"
+                      className="submit-btn approve text-white btn-sm cob-btn-primary"
                     >
                       Submit
                     </button>
