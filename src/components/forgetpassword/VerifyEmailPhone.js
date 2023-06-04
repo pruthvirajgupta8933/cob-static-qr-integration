@@ -101,10 +101,10 @@ const VerifyEmailPhone = (props) => {
                 Forgot Password
               </div>
               <div className="card-body NunitoSans-Regular">
-                <h5 className="card-title">
+                <h6 className="card-title">
                   We have sent the OTP on your registered Email Address and on
                   Phone Number.{" "}
-                </h5>
+                </h6>
                 <form className="form-inline" onSubmit={handleSubmit}>
                   <div className="form-inline">
                     <div className="form-group mx-sm-3 mb-2 float-center">

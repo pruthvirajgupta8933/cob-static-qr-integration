@@ -75,10 +75,10 @@ const ReceiptWalchand = () => {
   };
 
   return (
-    <>
-      <div className="container">
-        <div className="row">
-        <div className="col-12 ">
+
+      <div className="container-fluid">
+        <div className="row justify-content-center">
+        <div className="col-lg-6">
             <div className="card">
               <div className="card-header text-center">
                 <p>
@@ -109,7 +109,7 @@ const ReceiptWalchand = () => {
 
                     <div className="form-group">
                       <button
-                        className="btn receipt-button"
+                        className="btn cob-btn-primary"
                         onClick={(e) => onSubmit(e,pnrId)}
                         disabled={btnDisable}
                       >
@@ -125,8 +125,8 @@ const ReceiptWalchand = () => {
 
         {/* card end */}
 
-        <div className="row">
-          <div className="col-12">
+        <div className="row justify-content-center">
+          <div className="col-lg-6">
             {show &&
               data.map((user, i) => (
                 <>
@@ -189,7 +189,7 @@ const ReceiptWalchand = () => {
                       </table>
                     </div>
                     <div className="card-footer">
-                    <button value='click' onClick={()=>{printHandler('table_'+i)}} className="btn  cob-btn-primary ">Print</button>
+                    <button value='click' onClick={()=>{printHandler('table_'+i)}} className="btn cob-btn-primary">Print</button>
                     </div>
                   </div>
                 </>
@@ -197,7 +197,6 @@ const ReceiptWalchand = () => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 

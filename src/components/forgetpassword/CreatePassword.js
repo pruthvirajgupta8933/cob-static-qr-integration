@@ -34,7 +34,7 @@ const CreatePassword = (props) => {
   });
 
 
- 
+
 
 
   const initialValues = {
@@ -54,7 +54,7 @@ const CreatePassword = (props) => {
     setValuesIn({ ...valuesIn, showPassword: !valuesIn.showPassword });
   };
 
- 
+
 
   const onSubmit = async (values) => {
     const res = await axiosInstanceJWT
@@ -91,117 +91,105 @@ const CreatePassword = (props) => {
                 {({ formik }) => (
                   <>
                     <Form>
-                      <div className="form-group">
+                      <div className="form-group m-3">
                         <label htmlFor="exampleInputPassword1">
                           New Password
                         </label>
                         <div className="input-group" id="show_hide_password">
-                        <Field
-                                        className="form-control"
-                                        maxLength={255}
-                                        id="user-pws"
-                                        placeholder="Password"
-                                        type={
-                                          valuesIn.showPassword
-                                            ? "text"
-                                            : "password"
-                                        }
-                                        name="password"
+                          <Field
+                            className="form-control"
+                            maxLength={255}
+                            id="user-pws"
+                            placeholder="Password"
+                            type={
+                              valuesIn.showPassword
+                                ? "text"
+                                : "password"
+                            }
+                            name="password"
 
-                                        autoComplete="off"
-                                      />
-                                      <div className="input-group-addon viewforanother">
-                                        <a
-                                          href={() => false}
-                                          onClick={handleClickShowPassword}
-                                        >
-                                          {valuesIn.showPassword ? (
-                                            <i
-                                              className="fa fa-eye"
-                                              aria-hidden="true"
-                                            ></i>
-                                          ) : (
-                                            <i
-                                              className="fa fa-eye-slash"
-                                              aria-hidden="true"
-                                            ></i>
-                                          )}
-                                        </a>
-                                      </div>
+                            autoComplete="off"
+                          />
+                          <div className="input-group-addon viewforanother">
+                            <a
+                              href={() => false}
+                              onClick={handleClickShowPassword}
+                            >
+                              {valuesIn.showPassword ? (
+                                <i
+                                  className="fa fa-eye"
+                                  aria-hidden="true"
+                                ></i>
+                              ) : (
+                                <i
+                                  className="fa fa-eye-slash"
+                                  aria-hidden="true"
+                                ></i>
+                              )}
+                            </a>
+                          </div>
 
                         </div>
                         <ErrorMessage name="password">
                           {(msg) => (
-                            <div
-                              className="abhitest"
-                              style={{
-                                color: "red",
-                                // position: "absolute",
-                                zIndex: " 999",
-                              }}
-                            >
+                            <div className="text-danger">
                               {msg}
                             </div>
                           )}
                         </ErrorMessage>
+                      </div>
+
+                      <div className="form-group m-3">
                         <label htmlFor="exampleInputPassword2">
-                         Confirm Password
+                          Confirm Password
                         </label>
                         <div className="input-group mt-1">
-                        <Field
-                                        className="form-control"
-                                        maxLength={255}
-                                        id="user-cpw"
-                                        placeholder="Re-type password"
-                                        type={
-                                          passwordType.showPasswords
-                                            ? "text"
-                                            : "password"
-                                        }
-                                        name="confirmpassword"
-                                        size={50}
-                                      />
+                          <Field
+                            className="form-control"
+                            maxLength={255}
+                            id="user-cpw"
+                            placeholder="Re-type password"
+                            type={
+                              passwordType.showPasswords
+                                ? "text"
+                                : "password"
+                            }
+                            name="confirmpassword"
+                            size={50}
+                          />
 
-                                      <div className="input-group-addon viewforanother">
-                                        <a
-                                          href={() => false}
-                                          onClick={togglePassword}
-                                        >
-                                          {passwordType.showPasswords ? (
-                                            <i
-                                              className="fa fa-eye"
-                                              aria-hidden="true"
-                                            ></i>
-                                          ) : (
-                                            <i
-                                              className="fa fa-eye-slash"
-                                              aria-hidden="true"
-                                            ></i>
-                                          )}
-                                        </a>
-                                      </div>
-                                              </div>
-                                              <ErrorMessage name="confirmpassword">
-                            {(msg) => (
-                              <div
-                                className="abhitest"
-                                style={{
-                                  color: "red",
-                                  // position: "absolute",
-                                  zIndex: " 999",
-                                }}
-                              >
-                                {msg}
-                              </div>
-                            )}
-                          </ErrorMessage>
+                          <div className="input-group-addon viewforanother">
+                            <a
+                              href={() => false}
+                              onClick={togglePassword}
+                            >
+                              {passwordType.showPasswords ? (
+                                <i
+                                  className="fa fa-eye"
+                                  aria-hidden="true"
+                                ></i>
+                              ) : (
+                                <i
+                                  className="fa fa-eye-slash"
+                                  aria-hidden="true"
+                                ></i>
+                              )}
+                            </a>
+                          </div>
+                        </div>
+                        <ErrorMessage name="confirmpassword">
+                          {(msg) => (
+                            <div className="text-danger">
+                              {msg}
+                            </div>
+                          )}
+                        </ErrorMessage>
 
                       </div>
 
                       <button
                         type="submit"
                         className="createpasswordBtn mt-3 text-white"
-                        // onClick={() => props.props("a4")}
                       >
                         Submit
                       </button>
@@ -209,7 +197,7 @@ const CreatePassword = (props) => {
                   </>
                 )}
               </Formik>
-            
+
             </div>
             <div className="card-footer text-muted text-center">
               Sabpaisa.in

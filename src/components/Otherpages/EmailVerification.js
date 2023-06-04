@@ -1,9 +1,9 @@
 import React, { useEffect ,useState} from 'react';
 import { Link ,useParams} from 'react-router-dom';
 import sabpaisalogo from '../../assets/images/sabpaisa-logo-white.png';
-import axios from 'axios';
+// import axios from 'axios';
 import API_URL from '../../config';
-import { axiosInstance,axiosInstanceJWT,axiosInstanceAuth} from '../../utilities/axiosInstance';
+import {axiosInstanceAuth} from '../../utilities/axiosInstance';
 
 
 const EmailVerification = () => {
@@ -15,7 +15,8 @@ const EmailVerification = () => {
   useEffect(() => {
     axiosInstanceAuth.put(`${API_URL.EMAIL_VERIFY}${loginId}`)
     .then((response) => {
-      setData(response);
+      // console.log(response.data)
+      setData(response.data);
     })
     .catch((e) => {
       // console.log(e);
@@ -31,15 +32,17 @@ const EmailVerification = () => {
           <img  src={sabpaisalogo} alt="logo" width={"90px"} height={"25px"}/>
         </div>
       <div className="card-header" style={{"fontSize":"44px","fontWeight":"700"}}>
-      Account {data?"Activated":"is not activate"}
+      <h5>Account {data ? "Activated":"is not activate"}</h5>
+      
       </div>
       <div className="card-body">
         <p className="card-text" style={{"fontSize":"24px"}}>
         <i className="fa fa-user" aria-hidden="true" style={{"color":data?"greenyellow":"#000"}}></i>
         <i className="fa fa-check" aria-hidden="true" style={{"color":data?"greenyellow":"#ff3030"}}></i> 
         </p>
-        <p className="card-text" style={{"fontSize":"18px"}}>{data?"Thank you, your email has been verifed. Your account is now active. Please use the link below to login to your account.":"Please wait... !"}</p>
-        <Link to="/" className="btn  cob-btn-primary text-white">LOGIN TO YOUR ACCOUNT</Link>
+        <p className="card-text" style={{"fontSize":"18px"}}>
+        {data?"Thank you, your email has been verifed. Your account is now active. Please use the link below to login to your account.":"Please wait... !"}</p>
+        <Link to="/" className="btn  cob-btn-primary text-white btn-sm">LOGIN TO YOUR ACCOUNT</Link>
       </div>
       </div>
     </div>

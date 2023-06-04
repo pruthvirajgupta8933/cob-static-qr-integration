@@ -9,15 +9,15 @@ function ThanksCard(props) {
           <div className="card ">
             <div className="card-header text-center">Password Changed</div>
             <div className="card-body NunitoSans-Regular">
-              <h5 className="card-title">Password Changed successfully </h5>
+              <h5 className="card-title">Password Changed Successfully </h5>
 
               {/* <p className="card-text" style={{ display: "block" }}>
                 With supporting text below as a natural lead-in to additional
                 content.
               </p> */}
-              <Link to="/" className="btn  cob-btn-primary ">Back to login</Link>
+              <Link to="/" className="btn  cob-btn-primary btn-sm ">Back to login</Link>
             </div>
-            <div className="card-footer text-muted text-center">
+            <div className="card-footer text-muted text-center mt-4">
               Sabpaisa.in
             </div>
           </div>

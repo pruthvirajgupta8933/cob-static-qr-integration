@@ -124,8 +124,8 @@ const ReceiptByEmail = () => {
 
   return (
     <div className="container">
-      <div className="row">
-        <div className="col-12 ">
+      <div className="row justify-content-center">
+        <div className="col-lg-6">
           <div className="card">
             <div className="card-header text-center">
               <p>
@@ -168,7 +168,7 @@ const ReceiptByEmail = () => {
 
                 <div className="form-group">
                   <button
-                    className="btn receipt-button"
+                    className="btn cob-btn-primary"
                     disabled={btnDisable}
                     onClick={(e) => onSubmit(e, transactionId, studentEmailId)}
                   >
@@ -180,13 +180,13 @@ const ReceiptByEmail = () => {
           </div>
         </div>
       </div>
-      <div className="row">
-        <div className="col-12">
+      <div className="row justify-content-center">
+        <div className="col-lg-6">
           {show &&
             data.map((user) => (
               <div className="card mt-0" key={user.Id}>
                 <div className="card-body table-responsive">
-                  <h3>TRANSACTION RECEIPT</h3>
+                  <h5>TRANSACTION RECEIPT</h5>
                   <table className="table" id="joshi">
                     <thead>
                       <tr>

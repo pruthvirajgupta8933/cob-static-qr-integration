@@ -117,13 +117,11 @@ function TransactionEnqMultiParam() {
     }
 
     if (flag === 0) {
-     
+
       //https://adminapi.sabpaisa.in/Enquiry/ViewTxnEnqMultiParam/{txnID}/{CltTxnID}/{pemail}/{pmob}
-      const URL = `${API_URL.ViewTxnEnqMultiParam}/${
-        value.spTxnID === "" ? "ALL" : value.spTxnID
-      }/${value.clientTxnID === "" ? "ALL" : value.clientTxnID}/${
-        value.pemail === "" ? "ALL" : value.pemail
-      }/${value.pmob === "" ? "ALL" : value.pmob}`;
+      const URL = `${API_URL.ViewTxnEnqMultiParam}/${value.spTxnID === "" ? "ALL" : value.spTxnID
+        }/${value.clientTxnID === "" ? "ALL" : value.clientTxnID}/${value.pemail === "" ? "ALL" : value.pemail
+        }/${value.pmob === "" ? "ALL" : value.pmob}`;
       axiosInstance
         .get(URL)
         .then((res) => {
@@ -200,12 +198,12 @@ function TransactionEnqMultiParam() {
 
       {/* Modal */}
       <div
-        className="modal"
+        className={`modal fade mymodals show ${toggleModal ? "d-block" : "d-none" }`}
         id="exampleModalCenter"
         role="dialog"
         aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true"
-        style={{ display: toggleModal ? "block" : "none" }}
+        // style={{ display: toggleModal ? "block" : "none" }}
       >
         <div
           className="modal-dialog modal-dialog-centered modal-lg"
@@ -344,26 +342,23 @@ function TransactionEnqMultiParam() {
         </div>
       </div>
 
-      <div className="profileBarStatus mb-0"></div>
-      <main
-        className="gx-layout-content ant-layout-content"
-        style={{ background: "white" }}
-      >
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">View Transactions Enquiry</h1>
+      <div className="mb-0"></div>
+      <main className="" >
+        <div className="">
+          <div className="">
+            <h5 className="">View Transactions Enquiry</h5>
           </div>
-          <section className="features8 cid-sg6XYTl25a" id="features08-3-">
+
+          <section className="" id="features08-3-">
             <div className="container-fluid">
               <div className="row">
                 <div className="col-lg-12">
-                  {atLeastOneFieldReq ? (
+                  {atLeastOneFieldReq && (
                     <h4 className="text-danger">At Least One Field Required</h4>
-                  ) : (
-                    <></>
                   )}
                 </div>
               </div>
+
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -417,14 +412,14 @@ function TransactionEnqMultiParam() {
                       <div className="col-lg-12 mrg-btm- bgcolor">
                         <button
                           type="submit"
-                          className="btn bttn bttnbackgroundkyc"
+                          className="btn cob-btn-primary"
                           disabled={btnDisable}
                         >
-                         {btnDisable ? <> 
-                                &nbsp; Loading... </> : <> Submit</>}  
-                        
+                          {btnDisable ? <>
+                            &nbsp; Loading... </> : <> Submit</>}
+
                         </button>
-                       
+
                       </div>
                     </div>
                   </Form>
@@ -432,8 +427,8 @@ function TransactionEnqMultiParam() {
               </Formik>
 
               {txnList.length > 0 ? (
-                <div className="row">
-                  <div className="col-lg-4 mrg-btm- bgcolor">
+                <div className="row mt-5">
+                  <div className="col-lg-3 ">
                     <label>Search Here</label>
                     <input
                       type="text"
@@ -445,7 +440,7 @@ function TransactionEnqMultiParam() {
                     />
                   </div>
 
-                  <div className="col-lg-4 mrg-btm- bgcolor">
+                  <div className="col-lg-3">
                     <label>Count per page</label>
                     <select
                       value={pageSize}
