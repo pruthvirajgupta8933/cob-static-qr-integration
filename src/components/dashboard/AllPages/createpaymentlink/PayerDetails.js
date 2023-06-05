@@ -12,7 +12,7 @@ import API_URL from "../../../../config";
 import toastConfig from "../../../../utilities/toastTypes";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
-import "./index.css";
+// import "./index.css";
 import classes from "./paylink.module.css"
 
 const phoneRegExp =

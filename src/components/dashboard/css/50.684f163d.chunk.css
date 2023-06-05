@@ -65,7 +65,7 @@
     left: 15px;
     margin-top: -14px;
     display: block;
-    /* font-family: Notification; */
+
     width: 28px;
     height: 28px;
     font-size: 28px;
@@ -990,7 +990,7 @@ th.react-bs-table-expand-cell > div {
     pointer-events: none;
     color: rgba(250, 251, 255, 0.95);
     font-size: 100%;
-    /* font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif; */
+   
     max-width: 300px;
     -webkit-transition: top 0.4s, bottom 0.4s;
     transition: top 0.4s, bottom 0.4s;
@@ -1251,15 +1251,10 @@ th.react-bs-table-expand-cell > div {
     }
 }
 
-/*!
- * Quill Editor v1.3.0
- * https://quilljs.com/
- * Copyright (c) 2014, Jason Chen
- * Copyright (c) 2013, salesforce.com
- */
+
 .ql-container {
     box-sizing: border-box;
-    /* font-family: Helvetica, Arial, sans-serif; */
+   
     font-size: 13px;
     height: 100%;
     margin: 0;
@@ -1611,12 +1606,7 @@ th.react-bs-table-expand-cell > div {
 .ql-editor .ql-color-purple {
     color: #93f;
 }
-.ql-editor .ql-font-serif {
-    /* font-family: Georgia, Times New Roman, serif; */
-}
-.ql-editor .ql-font-monospace {
-    /* font-family: Monaco, Courier New, monospace; */
-}
+
 .ql-editor .ql-size-small {
     font-size: 0.75em;
 }
@@ -2069,12 +2059,7 @@ th.react-bs-table-expand-cell > div {
 .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]:before {
     content: "Monospace";
 }
-.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]:before {
-    /* font-family: Georgia, Times New Roman, serif; */
-}
-.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]:before {
-    /* font-family: Monaco, Courier New, monospace; */
-}
+
 .ql-snow .ql-picker.ql-size {
     width: 98px;
 }
@@ -2112,7 +2097,7 @@ th.react-bs-table-expand-cell > div {
 .ql-toolbar.ql-snow {
     border: 1px solid #ccc;
     box-sizing: border-box;
-    /* font-family: Helvetica Neue, Helvetica, Arial, sans-serif; */
+    
     padding: 8px;
 }
 .ql-toolbar.ql-snow .ql-formats {
