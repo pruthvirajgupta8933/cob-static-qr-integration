@@ -160,37 +160,22 @@ function Registration({hideDetails,getPendingDetails}) {
       {/* <HeaderPage /> */}
       <div className="container-fluid">
         <div className="row">
-          <div className="col-lg-1"></div>
-          <div className="authfy-container col-xs-12 col-sm-12 col-md-12 col-lg-12 col-sm-offset-1- col-md-offset-2- col-lg-offset-3-">
+          <div className="">
           
-            <div className={hideDetails?"":`col-sm-12 col-md-12 col-lg-6 authfy-panel-right pt-0`}>
+            <div className={hideDetails? "" :`col-sm-12 col-md-12 col-lg-6`}>
               {/* authfy-login start */}
-              <div className="authfy-login">
+              <div className="">
                 {/* panel-login start */}
-                <div className="authfy-panel panel-login text-center active">
-                  <div className="logmod__wrapper">
-                    <span className="logmod__close">Close</span>
-                    <div className="logmod__container">
-                      <div className="logmod__tab-wrapper">
-                        <div className="show logmod__tab lgm-1">
-                          <div className="logmod__heading NunitoSans-Regular">
-                            <span className="fontfigma">
+                <div className="">
+                  <div className="">
+                  
+                    <div className="">
+                      <div className="">
+                        <div className="show ">
+                          <div className="text-center">
+                            <h5 className="">
                               Welcome to SabPaisa
-                            </span>
-                            <div className="flex">
-                              <span className="Signupfigma mt-2">
-                                <span
-                                  style={{
-                                    color: "#4BB543",
-                                    fontWeight: "700",
-                                    fontSize: "18px",
-                                  }}
-                                >
-                                  Sign up
-                                </span>
-                                &nbsp; to Create New Account
-                              </span>
-                            </div>
+                            </h5>
                           </div>
                           <div className="logmod__form- NunitoSans-Regular">
                             <Formik
@@ -320,12 +305,12 @@ function Registration({hideDetails,getPendingDetails}) {
                                         </label>
                                         <Field
                                           name="business_cat_code"
-                                          className="selct fnt-lab"
+                                          className="form-select"
                                           component="select"
                                         >
                                           <option
                                             type="text"
-                                            className="form-control"
+                                            className="form-select"
                                             id="businesscode"
                                             value={""}
                                           >
@@ -482,37 +467,6 @@ function Registration({hideDetails,getPendingDetails}) {
                                         Create an account
                                       </button>
 
-                                      <div className="row mt-4">
-                                      <h4>Already have an account? <Link
-                                        to={`/login/${queryStringUrl}`}
-                                        className="text-primary text-decoration-underline pb-2"
-                                      >
-                                        Login
-                                      </Link></h4>
-                                        <p className="fs-6">
-                                <a
-                                  href="https://sabpaisa.in/term-conditions/"
-                                  rel="noreferrer"
-                                  target={"_blank"}
-                                  alt="SabPaisa Terms & Conditions"
-                                  className="colorforterms_condition"
-                                  title="SabPaisa Terms & Conditions"
-                                >
-                                  Terms & Conditions
-                                </a>
-
-                                <a
-                                  href="https://sabpaisa.in/privacy-policy/"
-                                  rel="noreferrer"
-                                  target={"_blank"}
-                                  alt="SabPaisa Privacy Policy"
-                                  className="colorforterms_condition"
-                                  title="SabPaisa Privacy Policy"
-                                >
-                                  &nbsp;| Privacy Policy
-                                </a>
-                              </p>
-                                    </div>
                                       {/* <span className="simform__actions-sidetext"></span>
                                       {<ErrorMessage name="terms_and_condition">
                                           {(msg) => (
@@ -537,9 +491,7 @@ function Registration({hideDetails,getPendingDetails}) {
               {/* ./authfy-login */}
             </div>
           </div>
-          <p className="footerforcopyright text-center NunitoSans-Regular">
-            Copyright @ 2023 SabPaisa All Rights Reserved version 1.0
-          </p>
+       
         </div>
         {/* ./row */}
       </div>
