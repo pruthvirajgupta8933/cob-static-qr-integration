@@ -24,7 +24,6 @@ const SettlementReportNew= () => {
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
   const { user } = auth;
-
   const { isLoadingTxnHistory } = dashboard;
   const [txnList, SetTxnList] = useState([]);
   // const [filterList,SetFilterList] = useState([])
@@ -112,6 +111,7 @@ const SettlementReportNew= () => {
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
   };
+  
 
   const onSubmitHandler = (values) => {
     console.log(values)
@@ -341,18 +341,15 @@ const SettlementReportNew= () => {
  
 
   return (
-    <section className="ant-layout NunitoSans-Regular">
-      <div>
-        <NavBar />
-      </div>
+    <section className="">
       <div className="profileBarStatus">
       <Notification/>
       </div>
-      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
+      <main className="">
         <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Settlement Report</h1>
-          </div>
+          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+            <h5 className="m-b-sm gx-float-left ml-3">Settlement Report</h5>
+          {/* </div> */}
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid">
               <Formik
@@ -368,7 +365,7 @@ const SettlementReportNew= () => {
                           control="select"
                           label="Client Code"
                           name="clientCode"
-                          className="form-control rounded-0 mt-0"
+                          className="form-select rounded-0 mt-0"
                           options={clientCodeOption}
                         />
                       </div>
@@ -397,7 +394,7 @@ const SettlementReportNew= () => {
                       <div className="form-group col-md-1 mr-2">
                         <button
                         disabled={disable}
-                        className="btn cob-btn-primary text-white"
+                        className="btn cob-btn-primary text-white btn-sm"
                           type="submit"
                         >
                           Search{" "}
@@ -406,7 +403,7 @@ const SettlementReportNew= () => {
                       {txnList?.length > 0 ? (
                         <div className="form-group col-md-1 ml-1">
                           <button
-                            className="btn cob-btn-primary  ml-3 text-white"
+                            className="btn cob-btn-primary  ml-3 text-white btn-sm"
                             style={{ backgroundColor: "rgb(1, 86, 179)" }}
                             type="button"
                             onClick={() => exportToExcelFn()}
@@ -458,7 +455,7 @@ const SettlementReportNew= () => {
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid  p-3 my-3 ">
               {txnList.length > 0 ? (
-                <h4>Total Record : {txnList.length} </h4>
+                <h6>Total Record : {txnList.length} </h6>
               ) : (
                 <></>
               )}

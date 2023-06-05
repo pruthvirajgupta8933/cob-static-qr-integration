@@ -126,7 +126,7 @@ const NotFilledKYC = () => {
   return (
     <div className="container-fluid flleft">
       <div className="form-row">
-        <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
+        <div className="form-group col-lg-3 col-md-12 mt-2">
           <SearchFilter
             kycSearch={kycSearch}
             searchText={searchText}
@@ -155,7 +155,8 @@ const NotFilledKYC = () => {
             optionSearchData={optionSearchData}
           />
         </div>
-        <div className="mt-1">
+
+        <div className="">
           <MerchnatListExportToxl
             URL={"export-excel/?search=Not-Filled"}
             filename={"Not-Filled-KYC"}
@@ -163,7 +164,7 @@ const NotFilledKYC = () => {
         </div>
       </div>
 
-      <div className="col-md-12 col-md-offset-4">
+      <div>
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
             <Table

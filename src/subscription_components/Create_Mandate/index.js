@@ -258,7 +258,7 @@ class MandateForm extends Component {
       <>
         <section className="ant-layout">
           <div>
-            <NavBar />
+            
           </div>
           {this.state.progressBar && (
             <div className="progress_bar_container">
@@ -421,7 +421,7 @@ class MandateForm extends Component {
                           </div>
                         </div>
                         <button
-                          class="btn bttn bttnbackgroundkyc"
+                          class="btn bttn cob-btn-primary"
                           type="submit"
                         >
                           Next

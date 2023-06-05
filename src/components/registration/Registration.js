@@ -510,7 +510,7 @@ function Registration() {
                                         </label>
                                         <Field
                                           name="business_cat_code"
-                                          className="selct fnt-lab"
+                                          className="form-selct"
                                           component="select"
                                         >
                                           <option
@@ -651,7 +651,7 @@ function Registration() {
                                   <div className="sminputs">
                                     <div className="simform__actions-">
                                       <button
-                                        className="figmabtn Satoshi-Medium text-white disabled1 w-50"
+                                        className="figmabtn  text-white disabled1 w-50"
                                         name="commit"
                                         type="submit"
                                         defaultValue="Create Account"

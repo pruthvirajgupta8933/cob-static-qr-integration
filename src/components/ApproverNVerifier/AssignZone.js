@@ -164,7 +164,7 @@ function AssignZone() {
         <div >
           <button
             type="button"
-            className="save-next-btn approve text-white  btn-xs "
+            className="save-next-btn approve text-white   cob-btn-primary btn-sm "
             onClick={() => {
               setModalDisplayData(row);
               setOpenModal(true);
@@ -180,17 +180,16 @@ function AssignZone() {
   ];
 
   return (
-    <section className="ant-layout">
-      <div>
-        <NavBar />
-      </div>
-      <main className="gx-layout-content ant-layout-content">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Configuration</h1>
+    <section className="">
+      <main className="">
+        <div className="">
+          <div className="">
+            <h5 className="">Configuration</h5>
           </div>
-          <div className="container-fluid flleft">
-            <div className="col-lg-3 mt-2">
+
+          <div className="row  mt-2">
+
+            <div className="col-lg-3">
               <SearchFilter
                 kycSearch={kycSearch}
                 searchText={searchText}
@@ -198,22 +197,15 @@ function AssignZone() {
                 setSearchByDropDown={setSearchByDropDown}
                 searchTextByApiCall={true}
               />
-              <div>
-                {openZoneModal === true ? (
-                  <ViewZoneModal userData={modalDisplayData} />
-                ) : (
-                  <></>
-                )}
-              </div>
             </div>
-            <div className="col-lg-3 mt-2">
+            <div className="col-lg-3">
               <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}
                 changePageSize={changePageSize}
               />
             </div>
-            <div className="form-group col-lg-3 col-md-12 mt-2">
+            <div className="col-lg-3">
               <SearchbyDropDown
                 kycSearch={kycSearch}
                 searchText={searchText}
@@ -224,25 +216,31 @@ function AssignZone() {
                 optionSearchData={optionSearchData}
               />
             </div>
-            <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
-              <div className="scroll overflow-auto">
-                {!loadingState && data?.length !== 0 && (
-                  <Table
-                    row={AssignZoneData}
-                    data={data}
-                    dataCount={dataCount}
-                    pageSize={pageSize}
-                    currentPage={currentPage}
-                    changeCurrentPage={changeCurrentPage}
-                  />
-                )}
-              </div>
-              <CustomLoader loadingState={loadingState} />
-              {data?.length === 0 && !loadingState && (
-                <h2 className="text-center font-weight-bold">No Data Found</h2>
+
+          </div>
+          <div className="">
+            <div className="scroll overflow-auto">
+              {!loadingState && data?.length !== 0 && (
+                <Table
+                  row={AssignZoneData}
+                  data={data}
+                  dataCount={dataCount}
+                  pageSize={pageSize}
+                  currentPage={currentPage}
+                  changeCurrentPage={changeCurrentPage}
+                />
               )}
             </div>
+            <CustomLoader loadingState={loadingState} />
+            {data?.length === 0 && !loadingState && (
+              <h2 className="text-center font-weight-bold">No Data Found</h2>
+            )}
           </div>
+        </div>
+        <div>
+          {openZoneModal === true && (
+            <ViewZoneModal userData={modalDisplayData} />
+          )}
         </div>
       </main>
     </section>

@@ -112,7 +112,7 @@ const PendindKyc = () => {
         <div>
           <button
             type="button"
-            className="approve text-white  btn-xs "
+            className="approve text-white  cob-btn-primary   btn-sm "
             onClick={() => {
               setKycIdClick(row);
               setIsModalOpen(!isOpenModal);
@@ -296,7 +296,7 @@ const PendindKyc = () => {
             optionSearchData={optionSearchData}
           />
         </div>
-        <div className="mt-1">
+        <div className="">
           <MerchnatListExportToxl
             URL={"export-excel/?search=Pending"}
             filename={"Pending-KYC"}
@@ -304,7 +304,7 @@ const PendindKyc = () => {
         </div>
       </div>
 
-      <div className="col-md-12 col-md-offset-4">
+      <div>
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
             <Table

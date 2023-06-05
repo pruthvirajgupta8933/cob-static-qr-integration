@@ -93,9 +93,9 @@ const StudentRecipets = () => {
     <>
       <div className="container">
         {/* ============================== */}
-        <div className="container-fluid m-0 p-0">
-          <div className="row ">
-            <div className="col-md-12 mx-auto">
+        <div className="container-fluid">
+          <div className="row justify-content-center">
+            <div className="col-lg-6">
               <div className="card ">
                 <div className="card-header text-center receipt-header">
                   SABPAISA TRANSACTION RECEIPT
@@ -152,8 +152,8 @@ const StudentRecipets = () => {
         </div>
         {/* ============================== */}
 
-        <div className="row">
-          <div className="col-12">
+        <div className="row justify-content-center">
+          <div className="col-lg-6">
             {show &&
               data.map((user) => (
                 <div className="card" key={user.id}>
@@ -217,7 +217,7 @@ const StudentRecipets = () => {
                     <button
                       value="click"
                       onClick={onClick}
-                      className="btn btn-primary"
+                      className="btn  cob-btn-primary "
                     >
                       Print
                     </button>

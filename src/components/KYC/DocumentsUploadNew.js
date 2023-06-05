@@ -250,7 +250,7 @@ function DocumentsUpload(props) {
       {BusinessOverviewStatus === true ||
       (KycList?.businessType !== null &&
         KycList?.businessType !== undefined) ? (
-        <div className="col-md-12">
+        <div className="col-lg-12 p-0">
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -261,8 +261,8 @@ function DocumentsUpload(props) {
           >
             {(formik) => (
               <Form>
-                <div className="form-row">
-                  <div className="col-sm-12 col-md-12 col-lg-12 mb-2">
+              <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-6 mb-2">
                     <label className=" col-form-label mt-0">
                       Select Document Type
                       <span style={{ color: "red" }}>*</span>
@@ -271,7 +271,7 @@ function DocumentsUpload(props) {
                     <FormikController
                       control="select"
                       name="docType"
-                      className="form-control"
+                      className="form-select"
                       options={newDocumentedOption}
                       readOnly={readOnly}
                       disabled={
@@ -294,8 +294,10 @@ function DocumentsUpload(props) {
                       Document name should be unique.
                     </span>
                   </div>
+              </div>
 
-                  {role?.merchant ? (
+              <div className="row">
+              {role?.merchant ? (
                     documentStatus !== "Approved" &&
                     documentStatus !== "Verified" ? (
                       docTypeIdDropdown !== "" ? (
@@ -366,13 +368,15 @@ function DocumentsUpload(props) {
                   ) : (
                     <></>
                   )}
+              </div>
 
-                  {documentStatus !== "Approved" &&
+              <div className="row">
+              {documentStatus !== "Approved" &&
                   documentStatus !== "Verified" &&
                   role?.merchant ? (
-                    <div className="col-12">
+                    <div className="col-lg-6  mt-4">
                       <button
-                        className="save-next-btn cob-btn-primary  text-white mt-4"
+                        className="btn btn-sm cob-btn-primary  text-white m-1"
                         type="button"
                         disabled={disable}
                         onClick={() => {
@@ -388,7 +392,7 @@ function DocumentsUpload(props) {
                       role?.merchant &&
                       btn ? (
                         <button
-                          className="save-next-btn cob-btn-primary  text-white mt-3 ml-3"
+                          className="btn btn-sm cob-btn-primary  text-white m-1"
                           type="button"
                           onClick={() => setTab(6)}
                         >
@@ -401,10 +405,13 @@ function DocumentsUpload(props) {
                   ) : (
                     <></>
                   )}
+              </div>
+                <div className="form-row">
+                
                   {savedData?.length ? (
                     <>
                       <hr />
-                      {savedData?.length > 0 ? (
+                      {/* {savedData?.length > 0 ? (
                         <div className="container">
                           <div className="row">
                             <div className="col p-0 mt-2">
@@ -421,8 +428,9 @@ function DocumentsUpload(props) {
                         </div>
                       ) : (
                         <></>
-                      )}
-                      <div className="col-lg-12">
+                      )} */}
+                      <div className="col-lg-12 mt-4">
+                      <h5>Preview Documents</h5>
                         <table className="table table-bordered">
                           <thead>
                             <tr>
@@ -457,7 +465,7 @@ function DocumentsUpload(props) {
                                   </a>
                                   <p className="text-danger"> {doc?.comment}</p>
                                 </td>
-                                <td>{doc.status}</td>
+                                <td>{doc?.status}</td>
                                 {role?.merchant &&
                                 documentStatus !== "Approved" &&
                                 documentStatus !== "Verified" ? (

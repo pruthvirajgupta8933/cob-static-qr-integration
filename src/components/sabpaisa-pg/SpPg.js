@@ -10,6 +10,7 @@ import { Link, useParams } from 'react-router-dom'
 import {  isNull } from 'lodash'
 import payment_default_gif from "../../assets/images/image_processing20201113-8803-s9v2bo.gif"
 import payment_response_gif from "../../assets/images/image_processing20210906-19522-9n3ter.gif"
+import classes from "./pg.module.css"
 
 function SpPg() {
 
@@ -118,23 +119,21 @@ function SpPg() {
     return (
         <React.Fragment>
             <section className="ant-layout">
-                <NavBar />
+                
                 <SabpaisaPaymentGateway planData={selectedPlan} clientTxnId={newClientTxnId} openPg={isOpenPg} clientData={auth?.user} subscribeId={subscribeId} />
                 <main className="gx-layout-content ant-layout-content">
                     <div className="gx-main-content-wrapper">
                         <div className="right_layout my_account_wrapper right_side_heading">
-                            <h1 className="m-b-sm gx-float-left">Payment</h1>
+                            <h5 className="m-b-sm gx-float-left">Payment</h5>
                         </div>
                         <section className="features8 cid-sg6XYTl25a" id="features08-3-">
                             <div className="container">
                             <div className="row">
                                 <div className="col-lg-6">
-                                    <img src={reponseFromServerFlag ? payment_default_gif: payment_response_gif} alt="payment" />
+                                    <img src={reponseFromServerFlag ? payment_default_gif: payment_response_gif} alt="payment" className={`${classes.image}`} />
                                 </div>
                                 <div className="col-lg-6">
                                     <div className="card">
-                                        <div className="card-header">
-                                        </div>
                                         {reponseFromServerFlag ?
                                             <div className="card-body">
                                                 {/* <h5 className="card-title">Payment Status</h5> */}
@@ -145,16 +144,16 @@ function SpPg() {
                                                 <p className="card-text">Payment Status : {responseData?.status}</p>
                                                 <p className="card-text">Transaction Date : {responseData?.transDate}</p>
                                                 <p className="card-text">{responseData?.sabpaisaMessage}</p>
-                                                <Link className="btn btn-primary" to="/dashboard">Back to Dashboard</Link>
+                                                <Link className="btn  cob-btn-primary btn-sm" to="/dashboard">Back to Dashboard</Link>
                                             </div>
                                             :
                                             <div className="card-body">
-                                                <h3 className="card-title">Make payment to activate the selected plan.</h3>
-                                                <h4 className="card-title">Amount : {selectedPlan[0]?.actual_price} INR</h4>
-                                                <h4 className="card-title">Plan Name : {selectedPlan[0]?.plan_name}</h4>
+                                                <h5 className="card-title">Make payment to activate the selected plan.</h5>
+                                                <p className="card-title">Amount : {selectedPlan[0]?.actual_price} INR</p>
+                                                <p className="card-title">Plan Name : {selectedPlan[0]?.plan_name}</p>
                                                 {/* <h5 className="card-title">Amount : {selectedPlan[0]?.planPrice}</h5> */}
                                                 {/* <p className="card-text">With supporting text below as a natural lead-in to additional content.</p> */}
-                                                <button onClick={() => { getClientTxnId(selectedPlan, auth?.user) }} className="btn btn-primary">Pay Now</button>
+                                                <button onClick={() => { getClientTxnId(selectedPlan, auth?.user) }} className="btn  cob-btn-primary btn-sm">Pay Now</button>
                                             </div>
                                         }
 

@@ -283,7 +283,7 @@ const DebitReport = () => {
   return (
     <section className="ant-layout">
       <div>
-        <NavBar />
+        
       </div>
       <div className="gx-main-content-wrapper">
         <div className="right_layout my_account_wrapper right_side_heading">
@@ -338,7 +338,7 @@ const DebitReport = () => {
                   <button
                     type="subbmit"
                     disabled={disable}
-                    className="btn approve text-white  btn-xs"
+                    className="btn approve text-white  btn-sm"
                   >
                     Submit
                   </button>

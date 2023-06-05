@@ -189,9 +189,7 @@ const KycDetailsModal = (props) => {
   
 
   return (
-    <>
      <CustomModal modalBody={modalBody} headerTitle={"Merchant KYC Details"} modalFooter={modalFooter} modalToggle={props?.isOpenModal} fnSetModalToggle={props?.handleModal} />
-    </>
   );
 };
 

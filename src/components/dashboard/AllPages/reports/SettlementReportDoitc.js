@@ -303,7 +303,7 @@ const SettlementReportDoitc = () => {
   return (
     <section className="ant-layout NunitoSans-Regular">
       <div>
-        <NavBar />
+        
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
@@ -354,7 +354,7 @@ const SettlementReportDoitc = () => {
                       <div className="form-group col-md-1">
                         <button
                           disabled={disable}
-                          className=" btn bttn bttnbackgroundkyc"
+                          className=" btn bttn cob-btn-primary"
                           type="submit"
                         >
                           Search{" "}

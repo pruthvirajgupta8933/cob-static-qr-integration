@@ -193,38 +193,24 @@ function AssignZone() {
   };
 
   return (
-    <section className="ant-layout">
-      <div>
-        <NavBar />
-      </div>
-      <main className="gx-layout-content ant-layout-content">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">MID Generation</h1>
+    <section className="">
+      <main className="">
+        <div className="">
+          <div className="">
+            <h5 className="">MID Generation</h5>
           </div>
-          <div className="container-fluid flleft">
+          <div className="container-fluid">
           <div className="row">
-            <div className="form-group  col-md-3">
+            <div className="form-group col-md-3">
               <SearchFilter
                 kycSearch={kycSearch}
                 searchText={searchText}
                 searchByText={searchByText}
                 setSearchByDropDown={setSearchByDropDown}
               />
-              <div>
-                {" "}
-                {openZoneModal === true ? (
-                  <ViewGenerateMidModal
-                    userData={modalDisplayData}
-                    setOpenModal={setOpenModal}
-                    afterGeneratingMid={afterGeneratingMid}
-                  />
-                ) : (
-                  <></>
-                )}
-              </div>
+
             </div>
-            <div className="form-group col-md-3 mx-4">
+            <div className="form-group col-md-3">
               <CountPerPageFilter
                 pageSize={pageSize}
                 dataCount={dataCount}
@@ -232,7 +218,7 @@ function AssignZone() {
               />
             </div>
 
-            <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4 mr-3">
+            <div className="">
               <div className="scroll overflow-auto mr-3">
                 {!loadingState && data?.length !== 0 && (
                   <Table
@@ -253,6 +239,17 @@ function AssignZone() {
           </div>
         </div>
         </div>
+        <div>
+                {openZoneModal === true ? (
+                  <ViewGenerateMidModal
+                    userData={modalDisplayData}
+                    setOpenModal={setOpenModal}
+                    afterGeneratingMid={afterGeneratingMid}
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
       </main>
     </section>
   );

@@ -19,7 +19,7 @@ const initialValues = {
 const validationSchema = Yup.object({
     business_category: Yup.string().required("Required").nullable(),
     risk_category_name: Yup.string().required("Required").nullable(),
-   
+
 })
 
 
@@ -41,14 +41,14 @@ const ViewRateMapping = (props) => {
 
 
     useEffect(() => {
-       
+
         dispatch(busiCategory())
             .then((resp) => {
                 const data = convertToFormikSelectJson(
                     "category_id",
                     "category_name",
                     resp.payload
-                  );
+                );
                 setRisk(data);
 
             })
@@ -60,7 +60,7 @@ const ViewRateMapping = (props) => {
     //         const postData = {
     //             risk_category_code: riskCode
     //         };
-           
+
     //         dispatch(businessCategory(postData)).then((resp) => {
 
     //             const data = convertToFormikSelectJson("business_category_id", "category_name", resp?.payload?.Data);
@@ -73,11 +73,11 @@ const ViewRateMapping = (props) => {
     // }, [riskCode]);
 
 
-    
+
 
     ///////////////////////////////////////////////////////////new Work
     useEffect(() => {
-       
+
         if (businessTemplate !== "") {
             const postData = {
                 business_cat_code: businessTemplate
@@ -85,7 +85,7 @@ const ViewRateMapping = (props) => {
             setDisable(false)
             dispatch(templateRate(postData)).then((resp) => {
                 const data = convertToFormikSelectJson("rate_template_code", "rate_template_name", resp?.payload);
-               setBusinessTemplates(data)
+                setBusinessTemplates(data)
             }).catch((err) => {
 
             })
@@ -173,16 +173,16 @@ const ViewRateMapping = (props) => {
                                         </button>
                                     </div>
                                     <div className="modal-body">
-                                        <h5 className="font-weight-bold ml-3">Client Name: {props?.userData?.clientName}</h5>
-                                        <h5 className="font-weight-bold ml-3">Client Code: {props?.userData?.clientCode}</h5>
+                                        <div className="mb-3">
+                                            <p className="m-0">Client Name: {props?.userData?.clientName}</p>
+                                            <p className="m-0">Client Code: {props?.userData?.clientCode}</p>
+                                        </div>
+
                                         <div className="container">
-
                                             <Form>
-                                               
-
                                                 <div className="row">
                                                     <div className="col-lg-6 ">
-                                                        <div className="input full- optional">
+                                                        <div className="">
                                                             <label
                                                                 className="string optional"
                                                                 htmlFor="business_category"
@@ -199,7 +199,7 @@ const ViewRateMapping = (props) => {
                                                             {formik.handleChange(
                                                                 "rate_template_name",
                                                                 setBusinessTemplate(formik?.values?.business_category),
-                                                              
+
                                                             )}
                                                             {/* {formik.handleChange(
                                                                 "category_name",
@@ -232,7 +232,7 @@ const ViewRateMapping = (props) => {
                                                         </div>
                                                     </div> */}
                                                     <div className="col-lg-6">
-                                                        <div className="input full- optional">
+                                                        <div className="">
                                                             <label
                                                                 className="string optional"
                                                                 htmlFor="Template_rate"
@@ -253,24 +253,21 @@ const ViewRateMapping = (props) => {
 
                                                 </div>
 
-
-                                                <div className="modal-footer">
-                                                    {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
+                                                    <div >
                                                     <button disabled={disable} type="submit" className="btn cob-btn-primary  text-white">View</button>
-                                                    {show === true ? (
-                                                        <div className='col-lg-12'>
-                                                            <RateRadioMapping riskTemplate={riskTemplate} chiledCode={props?.userData} />
-                                                        </div>
 
-
-                                                    ) : (
-                                                        <></>
-                                                    )}
-
-                                                </div>
-
+                                                    </div>
                                             </Form>
 
+                                            {show === true ? (
+                                                <div className="col-lg-12 mt-5">
+                                                    <RateRadioMapping riskTemplate={riskTemplate} chiledCode={props?.userData} />
+                                                </div>
+
+
+                                            ) : (
+                                                <></>
+                                            )}
 
                                         </div>
 

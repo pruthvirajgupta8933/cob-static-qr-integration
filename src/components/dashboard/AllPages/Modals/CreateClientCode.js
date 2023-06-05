@@ -120,7 +120,7 @@ function CreateClientCode(props) {
           />
           {isCodeValid ? <p>Client Code is valid</p> : "" }
           {isCodeValid===false ? <p>Client Code already exists</p> : "" }
-            <button className="btn btn-primary"  type="submit">Submit</button>
+            <button className="btn  cob-btn-primary "  type="submit">Submit</button>
             
             </div>
           </Form>

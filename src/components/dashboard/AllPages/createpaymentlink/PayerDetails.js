@@ -13,6 +13,7 @@ import toastConfig from "../../../../utilities/toastTypes";
 import DropDownCountPerPage from "../../../../_components/reuseable_components/DropDownCountPerPage";
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import "./index.css";
+import classes from "./paylink.module.css"
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -141,7 +142,8 @@ const PayerDetails = () => {
   };
 
   //ADD user API Integration
-  const onSubmit = async (e) => {
+
+    const onSubmit = async (e) => {
     // console.log(e)
     const res = await axiosInstance.post(API_URL.ADD_CUSTOMER, {
       name: e.name,
@@ -150,8 +152,7 @@ const PayerDetails = () => {
       client_code: clientCode,
       customer_type_id: e.customer_type_id,
     });
-
-    loadUser();
+  loadUser();
     if (res.status === 200) {
       toastConfig.successToast("Payee added successfully");
     } else {
@@ -160,8 +161,7 @@ const PayerDetails = () => {
   };
 
   // USE FOR EDIT FORM
-
-  const handleClick = (id) => {
+const handleClick = (id) => {
     setEditModalToggle(true);
     data.filter((dataItem) => {
       if (dataItem.id === id) {
@@ -215,7 +215,9 @@ const PayerDetails = () => {
         modalToggle={editModalToggle}
         fnSetModalToggle={setEditModalToggle}
       />
-      <Genratelink generatedata={genrateform} />
+      <Genratelink generatedata={genrateform}/>
+
+
       <div
         className="mymodals modal fade"
         id="exampleModal"
@@ -359,7 +361,7 @@ const PayerDetails = () => {
                         </label>
                         <Field
                           name="customer_type_id"
-                          className="selct"
+                          className="form-select"
                           component="select"
                         >
                           <option type="text" id="recipient-name">
@@ -391,13 +393,13 @@ const PayerDetails = () => {
                       <div className="modal-footer">
                         <button
                           type="submit"
-                          className="btn cob-btn-primary text-white"
+                          className="btn cob-btn-primary text-white btn-sm"
                         >
                           Submit
                         </button>
                         <button
                           type="button"
-                          className="btn cob-btn-secondary btn-danger text-white"
+                          className="btn cob-btn-secondary btn-danger text-white btn-sm"
                           data-dismiss="modal"
                           onClick={resetForm}
                         >
@@ -411,16 +413,17 @@ const PayerDetails = () => {
             </Formik>
           </div>
         </div>
+
       </div>
 
       {/* filter area */}
-      <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
-        <div className="container-fluid flleft">
+      <section >
+        <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-4 pl-4">
+            <div className="col-lg-4">
               <button
                 type="button"
-                className="btn cob-btn-primary btn-primary text-white"
+                className="btn cob-btn-primary btn-primary text-white btn-sm"
                 data-toggle="modal"
                 data-target="#exampleModal"
               >
@@ -430,7 +433,8 @@ const PayerDetails = () => {
           </div>
 
           <div className="row">
-            <div className="col-lg-4 mrg-btm- bgcolor">
+          <div className={`col-lg-3 mt-3`}>
+            {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
               <label>Search</label>
               <input
                 className="form-control"
@@ -439,7 +443,7 @@ const PayerDetails = () => {
                 placeholder="Search Here"
               />
             </div>
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className={`col-lg-3 mt-3`}>
               <label>Count Per Page</label>
               <select
                 value={pageSize}
@@ -451,16 +455,13 @@ const PayerDetails = () => {
               </select>
             </div>
           </div>
-          <div className="row">
-            <div className="col-lg-4 mrg-btm- bgcolor">
-              <p>Total Records:{data.length}</p>
-            </div>
-          </div>
         </div>
       </section>
 
       <section className="">
-        <div className="container-fluid flleft p-3 my-3 ">
+        <div className="container-fluid p-3 my-3 ">
+        <h6>Total Records:{data.length}</h6>
+
           <div className="scroll overflow-auto">
             <table className="table table-bordered">
               <thead>
@@ -487,7 +488,7 @@ const PayerDetails = () => {
                     <td>
                       <button
                         type="button"
-                        className="btn cob-btn-primary btn-primary text-white"
+                        className="btn cob-btn-primary btn-primary text-white btn-sm"
                         onClick={(e) => handleClick(user.id)}
                       >
                         Edit
@@ -498,7 +499,7 @@ const PayerDetails = () => {
                       <button
                         onClick={(e) => generateli(user.id)}
                         type="button"
-                        className="btn cob-btn-primary  text-white"
+                        className="btn cob-btn-primary  text-white btn-sm"
                         data-toggle="modal"
                         data-target="#bhuvi"
                         data-whatever="@getbootstrap"
@@ -509,7 +510,7 @@ const PayerDetails = () => {
                     </td>
                     <td>
                       <button
-                        className="btn  cob-btn-secondary btn-danger text-white mt-7 "
+                        className="btn  cob-btn-secondary btn-danger text-white btn-sm"
                         onClick={() => deleteUser(user.id)}
                       >
                         Delete

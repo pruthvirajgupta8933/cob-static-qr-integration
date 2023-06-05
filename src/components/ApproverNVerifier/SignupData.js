@@ -291,15 +291,13 @@ const SignupData = () => {
   ];
 
   return (
-    <section className="ant-layout">
-      <div>
-        <NavBar />
-      </div>
-      <main className="gx-layout-content ant-layout-content">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Signup Data</h1>
+    <section className="">
+      <main className="">
+        <div className="">
+          <div className="mb-5">
+            <h5 className="">Signup Data</h5>
           </div>
+
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -309,9 +307,9 @@ const SignupData = () => {
             enableReinitialize={true}
           >
             <Form>
-              <div className="container">
+              <div className="">
                 <div className="row">
-                  <div className="form-group  col-md-3 ml-4">
+                  <div className="form-group  col-md-3 ">
                     <FormikController
                       control="input"
                       type="date"
@@ -323,7 +321,7 @@ const SignupData = () => {
                     />
                   </div>
 
-                  <div className="form-group col-md-3 mx-4">
+                  <div className="form-group col-md-3 ">
                     <FormikController
                       control="input"
                       type="date"
@@ -335,11 +333,10 @@ const SignupData = () => {
                 </div>
 
                 <div className="row">
-                  <div className=" col-md-4">
+                  <div className="col-md-4">
                     <button
                       type="submit"
-                      className="btn cob-btn-primary approve text-white  text-white ml-4 "
-                    >
+                      className="btn cob-btn-primary approve text-white  text-white">
                       Submit
                     </button>
                     {signupData?.length > 0 ? (
@@ -359,12 +356,13 @@ const SignupData = () => {
               </div>
             </Form>
           </Formik>
-          {signupData.length===0 && show===true && <h2 className="text-center font-weight-bold mt-5">
+          {signupData.length===0 && show===true && <h5 className="text-center font-weight-bold mt-5">
                     No Data Found
-                  </h2>}
+                  </h5>}
           {!loadingState && signupData?.length !== 0 && (
             <>
-              <div className="form-group col-lg-3 col-md-12 mt-2 ml-4">
+            <div className="row mt-4">
+              <div className="form-group col-lg-3">
                 <SearchFilter
                   kycSearch={kycSearch}
                   searchText={searchText}
@@ -374,16 +372,16 @@ const SignupData = () => {
                 <div></div>
               </div>
 
-              <div className="form-group col-lg-3 col-md-12 mt-2 ml-3">
+              <div className="form-group col-lg-3">
                 <CountPerPageFilter
                   pageSize={pageSize}
                   dataCount={dataCount}
                   changePageSize={changePageSize}
                 />
               </div>
-
-              <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
-                <div className="scroll overflow-auto ml-4">
+</div>
+              <div className="container-fluid ">
+                <div className="scroll overflow-auto">
                   {!loadingState && signupData?.length !== 0 && (
                     <Table
                       row={rowSignUpData}

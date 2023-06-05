@@ -108,7 +108,7 @@ const PersonalDetails = ({ showBankDetails,backToPreviousScreen }) => {
           >
             Back
           </button>
-          <button class="btn bttn bttnbackgroundkyc" type="submit">
+          <button class="btn bttn cob-btn-primary" type="submit">
             Next
           </button>
         </Form>

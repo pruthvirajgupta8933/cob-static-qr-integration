@@ -61,7 +61,7 @@ function SubmitKyc(props) {
 
 
     }).catch(err => console.log(err))
-  
+
 
   }, []);
 
@@ -113,102 +113,86 @@ function SubmitKyc(props) {
         >
           {(formik) => (
             <Form>
-              <div className="form-group row">
-                <div className="row">
-                  {!isEmpCodeSaved && (kyc_status !== KYC_STATUS_VERIFIED || kyc_status !== KYC_STATUS_APPROVED )&&
-                    <div className="col-4">
-                      <FormikController
-                        control="select"
-                        name="referral_code"
-                        options={refferalListSelectOption}
-                        className="form-control "
-                        label="Referal Code (Optional)"
-                      />
-                    </div>
-                  }
-                  <div className="col-12  checkboxstyle">
-                    <div>
-                      <div className="para-style">
-                        <Field
-                          type="checkbox"
-                          name="term_condition"
-                          disabled={
-                            kyc_status.toLowerCase() === KYC_STATUS_VERIFIED.toLowerCase() ||
-                              kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()
-                              ? true
-                              : false
-                          }
-                          className="mr-2 mt-1"
-                        />
-                        I have read and understood the{" "}
-                        <a
-                          href="https://sabpaisa.in/term-conditions/"
-                          className="text-decoration-underline text-primary"
-                          rel="noreferrer"
-                          alt="Term & Conditions"
-                          target="_blank"
-                          title="Term & Conditions"
-                        >
-                          Terms & Conditions
-                        </a>
-                        ,{" "}
-                        <a
-                          href="https://sabpaisa.in/privacy-policy/"
-                          alt="Privacy Policy"
-                          target="_blank"
-                          title="Privacy Policy"
-                          rel="noreferrer"
-                          className="text-decoration-underline text-primary"
-                        >
-                          Privacy Policy
-                        </a>
-                        ,{" "}
-                        <a
-                          href="https://sabpaisa.in/service-agreement"
-                          alt="Service Agreement"
-                          target="_blank"
-                          title="Service Agreement"
-                          rel="noreferrer"
-                          className="text-decoration-underline text-primary"
-                        >
-                          Service Agreement
-                        </a>
-                      </div>
-                      <div className="col-lg-11 para-style2 ">
-                        By submitting the form, I agree to abide by the rules at
-                        all times.
-                      </div>
-                    </div>
+              <div className="row">
+                {!isEmpCodeSaved && (kyc_status !== KYC_STATUS_VERIFIED || kyc_status !== KYC_STATUS_APPROVED) &&
+                  <div className="col-4">
+                    <FormikController
+                      control="select"
+                      name="referral_code"
+                      options={refferalListSelectOption}
+                      className="form-control "
+                      label="Referal Code (Optional)"
+                    />
                   </div>
+                }
+              </div>
+
+              <div className="row">
+                <div className="col-lg-12 checkboxstyle">
+                  <div className="para-style">
+                    <Field
+                      type="checkbox"
+                      name="term_condition"
+                      disabled={
+                        kyc_status.toLowerCase() === KYC_STATUS_VERIFIED.toLowerCase() ||
+                          kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()
+                          ? true
+                          : false
+                      }
+                      className="mr-2 mt-1"
+                    />
+                    <span>I have read and understood the&nbsp;
+                    <a
+                      href="https://sabpaisa.in/term-conditions/"
+                      className="text-decoration-none text-primary"
+                      rel="noreferrer"
+                      alt="Term & Conditions"
+                      target="_blank"
+                      title="Term & Conditions"
+                    >
+                      Terms & Conditions
+                    </a>,{" "}
+                    <a
+                      href="https://sabpaisa.in/privacy-policy/"
+                      alt="Privacy Policy"
+                      target="_blank"
+                      title="Privacy Policy"
+                      rel="noreferrer"
+                      className="text-decoration-none text-primary"
+                    >
+                      Privacy Policy
+                    </a>
+                    ,
+                    <a
+                      href="https://sabpaisa.in/service-agreement"
+                      alt="Service Agreement"
+                      target="_blank"
+                      title="Service Agreement"
+                      rel="noreferrer"
+                      className="text-decoration-none text-primary"
+                    >&nbsp;Service Agreement
+                    </a>&nbsp;By submitting the form, I agree to abide by the rules at
+                    all times.
+                    </span>
+                  </div>
+                  <div className="col-lg-11 para-style2 ">
+                  
+                  </div>
+                  {
+                  <ErrorMessage name="term_condition">
+                    {(msg) => (<p className="text-danger">{msg}</p>)}
+                  </ErrorMessage>
+                }
                 </div>
               </div>
-              {
-                <ErrorMessage name="term_condition">
-                  {(msg) => (
-                    <p
-                      className="abhitest"
-                      style={{
-                        color: "red",
-                        position: "absolute",
-                        zIndex: " 999",
-                      }}
-                    >
-                      {msg}
-                    </p>
-                  )}
-                </ErrorMessage>
-              }
-              <div className="my-5 p-2">
-                <hr
-                  style={{
-                    borderColor: "#D9D9D9",
-                    textShadow: "2px 2px 5px grey",
-                    width: "100%",
-                  }}
-                />
-                <div className="mt-3">
+
+           
+              <hr/>
+              <hr/>
+              <div className="row">
+                <div className="col-12">
                   {(kyc_status.toLowerCase() === KYC_STATUS_VERIFIED.toLowerCase() ||
-                    kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()) ? <></>:  (
+                    kyc_status.toLowerCase() === KYC_STATUS_APPROVED.toLowerCase()) ? <></> : (
                     <button
                       disabled={disable}
                       className="save-next-btn float-lg-right cob-btn-primary text-white"
@@ -219,6 +203,9 @@ function SubmitKyc(props) {
                   )}
                 </div>
               </div>
+              <hr/>
+              <hr/>
+
             </Form>
           )}
         </Formik>

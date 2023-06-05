@@ -144,13 +144,13 @@ console.log("props.modalToggle", props.modalToggle)
                 />
                 <button
                   type="submit"
-                  className="btn cob-btn-primary text-white "
+                  className="btn cob-btn-primary text-white btn-sm"
                 >
                   Update
                 </button>
                 <button
                   type="button"
-                  className="btn cob-btn-secondary ml-2 text-white"
+                  className="btn cob-btn-secondary ml-2 text-white btn-sm"
                   onClick={()=>props.fnSetModalToggle(false)}
                 >
                   Cancel

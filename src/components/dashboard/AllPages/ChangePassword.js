@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import "yup-phone";
 import { changePasswordSlice } from "../../../slices/auth";
-import { toast} from "react-toastify";
+import { toast } from "react-toastify";
 import NavBar from "../NavBar/NavBar";
 import { logout } from "../../../slices/auth";
 
@@ -16,7 +16,7 @@ function ChangePassword() {
   // let { path, url } = useRouteMatch();
   const { user } = useSelector((state) => state.auth);
 
-  
+
   const { loginId, userName } = user;
 
   // const [clientId,setClientId] = useState(clientMerchantDetailsList!==null && clientMerchantDetailsList[0]?.clientId)
@@ -56,7 +56,7 @@ function ChangePassword() {
     showPassword: false,
   });
   // const exitback = () => {
-    
+
   // };
 
 
@@ -68,10 +68,10 @@ function ChangePassword() {
 
     new_password: Yup.string()
       .required("New Password Required")
-    .matches(
-      /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
-    ),
+      .matches(
+        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+      ),
 
     confirm_password: Yup.string()
       .oneOf([Yup.ref("new_password"), null], "Passwords must match")
@@ -83,7 +83,7 @@ function ChangePassword() {
   };
 
   const updataPassword = (data) => {
-    
+
     dispatch(
       changePasswordSlice({
         email: data.email,
@@ -103,213 +103,145 @@ function ChangePassword() {
   };
 
   return (
-    <section className="ant-layout">
-      <div>
-        <NavBar />
-      </div>
-      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
-        <div className="gx-main-content-wrapper">
+    <section className="">
+      <main className="">
+        <div className="container-fluid">
           <div className="right_layout my_account_wrapper">
-            <h1 className="right_side_heading">Change Password</h1>
-            <div className="ant-tabs ant-tabs-top ant-tabs-line">
-              <div
-                role="tablist"
-                className="ant-tabs-bar ant-tabs-top-bar"
-              >
-                <div className="ant-tabs-nav-container">
-                  <div className="ant-tabs-nav-wrap">
-                    <div className="ant-tabs-nav-scroll">
-                      <div className="ant-tabs-nav- ant-tabs-nav-animated">
-                        <div>
-                        
+            <h5 className="right_side_heading">Change Password</h5>
+
+            <div className="row">
+
+
+              <div className="col-lg-12">
+
+                <Formik
+                  enableReintialize="true"
+                  initialValues={{
+                    ...INITIAL_FORM_STATE,
+                  }}
+                  validationSchema={FORM_VALIDATION}
+                  onSubmit={updataPassword}
+                >
+                  <Form className="form-horizontal">
+
+                    <Field type="hidden" name="loginId" disabled />
+                    <Field type="hidden" name="email" disabled />
+
+                    <div className="form-group">
+
+
+                      <div className="col-lg-4 mb-3">
+                        <label className="form-label">
+                          Old Password
+                        </label>
+                        <Field
+                          type={
+                            values.showPassword
+                              ? "old_password"
+                              : "password"
+                          }
+                          name="old_password"
+                          placeholder="Enter Old Password"
+                          className="form-control"
+                        />
+
+
+                        <ErrorMessage name="old_password">
+                          {(msg) => (
+                            <div className="text-danger m-0">{msg}</div>
+                          )}
+                        </ErrorMessage>
+                      </div>
+
+
+                      <div className="col-lg-4 mb-3">
+                        <label
+                          className="form-label"
+                        >
+                          New Password
+                        </label>
+                        <Field
+                          type={values.showPassword ? "text" : "password"}
+                          name="new_password"
+                          placeholder="Enter New Password"
+                          className="form-control"
+                        />
+
+
+                        <ErrorMessage name="new_password">
+                          {(msg) => (
+                            <div className="text-danger m-0">{msg}</div>
+                          )}
+                        </ErrorMessage>
+                      </div>
+
+                      <div className="col-lg-4 mb-3">
+                        <label
+                          className="form-label"
+                          htmlFor="changepassword"
+                        >
+                          Confirm New Password :
+                        </label>
+                        <div className="input-group">
+
+                          <Field
+                            type={values.showPassword ? "text" : "password"}
+                            name="confirm_password"
+                            placeholder="Re-type New Password"
+                            className="form-control"
+                          />
+                          <div class="input-group-append">
+                          <span class="input-group-text" id="basic-addon2" onClick={handleClickShowPassword} > 
+                          {values.showPassword ? (
+                                <i className="fa fa-eye" aria-hidden="true"></i>
+                              ) : (
+                                <i
+                                  className="fa fa-eye-slash"
+                                  aria-hidden="true"
+                                ></i>
+                              )}
+                           </span></div>
+                          <span className="input-group-addon eyeicon d-none">
+                            <a onClick={handleClickShowPassword} href={false}>
+
+                              {values.showPassword ? (
+                                <i className="fa fa-eye" aria-hidden="true"></i>
+                              ) : (
+                                <i
+                                  className="fa fa-eye-slash"
+                                  aria-hidden="true"
+                                ></i>
+                              )}
+                            </a>
+                          </span>
+                       
                         </div>
-                        <div
-                          className="ant-tabs-ink-bar ant-tabs-ink-bar-animated"
-                          style={{
-                            display: "block",
-                            transform: "translate3d(0px, 0px, 0px)",
-                            width: "116px",
-                          }}
-                        ></div>
+                        <ErrorMessage name="confirm_password">
+                            {(msg) => (
+                              <div className="text-danger m-0">{msg}</div>
+                            )}
+                          </ErrorMessage>
+                      </div>
+
+
+
+                      <div className="col-lg-4 mb-3">
+                        <button
+                          type="sumbit"
+                          className=" btn bttn font-weight-bold cob-btn-primary w-100"
+
+                        >
+                          Update Password
+                        </button>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                
-                role="presentation"
-                style={{
-                  width: "0px",
-                  height: "0px",
-                  overflow: "hidden",
-                  position: "absolute",
-                }}
-              />
-              <div
-                className="ant-tabs-content ant-tabs-content-animated ant-tabs-top-content"
-                style={{ marginLeft: "0%" }}
-              >
-                <div
-                  role="tabpanel"
-                  aria-hidden="false"
-                  className="ant-tabs-tabpane ant-tabs-tabpane-active"
-                >
-                  <div
-                
-                    role="presentation"
-                    style={{
-                      width: "0px",
-                      height: "0px",
-                      overflow: "hidden",
-                      position: "absolute",
-                    }}
-                  ></div>
-                  <div className="container col-sm-8">
-                    <Formik
-                      enableReintialize="true"
-                      initialValues={{
-                        ...INITIAL_FORM_STATE,
-                      }}
-                      validationSchema={FORM_VALIDATION}
-                      onSubmit={updataPassword}
-                    >
-                      <Form className="form-horizontal">
-                        <h4 className="text-left m-b-lg m-b-20">
-                          Update Your Password.
-                        </h4>
-                        <Field type="hidden" name="loginId" disabled />
-                        <Field type="hidden" name="email" disabled />
 
-                        <div className="form-group">
-                          
-                          <div className="col-lg-4">
-                          <label
-                            className="control-label"
-                            htmlFor="email"
-                          >
-                            Old Password :
-                          </label>
-                            <Field
-                              type={
-                                values.showPassword
-                                  ? "old_password"
-                                  : "password"
-                              }
-                              name="old_password"
-                              placeholder="Enter Old Password"
-                              className="form-control"
-                            />
-                          
-
-                            <ErrorMessage name="old_password">
-                              {(msg) => (
-                                <div className="error_msg_display">{msg}</div>
-                              )}
-                            </ErrorMessage>
-                          </div>
-                        
-                          
-                          <div className="col-lg-4">
-                          <label
-                            className="control-label"
-                            htmlFor="newPassword"
-                          >
-                            {" "}
-                            New Password :
-                          </label>
-                            <Field
-                              type={values.showPassword ? "text" : "password"}
-                              name="new_password"
-                              placeholder="Enter New Password"
-                              className="form-control"
-                            />
-                          
-
-                            <ErrorMessage name="new_password">
-                              {(msg) => (
-                                <div className="error_msg_display">{msg}</div>
-                              )}
-                            </ErrorMessage>
-                          </div>
-
-                          <div className="col-lg-4">
-                          <label
-                            className="control-label"
-                            htmlFor="changepassword"
-                          >
-                            {" "}
-                            Confirm New Password :
-                          </label>
-                            <Field
-                              type={values.showPassword ? "text" : "password"}
-                              name="confirm_password"
-                              placeholder="Re-type New Password"
-                              className="form-control"
-                            />
-                            <span className="input-group-addon eyeicon">
-                              <a onClick={handleClickShowPassword}>
-                                {" "}
-                                {values.showPassword ? (
-                                  <i className="fa fa-eye" aria-hidden="true"></i>
-                                ) : (
-                                  <i
-                                    className="fa fa-eye-slash"
-                                    aria-hidden="true"
-                                  ></i>
-                                )}
-                              </a>
-                            </span>
-                            <ErrorMessage name="confirm_password">
-                              {(msg) => (
-                                <div className="error_msg_display">{msg}</div>
-                              )}
-                            </ErrorMessage>
-                          </div>
-                        </div>
-                          <div className="form-group  ">
-                          <div className="col-sm-12">
-                            <button
-                              type="sumbit"
-                              style={{
-                                margin: "10px",
-                                float: "right",
-                                width: "25%",
-                              }}
-                              className=" btn bttn font-weight-bold bttnbackgroundkyc"
-                              
-                            >
-                              {" "}
-                              Update Password
-                            </button>
-                          </div>
-                        </div>
-                        <br />
-                      </Form>
-                    </Formik>
-                  </div>
-                </div>
-                <div
-               
-                  role="presentation"
-                  style={{
-                    width: "0px",
-                    height: "0px",
-                    overflow: "hidden",
-                    position: "absolute",
-                  }}
-                ></div>
+                    <br />
+                  </Form>
+                </Formik>
               </div>
             </div>
-            <div
-              role="presentation"
-              style={{
-                width: "0px",
-                height: "0px",
-                overflow: "hidden",
-                position: "absolute",
-              }}
-            />
+
           </div>
         </div>
       </main>

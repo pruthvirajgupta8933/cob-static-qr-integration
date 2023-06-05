@@ -8,7 +8,7 @@ import { GetKycTabsStatus } from '../../../../slices/kycSlice';
 
 
 function MerchantContactInfo(props) {
-  
+
   const { merchantKycId, KycTabStatus } = props
   const [buttonText, setButtonText] = useState("Save and Next");
 
@@ -16,7 +16,7 @@ function MerchantContactInfo(props) {
   const [isRejected, setIsRejected] = useState(KycTabStatus?.general_info_status === "Verified" ? true : false);
 
 
-let commentsStatus=KycTabStatus.general_info_reject_comments;
+  let commentsStatus = KycTabStatus.general_info_reject_comments;
 
   const dispatch = useDispatch();
   const { role, kycid } = props;
@@ -54,136 +54,131 @@ let commentsStatus=KycTabStatus.general_info_reject_comments;
       });
   }
 
-  const handleRejectClick = (general_info_reject_comments="") => {
-   
-    
+  const handleRejectClick = (general_info_reject_comments = "") => {
+
+
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       general_info_rejected_by: loginId,
-      general_info_reject_comments:general_info_reject_comments
+      general_info_reject_comments: general_info_reject_comments
 
 
     };
     if (window.confirm("Reject Merchant Contact Info?")) {
-    dispatch(rejectKycOperation(rejectDetails))
-      .then((resp) => {
-        console.log(resp)
+      dispatch(rejectKycOperation(rejectDetails))
+        .then((resp) => {
+          console.log(resp)
 
-        
 
-        resp?.payload?.merchant_info_status &&
-          toast.success(resp?.payload?.general_info_status);
-        resp?.payload && toast.error(resp?.payload);
-        
-        dispatch(GetKycTabsStatus({login_id: merchantKycId?.loginMasterId})) // used to remove kyc button beacuse updated in redux store
-      })
-    
-      .catch((e) => {
-        toast.error("Try Again Network Error");
-      });
+
+          resp?.payload?.merchant_info_status &&
+            toast.success(resp?.payload?.general_info_status);
+          resp?.payload && toast.error(resp?.payload);
+
+          dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId })) // used to remove kyc button beacuse updated in redux store
+        })
+
+        .catch((e) => {
+          toast.error("Try Again Network Error");
+        });
     }
 
   }
 
 
   return (
-    <div className="row mb-4 border">
-      <div className="col-lg-12">
-        <h3 className="font-weight-bold">Merchant Contact Info</h3>
-      </div>
+    <div className="row mb-4 p-1 border">
+      <h5 className="">Merchant Contact Info</h5>
+      <div className="form-row g-3">
+        <div className="col-sm-6 col-md-6 col-lg-6">
+          <label className="">
+            Contact Name<span className="text-danger">*</span>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="inputPassword3"
+            disabled="true"
+            value={merchantKycId?.name}
+          />
+        </div>
 
+        <div className="col-sm-6 col-md-6 col-lg-6 ">
+          <label className="">
+            Aadhaar Number <span className="text-danger">*</span>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="inputPassword3"
+            disabled="true"
+            value={merchantKycId?.aadharNumber}
+          />
+        </div>
 
-      <div className="col-sm-6 col-md-6 col-lg-6 ">
-        <label className="col-form-label mt-0 p-2">
-          Contact Name<span style={{ color: "red" }}>*</span>
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="inputPassword3"
-          disabled="true"
-          value={merchantKycId?.name}
-        />
-      </div>
-
-      <div className="col-sm-6 col-md-6 col-lg-6 ">
-        <label className="col-form-label mt-0 p-2">
-          Aadhaar Number <span style={{ color: "red" }}>*</span>
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="inputPassword3"
-          disabled="true"
-          value={merchantKycId?.aadharNumber}
-        />
-      </div>
-
-
-      <div className="col-sm-6 col-md-6 col-lg-6 ">
-        <label className="col-form-label mt-0 p-2">
-          Contact Number<span style={{ color: "red" }}>*</span>
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="inputPassword3"
-          disabled="true"
-          value={merchantKycId?.contactNumber}
-        />
-
-        <span>
-          {merchantKycId?.isContactNumberVerified === 1 ? (
-            <p className="text-success">Verified</p>
-          ) : (
-            <p className="text-danger"> Not Verified</p>
-          )}
-        </span>
-      </div>
-      <div className="col-sm-6 col-md-6 col-lg-6 ">
-        <label className="col-form-label mt-0 p-2">
-          Email Id<span style={{ color: "red" }}>*</span>
-        </label>
-
-        <input
-          type="text"
-          className="form-control"
-          id="inputPassword3"
-          disabled="true"
-          value={merchantKycId?.emailId}
-        />
-        <span>
-          {merchantKycId?.isEmailVerified === 1 ? (
-            <p className="text-success">Verified</p>
-          ) : (
-            <p className="text-danger"> Not Verified</p>
-          )}
-        </span>
 
       </div>
+      <div className="form-row g-3">
+        <div className="col-sm-6 col-md-6 col-lg-6 ">
+          <label className="">
+            Contact Number<span style={{ color: "red" }}>*</span>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="inputPassword3"
+            disabled="true"
+            value={merchantKycId?.contactNumber}
+          />
 
-      
-      
-    
-    <div className="row container">
-    <div className="col-lg-6 font-weight-bold">
-        <p>Status : <span>{KycTabStatus?.general_info_status}</span></p>
-        <p>Comments : <span>{KycTabStatus?.general_info_reject_comments}</span></p>
+          <span>
+            {merchantKycId?.isContactNumberVerified === 1 ? (
+              <p className="text-success">Verified</p>
+            ) : (
+              <p className="text-danger"> Not Verified</p>
+            )}
+          </span>
+        </div>
+        <div className="col-sm-6 col-md-6 col-lg-6 ">
+          <label className="">
+            Email Id<span style={{ color: "red" }}>*</span>
+          </label>
+
+          <input
+            type="text"
+            className="form-control"
+            id="inputPassword3"
+            disabled="true"
+            value={merchantKycId?.emailId}
+          />
+          <span>
+            {merchantKycId?.isEmailVerified === 1 ? (
+              <p className="text-success">Verified</p>
+            ) : (
+              <p className="text-danger"> Not Verified</p>
+            )}
+          </span>
+
+        </div>
       </div>
-      
-      <div className="col-lg-6">
-        <VerifyRejectBtn
-         KycTabStatus={KycTabStatus?.general_info_status}
-          KycVerifyStatus={{ handleVerifyClick, isVerified }}
-          ContactComments={commentsStatus}
-          KycRejectStatus={{ handleRejectClick, isRejected }}
-          btnText={{ verify: "Verify", Reject: "Reject" }}
-        />
-      </div>
-      {/* <div className="col-lg-6 font-weight-bold mt-1 mb-2">
+      <div className="form-row g-3">
+        <div className="col-lg-6 font-weight-bold">
+          <p>Status : <span>{KycTabStatus?.general_info_status}</span></p>
+          <p>Comments : <span>{KycTabStatus?.general_info_reject_comments}</span></p>
+        </div>
+        <div className="col-lg-6">
+          <VerifyRejectBtn
+            KycTabStatus={KycTabStatus?.general_info_status}
+            KycVerifyStatus={{ handleVerifyClick, isVerified }}
+            ContactComments={commentsStatus}
+            KycRejectStatus={{ handleRejectClick, isRejected }}
+            btnText={{ verify: "Verify", Reject: "Reject" }}
+          />
+        </div>
+        {/* <div className="col-lg-6 font-weight-bold mt-1 mb-2">
         
       </div> */}
-    </div>
+      </div>
     </div>
 
   )

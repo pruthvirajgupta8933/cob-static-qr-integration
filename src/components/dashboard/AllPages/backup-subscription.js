@@ -288,7 +288,7 @@ const Subsciption = () => {
   return (
     <section className="ant-layout">
       <div>
-        <NavBar />
+        
         {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
       </div>
       <main className="gx-layout-content ant-layout-content">
@@ -330,7 +330,7 @@ const Subsciption = () => {
 
                           <div>
                             <p>
-                              <a className="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                              <a className="btn  cob-btn-primary " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 Link with href
                               </a>
                               <button className="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">

@@ -7,7 +7,7 @@ const ExportToExcel = () => {
     console.log(resp);
   });
   return (
-    <button onClick={ExportToExcel} className="btn btn-sm btn-primary ">
+    <button onClick={ExportToExcel} className="btn btn-sm btn-primary cob-btn-primary ">
       <i class="fa fa-file-excel-o mr-1" aria-hidden="true"></i>
       Export
     </button>

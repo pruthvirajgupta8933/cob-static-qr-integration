@@ -125,14 +125,14 @@ const SideNavbar = () => {
           <div className="gx-sidebar-content">
             <div className="brand-logo d-flex-item-right">
               <div className="float-centre pt-4 text-center- ml-3">
-                <Link to={`${url}`} className="txt-white sidenavFonts ">
+                {/* <Link to={`${url}`} className="txt-white sidenavFonts "> */}
                   <img
                     src={Sabpaisalogo3}
                     width={120}
                     alt="sabpaisa"
                     title="sabpaisa"
                   />
-                </Link>
+                {/* </Link> */}
               </div>
               <div className="sidebar_menu_list">
                 <div
@@ -154,7 +154,7 @@ const SideNavbar = () => {
                     }}
                   >
                     <ul
-                      className="desktop-sidenave-typography ant-menu ant-menu-dark ant-menu-root ant-menu-inline Satoshi-Medium"
+                      className="desktop-sidenave-typography ant-menu ant-menu-dark ant-menu-root ant-menu-inline "
                       role="menu"
                       style={{ background: "#140633" }}
                     >
@@ -163,7 +163,7 @@ const SideNavbar = () => {
                         roleBasedShowTab?.b2b === true ? (
                         <li className="ant-menu-item" role="menuitem">
                           <Link
-                            to={`${url}`}
+                            to={url}
                             className="txt-white sidenavFonts"
                           >
                             <img src={dashboard} width={17} alt="sabpaisa" />

@@ -335,7 +335,7 @@ function BusinessOverview(props) {
   );
 
   return (
-    <div className="col-md-12 p-3">
+    <div className="col-lg-12 p-0">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -374,8 +374,9 @@ function BusinessOverview(props) {
                 />
               </div>
             </div>
+
             <div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-12">
+              <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label p-2 mt-0">
                   Business Description <span style={{ color: "red" }}>*</span>
                 </label>
@@ -404,9 +405,7 @@ function BusinessOverview(props) {
                   />
                 </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-12">
+              <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label p-2 mt-0">
                   How do you wish to accept payments?
                   <span style={{ color: "red" }}>*</span>
@@ -450,23 +449,10 @@ function BusinessOverview(props) {
                 )}
               </div>
             </div>
+
             <div className="row">
-              {/* <div className="col-sm-4 col-md-4 col-lg-4">
-              <label className="col-form-label p-2 mt-0">
-                Company Website<span style={{ color: "red" }}>*</span>
-              </label>
 
-              <FormikController
-                control="input"
-                type="text"
-                name="company_website"
-                className="form-control"
-                disabled={VerifyKycStatus === "Verified" ? true : false}
-                readOnly={readOnly}
-              />
-            </div> */}
-
-              <div className="col-sm-4 col-md-4 col-lg-4">
+              <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label p-2 mt-0">
                   Expected Transaction/Year
                   <span style={{ color: "red" }}>*</span>
@@ -487,7 +473,7 @@ function BusinessOverview(props) {
                 {/* <span className="font-weight-bold m-0">{textWord}</span> */}
               </div>
 
-              <div className="col-sm-4 col-md-4 col-lg-4">
+              <div className="col-sm-12 col-md-12 col-lg-6">
                 <label className="col-form-label p-2 mt-0">
                   Avg Ticket Amount<span style={{ color: "red" }}>*</span>
                 </label>
@@ -505,22 +491,13 @@ function BusinessOverview(props) {
                 />
               </div>
             </div>
-            <div className="my-5- p-2- w-100 pull-left">
-              <hr
-                style={{
-                  borderColor: "#D9D9D9",
-                  textShadow: "2px 2px 5px grey",
-                  width: "100%",
-                }}
-              />
-              <div className="mt-2">
-                <div className="row">
+            <div className="row">
                   <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
                     {VerifyKycStatus === "Verified" ? (
                       <></>
                     ) : (
                       <button
-                        className="save-next-btn float-lg-right cob-btn-primary text-white"
+                        className="float-lg-right cob-btn-primary text-white btn btn-sm"
                         type="submit"
                         disabled={disabled}
                       >
@@ -529,8 +506,6 @@ function BusinessOverview(props) {
                     )}
                   </div>
                 </div>
-              </div>
-            </div>
           </Form>
         )}
       </Formik>

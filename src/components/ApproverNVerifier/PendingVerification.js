@@ -115,7 +115,7 @@ function PendingVerification() {
         <div>
           <button
             type="button"
-            className="approve text-white  btn-xs "
+            className="approve text-white cob-btn-primary btn-sm "
             onClick={() => {
               setKycIdClick(row);
               setIsModalOpen(true);
@@ -142,7 +142,7 @@ function PendingVerification() {
           roles?.viewer === true ? (
             <button
               type="button"
-              className="approve text-white  btn-xs"
+              className="approve text-white  cob-btn-primary   btn-sm"
               data-toggle="modal"
               onClick={() => {
                 setCommentId(row);
@@ -343,7 +343,7 @@ function PendingVerification() {
             optionSearchData={optionSearchData}
           />
         </div>
-        <div className="mt-1">
+        <div className="">
           <MerchnatListExportToxl
             URL={"export-excel/?search=processing"}
             filename={"Pending-Verification"}
@@ -351,7 +351,7 @@ function PendingVerification() {
         </div>
       </div>
 
-      <div className="col-md-12 col-md-offset-4">
+      <div>
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
             <Table

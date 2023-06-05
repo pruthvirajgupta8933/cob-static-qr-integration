@@ -232,7 +232,7 @@ const ChallanTransactReport = () => {
   return (
     <section className="ant-layout">
       <div>
-        <NavBar />
+        
       </div>
       <div className="gx-main-content-wrapper">
         <div className="right_layout my_account_wrapper right_side_heading">
@@ -287,7 +287,7 @@ const ChallanTransactReport = () => {
                   <button
                     type="subbmit"
                     disabled={disable}
-                    className="btn approve text-white  btn-xs"
+                    className="btn approve text-white  cob-btn-primary  btn-sm"
                   >
                     Submit
                   </button>
@@ -315,7 +315,7 @@ const ChallanTransactReport = () => {
 
                     <div className="form-group col-lg-4 col-md-12 mt-5">
                       <button
-                        className="btn btn-sm text-white  "
+                        className="btn btn-sm text-white  cob-btn-primary"
                         type="button"
                         disabled={isexcelDataLoaded}
                         onClick={() => exportToExcelFn()}

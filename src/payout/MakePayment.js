@@ -147,7 +147,7 @@ const MakePayment = (props) => {
     <>
       <section className="ant-layout">
         <div>
-          <NavBar />
+          
         </div>
         <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
           <div className="gx-main-content-wrapper">
@@ -454,7 +454,7 @@ const MakePayment = (props) => {
                       <div className="col-sm mt-4">
                         <button
                           type="submit"
-                          className="btn approve text-white  btn-xs"
+                          className="btn approve text-white  btn-sm"
                         >
                           Submit
                         </button>

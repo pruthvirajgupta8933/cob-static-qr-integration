@@ -237,16 +237,14 @@ const [data, setData] = useState([]);
   ];
 
   return (
-    <section className="ant-layout">
-      <div>
-        <NavBar />
-      </div>
-      <main className="gx-layout-content ant-layout-content">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Rate Mapping</h1>
+    <section className="">
+      <main className="">
+        <div className="">
+          <div className="">
+            <h5 className="">Rate Mapping</h5>
           </div>
-          <div className="container-fluid flleft">
+
+          <div className="row">
             <div className="col-lg-3 mt-2">
               <SearchFilter
                 kycSearch={kycSearch}
@@ -255,13 +253,7 @@ const [data, setData] = useState([]);
                 setSearchByDropDown={setSearchByDropDown}
                 searchTextByApiCall={true}
               />
-              <div>
-                {openZoneModal === true ? (
-                  <ViewRateMapping userData={modalDisplayData} />
-                ) : (
-                  <></>
-                )}
-              </div>
+              
             </div>
             <div className="col-lg-3 mt-2">
               <CountPerPageFilter
@@ -281,7 +273,9 @@ const [data, setData] = useState([]);
                 optionSearchData={optionSearchData}
               />
             </div>
-            <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+          </div>
+
+          <div className="">
               <div className="scroll overflow-auto">
                 
                 {!loadingState && data?.length !== 0 && (
@@ -300,8 +294,14 @@ const [data, setData] = useState([]);
                 <h2 className="text-center font-weight-bold">No Data Found</h2>
               )}
             </div>
-          </div>
         </div>
+        <div>
+                {openZoneModal === true ? (
+                  <ViewRateMapping userData={modalDisplayData} />
+                ) : (
+                  <></>
+                )}
+              </div>
       </main>
     </section>
   );

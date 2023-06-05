@@ -180,14 +180,11 @@ const BizzAppData = () => {
   };
 
   return (
-    <section className="ant-layout">
-      <div>
-        <NavBar />
-      </div>
-      <main className="gx-layout-content ant-layout-content">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1>Bizz App Data</h1>
+    <section className="">
+      <main className="">
+        <div className="">
+          <div className="">
+            <h5>Bizz App Data</h5>
           </div>
           <Formik
             initialValues={initialValues}
@@ -200,7 +197,7 @@ const BizzAppData = () => {
             <Form>
               <div className="container">
                 <div className="row">
-                  <div className="form-group  col-md-3 ml-4">
+                  <div className="form-group  col-md-3">
                     <FormikController
                       control="input"
                       type="date"
@@ -212,7 +209,7 @@ const BizzAppData = () => {
                     />
                   </div>
 
-                  <div className="form-group col-md-3 mx-4">
+                  <div className="form-group col-md-3 ">
                     <FormikController
                       control="input"
                       type="date"
@@ -222,16 +219,16 @@ const BizzAppData = () => {
                     />
                   </div>
                   <div className="row">
-                  <div className=" col-md-4 ">
+                  <div className="col-lg-12">
                     <button
                       type="submit"
-                      className="btn cob-btn-primary ml-4 approve text-white"
+                      className="btn cob-btn-primary approve text-white"
                     >
                       Submit
                     </button>
                     {FormData?.length > 0 ? (
                       <button
-                        className="btn cob-btn-primary  approve text-white ml-3"
+                        className="btn cob-btn-primary approve text-white ml-3"
                         type="button"
                         onClick={() => exportToExcelFn()}
                         style={{ backgroundColor: "rgb(1, 86, 179)" }}
@@ -247,18 +244,18 @@ const BizzAppData = () => {
                 {FormData?.length === 0 || FormData?.length === undefined ? (
                   <></>
                 ) : (
-                  <h4 className="mt-4 ml-3">Total Records : {FormData?.length}</h4>
+                  <h5 className="mt-4" >Total Records : {FormData?.length}</h5>
                 )}
               </div>
             </Form>
           </Formik>
-          {FormData.length===0 && show===true && <h2 className="text-center font-weight-bold mt-5">
+          {FormData.length===0 && show===true && <h5 className="text-center font-weight-bold mt-5">
                     No Data Found
-                  </h2>}
-          <div className="col-md-12 col-md-offset-4">
+                  </h5>}
+          <div className="col-md-12">
             <div className="scroll overflow-auto">
               {show === true && FormData?.length !== 0 ? (
-                <table className="table table-bordered ml-4">
+                <table className="table table-bordered">
                   <thead>
                     <tr>
                       <th>S. No.</th>

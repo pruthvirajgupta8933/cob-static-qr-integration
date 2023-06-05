@@ -141,12 +141,12 @@ function ApprovedMerchant() {
     {
       id: "14",
       name: "View Status",
-      width:"110px",
+      width: "110px",
       cell: (row) => (
         <div>
           <button
             type="button"
-            className="approve text-white  btn-xs "
+            className="approve text-white cob-btn-primary btn-sm "
             onClick={() => {
               setKycIdClick(row);
               setIsModalOpen(true);
@@ -165,11 +165,11 @@ function ApprovedMerchant() {
       cell: (row) => (
         <div >
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
-              className="approve text-white  btn-xs "
+              className="approve text-white  cob-btn-primary  btn-sm "
               data-toggle="modal"
               onClick={() => {
                 setCommentId(row);
@@ -193,8 +193,8 @@ function ApprovedMerchant() {
       cell: (row) => (
         <div>
           {roles?.verifier === true ||
-          roles?.approver === true ||
-          roles?.viewer === true ? (
+            roles?.approver === true ||
+            roles?.viewer === true ? (
             <button
               type="button"
               className="approve text-white"
@@ -221,11 +221,11 @@ function ApprovedMerchant() {
   const roles = roleBasedAccess();
 
   const kycSearch = (e, fieldType) => {
-    if(fieldType === "text"){
+    if (fieldType === "text") {
       setSearchByDropDown(false)
       setSearchText(e);
     }
-    if(fieldType === "dropdown"){
+    if (fieldType === "dropdown") {
       setSearchByDropDown(true)
       setOnboardType(e)
     }
@@ -242,7 +242,7 @@ function ApprovedMerchant() {
         page_size: pageSize,
         searchquery: searchText,
         merchantStatus: "Approved",
-        isDirect:onboardType
+        isDirect: onboardType
       })
     )
       .then((resp) => {
@@ -313,7 +313,8 @@ function ApprovedMerchant() {
 
 
   return (
-    <div className="container-fluid flleft">
+    <div className="container-fluid">
+    <div className="form-row">
       <div className="form-group col-lg-3 col-md-12 mt-2">
         <SearchFilter
           kycSearch={kycSearch}
@@ -322,40 +323,6 @@ function ApprovedMerchant() {
           setSearchByDropDown={setSearchByDropDown}
           searchTextByApiCall={true}
         />
-      </div>
-      <div>
-        {openCommentModal && <CommentModal
-            commentData={commentId}
-            isModalOpen={openCommentModal}
-            setModalState={setOpenCommentModal}
-            tabName={"Approved Tab"}
-          /> }
-          
-      
-{isOpenModal && <KycDetailsModal
-          kycId={kycIdClick}
-          handleModal={setIsModalOpen}
-          isOpenModal={isOpenModal}
-          renderApprovedTable={approvedTable}
-        />}
-        
-      </div>
-
-      <div>
-      {openDocumentModal && <ViewDocumentModal
-            documentData={commentId}
-            isModalOpen={openDocumentModal}
-            setModalState={setOpenDocumentModal}
-            tabName={"Approved Tab"}
-          />}
-          
-      {isOpenModal && <KycDetailsModal
-          kycId={kycIdClick}
-          handleModal={setIsModalOpen}
-          isOpenModal={isOpenModal}
-          renderApprovedTable={approvedTable}
-        />}
-        
       </div>
 
       <div className="form-group col-lg-3 col-md-12 mt-2">
@@ -376,15 +343,16 @@ function ApprovedMerchant() {
           optionSearchData={optionSearchData}
         />
       </div>
-      <div className="mt-1">
-      <MerchnatListExportToxl
-        URL={
-          "export-excel/?search=Approved"
-        }
-        filename={"Approved"}
-      />
+      <div className="">
+        <MerchnatListExportToxl
+          URL={
+            "export-excel/?search=Approved"
+          }
+          filename={"Approved"}
+        />
       </div>
-      <div className="container-fluid flleft p-3 my-3 col-md-12- col-md-offset-4">
+      </div>
+      <div className="">
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
             <Table
@@ -403,6 +371,33 @@ function ApprovedMerchant() {
           <h2 className="text-center font-weight-bold">No Data Found</h2>
         )}
       </div>
+
+
+      <div>
+        {openDocumentModal && <ViewDocumentModal
+          documentData={commentId}
+          isModalOpen={openDocumentModal}
+          setModalState={setOpenDocumentModal}
+          tabName={"Approved Tab"}
+        />}
+
+        {isOpenModal && <KycDetailsModal
+          kycId={kycIdClick}
+          handleModal={setIsModalOpen}
+          isOpenModal={isOpenModal}
+          renderApprovedTable={approvedTable}
+        />}
+
+      </div>
+      <div>
+        {openCommentModal && <CommentModal
+          commentData={commentId}
+          isModalOpen={openCommentModal}
+          setModalState={setOpenCommentModal}
+          tabName={"Approved Tab"}
+        />}
+      </div>
+
     </div>
   );
 }

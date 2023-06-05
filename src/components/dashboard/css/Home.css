@@ -26,10 +26,10 @@ table.tables tr:nth-child(odd) {
   margin-top: 10px;
 }
 
-.bgcolor {
+/* .bgcolor {
   background: #fcfcfc;
   padding: 10px 0;
-}
+} */
 
 .my_account_wrapper .merchant-detail-container {
   justify-content: none !important;
@@ -228,7 +228,7 @@ table.tables tr:nth-child(odd) {
 
 .onboarding-illustration-top {
   position: absolute;
-  top: -40px;
+  /* top: -40px; */
   right: -81px;
 
   height: 60px;
@@ -246,12 +246,12 @@ table.tables tr:nth-child(odd) {
   line-height: 22px;
 }
 
-.card .card-body {
+/* .card .card-body {
   padding: 1.25rem 0 !important;
 }
 .card {
   padding: 10px 26px !important;
-}
+} */
 .card .price {
   /* line-height: 22px;
     font-size: 44px;
@@ -262,7 +262,7 @@ table.tables tr:nth-child(odd) {
    
     line-height: 36px;
     padding: 0; */
-  line-height: 22px;
+  /* line-height: 22px;
   font-size: 20px;
   padding: 28px 0 0 0;
   font-weight: bold;
@@ -271,7 +271,7 @@ table.tables tr:nth-child(odd) {
   line-height: 24px;
   padding: 0;
   min-height: 20px;
-  max-height: 25px;
+  max-height: 25px; */
 }
 
 .kycbtns {
@@ -353,15 +353,15 @@ table.tables tr:nth-child(odd) {
 }
 
 .mymodals {
-  position: absolute;
+  /* position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100vh; */
   background: rgba(0, 0, 0, 0.5);
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   overflow: auto !important;
 }
 
@@ -817,7 +817,7 @@ a.sidenavFonts {
   /* font-family: 'Roboto'; */
   font-style: normal;
   font-weight: 700;
-  font-size: 19px;
+  /* font-size: 19px; */
   line-height: 22px;
   color: #44525f;
 }
@@ -878,7 +878,7 @@ a.sidenavFonts {
 
 @media (min-width: 1200px) {
   .container {
-    max-width: 100% !important;
+    /* max-width: 100% !important; */
   }
 }
 
@@ -1252,15 +1252,10 @@ Responsive Grids
   font-weight: bold;
   letter-spacing: 1.25px;
 }
-#sidebarMenu {
+
+/* #sidebarMenu {
   height: 100vh;
-  /* position: fixed; */
   user-select: none;
-  /* left: 0;
-   width: 250px; 
-   margin-top: 92px; 
-   transform: translateX(-250px);
-  transition: transform 250ms ease-in-out;  */
   background: linear-gradient(180deg, #140633 0%, #140633 100%);
   z-index: 99;
   display: block;
@@ -1314,11 +1309,10 @@ input[type="checkbox"].openSidebarMenu {
   height: 100%;
   width: 100%;
   top: 22px;
-  /* left: 15px; */
   height: 22px;
   width: 22px;
   right: 20px;
-}
+} */
 .spinner {
   transition: all 0.3s;
   box-sizing: border-box;
@@ -1371,7 +1365,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   transform: rotate(-135deg);
   margin-top: -9px;
 }
-
+/* 
 @media (min-width: 769px) {
   .navbar-nav {
     width: 100%;
@@ -1381,20 +1375,20 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   .sidebarIconToggle {
     display: none;
   }
-}
-@media (max-width: 768px) {
+} */
+
+/* @media (max-width: 768px) {
   .navbar-expand-md .navbar-toggler {
     display: none !important;
   }
-  /* {
-    display: flex;  
-  } */
+
   .navbar-expand-md .navbar-nav {
     min-width: 100vh;
     max-width: 100%;
     display: inline-block;
   }
 }
+
 @media (min-width: 768px) {
   .authfy-container {
     margin-top: 72px !important;
@@ -1422,7 +1416,7 @@ input[type="checkbox"]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   .sidebarIconToggle {
     display: block !important;
   }
-}
+} */
 
 .hoz-scroll {
   overflow-y: hidden;
@@ -1436,12 +1430,4 @@ table.nowrap td{
 
 .mt-2-addon{
   margin-top: 2.3rem !important;
-}
-.nodatafounds{
-  /* margin: 24px; */
-    margin-left: -78px;
-    text-align: center;
-    padding: 15px;
-    font-size: 24px;
-    font-weight: 700;
 }

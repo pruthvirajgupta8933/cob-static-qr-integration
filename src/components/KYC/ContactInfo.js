@@ -1,32 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 // import * as Yup from "yup";
 import Yup from "../../_components/formik/Yup"
 import FormikController from "../../_components/formik/FormikController";
-import API_URL from "../../config";
-import axios from "axios";
+
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
-  isPhoneVerified,
   otpForContactInfo,
-  verifyKycEachTab,
   updateContactInfo,
   kycUserList,
   GetKycTabsStatus,
 } from "../../slices/kycSlice";
-import MailVerificationModal from "./OtpVerificationKYC/MailVerificationModal";
+// import MailVerificationModal from "./OtpVerificationKYC/MailVerificationModal";
 import PhoneVerficationModal from "./OtpVerificationKYC/PhoneVerficationModal";
 import {
   Regex,
   RegexMsg,
-  space,
-  wordValidation,
+  // space,
+  // wordValidation,
 } from "../../_components/formik/ValidationRegex";
-import { values } from "lodash";
+// import { values } from "lodash";
 import gotVerified from "../../assets/images/verified.png";
 import $ from "jquery";
 import "./kyc-style.css";
+import { KYC_STATUS_VERIFIED } from "../../utilities/enums";
 
 function ContactInfo(props) {
   const setTab = props.tab;
@@ -34,7 +32,7 @@ function ContactInfo(props) {
 
   const dispatch = useDispatch();
 
-  const { role, kycid } = props;
+  const { role } = props;
   const { auth, kyc } = useSelector((state) => state);
 
   const { user } = auth;
@@ -232,10 +230,7 @@ function ContactInfo(props) {
   }
 
   return (
-    <div
-      className="col-md-12 col-md-offset-4 Satoshi-Medium"
-      style={{ width: "100%" }}
-    >
+    <div className="col-lg-12 p-0">
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -245,17 +240,15 @@ function ContactInfo(props) {
         {({
           values,
           setFieldValue,
-          initialValues,
           errors,
           setFieldError,
-          setFieldTouched,
-          handleChange,
+  
         }) => (
           <Form>
             <div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-6 ">
+              <div className="col-lg-6 col-sm-12 col-md-12">
                 <label className="col-form-label mt-0 p-2" data-tip={tooltipData.contact_person_name}>
-                  Contact Person Name<span style={{ color: "red" }}>*</span>
+                  Contact Person Name<span className="text-danger">*</span>
                 </label>
 
                 <FormikController
@@ -319,10 +312,10 @@ function ContactInfo(props) {
                       />
                     </span>
                   ) : role.merchant ? (
-                    <div className="position-sticky pull-right- otpbtn input-group-append">
+                    <div className="input-group-append">
                       <a
                         href={() => false}
-                        className="btn cob-btn-primary text-white btn-sm optbtn- btn-outline-secondary mb-0"
+                        className="btn cob-btn-primary btn-sm text-white"
                         onClick={() => {
                           checkInputIsValid(
                             errors,
@@ -404,18 +397,10 @@ function ContactInfo(props) {
               />
               {/*  Modal Popup for Otp Verification Mobile */}
             </div>
-
-            <div className="my-5- p-2- w-100 pull-left">
-              <hr
-                style={{
-                  borderColor: "#D9D9D9",
-                  textShadow: "2px 2px 5px grey",
-                  width: "100%",
-                }}
-              />
-              <div className="row">
+            <div className="row">
                 <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                  {VerifyKycStatus === "Verified" ? (
+                {console.log("VerifyKycStatus",VerifyKycStatus)}
+                  {VerifyKycStatus === KYC_STATUS_VERIFIED ? (
                     <></>
                   ) : (
                     <button
@@ -428,7 +413,6 @@ function ContactInfo(props) {
                   )}
                 </div>
               </div>
-            </div>
           </Form>
         )}
       </Formik>

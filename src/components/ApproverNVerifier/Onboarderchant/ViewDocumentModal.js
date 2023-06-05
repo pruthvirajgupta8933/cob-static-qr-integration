@@ -17,7 +17,7 @@ const ViewDocumentModal = (props) => {
   const [commentsList, setCommentsList] = useState([]);
   const [attachCommentFile, setattachCommentFile] = useState([]);
   const [uploadStatus, setUploadStatus] = useState(false);
-  const [btnDisable,setBtnDisable] = useState(false)
+  const [btnDisable, setBtnDisable] = useState(false)
 
 
   const initialValues = {
@@ -73,7 +73,7 @@ const ViewDocumentModal = (props) => {
     // console.log("values ::", values);
     setBtnDisable(true)
     let formData = new FormData();
-    formData.append("type", "22") 
+    formData.append("type", "22")
     formData.append("approver_id", loginId);
     formData.append("login_id", props?.documentData?.loginMasterId);
     formData.append("modified_by", loginId);
@@ -149,14 +149,13 @@ const ViewDocumentModal = (props) => {
         setTimeout(() => {
           getKycDocList();
         }, 1300);
-          if(resp?.payload?.status)
-          {
-            commentUpdate();
-            toast.success(resp?.payload?.message)
-          }
-          else{
-            toast.error(resp?.payload?.message);
-          }
+        if (resp?.payload?.status) {
+          commentUpdate();
+          toast.success(resp?.payload?.message)
+        }
+        else {
+          toast.error(resp?.payload?.message);
+        }
       })
       .catch((e) => {
         toast.error("Try Again Network Error");
@@ -174,210 +173,199 @@ const ViewDocumentModal = (props) => {
 
   // ---------------------------------------------------------------------------------||
 
-const modalBody = () => {
-  return (
-    <>
-     
-              <h5 className="font-weight-bold">
-                Merchant Name: {props?.documentData?.clientName}
-              </h5>
-              <h5 className="font-weight-bold">
-                Client Code: {props?.documentData?.clientCode}
-              </h5>
-              <div className="container">
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={(values, { resetForm }) => {
-                  handleSubmit(values);
-                  resetForm();
-                }}
-                enableReinitialize={true}
-              >
-                <Form>
-                  <div className="container">
-                    <div className="row">
-                      {/* <div> */}
-                      {/* <div className="col-lg-12-" style={{ width: "315px" }}> */}
+  const modalBody = () => {
+    return (
+      <div className="container-fluid">
 
-                      <div className="col-md-6 mt-4">
-                        <FormikController
-                          control="textArea"
-                          name="comments"
-                          className="form-control"
-                        />
-                      </div>
+        <h6 className="">
+          Merchant Name: {props?.documentData?.clientName}
+        </h6>
+        <h6 className="">
+          Client Code: {props?.documentData?.clientCode}
+        </h6>
+        <div className="row">
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(values, { resetForm }) => {
+              handleSubmit(values);
+              resetForm();
+            }}
+            enableReinitialize={true}
+          >
+            <Form>
+              <div className="form-row">
+                <div className="col-md-6">
+                  <FormikController
+                    control="textArea"
+                    name="comments"
+                    className="form-control"
+                  />
+                </div>
 
-                      <div className="col-md-6">
-                        <div class="file-input">
-                          <h5 className="font-weight-bold">Attachments</h5>
-                          <input
-                            ref={aRef}
-                            type="file"
-                            id="file"
-                            class="file"
-                            onChange={(e) => handleUploadAttachments(e)}
-                          />
-                          <div className="d-flex">
-                            <div>
-                              <label for="file">
-                                Upload Files{" "}
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  width="16"
-                                  height="16"
-                                  fill="currentColor"
-                                  class="bi bi-paperclip"
-                                  viewBox="0 0 16 16"
-                                >
-                                  <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
-                                </svg>
-                                <p class="file-name"></p>
-                              </label>
-                            </div>
-                            <div className="mt-2 ml-3">
-                              <button
-                                type="submit"
-                                className="submit-btn approve text-white  btn-xs"
-                                disabled={btnDisable}
-                              >
-                                Submit
-                              </button>
-                            </div>
-
-                            <div></div>
-                          </div>
-
-                          <div className="d-flex justify-content-between">
-                            {uploadStatus && (
-                              <>
-                                <div>{attachCommentFile?.name}</div>
-                                <button
-                                  type="button"
-                                  class="close"
-                                  aria-label="Close"
-                                  onClick={resetUploadFile}
-                                >
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-
-                      <div className="container">
-                        <div className="row">
-                          <div
-                            className="col-lg-5"
-                            style={{
-                              marginTop: "28px",
-                              textDecoration: "underline",
-                            }}
+                <div className="col-md-6">
+                  <div class="file-input">
+                    <h6 className="">Attachments</h6>
+                    <input
+                      ref={aRef}
+                      type="file"
+                      id="file"
+                      class="file"
+                      onChange={(e) => handleUploadAttachments(e)}
+                    />
+                    <div className="d-flex">
+                      <div>
+                        <label for="file">
+                          Upload Files{" "}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-paperclip"
+                            viewBox="0 0 16 16"
                           >
-                            <h2 className="font-weight-bold">
-                              View Documents
-                            </h2>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col hoz-scroll-">
-                            <table className="table table-bordered">
-                              <thead>
-                                <tr>
-                                  <th>Remark</th>
-                                  <th>Uploaded Date</th>
-                                  <th>View Attachments</th>
-                                  <th>Remove</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {(commentsList?.length === undefined ||
-                                  commentsList?.length === 0) && (
-                                    <tr>
-                                      <td colSpan="3">
-                                        <h3 className="font-weight-bold text-center">
-                                          No Data found
-                                        </h3>
-                                      </td>
-                                    </tr>
-                                  )}
-
-                                {(commentsList?.length !== undefined ||
-                                  commentsList?.length > 0) &&
-                                  Array.isArray(commentsList)
-                                  ? commentsList?.map((remark, i) => (
-                                    <tr key={i}>
-                                      <td style={{ overflowWrap: "anywhere" }}>{remark?.comment}</td>
-                                      <td>
-                                        {dateManipulate(remark?.comment_on)}
-                                      </td>
-                                      <td>
-                                        {remark?.file_path !== null && isUrlValid(remark?.file_path) && fileTypeCheck(remark?.file_path) && (
-                                            <a
-                                              href={remark?.file_path}
-                                              target={"_blank"}
-                                              rel="noreferrer"
-                                              download
-                                            >
-                                              <img
-                                                src={downloadIcon}
-                                                style={{
-                                                  height: "20px",
-                                                  width: "20px",
-                                                  margin: "auto",
-                                                }}
-                                                alt=""
-                                              />
-                                            </a>
-                                        )}
-                                      </td>
-                                      <td>
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            removeDocument(remark?.document_id);
-                                          }}
-                                        >
-                                          <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  ))
-                                  : []}
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      
+                            <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z" />
+                          </svg>
+                          <p class="file-name"></p>
+                        </label>
+                      </div>
+                      <div className="ml-3">
+                        <button
+                          type="submit"
+                          className="submit-btn approve text-white  cob-btn-primary  btn-sm"
+                          disabled={btnDisable}
+                        >
+                          Submit
+                        </button>
                       </div>
                     </div>
-                  </div>
-                </Form>
-              </Formik>
-            </div>
-            
 
-    </>
-  )
-}
-  const modalFooter = () =>{
-    return (
-      <>
- 
+                    <div className="d-flex justify-content-between">
+                      {uploadStatus && (
+                        <>
+                          <div>{attachCommentFile?.name}</div>
                           <button
                             type="button"
-                            className="btn btn-secondary text-white"
-                            data-dismiss="modal"
-                            onClick={() => {
-                              setCommentsList([]);
-                              props?.setModalState(false);
-                            }}
+                            class="close"
+                            aria-label="Close"
+                            onClick={resetUploadFile}
                           >
-                            Close
+                            <span aria-hidden="true">&times;</span>
                           </button>
-                    
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Form>
+          </Formik>
+        </div>
+        <div className="row">
+          <div className="container">
+            <div className="row">
+              <div
+                className="col-lg-5"
+              >
+                <h6 className="font-weight-bold">
+                  View Documents
+                </h6>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col hoz-scroll-">
+                <table className="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Remark</th>
+                      <th>Uploaded Date</th>
+                      <th>View Attachments</th>
+                      <th>Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(commentsList?.length === undefined ||
+                      commentsList?.length === 0) && (
+                        <tr>
+                          <td colSpan="3">
+                            <h3 className="font-weight-bold text-center">
+                              No Data found
+                            </h3>
+                          </td>
+                        </tr>
+                      )}
+
+                    {(commentsList?.length !== undefined ||
+                      commentsList?.length > 0) &&
+                      Array.isArray(commentsList)
+                      ? commentsList?.map((remark, i) => (
+                        <tr key={i}>
+                          <td style={{ overflowWrap: "anywhere" }}>{remark?.comment}</td>
+                          <td>
+                            {dateManipulate(remark?.comment_on)}
+                          </td>
+                          <td>
+                            {remark?.file_path !== null && isUrlValid(remark?.file_path) && fileTypeCheck(remark?.file_path) && (
+                              <a
+                                href={remark?.file_path}
+                                target={"_blank"}
+                                rel="noreferrer"
+                                download
+                              >
+                                <img
+                                  src={downloadIcon}
+                                  style={{
+                                    height: "20px",
+                                    width: "20px",
+                                    margin: "auto",
+                                  }}
+                                  alt=""
+                                />
+                              </a>
+                            )}
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                removeDocument(remark?.document_id);
+                              }}
+                            >
+                              <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                      : []}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+    )
+  }
+  const modalFooter = () => {
+    return (
+      <>
+
+        <button
+          type="button"
+          className="btn btn-secondary text-white"
+          data-dismiss="modal"
+          onClick={() => {
+            setCommentsList([]);
+            props?.setModalState(false);
+          }}
+        >
+          Close
+        </button>
+
 
       </>
     )
@@ -388,9 +376,9 @@ const modalBody = () => {
 
   return (
     <>
-     <CustomModal modalBody={modalBody} headerTitle={"Upload Agreement"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
+      <CustomModal modalBody={modalBody} headerTitle={"Upload Agreement"} modalFooter={modalFooter} modalToggle={props?.isModalOpen} fnSetModalToggle={props?.setModalState} />
     </>
-   
+
   );
 };
 

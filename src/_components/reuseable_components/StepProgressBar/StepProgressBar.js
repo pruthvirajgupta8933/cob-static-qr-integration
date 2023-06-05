@@ -152,7 +152,7 @@ function StepProgressBar(props) {
       <div>
         <div className="text-center">
           <div>
-            <h1 className="Satoshi-Bold">KYC Status</h1>
+            <h3 className="Satoshi-Bold">KYC Status</h3>
           </div>
         </div>
         <hr />

@@ -59,14 +59,13 @@ const PhoneVerficationModal = ({ show, setShow }) => {
 
 
   return (
-    <div>
       <div
-        className="modal fade show"
+        className="modal fade show mt-5"
         id="forPhone"
         role="dialog"
         aria-labelledby="phoneModal"
         aria-hidden="true"
-        style={{ display: show ? "block" : "none" ,marginLeft:"233px",marginTop:"42px"}}
+        style={{ display: show ? "block" : "none" }}
        
       >
         <div className="modal-dialog" role="document">
@@ -131,7 +130,6 @@ const PhoneVerficationModal = ({ show, setShow }) => {
           </div>
         </div>
       </div>
-    </div>
   )
 }
 
