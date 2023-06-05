@@ -596,7 +596,7 @@ const TransactionHistory = () => {
                       <select
                         value={pageSize}
                         rel={pageSize}
-                        className="select"
+                        className="form-select"
                         onChange={(e) => setPageSize(parseInt(e.target.value))}
                       >
                         <DropDownCountPerPage datalength={txnList.length} />
