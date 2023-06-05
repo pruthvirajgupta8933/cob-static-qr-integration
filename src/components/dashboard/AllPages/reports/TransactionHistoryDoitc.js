@@ -432,20 +432,13 @@ const TransactionHistoryDoitc = () => {
 
 
   return (
-    <section className="ant-layout NunitoSans-Regular">
-
-      <div>
-        <NavBar />
-      </div>
-      {/* <div className="profileBarStatus">
-      <Notification/>
-      </div> */}
-      <main className="gx-layout-content ant-layout-content">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Transactions History</h1>
+    <section className="">
+      <main className="">
+        <div className="">
+          <div className="">
+            <h5 className="">Transactions History</h5>
           </div>
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
+          <section className="">
             <div className="container-fluid">
               <Formik
                 initialValues={initialValues}
@@ -458,19 +451,19 @@ const TransactionHistoryDoitc = () => {
                       {roles?.merchant === true ? (
                         <></>
                       ) : (
-                        <div className="form-group col-md-2 mx-4">
+                        <div className="form-group col-md-2">
                           <FormikController
                             control="select"
                             label="Client Code"
                             name="clientCode"
-                            className="form-control rounded-0"
+                            className="form-select rounded-0"
                             options={clientCodeOption}
                           />
 
                         </div>
                       )}
 
-                      <div className="form-group col-md-2 mx-4">
+                      <div className="form-group col-md-2">
                         <FormikController
                           control="input"
                           type="date"
@@ -482,7 +475,7 @@ const TransactionHistoryDoitc = () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-2 mx-4">
+                      <div className="form-group col-md-2">
                         <FormikController
                           control="input"
                           type="date"
@@ -492,32 +485,31 @@ const TransactionHistoryDoitc = () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-2 mx-4">
+                      <div className="form-group col-md-2">
                         <FormikController
                           control="select"
                           label="Transactions Status"
                           name="transaction_status"
-                          className="form-control rounded-0 mt-0"
+                          className="form-select rounded-0 mt-0"
                           options={tempPayStatus}
                         />
                       </div>
 
-                      <div className="form-group col-md-2 mx-4">
+                      <div className="form-group col-md-2">
                         <FormikController
                           control="select"
                           label="Payment Mode"
                           name="payment_mode"
-                          className="form-control rounded-0 mt-0"
+                          className="form-select rounded-0 mt-0"
                           options={tempPaymode}
                         />
                       </div>
                     </div>
                     <div className="form-row">
-                      <div className="form-group col-md-1 ml-3">
+                      <div className="form-group col-md-1">
                         <button
-                          className="btn btn-sm text-white"
+                          className="btn btn-sm text-white cob-btn-primary"
                           type="submit"
-                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
                         >
                           Search
                         </button>
@@ -526,8 +518,8 @@ const TransactionHistoryDoitc = () => {
                       {txnList?.length > 0 ? (
                         <>
                           <div className="form-row">
-                            <div className="dropdown form-group col-md-1 ml-4">
-                              <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div className="dropdown form-group col-md-1 ml-1">
+                              <button className="btn cob-btn-primary text-white dropdown-toggle btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Export
                               </button>
                               <div className="dropdown-menu bg-light p-2" aria-labelledby="dropdownMenu2">
@@ -569,14 +561,14 @@ const TransactionHistoryDoitc = () => {
                       <select
                         value={pageSize}
                         rel={pageSize}
-                        className="ant-input"
+                        className="form-select"
                         onChange={(e) => setPageSize(parseInt(e.target.value))}
                       >
                         <DropDownCountPerPage datalength={txnList.length} />
                       </select>
                     </div>
                   </div>
-                  <h4>Total Record : {txnList.length} </h4>
+                  <h6>Total Record : {txnList.length} </h6>
                 </>
               ) : (
                 <></>
@@ -740,7 +732,7 @@ const TransactionHistoryDoitc = () => {
                   </div>
                 ) : buttonClicked === true && txnList.length === 0 ? (
                   <div className="showMsg">
-                    <h1 className="float-centre mr-5">Data Not Found</h1>
+                    <h6 className="float-centre mr-5">Data Not Found</h6>
                   </div>
                 ) : (
                   <div></div>

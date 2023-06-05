@@ -6,7 +6,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useHistory } from 'react-router-dom';
 import API_URL from '../../../../config';
-import "./index.css";
+// import "./index.css";
 
 
 const validationSchema = Yup.object().shape({
@@ -324,13 +324,13 @@ const { user } = useSelector((state) => state.auth);
                       <div className="modal-footer">
                         <button
                           type="submit"
-                          className="btn cob-btn-primary btn-primary text-white"
+                          className="btn cob-btn-primary btn-primary text-white btn-sm"
                         >
                           SUBMIT
                         </button>
                         <button
                           type="button"
-                          className="btn cob-btn-secondary btn-danger text-white"
+                          className="btn cob-btn-secondary btn-danger text-white btn-sm"
                           data-dismiss="modal"
                           onClick={resetForm}
                         >

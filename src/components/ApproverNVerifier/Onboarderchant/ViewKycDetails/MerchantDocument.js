@@ -308,19 +308,16 @@ const MerchantDocument = (props) => {
   // console.log("Check boolean", checkedClicked)
 
   return (
-    <div className="row mb-4 border">
-      <div className="col-lg-6">
-        <h3 className="font-weight-bold">Merchant Documents</h3>
-        {pendingDocument?.length === 0 ? null : <p className="font-weight-bold">Not Submitted:</p>}
+    <div className="row mb-4 border p-1">
+        <h5 className="">Merchant Documents</h5>
+        {pendingDocument?.length === 0 ? null : <p className="font-weight-bold m-0">Not submitted document list:</p>}
         {pendingDocument?.map((item) => {
           return (<> <span className="text-danger"> {item?.value}</span><br /></>)
         })}
-      </div>
 
+        
       <div className="col-lg-12 mt-4 m-2 hoz-scroll">
         <table className="table table-bordered w-100">
-
-
         <thead>
             {checkedClicked === true && (roles.approver || roles.verifier) &&
               <th colSpan={6} style={{ textAlign: "right" }}>
@@ -372,14 +369,12 @@ const MerchantDocument = (props) => {
                       : <></>}
                     <td>{i + 1}</td>
 
-                    <td><h5 className="text-wrap"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</h5>
-                      <h5><span className='font-weight-bold'>Doc.Status:</span> {doc?.status}</h5>
-                      <a
-                        href={doc?.filePath}
+                    <td><p className="text-wrap"><span className='font-weight-bold'>Doc.Type:</span> {getDocTypeName(doc?.type)}</p>
+                      <p><span className='font-weight-bold'>Doc.Status:</span> {doc?.status}</p>
+                      <a href={doc?.filePath}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-primary"
-                      >
+                        className="text-primary" >
                         View Document
                       </a>
 
@@ -403,7 +398,7 @@ const MerchantDocument = (props) => {
                                 verifyApproveDoc(doc?.documentId, doc?.status);
                               }}
                             >
-                              <h5 className="text-success">{buttonText}</h5>
+                              <h5 className="text-success fs-6">{buttonText}</h5>
                             </a>
                             &nbsp;
                             &nbsp;
@@ -420,7 +415,7 @@ const MerchantDocument = (props) => {
                             //   rejectDoc(doc?.documentId);
                             // }}
                             >
-                              <h5 className="text-danger">Reject</h5>
+                              <h5 className="text-danger fs-6">Reject</h5>
                             </a>
                           </>
                           : <></>

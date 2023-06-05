@@ -237,7 +237,7 @@ function Dashboard() {
   }
 
   return (
-    <section className="Test gx-app-layout ant-layout ant-layout-has-sider">
+    <section className="gx-app-layout ant-layout ant-layout-has-sider">
       <div></div>
       <SideNavbar />
       <Switch>

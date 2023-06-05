@@ -9,6 +9,8 @@ import DropDownCountPerPage from "../../../../_components/reuseable_components/D
 import { axiosInstance } from "../../../../utilities/axiosInstance";
 import CustomLoader from "../../../../_components/loader";
 import Spinner from "../../../ApproverNVerifier/Spinner";
+import moment from "moment";
+
 const PaymentLinkDetail = () => {
 
   const [pageSize, setPageSize] = useState(10);
@@ -24,6 +26,20 @@ const PaymentLinkDetail = () => {
   const [pageCount, setPageCount] = useState(data ? Math.ceil(data.length / pageSize) : 0);
 
 
+  let now = moment().format("YYYY-M-D");
+  let splitDate = now.split("-");
+  if (splitDate[1].length === 1) {
+    splitDate[1] = "0" + splitDate[1];
+  }
+  if (splitDate[2].length === 1) {
+    splitDate[2] = "0" + splitDate[2];
+  }
+  splitDate = splitDate.join("-");
+
+  const convertDate = (yourDate) => {
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    return date;
+  };
 
   const loaduser = () => {
     // toastConfig.infoToast("Loading")
@@ -95,13 +111,14 @@ const PaymentLinkDetail = () => {
     <React.Fragment>
       {/* filter area */}
       <FormPaymentLink loaduser={loaduser} />
-      <section className="features8 cid-sg6XYTl25a " id="features08-3-1">
-        <div className="container-fluid flleft">
+
+      <section className="" >
+        <div className="container-fluid">
           <div className="row">
-            <div className="col-lg-4 pl-4">
+            <div className="col-lg-3">
               <button
                 type="button"
-                className="btn cob-btn-primary btn-primary text-white"
+                className="btn cob-btn-primary btn-primary text-white btn-sm"
                 data-toggle="modal"
                 data-target="#exampleModal"
                 data-whatever="@getbootstrap">
@@ -111,39 +128,36 @@ const PaymentLinkDetail = () => {
           </div>
 
           <div className="row">
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className={`col-lg-3 mt-3`}>
+              {/* <div className="col-lg-4 mrg-btm- bgcolor"> */}
               <label>Search</label>
               <input
                 className="form-control"
+                onChange={getSearchTerm}
                 type="text"
                 placeholder="Search Here"
-                onChange={getSearchTerm}
               />
             </div>
-
-            <div className="col-lg-4 mrg-btm- bgcolor">
+            <div className={`col-lg-3 mt-3`}>
               <label>Count Per Page</label>
-              <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) => setPageSize(parseInt(e.target.value))} >
+              <select
+                value={pageSize}
+                rel={pageSize}
+                className="ant-input"
+                onChange={(e) => setPageSize(parseInt(e.target.value))}
+              >
                 <DropDownCountPerPage datalength={data.length} />
               </select>
             </div>
-
           </div>
-          <div className="mt-5" >
-            <CustomLoader loadingState={loadingState} />
-                  </div>
-          <div className="row">
-            <div className="col-lg-4 mrg-btm- bgcolor">
-              <p>Total Records: {data.length}</p>
-            </div>
-          </div>
-
         </div>
       </section>
 
 
       <section className="">
-        <div className="container-fluid flleft  p-3 my-3 ">
+        <div className="container-fluid p-3 my-3">
+        <h6>Total Records:{data.length}</h6>
+
           {!paginatedata ? (<h3> No Data Found</h3>) : (<React.Fragment>  <div className="scroll" style={{ overflow: "auto" }}>
             <table className="table table-bordered nowrap">
               <thead>
@@ -158,7 +172,10 @@ const PaymentLinkDetail = () => {
                   <th>Customer Name</th>
                   <th>Full Link</th>
                 </tr>
+
               </thead>
+
+
               {!loadingState && paginatedata?.length !== 0 &&
 
                 <tbody>
@@ -170,7 +187,7 @@ const PaymentLinkDetail = () => {
                       <td>{user?.amount}</td>
                       <td>{user?.customer_type}</td>
                       <td>{user?.customer_email}</td>
-                      <td>{user?.created_at}</td>
+                      <td>{convertDate(user?.created_at)}</td>
                       <td>{user?.remarks}</td>
                       {/* <td>{user.customer_id}</td> */}
                       <td>{user?.customer_name}</td>
@@ -182,8 +199,11 @@ const PaymentLinkDetail = () => {
               }
 
             </table>
+            <div class="d-flex justify-content-center align-items-center loader-container">
+              <CustomLoader loadingState={loadingState} />
+            </div>
 
-             {data?.length == 0 && !loadingState && (
+            {data?.length == 0 && !loadingState && (
               <h2 className="text-center">No data Found</h2>
             )}
           </div>
@@ -219,119 +239,6 @@ const PaymentLinkDetail = () => {
     </React.Fragment>
 
 
-
-    //     <div className="col-lg-12">
-    //       <button
-    //         type="button"
-    //         className="btn btn-primary"
-    //         data-toggle="modal"
-    //         data-target="#exampleModal"
-    //         data-whatever="@getbootstrap"
-    //       
-    //       >
-    //         Create Payment Link
-    //       </button>
-
-    //      <FormPaymentLink />
-    //       <div className="filterSection" style={{display:"flex"}}>
-
-    //       <div className="col-lg-6">
-    //       <label> &nbsp;</label>
-    //        <input
-    //        className="form-control"
-    //         type="text"
-    //         placeholder="Search Here"
-    //         onChange={getSearchTerm}
-    //       />
-
-
-    // </div>
-    // <div className="col-lg-6">
-    //       <label>
-    //         Count per page &nbsp; &nbsp;
-    //       </label>
-    //       <select value={pageSize} rel={pageSize} onChange={(e) =>setPageSize(parseInt(e.target.value))} className="form-control">
-    //         <option value="10">10</option>
-    //         <option value="20">20</option>
-    //         <option value="50">50</option>
-    //         <option value="100">100</option>
-
-    //       </select>
-    //        </div>
-
-
-
-
-
-    //       </div>
-    //       <p>
-    //         Total Records: {data.length}
-    //        </p>
-
-
-
-
-
-    //        <div>
-    //          {
-    //          ! paginatedata ? ("No data Found"):(
-    //       <table className="table" style={{marginLeft: 10}} >
-    //         <tr>
-    //         <th>Serial No.</th>
-    //           <th>Phone No.</th>
-    //           <th>Amount</th>
-    //           <th>Customer Type</th>
-    //           <th> Customer Email</th>
-    //           <th>Created At</th>
-    //           <th>Customer ID</th>
-    //           <th>Customer Name</th>
-    //           <th>Full Link</th>
-    //         </tr>
-
-    //         {paginatedata.map((user,i) => (
-    //           <tr>
-    //             <td>{i+1}</td>
-    //             <td>{user.customer_phoneNumber}</td>
-    //             <td>{user.amount}</td>
-    //             <td>{user.customer_type}</td>
-    //             <td>{user.customer_email}</td>
-    //             <td>{user.created_at}</td>
-    //             <td>{user.customer_id}</td>
-    //             <td>{user.customer_name}</td>
-    //             <td>{user.full_link}</td>
-    //           </tr>
-    //         ))}
-    //       </table>
-    //          )}
-    //       </div>
-    //       <div>
-    //   <nav aria-label="Page navigation example"  >
-    //   <ul className="pagination">
-    //     <a className="page-link" onClick={(prev) => setCurrentPage((prev) => prev === 1 ? prev : prev - 1) } href={void(0)}>Previous</a>
-
-    //    {
-
-    //      pages.map((page,i) => (
-    //       <li className={
-    //         page === currentPage ? " page-item active" : "page-item"
-    //       }> 
-    //           <a className="page-link">  
-    //             <p onClick={() => pagination(page)}>
-    //             {page}
-    //             </p>
-    //           </a>
-    //         </li>
-    //      ))
-    //    }
-    //     <a className="page-link"  onClick={(nex) => setCurrentPage((nex) => nex === pages.length ? nex : nex + 1)} href={void(0)}>Next</a>
-
-
-
-    //   </ul>
-    // </nav>
-    //   </div>
-
-    //     </div>
   );
 };
 

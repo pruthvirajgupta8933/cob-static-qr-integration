@@ -38,7 +38,7 @@
 body, html {
   
 
-    background: linear-gradient(50deg,#0e042b 36%,#1d0a5c 100%);
+    /* background: linear-gradient(50deg,#0e042b 36%,#1d0a5c 100%); */
     /* background-color: #f0f2f5;
      background-image: url("https://1.bp.blogspot.com/-fd1WXKk-TAc/XyqfngP4PiI/AAAAAAAAVMw/umQz3tkxtg43uPIy8W5og6gAkpCfjaTvACLcBGAsYHQ/w1563-h1563/bg-snell.png");
     background-image: url("../../../assets/images/bg-cob.png");
@@ -105,7 +105,7 @@ position:absolute;
 /* 02. Common CSS */
 /*--------------------*/
 
-
+/* 
 body {
   font-family: 'Satoshi-Regular';
   font-size: 14px;
@@ -160,7 +160,7 @@ a:focus {
 .brand-logo {
   margin-top: 0px;
   margin-bottom: 0px;
-}
+} */
 
 /*--------------------*/
 /* 03. Section Panel UI CSS */
@@ -356,7 +356,7 @@ a:focus {
 /*--------------------*/
 /* 04. Check box UI CSS */
 /*--------------------*/
-
+/* 
 .checkbox input[type="checkbox"] {
   position: absolute;
   right: 9000px;
@@ -406,12 +406,12 @@ a:focus {
 .checkbox input[type="checkbox"]:checked + .label-text:after {
   font-family: "FontAwesome";
   content: "\f00c";
-}
+} */
 
 /*--------------------*/
 /* 05. Responsive CSS */
 /*--------------------*/
-
+/* 
 @media (min-width: 768px) {		
 
   .max-height-signup {
@@ -505,9 +505,9 @@ a:focus {
   .mobile-nav-show {
     display: none;
   }
-}
+} */
 
-@media (min-width: 1200px)
+/* @media (min-width: 1200px)
 {
 .col-lg-offset-3 {
     margin-left: 25%;
@@ -519,11 +519,11 @@ a:focus {
     float: left;
 }
   
-}
+} */
 
 
 
-@media (min-width: 768px)
+/* @media (min-width: 768px)
 {
 .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
     float: left;  
@@ -531,7 +531,7 @@ a:focus {
   .mdevice{
     width:100%;
   }
-}
+} */
 
 .push-right{
   float:right;

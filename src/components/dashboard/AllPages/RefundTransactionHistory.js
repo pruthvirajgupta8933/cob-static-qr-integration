@@ -245,13 +245,13 @@ const RefundTransactionHistory = () => {
   return (
     <section className="ant-layout">
       <div>
-        <NavBar />
+        
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Refund Transaction History</h1>
-          </div>
+          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+            <h5 className="m-b-sm gx-float-left ml-2">Refund Transaction History</h5>
+          {/* </div> */}
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid">
               <Formik
@@ -261,18 +261,18 @@ const RefundTransactionHistory = () => {
               >
                 {(formik) => (
                   <Form>
-                    <div className="form-row">
-                      <div className="form-group col-md-4">
+                    <div className="form-row mt-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="select"
                           label="Client Code"
                           name="clientCode"
-                          className="form-control rounded-0 mt-0"
+                          className="form-select rounded-0 mt-0"
                           options={clientCodeOption}
                         />
                       </div>
 
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="input"
                           type="date"
@@ -282,7 +282,7 @@ const RefundTransactionHistory = () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="input"
                           type="date"
@@ -296,7 +296,7 @@ const RefundTransactionHistory = () => {
                       <div className="form-group col-md-1">
                         <button
                           disabled={disable}
-                          className="btn cob-btn-primary text-white"
+                          className="btn cob-btn-primary text-white btn-sm"
                           type="submit"
                         >
                           {" "}
@@ -306,7 +306,7 @@ const RefundTransactionHistory = () => {
                       {txnList?.length > 0 ? (
                         <div className="form-group col-md-1">
                           <button
-                            className="btn cob-btn-primary  text-white ml-5"
+                            className="btn cob-btn-primary btn-sm text-white ml-5"
                             type=""
                             onClick={() => {
                               exportToExcelFn();

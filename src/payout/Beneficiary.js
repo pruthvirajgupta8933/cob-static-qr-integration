@@ -50,7 +50,7 @@ const Beneficiary = () => {
     <>
       <section className="ant-layout">
         <div>
-          <NavBar />
+          
         </div>
         {payoutBeneficiaryState.isLoading && <Spinner />}
         <main className="gx-layout-content ant-layout-content NunitoSans-Regular">

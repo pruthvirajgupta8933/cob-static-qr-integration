@@ -73,7 +73,7 @@ const BulkPayer = () => {
                     <div className="col-lg-4 mrg-btm- bgcolor">
                     <button
                       type="submit"
-                      className="btn btn-primary martop">
+                      className="btn  cob-btn-primary  martop">
                       Submit
                     </button>
                     </div>

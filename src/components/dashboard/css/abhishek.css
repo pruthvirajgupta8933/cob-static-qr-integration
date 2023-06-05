@@ -7,15 +7,15 @@
 /* box for title text */
 [data-title]:after {
   content: attr(data-title);
-  /* position for title view box */
+
   position: absolute;
   bottom: -1.6em;  	
   left: 100%;
   z-index: 99999;
   visibility: hidden;
-  /* optional */
+
   white-space: nowrap;
-  /* stilization */
+
   background-color: #00FF00;
   color: #111;
   font-size: 150%;

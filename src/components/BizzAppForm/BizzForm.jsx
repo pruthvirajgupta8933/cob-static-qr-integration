@@ -201,8 +201,8 @@ const BizzAppForm = (props) => {
             <div className="row">
                 <div className="col-sm-12 mx-auto">
                     <div className="card ">
-                        <div className="card-header text-center">SabPaisa Biz App Form</div>
-                        <div className="card-body Satoshi-Medium">
+                        <div className="card-header text-center"><h3>SabPaisa Biz App Form</h3></div>
+                        <div className="card-body mt-3">
                             <h5 className="card-title">Please enter the detatils. </h5>
                             <Formik
                                 initialValues={initialValues}

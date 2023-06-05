@@ -19,7 +19,7 @@ import NavBar from "../NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 import moment from "moment";
 
-const ChargeBackTxnHistory= () => {
+const ChargeBackTxnHistory = () => {
   const dispatch = useDispatch();
   const roles = roleBasedAccess();
   const history = useHistory();
@@ -38,10 +38,10 @@ const ChargeBackTxnHistory= () => {
   const [pageCount, setPageCount] = useState(0);
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
-  const [disable,setIsDisable] = useState(false);
+  const [disable, setIsDisable] = useState(false);
 
- let now = moment().format("YYYY-M-D");
- let splitDate = now.split("-");
+  let now = moment().format("YYYY-M-D");
+  let splitDate = now.split("-");
   if (splitDate[1].length === 1) {
     splitDate[1] = "0" + splitDate[1];
   }
@@ -50,8 +50,8 @@ const ChargeBackTxnHistory= () => {
   }
   splitDate = splitDate.join("-");
 
- 
- let clientMerchantDetailsList = [];
+
+  let clientMerchantDetailsList = [];
   if (
     user &&
     user?.clientMerchantDetailsList === null &&
@@ -66,8 +66,8 @@ const ChargeBackTxnHistory= () => {
   const clientcode_rolebased = roles.bank
     ? "All"
     : roles.merchant
-    ? clientMerchantDetailsList[0]?.clientCode
-    : "";
+      ? clientMerchantDetailsList[0]?.clientCode
+      : "";
 
   const tempClientList = convertToFormikSelectJson(
     "clientCode",
@@ -103,11 +103,11 @@ const ChargeBackTxnHistory= () => {
     true
   );
 
-  
- 
+
+
 
   useEffect(() => {
-    
+
 
     setTimeout(() => {
       if (
@@ -129,7 +129,7 @@ const ChargeBackTxnHistory= () => {
   const onSubmitHandler = (values) => {
     setIsDisable(true)
     dispatch(fetchChargebackTxnHistory(values)).then((res) => {
-    
+
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {
@@ -137,20 +137,20 @@ const ChargeBackTxnHistory= () => {
         setIsDisable(false)
       }
       if (ApiStatus === "fulfilled") {
-         setIsDisable(false)
+        setIsDisable(false)
       }
       if (ApiPayload?.length < 1 && ApiStatus === "fulfilled") {
         toast.error("No Data Found");
-      setIsDisable(false)
+        setIsDisable(false)
       }
     });
   };
- 
+
 
   useEffect(() => {
     // Remove initiated from transaction history response
     const TxnListArrUpdated = dashboard.settlementReport;
-  
+
 
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
@@ -233,15 +233,15 @@ const ChargeBackTxnHistory= () => {
       'prearb_date',
       'status',
       'txn_id'
-       ];
+    ];
     const excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     txnList.map((item, index) => {
       const allowDataToShow = {
         'srNo': item.srNo === null ? "" : index + 1,
-        'arn' : item.arn === null ? "" : item.arn,
-        'bank_cb_fee' : item.bank_cb_fee === null ? "" : item.bank_cb_fee,
-        'cb_credit_date_txn_reject' : item.cb_credit_date_txn_reject === null ? "" : item.cb_credit_date_txn_reject,
+        'arn': item.arn === null ? "" : item.arn,
+        'bank_cb_fee': item.bank_cb_fee === null ? "" : item.bank_cb_fee,
+        'cb_credit_date_txn_reject': item.cb_credit_date_txn_reject === null ? "" : item.cb_credit_date_txn_reject,
         'charge_back_amount': item.charge_back_amount === null ? "" : Number.parseFloat(item.charge_back_amount),
         'charge_back_credit_date_to_merchant': item.charge_back_credit_date_to_merchant === null ? "" : item.charge_back_credit_date_to_merchant,
         'charge_back_date': item.charge_back_date === null ? "" : item.charge_back_date,
@@ -257,12 +257,12 @@ const ChargeBackTxnHistory= () => {
         'prearb_date': item.prearb_date === null ? "" : item.prearb_date,
         'status': item.status === null ? "" : item.status,
         'txn_id': item.txn_id === null ? "" : item.txn_id
-      
-     };
+
+      };
 
       excelArr.push(Object.values(allowDataToShow));
     });
-    
+
     const fileName = "ChargeBackTxn-Report";
     exportToSpreadsheet(excelArr, fileName);
   };
@@ -270,18 +270,15 @@ const ChargeBackTxnHistory= () => {
 
 
   return (
-    <section className="ant-layout">
-      <div>
-        <NavBar />
-      </div>
-      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">
-              Chargeback Transaction History
-            </h1>
-          </div>
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
+    <section className="">
+      <main className="">
+        <div className="">
+          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+          <h5 className="">
+            Chargeback Transaction History
+          </h5>
+          {/* </div> */}
+          <section className="">
             <div className="container-fluid">
               <Formik
                 initialValues={initialValues}
@@ -290,13 +287,13 @@ const ChargeBackTxnHistory= () => {
               >
                 {(formik) => (
                   <Form>
-                    <div className="form-row">
+                    <div className="form-row mt-4">
                       <div className="form-group col-md-4">
                         <FormikController
                           control="select"
                           label="Client Code"
                           name="clientCode"
-                          className="form-control rounded-0 mt-0"
+                          className="form-select rounded-0 mt-0"
                           options={clientCodeOption}
                         />
                       </div>
@@ -324,17 +321,17 @@ const ChargeBackTxnHistory= () => {
                     <div className="form-row">
                       <div className="form-group col-md-1">
                         <button
-                         disabled={disable}
-                          className="btn cob-btn-primary text-white"
+                          disabled={disable}
+                          className="btn btn-sm cob-btn-primary  text-white"
                           type="submit"
                         >
-                          Search{" "}
+                          Search
                         </button>
                       </div>
                       {txnList?.length > 0 ? (
                         <div className="form-group col-md-1">
                           <button
-                            className="btn btn-sm text-white"
+                            className="btn btn-sm text-white  cob-btn-primary "
                             style={{ backgroundColor: "rgb(1, 86, 179)" }}
                             type="button"
                             onClick={() => exportToExcelFn()}
@@ -370,7 +367,7 @@ const ChargeBackTxnHistory= () => {
                     <select
                       value={pageSize}
                       rel={pageSize}
-                      className="form-control rounded-0"
+                      className="form-select rounded-0"
                       onChange={(e) => setPageSize(parseInt(e.target.value))}
                     >
                       <DropDownCountPerPage datalength={txnList.length} />
@@ -383,10 +380,10 @@ const ChargeBackTxnHistory= () => {
             </div>
           </section>
 
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
-            <div className="container-fluid  p-3 my-3 ">
+          <section className="">
+            <div className="container-fluid p-3 my-3 ">
               {txnList.length > 0 ? (
-                <h4>Total Record : {txnList.length} </h4>
+                <h6>Total Record : {txnList.length} </h6>
               ) : (
                 <></>
               )}
@@ -395,27 +392,27 @@ const ChargeBackTxnHistory= () => {
                 <table className="table table-bordered">
                   <thead>
                     {txnList.length > 0 ? (
-                       <tr>
-                       <th> S.No </th>
-                       <th> Client Code </th>
-                       <th> Client Name </th>
-                       <th> SP Transaction ID </th>
-                       <th> Client Transaction ID </th>
-                       <th> Amount </th>
-                       <th> ARN </th>
-                       <th> Bank CB Fee </th>
-                       <th> CB Credit Date Txn Reject </th>
-                       <th> Charge Back Amount </th>
-                       <th> Charge Back Credit Date To Merchant </th>
-                       <th> Charge Back Date </th>
-                       <th> Charge Back Debit Amount </th>
-                       <th> Charge Back Remarks </th>
-                       <th> Charge Back Status </th>
-                       <th> Merchant CB Status </th>
-                       <th> Payment Mode </th>
-                       <th> Prearb Date </th>
-                       <th> Status </th>
-                     </tr>
+                      <tr>
+                        <th> S.No </th>
+                        <th> Client Code </th>
+                        <th> Client Name </th>
+                        <th> SP Transaction ID </th>
+                        <th> Client Transaction ID </th>
+                        <th> Amount </th>
+                        <th> ARN </th>
+                        <th> Bank CB Fee </th>
+                        <th> CB Credit Date Txn Reject </th>
+                        <th> Charge Back Amount </th>
+                        <th> Charge Back Credit Date To Merchant </th>
+                        <th> Charge Back Date </th>
+                        <th> Charge Back Debit Amount </th>
+                        <th> Charge Back Remarks </th>
+                        <th> Charge Back Status </th>
+                        <th> Merchant CB Status </th>
+                        <th> Payment Mode </th>
+                        <th> Prearb Date </th>
+                        <th> Status </th>
+                      </tr>
                     ) : (
                       <></>
                     )}
@@ -452,7 +449,7 @@ const ChargeBackTxnHistory= () => {
               </div>
 
               <div>
-                
+
                 {txnList.length > 0 ? (
                   <nav aria-label="Page navigation example">
                     <ul className="pagination">
@@ -478,7 +475,7 @@ const ChargeBackTxnHistory= () => {
                                 : "page-item"
                             }
                           >
-                          
+
                             <a
                               className={`page-link data_${i}`}
                               href={() => false}

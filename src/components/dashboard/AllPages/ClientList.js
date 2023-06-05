@@ -29,25 +29,20 @@ const handleChange= (e)=>{
       SetSearch(e);
 }
     return (
-      <section className="ant-layout">
-        <NavBar/>
-      {/* <div className="profileBarStatus"> */}
-        {/*  <div className="notification-bar"><span style="margin-right: 10px;">Please upload the documents<span className="btn">Upload Here</span></span></div>*/}
-      {/* </div> */}
-      <main className="gx-layout-content ant-layout-content">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Client List</h1>
+      <section className="">
+  
+      <main className="">
+        <div className="">
+          <div className="">
+            <h5 className="">Client List</h5>
           </div>
-          <section className="features8 cid-sg6XYTl25a" id="features08-3-">
+          <section className="" >
             <div className="container">
-              <div className="row">
-                {/* <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the
-                  lazy dog.The quick brown fox jumps over the lazy dog.</p> */}
-              
-                <div className="mrg-btm- bgcolor col-sm-12 col-md-12 col-lg-12">
+              <div className="row mt-4">
+               
+                <div className="col-sm-12 col-md-12 col-lg-12">
                   <div><label>Search</label></div>
-                  <input type="text" className="ant-input col-lg-4 col-sm-12 col-md-12 " onChange={(e)=>{handleChange(e.currentTarget.value)}} placeholder="Search from here" />
+                  <input type="text" className="col-lg-4 col-sm-12 col-md-12 " onChange={(e)=>{handleChange(e.currentTarget.value)}} placeholder="Search from here" />
                    
                   <div className='noOfRecord mt-20 mb-20 col-lg-12 col-sm-12 col-md-12 no-pad'>Number of Record: {clientListData.length}</div>
                   </div>

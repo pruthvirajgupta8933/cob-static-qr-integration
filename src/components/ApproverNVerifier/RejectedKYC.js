@@ -128,7 +128,7 @@ const RejectedKYC = () => {
         <div>
           <button
             type="button"
-            className="approve text-white  btn-xs "
+            className="approve text-white  cob-btn-primary  btn-sm "
             onClick={() => {
               setKycIdClick(row);
               setIsModalOpen(true);
@@ -152,7 +152,7 @@ const RejectedKYC = () => {
           roles?.viewer === true ? (
             <button
               type="button"
-              className="approve text-white  btn-xs "
+              className="approve text-white  cob-btn-primary  btn-sm "
               data-toggle="modal"
               onClick={() => {
                 setCommentId(row);
@@ -302,7 +302,7 @@ const RejectedKYC = () => {
             optionSearchData={optionSearchData}
           />
         </div>
-        <div className="mt-1">
+        <div className="">
           <MerchnatListExportToxl
             URL={"export-excel/?search=Rejected"}
             filename={"Rejected"}
@@ -310,7 +310,7 @@ const RejectedKYC = () => {
         </div>
       </div>
 
-      <div className="col-md-12 col-md-offset-4">
+      <div className="">
         <div className="scroll overflow-auto">
           {!loadingState && data?.length !== 0 && (
             <Table

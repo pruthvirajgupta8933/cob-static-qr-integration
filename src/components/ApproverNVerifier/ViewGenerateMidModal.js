@@ -121,7 +121,7 @@ const ViewGenerateMidModal = (props) => {
   
 
   return (
-    <div>
+
       <div
         className="modal fade mymodals"
         id="exampleModalCenter"
@@ -166,12 +166,12 @@ const ViewGenerateMidModal = (props) => {
                     </button>
                   </div>
                   <div className="modal-body">
-                    <h5 className="font-weight-bold">
+                    <h6 className="">
                       Client Name: {props?.userData?.clientName}
-                    </h5>
-                    <h5 className="font-weight-bold">
+                    </h6>
+                    <h6 className="">
                       Client Code: {props?.userData?.clientCode}
-                    </h5>
+                    </h6>
                     <div className="container">
                       <Form>
                         <div className="row">
@@ -198,10 +198,10 @@ const ViewGenerateMidModal = (props) => {
                             />
                           </div>
                         </div>
-                        <div className="col-lg-6-">
+                        <div className="">
                           <button
                             type="subbmit"
-                            className="submit-btn cob-btn-primary text-white"
+                            className="submit-btn cob-btn-primary text-white mb-2"
                             // disabled={disable}
                           >
                             {loading ? "Loading..." : "Generate MID"}
@@ -209,9 +209,7 @@ const ViewGenerateMidModal = (props) => {
                         </div>
                        
                           <div
-                            className="modal-footer"
-                            style={{ display: "contents" }}
-                          >
+                            className="modal-footer">
                             <table className="table table-bordered">
                               <thead>
                                 <tr>
@@ -249,7 +247,6 @@ const ViewGenerateMidModal = (props) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

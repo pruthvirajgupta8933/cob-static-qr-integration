@@ -53,7 +53,7 @@ const CommentModalForReject = () => {
                                                 <div className="col-sm" style={{ marginTop: "52px" }}>
                                                     <button
                                                         type="submit"
-                                                        className="btn approve text-white  btn-xs"
+                                                        className="btn approve text-white  cob-btn-primary  btn-sm"
                                                     >
                                                         Submit
                                                     </button>

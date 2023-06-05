@@ -25,7 +25,7 @@ function AlertBox(props) {
             <div className="row">
               {cardData?.map(data => (
                 <div className="col-4 mb-1" key={data}>
-                  <div className={`alert NunitoSans-Regular bg-light`} role="alert" >
+                  <div className={`alert bg-light`} role="alert" >
                     <p>{`Kindly pay the amount of the subscribed product`}</p>
                     <p>{`Product : ${data?.applicationName}`} </p>
                     <p>{`Product Plan : ${data?.planName}`} </p>

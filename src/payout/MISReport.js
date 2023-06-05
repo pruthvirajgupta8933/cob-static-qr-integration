@@ -18,7 +18,7 @@ const MISReport = () => {
     <>
       <section className="ant-layout">
         <div>
-          <NavBar />
+          
         </div>
         <div className="col-lg-12 mt-2 mb-4 bgcolor-">
           <ul className="nav nav-tabs approv">

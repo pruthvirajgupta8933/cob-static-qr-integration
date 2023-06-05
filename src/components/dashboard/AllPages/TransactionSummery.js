@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {successTxnSummary } from "../../../slices/dashboardSlice";
 import ProgressBar from "../../../_components/reuseable_components/ProgressBar";
 import { useRouteMatch, Redirect } from "react-router-dom";
-import NavBar from "../NavBar/NavBar";
 import "../css/Home.css";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
 
@@ -86,6 +86,7 @@ function TransactionSummery() {
     } else {
       //successTxnsumry=[];
     }
+  
   }, [successTxnsumry]);
 
   useEffect(() => {
@@ -117,28 +118,23 @@ function TransactionSummery() {
   });
 
   return (
-    <section className="ant-layout">
-      <div>
-        <NavBar />
-      </div>
+    <section className="">
+      
       {/* <div className="profileBarStatus">
         </div> */}
-      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Transaction Summary</h1>
-          </div>
-          <section
-            className="features8 cid-sg6XYTl25a flleft w-100"
-            id="features08-3-"
-          >
+      <main className="">
+        <div className="">
+          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
+            <h5 className="">Transaction Summary</h5>
+          {/* </div> */}
+          <section className="">
             <div className="container-fluid">
-              <div className="row bgcolor">
-                <div className="form-group col-md-3 mx-4 mrg-btm- bgcolor-">
+              <div className="row">
+                <div className="form-group col-md-3">
                   {/* <label>Successful Transaction Summary</label> */}
                   {/* <label>&nbsp;</label> */}
                   <select
-                    className="ant-input"
+                    className="form-select"
                     value={dttype}
                     onChange={(e) => setDttype(e.currentTarget.value)}
                   >
@@ -153,11 +149,11 @@ function TransactionSummery() {
                 </div>
 
                 {txnList.length > 0 ? (
-                  <div className="col-lg-3 mrg-btm-">
+                  <div className="col-lg-3">
                     {/* <label>Search</label> */}
                     <input
                       type="text"
-                      className="ant-input  "
+                      className="form-control "
                       onChange={(e) => {
                         handleChange(e.currentTarget.value);
                       }}
@@ -167,10 +163,10 @@ function TransactionSummery() {
                 ) : (
                   <></>
                 )}
-                <div className="gap ml-4">
-                  <p>
+                <div className="">
+                  <p className="m-0">
                     Total Successful Transactions: {totalSuccessTxn} | Total
-                    Amount {`(INR)`}: {totalAmt}{" "}
+                    Amount {`(INR)`}: {totalAmt}{" "} 
                   </p>
                 </div>
                 <table
@@ -178,7 +174,7 @@ function TransactionSummery() {
                   cellPadding={10}
                   border={0}
                   width="100%"
-                  className="tables ml-4"
+                  className="tables"
                 >
                   <tbody>
                     <tr>

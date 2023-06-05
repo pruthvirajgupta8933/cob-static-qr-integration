@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation,
+import {
+  useHistory, useLocation,
 } from "react-router-dom/cjs/react-router-dom.min";
 import BankDetails from "./BankDetails";
 import BusinessDetails from "./BusinessDetails";
@@ -9,7 +10,8 @@ import ContactInfo from "./ContactInfo";
 import DocumentsUploadNew from "./DocumentsUploadNew";
 import SubmitKyc from "./SubmitKyc";
 import {
-  kycUserList, kycDocumentUploadList, GetKycTabsStatus} from "../../slices/kycSlice";
+  kycUserList, kycDocumentUploadList, GetKycTabsStatus
+} from "../../slices/kycSlice";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import NavBar from "../dashboard/NavBar/NavBar";
 
@@ -69,17 +71,17 @@ function KycForm() {
 
   const kycStatusIcon = (tabStatus, currentTab, merchantConsent, isLastAction = false) => {
 
-    if (tabStatus  && merchantConsent === false && isLastAction) {
-      return <i class={`fa kyc-form-status-icon fa-exclamation`} aria-hidden="true"></i>
+    if (tabStatus && merchantConsent === false && isLastAction) {
+      return <i className={`fa kyc-form-status-icon fa-exclamation`} aria-hidden="true"></i>
     }
     if (tabStatus === KYC_STATUS_REJECTED) {
-      return <i class={`fa kyc-form-status-icon fa-exclamation`} aria-hidden="true"></i>
+      return <i className={`fa kyc-form-status-icon fa-exclamation`} aria-hidden="true"></i>
     }
     if (tabStatus === KYC_STATUS_PENDING || tabStatus === KYC_STATUS_PROCESSING) {
-      return <i class={`fa kyc-form-status-icon fa-check`} aria-hidden="true"></i>
+      return <i className={`fa kyc-form-status-icon fa-check`} aria-hidden="true"></i>
     }
     if (tabStatus === KYC_STATUS_VERIFIED || tabStatus === KYC_STATUS_APPROVED) {
-      return <i class={`fa kyc-form-status-icon fa-check-square-o`} aria-hidden="true"></i>
+      return <i className={`fa kyc-form-status-icon fa-check-square-o`} aria-hidden="true"></i>
     }
 
   }
@@ -89,7 +91,7 @@ function KycForm() {
       return "kyc_active_tab_warning"
     } else if (tabStatus === KYC_STATUS_REJECTED) {
       return "kyc_active_tab_error"
-    } else if (tabStatus === KYC_STATUS_VERIFIED  || tabStatus === KYC_STATUS_APPROVED) {
+    } else if (tabStatus === KYC_STATUS_VERIFIED || tabStatus === KYC_STATUS_APPROVED) {
       return "kyc_active_tab_success"
     } else {
       return "kyc_active_tab_default"
@@ -99,196 +101,119 @@ function KycForm() {
 
   return (
     <section className="ant-layout NunitoSans-Regular">
-      <div>
-        <NavBar />
-      </div>
       <div
         className={
-          "modal fade mymodals" +
+          "mt-5 modal fade mymodals" +
           (kycPopUp === true ? " show d-block" : " d-none")
         }
         role="dialog"
         style={{ overflow: "scroll" }}
       >
-        <div
-          className="modal-dialog modal-dialog-center container- ml-280-"
-          role="document"
-        >
-          <div className="modal-content kyc-modal_form ">
-            <div className="modal-body" style={{ display: "contents" }}>
-              <div className="card-group NunitoSans-Regular">
-                <div className="row kycnomar kycnopad">
-                  <div className="col-lg-3 col-xsm-12 col-sm-12 col-md-12 kycnomar kycnopad">
-                    <div className="card kycnomar kycnopad toppad noborder">
-                      <h1 className="m-b-sm gx-float-left paymentHeader text-left">
-                        KYC Form
-                        <span>
-                          <h6 className="paymentSubHeader mr-2 mt-2 mb-1 border-bottom">
-                            Complete KYC to start accepting payments
-                          </h6>
-                        </span>
-                      </h1>
+        <div className="modal-dialog modal-dialog-center modal-lg">
+          <div className="modal-content kyc-modal_form rounded-0">
+            <div className="modal-header py-1">
 
-                      <div className="card-body pt-0">
-                        <div>
-                          <ul className="menu-tab-kyc">
-                            <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 1 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : `inactive`}`}
-                                onClick={() => {
-                                  SetTab(1);
-                                  setTitle("CONTACT INFO");
-                                }}
-                              >
-                                {/* kyc status icon as per the status */}
-                                {kycStatusIcon(KycTabStatusStore?.general_info_status)}
-                                {/* <span className="tooltiptext">{`Status : ${KycTabStatusStore?.general_info_status}`}</span> */}
-                                Merchant Contact Info
-                              </a>
-                            </li>
+              <div>
+                <h5 className="font-weight-bold mb-0"> KYC Form</h5>
+                <p className="paymentSubHeader m-0 border-bottom">
+                  Complete KYC to start accepting payments
+                </p>
+              </div>
 
-                            <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex 
-                                  ${tab === 2 ? kycTabColorClassByStatus(KycTabStatusStore?.business_info_status) : `inactive`}`}
-                                onClick={() => {
-                                  SetTab(2);
-                                  setTitle("BUSINESS OVERVIEW");
-                                }}
-                              >
-                                {kycStatusIcon(KycTabStatusStore?.business_info_status)}
-                                Business Overview
-                              </a>
-                            </li>
+              <button type="button" onClick={() => redirect()} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body p-0">
+              <div className="d-flex align-items-start">
 
-                            <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 3 ? kycTabColorClassByStatus(KycTabStatusStore?.merchant_info_status) : `inactive`}`}
-                                onClick={() => {
-                                  SetTab(3);
-                                  setTitle("BUSINESS DETAILS");
-                                }}
-                              >
-                                {/* kyc status icon as per the status */}
-                                {kycStatusIcon(KycTabStatusStore?.merchant_info_status)}
-                                Business Details
-                              </a>
-                            </li>
-                            <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 4 ? kycTabColorClassByStatus(KycTabStatusStore?.settlement_info_status) : `inactive`}`}
-                                onClick={() => {
-                                  SetTab(4);
-                                  setTitle("BANK DETAILS");
-                                }}
-                              >
-                                {/* kyc status icon as per the status */}
-                                {kycStatusIcon(KycTabStatusStore?.settlement_info_status)}
-                                Bank Details
-                              </a>
-                            </li>
+                <div className="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 1 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`} type="button" role="tab"  onClick={() => {
+                    SetTab(1);
+                    setTitle("CONTACT INFO");
+                  }} >{kycStatusIcon(KycTabStatusStore?.general_info_status)}
+                    Merchant Contact Info</a>
 
-                            <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 5 ? kycTabColorClassByStatus(KycTabStatusStore?.document_status) : `inactive`}`}
-                                onClick={() => {
-                                  SetTab(5);
-                                  setTitle("DOCUMENTS UPLOAD");
-                                }}
-                              >
-                                {/* kyc status icon as per the status */}
-                                {kycStatusIcon(KycTabStatusStore?.document_status)}
-                                Upload Document
-                              </a>
-                            </li>
+                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 2 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button" onClick={() => {
+                    SetTab(2);
+                    setTitle("BUSINESS OVERVIEW");
+                  }}>{kycStatusIcon(KycTabStatusStore?.business_info_status)}
+                    Business Overview</a>
 
-                            <li className="nav-item p-2">
-                              <a
-                                href={() => false}
-                                className={`nav-link text-font text-font-ForStatusChange p-2 d-flex ${tab === 6 ? kycTabColorClassByStatus(KycTabStatusStore?.status, merchant_consent?.term_condition) : `inactive`}`}
-                                onClick={() => {
-                                  SetTab(6);
-                                  setTitle("SUBMIT KYC");
-                                }}
-                              >
-                                {/* warning icon required/  */}
-                                {kycStatusIcon(KycTabStatusStore?.status, tab, merchant_consent?.term_condition, true)}
-                                Submit KYC
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 3 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`} type="button" onClick={() => {
+                    SetTab(3);
+                    setTitle("BUSINESS DETAILS");
+                  }}> {kycStatusIcon(KycTabStatusStore?.merchant_info_status)}
+                    Business Details</a>
 
-                  <div className="col-lg-9 col-xsm-12 col-sm-12 col-md-12 kycnopad">
-                    <div className="card cardsection">
-                      <div className="card-body">
-                        <h1 className="card-title text-kyc-header mb-2 NunitoSans-Regular">
-                          {title}
-                          <button
-                            onClick={() => redirect()}
-                            type="button"
-                            className="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <span aria-hidden="true">
-                              &times;
-                            </span>
-                          </button>
-                        </h1>
+                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 4 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button"  onClick={() => {
+                    SetTab(4);
+                    setTitle("BANK DETAILS");
+                  }}>  {kycStatusIcon(KycTabStatusStore?.settlement_info_status)}
+                    Bank Details</a>
 
-                        {(tab === 1 && (
-                          <ContactInfo
+                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 5 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button"  onClick={() => {
+                    SetTab(5);
+                    setTitle("DOCUMENTS UPLOAD");
+                  }} >
+                    {kycStatusIcon(KycTabStatusStore?.document_status)}
+                    Upload Document</a>
+
+                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 6 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button"  onClick={() => {
+                    SetTab(6);
+                    setTitle("SUBMIT KYC");
+                  }}>
+                    {/* warning icon required/  */}
+                    {kycStatusIcon(KycTabStatusStore?.status, tab, merchant_consent?.term_condition, true)}
+                    Submit KYC</a>
+
+                </div>
+
+                <div className="tab-content w-100" id="v-pills-tabContent">
+                  <div className="card m-0 p-0">
+                    <div className="card-body">
+                    <h6 className="mb-3 font-weight-bold">{title}</h6>
+                      {(tab === 1 && (
+                        <ContactInfo
+                          role={roles}
+                          kycid={kycid}
+                          tab={SetTab}
+                          title={setTitle}
+                        />
+                      )) ||
+                        (tab === 2 && (
+                          <BusinessOverview
                             role={roles}
                             kycid={kycid}
                             tab={SetTab}
                             title={setTitle}
                           />
                         )) ||
-                          (tab === 2 && (
-                            <BusinessOverview
-                              role={roles}
-                              kycid={kycid}
-                              tab={SetTab}
-                              title={setTitle}
-                            />
-                          )) ||
-                          (tab === 3 && (
-                            <BusinessDetails
-                              role={roles}
-                              kycid={kycid}
-                              tab={SetTab}
-                              title={setTitle}
-                            />
-                          )) ||
-                          (tab === 4 && (
-                            <BankDetails
-                              role={roles}
-                              kycid={kycid}
-                              tab={SetTab}
-                              title={setTitle}
-                            />
-                          )) ||
-                          (tab === 5 && (
-                            <DocumentsUploadNew
-                              role={roles}
-                              kycid={kycid}
-                              tab={SetTab}
-                              title={setTitle}
-                            />
-                          )) ||
-                          (tab === 6 && (
-                            <SubmitKyc role={roles} kycid={kycid} />
-                          )) || <ContactInfo role={roles} kycid={kycid} />}
-                      </div>
+                        (tab === 3 && (
+                          <BusinessDetails
+                            role={roles}
+                            kycid={kycid}
+                            tab={SetTab}
+                            title={setTitle}
+                          />
+                        )) ||
+                        (tab === 4 && (
+                          <BankDetails
+                            role={roles}
+                            kycid={kycid}
+                            tab={SetTab}
+                            title={setTitle}
+                          />
+                        )) ||
+                        (tab === 5 && (
+                          <DocumentsUploadNew
+                            role={roles}
+                            kycid={kycid}
+                            tab={SetTab}
+                            title={setTitle}
+                          />
+                        )) ||
+                        (tab === 6 && (
+                          <SubmitKyc role={roles} kycid={kycid} />
+                        )) || <ContactInfo role={roles} kycid={kycid} />}
                     </div>
                   </div>
                 </div>

@@ -27,11 +27,11 @@ const CustomModal = ({ headerTitle, modalBody, modalFooter, modalToggle, fnSetMo
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div className="modal-dialog" role="document">
+      <div className="modal-dialog modal-lg" role="document">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
-              {headerTitle && headerTitle} 
+              {headerTitle} 
             </h5>
             <button
               type="button"

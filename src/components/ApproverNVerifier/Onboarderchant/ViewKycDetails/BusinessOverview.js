@@ -72,13 +72,13 @@ const BusinessOverview = (props) => {
 
 
   return (
-    <div className="row mb-4 border">
-      <div className="col-lg-12">
-        <h3 className="font-weight-bold">Business Overview</h3>
-      </div>
-
+    <div className="row p-1 mb-4 border">
+      
+        <h5 className="">Business Overview</h5>
+      
+        <div className="form-row g-3">
       <div className="col-sm-6 col-md-6 col-lg-6">
-        <label className="col-form-label mt-0 p-2">
+        <label className="">
           Business Type<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -89,8 +89,9 @@ const BusinessOverview = (props) => {
         />
       </div>
 
+
       <div className="col-sm-6 col-md-6 col-lg-6">
-        <label className="p-2 mt-0">
+        <label className="">
           Business Category<span style={{ color: "red" }}>*</span>
         </label>
         <input
@@ -100,10 +101,11 @@ const BusinessOverview = (props) => {
           value={businessCategoryResponse}
         />
       </div>
+      </div>
 
-
+      <div className="form-row g-3">
       <div className="col-sm-6 col-md-6 col-lg-6">
-        <label className="col-form-label p-2 mt-0">
+        <label className="">
           Business Description <span style={{ color: "red" }}>*</span>
         </label>
 
@@ -119,21 +121,6 @@ const BusinessOverview = (props) => {
         </textarea>
       </div>
 
-      {/* <div className="col-sm-4 col-md-4 col-lg-4">
-        <label className="col-form-label p-2 mt-0">
-          Company Website<span style={{ color: "red" }}>*</span>
-        </label>
-
-        <input
-          type="text"
-          className="form-control"
-          id="inputPassword3"
-          disabled="true"
-          value={
-            merchantKycId?.companyWebsite
-          }
-        />
-      </div> */}
 
       <div className="col-sm-6 col-md-6 col-lg-6">
         <label
@@ -154,9 +141,11 @@ const BusinessOverview = (props) => {
           }
         />
       </div>
+      </div>
 
+      <div className="form-row g-3">
       <div className="col-sm-6 col-md-6 col-lg-6">
-        <label className="col-form-label p-2 mt-0">
+        <label className="">
           Avg Ticket Amount<span style={{ color: "red" }}>*</span>
         </label>
 
@@ -173,7 +162,7 @@ const BusinessOverview = (props) => {
       </div>
 
       <div className="col-sm-6 col-md-6 col-lg-6">
-        <label className="col-form-label p-2 mt-0">
+        <label className="">
           {merchantKycId?.is_website_url === true ?
             <>
             Merchant wish to accept payments on :
@@ -195,14 +184,15 @@ const BusinessOverview = (props) => {
         </label>
 
       </div>
-
-      <div className="col-lg-6 font-weight-bold mt-2 ">
+      </div>
+      <hr/>
+      <div className="form-row g-3">
+      <div className="col-lg-6 font-weight-bold ">
         <p>Status : <span>{KycTabStatus?.business_info_status}</span></p>
         <p>Comments : <span>{KycTabStatus?.business_info_reject_comments}</span></p>
       </div>
 
-
-      <div className="col-lg-6 mt-3">
+      <div className="col-lg-6">
         <VerifyRejectBtn
           KycTabStatus={KycTabStatus?.business_info_status}
           ContactComments={commentsStatus}
@@ -210,10 +200,7 @@ const BusinessOverview = (props) => {
           KycRejectStatus={{ handleRejectClick, isRejected }}
           btnText={{ verify: "Verify", Reject: "Reject" }}
         />
-
       </div>
-      <div>
-
       </div>
 
     </div>

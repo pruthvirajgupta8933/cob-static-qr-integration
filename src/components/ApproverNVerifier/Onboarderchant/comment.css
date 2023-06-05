@@ -18,9 +18,7 @@
     width: 100px;
     height: 35px;
     border-radius: 3px;
-    /* background: linear-gradient(40deg, #ff6ec4, #7873f5); */
     background: #0156b3;
-    display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
@@ -35,3 +33,12 @@
     font-size: 0.85rem;
     color: #555;
   }
+
+
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}

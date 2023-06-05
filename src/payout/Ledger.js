@@ -82,7 +82,7 @@ const PayoutLedger = (props) => {
   return (
     <>
       <section className="ant-layout">
-        <div>{props.navBar == undefined && <NavBar />}</div>
+        {/* <div>{props.navBar == undefined && <NavBar />}</div> */}
         {payoutState.isLoading && <Spinner />}
 
         <main className="gx-layout-content ant-layout-content NunitoSans-Regular">

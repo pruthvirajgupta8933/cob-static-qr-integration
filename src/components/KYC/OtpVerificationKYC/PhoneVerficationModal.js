@@ -59,24 +59,22 @@ const PhoneVerficationModal = ({ show, setShow }) => {
 
 
   return (
-    <div>
       <div
-        className="modal fade show"
+        className="modal fade show mt-5"
         id="forPhone"
         role="dialog"
         aria-labelledby="phoneModal"
         aria-hidden="true"
-        style={{ display: show ? "block" : "none" ,marginLeft:"233px",marginTop:"42px"}}
+        style={{ display: show ? "block" : "none" }}
        
       >
         <div className="modal-dialog" role="document">
-          <div className="modal-content" style={{width:"615px", height:"303px"}}>
-
-            <>
+          <div className="modal-content">
+          
               <div className="modal-header">
-                <h3 className="modal-title paymentHeader" id="phoneModal">
+                <h4 className="modal-title paymentHeader" id="phoneModal">
                   OTP Verification
-                </h3>
+                </h4>
                 <button
                   type="button"
                   className="close"
@@ -127,11 +125,10 @@ const PhoneVerficationModal = ({ show, setShow }) => {
                 </div>
 
               </div>
-            </>
+
           </div>
         </div>
       </div>
-    </div>
   )
 }
 

@@ -6,8 +6,8 @@ import TransactionEnqMultiParam from '../dashboard/AllPages/TransactionEnqMultiP
 function ViewTransactionDetails() {
   return (
     <div className="container-fluid">
-    <nav className="navbar navbar-light bg-light">
-    <img className="navbar-brand" style={{width:"140px"}} src={sabpaisalogo} alt="sabpaisa"  />
+    <nav className="navbar navbar-light bg-light mb-5">
+    <img className="navbar-brand" style={{width:"120px"}} src={sabpaisalogo} alt="sabpaisa"  />
     </nav>
         <TransactionEnqMultiParam />
     </div> 

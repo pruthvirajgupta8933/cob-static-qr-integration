@@ -19,6 +19,11 @@ import UrlNotFound from './components/dashboard/UrlNotFound';
 import BizzForm from './components/BizzAppForm/BizzForm'
 import PrivacyPolicy from './TermsOfService/PrivacyPolicy';
 import TermsAndConditions from './TermsOfService/TermsAndConditions';
+import Test from './components/Otherpages/Test';
+import Header from './components/mainComponent/header/Header';
+import Login from './components/mainComponent/login/Login';
+import DashboardMainContent from './components/dashboard/dashboardLayout/DashboardMainContent';
+import Signup from './components/mainComponent/signup/Signup';
 
 function AllRoutes() {
 
@@ -26,20 +31,29 @@ function AllRoutes() {
 
     <Switch>
       <Route exact path="/login-page">
-        <LoginPage />
+        <Login />
       </Route>
       <Route exact path="/">
-        <LoginPage />
+        <Login />
       </Route>
       <Route exact path="/login">
-        <LoginPage />
+        <Login />
       </Route>
+      {/* <Route exact path="/main/login">
+        <Login />
+      </Route> */}
+
+      {/* <Route exact path="/main/signup">
+        <Signup />
+      </Route> */}
       <Route exact path="/registration">
-        <Registration />
+        <Signup />
       </Route>
-      <Route path="/dashboard">
-        {/* <MobileNavbar/> */}
+      {/* <Route path="/dashboard">
         <Dashboard />
+      </Route> */}
+      <Route path="/dashboard">
+        <DashboardMainContent />
       </Route>
       <Route exact path="/commonpages">
         <CommonPage />
@@ -62,9 +76,9 @@ function AllRoutes() {
       <Route exact path="/ReceiptWalchand">
         <ReceiptWalchand />
       </Route>
-      <Route exact path="/EmandatePage/">
+      {/* <Route exact path="/EmandatePage">
         <EmandatePage />
-      </Route>
+      </Route> */}
       <Route exact path="/bizzForm">
         <BizzForm />
       </Route>
@@ -76,6 +90,9 @@ function AllRoutes() {
       </Route>
       <Route exact path="/PrivacyPolicy">
         <PrivacyPolicy />
+      </Route>
+      <Route exact path="/test-login">
+        <Test />
       </Route>
       <Route path="*" component={UrlNotFound} />
     </Switch>
