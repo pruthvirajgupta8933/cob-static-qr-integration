@@ -141,7 +141,7 @@ function Login() {
                         </div>
                     </div>
 
-                    <div className={`${classes.left_screen}`}>
+                    <div className={`${classes.left_screen} card`}>
                         <div className={`${classes.form_container}`}>
                             <h4 className="text-center">Welcome to your Dashboard</h4>
                             <p className="text-center">You can login to track and record every transaction in real time.</p>

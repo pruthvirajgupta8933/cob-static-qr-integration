@@ -258,7 +258,7 @@ function Signup() {
                             <img src="https://partner.sabpaisa.in/static/media/COB.291fe45cb61eeb6e8b0d.png" className={` ${classes.signup_banner}`} />
                         </div>
                     </div>
-                    <div className={`${classes.left_screen}`}>
+                    <div className={`${classes.left_screen} card`}>
                         <div className="p-4">
                             <h4 className="text-center">Welcome to Sabpaisa</h4>
                             <p className="text-center">Sign up  to Create New Account</p>
@@ -450,33 +450,33 @@ function Signup() {
                                                     Create an account
                                                 </button>
                                             </div>
-                                            
+
                                             {/* <div className="d-flex justify-content-center mt-2"> */}
-                                          {/* <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} /> */}
-                                        {/* </div> */}
+                                            {/* <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} /> */}
+                                            {/* </div> */}
                                         </div>
                                         <div className="d-flex justify-content-center m-2">
-                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} />
+                                            <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} />
                                         </div>
                                     </Form>
                                 )}
                             </Formik>
 
                             <div className="text-center">
-                                
+
                                 <p className="sp-font-14">Already have an account with SabPaisa?  <Link
-                                            to={`/login/${queryStringUrl}`}
-                                            className="text-primary text-decoration-underline pb-2"
-                                          >
-                                            Login
-                                          </Link></p>
+                                    to={`/login/${queryStringUrl}`}
+                                    className="text-primary text-decoration-underline pb-2"
+                                >
+                                    Login
+                                </Link></p>
                             </div>
                         </div>
                         <div className="bd-highlight text-center sp-font-12"><p>By signing up, you agree to our Terms &amp; Conditions and Privacy Policy</p></div>
                     </div>
                 </div>
-                <div className="d-flex justify-content-center bd-highlight mb-3">
-                    <div className="p-1 bd-highlight sp-font-12 text-center"><p>Copyright @ 2023 SabPaisa All Rights Reserved version 1.0</p></div>
+                <div className="d-flex justify-content-center bd-highlight mt-4">
+                    <div className="p-1 bd-highlight sp-font-12 text-center"><p className="m-0">Copyright @ 2023 SabPaisa All Rights Reserved version 1.0</p></div>
                 </div>
             </main>
         </React.Fragment>

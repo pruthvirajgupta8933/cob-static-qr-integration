@@ -69,13 +69,12 @@ const PhoneVerficationModal = ({ show, setShow }) => {
        
       >
         <div className="modal-dialog" role="document">
-          <div className="modal-content" style={{width:"615px", height:"303px"}}>
-
-            <>
+          <div className="modal-content">
+          
               <div className="modal-header">
-                <h3 className="modal-title paymentHeader" id="phoneModal">
+                <h4 className="modal-title paymentHeader" id="phoneModal">
                   OTP Verification
-                </h3>
+                </h4>
                 <button
                   type="button"
                   className="close"
@@ -126,7 +125,7 @@ const PhoneVerficationModal = ({ show, setShow }) => {
                 </div>
 
               </div>
-            </>
+
           </div>
         </div>
       </div>
