@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Regex, RegexMsg } from "../../_components/formik/ValidationRegex";
 
-import "./kyc-style.css";
+// import "./kyc-style.css";
 
 const AdditionalKYC = () => {
   const dispatch = useDispatch();

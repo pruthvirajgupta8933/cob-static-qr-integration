@@ -6,7 +6,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useHistory } from 'react-router-dom';
 import API_URL from '../../../../config';
-import "./index.css";
+// import "./index.css";
 
 
 const validationSchema = Yup.object().shape({
