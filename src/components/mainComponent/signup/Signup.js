@@ -456,7 +456,10 @@ function Signup() {
                                             {/* </div> */}
                                         </div>
                                         <div className="d-flex justify-content-center m-2">
-                                            <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} />
+                                        <div className="d-none">
+                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} />
+
+                                        </div>
                                         </div>
                                     </Form>
                                 )}

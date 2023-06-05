@@ -262,7 +262,7 @@ const RefundTransactionHistory = () => {
                 {(formik) => (
                   <Form>
                     <div className="form-row mt-4">
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="select"
                           label="Client Code"
@@ -272,7 +272,7 @@ const RefundTransactionHistory = () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="input"
                           type="date"
@@ -282,7 +282,7 @@ const RefundTransactionHistory = () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="input"
                           type="date"

@@ -99,6 +99,9 @@ function SideNavbar() {
 
     const roleBasedShowTab = roleBasedAccess();
 
+    // enable for seleted merhcant
+    const enableSettlementReport = ["5208", "5207", "4304", "795" ];
+
     return (
         <nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block sidebar collapse ${sideNavClasses.sidebar_cob}`}>
             <div className="position-sticky pt-3">
@@ -140,6 +143,26 @@ function SideNavbar() {
                             >
                                 <i className="fa fa-bank"></i>
                                 Settlement Report
+                            </Link>
+                        </li>
+                    </ul>
+                )}
+
+
+                {/* display menu for selected merchant */}
+                {enableSettlementReport.includes(auth?.user?.loginId.toString()) && (
+
+                    <ul
+                        className="nav flex-column"
+                        role="menu"
+                    >
+                        <li className="nav-item" role="menuitem">
+                            <Link
+                                to={`${url}/settlement-report`}
+                                className={`nav-link ${sideNavClasses.nav_link}`}
+                            >
+                                <i className="fa fa-bank"></i>
+                                Settlement Report (Files)
                             </Link>
                         </li>
                     </ul>

@@ -29,7 +29,7 @@ const SettlementReport = () => {
     clientCode = user?.clientMerchantDetailsList[0].clientCode;
   } else {
     let clientMerchantDetailsList = user.clientMerchantDetailsList;
-    
+
     if (user.clientMerchantDetailsList !== undefined) {
       clientCode = clientMerchantDetailsList[0].clientCode;
     }
@@ -41,7 +41,7 @@ const SettlementReport = () => {
         setData(res.data);
       })
       .catch((err) => {
-       
+
       });
   }, []);
 
@@ -58,7 +58,7 @@ const SettlementReport = () => {
           .toLowerCase()
           .includes(searchArea.toLocaleLowerCase())
       );
-      
+
       setSearchFilterData(data);
     } else {
       setSearchFilterData(showFilterData);
@@ -77,7 +77,7 @@ const SettlementReport = () => {
   };
 
   useEffect(() => {
-   let tempArr1 = [];
+    let tempArr1 = [];
     data.filter((item) =>
       item.folder === selectedFolder && item.sub_folder === selectedSubFolder
         ? tempArr1.push(item)
@@ -94,20 +94,17 @@ const SettlementReport = () => {
 
   return (
     <>
-      <section className="ant-layout ">
-        <div className="profileBarStatus"></div>
-        <main className="gx-layout-content ant-layout-content">
-          <div className="gx-main-content-wrapper ">
-            <div className="right_layout my_account_wrapper right_side_heading  ">
-              <h1 className="m-b-sm gx-float-left ">Settlement Report</h1>
+      <section className="">
+
+        <main className="">
+          <div className="">
+            <div className="">
+              <h5 className="">Settlement Report</h5>
             </div>
-            <section
-              className="features8 cid-sg6XYTl25a flleft col-lg-12"
-              id="features08-3-"
-            >
+            <section>
               <div className="container-fluid ">
                 <div className="row">
-                  <div className="col-lg-6 mrg-btm">
+                  <div className="col-lg-3">
                     <label>Select Folder</label>
                     <select
                       value={selectedFolder}
@@ -124,7 +121,7 @@ const SettlementReport = () => {
                     </select>
                   </div>
 
-                  <div className="col-lg-6 mrg-btm">
+                  <div className="col-lg-3">
                     <label>Select Sub Folder</label>
                     <select
                       onChange={(event) =>
@@ -142,9 +139,11 @@ const SettlementReport = () => {
                         ))}
                     </select>
                   </div>
+                </div>
+                <div className="row mt-4">
                   {data?.length > 0 ? (
                     <React.Fragment>
-                      <div className="col-lg-6 mrg-btm- bgcolor">
+                      <div className="col-lg-3">
                         <label>Search</label>
                         <input
                           type="text"
@@ -156,9 +155,9 @@ const SettlementReport = () => {
                         {showFilterData.filter}
                       </div>
                       {searchFilterData.length > 9 ? (
-                        <div className="col-lg-6 mrg-btm- bgcolor">
+                        <div className="col-lg-3">
                           <label>Count Per Page</label>
-                          <select className="ant-input">
+                          <select className="form-select">
                             <DropDownCountPerPage
                               datalength={searchFilterData.length}
                             />
@@ -176,11 +175,9 @@ const SettlementReport = () => {
             </section>
 
             <section className="">
-              <div className="container-fluid  p-3 my-3 ">
-                {searchFilterData.length > 0 ? (
-                  <h4>Total Record : {searchFilterData.length} </h4>
-                ) : (
-                  <></>
+              <div className="container-fluid mt-5">
+                {searchFilterData.length > 0 && (
+                  <h6>Total Record : {searchFilterData.length} </h6>
                 )}
                 <div className="scroll" style={{ overflow: "auto" }}>
                   <table className="table table-bordered">

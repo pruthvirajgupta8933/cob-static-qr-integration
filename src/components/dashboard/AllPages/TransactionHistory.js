@@ -489,7 +489,7 @@ const TransactionHistory = () => {
                             control="select"
                             label="Client Code"
                             name="clientCode"
-                            className="form-control rounded-0"
+                            className="form-select rounded-0"
                             options={clientCodeOption}
                           />
 
@@ -502,7 +502,7 @@ const TransactionHistory = () => {
                           type="date"
                           label="From Date"
                           name="fromDate"
-                          className="form-control rounded-0"
+                          className="form-select rounded-0"
                         // value={startDate}
                         // onChange={(e)=>setStartDate(e.target.value)}
                         />
@@ -523,7 +523,7 @@ const TransactionHistory = () => {
                           control="select"
                           label="Transactions Status"
                           name="transaction_status"
-                          className="form-control rounded-0 mt-0"
+                          className="form-select rounded-0 mt-0"
                           options={tempPayStatus}
                         />
                       </div>
@@ -533,7 +533,7 @@ const TransactionHistory = () => {
                           control="select"
                           label="Payment Mode"
                           name="payment_mode"
-                          className="form-control rounded-0 mt-0"
+                          className="form-select rounded-0 mt-0"
                           options={tempPaymode}
                         />
                       </div>
@@ -596,7 +596,7 @@ const TransactionHistory = () => {
                       <select
                         value={pageSize}
                         rel={pageSize}
-                        className="ant-input"
+                        className="select"
                         onChange={(e) => setPageSize(parseInt(e.target.value))}
                       >
                         <DropDownCountPerPage datalength={txnList.length} />

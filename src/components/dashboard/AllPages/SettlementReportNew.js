@@ -360,7 +360,7 @@ const SettlementReportNew= () => {
                 {(formik) => (
                   <Form>
                     <div className="form-row">
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="select"
                           label="Client Code"
@@ -370,7 +370,7 @@ const SettlementReportNew= () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="input"
                           type="date"
@@ -380,7 +380,7 @@ const SettlementReportNew= () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="input"
                           type="date"

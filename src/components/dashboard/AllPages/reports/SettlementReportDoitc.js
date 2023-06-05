@@ -301,16 +301,13 @@ const SettlementReportDoitc = () => {
 
 
   return (
-    <section className="ant-layout NunitoSans-Regular">
-      <div>
-        
-      </div>
-      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
-        <div className="gx-main-content-wrapper">
-          <div className="right_layout my_account_wrapper right_side_heading">
-            <h1 className="m-b-sm gx-float-left">Settlement Report</h1>
+    <section className="">
+      <main className="">
+        <div className="">
+          <div className="">
+            <h6 className="">Settlement Report</h6>
           </div>
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
+          <section className="">
             <div className="container-fluid">
               <Formik
                 initialValues={initialValues}
@@ -320,17 +317,17 @@ const SettlementReportDoitc = () => {
                 {(formik) => (
                   <Form>
                     <div className="form-row">
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="select"
                           label="Client Code"
                           name="clientCode"
-                          className="form-control rounded-0 mt-0"
+                          className="form-select rounded-0 mt-0"
                           options={clientCodeOption}
                         />
                       </div>
 
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="input"
                           type="date"
@@ -340,7 +337,7 @@ const SettlementReportDoitc = () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-4">
+                      <div className="form-group col-md-3">
                         <FormikController
                           control="input"
                           type="date"
@@ -354,7 +351,7 @@ const SettlementReportDoitc = () => {
                       <div className="form-group col-md-1">
                         <button
                           disabled={disable}
-                          className=" btn bttn cob-btn-primary"
+                          className=" btn cob-btn-primary btn-sm"
                           type="submit"
                         >
                           Search{" "}
@@ -363,7 +360,7 @@ const SettlementReportDoitc = () => {
                       {txnList?.length > 0 ? (
                         <div className="form-group col-md-1">
                         <div className="dropdown form-group">
-                              <button className="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <button className="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Export
                               </button>
                               <div className="dropdown-menu bg-light p-2" aria-labelledby="dropdownMenu2">
@@ -401,7 +398,7 @@ const SettlementReportDoitc = () => {
                     <select
                       value={pageSize}
                       rel={pageSize}
-                      className="form-control rounded-0"
+                      className="form-select rounded-0"
                       onChange={(e) => setPageSize(parseInt(e.target.value))}
                     >
                       <DropDownCountPerPage datalength={txnList.length} />
@@ -414,10 +411,10 @@ const SettlementReportDoitc = () => {
             </div>
           </section>
 
-          <section className="features8 cid-sg6XYTl25a flleft w-100">
-            <div className="container-fluid  p-3 my-3 ">
+          <section className="">
+            <div className="container-fluid mt-5">
               {txnList.length > 0 ? (
-                <h4>Total Record : {txnList.length} </h4>
+                <h6>Total Record : {txnList.length} </h6>
               ) : (
                 <></>
               )}
