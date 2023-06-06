@@ -201,7 +201,6 @@ function Signup() {
     //function to get pending details like mobile number,bussiness caregory code
     const getPendingDetails = (mobileNumber, businessCategoryCode) => {
         let businessType = 1;
-        console.log(mobileNumber, businessCategoryCode);
         if (mobileNumber && businessCategoryCode) {
             setBtnDisable(true);
             dispatch(
