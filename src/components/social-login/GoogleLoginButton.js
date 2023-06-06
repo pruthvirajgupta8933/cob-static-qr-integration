@@ -6,7 +6,12 @@ import { useGoogleLogout } from 'react-google-login';
 
 
 
-const GoogleLoginButton = ({ enableSocialLogin, btnText }) => {
+const GoogleLoginButton = (props) => {
+  console.log(props)
+  const {enableSocialLogin,btnText, fnCls} = props
+  // props.fnCls();
+
+  // props.enableSocialLogin(true, "response call");
   const signOut  = useGoogleLogout({
     clientId: clientId,
     // onLogoutSuccess: handleLogout,
@@ -25,8 +30,9 @@ const GoogleLoginButton = ({ enableSocialLogin, btnText }) => {
     gapi.load("client:auth2", start);
   }, []);
   const responseGoogle = (response) => {
-    // console.log(response);
-    enableSocialLogin(true, response);
+    console.log("response");
+
+    props.enableSocialLogin(true, response);
     signOut();
   };
 

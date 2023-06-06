@@ -189,12 +189,14 @@ function Signup() {
 
 
     const enableSocialLogin = (flag, response) => {
+        console.log("flag",flag)
+        console.log("res",response)
         setIsModalOpen(true);
         toast.warning("Please add mobile number & bussiness category.")
-        setFullName(response?.profileObj?.familyName);
-        setEmail(response?.profileObj?.email);
-
+        setFullName(response?.profileObj?.name);
+        setEmail(response?.profileObj?.email)
     }
+    console.log(fullName,email,'-----')
     const queryStringUrl = window.location.search;
 
 
@@ -234,7 +236,7 @@ function Signup() {
     const modalBody = () => {
         return (
             <>
-                <AfterSignUp hideDetails={true} getPendingDetails={getPendingDetails} />
+                <AfterSignUp hideDetails={true} fullName={fullName} email={email} getPendingDetails={getPendingDetails} />
             </>
         );
     };
@@ -457,7 +459,7 @@ function Signup() {
                                         </div>
                                         <div className="d-flex justify-content-center m-2">
                                        
-                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} />
+                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} fullName={fullName} email={email} btnText={"Sign up with Google"}  />
 
                                         </div>
                                     </Form>
