@@ -25,7 +25,7 @@ const GoogleLoginButton = ({ enableSocialLogin, btnText }) => {
     gapi.load("client:auth2", start);
   }, []);
   const responseGoogle = (response) => {
-    console.log(response);
+    // console.log(response);
     enableSocialLogin(true, response);
     signOut();
   };

@@ -111,14 +111,14 @@ function Registration({ hideDetails, getPendingDetails }) {
           >
             {(formik, resetForm) => (
               <Form acceptCharset="utf-8" action="#" className="simform">
-                <div className="sminputs">
-                  <div className="sminputs">
-                    <div className="input full- optional">
-                      <label className="string optional" htmlFor="mobile">
+                <div className="row m-5">
+                
+                    <div className="col-lg-6">
+                      <label className="form-label" htmlFor="mobile">
                         Mobile Number
                       </label>
                       <Field
-                        className="string optional"
+                        className="form-control"
                         maxLength={10}
                         id="mobilenumber"
                         placeholder="Mobile Number"
@@ -133,14 +133,14 @@ function Registration({ hideDetails, getPendingDetails }) {
                       />
                       {
                         <ErrorMessage name="mobilenumber">
-                          {(msg) => <p className="abhitest errortxt">{msg}</p>}
+                          {(msg) => <p className="text-danger errortxt">{msg}</p>}
                         </ErrorMessage>
                       }
                     </div>
 
-                    <div className="input full- optional">
+                    <div className="col-lg-6">
                       <label
-                        className="string optional"
+                        className="form-label"
                         htmlFor="business_category"
                       >
                         Business Category
@@ -152,7 +152,6 @@ function Registration({ hideDetails, getPendingDetails }) {
                       >
                         <option
                           type="text"
-                          className="form-select"
                           id="businesscode"
                           value={""}
                         >
@@ -166,11 +165,10 @@ function Registration({ hideDetails, getPendingDetails }) {
                       </Field>
                       {
                         <ErrorMessage name="business_cat_code">
-                          {(msg) => <p className="abhitest errortxt">{msg}</p>}
+                          {(msg) => <p className="text-danger">{msg}</p>}
                         </ErrorMessage>
                       }
                     </div>
-                  </div>
                 </div>
                 <div className="d-flex justify-content-center">
                   <button

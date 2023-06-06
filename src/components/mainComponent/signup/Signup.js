@@ -200,6 +200,7 @@ function Signup() {
 
     //function to get pending details like mobile number,bussiness caregory code
     const getPendingDetails = (mobileNumber, businessCategoryCode) => {
+        console.log("hello")
         let businessType = 1;
         if (mobileNumber && businessCategoryCode) {
             setBtnDisable(true);
@@ -219,7 +220,7 @@ function Signup() {
             )
                 .unwrap()
                 .then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     setBtnDisable(false);
                     // resetForm();
                 })
