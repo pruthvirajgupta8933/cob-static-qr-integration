@@ -159,6 +159,21 @@ function Sandbox() {
                           className="form-control"
                           id="inputPassword3"
                           disabled="true"
+                          value="P8c3WQ7ei"
+                        />
+                      </div>
+                      <div className="col-lg-4">
+                        <label
+                          htmlFor="inputPassword3"
+                          className="col-form-label"
+                        >
+                          Password
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="inputPassword3"
+                          disabled="true"
                           value="x0xzPnXsgTq0QqXx"
                         />
                       </div>

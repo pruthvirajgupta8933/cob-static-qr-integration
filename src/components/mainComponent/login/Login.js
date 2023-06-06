@@ -231,7 +231,7 @@ function Login() {
                             <div className="d-flex justify-content-center m-2">
                             {/* <p>OR</p> */}
                             
-                            <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} />
+                            {/* <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign in with Google"} /> */}
                             
 
                             </div>
