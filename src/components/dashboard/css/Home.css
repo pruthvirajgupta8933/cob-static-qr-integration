@@ -688,14 +688,13 @@ button[disabled1] {
   color: #44525f;
 }
 
-.paragraphcssdashboards {
-  /* font-family: 'Roboto'; */
+/* .paragraphcssdashboards {
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
   color: #000000;
-}
+} */
 
 .forSpinner {
   margin-top: 126px;

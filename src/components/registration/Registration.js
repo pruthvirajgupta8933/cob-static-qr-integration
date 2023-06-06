@@ -73,6 +73,7 @@ function Registration() {
   //details from goole sign in
   const [fullName,setFullName]=useState("");
   const [email,setEmail]=useState("");
+  console.log(fullName,'fullname')
 
   const dispatch = useDispatch();
 
@@ -122,7 +123,6 @@ function Registration() {
     let { fullname, mobilenumber, emaill, passwordd, business_cat_code } =
       formData;
     setBtnDisable(true);
-
     dispatch(
       register({
         fullname: fullname,
@@ -189,7 +189,7 @@ function Registration() {
   }, [isUserRegistered, dispatch, history, message]);
 
 
-  const enableSocialLogin=(flag,response)=>
+  const enableSocialLogin = (flag, response) =>
   {
     setIsModalOpen(true);
     toast.warning("Please add mobile number & bussiness category.")
@@ -197,17 +197,19 @@ function Registration() {
     setEmail(response?.profileObj?.email);
 
   }
+
+
   const queryStringUrl = window.location.search;
 
 
   //function to get pending details like mobile number,bussiness caregory code
   const getPendingDetails=(mobileNumber,businessCategoryCode)=>
   {
+    
     let businessType = 1;
-    console.log(mobileNumber,businessCategoryCode);
     if(mobileNumber && businessCategoryCode)
     {
-      setBtnDisable(true);
+      // setBtnDisable(true);
       dispatch(
         register({
           fullname: fullName,
@@ -238,7 +240,7 @@ function Registration() {
   const modalBody = () => {
     return (
       <>
-        <AfterSignUp hideDetails={true} getPendingDetails={getPendingDetails} />
+        <AfterSignUp hideDetails={true}  />
       </>
     );
   };
@@ -668,7 +670,7 @@ function Registration() {
 
                                       <div className="row ">
                                         <div className="d-flex justify-content-center mt-2">
-                                          <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} />
+                                          <GoogleLoginButton enableSocialLogin={enableSocialLogin()}  btnText={"Sign up with Google"}  />
                                         </div>
                                         <h4 className="mt-2">
                                           Already have an account?{" "}

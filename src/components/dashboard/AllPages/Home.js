@@ -311,7 +311,7 @@ function Home() {
                     />
                     &nbsp;Payment Links
                   </h4>
-                  <p className="paragraphcssdashboards">
+                  <p className="">
                     Payment Links is the world’s first Unified link-based
                     payment method, for payment collections with the help of
                     links for a wide range of payment modes. Collect payments
@@ -436,7 +436,7 @@ function Home() {
       ) : (
         <div
           className={
-            "modal fade mymodals" +
+            "modal fade mymodals " +
             (modalState === "Not-Filled" ? " show d-block" : " d-none")
           }
           role="dialog"
@@ -461,53 +461,52 @@ function Home() {
                       <span aria-hidden="true">&times;</span>
                     </button>
 
-                    <div className="row">
-                      <div className="col-sm">
+                    <div className="row text-center">
+                      <div className="col-lg-12">
                         <h1 className="homeModalHeading">
                           Welcome to SabPaisa!
                         </h1>
-                        <h2 className="modalscolrsfortext">
+                        <h6 className="">
                           Complete the KYC to activate your account and start
                           accepting payments. Fill in all the information to
                           start your SabPaisa Payment services.
-                        </h2>
+                        </h6>
                       </div>
 
-                      <div className="col-sm">
+                      <div className="col-lg-12">
                         <img
                           src={bro}
-                          className="modalsimageclass"
+                          className="w-75"
                           alt="SabPaisa"
                           title="SabPaisa"
                         />
                       </div>
                     </div>
 
-                    <div className="row ">
-                      <div className="col-lg-4">
+                    <div className="row mt-3 ">
+                      <div className="col-lg-6 text-align-end">
                         <Link
                           to={`/dashboard/kyc`}
                           data-toggle="modal"
                           data-target="#exampleModalCenter"
                         >
-                          <button className="ModalButtonClr text-white mt-2">
-                            <h5 className="m-0">
-                              Complete KYC to activate account
-                            </h5>
+                          <button className="ModalButtbtn btn-sm cob-btn-primary">
+                          
+                              Complete the KYC
+                          
                           </button>
                         </Link>
                       </div>
-                      <div className="col-lg-7">
-                        <Link to={`/dashboard`}>
+                      <div className="col-lg-6">
+                        <Link to={`/dashboard`} >
                           <button
-                            className="ColrsforredirectProdct  text-white"
-                            style={{ marginTop: "9px" }}
+                            className="btn btn-sm cob-btn-secondary"
                             onClick={() => {
                               setModalState(!modalState);
                             }}
                             aria-label="Close"
                           >
-                            <h5 className="m-0">Try out our dashboard</h5>
+                            Try out our dashboard
                           </button>
                         </Link>
                       </div>

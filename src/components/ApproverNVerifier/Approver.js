@@ -11,9 +11,11 @@ import RejectedKYC from "./RejectedKYC";
 import { roleBasedAccess } from "../../_components/reuseable_components/roleBasedAccess";
 import { logout } from "../../slices/auth";
 import { merchantTab } from "../../slices/approverVerifierTabSlice";
+import classes from "./approver.module.css"
 
 const Approver = () => {
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
+  // console.log(verifierApproverTab?.currenTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab);
 
   const [users, setUsers] = useState();
@@ -54,13 +56,13 @@ const Approver = () => {
                 Merchant List
               </h5>
             </div>
-            <div className="col-6">
+            <div className="col-6 d-flex justify-content-end">
               {roles?.viewer === true ? (
                 <></>
               ) : (
                 <button
                   type="button"
-                  className="btn  cob-btn-primary "
+                  className="btn btn-sm cob-btn-primary "
                   onClick={() => redirect()}
                 >
                   Onboard Merchant
@@ -70,16 +72,13 @@ const Approver = () => {
           </div>
 
           <section>
-            <div className="row">
+            <div className="row mt-5">
               <div className="col-lg-12 mb-4">
                 <ul className="nav nav-tabs approv">
                   <li className="nav-item ">
                     <a
                       href={() => false}
-                      className={
-                        "nav-link " +
-                        (currenTab === 1 ? "activepaylink" : "inactive")
-                      }
+                      className={`nav-link  ${currenTab === 1 ? "activepaylink" : "inactive"} ${classes.cursor_pointer}`}
                       onClick={() => handleTabClick(1)}
                     >
                       Not Filled KYC
@@ -88,10 +87,8 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={
-                        "nav-link " +
-                        (currenTab === 2 ? "activepaylink" : "inactive")
-                      }
+                      className={`nav-link  ${currenTab === 2 ? "activepaylink" : "inactive"} ${classes.cursor_pointer}`}
+
                       onClick={() => handleTabClick(2)}
                     >
                       Pending KYC
@@ -100,10 +97,8 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={
-                        "nav-link " +
-                        (currenTab === 3 ? "activepaylink" : "inactive")
-                      }
+                      className={`nav-link  ${currenTab === 3 ? "activepaylink" : "inactive"} ${classes.cursor_pointer}`}
+
                       onClick={() => handleTabClick(3)}
                     >
                       Pending Verification
@@ -112,10 +107,8 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={
-                        "nav-link " +
-                        (currenTab === 4 ? "activepaylink" : "inactive")
-                      }
+                      className={`nav-link  ${currenTab === 4 ? "activepaylink" : "inactive"} ${classes.cursor_pointer}`}
+
                       onClick={() => handleTabClick(4)}
                     >
                       Pending Approval
@@ -124,10 +117,8 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={
-                        "nav-link " +
-                        (currenTab === 5 ? "activepaylink" : "inactive")
-                      }
+                      className={`nav-link  ${currenTab === 5 ? "activepaylink" : "inactive"} ${classes.cursor_pointer}`}
+
                       onClick={() => handleTabClick(5)}
                     >
                       Approved
@@ -136,10 +127,8 @@ const Approver = () => {
                   <li className="nav-item">
                     <a
                       href={() => false}
-                      className={
-                        "nav-link " +
-                        (currenTab === 6 ? "activepaylink" : "inactive")
-                      }
+                      className={`nav-link  ${currenTab === 6 ? "activepaylink" : "inactive"} ${classes.cursor_pointer}`}
+
                       onClick={() => handleTabClick(6)}
                     >
                       Rejected

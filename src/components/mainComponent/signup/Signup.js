@@ -191,9 +191,8 @@ function Signup() {
     const enableSocialLogin = (flag, response) => {
         setIsModalOpen(true);
         toast.warning("Please add mobile number & bussiness category.")
-        setFullName(response?.profileObj?.familyName);
-        setEmail(response?.profileObj?.email);
-
+        setFullName(response?.profileObj?.name);
+        setEmail(response?.profileObj?.email)
     }
     const queryStringUrl = window.location.search;
 
@@ -201,7 +200,6 @@ function Signup() {
     //function to get pending details like mobile number,bussiness caregory code
     const getPendingDetails = (mobileNumber, businessCategoryCode) => {
         let businessType = 1;
-        console.log(mobileNumber, businessCategoryCode);
         if (mobileNumber && businessCategoryCode) {
             setBtnDisable(true);
             dispatch(
@@ -220,7 +218,7 @@ function Signup() {
             )
                 .unwrap()
                 .then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     setBtnDisable(false);
                     // resetForm();
                 })
@@ -234,7 +232,7 @@ function Signup() {
     const modalBody = () => {
         return (
             <>
-                <AfterSignUp hideDetails={true} getPendingDetails={getPendingDetails} />
+                <AfterSignUp hideDetails={true} fullName={fullName} email={email} getPendingDetails={getPendingDetails} />
             </>
         );
     };
@@ -457,7 +455,7 @@ function Signup() {
                                         </div>
                                         <div className="d-flex justify-content-center m-2">
                                        
-                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} btnText={"Sign up with Google"} />
+                                        <GoogleLoginButton enableSocialLogin={enableSocialLogin} fullName={fullName} email={email} btnText={"Sign up with Google"}  />
 
                                         </div>
                                     </Form>
@@ -474,7 +472,7 @@ function Signup() {
                                 </Link></p>
                             </div>
                         </div>
-                        <div className="bd-highlight text-center sp-font-12"><p>By signing up, you agree to our Terms &amp; Conditions and Privacy Policy</p></div>
+                        <div className="bd-highlight text-center sp-font-12"><p>By signing up, you agree to our <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer"  target="_blank">Terms &amp; Conditions </a> and <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer"  target="_blank">Privacy Policy</a></p></div>
                     </div>
                 </div>
                 <div className="d-flex justify-content-center bd-highlight mt-4">
