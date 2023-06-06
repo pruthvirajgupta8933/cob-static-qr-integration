@@ -15,7 +15,7 @@ import classes from "./approver.module.css"
 
 const Approver = () => {
   const verifierApproverTab = useSelector((state) => state.verifierApproverTab);
-  console.log(verifierApproverTab?.currenTab)
+  // console.log(verifierApproverTab?.currenTab)
   const currenTab = parseInt(verifierApproverTab?.currenTab);
 
   const [users, setUsers] = useState();
