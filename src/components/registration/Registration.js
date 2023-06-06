@@ -204,7 +204,6 @@ function Registration() {
   const getPendingDetails=(mobileNumber,businessCategoryCode)=>
   {
     let businessType = 1;
-    console.log(mobileNumber,businessCategoryCode);
     if(mobileNumber && businessCategoryCode)
     {
       setBtnDisable(true);
