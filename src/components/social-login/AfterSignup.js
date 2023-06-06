@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../config";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
+import AuthService from "../../services/auth.service";
+import { toast } from "react-toastify";
 
 import "../login/css/home.css";
 import "../login/css/homestyle.css";
@@ -24,7 +26,7 @@ const FORM_VALIDATION = Yup.object().shape({
   business_cat_code: Yup.string().required("Required"),
 });
 
-function Registration({ hideDetails, getPendingDetails }) {
+function Registration({ hideDetails, getPendingDetails, fullName, email }) {
   const history = useHistory();
 
   const reduxState = useSelector((state) => state);
@@ -78,13 +80,32 @@ function Registration({ hideDetails, getPendingDetails }) {
     setQueryString(paramObject);
   }, []);
 
-  const handleRegistration = (formData) => {
-    setMobileNumber(formData?.mobilenumber);
-    setBussinessCategoryCode(formData?.business_cat_code);
+  const handleRegistration = async (formData) => {
     setBtnDisable(false);
-
     //Function passing as props to Registration for social login
     getPendingDetails(mobileNumber, businessCategoryCode);
+    let businessType = 1;
+    const data = {
+      fullname: fullName,
+      mobileNumber: formData?.mobilenumber,
+      email: email,
+      business_cat_code: formData?.business_cat_code,
+      businessType,
+      isDirect: true,
+      requestId: null,
+      plan_details: queryString,
+      is_social: true,
+    };
+    try {
+      const response = await AuthService.register(data);
+      if(response.status===200)
+      {
+        toast.success(response.data.message);
+        history.push("/login");
+      }
+    } catch (err) {
+      toast.error(err.response.data.message);
+    }
   };
 
   return (
@@ -106,69 +127,61 @@ function Registration({ hideDetails, getPendingDetails }) {
             }}
             validationSchema={FORM_VALIDATION}
             onSubmit={(values, { resetForm }) => {
-              handleRegistration(values, { resetForm });
+              handleRegistration(values);
             }}
           >
             {(formik, resetForm) => (
               <Form acceptCharset="utf-8" action="#" className="simform">
                 <div className="row m-5">
-                
-                    <div className="col-lg-6">
-                      <label className="form-label" htmlFor="mobile">
-                        Mobile Number
-                      </label>
-                      <Field
-                        className="form-control"
-                        maxLength={10}
-                        id="mobilenumber"
-                        placeholder="Mobile Number"
-                        name="mobilenumber"
-                        type="text"
-                        pattern="\d{10}"
-                        size={10}
-                        onKeyDown={(e) =>
-                          ["e", "E", "+", "-", "."].includes(e.key) &&
-                          e.preventDefault()
-                        }
-                      />
-                      {
-                        <ErrorMessage name="mobilenumber">
-                          {(msg) => <p className="text-danger errortxt">{msg}</p>}
-                        </ErrorMessage>
+                  <div className="col-lg-6">
+                    <label className="form-label" htmlFor="mobile">
+                      Mobile Number
+                    </label>
+                    <Field
+                      className="form-control"
+                      maxLength={10}
+                      id="mobilenumber"
+                      placeholder="Mobile Number"
+                      name="mobilenumber"
+                      type="text"
+                      pattern="\d{10}"
+                      size={10}
+                      onKeyDown={(e) =>
+                        ["e", "E", "+", "-", "."].includes(e.key) &&
+                        e.preventDefault()
                       }
-                    </div>
+                    />
+                    {
+                      <ErrorMessage name="mobilenumber">
+                        {(msg) => <p className="text-danger errortxt">{msg}</p>}
+                      </ErrorMessage>
+                    }
+                  </div>
 
-                    <div className="col-lg-6">
-                      <label
-                        className="form-label"
-                        htmlFor="business_category"
-                      >
-                        Business Category
-                      </label>
-                      <Field
-                        name="business_cat_code"
-                        className="form-select"
-                        component="select"
-                      >
-                        <option
-                          type="text"
-                          id="businesscode"
-                          value={""}
-                        >
-                          Select Business
+                  <div className="col-lg-6">
+                    <label className="form-label" htmlFor="business_category">
+                      Business Category
+                    </label>
+                    <Field
+                      name="business_cat_code"
+                      className="form-select"
+                      component="select"
+                    >
+                      <option type="text" id="businesscode" value={""}>
+                        Select Business
+                      </option>
+                      {businessCode?.map((business, i) => (
+                        <option value={business.category_id} key={i}>
+                          {business.category_name}
                         </option>
-                        {businessCode?.map((business, i) => (
-                          <option value={business.category_id} key={i}>
-                            {business.category_name}
-                          </option>
-                        ))}
-                      </Field>
-                      {
-                        <ErrorMessage name="business_cat_code">
-                          {(msg) => <p className="text-danger">{msg}</p>}
-                        </ErrorMessage>
-                      }
-                    </div>
+                      ))}
+                    </Field>
+                    {
+                      <ErrorMessage name="business_cat_code">
+                        {(msg) => <p className="text-danger">{msg}</p>}
+                      </ErrorMessage>
+                    }
+                  </div>
                 </div>
                 <div className="d-flex justify-content-center">
                   <button
@@ -182,6 +195,7 @@ function Registration({ hideDetails, getPendingDetails }) {
                         : false
                     }
                     data-rel={btnDisable}
+                    // onClick={()=>handleRegistration()}
                   >
                     Create an account
                   </button>
