@@ -330,3 +330,15 @@ input, select{
 .align-items-center {
   -ms-flex-align: center!important;
 }
+
+
+/* gloablly apply css */
+
+p{
+  font-family: "Roboto-Regular";
+}
+
+
+h1, h2, h3, h4, h5, h6{
+  font-family: "OpenSans-Regular";
+}

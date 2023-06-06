@@ -311,7 +311,7 @@ function Home() {
                     />
                     &nbsp;Payment Links
                   </h4>
-                  <p className="paragraphcssdashboards">
+                  <p className="">
                     Payment Links is the world’s first Unified link-based
                     payment method, for payment collections with the help of
                     links for a wide range of payment modes. Collect payments

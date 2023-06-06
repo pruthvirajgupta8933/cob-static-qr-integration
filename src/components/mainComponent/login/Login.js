@@ -130,14 +130,14 @@ function Login() {
     return (
         <React.Fragment>
             <Header />
-            <main className="container-fluid">
+            <main className={`container-fluid`}>
                 <div className={`d-flex flex-row ${classes.flex_column_reverse} ${classes.container_custom}`}>
                     <div className={`${classes.right_screen}`}>
                         <div className="p-4 text-center ">
                             <h1>An all-in-one</h1>
                             <h2>Dashboard</h2>
                             <h4>Trusted by over 3000+ Mega Clients</h4>
-                            <img src="https://partner.sabpaisa.in/static/media/COB.291fe45cb61eeb6e8b0d.png" className={`${classes.login_banner}`} />
+                            <img src="https://partner.sabpaisa.in/static/media/COB.291fe45cb61eeb6e8b0d.png" alt="banner" className={`${classes.login_banner}`} />
                         </div>
                     </div>
 
@@ -240,7 +240,7 @@ function Login() {
                                 <p className={`${classes.sp_font_14}`}>Don’t have an account with SabPaisa?  <Link className="text-primary text-decoration-underline" to="/Registration">Sign Up</Link></p>
                             </div>
                         </div>
-                        <div className="bd-highlight text-center sp-font-12"><p>Terms &amp; Condition | Privacy Policy</p></div>
+                        <div className="bd-highlight text-center sp-font-12"><p><a href="https://sabpaisa.in/term-conditions/" rel="noreferrer"  target="_blank">Terms &amp; Conditions </a> | <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer"  target="_blank">Privacy Policy</a></p></div>
                     </div>
                 </div>
                 <div className="d-flex justify-content-center bd-highlight mt-3 ">

@@ -474,7 +474,7 @@ function Signup() {
                                 </Link></p>
                             </div>
                         </div>
-                        <div className="bd-highlight text-center sp-font-12"><p>By signing up, you agree to our Terms &amp; Conditions and Privacy Policy</p></div>
+                        <div className="bd-highlight text-center sp-font-12"><p>By signing up, you agree to our <a href="https://sabpaisa.in/term-conditions/" rel="noreferrer"  target="_blank">Terms &amp; Conditions </a> and <a href="https://sabpaisa.in/privacy-policy/" rel="noreferrer"  target="_blank">Privacy Policy</a></p></div>
                     </div>
                 </div>
                 <div className="d-flex justify-content-center bd-highlight mt-4">
