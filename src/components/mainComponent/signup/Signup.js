@@ -189,20 +189,16 @@ function Signup() {
 
 
     const enableSocialLogin = (flag, response) => {
-        console.log("flag",flag)
-        console.log("res",response)
         setIsModalOpen(true);
         toast.warning("Please add mobile number & bussiness category.")
         setFullName(response?.profileObj?.name);
         setEmail(response?.profileObj?.email)
     }
-    console.log(fullName,email,'-----')
     const queryStringUrl = window.location.search;
 
 
     //function to get pending details like mobile number,bussiness caregory code
     const getPendingDetails = (mobileNumber, businessCategoryCode) => {
-        console.log("hello")
         let businessType = 1;
         if (mobileNumber && businessCategoryCode) {
             setBtnDisable(true);
