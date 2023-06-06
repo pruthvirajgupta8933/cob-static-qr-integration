@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
 import GoogleLogin from "react-google-login";
 import { gapi } from "gapi-script";
-import UseGoogleLogout from './GoogleLogout';
-import { useGoogleLogout } from 'react-google-login';
-
-
+import UseGoogleLogout from "./GoogleLogout";
+import { useGoogleLogout } from "react-google-login";
 
 const GoogleLoginButton = (props) => {
-  console.log(props)
-  const {enableSocialLogin,btnText, fnCls} = props
-  // props.fnCls();
-
-  // props.enableSocialLogin(true, "response call");
-  const signOut  = useGoogleLogout({
+  const { enableSocialLogin, btnText, fnCls } = props;
+  const signOut = useGoogleLogout({
     clientId: clientId,
     // onLogoutSuccess: handleLogout,
   });
@@ -30,15 +24,11 @@ const GoogleLoginButton = (props) => {
     gapi.load("client:auth2", start);
   }, []);
   const responseGoogle = (response) => {
-    console.log("response");
-
     props.enableSocialLogin(true, response);
     signOut();
   };
 
-  const LoginFailure = (response) => {
-    console.log("err", response);
-  };
+  const LoginFailure = (response) => {};
 
   return (
     <>
