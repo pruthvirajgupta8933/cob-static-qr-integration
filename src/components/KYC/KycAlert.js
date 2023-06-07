@@ -66,12 +66,12 @@ function KycAlert() {
   return (
     kycTabRejectionStatus?.length > 0 &&
     <div className="alert alert-danger NunitoSans-Regular" role="alert" >
-      <h4 className="alert-heading" data-tip="Kindly Update your KYC">KYC Alert!</h4>
+      <h6 className="alert-heading" data-tip="Kindly Update your KYC">KYC Alert!</h6>
       {kycTabRejectionStatus && kycTabRejectionStatus?.map((kycTabStatus, i) => (
         <p key={i}><span>{kycTabStatus?.tab} : {kycTabStatus?.comment}</span> </p>)
       )}
       <hr />
-      <Link className="submit-btn cob-btn-primary  text-white" to="dashboard/kyc">Go to KYC the Form</Link>
+      <Link className="submit-btn cob-btn-primary btn-sm text-decoration-none  text-white" to="dashboard/kyc">Go to KYC the Form</Link>
     </div>
 
   )

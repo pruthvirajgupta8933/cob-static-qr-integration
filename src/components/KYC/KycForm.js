@@ -87,6 +87,7 @@ function KycForm() {
   }
 
   const kycTabColorClassByStatus = (tabStatus, merchantConsent) => {
+    console.log("tabStatus",tabStatus)
     if (merchantConsent === false) {
       return "kyc_active_tab_warning"
     } else if (tabStatus === KYC_STATUS_REJECTED) {
@@ -132,32 +133,32 @@ function KycForm() {
                   }} >{kycStatusIcon(KycTabStatusStore?.general_info_status)}
                     Merchant Contact Info</a>
 
-                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 2 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button" onClick={() => {
+                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 2 ? kycTabColorClassByStatus(KycTabStatusStore?.business_info_status) : 'inactive'}`}  type="button" onClick={() => {
                     SetTab(2);
                     setTitle("BUSINESS OVERVIEW");
                   }}>{kycStatusIcon(KycTabStatusStore?.business_info_status)}
                     Business Overview</a>
 
-                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 3 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`} type="button" onClick={() => {
+                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 3 ? kycTabColorClassByStatus(KycTabStatusStore?.merchant_info_status) : 'inactive'}`} type="button" onClick={() => {
                     SetTab(3);
                     setTitle("BUSINESS DETAILS");
                   }}> {kycStatusIcon(KycTabStatusStore?.merchant_info_status)}
                     Business Details</a>
 
-                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 4 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button"  onClick={() => {
+                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 4 ? kycTabColorClassByStatus(KycTabStatusStore?.settlement_info_status) : 'inactive'}`}  type="button"  onClick={() => {
                     SetTab(4);
                     setTitle("BANK DETAILS");
                   }}>  {kycStatusIcon(KycTabStatusStore?.settlement_info_status)}
                     Bank Details</a>
 
-                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 5 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button"  onClick={() => {
+                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 5 ? kycTabColorClassByStatus(KycTabStatusStore?.document_status) : 'inactive'}`}  type="button"  onClick={() => {
                     SetTab(5);
                     setTitle("DOCUMENTS UPLOAD");
                   }} >
                     {kycStatusIcon(KycTabStatusStore?.document_status)}
                     Upload Document</a>
 
-                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 6 ? kycTabColorClassByStatus(KycTabStatusStore?.general_info_status) : 'inactive'}`}  type="button"  onClick={() => {
+                  <a href={false} className={`nav-link text-font-ForStatusChange rounded-0 ${tab === 6 ? kycTabColorClassByStatus(KycTabStatusStore?.status) : 'inactive'}`}  type="button"  onClick={() => {
                     SetTab(6);
                     setTitle("SUBMIT KYC");
                   }}>
