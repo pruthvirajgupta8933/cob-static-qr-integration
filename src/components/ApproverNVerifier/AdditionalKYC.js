@@ -124,15 +124,16 @@ const AdditionalKYC = () => {
   const [selectedDocType, setSelectedDocType] = useState("");
   const [panStatus, setPanStatus] = useState(false);
   const [gstinData, setGstinData] = useState([])
-
+  const[bankAccount,setBankaccount]=useState([])
   const [gstStatus, setGstStatus] = useState(false);
   const [bankStatus, setBankStatus] = useState(false);
   const [buttonDisable, setButtonDisable] = useState(false)
   const [isLoading, setIsLoading] = useState(false);
   const [showPanInfo, setShowPanInfo] = useState([])
-
   const objArray = Object.entries(gstinData);
   const panInfodata = Object.entries(showPanInfo);
+  const banckAccountInfo=Object.entries(bankAccount)
+  
 
 
 
@@ -220,6 +221,9 @@ const AdditionalKYC = () => {
     ).then((res) => {
       if (
         setButtonDisable(false),
+        // setBankaccount(res?payload),
+        setBankaccount(res?.payload),
+
         res?.meta?.requestStatus === "fulfilled" &&
         res?.payload?.status === true &&
         res?.payload?.valid === true
@@ -388,7 +392,7 @@ const AdditionalKYC = () => {
                         placeholder="Enter your Account Number"
                       />
                     </div>
-                    <div className="col-lg-3 mt-4">
+                    <div className="col-lg-3 mt-3">
                       <p></p>
                       <button
                         type="submit"
@@ -405,7 +409,7 @@ const AdditionalKYC = () => {
               ""
             )}
 
-            {panStatus === true && selectedDocType === "1" && (
+        {panStatus === true && selectedDocType === "1" && (
               <div class="container mt-5">
                 <h5 class="">PAN Details</h5>
                 <div class="row">
@@ -425,8 +429,7 @@ const AdditionalKYC = () => {
               </div>
             )}
 
-        
-            {gstStatus === true && selectedDocType === "2" &&
+        {gstStatus === true && selectedDocType === "2" &&
               <div class="container mt-5">
                 <h5 class="">GSTIN Information</h5>
                 <div class="row">
@@ -449,21 +452,21 @@ const AdditionalKYC = () => {
             {bankStatus === true && selectedDocType === "3" ? (
               <div className="container" style={{ marginTop: "32px" }}>
                 <h5 className="font-weight-bold">Bank Account Information</h5>
-                <div className="row">
-                  <div className="col-lg-4 font-weight-bold">
-                    Full Name :{" "}
-                    {bankAccountHolderName.length > 2
-                      ? bankAccountHolderName
-                      : ""}
-                  </div>
-                  {/* <div className="col-lg-5">
-          
-            </div> */}
-                  <div className="col-lg-4 font-weight-bold">
-                    Account Status : {accountStatus}
-                  </div>
+                <div class="row">
+                  {banckAccountInfo.map(([key, value]) => (
+                    <div class="col-md-6 p-2 text-uppercase" key={key}>
+                      <span class="font-weight-bold mb-1">
+                        {key.replace('_', ' ')}:
+                      </span>
+                      {typeof value === "boolean" ? (
+                        <span>{value.toString()}</span>
+                      ) : (
+                        <span>&nbsp;{value}</span>
+                      )}
+                    </div>
+                  ))}
                 </div>
-                <div className="row">
+                {/* <div className="row">
                   <div className="col-lg-4 font-weight-bold">
                     Valid :{" "}
                     {accountValidity === true
@@ -472,10 +475,8 @@ const AdditionalKYC = () => {
                         ? "false"
                         : "Not Found"}
                   </div>
-                  {/* <div className="col-lg-5">
-          
-            </div> */}
-                </div>
+                 
+                </div> */}
               </div>
             ) : (
               ""

@@ -5,6 +5,7 @@ import { roleBasedAccess } from '../../../../_components/reuseable_components/ro
 import { verifyKycDocumentTab, kycDocumentUploadList, approveDoc } from '../../../../slices/kycSlice';
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify"
+import classes from "./viewStatus.module.css"
 import CompleteVerifyAndRejectBtn from './CompleteVerifyAndRejectBtn';
 
 
@@ -381,7 +382,7 @@ const MerchantDocument = (props) => {
                     </td>
                     <td>
 
-                      <p className="text-danger"> {doc?.comment === "Null" ? "" : doc?.comment}</p>
+                      <p  className={`text-danger ${classes.cursor_pointer}`}> {doc?.comment === "Null" ? "" : doc?.comment}</p>
                     </td>
                     {/* <td>{doc?.status}</td> */}
 
@@ -391,9 +392,9 @@ const MerchantDocument = (props) => {
                         {/*  || (enableBtnApprover(doc?.status) && enableApproverTabwise) */}
                         {(enableBtnVerifier && doc?.status === "Pending") || (enableBtnApprover && doc?.status === "Verified") ?
                           <>
-
                             <a
                               href={() => false}
+                              className={`${classes.cursor_pointer}`}
                               onClick={() => {
                                 verifyApproveDoc(doc?.documentId, doc?.status);
                               }}
@@ -406,7 +407,7 @@ const MerchantDocument = (props) => {
                             &nbsp;
                             <a
                               href={() => false}
-                              className="text-danger"
+                              className={`${classes.cursor_pointer}`}
                               onClick={() => {
                                 setButtonClick(doc?.documentId)
                                 setCloseModal(true)

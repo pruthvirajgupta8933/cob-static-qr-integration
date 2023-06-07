@@ -222,12 +222,19 @@ const ReferZone = () => {
           <div className="container-fluid">
             <div className="row">
               <div className="col-lg-3">
-                <SearchFilter
+                {/* <SearchFilter
                   kycSearch={kycSearch}
                   searchText={searchText}
                   searchByText={searchByText}
                   setSearchByDropDown={setSearchByDropDown}
-                />
+                /> */}
+                <SearchFilter
+          kycSearch={kycSearch}
+          searchText={searchText}
+          searchByText={searchByText}
+          setSearchByDropDown={setSearchByDropDown}
+          searchTextByApiCall={true}
+        />
 
               </div>
               <div className="col-lg-3">
