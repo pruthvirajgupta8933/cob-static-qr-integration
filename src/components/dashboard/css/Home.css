@@ -1376,3 +1376,23 @@ table.nowrap td{
 .mt-2-addon{
   margin-top: 2.3rem !important;
 }
+
+
+@media (min-width: 300px) and (max-width: 760px) {
+  /* .caret{display: none;} */
+  #dropdownMenuLink{
+      display: block;
+  }
+  .navbar-nav li a.nav-link{
+      padding: 14px 10px;
+  } 
+  .announcement-banner-container{
+      padding-top: 5%;
+  }
+  .foralinkscsshere{
+      font-size: 12px;
+      margin: 8px 0px !important;
+  vertical-align: top;
+}
+  
+}
