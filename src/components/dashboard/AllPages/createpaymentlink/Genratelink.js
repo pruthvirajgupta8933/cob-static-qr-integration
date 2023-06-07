@@ -189,7 +189,7 @@ let clientMerchantDetailsList = [];
                       <div className="col-lg-4">
                         <label>Hours</label>
                         <br />
-                        <select  value={hours} onChange={(e) => setHours(e.target.value)} className="ant-input">
+                        <select  value={hours} onChange={(e) => setHours(e.target.value)} className="form-select">
                           <option value="">Hours</option>
                           <option value="00">00</option>
                           <option value="01">01</option>
@@ -224,7 +224,7 @@ let clientMerchantDetailsList = [];
                       <div className="col-lg-4">
                         <label>Minutes</label>
                         <br />
-                        <select  value={minutes} onChange={(e) => setMinutes(e.target.value)} className="ant-input">
+                        <select  value={minutes} onChange={(e) => setMinutes(e.target.value)} className="form-select">
                           <option value=''>Minutes</option>
                           <option value='00'>00</option>
                           <option value="01">01</option>

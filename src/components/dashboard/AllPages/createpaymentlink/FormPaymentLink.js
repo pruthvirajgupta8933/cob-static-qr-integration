@@ -142,7 +142,7 @@ function FormPaymentLink(props) {
                 </div>
                 <div className="container">
                   <Form>
-                      <div className="form-group col-md-12">
+                      <div className="form-group col-md-12 mt-3">
                         <label
                           className="form-check-label"
                           htmlFor="exampleCheck1"
@@ -186,7 +186,7 @@ function FormPaymentLink(props) {
                             name="Amount"
                             autoComplete="off"
                             className="form-control"
-                            placeholder="Enter Payment Amount in (INR)"
+                            placeholder="Enter Payment Amount"
                           />
                           {<ErrorMessage name="Amount">
                             {msg => <p style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
@@ -228,7 +228,7 @@ function FormPaymentLink(props) {
                         <div className="form-group col-md-6">
                           <label>Hours</label>
 
-                          <Field component='select' className="ant-input" name='hours' value={hours} onChange={(e) => setHours(e.target.value)}>
+                          <Field component='select'  className="form-select" name='hours' value={hours} onChange={(e) => setHours(e.target.value)}>
                             <option value="" >Hours</option>
                             {hoursArr.map((val, i) => (
                               <option value={val} key={i}>{val}</option>
@@ -238,7 +238,7 @@ function FormPaymentLink(props) {
                         <div className="form-group col-md-6">
                           <label>Minutes</label>
 
-                          <Field component='select' className="ant-input" name='minutes' value={minutes} onChange={(e) => setMinutes(e.target.value)}>
+                          <Field component='select'  className="form-select " name='minutes' value={minutes} onChange={(e) => setMinutes(e.target.value)}>
                             <option value="">Minutes</option>
                             <option value="00">00</option>
                             <option value="01">01</option>
