@@ -94,7 +94,7 @@ function Home() {
 
       <div className="row">
         <div className="col-lg-12">
-          {roles?.merchant === true ? (
+          {roles?.merchant === true && (
             <React.Fragment>
               {unPaidProduct?.length > 0 && (
                 <AlertBox
@@ -110,15 +110,15 @@ function Home() {
                 />
               )
               }
-
-              {/* KYC ALETT */}
-              <KycAlert />
             </React.Fragment>
-          ) : (
-            <></>
           )}
         </div>
-
+      </div>
+      <div className="row mt-3">
+        <div className="col-lg-12">
+             {/* KYC ALETT */}
+             <KycAlert />
+        </div>
       </div>
       <hr />
 
