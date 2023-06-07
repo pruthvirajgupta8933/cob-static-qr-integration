@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {clearSuccessTxnsummary } from "../../../slices/dashboardSlice";
+import { clearSuccessTxnsummary } from "../../../slices/dashboardSlice";
 import { useRouteMatch, Redirect, Link } from "react-router-dom";
 import onlineshopinglogo from "../../../assets/images/onlineshopinglogo.png";
 import "../css/Home.css";
@@ -116,18 +116,17 @@ function Home() {
       </div>
       <div className="row mt-3">
         <div className="col-lg-12">
-             {/* KYC ALETT */}
-             <KycAlert />
+          {/* KYC ALETT */}
+          <KycAlert />
         </div>
       </div>
       <hr />
 
       <div className="row">
-
-        <div className="col-lg-9 d-flex justify-content-between">
+        <div className="col-sm-9 d-flex flex-wrap justify-content-center">
 
           <div
-            className="col-lg-3"
+            className="col-lg-4"
             data-aos="fade-up"
           >
             <div className="icon text-primary mb-3">
@@ -159,7 +158,7 @@ function Home() {
           </div>
 
           <div
-            className="col-lg-3"
+            className="col-lg-4"
             data-aos="fade-up"
             data-aos-delay="50"
           >
@@ -192,7 +191,7 @@ function Home() {
           </div>
 
           <div
-            className="col-lg-3"
+            className="col-lg-4"
             data-aos="fade-up"
             data-aos-delay="100"
           >
@@ -250,8 +249,8 @@ function Home() {
           kyc?.kycUserList?.status !== "Approved" && (
             <div className="col-lg-12 col-md-12">
               <div className="card col-lg-12- cardkyc pull-left">
-                <div className="font-weight-bold card-body ">
-                  <span>
+                <div className="card-body ">
+                  <span className="font-weight-bold">
                     You can accept payments upto ₹10,000 for now. To extend
                     the limit complete your KYC and get it approved.
                   </span>
@@ -491,9 +490,9 @@ function Home() {
                           data-target="#exampleModalCenter"
                         >
                           <button className="ModalButtbtn btn-sm cob-btn-primary">
-                          
-                              Complete the KYC
-                          
+
+                            Complete the KYC
+
                           </button>
                         </Link>
                       </div>

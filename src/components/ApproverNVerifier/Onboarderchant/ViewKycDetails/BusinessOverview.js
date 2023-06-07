@@ -20,16 +20,9 @@ const BusinessOverview = (props) => {
 
   const { user } = auth;
   const { loginId } = user;
-  const stringManulate = (str) => {
-    let str1 = str.substring(0, 15)
-    return `${str1}...`
+  
 
-  }
-
-
-
-
-  const handleVerifyClick = () => {
+const handleVerifyClick = () => {
     const veriferDetails = {
       login_id: merchantKycId.loginMasterId,
       business_info_verified_by: loginId,

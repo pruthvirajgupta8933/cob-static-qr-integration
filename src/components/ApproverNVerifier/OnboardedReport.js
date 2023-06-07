@@ -451,6 +451,7 @@ const OnboardedReport = () => {
                 searchText={searchText}
                 searchByText={searchByText}
                 setSearchByDropDown={setSearchByDropDown}
+                searchTextByApiCall={true}
               />
             </div>
 

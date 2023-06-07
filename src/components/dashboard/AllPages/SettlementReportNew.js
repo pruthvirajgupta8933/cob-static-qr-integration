@@ -341,11 +341,14 @@ const SettlementReportNew= () => {
  
 
   return (
-    <section className="">
+    <section className="ant-layout NunitoSans-Regular">
+      <div>
+        
+      </div>
       <div className="profileBarStatus">
       <Notification/>
       </div>
-      <main className="">
+      <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
           {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
             <h5 className="m-b-sm gx-float-left ml-3">Settlement Report</h5>
@@ -360,17 +363,17 @@ const SettlementReportNew= () => {
                 {(formik) => (
                   <Form>
                     <div className="form-row">
-                      <div className="form-group col-md-3">
+                      <div className="form-group col-md-4">
                         <FormikController
                           control="select"
                           label="Client Code"
                           name="clientCode"
-                          className="form-select rounded-0 mt-0"
+                          className="form-control rounded-0 mt-0"
                           options={clientCodeOption}
                         />
                       </div>
 
-                      <div className="form-group col-md-3">
+                      <div className="form-group col-md-4">
                         <FormikController
                           control="input"
                           type="date"
@@ -380,7 +383,7 @@ const SettlementReportNew= () => {
                         />
                       </div>
 
-                      <div className="form-group col-md-3">
+                      <div className="form-group col-md-4">
                         <FormikController
                           control="input"
                           type="date"
@@ -394,7 +397,7 @@ const SettlementReportNew= () => {
                       <div className="form-group col-md-1 mr-2">
                         <button
                         disabled={disable}
-                        className="btn cob-btn-primary text-white btn-sm"
+                        className="btn cob-btn-primary text-white"
                           type="submit"
                         >
                           Search{" "}
@@ -403,7 +406,7 @@ const SettlementReportNew= () => {
                       {txnList?.length > 0 ? (
                         <div className="form-group col-md-1 ml-1">
                           <button
-                            className="btn cob-btn-primary  ml-3 text-white btn-sm"
+                            className="btn cob-btn-primary  ml-3 text-white"
                             style={{ backgroundColor: "rgb(1, 86, 179)" }}
                             type="button"
                             onClick={() => exportToExcelFn()}
@@ -455,7 +458,7 @@ const SettlementReportNew= () => {
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid  p-3 my-3 ">
               {txnList.length > 0 ? (
-                <h6>Total Record : {txnList.length} </h6>
+                <h4>Total Record : {txnList.length} </h4>
               ) : (
                 <></>
               )}

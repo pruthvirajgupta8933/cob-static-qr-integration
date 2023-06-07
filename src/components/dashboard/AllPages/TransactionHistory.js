@@ -239,9 +239,9 @@ const TransactionHistory = () => {
       const date2 = new Date(toDate);
       const diffTime = Math.abs(date2 - date1);
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      if (diffDays < 0 || diffDays > 90) {
+      if (diffDays < 0 || diffDays > 31) {
         flag = false;
-        alert("The date range should be under 3 months");
+        alert("The date range should be under 1 months");
       }
     } else {
       flag = true;
@@ -502,7 +502,7 @@ const TransactionHistory = () => {
                           type="date"
                           label="From Date"
                           name="fromDate"
-                          className="form-select rounded-0"
+                          className="form-control rounded-0"
                         // value={startDate}
                         // onChange={(e)=>setStartDate(e.target.value)}
                         />

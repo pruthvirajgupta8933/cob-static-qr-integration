@@ -7019,24 +7019,7 @@ footer {
 .mt-31{
     margin-top: 31px;
 }
-@media (min-width: 300px) and (max-width: 760px) {
-    /* .caret{display: none;} */
-    #dropdownMenuLink{
-        display: block;
-    }
-    .navbar-nav li a.nav-link{
-        padding: 14px 10px;
-    } 
-    .announcement-banner-container{
-        padding-top: 5%;
-    }
-    .foralinkscsshere{
-        font-size: 10px;
-        margin: 8px 0px !important;
-    vertical-align: top;
-}
-    
-}
+
 /* #navpad{
     padding:5px 8px !important;
 }
