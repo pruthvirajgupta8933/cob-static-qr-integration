@@ -25,40 +25,21 @@ const [hours, setHours] = useState("");
 const { user } = useSelector((state) => state.auth);
 
 
-  // const [data, setData] = useState([])
-  // var clientMerchantDetailsList = user.clientMerchantDetailsList;
-  // const { clientCode } = clientMerchantDetailsList[0]
-
-  let clientMerchantDetailsList = [];
+let clientMerchantDetailsList = [];
   let clientCode = '';
-  if (user && user.clientMerchantDetailsList === null) {
-    // console.log("genratelink");  
+  if (user && user.clientMerchantDetailsList === null) {  
     history.push('/dashboard/profile');
 
   } else {
     clientMerchantDetailsList = user.clientMerchantDetailsList;
     clientCode = clientMerchantDetailsList[0].clientCode;
   }
-  // console.log(customer_type_id);
+  
 
 
 
   const generateHandler = async (e) => {
-    // const linkdata = {
-
-    //   Customer_id: customer_id,
-    //   Amount: enteredAmount,
-    //   Remarks: enteredPurpose,
-    //   valid_to: dateFormat(enteredDate),
-    //   Client_Code: clientCode,
-    //   name_visiblity: true,
-    //   email_visibilty: true,
-    //   phone_number_visibilty: true,
-    //   isMerchantChargeBearer: true,
-    // };
-
-    // console.log(linkdata);
-    toast.info("Please Wait...")
+   toast.info("Please Wait...")
     await axios
       .post(`${API_URL.ADD_LINK}?Customer_id=${customer_id}&Remarks=${e.Remarks}&Amount=${e.Amount}&Client_Code=${clientCode}&name_visiblity=true&email_visibilty=true&phone_number_visibilty=true&valid_to=${dateFormat(e.Date)}&isMerchantChargeBearer=true&isPasswordProtected=${passwordcheck}`, {
         Amount: e.Amount,
@@ -72,10 +53,9 @@ const { user } = useSelector((state) => state.auth);
 
       .then((response) => {
         toast.success(response.data.message)
-        // console.log(JSON.stringify(response.data));
+        
       })
       .catch((error) => {
-        // console.log(error);
         toast.error("Payment Link Creation Failed ")
       });
 
@@ -92,23 +72,9 @@ const { user } = useSelector((state) => state.auth);
       enteredDate + '%20' + hours + ':' + minutes
     );
   };
-  const handleCheck = (e) => {                 //for checkbox
+  const handleCheck = (e) => {                 
     setPasswordCheck(e.target.checked);
   };
-  // const cancelClick = () => {
-
-  //   setEnteredAmount("");
-  //   setEnteredDate("");
-  //   setEnteredPurpose("");
-  //   setHours("");
-  //   setMinutes("");
-
-  //   document.getElementById("checkbox_pass").checked = false;
-  // }
-  // const closeClick = () => {
-  //   document.getElementById("checkbox_pass").checked = false;
-  // }
-
   return (
     <div
       className="mymodals modal fade"
@@ -168,7 +134,7 @@ const { user } = useSelector((state) => state.auth);
                   <Form >
                     <br />
                     <div className="row mt-4">
-                      <div className="col">
+                      <div className="col-lg-4">
                         <label htmlFor="exampleInputEmail1">
                           Amount
                         </label>
@@ -185,30 +151,30 @@ const { user } = useSelector((state) => state.auth);
                           {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                         </ErrorMessage>
                       </div>
-                      <div className="col">
+                      <div className="col-lg-4">
                         <label htmlFor="exampleInputEmail1">
-                        Purpose of Payment Collection
+                        Purpose of Payment 
                         </label>
                         <Field
                           type="text"
                           name="Remarks"
                           autoComplete="off"
                           className="form-control"
-                          placeholder="Enter Purpose of Payment Collection"
+                          placeholder="Payment Purpose"
                         />
                         <ErrorMessage name="Remarks">
                           {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                         </ErrorMessage>
 
                       </div>
-                    </div>
-
-                    <div className="row mt-4">
-                      <div className="col-lg-3">
+                       <div className="col-lg-4">
                         <label>Link Validity</label>
                         <Field
                           type="date"
                           name="Date"
+                          autoComplete="off"
+                         
+                          
                           className="ant-input"
                           min={new Date().toLocaleDateString('en-ca')}
                         />
@@ -216,10 +182,14 @@ const { user } = useSelector((state) => state.auth);
                           {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
                         </ErrorMessage>
                       </div>
-                      <div className="col-lg-3">
+                    </div>
+
+                    <div className="row mt-4">
+                      
+                      <div className="col-lg-4">
                         <label>Hours</label>
                         <br />
-                        <select  value={hours} onChange={(e) => setHours(e.target.value)} className="form-control">
+                        <select  value={hours} onChange={(e) => setHours(e.target.value)} className="ant-input">
                           <option value="">Hours</option>
                           <option value="00">00</option>
                           <option value="01">01</option>
@@ -251,10 +221,10 @@ const { user } = useSelector((state) => state.auth);
 
                         </select>
                       </div>
-                      <div className="col-lg-3">
+                      <div className="col-lg-4">
                         <label>Minutes</label>
                         <br />
-                        <select  value={minutes} onChange={(e) => setMinutes(e.target.value)} className="form-control">
+                        <select  value={minutes} onChange={(e) => setMinutes(e.target.value)} className="ant-input">
                           <option value=''>Minutes</option>
                           <option value='00'>00</option>
                           <option value="01">01</option>

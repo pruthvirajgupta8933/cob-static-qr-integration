@@ -121,8 +121,7 @@ const ViewRateMapping = (props) => {
 
 
 
-
-    const handleSubmit = (values) => {
+ const handleSubmit = (values) => {
         setDisable(true)
         console.log(values)
 

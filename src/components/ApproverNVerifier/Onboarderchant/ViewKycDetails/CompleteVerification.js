@@ -118,7 +118,7 @@ const CompleteVerification = (props) => {
   }
 
   const handleRejectClick = (commetText) => {
-    // console.log("This is comments",commetText)
+    
     const rejectDetails = {
       login_id: merchantKycId.loginMasterId,
       rejected_by: loginId,
@@ -127,7 +127,6 @@ const CompleteVerification = (props) => {
     if (window.confirm("Reject kyc")) {
       dispatch(completeVerificationRejectKyc(rejectDetails))
         .then((resp) => {
-          // console.log("This sis",resp)
           resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload)
           dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
           setButtonClick(false)
@@ -139,109 +138,20 @@ const CompleteVerification = (props) => {
           }else if (currenTab===5){
             return approvedTable()
           }
-          // return currenTab === 4 ? pendingApporvalTable() : currenTab === 3 ? pendingVerfyTable() : currenTab === 5 ? approvedTable() :<></>
+         
         })
         .catch((e) => {
           toast.error("Something went wrong, Please Try Again later")
         });
     }
+}
 
 
-
-    // .then((resp) => {
-    //   resp?.payload?.message &&
-    //     toast.success(resp?.payload?.message);
-    //   resp?.payload?.detail && toast.error(resp?.payload?.detail);
-    // })
-    // .catch((e) => {
-    //   toast.error("Try Again Network Error");
-    // });
-
-  }
-
-
-  // Function For Reversing to Pending Verification
-
-  // const handlePushBack = (commetText) => {
-
-  //   const reverseDetails = {
-  //     login_id: merchantKycId.loginMasterId,
-  //     approved_by: loginId,
-  //     comments: commetText
-  //   };
-  //   if (window.confirm("Are you sure to push it back ?")) {
-  //     if (roles.approver && currenTab === 4) {
-  //       dispatch(reverseToPendingVerification(reverseDetails))
-  //         .then((resp) => {
-  //           // console.log("This sis",resp)
-  //           resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload)
-  //           dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
-  //           closeVerificationModal(false)
-  //           setPushButtonClick(false)
-  //           setCommetText("")
-  //           return currenTab === 4 ? pendingApporvalTable() : <></>
-
-  //         })
-  //         .catch((e) => {
-  //           toast.error("Something went wrong, Please Try Again later")
-  //         });
-  //     }
-
-  //     //  for reversing it from Approved to pending Approval
-  //     if (roles?.approver && currenTab === 5) {
-  //       const reverseToPendingApprovalDetails = {
-  //         login_id: merchantKycId.loginMasterId,
-  //         approved_by: loginId,
-  //         comments: commetText
-  //       };
-
-  //       dispatch(reverseToPendingApproval(reverseToPendingApprovalDetails))
-  //         .then((resp) => {
-  //           // console.log("This sis",resp)
-  //           resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload)
-  //           dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
-  //           closeVerificationModal(false)
-  //           setPushButtonClick(false)
-  //           setCommetText("");
-  //           return currenTab === 5 ? approvedTable() : <></>
-  //         })
-  //         .catch((e) => {
-  //           toast.error("Something went wrong, Please Try Again later")
-  //         });
-
-
-  //     }
-  //     if (roles?.approver && currenTab === 6) {
-  //       const reverseToPendingKyc = {
-  //         login_id: merchantKycId.loginMasterId,
-  //         approved_by: loginId,
-  //         comments: commetText
-  //       };
-
-  //       dispatch(reverseToPendingkyc(reverseToPendingKyc))
-  //         .then((resp) => {
-  //           // console.log("This sis",resp)
-  //           resp?.payload?.status_code === 200 ? toast.success(resp?.payload?.message) : toast.error(resp?.payload)
-  //           dispatch(GetKycTabsStatus({ login_id: merchantKycId?.loginMasterId }))
-  //           closeVerificationModal(false)
-  //           setPushButtonClick(false)
-  //           setCommetText("");
-  //           return currenTab === 6 ? renderToPendingKyc() : <></>
-
-  //         })
-  //         .catch((e) => {
-  //           // toast.error("Something went wrong, Please Try Again later")
-  //         });
-
-
-  //     }
-  //   }
-  // }
+ 
 
   useEffect(() => {
 
-
-    ////////////////////////////////////////////////////// Button enable for approver
+////////////////////////////////////////////////////// Button enable for approver
     const approver = () => {
       let enableBtn = false;
       if (currenTab === 4) {
