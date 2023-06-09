@@ -15,8 +15,8 @@ import {
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
-import NavBar from "../NavBar/NavBar";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
+import ReactDatePicker from "../../../_components/formik/components/ReactDatePicker";
 import moment from "moment";
 
 const ChargeBackTxnHistory = () => {
@@ -63,17 +63,17 @@ const ChargeBackTxnHistory = () => {
     clientMerchantDetailsList = user?.clientMerchantDetailsList;
   }
 
-  const clientcode_rolebased = roles.bank
-    ? "All"
-    : roles.merchant
-      ? clientMerchantDetailsList[0]?.clientCode
-      : "";
+  // const clientcode_rolebased = roles.bank
+  //   ? "All"
+  //   : roles.merchant
+  //     ? clientMerchantDetailsList[0]?.clientCode
+  //     : "";
 
-  const tempClientList = convertToFormikSelectJson(
-    "clientCode",
-    "clientName",
-    clientMerchantDetailsList
-  );
+  // const tempClientList = convertToFormikSelectJson(
+  //   "clientCode",
+  //   "clientName",
+  //   clientMerchantDetailsList
+  // );
 
   const [todayDate, setTodayDate] = useState(splitDate);
 
@@ -125,12 +125,19 @@ const ChargeBackTxnHistory = () => {
     setCurrentPage(pageNo);
   };
 
-
   const onSubmitHandler = (values) => {
-    setIsDisable(true)
-    dispatch(fetchChargebackTxnHistory(values)).then((res) => {
+    const paramData = {
+      clientCode: values.clientCode,
+      fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
+      endDate: values.endDate,
+      noOfClient: values.noOfClient,
+      rpttype: values.rpttype,
+    }
 
-      const ApiStatus = res?.meta?.requestStatus;
+    console.log(values,"values")
+    setIsDisable(true)
+    dispatch(fetchChargebackTxnHistory(paramData)).then((res) => {
+    const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {
         toast.error("Request Rejected");
@@ -299,23 +306,33 @@ const ChargeBackTxnHistory = () => {
                       </div>
 
                       <div className="form-group col-md-4">
-                        <FormikController
-                          control="input"
-                          type="date"
-                          label="From Date"
-                          name="fromDate"
-                          className="form-control rounded-0"
-                        />
+                      <ReactDatePicker
+                        label="From Date"
+                        id="fromDate"
+                        name="fromDate"
+                        selected={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
+                        onChange={date => formik.setFieldValue('fromDate', date)}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control rounded-0"
+                        errorMsg={formik.errors["fromDate"]}
+                        required={true}
+                      />
+                        
                       </div>
 
                       <div className="form-group col-md-4">
-                        <FormikController
-                          control="input"
-                          type="date"
-                          label="End Date"
-                          name="endDate"
-                          className="form-control rounded-0"
-                        />
+                      <ReactDatePicker
+                        label="End Date"
+                        id="endDate"
+                        name="endDate"
+                        selected={formik.values.endDate ? new Date(formik.values.endDate) : null}
+                        onChange={date => formik.setFieldValue('endDate', date)}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control rounded-0"
+                        errorMsg={formik.errors["endDate"]}
+                        required={true}
+                      />
+                        
                       </div>
                     </div>
                     <div className="form-row">

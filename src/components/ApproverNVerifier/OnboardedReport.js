@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import NavBar from "../dashboard/NavBar/NavBar";
 import { Formik, Form } from "formik";
 import { useDispatch } from "react-redux";
-// import Spinner from './Spinner';
-// import DropDownCountPerPage from "../../_components/reuseable_components/DropDownCountPerPage";
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+
 import toastConfig from "../../utilities/toastTypes";
 import { onboardedReport } from "../../slices/kycSlice";
 import moment from "moment";
 import * as Yup from "yup";
 import FormikController from "../../_components/formik/FormikController";
-// import { exportToSpreadsheet } from '../../utilities/exportToSpreadsheet';
 import { onboardedReportExport } from "../../slices/kycSlice";
+import ReactDatePicker from "../../_components/formik/components/ReactDatePicker";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import Table from "../../_components/table_components/table/Table";
 import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage";
@@ -25,7 +25,6 @@ const validationSchema = Yup.object({
 });
 
 const OnboardedReport = () => {
-  const [spinner, setSpinner] = useState(false);
   const [data, setData] = useState([]);
   const [verfiedMerchant, setVerifiedMerchant] = useState([]);
   const [dataCount, setDataCount] = useState("");
@@ -130,9 +129,7 @@ const OnboardedReport = () => {
     );
   };
 
-  const VerierAndApproverSearch = (e) => {
-    setSearchText(e.target.value);
-  };
+ 
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -172,16 +169,11 @@ const OnboardedReport = () => {
         page: currentPage,
         page_size: pageSize,
         selectedChoice,
-        from_date: values.from_date,
-        to_date: values.to_date,
+        from_date: moment(values.from_date).startOf('day').format('YYYY-MM-DD'),
+        to_date: moment(values.to_date).startOf('day').format('YYYY-MM-DD'),
       })
     )
       .then((resp) => {
-        // resp?.payload?.results?.length ? setShowData(true) : toastConfig.errorToast("No Data Found")
-
-        setSpinner(false);
-        setSpinner(false);
-
         const data = resp?.payload?.results;
 
         const dataCoun = resp?.payload?.count;
@@ -202,23 +194,8 @@ const OnboardedReport = () => {
       });
   };
 
-  // useEffect(() => {
-  //     if (searchText.length > 0) {
-  //         setData(
-  //             verfiedMerchant.filter((item) =>
-  //                 Object.values(item)
-  //                     .join(" ")
-  //                     .toLowerCase()
-  //                     .includes(searchText?.toLocaleLowerCase())
-  //             )
-  //         );
-  //     } else {
-  //         setData(verfiedMerchant);
-  //     }
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [searchText]);
-
-  useEffect(() => {
+  
+ useEffect(() => {
     dispatch(
       onboardedReport({
         page: currentPage,
@@ -229,8 +206,6 @@ const OnboardedReport = () => {
       })
     )
       .then((resp) => {
-        setSpinner(false);
-
         const data = resp?.payload?.results;
         const dataCoun = resp?.payload?.count;
         setData(data);
@@ -244,106 +219,13 @@ const OnboardedReport = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, pageSize]);
 
-  // const totalPages = Math.ceil(dataCount / pageSize);
-  // let pageNumbers = []
-  // if (!Number.isNaN(totalPages)) {
-  //     pageNumbers = [...Array(Math.max(0, totalPages + 1)).keys()].slice(1);
-  // }
-
-  // const nextPage = () => {
-  //     setIsLoaded(true)
-  //     setData([])
-  //     if (currentPage < pageNumbers.length) {
-  //         setCurrentPage(currentPage + 1);
-  //     }
-  // };
-
-  // const prevPage = () => {
-  //     setIsLoaded(true)
-  //     setData([])
-  //     if (currentPage > 1) {
-  //         setCurrentPage(currentPage - 1);
-  //     }
-  // };
-
-  // useEffect(() => {
-  //     let lastSevenPage = totalPages - 7;
-  //     if (pageNumbers?.length > 0) {
-  //         let start = 0;
-  //         let end = currentPage + 6;
-  //         if (totalPages > 6) {
-  //             start = currentPage - 1;
-
-  //             if (parseInt(lastSevenPage) <= parseInt(start)) {
-  //                 start = lastSevenPage;
-  //             }
-  //         }
-  //         const pageNumber = pageNumbers.slice(start, end)?.map((pgNumber, i) => {
-  //             return pgNumber;
-  //         });
-  //         setDisplayPageNumber(pageNumber);
-  //     }
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [currentPage, totalPages]);
-
+  
   const selectStatus = [
     { key: "0", value: "Select"},
     { key: "1", value: "Verified" },
     { key: "2", value: "Approved" },
   ];
 
-  //     const excelHeaderRow = [
-  //         "S.No",
-  //         "Name",
-  //         "Email",
-  //         "Mobile Number",
-  //         "Created Date",
-  //         "Status",
-  //         "Business Category Name",
-  //         "Business Category Code",
-  //         "Company Name",
-  //         "Company's Website",
-  //         "GST Number",
-  //         "Business Type",
-  //         "Expected Transactions",
-  //         "Zone Code",
-  //         "Address",
-  //         "Product Name",
-  //         "Plan Name",
-  //         "Landing  Page Name",
-  //         "Platform",
-  //     ];
-  //     let excelArr = [excelHeaderRow];
-  //     // eslint-disable-next-line array-callback-return
-  //     data.map((item, index) => {
-
-  //         const allowDataToShow = {
-  //             srNo: item.srNo === null ? "" : index + 1,
-  //             name: item.name === null ? "" : item.name,
-  //             email: item.email === null ? "" : item.email,
-  //             mobileNumber: item.mobileNumber === null ? "" : item.mobileNumber,
-  //             createdDate: item.createdDate === null ? "" : item.createdDate,
-  //             status: item.status === null ? "" : item.status,
-  //             business_category_name: item.business_category_name === null ? "" : item.business_category_name,
-  //             business_cat_code: item.business_cat_code === null ? "" : item.business_cat_code,
-  //             company_name: item.company_name === null ? "" : item.company_name,
-  //             companyWebsite: item.companyWebsite === null ? "" : item.companyWebsite,
-  //             gstNumber: item.gstNumber === null ? "" : item.gstNumber,
-  //             businessType: item.businessType === null ? "" : item.businessType,
-  //             expectedTransactions: item.businessType === null ? "" : item.expectedTransactions,
-  //             zone_code: item.zone_code === null ? "" : item.zone_code,
-  //             address: item.address === null ? "" : item.address,
-  //             product_name: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.appName,
-  //             plan_name: item?.website_plan_details?.planName === null ? "" : item?.website_plan_details?.planName,
-  //             landing_page_name: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.page,
-  //             platForm: item?.website_plan_details?.appName === null ? "" : item?.website_plan_details?.platform,
-  //         };
-
-  //         excelArr.push(Object.values(allowDataToShow));
-  //     });
-  //     const fileName = "Onboarded-Report";
-  //     exportToSpreadsheet(excelArr, fileName);
-  // };
   const exportToExcelFn = () => {
     dispatch(
       onboardedReportExport({
@@ -364,7 +246,7 @@ const OnboardedReport = () => {
     });
   };
 
-  console.log(dataClick, "data Click");
+  
   return (
     <section className="">
 
@@ -386,7 +268,20 @@ const OnboardedReport = () => {
           {(formik, resetForm) => (
             <Form className="row">
                   <div className="form-group col-md-3">
-                    <FormikController
+                  <label htmlFor="fromDate" className="ml-3">From Date:</label>
+                        <ReactDatePicker
+                          id="fromDate"
+                          name="from_date"
+                          selected={formik.values.from_date ? new Date(formik.values.from_date) : null}
+                          onChange={date => formik.setFieldValue('from_date', date)}
+                           dateFormat="dd/MM/yyyy"
+                          className="form-control rounded-0"
+                          errorMsg={formik.errors["from_date"]}
+                          required={true}
+                        />
+                     
+                    
+                    {/* <FormikController
                       control="input"
                       type="date"
                       label="From Date"
@@ -394,17 +289,27 @@ const OnboardedReport = () => {
                       className="form-control"
                       // value={startDate}
                       // onChange={(e)=>setStartDate(e.target.value)}
-                    />
+                    /> */}
                   </div>
 
                   <div className="form-group col-md-3 ">
-                    <FormikController
+                  <label htmlFor="endDate">End Date:</label>
+                        <ReactDatePicker
+                          id="endDate"
+                          name="to_date"
+                          selected={formik.values.to_date ? new Date(formik.values.to_date) : null}
+                          onChange={date => formik.setFieldValue('to_date', date)}
+                          dateFormat="dd/MM/yyyy"
+                          className="form-control rounded-0"
+                          errorMsg={formik.errors["to_date"]}
+                        />
+                    {/* <FormikController
                       control="input"
                       type="date"
                       label="End Date"
                       name="to_date"
                       className="form-control"
-                    />
+                    /> */}
                   </div>
                   <div className="form-group col-md-3">
                     <FormikController
@@ -440,12 +345,10 @@ const OnboardedReport = () => {
           <></>
         )}
 
-{console.log("loadingState",loadingState)}
-{console.log("data?.length",data?.length)}
-        {!loadingState && data?.length !== 0 && (
+{!loadingState && data?.length !== 0 && (
           <>
           <div className="row">
-          <div className="form-group col-lg-3 ">
+          <div className="form-group col-lg-3 ml-3 ">
               <SearchFilter
                 kycSearch={kycSearch}
                 searchText={searchText}

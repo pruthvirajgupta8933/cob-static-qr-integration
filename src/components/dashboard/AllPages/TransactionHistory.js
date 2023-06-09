@@ -18,7 +18,7 @@ import API_URL from "../../../config";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
 import { roleBasedAccess } from "../../../_components/reuseable_components/roleBasedAccess";
-import NavBar from "../../dashboard/NavBar/NavBar";
+import ReactDatePicker from "../../../_components/formik/components/ReactDatePicker";
 import { axiosInstance } from "../../../utilities/axiosInstance";
 import Notification from "../../../_components/reuseable_components/Notification";
 import moment from "moment";
@@ -219,12 +219,14 @@ const TransactionHistory = () => {
         clientCode: strClientCode,
         paymentStatus: transaction_status,
         paymentMode: payment_mode,
-        fromDate: fromDate,
-        endDate: endDate,
+        fromDate: moment(fromDate).startOf('day').format('YYYY-MM-DD'),
+        endDate: moment(endDate).startOf('day').format('YYYY-MM-DD'),
         length: "0",
         page: "0",
         noOfClient: clientCodeArrLength,
       };
+
+      console.log(paramData,"this is paramdata value")
 
       dispatch(fetchTransactionHistorySlice(paramData));
     }
@@ -497,7 +499,18 @@ const TransactionHistory = () => {
                       )}
 
                       <div className="form-group col-lg-3">
-                        <FormikController
+                      <ReactDatePicker
+                        label="From Date"
+                        id="fromDate"
+                        name="fromDate"
+                        selected={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
+                        onChange={date => formik.setFieldValue('fromDate', date)}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control rounded-0"
+                        errorMsg={formik.errors["fromDate"]}
+                        required={true}
+                      />
+                        {/* <FormikController
                           control="input"
                           type="date"
                           label="From Date"
@@ -505,17 +518,28 @@ const TransactionHistory = () => {
                           className="form-control rounded-0"
                         // value={startDate}
                         // onChange={(e)=>setStartDate(e.target.value)}
-                        />
+                        /> */}
                       </div>
 
                       <div className="form-group col-lg-3">
-                        <FormikController
+                      <ReactDatePicker
+                        label="End Date"
+                        id="endDate"
+                        name="endDate"
+                        selected={formik.values.endDate ? new Date(formik.values.endDate) : null}
+                        onChange={date => formik.setFieldValue('endDate', date)}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control rounded-0"
+                        errorMsg={formik.errors["endDate"]}
+                        required={true}
+                      />
+                        {/* <FormikController
                           control="input"
                           type="date"
                           label="End Date"
                           name="endDate"
                           className="form-control rounded-0"
-                        />
+                        /> */}
                       </div>
 
                       <div className="form-group col-lg-3">

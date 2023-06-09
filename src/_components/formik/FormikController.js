@@ -4,6 +4,8 @@ import TextArea from "./components/TextArea"
 import Select from "./components/Select.js"
 import RadioButtons from "./components/RadioButton.js"
 import CheckBoxes from "./components/CheckBoxes.js"
+import ReactDatePicker from "./components/ReactDatePicker.js"
+
 import File from "./components/File.js"
 
 function FormikController(props) {
@@ -21,6 +23,8 @@ function FormikController(props) {
       return <RadioButtons {...rest} />
     case "checkbox":
       return <CheckBoxes {...rest} />
+    case "date":
+      return <ReactDatePicker {...rest} />
     default:
       return null
   }
