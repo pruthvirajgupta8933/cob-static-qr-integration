@@ -118,7 +118,7 @@ function Login() {
                         setLoading(false);
                     }
                 } else {
-                    history.push("/Registration");
+                    history.push(`/Registration/${queryString}`);
                     setLoading(false);
                     toast.error(res?.payload ?? "Rejected"); ///////it means when we have server or api response is diffrent it show rejected
                 }
