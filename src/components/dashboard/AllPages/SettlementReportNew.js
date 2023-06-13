@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import _ from "lodash";
 import { Formik, Form } from "formik";
+import DatePicker from 'react-datepicker';
+
+import "react-datepicker/dist/react-datepicker.css";
 import * as Yup from "yup";
 import FormikController from "../../../_components/formik/FormikController";
 import { toast } from "react-toastify";
@@ -16,10 +19,11 @@ import Notification from "../../../_components/reuseable_components/Notification
 import { exportToSpreadsheet } from "../../../utilities/exportToSpreadsheet";
 import DropDownCountPerPage from "../../../_components/reuseable_components/DropDownCountPerPage";
 import { convertToFormikSelectJson } from "../../../_components/reuseable_components/convertToFormikSelectJson";
+import ReactDatePicker from "../../../_components/formik/components/ReactDatePicker";
 import NavBar from "../NavBar/NavBar";
 import moment from "moment";
 
-const SettlementReportNew= () => {
+const SettlementReportNew = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { auth, dashboard } = useSelector((state) => state);
@@ -28,6 +32,7 @@ const SettlementReportNew= () => {
   const [txnList, SetTxnList] = useState([]);
   // const [filterList,SetFilterList] = useState([])
   const [searchText, SetSearchText] = useState("");
+  const [startDate, setStartDate] = useState(null);
 
   const [pageSize, setPageSize] = useState(10);
   const [paginatedata, setPaginatedData] = useState([]);
@@ -37,7 +42,7 @@ const SettlementReportNew= () => {
   const [pageCount, setPageCount] = useState(0);
   const [dataFound, setDataFound] = useState(false);
   const [buttonClicked, isButtonClicked] = useState(false);
-  const [disable,setIsDisable] = useState(false)
+  const [disable, setIsDisable] = useState(false)
 
   let now = moment().format("YYYY-M-D");
   let splitDate = now.split("-");
@@ -95,7 +100,7 @@ const SettlementReportNew= () => {
   });
 
   useEffect(() => {
-   
+
     setTimeout(() => {
       if (
         showData.length < 1 &&
@@ -111,13 +116,21 @@ const SettlementReportNew= () => {
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
   };
-  
+
 
   const onSubmitHandler = (values) => {
-    console.log(values)
+
+    const paramData = {
+      clientCode: values.clientCode,
+      fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
+      endDate: values.endDate,
+      noOfClient: values.noOfClient,
+      rpttype: values.rpttype,
+    }
+
     setIsDisable(true)
-    dispatch(fetchSettlementReportSlice(values)).then((res) => {
-     
+    dispatch(fetchSettlementReportSlice(paramData)).then((res) => {
+
       const ApiStatus = res?.meta?.requestStatus;
       const ApiPayload = res?.payload;
       if (ApiStatus === "rejected") {
@@ -137,7 +150,7 @@ const SettlementReportNew= () => {
   useEffect(() => {
     // Remove initiated from transaction history response
     const TxnListArrUpdated = dashboard.settlementReport;
-   
+
 
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
@@ -151,7 +164,7 @@ const SettlementReportNew= () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dashboard]);
 
-  
+
 
   useEffect(() => {
     setPaginatedData(
@@ -166,7 +179,7 @@ const SettlementReportNew= () => {
   }, [pageSize, showData]);
 
   useEffect(() => {
-   
+
     const startIndex = (currentPage - 1) * pageSize;
     const paginatedPost = _(showData)
       .slice(startIndex)
@@ -198,6 +211,11 @@ const SettlementReportNew= () => {
     }
   }, [searchText]);
 
+  const covertDate = (yourDate) => {
+    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a").toUpperCase();
+    return date;
+  };
+
   const pages = _.range(1, pageCount + 1);
 
   const exportToExcelFn = () => {
@@ -218,7 +236,7 @@ const SettlementReportNew= () => {
       'CLIENT CODE',
       'PAYMENT MODE',
       'PAYEE ADDRESS',
-     
+
       'CLIENT NAME',
       'GR NUMBER',
       // 'PAID AMOUNT',
@@ -241,7 +259,7 @@ const SettlementReportNew= () => {
       'SETTLEMENT BANK REF',
       'SETTLEMENT REMARKS',
       'SETTLEMENT UTR',
-    
+
       'UDF1',
       'UDF2',
       'UDF3',
@@ -262,15 +280,15 @@ const SettlementReportNew= () => {
       'UDF18',
       'UDF19',
       'UDF20'
-       ];
+    ];
     const excelArr = [excelHeaderRow];
     // eslint-disable-next-line array-callback-return
     txnList.map((item, index) => {
-     
+
       const allowDataToShow = {
         'srNo': item.srNo === null ? "" : index + 1,
-        'txn_id' : item.txn_id === null ? "" : item.txn_id,
-        'client_txn_id' : item.client_txn_id === null ? "" : item.client_txn_id,
+        'txn_id': item.txn_id === null ? "" : item.txn_id,
+        'client_txn_id': item.client_txn_id === null ? "" : item.client_txn_id,
         'challan_no': item.challan_no === null ? "" : item.challan_no,
         // 'pg_pay_mode': item.pg_pay_mode === null ? "" : item.pg_pay_mode,
         'payee_amount': item.payee_amount === null ? "" : Number.parseFloat(item.payee_amount),
@@ -284,7 +302,7 @@ const SettlementReportNew= () => {
         'client_code': item.client_code === null ? "" : item.client_code,
         'payment_mode': item.payment_mode === null ? "" : item.payment_mode,
         'payee_address': item.payee_address === null ? "" : item.payee_address,
-        
+
         'client_name': item.client_name === null ? "" : item.client_name,
         'gr_number': item.gr_number === null ? "" : item.gr_number,
         // 'paid_amount': item.paid_amount === null ? "" : Number.parseFloat(item.paid_amount),
@@ -307,7 +325,7 @@ const SettlementReportNew= () => {
         'settlement_bank_ref': item.settlement_bank_ref === null ? "" : item.settlement_bank_ref,
         'settlement_remarks': item.settlement_remarks === null ? "" : item.settlement_remarks,
         'settlement_utr': item.settlement_utr === null ? "" : item.settlement_utr,
-      
+
         'udf1': item.udf1 === null ? "" : item.udf1,
         'udf2': item.udf2 === null ? "" : item.udf2,
         'udf3': item.udf3 === null ? "" : item.udf3,
@@ -328,30 +346,30 @@ const SettlementReportNew= () => {
         'udf18': item.udf18 === null ? "" : item.udf18,
         'udf19': item.udf19 === null ? "" : item.udf19,
         'udf20': item.udf20 === null ? "" : item.udf20
-        
-       };
+
+      };
 
       excelArr.push(Object.values(allowDataToShow));
     });
-    
+
     const fileName = "Settlement-Report";
     exportToSpreadsheet(excelArr, fileName);
   };
 
- 
+
 
   return (
     <section className="ant-layout NunitoSans-Regular">
       <div>
-        
+
       </div>
       <div className="profileBarStatus">
-      <Notification/>
+        <Notification />
       </div>
       <main className="gx-layout-content ant-layout-content NunitoSans-Regular">
         <div className="gx-main-content-wrapper">
           {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-            <h5 className="m-b-sm gx-float-left ml-3">Settlement Report</h5>
+          <h5 className="m-b-sm gx-float-left ml-3">Settlement Report</h5>
           {/* </div> */}
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid">
@@ -372,32 +390,39 @@ const SettlementReportNew= () => {
                           options={clientCodeOption}
                         />
                       </div>
-
                       <div className="form-group col-md-4">
-                        <FormikController
-                          control="input"
-                          type="date"
-                          label="From Date"
+                        <label htmlFor="fromDate">From Date:</label>
+                        <ReactDatePicker
+                          id="fromDate"
                           name="fromDate"
+                          selected={formik.values.fromDate ? new Date(formik.values.fromDate) : null}
+                          onChange={date => formik.setFieldValue('fromDate', date)}
+                          dateFormat="dd/MM/yyyy"
                           className="form-control rounded-0"
+                          errorMsg={formik.errors["fromDate"]}
+                          required={true}
                         />
                       </div>
-
                       <div className="form-group col-md-4">
-                        <FormikController
-                          control="input"
-                          type="date"
-                          label="End Date"
+                        <label htmlFor="endDate">End Date:</label>
+                        <ReactDatePicker
+                          id="endDate"
                           name="endDate"
+                          selected={formik.values.endDate ? new Date(formik.values.endDate) : null}
+                          onChange={date => formik.setFieldValue('endDate', date)}
+                          dateFormat="dd/MM/yyyy"
                           className="form-control rounded-0"
+                          errorMsg={formik.errors["endDate"]}
+                          required={true}
                         />
                       </div>
                     </div>
+
                     <div className="form-row">
                       <div className="form-group col-md-1 mr-2">
                         <button
-                        disabled={disable}
-                        className="btn cob-btn-primary text-white"
+                          disabled={disable}
+                          className="btn cob-btn-primary text-white"
                           type="submit"
                         >
                           Search{" "}
@@ -458,7 +483,7 @@ const SettlementReportNew= () => {
           <section className="features8 cid-sg6XYTl25a flleft w-100">
             <div className="container-fluid  p-3 my-3 ">
               {txnList.length > 0 ? (
-                <h4>Total Record : {txnList.length} </h4>
+                <h6>Total Record : {txnList.length} </h6>
               ) : (
                 <></>
               )}
@@ -518,7 +543,7 @@ const SettlementReportNew= () => {
               </div>
 
               <div>
-               
+
                 {txnList.length > 0 ? (
                   <nav aria-label="Page navigation example">
                     <ul className="pagination">
@@ -544,7 +569,7 @@ const SettlementReportNew= () => {
                                 : "page-item"
                             }
                           >
-                            
+
                             <a
                               className={`page-link data_${i}`}
                               href={() => false}

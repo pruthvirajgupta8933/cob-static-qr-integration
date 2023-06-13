@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import NavBar from "../dashboard/NavBar/NavBar";
 import { Formik, Form } from "formik";
 import API_URL from "../../config";
 import moment from "moment";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-
+import ReactDatePicker from "../../_components/formik/components/ReactDatePicker";
 import FormikController from "../../_components/formik/FormikController";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
@@ -43,9 +42,10 @@ const BizzAppData = () => {
 
   const handleSubmit = (values) => {
     const postData = {
-      start_date: values.start_date,
+      start_date:moment(values.start_date).startOf('day').format('YYYY-MM-DD'),
       end_date: values.end_date,
     };
+  
     let apiRes = axiosInstanceJWT
       .post(API_URL.GET_BIZZ_DATA, postData)
       .then((resp) => {
@@ -194,11 +194,24 @@ const BizzAppData = () => {
             }}
             enableReinitialize={true}
           >
+            {(formik) => (
             <Form>
+              
               <div className="container">
                 <div className="row">
                   <div className="form-group  col-md-3">
-                    <FormikController
+                  <ReactDatePicker
+                        label="From Date"
+                        id="fromDate"
+                        name="fromDate"
+                        selected={formik.values.start_date ? new Date(formik.values.start_date) : null}
+                        onChange={date => formik.setFieldValue('start_date', date)}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control rounded-0"
+                        errorMsg={formik.errors["start_date"]}
+                        required={true}
+                      />
+                    {/* <FormikController
                       control="input"
                       type="date"
                       label="From Date"
@@ -206,17 +219,28 @@ const BizzAppData = () => {
                       className="form-control rounded-0"
                       // value={startDate}
                       // onChange={(e)=>setStartDate(e.target.value)}
-                    />
+                    /> */}
                   </div>
 
                   <div className="form-group col-md-3 ">
-                    <FormikController
+                    {/* <FormikController
                       control="input"
                       type="date"
                       label="End Date"
                       name="end_date"
                       className="form-control rounded-0"
-                    />
+                    /> */}
+                     <ReactDatePicker
+                        label="End Date"
+                        id="endDate"
+                        name="end_date"
+                        selected={formik.values.end_date ? new Date(formik.values.end_date) : null}
+                        onChange={date => formik.setFieldValue('end_date', date)}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control rounded-0"
+                        errorMsg={formik.errors["end_date"]}
+                        required={true}
+                      />
                   </div>
                   <div className="row">
                   <div className="col-lg-12">
@@ -248,6 +272,7 @@ const BizzAppData = () => {
                 )}
               </div>
             </Form>
+            )}
           </Formik>
           {FormData.length===0 && show===true && <h5 className="text-center font-weight-bold mt-5">
                     No Data Found

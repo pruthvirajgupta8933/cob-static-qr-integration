@@ -1,20 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import NavBar from "../dashboard/NavBar/NavBar";
 import { Formik, Form } from "formik";
 import API_URL from "../../config";
 import moment from "moment";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-
-import FormikController from "../../_components/formik/FormikController";
 import { axiosInstanceJWT } from "../../utilities/axiosInstance";
 import { exportToSpreadsheet } from "../../utilities/exportToSpreadsheet";
 import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
-// import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage";
+import ReactDatePicker from "../../_components/formik/components/ReactDatePicker";
 
 const validationSchema = Yup.object({
   from_date: Yup.date().required("Required").nullable(),
@@ -29,14 +26,14 @@ const SignupData = () => {
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [saveData, setSaveData] = useState();
-  
+
 
   const [loadingState, setLoadingState] = useState(false);
   const [dataCount, setDataCount] = useState(0);
-  
+
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  console.log(signupData.length,"my signupdata")
+
 
   // const loadingState = useSelector((state) => state.kyc.isLoadingForApproved);
 
@@ -73,17 +70,7 @@ const SignupData = () => {
     );
   };
 
-  //function for change current page
-  // const changeCurrentPage = (page) => {
-  //   setCurrentPage(page);
-  // };
-
-  // //function for change page size
-  // const changePageSize = (pageSize) => {
-  //   setPageSize(pageSize);
-  // };
-
-  useEffect(() => {
+useEffect(() => {
     const postData = {
       from_date: saveData?.from_date,
       to_date: saveData?.to_date,
@@ -96,7 +83,7 @@ const SignupData = () => {
       .then((resp) => {
         setSignupData(resp?.data?.Merchant_Info);
         setAssignzone(resp?.data?.Merchant_Info);
-        // console.log(resp?.data)
+        
         setShow(true);
         setLoadingState(false);
         setDataCount(resp?.data?.count);
@@ -107,10 +94,11 @@ const SignupData = () => {
   }, [currentPage, pageSize]);
 
   const handleSubmit = (values) => {
+
     setSaveData(values);
     setLoadingState(true);
     const postData = {
-      from_date: values.from_date,
+      from_date: moment(values.from_date).startOf('day').format('YYYY-MM-DD'),
       to_date: values.to_date,
     };
     let apiRes = axiosInstanceJWT
@@ -121,7 +109,7 @@ const SignupData = () => {
       .then((resp) => {
         setSignupData(resp?.data?.Merchant_Info);
         setAssignzone(resp?.data?.Merchant_Info);
-        // console.log(resp?.data)
+        
         setShow(true);
         setLoadingState(false);
         setDataCount(resp?.data?.count);
@@ -203,20 +191,9 @@ const SignupData = () => {
     exportToSpreadsheet(excelArr, fileName);
   };
 
-  // Return list from the json object
-  // const objectToList = (data, forExcel = false) => {
-  //   console.log(data)
-  //   return forExcel ?
-  //     JSON?.stringify(data)
-  //     :
-  //     data?.map((d, i) => {
-  //       return Object.keys(d)?.map((k, i) => (
-  //         <p key={k}> <span>{k}</span> : <span>{Object.values(d)[i]}</span></p>
-  //       ))
-  //     })
-  // }
-
   
+
+
 
   const covertDate = (yourDate) => {
     let date = moment(yourDate).format("DD/MM/YYYY");
@@ -306,80 +283,89 @@ const SignupData = () => {
             }}
             enableReinitialize={true}
           >
-            <Form>
-              <div className="">
-                <div className="row">
-                  <div className="form-group  col-md-3 ">
-                    <FormikController
-                      control="input"
-                      type="date"
-                      label="From Date"
-                      name="from_date"
-                      className="form-control rounded-0 "
-                      // value={startDate}
-                      // onChange={(e)=>setStartDate(e.target.value)}
-                    />
-                  </div>
+            {(formik) => (
+              <Form>
+                
+               
+                  <div className="row">
+                    <div className="form-group  col-md-3 ">
+                      <ReactDatePicker
+                        label="From Date"
+                        id="fromDate"
+                        name="from_date"
+                        selected={formik.values.from_date ? new Date(formik.values.from_date) : null}
+                        onChange={date => formik.setFieldValue('from_date', date)}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control rounded-0"
+                        errorMsg={formik.errors["from_date"]}
+                        required={true}
+                      />
 
-                  <div className="form-group col-md-3 ">
-                    <FormikController
-                      control="input"
-                      type="date"
-                      label="End Date"
-                      name="to_date"
-                      className="form-control rounded-0"
-                    />
-                  </div>
-                </div>
+                    </div>
+                    <div className="form-group col-md-3 ml-3">
 
-                <div className="row">
-                  <div className="col-md-4">
-                    <button
-                      type="submit"
-                      className="btn cob-btn-primary approve text-white  text-white">
-                      Submit
-                    </button>
-                    {signupData?.length > 0 ? (
+                      <ReactDatePicker
+                        label="End Date"
+                        id="endDate"
+                        name="to_date"
+                        selected={formik.values.to_date ? new Date(formik.values.to_date) : null}
+                        onChange={date => formik.setFieldValue('to_date', date)}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control rounded-0"
+                        errorMsg={formik.errors["to_date"]}
+                      />
+                    </div>
+                  
+
+                  <div className="row">
+                    <div className="col-md-4">
                       <button
-                        className="btn cob-btn-primary  approve  text-white ml-4"
-                        type="button"
-                        onClick={() => exportToExcelFn()}
-                        style={{ backgroundColor: "rgb(1, 86, 179)" }}
-                      >
-                        Export
+                        type="submit"
+                        className="btn cob-btn-primary approve text-white">
+                        Submit
                       </button>
-                    ) : (
-                      <></>
-                    )}
+                      {signupData?.length > 0 ? (
+                        <button
+                          className="btn cob-btn-primary  approve  text-white ml-3"
+                          type="button"
+                          onClick={() => exportToExcelFn()}
+                          style={{ backgroundColor: "rgb(1, 86, 179)" }}
+                        >
+                          Export
+                        </button>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Form>
+              </Form>
+            )}
           </Formik>
-          {signupData.length===0 && show===true && <h5 className="text-center font-weight-bold mt-5">
-                    No Data Found
-                  </h5>}
+          {signupData.length === 0 && show === true && <h5 className="text-center font-weight-bold mt-5">
+            No Data Found
+          </h5>}
           {!loadingState && signupData?.length !== 0 && (
             <>
-            <div className="row mt-4">
-              <div className="form-group col-lg-3">
-                <SearchFilter
-                  kycSearch={kycSearch}
-                  searchText={searchText}
-                  searchByText={searchByText}
-                  setSearchByDropDown={setSearchByDropDown}
-                />
-                <div></div>
-              </div>
+              <div className="row mt-4">
+                <div className="form-group col-lg-3 ml-2">
+                  <SearchFilter
+                    kycSearch={kycSearch}
+                    searchText={searchText}
+                    searchByText={searchByText}
+                    setSearchByDropDown={setSearchByDropDown}
+                  />
+                  <div></div>
+                </div>
 
-              <div className="form-group col-lg-3">
-                <CountPerPageFilter
-                  pageSize={pageSize}
-                  dataCount={dataCount}
-                  changePageSize={changePageSize}
-                />
+                <div className="form-group col-lg-3">
+                  <CountPerPageFilter
+                    pageSize={pageSize}
+                    dataCount={dataCount}
+                    changePageSize={changePageSize}
+                  />
+                </div>
               </div>
-</div>
               <div className="container-fluid ">
                 <div className="scroll overflow-auto">
                   {!loadingState && signupData?.length !== 0 && (
@@ -394,14 +380,6 @@ const SignupData = () => {
                   )}
                 </div>
                 <CustomLoader loadingState={loadingState} />
-                
-                {/* {signupData?.length === 0 && !loadingState ? (
-                  <h2 className="text-center font-weight-bold">
-                    No Data Found
-                  </h2>
-                ) : (
-                  <></>
-                )} */}
               </div>
             </>
           )}
