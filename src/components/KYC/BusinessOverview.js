@@ -354,7 +354,7 @@ function BusinessOverview(props) {
                   control="select"
                   name="business_type"
                   options={data}
-                  className="form-control"
+                  className="form-select"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
@@ -368,7 +368,7 @@ function BusinessOverview(props) {
                   control="select"
                   name="business_category"
                   options={businessCategory}
-                  className="form-control"
+                  className="form-select"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />

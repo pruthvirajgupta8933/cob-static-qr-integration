@@ -120,8 +120,8 @@ function SubmitKyc(props) {
                       control="select"
                       name="referral_code"
                       options={refferalListSelectOption}
-                      className="form-control "
-                      label="Referal Code (Optional)"
+                      className="form-select"
+                      label="Referral Code (Optional)"
                     />
                   </div>
                 }
