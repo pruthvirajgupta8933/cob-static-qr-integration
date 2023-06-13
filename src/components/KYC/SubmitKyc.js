@@ -26,6 +26,7 @@ function SubmitKyc(props) {
   const merchant_consent = kycUserList?.merchant_consent?.term_condition;
   const isEmpCodeSaved = kycUserList?.emp_code?.is_saved;
   const empCode = kycUserList?.emp_code?.emp_code;
+  // console.log( kycUserList?.emp_code)
 
   const kyc_status = kycUserList?.status;
   const [readOnly, setReadOnly] = useState(false);
@@ -35,11 +36,11 @@ function SubmitKyc(props) {
 
   const initialValues = {
     term_condition: merchant_consent,
-    referal_code: empCode
+    referral_code: empCode
   };
 
   const validationSchema = Yup.object({
-    referal_code: Yup.string().nullable(),
+    referral_code: Yup.string().required("Please select the referral code.").nullable(),
     term_condition: Yup.string().oneOf(
       ["true"],
       "You must accept all the terms & conditions"
@@ -68,14 +69,14 @@ function SubmitKyc(props) {
 
 
   const onSubmit = (value) => {
-    console.log("value", value)
+   
     setIsDisable(true);
     dispatch(
       saveKycConsent({
         term_condition: value.term_condition,
         login_id: loginId,
         submitted_by: loginId,
-        emp_code: value.referal_code
+        emp_code: value.referral_code
       })
     ).then((res) => {
       if (
@@ -114,14 +115,15 @@ function SubmitKyc(props) {
           {(formik) => (
             <Form>
               <div className="row">
-                {!isEmpCodeSaved && (kyc_status !== KYC_STATUS_VERIFIED || kyc_status !== KYC_STATUS_APPROVED) &&
+                {/* {!isEmpCodeSaved && (kyc_status !== KYC_STATUS_VERIFIED || kyc_status !== KYC_STATUS_APPROVED) && */}
+                {true &&
                   <div className="col-4">
                     <FormikController
                       control="select"
                       name="referral_code"
                       options={refferalListSelectOption}
                       className="form-select"
-                      label="Referral Code (Optional)"
+                      label="Referral Code"
                     />
                   </div>
                 }
