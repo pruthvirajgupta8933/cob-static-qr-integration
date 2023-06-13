@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react';
 import { useSelector } from 'react-redux';
 import NavBar from '../NavBar/NavBar';
+import { uniqueId } from 'lodash';
 
 function ClientList() {
 
@@ -41,8 +42,12 @@ const handleChange= (e)=>{
               <div className="row mt-4">
                
                 <div className="col-sm-12 col-md-12 col-lg-12">
-                  <div><label>Search</label></div>
-                  <input type="text" className="col-lg-4 col-sm-12 col-md-12 " onChange={(e)=>{handleChange(e.currentTarget.value)}} placeholder="Search from here" />
+                  <div className="col-lg-4 p-0">
+                  <label>Search</label>
+                  <input type="text" className="form-control" onChange={(e)=>{handleChange(e.currentTarget.value)}} placeholder="Search from here" />
+                  </div>
+
+                  
                    
                   <div className='noOfRecord mt-20 mb-20 col-lg-12 col-sm-12 col-md-12 no-pad'>Number of Record: {clientListData.length}</div>
                   </div>
@@ -53,9 +58,9 @@ const handleChange= (e)=>{
                       <th>Client Code</th>
                       <th>Client Name</th>
                       <th>Contact No.</th>
-                      <th>Email ID</th>
+                      {/* <th>Email ID</th>
                       <th>Configuration Status</th>
-                      <th>Configuration Date Time</th>
+                      <th>Configuration Date Time</th> */}
                     </tr>
                    {clientListData && clientListData.map((item,i)=>{
                         return(
@@ -63,9 +68,9 @@ const handleChange= (e)=>{
                             <td className='border'>{item.clientCode}</td>
                             <td className='border'>{item.clientName}</td>
                             <td className='border'>{item.clientContact}</td>
-                            <td className='border'>{item.clientEmail}</td>
+                            {/* <td className='border'>{item.clientEmail}</td>
                             <td className='border'>{item.configuration_status}</td>
-                            <td className='border'>{item.subscribedTym}</td>
+                            <td className='border'>{item.subscribedTym}</td> */}
                           </tr>
 
                         )
