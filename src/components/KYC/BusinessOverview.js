@@ -385,11 +385,11 @@ function BusinessOverview(props) {
                   control="textArea"
                   type="text"
                   name="billing_label"
-                  className="form-control"
+                  className="form-control fs-12"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-                <p>
+                <p className="fs-10">
                   Please give a brief description of the nature of your
                   business. Please give examples of products you sell, business
                   category you operate in, your customers and channels through
