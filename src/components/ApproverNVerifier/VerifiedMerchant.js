@@ -129,6 +129,11 @@ function VerifiedMerchant() {
     },
     {
       id: "13",
+      name: "Zone Name",
+      selector: (row) => row.zoneName,
+    },
+    {
+      id: "14",
       name: "View Status",
       width: "120px",
       cell: (row) => (
@@ -151,7 +156,7 @@ function VerifiedMerchant() {
       ),
     },
     {
-      id: "14",
+      id: "15",
       name: "Action",
       cell: (row) => (
         <div>

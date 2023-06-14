@@ -121,6 +121,11 @@ const RejectedKYC = () => {
     },
     {
       id: "12",
+      name: "Zone Name",
+      selector: (row) => row.zoneName,
+    },
+    {
+      id: "13",
       name: "View Status",
       selector: (row) => row.viewStatus,
       width: "110px",
@@ -142,7 +147,7 @@ const RejectedKYC = () => {
       ),
     },
     {
-      id: "13",
+      id: "14",
       name: "Action",
       selector: (row) => row.actionStatus,
       cell: (row) => (
