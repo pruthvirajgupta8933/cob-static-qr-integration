@@ -100,6 +100,7 @@ function ContactInfo(props) {
       .nullable(),
     aadhar_number: Yup.string()
       .trim()
+      .max(18,"Exceeds the limit")
       .matches(Regex.acceptNumber, RegexMsg.acceptNumber)
       .matches(aadhaarRegex, "Aadhaar Number is Invalid")
       .required("Required")

@@ -399,7 +399,7 @@ function BusinessOverview(props) {
                   Please give a brief description of the nature of your
                   business. Please give examples of products you sell, business
                   category you operate in, your customers and channels through
-                  which you operate (website, offline retail).
+                  which you operate (website, offline-retail).
                 </p>
                 <div className="my-5- p-2- w-100 pull-left">
                   <hr
