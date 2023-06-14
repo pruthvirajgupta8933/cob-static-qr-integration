@@ -215,7 +215,7 @@ const TransactionHistoryDoitc = () => {
   useEffect(() => {
     // Remove initiated from transaction history response
     let TxnListArrUpdated = merchantReportSlice?.transactionHistoryDoitc?.data;
-    console.log("TxnListArrUpdated", TxnListArrUpdated)
+    // console.log("TxnListArrUpdated", TxnListArrUpdated)
     setUpdateTxnList(TxnListArrUpdated);
     setShowData(TxnListArrUpdated);
     SetTxnList(TxnListArrUpdated);

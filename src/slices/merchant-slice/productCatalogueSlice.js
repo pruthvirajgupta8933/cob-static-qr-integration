@@ -89,7 +89,7 @@ const productCatalogueSlice = createSlice({
       state.productPlanData = action.payload?.data?.data?.ProductDetail;
     },
     [updateSubscribeDetails.fulfilled]:(state,action)=>{
-      console.log("action",action)
+      // console.log("action",action)
       state.clientSubscribeStatus = action.payload?.data?.data;
     }
 

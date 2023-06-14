@@ -2,9 +2,9 @@
 import React from "react";
 import { ExportFileservice } from "../../services/exportFile-service/export-file-service";
 const ExportToExcel = () => {
-  console.log("running");
+  // console.log("running");
   ExportFileservice.exportFileDownload().then((resp) => {
-    console.log(resp);
+    // console.log(resp);
   });
   return (
     <button onClick={ExportToExcel} className="btn btn-sm btn-primary cob-btn-primary ">

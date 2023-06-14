@@ -1,7 +1,7 @@
 import React from "react";
 
 const BankResponse = (props) => {
-  console.log(props);
+  // console.log(props);
   return (
     <div>
       <div class="col-sm-6">

@@ -23,7 +23,7 @@ export const transactionHistoryDoitc = createAsyncThunk(
     async (object, thunkAPI) => {
         try {
             const data = await fetchTransactionHistoryDoitc(object);
-            console.log(data)
+            // console.log(data)
             return { data: data };
         } catch (error) {
             const message =

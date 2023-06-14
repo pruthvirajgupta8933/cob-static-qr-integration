@@ -67,7 +67,7 @@ function MerchantContactInfo(props) {
     if (window.confirm("Reject Merchant Contact Info?")) {
       dispatch(rejectKycOperation(rejectDetails))
         .then((resp) => {
-          console.log(resp)
+          // console.log(resp)
 
 
 
