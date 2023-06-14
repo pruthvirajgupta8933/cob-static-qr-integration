@@ -140,6 +140,11 @@ function ApprovedMerchant() {
     },
     {
       id: "14",
+      name: "Zone Name",
+      selector: (row) => row.zoneName,
+    },
+    {
+      id: "15",
       name: "View Status",
       width: "110px",
       cell: (row) => (
@@ -160,7 +165,7 @@ function ApprovedMerchant() {
       ),
     },
     {
-      id: "15",
+      id: "16",
       name: "Upload Agreement",
       cell: (row) => (
         <div >
@@ -187,7 +192,7 @@ function ApprovedMerchant() {
       ),
     },
     {
-      id: "16",
+      id: "17",
       name: "Action",
       selector: (row) => row.actionStatus,
       cell: (row) => (
