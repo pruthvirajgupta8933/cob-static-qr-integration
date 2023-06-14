@@ -53,7 +53,7 @@ const AuthMandate = ({ updatedData }) => {
 
   const randomNumber = generateRandomNumber();
 
-  console.log("updatedData :  :", updatedData);
+  // console.log("updatedData :  :", updatedData);
 
   const onSubmit = (values) => {
     // console.log(values)

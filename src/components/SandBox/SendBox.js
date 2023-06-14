@@ -271,8 +271,45 @@ function Sandbox() {
                           value={data && data?.authKey}
                         />
                       </div>
+                      
                       <div className="col-lg-4">
                         <label
+                          htmlFor="inputPassword3"
+                          className="col-form-label"
+                        >
+                          Client Password
+                        </label>
+                        <div className="input-group">
+                          <input type={
+                            values.showPassword
+                              ? "text"
+                              : "password"
+                          }
+                            className="form-control"
+                            id="inputPassword3"
+                            name="passwordd"
+                            readOnly="true"
+                            value={data && data?.clientPassword} />
+
+                          <div className="input-group-append">
+                            <span className="input-group-text" id="basic-addon2" onClick={handleClickShowPassword}>
+                            
+                            {values.showPassword ? (
+                              <i
+                                className="fa fa-eye"
+                                aria-hidden="true"
+                              ></i>
+                            ) : (
+                              <i
+                                className="fa fa-eye-slash"
+                                aria-hidden="true"
+                              ></i>
+                            )}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* <label
                           htmlFor="inputPassword3"
                           className="col-form-label"
                         >
@@ -305,7 +342,8 @@ function Sandbox() {
                               ></i>
                             )}
                           </a>
-                        </div>
+                        </div> */}
+
                       </div>
                       <div className="col-lg-4">
                         <label

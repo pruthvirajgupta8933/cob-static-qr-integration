@@ -134,7 +134,7 @@ const ChargeBackTxnHistory = () => {
       rpttype: values.rpttype,
     }
 
-    console.log(values,"values")
+    // console.log(values,"values")
     setIsDisable(true)
     dispatch(fetchChargebackTxnHistory(paramData)).then((res) => {
     const ApiStatus = res?.meta?.requestStatus;

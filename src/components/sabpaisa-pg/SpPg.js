@@ -107,11 +107,11 @@ function SpPg() {
                 setIsOpenPg(true)
             }else{
                 setIsOpenPg(false)
-                console.log("erro")
+                // console.log("erro")
             }
         }else{
             setIsOpenPg(false)
-            console.log("error")
+            // console.log("error")
         }
     }
 

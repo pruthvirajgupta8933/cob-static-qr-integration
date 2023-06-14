@@ -3,7 +3,7 @@ import React from "react";
 const PersonalDetails = ({ updatedData }) => {
 
 
-  console.log(updatedData,"Updated Data")
+  // console.log(updatedData,"Updated Data")
   return (
     <div>
       <div class="container">

@@ -71,7 +71,7 @@ export const Edituser = (props) => {
         });
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
         toast.error("Data not Updated", {
           position: "top-right",
           autoClose: 2000,

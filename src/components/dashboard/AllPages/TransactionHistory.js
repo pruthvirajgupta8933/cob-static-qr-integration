@@ -226,7 +226,7 @@ const TransactionHistory = () => {
         noOfClient: clientCodeArrLength,
       };
 
-      console.log(paramData,"this is paramdata value")
+      // console.log(paramData,"this is paramdata value")
 
       dispatch(fetchTransactionHistorySlice(paramData));
     }

@@ -106,7 +106,7 @@ const MakePayment = (props) => {
       })
     ).then((res) => {
       if (res) {
-        console.log(res,"--makepayment")
+        // console.log(res,"--makepayment")
         if (res.meta.requestStatus === "fulfilled") {
           if(res.payload.responseCode==="1")
           {
