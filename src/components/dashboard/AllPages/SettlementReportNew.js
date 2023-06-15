@@ -56,7 +56,7 @@ const SettlementReportNew = () => {
 
 
   const convertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
+    let date = moment(yourDate).format("DD/MM/YYYY");
     return date;
   };
 
@@ -123,7 +123,7 @@ const SettlementReportNew = () => {
     const paramData = {
       clientCode: values.clientCode,
       fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
-      endDate: values.endDate,
+      endDate: moment(values.endDate).startOf('day').format('YYYY-MM-DD'),
       noOfClient: values.noOfClient,
       rpttype: values.rpttype,
     }
@@ -212,7 +212,7 @@ const SettlementReportNew = () => {
   }, [searchText]);
 
   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a").toUpperCase();
+    let date = moment(yourDate).format("DD/MM/YYYY").toUpperCase();
     return date;
   };
 
