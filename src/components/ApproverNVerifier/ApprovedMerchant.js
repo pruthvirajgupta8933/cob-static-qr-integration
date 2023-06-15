@@ -133,16 +133,16 @@ function ApprovedMerchant() {
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
-    {
-      id: "13",
-      name: "Emp. Code",
-      selector: (row) => row.emp_code,
-    },
-    {
-      id: "14",
-      name: "Zone Name",
-      selector: (row) => row.zoneName,
-    },
+    // {
+    //   id: "13",
+    //   name: "Emp. Code",
+    //   selector: (row) => row.emp_code,
+    // },
+    // {
+    //   id: "14",
+    //   name: "Zone Name",
+    //   selector: (row) => row.zoneName,
+    // },
     {
       id: "15",
       name: "View Status",
