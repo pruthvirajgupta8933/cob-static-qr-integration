@@ -123,7 +123,7 @@ const SettlementReportNew = () => {
     const paramData = {
       clientCode: values.clientCode,
       fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
-      endDate: values.endDate,
+      endDate: moment(values.endDate).startOf('day').format('YYYY-MM-DD'),
       noOfClient: values.noOfClient,
       rpttype: values.rpttype,
     }
