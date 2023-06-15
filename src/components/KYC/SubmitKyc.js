@@ -36,11 +36,11 @@ function SubmitKyc(props) {
 
   const initialValues = {
     term_condition: merchant_consent,
-    referral_code: empCode
+    referral_code: "SP002"
   };
 
   const validationSchema = Yup.object({
-    referral_code: Yup.string().required("Please select the referral code.").nullable(),
+    // referral_code: Yup.string().required("Please select the referral code.").nullable(),
     term_condition: Yup.string().oneOf(
       ["true"],
       "You must accept all the terms & conditions"
@@ -116,7 +116,7 @@ function SubmitKyc(props) {
             <Form>
               <div className="row">
                 {/* {!isEmpCodeSaved && (kyc_status !== KYC_STATUS_VERIFIED || kyc_status !== KYC_STATUS_APPROVED) && */}
-                {true &&
+                {/* {true &&
                   <div className="col-4">
                     <FormikController
                       control="select"
@@ -126,7 +126,7 @@ function SubmitKyc(props) {
                       label="Referral Code"
                     />
                   </div>
-                }
+                } */}
               </div>
 
               <div className="row">
