@@ -114,16 +114,16 @@ const RejectedKYC = () => {
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
-    {
-      id: "11",
-      name: "Emp. Code",
-      selector: (row) => row.emp_code,
-    },
-    {
-      id: "12",
-      name: "Zone Name",
-      selector: (row) => row.zoneName,
-    },
+    // {
+    //   id: "11",
+    //   name: "Emp. Code",
+    //   selector: (row) => row.emp_code,
+    // },
+    // {
+    //   id: "12",
+    //   name: "Zone Name",
+    //   selector: (row) => row.zoneName,
+    // },
     {
       id: "13",
       name: "View Status",

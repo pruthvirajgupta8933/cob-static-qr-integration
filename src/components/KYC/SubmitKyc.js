@@ -36,7 +36,7 @@ function SubmitKyc(props) {
 
   const initialValues = {
     term_condition: merchant_consent,
-    referral_code: "SP002"
+    referral_code: ""
   };
 
   const validationSchema = Yup.object({
