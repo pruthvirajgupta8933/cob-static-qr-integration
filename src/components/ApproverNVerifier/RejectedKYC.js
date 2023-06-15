@@ -114,13 +114,18 @@ const RejectedKYC = () => {
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
+    // {
+    //   id: "11",
+    //   name: "Emp. Code",
+    //   selector: (row) => row.emp_code,
+    // },
+    // {
+    //   id: "12",
+    //   name: "Zone Name",
+    //   selector: (row) => row.zoneName,
+    // },
     {
-      id: "11",
-      name: "Emp. Code",
-      selector: (row) => row.emp_code,
-    },
-    {
-      id: "12",
+      id: "13",
       name: "View Status",
       selector: (row) => row.viewStatus,
       width: "110px",
@@ -128,7 +133,7 @@ const RejectedKYC = () => {
         <div>
           <button
             type="button"
-            className="approve text-white  cob-btn-primary  btn-sm "
+            className="approve text-white  cob-btn-primary  btn-sm"
             onClick={() => {
               setKycIdClick(row);
               setIsModalOpen(true);
@@ -142,7 +147,7 @@ const RejectedKYC = () => {
       ),
     },
     {
-      id: "13",
+      id: "14",
       name: "Action",
       selector: (row) => row.actionStatus,
       cell: (row) => (

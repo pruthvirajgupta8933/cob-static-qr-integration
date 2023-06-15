@@ -206,7 +206,7 @@ const OnboardMerchant = () => {
     <>
       {/* <HeaderPage /> */}
       <div className="ant-layout">
-        < NavBar />
+       
         <div className="row">
           <div className="authfy-container col-xs-12 col-sm-10 col-md-8 col-lg-8 col-sm-offset-1- col-md-offset-2- col-lg-offset-3- mx-auto">
 

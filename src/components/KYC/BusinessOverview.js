@@ -26,6 +26,7 @@ function BusinessOverview(props) {
   const { role } = props;
   const [data, setData] = useState([]);
   const [businessCategory, setBusinessCategory] = useState([]);
+  const [platform, setPlatform] = useState([]);
   const [disabled, setIsDisabled] = useState(false);
   const { auth, kyc } = useSelector((state) => state);
   const [transactionRangeOption, setTransactionRangeOption] = useState([]);
@@ -68,13 +69,15 @@ function BusinessOverview(props) {
     business_category_code = KycList?.businessCategory;
   }
 
+  // console.log("KycList", KycList)
+  // *static data added after internal discussion
   const initialValues = {
     business_type: KycList.businessType,
     business_category: business_category_code,
     business_model: "Working",
     billing_label: KycList.billingLabel,
     erp_check: KycList.erpCheck === true ? "True" : "False",
-    platform_id: "1234567",
+    platform_id: KycList.platformId,
     // company_website: KycList.companyWebsite,
     seletcted_website_app_url: KycList?.is_website_url ? "Yes" : "No",
     website_app_url: KycList?.website_app_url,
@@ -91,6 +94,9 @@ function BusinessOverview(props) {
       business_type: Yup.string().required("Select Business Type").nullable(),
       business_category: Yup.string()
         .required("Select Business Category")
+        .nullable(),
+      platform_id: Yup.string()
+        .required("Select the platform")
         .nullable(),
       billing_label: Yup.string()
         .trim()
@@ -176,7 +182,7 @@ function BusinessOverview(props) {
           "platformName",
           resp.payload
         );
-        // setPlatform(data);
+        setPlatform(data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -210,13 +216,13 @@ function BusinessOverview(props) {
   }, []);
 
   const onSubmit = (values) => {
-    const expectedTxn= values.expected_transactions.split("-");
+    const expectedTxn = values.expected_transactions.split("-");
     const numbers = expectedTxn.map(part => parseInt(part));
-    const maxValueTxn = Math.max(...numbers); 
+    const maxValueTxn = Math.max(...numbers);
     const ticketSize = values.avg_ticket_size.split("-");
-    const avgTicket= ticketSize.map(part => parseInt(part))
-    const maxTicketSize=Math.max(...avgTicket);
-    const avgCount=maxValueTxn*maxTicketSize;
+    const avgTicket = ticketSize.map(part => parseInt(part))
+    const maxTicketSize = Math.max(...avgTicket);
+    const avgCount = maxValueTxn * maxTicketSize;
 
     if (role.merchant) {
       // setIsDisabled(true)
@@ -354,7 +360,7 @@ function BusinessOverview(props) {
                   control="select"
                   name="business_type"
                   options={data}
-                  className="form-control"
+                  className="form-select"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
@@ -368,7 +374,7 @@ function BusinessOverview(props) {
                   control="select"
                   name="business_category"
                   options={businessCategory}
-                  className="form-control"
+                  className="form-select"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
@@ -385,15 +391,15 @@ function BusinessOverview(props) {
                   control="textArea"
                   type="text"
                   name="billing_label"
-                  className="form-control"
+                  className="form-control fs-12"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
-                <p>
+                <p className="fs-10">
                   Please give a brief description of the nature of your
                   business. Please give examples of products you sell, business
                   category you operate in, your customers and channels through
-                  which you operate (website, offline retail).
+                  which you operate (website, offline-retail).
                 </p>
                 <div className="my-5- p-2- w-100 pull-left">
                   <hr
@@ -451,8 +457,26 @@ function BusinessOverview(props) {
             </div>
 
             <div className="row">
+            <div className="col-sm-12 col-md-12 col-lg-4">
+                <label className="col-form-label p-2 mt-0">
+                  Platform Type<span className="text-danger">*</span>
+                </label>
 
-              <div className="col-sm-12 col-md-12 col-lg-6">
+                <FormikController
+                  control="select"
+                  name="platform_id"
+                  className="form-select"
+                  valueFlag={false}
+                  disabled={VerifyKycStatus === "Verified" ? true : false}
+                  readOnly={readOnly}
+                  options={platform}
+                
+                />
+              </div>
+
+              
+
+              <div className="col-sm-12 col-md-12 col-lg-4">
                 <label className="col-form-label p-2 mt-0">
                   Expected Transaction/Year
                   <span style={{ color: "red" }}>*</span>
@@ -473,7 +497,7 @@ function BusinessOverview(props) {
                 {/* <span className="font-weight-bold m-0">{textWord}</span> */}
               </div>
 
-              <div className="col-sm-12 col-md-12 col-lg-6">
+              <div className="col-sm-12 col-md-12 col-lg-4">
                 <label className="col-form-label p-2 mt-0">
                   Avg Ticket Amount<span style={{ color: "red" }}>*</span>
                 </label>
@@ -487,25 +511,28 @@ function BusinessOverview(props) {
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                   options={ticketOptions}
-                  onClick={() => getExpectedTransactions(2)}
+                  // onClick={() => getExpectedTransactions(2)}
                 />
               </div>
+
+           
             </div>
+
             <div className="row">
-                  <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
-                    {VerifyKycStatus === "Verified" ? (
-                      <></>
-                    ) : (
-                      <button
-                        className="float-lg-right cob-btn-primary text-white btn btn-sm"
-                        type="submit"
-                        disabled={disabled}
-                      >
-                        {buttonText}
-                      </button>
-                    )}
-                  </div>
-                </div>
+              <div className="col-sm-12 col-md-12 col-lg-12 col-form-label">
+                {VerifyKycStatus === "Verified" ? (
+                  <></>
+                ) : (
+                  <button
+                    className="float-lg-right cob-btn-primary text-white btn btn-sm"
+                    type="submit"
+                    disabled={disabled}
+                  >
+                    {buttonText}
+                  </button>
+                )}
+              </div>
+            </div>
           </Form>
         )}
       </Formik>

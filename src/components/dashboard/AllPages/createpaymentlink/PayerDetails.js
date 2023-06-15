@@ -72,7 +72,7 @@ const PayerDetails = () => {
     await axiosInstance
       .get(API_URL.GET_CUSTOMERS + clientCode)
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         setData(res.data);
         setDisplayList(res.data);
         setPaginatedData(_(res.data).slice(0).take(pageSize).value());

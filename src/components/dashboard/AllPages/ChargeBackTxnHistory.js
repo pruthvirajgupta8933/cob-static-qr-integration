@@ -129,12 +129,12 @@ const ChargeBackTxnHistory = () => {
     const paramData = {
       clientCode: values.clientCode,
       fromDate: moment(values.fromDate).startOf('day').format('YYYY-MM-DD'),
-      endDate: values.endDate,
+      endDate: moment(values.endDate).startOf('day').format('YYYY-MM-DD'),
       noOfClient: values.noOfClient,
       rpttype: values.rpttype,
     }
 
-    console.log(values,"values")
+    // console.log(values,"values")
     setIsDisable(true)
     dispatch(fetchChargebackTxnHistory(paramData)).then((res) => {
     const ApiStatus = res?.meta?.requestStatus;

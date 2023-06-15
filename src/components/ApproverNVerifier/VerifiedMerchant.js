@@ -122,13 +122,18 @@ function VerifiedMerchant() {
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
+    // {
+    //   id: "12",
+    //   name: "Emp. Code",
+    //   selector: (row) => row.emp_code,
+    // },
+    // {
+    //   id: "13",
+    //   name: "Zone Name",
+    //   selector: (row) => row.zoneName,
+    // },
     {
-      id: "12",
-      name: "Emp. Code",
-      selector: (row) => row.emp_code,
-    },
-    {
-      id: "13",
+      id: "14",
       name: "View Status",
       width: "120px",
       cell: (row) => (
@@ -151,7 +156,7 @@ function VerifiedMerchant() {
       ),
     },
     {
-      id: "14",
+      id: "15",
       name: "Action",
       cell: (row) => (
         <div>

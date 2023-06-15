@@ -87,7 +87,7 @@ function KycForm() {
   }
 
   const kycTabColorClassByStatus = (tabStatus, merchantConsent) => {
-    console.log("tabStatus",tabStatus)
+    // console.log("tabStatus",tabStatus)
     if (merchantConsent === false) {
       return "kyc_active_tab_warning"
     } else if (tabStatus === KYC_STATUS_REJECTED) {

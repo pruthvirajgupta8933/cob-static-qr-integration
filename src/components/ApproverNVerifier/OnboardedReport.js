@@ -52,7 +52,7 @@ const OnboardedReport = () => {
 
   let noResultsFound = data;
 
-  console.log(noResultsFound, "noResultsFound");
+  // console.log(noResultsFound, "noResultsFound");
 
   const rowSignUpData = [
     { id: "1", name: "S. No.", selector: (row) => row.sno, sortable: true },
@@ -152,7 +152,7 @@ const OnboardedReport = () => {
 
   const dispatch = useDispatch();
 
-  console.log(loadingState, "loadingState");
+  // console.log(loadingState, "loadingState");
 
   let selectedChoice =
     selectedvalue === "1"

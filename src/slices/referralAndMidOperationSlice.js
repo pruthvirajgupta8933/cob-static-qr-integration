@@ -47,7 +47,7 @@ export const saveReferingMerchant = createAsyncThunk(
         error.message ||
         error.toString() || error.request.toString();
       thunkAPI.dispatch(setMessage(message));
-      console.log("this is message",message)
+      // console.log("this is message",message)
       return thunkAPI.rejectWithValue(message); 
         
         

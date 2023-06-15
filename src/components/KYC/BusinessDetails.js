@@ -674,7 +674,7 @@ function BusinessDetails(props) {
                   control="select"
                   name="state_id"
                   options={BusinessOverview}
-                  className="form-control"
+                  className="form-select"
                   disabled={VerifyKycStatus === "Verified" ? true : false}
                   readOnly={readOnly}
                 />
