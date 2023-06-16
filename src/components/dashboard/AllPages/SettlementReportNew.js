@@ -211,10 +211,7 @@ const SettlementReportNew = () => {
     }
   }, [searchText]);
 
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY").toUpperCase();
-    return date;
-  };
+  
 
   const pages = _.range(1, pageCount + 1);
 

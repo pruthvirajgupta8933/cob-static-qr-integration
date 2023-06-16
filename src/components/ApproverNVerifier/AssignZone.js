@@ -12,6 +12,7 @@ import SearchbyDropDown from "../../_components/table_components/filters/Searchb
 import Table from "../../_components/table_components/table/Table";
 import NavBar from "../../components/dashboard/NavBar/NavBar";
 import CustomLoader from "../../_components/loader";
+import DateFormatter from "../../utilities/DateConvert";
 
 function AssignZone() {
   const [data, setData] = useState([]);
@@ -71,10 +72,7 @@ function AssignZone() {
     );
   };
 
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-    return date;
-  };
+ 
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -148,7 +146,7 @@ function AssignZone() {
       id: "7",
       name: "Registered Date",
       selector: (row) => row.signUpDate,
-      cell: (row) => covertDate(row.signUpDate),
+      cell: (row) =>DateFormatter(row.signUpDate),
       sortable: true,
       width: "150px",
     },

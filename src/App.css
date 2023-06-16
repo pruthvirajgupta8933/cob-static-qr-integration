@@ -299,6 +299,11 @@ input, select{
 }
 
 
+/* display none unwanted div */
+.modal-backdrop{
+  display: none !important;
+}
+
 /* global button color classes */
 
 /* Primary */

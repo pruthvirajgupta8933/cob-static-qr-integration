@@ -16,6 +16,7 @@ import SearchbyDropDown from "../../_components/table_components/filters/Searchb
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
+import DateFormatter from "../../utilities/DateConvert";
 
 function PendingVerification() {
   const roles = roleBasedAccess();
@@ -85,7 +86,7 @@ function PendingVerification() {
       name: "Registered Date",
       selector: (row) => row.signUpDate,
       sortable: true,
-      cell: (row) => <div>{covertDate(row.signUpDate)}</div>,
+      cell: (row) => <div>{DateFormatter(row.signUpDate)}</div>,
       width: "150px",
     },
 
@@ -94,7 +95,7 @@ function PendingVerification() {
       name: "Submitted Date",
       selector: (row) => row.updated_on,
       sortable: true,
-      cell: (row) => <div>{covertDate(row.updated_on)}</div>,
+      cell: (row) => <div>{DateFormatter(row.updated_on)}</div>,
       width: "150px",
     },
     {
@@ -102,16 +103,16 @@ function PendingVerification() {
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
-    // {
-    //   id: "11",
-    //   name: "Emp. Code",
-    //   selector: (row) => row.emp_code,
-    // },
-    // {
-    //   id: "12",
-    //   name: "Zone Name",
-    //   selector: (row) => row.zoneName,
-    // },
+    {
+      id: "11",
+      name: "Emp. Code",
+      selector: (row) => row.emp_code,
+    },
+    {
+      id: "12",
+      name: "Zone Name",
+      selector: (row) => row.zoneName,
+    },
     {
       id: "13",
       name: "View Status",
@@ -290,11 +291,6 @@ function PendingVerification() {
       value: "offline",
     },
   ];
-
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a").toUpperCase();
-    return date;
-  };
 
   return (
     <div className="container-fluid flleft">

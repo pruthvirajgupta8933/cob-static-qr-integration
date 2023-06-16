@@ -13,6 +13,7 @@ import CountPerPageFilter from "../../_components/table_components/filters/Count
 import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
+import DateFormatter from "../../utilities/DateConvert";
 
 const RejectedKYC = () => {
   const roles = roleBasedAccess();
@@ -97,7 +98,7 @@ const RejectedKYC = () => {
       id: "8",
       name: "Registered Date",
       selector: (row) => row.signUpDate,
-      cell: (row) => covertDate(row.signUpDate),
+      cell: (row) => DateFormatter(row.signUpDate),
       sortable: true,
       width: "150px",
     },
@@ -106,7 +107,7 @@ const RejectedKYC = () => {
       name: "Submitted Date",
       selector: (row) => row.updated_on,
       sortable: true,
-      cell: (row) => <div>{covertDate(row.updated_on)}</div>,
+      cell: (row) => <div>{DateFormatter(row.updated_on)}</div>,
       width: "150px",
     },
     {
@@ -114,16 +115,16 @@ const RejectedKYC = () => {
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
-    // {
-    //   id: "11",
-    //   name: "Emp. Code",
-    //   selector: (row) => row.emp_code,
-    // },
-    // {
-    //   id: "12",
-    //   name: "Zone Name",
-    //   selector: (row) => row.zoneName,
-    // },
+    {
+      id: "11",
+      name: "Emp. Code",
+      selector: (row) => row.emp_code,
+    },
+    {
+      id: "12",
+      name: "Zone Name",
+      selector: (row) => row.zoneName,
+    },
     {
       id: "13",
       name: "View Status",
@@ -245,10 +246,7 @@ const RejectedKYC = () => {
     },
   ];
 
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a").toUpperCase();
-    return date;
-  };
+  
 
   //function for change current page
   const changeCurrentPage = (page) => {

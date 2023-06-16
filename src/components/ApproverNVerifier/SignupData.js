@@ -12,6 +12,7 @@ import CustomLoader from "../../_components/loader";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage";
 import ReactDatePicker from "../../_components/formik/components/ReactDatePicker";
+import DateFormatter from "../../utilities/DateConvert";
 
 const validationSchema = Yup.object({
   from_date: Yup.date().required("Required").nullable(),
@@ -22,7 +23,7 @@ const validationSchema = Yup.object({
 
 const SignupData = () => {
   const [signupData, setSignupData] = useState([]);
-  const [assignZone, setAssignzone] = useState([]);
+  const [filterSignupData, setFilterSignupData] = useState([]);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [saveData, setSaveData] = useState();
@@ -56,12 +57,12 @@ const SignupData = () => {
     fieldType === "text"
       ? setSearchByDropDown(false)
       : setSearchByDropDown(true);
-    setSearchText(e);
+    setSearchText(e); 
   };
 
   const searchByText = (text) => {
     setSignupData(
-      assignZone?.filter((item) =>
+      filterSignupData?.filter((item) =>
         Object.values(item)
           .join(" ")
           .toLowerCase()
@@ -82,7 +83,7 @@ useEffect(() => {
       )
       .then((resp) => {
         setSignupData(resp?.data?.Merchant_Info);
-        setAssignzone(resp?.data?.Merchant_Info);
+        setFilterSignupData(resp?.data?.Merchant_Info);
         
         setShow(true);
         setLoadingState(false);
@@ -108,7 +109,7 @@ useEffect(() => {
       )
       .then((resp) => {
         setSignupData(resp?.data?.Merchant_Info);
-        setAssignzone(resp?.data?.Merchant_Info);
+        setFilterSignupData(resp?.data?.Merchant_Info);
         
         setShow(true);
         setLoadingState(false);
@@ -191,14 +192,6 @@ useEffect(() => {
     exportToSpreadsheet(excelArr, fileName);
   };
 
-  
-
-
-
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-    return date;
-  };
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -231,7 +224,7 @@ useEffect(() => {
     {
       id: "5",
       name: "Registered Date",
-      selector: (row) => covertDate(row.createdDate),
+      selector: (row) => DateFormatter(row.createdDate,false),
       sortable: true,
     },
     {
@@ -296,15 +289,15 @@ useEffect(() => {
                         selected={formik.values.from_date ? new Date(formik.values.from_date) : null}
                         onChange={date => formik.setFieldValue('from_date', date)}
                         dateFormat="dd/MM/yyyy"
-                        className="form-control rounded-0"
+                        className="form-control rounded-0 date-input"
                         errorMsg={formik.errors["from_date"]}
                         required={true}
                       />
+                      
 
                     </div>
                     <div className="form-group col-md-3 ml-3">
-
-                      <ReactDatePicker
+                    <ReactDatePicker
                         label="End Date"
                         id="endDate"
                         name="to_date"
