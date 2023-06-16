@@ -16,6 +16,7 @@ import Table from "../../_components/table_components/table/Table";
 import CustomLoader from "../../_components/loader";
 import ViewDocumentModal from "./Onboarderchant/ViewDocumentModal";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
+import DateFormatter from "../../utilities/DateConvert";
 
 
 function ApprovedMerchant() {
@@ -97,7 +98,7 @@ function ApprovedMerchant() {
       id: "8",
       name: "Registered Date",
       selector: (row) => row.signUpDate,
-      cell: (row) => covertDate(row.signUpDate),
+      cell: (row) => DateFormatter(row.signUpDate),
       sortable: true,
       width: "150px",
     },
@@ -106,7 +107,7 @@ function ApprovedMerchant() {
       name: "Submitted Date",
       selector: (row) => row.updated_on,
       sortable: true,
-      cell: (row) => <div>{covertDate(row.updated_on)}</div>,
+      cell: (row) => <div>{DateFormatter(row.updated_on)}</div>,
       width: "150px",
     },
 
@@ -115,7 +116,7 @@ function ApprovedMerchant() {
       id: "10",
       name: "Verified Date",
       selector: (row) => row?.verified_date,
-      cell: (row) => covertDate(row?.verified_date),
+      cell: (row) => DateFormatter(row?.verified_date),
       sortable: true,
       width: "150px",
     },
@@ -123,7 +124,7 @@ function ApprovedMerchant() {
       id: "11",
       name: "Approved Date",
       selector: (row) => row?.approved_date,
-      cell: (row) => covertDate(row?.approved_date),
+      cell: (row) => DateFormatter(row?.approved_date),
       sortable: true,
       width: "150px",
     },
@@ -282,10 +283,7 @@ function ApprovedMerchant() {
     );
   };
 
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a").toUpperCase();
-    return date;
-  };
+ 
 
   //function for change current page
   const changeCurrentPage = (page) => {

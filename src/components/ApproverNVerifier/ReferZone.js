@@ -12,6 +12,7 @@ import Table from "../../_components/table_components/table/Table";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
+import DateFormatter from "../../utilities/DateConvert";
 
 const ReferZone = () => {
   function capitalizeFirstLetter(param) {
@@ -87,7 +88,7 @@ const ReferZone = () => {
       name: "Registered Date",
       selector: (row) => row.signUpDate,
       sortable: true,
-      cell: (row) => <div>{covertDate(row.signUpDate)}</div>,
+      cell: (row) => <div>{DateFormatter(row.signUpDate)}</div>,
       width: "150px",
     },
     {
@@ -183,10 +184,7 @@ const ReferZone = () => {
     setSearchText(e);
   };
 
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-    return date;
-  };
+  
 
   const searchByText = (text) => {
     setData(

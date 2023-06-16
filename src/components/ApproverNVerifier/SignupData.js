@@ -12,6 +12,7 @@ import CustomLoader from "../../_components/loader";
 import SearchFilter from "../../_components/table_components/filters/SearchFilter";
 import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage";
 import ReactDatePicker from "../../_components/formik/components/ReactDatePicker";
+import DateFormatter from "../../utilities/DateConvert";
 
 const validationSchema = Yup.object({
   from_date: Yup.date().required("Required").nullable(),
@@ -191,10 +192,6 @@ useEffect(() => {
     exportToSpreadsheet(excelArr, fileName);
   };
 
-   const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-    return date;
-  };
 
   //function for change current page
   const changeCurrentPage = (page) => {
@@ -227,7 +224,7 @@ useEffect(() => {
     {
       id: "5",
       name: "Registered Date",
-      selector: (row) => covertDate(row.createdDate),
+      selector: (row) => DateFormatter(row.createdDate,false),
       sortable: true,
     },
     {

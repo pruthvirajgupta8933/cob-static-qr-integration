@@ -9,6 +9,7 @@ import { convertToFormikSelectJson } from "../../_components/reuseable_component
 import { forGeneratingMid } from "../../slices/referralAndMidOperationSlice";
 import { getallGenrateMidData } from "../../slices/referralAndMidOperationSlice";
 import moment from "moment";
+import DateFormatter from "../../utilities/DateConvert";
 const ViewGenerateMidModal = (props) => {
   const [show, setShow] = useState(false);
   const [bankData, setBankData] = useState([]);
@@ -113,10 +114,7 @@ const ViewGenerateMidModal = (props) => {
       });
   };
 
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-      return date
-    }
+  
 
   
 
@@ -228,7 +226,7 @@ const ViewGenerateMidModal = (props) => {
                                   <td>{data?.PaymentMode}</td>
                                   <td>{data?.BankName}</td>
                                   <td>{data?.sub_merchant_id}</td>
-                                  <td>{covertDate(data?.created_date)}</td>
+                                  <td>{DateFormatter(data?.created_date,false)}</td>
                                   
                                 </tr>
                                  ))}
