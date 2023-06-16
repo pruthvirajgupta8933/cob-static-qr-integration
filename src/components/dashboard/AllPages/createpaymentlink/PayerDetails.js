@@ -216,9 +216,7 @@ const handleClick = (id) => {
         fnSetModalToggle={setEditModalToggle}
       />
       <Genratelink generatedata={genrateform}/>
-
-
-      <div
+        <div
         className="mymodals modal fade"
         id="exampleModal"
         role="dialog"

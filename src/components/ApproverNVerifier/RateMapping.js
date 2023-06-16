@@ -10,6 +10,7 @@ import NavBar from "../../components/dashboard/NavBar/NavBar";
 import ViewRateMapping from "./ViewRateMapping";
 import SearchbyDropDown from "../../_components/table_components/filters/Searchbydropdown";
 import CustomLoader from "../../_components/loader";
+import DateFormatter from "../../utilities/DateConvert";
 
 function RateMapping() {
   const dispatch = useDispatch();
@@ -64,47 +65,7 @@ const [data, setData] = useState([]);
     }
   }, [searchText]);
 
-  //Map the table data
-  // const colData = () => {
-  //   return (
-  //     <>
-  //       {data == [] ? (
-  //         <td colSpan={"11"}>
-  //           {" "}
-  //           <div className="nodatafound text-center">No data found </div>
-  //         </td>
-  //       ) : (
-  //         data?.map((user, i) => (
-  //           <tr key={i}>
-  //             <td>{i + 1}</td>
-  //             <td>{user.clientCode}</td>
-  //             <td>{user.name}</td>
-  //             <td>{user.emailId}</td>
-  //             <td>{user.contactNumber}</td>
-  //             <td>{user.status}</td>
-  //             <td>{covertDate(user.signUpDate)}</td>
-  //             <td>{user?.isDirect}</td>
-  //             {/* <td>  <button type="button" className="btn btn-primary" onClick={onClick}>View Document</button></td> */}
-  //             <td>
-  //               <button
-  //                 type="submit"
-  //                 onClick={() => {
-  //                   setModalDisplayData(user);
-  //                   setOpenModal(true);
-  //                 }}
-  //                 className="btn btn-primary"
-  //                 data-toggle="modal"
-  //                 data-target="#exampleModalCenter"
-  //               >
-  //                 Rate Map
-  //               </button>
-  //             </td>
-  //           </tr>
-  //         ))
-  //       )}
-  //     </>
-  //   );
-  // };
+  
 
   const searchByText = (text) => {
     setData(
@@ -158,10 +119,7 @@ const [data, setData] = useState([]);
     return param?.charAt(0).toUpperCase() + param?.slice(1);
   }
 
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-    return date;
-  };
+  
 
   const AssignZoneData = [
     {
@@ -205,7 +163,7 @@ const [data, setData] = useState([]);
       id: "7",
       name: "Registered Date",
       selector: (row) => row.signUpDate,
-      cell: (row) => covertDate(row.signUpDate),
+      cell: (row) => DateFormatter(row.signUpDate),
       sortable: true,
       width: "150px",
     },

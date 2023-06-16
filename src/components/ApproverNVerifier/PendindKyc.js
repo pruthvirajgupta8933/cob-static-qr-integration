@@ -14,6 +14,7 @@ import SearchbyDropDown from "../../_components/table_components/filters/Searchb
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
 import SkeletonTable from "../../_components/table_components/table/skeleton-table";
+import DateFormatter from "../../utilities/DateConvert";
 
 const PendindKyc = () => {
   const roles = roleBasedAccess();
@@ -96,7 +97,7 @@ const PendindKyc = () => {
       name: "Registered Date",
       selector: (row) => row.signUpDate,
       sortable: true,
-      cell: (row) => <div>{covertDate(row.signUpDate)}</div>,
+      cell: (row) => <div>{DateFormatter(row.signUpDate)}</div>,
       width: "150px",
     },
     {
@@ -243,13 +244,6 @@ const PendindKyc = () => {
       value: "offline",
     },
   ];
-
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY hh:mm a");
-    return date;
-  };
-
-  // console.log("Data Loading",isLoaded)
 
   return (
     <div className="container-fluid flleft">

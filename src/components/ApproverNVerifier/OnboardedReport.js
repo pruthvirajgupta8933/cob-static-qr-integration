@@ -15,6 +15,8 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import Table from "../../_components/table_components/table/Table";
 import CountPerPageFilter from "../../../src/_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
+import DateFormatter from "../../utilities/DateConvert";
+
 
 const validationSchema = Yup.object({
   from_date: Yup.date().required("Required").nullable(),
@@ -45,10 +47,7 @@ const OnboardedReport = () => {
   const [disabled, setDisabled] = useState(false);
   const [dataClick, setDataClick] = useState(false);
 
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-    return date;
-  };
+  
 
   let noResultsFound = data;
 
@@ -93,7 +92,7 @@ const OnboardedReport = () => {
     {
       id: "8",
       name: "Registered Date",
-      selector: (row) => covertDate(row.signUpDate),
+      selector: (row) =>DateFormatter(row.signUpDate,false),
       sortable: true,
     },
 

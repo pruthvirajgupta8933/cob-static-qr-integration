@@ -12,6 +12,7 @@ import SearchFilter from "../../_components/table_components/filters/SearchFilte
 import Table from "../../_components/table_components/table/Table";
 import CountPerPageFilter from "../../_components/table_components/filters/CountPerPage";
 import CustomLoader from "../../_components/loader";
+import DateFormatter from "../../utilities/DateConvert";
 
 function AssignZone() {
   function capitalizeFirstLetter(param) {
@@ -70,7 +71,7 @@ function AssignZone() {
       name: "Registered Date",
       selector: (row) => row.signUpDate,
       sortable: true,
-      cell: (row) => <div>{covertDate(row.signUpDate)}</div>,
+      cell: (row) => <div>{DateFormatter(row.signUpDate)}</div>,
       width: "150px",
     },
     {
@@ -187,10 +188,7 @@ function AssignZone() {
     setPageSize(pageSize);
   };
 
-  const covertDate = (yourDate) => {
-    let date = moment(yourDate).format("DD/MM/YYYY");
-    return date;
-  };
+ 
 
   return (
     <section className="">

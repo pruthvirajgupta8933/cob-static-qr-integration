@@ -211,15 +211,7 @@ const BizzAppData = () => {
                         errorMsg={formik.errors["start_date"]}
                         required={true}
                       />
-                    {/* <FormikController
-                      control="input"
-                      type="date"
-                      label="From Date"
-                      name="start_date"
-                      className="form-control rounded-0"
-                      // value={startDate}
-                      // onChange={(e)=>setStartDate(e.target.value)}
-                    /> */}
+                   
                   </div>
 
                   <div className="form-group col-md-3 ">
