@@ -123,9 +123,6 @@ const ViewRateMapping = (props) => {
 
  const handleSubmit = (values) => {
         setDisable(true)
-        console.log(values)
-
-
         const postData = {
             "rate_template_code": values?.business_category,
             "business_cat_code": values?.risk_category_name,

@@ -126,6 +126,8 @@ const ReferZone = () => {
   const [openZoneModal, setOpenModal] = useState(false);
   const [isSearchByDropDown, setSearchByDropDown] = useState(false);
 
+
+  console.log("openZoneModal",openZoneModal)
   const dispatch = useDispatch();
 
   const approvedSearch = (e) => {
@@ -271,15 +273,13 @@ const ReferZone = () => {
       </main>
       <div>
 
-        {openZoneModal === true ? (
+        {openZoneModal === true && (
           <ViewReferZoneModal
             userData={modalDisplayData}
             setOpenModal={setOpenModal}
             refreshAfterRefer={refreshAfterRefer}
           />
-        ) : (
-          <></>
-        )}
+        ) }
       </div>
     </section>
   );

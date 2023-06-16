@@ -6,7 +6,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { saveKycConsent, UpdateModalStatus } from "../../slices/kycSlice";
-import { getRefferal } from "../../services/kyc/merchant-kyc";
+
 import FormikController from "../../_components/formik/FormikController";
 import { convertToFormikSelectJson } from "../../_components/reuseable_components/convertToFormikSelectJson";
 import { KYC_STATUS_APPROVED, KYC_STATUS_VERIFIED } from "../../utilities/enums";
@@ -36,7 +36,6 @@ function SubmitKyc(props) {
 
   const initialValues = {
     term_condition: merchant_consent,
-    referral_code: ""
   };
 
   const validationSchema = Yup.object({
@@ -51,17 +50,17 @@ function SubmitKyc(props) {
 
   useEffect(() => {
 
-    getRefferal().then(res => {
-      setRefferalList(res?.data?.message)
-      const data = convertToFormikSelectJson(
-        "emp_code",
-        "referral_code",
-        res?.data?.message
-      )
-      setRefferalListSelectOption(data)
+    // getRefferal().then(res => {
+    //   setRefferalList(res?.data?.message)
+    //   const data = convertToFormikSelectJson(
+    //     "emp_code",
+    //     "referral_code",
+    //     res?.data?.message
+    //   )
+    //   setRefferalListSelectOption(data)
 
 
-    }).catch(err => console.log(err))
+    // }).catch(err => console.log(err))
 
 
   }, []);
@@ -76,7 +75,6 @@ function SubmitKyc(props) {
         term_condition: value.term_condition,
         login_id: loginId,
         submitted_by: loginId,
-        emp_code: value.referral_code
       })
     ).then((res) => {
       if (
