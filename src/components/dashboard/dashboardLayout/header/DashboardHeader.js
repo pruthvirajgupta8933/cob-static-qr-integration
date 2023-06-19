@@ -5,6 +5,7 @@ import profile from "../../../../assets/images/profile.png";
 import { Link } from "react-router-dom";
 import { roleBasedAccess } from "../../../../_components/reuseable_components/roleBasedAccess";
 import headerClasses from "./dashboard-header.module.css"
+import themeClasses from "../../../../theme.module.scss"
 import Sabpaisalogo3 from "../../../../assets/images/sabpaisa-white-logo1.png";
 
 function DashboardHeader() {
@@ -20,7 +21,7 @@ function DashboardHeader() {
     };
 
     return (
-        <header className={`navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow position-fixed ${headerClasses.navbar_cob}`}>
+        <header className={`navbar navbar-dark sticky-top flex-md-nowrap p-0 shadow position-fixed ${headerClasses.navbar_cob}  ${themeClasses.headerBg} `}>
             <a className={`${headerClasses.navbar_brand_cob}  navbar-brand col-md-3 col-lg-2 me-0 px-3`} href={false}>
             <button className={`d-md-none collapsed navbar-toggler `} type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 {/* <span className="navbar-toggler-icon" /> */}
