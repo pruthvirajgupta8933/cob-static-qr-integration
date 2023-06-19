@@ -80,11 +80,21 @@ const ReferZone = () => {
     },
     {
       id: "8",
+      name: "Emp. Code",
+      selector: (row) => row.emp_code,
+    },
+    {
+      id: "9",
+      name: "Zone Name",
+      selector: (row) => row.zoneName,
+    },
+    {
+      id: "10",
       name: "KYC Status",
       selector: (row) => row.status,
     },
     {
-      id: "9",
+      id: "11",
       name: "Registered Date",
       selector: (row) => row.signUpDate,
       sortable: true,
@@ -92,12 +102,12 @@ const ReferZone = () => {
       width: "150px",
     },
     {
-      id: "10",
+      id: "12",
       name: "Onboard Type",
       selector: (row) => row.isDirect,
     },
     {
-      id: "11",
+      id: "13",
       name: "Add Sourcing Partner",
       cell: (row) => (
         <button
