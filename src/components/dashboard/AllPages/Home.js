@@ -120,7 +120,7 @@ function Home() {
           <KycAlert />
         </div>
       </div>
-      <hr />
+      <br />
 
       <div className="row">
         <div className="col-sm-9 d-flex flex-wrap justify-content-center">
@@ -240,9 +240,9 @@ function Home() {
         </div>
       </div>
 
-      <hr />
-      <hr />
-      <hr />
+      <br />
+      <br />
+      <br />
       <div className="row kyc-link">
 
         {roles?.merchant === true &&
@@ -294,8 +294,8 @@ function Home() {
 
       </div>
 
-      <hr />
-      <hr />
+      <br />
+      <br />
       <div className="row">
         {roles?.merchant === true && (
           <div className="container-fluid">
