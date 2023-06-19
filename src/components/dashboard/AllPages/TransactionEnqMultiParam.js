@@ -373,7 +373,7 @@ function TransactionEnqMultiParam() {
                           type="text"
                           label="Sabpaisa Transaction ID"
                           name="spTxnID"
-                          className="ant-input"
+                          className="form-control"
                         />
                       </div>
                       <div className="col-lg-3 mrg-btm- bgcolor">
@@ -382,7 +382,7 @@ function TransactionEnqMultiParam() {
                           type="text"
                           label="Client Transaction ID"
                           name="clientTxnID"
-                          className="ant-input"
+                          className="form-control"
                         />
                       </div>
 
@@ -392,7 +392,7 @@ function TransactionEnqMultiParam() {
                           type="text"
                           label="Payer Email"
                           name="pemail"
-                          className="ant-input"
+                          className="form-control"
                         />
                       </div>
                       <div className="col-lg-3 mrg-btm- bgcolor">
@@ -401,7 +401,7 @@ function TransactionEnqMultiParam() {
                           type="text"
                           label="Payer Mobile"
                           name="pmob"
-                          className="ant-input"
+                          className="form-control"
                         />
                       </div>
                     </div>
@@ -432,7 +432,7 @@ function TransactionEnqMultiParam() {
                     <label>Search Here</label>
                     <input
                       type="text"
-                      className="ant-input"
+                      className="form-control"
                       placeholder="Search here"
                       onChange={(e) => {
                         SetSearchText(e.target.value);
@@ -445,7 +445,7 @@ function TransactionEnqMultiParam() {
                     <select
                       value={pageSize}
                       rel={pageSize}
-                      className="ant-input"
+                      className="form-select"
                       onChange={(e) => setPageSize(parseInt(e.target.value))}
                     >
                       <DropDownCountPerPage datalength={txnList.length} />

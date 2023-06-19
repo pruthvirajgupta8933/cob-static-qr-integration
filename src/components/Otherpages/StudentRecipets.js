@@ -113,7 +113,7 @@ const StudentRecipets = () => {
                       </label>
                       <input
                         type="text"
-                        className="ant-input"
+                        className="form-control"
                         name="transactionid"
                         value={transactionId}
                         onChange={(e) => setTransactionId(e.target.value)}
@@ -127,7 +127,7 @@ const StudentRecipets = () => {
                       <label for="txn_id_input">Enter Student ID :</label>
                       <input
                         type="text"
-                        className="ant-input"
+                        className="form-control"
                         name="studdentid"
                         value={studentId}
                         onChange={(e) => setStudentId(e.target.value)}

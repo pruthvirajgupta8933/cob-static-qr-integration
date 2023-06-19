@@ -94,12 +94,11 @@ const ReceiptWalchand = () => {
               <div className="card-body">
 
               <form action="#">
-                   
                     <div className="form-group">
                       <label for="txn_id_input">Enter PNR number :</label>
                       <input
                         type="text"
-                        className="ant-input"
+                        className="form-control"
                         name="pnrId"
                         value={pnrId}
                         onChange={(e) => setPnrId(e.target.value)}

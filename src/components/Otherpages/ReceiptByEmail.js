@@ -144,7 +144,7 @@ const ReceiptByEmail = () => {
                   <label for="txn_id_input">Sabpaisa Transcation ID :</label>
                   <input
                     type="text"
-                    className="ant-input"
+                    className="form-control"
                     name="transactionid"
                     value={transactionId}
                     onChange={(e) => setTransactionId(e.target.value)}
@@ -158,7 +158,7 @@ const ReceiptByEmail = () => {
                   <label for="txn_id_input">Enter Student ID :</label>
                   <input
                     type="text"
-                    className="ant-input"
+                    className="form-control"
                     name="studentEmailid"
                     value={studentEmailId}
                     onChange={(e) => setStudentEmailId(e.target.value)}

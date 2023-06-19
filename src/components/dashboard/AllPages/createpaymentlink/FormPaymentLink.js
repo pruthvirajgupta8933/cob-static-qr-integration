@@ -215,7 +215,7 @@ function FormPaymentLink(props) {
                           <Field
                             name="Date"
                             type="date"
-                            className="ant-input- form-control"
+                            className="form-control"
                             min={new Date().toLocaleDateString('en-ca')}
                             placeholder="From Date"
                           />

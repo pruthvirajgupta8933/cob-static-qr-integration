@@ -143,7 +143,7 @@ const PaymentLinkDetail = () => {
               <select
                 value={pageSize}
                 rel={pageSize}
-                className="ant-input"
+                className="form-control"
                 onChange={(e) => setPageSize(parseInt(e.target.value))}
               >
                 <DropDownCountPerPage datalength={data.length} />

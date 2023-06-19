@@ -230,7 +230,7 @@ useEffect(() => {
                                 control="select"
                                 name="emp_name"
                                 options={employeeName}
-                                className="ant-input"
+                                className="form-select"
                               // readOnly={true}
                               />
                             </div>
@@ -249,7 +249,7 @@ useEffect(() => {
                                 name="riskCategoryCode"
                                 options={riskCategoryCode}
                               
-                                className="ant-input"
+                                className="form-select"
                               />
 
                             </div>
@@ -268,7 +268,7 @@ useEffect(() => {
                                 control="select"
                                 name="mccCode"
                                 options={mccCode}
-                                className="ant-input"
+                                className="form-select"
                               />
 
                             </div>

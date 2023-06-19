@@ -116,7 +116,7 @@ const Reports = () => {
 
             <div className="col-lg-3">
               <label>Count Per Page</label>
-              <select value={pageSize} rel={pageSize} className="ant-input" onChange={(e) => setPageSize(parseInt(e.target.value))} >
+              <select value={pageSize} rel={pageSize} className="form-select" onChange={(e) => setPageSize(parseInt(e.target.value))} >
                 <DropDownCountPerPage datalength={data.length} />
               </select>
             </div>
