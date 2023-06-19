@@ -99,11 +99,11 @@ function SideNavbar() {
 
     const roleBasedShowTab = roleBasedAccess();
   
-    // enable for seleted merhcant
+    // enable for seleted merhcant live merchant id
     const enableSettlementReport = ["5208", "5207", "4304", "795" ];
 
     return (
-        <nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block sidebar collapse ${sideNavClasses.sidebar_cob}`}>
+        <nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block sidebar collapse cob-primary-btn-bg ${sideNavClasses.sidebar_cob}`}>
             <div className="position-sticky pt-3">
                 {(roleBasedShowTab?.merchant === true ||
                     roleBasedShowTab?.bank === true ||

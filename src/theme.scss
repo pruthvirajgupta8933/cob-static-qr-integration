@@ -10,9 +10,6 @@ $primaryColor: #154280;
 
 
 
-
-
-
 // outer dashboard
 .headerBg {
     background-color: $primaryColor;
@@ -29,5 +26,14 @@ $primaryColor: #154280;
 }
 
 .dashboardHeaderBg{
+    background-color: $primaryColor;
+}
+
+
+
+
+// --------------------------------------------------------------------------------------
+
+.cob-primary-btn-bg{
     background-color: $primaryColor;
 }
