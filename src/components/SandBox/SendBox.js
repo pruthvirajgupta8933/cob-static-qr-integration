@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "../dashboard/NavBar/NavBar";
+// import NavBar from "../dashboard/NavBar/NavBar";
 import StepProgressBar from "../../_components/reuseable_components/StepProgressBar/StepProgressBar";
 import { useDispatch, useSelector } from "react-redux";
 import { kycUserList } from "../../slices/kycSlice";
@@ -75,11 +75,13 @@ function Sandbox() {
     <section >
       <main >
         <div className="">
-          {/* <div className="right_layout my_account_wrapper right_side_heading"> */}
-          <h5 className="">Integration Kit</h5>
-          <a className="btn cob-btn-primary btn-sm float-right text-white" href="https://sabpaisa.in/integration-kits/" target="_blank" rel="noreferrer">Developer Guide</a>
-          {/* </div> */}
+          <div className="d-flex">
+            <div className="p-2 w-100"> <h5 className="">Integration Kit</h5></div>
+            <div className="p-2 flex-shrink-1"><a className="btn cob-btn-primary btn-sm float-right text-white" href="https://sabpaisa.in/integration-kits/" target="_blank" rel="noreferrer">Developer Guide</a></div>
+          </div>
+
           <section className="">
+
             <div className="container-fluid">
               <div className="row">
                 <StepProgressBar status={kycStatus} />
@@ -256,7 +258,7 @@ function Sandbox() {
                           value={data && data?.authKey}
                         />
                       </div>
-                      
+
                       <div className="col-lg-4">
                         <label
                           htmlFor="inputPassword3"
@@ -278,18 +280,18 @@ function Sandbox() {
 
                           <div className="input-group-append">
                             <span className="input-group-text" id="basic-addon2" onClick={handleClickShowPassword}>
-                            
-                            {values.showPassword ? (
-                              <i
-                                className="fa fa-eye"
-                                aria-hidden="true"
-                              ></i>
-                            ) : (
-                              <i
-                                className="fa fa-eye-slash"
-                                aria-hidden="true"
-                              ></i>
-                            )}
+
+                              {values.showPassword ? (
+                                <i
+                                  className="fa fa-eye"
+                                  aria-hidden="true"
+                                ></i>
+                              ) : (
+                                <i
+                                  className="fa fa-eye-slash"
+                                  aria-hidden="true"
+                                ></i>
+                              )}
                             </span>
                           </div>
                         </div>
