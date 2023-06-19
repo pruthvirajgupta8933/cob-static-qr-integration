@@ -187,8 +187,8 @@ function SubmitKyc(props) {
               </div>
 
            
-              <hr/>
-              <hr/>
+              <br />
+              <br />
               <div className="row">
                 <div className="col-12">
                   {(kyc_status.toLowerCase() === KYC_STATUS_VERIFIED.toLowerCase() ||
@@ -203,8 +203,8 @@ function SubmitKyc(props) {
                   )}
                 </div>
               </div>
-              <hr/>
-              <hr/>
+              <br />
+              <br />
 
             </Form>
           )}

@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import axios from "axios";
-import { toast } from 'react-toastify';
-import { Zoom } from "react-toastify";
+import { toast, Zoom } from 'react-toastify';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../../../config";
@@ -153,7 +152,7 @@ function FormPaymentLink(props) {
                         id="checkbox_pass"
                       />
                       <label className="form-check-label" htmlFor="exampleCheck1" >  Is Password Protected</label>
-                   </div>
+                  </div>
                     </div>
                     <div className="form-row">
                       <div className="form-group col-md-6">
