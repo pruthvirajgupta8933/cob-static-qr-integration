@@ -72,6 +72,8 @@ import MandateReport from "../../../subscription_components/MandateReport";
 import BizzAppData from '../../ApproverNVerifier/BizzData';
 import CreateMandate from "../../../subscription_components/Create_Mandate/index";
 import DebitReport from "../../../subscription_components/DebitReport";
+import AllowedRoute from "../../../ProtectedRoutes/AllowedRoute";
+import Faq from "../../../components/Faq/Faq"
 
 
 
@@ -498,6 +500,15 @@ function DashboardMainContent() {
                             <MerchantRoute exact path={`${path}/payout/payment_status`} Component={MakePayment}>
                                 <SpPg />
                             </MerchantRoute>
+
+
+                            {/* Routing for Faq */}
+                            <AllowedRoute  exact path={`${path}/faq`} Component={Faq}>
+                                <Faq/>
+
+                            </AllowedRoute>
+
+
 
 
                             {/* Routing for subscription */}
