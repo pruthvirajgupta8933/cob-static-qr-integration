@@ -166,7 +166,7 @@ function SideNavbar() {
                     </ul>
                 )}
 
-                <ul  className="nav flex-column"
+                {/* <ul  className="nav flex-column"
                         role="menu">
                     <li className="nav-item" role="menuitem">
                         <Link
@@ -177,7 +177,7 @@ function SideNavbar() {
                             Faq
                         </Link>
                     </li>
-                </ul>
+                </ul> */}
 
             </div>
         </nav>
