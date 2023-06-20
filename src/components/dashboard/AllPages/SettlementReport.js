@@ -108,7 +108,7 @@ const SettlementReport = () => {
                     <label>Select Folder</label>
                     <select
                       value={selectedFolder}
-                      className="ant-input"
+                      className="form-select"
                       onChange={(e) => onChangeFolder(e.target.value)}
                     >
                       <option value="">Select Folder</option>
@@ -128,7 +128,7 @@ const SettlementReport = () => {
                         SetSelectedSubFolder(event.target.value)
                       }
                       value={selectedSubFolder}
-                      className="ant-input"
+                      className="form-select"
                     >
                       <option value="">Select</option>
                       {subFolderArr &&
@@ -149,7 +149,7 @@ const SettlementReport = () => {
                           type="text"
                           value={searchArea}
                           placeholder="Search Here"
-                          className="ant-input"
+                          className="form-select"
                           onChange={getSearchTerm}
                         />
                         {showFilterData.filter}

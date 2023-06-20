@@ -175,7 +175,7 @@ let clientMerchantDetailsList = [];
                           autoComplete="off"
                          
                           
-                          className="ant-input"
+                          className="form-control"
                           min={new Date().toLocaleDateString('en-ca')}
                         />
                         <ErrorMessage name="Date">

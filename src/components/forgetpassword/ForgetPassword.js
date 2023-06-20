@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import HeaderPage from "../login/HeaderPage";
+// import HeaderPage from "../login/HeaderPage";
+import Header from "../mainComponent/header/Header";
 import EnterUserID from "./EnterUserID";
 import VerifyEmailPhone from "./VerifyEmailPhone";
 import ThanksCard from "./ThanksCard";
@@ -15,7 +16,7 @@ const ForgetPassword = () => {
 
   return (
     <React.Fragment>
-      <HeaderPage />
+      <Header />
 
       {/* enter user id  */}
       {showCard === "a1" ? <EnterUserID props={handleFormSubmit} /> : <></>}

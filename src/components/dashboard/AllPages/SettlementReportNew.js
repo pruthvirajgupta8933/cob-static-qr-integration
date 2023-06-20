@@ -419,7 +419,7 @@ const SettlementReportNew = () => {
                       <div className="form-group col-md-1 mr-2">
                         <button
                           disabled={disable}
-                          className="btn cob-btn-primary text-white"
+                          className="btn cob-btn-primary text-white btn-sm"
                           type="submit"
                         >
                           Search{" "}

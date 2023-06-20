@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import axios from "axios";
-import { toast } from 'react-toastify';
-import { Zoom } from "react-toastify";
+import { toast, Zoom } from 'react-toastify';
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import API_URL from "../../../../config";
 
 function FormPaymentLink(props) {
-  const{loaduser}=props;
+  const { loaduser } = props;
 
   const [drop, setDrop] = useState([]);
   const [hours, setHours] = useState("");
@@ -80,7 +79,7 @@ function FormPaymentLink(props) {
             transition: Zoom,
             limit: 2,
           })
-          loaduser();
+        loaduser();
       })
       .catch((error) => {
         toast.error('Payment Link Creation Failed', {
@@ -89,7 +88,7 @@ function FormPaymentLink(props) {
           transition: Zoom,
           limit: 2,
         })
-        
+
       });
   };
 
@@ -142,184 +141,182 @@ function FormPaymentLink(props) {
                 </div>
                 <div className="container">
                   <Form>
-                      <div className="form-group col-md-12 mt-3">
-                        <label
-                          className="form-check-label"
-                          htmlFor="exampleCheck1"
+
+                    <div className="form-row mb-2">
+                    <div className="form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        onChange={handleCheck}
+                        value={passwordcheck}
+                        id="checkbox_pass"
+                      />
+                      <label className="form-check-label" htmlFor="exampleCheck1" >  Is Password Protected</label>
+                  </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group col-md-6">
+                        <label>Select Payer Details</label>
+                        <Field className="form-control" component='select'
+                          name='Customer_id'
                         >
-                          <input
-                            type="checkbox"
-                            className="col-lg-6 padbottom"
-                            onChange={handleCheck}
-                            value={passwordcheck}
-                            id="checkbox_pass"
-                          />
-                          &ensp; is Password Protected
+                          <option value="">Select Payer</option>
+                          {drop.map((payer, i) => (
+                            <option value={payer.id} key={i}>
+                              {payer.name} - {payer.email}
+                            </option>
+                          ))}
+                        </Field>
+                        {<ErrorMessage name="Customer_id">
+                          {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                        </ErrorMessage>}
+                      </div>
+                      <div className="form-group col-md-6">
+                        <label>
+                          Payment to be Collected (INR)
                         </label>
+                        <Field
+                          type="number"
+                          min="1"
+                          step="1"
+                          onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
+                          name="Amount"
+                          autoComplete="off"
+                          className="form-control"
+                          placeholder="Enter Payment Amount"
+                        />
+                        {<ErrorMessage name="Amount">
+                          {msg => <p style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
+                        </ErrorMessage>}
                       </div>
-                      <div className="form-row">
-                        <div className="form-group col-md-6">
-                          <label>Select Payer Details</label>
-                          <Field className="form-control" component='select'
-                            name='Customer_id'
-                          >
-                            <option value="">Select Payer</option>
-                            {drop.map((payer, i) => (
-                              <option value={payer.id} key={i}>
-                                {payer.name} - {payer.email}
-                              </option>
-                            ))}
-                          </Field>
-                          {<ErrorMessage name="Customer_id">
-                            {msg => <p className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                          </ErrorMessage>}
-                        </div>
-                        <div className="form-group col-md-6">
-                          <label>
-                            Payment to be Collected (INR)
-                          </label>
-                          <Field
-                            type="number"
-                            min="1"
-                            step="1"
-                            onKeyDown={(e) => ["e", "E", "+", "-", "."].includes(e.key) && e.preventDefault()}
-                            name="Amount"
-                            autoComplete="off"
-                            className="form-control"
-                            placeholder="Enter Payment Amount"
-                          />
-                          {<ErrorMessage name="Amount">
-                            {msg => <p style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</p>}
-                          </ErrorMessage>}
-                        </div>
-                      </div>
-                      <div className="form-row">
-                        <div className="form-group col-md-6">
-                          <label >
-                            Purpose of Payment
-                          </label>
-                          <Field
-                            type="text"
-                            name="Remarks"
-                            autoComplete="off"
-                            className="form-control"
-                            placeholder="Enter Purpose of Payment"
-                          />
-                          {<ErrorMessage name="Remarks">
-                            {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
-                          </ErrorMessage>}
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group col-md-6">
+                        <label >
+                          Purpose of Payment
+                        </label>
+                        <Field
+                          type="text"
+                          name="Remarks"
+                          autoComplete="off"
+                          className="form-control"
+                          placeholder="Enter Purpose of Payment"
+                        />
+                        {<ErrorMessage name="Remarks">
+                          {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                        </ErrorMessage>}
 
-                        </div>
-                        <div className="form-group col-md-6">
-                          <label>Select Date</label>
-                          <Field
-                            name="Date"
-                            type="date"
-                            className="ant-input- form-control"
-                            min={new Date().toLocaleDateString('en-ca')}
-                            placeholder="From Date"
-                          />
-                          {<ErrorMessage name="Date">
-                            {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
-                          </ErrorMessage>}
-                        </div>
                       </div>
-                      <div className="form-row">
-                        <div className="form-group col-md-6">
-                          <label>Hours</label>
+                      <div className="form-group col-md-6">
+                        <label>Select Date</label>
+                        <Field
+                          name="Date"
+                          type="date"
+                          className="form-control"
+                          min={new Date().toLocaleDateString('en-ca')}
+                          placeholder="From Date"
+                        />
+                        {<ErrorMessage name="Date">
+                          {msg => <div className="abhitest" style={{ color: "red", position: "absolute", zIndex: " 999" }}>{msg}</div>}
+                        </ErrorMessage>}
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group col-md-6">
+                        <label>Hours</label>
 
-                          <Field component='select'  className="form-select" name='hours' value={hours} onChange={(e) => setHours(e.target.value)}>
-                            <option value="" >Hours</option>
-                            {hoursArr.map((val, i) => (
-                              <option value={val} key={i}>{val}</option>
-                            ))}
-                          </Field>
-                        </div>
-                        <div className="form-group col-md-6">
-                          <label>Minutes</label>
+                        <Field component='select' className="form-select" name='hours' value={hours} onChange={(e) => setHours(e.target.value)}>
+                          <option value="" >Hours</option>
+                          {hoursArr.map((val, i) => (
+                            <option value={val} key={i}>{val}</option>
+                          ))}
+                        </Field>
+                      </div>
+                      <div className="form-group col-md-6">
+                        <label>Minutes</label>
 
-                          <Field component='select'  className="form-select " name='minutes' value={minutes} onChange={(e) => setMinutes(e.target.value)}>
-                            <option value="">Minutes</option>
-                            <option value="00">00</option>
-                            <option value="01">01</option>
-                            <option value="02">02</option>
-                            <option value="03">03</option>
-                            <option value="04">04</option>
-                            <option value="05">04</option>
-                            <option value="06">05</option>
-                            <option value="06">06</option>
-                            <option value="07">07</option>
-                            <option value="08">08</option>
-                            <option value="09">09</option>
-                            <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
-                            <option value="13">13</option>
-                            <option value="14">14</option>
-                            <option value="15">15</option>
-                            <option value="16">16</option>
-                            <option value="17">17</option>
-                            <option value="18">18</option>
-                            <option value="19">19</option>
-                            <option value="20">20</option>
-                            <option value="21">21</option>
-                            <option value="22">22</option>
-                            <option value="23">23</option>
-                            <option value="24">24</option>
-                            <option value="25">25</option>
-                            <option value="26">26</option>
-                            <option value="27">27</option>
-                            <option value="28">28</option>
-                            <option value="29">29</option>
-                            <option value="30">30</option>
-                            <option value="31">31</option>
-                            <option value="32">32</option>
-                            <option value="33">33</option>
-                            <option value="34">34</option>
-                            <option value="35">35</option>
-                            <option value="26">36</option>
-                            <option value="37">37</option>
-                            <option value="38">38</option>
-                            <option value="39">39</option>
-                            <option value="40">40</option>
-                            <option value="41">41</option>
-                            <option value="42">42</option>
-                            <option value="43">43</option>
-                            <option value="44">44</option>
-                            <option value="45">45</option>
-                            <option value="46">46</option>
-                            <option value="47">47</option>
-                            <option value="48">48</option>
-                            <option value="49">49</option>
-                            <option value="50">50</option>
-                            <option value="51">51</option>
-                            <option value="52">52</option>
-                            <option value="53">53</option>
-                            <option value="54">54</option>
-                            <option value="55">55</option>
-                            <option value="56">56</option>
-                            <option value="57">57</option>
-                            <option value="58">58</option>
-                            <option value="59">59</option>
-                          </Field>
-                        </div>
+                        <Field component='select' className="form-select " name='minutes' value={minutes} onChange={(e) => setMinutes(e.target.value)}>
+                          <option value="">Minutes</option>
+                          <option value="00">00</option>
+                          <option value="01">01</option>
+                          <option value="02">02</option>
+                          <option value="03">03</option>
+                          <option value="04">04</option>
+                          <option value="05">04</option>
+                          <option value="06">05</option>
+                          <option value="06">06</option>
+                          <option value="07">07</option>
+                          <option value="08">08</option>
+                          <option value="09">09</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
+                          <option value="21">21</option>
+                          <option value="22">22</option>
+                          <option value="23">23</option>
+                          <option value="24">24</option>
+                          <option value="25">25</option>
+                          <option value="26">26</option>
+                          <option value="27">27</option>
+                          <option value="28">28</option>
+                          <option value="29">29</option>
+                          <option value="30">30</option>
+                          <option value="31">31</option>
+                          <option value="32">32</option>
+                          <option value="33">33</option>
+                          <option value="34">34</option>
+                          <option value="35">35</option>
+                          <option value="26">36</option>
+                          <option value="37">37</option>
+                          <option value="38">38</option>
+                          <option value="39">39</option>
+                          <option value="40">40</option>
+                          <option value="41">41</option>
+                          <option value="42">42</option>
+                          <option value="43">43</option>
+                          <option value="44">44</option>
+                          <option value="45">45</option>
+                          <option value="46">46</option>
+                          <option value="47">47</option>
+                          <option value="48">48</option>
+                          <option value="49">49</option>
+                          <option value="50">50</option>
+                          <option value="51">51</option>
+                          <option value="52">52</option>
+                          <option value="53">53</option>
+                          <option value="54">54</option>
+                          <option value="55">55</option>
+                          <option value="56">56</option>
+                          <option value="57">57</option>
+                          <option value="58">58</option>
+                          <option value="59">59</option>
+                        </Field>
                       </div>
-                      <div className="form-row">
-                        <button
-                          type="submit"
-                          className="btn btn-sm cob-btn-primary  mb-3 text-white"
-                        >
-                          SUBMIT
-                        </button>
-                        <button onClick={resetForm}
-                          type="button"
-                          className="btn btn-sm  cob-btn-secondary mb-3 text-white ml-3"
-                          data-dismiss="modal"
-                        >
-                          CANCEL
-                        </button>
-                      </div>
-                    
+                    </div>
+                    <div className="form-row">
+                      <button
+                        type="submit"
+                        className="btn btn-sm cob-btn-primary  mb-3 text-white"
+                      >
+                        SUBMIT
+                      </button>
+                      <button onClick={resetForm}
+                        type="button"
+                        className="btn btn-sm  cob-btn-secondary mb-3 text-white ml-3"
+                        data-dismiss="modal"
+                      >
+                        CANCEL
+                      </button>
+                    </div>
+
                   </Form>
                 </div>
               </>

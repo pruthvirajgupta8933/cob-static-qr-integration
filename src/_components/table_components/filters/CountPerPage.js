@@ -9,7 +9,7 @@ const CountPerPage = ({ pageSize, dataCount, changePageSize }) => {
         value={pageSize}
         rel={pageSize}
         onChange={(e) => changePageSize(parseInt(e.target.value))}
-        className="ant-input"
+        className="form-select"
       >
         <DropDownCountPerPage datalength={dataCount} />
       </select>

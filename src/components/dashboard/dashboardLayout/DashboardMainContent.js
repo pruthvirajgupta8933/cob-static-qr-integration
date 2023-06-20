@@ -72,6 +72,8 @@ import MandateReport from "../../../subscription_components/MandateReport";
 import BizzAppData from '../../ApproverNVerifier/BizzData';
 import CreateMandate from "../../../subscription_components/Create_Mandate/index";
 import DebitReport from "../../../subscription_components/DebitReport";
+import Faq from "../../../components/Faq/Faq"
+import AllowedForAll from "../../../ProtectedRoutes/AllowedForAll";
 
 
 
@@ -500,6 +502,20 @@ function DashboardMainContent() {
                             </MerchantRoute>
 
 
+                            {/* Routing for Faq */}
+
+                            <AllowedForAll  exact path={`${path}/faq`} Component={Faq}>
+                                <Faq/>
+
+                            </AllowedForAll>
+                            {/* <All  exact path={`${path}/faq`} Component={Faq}>
+                                <Faq/>
+
+                            </AllowedRoute> */}
+
+
+
+
                             {/* Routing for subscription */}
                             {/* ----------------------------------------------------------------------------------------------------|| */}
                             <MerchantRoute exact path={`${path}/subscription/mandateReports`} Component={MandateReport}>
@@ -546,6 +562,16 @@ function DashboardMainContent() {
                                 >
                                     <ReferZone />
                                 </ApproverRoute>
+                            )}
+
+                            {roles?.verifier && (
+                                <VerifierRoute
+                                    exact
+                                    path={`${path}/referzone`}
+                                    Component={ReferZone}
+                                >
+                                    <ReferZone />
+                                </VerifierRoute>
                             )}
 
 

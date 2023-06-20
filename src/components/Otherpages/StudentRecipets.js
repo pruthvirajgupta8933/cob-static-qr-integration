@@ -3,6 +3,7 @@ import axios from "axios";
 import sabpaisalogo from "../../assets/images/sabpaisalogo.png";
 import API_URL from "../../config";
 import toastConfig from "../../utilities/toastTypes";
+import Header from "../mainComponent/header/Header";
 
 const StudentRecipets = () => {
   const initialState = {
@@ -91,6 +92,7 @@ const StudentRecipets = () => {
 
   return (
     <>
+    <Header/>
       <div className="container">
         {/* ============================== */}
         <div className="container-fluid">
@@ -113,7 +115,7 @@ const StudentRecipets = () => {
                       </label>
                       <input
                         type="text"
-                        className="ant-input"
+                        className="form-control"
                         name="transactionid"
                         value={transactionId}
                         onChange={(e) => setTransactionId(e.target.value)}
@@ -127,7 +129,7 @@ const StudentRecipets = () => {
                       <label for="txn_id_input">Enter Student ID :</label>
                       <input
                         type="text"
-                        className="ant-input"
+                        className="form-control"
                         name="studdentid"
                         value={studentId}
                         onChange={(e) => setStudentId(e.target.value)}

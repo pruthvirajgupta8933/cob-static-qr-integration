@@ -155,7 +155,7 @@ function StepProgressBar(props) {
             <h3 className="Satoshi-Bold">KYC Status</h3>
           </div>
         </div>
-        <hr />
+        <br />
 
         <div style={{ width: "80%", margin: "0 auto" }}>
           <ProgressBar
@@ -166,12 +166,12 @@ function StepProgressBar(props) {
           
           </ProgressBar>
         </div>
-        <hr />
-        <hr />
+        <br />
+        <br />
         {/* <div className="Placeholder" style={{ color: "#191919" }}>
             Predesign done on 12/17/2020
         </div> */}
-        <hr />
+        <br />
         {/* <div className="Placeholder2">
             Pre-design ready. In case you need, you can request a new redesign
         </div>

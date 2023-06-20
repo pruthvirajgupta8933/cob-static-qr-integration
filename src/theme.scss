@@ -1,0 +1,64 @@
+@import url("../src/assets/fonts/Sofia/sofia.css");
+
+$primaryColor: #29205d;
+
+// $buttonPrimary:
+// $buttonOnHover:
+// $buttonDisable:
+
+// paragraphFontSize
+// headingFontSize
+
+// fontFamily
+
+
+
+// outer dashboard
+.headerBg {
+    background-color: $primaryColor;
+}
+
+
+
+
+// --------------------------------------------------------------------------------- 
+
+// inner dashboard 
+.sidebarBg{
+    background-color: #130532;
+}
+
+.dashboardHeaderBg{
+    background-color: #130532;
+}
+
+
+
+
+// --------------------------------------------------------------------------------------
+
+.cob-primary-btn-bg{
+    background-color: $primaryColor;
+}
+
+
+// global tag
+
+p{
+    font-family: "Sofia-Pro-Regular";
+    font-weight: 500;
+    font-style: normal;
+
+}
+
+h1,h2,h3,h4,h5{
+    font-family: "Sofia-Pro-Regular";
+    font-weight: 500;
+    font-style: normal;
+}
+
+a, span, label {
+    font-family: "Sofia-Pro-Regular";
+    font-weight: 500;
+    font-style: normal
+}

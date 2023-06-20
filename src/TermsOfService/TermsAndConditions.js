@@ -1,11 +1,12 @@
 import React from "react";
 import "./termsOfService.css";
-import HeaderPage from "../components/login/HeaderPage";
+import Header from '../components/mainComponent/header/Header'
+
 
 const TermsAndConditions = () => {
   return (
     <>
-      <HeaderPage />
+      <Header />
       <div className="tcContainer" data-bs-spy="scroll" data-bs-offset="50">
         <div className="tcheading">Terms and Conditions</div>
         <div class="container">

@@ -37,7 +37,7 @@ const SearchFilter = ({
       <div>
         <label>Onboard Type</label>
         <select
-          className="ant-input"
+          className="form-select"
           onChange={(e) => kycSearch(e.target.value, "dropdown")}
         >
           {optionSearchData &&
