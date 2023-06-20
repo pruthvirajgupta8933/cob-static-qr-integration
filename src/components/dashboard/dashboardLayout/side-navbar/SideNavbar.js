@@ -98,9 +98,9 @@ function SideNavbar() {
     // console.log("itemRef", itemRef)
 
     const roleBasedShowTab = roleBasedAccess();
-  
+
     // enable for seleted merhcant live merchant id
-    const enableSettlementReport = ["5208", "5207", "4304", "795" ];
+    const enableSettlementReport = ["5208", "5207", "4304", "795"];
 
     return (
         <nav id="sidebarMenu" className={`col-md-3 col-lg-2 d-md-block sidebar collapse cob-primary-btn-bg ${sideNavClasses.sidebar_cob}`}>
@@ -147,8 +147,8 @@ function SideNavbar() {
                         </li>
                     </ul>
                 )}
- {/* display menu for selected merchant */}
-                 {enableSettlementReport.includes(auth?.user?.loginId.toString()) && (
+                {/* display menu for selected merchant */}
+                {enableSettlementReport.includes(auth?.user?.loginId.toString()) && (
 
                     <ul
                         className="nav flex-column"
@@ -163,18 +163,21 @@ function SideNavbar() {
                                 Settlement Report (Files)
                             </Link>
                         </li>
-                        <li className="nav-item" role="menuitem">
-                            <Link
-                                to={`${url}/faq`}
-                                className={`nav-link ${sideNavClasses.nav_link}`}
-                            >
-                                <i class="fa fa-question-circle mr-1" aria-hidden="true"></i>
-                                Faq
-                            </Link>
-                        </li>
-                        
                     </ul>
                 )}
+
+                <ul  className="nav flex-column"
+                        role="menu">
+                    <li className="nav-item" role="menuitem">
+                        <Link
+                            to={`${url}/faq`}
+                            className={`nav-link ${sideNavClasses.nav_link}`}
+                        >
+                            <i class="fa fa-question-circle mr-1" aria-hidden="true"></i>
+                            Faq
+                        </Link>
+                    </li>
+                </ul>
 
             </div>
         </nav>
