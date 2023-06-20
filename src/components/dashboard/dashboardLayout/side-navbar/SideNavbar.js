@@ -159,7 +159,7 @@ function SideNavbar() {
                                 to={`${url}/settlement-report`}
                                 className={`nav-link ${sideNavClasses.nav_link}`}
                             >
-                                <i className="fa fa-bank"></i>
+                                <i className="fa fa-bank mr-1"></i>
                                 Settlement Report (Files)
                             </Link>
                         </li>
@@ -168,7 +168,7 @@ function SideNavbar() {
                                 to={`${url}/faq`}
                                 className={`nav-link ${sideNavClasses.nav_link}`}
                             >
-                                <i className="fa fa-bank"></i>
+                                <i class="fa fa-question-circle mr-1" aria-hidden="true"></i>
                                 Faq
                             </Link>
                         </li>
