@@ -3,6 +3,7 @@ import axios from "axios";
 import sabpaisalogo from "../../assets/images/sabpaisalogo.png";
 import API_URL from "../../config";
 import toastConfig from "../../utilities/toastTypes";
+import Header from "../mainComponent/header/Header";
 
 const ReceiptWalchand = () => {
   const [pnrId, setPnrId] = useState();
@@ -75,6 +76,8 @@ const ReceiptWalchand = () => {
   };
 
   return (
+    <React.Fragment>
+      <Header />
 
       <div className="container-fluid">
         <div className="row justify-content-center">
@@ -196,6 +199,9 @@ const ReceiptWalchand = () => {
           </div>
         </div>
       </div>
+    </React.Fragment>
+
+  
   );
 };
 

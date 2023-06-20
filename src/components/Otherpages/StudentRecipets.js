@@ -3,6 +3,7 @@ import axios from "axios";
 import sabpaisalogo from "../../assets/images/sabpaisalogo.png";
 import API_URL from "../../config";
 import toastConfig from "../../utilities/toastTypes";
+import Header from "../mainComponent/header/Header";
 
 const StudentRecipets = () => {
   const initialState = {
@@ -91,6 +92,7 @@ const StudentRecipets = () => {
 
   return (
     <>
+    <Header/>
       <div className="container">
         {/* ============================== */}
         <div className="container-fluid">

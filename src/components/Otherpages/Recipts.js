@@ -5,7 +5,8 @@ import { Formik, Form } from "formik"
 import sabpaisalogo from '../../assets/images/sabpaisalogo.png';
 import API_URL from '../../config';
 import FormikController from '../../_components/formik/FormikController';
-import { axiosInstance } from '../../utilities/axiosInstance';
+// import { axiosInstance } from '../../utilities/axiosInstance';
+import Header from "../mainComponent/header/Header" 
 import toastConfig from '../../utilities/toastTypes';
 
 export const Recipts = () => {
@@ -113,6 +114,7 @@ export const Recipts = () => {
 
     <div>
       {/* ============================== */}
+      <Header />
       <div className="container-fluid toppad">
         <div className="row justify-content-center">
           <div className="col-lg-6">

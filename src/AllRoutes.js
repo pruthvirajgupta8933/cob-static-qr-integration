@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route } from "react-router-dom";
 
 import ForgetPassword from './components/forgetpassword/ForgetPassword';
-import CommonPage from './components/Otherpages/CommonPage';
+// import CommonPage from './components/Otherpages/CommonPage';
 import EmailVerification from './components/Otherpages/EmailVerification'
 import { Recipts } from './components/Otherpages/Recipts';
 import StudentRecipets from './components/Otherpages/StudentRecipets';
@@ -43,9 +43,9 @@ function AllRoutes() {
       <Route path="/dashboard">
         <DashboardMainContent />
       </Route>
-      <Route exact path="/commonpages">
+      {/* <Route exact path="/commonpages">
         <CommonPage />
-      </Route>
+      </Route> */}
       <Route path="/forget">
         <ForgetPassword />
       </Route>
