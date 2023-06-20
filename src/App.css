@@ -117,43 +117,43 @@ input, select{
 /* font classes  */
 
 .Satoshi-Bold {
-  font-family: "Satoshi-Bold" !important;
+  /* font-family: "Satoshi-Bold" !important; */
 }
 
 .Satoshi-Medium {
-  font-family: "Satoshi-Medium" !important;
+  /* font-family: "Satoshi-Medium" !important; */
 }
 
 .OpenSans-Regular {
-  font-family: "OpenSans-Regular" !important;
+  /* font-family: "OpenSans-Regular" !important; */
 }
 
 .NunitoSans-Regular {
-  font-family: "NunitoSans-Regular" !important;
+  /* font-family: "NunitoSans-Regular" !important; */
 }
 
 .NunitoSans-Medium {
-  font-family: "NunitoSans-Medium" !important;
+  /* font-family: "NunitoSans-Medium" !important; */
 }
 
 .Roboto-Regular {
-  font-family: "Roboto-Regular" !important;
+  /* font-family: "Roboto-Regular" !important; */
 }
 
 .Roboto-Medium {
-  font-family: "Roboto-Medium" !important;
+  /* font-family: "Roboto-Medium" !important; */
 }
 
 .Montserrat-Regular {
-  font-family: "Montserrat-Regular" !important;
+  /* font-family: "Montserrat-Regular" !important; */
 }
 
 .Montserrat-Medium {
-  font-family: "Montserrat-Medium" !important;
+  /* font-family: "Montserrat-Medium" !important; */
 }
 
 .Satoshi-Bold {
-  font-family: "Satoshi-Bold" !important;
+  /* font-family: "Satoshi-Bold" !important; */
 }
 
 /* ENd As per figma css */
@@ -338,15 +338,15 @@ input, select{
 
 
 /* gloablly apply css */
-
+/* 
 p{
   font-family: "Roboto-Regular";
-}
+} */
 
-
+/* 
 h1, h2, h3, h4, h5, h6{
   font-family: "OpenSans-Regular";
-}
+} */
 
 .fs-12{
   font-size: 12px;

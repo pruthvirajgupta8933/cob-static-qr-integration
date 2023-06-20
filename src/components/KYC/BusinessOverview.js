@@ -340,6 +340,15 @@ function BusinessOverview(props) {
     avgTicketAmount
   );
 
+
+
+
+  const tooltipData = {
+    "expected_transaction_yr": "Expected transaction/year refers to the estimated number of transactions that are anticipated to occur within a specific time frame, typically a year",
+    "avg_ticket_amount":"Average ticket amount refers to the average value or amount spent per transaction or customer."
+  }
+
+
   return (
     <div className="col-lg-12 p-0">
       <Formik
@@ -477,9 +486,9 @@ function BusinessOverview(props) {
               
 
               <div className="col-sm-12 col-md-12 col-lg-4">
-                <label className="col-form-label p-2 mt-0">
-                  Expected Transaction/Year
-                  <span style={{ color: "red" }}>*</span>
+                <label className="col-form-label p-2 mt-0"  data-tip={tooltipData.expected_transaction_yr}>
+                  Expected Trans./Year
+                  <span className="text-danger">*</span>
                 </label>
 
                 <FormikController
@@ -498,8 +507,8 @@ function BusinessOverview(props) {
               </div>
 
               <div className="col-sm-12 col-md-12 col-lg-4">
-                <label className="col-form-label p-2 mt-0">
-                  Avg Ticket Amount<span style={{ color: "red" }}>*</span>
+                <label className="col-form-label p-2 mt-0" data-tip={tooltipData.avg_ticket_amount}>
+                  Avg Ticket Amount<span className="text-danger">*</span>
                 </label>
 
                 <FormikController
