@@ -166,7 +166,7 @@ function SideNavbar() {
                     </ul>
                 )}
 
-                {/* <ul  className="nav flex-column"
+                <ul  className="nav flex-column"
                         role="menu">
                     <li className="nav-item" role="menuitem">
                         <Link
@@ -174,10 +174,10 @@ function SideNavbar() {
                             className={`nav-link ${sideNavClasses.nav_link}`}
                         >
                             <i class="fa fa-question-circle mr-1" aria-hidden="true"></i>
-                            Faq
+                            FAQ/Help
                         </Link>
                     </li>
-                </ul> */}
+                </ul>
 
             </div>
         </nav>
